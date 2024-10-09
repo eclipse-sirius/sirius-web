@@ -15,8 +15,8 @@ import { useCurrentProject } from '@eclipse-sirius/sirius-web-application';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+import { Panel } from '@xyflow/react';
 import { memo } from 'react';
-import { Panel } from 'reactflow';
 import { makeStyles } from 'tss-react/mui';
 
 const usePapayaDiagramInformationPanelStyles = makeStyles()((theme) => ({

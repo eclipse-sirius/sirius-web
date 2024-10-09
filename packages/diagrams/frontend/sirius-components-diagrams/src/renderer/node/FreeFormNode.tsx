@@ -13,8 +13,8 @@
 
 import { ServerContext, ServerContextValue, getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@mui/material/styles';
+import { Node, NodeProps } from '@xyflow/react';
 import React, { memo, useContext, useMemo } from 'react';
-import { NodeProps } from 'reactflow';
 import { BorderNodePosition } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { useConnectorNodeStyle } from '../connector/useConnectorNodeStyle';
@@ -26,6 +26,7 @@ import { ConnectionTargetHandle } from '../handles/ConnectionTargetHandle';
 import { useRefreshConnectionHandles } from '../handles/useRefreshConnectionHandles';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { FreeFormNodeData } from './FreeFormNode.types';
+import { NodeComponentsMap } from './NodeTypes';
 import { Resizer } from './Resizer';
 
 const freeFormNodeStyle = (
@@ -89,76 +90,78 @@ const computeBorderRotation = (data: FreeFormNodeData): string | undefined => {
   return undefined;
 };
 
-export const FreeFormNode = memo(({ data, id, selected, dragging }: NodeProps<FreeFormNodeData>) => {
-  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
+  ({ data, id, selected, dragging }: NodeProps<Node<FreeFormNodeData>>) => {
+    const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
-  const theme = useTheme();
-  const { onDrop, onDragOver } = useDrop();
+    const theme = useTheme();
+    const { onDrop, onDragOver } = useDrop();
 
-  const rotation = useMemo(
-    () => computeBorderRotation(data),
-    [data.isBorderNode, data.positionDependentRotation, data.borderNodePosition]
-  );
-  let imageURL: string | undefined = undefined;
-  if (data.imageURL) {
-    imageURL = httpOrigin + data.imageURL;
-  }
-
-  const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
-  const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
-  const nodeStyle = useMemo(
-    () => freeFormNodeStyle(theme, data.style, selected, data.isHovered, data.faded),
-    [data.style, selected, data.isHovered, data.faded]
-  );
-  const backgroundStyle = useMemo(
-    () => backgroundNodeStyle(theme, data.style, rotation, imageURL),
-    [data.style, rotation, imageURL]
-  );
-
-  const handleOnDrop = (event: React.DragEvent) => {
-    onDrop(event, id);
-  };
-
-  useRefreshConnectionHandles(id, data.connectionHandles);
-
-  const getLabelId = (data: FreeFormNodeData): string | null => {
-    let labelId: string | null = null;
-    if (data.insideLabel) {
-      labelId = data.insideLabel.id;
-    } else if (data.outsideLabels.BOTTOM_MIDDLE) {
-      labelId = data.outsideLabels.BOTTOM_MIDDLE.id;
+    const rotation = useMemo(
+      () => computeBorderRotation(data),
+      [data.isBorderNode, data.positionDependentRotation, data.borderNodePosition]
+    );
+    let imageURL: string | undefined = undefined;
+    if (data.imageURL) {
+      imageURL = httpOrigin + data.imageURL;
     }
-    return labelId;
-  };
 
-  return (
-    <>
-      <Resizer data={data} selected={selected} />
-      <div
-        style={{
-          ...nodeStyle,
-          ...connectionFeedbackStyle,
-          ...dropFeedbackStyle,
-        }}
-        onDragOver={onDragOver}
-        onDrop={handleOnDrop}
-        data-testid={`FreeForm - ${data?.targetObjectLabel}`}>
-        <div style={{ ...backgroundStyle }} />
-        {data.insideLabel && <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} />}
-        {selected ? (
-          <DiagramElementPalette
-            diagramElementId={id}
-            targetObjectId={data.targetObjectId}
-            labelId={getLabelId(data)}
-          />
-        ) : null}
-        {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
-        <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
-        <ConnectionHandles connectionHandles={data.connectionHandles} />
-      </div>
-      {data.outsideLabels.BOTTOM_MIDDLE && (
-        <Label diagramElementId={id} label={data.outsideLabels.BOTTOM_MIDDLE} faded={data.faded} />
-      )}
-    </>
-  );
-});
+    const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
+    const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
+    const nodeStyle = useMemo(
+      () => freeFormNodeStyle(theme, data.style, !!selected, data.isHovered, data.faded),
+      [data.style, !!selected, data.isHovered, data.faded]
+    );
+    const backgroundStyle = useMemo(
+      () => backgroundNodeStyle(theme, data.style, rotation, imageURL),
+      [data.style, rotation, imageURL]
+    );
+
+    const handleOnDrop = (event: React.DragEvent) => {
+      onDrop(event, id);
+    };
+
+    useRefreshConnectionHandles(id, data.connectionHandles);
+
+    const getLabelId = (data: FreeFormNodeData): string | null => {
+      let labelId: string | null = null;
+      if (data.insideLabel) {
+        labelId = data.insideLabel.id;
+      } else if (data.outsideLabels.BOTTOM_MIDDLE) {
+        labelId = data.outsideLabels.BOTTOM_MIDDLE.id;
+      }
+      return labelId;
+    };
+
+    return (
+      <>
+        <Resizer data={data} selected={!!selected} />
+        <div
+          style={{
+            ...nodeStyle,
+            ...connectionFeedbackStyle,
+            ...dropFeedbackStyle,
+          }}
+          onDragOver={onDragOver}
+          onDrop={handleOnDrop}
+          data-testid={`FreeForm - ${data?.targetObjectLabel}`}>
+          <div style={{ ...backgroundStyle }} />
+          {data.insideLabel && <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} />}
+          {selected ? (
+            <DiagramElementPalette
+              diagramElementId={id}
+              targetObjectId={data.targetObjectId}
+              labelId={getLabelId(data)}
+            />
+          ) : null}
+          {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
+          <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
+          <ConnectionHandles connectionHandles={data.connectionHandles} />
+        </div>
+        {data.outsideLabels.BOTTOM_MIDDLE && (
+          <Label diagramElementId={id} label={data.outsideLabels.BOTTOM_MIDDLE} faded={data.faded} />
+        )}
+      </>
+    );
+  }
+);

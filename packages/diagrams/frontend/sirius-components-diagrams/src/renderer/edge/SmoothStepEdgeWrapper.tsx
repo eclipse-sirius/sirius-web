@@ -10,24 +10,23 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Edge, EdgeProps, Node, Position, getSmoothStepPath, useInternalNode } from '@xyflow/react';
 import { memo, useContext } from 'react';
-import { EdgeProps, Node, Position, getSmoothStepPath, useStoreApi } from 'reactflow';
-import { NodeData } from '../DiagramRenderer.types';
-import { getHandleCoordinatesByPosition } from './EdgeLayout';
-import { MultiLabelEdge } from './MultiLabelEdge';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 import { NodeTypeContext } from '../../contexts/NodeContext';
 import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
+import { NodeData } from '../DiagramRenderer.types';
+import { DiagramNodeType } from '../node/NodeTypes.types';
+import { getHandleCoordinatesByPosition } from './EdgeLayout';
+import { MultiLabelEdge } from './MultiLabelEdge';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
 
-export const SmoothStepEdgeWrapper = memo((props: EdgeProps<MultiLabelEdgeData>) => {
+export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeData>>) => {
   const { source, target, markerEnd, markerStart, sourcePosition, targetPosition, sourceHandleId, targetHandleId } =
     props;
   const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
-  const { nodeInternals } = useStoreApi().getState();
 
-  const sourceNode = nodeInternals.get(source);
-  const targetNode = nodeInternals.get(target);
+  const sourceNode = useInternalNode<Node<NodeData>>(source);
+  const targetNode = useInternalNode<Node<NodeData>>(target);
 
   if (!sourceNode || !targetNode) {
     return null;

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Position } from 'reactflow';
+import { Position } from '@xyflow/react';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
 import { GQLNode, GQLNodeStyle, GQLViewModifier } from '../graphql/subscription/nodeFragment.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';

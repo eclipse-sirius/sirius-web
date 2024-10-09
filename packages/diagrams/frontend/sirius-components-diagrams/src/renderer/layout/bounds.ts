@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Dimensions, Node, XYPosition } from 'reactflow';
+import { Dimensions, Node, XYPosition } from '@xyflow/react';
 import { NodeData } from '../DiagramRenderer.types';
 import { defaultHeight, defaultWidth } from './layoutParams';
 

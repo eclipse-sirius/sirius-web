@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { useUpdateNodeInternals } from '@xyflow/react';
 import { useEffect } from 'react';
-import { useUpdateNodeInternals } from 'reactflow';
 export const useRefreshTargetHandles = (id: string, shouldRefresh: boolean) => {
   const updateNodeInternals = useUpdateNodeInternals();
   useEffect(() => {

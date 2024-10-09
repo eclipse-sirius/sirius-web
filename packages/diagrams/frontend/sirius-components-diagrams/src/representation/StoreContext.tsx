@@ -11,8 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { Edge, EdgeChange, Node, NodeChange, applyEdgeChanges, applyNodeChanges } from '@xyflow/react';
 import React, { useCallback, useState } from 'react';
-import { Edge, EdgeChange, Node, NodeChange, applyEdgeChanges, applyNodeChanges } from 'reactflow';
+import { EdgeData, NodeData } from '../renderer/DiagramRenderer.types';
 import { StoreContextValue } from './StoreContext.types';
 
 const defaultValue: StoreContextValue = {
@@ -29,16 +30,16 @@ const defaultValue: StoreContextValue = {
 export const StoreContext = React.createContext<StoreContextValue>(defaultValue);
 
 export const StoreContextProvider = ({ children }) => {
-  const [nodes, setNodes] = useState<Node[]>([]);
-  const [edges, setEdges] = useState<Edge[]>([]);
+  const [nodes, setNodes] = useState<Node<NodeData>[]>([]);
+  const [edges, setEdges] = useState<Edge<EdgeData>[]>([]);
 
   const onNodesChange = useCallback(
-    (changes: NodeChange[]) => setNodes((prevState) => applyNodeChanges(changes, prevState)),
+    (changes: NodeChange<Node<NodeData>>[]) => setNodes((prevState) => applyNodeChanges(changes, prevState)),
     [setEdges]
   );
 
   const onEdgesChange = useCallback(
-    (changes: EdgeChange[]) => setEdges((prevState) => applyEdgeChanges(changes, prevState)),
+    (changes: EdgeChange<Edge<EdgeData>>[]) => setEdges((prevState) => applyEdgeChanges(changes, prevState)),
     [setEdges]
   );
 

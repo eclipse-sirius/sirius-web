@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Node } from 'reactflow';
+import { Node } from '@xyflow/react';
 import { NodeData } from '../DiagramRenderer.types';
 export interface NodeContextValue {
   hoveredNode: Node<NodeData> | null;

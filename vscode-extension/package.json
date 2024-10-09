@@ -150,7 +150,7 @@
     "notistack": "3.0.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "reactflow": "11.10.1",
+    "@xyflow/react": "12.2.1",
     "reflect-metadata": "0.1.13",
     "subscriptions-transport-ws": "0.11.0",
     "uuid": "8.3.2",

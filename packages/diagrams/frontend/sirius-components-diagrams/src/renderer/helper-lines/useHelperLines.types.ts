@@ -10,15 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { NodeChange } from 'reactflow';
+import { Node, NodeChange } from '@xyflow/react';
+import { NodeData } from '../DiagramRenderer.types';
 
 export interface UseHelperLinesValue {
   helperLinesEnabled: boolean;
   setHelperLinesEnabled: (enable: boolean) => void;
   verticalHelperLine: number | null;
   horizontalHelperLine: number | null;
-  applyHelperLines: (changes: NodeChange[]) => NodeChange[];
-  resetHelperLines: (changes: NodeChange[]) => void;
+  applyHelperLines: (changes: NodeChange<Node<NodeData>>[]) => NodeChange<Node<NodeData>>[];
+  resetHelperLines: (changes: NodeChange<Node<NodeData>>[]) => void;
 }
 
 export interface UseHelperLinesState {

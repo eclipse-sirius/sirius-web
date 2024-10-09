@@ -16,7 +16,6 @@ import { DropNodeContextProviderProps, DropNodeContextState, DropNodeContextValu
 
 const defaultValue: DropNodeContextValue = {
   initialPosition: null,
-  initialPositionAbsolute: null,
   droppableOnDiagram: false,
   draggedNodeId: '',
   initializeDrop: () => {},
@@ -36,7 +35,6 @@ export const DropNodeContextProvider = ({ children }: DropNodeContextProviderPro
     setState((prevState) => ({
       ...prevState,
       initialPosition: null,
-      initialPositionAbsolute: null,
       droppableOnDiagram: false,
       draggedNodeId: '',
     }));
@@ -46,7 +44,6 @@ export const DropNodeContextProvider = ({ children }: DropNodeContextProviderPro
     <DropNodeContext.Provider
       value={{
         initialPosition: state.initialPosition,
-        initialPositionAbsolute: state.initialPositionAbsolute,
         droppableOnDiagram: state.droppableOnDiagram,
         draggedNodeId: state.draggedNodeId,
         initializeDrop,

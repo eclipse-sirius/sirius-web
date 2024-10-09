@@ -10,18 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useCallback, useContext } from 'react';
-import { Node, XYPosition, useReactFlow } from 'reactflow';
-import { UseDistributeElementsValue } from './useDistributeElements.types';
-import { NodeData, EdgeData } from '../DiagramRenderer.types';
-import { DiagramNodeType } from '../node/NodeTypes.types';
-import { useSynchronizeLayoutData } from './useSynchronizeLayoutData';
-import { RawDiagram } from './layout.types';
-import { useLayout } from './useLayout';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { Edge, Node, XYPosition, useReactFlow } from '@xyflow/react';
+import { useCallback, useContext } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
+import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { DiagramNodeType } from '../node/NodeTypes.types';
 import { useOverlap } from '../overlap/useOverlap';
+import { RawDiagram } from './layout.types';
+import { UseDistributeElementsValue } from './useDistributeElements.types';
+import { useLayout } from './useLayout';
+import { useSynchronizeLayoutData } from './useSynchronizeLayoutData';
 
 function getComparePositionFn(direction: 'horizontal' | 'vertical') {
   return (node1: Node, node2: Node) => {
@@ -36,7 +36,7 @@ function getComparePositionFn(direction: 'horizontal' | 'vertical') {
 
 const arrangeGapBetweenElements: number = 32;
 export const useDistributeElements = (): UseDistributeElementsValue => {
-  const { getNodes, getEdges, setNodes } = useReactFlow<NodeData, EdgeData>();
+  const { getNodes, getEdges, setNodes } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
   const { addMessages } = useMultiToast();
@@ -45,15 +45,15 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
 
   const processLayoutTool = (
     selectedNodeIds: string[],
-    layoutFn: (selectedNodes: Node<NodeData>[], refNode: Node) => Node<NodeData>[],
+    layoutFn: (selectedNodes: Node<NodeData>[], refNode: Node<NodeData>) => Node<NodeData>[],
     sortFn: ((node1: Node, node2: Node) => number) | null = null,
     refElementId: string | null = null,
     direction: 'horizontal' | 'vertical' = 'horizontal'
   ): void => {
     const selectedNodes: Node<NodeData>[] = getNodes().filter((node) => selectedNodeIds.includes(node.id));
-    const firstParent = selectedNodes[0]?.parentNode;
+    const firstParent = selectedNodes[0]?.parentId;
     const sameParent: boolean = selectedNodes.reduce(
-      (isSameParent, node) => isSameParent && node.parentNode === firstParent,
+      (isSameParent, node) => isSameParent && node.parentId === firstParent,
       true
     );
     if (selectedNodes.length < 2) {
@@ -73,13 +73,13 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
     }
     if (refNode) {
       const updatedNodes: Node<NodeData>[] = layoutFn(selectedNodes, refNode);
-      const overlapFreeNodes: Node[] = resolveNodeOverlap(updatedNodes, direction);
+      const overlapFreeNodes: Node<NodeData>[] = resolveNodeOverlap(updatedNodes, direction);
       const diagramToLayout: RawDiagram = {
         nodes: [...overlapFreeNodes] as Node<NodeData, DiagramNodeType>[],
         edges: getEdges(),
       };
       layout(diagramToLayout, diagramToLayout, null, (laidOutDiagram) => {
-        const overlapFreeNodesAfterLayout: Node[] = resolveNodeOverlap(laidOutDiagram.nodes, 'horizontal');
+        const overlapFreeNodesAfterLayout: Node<NodeData>[] = resolveNodeOverlap(laidOutDiagram.nodes, 'horizontal');
         setNodes(overlapFreeNodesAfterLayout);
         const finalDiagram: RawDiagram = {
           nodes: overlapFreeNodesAfterLayout as Node<NodeData, DiagramNodeType>[],
@@ -93,9 +93,9 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
   const distributeNodesOnGap = (direction: 'horizontal' | 'vertical') => {
     return useCallback((selectedNodeIds: string[]) => {
       const selectedNodes: Node<NodeData>[] = getNodes().filter((node) => selectedNodeIds.includes(node.id));
-      const firstParent = selectedNodes[0]?.parentNode;
+      const firstParent = selectedNodes[0]?.parentId;
       const sameParent: boolean = selectedNodes.reduce(
-        (isSameParent, node) => isSameParent && node.parentNode === firstParent,
+        (isSameParent, node) => isSameParent && node.parentId === firstParent,
         true
       );
       if (selectedNodes.length < 3 || !sameParent) {
@@ -221,7 +221,11 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
   };
 
   const justifyElements = (
-    justifyElementsFn: (selectedNodes: Node[], selectedNodeIds: string[], refNode: Node) => Node[]
+    justifyElementsFn: (
+      selectedNodes: Node<NodeData>[],
+      selectedNodeIds: string[],
+      refNode: Node<NodeData>
+    ) => Node<NodeData>[]
   ) => {
     return useCallback(
       (selectedNodeIds: string[], refElementId: string | null) => {
@@ -240,7 +244,7 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
   };
 
   const justifyHorizontally = justifyElements(
-    (selectedNodes: Node[], selectedNodeIds: string[], refNode: Node): Node[] => {
+    (selectedNodes: Node<NodeData>[], selectedNodeIds: string[], refNode: Node<NodeData>): Node<NodeData>[] => {
       const largestWidth: number = selectedNodes.reduce((width, node) => Math.max(width, node.width ?? 0), 0);
       return getNodes().map((node) => {
         if (
@@ -267,7 +271,7 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
   );
 
   const justifyVertically = justifyElements(
-    (selectedNodes: Node[], selectedNodeIds: string[], refNode: Node): Node[] => {
+    (selectedNodes: Node<NodeData>[], selectedNodeIds: string[], refNode: Node<NodeData>): Node<NodeData>[] => {
       const largestHeight: number = selectedNodes.reduce((height, node) => Math.max(height, node.height ?? 0), 0);
       return getNodes().map((node) => {
         if (

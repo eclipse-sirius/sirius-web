@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { EdgeProps } from '@xyflow/react';
 import { ComponentType } from 'react';
-import { EdgeProps } from 'reactflow';
 
 export type DiagramEdgeType = 'smartStepEdge' | 'smoothStepEdge';
 

@@ -15,9 +15,9 @@ import { ApolloClient, InMemoryCache } from '@apollo/client/core';
 import { ApolloProvider } from '@apollo/client/react';
 import { MessageOptions, ServerContext, ToastContext, theme } from '@eclipse-sirius/sirius-components-core';
 import { ThemeProvider } from '@mui/material/styles';
+import { Node, NodeProps, ReactFlowProvider } from '@xyflow/react';
 import { Fragment, createElement } from 'react';
 import { Root, createRoot } from 'react-dom/client';
-import { Node, ReactFlowProvider } from 'reactflow';
 import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
 import { NodeData } from '../DiagramRenderer.types';
 import { Label } from '../Label';
@@ -39,19 +39,9 @@ const emptyNodeProps = {
   selected: false,
   isConnectable: true,
   dragging: false,
-  xPos: 0,
-  yPos: 0,
+  positionAbsoluteX: 0,
+  positionAbsoluteY: 0,
   zIndex: -1,
-};
-
-const emptyListNodeProps = {
-  ...emptyNodeProps,
-  type: 'listNode',
-};
-
-const emptyRectangularNodeProps = {
-  ...emptyNodeProps,
-  type: 'rectangularNode',
 };
 
 const isListNode = (node: Node<NodeData>): node is Node<ListNodeData> => node.type === 'listNode';
@@ -137,8 +127,15 @@ export const prepareLayoutArea = (
     if (hiddenContainer && node) {
       const children: JSX.Element[] = [];
       if (isRectangularNode(node)) {
+        const freeFormNodeProps: NodeProps<Node<FreeFormNodeData, 'freeFormNode'>> = {
+          ...emptyNodeProps,
+          type: 'freeFormNode',
+          id: node.id,
+          data: node.data,
+        };
+
         const element = createElement(FreeFormNode, {
-          ...emptyRectangularNodeProps,
+          ...freeFormNodeProps,
           id: node.id,
           data: node.data,
           key: `${node.id}-${index}`,
@@ -146,10 +143,15 @@ export const prepareLayoutArea = (
         children.push(element);
       }
       if (isListNode(node)) {
-        const element = createElement(ListNode, {
-          ...emptyListNodeProps,
+        const listNodeProps: NodeProps<Node<ListNodeData, 'listNode'>> = {
+          ...emptyNodeProps,
+          type: 'listNode',
           id: node.id,
           data: node.data,
+        };
+
+        const element = createElement(ListNode, {
+          ...listNodeProps,
           key: `${node.id}-${index}`,
         });
         children.push(element);
@@ -230,7 +232,7 @@ const layoutDiagram = (
   nodeLayoutHandlerContributions: INodeLayoutHandler<NodeData>[]
 ) => {
   const allVisibleNodes = diagram.nodes.filter((node) => !node.hidden);
-  const nodesToLayout = allVisibleNodes.filter((node) => !node.parentNode);
+  const nodesToLayout = allVisibleNodes.filter((node) => !node.parentId);
 
   const layoutEngine: ILayoutEngine = new LayoutEngine();
 
@@ -243,8 +245,8 @@ const layoutDiagram = (
     newlyAddedNode = allVisibleNodes
       .filter((node) => !previousDiagram?.nodes.map((n) => n.id).find((n) => n === node.id))
       .find((node) => {
-        if (node.parentNode) {
-          return referencePosition.parentId === node.parentNode;
+        if (node.parentId) {
+          return referencePosition.parentId === node.parentId;
         }
         return !referencePosition.parentId || referencePosition.parentId === '';
       });
@@ -253,7 +255,7 @@ const layoutDiagram = (
       if (newlyAddedNode.data.isBorderNode) {
         getNewlyAddedBorderNodePosition(
           newlyAddedNode,
-          allVisibleNodes.find((node) => node.id === newlyAddedNode?.parentNode),
+          allVisibleNodes.find((node) => node.id === newlyAddedNode?.parentId),
           referencePosition
         );
       }

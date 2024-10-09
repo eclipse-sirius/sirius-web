@@ -22,8 +22,8 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
+import { Edge, Node, OnSelectionChangeFunc, useOnSelectionChange, useReactFlow } from '@xyflow/react';
 import { Fragment, memo, useCallback, useRef, useState } from 'react';
-import { Node, OnSelectionChangeFunc, useOnSelectionChange, useReactFlow } from 'reactflow';
 import { makeStyles } from 'tss-react/mui';
 import { AlignHorizontalCenterIcon } from '../../../icons/AlignHorizontalCenterIcon';
 import { AlignHorizontalLeftIcon } from '../../../icons/AlignHorizontalLeftIcon';
@@ -120,12 +120,11 @@ export const GroupPalette = memo(({ x, y, isOpened, refElementId, hidePalette }:
     isDistributeElementToolSectionExpand: false,
     lastDistributeElementToolId: null,
   });
-  const { getNode } = useReactFlow<NodeData, EdgeData>();
+  const { getNode } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
   const onChange: OnSelectionChangeFunc = useCallback(({ nodes, edges }) => {
-    const selectedNodes = nodes.filter((node: Node) => node.selected);
-    const selectedListChildFiltered = selectedNodes.filter((node: Node) => {
-      const parent = getNode(node.parentNode ?? '');
+    const selectedListChildFiltered = nodes.filter((node: Node) => {
+      const parent = getNode(node.parentId ?? '');
       if (parent) {
         return !isListData(parent);
       }
@@ -135,7 +134,7 @@ export const GroupPalette = memo(({ x, y, isOpened, refElementId, hidePalette }:
 
     const isMinimalPalette = !canSelectedNodesBeDistributed(selectedListChildFiltered);
 
-    const selectedElements = isMinimalPalette ? [...selectedNodes, ...selectedEdges] : [...selectedListChildFiltered];
+    const selectedElements = isMinimalPalette ? [...nodes, ...selectedEdges] : [...selectedListChildFiltered];
     if (selectedElements.length > 1) {
       setState((prevState) => ({
         ...prevState,
