@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,18 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.diagrams.layoutdata;
+import { Edge, EdgeProps, XYPosition } from '@xyflow/react';
 
-import java.util.List;
+export type MultiLabelEditableEdgeProps<T extends Edge<Record<string, unknown>, string | undefined>> = {
+  bendingPoints: XYPosition[];
+} & EdgeProps<T>;
 
-/**
- * The layout data of an edge.
- *
- * @author sbegaudeau
- */
-public record EdgeLayoutData(
-        String id,
-        List<Position> bendingPoints
-) {
-
-}
+export type MultiLabelEditableEdgeState = {
+  localBendingPoints: XYPosition[];
+  middleBendingPoints: XYPosition[];
+  temporaryPointDragPosition: XYPosition | null;
+  temporaryPointDragIndex: number | null;
+};

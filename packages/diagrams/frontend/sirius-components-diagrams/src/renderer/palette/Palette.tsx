@@ -20,6 +20,7 @@ import {
   useSelection,
 } from '@eclipse-sirius/sirius-components-core';
 import AdjustIcon from '@mui/icons-material/Adjust';
+import DirectionsOffIcon from '@mui/icons-material/DirectionsOff';
 import TonalityIcon from '@mui/icons-material/Tonality';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
@@ -68,6 +69,7 @@ import {
 import { ToolSection } from './tool-section/ToolSection';
 import { DiagramPaletteToolComponentProps } from './tool/DiagramPaletteTool.types';
 import { diagramPaletteToolExtensionPoint } from './tool/DiagramPaletteToolExtensionPoints';
+import { useEditableEdgePath } from '../edge/useEditableEdgePath';
 
 const usePaletteStyle = makeStyles()((theme) => ({
   palette: {
@@ -224,6 +226,7 @@ export const Palette = ({
   const { fadeDiagramElements } = useFadeDiagramElements();
   const { pinDiagramElements } = usePinDiagramElements();
   const { adjustSize } = useAdjustSize();
+  const { removeEdgeLayoutData } = useEditableEdgePath();
   const { getNodes, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
 
@@ -301,6 +304,25 @@ export const Palette = ({
         </IconButton>
       </Tooltip>
     );
+  }
+
+  let resetEditedEdgePath: JSX.Element | undefined;
+  const edge = getEdges().find((edge) => edge.id === diagramElementId);
+  if (edge) {
+    if (edge.data?.bendingPoints) {
+      resetEditedEdgePath = (
+        <Tooltip title="Reset path">
+          <IconButton
+            className={classes.toolIcon}
+            size="small"
+            aria-label="Reset path"
+            onClick={() => removeEdgeLayoutData(diagramElementId)}
+            data-testid="Reset-path">
+            <DirectionsOffIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
+      );
+    }
   }
 
   let x: number = 0;
@@ -503,6 +525,7 @@ export const Palette = ({
           </Tooltip>
           {pinUnpinTool}
           {adjustSizeTool}
+          {resetEditedEdgePath}
         </>
       ) : null}
     </Paper>

@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.InsideLabelDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.LabelEditToolBuilder;
@@ -30,10 +31,12 @@ import org.eclipse.sirius.components.view.builder.generated.diagram.NodePaletteB
 import org.eclipse.sirius.components.view.builder.generated.diagram.RectangularNodeStyleDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.SetValueBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
+import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
+import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
-import org.eclipse.sirius.components.view.diagram.LabelEditTool;
+import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
@@ -55,8 +58,6 @@ public class EditableLabelDiagramDescriptionProvider implements IEditingContextP
     private final View view;
 
     private DiagramDescription diagramDescription;
-
-    private LabelEditTool labelEditTool;
 
     public EditableLabelDiagramDescriptionProvider(IDiagramIdProvider diagramIdProvider) {
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
@@ -100,7 +101,7 @@ public class EditableLabelDiagramDescriptionProvider implements IEditingContextP
                 .position(InsideLabelPosition.TOP_CENTER)
                 .build();
 
-        this.labelEditTool = new LabelEditToolBuilder()
+        var labelEditTool = new LabelEditToolBuilder()
                 .name("Edit Label")
                 .initialDirectEditLabelExpression("aql:self.name")
                 .body(
@@ -113,7 +114,7 @@ public class EditableLabelDiagramDescriptionProvider implements IEditingContextP
 
 
         var nodePalette = new NodePaletteBuilder()
-                .labelEditTool(this.labelEditTool)
+                .labelEditTool(labelEditTool)
                 .build();
 
         var nodeDescription = new NodeDescriptionBuilder()
@@ -125,12 +126,54 @@ public class EditableLabelDiagramDescriptionProvider implements IEditingContextP
                 .palette(nodePalette)
                 .build();
 
+        var dependencyEdgeStyle = new DiagramBuilders().newEdgeStyle()
+                .sourceArrowStyle(ArrowStyle.NONE)
+                .targetArrowStyle(ArrowStyle.INPUT_FILL_CLOSED_ARROW)
+                .lineStyle(LineStyle.SOLID)
+                .edgeWidth(1)
+                .borderSize(0)
+                .build();
+
+        var edgeCenterLabelEditTool = new DiagramBuilders().newLabelEditTool()
+                .name("Edit Begin Label")
+                .initialDirectEditLabelExpression("aql:semanticEdgeSource.name")
+                .body(
+                        new ViewBuilders().newChangeContext()
+                                .expression("aql:semanticEdgeSource")
+                                .children(
+                                        new SetValueBuilder()
+                                                .featureName("name")
+                                                .valueExpression("aql:newLabel)")
+                                                .build()
+                                )
+                                .build()
+                )
+                .build();
+        var edgePalette = new DiagramBuilders().newEdgePalette()
+                .centerLabelEditTool(edgeCenterLabelEditTool)
+                .build();
+
+        var edgeDescription = new DiagramBuilders().newEdgeDescription()
+                .name("Dependency")
+                .sourceNodeDescriptions(nodeDescription)
+                .targetNodeDescriptions(nodeDescription)
+                .centerLabelExpression("")
+                .sourceNodesExpression("aql:self")
+                .targetNodesExpression("aql:self.dependencies")
+                .isDomainBasedEdge(false)
+                .beginLabelExpression("aql:'source ' + semanticEdgeSource.name")
+                .centerLabelExpression("aql:semanticEdgeSource.name + ' - ' + semanticEdgeTarget.name")
+                .endLabelExpression("aql:'target ' + semanticEdgeTarget.name")
+                .palette(edgePalette)
+                .style(dependencyEdgeStyle)
+                .build();
+
         this.diagramDescription = new DiagramDescriptionBuilder()
                 .name("Diagram")
                 .titleExpression("aql:'EditableLabelDiagram'")
                 .domainType("papaya:Project")
                 .nodeDescriptions(nodeDescription)
-                .edgeDescriptions()
+                .edgeDescriptions(edgeDescription)
                 .autoLayout(false)
                 .build();
 

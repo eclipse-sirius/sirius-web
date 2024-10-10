@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventPro
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInputReferencePositionProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.EdgeLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.LayoutDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.NodeLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ReferencePosition;
@@ -44,6 +45,7 @@ import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
+import org.eclipse.sirius.components.diagrams.layoutdata.EdgeLayoutData;
 import org.eclipse.sirius.components.diagrams.layoutdata.NodeLayoutData;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.slf4j.Logger;
@@ -139,7 +141,14 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
                                 (oldValue, newValue) -> newValue
                         ));
 
-                var layoutData = new DiagramLayoutData(nodeLayoutData, Map.of(), Map.of());
+                var edgeLayoutData = layoutDiagramInput.diagramLayoutData().edgeLayoutData().stream()
+                        .collect(Collectors.toMap(
+                                EdgeLayoutDataInput::id,
+                                edgeLayoutDataInput -> new EdgeLayoutData(edgeLayoutDataInput.id(), edgeLayoutDataInput.bendingPoints()),
+                                (oldValue, newValue) -> newValue
+                        ));
+
+                var layoutData = new DiagramLayoutData(nodeLayoutData, edgeLayoutData, Map.of());
                 var laidOutDiagram = Diagram.newDiagram(diagram)
                         .layoutData(layoutData)
                         .build();
@@ -244,8 +253,8 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     @Override
     public Flux<IPayload> getOutputEvents(IInput input) {
         return Flux.merge(
-            this.diagramEventFlux.getFlux(this.currentRevisionId, this.currentRevisionCause),
-            this.subscriptionManager.getFlux(input)
+                this.diagramEventFlux.getFlux(this.currentRevisionId, this.currentRevisionCause),
+                this.subscriptionManager.getFlux(input)
         );
     }
 

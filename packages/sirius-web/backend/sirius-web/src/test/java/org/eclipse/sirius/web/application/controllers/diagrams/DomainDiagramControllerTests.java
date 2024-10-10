@@ -141,6 +141,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
 
         var diagramId = new AtomicReference<String>();
         var currentRevisionId = new AtomicReference<UUID>();
+
         var humanNodeId  = new AtomicReference<String>();
         var initialDiagramMetadata = new AtomicReference<RepresentationMetadata>(null);
         var initialDiagramContent = new AtomicReference<RepresentationContent>(null);
@@ -160,7 +161,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
 
         Runnable initialDiagramLayout = () -> {
             var humanNodeLayout = new NodeLayoutDataInput(humanNodeId.get(), initialPosition, initialSize, true);
-            var layoutData = new DiagramLayoutDataInput(List.of(humanNodeLayout));
+            var layoutData = new DiagramLayoutDataInput(List.of(humanNodeLayout), List.of());
             var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), diagramId.get(), layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);
         };
@@ -187,7 +188,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
 
         Runnable modifyDiagramLayout = () -> {
             var humanNodeLayout = new NodeLayoutDataInput(humanNodeId.get(), modifiedPosition, modifiedSize, true);
-            var layoutData = new DiagramLayoutDataInput(List.of(humanNodeLayout));
+            var layoutData = new DiagramLayoutDataInput(List.of(humanNodeLayout), List.of());
             var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), diagramId.get(), layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);
         };
