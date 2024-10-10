@@ -14,6 +14,7 @@
 
 - [ADR-158] Support delegating representation event handling
 - [ADR-159] Create event processor only using the representation id
+- [ADR-XXX] Persist label position in diagram
 
 === Deprecation warning
 
