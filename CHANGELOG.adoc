@@ -44,6 +44,8 @@ This allows an error to be displayed when there is a problem during uploading
 - [releng] Switch to Spring Boot 3.3.3
 - https://github.com/eclipse-sirius/sirius-web/issues/3846[#3846] [core] Migrate the frontend to `react 18.3.1`, `react-dom 18.3.1`, `react-router-dom 6.26.0`, `@xstate/react: 3.0.0` and `@ObeoNetwork/gantt-task-react 0.6.0`
 - https://github.com/eclipse-sirius/sirius-web/issues/3840[#3840] [diagram] Migrate to ReactFlow 12
+- https://github.com/eclipse-sirius/sirius-web/issues/3868[#3868] [diagram] Add dependency to `react-draggable 4.4.6`
+- https://github.com/eclipse-sirius/sirius-web/issues/3868[#3868] [diagram] Add dependency to `svg-path-parser 1.1.0`
 
 
 === Bug fixes
@@ -74,6 +76,7 @@ The new endpoints are:
 description (optional).
 ** deleteProject (`POST /api/rest/projects/{projectId}`): Delete the project with the given id (projectId).
 ** updateProject (`PUT /projects/{projectId}`): Update the project with the given id (projectId).
+- https://github.com/eclipse-sirius/sirius-web/issues/3868[#3868] [diagram] Make path of edges editable
 
 === Improvements
 

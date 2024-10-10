@@ -38,6 +38,7 @@ type Diagram implements Representation {
 
 type DiagramLayoutData {
   nodeLayoutData: [NodeLayoutData!]!
+  edgeLayoutData: [EdgeLayoutData!]!
 }
 
 type NodeLayoutData {
@@ -45,6 +46,11 @@ type NodeLayoutData {
   position: Position!
   size: Size!
   resizedByUser: Boolean!
+}
+
+type EdgeLayoutData {
+  id: ID!
+  bendingPoints: [Position!]!
 }
 
 enum ViewModifier {
@@ -567,6 +573,7 @@ input LayoutDiagramInput {
 
 input DiagramLayoutDataInput {
   nodeLayoutData: [NodeLayoutDataInput!]!
+  edgeLayoutData: [EdgeLayoutDataInput!]!
 }
 
 input NodeLayoutDataInput {
@@ -574,6 +581,11 @@ input NodeLayoutDataInput {
   position: PositionInput!
   size: SizeInput!
   resizedByUser: Boolean!
+}
+
+input EdgeLayoutDataInput {
+  id: ID!
+  bendingPoints: [PositionInput!]!
 }
 
 input PositionInput {

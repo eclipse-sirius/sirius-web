@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,18 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.diagrams.layoutdata;
+import { DraggableData } from 'react-draggable';
 
-import java.util.List;
+export interface BendPointProps {
+  x: number;
+  y: number;
+  index: number;
+  onDragStop: (eventData: DraggableData, index: number) => void;
+  onDoubleClick: (index: number) => void;
+}
 
-/**
- * The layout data of an edge.
- *
- * @author sbegaudeau
- */
-public record EdgeLayoutData(
-        String id,
-        List<Position> bendingPoints
-) {
-
+export interface TemporaryBendPointProps {
+  x: number;
+  y: number;
+  index: number;
+  onDragStop: (eventData: DraggableData, index: number) => void;
 }

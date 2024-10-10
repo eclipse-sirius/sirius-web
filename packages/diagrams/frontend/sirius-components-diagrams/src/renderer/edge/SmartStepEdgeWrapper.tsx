@@ -20,8 +20,10 @@ import {
   useInternalNode,
   useReactFlow,
   useStoreApi,
+  XYPosition,
 } from '@xyflow/react';
 import { memo, useContext, useMemo } from 'react';
+import parse from 'svg-path-parser';
 import { NodeTypeContext } from '../../contexts/NodeContext';
 import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
@@ -86,8 +88,17 @@ const isNodeInternal = (node: InternalNode<Node<NodeData>> | undefined): node is
 };
 
 export const SmartStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeData>>) => {
-  const { source, target, markerEnd, markerStart, sourcePosition, targetPosition, sourceHandleId, targetHandleId } =
-    props;
+  const {
+    source,
+    target,
+    markerEnd,
+    markerStart,
+    sourcePosition,
+    targetPosition,
+    sourceHandleId,
+    targetHandleId,
+    data,
+  } = props;
   const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
   const { getNodes } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const storeApi = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
@@ -266,6 +277,23 @@ export const SmartStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeDa
     );
   }
   const { edgeCenterX, edgeCenterY, svgPathString } = getSmartEdgeResponse;
+  let edgePath, bendingPoints: XYPosition[];
+  if (data?.bendingPoints) {
+    bendingPoints = data.bendingPoints;
+    edgePath = `M ${sourceX} ${sourceY}`;
+
+    for (let i = 0; i < data.bendingPoints.length; i++) {
+      edgePath += ` L ${data.bendingPoints[i]?.x} ${data.bendingPoints[i]?.y}`;
+    }
+    edgePath += ` L ${targetX} ${targetY}`;
+  } else {
+    edgePath = svgPathString;
+    bendingPoints = parse(svgPathString)
+      .filter((segment) => segment.code === 'Q')
+      .map((segment) => {
+        return { x: (segment.x + segment.x1) / 2, y: (segment.y + segment.y1) / 2 };
+      });
+  }
   return (
     <MultiLabelEdge
       {...props}
@@ -275,7 +303,8 @@ export const SmartStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeDa
       targetY={targetY}
       edgeCenterX={edgeCenterX}
       edgeCenterY={edgeCenterY}
-      svgPathString={svgPathString}
+      svgPathString={edgePath}
+      bendingPoints={bendingPoints}
     />
   );
 });

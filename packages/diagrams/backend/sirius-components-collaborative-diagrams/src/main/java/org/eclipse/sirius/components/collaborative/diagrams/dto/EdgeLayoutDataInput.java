@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,13 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
-package org.eclipse.sirius.components.diagrams.layoutdata;
+import java.util.List;
+
+import org.eclipse.sirius.components.diagrams.layoutdata.Position;
 
 /**
- * The position ratio of an element.
+ * Input used to receive edge layout data.
  *
- * @author sbegaudeau
+ * @author frouene
  */
-public record Ratio(double x, double y) {
+public record EdgeLayoutDataInput(String id, List<Position> bendingPoints) {
+
 }
