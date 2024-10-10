@@ -165,6 +165,8 @@ type Mutation {
   deleteObject(input: DeleteObjectInput!): DeleteObjectPayload!
   renameObject(input: RenameObjectInput!): RenameObjectPayload!
   invokeEditingContextAction(input: InvokeEditingContextActionInput!): InvokeEditingContextActionPayload!
+  undo(input : UndoRedoInput!) : UndoPayload!
+  redo(input : UndoRedoInput!) : UndoPayload!
 }
 
 type Object {
@@ -228,6 +230,14 @@ input DeleteObjectInput {
   editingContextId: ID!
   objectId: ID!
 }
+
+input UndoRedoInput {
+  id: ID!
+  editingContextId: ID!
+  mutationId: ID!
+}
+
+union UndoPayload = ErrorPayload | SuccessPayload
 
 union DeleteObjectPayload = ErrorPayload | SuccessPayload
 

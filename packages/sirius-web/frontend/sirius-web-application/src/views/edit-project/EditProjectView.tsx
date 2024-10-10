@@ -42,6 +42,7 @@ import {
 import { ProjectContext } from './ProjectContext';
 import { NewDocumentModalContribution } from './TreeToolBarContributions/NewDocumentModalContribution';
 import { UploadDocumentModalContribution } from './TreeToolBarContributions/UploadDocumentModalContribution';
+import { UndoRedo } from './UndoRedo';
 import { useProjectAndRepresentationMetadata } from './useProjectAndRepresentationMetadata';
 
 const useEditProjectViewStyles = makeStyles()((_) => ({
@@ -123,12 +124,14 @@ export const EditProjectView = () => {
         <SelectionContextProvider initialSelection={initialSelection}>
           <EditProjectNavbar readOnly={readOnly} />
           <TreeToolBarProvider>
-            <Workbench
-              editingContextId={context.project.currentEditingContext.id}
-              initialRepresentationSelected={context.representation}
-              onRepresentationSelected={onRepresentationSelected}
-              readOnly={readOnly}
-            />
+            <UndoRedo>
+              <Workbench
+                editingContextId={context.project.currentEditingContext.id}
+                initialRepresentationSelected={context.representation}
+                onRepresentationSelected={onRepresentationSelected}
+                readOnly={readOnly}
+              />
+            </UndoRedo>
           </TreeToolBarProvider>
         </SelectionContextProvider>
       </ProjectContext.Provider>

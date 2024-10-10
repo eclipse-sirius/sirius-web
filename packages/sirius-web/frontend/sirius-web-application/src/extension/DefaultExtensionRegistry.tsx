@@ -51,6 +51,7 @@ import LinkIcon from '@mui/icons-material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import WarningIcon from '@mui/icons-material/Warning';
 import { DiagramFilter } from '../diagrams/DiagramFilter';
+import { OperationCountLink } from '../graphql/ApolloLinkMutationsStack';
 import { ApolloClientOptionsConfigurer } from '../graphql/useCreateApolloClient.types';
 import { apolloClientOptionsConfigurersExtensionPoint } from '../graphql/useCreateApolloClientExtensionPoints';
 import { OnboardArea } from '../onboarding/OnboardArea';
@@ -251,6 +252,7 @@ const nodesApolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (curre
   return {
     ...currentOptions,
     documentTransform: newDocumentTransform,
+    link: new OperationCountLink().concat(currentOptions.link),
   };
 };
 
