@@ -469,7 +469,7 @@ exports[`should render a readOnly list from widget properties 1`] = `
             class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-dsuxgy-MuiTableCell-root"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1  css-qh6f2j-style css-1gqyz35-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-qh6f2j-style css-1gqyz35-MuiTypography-root"
               data-testid="representation-item1Label"
             >
               item1Label
@@ -503,7 +503,7 @@ exports[`should render a readOnly list from widget properties 1`] = `
             class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-dsuxgy-MuiTableCell-root"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1  css-qh6f2j-style css-1gqyz35-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-qh6f2j-style css-1gqyz35-MuiTypography-root"
               data-testid="representation-item2Label"
             >
               item2Label
@@ -537,7 +537,7 @@ exports[`should render a readOnly list from widget properties 1`] = `
             class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-dsuxgy-MuiTableCell-root"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1  css-qh6f2j-style css-1gqyz35-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-qh6f2j-style css-1gqyz35-MuiTypography-root"
               data-testid="representation-item3Label"
             >
               item3Label

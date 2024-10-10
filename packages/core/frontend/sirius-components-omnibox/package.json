@@ -1,0 +1,61 @@
+{
+  "name": "@eclipse-sirius/sirius-components-omnibox",
+  "author": "Eclipse Sirius",
+  "version": "2024.9.4",
+  "license": "EPL-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eclipse-sirius/sirius-web"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "main": "./dist/sirius-components-omnibox.umd.js",
+  "module": "./dist/sirius-components-omnibox.es.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "require": "./dist/sirius-components-omnibox.umd.js",
+      "import": "./dist/sirius-components-omnibox.es.js"
+    }
+  },
+  "scripts": {
+    "start": "vite build --mode 'development' && tsc",
+    "build": "vite build && tsc",
+    "format": "prettier --write \"src/**/*.{js,ts,tsx,css}\"",
+    "format-lint": "prettier --list-different \"src/**/*.{js,ts,tsx,css}\"",
+    "publish:local": "yalc push"
+  },
+  "peerDependencies": {
+    "@apollo/client": "3.10.4",
+    "@eclipse-sirius/sirius-components-core": "*",
+    "@mui/icons-material": "5.15.19",
+    "@mui/material": "5.15.19",
+    "@xstate/react": "3.0.0",
+    "graphql": "16.8.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "tss-react": "4.9.7",
+    "xstate": "4.32.1"
+  },
+  "devDependencies": {
+    "@eclipse-sirius/sirius-components-core": "*",
+    "@eclipse-sirius/sirius-components-tsconfig": "*",
+    "@mui/icons-material": "5.15.19",
+    "@mui/material": "5.15.19",
+    "@types/node": "20.12.12",
+    "@types/react": "18.3.3",
+    "@vitejs/plugin-react": "4.3.0",
+    "jest-junit-reporter": "1.1.0",
+    "prettier": "2.7.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-router-dom": "6.26.0",
+    "rollup-plugin-peer-deps-external": "2.2.4",
+    "typescript": "5.4.5",
+    "vite": "5.2.11"
+  }
+}

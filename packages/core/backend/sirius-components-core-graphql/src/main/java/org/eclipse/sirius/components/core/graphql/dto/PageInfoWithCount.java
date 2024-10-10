@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.dto;
+package org.eclipse.sirius.components.core.graphql.dto;
 
 import graphql.relay.ConnectionCursor;
 import graphql.relay.PageInfo;

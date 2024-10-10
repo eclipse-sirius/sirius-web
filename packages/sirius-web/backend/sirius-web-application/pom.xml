@@ -56,6 +56,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-core-graphql</artifactId>
+			<version>2024.9.8</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative</artifactId>
 			<version>2024.9.8</version>
 		</dependency>
@@ -87,11 +92,6 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-emf-forms</artifactId>
-			<version>2024.9.8</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-domain</artifactId>
 			<version>2024.9.8</version>
 		</dependency>
 		<dependency>

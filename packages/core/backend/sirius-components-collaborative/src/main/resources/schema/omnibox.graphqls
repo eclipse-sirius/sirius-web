@@ -1,0 +1,24 @@
+extend type Viewer {
+  omniboxCommands(contextEntries: [OmniboxContextEntry!]!, query: String!): ViewerOmniboxCommandsConnection!
+}
+input OmniboxContextEntry {
+  id: ID!
+  kind: String!
+}
+
+type ViewerOmniboxCommandsConnection {
+  edges: [OmniboxCommandsEdge!]!
+  pageInfo: PageInfo!
+}
+
+type OmniboxCommandsEdge {
+  node: OmniboxCommand!
+}
+
+type OmniboxCommand {
+  id: ID!
+  label: String!
+  kind: String!
+  iconURLs: [String!]!
+  description: String!
+}
