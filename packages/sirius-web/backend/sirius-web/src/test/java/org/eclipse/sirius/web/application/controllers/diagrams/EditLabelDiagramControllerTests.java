@@ -78,7 +78,7 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
         this.givenInitialServerState.initialize();
     }
 
-    private Flux<Object> givenSubscriptionToLabelEditableDiagramDiagram() {
+    private Flux<Object> givenSubscriptionToLabelEditableDiagram() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 PapayaIdentifiers.PAPAYA_PROJECT.toString(),
@@ -94,7 +94,7 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
     @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenDiagramWithNodeUsingComputedLabelWhenItsInitialLabelIsRequestedThenTheRawLabelIsReturned() {
-        var flux = this.givenSubscriptionToLabelEditableDiagramDiagram();
+        var flux = this.givenSubscriptionToLabelEditableDiagram();
 
         var diagramId = new AtomicReference<String>();
         var labelId = new AtomicReference<String>();
@@ -134,7 +134,7 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
     @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenDiagramWithNodeWhenItsLabelIsEditedThenTheLabelIsUpdated() {
-        var flux = this.givenSubscriptionToLabelEditableDiagramDiagram();
+        var flux = this.givenSubscriptionToLabelEditableDiagram();
 
         var diagramId = new AtomicReference<String>();
         var nodeId = new AtomicReference<String>();
@@ -153,10 +153,10 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
 
         Runnable editLabel = () -> {
             var input = new EditLabelInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), labelId.get(), "new label");
-            var invokeSingleClickOnDiagramElementToolResult = this.editLabelMutationRunner.run(input);
+            var result = this.editLabelMutationRunner.run(input);
 
-            String invokeSingleClickOnDiagramElementToolResultTypename = JsonPath.read(invokeSingleClickOnDiagramElementToolResult, "$.data.editLabel.__typename");
-            assertThat(invokeSingleClickOnDiagramElementToolResultTypename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
+            String typename = JsonPath.read(result, "$.data.editLabel.__typename");
+            assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
         };
 
         Predicate<Object> updatedDiagramContentMatcher = payload -> Optional.of(payload)
@@ -169,6 +169,57 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
                         .map(node -> node.getInsideLabel().getText().equals("new label-suffix"))
                         .findFirst()
                         .orElse(false);
+                })
+                .isPresent();
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(editLabel)
+                .expectNextMatches(updatedDiagramContentMatcher)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a diagram with an edge, when its begin label is edited, then the label is updated")
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenDiagramWithEdgeWhenItsBeeginLabelIsEditedThenTheLabelIsUpdated() {
+        var flux = this.givenSubscriptionToLabelEditableDiagram();
+
+        var diagramId = new AtomicReference<String>();
+        var edgeId = new AtomicReference<String>();
+        var labelId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
+                .map(DiagramRefreshedEventPayload::diagram)
+                .ifPresentOrElse(diagram -> {
+                    diagramId.set(diagram.getId());
+                    var edge = new DiagramNavigator(diagram).edgeWithLabel("sirius-web-application - sirius-web-domain").getEdge();
+                    edgeId.set(edge.getId());
+                    labelId.set(edge.getCenterLabel().getId());
+                }, () -> fail("Missing diagram"));
+
+        Runnable editLabel = () -> {
+            var input = new EditLabelInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), labelId.get(), "sirius-web-application-renamed");
+            var result = this.editLabelMutationRunner.run(input);
+
+            String typename = JsonPath.read(result, "$.data.editLabel.__typename");
+            assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
+        };
+
+        Predicate<Object> updatedDiagramContentMatcher = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
+                .map(DiagramRefreshedEventPayload::diagram)
+                .filter(diagram -> {
+                    return diagram.getEdges().stream()
+                            .filter(edge -> edge.getId().equals(edgeId.get()))
+                            .map(edge -> edge.getCenterLabel().getText().equals("sirius-web-application-renamed - sirius-web-domain"))
+                            .findFirst()
+                            .orElse(false);
                 })
                 .isPresent();
 

@@ -72,7 +72,8 @@ _Warning:_ while more powerful, the new extension point should be used with care
 - [releng] Switch to the final release version of AQL 8.0.2
 - https://github.com/eclipse-sirius/sirius-web/issues/3836[#3836] [gantt] Switch to @ObeoNetwork/gantt-task-react 0.6.1 to benefit for enhancements
 - https://github.com/eclipse-sirius/sirius-web/issues/3823[#3823] [table] Add a dependency to `material-react-table "2.13.3"` and `export-to-csv "1.3.0"`
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3868[#3868] [diagram] Add dependency to `react-draggable 4.4.6`
+- https://github.com/eclipse-sirius/sirius-web/issues/3868[#3868] [diagram] Add dependency to `svg-path-parser 1.1.0`
 
 
 === Bug fixes
@@ -139,6 +140,7 @@ _Warning:_ make sure all contributions return an actual MUI `MenuItem` component
 ** `projectContextMenuContainerExtensionPoint`: can be used to wrap the menu inside a custom container, for example to add more context for the items or to completely replace the context menu.
 - https://github.com/eclipse-sirius/sirius-web/issues/3980[#3980] [diagram] Add _Elements to Select Expression_ on _NodeTool_ and _EdgeTool_ to control which semantic elements should be selected after the tool's successful execution
 - https://github.com/eclipse-sirius/sirius-web/issues/4048[#4048] [core] Add the ability to undo/redo only semantic changes after a mutation with crtl+z or ctrl+y on the edit project view (this does not include deleting a resource)
+- https://github.com/eclipse-sirius/sirius-web/issues/3868[#3868] [diagram] Make the path of edges editable
 
 === Improvements
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,18 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.diagrams.layoutdata;
+package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
 import java.util.List;
 
+import org.eclipse.sirius.components.diagrams.layoutdata.Position;
+
 /**
- * The layout data of an edge.
+ * Input used to receive edge layout data.
  *
- * @author sbegaudeau
+ * @author frouene
  */
-public record EdgeLayoutData(
-        String id,
-        List<Position> bendingPoints
-) {
+public record EdgeLayoutDataInput(String id, List<Position> bendingPoints) {
 
 }

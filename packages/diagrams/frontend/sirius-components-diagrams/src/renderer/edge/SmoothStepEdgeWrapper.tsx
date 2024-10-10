@@ -10,19 +10,33 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Edge, EdgeProps, Node, Position, getSmoothStepPath, useInternalNode } from '@xyflow/react';
+import { Edge, EdgeProps, Node, Position, getSmoothStepPath, useInternalNode, XYPosition } from '@xyflow/react';
 import { memo, useContext } from 'react';
+import parse from 'svg-path-parser';
 import { NodeTypeContext } from '../../contexts/NodeContext';
 import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
 import { NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { getHandleCoordinatesByPosition } from './EdgeLayout';
-import { MultiLabelEdge } from './MultiLabelEdge';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
+import { MultiLabelEditableEdge } from './MultiLabelEditableEdge';
+
+function isMultipleOfTwo(num: number): boolean {
+  return num % 2 === 0;
+}
 
 export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeData>>) => {
-  const { source, target, markerEnd, markerStart, sourcePosition, targetPosition, sourceHandleId, targetHandleId } =
-    props;
+  const {
+    source,
+    target,
+    markerEnd,
+    markerStart,
+    sourcePosition,
+    targetPosition,
+    sourceHandleId,
+    targetHandleId,
+    data,
+  } = props;
   const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
 
   const sourceNode = useInternalNode<Node<NodeData>>(source);
@@ -87,24 +101,70 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
       break;
   }
 
-  const [edgePath, labelX, labelY] = getSmoothStepPath({
-    sourceX,
-    sourceY,
-    sourcePosition,
-    targetX,
-    targetY,
-    targetPosition,
-  });
+  let bendingPoints: XYPosition[] = [];
+  if (data?.bendingPoints) {
+    bendingPoints = data.bendingPoints;
+  } else {
+    const [smoothEdgePath] = getSmoothStepPath({
+      sourceX,
+      sourceY,
+      sourcePosition,
+      targetX,
+      targetY,
+      targetPosition,
+    });
+
+    const quadraticCurvePoints: { x: number; y: number }[] = parse(smoothEdgePath).filter(
+      (segment) => segment.code === 'Q'
+    );
+
+    if (quadraticCurvePoints.length > 0) {
+      const firstPoint = quadraticCurvePoints[0];
+      if (firstPoint) {
+        switch (sourcePosition) {
+          case Position.Right:
+          case Position.Left:
+            bendingPoints.push({ x: firstPoint.x, y: sourceY });
+            for (let i = 1; i < quadraticCurvePoints.length; i++) {
+              const currentPoint = quadraticCurvePoints[i];
+              const previousPoint = quadraticCurvePoints[i - 1];
+              if (currentPoint && previousPoint) {
+                if (isMultipleOfTwo(i)) {
+                  bendingPoints.push({ x: currentPoint.x, y: previousPoint.y });
+                } else {
+                  bendingPoints.push({ x: previousPoint.x, y: currentPoint.y });
+                }
+              }
+            }
+            break;
+          case Position.Top:
+          case Position.Bottom:
+            bendingPoints.push({ x: sourceX, y: firstPoint.y });
+            for (let i = 1; i < quadraticCurvePoints.length; i++) {
+              const currentPoint = quadraticCurvePoints[i];
+              const previousPoint = quadraticCurvePoints[i - 1];
+              if (currentPoint && previousPoint) {
+                if (isMultipleOfTwo(i)) {
+                  bendingPoints.push({ x: previousPoint.x, y: currentPoint.y });
+                } else {
+                  bendingPoints.push({ x: currentPoint.x, y: previousPoint.y });
+                }
+              }
+            }
+            break;
+        }
+      }
+    }
+  }
+
   return (
-    <MultiLabelEdge
+    <MultiLabelEditableEdge
       {...props}
       sourceX={sourceX}
       sourceY={sourceY}
       targetX={targetX}
       targetY={targetY}
-      edgeCenterX={labelX}
-      edgeCenterY={labelY}
-      svgPathString={edgePath}
+      bendingPoints={bendingPoints}
     />
   );
 });

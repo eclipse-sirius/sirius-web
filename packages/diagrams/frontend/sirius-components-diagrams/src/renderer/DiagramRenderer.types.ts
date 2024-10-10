@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Edge, Node, ReactFlowProps } from '@xyflow/react';
+import { Edge, Node, ReactFlowProps, XYPosition } from '@xyflow/react';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagramRefreshedEventPayload } from '../graphql/subscription/diagramEventSubscription.types';
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
@@ -70,6 +70,7 @@ export interface EdgeData extends Record<string, unknown> {
   label: EdgeLabel | null;
   faded: boolean;
   centerLabelEditable: boolean;
+  bendingPoints: XYPosition[] | null;
 }
 
 export interface InsideLabel {

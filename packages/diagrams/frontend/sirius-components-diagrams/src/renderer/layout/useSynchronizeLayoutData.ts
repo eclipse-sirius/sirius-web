@@ -27,6 +27,7 @@ import {
   GQLNodeLayoutData,
   GQLSuccessPayload,
   UseSynchronizeLayoutDataValue,
+  GQLEdgeLayoutData,
 } from './useSynchronizeLayoutData.types';
 
 const layoutDiagramMutation = gql`
@@ -78,6 +79,7 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
 
   const toDiagramLayoutData = (diagram: RawDiagram): GQLDiagramLayoutData => {
     const nodeLayoutData: GQLNodeLayoutData[] = [];
+    const edgeLayoutData: GQLEdgeLayoutData[] = [];
 
     diagram.nodes.forEach((node) => {
       const {
@@ -102,8 +104,20 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
         });
       }
     });
+
+    diagram.edges.forEach((edge) => {
+      if (edge.data?.bendingPoints) {
+        edgeLayoutData.push({
+          id: edge.id,
+          bendingPoints: edge.data.bendingPoints.map((point) => {
+            return { x: point.x, y: point.y };
+          }),
+        });
+      }
+    });
     return {
       nodeLayoutData,
+      edgeLayoutData,
     };
   };
 
