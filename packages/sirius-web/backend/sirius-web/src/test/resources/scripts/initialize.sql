@@ -126,7 +126,7 @@ INSERT INTO document (
   '48dc942a-6b76-4133-bca5-5b29ebee133d',
   'cb133bf0-d7aa-4a83-a277-0972919dd46a',
   'Ecore',
-  '{"json":{"version":"1.0","encoding":"utf-8"},"ns": {"ecore":"http://www.eclipse.org/emf/2002/Ecore"},"content":[{"id":"3237b215-ae23-48d7-861e-f542a4b9a4b8","eClass":"ecore:EPackage","data":{"name":"Sample"}}]}',
+  '{ "json": { "version": "1.0", "encoding": "utf-8" }, "ns": { "ecore": "http://www.eclipse.org/emf/2002/Ecore" }, "content": [ { "id": "3237b215-ae23-48d7-861e-f542a4b9a4b8", "eClass": "ecore:EPackage", "data": { "name": "Sample", "eClassifiers": [ { "id": "f0eecd16-d9da-4c98-a422-c73897bc48f5", "eClass": "ecore:EClass", "data": { "name": "SampleEClass" } } ] } } ] }',
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );

@@ -1,0 +1,32 @@
+= [ADR-160] Support REST APIs
+
+== Context
+
+REST APIs can be useful to execute CRUD requests in Sirius Web.
+
+=== Current behavior
+
+There are currently no REST APIs allowing to query/modify projects/models in Sirius Web.
+
+== Decision
+
+The decision is to support all REST APIs described in the Systems Modeling Application Programming Interface (API) and Services section "8.1 REST/HTTP PSM" coming from https://www.omg.org/spec/SystemsModelingAPI/.
+
+We will consider at least both the ProjectService and ElementNavigationService endpoints.
+
+Additional resources:
+- https://www.omg.org/spec/SystemsModelingAPI/20230201/OpenAPI.json
+- https://www.omg.org/spec/SystemsModelingAPI/20230201/Schemas.json
+
+Some concepts in this specification are coming from SysMLv2 (i.e. Element and Relationship).
+For example, the `GET /projects/{projectId}/commits/{commitId}/elements/` will return the list of all objects contained in the given project.
+
+Depending on the metamodel, objects could be serialized differently in JSON.
+So, Sirius Web will let specifiers serialized their objects as they want.
+
+Some default implementation of the Java services associated to the object-related REST APIs will be provided through a new interface `IDefaultObjectRestService`.
+Specifiers will also be able to provide their own implementations by implementing `IObjectRestServiceDelegate` as a spring `Service`.
+
+== Status
+
+Work in progress

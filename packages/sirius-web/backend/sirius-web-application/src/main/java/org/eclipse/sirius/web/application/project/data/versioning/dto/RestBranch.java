@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.data.versioning.dto;
 
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,6 +28,6 @@ public record RestBranch(
         String humanIdentifier,
         String decription,
         String name,
-        Instant created) implements IRestCommitReference {
+        OffsetDateTime created) implements IRestCommitReference {
 
 }

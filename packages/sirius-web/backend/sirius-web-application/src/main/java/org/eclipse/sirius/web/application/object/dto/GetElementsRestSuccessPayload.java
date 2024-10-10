@@ -10,20 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.project.data.versioning.dto;
+package org.eclipse.sirius.web.application.object.dto;
 
-import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
-import org.eclipse.sirius.web.application.dto.IRestRecord;
+import org.eclipse.sirius.components.core.api.IPayload;
 
 /**
- * Interface for the REST CommitReference DTO.
+ * The payload for the "getElements" REST API on success.
  *
  * @author arichard
  */
-public interface IRestCommitReference extends IRestRecord {
-
-    OffsetDateTime created();
-
-    String name();
+public record GetElementsRestSuccessPayload(UUID id, List<Object> elements) implements IPayload {
+    public GetElementsRestSuccessPayload {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(elements);
+    }
 }

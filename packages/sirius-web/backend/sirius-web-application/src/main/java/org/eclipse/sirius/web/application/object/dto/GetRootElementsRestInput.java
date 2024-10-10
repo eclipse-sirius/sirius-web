@@ -10,20 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.project.data.versioning.dto;
+package org.eclipse.sirius.web.application.object.dto;
 
-import java.time.OffsetDateTime;
+import java.util.UUID;
 
-import org.eclipse.sirius.web.application.dto.IRestRecord;
+import org.eclipse.sirius.components.core.api.IInput;
 
 /**
- * Interface for the REST CommitReference DTO.
+ * The input object of the GetRootElementsRestEventHandler.
  *
  * @author arichard
  */
-public interface IRestCommitReference extends IRestRecord {
-
-    OffsetDateTime created();
-
-    String name();
+public record GetRootElementsRestInput(UUID id) implements IInput {
 }

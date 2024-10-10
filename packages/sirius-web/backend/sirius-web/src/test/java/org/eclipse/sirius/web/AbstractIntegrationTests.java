@@ -30,7 +30,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
  *
  * @author sbegaudeau
  */
-@SpringJUnitConfig(classes = { IntegrationTestConfiguration.class, SiriusWebStarterConfiguration.class, JDBCConfiguration.class })
+@SpringJUnitConfig(classes = { IntegrationTestConfiguration.class, SiriusWebStarterConfiguration.class, JDBCConfiguration.class, EObjectSerializerTestConfig.class })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public abstract class AbstractIntegrationTests {
     public static final PostgreSQLContainer<?> POSTGRESQL_CONTAINER;

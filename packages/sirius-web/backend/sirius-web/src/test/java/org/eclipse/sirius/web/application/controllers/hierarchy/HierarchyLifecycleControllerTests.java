@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.application.controllers.hierarchy;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.time.Duration;
 import java.util.Optional;
@@ -75,7 +76,7 @@ public class HierarchyLifecycleControllerTests extends AbstractIntegrationTests 
                 .map(HierarchyRefreshedEventPayload::hierarchy)
                 .ifPresentOrElse(hierarchy -> {
                     assertThat(hierarchy.getLabel()).isEqualTo("Sample Hierarchy");
-                    assertThat(hierarchy.getChildNodes()).isEmpty();
+                    assertFalse(hierarchy.getChildNodes().isEmpty());
                 }, () -> fail("Missing hierarchy"));
         };
 

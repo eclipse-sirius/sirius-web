@@ -18,7 +18,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.project.dto.RestProject;
 import org.eclipse.sirius.web.data.TestIdentifiers;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -47,9 +46,6 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
-    @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
-
     @LocalServerPort
     private String port;
 
@@ -64,11 +60,9 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
 
     @Test
     @DisplayName("Test the GET '/projects' REST API, should return all known projects")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void restAPIgetProjects() {
-        this.givenCommittedTransaction.commit();
-
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
                 .build();
@@ -84,11 +78,9 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
 
     @Test
     @DisplayName("Test the GET '/projects/{projectId}' REST API, should return the project corresponding to the given projectId")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void restAPIgetProjectFromProjectId() {
-        this.givenCommittedTransaction.commit();
-
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
                 .build();
@@ -114,11 +106,9 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
 
     @Test
     @DisplayName("Test the POST '/projects' REST API, should create a project with the given name")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void restAPIcreateProjectFromName() {
-        this.givenCommittedTransaction.commit();
-
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
                 .build();
@@ -142,11 +132,9 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
 
     @Test
     @DisplayName("Test the PUT '/projects/{projectId}' REST API, should update the project with the given projectId")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void restAPIupdateProject() {
-        this.givenCommittedTransaction.commit();
-
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
                 .build();
@@ -180,11 +168,9 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
 
     @Test
     @DisplayName("Test the DELETE '/projects/{projectId}' REST API, should delete and return the project corresponding to the given projectId")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void restAPIdeleteProjectFromProjectId() {
-        this.givenCommittedTransaction.commit();
-
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
                 .build();
