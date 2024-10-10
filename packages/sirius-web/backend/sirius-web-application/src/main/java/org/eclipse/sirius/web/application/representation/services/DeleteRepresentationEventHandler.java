@@ -25,7 +25,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.web.application.UUIDParser;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataDeletionService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataDeletionService;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.stereotype.Service;
 
@@ -41,14 +41,14 @@ import reactor.core.publisher.Sinks;
 @Service
 public class DeleteRepresentationEventHandler implements IEditingContextEventHandler {
 
-    private final IRepresentationDataDeletionService representationDataDeletionService;
+    private final IRepresentationMetadataDeletionService representationMetadataDeletionService;
 
     private final IMessageService messageService;
 
     private final Counter counter;
 
-    public DeleteRepresentationEventHandler(IRepresentationDataDeletionService representationDataDeletionService, IMessageService messageService, MeterRegistry meterRegistry) {
-        this.representationDataDeletionService = Objects.requireNonNull(representationDataDeletionService);
+    public DeleteRepresentationEventHandler(IRepresentationMetadataDeletionService representationMetadataDeletionService, IMessageService messageService, MeterRegistry meterRegistry) {
+        this.representationMetadataDeletionService = Objects.requireNonNull(representationMetadataDeletionService);
         this.messageService = Objects.requireNonNull(messageService);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
@@ -73,7 +73,7 @@ public class DeleteRepresentationEventHandler implements IEditingContextEventHan
             if (optionalRepresentationId.isPresent()) {
                 var representationId = optionalRepresentationId.get();
 
-                this.representationDataDeletionService.delete(deleteRepresentationInput, representationId);
+                this.representationMetadataDeletionService.delete(deleteRepresentationInput, representationId);
 
                 payload = new DeleteRepresentationSuccessPayload(input.id(), deleteRepresentationInput.representationId());
                 changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_DELETION, editingContext.getId(), input);

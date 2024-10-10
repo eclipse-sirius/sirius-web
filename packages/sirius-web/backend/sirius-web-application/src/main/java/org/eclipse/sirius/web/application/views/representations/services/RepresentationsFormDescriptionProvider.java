@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -30,11 +31,9 @@ import org.eclipse.sirius.components.collaborative.editingcontext.EditingContext
 import org.eclipse.sirius.components.collaborative.forms.api.IRepresentationsDescriptionProvider;
 import org.eclipse.sirius.components.collaborative.forms.variables.FormVariableProvider;
 import org.eclipse.sirius.components.core.CoreImageConstants;
-import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
-import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.components.forms.TreeNode;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.components.ListComponent;
@@ -53,6 +52,10 @@ import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.web.application.UUIDParser;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -201,11 +204,13 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
 
     private List<?> getItems(VariableManager variableManager) {
         Object object = variableManager.getVariables().get(VariableManager.SELF);
-        String id = this.identityService.getId(object);
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
-        if (optionalEditingContext.isPresent() && id != null) {
-            IEditingContext editingContext = optionalEditingContext.get();
-            return this.representationMetadataSearchService.findAllByTargetObjectId(editingContext, id);
+        var optionalProjectId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+                .map(IEditingContext::getId)
+                .flatMap(new UUIDParser()::parse);
+        if (optionalProjectId.isPresent()) {
+            var projectId = optionalProjectId.get();
+            String id = this.identityService.getId(object);
+            return this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(projectId), id);
         }
         return List.of();
     }
@@ -213,6 +218,7 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
     private String getItemId(VariableManager variableManager) {
         return variableManager.get(ListComponent.CANDIDATE_VARIABLE, RepresentationMetadata.class)
                 .map(RepresentationMetadata::getId)
+                .map(UUID::toString)
                 .orElse(null);
     }
 
@@ -244,6 +250,7 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
     private IStatus deleteItem(VariableManager variableManager) {
         return variableManager.get(ListComponent.CANDIDATE_VARIABLE, RepresentationMetadata.class)
                 .map(RepresentationMetadata::getId)
+                .map(UUID::toString)
                 .map(this::getSuccessStatus)
                 .orElse(new Failure(""));
     }
@@ -262,28 +269,33 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
             Object object = variableManager.getVariables().get(VariableManager.SELF);
             String id = this.identityService.getId(object);
             if (object instanceof Portal portal) {
-                items = this.getPortalChildren(optionalEditingContext.get(), portal);
+                items = this.getPortalChildren(portal);
             } else if (id != null) {
-                items = this.representationMetadataSearchService.findAllByTargetObjectId(editingContext, id);
+                var optionalEditingContextId = new UUIDParser().parse(editingContext.getId());
+                if (optionalEditingContextId.isPresent()) {
+                    var projectId = optionalEditingContextId.get();
+                    items = this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(projectId), id).stream().toList();
+                }
             } else if (object instanceof RepresentationMetadata representationMetadata && Portal.KIND.equals(representationMetadata.getKind())) {
-                Optional<Portal> optionalPortal = this.representationSearchService.findById(editingContext, representationMetadata.getId(), Portal.class);
-                items = optionalPortal.map(portal -> this.getPortalChildren(editingContext, portal)).orElse(List.of());
+                Optional<Portal> optionalPortal = this.representationSearchService.findById(editingContext, representationMetadata.getId().toString(), Portal.class);
+                items = optionalPortal.map(this::getPortalChildren).orElse(List.of());
             }
         }
         return items;
     }
 
-    private List<RepresentationMetadata> getPortalChildren(IEditingContext editingContext, Portal portal) {
+    private List<RepresentationMetadata> getPortalChildren(Portal portal) {
         return portal.getViews().stream()
                 .map(PortalView::getRepresentationId)
-                .flatMap(representationId -> this.representationSearchService.findById(editingContext, representationId, IRepresentation.class).stream())
-                .map(representation -> new RepresentationMetadata(representation.getId(), representation.getKind(), representation.getLabel(), representation.getDescriptionId()))
+                .flatMap(representationId -> new UUIDParser().parse(representationId).stream())
+                .flatMap(representationId -> this.representationMetadataSearchService.findMetadataById(representationId).stream())
                 .toList();
     }
 
     private String getNodeId(VariableManager variableManager) {
         return variableManager.get(VariableManager.SELF, RepresentationMetadata.class)
                 .map(RepresentationMetadata::getId)
+                .map(UUID::toString)
                 .orElse(null);
     }
 

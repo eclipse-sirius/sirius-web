@@ -12,9 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.portals.graphql.datafetchers.query;
 
+import java.util.List;
+
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
-import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
+import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.portals.PortalView;
 
@@ -27,15 +29,17 @@ import graphql.schema.DataFetchingEnvironment;
  */
 @QueryDataFetcher(type = "PortalView", field = "representationMetadata")
 public class PortalViewRepresentationMetadataDataFetcher implements IDataFetcherWithFieldCoordinates<RepresentationMetadata> {
-    private final IRepresentationMetadataSearchService representationMetadataSearchService;
+    private final List<IRepresentationMetadataProvider> representationMetadataProviders;
 
-    public PortalViewRepresentationMetadataDataFetcher(IRepresentationMetadataSearchService representationMetadataSearchService) {
-        this.representationMetadataSearchService = representationMetadataSearchService;
+    public PortalViewRepresentationMetadataDataFetcher(List<IRepresentationMetadataProvider> representationMetadataProviders) {
+        this.representationMetadataProviders = representationMetadataProviders;
     }
 
     @Override
     public RepresentationMetadata get(DataFetchingEnvironment environment) throws Exception {
         PortalView portalView = environment.getSource();
-        return this.representationMetadataSearchService.findByRepresentationId(portalView.getRepresentationId()).orElseThrow();
+        return this.representationMetadataProviders.stream()
+                .flatMap(provider -> provider.getMetadata(portalView.getRepresentationId()).stream())
+                .findFirst().orElseThrow();
     }
 }

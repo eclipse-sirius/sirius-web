@@ -24,11 +24,14 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchServ
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.web.application.UUIDParser;
-import org.eclipse.sirius.web.application.representation.services.api.IRepresentationDataMigrationService;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.projections.RepresentationDataContentOnly;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
+import org.eclipse.sirius.web.application.representation.services.api.IRepresentationContentMigrationService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationContent;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -39,34 +42,42 @@ import org.springframework.stereotype.Service;
 @Service
 public class RepresentationSearchService implements IRepresentationSearchService {
 
-    private final IRepresentationDataSearchService representationDataSearchService;
+    private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
-    private final IRepresentationDataMigrationService representationDataMigrationService;
+    private final IRepresentationContentSearchService representationContentSearchService;
+
+    private final IRepresentationContentMigrationService representationContentMigrationService;
 
     private final ObjectMapper objectMapper;
 
     private final Logger logger = LoggerFactory.getLogger(RepresentationSearchService.class);
 
-    public RepresentationSearchService(IRepresentationDataSearchService representationDataSearchService, IRepresentationDataMigrationService representationDataMigrationService, ObjectMapper objectMapper) {
-        this.representationDataSearchService = Objects.requireNonNull(representationDataSearchService);
-        this.representationDataMigrationService = Objects.requireNonNull(representationDataMigrationService);
+    public RepresentationSearchService(IRepresentationMetadataSearchService representationMetadataSearchService, IRepresentationContentSearchService representationContentSearchService, IRepresentationContentMigrationService representationContentMigrationService, ObjectMapper objectMapper) {
+        this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
+        this.representationContentSearchService = Objects.requireNonNull(representationContentSearchService);
+        this.representationContentMigrationService = Objects.requireNonNull(representationContentMigrationService);
         this.objectMapper = Objects.requireNonNull(objectMapper);
     }
 
     @Override
     public <T extends IRepresentation> Optional<T> findById(IEditingContext editingContext, String representationId, Class<T> representationClass) {
         return new UUIDParser().parse(representationId)
-                .flatMap(this.representationDataSearchService::findContentById)
-                .map(this::migratedContent)
-                .flatMap(this::toRepresentation)
+                .flatMap(this.representationMetadataSearchService::findMetadataById)
+                .flatMap(this::getRepresentation)
                 .filter(representationClass::isInstance)
                 .map(representationClass::cast);
+    }
+
+    private Optional<IRepresentation> getRepresentation(RepresentationMetadata representationMetadata) {
+        return this.representationContentSearchService.findContentByRepresentationMetadata(AggregateReference.to(representationMetadata.getId()))
+                .map(representationContent -> this.migratedContent(representationMetadata, representationContent))
+                .flatMap(this::toRepresentation);
     }
 
     @Override
     public boolean existByIdAndKind(String representationId, List<String> kinds) {
         Optional<UUID> uuid =  new UUIDParser().parse(representationId);
-        return uuid.filter(value -> this.representationDataSearchService.existsByIdAndKind(value, kinds)).isPresent();
+        return uuid.filter(value -> this.representationMetadataSearchService.existsByIdAndKind(value, kinds)).isPresent();
     }
 
     private Optional<IRepresentation> toRepresentation(String content) {
@@ -81,8 +92,8 @@ public class RepresentationSearchService implements IRepresentationSearchService
         return optionalRepresentation;
     }
 
-    private String migratedContent(RepresentationDataContentOnly representationData) {
-        return this.representationDataMigrationService.getMigratedContent(representationData)
+    private String migratedContent(RepresentationMetadata representationMetadata, RepresentationContent representationContent) {
+        return this.representationContentMigrationService.getMigratedContent(representationMetadata, representationContent)
                 .map(Object::toString)
                 .orElse("");
     }

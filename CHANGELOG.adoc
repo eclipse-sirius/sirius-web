@@ -37,7 +37,10 @@ This allows an error to be displayed when there is a problem during uploading
 - https://github.com/eclipse-sirius/sirius-web/issues/4037[#4037] [trees] The tree item id passed to `ITreeQueryService.findTreeItem` is no longer a UUID but is now a String.
 - https://github.com/eclipse-sirius/sirius-web/issues/4077[#4077] [charts] Remove `interface RepresentationMetadata` from `BarChart.types.ts`.
 - https://github.com/eclipse-sirius/sirius-web/issues/3840[#3840] [diagram] Migrate to ReactFlow 12, if you have components that uses the library then you'll need to update them.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3679[#3679] [core] Split representation metadata from content
++ Remove `org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService` and its implementation.
++ Use `org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService#findAllMetadataByTargetObjectId` instead of `org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService#findAllByTargetObjectId`.
+- https://github.com/eclipse-sirius/sirius-web/issues/3679[#3679] [sirius-web] aql service `hasChildren` requires the editing context like the aql service `getChildren`.
 
 === Dependency update
 
@@ -159,7 +162,7 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 
 * The `String` attribute `org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput#selectedObjectId` has been replaced by the attribute `variables` of type `List<ToolVariable>`
 - https://github.com/eclipse-sirius/sirius-web/issues/3437[#3437] [core] Migrate frontend to MUI 5, if you contributed React componenent that use MUI, you should upgrade them to use MUI 5.
-- https://github.com/eclipse-sirius/sirius-web/issues/2204[#2204] [core] Added `getStyledLabel` in `IDefaultLabelService` and `IObjectService`, you must implement this method if you have custom implementation of these interface. 
+- https://github.com/eclipse-sirius/sirius-web/issues/2204[#2204] [core] Added `getStyledLabel` in `IDefaultLabelService` and `IObjectService`, you must implement this method if you have custom implementation of these interface.
 - https://github.com/eclipse-sirius/sirius-web/issues/3815[#3815] [core] Make child creation descriptions locale independent
 - https://github.com/eclipse-sirius/sirius-web/issues/3976[#3976] [core] Remove the configuration object used to create representation event processors.
 

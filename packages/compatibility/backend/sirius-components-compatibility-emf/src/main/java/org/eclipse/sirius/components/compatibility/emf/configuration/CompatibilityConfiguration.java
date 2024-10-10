@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 THALES GLOBAL SERVICES and others.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,6 @@ import org.eclipse.sirius.components.compatibility.emf.api.IExternalJavaActionPr
 import org.eclipse.sirius.components.compatibility.emf.diagrams.CanCreateDiagramPredicate;
 import org.eclipse.sirius.components.compatibility.emf.modeloperations.ModelOperationHandlerSwitch;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -46,9 +45,9 @@ public class CompatibilityConfiguration {
     }
 
     @Bean
-    public IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider(IObjectService objectService, IRepresentationMetadataSearchService representationMetadataSearchService,
+    public IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider(IObjectService objectService,
             IIdentifierProvider identifierProvider, List<IExternalJavaActionProvider> externalJavaActionProviders) {
-        return (interpreter) -> new ModelOperationHandlerSwitch(objectService, representationMetadataSearchService, identifierProvider, externalJavaActionProviders, interpreter);
+        return (interpreter) -> new ModelOperationHandlerSwitch(objectService, identifierProvider, externalJavaActionProviders, interpreter);
     }
 
 }

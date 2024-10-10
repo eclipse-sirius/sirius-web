@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2024 Obeo.
+  ~ This program and the accompanying materials
+  ~ are made available under the terms of the Eclipse Public License v2.0
+  ~ which accompanies this distribution, and is available at
+  ~ https://www.eclipse.org/legal/epl-2.0/
+  ~
+  ~ SPDX-License-Identifier: EPL-2.0
+  ~
+  ~ Contributors:
+  ~     Obeo - initial API and implementation
+  -->
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="01-split-representation-metadata-from-content" author="gcoutable">
+        <createTable tableName="representation_content">
+            <column name="id"  type="UUID" defaultValueComputed="gen_random_uuid()">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="representation_metadata_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_migration_performed" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="migration_version" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_on" type="TIMESTAMPTZ">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_modified_on" type="TIMESTAMPTZ">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="representation_content" baseColumnNames="representation_metadata_id" constraintName="fk_representation_content_representation_metadata_id" referencedTableName="representation_data" referencedColumnNames="id" onDelete="CASCADE"/>
+
+        <sql>
+            INSERT INTO representation_content (
+                representation_metadata_id,
+                content,
+                last_migration_performed,
+                migration_version,
+                created_on,
+                last_modified_on
+            )
+            SELECT
+                representationData.id,
+                representationData.content,
+                representationData.last_migration_performed,
+                representationData.migration_version,
+                representationData.created_on,
+                representationData.last_modified_on
+            FROM representation_data representationData
+        </sql>
+
+        <dropColumn tableName="representation_data" columnName="content" />
+        <dropColumn tableName="representation_data" columnName="last_migration_performed" />
+        <dropColumn tableName="representation_data" columnName="migration_version" />
+
+        <renameTable oldTableName="representation_data" newTableName="representation_metadata" />
+    </changeSet>
+</databaseChangeLog>

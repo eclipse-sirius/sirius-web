@@ -31,10 +31,12 @@ import org.eclipse.sirius.components.graphql.tests.RenameRepresentationMutationR
 import org.eclipse.sirius.components.portals.tests.graphql.PortalEventSubscriptionRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.TestIdentifiers;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationDataContentUpdatedEvent;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationDataCreatedEvent;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationDataDeletedEvent;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationContentCreatedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationContentUpdatedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationMetadataCreatedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationMetadataDeletedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.services.TestRepresentationDescription;
 import org.eclipse.sirius.web.services.api.IDomainEventCollector;
 import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
@@ -44,6 +46,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.transaction.TestTransaction;
@@ -77,7 +80,10 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
     private DeleteRepresentationMutationRunner deleteRepresentationMutationRunner;
 
     @Autowired
-    private IRepresentationDataSearchService representationDataSearchService;
+    private IRepresentationMetadataSearchService representationMetadataSearchService;
+
+    @Autowired
+    private IRepresentationContentSearchService representationContentSearchService;
 
     @Autowired
     private PortalEventSubscriptionRunner portalEventSubscriptionRunner;
@@ -116,11 +122,12 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
         String representationId = JsonPath.read(result, "$.data.createRepresentation.representation.id");
         assertThat(representationId).isNotNull();
 
-        assertThat(this.domainEventCollector.getDomainEvents()).hasSize(1);
-        var event = this.domainEventCollector.getDomainEvents().get(0);
-        assertThat(event).isInstanceOf(RepresentationDataCreatedEvent.class);
-
-        assertThat(this.representationDataSearchService.existsById(UUID.fromString(representationId))).isTrue();
+        assertThat(this.domainEventCollector.getDomainEvents())
+                .hasSize(2)
+                .satisfiesExactlyInAnyOrder(event -> assertThat(event).isInstanceOf(RepresentationMetadataCreatedEvent.class), event -> assertThat(event).isInstanceOf(RepresentationContentCreatedEvent.class));
+        var representationUUID = UUID.fromString(representationId);
+        assertThat(this.representationMetadataSearchService.existsById(representationUUID)).isTrue();
+        assertThat(this.representationContentSearchService.findContentByRepresentationMetadata(AggregateReference.to(representationUUID))).isPresent();
     }
 
     @Test
@@ -143,7 +150,7 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
             assertThat(typename).isEqualTo(RenameRepresentationSuccessPayload.class.getSimpleName());
 
             assertThat(this.domainEventCollector.getDomainEvents()).hasSize(1);
-            assertThat(this.domainEventCollector.getDomainEvents()).anyMatch(RepresentationDataContentUpdatedEvent.class::isInstance);
+            assertThat(this.domainEventCollector.getDomainEvents()).anyMatch(RepresentationContentUpdatedEvent.class::isInstance);
         };
 
         StepVerifier.create(flux)
@@ -159,7 +166,7 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
     public void givenRepresentationToDeleteWhenMutationIsPerformedThenTheRepresentationHasBeenDeleted() {
         this.givenCommittedTransaction.commit();
 
-        assertThat(this.representationDataSearchService.existsById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION)).isTrue();
+        assertThat(this.representationMetadataSearchService.existsById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION)).isTrue();
 
         var input = new DeleteRepresentationInput(UUID.randomUUID(), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
         var result = this.deleteRepresentationMutationRunner.run(input);
@@ -170,10 +177,10 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
         String typename = JsonPath.read(result, "$.data.deleteRepresentation.__typename");
         assertThat(typename).isEqualTo(DeleteRepresentationSuccessPayload.class.getSimpleName());
 
-        assertThat(this.representationDataSearchService.existsById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION)).isFalse();
+        assertThat(this.representationMetadataSearchService.existsById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION)).isFalse();
 
         assertThat(this.domainEventCollector.getDomainEvents()).hasSize(1);
         var event = this.domainEventCollector.getDomainEvents().get(0);
-        assertThat(event).isInstanceOf(RepresentationDataDeletedEvent.class);
+        assertThat(event).isInstanceOf(RepresentationMetadataDeletedEvent.class);
     }
 }

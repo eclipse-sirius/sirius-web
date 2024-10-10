@@ -31,7 +31,6 @@ import org.eclipse.sirius.components.core.CoreImageConstants;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
 import org.eclipse.sirius.components.domain.Domain;
@@ -40,8 +39,8 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.application.UUIDParser;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.projections.RepresentationDataMetadataOnly;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -62,16 +61,13 @@ public class DomainExplorerServices {
 
     private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
-    private final IRepresentationDataSearchService representationDataSearchService;
-
     private final IURLParser urlParser;
 
     private final List<IRepresentationImageProvider> representationImageProviders;
 
-    public DomainExplorerServices(IObjectService objectService, IRepresentationDataSearchService representationDataSearchService, IRepresentationMetadataSearchService representationMetadataSearchService, IURLParser urlParser, List<IRepresentationImageProvider> representationImageProviders) {
+    public DomainExplorerServices(IObjectService objectService, IRepresentationMetadataSearchService representationMetadataSearchService, IURLParser urlParser, List<IRepresentationImageProvider> representationImageProviders) {
         this.objectService = Objects.requireNonNull(objectService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
-        this.representationDataSearchService = Objects.requireNonNull(representationDataSearchService);
         this.urlParser = Objects.requireNonNull(urlParser);
         this.representationImageProviders = Objects.requireNonNull(representationImageProviders);
     }
@@ -90,7 +86,7 @@ public class DomainExplorerServices {
         return kind;
     }
 
-    public boolean hasChildren(Object self) {
+    public boolean hasChildren(Object self, IEditingContext editingContext) {
         boolean hasChildren = false;
         if (self instanceof Resource resource) {
             hasChildren = !resource.getContents().isEmpty();
@@ -98,8 +94,12 @@ public class DomainExplorerServices {
             hasChildren = !eObject.eContents().isEmpty();
 
             if (!hasChildren) {
-                String id = this.objectService.getId(eObject);
-                hasChildren = this.representationDataSearchService.existAnyRepresentationForTargetObjectId(id);
+                var optionalEditingContextId = new UUIDParser().parse(editingContext.getId());
+                if (optionalEditingContextId.isPresent()) {
+                    var projectId = optionalEditingContextId.get();
+                    String id = this.objectService.getId(eObject);
+                    hasChildren = this.representationMetadataSearchService.existAnyRepresentationForProjectAndTargetObjectId(AggregateReference.to(projectId), id);
+                }
             }
 
             if (!hasChildren && self instanceof Entity) {
@@ -141,9 +141,13 @@ public class DomainExplorerServices {
                 if (self instanceof Resource resource) {
                     result.addAll(resource.getContents());
                 } else if (self instanceof EObject) {
-                    var representationMetadata = new ArrayList<>(this.representationMetadataSearchService.findAllByTargetObjectId(editingContext, id));
-                    representationMetadata.sort(Comparator.comparing(RepresentationMetadata::getLabel));
-                    result.addAll(representationMetadata);
+                    var optionalEditingContextId = new UUIDParser().parse(editingContext.getId());
+                    if (optionalEditingContextId.isPresent()) {
+                        var projectId = optionalEditingContextId.get();
+                        var representationMetadata = new ArrayList<>(this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(projectId), id));
+                        representationMetadata.sort(Comparator.comparing(org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata::getLabel));
+                        result.addAll(representationMetadata);
+                    }
                     List<Object> contents = this.objectService.getContents(self);
                     if (self instanceof Entity entity) {
                         result.add(new SettingWrapper(((InternalEObject) entity).eSetting(entity.eClass().getEStructuralFeature("superTypes"))));
@@ -164,8 +168,8 @@ public class DomainExplorerServices {
         Object result = null;
 
         if (self instanceof RepresentationMetadata) {
-            var optionalRepresentationMetadata = new UUIDParser().parse(treeItemId).flatMap(this.representationDataSearchService::findMetadataById);
-            var repId = optionalRepresentationMetadata.map(RepresentationDataMetadataOnly::targetObjectId).orElse(null);
+            var optionalRepresentationMetadata = new UUIDParser().parse(treeItemId).flatMap(this.representationMetadataSearchService::findMetadataById);
+            var repId = optionalRepresentationMetadata.map(org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata::getTargetObjectId).orElse(null);
             result = this.objectService.getObject(editingContext, repId);
         } else if (self instanceof EObject eObject) {
             Object semanticContainer = eObject.eContainer();

@@ -1,15 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
 -- Sample migration project
 INSERT INTO project (
   id,
@@ -275,18 +263,15 @@ INSERT INTO document (
   '2024-05-06 15:00:0.000'
 );
 
-INSERT INTO representation_data (
+INSERT INTO representation_metadata (
   id,
   project_id,
   target_object_id,
   description_id,
   label,
   kind,
-  content,
   created_on,
-  last_modified_on,
-  last_migration_performed,
-  migration_version
+  last_modified_on
 ) VALUES (
   '35f1cd7b-e5bb-443d-95ef-bab372a92b0f',
   'a3b86086-23f5-41cb-97b9-5ac7234a98af',
@@ -294,6 +279,20 @@ INSERT INTO representation_data (
   'siriusComponents://representationDescription?kind=TreeMap',
   'Hierarchy Migration',
   'siriusComponents://representation?type=TreeMap',
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000'
+);
+INSERT INTO representation_content (
+  id,
+  representation_metadata_id,
+  content,
+  created_on,
+  last_modified_on,
+  last_migration_performed,
+  migration_version
+) VALUES (
+  '8ad82a59-2fca-4024-92a2-11331a2bfbd1',
+  '35f1cd7b-e5bb-443d-95ef-bab372a92b0f',
   '{
     "id": "35f1cd7b-e5bb-443d-95ef-bab372a92b0f",
     "descriptionId": "siriusComponents://representation?type=TreeMap",
@@ -457,18 +456,15 @@ INSERT INTO document (
   '2024-01-02 9:42:0.000'
 );
 
-INSERT INTO representation_data (
+INSERT INTO representation_metadata (
   id,
   project_id,
   target_object_id,
   description_id,
   label,
   kind,
-  content,
   created_on,
-  last_modified_on,
-  last_migration_performed,
-  migration_version
+  last_modified_on
 ) VALUES (
   '9698833e-ffd4-435a-9aec-765622ce524e',
   'a5441b64-83a5-4754-8794-57227bf8a322',
@@ -476,6 +472,20 @@ INSERT INTO representation_data (
   'siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=e932123d-b916-3537-84d2-86a4f5873d93',
   'Diagram UserResizable Migration',
   'siriusComponents://representation?type=Diagram',
+  '2024-07-04 9:42:0.000',
+  '2024-07-04 9:42:0.000'
+);
+INSERT INTO representation_content (
+  id,
+  representation_metadata_id,
+  content,
+  created_on,
+  last_modified_on,
+  last_migration_performed,
+  migration_version
+) VALUES (
+  '4682cc9d-f9a5-4364-9c5d-15f3cf25b225',
+  '9698833e-ffd4-435a-9aec-765622ce524e',
   '{
     "descriptionId": "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=e932123d-b916-3537-84d2-86a4f5873d93",
     "edges": [

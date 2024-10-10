@@ -42,8 +42,10 @@ import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.studio.services.representations.api.IDomainDiagramDescriptionProvider;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationData;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationDataRepository;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationContent;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationContentRepository;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationMetadataRepository;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
@@ -79,7 +81,10 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
     private IDomainDiagramDescriptionProvider domainDiagramDescriptionProvider;
 
     @Autowired
-    private IRepresentationDataRepository representationDataRepository;
+    private IRepresentationMetadataRepository representationMetadataRepository;
+
+    @Autowired
+    private IRepresentationContentRepository representationContentRepository;
 
     @Autowired
     private LayoutDiagramMutationRunner layoutDiagramMutationRunner;
@@ -137,7 +142,8 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
         var diagramId = new AtomicReference<String>();
         var currentRevisionId = new AtomicReference<UUID>();
         var humanNodeId  = new AtomicReference<String>();
-        var initialDiagramData = new AtomicReference<RepresentationData>(null);
+        var initialDiagramMetadata = new AtomicReference<RepresentationMetadata>(null);
+        var initialDiagramContent = new AtomicReference<RepresentationContent>(null);
 
         Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
                 .filter(DiagramRefreshedEventPayload.class::isInstance)
@@ -171,7 +177,12 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
                     assertThat(humanNodeLayout).isNotNull();
                     assertThat(humanNodeLayout.position()).isEqualTo(initialPosition);
                     assertThat(humanNodeLayout.size()).isEqualTo(initialSize);
-                    this.representationDataRepository.findById(UUID.fromString(diagramId.get())).ifPresent(initialDiagramData::set);
+                    var optionalRepresentationMetadata = this.representationMetadataRepository.findById(UUID.fromString(diagramId.get()));
+                    if (optionalRepresentationMetadata.isPresent()) {
+                        var representationMetadata = optionalRepresentationMetadata.get();
+                        initialDiagramMetadata.set(representationMetadata);
+                        this.representationContentRepository.findContentByRepresentationMetadataId(representationMetadata.getId()).ifPresent(initialDiagramContent::set);
+                    }
                 }, () -> fail(MISSING_DIAGRAM));
 
         Runnable modifyDiagramLayout = () -> {
@@ -194,9 +205,9 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
                     assertThat(humanNodeLayout.position()).isEqualTo(modifiedPosition);
                     assertThat(humanNodeLayout.size()).isEqualTo(modifiedSize);
 
-                    var modifiedDiagramData = this.representationDataRepository.findById(UUID.fromString(diagramId.get())).get();
-                    assertThat(modifiedDiagramData).isNotEqualTo(initialDiagramData.get());
-                    assertThat(modifiedDiagramData.getContent()).isNotEqualTo(initialDiagramData.get().getContent());
+                    var modifiedDiagramMetadata = this.representationMetadataRepository.findById(UUID.fromString(diagramId.get())).get();
+                    var modifiedDiagramContent = this.representationContentRepository.findContentByRepresentationMetadataId(modifiedDiagramMetadata.getId()).get();
+                    assertThat(modifiedDiagramContent.getContent()).isNotEqualTo(initialDiagramContent.get().getContent());
                 }, () -> fail(MISSING_DIAGRAM));
 
         StepVerifier.create(flux)
@@ -205,14 +216,15 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
                 .consumeNextWith(initialDiagramLayoutConsumer)
                 .then(modifyDiagramLayout)
                 .consumeNextWith(modifiedDiagramLayoutConsumer)
-                .then(() -> this.reload(diagramId.get(), initialDiagramData.get()))
+                .then(() -> this.reload(diagramId.get(), initialDiagramMetadata.get(), initialDiagramContent.get()))
                 .consumeNextWith(initialDiagramLayoutConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
 
-    private void reload(String diagramId, RepresentationData representationData) {
-        this.representationDataRepository.save(representationData);
+    private void reload(String diagramId, RepresentationMetadata representationMetadata, RepresentationContent representationContent) {
+        this.representationMetadataRepository.save(representationMetadata);
+        this.representationContentRepository.save(representationContent);
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
