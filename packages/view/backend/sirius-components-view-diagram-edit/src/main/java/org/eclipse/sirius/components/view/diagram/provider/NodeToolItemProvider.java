@@ -55,6 +55,7 @@ public class NodeToolItemProvider extends ToolItemProvider {
             super.getPropertyDescriptors(object);
 
             this.addIconURLsExpressionPropertyDescriptor(object);
+            this.addElementsToSelectExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -69,6 +70,19 @@ public class NodeToolItemProvider extends ToolItemProvider {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_NodeTool_iconURLsExpression_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_NodeTool_iconURLsExpression_feature", "_UI_NodeTool_type"),
                 DiagramPackage.Literals.NODE_TOOL__ICON_UR_LS_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Elements To Select Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addElementsToSelectExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_NodeTool_elementsToSelectExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeTool_elementsToSelectExpression_feature", "_UI_NodeTool_type"),
+                DiagramPackage.Literals.NODE_TOOL__ELEMENTS_TO_SELECT_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -145,6 +159,7 @@ public class NodeToolItemProvider extends ToolItemProvider {
 
         switch (notification.getFeatureID(NodeTool.class)) {
             case DiagramPackage.NODE_TOOL__ICON_UR_LS_EXPRESSION:
+            case DiagramPackage.NODE_TOOL__ELEMENTS_TO_SELECT_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case DiagramPackage.NODE_TOOL__DIALOG_DESCRIPTION:

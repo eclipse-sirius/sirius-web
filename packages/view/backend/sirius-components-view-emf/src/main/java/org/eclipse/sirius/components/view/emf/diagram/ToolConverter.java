@@ -14,9 +14,11 @@ package org.eclipse.sirius.components.view.emf.diagram;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -24,8 +26,10 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditService;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.SemanticKindConstants;
 import org.eclipse.sirius.components.diagrams.tools.ITool;
 import org.eclipse.sirius.components.diagrams.tools.Palette;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
@@ -34,7 +38,10 @@ import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramEleme
 import org.eclipse.sirius.components.diagrams.tools.ToolSection;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.representations.WorkbenchSelection;
+import org.eclipse.sirius.components.representations.WorkbenchSelectionEntry;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
@@ -42,6 +49,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.Tool;
+import org.eclipse.sirius.components.view.emf.OperationInterpreterViewSwitch;
 import org.eclipse.sirius.components.view.emf.diagram.providers.api.IViewToolImageProvider;
 
 /**
@@ -181,7 +189,9 @@ public class ToolConverter {
                 .handler(variableManager -> {
                     VariableManager child = variableManager.createChild();
                     child.put(CONVERTED_NODES_VARIABLE, convertedNodes);
-                    return this.execute(converterContext, convertedNodes, nodeTool, child);
+                    var result = this.execute(converterContext, convertedNodes, nodeTool, child);
+                    this.applyElementsToSelectExpression(result, converterContext, child, nodeTool.getElementsToSelectExpression());
+                    return result;
                 })
                 .targetDescriptions(List.of())
                 .dialogDescriptionId(this.diagramIdProvider.getId(nodeTool.getDialogDescription()))
@@ -203,9 +213,44 @@ public class ToolConverter {
                     VariableManager child = variableManager.createChild();
                     child.put(CONVERTED_NODES_VARIABLE, convertedNodes);
                     child.put("nodeDescription", nodeDescription);
-                    return this.execute(converterContext, convertedNodes, edgeTool, child);
+                    var result = this.execute(converterContext, convertedNodes, edgeTool, child);
+                    this.applyElementsToSelectExpression(result, converterContext, child, edgeTool.getElementsToSelectExpression());
+                    return result;
                 })
                 .build();
+    }
+
+    private void applyElementsToSelectExpression(IStatus result, ViewDiagramDescriptionConverterContext converterContext, VariableManager variableManager, String elementsToSelectExpression) {
+        if (result instanceof Success success && elementsToSelectExpression != null && !elementsToSelectExpression.isBlank()) {
+            // "Resolve" any explicitly returned selection entries into the actual semantic elements; AQL expressions can't do much with just WorkbenSelectionEntries
+            List<Object> newSelection = List.of();
+            if (success.getParameters().get(Success.NEW_SELECTION) instanceof WorkbenchSelection workbenchSelection && !workbenchSelection.getEntries().isEmpty()) {
+                var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+                if (optionalEditingContext.isPresent()) {
+                    newSelection = workbenchSelection.getEntries().stream()
+                            .filter(entry -> entry.getKind().startsWith(SemanticKindConstants.PREFIX + "?"))
+                            .map(entry -> this.objectService.getObject(optionalEditingContext.get(), entry.getId()))
+                            .flatMap(Optional::stream)
+                            .toList();
+                }
+            }
+            @SuppressWarnings("unchecked")
+            var collectedNewInstances = (Map<String, Object>) success.getParameters().getOrDefault(OperationInterpreterViewSwitch.NEW_INSTANCES_COLLECTOR, Map.of());
+            // Evaluate the expression
+            Map<String, Object> variables = new HashMap<>(variableManager.getVariables());
+            variables.put(Success.NEW_SELECTION, newSelection);
+            for (var entry : collectedNewInstances.entrySet()) {
+                variables.put(entry.getKey(), entry.getValue());
+            }
+            var optionalComputedNewSelection = converterContext.getInterpreter().evaluateExpression(variables, elementsToSelectExpression).asObjects();
+            if (optionalComputedNewSelection.isPresent()) {
+                // Convert back the result into a WorkbenchSelection
+                var entries = optionalComputedNewSelection.get().stream()
+                        .map(element -> new WorkbenchSelectionEntry(this.objectService.getId(element), this.objectService.getKind(element)))
+                        .toList();
+                success.getParameters().put(Success.NEW_SELECTION, new WorkbenchSelection(entries));
+            }
+        }
     }
 
     private IStatus execute(ViewDiagramDescriptionConverterContext converterContext, Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes, Tool tool,

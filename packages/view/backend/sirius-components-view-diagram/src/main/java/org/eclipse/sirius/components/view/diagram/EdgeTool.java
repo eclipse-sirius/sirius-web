@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,8 @@ import org.eclipse.emf.common.util.EList;
  * <li>{@link org.eclipse.sirius.components.view.diagram.EdgeTool#getTargetElementDescriptions <em>Target Element
  * Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.EdgeTool#getIconURLsExpression <em>Icon UR Ls
+ * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.EdgeTool#getElementsToSelectExpression <em>Elements To Select
  * Expression</em>}</li>
  * </ul>
  *
@@ -66,5 +68,28 @@ public interface EdgeTool extends Tool {
      * @generated
      */
     void setIconURLsExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Elements To Select Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Elements To Select Expression</em>' attribute.
+     * @see #setElementsToSelectExpression(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeTool_ElementsToSelectExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     */
+    String getElementsToSelectExpression();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.EdgeTool#getElementsToSelectExpression
+     * <em>Elements To Select Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Elements To Select Expression</em>' attribute.
+     * @see #getElementsToSelectExpression()
+     * @generated
+     */
+    void setElementsToSelectExpression(String value);
 
 } // EdgeTool

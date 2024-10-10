@@ -327,6 +327,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="targetElementDescriptions"
         upperBound="-1" eType="#//DiagramElementDescription"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="iconURLsExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="elementsToSelectExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EdgeReconnectionTool" abstract="true"
       eSuperTypes="#//Tool"/>
@@ -338,6 +340,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="dialogDescription" eType="#//DialogDescription"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="iconURLsExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="elementsToSelectExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SourceEdgeEndReconnectionTool" eSuperTypes="#//EdgeReconnectionTool"/>
   <eClassifiers xsi:type="ecore:EClass" name="TargetEdgeEndReconnectionTool" eSuperTypes="#//EdgeReconnectionTool"/>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.view.emf.diagram;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -30,10 +31,13 @@ import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.representations.WorkbenchSelection;
+import org.eclipse.sirius.components.representations.WorkbenchSelectionEntry;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.diagram.Tool;
 import org.eclipse.sirius.components.view.diagram.util.DiagramSwitch;
 import org.eclipse.sirius.components.view.emf.IOperationInterpreter;
+import org.eclipse.sirius.components.view.emf.OperationInterpreterViewSwitch;
 
 /**
  * Executes the body of a diagram tool as defined by a set of {@link Operation}s.
@@ -65,15 +69,30 @@ public class DiagramOperationInterpreter implements IOperationInterpreter {
     }
 
     public IStatus executeTool(Tool tool, VariableManager variableManager) {
-        Optional<VariableManager> optionalVariableManager = this.executeOperations(tool.getBody(), variableManager);
+        VariableManager toolVariableManager = variableManager.createChild();
+        // Used to collect the new semantic elements created during the execution of the tool.
+        // All operations executed inside the body of the tool are guaranteed to see this variable and
+        // are allowed to add new (named) instances to it.
+        var newInstancesCollector = new LinkedHashMap<>();
+        toolVariableManager.put(OperationInterpreterViewSwitch.NEW_INSTANCES_COLLECTOR, newInstancesCollector);
+        Optional<VariableManager> optionalVariableManager = this.executeOperations(tool.getBody(), toolVariableManager);
+
         List<Message> feedbackStackedMessages = new ArrayList<>(this.feedbackMessageService.getFeedbackMessages());
         if (optionalVariableManager.isEmpty()) {
             List<Message> errorMessages = new ArrayList<>();
             errorMessages.add(new Message(String.format("Something went wrong while executing the tool '%s'", tool.getName()), MessageLevel.ERROR));
             errorMessages.addAll(feedbackStackedMessages);
             return new Failure(errorMessages);
+        } else {
+            // Create a default NEW_SELECTION based on the new instances created, but also expose these instances with their names in the returned Status
+            // so that they can be used when evaluating an explicit elementsToSelectExpression.
+            var selectionEntries = newInstancesCollector.values().stream()
+                    .map(newInstance -> new WorkbenchSelectionEntry(this.objectService.getId(newInstance), this.objectService.getKind(newInstance)))
+                    .toList();
+            var parameters = Map.of(Success.NEW_SELECTION, new WorkbenchSelection(selectionEntries),
+                                    OperationInterpreterViewSwitch.NEW_INSTANCES_COLLECTOR, newInstancesCollector);
+            return new Success("", parameters, this.feedbackMessageService.getFeedbackMessages());
         }
-        return new Success(this.feedbackMessageService.getFeedbackMessages());
     }
 
     @Override

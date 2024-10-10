@@ -94,5 +94,15 @@ public class EdgeToolBuilder {
         return this;
     }
 
+    /**
+     * Setter for ElementsToSelectExpression.
+     *
+     * @generated
+     */
+    public EdgeToolBuilder elementsToSelectExpression(java.lang.String value) {
+        this.getEdgeTool().setElementsToSelectExpression(value);
+        return this;
+    }
+
 }
 

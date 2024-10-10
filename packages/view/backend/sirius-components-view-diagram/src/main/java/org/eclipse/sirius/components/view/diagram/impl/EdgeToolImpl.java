@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,6 +33,8 @@ import org.eclipse.sirius.components.view.diagram.EdgeTool;
  * Element Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeToolImpl#getIconURLsExpression <em>Icon UR Ls
  * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeToolImpl#getElementsToSelectExpression <em>Elements To
+ * Select Expression</em>}</li>
  * </ul>
  *
  * @generated
@@ -67,6 +69,26 @@ public class EdgeToolImpl extends ToolImpl implements EdgeTool {
      * @ordered
      */
     protected String iconURLsExpression = ICON_UR_LS_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getElementsToSelectExpression() <em>Elements To Select Expression</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getElementsToSelectExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String ELEMENTS_TO_SELECT_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getElementsToSelectExpression() <em>Elements To Select Expression</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getElementsToSelectExpression()
+     * @generated
+     * @ordered
+     */
+    protected String elementsToSelectExpression = ELEMENTS_TO_SELECT_EXPRESSION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -129,12 +151,37 @@ public class EdgeToolImpl extends ToolImpl implements EdgeTool {
      * @generated
      */
     @Override
+    public String getElementsToSelectExpression() {
+        return this.elementsToSelectExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setElementsToSelectExpression(String newElementsToSelectExpression) {
+        String oldElementsToSelectExpression = this.elementsToSelectExpression;
+        this.elementsToSelectExpression = newElementsToSelectExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_TOOL__ELEMENTS_TO_SELECT_EXPRESSION, oldElementsToSelectExpression, this.elementsToSelectExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case DiagramPackage.EDGE_TOOL__TARGET_ELEMENT_DESCRIPTIONS:
                 return this.getTargetElementDescriptions();
             case DiagramPackage.EDGE_TOOL__ICON_UR_LS_EXPRESSION:
                 return this.getIconURLsExpression();
+            case DiagramPackage.EDGE_TOOL__ELEMENTS_TO_SELECT_EXPRESSION:
+                return this.getElementsToSelectExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -155,6 +202,9 @@ public class EdgeToolImpl extends ToolImpl implements EdgeTool {
             case DiagramPackage.EDGE_TOOL__ICON_UR_LS_EXPRESSION:
                 this.setIconURLsExpression((String) newValue);
                 return;
+            case DiagramPackage.EDGE_TOOL__ELEMENTS_TO_SELECT_EXPRESSION:
+                this.setElementsToSelectExpression((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -173,6 +223,9 @@ public class EdgeToolImpl extends ToolImpl implements EdgeTool {
             case DiagramPackage.EDGE_TOOL__ICON_UR_LS_EXPRESSION:
                 this.setIconURLsExpression(ICON_UR_LS_EXPRESSION_EDEFAULT);
                 return;
+            case DiagramPackage.EDGE_TOOL__ELEMENTS_TO_SELECT_EXPRESSION:
+                this.setElementsToSelectExpression(ELEMENTS_TO_SELECT_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -189,6 +242,8 @@ public class EdgeToolImpl extends ToolImpl implements EdgeTool {
                 return this.targetElementDescriptions != null && !this.targetElementDescriptions.isEmpty();
             case DiagramPackage.EDGE_TOOL__ICON_UR_LS_EXPRESSION:
                 return ICON_UR_LS_EXPRESSION_EDEFAULT == null ? this.iconURLsExpression != null : !ICON_UR_LS_EXPRESSION_EDEFAULT.equals(this.iconURLsExpression);
+            case DiagramPackage.EDGE_TOOL__ELEMENTS_TO_SELECT_EXPRESSION:
+                return ELEMENTS_TO_SELECT_EXPRESSION_EDEFAULT == null ? this.elementsToSelectExpression != null : !ELEMENTS_TO_SELECT_EXPRESSION_EDEFAULT.equals(this.elementsToSelectExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -206,6 +261,8 @@ public class EdgeToolImpl extends ToolImpl implements EdgeTool {
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (iconURLsExpression: ");
         result.append(this.iconURLsExpression);
+        result.append(", elementsToSelectExpression: ");
+        result.append(this.elementsToSelectExpression);
         result.append(')');
         return result.toString();
     }

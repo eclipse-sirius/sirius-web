@@ -58,7 +58,6 @@ export interface GQLWorkbenchSelection {
 
 export interface GQLWorkbenchSelectionEntry {
   id: string;
-  label: string;
   kind: string;
 }
 
