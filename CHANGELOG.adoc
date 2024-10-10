@@ -113,6 +113,7 @@ This will allow specifier to create images that fir perfectly in the project tem
 - https://github.com/eclipse-sirius/sirius-web/issues/3816[#3816] [form] Make EMF default form support Integer null value
 - https://github.com/eclipse-sirius/sirius-web/issues/3826[#3826] [form] Make EMF default form support attributes with a date
 - https://github.com/eclipse-sirius/sirius-web/issues/2163[#2163] [form] Make EMF default form support non changeable features
+- https://github.com/eclipse-sirius/sirius-web/issues/4086[#4086] [form] Wrap widget returned by property section in a div with a specific classname 
 
 
 == v2024.9.0
