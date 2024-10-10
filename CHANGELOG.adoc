@@ -10,6 +10,7 @@
 - Add support for drag and drop in the explorer
 - Add custom bending points to edges
 - Add support for draggable labels
+- Improve form property section layout
 
 
 === Architectural decision records

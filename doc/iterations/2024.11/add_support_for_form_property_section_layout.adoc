@@ -1,0 +1,73 @@
+= Add support for form property section layout
+
+== Problem
+
+A property section in a form is made of a label, a help icon and a widget area.
+Currently, the layout is always vertical: label and help icon are in div and the widget area is below.
+
+== Key Result
+
+It will be possible as a specifier to choose if the layout is horizontal or vertical.
+
+== Solution
+
+The property section contains 
+
+* a "label" div which includes the label and the help icon.
+* a "widget"div
+
+The content of the property section is layouted with CSS Grid.
+New attributes are added on form widget styles to specify the layout.
+It corresponds to CSS Grid options:
+
+ * gridTemplateColumns
+ * gridTemplateRows
+ * labelGridColumn : the grid options that applies to the label area.
+ It is a shortHand for `grid-column-start ` and `grid-column-end`.
+ * labelGridRow : the grid options that applies to the label area.
+ It is a shortHand for `grid-row-start ` and `grid-row-end`.
+ * widgetGridColumn : the grid options that applies to the widget area.
+ It is a shortHand for `grid-column-start ` and `grid-column-end`.
+ * widgetGridRow : the grid options that applies to the widget area.
+ It is a shortHand for `grid-row-start ` and `grid-row-end`.
+ * gap
+
+Example:
+If all the property sections are defined with `gridTemplateColumns='15em auto'` or `gridTemplateColumns='30% 70%'` , the "label" div of all the property sections will be justified.
+
+=== Forms editor
+
+The form editor should display the property section accordingly to the widget styles`.
+
+The default layout in the form editor should be unchanged.
+
+=== Scope
+
+The change will be done to the following widgets:
+* text field
+* text area
+* select
+* multi select
+* date
+* checkbox
+* perhaps more
+
+=== Default details view
+
+The default `Details` must be displayed unchanged.
+In view model, when the user had a style on a widget, the default grid values are initialized so that the default behavior `Details` is set unchanged.
+
+=== Breadboarding
+
+NA
+
+=== Cutting backs
+
+NA
+
+== Rabbit holes
+
+NA
+
+== No-gos
+
