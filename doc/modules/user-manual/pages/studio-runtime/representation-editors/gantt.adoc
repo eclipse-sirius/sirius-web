@@ -1,0 +1,11 @@
+= Gantt
+
+A *`{gantt}` representation* conforms to a `{mkr-gantt}` of the _{stddef}_.
+
+== Purpose
+
+Gantt representations represent domain data in the style of https://en.wikipedia.org/wiki/Gantt_chart[Gantt Charts]. The main purpose is to represent the spread of tasks over a timeline.
+
+#TODO: Migrate https://github.com/eclipse-sirius/sirius-web/blob/master/doc/user/representation-gantt.adoc#
+
+#TODO: When we have a nominal example of Gantt representation, add a snapshot here, and add details of the UI.#
