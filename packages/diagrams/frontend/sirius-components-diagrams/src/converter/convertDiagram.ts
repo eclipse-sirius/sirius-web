@@ -36,6 +36,7 @@ import { ImageNodeConverter } from './ImageNodeConverter';
 import { ListNodeConverter } from './ListNodeConverter';
 import { RectangleNodeConverter } from './RectangleNodeConverter';
 import { convertContentStyle, convertLabelStyle } from './convertLabel';
+import { GQLEdgeLayoutData } from '../renderer/layout/useSynchronizeLayoutData.types';
 
 const nodeDepth = (nodeId2node: Map<string, Node>, nodeId: string): number => {
   const node = nodeId2node.get(nodeId);
@@ -143,6 +144,9 @@ export const convertDiagram = (
   const edges: Edge<EdgeData>[] = gqlDiagram.edges.map((gqlEdge) => {
     const sourceNode: Node<NodeData> | undefined = nodeId2node.get(gqlEdge.sourceId);
     const targetNode: Node<NodeData> | undefined = nodeId2node.get(gqlEdge.targetId);
+    const edgeLayoutData: GQLEdgeLayoutData | undefined = gqlDiagram.layoutData.edgeLayoutData.find(
+      (layoutData) => layoutData.id === gqlEdge.id
+    );
     const data: MultiLabelEdgeData = {
       targetObjectId: gqlEdge.targetObjectId,
       targetObjectKind: gqlEdge.targetObjectKind,
@@ -150,6 +154,7 @@ export const convertDiagram = (
       label: null,
       faded: gqlEdge.state === GQLViewModifier.Faded,
       centerLabelEditable: gqlEdge.centerLabelEditable,
+      bendingPoints: edgeLayoutData?.bendingPoints ?? null,
     };
 
     if (gqlEdge.beginLabel) {

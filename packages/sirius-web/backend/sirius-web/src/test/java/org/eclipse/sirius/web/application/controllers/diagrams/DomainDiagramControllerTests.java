@@ -94,8 +94,8 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
 
     @Test
     @DisplayName("Given a domain diagram on a studio, when it is opened, then entities are visible")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/studio.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenDomainDiagramOnStudioWhenItIsOpenedThenEntitiesAreVisible() {
         var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), this.domainDiagramDescriptionProvider.getDescriptionId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), "Domain");
         var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input);
@@ -123,8 +123,8 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
 
     @Test
     @DisplayName("Given a domain diagram on a studio, when moving a node and then reloading the previously saved state, then the node is back to its initial position")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/studio.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenDomainDiagramOnStudioWhenMovingNodeAndThenReloadingPreviousStateThenNodeBackToInitialPosition() {
         var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), this.domainDiagramDescriptionProvider.getDescriptionId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), "Domain");
         var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input);
@@ -136,7 +136,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
 
         var diagramId = new AtomicReference<String>();
         var currentRevisionId = new AtomicReference<UUID>();
-        var humanNodeId  = new AtomicReference<String>();
+        var humanNodeId = new AtomicReference<String>();
         var initialDiagramData = new AtomicReference<RepresentationData>(null);
 
         Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
@@ -154,7 +154,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
 
         Runnable initialDiagramLayout = () -> {
             var humanNodeLayout = new NodeLayoutDataInput(humanNodeId.get(), initialPosition, initialSize, true);
-            var layoutData = new DiagramLayoutDataInput(List.of(humanNodeLayout));
+            var layoutData = new DiagramLayoutDataInput(List.of(humanNodeLayout), List.of());
             var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), diagramId.get(), layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);
         };
@@ -176,7 +176,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
 
         Runnable modifyDiagramLayout = () -> {
             var humanNodeLayout = new NodeLayoutDataInput(humanNodeId.get(), modifiedPosition, modifiedSize, true);
-            var layoutData = new DiagramLayoutDataInput(List.of(humanNodeLayout));
+            var layoutData = new DiagramLayoutDataInput(List.of(humanNodeLayout), List.of());
             var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), diagramId.get(), layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);
         };

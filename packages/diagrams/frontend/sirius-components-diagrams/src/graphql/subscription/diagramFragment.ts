@@ -30,6 +30,10 @@ fragment diagramFragment on Diagram {
       size { width height }
       resizedByUser
     }
+    edgeLayoutData {
+      id
+      bendingPoints { x y }
+    }
   }
   nodes {
     ...nodeFragment
