@@ -10,13 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Edge, EdgeProps } from '@xyflow/react';
+import { Edge, EdgeProps, XYPosition } from '@xyflow/react';
 import { EdgeData, EdgeLabel } from '../DiagramRenderer.types';
 
 export type MultiLabelEdgeProps<T extends Edge<Record<string, unknown>, string | undefined>> = {
   edgeCenterX: number;
   edgeCenterY: number;
   svgPathString: string;
+  bendingPoints?: XYPosition[];
 } & EdgeProps<T>;
 
 export interface MultiLabelEdgeData extends EdgeData {

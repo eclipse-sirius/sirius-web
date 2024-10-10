@@ -10,8 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Edge, EdgeProps, Node, Position, getSmoothStepPath, useInternalNode } from '@xyflow/react';
+import { Edge, EdgeProps, Node, Position, getSmoothStepPath, useInternalNode, XYPosition } from '@xyflow/react';
 import { memo, useContext } from 'react';
+import parse from 'svg-path-parser';
 import { NodeTypeContext } from '../../contexts/NodeContext';
 import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
 import { NodeData } from '../DiagramRenderer.types';
@@ -21,8 +22,17 @@ import { MultiLabelEdge } from './MultiLabelEdge';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
 
 export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeData>>) => {
-  const { source, target, markerEnd, markerStart, sourcePosition, targetPosition, sourceHandleId, targetHandleId } =
-    props;
+  const {
+    source,
+    target,
+    markerEnd,
+    markerStart,
+    sourcePosition,
+    targetPosition,
+    sourceHandleId,
+    targetHandleId,
+    data,
+  } = props;
   const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
 
   const sourceNode = useInternalNode<Node<NodeData>>(source);
@@ -87,14 +97,31 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
       break;
   }
 
-  const [edgePath, labelX, labelY] = getSmoothStepPath({
-    sourceX,
-    sourceY,
-    sourcePosition,
-    targetX,
-    targetY,
-    targetPosition,
-  });
+  let edgePath, labelX, labelY, bendingPoints: XYPosition[];
+  if (data?.bendingPoints) {
+    bendingPoints = data.bendingPoints;
+    edgePath = `M ${sourceX} ${sourceY}`;
+
+    for (let i = 0; i < data.bendingPoints.length; i++) {
+      edgePath += ` L ${data.bendingPoints[i]?.x} ${data.bendingPoints[i]?.y}`;
+    }
+    edgePath += ` L ${targetX} ${targetY}`;
+  } else {
+    [edgePath, labelX, labelY] = getSmoothStepPath({
+      sourceX,
+      sourceY,
+      sourcePosition,
+      targetX,
+      targetY,
+      targetPosition,
+    });
+
+    bendingPoints = parse(edgePath)
+      .filter((segment) => segment.code === 'Q')
+      .map((segment) => {
+        return { x: (segment.x + segment.x1) / 2, y: (segment.y + segment.y1) / 2 };
+      });
+  }
   return (
     <MultiLabelEdge
       {...props}
@@ -105,6 +132,7 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
       edgeCenterX={labelX}
       edgeCenterY={labelY}
       svgPathString={edgePath}
+      bendingPoints={bendingPoints}
     />
   );
 });
