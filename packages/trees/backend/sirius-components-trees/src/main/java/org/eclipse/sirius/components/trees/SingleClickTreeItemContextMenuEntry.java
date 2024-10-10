@@ -12,13 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.trees;
 
+import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.representations.VariableManager;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
-
-import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.representations.IStatus;
-import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
  * Single click tree item context menu entry.
@@ -33,10 +32,6 @@ public final class SingleClickTreeItemContextMenuEntry implements ITreeItemConte
     private Function<VariableManager, String> label;
 
     private Function<VariableManager, List<String>> iconURL;
-
-    private Function<VariableManager, Boolean> precondition;
-
-    private Function<VariableManager, IStatus> handler;
 
     private SingleClickTreeItemContextMenuEntry() {
         // Prevent instantiation
@@ -57,15 +52,6 @@ public final class SingleClickTreeItemContextMenuEntry implements ITreeItemConte
         return this.iconURL;
     }
 
-    @Override
-    public Function<VariableManager, Boolean> getPrecondition() {
-        return this.precondition;
-    }
-
-    public Function<VariableManager, IStatus> getHandler() {
-        return this.handler;
-    }
-
     public static Builder newSingleClickTreeItemContextMenuEntry(String id) {
         return new Builder(id);
     }
@@ -84,10 +70,6 @@ public final class SingleClickTreeItemContextMenuEntry implements ITreeItemConte
 
         private Function<VariableManager, List<String>> iconURL;
 
-        private Function<VariableManager, Boolean> precondition;
-
-        private Function<VariableManager, IStatus> handler;
-
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -102,23 +84,11 @@ public final class SingleClickTreeItemContextMenuEntry implements ITreeItemConte
             return this;
         }
 
-        public Builder precondition(Function<VariableManager, Boolean> precondition) {
-            this.precondition = precondition;
-            return this;
-        }
-
-        public Builder handler(Function<VariableManager, IStatus> handler) {
-            this.handler = handler;
-            return this;
-        }
-
         public SingleClickTreeItemContextMenuEntry build() {
             SingleClickTreeItemContextMenuEntry action = new SingleClickTreeItemContextMenuEntry();
             action.id = Objects.requireNonNull(this.id);
             action.label = Objects.requireNonNull(this.label);
             action.iconURL = Objects.requireNonNull(this.iconURL);
-            action.precondition = Objects.requireNonNull(this.precondition);
-            action.handler = Objects.requireNonNull(this.handler);
             return action;
         }
     }

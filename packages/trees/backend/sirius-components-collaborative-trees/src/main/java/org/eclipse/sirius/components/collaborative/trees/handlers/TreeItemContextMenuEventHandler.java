@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeEventHandler;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeInput;
+import org.eclipse.sirius.components.collaborative.trees.api.ITreeItemContextMenuEntryProvider;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeItemContextMenuInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeItemContextMenuSuccessPayload;
 import org.eclipse.sirius.components.collaborative.trees.services.api.ICollaborativeTreeMessageService;
@@ -56,10 +57,13 @@ public class TreeItemContextMenuEventHandler implements ITreeEventHandler {
 
     private final Counter counter;
 
+    private final List<ITreeItemContextMenuEntryProvider> contextMenuEntryProviders;
+
     public TreeItemContextMenuEventHandler(ICollaborativeTreeMessageService messageService, ITreeQueryService treeQueryService,
-            MeterRegistry meterRegistry) {
+            MeterRegistry meterRegistry, List<ITreeItemContextMenuEntryProvider> contextMenuEntryProviders) {
         this.messageService = Objects.requireNonNull(messageService);
         this.treeQueryService = Objects.requireNonNull(treeQueryService);
+        this.contextMenuEntryProviders = Objects.requireNonNull(contextMenuEntryProviders);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
@@ -94,14 +98,15 @@ public class TreeItemContextMenuEventHandler implements ITreeEventHandler {
                 var semanticTreeItemObject = treeDescription.getTreeItemObjectProvider().apply(variableManager);
                 variableManager.put(VariableManager.SELF, semanticTreeItemObject);
 
-                var candidates = treeDescription.getContextMenuEntries().stream()
-                        .filter(action -> action.getPrecondition().apply(variableManager))
-                        .map(treeItemContextMenuEntry -> this.convertTreeItemContextAction(treeItemContextMenuEntry, variableManager))
+                var entries = this.contextMenuEntryProviders.stream()
+                        .filter(provider -> provider.canHandle(editingContext, treeDescription, tree, treeItem))
+                        .flatMap(provider -> provider.getTreeItemContextMenuEntries(editingContext, treeDescription, tree, treeItem).stream())
+                        .map(ticme -> this.convertTreeItemContextAction(ticme, variableManager))
                         .filter(Objects::nonNull)
                         .sorted(Comparator.comparing(org.eclipse.sirius.components.collaborative.trees.dto.ITreeItemContextMenuEntry::label))
                         .toList();
 
-                payload = new TreeItemContextMenuSuccessPayload(treeInput.id(), candidates);
+                payload = new TreeItemContextMenuSuccessPayload(treeInput.id(), entries);
             }
         }
 

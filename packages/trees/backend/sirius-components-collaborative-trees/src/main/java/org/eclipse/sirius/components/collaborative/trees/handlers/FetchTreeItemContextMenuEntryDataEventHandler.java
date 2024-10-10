@@ -12,12 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.trees.handlers;
 
-import java.util.Objects;
-import java.util.Optional;
-
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
+import org.eclipse.sirius.components.collaborative.trees.api.IFetchTreeItemContextMenuEntryDataProvider;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeEventHandler;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.FetchTreeItemContextMenuEntryData;
@@ -28,19 +28,16 @@ import org.eclipse.sirius.components.collaborative.trees.services.api.ITreeQuery
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.trees.FetchTreeItemContextMenuEntry;
-import org.eclipse.sirius.components.trees.FetchTreeItemContextMenuEntryKind;
-import org.eclipse.sirius.components.trees.ITreeItemContextMenuEntry;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.springframework.stereotype.Service;
-
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Used to retrieve data associated to a tree item fetch action.
@@ -56,10 +53,13 @@ public class FetchTreeItemContextMenuEntryDataEventHandler implements ITreeEvent
 
     private final Counter counter;
 
+    private final List<IFetchTreeItemContextMenuEntryDataProvider> fetchTreeItemContextMenuEntryDataProviders;
+
     public FetchTreeItemContextMenuEntryDataEventHandler(ICollaborativeTreeMessageService messageService, ITreeQueryService treeQueryService,
-            MeterRegistry meterRegistry) {
+                                                         MeterRegistry meterRegistry, List<IFetchTreeItemContextMenuEntryDataProvider> fetchTreeItemContextMenuEntryDataProviders) {
         this.messageService = Objects.requireNonNull(messageService);
         this.treeQueryService = Objects.requireNonNull(treeQueryService);
+        this.fetchTreeItemContextMenuEntryDataProviders = Objects.requireNonNull(fetchTreeItemContextMenuEntryDataProviders);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
@@ -86,21 +86,11 @@ public class FetchTreeItemContextMenuEntryDataEventHandler implements ITreeEvent
             if (optionalTreeItem.isPresent()) {
                 TreeItem treeItem = optionalTreeItem.get();
 
-                var variableManager = new VariableManager();
-                variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
-                variableManager.put(TreeDescription.TREE, tree);
-                variableManager.put(TreeItem.SELECTED_TREE_ITEM, treeItem);
-                variableManager.put(TreeDescription.ID, input.treeItemId());
-                var semanticTreeItemObject = treeDescription.getTreeItemObjectProvider().apply(variableManager);
-                variableManager.put(VariableManager.SELF, semanticTreeItemObject);
-
-                Optional<ITreeItemContextMenuEntry> action = treeDescription.getContextMenuEntries().stream()
-                        .filter(a -> Objects.equals(a.getId(), input.menuEntryId()))
+                Optional<FetchTreeItemContextMenuEntryData> metadata = fetchTreeItemContextMenuEntryDataProviders.stream()
+                        .filter(prov -> prov.canHandle(treeDescription))
+                        .map(prov -> prov.handle(editingContext, treeDescription, tree, treeItem, input.menuEntryId()))
+                        .filter(Objects::nonNull)
                         .findFirst();
-                Optional<FetchTreeItemContextMenuEntryData> metadata = action
-                        .filter(FetchTreeItemContextMenuEntry.class::isInstance)
-                        .map(FetchTreeItemContextMenuEntry.class::cast)
-                        .map(fetchTreeItemContextMenuEntry -> this.getFetchMetadata(fetchTreeItemContextMenuEntry, variableManager));
                 if (metadata.isPresent()) {
                     payload = new FetchTreeItemContextMenuEntryDataSuccessPayload(treeInput.id(), metadata.get());
                 }
@@ -110,11 +100,4 @@ public class FetchTreeItemContextMenuEntryDataEventHandler implements ITreeEvent
         changeDescriptionSink.tryEmitNext(changeDescription);
         payloadSink.tryEmitValue(payload);
     }
-
-    private FetchTreeItemContextMenuEntryData getFetchMetadata(FetchTreeItemContextMenuEntry fetchAction, VariableManager variableManager) {
-        String urlToFetch = fetchAction.getUrlToFetch().apply(variableManager);
-        FetchTreeItemContextMenuEntryKind fetchKind = fetchAction.getFetchKind().apply(variableManager);
-        return new FetchTreeItemContextMenuEntryData(urlToFetch, fetchKind);
-    }
-
 }

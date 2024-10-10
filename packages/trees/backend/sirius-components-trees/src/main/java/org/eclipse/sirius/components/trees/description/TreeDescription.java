@@ -24,7 +24,6 @@ import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.trees.ITreeItemContextMenuEntry;
 
 /**
  * The root concept of the description of a tree representation.
@@ -49,8 +48,6 @@ public final class TreeDescription implements IRepresentationDescription {
     private String id;
 
     private String label;
-
-    private List<ITreeItemContextMenuEntry> contextMenuEntries;
 
     private Function<VariableManager, String> idProvider;
 
@@ -108,10 +105,6 @@ public final class TreeDescription implements IRepresentationDescription {
     @Override
     public String getLabel() {
         return this.label;
-    }
-
-    public List<ITreeItemContextMenuEntry> getContextMenuEntries() {
-        return this.contextMenuEntries;
     }
 
     public Function<VariableManager, String> getIdProvider() {
@@ -205,8 +198,6 @@ public final class TreeDescription implements IRepresentationDescription {
 
         private String label;
 
-        private List<ITreeItemContextMenuEntry> contextMenuEntries;
-
         private Function<VariableManager, String> idProvider;
 
         private Function<VariableManager, String> treeItemIdProvider;
@@ -250,7 +241,6 @@ public final class TreeDescription implements IRepresentationDescription {
         private Builder(TreeDescription treeDescription) {
             this.id = treeDescription.getId();
             this.label = treeDescription.getLabel();
-            this.contextMenuEntries = treeDescription.getContextMenuEntries();
             this.idProvider = treeDescription.getIdProvider();
             this.treeItemIdProvider = treeDescription.getTreeItemIdProvider();
             this.kindProvider = treeDescription.getKindProvider();
@@ -278,11 +268,6 @@ public final class TreeDescription implements IRepresentationDescription {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
-            return this;
-        }
-
-        public Builder contextMenuEntries(List<ITreeItemContextMenuEntry> contextMenuEntries) {
-            this.contextMenuEntries = contextMenuEntries;
             return this;
         }
 
@@ -380,7 +365,6 @@ public final class TreeDescription implements IRepresentationDescription {
             TreeDescription treeDescription = new TreeDescription();
             treeDescription.id = Objects.requireNonNull(this.id);
             treeDescription.label = Objects.requireNonNull(this.label);
-            treeDescription.contextMenuEntries = Objects.requireNonNull(this.contextMenuEntries);
             treeDescription.idProvider = Objects.requireNonNull(this.idProvider);
             treeDescription.treeItemIdProvider = Objects.requireNonNull(this.treeItemIdProvider);
             treeDescription.kindProvider = Objects.requireNonNull(this.kindProvider);

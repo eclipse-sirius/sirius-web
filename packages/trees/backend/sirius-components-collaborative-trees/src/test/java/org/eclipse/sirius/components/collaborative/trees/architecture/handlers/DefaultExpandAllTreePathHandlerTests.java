@@ -71,7 +71,6 @@ public class DefaultExpandAllTreePathHandlerTests {
                         .treeItemIdProvider(v -> "itemId")
                         .treeItemObjectProvider(v -> new Object())
                         .treeItemLabelProvider(v -> null)
-                        .contextMenuEntries(List.of())
                         .build();
 
                 return Optional.of(diagramDescription);
