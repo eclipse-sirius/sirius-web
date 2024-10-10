@@ -12,10 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.trees;
 
+import org.eclipse.sirius.components.representations.VariableManager;
+
 import java.util.List;
 import java.util.function.Function;
-
-import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
  * Interface implemented by all the tree item context menu entries.
@@ -28,7 +28,4 @@ public interface ITreeItemContextMenuEntry {
     Function<VariableManager, String> getLabel();
 
     Function<VariableManager, List<String>> getIconURL();
-
-    Function<VariableManager, Boolean> getPrecondition();
-
 }

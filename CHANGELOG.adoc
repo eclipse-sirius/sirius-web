@@ -97,6 +97,7 @@ never, always and if_children (to display the separator only if children exist).
 - https://github.com/eclipse-sirius/sirius-web/issues/4064[#4064] [sirius-web] Ensure that project template images fill the whole content part of the card.
 Project template images will now have a predictable size of 150px by 110px.
 This will allow specifier to create images that fir perfectly in the project template card.
+- https://github.com/eclipse-sirius/sirius-web/issues/4088[#4088] Change tree item context menu entries internal management
 
 
 == v2024.9.0

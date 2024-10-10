@@ -33,12 +33,6 @@ public final class FetchTreeItemContextMenuEntry implements ITreeItemContextMenu
 
     private Function<VariableManager, List<String>> iconURL;
 
-    private Function<VariableManager, Boolean> precondition;
-
-    private Function<VariableManager, String> urlToFetch;
-
-    private Function<VariableManager, FetchTreeItemContextMenuEntryKind> fetchKind;
-
     private FetchTreeItemContextMenuEntry() {
         // Prevent instantiation
     }
@@ -56,19 +50,6 @@ public final class FetchTreeItemContextMenuEntry implements ITreeItemContextMenu
     @Override
     public Function<VariableManager, List<String>> getIconURL() {
         return this.iconURL;
-    }
-
-    @Override
-    public Function<VariableManager, Boolean> getPrecondition() {
-        return this.precondition;
-    }
-
-    public Function<VariableManager, String> getUrlToFetch() {
-        return this.urlToFetch;
-    }
-
-    public Function<VariableManager, FetchTreeItemContextMenuEntryKind> getFetchKind() {
-        return this.fetchKind;
     }
 
     public static Builder newFetchTreeItemContextMenuEntry(String id) {
@@ -89,12 +70,6 @@ public final class FetchTreeItemContextMenuEntry implements ITreeItemContextMenu
 
         private Function<VariableManager, List<String>> iconURL;
 
-        private Function<VariableManager, Boolean> precondition;
-
-        private Function<VariableManager, String> urlToFetch;
-
-        private Function<VariableManager, FetchTreeItemContextMenuEntryKind> fetchKind;
-
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -109,29 +84,11 @@ public final class FetchTreeItemContextMenuEntry implements ITreeItemContextMenu
             return this;
         }
 
-        public Builder precondition(Function<VariableManager, Boolean> precondition) {
-            this.precondition = precondition;
-            return this;
-        }
-
-        public Builder urlToFetch(Function<VariableManager, String> urlToFetch) {
-            this.urlToFetch = urlToFetch;
-            return this;
-        }
-
-        public Builder fetchKind(Function<VariableManager, FetchTreeItemContextMenuEntryKind> fetchKind) {
-            this.fetchKind = fetchKind;
-            return this;
-        }
-
         public FetchTreeItemContextMenuEntry build() {
             var action = new FetchTreeItemContextMenuEntry();
             action.id = Objects.requireNonNull(this.id);
             action.label = Objects.requireNonNull(this.label);
             action.iconURL = Objects.requireNonNull(this.iconURL);
-            action.precondition = Objects.requireNonNull(this.precondition);
-            action.urlToFetch = Objects.requireNonNull(this.urlToFetch);
-            action.fetchKind = Objects.requireNonNull(this.fetchKind);
             return action;
         }
     }

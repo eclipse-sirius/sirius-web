@@ -12,11 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.trees.handlers;
 
-import java.util.Objects;
-
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
+import org.eclipse.sirius.components.collaborative.trees.api.ISingleClickTreeItemContextMenuEntryExecutor;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeEventHandler;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.InvokeSingleClickTreeItemContextMenuEntryInput;
@@ -28,17 +29,15 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.Success;
-import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
-import org.eclipse.sirius.components.trees.SingleClickTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.springframework.stereotype.Service;
-
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
+
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Used to invoke a single click entry of tree items context menu.
@@ -54,10 +53,13 @@ public class InvokeSingleClickTreeItemContextMenuEntryEventHandler implements IT
 
     private final Counter counter;
 
+    private final List<ISingleClickTreeItemContextMenuEntryExecutor> singleClickTreeItemContextMenuEntryExecutors;
+
     public InvokeSingleClickTreeItemContextMenuEntryEventHandler(ICollaborativeTreeMessageService messageService, ITreeQueryService treeQueryService,
-            MeterRegistry meterRegistry) {
+                                                                 MeterRegistry meterRegistry, List<ISingleClickTreeItemContextMenuEntryExecutor> singleClickTreeItemContextMenuEntryExecutors) {
         this.messageService = Objects.requireNonNull(messageService);
         this.treeQueryService = Objects.requireNonNull(treeQueryService);
+        this.singleClickTreeItemContextMenuEntryExecutors = Objects.requireNonNull(singleClickTreeItemContextMenuEntryExecutors);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
@@ -78,33 +80,22 @@ public class InvokeSingleClickTreeItemContextMenuEntryEventHandler implements IT
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, treeInput.representationId(), treeInput);
 
         if (treeInput instanceof InvokeSingleClickTreeItemContextMenuEntryInput input) {
-
             var optionalTreeItem = this.treeQueryService.findTreeItem(tree, input.treeItemId());
 
             if (optionalTreeItem.isPresent()) {
                 TreeItem treeItem = optionalTreeItem.get();
 
-                VariableManager variableManager = new VariableManager();
-                variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
-                variableManager.put(TreeItem.SELECTED_TREE_ITEM, treeItem);
-                variableManager.put(TreeDescription.ID, input.treeItemId());
-                variableManager.put(TreeDescription.TREE, tree);
-                var semanticTreeItemObject = treeDescription.getTreeItemObjectProvider().apply(variableManager);
-                variableManager.put(VariableManager.SELF, semanticTreeItemObject);
+                var status = singleClickTreeItemContextMenuEntryExecutors.stream()
+                        .filter(executor -> executor.canExecute(treeDescription))
+                        .findFirst()
+                        .map(executor -> executor.execute(editingContext, treeDescription, tree, treeItem, input.menuEntryId()))
+                        .get();
 
-                var optionalAction = treeDescription.getContextMenuEntries().stream()
-                    .filter(action -> Objects.equals(action.getId(), input.menuEntryId()))
-                    .filter(SingleClickTreeItemContextMenuEntry.class::isInstance)
-                    .map(SingleClickTreeItemContextMenuEntry.class::cast)
-                    .findFirst();
-                if (optionalAction.isPresent()) {
-                    var status = optionalAction.get().getHandler().apply(variableManager);
-                    if (status instanceof Success success) {
-                        changeDescription = new ChangeDescription(success.getChangeKind(), treeInput.representationId(), treeInput, success.getParameters());
-                        payload = new SuccessPayload(treeInput.id());
-                    } else if (status instanceof Failure failure) {
-                        payload = new ErrorPayload(treeInput.id(), failure.getMessages());
-                    }
+                if (status instanceof Success success) {
+                    changeDescription = new ChangeDescription(success.getChangeKind(), treeInput.representationId(), treeInput, success.getParameters());
+                    payload = new SuccessPayload(treeInput.id());
+                } else if (status instanceof Failure failure) {
+                    payload = new ErrorPayload(treeInput.id(), failure.getMessages());
                 }
             }
         }

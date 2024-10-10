@@ -163,7 +163,6 @@ public class TreeRendererTests {
                 .treeItemIdProvider(v -> this.getSelfNode(v).getId())
                 .treeItemObjectProvider(v -> root.search(v.get("treeItemId", String.class).get(), new HashSet<>()))
                 .treeItemLabelProvider(v -> StyledString.of(v.get(VariableManager.SELF, TreeNode.class).map(TreeNode::getId).orElse(FAKE_ID)))
-                .contextMenuEntries(List.of())
                 .build();
 
     }
