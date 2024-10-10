@@ -210,9 +210,21 @@ test('render list widget with help hint', () => {
   expect(container).toMatchSnapshot();
 });
 
-test('should render a readOnly list from widget properties', () => {
+test('when in read-only mode, list items can still be selected but handlers are not invoked', async () => {
+  let clickListItemMutationCalled = false;
+  const itemClickCalledCalledSuccessMock: MockedResponse<Record<string, any>> = {
+    request: {
+      query: clickListItemMutation,
+      variables: clickListItemVariables,
+    },
+    result: () => {
+      clickListItemMutationCalled = true;
+      return { data: clickListItemSuccessData };
+    },
+  };
+
   const { container } = render(
-    <MockedProvider>
+    <MockedProvider mocks={[itemClickCalledCalledSuccessMock]}>
       <ToastContext.Provider value={toastContextMock}>
         <SelectionContext.Provider value={{ selection: emptySelection, setSelection, selectedRepresentations: [] }}>
           <ListPropertySection
@@ -226,4 +238,17 @@ test('should render a readOnly list from widget properties', () => {
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
+
+  const element: HTMLElement = screen.getByTestId('representation-item3Label');
+  expect(element.textContent).toBe('item3Label');
+
+  await act(async () => {
+    userEvent.click(element);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    await waitFor(() => {
+      expect(clickListItemMutationCalled).toBeFalsy();
+      expect(container).toMatchSnapshot();
+    });
+  });
 });

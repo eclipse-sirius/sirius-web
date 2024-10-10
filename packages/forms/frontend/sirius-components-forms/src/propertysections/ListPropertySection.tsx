@@ -206,33 +206,37 @@ export const ListPropertySection: PropertySectionComponent<GQLList> = ({
   const onSimpleClick = (item: GQLListItem) => {
     const { id, kind } = item;
     setSelection({ entries: [{ id, kind }] });
-    const variables: GQLClickListItemMutationVariables = {
-      input: {
-        id: crypto.randomUUID(),
-        editingContextId,
-        representationId: formId,
-        listId: widget.id,
-        listItemId: item.id,
-        clickEventKind: 'SINGLE_CLICK',
-      },
-    };
+    if (!readOnly && !widget.readOnly) {
+      const variables: GQLClickListItemMutationVariables = {
+        input: {
+          id: crypto.randomUUID(),
+          editingContextId,
+          representationId: formId,
+          listId: widget.id,
+          listItemId: item.id,
+          clickEventKind: 'SINGLE_CLICK',
+        },
+      };
 
-    clickListItem({ variables });
+      clickListItem({ variables });
+    }
   };
   const onDoubleClick = (item: GQLListItem) => {
     const { id, kind } = item;
     setSelection({ entries: [{ id, kind }] });
-    const variables: GQLClickListItemMutationVariables = {
-      input: {
-        id: crypto.randomUUID(),
-        editingContextId,
-        representationId: formId,
-        listId: widget.id,
-        listItemId: item.id,
-        clickEventKind: 'DOUBLE_CLICK',
-      },
-    };
-    clickListItem({ variables });
+    if (!readOnly && !widget.readOnly) {
+      const variables: GQLClickListItemMutationVariables = {
+        input: {
+          id: crypto.randomUUID(),
+          editingContextId,
+          representationId: formId,
+          listId: widget.id,
+          listItemId: item.id,
+          clickEventKind: 'DOUBLE_CLICK',
+        },
+      };
+      clickListItem({ variables });
+    }
   };
 
   const clickHandler = useClickHandler<GQLListItem>(onSimpleClick, onDoubleClick);
@@ -242,8 +246,8 @@ export const ListPropertySection: PropertySectionComponent<GQLList> = ({
       <>
         <IconOverlay iconURL={item.iconURL} alt={item.label} customIconStyle={{ marginRight: theme.spacing(2) }} />
         <Typography
-          className={`${readOnly || widget.readOnly ? '' : classes.canBeSelectedItem} ${classes.style}`}
-          onClick={() => (readOnly || widget.readOnly ? {} : clickHandler(item))}
+          className={`${classes.canBeSelectedItem} ${classes.style}`}
+          onClick={() => clickHandler(item)}
           color="textPrimary"
           data-testid={`representation-${item.label}`}>
           {item.label}
