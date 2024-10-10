@@ -1,0 +1,79 @@
+= ADR-160 - Add the ability to select newly created diagram elements
+
+See https://github.com/eclipse-sirius/sirius-web/issues/3980
+
+== Context
+
+When a user invokes a tool on a diagram the current selection does not change.
+This is confusing users, in particular for tools whose purpose is to create new elements that appear on the diagram.
+In this case, users expect the newly created element(s) to be selected after the tool execution.
+
+Given the openness of Sirius tools' behavior, it should also be possible for studio makers to configure tools to select _arbitrary elements_ (not necessarily the newly created one, or not all of them) on the diagram if required.
+
+Instead of semantic element(s), the "element" to select could be select could also be another representation.
+In this case the effect would be to open/navigate to the corresponding representation.
+
+== Decision
+
+=== Backend
+
+From the backend, we will leverage the existing mechanism:
+
+* on success, tools (specifically, `ITool.getHandler()`) return a `Success` value which can indicate in its `success.getParameters().get(Success.NEW_SELECTION)` the new `WorkbenchSelection` requested.
+* this is transmitted to the frontend as `InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload.newSelection` and `InvokeSingleClickOnDiagramElementToolSuccessPayload.newSelection`.
+
+We will add a new optional attribute to diagram tools: `selectedElementsExpression: IntepretedExpression`.
+It will be added at least to `NodeTool` (`SingleClickOnDiagramElementTool`) and `EdgeTool` (`SingleClickOnTwoDiagramElementsTool`).
+If time permits, the attribute will be added directly to the `Tool` type so that it is available in all tools can have arbitrary effects on the semantic model.
+
+In the API, `ITool` will not change.
+Programatically defined tools will need to supply the value of `NEW_SELECTION` themselves in their handler.
+
+For tools defined using the View DSL, `ToolConverter` and the related classes (e.g. `DiagramOperationInterpreter`) will be updated.
+
+If the tool does not define an explicit `selectedElementsExpression`, the tool's interpreter will automatically collect/detect new semantic elements created during the execution of the tool.
+These will be set as the `NEW_SELECTION` parameter of the `IResult` on success.
+There might be some limitations on which new semantic elements can be automatically detected this way depending on how the instances are create (e.g. using an explicit _Create Instance_ operation, the `CanonicalServices.createSemanticInstance()` method, or some opaque and indirect Java service).
+
+If the tool does define an explicit `selectedElementsExpression`, then the automatic detection will still be performed, but only serve as an additional input to the evaluation of the expression.
+In this case, on tool succes the `selectedElementsExpression` will be evaluated in the same context (_VariableManager_) as was used for executing the tool's handler, but:
+
+* with an additional variable `newSelection` containing the list of newly created semantic elements detected by the automatic/default mechanism.
+* of course, on the state of the semantic model _after_ the tool has been executed.
+
+The result of the expression evaluation should be a list of semantic elements (a single element will be interpreted as a singleton list) to be used instead of the default as the `NEW_SELECTION` parameter for the resulting `Success`.
+An empty `selectedElementsExpression` will have the same effect as one which says `aql:newSelection` as it returns the default.
+
+NOTE: Technically the `NEW_SELECTION` parameter of the `Success` is a `WorkbenchSelection` made of a list of `WorkbenchSelectionEntry`s, but the conversion will be made automatically and the `selectedElementsExpression` can return plain semantic elements.
+
+=== Frontend
+
+On the frontend, when a supported tool is executed, the resulting success payload already returns the `newSelection` (it's just always empty at the moment).
+If a non-empty `newSelection` is received, we will "simply" use that to set the workench's selection (`setSelection`) so that the requested semantic elements are selected in the whole workbench (_Explorer_, _Details_ view, and of course the diagram).
+
+One difficulty is that at the time the frontend receives the payload from the tool's successful execution, the current version of the diagram it (the frontend) knows about may not yet have any corresponding diagram element to select.
+This is the case for example if the tool's payload is received before the corresponding `diagramRefreshedEventPayload` and the requested selection is a newly created semantic element which by definition could not have a matching diagram element in the previous state of the diagram.
+
+The diagram renderer will need to be updated to consider the `newSelection` requested by a tool execution to compute the `selected` state of diagram elements when it receives the `diagramRefreshedEventPayload` corresponding to that tool's execution.
+
+=== Breadboarding
+
+No particular UI except for a new _Elements to select expression_ field in the _Details_ view for diagram tool descriptions.
+
+=== Cutting backs
+
+* Support for the "selected element" to be a representation instead of an actual semantic element, in which case the effect of the tool will be to navigate to the representation in question.
+This will only be possible with explicitly defined `selectedElementsExpression`, in which case it should return a single `RepresentationMetadata` object.
+* Extend the support for `newSelection` to other diagram tools which perform semantic changes like `editLabel`, `deleteFromDiagram`, `dropOnDiagramDropOnDiagramPayload`, and `dropNode`.
+
+=== Rabbit holes
+
+* We will not be able to automatically detect newly created elements when they are created through opaque Java services.
+Unless support undo/redo (issue #1078) introduces the required EMF-level mecahnisms to reliably detect all newly created elements during the execution of a tool, in which case we will leverage that information.
+* On the backend, it may be needed to refactor the `DiagramOperationInterpreter` and related classes (`DiagramOperationInterpreter`, `DiagramOperationInterpreterViewSwitch`, `OperationInterpreterViewSwitch` etc.) to implement the required status tracking cleanly.
+* On the frontend, the mechanisms used to synchronize the diagram's selection (diagram elements) with the workbench selection (semantic elements) may also need to evolve significantly.
+* We will only support *daigrams* at the moment, even though the general idea could be generalized to other representation kinds later on.
+
+== Status
+
+Draft
