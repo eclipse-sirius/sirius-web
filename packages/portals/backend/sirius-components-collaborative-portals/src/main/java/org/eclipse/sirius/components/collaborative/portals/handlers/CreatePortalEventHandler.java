@@ -17,6 +17,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationMetadataPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
@@ -49,6 +50,8 @@ import reactor.core.publisher.Sinks.One;
 public class CreatePortalEventHandler implements IEditingContextEventHandler {
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
+    private final IRepresentationMetadataPersistenceService representationMetadataPersistenceService;
+
     private final IRepresentationPersistenceService representationPersistenceService;
 
     private final IObjectService objectService;
@@ -57,9 +60,10 @@ public class CreatePortalEventHandler implements IEditingContextEventHandler {
 
     private final Counter counter;
 
-    public CreatePortalEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationPersistenceService representationPersistenceService,
+    public CreatePortalEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationMetadataPersistenceService representationMetadataPersistenceService, IRepresentationPersistenceService representationPersistenceService,
             IObjectService objectService, ICollaborativePortalMessageService messageService, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+        this.representationMetadataPersistenceService = Objects.requireNonNull(representationMetadataPersistenceService);
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
         this.objectService = Objects.requireNonNull(objectService);
         this.messageService = Objects.requireNonNull(messageService);
@@ -96,11 +100,13 @@ public class CreatePortalEventHandler implements IEditingContextEventHandler {
                     VariableManager variableManager = new VariableManager();
                     variableManager.put(VariableManager.SELF, object);
                     variableManager.put("name", createRepresentationInput.representationName());
+                    String label = portalDescription.getLabelProvider().apply(variableManager);
 
                     Portal portal = new PortalRenderer(variableManager, portalDescription).render();
+                    var representationMetadata = new RepresentationMetadata(portal.getId(), portal.getKind(), label, portal.getDescriptionId());
+                    this.representationMetadataPersistenceService.save(createRepresentationInput, editingContext, representationMetadata, portal.getTargetObjectId());
                     this.representationPersistenceService.save(createRepresentationInput, editingContext, portal);
 
-                    var representationMetadata = new RepresentationMetadata(portal.getId(), portal.getKind(), portal.getLabel(), portal.getDescriptionId());
                     payload = new CreateRepresentationSuccessPayload(input.id(), representationMetadata);
                     changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_CREATION, editingContext.getId(), input);
                 }

@@ -38,8 +38,6 @@ public final class Diagram implements IRepresentation {
 
     private String descriptionId;
 
-    private String label;
-
     private List<Node> nodes;
 
     private List<Edge> edges;
@@ -70,11 +68,6 @@ public final class Diagram implements IRepresentation {
         return this.descriptionId;
     }
 
-    @Override
-    public String getLabel() {
-        return this.label;
-    }
-
     public List<Node> getNodes() {
         return this.nodes;
     }
@@ -97,8 +90,8 @@ public final class Diagram implements IRepresentation {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, targetObjectId: {2}, descriptionId: {3}, label: {4}, nodeCount: {5}, edgeCount: {6}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.targetObjectId, this.descriptionId, this.label, this.nodes.size(), this.edges.size());
+        String pattern = "{0} '{'id: {1}, targetObjectId: {2}, descriptionId: {3}, nodeCount: {4}, edgeCount: {5}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.targetObjectId, this.descriptionId, this.nodes.size(), this.edges.size());
     }
 
     /**
@@ -116,8 +109,6 @@ public final class Diagram implements IRepresentation {
 
         private String descriptionId;
 
-        private String label;
-
         private List<Node> nodes;
 
         private List<Edge> edges;
@@ -132,7 +123,6 @@ public final class Diagram implements IRepresentation {
             this.id = diagram.getId();
             this.targetObjectId = diagram.getTargetObjectId();
             this.descriptionId = diagram.getDescriptionId();
-            this.label = diagram.getLabel();
             this.nodes = diagram.getNodes();
             this.edges = diagram.getEdges();
             this.layoutData = diagram.getLayoutData();
@@ -145,11 +135,6 @@ public final class Diagram implements IRepresentation {
 
         public Builder descriptionId(String descriptionId) {
             this.descriptionId = Objects.requireNonNull(descriptionId);
-            return this;
-        }
-
-        public Builder label(String label) {
-            this.label = Objects.requireNonNull(label);
             return this;
         }
 
@@ -174,7 +159,6 @@ public final class Diagram implements IRepresentation {
             diagram.kind = Objects.requireNonNull(this.kind);
             diagram.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             diagram.descriptionId = Objects.requireNonNull(this.descriptionId);
-            diagram.label = Objects.requireNonNull(this.label);
             diagram.nodes = Objects.requireNonNull(this.nodes);
             diagram.edges = Objects.requireNonNull(this.edges);
             diagram.layoutData = Objects.requireNonNull(this.layoutData);

@@ -48,8 +48,4 @@ public class DiagramAssert extends AbstractObjectAssert<DiagramAssert, Diagram> 
         return this;
     }
 
-    public DiagramAssert hasLabel(String label) {
-        assertThat(this.actual.getLabel()).isEqualTo(label);
-        return this;
-    }
 }

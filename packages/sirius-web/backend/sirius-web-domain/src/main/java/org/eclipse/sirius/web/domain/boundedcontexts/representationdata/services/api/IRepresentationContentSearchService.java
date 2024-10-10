@@ -28,4 +28,6 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 public interface IRepresentationContentSearchService {
 
     Optional<RepresentationContent> findContentByRepresentationMetadata(AggregateReference<RepresentationMetadata, UUID> representationMetadata);
+
+    boolean contentExistsByRepresentationMetadata(AggregateReference<RepresentationMetadata, UUID> representationMetadata);
 }

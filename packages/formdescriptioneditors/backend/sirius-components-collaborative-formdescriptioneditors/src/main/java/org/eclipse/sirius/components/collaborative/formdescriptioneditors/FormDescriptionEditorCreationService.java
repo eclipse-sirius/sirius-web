@@ -75,17 +75,12 @@ public class FormDescriptionEditorCreationService implements IFormDescriptionEdi
     }
 
     @Override
-    public FormDescriptionEditor create(ICause cause, String label, Object targetObject, FormDescriptionEditorDescription formDescriptionEditorDescription, IEditingContext editingContext) {
-        FormDescriptionEditor newFormDescriptionEditor = FormDescriptionEditor.newFormDescriptionEditor(UUID.randomUUID().toString())
-                .label(label)
+    public FormDescriptionEditor create(ICause cause, Object targetObject, FormDescriptionEditorDescription formDescriptionEditorDescription, IEditingContext editingContext) {
+        return FormDescriptionEditor.newFormDescriptionEditor(UUID.randomUUID().toString())
                 .targetObjectId(this.objectService.getId(targetObject))
                 .descriptionId(formDescriptionEditorDescription.getId())
                 .pages(List.of()) // We don't store form description editor pages, it will be re-render by the FormDescriptionEditorProcessor.
                 .build();
-
-        this.representationPersistenceService.save(cause, editingContext, newFormDescriptionEditor);
-
-        return newFormDescriptionEditor;
     }
 
     @Override
@@ -99,20 +94,19 @@ public class FormDescriptionEditorCreationService implements IFormDescriptionEdi
         if (optionalObject.isPresent() && optionalFormDescriptionEditorDescription.isPresent()) {
             Object object = optionalObject.get();
             FormDescriptionEditorDescription formDescriptionEditorDescription = optionalFormDescriptionEditorDescription.get();
-            return this.doRender(previousFormDescriptionEditor.getLabel(), object, editingContext, formDescriptionEditorDescription,
+            return this.doRender(object, editingContext, formDescriptionEditorDescription,
                     Optional.of(formDescriptionEditorContext));
         }
 
         return null;
     }
 
-    private FormDescriptionEditor doRender(String label, Object targetObject, IEditingContext editingContext, FormDescriptionEditorDescription formDescriptionEditorDescription,
+    private FormDescriptionEditor doRender(Object targetObject, IEditingContext editingContext, FormDescriptionEditorDescription formDescriptionEditorDescription,
             Optional<IFormDescriptionEditorContext> optionalFormDescriptionEditorContext) {
         long start = System.currentTimeMillis();
 
         VariableManager variableManager = new VariableManager();
         variableManager.put(VariableManager.SELF, targetObject);
-        variableManager.put(FormDescriptionEditor.LABEL, label);
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
         variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
 

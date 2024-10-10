@@ -30,13 +30,9 @@ public final class FormDescriptionEditor implements IRepresentation {
 
     public static final String KIND = IRepresentation.KIND_PREFIX + "?type=FormDescriptionEditor";
 
-    public static final String LABEL = "label";
-
     private String id;
 
     private String kind;
-
-    private String label;
 
     private String targetObjectId;
 
@@ -56,11 +52,6 @@ public final class FormDescriptionEditor implements IRepresentation {
     @Override
     public String getKind() {
         return this.kind;
-    }
-
-    @Override
-    public String getLabel() {
-        return this.label;
     }
 
     @Override
@@ -87,8 +78,8 @@ public final class FormDescriptionEditor implements IRepresentation {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, targetObjectId: {3}, descriptionId: {4}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.targetObjectId, this.descriptionId);
+        String pattern = "{0} '{'id: {1}, targetObjectId: {2}, descriptionId: {3}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.targetObjectId, this.descriptionId);
     }
 
     /**
@@ -103,8 +94,6 @@ public final class FormDescriptionEditor implements IRepresentation {
 
         private String kind = KIND;
 
-        private String label;
-
         private String targetObjectId;
 
         private String descriptionId;
@@ -117,15 +106,9 @@ public final class FormDescriptionEditor implements IRepresentation {
 
         public Builder(FormDescriptionEditor formDescriptionEditor) {
             this.id = formDescriptionEditor.id;
-            this.label = formDescriptionEditor.label;
             this.targetObjectId = formDescriptionEditor.targetObjectId;
             this.descriptionId = formDescriptionEditor.descriptionId;
             this.pages = formDescriptionEditor.pages;
-        }
-
-        public Builder label(String label) {
-            this.label = Objects.requireNonNull(label);
-            return this;
         }
 
         public Builder targetObjectId(String targetObjectId) {
@@ -147,7 +130,6 @@ public final class FormDescriptionEditor implements IRepresentation {
             FormDescriptionEditor formDescriptionEditor = new FormDescriptionEditor();
             formDescriptionEditor.id = Objects.requireNonNull(this.id);
             formDescriptionEditor.kind = Objects.requireNonNull(this.kind);
-            formDescriptionEditor.label = Objects.requireNonNull(this.label);
             formDescriptionEditor.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             formDescriptionEditor.descriptionId = Objects.requireNonNull(this.descriptionId);
             formDescriptionEditor.pages = Objects.requireNonNull(this.pages);

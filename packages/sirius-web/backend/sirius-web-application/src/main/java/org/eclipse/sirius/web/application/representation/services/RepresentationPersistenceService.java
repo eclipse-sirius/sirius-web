@@ -28,10 +28,9 @@ import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationContent;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentCreationService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentUpdateService;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataCreationService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +50,7 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
 
     private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
-    private final IRepresentationMetadataCreationService representationMetadataCreationService;
+    private final IRepresentationContentSearchService representationContentSearchService;
 
     private final IRepresentationContentCreationService representationContentCreationService;
 
@@ -63,10 +62,9 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
 
     private final List<IRepresentationMigrationParticipant> migrationParticipants;
 
-    public RepresentationPersistenceService(IRepresentationMetadataSearchService representationMetadataSearchService, IRepresentationMetadataCreationService representationMetadataCreationService,
-            IRepresentationContentCreationService representationContentCreationService, IRepresentationContentUpdateService representationContentUpdateService, ObjectMapper objectMapper, List<IRepresentationMigrationParticipant> migrationParticipants) {
+    public RepresentationPersistenceService(IRepresentationMetadataSearchService representationMetadataSearchService, IRepresentationContentSearchService representationContentSearchService, IRepresentationContentCreationService representationContentCreationService, IRepresentationContentUpdateService representationContentUpdateService, ObjectMapper objectMapper, List<IRepresentationMigrationParticipant> migrationParticipants) {
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
-        this.representationMetadataCreationService = Objects.requireNonNull(representationMetadataCreationService);
+        this.representationContentSearchService = Objects.requireNonNull(representationContentSearchService);
         this.representationContentCreationService = Objects.requireNonNull(representationContentCreationService);
         this.representationContentUpdateService = Objects.requireNonNull(representationContentUpdateService);
         this.objectMapper = Objects.requireNonNull(objectMapper);
@@ -76,29 +74,19 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
     @Override
     @Transactional
     public void save(ICause cause, IEditingContext editingContext, IRepresentation representation) {
-        var optionalProjectId = new UUIDParser().parse(editingContext.getId());
         var optionalRepresentationId = new UUIDParser().parse(representation.getId());
-        if (optionalProjectId.isPresent() && optionalRepresentationId.isPresent()) {
-            var projectId = optionalProjectId.get();
+        if (optionalRepresentationId.isPresent()) {
             var representationId = optionalRepresentationId.get();
 
             String content = this.toString(representation);
 
-            var exists = this.representationMetadataSearchService.existsById(representationId);
+            var exists = this.representationContentSearchService.contentExistsByRepresentationMetadata(AggregateReference.to(representationId));
 
             if (exists) {
                 var migrationData = this.getLastMigrationData(representation.getKind());
                 this.representationContentUpdateService.updateContentByRepresentationIdWithMigrationData(cause, representationId, content, migrationData.lastMigrationPerformed(), migrationData.migrationVersion());
             } else {
                 var migrationData = this.getInitialMigrationData(representation.getKind());
-                var representationMetadata = RepresentationMetadata.newRepresentationMetadata(representationId)
-                        .project(AggregateReference.to(projectId))
-                        .label(representation.getLabel())
-                        .kind(representation.getKind())
-                        .descriptionId(representation.getDescriptionId())
-                        .targetObjectId(representation.getTargetObjectId())
-                        .build(cause);
-
                 var representationContent = RepresentationContent.newRepresentationContent(UUID.randomUUID())
                         .representationMetadata(AggregateReference.to(representationId))
                         .content(content)
@@ -106,7 +94,6 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
                         .migrationVersion(migrationData.migrationVersion())
                         .build(cause);
 
-                this.representationMetadataCreationService.create(representationMetadata);
                 this.representationContentCreationService.create(representationContent);
             }
         }

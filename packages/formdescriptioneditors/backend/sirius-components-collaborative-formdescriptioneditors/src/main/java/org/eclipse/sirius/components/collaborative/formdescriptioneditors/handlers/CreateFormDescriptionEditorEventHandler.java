@@ -18,6 +18,8 @@ import java.util.Optional;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationMetadataPersistenceService;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSuccessPayload;
@@ -49,6 +51,10 @@ public class CreateFormDescriptionEditorEventHandler implements IEditingContextE
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
+    private final IRepresentationMetadataPersistenceService representationMetadataPersistenceService;
+
+    private final IRepresentationPersistenceService representationPersistenceService;
+
     private final IObjectService objectService;
 
     private final ICollaborativeFormDescriptionEditorMessageService messageService;
@@ -57,9 +63,12 @@ public class CreateFormDescriptionEditorEventHandler implements IEditingContextE
 
     private final Counter counter;
 
-    public CreateFormDescriptionEditorEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IObjectService objectService,
+    public CreateFormDescriptionEditorEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService,
+            IRepresentationMetadataPersistenceService representationMetadataPersistenceService, IRepresentationPersistenceService representationPersistenceService, IObjectService objectService,
             ICollaborativeFormDescriptionEditorMessageService messageService, IFormDescriptionEditorCreationService formDescriptionEditorCreationService, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+        this.representationMetadataPersistenceService = Objects.requireNonNull(representationMetadataPersistenceService);
+        this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
         this.objectService = Objects.requireNonNull(objectService);
         this.messageService = Objects.requireNonNull(messageService);
         this.formDescriptionEditorCreationService = Objects.requireNonNull(formDescriptionEditorCreationService);
@@ -96,13 +105,18 @@ public class CreateFormDescriptionEditorEventHandler implements IEditingContextE
             Optional<Object> optionalObject = this.objectService.getObject(editingContext, createRepresentationInput.objectId());
 
             if (optionalFormDescriptionEditorDescription.isPresent() && optionalObject.isPresent()) {
-                Object object = optionalObject.get();
                 FormDescriptionEditorDescription representationDescription = optionalFormDescriptionEditorDescription.get();
-                FormDescriptionEditor formDescriptionEditor = this.formDescriptionEditorCreationService.create(createRepresentationInput, createRepresentationInput.representationName(), object, representationDescription,
-                        editingContext);
+                Object object = optionalObject.get();
 
-                var representationMetadata = new RepresentationMetadata(formDescriptionEditor.getId(), formDescriptionEditor.getKind(), formDescriptionEditor.getLabel(),
+                String label = createRepresentationInput.representationName();
+
+                FormDescriptionEditor formDescriptionEditor = this.formDescriptionEditorCreationService.create(createRepresentationInput, object, representationDescription,
+                        editingContext);
+                var representationMetadata = new RepresentationMetadata(formDescriptionEditor.getId(), formDescriptionEditor.getKind(), label,
                         formDescriptionEditor.getDescriptionId());
+                this.representationMetadataPersistenceService.save(createRepresentationInput, editingContext, representationMetadata, formDescriptionEditor.getTargetObjectId());
+                this.representationPersistenceService.save(createRepresentationInput, editingContext, formDescriptionEditor);
+
                 payload = new CreateRepresentationSuccessPayload(input.id(), representationMetadata);
                 changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_CREATION, editingContext.getId(), input);
             }

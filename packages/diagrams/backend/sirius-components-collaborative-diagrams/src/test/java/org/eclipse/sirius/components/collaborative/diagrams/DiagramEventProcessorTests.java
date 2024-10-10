@@ -25,12 +25,15 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.handlers.TestDiagramBuilder;
 import org.eclipse.sirius.components.collaborative.representations.SubscriptionManager;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.InsideLabel;
+import org.eclipse.sirius.components.diagrams.Node;
 import org.junit.jupiter.api.Test;
 
 import reactor.test.StepVerifier;
@@ -46,11 +49,12 @@ public class DiagramEventProcessorTests {
 
     private static final String DIAGRAM_DESCRIPTION_ID = UUID.randomUUID().toString();
 
+    private static final Node INITIAL_TEST_NODE = getInitialTestNode();
+
     private static final Diagram INITIAL_TEST_DIAGRAM = Diagram.newDiagram(DIAGRAM_ID)
             .descriptionId(DIAGRAM_DESCRIPTION_ID)
-            .label(String.valueOf(0))
             .targetObjectId("targetObjectId")
-            .nodes(List.of())
+            .nodes(List.of(INITIAL_TEST_NODE))
             .edges(List.of())
             .build();
 
@@ -63,10 +67,20 @@ public class DiagramEventProcessorTests {
         }
     };
 
+    private static Node getInitialTestNode() {
+        var initNode = new TestDiagramBuilder().getNode(UUID.randomUUID().toString(), true);
+        var insideLabel = InsideLabel.newInsideLabel(initNode.getInsideLabel())
+                .text(String.valueOf(0))
+                .build();
+        return Node.newNode(initNode)
+                .insideLabel(insideLabel)
+                .build();
+    }
+
     private Predicate<IPayload> getRefreshDiagramEventPayloadPredicate(int count) {
         return representationEventPayload -> {
             if (representationEventPayload instanceof DiagramRefreshedEventPayload payload) {
-                return payload.diagram() != null && payload.diagram().getLabel().equals(String.valueOf(count));
+                return payload.diagram() != null && payload.diagram().getNodes().get(0).getInsideLabel().getText().equals(String.valueOf(count));
             }
             return false;
         };

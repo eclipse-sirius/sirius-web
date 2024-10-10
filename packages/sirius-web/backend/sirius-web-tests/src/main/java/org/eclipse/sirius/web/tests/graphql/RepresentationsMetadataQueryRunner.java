@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.graphql.tests;
+package org.eclipse.sirius.web.tests.graphql;
 
 import java.util.Map;
 import java.util.Objects;
@@ -20,21 +20,25 @@ import org.eclipse.sirius.components.graphql.tests.api.IQueryRunner;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to get the representation metadata with the GraphQL API.
+ * Used to get the many representation metadata with the GraphQL API.
  *
  * @author gdaniel
  */
 @Service
-public class RepresentationMetadataQueryRunner implements IQueryRunner {
+public class RepresentationsMetadataQueryRunner implements IQueryRunner {
 
-    private static final String REPRESENTATION_METADATA_QUERY = """
-            query getRepresentationMetadata($editingContextId: ID!, $representationId: ID!) {
+    private static final String REPRESENTATIONS_METADATA_QUERY = """
+            query getRepresentationMetadata($editingContextId: ID!, $representationIds: [ID!]) {
               viewer {
                 editingContext(editingContextId: $editingContextId) {
-                  representation(representationId: $representationId) {
-                    id
-                    kind
-                    label
+                  representations(representationIds: $representationIds) {
+                    edges {
+                      node {
+                        id
+                        label
+                        kind
+                      }
+                    }
                   }
                 }
               }
@@ -43,13 +47,13 @@ public class RepresentationMetadataQueryRunner implements IQueryRunner {
 
     private final IGraphQLRequestor graphQLRequestor;
 
-    public RepresentationMetadataQueryRunner(IGraphQLRequestor graphQLRequestor) {
+    public RepresentationsMetadataQueryRunner(IGraphQLRequestor graphQLRequestor) {
         this.graphQLRequestor = Objects.requireNonNull(graphQLRequestor);
     }
 
     @Override
     public String run(Map<String, Object> variables) {
-        return this.graphQLRequestor.execute(REPRESENTATION_METADATA_QUERY, variables);
+        return this.graphQLRequestor.execute(REPRESENTATIONS_METADATA_QUERY, variables);
     }
 
 }

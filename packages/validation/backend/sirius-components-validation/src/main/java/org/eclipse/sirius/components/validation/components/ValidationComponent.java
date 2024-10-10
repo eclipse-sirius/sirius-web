@@ -43,7 +43,6 @@ public class ValidationComponent implements IComponent {
         Optional<Validation> optionalPreviousValidation = this.props.getPreviousValidation();
 
         String id = optionalPreviousValidation.map(Validation::getId).orElseGet(() -> Validation.PREFIX);
-        String label = validationDescription.getLabel();
         String targetObjectId = validationDescription.getTargetObjectIdProvider().apply(variableManager);
 
         List<?> diagnostics = validationDescription.getDiagnosticsProvider().apply(variableManager);
@@ -53,14 +52,11 @@ public class ValidationComponent implements IComponent {
             children.add(new Element(DiagnosticComponent.class, diagnosticComponentProps));
         }
 
-        // @formatter:off
         ValidationElementProps validationElementProps = ValidationElementProps.newValidationElementProps(id)
-                .label(label)
                 .descriptionId(validationDescription.getId())
                 .targetObjectId(targetObjectId)
                 .children(children)
                 .build();
-        // @formatter:on
 
         return new Element(ValidationElementProps.TYPE, validationElementProps);
     }

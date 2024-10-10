@@ -20,6 +20,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationMetadataPersistenceService;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSuccessPayload;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.TestFormDescriptionEditorBuilder;
@@ -51,13 +53,11 @@ public class CreateFormDescriptionEditorEventHandlerTests {
         IRepresentationDescriptionSearchService representationDescriptionSearchService = new IRepresentationDescriptionSearchService.NoOp() {
             @Override
             public Optional<IRepresentationDescription> findById(IEditingContext editingContext, String id) {
-                // @formatter:off
                 FormDescriptionEditorDescription formDescriptionEditorDescription = FormDescriptionEditorDescription.newFormDescriptionEditorDescription(UUID.randomUUID().toString())
                         .label("label")
                         .canCreatePredicate(variableManager -> Boolean.TRUE)
                         .targetObjectIdProvider(variableManager -> "targetObjectId")
                         .build();
-                // @formatter:on
 
                 return Optional.of(formDescriptionEditorDescription);
             }
@@ -66,7 +66,7 @@ public class CreateFormDescriptionEditorEventHandlerTests {
         AtomicBoolean hasBeenCalled = new AtomicBoolean();
         IFormDescriptionEditorCreationService formDescriptionEditorCreationService = new IFormDescriptionEditorCreationService.NoOp() {
             @Override
-            public FormDescriptionEditor create(ICause cause, String label, Object targetObject, FormDescriptionEditorDescription formDescriptionEditorDescription, IEditingContext editingContext) {
+            public FormDescriptionEditor create(ICause cause, Object targetObject, FormDescriptionEditorDescription formDescriptionEditorDescription, IEditingContext editingContext) {
                 hasBeenCalled.set(true);
                 return new TestFormDescriptionEditorBuilder().getFormDescriptionEditor(UUID.randomUUID().toString());
             }
@@ -80,7 +80,7 @@ public class CreateFormDescriptionEditorEventHandlerTests {
             }
         };
 
-        CreateFormDescriptionEditorEventHandler handler = new CreateFormDescriptionEditorEventHandler(representationDescriptionSearchService, objectService,
+        CreateFormDescriptionEditorEventHandler handler = new CreateFormDescriptionEditorEventHandler(representationDescriptionSearchService, new IRepresentationMetadataPersistenceService.NoOp(), new IRepresentationPersistenceService.NoOp(), objectService,
                 new ICollaborativeFormDescriptionEditorMessageService.NoOp(), formDescriptionEditorCreationService, new SimpleMeterRegistry());
 
         var input = new CreateRepresentationInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID().toString(), "objectId", "representationName");

@@ -24,6 +24,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.collaborative.api.IRepresentationMetadataPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
@@ -35,6 +36,7 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateInitializer;
 import org.springframework.stereotype.Service;
 
@@ -52,13 +54,17 @@ public class FlowProjectTemplatesInitializer implements IProjectTemplateInitiali
 
     private final IDiagramCreationService diagramCreationService;
 
+    private final IRepresentationMetadataPersistenceService representationMetadataPersistenceService;
+
     private final IRepresentationPersistenceService representationPersistenceService;
 
     public FlowProjectTemplatesInitializer(IRepresentationDescriptionSearchService representationDescriptionSearchService,
-            IDiagramCreationService diagramCreationService, IRepresentationPersistenceService representationPersistenceService, MeterRegistry meterRegistry) {
+            IDiagramCreationService diagramCreationService, IRepresentationPersistenceService representationPersistenceService, MeterRegistry meterRegistry,
+            IRepresentationMetadataPersistenceService representationMetadataPersistenceService) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.diagramCreationService = Objects.requireNonNull(diagramCreationService);
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
+        this.representationMetadataPersistenceService = Objects.requireNonNull(representationMetadataPersistenceService);
     }
 
     @Override
@@ -90,10 +96,17 @@ public class FlowProjectTemplatesInitializer implements IProjectTemplateInitiali
                 DiagramDescription topographyDiagram = optionalTopographyDiagram.get();
                 Object semanticTarget = resource.getContents().get(0);
 
-                Diagram diagram = this.diagramCreationService.create(topographyDiagram.getLabel(), semanticTarget, topographyDiagram, editingContext);
+                var variableManager = new VariableManager();
+                variableManager.put(VariableManager.SELF, semanticTarget);
+                variableManager.put(DiagramDescription.LABEL, topographyDiagram.getLabel());
+                String label = topographyDiagram.getLabelProvider().apply(variableManager);
+
+                Diagram diagram = this.diagramCreationService.create(semanticTarget, topographyDiagram, editingContext);
+                var representationMetadata = new RepresentationMetadata(diagram.getId(), diagram.getKind(), label, diagram.getDescriptionId());
+                this.representationMetadataPersistenceService.save(cause, editingContext, representationMetadata, diagram.getTargetObjectId());
                 this.representationPersistenceService.save(cause, editingContext, diagram);
 
-                result = Optional.of(new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId()));
+                result = Optional.of(representationMetadata);
             }
         }
         return result;

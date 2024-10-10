@@ -26,6 +26,7 @@ import java.util.function.Consumer;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditTextfieldInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
+import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.forms.tests.graphql.EditTextfieldMutationRunner;
@@ -161,10 +162,19 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
                             .isReadOnly();
                 }, () -> fail("Missing form"));
 
+        Runnable tryEditReadOnlyTextField = () -> {
+            var input = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), formId.get(), textfieldId.get(), "buck");
+            var result = this.editTextfieldMutationRunner.run(input);
+
+            String typename = JsonPath.read(result, "$.data.editTextfield.__typename");
+            assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
+        };
+
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)
                 .then(editTextfield)
                 .consumeNextWith(updatedFormContentConsumer)
+                .then(tryEditReadOnlyTextField)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

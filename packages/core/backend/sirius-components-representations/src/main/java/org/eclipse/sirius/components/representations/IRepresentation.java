@@ -24,8 +24,6 @@ public interface IRepresentation {
 
     String getDescriptionId();
 
-    String getLabel();
-
     String getKind();
 
     String getTargetObjectId();
@@ -43,11 +41,6 @@ public interface IRepresentation {
 
         @Override
         public String getDescriptionId() {
-            return "";
-        }
-
-        @Override
-        public String getLabel() {
             return "";
         }
 
