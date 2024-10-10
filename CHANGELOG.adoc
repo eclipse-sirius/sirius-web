@@ -8,6 +8,7 @@
 - Automatically select newly created nodes on diagrams
 - Add undo/redo support
 - Add support for drag and drop in the explorer
+- Improve form property section layout
 
 
 === Architectural decision records
