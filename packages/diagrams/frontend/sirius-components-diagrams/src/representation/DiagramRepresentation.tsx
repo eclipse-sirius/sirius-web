@@ -11,20 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { gql, OnDataOptions, useQuery, useSubscription } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import { RepresentationComponentProps, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { ReactFlowProvider } from '@xyflow/react';
 import { memo, useEffect, useState } from 'react';
-import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramDescriptionContext } from '../contexts/DiagramDescriptionContext';
-import { DialogContextProvider } from '../dialog/DialogContext';
-import { diagramEventSubscription } from '../graphql/subscription/diagramEventSubscription';
-import {
-  GQLDiagramEventPayload,
-  GQLDiagramRefreshedEventPayload,
-} from '../graphql/subscription/diagramEventSubscription.types';
 import { ConnectorContextProvider } from '../renderer/connector/ConnectorContext';
-import { DiagramRenderer } from '../renderer/DiagramRenderer';
 import { DiagramDirectEditContextProvider } from '../renderer/direct-edit/DiagramDirectEditContext';
 import { DropNodeContextProvider } from '../renderer/dropNode/DropNodeContext';
 import { MarkerDefinitions } from '../renderer/edge/MarkerDefinitions';
@@ -37,12 +29,8 @@ import {
   GQLDiagramDescription,
   GQLDiagramDescriptionData,
   GQLDiagramDescriptionVariables,
-  GQLDiagramEventData,
-  GQLDiagramEventVariables,
 } from './DiagramRepresentation.types';
-import { StoreContextProvider } from './StoreContext';
-
-const subscription = gql(diagramEventSubscription);
+import { DiagramSubscriptionProvider } from './DiagramSubscriptionProvider';
 
 export const getDiagramDescription = gql`
   query getDiagramDescription($editingContextId: ID!, $representationId: ID!) {
@@ -75,37 +63,13 @@ export const getDiagramDescription = gql`
   }
 `;
 
-const isDiagramRefreshedEventPayload = (payload: GQLDiagramEventPayload): payload is GQLDiagramRefreshedEventPayload =>
-  payload.__typename === 'DiagramRefreshedEventPayload';
-
 export const DiagramRepresentation = memo(
   ({ editingContextId, representationId, readOnly }: RepresentationComponentProps) => {
     const [state, setState] = useState<DiagramRepresentationState>({
       id: crypto.randomUUID(),
-      diagramRefreshedEventPayload: null,
-      payload: null,
-      complete: false,
       message: null,
     });
     const { addErrorMessage } = useMultiToast();
-
-    const variables: GQLDiagramEventVariables = {
-      input: {
-        id: state.id,
-        editingContextId,
-        diagramId: representationId,
-      },
-    };
-
-    const onData = ({ data }: OnDataOptions<GQLDiagramEventData>) => {
-      if (data.data) {
-        const { diagramEvent } = data.data;
-        if (isDiagramRefreshedEventPayload(diagramEvent)) {
-          setState((prevState) => ({ ...prevState, diagramRefreshedEventPayload: diagramEvent }));
-        }
-        setState((prevState) => ({ ...prevState, payload: diagramEvent }));
-      }
-    };
 
     const {
       loading: diagramDescriptionLoading,
@@ -116,7 +80,6 @@ export const DiagramRepresentation = memo(
         editingContextId,
         representationId,
       },
-      skip: state.diagramRefreshedEventPayload === null,
     });
 
     useEffect(() => {
@@ -132,74 +95,40 @@ export const DiagramRepresentation = memo(
       }
     }, [diagramDescriptionLoading, diagramDescriptionData, diagramDescriptionError]);
 
-    const onComplete = () => {
-      setState((prevState) => ({ ...prevState, diagramRefreshedEventPayload: null, complete: true }));
-    };
-
-    const { error } = useSubscription<GQLDiagramEventData>(subscription, {
-      variables,
-      fetchPolicy: 'no-cache',
-      onData,
-      onComplete,
-    });
-
     const diagramDescription: GQLDiagramDescription | undefined =
       diagramDescriptionData?.viewer.editingContext.representation.description;
 
     if (state.message) {
       return <div>{state.message}</div>;
     }
-    if (error) {
-      return <div>{error.message}</div>;
-    }
-    if (state.complete) {
-      return <div>The representation is not available anymore</div>;
-    }
-    if (!state.diagramRefreshedEventPayload || !diagramDescription) {
+
+    if (!diagramDescription) {
       return <div></div>;
     }
 
     return (
       <ReactFlowProvider>
-        <DiagramContext.Provider
-          value={{
-            editingContextId,
-            diagramId: representationId,
-            refreshEventPayloadId: state.diagramRefreshedEventPayload.id,
-            payload: state.payload,
-            readOnly,
-          }}>
-          <DiagramDescriptionContext.Provider value={{ diagramDescription }}>
-            <StoreContextProvider>
-              <DiagramDirectEditContextProvider>
-                <DiagramPaletteContextProvider>
-                  <DiagramElementPaletteContextProvider>
-                    <ConnectorContextProvider>
-                      <DropNodeContextProvider>
-                        <NodeContextProvider>
-                          <div
-                            style={{ display: 'inline-block', position: 'relative' }}
-                            data-representation-kind="diagram"
-                            data-representation-label={state.diagramRefreshedEventPayload.diagram.metadata.label}>
-                            <MarkerDefinitions />
-                            <FullscreenContextProvider>
-                              <DialogContextProvider>
-                                <DiagramRenderer
-                                  key={state.diagramRefreshedEventPayload.diagram.id}
-                                  diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
-                                />
-                              </DialogContextProvider>
-                            </FullscreenContextProvider>
-                          </div>
-                        </NodeContextProvider>
-                      </DropNodeContextProvider>
-                    </ConnectorContextProvider>
-                  </DiagramElementPaletteContextProvider>
-                </DiagramPaletteContextProvider>
-              </DiagramDirectEditContextProvider>
-            </StoreContextProvider>
-          </DiagramDescriptionContext.Provider>
-        </DiagramContext.Provider>
+        <DiagramDirectEditContextProvider>
+          <DiagramPaletteContextProvider>
+            <DiagramElementPaletteContextProvider>
+              <ConnectorContextProvider>
+                <DropNodeContextProvider>
+                  <NodeContextProvider>
+                    <MarkerDefinitions />
+                    <FullscreenContextProvider>
+                      <DiagramDescriptionContext.Provider value={{ diagramDescription }}>
+                        <DiagramSubscriptionProvider
+                          diagramId={representationId}
+                          editingContextId={editingContextId}
+                          readOnly={readOnly}></DiagramSubscriptionProvider>
+                      </DiagramDescriptionContext.Provider>
+                    </FullscreenContextProvider>
+                  </NodeContextProvider>
+                </DropNodeContextProvider>
+              </ConnectorContextProvider>
+            </DiagramElementPaletteContextProvider>
+          </DiagramPaletteContextProvider>
+        </DiagramDirectEditContextProvider>
       </ReactFlowProvider>
     );
   }

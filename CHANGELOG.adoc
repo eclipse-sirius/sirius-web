@@ -103,7 +103,7 @@ never, always and if_children (to display the separator only if children exist).
 - https://github.com/eclipse-sirius/sirius-web/issues/4064[#4064] [sirius-web] Ensure that project template images fill the whole content part of the card.
 Project template images will now have a predictable size of 150px by 110px.
 This will allow specifier to create images that fir perfectly in the project template card.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3533[#3553] [diagram] Add a dedicated component to handle diagram subscription
 
 == v2024.9.0
 
@@ -389,6 +389,7 @@ We cannot rely on the error message recaived from the backend since Cross Origin
 - https://github.com/eclipse-sirius/sirius-web/issues/3684[#3684] [form, tree] Replace form & tree converters configurations with dedicated extension points
 - https://github.com/eclipse-sirius/sirius-web/issues/3701[#3701] [domain] Add edge and node tools to domain diagram including creation tools as well as delete and direct edit tools.
 - https://github.com/eclipse-sirius/sirius-web/issues/3859[#3859] [view] Allow name duplication in ecore by grouping builders in dedicated packages
+
 
 == v2024.5.0
 
