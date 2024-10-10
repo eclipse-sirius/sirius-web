@@ -1,0 +1,56 @@
+= Add support for form property section layout
+
+== Problem
+
+A property section in a form is made of a label, a help icon and a value area.
+Currently, the layout is always vertical: label and help icon are in div and the value area is below.
+
+== Key Result
+
+It will be possible as a specifier to choose if the layout is horizontal or vertical.
+
+== Solution
+
+The property section contains 
+
+* a "label" div which includes the label and the help icon.
+* a "value"div
+
+The content of the property section is layouted with CSS grid.
+New attributes are added on form widget styles to specify the layout.
+It corresponds to CSS grid options:
+
+ * gridTemplateColumns
+ * gridTemplateRows
+ * justifyContent
+ * alignContent
+ * gap
+
+Example:
+Many property sections are defined with `gridTemplateColumns=""1fr 2fr`.
+That configuration will allow to justify the "label" div of all the property sections.
+
+The form editor should display the property section accordingly to the widget styles`.
+
+The change will be done to the following widgets:
+* text field
+* text area
+* select
+* multi select
+* date
+* perhps more
+
+=== Breadboarding
+
+NA
+
+=== Cutting backs
+
+NA
+
+== Rabbit holes
+
+NA
+
+== No-gos
+
