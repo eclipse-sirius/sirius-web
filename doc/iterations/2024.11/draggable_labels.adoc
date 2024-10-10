@@ -1,0 +1,33 @@
+= (M) Support labels to be freely moved
+
+== Problem
+
+The current system does not allow users to freely move the outside labels of the nodes or the labels of edges.
+This limitation restricts the flexibility and customization of diagrams, making it difficult for users to optimize the layout and improve the readability of their diagrams.
+
+== Key Result
+
+Enable users to move labels freely and persist the changes.
+
+== Solution
+
+* Make the labels freely draggable anywhere on the diagram.
+* Ensure that the changes made to the label's position are persisted and propagated to all users who have the same diagram open.
+* When a node is selected, we will add a specific border around all of its labels to help users easily identify which labels belong to that node.
+
+=== Cutting backs
+
+* Do not allow the resizing of nodes to automatically move their labels.
+* A specifier may not want an outside label to be movable, adding the ability to make it fixable.
+
+== Rabbit holes
+
+* Ensure that the feature also works for labels on edges.
+ This could involve a more complex implementation, but it would greatly enhance the flexibility and customization options for users.
+* The inside labels are not concerned and won't be draggable.
+* The label is freely movable inside the full view port.
+
+== No-gos
+
+* Do not allow the automatic optimization of label placement during an "arrangeAll" function.
+ This could potentially disrupt the user's intended layout and make it difficult for them to place labels in the desired location.
