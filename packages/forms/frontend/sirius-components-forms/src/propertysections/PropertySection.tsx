@@ -264,5 +264,5 @@ export const PropertySection = ({ editingContextId, formId, widget, readOnly }: 
       console.error(`Unsupported widget type ${widget.__typename}`);
     }
   }
-  return propertySection;
+  return <div className="PropertySection">{propertySection}</div>;
 };
