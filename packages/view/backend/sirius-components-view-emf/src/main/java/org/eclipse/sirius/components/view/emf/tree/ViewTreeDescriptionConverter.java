@@ -16,42 +16,27 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.trees.api.IDeleteTreeItemHandler;
 import org.eclipse.sirius.components.collaborative.trees.api.IRenameTreeItemHandler;
-import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
-import org.eclipse.sirius.components.representations.Message;
-import org.eclipse.sirius.components.representations.MessageLevel;
-import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.trees.FetchTreeItemContextMenuEntryKind;
-import org.eclipse.sirius.components.trees.ITreeItemContextMenuEntry;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
-import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
-import org.eclipse.sirius.components.view.emf.OperationInterpreter;
-import org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry;
-import org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry;
-import org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry;
 import org.springframework.stereotype.Service;
 
 /**
@@ -70,16 +55,10 @@ public class ViewTreeDescriptionConverter implements IRepresentationDescriptionC
 
     private final List<IDeleteTreeItemHandler> deleteTreeItemHandlers;
 
-    private final IEditService editService;
-
-    private final IFeedbackMessageService feedbackMessageService;
-
-    public ViewTreeDescriptionConverter(ITreeIdProvider treeIdProvider, List<IDeleteTreeItemHandler> deleteTreeItemHandlers, List<IRenameTreeItemHandler> renameTreeItemHandlers, IEditService editService, IFeedbackMessageService feedbackMessageService) {
+    public ViewTreeDescriptionConverter(ITreeIdProvider treeIdProvider, List<IDeleteTreeItemHandler> deleteTreeItemHandlers, List<IRenameTreeItemHandler> renameTreeItemHandlers) {
         this.treeIdProvider = Objects.requireNonNull(treeIdProvider);
         this.renameTreeItemHandlers = Objects.requireNonNull(renameTreeItemHandlers);
         this.deleteTreeItemHandlers = Objects.requireNonNull(deleteTreeItemHandlers);
-        this.editService = Objects.requireNonNull(editService);
-        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
     }
 
     @Override
@@ -113,7 +92,6 @@ public class ViewTreeDescriptionConverter implements IRepresentationDescriptionC
                 .parentObjectProvider(variableManager -> this.evaluateObject(interpreter, variableManager, viewTreeDescription.getParentExpression()))
                 .deleteHandler(this::getDeleteHandler)
                 .renameHandler(this::getRenameHandler)
-                .contextMenuEntries(this.getContextMenuActions(interpreter, viewTreeDescription))
                 ;
 
         return builder.build();
@@ -191,16 +169,6 @@ public class ViewTreeDescriptionConverter implements IRepresentationDescriptionC
                 .orElse(List.of());
     }
 
-    private IStatus executeOperations(AQLInterpreter interpreter, VariableManager variableManager, List<Operation> operations) {
-        OperationInterpreter operationInterpreter = new OperationInterpreter(interpreter, this.editService);
-        Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, variableManager);
-        if (optionalVariableManager.isEmpty()) {
-            return this.buildFailureWithFeedbackMessages("Something went wrong while handling the context menu action");
-        } else {
-            return this.buildSuccessWithSemanticChangeAndFeedbackMessages();
-        }
-    }
-
     private IStatus getDeleteHandler(VariableManager variableManager) {
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
         var optionalTreeItem = variableManager.get(TreeItem.SELECTED_TREE_ITEM, TreeItem.class);
@@ -253,50 +221,5 @@ public class ViewTreeDescriptionConverter implements IRepresentationDescriptionC
             result = styleConverter.convert(optionalTreeItemLabelDescription.get());
         }
         return result;
-    }
-
-    private java.util.List<ITreeItemContextMenuEntry> getContextMenuActions(AQLInterpreter interpreter, org.eclipse.sirius.components.view.tree.TreeDescription viewTreeDescription) {
-        return viewTreeDescription.getContextMenuEntries().stream()
-                .map(action -> this.convertContextMenuEntry(interpreter, action))
-                .toList();
-    }
-
-    private ITreeItemContextMenuEntry convertContextMenuEntry(AQLInterpreter interpreter, TreeItemContextMenuEntry viewTreeItemContextAction) {
-        ITreeItemContextMenuEntry result = null;
-        if (viewTreeItemContextAction instanceof SingleClickTreeItemContextMenuEntry viewSimpleAction) {
-            result = org.eclipse.sirius.components.trees.SingleClickTreeItemContextMenuEntry.newSingleClickTreeItemContextMenuEntry(UUID.randomUUID().toString())
-                    .label(variableMananger -> this.evaluateString(interpreter, variableMananger, viewSimpleAction.getLabelExpression()))
-                    .iconURL(variableMananger -> this.evaluateStringList(interpreter, variableMananger, viewSimpleAction.getIconURLExpression()))
-                    .precondition(variableMananger -> this.evaluateBoolean(interpreter, variableMananger, viewSimpleAction.getPreconditionExpression()))
-                    .handler(variableMananger -> this.executeOperations(interpreter, variableMananger, viewSimpleAction.getBody()))
-                    .build();
-        } else if (viewTreeItemContextAction instanceof FetchTreeItemContextMenuEntry viewFetchAction) {
-            result = org.eclipse.sirius.components.trees.FetchTreeItemContextMenuEntry.newFetchTreeItemContextMenuEntry(UUID.randomUUID().toString())
-                    .label(variableMananger -> this.evaluateString(interpreter, variableMananger, viewFetchAction.getLabelExpression()))
-                    .iconURL(variableMananger -> this.evaluateStringList(interpreter, variableMananger, viewFetchAction.getIconURLExpression()))
-                    .precondition(variableMananger -> this.evaluateBoolean(interpreter, variableMananger, viewFetchAction.getPreconditionExpression()))
-                    .urlToFetch(variableMananger -> this.evaluateString(interpreter, variableMananger, viewFetchAction.getUrlExression()))
-                    .fetchKind(variableMananger -> this.convertFetchKind(viewFetchAction.getKind()))
-                    .build();
-        }
-        return result;
-    }
-
-    private Failure buildFailureWithFeedbackMessages(String technicalMessage) {
-        List<Message> errorMessages = new ArrayList<>();
-        errorMessages.add(new Message(technicalMessage, MessageLevel.ERROR));
-        errorMessages.addAll(this.feedbackMessageService.getFeedbackMessages());
-        return new Failure(errorMessages);
-    }
-
-    private Success buildSuccessWithSemanticChangeAndFeedbackMessages() {
-        return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
-    }
-
-    private FetchTreeItemContextMenuEntryKind convertFetchKind(org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntryKind fetchActionKind) {
-        return switch (fetchActionKind) {
-            case DOWNLOAD -> FetchTreeItemContextMenuEntryKind.DOWNLOAD;
-            case OPEN -> FetchTreeItemContextMenuEntryKind.OPEN;
-        };
     }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CollaborativeTreeMessageService implements ICollaborativeTreeMessageService {
+
     private final MessageSourceAccessor messageSourceAccessor;
 
     public CollaborativeTreeMessageService(@Qualifier("collaborativeTreeMessageSourceAccessor") MessageSourceAccessor messageSourceAccessor) {
@@ -35,5 +36,10 @@ public class CollaborativeTreeMessageService implements ICollaborativeTreeMessag
     @Override
     public String invalidInput(String expectedInputTypeName, String receivedInputTypeName) {
         return this.messageSourceAccessor.getMessage("INVALID_INPUT", new Object[] { expectedInputTypeName, receivedInputTypeName });
+    }
+
+    @Override
+    public String noSingleClickTreeItemExecutor() {
+        return this.messageSourceAccessor.getMessage("NO_SINGLE_CLICK_TREE_ITEM_EXECUTOR");
     }
 }
