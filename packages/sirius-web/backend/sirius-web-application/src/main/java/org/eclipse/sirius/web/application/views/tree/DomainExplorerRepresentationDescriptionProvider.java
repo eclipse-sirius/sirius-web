@@ -56,7 +56,6 @@ public class DomainExplorerRepresentationDescriptionProvider implements IEditing
                 .canCreatePredicate(variableManager -> false)
                 .targetObjectIdProvider(variableManager -> variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).orElse(null))
                 .elementsProvider(this::getElements)
-                .contextMenuEntries(List.of())
                 .build();
 
         return List.of(explorerDescription);

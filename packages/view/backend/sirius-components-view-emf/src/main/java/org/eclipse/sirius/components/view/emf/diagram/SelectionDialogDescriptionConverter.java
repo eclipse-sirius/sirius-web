@@ -217,7 +217,6 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
                 .treeItemObjectProvider(this::getTreeItemObject)
                 .parentObjectProvider(this::getParentObject)
                 .treeItemLabelProvider(labelProvider)
-                .contextMenuEntries(List.of())
                 .build();
     }
 
