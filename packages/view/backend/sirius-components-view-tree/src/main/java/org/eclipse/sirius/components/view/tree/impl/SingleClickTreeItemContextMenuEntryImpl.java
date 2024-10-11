@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,8 @@ import org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEnt
 import org.eclipse.sirius.components.view.tree.TreePackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Single Click Tree Item Context Menu Entry</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Single Click Tree Item Context Menu
+ * Entry</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
@@ -39,11 +40,12 @@ import org.eclipse.sirius.components.view.tree.TreePackage;
 public class SingleClickTreeItemContextMenuEntryImpl extends TreeItemContextMenuEntryImpl implements SingleClickTreeItemContextMenuEntry {
 
     /**
-     * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      *
+     * @see #getBody()
      * @generated
      * @ordered
-     * @see #getBody()
      */
     protected EList<Operation> body;
 

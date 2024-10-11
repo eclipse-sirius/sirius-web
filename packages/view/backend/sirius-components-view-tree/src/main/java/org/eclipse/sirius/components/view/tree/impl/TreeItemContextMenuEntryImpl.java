@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.tree.impl;
 
-import java.util.Objects;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -22,7 +20,8 @@ import org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.TreePackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Item Context Menu Entry</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Item Context Menu Entry</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
@@ -41,74 +40,82 @@ import org.eclipse.sirius.components.view.tree.TreePackage;
 public abstract class TreeItemContextMenuEntryImpl extends MinimalEObjectImpl.Container implements TreeItemContextMenuEntry {
 
     /**
-     * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
+     * @see #getName()
      * @generated
      * @ordered
-     * @see #getName()
      */
     protected static final String NAME_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
+     * @see #getName()
      * @generated
      * @ordered
-     * @see #getName()
      */
     protected String name = NAME_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The default value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
      *
+     * @see #getLabelExpression()
      * @generated
      * @ordered
-     * @see #getLabelExpression()
      */
     protected static final String LABEL_EXPRESSION_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The cached value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
      *
+     * @see #getLabelExpression()
      * @generated
      * @ordered
-     * @see #getLabelExpression()
      */
     protected String labelExpression = LABEL_EXPRESSION_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getIconURLExpression() <em>Icon URL Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The default value of the '{@link #getIconURLExpression() <em>Icon URL Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getIconURLExpression()
      * @generated
      * @ordered
-     * @see #getIconURLExpression()
      */
     protected static final String ICON_URL_EXPRESSION_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getIconURLExpression() <em>Icon URL Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The cached value of the '{@link #getIconURLExpression() <em>Icon URL Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getIconURLExpression()
      * @generated
      * @ordered
-     * @see #getIconURLExpression()
      */
     protected String iconURLExpression = ICON_URL_EXPRESSION_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The default value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getPreconditionExpression()
      * @generated
      * @ordered
-     * @see #getPreconditionExpression()
      */
     protected static final String PRECONDITION_EXPRESSION_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The cached value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getPreconditionExpression()
      * @generated
      * @ordered
-     * @see #getPreconditionExpression()
      */
     protected String preconditionExpression = PRECONDITION_EXPRESSION_EDEFAULT;
 
@@ -300,13 +307,13 @@ public abstract class TreeItemContextMenuEntryImpl extends MinimalEObjectImpl.Co
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__NAME:
-                return !Objects.equals(NAME_EDEFAULT, this.name);
+                return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
             case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION:
-                return !Objects.equals(LABEL_EXPRESSION_EDEFAULT, this.labelExpression);
+                return LABEL_EXPRESSION_EDEFAULT == null ? this.labelExpression != null : !LABEL_EXPRESSION_EDEFAULT.equals(this.labelExpression);
             case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION:
-                return !Objects.equals(ICON_URL_EXPRESSION_EDEFAULT, this.iconURLExpression);
+                return ICON_URL_EXPRESSION_EDEFAULT == null ? this.iconURLExpression != null : !ICON_URL_EXPRESSION_EDEFAULT.equals(this.iconURLExpression);
             case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION:
-                return !Objects.equals(PRECONDITION_EXPRESSION_EDEFAULT, this.preconditionExpression);
+                return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -321,16 +328,17 @@ public abstract class TreeItemContextMenuEntryImpl extends MinimalEObjectImpl.Co
         if (this.eIsProxy())
             return super.toString();
 
-        String result = super.toString() + " (name: " +
-                this.name +
-                ", labelExpression: " +
-                this.labelExpression +
-                ", iconURLExpression: " +
-                this.iconURLExpression +
-                ", preconditionExpression: " +
-                this.preconditionExpression +
-                ')';
-        return result;
+        StringBuilder result = new StringBuilder(super.toString());
+        result.append(" (name: ");
+        result.append(this.name);
+        result.append(", labelExpression: ");
+        result.append(this.labelExpression);
+        result.append(", iconURLExpression: ");
+        result.append(this.iconURLExpression);
+        result.append(", preconditionExpression: ");
+        result.append(this.preconditionExpression);
+        result.append(')');
+        return result.toString();
     }
 
 } // TreeItemContextMenuEntryImpl

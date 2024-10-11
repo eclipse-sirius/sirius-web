@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntryKind;
+import org.eclipse.sirius.components.view.tree.IfTreeItemLabelElementDescription;
 import org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.TreeDescription;
 import org.eclipse.sirius.components.view.tree.TreeFactory;
@@ -50,6 +51,13 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
      * @generated
      */
     private EClass treeItemLabelDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass ifTreeItemLabelElementDescriptionEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -115,15 +123,17 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
     private boolean isInitialized = false;
 
     /**
-     * Creates an instance of the model <b>Package</b>, registered with {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package package URI value.
+     * Creates an instance of the model <b>Package</b>, registered with {@link org.eclipse.emf.ecore.EPackage.Registry
+     * EPackage.Registry} by the package package URI value.
      * <p>
-     * Note: the correct way to create the package is via the static factory method {@link #init init()}, which also performs initialization of the package, or returns the registered package, if one
-     * already exists. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Note: the correct way to create the package is via the static factory method {@link #init init()}, which also
+     * performs initialization of the package, or returns the registered package, if one already exists. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
      * @see org.eclipse.emf.ecore.EPackage.Registry
      * @see org.eclipse.sirius.components.view.tree.TreePackage#eNS_URI
      * @see #init()
+     * @generated
      */
     private TreePackageImpl() {
         super(eNS_URI, TreeFactory.eINSTANCE);
@@ -133,13 +143,14 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
      * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
      *
      * <p>
-     * This method is used to initialize {@link TreePackage#eINSTANCE} when that field is accessed. Clients should not invoke it directly. Instead, they should simply access that field to obtain the
-     * package. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This method is used to initialize {@link TreePackage#eINSTANCE} when that field is accessed. Clients should not
+     * invoke it directly. Instead, they should simply access that field to obtain the package. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      *
-     * @generated
      * @see #eNS_URI
      * @see #createPackageContents()
      * @see #initializePackageContents()
+     * @generated
      */
     public static TreePackage init() {
         if (isInited)
@@ -354,6 +365,36 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
      * @generated
      */
     @Override
+    public EClass getIfTreeItemLabelElementDescription() {
+        return this.ifTreeItemLabelElementDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getIfTreeItemLabelElementDescription_PredicateExpression() {
+        return (EAttribute) this.ifTreeItemLabelElementDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getIfTreeItemLabelElementDescription_Children() {
+        return (EReference) this.ifTreeItemLabelElementDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getTreeItemLabelFragmentDescription() {
         return this.treeItemLabelFragmentDescriptionEClass;
     }
@@ -509,7 +550,8 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
     }
 
     /**
-     * Creates the meta-model objects for the package. This method is guarded to have no affect on any invocation but its first. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Creates the meta-model objects for the package. This method is guarded to have no affect on any invocation but
+     * its first. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -539,6 +581,10 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
         this.createEAttribute(this.treeItemLabelDescriptionEClass, TREE_ITEM_LABEL_DESCRIPTION__PRECONDITION_EXPRESSION);
         this.createEReference(this.treeItemLabelDescriptionEClass, TREE_ITEM_LABEL_DESCRIPTION__CHILDREN);
 
+        this.ifTreeItemLabelElementDescriptionEClass = this.createEClass(IF_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION);
+        this.createEAttribute(this.ifTreeItemLabelElementDescriptionEClass, IF_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION__PREDICATE_EXPRESSION);
+        this.createEReference(this.ifTreeItemLabelElementDescriptionEClass, IF_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION__CHILDREN);
+
         this.treeItemLabelFragmentDescriptionEClass = this.createEClass(TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION);
         this.createEAttribute(this.treeItemLabelFragmentDescriptionEClass, TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__LABEL_EXPRESSION);
         this.createEReference(this.treeItemLabelFragmentDescriptionEClass, TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__STYLE);
@@ -563,7 +609,8 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
     }
 
     /**
-     * Complete the initialization of the package and its meta-model. This method is guarded to have no affect on any invocation but its first. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Complete the initialization of the package and its meta-model. This method is guarded to have no affect on any
+     * invocation but its first. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -586,6 +633,7 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
 
         // Add supertypes to classes
         this.treeDescriptionEClass.getESuperTypes().add(theViewPackage.getRepresentationDescription());
+        this.ifTreeItemLabelElementDescriptionEClass.getESuperTypes().add(this.getTreeItemLabelElementDescription());
         this.treeItemLabelFragmentDescriptionEClass.getESuperTypes().add(this.getTreeItemLabelElementDescription());
         this.singleClickTreeItemContextMenuEntryEClass.getESuperTypes().add(this.getTreeItemContextMenuEntry());
         this.fetchTreeItemContextMenuEntryEClass.getESuperTypes().add(this.getTreeItemContextMenuEntry());
@@ -627,6 +675,13 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getTreeItemLabelDescription_Children(), this.getTreeItemLabelElementDescription(), null, "children", null, 0, -1, TreeItemLabelDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.ifTreeItemLabelElementDescriptionEClass, IfTreeItemLabelElementDescription.class, "IfTreeItemLabelElementDescription", !IS_ABSTRACT, !IS_INTERFACE,
+                IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getIfTreeItemLabelElementDescription_PredicateExpression(), theViewPackage.getInterpretedExpression(), "predicateExpression", null, 0, 1,
+                IfTreeItemLabelElementDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getIfTreeItemLabelElementDescription_Children(), this.getTreeItemLabelElementDescription(), null, "children", null, 1, -1, IfTreeItemLabelElementDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.treeItemLabelFragmentDescriptionEClass, TreeItemLabelFragmentDescription.class, "TreeItemLabelFragmentDescription", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);

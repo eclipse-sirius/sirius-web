@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.tree;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -21,6 +22,7 @@ import org.eclipse.sirius.components.core.api.labels.StyledStringFragment;
 import org.eclipse.sirius.components.core.api.labels.StyledStringFragmentStyle;
 import org.eclipse.sirius.components.core.api.labels.UnderLineStyle;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
+import org.eclipse.sirius.components.view.tree.IfTreeItemLabelElementDescription;
 import org.eclipse.sirius.components.view.tree.TreeItemLabelDescription;
 import org.eclipse.sirius.components.view.tree.TreeItemLabelElementDescription;
 import org.eclipse.sirius.components.view.tree.TreeItemLabelFragmentDescription;
@@ -43,17 +45,24 @@ public class TreeItemStyleConverter {
 
     public StyledString convert(TreeItemLabelDescription tild) {
         var fragments = tild.getChildren().stream()
-                .map(this::convertElement)
-                .filter(Objects::nonNull)
+                .flatMap(tiled -> this.convertElement(tiled).stream())
                 .toList();
         return new StyledString(fragments);
     }
 
-    private StyledStringFragment convertElement(TreeItemLabelElementDescription element) {
+    private List<StyledStringFragment> convertElement(TreeItemLabelElementDescription element) {
+        List<StyledStringFragment> result = List.of();
         if (element instanceof TreeItemLabelFragmentDescription fragment) {
-            return this.convertFragment(fragment);
+            result = List.of(this.convertFragment(fragment));
+        } else if (element instanceof IfTreeItemLabelElementDescription ifElement) {
+            var isValid = this.evaluateBoolean(ifElement.getPredicateExpression()).orElse(false);
+            if (isValid) {
+                result = ifElement.getChildren().stream()
+                        .flatMap(tiled -> this.convertElement(tiled).stream())
+                        .toList();
+            }
         }
-        return null;
+        return result;
     }
 
     private StyledStringFragment convertFragment(TreeItemLabelFragmentDescription fragment) {
