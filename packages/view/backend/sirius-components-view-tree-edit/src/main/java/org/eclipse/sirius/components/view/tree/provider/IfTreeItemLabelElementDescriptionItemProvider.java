@@ -21,24 +21,23 @@ import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.eclipse.sirius.components.view.tree.TreeItemLabelFragmentDescription;
+import org.eclipse.sirius.components.view.tree.IfTreeItemLabelElementDescription;
 import org.eclipse.sirius.components.view.tree.TreePackage;
 
 /**
  * This is the item provider adapter for a
- * {@link org.eclipse.sirius.components.view.tree.TreeItemLabelFragmentDescription} object. <!-- begin-user-doc --> <!--
- * end-user-doc -->
+ * {@link org.eclipse.sirius.components.view.tree.IfTreeItemLabelElementDescription} object. <!-- begin-user-doc -->
+ * <!-- end-user-doc -->
  *
  * @generated
  */
-public class TreeItemLabelFragmentDescriptionItemProvider extends TreeItemLabelElementDescriptionItemProvider {
-
+public class IfTreeItemLabelElementDescriptionItemProvider extends TreeItemLabelElementDescriptionItemProvider {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    public TreeItemLabelFragmentDescriptionItemProvider(AdapterFactory adapterFactory) {
+    public IfTreeItemLabelElementDescriptionItemProvider(AdapterFactory adapterFactory) {
         super(adapterFactory);
     }
 
@@ -52,44 +51,45 @@ public class TreeItemLabelFragmentDescriptionItemProvider extends TreeItemLabelE
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            this.addLabelExpressionPropertyDescriptor(object);
-            this.addStylePropertyDescriptor(object);
+            this.addPredicateExpressionPropertyDescriptor(object);
+            this.addChildrenPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
 
     /**
-     * This adds a property descriptor for the Label Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Predicate Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
      * @generated
      */
-    protected void addLabelExpressionPropertyDescriptor(Object object) {
+    protected void addPredicateExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_TreeItemLabelFragmentDescription_labelExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_TreeItemLabelFragmentDescription_labelExpression_feature", "_UI_TreeItemLabelFragmentDescription_type"),
-                TreePackage.Literals.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_IfTreeItemLabelElementDescription_predicateExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_IfTreeItemLabelElementDescription_predicateExpression_feature", "_UI_IfTreeItemLabelElementDescription_type"),
+                TreePackage.Literals.IF_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION__PREDICATE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This adds a property descriptor for the Style feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Children feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    protected void addStylePropertyDescriptor(Object object) {
+    protected void addChildrenPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_TreeItemLabelFragmentDescription_style_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_TreeItemLabelFragmentDescription_style_feature", "_UI_TreeItemLabelFragmentDescription_type"),
-                TreePackage.Literals.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__STYLE, true, false, true, null, null, null));
+                this.getString("_UI_IfTreeItemLabelElementDescription_children_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_IfTreeItemLabelElementDescription_children_feature", "_UI_IfTreeItemLabelElementDescription_type"),
+                TreePackage.Literals.IF_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION__CHILDREN, true, false, true, null, null, null));
     }
 
     /**
-     * This returns TreeItemLabelFragmentDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This returns IfTreeItemLabelElementDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/TreeItemLabelFragmentDescription.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/IfTreeItemLabelElementDescription.svg"));
     }
 
     /**
@@ -109,8 +109,8 @@ public class TreeItemLabelFragmentDescriptionItemProvider extends TreeItemLabelE
      */
     @Override
     public String getText(Object object) {
-        String label = ((TreeItemLabelFragmentDescription) object).getLabelExpression();
-        return label == null || label.length() == 0 ? this.getString("_UI_TreeItemLabelFragmentDescription_type") : this.getString("_UI_TreeItemLabelFragmentDescription_type") + " " + label;
+        String label = ((IfTreeItemLabelElementDescription) object).getPredicateExpression();
+        return label == null || label.length() == 0 ? this.getString("_UI_IfTreeItemLabelElementDescription_type") : this.getString("_UI_IfTreeItemLabelElementDescription_type") + " " + label;
     }
 
     /**
@@ -124,8 +124,8 @@ public class TreeItemLabelFragmentDescriptionItemProvider extends TreeItemLabelE
     public void notifyChanged(Notification notification) {
         this.updateChildren(notification);
 
-        switch (notification.getFeatureID(TreeItemLabelFragmentDescription.class)) {
-            case TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__LABEL_EXPRESSION:
+        switch (notification.getFeatureID(IfTreeItemLabelElementDescription.class)) {
+            case TreePackage.IF_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION__PREDICATE_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }

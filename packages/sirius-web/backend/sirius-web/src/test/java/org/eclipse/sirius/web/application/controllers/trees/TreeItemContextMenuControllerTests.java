@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,14 +29,15 @@ import java.util.function.Consumer;
 import org.eclipse.sirius.components.collaborative.trees.dto.InvokeSingleClickTreeItemContextMenuEntryInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.tests.graphql.ExplorerDescriptionsQueryRunner;
+import org.eclipse.sirius.web.tests.graphql.FetchTreeItemContextMenuEntryDataQueryRunner;
 import org.eclipse.sirius.web.tests.graphql.SingleClickTreeItemContextMenuEntryMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.TreeItemContextMenuQueryRunner;
-import org.eclipse.sirius.web.tests.graphql.FetchTreeItemContextMenuEntryDataQueryRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
@@ -80,7 +81,7 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
     private RepresentationIdBuilder representationIdBuilder;
 
     @Autowired
-    private ExplorerEventSubscriptionRunner treeEventSubscriptionRunner;
+    private ExplorerEventSubscriptionRunner explorerEventSubscriptionRunner;
 
     @Autowired
     private ExplorerDescriptionsQueryRunner explorerDescriptionsQueryRunner;
@@ -110,23 +111,16 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
         explorerDescriptionId.set(explorerIds.get(1));
 
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(explorerDescriptionId.get(), List.of(StudioIdentifiers.DOMAIN_DOCUMENT.toString(), StudioIdentifiers.DOMAIN_OBJECT.toString(), ROOT_ENTITY_ID), List.of());
-        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), explorerRepresentationId);
-        var flux = this.treeEventSubscriptionRunner.run(input);
+        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), explorerRepresentationId);
+        var flux = this.explorerEventSubscriptionRunner.run(input);
 
         // 2- Retrieve the representation id (the id of DSL Domain explorer example tree)
         var treeId = new AtomicReference<String>();
 
-        Consumer<Object> initialTreeContentConsumer = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(TreeRefreshedEventPayload.class::isInstance)
-                .map(TreeRefreshedEventPayload.class::cast)
-                .map(TreeRefreshedEventPayload::tree)
-                .ifPresentOrElse(tree -> {
-                    assertThat(tree).isNotNull();
-                    treeId.set(tree.getId());
-                }, () -> fail("Missing tree"));
+        Consumer<Object> initialTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+            assertThat(tree).isNotNull();
+            treeId.set(tree.getId());
+        });
 
         var helpId = new AtomicReference<String>();
         var toggleAbstractAction = new AtomicReference<String>();
@@ -189,5 +183,16 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
             .then(invokeToggleAbstractAction)
             .thenCancel()
             .verify(Duration.ofSeconds(30));
+    }
+
+    private Consumer<Object> getTreeSubscriptionConsumer(Consumer<Tree> treeConsumer) {
+        return object -> Optional.of(object)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData)
+                .filter(TreeRefreshedEventPayload.class::isInstance)
+                .map(TreeRefreshedEventPayload.class::cast)
+                .map(TreeRefreshedEventPayload::tree)
+                .ifPresentOrElse(treeConsumer, () -> fail("Missing tree"));
     }
 }

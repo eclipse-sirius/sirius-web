@@ -55,6 +55,7 @@ Specifiers can contribute dedicated AQL services for this feature using implemen
 - [charts] Make the npm package `sirius-components-charts` use the strict version of our TypeScript configuration
 - [trees] Make the npm package `sirius-components-trees` use the strict version of our TypeScript configuration
 - https://github.com/eclipse-sirius/sirius-web/issues/1047[#1047] [sirius-web] In the _Domain_ diagram, when using direct-edit on a relatin edge, the initial text now only includes the name of the relation (without the cardinality)
+- https://github.com/eclipse-sirius/sirius-web/issues/4095[#4095] Add conditional tree item label element description
 
 == v2025.1.0
 

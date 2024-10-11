@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntryKind;
+import org.eclipse.sirius.components.view.tree.IfTreeItemLabelElementDescription;
 import org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.TreeDescription;
 import org.eclipse.sirius.components.view.tree.TreeFactory;
@@ -71,6 +72,8 @@ public class TreeFactoryImpl extends EFactoryImpl implements TreeFactory {
                 return this.createTreeDescription();
             case TreePackage.TREE_ITEM_LABEL_DESCRIPTION:
                 return this.createTreeItemLabelDescription();
+            case TreePackage.IF_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION:
+                return this.createIfTreeItemLabelElementDescription();
             case TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION:
                 return this.createTreeItemLabelFragmentDescription();
             case TreePackage.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY:
@@ -132,6 +135,17 @@ public class TreeFactoryImpl extends EFactoryImpl implements TreeFactory {
     public TreeItemLabelDescription createTreeItemLabelDescription() {
         TreeItemLabelDescriptionImpl treeItemLabelDescription = new TreeItemLabelDescriptionImpl();
         return treeItemLabelDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public IfTreeItemLabelElementDescription createIfTreeItemLabelElementDescription() {
+        IfTreeItemLabelElementDescriptionImpl ifTreeItemLabelElementDescription = new IfTreeItemLabelElementDescriptionImpl();
+        return ifTreeItemLabelElementDescription;
     }
 
     /**
