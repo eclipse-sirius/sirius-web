@@ -45,6 +45,7 @@ public class ImportExistingTypesToolProvider {
         var dialogDescription = new DiagramBuilders().newSelectionDialogDescription()
                 .selectionMessage("Select the types to import")
                 .selectionDialogTreeDescription(treeDescription)
+                .multiple(true)
                 .build();
 
         var ifClass = new ViewBuilders().newIf()
@@ -103,10 +104,16 @@ public class ImportExistingTypesToolProvider {
                         new ViewBuilders().newChangeContext()
                                 .expression("aql:self")
                                 .children(
-                                        ifClass,
-                                        ifInterface,
-                                        ifRecord,
-                                        ifEnum
+                                        new ViewBuilders().newFor()
+                                                .expression("aql:selectedObjects")
+                                                .iteratorName("selectedObject")
+                                                .children(
+                                                        ifClass,
+                                                        ifInterface,
+                                                        ifRecord,
+                                                        ifEnum
+                                                )
+                                                .build()
                                 )
                                 .build()
                 )
