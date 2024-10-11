@@ -7,9 +7,9 @@ The slider widget is an alternative UI to show and edit a numeric value inside a
 
 == Core Widget Implementation: Backend
 
-The first step is to create the core implementation of the new widget in the backend, and plug it inside the _Form_ representation's rendering process.
+* The first step is to create the core implementation of the new widget in the backend, and plug it inside the _Form_ representation's rendering process.
 
-You will need the equivalent of all the following classes (these can found in `org.eclipse.sirius.web.sample.slider`):
+You will need the equivalent of all the following classes:
 
 * `Slider.java`: a concrete subclass of `AbstractWidget`, which represents a concrete instance of your custom widget.
 In the case of the slider, it contains the fields representing the state of a specific instance (min, max and current value) and the Java `Function` to be invoked to apply the slider's only edition operation (setting a new value).
@@ -27,10 +27,10 @@ In the case of the Slider widget, we only have `EditSliderInput.java` which corr
 * `EditSliderValueEventHandler.java`: the actual implementation of the mutation, as an `IFormEventHandler`.
 Must be a Spring `@Service` to be properly detected.
 
-Finally, you will also need to declare you new widget and its mutation(s) in the global GraphQL Schema.
+* Finally, you will also need to declare your new widget and its mutation(s) in the global GraphQL Schema.
 This is done by simply providing a `.graphqls` schema file.
 Note that the file *must* be in a `schema` folder in the classpath to be detected.
-For the Slider widget we have `/sirius-web-sample-application/src/main/resources/schema/slider.graphqls` with the following content:
+For the Slider widget we will add `/sirius-web-sample-application/src/main/resources/schema/slider.graphqls` with the following content:
 
 [source,graphqls]
 ----
@@ -67,11 +67,10 @@ For example, almost all of our widgets have a `value` field and we are thus usin
 
 == Core Widget Implementation: Frontend
 
-Declare the `GQLWidget` concrete sub-type for you new widget:
+* Declare the `GQLWidget` concrete sub-type for you new widget:
 
 [source,typescript]
 ----
-// File: packages/sirius-web/frontend/sirius-web/src/widgets/SliderFragment.types.ts
 import { GQLWidget } from '@eclipse-sirius/sirius-components-forms';
  
 export interface GQLSlider extends GQLWidget {
@@ -82,12 +81,11 @@ export interface GQLSlider extends GQLWidget {
 }
 ----
 
-Implement the actual frontend React component for your new widget.
+* Implement the actual frontend React component for your new widget.
 The React component must match the signature expected for _Property Sections_.
 
 [source,typescript]
 ----
-// File: packages/sirius-web/frontend/sirius-web/src/widgets/SliderPropertySection.tsx
 export const SliderPropertySection = ({
   editingContextId,
   formId,
@@ -99,46 +97,105 @@ export const SliderPropertySection = ({
 }
 ----
 
-Finally, at the top-level of your application you must provide a `PropertySectionContext` with a `PropertySectionComponentRegistry` value which declare all you custom widgets:
+* Declare the custom graphql fields to be retrieved for your custom widget
 
-[source,typscript]
+[source,typescript]
 ----
-// File: packages/sirius-web/frontend/sirius-web/src/index.tsx
-const propertySectionsRegistry = {
-  getComponent: (widget: GQLWidget) => {
-    if (widget.__typename === 'Slider') {
-      return SliderPropertySection;
-    } else {
-      return (props: PropertySectionComponentProps<GQLWidget>) => null;
-    }
-  },
-  getWidgetContributions: () => {
-    const sliderWidgetContribution: WidgetContribution = {
-      name: 'Slider',
-      fields: `label iconURL minValue maxValue currentValue`,
-      icon: <LinearScaleOutlinedIcon />,
-    };
-    return [sliderWidgetContribution];
-  },
+//Example file: packages/sirius-web/frontend/sirius-web-application/src/extension/ReferenceWidgetDocumentTransform.ts
+export const sliderWidgetDocumentTransform = new DocumentTransform((document) => {
+  if (shouldTransform(document)) {
+    return visit(document, {
+      FragmentDefinition(node) {
+        if (!isWidgetFragmentDefinition(node)) {
+          return undefined;
+        }
+        const sliderWidgetInlineFragment: InlineFragmentNode = {
+          kind: Kind.INLINE_FRAGMENT,
+          selectionSet: {
+            kind: Kind.SELECTION_SET,
+            selections: [
+              labelField,
+              iconURLField,
+              minValueField,
+              maxValueField,
+              currentValueField
+            ],
+          },
+          typeCondition: {
+            kind: Kind.NAMED_TYPE,
+            name: {
+              kind: Kind.NAME,
+              value: 'SliderWidget',
+            },
+          },
+        };
+
+        return {
+          ...node,
+          selectionSet: {
+            ...node.selectionSet,
+            selections: [...node.selectionSet.selections, sliderWidgetInlineFragment],
+          },
+        };
+      },
+    });
+  }
+  return document;
+});
+----
+
+* Finally, you have to contribute all these elements with two entry points to the  global registry `ExtensionRegistry`
+
+`widgetContributionExtensionPoint`:
+
+[source,typescript]
+----
+const isSliderWidget = (widget: GQLWidget): widget is GQLSliderWidget => widget.__typename === 'SliderWidget';
+
+defaultExtensionRegistry.putData(widgetContributionExtensionPoint, {
+  identifier: `siriusWeb_${widgetContributionExtensionPoint.identifier}_sliderWidget`,
+  data: [
+    {
+      name: 'SliderWidget',
+      icon: <SliderIcon />,
+      previewComponent: SliderPreview,
+      component: (widget: GQLWidget): PropertySectionComponent<GQLWidget> | null => {
+        let propertySectionComponent: PropertySectionComponent<GQLWidget> | null = null;
+
+        if (isSliderWidget(widget)) {
+          propertySectionComponent = SliderPropertySection;
+        }
+        return propertySectionComponent;
+      },
+    },
+  ],
+});
+----
+
+NOTE: `previewComponent` is used for the  Form Description Editor.
+
+`apolloClientOptionsConfigurersExtensionPoint`:
+
+[source,typescript]
+----
+const widgetsApolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (currentOptions) => {
+  const { documentTransform } = currentOptions;
+
+  const newDocumentTransform = documentTransform
+    ? documentTransform.concat(sliderWidgetDocumentTransform)
+    : sliderWidgetDocumentTransform;
+  return {
+    ...currentOptions,
+    documentTransform: newDocumentTransform,
+  };
 };
 
-const propertySectionRegistryValue = {
-  propertySectionsRegistry,
-};
-
-ReactDOM.render(
-  // ...
-      <PropertySectionContext.Provider value={propertySectionRegistryValue}>
-          <App />
-      </PropertySectionContext.Provider>
-  // ...,
-  document.getElementById('root')
-);
+defaultExtensionRegistry.putData(apolloClientOptionsConfigurersExtensionPoint, {
+  identifier: `siriusWeb_${apolloClientOptionsConfigurersExtensionPoint.identifier}`,
+  data: [widgetsApolloClientOptionsConfigurer],
+});
 ----
 
-Note the `sliderWidgetContribution` which gives the name and GraphQL type name and fields/section for the frontend to be able to retrieve the data for your custom widgets.
-They must match the names you declared in the `graphqls` file.
-Although the `Slider` example only defines direct attributes, the `fields` can contain deeper definitions, e.g. `id label iconURL container referenceValue { id label kind iconURL }`.
 
 == View DSL Integration
 
@@ -175,7 +232,7 @@ public ChildExtenderProvider sliderWidgetChildExtenderProvider() {
 }
 ----
 
-With these information, it becomes possible to create instances of your widget's View-based description class (e.g. `SliderDescription`) inside a View-based FormDescription.
+With this information, it becomes possible to create instances of your widget's View-based description class (e.g. `SliderDescription`) inside a View-based FormDescription.
 
 The final step is to tell the system how to convert these modeled widget description into their corresponding core implementation.
 This is done by declaring a `IWidgetConverterProvider`:
@@ -194,38 +251,3 @@ public class SliderDescriptionConverterProvider implements IWidgetConverterProvi
 The actual conversion is delegated to a `Switch<AbstractWidgetDescription>` implementation that you must provide.
 It will be called during the View conversion process when the system finds an instance of your custom widget inside a View definition.
 
-See the code for `org.eclipse.sirius.web.sample.slider.SliderDescriptionConverterSwitch` for more details.
-
-== Form Description Editor Integration
-
-If you want your custom widget to be usable inside the visual Form Description Editor, some additional steps are needed.
-
-On the backend you must provide a `org.eclipse.sirius.components.formdescriptioneditors.IWidgetPreviewConverterProvider`.
-Its role is similar to the `IWidgetConverterProvider`, but it will be executed in the context of a Form Description Editor instead of on a concrete target model.
-The `AbstractWidgetDescription` it returns will be used to provide a "static preview" of your widget.
-Depending on your case you may only provide a completely fixed widget description which will always render the same, or try to interpret statically some of the widget's properties (e.g. colors) if possible.
-
-See `org.eclipse.sirius.web.sample.slider.SliderDescriptionPreviewConverterProvider` for an example.
-
-On the frontend you must provide a component to render the widget preview in the context of the _Form Description Editor_.
-It is very similar to the _Property Section_ component but simpler as it does not support the actual behavior of the widget.
-See `sirius-web/frontend/sirius-web/src/widgets/SliderPreview.tsx` for an example.
-
-Finally, you must register this preview component in the top-level regsitry's `getPreviewComponent` function:
-
-[source,javascript]
-----
-const propertySectionsRegistry = {
-  getComponent: (widget: GQLWidget) => {
-    // ...
-  },
-  getPreviewComponent: (widget: GQLWidget) => {
-    if (widget.__typename === 'Slider') {
-      return SliderPreview;
-    }
-  },
-  getWidgetContributions: () => {
-    // ...
-  },
-};
-----

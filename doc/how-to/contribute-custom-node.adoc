@@ -89,8 +89,8 @@ export const EllipseNode = memo(({ data, isConnectable, id, selected }: NodeProp
 
 [source,typescript]
 ----
-// File: packages/sirius-web/frontend/sirius-web/src/nodes/EllipseNodeConverterHandler.tsx
-export class EllipseNodeConverterHandler implements INodeConverterHandler {
+// File: packages/sirius-web/frontend/sirius-web/src/nodes/EllipseNodeConverter.ts
+export class EllipseNodeConverter implements INodeConverter {
   // ...
 }
 ----
@@ -125,6 +125,7 @@ The `handle` method, converts a `GQLNode` to a concrete `Node` and adds it to th
 
 [source,typescript]
 ----
+// File: packages/sirius-web/frontend/sirius-web/src/nodes/EllipseNodeLayoutHandler.ts
 export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
 // ...
 }
@@ -155,30 +156,45 @@ The `handle` method, layout a _node_ by setting its _size_ and _position_, remem
   }
 ----
 
-* Finally, you have to contribute all these elements to the `NodeTypeComponentRegistry`, for _sirius-web_ this registry is in `packages/sirius-web/frontend/sirius-web/src/views/edit-project/EditProjectView.tsx`.
+* Declare the custom graphql fields to be retrieved for your custom node
 
 [source,typescript]
 ----
-    const nodeTypeRegistry: NodeTypeComponentRegistry = {
-      getNodeStyleContributions: () => {
-        const ellipseNodeStyleContribution: NodeStyleContribution = {
-          name: 'EllipseNodeStyle',
-          fields: `borderColor, borderSize, borderStyle, color`,
-        };
-        return [ellipseNodeStyleContribution];
+// File: packages/sirius-web/frontend/sirius-web-application/src/extension/ElipseNodeDocumentTransform.ts
+export const ellipseNodeStyleDocumentTransform = new DocumentTransform((document) => {
+  // ...
+   const ellipseNodeStyleInlineFragment: InlineFragmentNode = {
+      kind: Kind.INLINE_FRAGMENT,
+      selectionSet: {
+        kind: Kind.SELECTION_SET,
+        selections: [borderColorField, borderSizeField, borderStyleField, backgroundField],
       },
-      getNodeLayoutHandler: () => {
-        return [new EllipseNodeLayoutHandler()];
-      },
-      getNodeConverterHandler: () => {
-        return [new EllipseNodeConverterHandler()];
-      },
-      getNodeTypeContributions: () => {
-        return [<NodeTypeContribution component={EllipseNode} type={'ellipseNode'} />];
+      typeCondition: {
+        kind: Kind.NAMED_TYPE,
+        name: {
+          kind: Kind.NAME,
+          value: 'EllipseNodeStyle',
+        },
       },
     };
+   // ...
+});
 ----
 
-IMPORTANT: Make sure the type of the `getNodeTypeContributions` matches the type set during the conversion (in `EllipseNodeConverterHandler`).
+In this example we're looking for `borderColorField`, `borderSizeField`, `borderStyleField` and `backgroundField` fields.
+
+* Finally, you have to contribute all these elements to the `NodeTypeRegistry` given in props to `DiagramRepresentationConfiguration` component.
+
+[source,typescript]
+----
+// File: packages/sirius-web/frontend/sirius-web/src/index.tsx
+const nodeTypeRegistry: NodeTypeRegistry = {
+  nodeLayoutHandlers: [new EllipseNodeLayoutHandler()],
+  nodeConverters: [new EllipseNodeConverter()],
+  nodeTypeContributions: [<NodeTypeContribution component={EllipseNode} type={'ellipseNode'} />],
+};
+----
+
+IMPORTANT: Make sure the type of the `nodeTypeContributions` matches the type set during the conversion (in `EllipseNodeConverterHandler`).
 
 
