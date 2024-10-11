@@ -19,61 +19,63 @@ import java.util.List;
 import org.eclipse.emf.common.util.Enumerator;
 
 /**
- * <!-- begin-user-doc --> A representation of the literals of the enumeration '<em><b>Fetch Tree Item Context Menu Entry Kind</b></em>', and utility methods for working with them. <!-- end-user-doc
- * -->
+ * <!-- begin-user-doc --> A representation of the literals of the enumeration '<em><b>Fetch Tree Item Context Menu
+ * Entry Kind</b></em>', and utility methods for working with them. <!-- end-user-doc -->
  *
+ * @see org.eclipse.sirius.components.view.tree.TreePackage#getFetchTreeItemContextMenuEntryKind()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.view.tree.TreePackage#getFetchTreeItemContextMenuEntryKind()
  */
 public enum FetchTreeItemContextMenuEntryKind implements Enumerator {
     /**
      * The '<em><b>DOWNLOAD</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #DOWNLOAD_VALUE
      * @generated
      * @ordered
-     * @see #DOWNLOAD_VALUE
      */
     DOWNLOAD(0, "DOWNLOAD", "DOWNLOAD"),
 
     /**
      * The '<em><b>OPEN</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #OPEN_VALUE
      * @generated
      * @ordered
-     * @see #OPEN_VALUE
      */
     OPEN(1, "OPEN", "OPEN");
 
     /**
      * The '<em><b>DOWNLOAD</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #DOWNLOAD
      * @model
      * @generated
      * @ordered
-     * @see #DOWNLOAD
      */
     public static final int DOWNLOAD_VALUE = 0;
 
     /**
      * The '<em><b>OPEN</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #OPEN
      * @model
      * @generated
      * @ordered
-     * @see #OPEN
      */
     public static final int OPEN_VALUE = 1;
 
     /**
-     * An array of all the '<em><b>Fetch Tree Item Context Menu Entry Kind</b></em>' enumerators. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * An array of all the '<em><b>Fetch Tree Item Context Menu Entry Kind</b></em>' enumerators. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
      *
      * @generated
      */
     private static final FetchTreeItemContextMenuEntryKind[] VALUES_ARRAY = new FetchTreeItemContextMenuEntryKind[] { DOWNLOAD, OPEN, };
 
     /**
-     * A public read-only list of all the '<em><b>Fetch Tree Item Context Menu Entry Kind</b></em>' enumerators. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * A public read-only list of all the '<em><b>Fetch Tree Item Context Menu Entry Kind</b></em>' enumerators. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -112,10 +114,11 @@ public enum FetchTreeItemContextMenuEntryKind implements Enumerator {
     }
 
     /**
-     * Returns the '<em><b>Fetch Tree Item Context Menu Entry Kind</b></em>' literal with the specified literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the '<em><b>Fetch Tree Item Context Menu Entry Kind</b></em>' literal with the specified literal value.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param literal
-     *         the literal.
+     *            the literal.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
@@ -130,10 +133,11 @@ public enum FetchTreeItemContextMenuEntryKind implements Enumerator {
     }
 
     /**
-     * Returns the '<em><b>Fetch Tree Item Context Menu Entry Kind</b></em>' literal with the specified name. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the '<em><b>Fetch Tree Item Context Menu Entry Kind</b></em>' literal with the specified name. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @param name
-     *         the name.
+     *            the name.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
@@ -148,10 +152,11 @@ public enum FetchTreeItemContextMenuEntryKind implements Enumerator {
     }
 
     /**
-     * Returns the '<em><b>Fetch Tree Item Context Menu Entry Kind</b></em>' literal with the specified integer value. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the '<em><b>Fetch Tree Item Context Menu Entry Kind</b></em>' literal with the specified integer value.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the integer value.
+     *            the integer value.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
@@ -196,7 +201,8 @@ public enum FetchTreeItemContextMenuEntryKind implements Enumerator {
     }
 
     /**
-     * Returns the literal value of the enumerator, which is its string representation. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the literal value of the enumerator, which is its string representation. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      */

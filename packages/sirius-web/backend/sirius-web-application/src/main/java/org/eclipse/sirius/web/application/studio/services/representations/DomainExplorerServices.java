@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.Entity;
 import org.eclipse.sirius.web.application.UUIDParser;
@@ -54,7 +53,7 @@ public class DomainExplorerServices {
 
     private final IExplorerServices explorerServices;
 
-    public DomainExplorerServices(IObjectService objectService, IRepresentationMetadataSearchService representationMetadataSearchService, IURLParser urlParser, List<IRepresentationImageProvider> representationImageProviders, IExplorerServices explorerServices) {
+    public DomainExplorerServices(IObjectService objectService, IRepresentationMetadataSearchService representationMetadataSearchService, List<IRepresentationImageProvider> representationImageProviders, IExplorerServices explorerServices) {
         this.objectService = Objects.requireNonNull(objectService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.explorerServices = Objects.requireNonNull(explorerServices);
@@ -197,6 +196,13 @@ public class DomainExplorerServices {
             entity.setAbstract(!entity.isAbstract());
         }
         return self;
+    }
+
+    public boolean isAbstractEntity(Object self) {
+        if (self instanceof Entity entity) {
+            return entity.isAbstract();
+        }
+        return false;
     }
 
     /**

@@ -28,6 +28,11 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="children" upperBound="-1"
         eType="#//TreeItemLabelElementDescription" containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IfTreeItemLabelElementDescription" eSuperTypes="#//TreeItemLabelElementDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="predicateExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="children" lowerBound="1"
+        upperBound="-1" eType="#//TreeItemLabelElementDescription" containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TreeItemLabelFragmentDescription" eSuperTypes="#//TreeItemLabelElementDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//TextStyleDescription"/>
