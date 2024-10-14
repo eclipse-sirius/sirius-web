@@ -112,7 +112,12 @@ public class CreateTreeEventHandler implements IEditingContextEventHandler {
                 String label = treeDescription.getLabelProvider().apply(variableManager).toString();
 
                 Tree tree = this.treeCreationService.create(object, treeDescription, editingContext);
-                var representationMetadata = new RepresentationMetadata(tree.getId(), tree.getKind(), label, tree.getDescriptionId());
+                var representationMetadata = RepresentationMetadata.newRepresentationMetadata(tree.getId())
+                        .kind(tree.getKind())
+                        .label(label)
+                        .descriptionId(tree.getDescriptionId())
+                        .build();
+
                 this.representationMetadataPersistenceService.save(createRepresentationInput, editingContext, representationMetadata, tree.getTargetObjectId());
                 this.representationPersistenceService.save(createRepresentationInput, editingContext, tree);
 

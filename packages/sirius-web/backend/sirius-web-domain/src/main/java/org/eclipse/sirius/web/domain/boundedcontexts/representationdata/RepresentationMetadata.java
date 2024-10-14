@@ -21,6 +21,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.AbstractValidatingAggregate
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationMetadataCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationMetadataDeletedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationMetadataUpdateEvent;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
@@ -88,6 +89,17 @@ public class RepresentationMetadata extends AbstractValidatingAggregateRoot<Repr
 
     public Instant getLastModifiedOn() {
         return this.lastModifiedOn;
+    }
+
+    public void updateLabel(ICause cause, String newLabel) {
+        if (!this.label.equals(newLabel)) {
+            this.label = newLabel;
+
+            var now = Instant.now();
+            this.lastModifiedOn = now;
+
+            this.registerEvent(new RepresentationMetadataUpdateEvent(UUID.randomUUID(), now, cause, this));
+        }
     }
 
     public void dispose(ICause cause) {

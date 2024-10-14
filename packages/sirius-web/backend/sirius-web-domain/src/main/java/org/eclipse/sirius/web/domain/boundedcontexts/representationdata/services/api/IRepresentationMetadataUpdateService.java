@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,16 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.dto;
+package org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api;
 
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.web.domain.services.IResult;
 
 /**
- * The input of the rename representation mutation.
+ * Used to update existing representation metadata.
  *
- * @author arichard
+ * @author gcoutable
  */
-public record RenameRepresentationInput(UUID id, String editingContextId, String representationId, String newLabel) implements IInput {
+public interface IRepresentationMetadataUpdateService {
+
+    IResult<Void> updateRepresentationMetadataLabelById(ICause cause, UUID representationMetadataId, String label);
 }

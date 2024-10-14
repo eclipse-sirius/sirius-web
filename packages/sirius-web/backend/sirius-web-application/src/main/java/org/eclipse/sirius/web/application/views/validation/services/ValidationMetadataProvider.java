@@ -31,7 +31,13 @@ public class ValidationMetadataProvider implements IRepresentationMetadataProvid
     @Override
     public Optional<RepresentationMetadata> getMetadata(String representationId) {
         if (Objects.equals(representationId, Validation.PREFIX)) {
-            return Optional.of(new RepresentationMetadata(representationId, Validation.KIND, ValidationDescriptionProvider.LABEL, ValidationDescriptionProvider.DESCRIPTION_ID));
+            var representationMetadata = RepresentationMetadata.newRepresentationMetadata(representationId)
+                    .kind(Validation.KIND)
+                    .label(ValidationDescriptionProvider.LABEL)
+                    .descriptionId(ValidationDescriptionProvider.DESCRIPTION_ID)
+                    .build();
+
+            return Optional.of(representationMetadata);
         }
         return Optional.empty();
     }

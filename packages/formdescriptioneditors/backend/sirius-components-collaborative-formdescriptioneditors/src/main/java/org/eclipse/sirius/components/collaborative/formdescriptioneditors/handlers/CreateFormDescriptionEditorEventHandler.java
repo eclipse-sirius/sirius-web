@@ -112,8 +112,12 @@ public class CreateFormDescriptionEditorEventHandler implements IEditingContextE
 
                 FormDescriptionEditor formDescriptionEditor = this.formDescriptionEditorCreationService.create(createRepresentationInput, object, representationDescription,
                         editingContext);
-                var representationMetadata = new RepresentationMetadata(formDescriptionEditor.getId(), formDescriptionEditor.getKind(), label,
-                        formDescriptionEditor.getDescriptionId());
+                var representationMetadata = RepresentationMetadata.newRepresentationMetadata(formDescriptionEditor.getId())
+                        .kind(formDescriptionEditor.getKind())
+                        .label(label)
+                        .descriptionId(formDescriptionEditor.getDescriptionId())
+                        .build();
+
                 this.representationMetadataPersistenceService.save(createRepresentationInput, editingContext, representationMetadata, formDescriptionEditor.getTargetObjectId());
                 this.representationPersistenceService.save(createRepresentationInput, editingContext, formDescriptionEditor);
 
