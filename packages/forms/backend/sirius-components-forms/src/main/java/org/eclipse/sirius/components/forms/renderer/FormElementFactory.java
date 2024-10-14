@@ -156,7 +156,6 @@ public class FormElementFactory implements IElementFactory {
         List<BarChartEntry> entries = this.getBarChartEntries(props);
         Builder builder = BarChart.newBarChart(props.getId())
                 .descriptionId(props.getDescriptionId())
-                .label(props.getLabel())
                 .targetObjectId(props.getTargetObjectId())
                 .width(props.getWidth())
                 .height(props.getHeight())
@@ -175,7 +174,6 @@ public class FormElementFactory implements IElementFactory {
         org.eclipse.sirius.components.charts.piechart.PieChart.Builder builder = PieChart.newPieChart(props.getId())
                 .descriptionId(props.getDescriptionId())
                 .targetObjectId(props.getTargetObjectId())
-                .label(props.getLabel())
                 .entries(entries);
 
         if (props.getStyle() != null) {
@@ -216,7 +214,6 @@ public class FormElementFactory implements IElementFactory {
                 .toList();
 
         return Form.newForm(props.getId())
-                .label(props.getLabel())
                 .targetObjectId(props.getTargetObjectId())
                 .descriptionId(props.getDescriptionId())
                 .pages(pages)

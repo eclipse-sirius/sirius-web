@@ -53,11 +53,9 @@ public class RenameFormEventHandler implements IFormEventHandler {
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
         this.messageService = Objects.requireNonNull(messageService);
 
-        // @formatter:off
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
-        // @formatter:on
     }
 
     @Override
@@ -77,12 +75,9 @@ public class RenameFormEventHandler implements IFormEventHandler {
             RenameFormInput renameRepresentationInput = (RenameFormInput) formInput;
             String newLabel = renameRepresentationInput.newLabel();
 
-            // @formatter:off
             Form renamedForm = Form.newForm(form)
-                    .label(newLabel)
                     .pages(List.of()) // We don't store form pages, it will be re-render by the FormProcessor.
                     .build();
-            // @formatter:on
             this.representationPersistenceService.save(renameRepresentationInput, editingContext, renamedForm);
 
             payload = new RenameRepresentationSuccessPayload(formInput.id(), renamedForm);

@@ -18,6 +18,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationMetadataPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
@@ -31,6 +32,7 @@ import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.springframework.stereotype.Service;
@@ -50,6 +52,8 @@ public class CreateTreeEventHandler implements IEditingContextEventHandler {
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
+    private final IRepresentationMetadataPersistenceService representationMetadataPersistenceService;
+
     private final IRepresentationPersistenceService representationPersistenceService;
 
     private final TreeCreationService treeCreationService;
@@ -60,9 +64,10 @@ public class CreateTreeEventHandler implements IEditingContextEventHandler {
 
     private final Counter counter;
 
-    public CreateTreeEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationPersistenceService representationPersistenceService,
+    public CreateTreeEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationMetadataPersistenceService representationMetadataPersistenceService, IRepresentationPersistenceService representationPersistenceService,
             TreeCreationService treeCreationService, IObjectService objectService, ICollaborativeMessageService messageService, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+        this.representationMetadataPersistenceService = Objects.requireNonNull(representationMetadataPersistenceService);
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
         this.treeCreationService = Objects.requireNonNull(treeCreationService);
         this.objectService = Objects.requireNonNull(objectService);
@@ -101,11 +106,16 @@ public class CreateTreeEventHandler implements IEditingContextEventHandler {
                 TreeDescription treeDescription = optionalTreeDescription.get();
                 Object object = optionalObject.get();
 
-                Tree tree = this.treeCreationService.create(createRepresentationInput.representationName(), object, treeDescription, editingContext);
+                var variableManager = new VariableManager();
+                variableManager.put(VariableManager.SELF, object);
+                variableManager.put(TreeDescription.LABEL, createRepresentationInput.representationName());
+                String label = treeDescription.getLabelProvider().apply(variableManager).toString();
 
+                Tree tree = this.treeCreationService.create(object, treeDescription, editingContext);
+                var representationMetadata = new RepresentationMetadata(tree.getId(), tree.getKind(), label, tree.getDescriptionId());
+                this.representationMetadataPersistenceService.save(createRepresentationInput, editingContext, representationMetadata, tree.getTargetObjectId());
                 this.representationPersistenceService.save(createRepresentationInput, editingContext, tree);
 
-                var representationMetadata = new RepresentationMetadata(tree.getId(), tree.getKind(), tree.getLabel(), tree.getDescriptionId());
                 payload = new CreateRepresentationSuccessPayload(input.id(), representationMetadata);
                 changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_CREATION, editingContext.getId(), input);
             }

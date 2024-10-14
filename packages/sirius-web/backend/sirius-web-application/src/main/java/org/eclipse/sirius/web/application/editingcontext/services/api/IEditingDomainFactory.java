@@ -24,16 +24,4 @@ public interface IEditingDomainFactory {
 
     AdapterFactoryEditingDomain createEditingDomain(Project project);
 
-    /**
-     * Implementation which does nothing, used for mocks in unit tests.
-     *
-     * @author frouene
-     */
-    class NoOp implements IEditingDomainFactory {
-
-        @Override
-        public AdapterFactoryEditingDomain createEditingDomain(Project project) {
-            return null;
-        }
-    }
 }

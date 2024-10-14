@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,31 +12,30 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.api;
 
+import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.events.ICause;
-import org.eclipse.sirius.components.representations.IRepresentation;
 
 /**
- * Used to persist the representations.
+ * Used to persist representation metadata.
  *
- * @author sbegaudeau
+ * @author gcoutable
  */
-public interface IRepresentationPersistenceService {
+public interface IRepresentationMetadataPersistenceService {
 
-    void save(ICause cause, IEditingContext editingContext, IRepresentation representation);
+    void save(ICause cause, IEditingContext editingContext, RepresentationMetadata representationMetadata, String targetObjectId);
 
     /**
      * Empty implementation, used for mocks in unit tests.
      *
      * @author pcdavid
      */
-    class NoOp implements IRepresentationPersistenceService {
+    class NoOp implements IRepresentationMetadataPersistenceService {
 
         @Override
-        public void save(ICause cause, IEditingContext editingContext, IRepresentation representation) {
+        public void save(ICause cause, IEditingContext editingContext, RepresentationMetadata representationMetadata, String targetObjectId) {
             // Do nothing
         }
 
     }
-
 }

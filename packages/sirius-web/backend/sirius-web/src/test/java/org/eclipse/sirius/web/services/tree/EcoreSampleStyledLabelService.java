@@ -17,7 +17,9 @@ import java.util.List;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationMetadataPersistenceService;
 import org.eclipse.sirius.components.core.api.ILabelServiceDelegate;
+import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.core.api.labels.StyledStringFragment;
 import org.eclipse.sirius.components.core.api.labels.StyledStringFragmentStyle;
@@ -35,8 +37,8 @@ public class EcoreSampleStyledLabelService extends DefaultLabelService implement
 
     private static final String NAME = "name";
 
-    public EcoreSampleStyledLabelService(LabelFeatureProviderRegistry labelFeatureProviderRegistry, ComposedAdapterFactory composedAdapterFactory, List<IRepresentationImageProvider> representationImageProviders) {
-        super(labelFeatureProviderRegistry, composedAdapterFactory, representationImageProviders);
+    public EcoreSampleStyledLabelService(List<IRepresentationMetadataProvider> representationMetadataProviders, IRepresentationMetadataPersistenceService representationMetadataPersistenceService, LabelFeatureProviderRegistry labelFeatureProviderRegistry, ComposedAdapterFactory composedAdapterFactory, List<IRepresentationImageProvider> representationImageProviders) {
+        super(representationMetadataProviders, labelFeatureProviderRegistry, composedAdapterFactory, representationImageProviders);
     }
 
     @Override

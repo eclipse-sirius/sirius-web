@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.charts.hierarchy.descriptions.HierarchyDesc
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationMetadataPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.charts.messages.ICollaborativeChartsMessageService;
@@ -32,6 +33,7 @@ import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -49,6 +51,8 @@ public class CreateHierarchyEventHandler implements IEditingContextEventHandler 
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
+    private final IRepresentationMetadataPersistenceService representationMetadataPersistenceService;
+
     private final IRepresentationPersistenceService representationPersistenceService;
 
     private final IObjectService objectService;
@@ -59,10 +63,12 @@ public class CreateHierarchyEventHandler implements IEditingContextEventHandler 
 
     private final Counter counter;
 
-    public CreateHierarchyEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationPersistenceService representationPersistenceService,
-            IObjectService objectService, ICollaborativeChartsMessageService messageService, HierarchyCreationService hierarchyCreationService, MeterRegistry meterRegistry) {
+    public CreateHierarchyEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationMetadataPersistenceService representationMetadataPersistenceService,
+            IRepresentationPersistenceService representationPersistenceService, IObjectService objectService, ICollaborativeChartsMessageService messageService,
+            HierarchyCreationService hierarchyCreationService, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
+        this.representationMetadataPersistenceService = Objects.requireNonNull(representationMetadataPersistenceService);
         this.objectService = Objects.requireNonNull(objectService);
         this.messageService = Objects.requireNonNull(messageService);
         this.hierarchyCreationService = Objects.requireNonNull(hierarchyCreationService);
@@ -101,10 +107,16 @@ public class CreateHierarchyEventHandler implements IEditingContextEventHandler 
                 Object object = optionalObject.get();
                 HierarchyDescription representationDescription = optionalHierarchyDescription.get();
 
-                Hierarchy hierarchy = this.hierarchyCreationService.create(createRepresentationInput, createRepresentationInput.representationName(), object, representationDescription, editingContext);
+                var variableManager = new VariableManager();
+                variableManager.put(VariableManager.SELF, object);
+                variableManager.put(HierarchyDescription.LABEL, createRepresentationInput.representationName());
+                String label = representationDescription.getLabelProvider().apply(variableManager);
+
+                Hierarchy hierarchy = this.hierarchyCreationService.create(object, representationDescription, editingContext);
+                var representationMetadata = new RepresentationMetadata(hierarchy.getId(), hierarchy.getKind(), label, hierarchy.getDescriptionId());
+                this.representationMetadataPersistenceService.save(createRepresentationInput, editingContext, representationMetadata, hierarchy.getTargetObjectId());
                 this.representationPersistenceService.save(createRepresentationInput, editingContext, hierarchy);
 
-                var representationMetadata = new RepresentationMetadata(hierarchy.getId(), hierarchy.getKind(), hierarchy.getLabel(), hierarchy.getDescriptionId());
                 payload = new CreateRepresentationSuccessPayload(input.id(), representationMetadata);
                 changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_CREATION, editingContext.getId(), input);
             }

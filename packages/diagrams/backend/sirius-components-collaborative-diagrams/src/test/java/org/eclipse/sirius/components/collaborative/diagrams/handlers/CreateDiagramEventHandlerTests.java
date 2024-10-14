@@ -22,6 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationMetadataPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
@@ -54,7 +55,6 @@ public class CreateDiagramEventHandlerTests {
         IRepresentationDescriptionSearchService representationDescriptionSearchService = new IRepresentationDescriptionSearchService.NoOp() {
             @Override
             public Optional<IRepresentationDescription> findById(IEditingContext editingContext, String id) {
-                // @formatter:off
                 DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.randomUUID().toString())
                         .label("label")
                         .canCreatePredicate(variableManager -> Boolean.TRUE)
@@ -65,7 +65,6 @@ public class CreateDiagramEventHandlerTests {
                         .targetObjectIdProvider(variableManager -> "targetObjectId")
                         .dropHandler(variableManager -> new Failure(""))
                         .build();
-                // @formatter:on
 
                 return Optional.of(diagramDescription);
             }
@@ -74,7 +73,7 @@ public class CreateDiagramEventHandlerTests {
         AtomicBoolean hasBeenCalled = new AtomicBoolean();
         IDiagramCreationService diagramCreationService = new IDiagramCreationService.NoOp() {
             @Override
-            public Diagram create(String label, Object targetObject, DiagramDescription diagramDescription, IEditingContext editingContext) {
+            public Diagram create(Object targetObject, DiagramDescription diagramDescription, IEditingContext editingContext) {
                 hasBeenCalled.set(true);
                 return new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString());
             }
@@ -88,7 +87,7 @@ public class CreateDiagramEventHandlerTests {
             }
         };
 
-        CreateDiagramEventHandler handler = new CreateDiagramEventHandler(representationDescriptionSearchService, new IRepresentationPersistenceService.NoOp(), diagramCreationService, objectService,
+        CreateDiagramEventHandler handler = new CreateDiagramEventHandler(representationDescriptionSearchService, new IRepresentationMetadataPersistenceService.NoOp(), new IRepresentationPersistenceService.NoOp(), diagramCreationService, objectService,
                 new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
 
         var input = new CreateRepresentationInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID().toString(), "objectId", "representationName");
