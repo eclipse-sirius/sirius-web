@@ -50,6 +50,16 @@ public class TreeBuilders {
     }
 
     /**
+     * Instantiate a ForTreeItemLabelElementDescriptionBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public ForTreeItemLabelElementDescriptionBuilder newForTreeItemLabelElementDescription() {
+        return new ForTreeItemLabelElementDescriptionBuilder();
+    }
+
+    /**
      * Instantiate a TreeItemLabelFragmentDescriptionBuilder .
      *
      * @author BuilderGenerator

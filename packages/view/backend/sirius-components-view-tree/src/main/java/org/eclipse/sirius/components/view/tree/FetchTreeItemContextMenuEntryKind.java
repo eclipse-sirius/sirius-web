@@ -22,9 +22,9 @@ import org.eclipse.emf.common.util.Enumerator;
  * <!-- begin-user-doc --> A representation of the literals of the enumeration '<em><b>Fetch Tree Item Context Menu
  * Entry Kind</b></em>', and utility methods for working with them. <!-- end-user-doc -->
  *
+ * @see org.eclipse.sirius.components.view.tree.TreePackage#getFetchTreeItemContextMenuEntryKind()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.view.tree.TreePackage#getFetchTreeItemContextMenuEntryKind()
  */
 public enum FetchTreeItemContextMenuEntryKind implements Enumerator {
     /**

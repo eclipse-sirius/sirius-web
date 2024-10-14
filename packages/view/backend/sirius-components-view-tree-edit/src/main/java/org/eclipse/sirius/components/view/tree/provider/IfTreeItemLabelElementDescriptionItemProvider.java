@@ -17,11 +17,13 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.view.tree.IfTreeItemLabelElementDescription;
+import org.eclipse.sirius.components.view.tree.TreeFactory;
 import org.eclipse.sirius.components.view.tree.TreePackage;
 
 /**
@@ -52,7 +54,6 @@ public class IfTreeItemLabelElementDescriptionItemProvider extends TreeItemLabel
             super.getPropertyDescriptors(object);
 
             this.addPredicateExpressionPropertyDescriptor(object);
-            this.addChildrenPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -71,15 +72,33 @@ public class IfTreeItemLabelElementDescriptionItemProvider extends TreeItemLabel
     }
 
     /**
-     * This adds a property descriptor for the Children feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+     * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      */
-    protected void addChildrenPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_IfTreeItemLabelElementDescription_children_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_IfTreeItemLabelElementDescription_children_feature", "_UI_IfTreeItemLabelElementDescription_type"),
-                TreePackage.Literals.IF_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION__CHILDREN, true, false, true, null, null, null));
+    @Override
+    public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
+        if (this.childrenFeatures == null) {
+            super.getChildrenFeatures(object);
+            this.childrenFeatures.add(TreePackage.Literals.IF_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION__CHILDREN);
+        }
+        return this.childrenFeatures;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    protected EStructuralFeature getChildFeature(Object object, Object child) {
+        // Check the type of the specified child object and return the proper feature to use for
+        // adding (see {@link AddCommand}) it as a child.
+
+        return super.getChildFeature(object, child);
     }
 
     /**
@@ -128,6 +147,9 @@ public class IfTreeItemLabelElementDescriptionItemProvider extends TreeItemLabel
             case TreePackage.IF_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION__PREDICATE_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
+            case TreePackage.IF_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION__CHILDREN:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+                return;
         }
         super.notifyChanged(notification);
     }
@@ -141,6 +163,12 @@ public class IfTreeItemLabelElementDescriptionItemProvider extends TreeItemLabel
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
+
+        newChildDescriptors.add(this.createChildParameter(TreePackage.Literals.IF_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION__CHILDREN, TreeFactory.eINSTANCE.createIfTreeItemLabelElementDescription()));
+
+        newChildDescriptors.add(this.createChildParameter(TreePackage.Literals.IF_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION__CHILDREN, TreeFactory.eINSTANCE.createForTreeItemLabelElementDescription()));
+
+        newChildDescriptors.add(this.createChildParameter(TreePackage.Literals.IF_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION__CHILDREN, TreeFactory.eINSTANCE.createTreeItemLabelFragmentDescription()));
     }
 
 }

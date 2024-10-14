@@ -305,7 +305,7 @@ public interface TreePackage extends EPackage {
      * @see org.eclipse.sirius.components.view.tree.impl.TreePackageImpl#getTreeItemLabelElementDescription()
      * @generated
      */
-    int TREE_ITEM_LABEL_ELEMENT_DESCRIPTION = 4;
+    int TREE_ITEM_LABEL_ELEMENT_DESCRIPTION = 5;
 
     /**
      * The number of structural features of the '<em>Item Label Element Description</em>' class. <!-- begin-user-doc -->
@@ -374,6 +374,61 @@ public interface TreePackage extends EPackage {
 
     /**
      * The meta object id for the
+     * '{@link org.eclipse.sirius.components.view.tree.impl.ForTreeItemLabelElementDescriptionImpl <em>For Tree Item
+     * Label Element Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.tree.impl.ForTreeItemLabelElementDescriptionImpl
+     * @see org.eclipse.sirius.components.view.tree.impl.TreePackageImpl#getForTreeItemLabelElementDescription()
+     * @generated
+     */
+    int FOR_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION = 3;
+
+    /**
+     * The feature id for the '<em><b>Iterator</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FOR_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION__ITERATOR = TREE_ITEM_LABEL_ELEMENT_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Iterable Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FOR_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION__ITERABLE_EXPRESSION = TREE_ITEM_LABEL_ELEMENT_DESCRIPTION_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FOR_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION__CHILDREN = TREE_ITEM_LABEL_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
+
+    /**
+     * The number of structural features of the '<em>For Tree Item Label Element Description</em>' class. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FOR_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION_FEATURE_COUNT = TREE_ITEM_LABEL_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
+
+    /**
+     * The number of operations of the '<em>For Tree Item Label Element Description</em>' class. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FOR_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION_OPERATION_COUNT = TREE_ITEM_LABEL_ELEMENT_DESCRIPTION_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the
      * '{@link org.eclipse.sirius.components.view.tree.impl.TreeItemLabelFragmentDescriptionImpl <em>Item Label Fragment
      * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -381,7 +436,7 @@ public interface TreePackage extends EPackage {
      * @see org.eclipse.sirius.components.view.tree.impl.TreePackageImpl#getTreeItemLabelFragmentDescription()
      * @generated
      */
-    int TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION = 3;
+    int TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION = 4;
 
     /**
      * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -426,7 +481,7 @@ public interface TreePackage extends EPackage {
      * @see org.eclipse.sirius.components.view.tree.impl.TreePackageImpl#getTreeItemContextMenuEntry()
      * @generated
      */
-    int TREE_ITEM_CONTEXT_MENU_ENTRY = 5;
+    int TREE_ITEM_CONTEXT_MENU_ENTRY = 6;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -490,7 +545,7 @@ public interface TreePackage extends EPackage {
      * @see org.eclipse.sirius.components.view.tree.impl.TreePackageImpl#getSingleClickTreeItemContextMenuEntry()
      * @generated
      */
-    int SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY = 6;
+    int SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY = 7;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -562,7 +617,7 @@ public interface TreePackage extends EPackage {
      * @see org.eclipse.sirius.components.view.tree.impl.TreePackageImpl#getFetchTreeItemContextMenuEntry()
      * @generated
      */
-    int FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY = 7;
+    int FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY = 8;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -641,7 +696,7 @@ public interface TreePackage extends EPackage {
      * @see org.eclipse.sirius.components.view.tree.impl.TreePackageImpl#getFetchTreeItemContextMenuEntryKind()
      * @generated
      */
-    int FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY_KIND = 8;
+    int FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY_KIND = 9;
 
     /**
      * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -896,6 +951,53 @@ public interface TreePackage extends EPackage {
      * @generated
      */
     EReference getIfTreeItemLabelElementDescription_Children();
+
+    /**
+     * Returns the meta object for class
+     * '{@link org.eclipse.sirius.components.view.tree.ForTreeItemLabelElementDescription <em>For Tree Item Label
+     * Element Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>For Tree Item Label Element Description</em>'.
+     * @see org.eclipse.sirius.components.view.tree.ForTreeItemLabelElementDescription
+     * @generated
+     */
+    EClass getForTreeItemLabelElementDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.tree.ForTreeItemLabelElementDescription#getIterator
+     * <em>Iterator</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Iterator</em>'.
+     * @see org.eclipse.sirius.components.view.tree.ForTreeItemLabelElementDescription#getIterator()
+     * @see #getForTreeItemLabelElementDescription()
+     * @generated
+     */
+    EAttribute getForTreeItemLabelElementDescription_Iterator();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.tree.ForTreeItemLabelElementDescription#getIterableExpression
+     * <em>Iterable Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Iterable Expression</em>'.
+     * @see org.eclipse.sirius.components.view.tree.ForTreeItemLabelElementDescription#getIterableExpression()
+     * @see #getForTreeItemLabelElementDescription()
+     * @generated
+     */
+    EAttribute getForTreeItemLabelElementDescription_IterableExpression();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.tree.ForTreeItemLabelElementDescription#getChildren
+     * <em>Children</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Children</em>'.
+     * @see org.eclipse.sirius.components.view.tree.ForTreeItemLabelElementDescription#getChildren()
+     * @see #getForTreeItemLabelElementDescription()
+     * @generated
+     */
+    EReference getForTreeItemLabelElementDescription_Children();
 
     /**
      * Returns the meta object for class
@@ -1266,6 +1368,41 @@ public interface TreePackage extends EPackage {
          * @generated
          */
         EReference IF_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION__CHILDREN = eINSTANCE.getIfTreeItemLabelElementDescription_Children();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.tree.impl.ForTreeItemLabelElementDescriptionImpl <em>For Tree Item
+         * Label Element Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.tree.impl.ForTreeItemLabelElementDescriptionImpl
+         * @see org.eclipse.sirius.components.view.tree.impl.TreePackageImpl#getForTreeItemLabelElementDescription()
+         * @generated
+         */
+        EClass FOR_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION = eINSTANCE.getForTreeItemLabelElementDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Iterator</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute FOR_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION__ITERATOR = eINSTANCE.getForTreeItemLabelElementDescription_Iterator();
+
+        /**
+         * The meta object literal for the '<em><b>Iterable Expression</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute FOR_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION__ITERABLE_EXPRESSION = eINSTANCE.getForTreeItemLabelElementDescription_IterableExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Children</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference FOR_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION__CHILDREN = eINSTANCE.getForTreeItemLabelElementDescription_Children();
 
         /**
          * The meta object literal for the

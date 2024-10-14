@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.tree;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -22,6 +23,7 @@ import org.eclipse.sirius.components.core.api.labels.StyledStringFragment;
 import org.eclipse.sirius.components.core.api.labels.StyledStringFragmentStyle;
 import org.eclipse.sirius.components.core.api.labels.UnderLineStyle;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
+import org.eclipse.sirius.components.view.tree.ForTreeItemLabelElementDescription;
 import org.eclipse.sirius.components.view.tree.IfTreeItemLabelElementDescription;
 import org.eclipse.sirius.components.view.tree.TreeItemLabelDescription;
 import org.eclipse.sirius.components.view.tree.TreeItemLabelElementDescription;
@@ -61,6 +63,8 @@ public class TreeItemStyleConverter {
                         .flatMap(tiled -> this.convertElement(tiled).stream())
                         .toList();
             }
+        } else if (element instanceof ForTreeItemLabelElementDescription forElement) {
+            result = this.convertForElementDescription(forElement);
         }
         return result;
     }
@@ -91,11 +95,29 @@ public class TreeItemStyleConverter {
         return new StyledStringFragment(text, styleBuilder.build());
     }
 
+    private List<StyledStringFragment> convertForElementDescription(ForTreeItemLabelElementDescription forElement) {
+        var result = new ArrayList<StyledStringFragment>();
+        var iterable = evaluateObjectList(forElement.getIterableExpression());
+        iterable.forEach(iteration -> {
+            variables.put(forElement.getIterator(), iteration);
+            result.addAll(forElement.getChildren().stream()
+                    .flatMap(tiled -> this.convertElement(tiled).stream())
+                    .toList());
+        });
+        return result;
+    }
+
     private Optional<String> evaluateString(String expression) {
         return this.interpreter.evaluateExpression(this.variables, expression).asString();
     }
 
     private Optional<Boolean> evaluateBoolean(String expression) {
         return this.interpreter.evaluateExpression(this.variables, expression).asBoolean();
+    }
+
+    private List<Object> evaluateObjectList(String expression) {
+        return interpreter.evaluateExpression(variables, expression)
+                .asObjects()
+                .orElse(List.of());
     }
 }

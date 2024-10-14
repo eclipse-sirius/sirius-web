@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntryKind;
+import org.eclipse.sirius.components.view.tree.ForTreeItemLabelElementDescription;
 import org.eclipse.sirius.components.view.tree.IfTreeItemLabelElementDescription;
 import org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.TreeDescription;
@@ -74,6 +75,8 @@ public class TreeFactoryImpl extends EFactoryImpl implements TreeFactory {
                 return this.createTreeItemLabelDescription();
             case TreePackage.IF_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION:
                 return this.createIfTreeItemLabelElementDescription();
+            case TreePackage.FOR_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION:
+                return this.createForTreeItemLabelElementDescription();
             case TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION:
                 return this.createTreeItemLabelFragmentDescription();
             case TreePackage.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY:
@@ -146,6 +149,17 @@ public class TreeFactoryImpl extends EFactoryImpl implements TreeFactory {
     public IfTreeItemLabelElementDescription createIfTreeItemLabelElementDescription() {
         IfTreeItemLabelElementDescriptionImpl ifTreeItemLabelElementDescription = new IfTreeItemLabelElementDescriptionImpl();
         return ifTreeItemLabelElementDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ForTreeItemLabelElementDescription createForTreeItemLabelElementDescription() {
+        ForTreeItemLabelElementDescriptionImpl forTreeItemLabelElementDescription = new ForTreeItemLabelElementDescriptionImpl();
+        return forTreeItemLabelElementDescription;
     }
 
     /**

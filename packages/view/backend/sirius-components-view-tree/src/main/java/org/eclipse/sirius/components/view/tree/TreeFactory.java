@@ -56,6 +56,15 @@ public interface TreeFactory extends EFactory {
     IfTreeItemLabelElementDescription createIfTreeItemLabelElementDescription();
 
     /**
+     * Returns a new object of class '<em>For Tree Item Label Element Description</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>For Tree Item Label Element Description</em>'.
+     * @generated
+     */
+    ForTreeItemLabelElementDescription createForTreeItemLabelElementDescription();
+
+    /**
      * Returns a new object of class '<em>Item Label Fragment Description</em>'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
