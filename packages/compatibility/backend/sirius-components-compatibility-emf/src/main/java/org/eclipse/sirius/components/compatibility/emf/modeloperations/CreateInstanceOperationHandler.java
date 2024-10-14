@@ -26,10 +26,9 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.api.IModelOperationHandler;
-import org.eclipse.sirius.components.emf.EPackageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
+import org.eclipse.sirius.components.emf.EPackageService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -57,8 +56,6 @@ public class CreateInstanceOperationHandler implements IModelOperationHandler {
 
     private final IObjectService objectService;
 
-    private final IRepresentationMetadataSearchService representationMetadataSearchService;
-
     private final IIdentifierProvider identifierProvider;
 
     private final AQLInterpreter interpreter;
@@ -69,11 +66,10 @@ public class CreateInstanceOperationHandler implements IModelOperationHandler {
 
     private final CreateInstance createInstance;
 
-    public CreateInstanceOperationHandler(IObjectService objectService, IRepresentationMetadataSearchService representationMetadataSearchService, IIdentifierProvider identifierProvider,
+    public CreateInstanceOperationHandler(IObjectService objectService, IIdentifierProvider identifierProvider,
             AQLInterpreter interpreter, EPackageService ePackageService, ChildModelOperationHandler childModelOperationHandler, CreateInstance createInstance) {
         this.objectService = Objects.requireNonNull(objectService);
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
-        this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.interpreter = Objects.requireNonNull(interpreter);
         this.ePackageService = Objects.requireNonNull(ePackageService);
         this.childModelOperationHandler = Objects.requireNonNull(childModelOperationHandler);
@@ -133,6 +129,6 @@ public class CreateInstanceOperationHandler implements IModelOperationHandler {
         }
 
         List<ModelOperation> subModelOperations = this.createInstance.getSubModelOperations();
-        return this.childModelOperationHandler.handle(this.objectService, this.representationMetadataSearchService, this.identifierProvider, this.interpreter, childVariables, subModelOperations);
+        return this.childModelOperationHandler.handle(this.objectService, this.identifierProvider, this.interpreter, childVariables, subModelOperations);
     }
 }

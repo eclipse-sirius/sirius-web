@@ -25,12 +25,14 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.data.MigrationIdentifiers;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,7 +51,10 @@ public class MigrationParticipantOrderTests extends AbstractIntegrationTests {
     private IEditingContextSearchService editingContextSearchService;
 
     @Autowired
-    private IRepresentationDataSearchService representationDataSearchService;
+    private IRepresentationMetadataSearchService representationMetadataSearchService;
+
+    @Autowired
+    private IRepresentationContentSearchService representationContentSearchService;
 
     @Autowired
     private IRepresentationSearchService representationSearchService;
@@ -73,14 +78,14 @@ public class MigrationParticipantOrderTests extends AbstractIntegrationTests {
 
         this.representationPersistenceService.save(null, optionalEditingContext.get(), optionalRepresentation.get());
 
-        var optionalUpdatedRepresentationData = this.representationDataSearchService.findContentById(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM_HIERARCHY);
-        assertThat(optionalUpdatedRepresentationData).isPresent();
+        var optionalUpdatedRepresentationContent = this.representationContentSearchService.findContentByRepresentationMetadata(AggregateReference.to(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM_HIERARCHY));
+        assertThat(optionalUpdatedRepresentationContent).isPresent();
 
-        var updatedRepresentationData = optionalUpdatedRepresentationData.get();
+        var updatedRepresentationContent = optionalUpdatedRepresentationContent.get();
 
-        assertThat(updatedRepresentationData.migrationVersion()).isEqualTo("9999.12.99-300012310900");
+        assertThat(updatedRepresentationContent.getMigrationVersion()).isEqualTo("9999.12.99-300012310900");
         // The name is empty because we registered an anonymous representation migration participant.
-        assertThat(updatedRepresentationData.lastMigrationPerformed()).isEqualTo("");
+        assertThat(updatedRepresentationContent.getLastMigrationPerformed()).isEqualTo("");
     }
 
     @Test
@@ -98,13 +103,13 @@ public class MigrationParticipantOrderTests extends AbstractIntegrationTests {
 
         this.representationPersistenceService.save(null, optionalEditingContext.get(), newHierarchy);
 
-        var optionalUpdatedRepresentationData = this.representationDataSearchService.findContentById(UUID.fromString(newHierarchy.getId()));
-        assertThat(optionalUpdatedRepresentationData).isPresent();
-        var updatedRepresentationData = optionalUpdatedRepresentationData.get();
+        var optionalUpdatedRepresentationContent = this.representationContentSearchService.findContentByRepresentationMetadata(AggregateReference.to(UUID.fromString(newHierarchy.getId())));
+        assertThat(optionalUpdatedRepresentationContent).isPresent();
+        var updatedRepresentationContent = optionalUpdatedRepresentationContent.get();
 
-        assertThat(updatedRepresentationData.migrationVersion()).isEqualTo("9999.12.99-300012310900");
+        assertThat(updatedRepresentationContent.getMigrationVersion()).isEqualTo("9999.12.99-300012310900");
         // The name is not empty because the initial representation migration participant is initialized with "none"
-        assertThat(updatedRepresentationData.lastMigrationPerformed()).isEqualTo("none");
+        assertThat(updatedRepresentationContent.getLastMigrationPerformed()).isEqualTo("none");
     }
 
     @Test

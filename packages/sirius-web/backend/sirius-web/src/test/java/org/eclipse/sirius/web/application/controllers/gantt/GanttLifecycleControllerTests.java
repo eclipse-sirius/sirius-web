@@ -37,8 +37,8 @@ import org.eclipse.sirius.components.gantt.tests.navigation.GanttNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationData;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationDataRepository;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationContent;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationContentRepository;
 import org.eclipse.sirius.web.services.gantt.PapayaGanttDescriptionProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedGanttSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -80,7 +80,7 @@ public class GanttLifecycleControllerTests extends AbstractIntegrationTests {
     private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
     @Autowired
-    private IRepresentationDataRepository representationDataRepository;
+    private IRepresentationContentRepository representationContentRepository;
 
     @BeforeEach
     public void beforeEach() {
@@ -109,7 +109,7 @@ public class GanttLifecycleControllerTests extends AbstractIntegrationTests {
 
         var ganttId = new AtomicReference<String>();
         var taskId = new AtomicReference<String>();
-        var representationData = new AtomicReference<RepresentationData>();
+        var representationContent = new AtomicReference<RepresentationContent>();
 
         Consumer<Object> initialGanttContentConsumer = payload -> Optional.of(payload)
                 .filter(GanttRefreshedEventPayload.class::isInstance)
@@ -123,8 +123,8 @@ public class GanttLifecycleControllerTests extends AbstractIntegrationTests {
                     taskId.set(task.id());
 
                     var representationId = new UUIDParser().parse(gantt.getId()).orElseThrow(() -> new IllegalArgumentException("Invalid identifier"));
-                    this.representationDataRepository.findById(representationId)
-                            .ifPresentOrElse(representationData::set, () -> fail("Missing representation data"));
+                    this.representationContentRepository.findContentByRepresentationMetadataId(representationId)
+                            .ifPresentOrElse(representationContent::set, () -> fail("Missing representation data"));
                 }, () -> fail("Missing gantt"));
 
 
@@ -150,7 +150,7 @@ public class GanttLifecycleControllerTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing gantt"));
 
         Runnable reloadGantt = () -> {
-            this.representationDataRepository.save(representationData.get());
+            this.representationContentRepository.save(representationContent.get());
             TestTransaction.flagForCommit();
             TestTransaction.end();
             TestTransaction.start();

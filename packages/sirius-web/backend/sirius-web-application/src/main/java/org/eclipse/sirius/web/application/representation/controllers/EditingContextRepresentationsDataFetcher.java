@@ -19,11 +19,10 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.core.RepresentationMetadata;
-import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
 import org.eclipse.sirius.web.application.dto.PageInfoWithCount;
+import org.eclipse.sirius.web.application.representation.dto.RepresentationMetadataDTO;
 import org.eclipse.sirius.web.application.representation.services.api.IRepresentationApplicationService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -46,28 +45,25 @@ import graphql.schema.DataFetchingEnvironment;
  * @author sbegaudeau
  */
 @QueryDataFetcher(type = "EditingContext", field = "representations")
-public class EditingContextRepresentationsDataFetcher implements IDataFetcherWithFieldCoordinates<Connection<DataFetcherResult<RepresentationMetadata>>> {
+public class EditingContextRepresentationsDataFetcher implements IDataFetcherWithFieldCoordinates<Connection<DataFetcherResult<RepresentationMetadataDTO>>> {
 
     private static final String REPRESENTATION_IDS_ARGUMENT = "representationIds";
 
     private final IRepresentationApplicationService representationApplicationService;
 
-    private final IRepresentationMetadataSearchService representationMetadataSearchService;
-
-    public EditingContextRepresentationsDataFetcher(IRepresentationApplicationService representationApplicationService, IRepresentationMetadataSearchService representationMetadataSearchService) {
+    public EditingContextRepresentationsDataFetcher(IRepresentationApplicationService representationApplicationService) {
         this.representationApplicationService = Objects.requireNonNull(representationApplicationService);
-        this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
     }
 
     @Override
-    public Connection<DataFetcherResult<RepresentationMetadata>> get(DataFetchingEnvironment environment) throws Exception {
+    public Connection<DataFetcherResult<RepresentationMetadataDTO>> get(DataFetchingEnvironment environment) throws Exception {
         String editingContextId = environment.getSource();
-        Page<RepresentationMetadata> representationMetadataPage = Page.empty();
+        Page<RepresentationMetadataDTO> representationMetadataPage = Page.empty();
 
         List<String> representationIds = environment.getArgument(REPRESENTATION_IDS_ARGUMENT);
         if (representationIds != null) {
-            List<RepresentationMetadata> allRepresentationMetadata = representationIds.stream()
-                    .map(this.representationMetadataSearchService::findByRepresentationId)
+            List<RepresentationMetadataDTO> allRepresentationMetadata = representationIds.stream()
+                    .map(this.representationApplicationService::findRepresentationMetadataById)
                     .flatMap(Optional::stream)
                     .toList();
             representationMetadataPage = new PageImpl<>(allRepresentationMetadata, Pageable.unpaged(), allRepresentationMetadata.size());
@@ -78,14 +74,14 @@ public class EditingContextRepresentationsDataFetcher implements IDataFetcherWit
         return this.toConnection(environment, representationMetadataPage);
     }
 
-    private Connection<DataFetcherResult<RepresentationMetadata>> toConnection(DataFetchingEnvironment environment, Page<RepresentationMetadata> representationMetadataPage) {
+    private Connection<DataFetcherResult<RepresentationMetadataDTO>> toConnection(DataFetchingEnvironment environment, Page<RepresentationMetadataDTO> representationMetadataPage) {
         var edges = representationMetadataPage.stream().map(representationMetadata -> {
-            var globalId = new Relay().toGlobalId("RepresentationMetadata", representationMetadata.getId());
+            var globalId = new Relay().toGlobalId("RepresentationMetadata", representationMetadata.id().toString());
             var cursor = new DefaultConnectionCursor(globalId);
 
             Map<String, Object> localContext = new HashMap<>(environment.getLocalContext());
-            localContext.put(LocalContextConstants.REPRESENTATION_ID, representationMetadata.getId());
-            return (Edge<DataFetcherResult<RepresentationMetadata>>) new DefaultEdge<>(DataFetcherResult.<RepresentationMetadata>newResult()
+            localContext.put(LocalContextConstants.REPRESENTATION_ID, representationMetadata.id().toString());
+            return (Edge<DataFetcherResult<RepresentationMetadataDTO>>) new DefaultEdge<>(DataFetcherResult.<RepresentationMetadataDTO>newResult()
                     .data(representationMetadata)
                     .localContext(localContext)
                     .build(), cursor);

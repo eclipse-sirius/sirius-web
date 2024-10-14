@@ -25,11 +25,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
 import org.eclipse.sirius.components.core.CoreImageConstants;
-import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
@@ -42,8 +40,9 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.web.application.UUIDParser;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.projections.RepresentationDataMetadataOnly;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -69,14 +68,11 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
 
     private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
-    private final IRepresentationDataSearchService representationDataSearchService;
-
-    public DomainTreeRepresentationDescriptionProvider(IObjectService objectService, IURLParser urlParser, List<IRepresentationImageProvider> representationImageProviders, IRepresentationDataSearchService representationDataSearchService, IRepresentationMetadataSearchService representationMetadataSearchService) {
+    public DomainTreeRepresentationDescriptionProvider(IObjectService objectService, IURLParser urlParser, List<IRepresentationImageProvider> representationImageProviders, IRepresentationMetadataSearchService representationMetadataSearchService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.urlParser = Objects.requireNonNull(urlParser);
         this.representationImageProviders = Objects.requireNonNull(representationImageProviders);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
-        this.representationDataSearchService = Objects.requireNonNull(representationDataSearchService);
     }
 
     @Override
@@ -117,7 +113,7 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
 
         String id = null;
         if (self instanceof RepresentationMetadata representationMetadata) {
-            id = representationMetadata.getId();
+            id = representationMetadata.getId().toString();
         } else if (self instanceof Resource resource) {
             id = resource.getURI().path().substring(1);
         } else if (self instanceof EObject) {
@@ -189,10 +185,12 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
         boolean hasChildren = false;
         if (self instanceof EObject eObject) {
             hasChildren = !eObject.eContents().isEmpty();
+            var optionalEditingContextId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).flatMap(new UUIDParser()::parse);
 
-            if (!hasChildren) {
+            if (!hasChildren && optionalEditingContextId.isPresent()) {
+                var projectId = optionalEditingContextId.get();
                 String id = this.objectService.getId(eObject);
-                hasChildren = this.representationDataSearchService.existAnyRepresentationForTargetObjectId(id);
+                hasChildren = this.representationMetadataSearchService.existAnyRepresentationForProjectAndTargetObjectId(AggregateReference.to(projectId), id);
             }
 
             if (!hasChildren && self instanceof Entity) {
@@ -218,7 +216,6 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
 
     private List<Object> getDefaultChildren(VariableManager variableManager) {
         List<Object> result = new ArrayList<>();
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
         Object self = variableManager.getVariables().get(VariableManager.SELF);
         List<String> expandedIds = new ArrayList<>();
         Object objects = variableManager.getVariables().get(TreeRenderer.EXPANDED);
@@ -228,24 +225,25 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
                     .map(String.class::cast)
                     .toList();
         }
-        if (optionalEditingContext.isPresent()) {
-            IEditingContext editingContext = optionalEditingContext.get();
-            String id = this.getTreeItemId(variableManager);
-            if (expandedIds.contains(id)) {
-                if (self instanceof EObject) {
-                    var representationMetadata = new ArrayList<>(this.representationMetadataSearchService.findAllByTargetObjectId(editingContext, id));
+        String id = this.getTreeItemId(variableManager);
+        if (expandedIds.contains(id)) {
+            if (self instanceof EObject) {
+                var optionalProjectId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).flatMap(new UUIDParser()::parse);
+                if (optionalProjectId.isPresent()) {
+                    var projectId = optionalProjectId.get();
+                    var representationMetadata = new ArrayList<>(this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(projectId), id));
                     representationMetadata.sort(Comparator.comparing(RepresentationMetadata::getLabel));
                     result.addAll(representationMetadata);
-                    List<Object> contents = this.objectService.getContents(self);
-                    if (self instanceof Entity entity) {
-                        result.add(((InternalEObject) entity).eSetting(entity.eClass().getEStructuralFeature("superTypes")));
-                    }
-                    result.addAll(contents);
-                } else if (self instanceof Setting setting) {
-                    var value = setting.get(true);
-                    if (value instanceof Collection<?> collection) {
-                        result.addAll(collection);
-                    }
+                }
+                List<Object> contents = this.objectService.getContents(self);
+                if (self instanceof Entity entity) {
+                    result.add(((InternalEObject) entity).eSetting(entity.eClass().getEStructuralFeature("superTypes")));
+                }
+                result.addAll(contents);
+            } else if (self instanceof Setting setting) {
+                var value = setting.get(true);
+                if (value instanceof Collection<?> collection) {
+                    result.addAll(collection);
                 }
             }
         }
@@ -288,8 +286,8 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
         Object result = null;
 
         if (self instanceof RepresentationMetadata && optionalTreeItemId.isPresent() && optionalEditingContext.isPresent()) {
-            var optionalRepresentationMetadata = new UUIDParser().parse(optionalTreeItemId.get()).flatMap(this.representationDataSearchService::findMetadataById);
-            var repId = optionalRepresentationMetadata.map(RepresentationDataMetadataOnly::targetObjectId).orElse(null);
+            var optionalRepresentationMetadata = new UUIDParser().parse(optionalTreeItemId.get()).flatMap(this.representationMetadataSearchService::findMetadataById);
+            var repId = optionalRepresentationMetadata.map(RepresentationMetadata::getTargetObjectId).orElse(null);
             result = this.objectService.getObject(optionalEditingContext.get(), repId);
         } else if (self instanceof EObject eObject) {
             Object semanticContainer = eObject.eContainer();

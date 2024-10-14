@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo and others.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,7 +47,7 @@ public class RemoveElementOperationHandlerTests {
 
         this.removeElementOperation = ToolFactory.eINSTANCE.createRemoveElement();
 
-        this.removeElementOperationHandler = new RemoveElementOperationHandler(this.operationTestContext.getObjectService(), this.operationTestContext.getRepresentationMetadataSearchService(),
+        this.removeElementOperationHandler = new RemoveElementOperationHandler(this.operationTestContext.getObjectService(),
                 this.operationTestContext.getIdentifierProvider(), this.operationTestContext.getInterpreter(), new ChildModelOperationHandler(List.of()), this.removeElementOperation);
     }
 
