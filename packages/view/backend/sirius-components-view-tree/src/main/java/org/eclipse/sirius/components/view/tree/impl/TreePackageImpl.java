@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntryKind;
+import org.eclipse.sirius.components.view.tree.ForTreeItemLabelElementDescription;
 import org.eclipse.sirius.components.view.tree.IfTreeItemLabelElementDescription;
 import org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.TreeDescription;
@@ -58,6 +59,13 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
      * @generated
      */
     private EClass ifTreeItemLabelElementDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass forTreeItemLabelElementDescriptionEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -395,6 +403,46 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
      * @generated
      */
     @Override
+    public EClass getForTreeItemLabelElementDescription() {
+        return this.forTreeItemLabelElementDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getForTreeItemLabelElementDescription_Iterator() {
+        return (EAttribute) this.forTreeItemLabelElementDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getForTreeItemLabelElementDescription_IterableExpression() {
+        return (EAttribute) this.forTreeItemLabelElementDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getForTreeItemLabelElementDescription_Children() {
+        return (EReference) this.forTreeItemLabelElementDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getTreeItemLabelFragmentDescription() {
         return this.treeItemLabelFragmentDescriptionEClass;
     }
@@ -585,6 +633,11 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
         this.createEAttribute(this.ifTreeItemLabelElementDescriptionEClass, IF_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION__PREDICATE_EXPRESSION);
         this.createEReference(this.ifTreeItemLabelElementDescriptionEClass, IF_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION__CHILDREN);
 
+        this.forTreeItemLabelElementDescriptionEClass = this.createEClass(FOR_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION);
+        this.createEAttribute(this.forTreeItemLabelElementDescriptionEClass, FOR_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION__ITERATOR);
+        this.createEAttribute(this.forTreeItemLabelElementDescriptionEClass, FOR_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION__ITERABLE_EXPRESSION);
+        this.createEReference(this.forTreeItemLabelElementDescriptionEClass, FOR_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION__CHILDREN);
+
         this.treeItemLabelFragmentDescriptionEClass = this.createEClass(TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION);
         this.createEAttribute(this.treeItemLabelFragmentDescriptionEClass, TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__LABEL_EXPRESSION);
         this.createEReference(this.treeItemLabelFragmentDescriptionEClass, TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__STYLE);
@@ -634,6 +687,7 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
         // Add supertypes to classes
         this.treeDescriptionEClass.getESuperTypes().add(theViewPackage.getRepresentationDescription());
         this.ifTreeItemLabelElementDescriptionEClass.getESuperTypes().add(this.getTreeItemLabelElementDescription());
+        this.forTreeItemLabelElementDescriptionEClass.getESuperTypes().add(this.getTreeItemLabelElementDescription());
         this.treeItemLabelFragmentDescriptionEClass.getESuperTypes().add(this.getTreeItemLabelElementDescription());
         this.singleClickTreeItemContextMenuEntryEClass.getESuperTypes().add(this.getTreeItemContextMenuEntry());
         this.fetchTreeItemContextMenuEntryEClass.getESuperTypes().add(this.getTreeItemContextMenuEntry());
@@ -681,6 +735,15 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
         this.initEAttribute(this.getIfTreeItemLabelElementDescription_PredicateExpression(), theViewPackage.getInterpretedExpression(), "predicateExpression", null, 0, 1,
                 IfTreeItemLabelElementDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getIfTreeItemLabelElementDescription_Children(), this.getTreeItemLabelElementDescription(), null, "children", null, 1, -1, IfTreeItemLabelElementDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.forTreeItemLabelElementDescriptionEClass, ForTreeItemLabelElementDescription.class, "ForTreeItemLabelElementDescription", !IS_ABSTRACT, !IS_INTERFACE,
+                IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getForTreeItemLabelElementDescription_Iterator(), this.ecorePackage.getEString(), "iterator", null, 0, 1, ForTreeItemLabelElementDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getForTreeItemLabelElementDescription_IterableExpression(), theViewPackage.getInterpretedExpression(), "iterableExpression", null, 0, 1,
+                ForTreeItemLabelElementDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getForTreeItemLabelElementDescription_Children(), this.getTreeItemLabelElementDescription(), null, "children", null, 1, -1, ForTreeItemLabelElementDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.treeItemLabelFragmentDescriptionEClass, TreeItemLabelFragmentDescription.class, "TreeItemLabelFragmentDescription", !IS_ABSTRACT, !IS_INTERFACE,

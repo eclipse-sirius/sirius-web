@@ -39,7 +39,12 @@
     </genClasses>
     <genClasses ecoreClass="tree.ecore#//IfTreeItemLabelElementDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//IfTreeItemLabelElementDescription/predicateExpression"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference tree.ecore#//IfTreeItemLabelElementDescription/children"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference tree.ecore#//IfTreeItemLabelElementDescription/children"/>
+    </genClasses>
+    <genClasses ecoreClass="tree.ecore#//ForTreeItemLabelElementDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//ForTreeItemLabelElementDescription/iterator"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//ForTreeItemLabelElementDescription/iterableExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference tree.ecore#//ForTreeItemLabelElementDescription/children"/>
     </genClasses>
     <genClasses ecoreClass="tree.ecore#//TreeItemLabelFragmentDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeItemLabelFragmentDescription/labelExpression"/>

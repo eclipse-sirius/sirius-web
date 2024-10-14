@@ -161,6 +161,15 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
                 .children(
                         this.getEntityKeyFragment(textStylePalette),
                         this.getEntityValueFragment(textStylePalette),
+                        new TreeBuilders().newTreeItemLabelFragmentDescription()
+                                .labelExpression(" {")
+                                .style(this.getTextStyleByName(textStylePalette, NORMAL_TEXT_STYLE_NAME))
+                                .build(),
+                        this.getAttributesFragments(textStylePalette),
+                        new TreeBuilders().newTreeItemLabelFragmentDescription()
+                                .labelExpression("}")
+                                .style(this.getTextStyleByName(textStylePalette, NORMAL_TEXT_STYLE_NAME))
+                                .build(),
                         this.getAbstractEntityValueFragment(textStylePalette))
                 .build();
     }
@@ -173,6 +182,13 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
                         .labelExpression(AQL_SELF_GET_TREE_ITEM_LABEL)
                         // no style specified => default one will be chosen
                         .build())
+                .build();
+    }
+
+    private TreeItemLabelElementDescription getEntityKeyFragment(TextStylePalette textStylePalette) {
+        return new TreeBuilders().newTreeItemLabelFragmentDescription()
+                .labelExpression("aql:'[Entity] '")
+                .style(this.getTextStyleByName(textStylePalette, BROWN_BOLD_TEXT_STYLE_NAME))
                 .build();
     }
 
@@ -193,10 +209,23 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
                 .build();
     }
 
-    private TreeItemLabelElementDescription getEntityKeyFragment(TextStylePalette textStylePalette) {
-        return new TreeBuilders().newTreeItemLabelFragmentDescription()
-                .labelExpression("aql:'[Entity] '")
-                .style(this.getTextStyleByName(textStylePalette, BROWN_BOLD_TEXT_STYLE_NAME))
+    private TreeItemLabelElementDescription getAttributesFragments(TextStylePalette textStylePalette) {
+        return new TreeBuilders().newForTreeItemLabelElementDescription()
+                .iterator("attribute")
+                .iterableExpression("aql:self.attributes")
+                .children(
+                        new TreeBuilders().newTreeItemLabelFragmentDescription()
+                                .labelExpression("aql:attribute.name")
+                                .style(this.getTextStyleByName(textStylePalette, NORMAL_TEXT_STYLE_NAME))
+                                .build(),
+                        new TreeBuilders().newIfTreeItemLabelElementDescription()
+                                .predicateExpression("aql:self.attributes->indexOf(attribute) < (self.attributes->size())")
+                                .children(new TreeBuilders().newTreeItemLabelFragmentDescription()
+                                        .labelExpression(", ")
+                                        .style(this.getTextStyleByName(textStylePalette, NORMAL_TEXT_STYLE_NAME))
+                                        .build())
+                                .build()
+                )
                 .build();
     }
 

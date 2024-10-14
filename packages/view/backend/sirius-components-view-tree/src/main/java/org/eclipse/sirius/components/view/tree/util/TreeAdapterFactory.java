@@ -18,6 +18,7 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry;
+import org.eclipse.sirius.components.view.tree.ForTreeItemLabelElementDescription;
 import org.eclipse.sirius.components.view.tree.IfTreeItemLabelElementDescription;
 import org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.TreeDescription;
@@ -62,6 +63,11 @@ public class TreeAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseIfTreeItemLabelElementDescription(IfTreeItemLabelElementDescription object) {
             return TreeAdapterFactory.this.createIfTreeItemLabelElementDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseForTreeItemLabelElementDescription(ForTreeItemLabelElementDescription object) {
+            return TreeAdapterFactory.this.createForTreeItemLabelElementDescriptionAdapter();
         }
 
         @Override
@@ -182,6 +188,21 @@ public class TreeAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createIfTreeItemLabelElementDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.tree.ForTreeItemLabelElementDescription <em>For Tree Item Label
+     * Element Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.tree.ForTreeItemLabelElementDescription
+     * @generated
+     */
+    public Adapter createForTreeItemLabelElementDescriptionAdapter() {
         return null;
     }
 
