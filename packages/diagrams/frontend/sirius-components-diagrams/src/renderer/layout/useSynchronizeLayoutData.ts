@@ -27,7 +27,9 @@ import {
   GQLNodeLayoutData,
   GQLSuccessPayload,
   UseSynchronizeLayoutDataValue,
+  GQLLabelLayoutData,
 } from './useSynchronizeLayoutData.types';
+import { EdgeLabel } from '../DiagramRenderer.types';
 
 const layoutDiagramMutation = gql`
   mutation layoutDiagram($input: LayoutDiagramInput!) {
@@ -78,6 +80,7 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
 
   const toDiagramLayoutData = (diagram: RawDiagram): GQLDiagramLayoutData => {
     const nodeLayoutData: GQLNodeLayoutData[] = [];
+    const labelLayoutData: GQLLabelLayoutData[] = [];
 
     diagram.nodes.forEach((node) => {
       const {
@@ -101,9 +104,57 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
           resizedByUser,
         });
       }
+      const outsideLabelPosition = Object.values(node.data.outsideLabels)[0];
+      if (outsideLabelPosition) {
+        labelLayoutData.push({
+          id: outsideLabelPosition.id,
+          position: {
+            x: outsideLabelPosition.position.x,
+            y: outsideLabelPosition.position.y,
+          },
+        });
+      }
+    });
+
+    diagram.edges.forEach((edge) => {
+      const centerLabel = edge.data?.label;
+      if (centerLabel) {
+        labelLayoutData.push({
+          id: centerLabel.id,
+          position: {
+            x: centerLabel.position.x,
+            y: centerLabel.position.y,
+          },
+        });
+      }
+      if (edge.data && 'beginLabel' in edge.data) {
+        const beginLabel = edge.data?.beginLabel as EdgeLabel;
+        if (beginLabel) {
+          labelLayoutData.push({
+            id: beginLabel.id,
+            position: {
+              x: beginLabel.position.x,
+              y: beginLabel.position.y,
+            },
+          });
+        }
+      }
+      if (edge.data && 'endLabel' in edge.data) {
+        const endLabel = edge.data?.endLabel as EdgeLabel;
+        if (endLabel) {
+          labelLayoutData.push({
+            id: endLabel.id,
+            position: {
+              x: endLabel.position.x,
+              y: endLabel.position.y,
+            },
+          });
+        }
+      }
     });
     return {
       nodeLayoutData,
+      labelLayoutData,
     };
   };
 

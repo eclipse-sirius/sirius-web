@@ -63,7 +63,11 @@ const labelStyle = (theme: Theme, style: React.CSSProperties, faded: Boolean): R
   };
 };
 
-const labelContentStyle = (theme: Theme, label: EdgeLabel | InsideLabel | OutsideLabel): React.CSSProperties => {
+const labelContentStyle = (
+  theme: Theme,
+  label: EdgeLabel | InsideLabel | OutsideLabel,
+  highlighted: boolean
+): React.CSSProperties => {
   const labelContentStyle: React.CSSProperties = {
     display: 'flex',
     alignItems: 'center',
@@ -79,7 +83,7 @@ const labelContentStyle = (theme: Theme, label: EdgeLabel | InsideLabel | Outsid
     default:
       break;
   }
-  return {
+  const style = {
     ...labelContentStyle,
     ...label.contentStyle,
     background: label.contentStyle.background ? getCSSColor(String(label.contentStyle.background), theme) : undefined,
@@ -87,6 +91,12 @@ const labelContentStyle = (theme: Theme, label: EdgeLabel | InsideLabel | Outsid
       ? getCSSColor(String(label.contentStyle.borderColor), theme)
       : undefined,
   };
+  if (highlighted) {
+    style.borderWidth = `1px`;
+    style.borderColor = theme.palette.selected;
+    style.borderStyle = 'dashed';
+  }
+  return style;
 };
 
 const labelOverflowStyle = (label: EdgeLabel | InsideLabel | OutsideLabel): React.CSSProperties => {
@@ -108,7 +118,7 @@ const labelOverflowStyle = (label: EdgeLabel | InsideLabel | OutsideLabel): Reac
   return style;
 };
 
-export const Label = memo(({ diagramElementId, label, faded }: LabelProps) => {
+export const Label = memo(({ diagramElementId, label, faded, highlighted }: LabelProps) => {
   const theme: Theme = useTheme();
   const { currentlyEditedLabelId, editingKey, resetDirectEdit } = useDiagramDirectEdit();
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
@@ -128,7 +138,7 @@ export const Label = memo(({ diagramElementId, label, faded }: LabelProps) => {
       <div
         data-id={`${label.id}-content`}
         data-testid={`Label content - ${label.text}`}
-        style={labelContentStyle(theme, label)}>
+        style={labelContentStyle(theme, label, !!highlighted)}>
         <IconOverlay iconURL={label.iconURL} alt={label.text} customIconStyle={{ marginRight: theme.spacing(1) }} />
         <div style={labelOverflowStyle(label)}>{label.text}</div>
       </div>

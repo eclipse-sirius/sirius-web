@@ -20,6 +20,7 @@ export interface UseSynchronizeLayoutDataValue {
 
 export interface GQLDiagramLayoutData {
   nodeLayoutData: GQLNodeLayoutData[];
+  labelLayoutData: GQLLabelLayoutData[];
 }
 
 export interface GQLNodeLayoutData {
@@ -27,6 +28,11 @@ export interface GQLNodeLayoutData {
   position: GQLPosition;
   size: GQLSize;
   resizedByUser: boolean;
+}
+
+export interface GQLLabelLayoutData {
+  id: string;
+  position: GQLPosition;
 }
 
 export interface GQLSize {
