@@ -23,6 +23,11 @@ declare module '@mui/material/styles' {
       background: React.CSSProperties['color'];
     };
     selected: React.CSSProperties['color'];
+    dropArea: {
+      backgroundColor: React.CSSProperties['color'];
+      color: React.CSSProperties['color'];
+      borderColor: React.CSSProperties['color'];
+    };
   }
 }
 
@@ -37,6 +42,11 @@ declare module '@mui/material/styles/createPalette' {
       background: React.CSSProperties['color'];
     };
     selected: React.CSSProperties['color'];
+    dropArea: {
+      backgroundColor: React.CSSProperties['color'];
+      color: React.CSSProperties['color'];
+      borderColor: React.CSSProperties['color'];
+    };
   }
   export interface PaletteOptions {
     navigation: {
@@ -48,5 +58,10 @@ declare module '@mui/material/styles/createPalette' {
       background: React.CSSProperties['color'];
     };
     selected: React.CSSProperties['color'];
+    dropArea: {
+      backgroundColor: React.CSSProperties['color'];
+      color: React.CSSProperties['color'];
+      borderColor: React.CSSProperties['color'];
+    };
   }
 }

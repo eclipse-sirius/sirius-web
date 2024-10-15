@@ -95,7 +95,7 @@ export function HelpTooltip({ editingContextId, formId, widgetId, children }: He
       title={state.content || ''}
       placement={'top'}
       arrow>
-      {children || <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} />}
+      {children || <HelpOutlineOutlined color="inherit" style={{ marginLeft: 8, fontSize: 16 }} />}
     </Tooltip>
   );
 }

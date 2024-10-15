@@ -66,6 +66,24 @@ export const baseTheme: Theme = createTheme({
       hover: '#BE1A7826',
       selected: '#BE1A7842',
     },
+    dropArea: {
+      backgroundColor: theme.palette.grey[100],
+      color: theme.palette.grey[600],
+      borderColor: theme.palette.grey[400],
+    },
+    formdescriptioneditor: {
+      widget: {
+        defaultBorderColor: 'whitesmoke',
+      },
+    },
+    portal: {
+      representationFrame: {
+        borderColor: theme.palette.grey[500],
+      },
+      frameHeader: {
+        backgroundColor: theme.palette.grey[300],
+      },
+    },
   },
 });
 

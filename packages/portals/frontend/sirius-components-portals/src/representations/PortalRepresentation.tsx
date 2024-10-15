@@ -42,10 +42,10 @@ const usePortalRepresentationStyles = makeStyles()((theme) => ({
     backgroundColor: theme.palette.background.default,
   },
   dropArea: {
-    backgroundColor: theme.palette.grey[200],
+    backgroundColor: theme.palette.dropArea.backgroundColor,
     borderWidth: '1px',
     borderStyle: 'dashed',
-    borderColor: theme.palette.grey[400],
+    borderColor: theme.palette.dropArea.borderColor,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',

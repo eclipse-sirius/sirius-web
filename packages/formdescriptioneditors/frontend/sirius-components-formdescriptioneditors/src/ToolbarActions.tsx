@@ -18,8 +18,8 @@ import AddIcon from '@mui/icons-material/Add';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { Theme } from '@mui/material/styles';
-import { makeStyles } from 'tss-react/mui';
 import { useEffect, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { addToolbarActionMutation, moveToolbarActionMutation } from './FormDescriptionEditorEventFragment';
 import {
   GQLAddToolbarActionInput,
@@ -50,8 +50,10 @@ const useToolbarActionsStyles = makeStyles()((theme: Theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'whitesmoke',
-    border: '1px solid whitesmoke',
+    backgroundColor: theme.palette.dropArea.backgroundColor,
+    borderWidth: '1px',
+    borderStyle: 'solid',
+    borderColor: theme.palette.dropArea.borderColor,
     borderRadius: '5px',
     width: '20px',
     height: '30px',
