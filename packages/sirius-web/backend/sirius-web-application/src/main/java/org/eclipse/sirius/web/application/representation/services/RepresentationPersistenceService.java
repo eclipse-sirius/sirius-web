@@ -23,7 +23,9 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenc
 import org.eclipse.sirius.components.collaborative.representations.migration.IRepresentationMigrationParticipant;
 import org.eclipse.sirius.components.collaborative.representations.migration.RepresentationMigrationData;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.components.portals.Portal;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationData;
@@ -69,6 +71,13 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
     @Override
     @Transactional
     public void save(ICause cause, IEditingContext editingContext, IRepresentation representation) {
+        System.out.println("SAVING REPRESENTATION : " + representation.getKind());
+        if (representation instanceof Portal portal) {
+            System.out.println(portal.getLayoutData());
+        }
+        if (representation instanceof Diagram diagram) {
+            System.out.println(diagram.getLayoutData().nodeLayoutData());
+        }
         var optionalProjectId = new UUIDParser().parse(editingContext.getId());
         var optionalRepresentationId = new UUIDParser().parse(representation.getId());
         if (optionalProjectId.isPresent() && optionalRepresentationId.isPresent()) {

@@ -20,6 +20,7 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.change.ChangeDescription;
 import org.eclipse.emf.ecore.change.util.ChangeRecorder;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.sirius.components.core.api.representations.IRepresentationChangeEvent;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.View;
@@ -41,7 +42,11 @@ public class EditingContext implements IEMFEditingContext {
 
     private final Map<String, ChangeDescription> changesDescription = new HashMap<>();
 
+    private final Map<String, List<IRepresentationChangeEvent>> representationChangesDescription = new HashMap<>();
+
     private final ChangeRecorder changeRecorder;
+
+    private String lastMutationId;
 
     public EditingContext(String id, AdapterFactoryEditingDomain editingDomain, Map<String, IRepresentationDescription> representationDescriptions, List<View> views) {
         this.id = Objects.requireNonNull(id);
@@ -77,4 +82,15 @@ public class EditingContext implements IEMFEditingContext {
         return changesDescription;
     }
 
+    public String getLastMutationId() {
+        return lastMutationId;
+    }
+
+    public void setLastMutationId(String lastMutationId) {
+        this.lastMutationId = lastMutationId;
+    }
+
+    public Map<String, List<IRepresentationChangeEvent>> getRepresentationChangesDescription() {
+        return representationChangesDescription;
+    }
 }
