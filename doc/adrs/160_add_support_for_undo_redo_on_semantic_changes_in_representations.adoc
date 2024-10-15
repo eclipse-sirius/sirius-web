@@ -1,0 +1,185 @@
+= [ADR-159] Add support for undo redo on semantic changes in representations
+
+== Context
+
+We want to be able to undo or redo an action performed.
+
+
+=== Current behavior
+
+None.
+
+
+== Decision
+
+=== Frontend
+
+We will store the `ids` of each `mutation` performed by the front-end using `ApolloLink API` in two arrays to track available undo or redo.
+
+[source,typescript]
+----
+export class OperationCountLink extends ApolloLink {
+  constructor() {
+    super();
+  }
+  override request(operation: Operation, forward) {
+    if (
+      operation.query.definitions[0].kind === Kind.OPERATION_DEFINITION &&
+      operation.query.definitions[0].operation === OperationTypeNode.MUTATION &&
+      operation.variables.input.id &&
+      !(
+        operation.operationName === 'undo' ||
+        operation.operationName === 'redo'
+      )
+    ) {
+      var storedUndoStack = sessionStorage.getItem('undoStack');
+      var undoStack = JSON.parse(storedUndoStack);
+
+      sessionStorage.setItem('undoStack', JSON.stringify([operation.variables.input.id, ...undoStack]));
+      sessionStorage.setItem('redoStack', JSON.stringify([]));
+    }
+
+    return forward(operation);
+  }
+}
+----
+
+We will add two `event handlers` to handle `ctrl + z` and `ctrl + y` to respectively `undo` or `redo` a mutation.
+Theses event handler will send an undo or redo mutation to the back-end with the `id of the mutation` previously responsible for a `semantic change`.
+
+[source,typescript]
+----
+const undoLastAction = () => {
+var storedArray = sessionStorage.getItem('undoStack');
+if (storedArray) {
+    var arr = JSON.parse(storedArray);
+    if (arr[0]) {
+    const input: GQLUndoRedoInput = {
+        id: crypto.randomUUID(),
+        editingContextId: projectId,
+        mutationId: arr[0],
+    };
+    undo({ variables: { input } });
+    }
+}
+};
+----
+
+* When performing a undo or redo, the arrays are updated to reflect the available undo or redo actions.
+* When performing a new mutation, the redo mutation array will be cleared.
+
+=== Backend
+
+* In order to `track changes` and `undo` or `redo` a semantic change on elements of a resource, we will use the `org.eclipse.emf.ecore.change API`.
+* We will leverage `IInputPreProcessor` and `IInputPostProcessor` API to trigger the `tracking of semantic changes` caused by a  `mutation`.
+
+[source,java]
+----
+@Service
+public class InputPrePostProcess implements IInputPreProcessor, IInputPostProcessor {
+
+    private boolean canHandle(IInput input)  {
+        return !(input instanceof UndoInput || input instanceof RedoInput || input instanceof LayoutDiagramInput);
+    }
+
+    @Override
+    public IInput preProcess(IEditingContext editingContext, IInput input, Sinks.Many<ChangeDescription> changeDescriptionSink) {
+        if (editingContext instanceof EditingContext siriusEditingContext && canHandle(input)) {
+            siriusEditingContext.getChangeRecorder().beginRecording(siriusEditingContext.getDomain().getResourceSet().getResources());
+        }
+        return input;
+    }
+
+    @Override
+    public void postProcess(IEditingContext editingContext, IInput input, Sinks.Many<ChangeDescription> changeDescriptionSink) {
+        if (editingContext instanceof EditingContext siriusEditingContext && canHandle(input)) {
+            var changeDescription = siriusEditingContext.getChangeRecorder().summarize();
+            siriusEditingContext.getChangesDescription().put(input.id().toString(), changeDescription);
+            siriusEditingContext.getChangeRecorder().endRecording();
+        }
+
+    }
+}
+----
+
+These changes will be `stored` in the `editingContext`.
+
+[source,java]
+----
+private final Map<String, ChangeDescription> changesDescription = new HashMap<>();
+
+private final ChangeRecorder changeRecorder;
+
+public EditingContext(String id, AdapterFactoryEditingDomain editingDomain, Map<String, IRepresentationDescription> representationDescriptions, List<View> views) {
+    this.id = Objects.requireNonNull(id);
+    this.editingDomain = Objects.requireNonNull(editingDomain);
+    this.changeRecorder = new ChangeRecorder(this.editingDomain.getResourceSet());
+    this.representationDescriptions = Objects.requireNonNull(representationDescriptions);
+    this.views = Objects.requireNonNull(views);
+}
+----
+
+We can apply either undo or redo with the `applyAndReverse` method.
+
+[source,java]
+----
+@Service
+public class UndoEventHandler implements IEditingContextEventHandler {
+
+    @Override
+    public boolean canHandle(IEditingContext editingContext, IInput input) {
+        return input instanceof UndoInput;
+    }
+
+    @Override
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
+        IPayload payload = new ErrorPayload(input.id(), "Error ");
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
+        if (editingContext instanceof EditingContext siriusEditingContext && input instanceof UndoInput undoInput) {
+            var emfChangeDescription = siriusEditingContext.getChangesDescription().get(undoInput.mutationId());
+            if (emfChangeDescription != null) {
+                emfChangeDescription.applyAndReverse();
+            }
+            payload = new SuccessPayload(input.id());
+        }
+        payloadSink.tryEmitValue(payload);
+        changeDescriptionSink.tryEmitNext(changeDescription);
+    }
+
+}
+----
+
+We don't have a clear way to distinguish between `mutation input` and `query input`.
+We need to make the distinction to avoid storing too much informations, as such we will introduce `new interfaces` :
+
+[source,java]
+----
+public interface IMutationInput extends IInput {
+
+}
+
+public interface IQueryInput extends IInput {
+
+}
+----
+
+=== Things to improve
+
+* The `org.eclipse.emf.ecore.change API` does not handle the `deletion` and `restoration` of a `resource` by default but only the changes on the `EObjects` contained in the resource.
+* We will also need to handle the `restoration of the diagram layout` so the elements restored keep their previous position and size.
+
+== Status
+
+Work in progress
+
+
+== Consequences
+
+All existing mutation `Input` will need to implement `IMutationInput`
+
+
+
+
+
+
+
