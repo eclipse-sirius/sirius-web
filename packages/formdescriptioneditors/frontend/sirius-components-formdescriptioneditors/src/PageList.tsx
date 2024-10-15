@@ -13,11 +13,12 @@
 import { useMutation } from '@apollo/client';
 import { Selection, Toast, useDeletionConfirmationDialog, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { GQLFlexboxContainer, GQLPage, GQLWidget } from '@eclipse-sirius/sirius-components-forms';
+import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
-import { makeStyles } from 'tss-react/mui';
 import React, { useEffect, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { addPageMutation, deletePageMutation, movePageMutation } from './FormDescriptionEditorEventFragment';
 import {
   GQLAddPageInput,
@@ -33,12 +34,11 @@ import {
   GQLMovePageMutationVariables,
   GQLMovePagePayload,
 } from './FormDescriptionEditorEventFragment.types';
+import { useFormDescriptionEditor } from './hooks/useFormDescriptionEditor';
 import { Page } from './Page';
 import { PageListState } from './PageList.types';
 import { ToolbarActions } from './ToolbarActions';
 import { isFlexboxContainer } from './WidgetOperations';
-
-import { useFormDescriptionEditor } from './hooks/useFormDescriptionEditor';
 
 const isErrorPayload = (payload: GQLAddPagePayload | GQLMovePagePayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
@@ -61,9 +61,9 @@ const usePageListStyles = makeStyles()((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'whitesmoke',
+    backgroundColor: theme.palette.dropArea.backgroundColor,
     borderRadius: '10px',
-    color: 'gray',
+    color: theme.palette.dropArea.color,
     height: '40px',
     width: '50%',
   },
@@ -407,7 +407,7 @@ export const PageList = () => {
             );
           })}
         </Tabs>
-        <div
+        <Box
           data-testid="PageList-DropArea"
           className={classes.rightDropArea}
           onDragEnter={readOnly ? noop : handleDragEnter}
@@ -415,7 +415,7 @@ export const PageList = () => {
           onDragLeave={readOnly ? noop : handleDragLeave}
           onDrop={readOnly ? noop : handleDropArea}>
           <Typography variant="body1">{'Drag and drop a page here'}</Typography>
-        </div>
+        </Box>
         {selectedPageToolbar}
       </div>
       <Page page={state.selectedPage} />

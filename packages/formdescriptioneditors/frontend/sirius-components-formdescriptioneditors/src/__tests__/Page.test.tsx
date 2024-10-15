@@ -11,12 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
-import { ConfirmationDialogContext, Selection, SelectionContext } from '@eclipse-sirius/sirius-components-core';
+import { ConfirmationDialogContext, Selection, SelectionContext, theme } from '@eclipse-sirius/sirius-components-core';
 import { GQLPage } from '@eclipse-sirius/sirius-components-forms';
-import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { ThemeProvider } from '@mui/material/styles';
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act } from 'react';
 import { afterEach, expect, test, vi } from 'vitest';
-
-import React from 'react';
 import { addPageMutation, deletePageMutation, movePageMutation } from '../FormDescriptionEditorEventFragment';
 import {
   GQLAddPageMutationData,
@@ -48,24 +48,26 @@ const emptySetSelection = (_: Selection) => {};
 
 const TestContextProvider = ({ mocks, formDescriptionEditor, children }) => {
   return (
-    <MockedProvider mocks={mocks}>
-      <ConfirmationDialogContext.Provider
-        value={{
-          showConfirmation,
-        }}>
-        <FormDescriptionEditorContext.Provider
+    <ThemeProvider theme={theme}>
+      <MockedProvider mocks={mocks}>
+        <ConfirmationDialogContext.Provider
           value={{
-            editingContextId: 'editingContextId',
-            representationId: 'formDescriptionEditorId',
-            formDescriptionEditor,
-            readOnly: false,
+            showConfirmation,
           }}>
-          <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
-            {children}
-          </SelectionContext.Provider>
-        </FormDescriptionEditorContext.Provider>
-      </ConfirmationDialogContext.Provider>
-    </MockedProvider>
+          <FormDescriptionEditorContext.Provider
+            value={{
+              editingContextId: 'editingContextId',
+              representationId: 'formDescriptionEditorId',
+              formDescriptionEditor,
+              readOnly: false,
+            }}>
+            <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
+              {children}
+            </SelectionContext.Provider>
+          </FormDescriptionEditorContext.Provider>
+        </ConfirmationDialogContext.Provider>
+      </MockedProvider>
+    </ThemeProvider>
   );
 };
 

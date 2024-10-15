@@ -103,6 +103,9 @@ description (optional).
 - https://github.com/eclipse-sirius/sirius-web/issues/3950[#3950] [diagram] Have the multiple selection on the Selection Dialog
 - https://github.com/eclipse-sirius/sirius-web/issues/3982[#3982] [core] Add support for the command palette.
 - https://github.com/eclipse-sirius/sirius-web/issues/3983[#3983] [tree] Add drag and drop support for explorer
+- https://github.com/eclipse-sirius/sirius-web/issues/3985[#3985] [core] Add first support for the dark theme.
++ Based on the `prefers-color-scheme` media query, it activates the dark theme based on the browser preference for firefox or, the OS preference for chrome.
++ Styles in representation descriptions does not leverage on the `color scheme` yet.
 
 
 === Improvements

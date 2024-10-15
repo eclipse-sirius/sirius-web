@@ -16,10 +16,10 @@ import {
   representationFactoryExtensionPoint,
   useData,
 } from '@eclipse-sirius/sirius-components-core';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from 'tss-react/mui';
-import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { RepresentationFrameProps } from './RepresentationFrame.types';
 
 const useFrameStyles = makeStyles()((theme) => ({
@@ -29,10 +29,10 @@ const useFrameStyles = makeStyles()((theme) => ({
     gridTemplateRows: 'min-content minmax(0, 1fr)',
     overflow: 'auto',
     border: '1px solid',
-    borderColor: theme.palette.grey[500],
+    borderColor: theme.palette.portal.representationFrame.borderColor,
   },
   frameHeader: {
-    backgroundColor: theme.palette.grey[300],
+    backgroundColor: theme.palette.portal.frameHeader.backgroundColor,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',

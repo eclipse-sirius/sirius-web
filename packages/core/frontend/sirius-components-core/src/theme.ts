@@ -12,18 +12,7 @@
  *******************************************************************************/
 import { createTheme, responsiveFontSizes } from '@mui/material/styles';
 
-const fallbackTheme = createTheme({
-  palette: {
-    navigation: {
-      leftBackground: 'white',
-      rightBackground: 'white',
-    },
-    navigationBar: {
-      border: 'black',
-      background: 'black',
-    },
-    selected: 'gray',
-  },
+const typography = createTheme({
   typography: {
     fontSize: 12,
     h1: {
@@ -82,4 +71,49 @@ const fallbackTheme = createTheme({
     },
   },
 });
+
+const fallbackTheme = createTheme({
+  ...typography,
+  palette: {
+    mode: 'light',
+    navigation: {
+      leftBackground: 'white',
+      rightBackground: 'white',
+    },
+    navigationBar: {
+      border: 'black',
+      background: 'black',
+    },
+    selected: 'gray',
+    dropArea: {
+      backgroundColor: 'whitesmoke',
+      color: 'gray',
+      borderColor: 'gray',
+    },
+  },
+});
+
+const fallbackDarkTheme = createTheme({
+  ...typography,
+  palette: {
+    mode: 'dark',
+    navigation: {
+      leftBackground: 'black',
+      rightBackground: 'black',
+    },
+    navigationBar: {
+      border: 'white',
+      background: 'white',
+    },
+    selected: 'whitesmoke',
+    dropArea: {
+      backgroundColor: 'gray',
+      color: 'whitesmoke',
+      borderColor: 'whitesmoke',
+    },
+  },
+});
+
 export const theme = responsiveFontSizes(fallbackTheme);
+
+export const darkTheme = responsiveFontSizes(fallbackDarkTheme);

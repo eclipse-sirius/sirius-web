@@ -31,8 +31,8 @@ import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import Typography from '@mui/material/Typography';
 import { Theme, useTheme } from '@mui/material/styles';
-import { makeStyles } from 'tss-react/mui';
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { addWidgetMutation } from './FormDescriptionEditorEventFragment';
 import {
   GQLAddWidgetInput,
@@ -77,9 +77,9 @@ const useStyles = makeStyles()((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'whitesmoke',
+    backgroundColor: theme.palette.dropArea.backgroundColor,
     borderRadius: '10px',
-    color: 'gray',
+    color: theme.palette.dropArea.color,
     height: '30px',
     width: '100%',
   },
@@ -99,7 +99,7 @@ const useStyles = makeStyles()((theme) => ({
     margin: '0px',
     padding: '0px',
     borderWidth: '1px',
-    borderColor: 'gray',
+    borderColor: theme.palette.formdescriptioneditor.widget.defaultBorderColor,
     borderStyle: 'solid',
     borderRadius: '0px',
   },
@@ -279,7 +279,7 @@ export const SplitButtonWidget = ({ widget }: SplitButtonWidgetProps) => {
         <Typography variant="subtitle2" className={state.selected ? classes.selected : ''}>
           {widget.label}
         </Typography>
-        {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" className={classes.helpOutlineOutlined} /> : null}
+        {widget.hasHelpText ? <HelpOutlineOutlined color="inherit" className={classes.helpOutlineOutlined} /> : null}
       </div>
       <ButtonGroup
         variant="contained"

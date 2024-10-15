@@ -19,6 +19,7 @@ import {
 import { NodeTypeContext, NodeTypeContextValue } from '@eclipse-sirius/sirius-components-diagrams';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Theme, ThemeProvider } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { ToastProvider } from '../../src/toast/ToastProvider';
@@ -31,7 +32,7 @@ import { defaultExtensionRegistry } from '../extension/DefaultExtensionRegistry'
 import { DefaultExtensionRegistryMergeStrategy } from '../extension/DefaultExtensionRegistryMergeStrategy';
 import { ApolloGraphQLProvider } from '../graphql/ApolloGraphQLProvider';
 import { Router } from '../router/Router';
-import { siriusWebTheme as defaultTheme } from '../theme/siriusWebTheme';
+import { siriusWebDarkTheme as defaultDarkTheme, siriusWebTheme as defaultTheme } from '../theme/siriusWebTheme';
 import { SiriusWebApplicationProps } from './SiriusWebApplication.types';
 
 const style = {
@@ -39,6 +40,13 @@ const style = {
   gridTemplateColumns: '1fr',
   gridTemplateRows: '1fr',
   minHeight: '100vh',
+};
+
+const getDefaultTheme = (darkMode: boolean) => {
+  if (darkMode) {
+    return defaultDarkTheme;
+  }
+  return defaultTheme;
 };
 
 export const SiriusWebApplication = ({
@@ -49,7 +57,8 @@ export const SiriusWebApplication = ({
   theme,
   children,
 }: SiriusWebApplicationProps) => {
-  const siriusWebTheme: Theme = theme ? theme : defaultTheme;
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const siriusWebTheme: Theme = theme ? theme : getDefaultTheme(prefersDarkMode);
 
   let nodeTypeRegistryValue: NodeTypeContextValue = { ...defaultNodeTypeRegistry };
   React.Children.forEach(children, (child) => {

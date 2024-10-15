@@ -144,7 +144,7 @@ export const ButtonWidget = ({ widget }: ButtonWidgetProps) => {
         <Typography variant="subtitle2" className={state.selected ? classes.selected : ''}>
           {widget.label}
         </Typography>
-        {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
+        {widget.hasHelpText ? <HelpOutlineOutlined color="inherit" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
       </div>
       <Button
         data-testid={widget.label}
