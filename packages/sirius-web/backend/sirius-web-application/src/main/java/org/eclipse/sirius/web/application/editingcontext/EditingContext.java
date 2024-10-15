@@ -12,10 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.editingcontext;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.eclipse.emf.ecore.change.ChangeDescription;
+import org.eclipse.emf.ecore.change.util.ChangeRecorder;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
@@ -36,9 +39,14 @@ public class EditingContext implements IEMFEditingContext {
 
     private final List<View> views;
 
+    private final Map<String, ChangeDescription> changesDescription = new HashMap<>();
+
+    private final ChangeRecorder changeRecorder;
+
     public EditingContext(String id, AdapterFactoryEditingDomain editingDomain, Map<String, IRepresentationDescription> representationDescriptions, List<View> views) {
         this.id = Objects.requireNonNull(id);
         this.editingDomain = Objects.requireNonNull(editingDomain);
+        this.changeRecorder = new ChangeRecorder(this.editingDomain.getResourceSet());
         this.representationDescriptions = Objects.requireNonNull(representationDescriptions);
         this.views = Objects.requireNonNull(views);
     }
@@ -59,6 +67,14 @@ public class EditingContext implements IEMFEditingContext {
 
     public List<View> getViews() {
         return this.views;
+    }
+
+    public ChangeRecorder getChangeRecorder() {
+        return changeRecorder;
+    }
+
+    public Map<String, ChangeDescription> getChangesDescription() {
+        return changesDescription;
     }
 
 }

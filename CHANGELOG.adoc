@@ -79,7 +79,7 @@ description (optional).
 - https://github.com/eclipse-sirius/sirius-web/issues/3873[#3873] [diagram] Make the Selection Dialog available for the EdgeTool
 - https://github.com/eclipse-sirius/sirius-web/issues/3950[#3950] [diagram] Have the multiple selection on the Selection Dialog
 - https://github.com/eclipse-sirius/sirius-web/issues/3982[#3982] [core] Add support for the command palette.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4048[#4048] [core] Add the ability to undo/redo a mutation on the the edit project view with ctrl+z or ctrl+y (restoring a deleted resource is not yet supported).
 
 === Improvements
 
