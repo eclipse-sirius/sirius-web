@@ -1,0 +1,71 @@
+= [ADR-XXX] Persist label position in diagram
+
+== Context
+
+Some diagram labels will become movable, so we need to be able to persist their position so that they're not lost each time the diagram is refreshed.
+
+
+=== Current behavior
+
+Currently, the only layout data persist on the diagram are the ones from the node (size, position, etc.).
+
+== Decision
+
+In the existing `DiagramLayoutData` record, there's already a map that contains `LabelLayoutData`. The new `LabelLayoutData` type is defined as follows:
+
+[source,java]
+----
+public record DiagramLayoutData(
+        Map<String, NodeLayoutData> nodeLayoutData,
+        Map<String, EdgeLayoutData> edgeLayoutData,
+        Map<String, LabelLayoutData> labelLayoutData) {}
+----
+
+[source,java]
+----
+public record LabelLayoutData(String id, Position position) {}
+----
+
+In the frontend, the useSynchronizeLayoutData hook is updated to include label layout data for all nodes in the diagram.
+This is done by iterating through each node and edge, adding the label layout data, which includes the label's `id` and its position:
+
+[source, typescript]
+----
+diagram.nodes.forEach((node) => {
+
+    labelLayoutData.push({
+      id: labelPosition.id,
+      position: {
+        x: labelPosition.position.x,
+        y: labelPosition.position.y,
+      },
+    });
+
+});
+
+diagram.edges.forEach((edge) => {
+
+    labelLayoutData.push({
+      id: label.id,
+      position: {
+        x: label.position.x,
+        y: label.position.y,
+      },
+    });
+});
+
+
+----
+
+Furthermore, in the `convertLabel.ts` file, the label's position is set using the ReactFlow data.
+This is done by finding the label layout data with the matching `id` and using its position.
+If no matching ID is found, a default position of `{ x: 0, y: 0 }` is used:
+
+[source, typescript]
+----
+gqlLabelLayoutData.find((labelLayoutData) => labelLayoutData.id === id)?.position ?? { x: 0, y: 0 }
+----
+
+== Status
+
+Work in progress
