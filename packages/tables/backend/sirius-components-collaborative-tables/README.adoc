@@ -1,0 +1,9 @@
+= sirius-component-collaborative-tables
+
+== Goal
+
+This project provides support for our tables collaborative edition layer.
+
+== Dependencies
+
+- sirius-component-tables

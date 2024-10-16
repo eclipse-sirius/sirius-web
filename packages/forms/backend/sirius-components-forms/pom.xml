@@ -55,6 +55,11 @@
 			<version>2024.9.8</version>
 		</dependency>
 		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-tables</artifactId>
+			<version>2024.9.8</version>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
@@ -78,7 +83,8 @@
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>3.4.0</version>
 				<configuration>
-					<configLocation>../../../releng/backend/sirius-components-resources/checkstyle/CheckstyleConfiguration.xml</configLocation>
+					<configLocation>
+						../../../releng/backend/sirius-components-resources/checkstyle/CheckstyleConfiguration.xml</configLocation>
 					<includeTestSourceDirectory>true</includeTestSourceDirectory>
 					<failsOnError>true</failsOnError>
 					<consoleOutput>true</consoleOutput>

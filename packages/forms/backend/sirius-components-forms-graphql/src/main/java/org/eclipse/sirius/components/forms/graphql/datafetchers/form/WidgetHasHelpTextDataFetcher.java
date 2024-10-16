@@ -49,6 +49,7 @@ public class WidgetHasHelpTextDataFetcher  implements IDataFetcherWithFieldCoord
             "Select",
             "Slider",
             "SplitButton",
+            "TableWidget",
             "Textarea",
             "Textfield",
             "ToolbarAction",

@@ -19,6 +19,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
+import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.springframework.context.annotation.Configuration;
 
@@ -35,11 +36,14 @@ public class FormEventProcessorFactoryConfiguration {
 
     private final List<IFormEventHandler> formEventHandlers;
 
+    private final List<ITableEventHandler> tableEventHandlers;
+
     private final Optional<IFormPostProcessor> optionalFormProcessor;
 
-    public FormEventProcessorFactoryConfiguration(IObjectService objectService, List<IFormEventHandler> formEventHandlers, Optional<IFormPostProcessor> optionalFormProcessor) {
+    public FormEventProcessorFactoryConfiguration(IObjectService objectService, List<IFormEventHandler> formEventHandlers, List<ITableEventHandler> tableEventHandlers, Optional<IFormPostProcessor> optionalFormProcessor) {
         this.objectService = Objects.requireNonNull(objectService);
         this.formEventHandlers = Objects.requireNonNull(formEventHandlers);
+        this.tableEventHandlers = Objects.requireNonNull(tableEventHandlers);
         this.optionalFormProcessor = Objects.requireNonNull(optionalFormProcessor);
     }
 
@@ -53,5 +57,9 @@ public class FormEventProcessorFactoryConfiguration {
 
     public IFormPostProcessor getFormPostProcessor() {
         return this.optionalFormProcessor.orElse(new IFormPostProcessor.NoOp());
+    }
+
+    public List<ITableEventHandler> getTableEventHandlers() {
+        return tableEventHandlers;
     }
 }
