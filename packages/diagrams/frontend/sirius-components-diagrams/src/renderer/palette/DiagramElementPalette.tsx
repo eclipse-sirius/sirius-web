@@ -38,6 +38,10 @@ export const DiagramElementPalette = memo(
       return null;
     }
 
+    //If the Palette search field has the focus on, the useKeyPress from reactflow ignore the key pressed event.
+    const onEscape = () => {
+      hideDiagramElementPalette();
+    };
     const handleDirectEditClick = () => {
       if (labelId) {
         setCurrentlyEditedLabelId('palette', labelId, null);
@@ -53,6 +57,7 @@ export const DiagramElementPalette = memo(
           targetObjectId={targetObjectId}
           onDirectEditClick={handleDirectEditClick}
           hideableDiagramElement
+          onEscape={onEscape}
         />
       </PalettePortal>
     ) : null;

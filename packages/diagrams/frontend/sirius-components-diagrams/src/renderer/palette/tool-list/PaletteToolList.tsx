@@ -26,6 +26,7 @@ import { isPaletteDivider, isSingleClickOnDiagramElementTool, isToolSection } fr
 import { GQLPaletteEntry, GQLTool, GQLToolSection } from '../Palette.types';
 import { PaletteToolListProps, PaletteToolListStateValue } from './PaletteToolList.types';
 import { PaletteToolSectionList } from './PaletteToolSectionList';
+import { usePaletteEntryTooltip } from './usePaletteEntryTooltip';
 
 const useStyle = makeStyles()((theme) => ({
   toolListContainer: {
@@ -64,9 +65,6 @@ export const PaletteToolList = ({ palette, onToolClick }: PaletteToolListProps) 
 
   const [state, setState] = useState<PaletteToolListStateValue>(defaultValue);
 
-  const tooltipDelay = 750;
-  const tooltipPlacement = 'left';
-
   const handleToolSectionClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, toolSection: GQLToolSection) => {
     event.stopPropagation();
     setState((prevState) => ({ ...prevState, toolSection }));
@@ -83,12 +81,13 @@ export const PaletteToolList = ({ palette, onToolClick }: PaletteToolListProps) 
   };
 
   const { classes } = useStyle();
+  const { tooltipEnterDelay, tooltipPlacement } = usePaletteEntryTooltip();
   const convertPaletteEntry = (paletteEntry: GQLPaletteEntry): JSX.Element | null => {
     let jsxElement: JSX.Element | null = null;
     if (isSingleClickOnDiagramElementTool(paletteEntry)) {
       jsxElement = (
         <Tooltip
-          enterDelay={tooltipDelay}
+          enterDelay={tooltipEnterDelay}
           placement={tooltipPlacement}
           title={paletteEntry.label}
           key={'tooltip_' + paletteEntry.id}>
@@ -109,7 +108,7 @@ export const PaletteToolList = ({ palette, onToolClick }: PaletteToolListProps) 
       jsxElement = (
         <Tooltip
           key={'tooltip_' + paletteEntry.id}
-          enterDelay={tooltipDelay}
+          enterDelay={tooltipEnterDelay}
           placement={tooltipPlacement}
           title={paletteEntry.label}>
           <ListItemButton
@@ -142,7 +141,7 @@ export const PaletteToolList = ({ palette, onToolClick }: PaletteToolListProps) 
               toolSection={entry as GQLToolSection}
               onToolClick={handleToolClick}
               onBackToMainList={onBackToMainList}
-              tooltipDelay={tooltipDelay}
+              tooltipDelay={tooltipEnterDelay}
               tooltipPlacement={tooltipPlacement}
             />
           </div>

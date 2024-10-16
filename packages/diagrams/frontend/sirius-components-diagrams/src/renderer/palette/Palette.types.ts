@@ -37,6 +37,7 @@ export interface PaletteProps {
   targetObjectId: string;
   onDirectEditClick: () => void;
   hideableDiagramElement?: boolean;
+  onEscape?: () => void;
 }
 
 export interface PaletteStyleProps {
