@@ -16,7 +16,7 @@ import {
   DiagramPaletteContextProviderProps,
   DiagramPaletteContextProviderState,
   DiagramPaletteContextValue,
-  ToolSectionWithLastTool,
+  PaletteWithLastTool,
 } from './DiagramPaletteContext.types';
 import { GQLTool } from './Palette.types';
 
@@ -50,25 +50,22 @@ export const DiagramPaletteContextProvider = ({ children }: DiagramPaletteContex
     }
   }, [state.isOpened]);
 
-  const getLastToolInvoked = (toolSectionId: string): GQLTool | null => {
+  const getLastToolInvoked = (paletteId: string): GQLTool | null => {
     return (
-      state.lastToolsInvoked.find(
-        (toolSectionWithDefaultTool) => toolSectionWithDefaultTool.toolSectionId === toolSectionId
-      )?.lastTool || null
+      state.lastToolsInvoked.find((toolSectionWithDefaultTool) => toolSectionWithDefaultTool.paletteId === paletteId)
+        ?.lastTool || null
     );
   };
 
-  const setLastToolInvoked = (toolSectionId: string, tool: GQLTool) => {
-    const lastToolsInvoked: ToolSectionWithLastTool[] = state.lastToolsInvoked;
-    if (lastToolsInvoked.some((toolSectionWithLastTool) => toolSectionWithLastTool.toolSectionId === toolSectionId)) {
+  const setLastToolInvoked = (paletteId: string, tool: GQLTool) => {
+    const lastToolsInvoked: PaletteWithLastTool[] = state.lastToolsInvoked;
+    if (lastToolsInvoked.some((toolSectionWithLastTool) => toolSectionWithLastTool.paletteId === paletteId)) {
       lastToolsInvoked.splice(
-        lastToolsInvoked.findIndex(
-          (toolSectionWithLastTool) => toolSectionWithLastTool.toolSectionId === toolSectionId
-        ),
+        lastToolsInvoked.findIndex((toolSectionWithLastTool) => toolSectionWithLastTool.paletteId === paletteId),
         1
       );
     }
-    lastToolsInvoked.push({ toolSectionId: toolSectionId, lastTool: tool });
+    lastToolsInvoked.push({ paletteId, lastTool: tool });
   };
 
   return (
