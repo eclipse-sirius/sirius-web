@@ -13,7 +13,6 @@
 
 import AdjustIcon from '@mui/icons-material/Adjust';
 import TonalityIcon from '@mui/icons-material/Tonality';
-import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { makeStyles } from 'tss-react/mui';
@@ -139,9 +138,5 @@ export const usePaletteQuickAccessToolBar = ({
       quickAccessToolComponents.push(adjustSizeTool);
     }
   }
-  let element: JSX.Element | null = null;
-  if (quickAccessToolComponents.length > 0) {
-    element = <Box className={classes.quickAccessTools}>{quickAccessToolComponents}</Box>;
-  }
-  return { element };
+  return { quickAccessToolComponents };
 };
