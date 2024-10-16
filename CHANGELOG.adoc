@@ -15,6 +15,7 @@
 
 - [ADR-158] Support delegating representation event handling
 - [ADR-159] Create event processor only using the representation id
+- [ADR-161] Add support for actions in tree item menu
 
 === Deprecation warning
 
