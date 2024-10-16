@@ -129,7 +129,8 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   useEffect(() => {
     const { diagram, cause } = diagramRefreshedEventPayload;
     const convertedDiagram: Diagram = convertDiagram(diagram, nodeConverters, diagramDescription, edgeType);
-
+    console.log(cause);
+    console.log(diagramRefreshedEventPayload);
     const selectedNodeIds = nodes.filter((node) => node.selected).map((node) => node.id);
     const selectedEdgeIds = edges.filter((edge) => edge.selected).map((edge) => edge.id);
     if (cause === 'layout') {
