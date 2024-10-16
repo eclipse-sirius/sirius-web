@@ -1,0 +1,17 @@
+* xref:maker-manual:index.adoc[]
+** xref:maker-manual:setup.adoc[]
++
+--
+include::partial$setup/nav.adoc[]
+--
+** xref:maker-manual:interface-tour.adoc[]
+** xref:maker-manual:studio-definitions.adoc[]
++
+--
+include::partial$studio-definitions/nav.adoc[]
+--
+** xref:maker-manual:tutorials.adoc[]
++
+--
+include::partial$tutorials/nav.adoc[]
+--

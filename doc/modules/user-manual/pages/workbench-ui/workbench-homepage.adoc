@@ -1,0 +1,22 @@
+= {ui-view-homepage}
+
+This is the defaut entrypoint for {sw}-based applications.
+
+.The _{ui-view-homepage}_
+image::Homepage_Annotated.png["{sw} {ui-view-homepage}"]
+
+* Top section: 
+** [[project-wizards]]*<1>* Wizards to create new projects based on _{usr-project-template}_.
++
+--
+NOTE: Available templates depend on the _{usr-data-models}_ contributed to the platform.
+--
+** [[project-create]]*<2>* Wizard to create a new blank project. Blank projects initially have no data or metadata beside a name.
+** [[project-upload]]*<3>* Wizard to upload a project from your filesystem. The expected file format is described xref:user-manual:core-concepts.adoc#_export[here].
+** [[project-creation]]*<4>* Wizard to display all possible project creation options.
+* Bottom section:
+** [[project-list]]*<5>* The paginated list of all existing projects. Click on a project name to open its xref:user-manual:workbench-ui/project-homepage.adoc[homepage].
+** [[project-menu]]*<6>* The contextual menu `...` of a project:
+. [[project-rename]]image:Homepage_Project_Menu_Rename.png["{ui-view-homepage} {project} Contextual Menu Action Rename"]: Opens the dialog to change the name of the _{project}_.
+. [[project-download]]image:Homepage_Project_Menu_Download.png["{ui-view-homepage} {project} Contextual Menu Action Download"]: _xref:user-manual:core-concepts/projects.adoc#_export[Downloads]_ the project as a ZIP archive of JSON files.
+. [[project-delete]]image:Homepage_Project_Menu_Delete.png["{ui-view-homepage} {project} Contextual Menu Action Delete"]: Opens the dialog to delete the _{project}_ from the workbench.

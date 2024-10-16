@@ -1,0 +1,77 @@
+= Deck
+
+#Some elements here: https://github.com/eclipse-sirius/sirius-web/blob/master/doc/user/representation-deck.adoc#
+
+A `Deck` representation conforms to a `{mkr-deck}` of the _{stddef}_.
+
+.A Sample `Deck` representing a Kanban Board.
+image::Deck_Sample.png["Snapshot of a sample `Deck` representation"]
+
+#TODO: Re-do snapshots when (if ?!) there is a seminal deck example provided by {sw}.#
+
+== Purpose
+
+In a `Deck` representation, objects from the {usr-model} are represented as `Cards` arranged vertically in `Lanes` distributed horizontally. 
+This representation is inspired by https://en.wikipedia.org/wiki/Kanban_board[Kanban Boards] where the cards are tasks or items, which are in a specific state (the lanes).
+
+
+== Visualization
+
+#TODO: Add same sample snapshot as above, but with the following highlights: Lanes, Cards, Toolbar#
+
+=== Lanes
+
+#TODO: Add snapshot of a lane, highlighted with elements of interest like title/label/contextual menu/collapse.#
+
+A `Lane` is a vertically-organized container containing `Cards`. The various `Lanes` of a `Deck` are distributed horizontally in the editor.
+
+At the top of a `Lane`, its contextual menu can be used to hide a sub-set of its `Card` {objects}:
+
+.The panel to configure the visible `Card` in a `Lane`.
+image::Deck_Lane_Visible-Cards.png["Snapshot of the {deck} lane visible cards panel"]
+
+At the bottom of a `Lane`, depending on its current state:
+
+* [[lane-collapse]]image:Deck_Lane_Collapse.png["{deck} editor lane collapse action"] (when expanded) can be used to collapse the `Lane`: its `Card` {objects} are no longer visible, only the `Lane` itself is displayed.
+* [[lane-expand]]image:Deck_Lane_Expand.png["{deck} editor lane expand action"] (when collapsed) can be used to expand the `Lane`: its `Card` {objects} are visible, making the `Lane` grab vertical space in order to display them.
+
+Upon selecting a `Lane`, its associated semantic model element gets selected in the {usr-ui-workbench}.
+
+=== Cards
+
+#TODO: Add snapshot of a card, highlighted with elements of interest like title/label/delete.#
+
+A `Card` is a rectangular shape contained by a `Lane`.
+
+Upon selecting a `Card`, its associated semantic model element gets selected in the {usr-ui-workbench}.
+
+=== Toolbar
+
+.The {deck} editor toolbar
+image::Deck_Toolbar.png["Snapshot of the {deck} editor toolbar"]
+
+* [[full-screen]]image:Deck_Toolbar_Action_Full-Screen.png["{deck} editor toolbar action to toggle full screen mode"](Toggle full screen mode): enables the full screen mode on this _{representation}_.
+* [[fit-screen]]image:Deck_Toolbar_Action_Fit-Screen.png["{deck} editor toolbar action to fit to screen"](Fit to screen): adjusts the zoom level to match the size of the editor.
+* [[zoom-in]]image:Deck_Toolbar_Action_ZoomIn.png["{deck} editor toolbar action to zoom in"](Zoom in): increases the zoom level.
+* [[zoom-out]]image:Deck_Toolbar_Action_ZoomOut.png["{deck} editor toolbar action to zoom out"](Zoom out): decreases the zoom level.
+* [[zoom-reset]]image:Deck_Toolbar_Action_ZoomReset.png["{deck} editor toolbar action to reset the zoom level"](Reset zoom): resets the zoom level.
+* [[share]]image:Deck_Toolbar_Action_Share.png["{deck} editor toolbar action to share"](Share): opens a dialog to display, and copies into the clipboard, a shareable link of this _{representation}_.
+
+
+== Edition
+
+* Depending on the _{stddef}_, a `Card` can usually be moved between from one `Lane` to another.
+* At the bottom of a `Lane`, the following action can be used to add a `Card` into the `Lane`:
++
+--
+[[add-card]]
+image::Deck_Lane_Add-Card.png["Snapshot of the {deck} lane action to add a card"]
+
+Upon using this action, information about the `Card` to create is prompted on-location:
+[[add-card-wizard]]
+image::Deck_Lane_Add-Card_Wizard.png["Snapshot of the {deck} lane card addition wizard"]
+
+The resulting changes depend on how the _{stddef}_ is configured.
+--
+
+#TODO: Add impact of all kinds of Deck tools#

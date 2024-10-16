@@ -1,0 +1,3 @@
+= Architecture
+
+#TODO: Insert architecture diagram of the Studio Runtime. It should show that the Studio Runtime is embedded in a cloud-based application, and takes the Studio Definitions in order to render, as part of the Generic Workbench, the contributions specific to the data model / view model of the domain.#
