@@ -11,10 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { ServerContext, ServerContextValue, useData } from '@eclipse-sirius/sirius-components-core';
+import { ComponentExtension, useComponent, useComponents } from '@eclipse-sirius/sirius-components-core';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import GetAppIcon from '@mui/icons-material/GetApp';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import IconButton from '@mui/material/IconButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -22,20 +21,23 @@ import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
-import { ComponentType, useContext, useState } from 'react';
+import { ComponentType, useState } from 'react';
 import { DeleteProjectModal } from '../../../modals/delete-project/DeleteProjectModal';
 import { RenameProjectModal } from '../../../modals/rename-project/RenameProjectModal';
 import {
-  ProjectActionButtonProps,
   ProjectActionButtonState,
+  ProjectContextMenuEntryProps,
   ProjectContextMenuModal,
   ProjectContextMenuModalProps,
   ProjectContextMenuProps,
   ProjectContextMenuState,
 } from './ProjectActionButton.types';
-import { projectActionButtonMenuItemExtensionPoint } from './ProjectActionButtonExtensionPoints';
+import {
+  projectContextMenuContainerExtensionPoint,
+  projectContextMenuEntryExtensionPoint,
+} from './ProjectContextMenuExtensionPoints';
 
-export const ProjectActionButton = ({ project, onChange }: ProjectActionButtonProps) => {
+export const ProjectActionButton = ({ project, onChange }: ProjectContextMenuEntryProps) => {
   const [state, setState] = useState<ProjectActionButtonState>({
     contextMenuAnchorElement: null,
   });
@@ -74,6 +76,8 @@ const ProjectContextMenu = ({ menuAnchor, project, onChange, onClose }: ProjectC
     modalToDisplay: null,
   });
 
+  const { Component: ProjectContextMenuContainer } = useComponent(projectContextMenuContainerExtensionPoint);
+
   const onRename = () => setState((prevState) => ({ ...prevState, modalToDisplay: 'RENAME_PROJECT_DIALOG' }));
   const onDelete = () => setState((prevState) => ({ ...prevState, modalToDisplay: 'DELETE_PROJECT_DIALOG' }));
   const onCancel = () => setState((prevState) => ({ ...prevState, modalToDisplay: null }));
@@ -85,10 +89,11 @@ const ProjectContextMenu = ({ menuAnchor, project, onChange, onClose }: ProjectC
 
   const ModalComponent = modals[state.modalToDisplay];
 
-  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
-  const { data: menuItemProps } = useData(projectActionButtonMenuItemExtensionPoint);
+  const menuItemComponentExtensions: ComponentExtension<ProjectContextMenuEntryProps>[] = useComponents(
+    projectContextMenuEntryExtensionPoint
+  );
   return (
-    <>
+    <ProjectContextMenuContainer>
       <Menu
         data-testid="project-actions-contextmenu"
         id="project-actions-contextmenu"
@@ -102,23 +107,17 @@ const ProjectContextMenu = ({ menuAnchor, project, onChange, onClose }: ProjectC
           </ListItemIcon>
           <ListItemText primary="Rename" />
         </MenuItem>
-        <MenuItem component="a" href={`${httpOrigin}/api/projects/${project.id}`} type="application/octet-stream">
-          <ListItemIcon>
-            <GetAppIcon />
-          </ListItemIcon>
-          <ListItemText primary="Download" />
-        </MenuItem>
         <MenuItem onClick={onDelete} data-testid="delete">
           <ListItemIcon>
             <DeleteIcon />
           </ListItemIcon>
           <ListItemText primary="Delete" />
         </MenuItem>
-        {menuItemProps.map((props, index) => (
-          <MenuItem {...props} key={index} />
+        {menuItemComponentExtensions.map(({ Component: ProjectContextMenuItem }, index) => (
+          <ProjectContextMenuItem key={index} project={project} onChange={onChange} />
         ))}
       </Menu>
       {ModalComponent ? <ModalComponent project={project} onSuccess={onSuccess} onCancel={onCancel} /> : null}
-    </>
+    </ProjectContextMenuContainer>
   );
 };

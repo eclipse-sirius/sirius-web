@@ -13,13 +13,17 @@
 
 import { GQLProject } from './useProjects.types';
 
-export interface ProjectActionButtonProps {
+export interface ProjectContextMenuEntryProps {
   project: GQLProject;
   onChange: () => void;
 }
 
 export interface ProjectActionButtonState {
   contextMenuAnchorElement: HTMLElement | null;
+}
+
+export interface ProjectContextMenuContainerProps {
+  children?: React.ReactNode;
 }
 
 export interface ProjectContextMenuProps {
