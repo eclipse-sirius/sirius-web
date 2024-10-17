@@ -137,7 +137,7 @@ export const prepareLayoutArea = (
         const element = createElement(FreeFormNode, {
           ...freeFormNodeProps,
           id: node.id,
-          data: node.data,
+          data: { ...node.data, isFake: true },
           key: `${node.id}-${index}`,
         });
         children.push(element);
@@ -147,7 +147,7 @@ export const prepareLayoutArea = (
           ...emptyNodeProps,
           type: 'listNode',
           id: node.id,
-          data: node.data,
+          data: { ...node.data, isFake: true },
         };
 
         const element = createElement(ListNode, {
