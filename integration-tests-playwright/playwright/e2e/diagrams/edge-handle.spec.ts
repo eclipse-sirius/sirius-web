@@ -18,7 +18,14 @@ import { PlaywrightProject } from '../../helpers/PlaywrightProject';
 
 test.describe('edge-handle', () => {
   let projectId;
+  let handleWarnings: string[];
   test.beforeEach(async ({ page, request }) => {
+    handleWarnings = [];
+    page.on('console', (message) => {
+      if (message.text().includes('Handle: No node id found')) {
+        handleWarnings.push(message.text());
+      }
+    });
     const project = await new PlaywrightProject(request).createProject('edge-handle', 'blank-project');
     projectId = project.projectId;
     await page.goto(`/projects/${projectId}/edit`);
@@ -30,6 +37,11 @@ test.describe('edge-handle', () => {
 
   test.afterEach(async ({ request }) => {
     await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when a diagram is initialized, then handles are only rendered inside React Flow nodes', async ({ page }) => {
+    await expect(new PlaywrightNode(page, 'Entity1').nodeLocator).toBeAttached();
+    expect(handleWarnings).toEqual([]);
   });
 
   test('when two handles are on the same node, then they stay sticky to the node side', async ({ page }) => {

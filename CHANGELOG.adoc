@@ -74,6 +74,9 @@ Imports of these classes must be updated to:
 Downstream consumers must declare this dependency and replace the package prefix `org.eclipse.sirius.web.domain.boundedcontexts.projectimage` with `org.eclipse.sirius.web.projects.images.domain`, including its `event`, `repositories`, `services`, and `services.api` subpackages.
 - https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [sirius-web] The project semantic data domain has moved to the dedicated Maven module `sirius-web-projects-semanticdata-domain`.
 Downstream consumers must declare this dependency and replace the package prefix `org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata` with `org.eclipse.sirius.web.projects.semanticdata.domain`, including its `events`, `repositories`, `services`, and `services.api` subpackages.
+- https://github.com/eclipse-sirius/sirius-web/issues/2770[#2770] [diagram] Remove `findNodeIndex` from `@eclipse-sirius/sirius-components-diagrams`.
+Custom node layout handlers should use `getNodeBorderWidth(node.data.style)` instead of inspecting hidden rendered nodes.
+Consumers that still need a node index can use `nodes.findIndex((node) => node.id === nodeId)`.
 
 
 === Dependency update
@@ -87,6 +90,7 @@ Downstream consumers must declare this dependency and replace the package prefix
 
 - https://github.com/eclipse-sirius/sirius-web/issues/3914[#3914] [diagram] Allow icon label nodes to be moved inside free-form containers.
 - https://github.com/eclipse-sirius/sirius-web/issues/3712[#3712] [diagram] Render child and border nodes declared under a border node.
+- https://github.com/eclipse-sirius/sirius-web/issues/2770[#2770] [diagram] Prevent React Flow handle warnings while computing the initial diagram layout.
 
 
 === New Features

@@ -21,7 +21,6 @@ import {
   computeNodesBox,
   computePreviousPosition,
   computePreviousSize,
-  findNodeIndex,
   getBorderNodeExtent,
   getChildNodePosition,
   getDefaultOrMinHeight,
@@ -29,6 +28,7 @@ import {
   getEastBorderNodeFootprintHeight,
   getHeaderHeightFootprint,
   getInsideLabelWidthConstraint,
+  getNodeBorderWidth,
   getNorthBorderNodeFootprintWidth,
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
@@ -69,9 +69,7 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
   ) {
     layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNodes);
 
-    const nodeIndex = findNodeIndex(visibleNodes, node.id);
-    const nodeElement = document.getElementById(`${node.id}-ellipseNode-${nodeIndex}`)?.children[0];
-    const borderWidth = nodeElement ? parseFloat(window.getComputedStyle(nodeElement).borderWidth) : 0;
+    const borderWidth = getNodeBorderWidth(node.data.style);
 
     const borderNodes = directChildren.filter((node) => node.data.isBorderNode);
     const directNodesChildren = directChildren.filter((child) => !child.data.isBorderNode);

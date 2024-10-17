@@ -72,6 +72,7 @@ export type {
 export { computePreviousPosition, computePreviousSize } from './renderer/layout/bounds';
 export { useElkLayout } from './renderer/layout/elk/useElkLayout';
 export type { UseElkLayoutValue } from './renderer/layout/elk/useElkLayout.types';
+export { getNodeBorderWidth } from './renderer/layout/getNodeBorderWidth';
 export type { ForcedDimensions, RawDiagram } from './renderer/layout/layout.types';
 export * from './renderer/layout/layoutBorderNodes';
 export type { ILayoutEngine, INodeLayoutHandler } from './renderer/layout/LayoutEngine.types';
