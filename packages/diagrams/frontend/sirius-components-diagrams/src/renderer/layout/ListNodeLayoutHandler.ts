@@ -17,6 +17,7 @@ import { ListNodeData } from '../node/ListNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { computePreviousSize } from './bounds';
+import { getNodeBorderWidth } from './getNodeBorderWidth';
 import { ForcedDimensions, RawDiagram } from './layout.types';
 import { getBorderNodeExtent } from './layoutBorderNodes';
 import {
@@ -40,16 +41,6 @@ const getChildNodeHeightMinFootPrint = (node: Node<NodeData>): number => {
   return node.data.resizedByUser ? node.height ?? 0 : getDefaultOrMinHeight(node.data.minComputedHeight ?? 0, node);
 };
 
-const getBorderWidthValue = (borderWidthStyle: string | number | undefined): number => {
-  if (borderWidthStyle === undefined) {
-    return 0;
-  }
-  if (typeof borderWidthStyle === 'string') {
-    return parseFloat(borderWidthStyle);
-  }
-  return borderWidthStyle;
-};
-
 export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
   public canHandle(node: Node<NodeData, DiagramNodeType>) {
     return node.type === 'listNode';
@@ -64,7 +55,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     newlyAddedNodes: Node<NodeData, DiagramNodeType>[],
     forceDimensions?: ForcedDimensions
   ) {
-    const borderWidth = getBorderWidthValue(node.data.style.borderLeftWidth ?? node.data.style.borderWidth);
+    const borderWidth: number = getNodeBorderWidth(node.data.style);
     if (directChildren.length > 0) {
       this.handleParentNode(
         layoutEngine,
