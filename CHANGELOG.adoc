@@ -38,6 +38,10 @@ This allows an error to be displayed when there is a problem during uploading
 - https://github.com/eclipse-sirius/sirius-web/issues/4037[#4037] [trees] The tree item id passed to `ITreeQueryService.findTreeItem` is no longer a UUID but is now a String.
 - https://github.com/eclipse-sirius/sirius-web/issues/4077[#4077] [charts] Remove `interface RepresentationMetadata` from `BarChart.types.ts`.
 - https://github.com/eclipse-sirius/sirius-web/issues/3840[#3840] [diagram] Migrate to ReactFlow 12, if you have components that uses the library then you'll need to update them.
+- https://github.com/eclipse-sirius/sirius-web/issues/4114[#4114] [sirius-web] The `projectActionButtonMenuItemExtensionPoint` extension point has been removed.
+Use the new `projectContextMenuEntryExtensionPoint` instead which allows the contribution of actual `MenuItem` components instead of just props.
+See `ProjectDownloadMenuItemExtension` for an example.
+_Warning:_ while more powerful, the new extension point should be used with care: make sure all contributions return an actual MUI `MenuItem` component.
 
 
 === Dependency update
@@ -79,7 +83,12 @@ description (optional).
 - https://github.com/eclipse-sirius/sirius-web/issues/3873[#3873] [diagram] Make the Selection Dialog available for the EdgeTool
 - https://github.com/eclipse-sirius/sirius-web/issues/3950[#3950] [diagram] Have the multiple selection on the Selection Dialog
 - https://github.com/eclipse-sirius/sirius-web/issues/3982[#3982] [core] Add support for the command palette.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4114[#4114] [sirius-web] Two new extension points have been added to customize the context menu displayed for a project in the project browser:
+** `projectContextMenuEntryExtensionPoint` can be used to add new entries to the menu.
+They will be added at the end after the default hard-coded actions.
+See `ProjectDownloadMenuItemExtension` for an example.
+_Warning:_ make sure all contributions return an actual MUI `MenuItem` component.
+** `projectContextMenuContainerExtensionPoint`: can be used to wrap the menu inside a custom container, for example to add more context for the items or to completely replace the context menu.
 
 === Improvements
 
