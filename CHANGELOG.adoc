@@ -56,6 +56,10 @@ This is much more natural and closer to the behavior of usual languages, but cha
 - https://github.com/eclipse-sirius/sirius-web/issues/3983[#3983] [tree] The `TreeDescription` must now implement a `dropTreeItemHandler`.
 - https://github.com/eclipse-sirius/sirius-web/issues/3680[#3680] [core] The label has been removed from the content of all representations.
 + The label of a representation is available through its metadata that can be retrieve thanks to the service `IRepresentationMetadataSearchService` from sirius-web-domain or, `IRepresentationMetadataProvider` from sirius-components-collaborative.
+- https://github.com/eclipse-sirius/sirius-web/issues/4114[#4114] [sirius-web] The `projectActionButtonMenuItemExtensionPoint` extension point has been removed.
+Use the new `projectContextMenuEntryExtensionPoint` instead which allows the contribution of actual `MenuItem` components instead of just props.
+See `ProjectDownloadMenuItemExtension` for an example.
+_Warning:_ while more powerful, the new extension point should be used with care: make sure all contributions return an actual MUI `MenuItem` component.
 
 
 === Dependency update
@@ -104,7 +108,7 @@ description (optional).
 ** updateProject (`PUT /projects/{projectId}`): Update the project with the given id (projectId).
 Add Object related REST APIs.
 The new endpoints are:
-** getElements (`GET /api/rest/projects/{projectId}/commits/{commitId}/elements`): Get all the elements in a given project at the given commit. There are no commits in Sirius Web so you can use the same Id as the projectId for the commitId. 
+** getElements (`GET /api/rest/projects/{projectId}/commits/{commitId}/elements`): Get all the elements in a given project at the given commit. There are no commits in Sirius Web so you can use the same Id as the projectId for the commitId.
 ** getElementById (`GET /api/rest/projects/{projectId}/commits/{commitId}/elements/{elementId}`): Get element with the given id (elementId) in the given project at the given commit. There are no commits in Sirius Web so you can use the same Id as the projectId for the commitId.
 ** getRelationshipsByRelatedElement (`GET /api/rest/projects/{projectId}/commits/{commitId}/elements/{elementId}/relationships`): Get relationships that are incoming, outgoing, or both relative to the given related element. There are no commits in Sirius Web so you can use the same Id as the projectId for the commitId.
 ** getRootElements (`GET /api/rest/projects/{projectId}/commits/{commitId}/roots`): Get all the root elements in the given project at the given commit. There are no commits in Sirius Web so you can use the same Id as the projectId for the commitId.
@@ -122,6 +126,12 @@ Specifiers are also encouraged to implement their own JSON serializers for their
 See `DownloadProjectMenuEntryContribution` for an example.
 _Warning:_ make sure all contributions return an actual MUI `MenuItem` component.
 ** `editProjectNavbarMenuContainerExtensionPoint`: can be used to wrap the menu inside a custom container, for example to add more context for the items or to completely replace the context menu.
+- https://github.com/eclipse-sirius/sirius-web/issues/4114[#4114] [sirius-web] Two new extension points have been added to customize the context menu displayed for a project in the project browser:
+** `projectContextMenuEntryExtensionPoint` can be used to add new entries to the menu.
+They will be added at the end after the default hard-coded actions.
+See `ProjectDownloadMenuItemExtension` for an example.
+_Warning:_ make sure all contributions return an actual MUI `MenuItem` component.
+** `projectContextMenuContainerExtensionPoint`: can be used to wrap the menu inside a custom container, for example to add more context for the items or to completely replace the context menu.
 
 === Improvements
 
