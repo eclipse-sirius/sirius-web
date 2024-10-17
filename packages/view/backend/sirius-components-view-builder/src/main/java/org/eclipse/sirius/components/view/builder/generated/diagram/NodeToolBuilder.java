@@ -91,5 +91,15 @@ public class NodeToolBuilder {
         return this;
     }
 
+    /**
+     * Setter for ElementsToSelectExpression.
+     *
+     * @generated
+     */
+    public NodeToolBuilder elementsToSelectExpression(java.lang.String value) {
+        this.getNodeTool().setElementsToSelectExpression(value);
+        return this;
+    }
+
 }
 

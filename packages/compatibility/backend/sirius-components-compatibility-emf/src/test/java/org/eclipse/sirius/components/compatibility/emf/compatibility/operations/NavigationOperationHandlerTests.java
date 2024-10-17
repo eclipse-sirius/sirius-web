@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -98,8 +98,8 @@ public class NavigationOperationHandlerTests {
         WorkbenchSelection selection = (WorkbenchSelection) selectionParameter;
         // @formatter:off
         assertThat(selection).isEqualTo(new WorkbenchSelection(List.of(
-                new WorkbenchSelectionEntry(FIRST_DIAGRAM_ID, FIRST_DIAGRAM_LABEL, Diagram.KIND),
-                new WorkbenchSelectionEntry(SECOND_DIAGRAM_ID, SECOND_DIAGRAM_LABEL, Diagram.KIND)
+                new WorkbenchSelectionEntry(FIRST_DIAGRAM_ID, Diagram.KIND),
+                new WorkbenchSelectionEntry(SECOND_DIAGRAM_ID, Diagram.KIND)
         )));
         // @formatter:on
     }
@@ -130,9 +130,9 @@ public class NavigationOperationHandlerTests {
         WorkbenchSelection selection = (WorkbenchSelection) selectionParameter;
         // @formatter:off
         assertThat(selection).isEqualTo(new WorkbenchSelection(List.of(
-                new WorkbenchSelectionEntry(FIRST_DIAGRAM_ID, FIRST_DIAGRAM_LABEL, Diagram.KIND),
-                new WorkbenchSelectionEntry(SECOND_DIAGRAM_ID, SECOND_DIAGRAM_LABEL, Diagram.KIND),
-                new WorkbenchSelectionEntry(THIRD_DIAGRAM_ID, THIRD_DIAGRAM_LABEL, Diagram.KIND)
+                new WorkbenchSelectionEntry(FIRST_DIAGRAM_ID, Diagram.KIND),
+                new WorkbenchSelectionEntry(SECOND_DIAGRAM_ID, Diagram.KIND),
+                new WorkbenchSelectionEntry(THIRD_DIAGRAM_ID, Diagram.KIND)
         )));
         // @formatter:on
     }

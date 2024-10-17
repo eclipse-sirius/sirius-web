@@ -19,10 +19,10 @@ import java.util.function.Function;
 
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.api.IModelOperationHandler;
-import org.eclipse.sirius.components.emf.EPackageService;
 import org.eclipse.sirius.components.compatibility.emf.api.IExternalJavaActionProvider;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
+import org.eclipse.sirius.components.emf.EPackageService;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.diagram.description.tool.CreateView;
 import org.eclipse.sirius.diagram.description.tool.Navigation;
@@ -161,7 +161,7 @@ public class ModelOperationHandlerSwitch implements Function<ModelOperation, Opt
     }
 
     private Optional<IModelOperationHandler> caseNavigation(Navigation navigationOperation) {
-        return Optional.of(new NavigationOperationHandler(this.objectService, this.identifierProvider, this.representationMetadataSearchService, this.interpreter, navigationOperation));
+        return Optional.of(new NavigationOperationHandler(this.objectService, this.identifierProvider, this.representationMetadataSearchService, navigationOperation));
     }
 
     private Optional<IModelOperationHandler> caseRemoveElement(RemoveElement removeElementOperation) {

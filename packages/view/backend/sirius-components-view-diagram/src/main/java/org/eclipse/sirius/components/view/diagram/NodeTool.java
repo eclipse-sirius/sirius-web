@@ -22,6 +22,8 @@ package org.eclipse.sirius.components.view.diagram;
  * <li>{@link org.eclipse.sirius.components.view.diagram.NodeTool#getDialogDescription <em>Dialog Description</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.NodeTool#getIconURLsExpression <em>Icon UR Ls
  * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.NodeTool#getElementsToSelectExpression <em>Elements To Select
+ * Expression</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeTool()
@@ -74,5 +76,28 @@ public interface NodeTool extends Tool {
      * @generated
      */
     void setIconURLsExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Elements To Select Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Elements To Select Expression</em>' attribute.
+     * @see #setElementsToSelectExpression(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeTool_ElementsToSelectExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     */
+    String getElementsToSelectExpression();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.NodeTool#getElementsToSelectExpression
+     * <em>Elements To Select Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Elements To Select Expression</em>' attribute.
+     * @see #getElementsToSelectExpression()
+     * @generated
+     */
+    void setElementsToSelectExpression(String value);
 
 } // NodeTool
