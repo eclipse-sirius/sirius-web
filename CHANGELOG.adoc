@@ -72,6 +72,7 @@ This allows an error to be displayed when there is a problem during uploading
 Charts' metadata is only relevant when Charts are used as Representations.
 - https://github.com/eclipse-sirius/sirius-web/issues/3904[#3904] [form] Fix an issue where textfield did not update to reflect backend-set value when it matched the initial value.
 - https://github.com/eclipse-sirius/sirius-web/issues/3836[#3836] [gantt] Prevent task.description from resetting after gantt task change.
+- https://github.com/eclipse-sirius/sirius-web/issues/4117[#4117] [core] Fix URLParser for single-character parameter entries (e.g. identifiers).
 
 === New Features
 

@@ -55,7 +55,7 @@ public class URLParser implements IURLParser {
 
     @Override
     public List<String> getParameterEntries(String value) {
-        if (value.startsWith("[") && value.endsWith("]") && value.length() > 3) {
+        if (value.startsWith("[") && value.endsWith("]") && value.length() >= 3) {
             var rawValue = value.substring(1);
             rawValue = rawValue.substring(0, rawValue.indexOf("]"));
             return Arrays.stream(rawValue.split(",")).toList();
