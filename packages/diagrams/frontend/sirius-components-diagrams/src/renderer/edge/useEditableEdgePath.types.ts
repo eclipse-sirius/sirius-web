@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,13 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Edge } from '@xyflow/react';
+import { EdgeData } from '../DiagramRenderer.types';
 
-package org.eclipse.sirius.components.diagrams.layoutdata;
-
-/**
- * The position ratio of an element.
- *
- * @author sbegaudeau
- */
-public record Ratio(double x, double y) {
+export interface UseEditableEdgePathValue {
+  synchronizeEdgeLayoutData: (edges: Edge<EdgeData>[]) => void;
+  removeEdgeLayoutData: (edgeId: string) => void;
 }

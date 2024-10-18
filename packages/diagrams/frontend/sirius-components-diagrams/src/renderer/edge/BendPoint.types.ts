@@ -10,16 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Edge, EdgeProps } from '@xyflow/react';
-import { EdgeData, EdgeLabel } from '../DiagramRenderer.types';
+import { DraggableData } from 'react-draggable';
 
-export type MultiLabelEdgeProps<T extends Edge<Record<string, unknown>, string | undefined>> = {
-  edgeCenterX?: number;
-  edgeCenterY?: number;
-  svgPathString: string;
-} & EdgeProps<T>;
+export interface BendPointProps {
+  x: number;
+  y: number;
+  index: number;
+  onDrag: (eventData: DraggableData, index: number) => void;
+  onDragStop: (eventData: DraggableData, index: number) => void;
+  onDoubleClick: (index: number) => void;
+}
 
-export interface MultiLabelEdgeData extends EdgeData {
-  beginLabel?: EdgeLabel;
-  endLabel?: EdgeLabel;
+export interface TemporaryBendPointProps {
+  x: number;
+  y: number;
+  index: number;
+  onDrag: (eventData: DraggableData, index: number) => void;
+  onDragStop: (eventData: DraggableData, index: number) => void;
 }
