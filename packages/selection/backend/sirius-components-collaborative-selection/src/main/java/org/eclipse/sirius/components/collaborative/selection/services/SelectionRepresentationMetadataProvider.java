@@ -16,8 +16,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.RepresentationMetadata;
-import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.springframework.stereotype.Service;
 
 /**
@@ -32,9 +32,9 @@ public class SelectionRepresentationMetadataProvider implements IRepresentationM
 
     private static final String PREFIX = "selectionDialog://";
 
-    private final URLParser urlParser;
+    private final IURLParser urlParser;
 
-    public SelectionRepresentationMetadataProvider(URLParser urlParser) {
+    public SelectionRepresentationMetadataProvider(IURLParser urlParser) {
         this.urlParser = Objects.requireNonNull(urlParser);
     }
 
