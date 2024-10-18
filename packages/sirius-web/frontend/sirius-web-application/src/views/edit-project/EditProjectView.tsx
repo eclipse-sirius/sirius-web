@@ -48,7 +48,7 @@ import { useProjectAndRepresentationMetadata } from './useProjectAndRepresentati
 const useEditProjectViewStyles = makeStyles()((_) => ({
   editProjectView: {
     display: 'grid',
-    gridTemplateRows: 'min-content minmax(0, 1fr)',
+    gridTemplateRows: 'min-content min-content minmax(0, 1fr)',
     gridTemplateColumns: '1fr',
     height: '100vh',
     width: '100vw',

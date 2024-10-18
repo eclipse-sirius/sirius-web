@@ -117,7 +117,11 @@ Specifiers are also encouraged to implement their own JSON serializers for their
 - https://github.com/eclipse-sirius/sirius-web/issues/3982[#3982] [core] Add support for the command palette.
 - https://github.com/eclipse-sirius/sirius-web/issues/3983[#3983] [tree] Add drag and drop support for explorer
 - https://github.com/eclipse-sirius/sirius-web/issues/3823[#3823] [form][table] Add table widget in form.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4113[#4113] [sirius-web] Two new extension points have been added to customize the context menu displayed for a project in the edit project view:
+** `editProjectNavbarMenuEntryExtensionPoint` can be used to add new entries to the menu.
+See `DownloadProjectMenuEntryContribution` for an example.
+_Warning:_ make sure all contributions return an actual MUI `MenuItem` component.
+** `editProjectNavbarMenuContainerExtensionPoint`: can be used to wrap the menu inside a custom container, for example to add more context for the items or to completely replace the context menu.
 
 === Improvements
 

@@ -60,6 +60,8 @@ import { navigationBarRightContributionExtensionPoint } from '../navigationBar/N
 import { OnboardArea } from '../onboarding/OnboardArea';
 import { DiagramTreeItemContextMenuContribution } from '../views/edit-project/DiagramTreeItemContextMenuContribution';
 import { DocumentTreeItemContextMenuContribution } from '../views/edit-project/DocumentTreeItemContextMenuContribution';
+import { DownloadProjectMenuEntryContribution } from '../views/edit-project/EditProjectNavbar/DownloadProjectMenuEntryContribution';
+import { editProjectNavbarMenuEntryExtensionPoint } from '../views/edit-project/EditProjectNavbar/EditProjectNavbarMenuExtensionPoints';
 import { ObjectTreeItemContextMenuContribution } from '../views/edit-project/ObjectTreeItemContextMenuContribution';
 import { DetailsView } from '../views/edit-project/workbench-views/DetailsView';
 import { RelatedElementsView } from '../views/edit-project/workbench-views/RelatedElementsView';
@@ -345,6 +347,18 @@ const defaultSettingPages: ProjectSettingTabContribution[] = [
 defaultExtensionRegistry.putData(projectSettingsTabExtensionPoint, {
   identifier: `siriusWeb_${projectSettingsTabExtensionPoint.identifier}`,
   data: defaultSettingPages,
+});
+
+/*******************************************************************************
+ *
+ * Edit project navbar context menu items
+ *
+ * Used to register menu items available on project's context menu in the edit project view
+ *
+ *******************************************************************************/
+defaultExtensionRegistry.addComponent(editProjectNavbarMenuEntryExtensionPoint, {
+  identifier: `siriusWeb_${editProjectNavbarMenuEntryExtensionPoint.identifier}_download`,
+  Component: DownloadProjectMenuEntryContribution,
 });
 
 export { defaultExtensionRegistry };

@@ -11,10 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useSubscription } from '@apollo/client';
-import { ServerContext, ServerContextValue, Toast, useComponent } from '@eclipse-sirius/sirius-components-core';
+import { ComponentExtension, Toast, useComponent, useComponents } from '@eclipse-sirius/sirius-components-core';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import GetAppIcon from '@mui/icons-material/GetApp';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import SettingsIcon from '@mui/icons-material/Settings';
 import IconButton from '@mui/material/IconButton';
@@ -25,7 +24,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { emphasize } from '@mui/material/styles';
 import { useMachine } from '@xstate/react';
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Navigate, Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { StateMachine } from 'xstate';
@@ -33,7 +32,11 @@ import { DeleteProjectModal } from '../../../modals/delete-project/DeleteProject
 import { RenameProjectModal } from '../../../modals/rename-project/RenameProjectModal';
 import { NavigationBar } from '../../../navigationBar/NavigationBar';
 import { useCurrentProject } from '../useCurrentProject';
-import { EditProjectNavbarProps, GQLProjectEventSubscription } from './EditProjectNavbar.types';
+import {
+  EditProjectNavbarMenuEntryProps,
+  EditProjectNavbarProps,
+  GQLProjectEventSubscription,
+} from './EditProjectNavbar.types';
 import { editProjectNavbarSubtitleExtensionPoint } from './EditProjectNavbarExtensionPoints';
 import {
   EditProjectNavbarContext,
@@ -51,6 +54,10 @@ import {
   ShowToastEvent,
   editProjectNavbarMachine,
 } from './EditProjectNavbarMachine';
+import {
+  editProjectNavbarMenuContainerExtensionPoint,
+  editProjectNavbarMenuEntryExtensionPoint,
+} from './EditProjectNavbarMenuExtensionPoints';
 
 const projectEventSubscription = gql`
   subscription projectEvent($input: ProjectEventInput!) {
@@ -92,7 +99,6 @@ const useEditProjectViewNavbarStyles = makeStyles()((theme) => ({
 export const EditProjectNavbar = ({ readOnly }: EditProjectNavbarProps) => {
   const { project } = useCurrentProject();
   const { classes } = useEditProjectViewNavbarStyles();
-  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   const [{ value, context }, dispatch] = useMachine<
     StateMachine<EditProjectNavbarContext, EditProjectNavbarStateSchema, EditProjectNavbarEvent>
@@ -174,6 +180,11 @@ export const EditProjectNavbar = ({ readOnly }: EditProjectNavbarProps) => {
   }
 
   const { Component: ProjectSubtitle } = useComponent(editProjectNavbarSubtitleExtensionPoint);
+  const { Component: ContextMenuContainer } = useComponent(editProjectNavbarMenuContainerExtensionPoint);
+  const menuItemComponentExtensions: ComponentExtension<EditProjectNavbarMenuEntryProps>[] = useComponents(
+    editProjectNavbarMenuEntryExtensionPoint
+  );
+
   return (
     <>
       <NavigationBar>
@@ -198,65 +209,58 @@ export const EditProjectNavbar = ({ readOnly }: EditProjectNavbarProps) => {
           <ProjectSubtitle />
         </div>
       </NavigationBar>
-
-      <Menu
-        open={navbar === 'contextualMenuDisplayedState'}
-        anchorEl={projectMenuAnchor}
-        data-testid="navbar-contextmenu"
-        onClose={onCloseContextMenu}>
-        <MenuItem
-          onClick={() => {
-            const showModal: HandleShowModalEvent = {
-              type: 'HANDLE_SHOW_MODAL_EVENT',
-              modalName: 'RenameProject',
-            };
-            dispatch(showModal);
-          }}
-          disabled={readOnly}
-          data-testid="rename">
-          <ListItemIcon>
-            <EditIcon />
-          </ListItemIcon>
-          <ListItemText primary="Rename" />
-        </MenuItem>
-        <MenuItem
-          component="a"
-          href={`${httpOrigin}/api/projects/${project?.id}`}
-          type="application/octet-stream"
-          onClick={onCloseContextMenu}
-          data-testid="download-link">
-          <ListItemIcon>
-            <GetAppIcon />
-          </ListItemIcon>
-          <ListItemText primary="Download" />
-        </MenuItem>
-        <MenuItem
-          divider
-          component={RouterLink}
-          to={`/projects/${project?.id}/settings`}
-          onClick={onCloseContextMenu}
-          data-testid="project-settings-link">
-          <ListItemIcon>
-            <SettingsIcon />
-          </ListItemIcon>
-          <ListItemText primary="Settings" />
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            const showModal: HandleShowModalEvent = {
-              type: 'HANDLE_SHOW_MODAL_EVENT',
-              modalName: 'DeleteProject',
-            };
-            dispatch(showModal);
-          }}
-          disabled={readOnly}
-          data-testid="delete">
-          <ListItemIcon>
-            <DeleteIcon />
-          </ListItemIcon>
-          <ListItemText primary="Delete" />
-        </MenuItem>
-      </Menu>
+      <ContextMenuContainer>
+        <Menu
+          open={navbar === 'contextualMenuDisplayedState'}
+          anchorEl={projectMenuAnchor}
+          data-testid="navbar-contextmenu"
+          onClose={onCloseContextMenu}>
+          <MenuItem
+            onClick={() => {
+              const showModal: HandleShowModalEvent = {
+                type: 'HANDLE_SHOW_MODAL_EVENT',
+                modalName: 'RenameProject',
+              };
+              dispatch(showModal);
+            }}
+            disabled={readOnly}
+            data-testid="rename">
+            <ListItemIcon>
+              <EditIcon />
+            </ListItemIcon>
+            <ListItemText primary="Rename" />
+          </MenuItem>
+          {menuItemComponentExtensions.map(({ Component: ProjectContextMenuItem }, index) => (
+            <ProjectContextMenuItem key={index} projectId={project?.id || ''} onCloseContextMenu={onCloseContextMenu} />
+          ))}
+          <MenuItem
+            divider
+            component={RouterLink}
+            to={`/projects/${project?.id}/settings`}
+            onClick={onCloseContextMenu}
+            data-testid="project-settings-link">
+            <ListItemIcon>
+              <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Settings" />
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              const showModal: HandleShowModalEvent = {
+                type: 'HANDLE_SHOW_MODAL_EVENT',
+                modalName: 'DeleteProject',
+              };
+              dispatch(showModal);
+            }}
+            disabled={readOnly}
+            data-testid="delete">
+            <ListItemIcon>
+              <DeleteIcon />
+            </ListItemIcon>
+            <ListItemText primary="Delete" />
+          </MenuItem>
+        </Menu>
+      </ContextMenuContainer>
       <Toast
         message={message}
         open={toast === 'visible'}

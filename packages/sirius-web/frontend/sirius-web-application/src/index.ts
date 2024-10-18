@@ -55,8 +55,16 @@ export {
   navigationBarMenuIconExtensionPoint,
 } from './navigationBar/NavigationBarMenuExtensionPoints';
 export { routerExtensionPoint } from './router/RouterExtensionPoints';
-export { type EditProjectNavbarSubtitleProps } from './views/edit-project/EditProjectNavbar/EditProjectNavbar.types';
+export type {
+  EditProjectNavbarMenuContainerProps,
+  EditProjectNavbarMenuEntryProps,
+  EditProjectNavbarSubtitleProps,
+} from './views/edit-project/EditProjectNavbar/EditProjectNavbar.types';
 export { editProjectNavbarSubtitleExtensionPoint } from './views/edit-project/EditProjectNavbar/EditProjectNavbarExtensionPoints';
+export {
+  editProjectNavbarMenuContainerExtensionPoint,
+  editProjectNavbarMenuEntryExtensionPoint,
+} from './views/edit-project/EditProjectNavbar/EditProjectNavbarMenuExtensionPoints';
 export { type ProjectReadOnlyPredicate } from './views/edit-project/EditProjectView.types';
 export { editProjectViewReadOnlyPredicateExtensionPoint } from './views/edit-project/EditProjectViewExtensionPoints';
 export { useCurrentProject } from './views/edit-project/useCurrentProject';
