@@ -32,9 +32,9 @@ import org.eclipse.sirius.components.collaborative.forms.api.IPropertiesDefaultD
 import org.eclipse.sirius.components.collaborative.forms.api.IPropertiesDescriptionService;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorFactoryConfiguration;
-import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
@@ -68,8 +68,10 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
 
     private final IFormPostProcessor formPostProcessor;
 
+    private final IURLParser urlParser;
+
     public PropertiesEventProcessorFactory(IPropertiesDescriptionService propertiesDescriptionService, IPropertiesDefaultDescriptionProvider propertiesDefaultDescriptionProvider, List<IWidgetDescriptor> widgetDescriptors,
-            RepresentationEventProcessorFactoryConfiguration configuration, FormEventProcessorFactoryConfiguration formConfiguration) {
+            RepresentationEventProcessorFactoryConfiguration configuration, FormEventProcessorFactoryConfiguration formConfiguration, IURLParser urlParser) {
         this.propertiesDescriptionService = Objects.requireNonNull(propertiesDescriptionService);
         this.propertiesDefaultDescriptionProvider = Objects.requireNonNull(propertiesDefaultDescriptionProvider);
         this.objectService = Objects.requireNonNull(formConfiguration.getObjectService());
@@ -79,6 +81,7 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
         this.subscriptionManagerFactory = Objects.requireNonNull(configuration.getSubscriptionManagerFactory());
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
         this.formPostProcessor = Objects.requireNonNull(formConfiguration.getFormPostProcessor());
+        this.urlParser = Objects.requireNonNull(urlParser);
     }
 
     @Override
@@ -90,10 +93,10 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
     public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IEditingContext editingContext, String representationId) {
         List<PageDescription> pageDescriptions = this.propertiesDescriptionService.getPropertiesDescriptions();
 
-        Map<String, List<String>> parameters = new URLParser().getParameterValues(representationId);
+        Map<String, List<String>> parameters = this.urlParser.getParameterValues(representationId);
         String objectIdsParam = parameters.get("objectIds").get(0);
 
-        var objectIds = new URLParser().getParameterEntries(objectIdsParam);
+        var objectIds = this.urlParser.getParameterEntries(objectIdsParam);
         var objects = objectIds.stream()
                 .map(objectId -> this.objectService.getObject(editingContext, objectId))
                 .flatMap(Optional::stream)

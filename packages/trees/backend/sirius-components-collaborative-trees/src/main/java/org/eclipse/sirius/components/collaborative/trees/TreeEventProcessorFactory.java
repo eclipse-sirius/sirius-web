@@ -21,13 +21,14 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProce
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
+import org.eclipse.sirius.components.collaborative.api.RepresentationEventProcessorFactoryConfiguration;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeEventHandler;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeService;
 import org.eclipse.sirius.components.collaborative.trees.api.TreeCreationParameters;
-import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.springframework.stereotype.Service;
@@ -58,14 +59,18 @@ public class TreeEventProcessorFactory implements IRepresentationEventProcessorF
 
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
-    public TreeEventProcessorFactory(IRepresentationSearchService representationSearchService, IRepresentationDescriptionSearchService representationDescriptionSearchService, IObjectService objectService, ITreeService treeService, List<ITreeEventHandler> treeEventHandlers, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry, ISubscriptionManagerFactory subscriptionManagerFactory) {
-        this.representationSearchService = Objects.requireNonNull(representationSearchService);
-        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+    private final IURLParser urlParser;
+
+    public TreeEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, IObjectService objectService, ITreeService treeService, List<ITreeEventHandler> treeEventHandlers,
+            IURLParser urlParser) {
+        this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
+        this.representationDescriptionSearchService = Objects.requireNonNull(configuration.getRepresentationDescriptionSearchService());
         this.objectService = Objects.requireNonNull(objectService);
         this.treeService = Objects.requireNonNull(treeService);
         this.treeEventHandlers = Objects.requireNonNull(treeEventHandlers);
-        this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
-        this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
+        this.subscriptionManagerFactory = Objects.requireNonNull(configuration.getSubscriptionManagerFactory());
+        this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
+        this.urlParser = Objects.requireNonNull(urlParser);
     }
 
     @Override
@@ -112,7 +117,7 @@ public class TreeEventProcessorFactory implements IRepresentationEventProcessorF
     List<String> getExpandedIdsFromRepresentationId(String representationId) {
         if (representationId.indexOf(EXPANDED_IDS) > 0) {
             String rowExpanded = representationId.substring(representationId.indexOf(EXPANDED_IDS) + EXPANDED_IDS.length());
-            return new URLParser().getParameterEntries(rowExpanded);
+            return this.urlParser.getParameterEntries(rowExpanded);
         }
         return List.of();
     }

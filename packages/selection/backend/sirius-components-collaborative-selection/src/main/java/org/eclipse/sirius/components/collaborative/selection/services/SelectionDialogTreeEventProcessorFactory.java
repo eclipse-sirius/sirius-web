@@ -25,9 +25,9 @@ import org.eclipse.sirius.components.collaborative.trees.TreeEventProcessor;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeEventHandler;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeService;
 import org.eclipse.sirius.components.collaborative.trees.api.TreeCreationParameters;
-import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
@@ -53,12 +53,16 @@ public class SelectionDialogTreeEventProcessorFactory implements IRepresentation
 
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
-    public SelectionDialogTreeEventProcessorFactory(IRepresentationDescriptionSearchService representationDescriptionSearchService, List<ITreeEventHandler> treeEventHandlers, ITreeService treeService, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry, ISubscriptionManagerFactory subscriptionManagerFactory) {
+    private final IURLParser urlParser;
+
+    public SelectionDialogTreeEventProcessorFactory(IRepresentationDescriptionSearchService representationDescriptionSearchService, List<ITreeEventHandler> treeEventHandlers, ITreeService treeService,
+            IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry, ISubscriptionManagerFactory subscriptionManagerFactory, IURLParser urlParser) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.treeService = Objects.requireNonNull(treeService);
         this.treeEventHandlers = Objects.requireNonNull(treeEventHandlers);
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
+        this.urlParser = Objects.requireNonNull(urlParser);
     }
 
     @Override
@@ -72,9 +76,9 @@ public class SelectionDialogTreeEventProcessorFactory implements IRepresentation
         if (optionalTreeDescription.isPresent()) {
             var treeDescription = optionalTreeDescription.get();
 
-            Map<String, List<String>> parameters = new URLParser().getParameterValues(representationId);
+            Map<String, List<String>> parameters = this.urlParser.getParameterValues(representationId);
             String expandedIds = parameters.get("expandedIds").get(0);
-            var expanded = new URLParser().getParameterEntries(expandedIds);
+            var expanded = this.urlParser.getParameterEntries(expandedIds);
 
             TreeCreationParameters treeCreationParameters = TreeCreationParameters.newTreeCreationParameters(representationId)
                     .treeDescription(treeDescription)

@@ -29,9 +29,9 @@ import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorFactoryConfiguration;
-import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.web.application.diagram.services.filter.api.IDiagramFilterDescriptionProvider;
@@ -61,9 +61,11 @@ public class DiagramFilterEventProcessorFactory implements IRepresentationEventP
 
     private final IFormPostProcessor formPostProcessor;
 
+    private final IURLParser urlParser;
+
     public DiagramFilterEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, IRepresentationSearchService representationSearchService,
-                                              IDiagramFilterDescriptionProvider diagramFilterDescriptionProvider, List<IWidgetDescriptor> widgetDescriptors,
-                                              FormEventProcessorFactoryConfiguration formConfiguration) {
+            IDiagramFilterDescriptionProvider diagramFilterDescriptionProvider, List<IWidgetDescriptor> widgetDescriptors, FormEventProcessorFactoryConfiguration formConfiguration,
+            IURLParser urlParser) {
         this.diagramFilterDescriptionProvider = Objects.requireNonNull(diagramFilterDescriptionProvider);
         this.objectService = Objects.requireNonNull(formConfiguration.getObjectService());
         this.representationSearchService = Objects.requireNonNull(representationSearchService);
@@ -72,6 +74,7 @@ public class DiagramFilterEventProcessorFactory implements IRepresentationEventP
         this.subscriptionManagerFactory = Objects.requireNonNull(configuration.getSubscriptionManagerFactory());
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
         this.formPostProcessor = Objects.requireNonNull(formConfiguration.getFormPostProcessor());
+        this.urlParser = Objects.requireNonNull(urlParser);
     }
 
     @Override
@@ -82,10 +85,10 @@ public class DiagramFilterEventProcessorFactory implements IRepresentationEventP
     @Override
     public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IEditingContext editingContext, String representationId) {
         if (this.diagramFilterDescriptionProvider != null) {
-            Map<String, List<String>> parameters = new URLParser().getParameterValues(representationId);
+            Map<String, List<String>> parameters = this.urlParser.getParameterValues(representationId);
             String objectIdsParam = parameters.get("objectIds").get(0);
 
-            var objectIds = new URLParser().getParameterEntries(objectIdsParam);
+            var objectIds = this.urlParser.getParameterEntries(objectIdsParam);
             var objects = objectIds.stream()
                     .map(objectId -> this.objectService.getObject(editingContext, objectId))
                     .flatMap(Optional::stream)

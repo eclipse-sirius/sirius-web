@@ -25,9 +25,9 @@ import org.eclipse.sirius.components.collaborative.trees.TreeEventProcessor;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeEventHandler;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeService;
 import org.eclipse.sirius.components.collaborative.trees.api.TreeCreationParameters;
-import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.springframework.stereotype.Service;
 
@@ -51,13 +51,16 @@ public class ExplorerEventProcessorFactory implements IRepresentationEventProces
 
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
+    private final IURLParser urlParser;
+
     public ExplorerEventProcessorFactory(IRepresentationDescriptionSearchService representationDescriptionSearchService, ITreeService treeService, List<ITreeEventHandler> treeEventHandlers,
-            ISubscriptionManagerFactory subscriptionManagerFactory, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
+            ISubscriptionManagerFactory subscriptionManagerFactory, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry, IURLParser urlParser) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.treeService = Objects.requireNonNull(treeService);
         this.treeEventHandlers = Objects.requireNonNull(treeEventHandlers);
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
+        this.urlParser = Objects.requireNonNull(urlParser);
     }
 
     @Override
@@ -67,7 +70,7 @@ public class ExplorerEventProcessorFactory implements IRepresentationEventProces
 
     @Override
     public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IEditingContext editingContext, String representationId) {
-        Map<String, List<String>> parameters = new URLParser().getParameterValues(representationId);
+        Map<String, List<String>> parameters = this.urlParser.getParameterValues(representationId);
         var treeDescriptionId = parameters.get("treeDescriptionId").get(0);
         Optional<TreeDescription> optionalTreeDescription = this.representationDescriptionSearchService
                 .findById(editingContext, treeDescriptionId)
@@ -78,10 +81,10 @@ public class ExplorerEventProcessorFactory implements IRepresentationEventProces
             var treeDescription = optionalTreeDescription.get();
 
             String activeFilterIdsParam = parameters.get("activeFilterIds").get(0);
-            var activeFilterIds = new URLParser().getParameterEntries(activeFilterIdsParam);
+            var activeFilterIds = this.urlParser.getParameterEntries(activeFilterIdsParam);
 
             String expandedIdsParam = parameters.get("expandedIds").get(0);
-            var expanded = new URLParser().getParameterEntries(expandedIdsParam);
+            var expanded = this.urlParser.getParameterEntries(expandedIdsParam);
 
             TreeCreationParameters treeCreationParameters = TreeCreationParameters.newTreeCreationParameters(representationId)
                     .treeDescription(treeDescription)
