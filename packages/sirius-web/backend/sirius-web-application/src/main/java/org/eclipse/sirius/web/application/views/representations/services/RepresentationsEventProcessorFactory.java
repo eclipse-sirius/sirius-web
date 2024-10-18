@@ -30,9 +30,9 @@ import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
 import org.eclipse.sirius.components.collaborative.forms.api.IRepresentationsDescriptionProvider;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorFactoryConfiguration;
-import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.springframework.stereotype.Service;
@@ -61,8 +61,11 @@ public class RepresentationsEventProcessorFactory implements IRepresentationEven
 
     private final IFormPostProcessor formPostProcessor;
 
+    private final IURLParser urlParser;
+
     public RepresentationsEventProcessorFactory(IRepresentationsDescriptionProvider representationsDescriptionProvider, ISubscriptionManagerFactory subscriptionManagerFactory,
-            RepresentationEventProcessorFactoryConfiguration configuration, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry, List<IWidgetDescriptor> widgetDescriptors, FormEventProcessorFactoryConfiguration formConfiguration) {
+            RepresentationEventProcessorFactoryConfiguration configuration, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry, List<IWidgetDescriptor> widgetDescriptors,
+            FormEventProcessorFactoryConfiguration formConfiguration, IURLParser urlParser) {
         this.representationsDescriptionProvider = Objects.requireNonNull(representationsDescriptionProvider);
         this.objectService = Objects.requireNonNull(formConfiguration.getObjectService());
         this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
@@ -71,6 +74,7 @@ public class RepresentationsEventProcessorFactory implements IRepresentationEven
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
         this.formPostProcessor = Objects.requireNonNull(formConfiguration.getFormPostProcessor());
+        this.urlParser = Objects.requireNonNull(urlParser);
     }
 
     @Override
@@ -80,10 +84,10 @@ public class RepresentationsEventProcessorFactory implements IRepresentationEven
 
     @Override
     public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IEditingContext editingContext, String representationId) {
-        Map<String, List<String>> parameters = new URLParser().getParameterValues(representationId);
+        Map<String, List<String>> parameters = this.urlParser.getParameterValues(representationId);
         String objectIdsParam = parameters.get("objectIds").get(0);
 
-        var objectIds = new URLParser().getParameterEntries(objectIdsParam);
+        var objectIds = this.urlParser.getParameterEntries(objectIdsParam);
         var objects = objectIds.stream()
             .map(objectId -> this.objectService.getObject(editingContext, objectId))
             .flatMap(Optional::stream)
