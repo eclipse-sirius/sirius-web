@@ -26,16 +26,15 @@ import org.eclipse.sirius.components.view.tree.TreePackage;
 
 /**
  * This is the item provider adapter for a
- * {@link org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry}
- * object. <!-- begin-user-doc --> <!-- end-user-doc -->
+ * {@link org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry} object. <!-- begin-user-doc -->
+ * <!-- end-user-doc -->
  *
  * @generated
  */
 public class SingleClickTreeItemContextMenuEntryItemProvider extends TreeItemContextMenuEntryItemProvider {
 
     /**
-     * This constructs an instance from a factory and a notifier. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -44,36 +43,34 @@ public class SingleClickTreeItemContextMenuEntryItemProvider extends TreeItemCon
     }
 
     /**
-     * This returns the property descriptors for the adapted class. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (this.itemPropertyDescriptors == null) {
+        if (itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
         }
-        return this.itemPropertyDescriptors;
+        return itemPropertyDescriptors;
     }
 
     /**
-     * This specifies how to implement {@link #getChildren} and is used to deduce an
-     * appropriate feature for an {@link org.eclipse.emf.edit.command.AddCommand},
-     * {@link org.eclipse.emf.edit.command.RemoveCommand} or
-     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+     * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      */
     @Override
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-        if (this.childrenFeatures == null) {
+        if (childrenFeatures == null) {
             super.getChildrenFeatures(object);
-            this.childrenFeatures.add(TreePackage.Literals.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__BODY);
+            childrenFeatures.add(TreePackage.Literals.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__BODY);
         }
-        return this.childrenFeatures;
+        return childrenFeatures;
     }
 
     /**
@@ -83,23 +80,20 @@ public class SingleClickTreeItemContextMenuEntryItemProvider extends TreeItemCon
      */
     @Override
     protected EStructuralFeature getChildFeature(Object object, Object child) {
-        // Check the type of the specified child object and return the proper feature to
-        // use for
+        // Check the type of the specified child object and return the proper feature to use for
         // adding (see {@link AddCommand}) it as a child.
 
         return super.getChildFeature(object, child);
     }
 
     /**
-     * This returns SingleClickTreeItemContextMenuEntry.gif. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This returns SingleClickTreeItemContextMenuEntry.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object,
-                this.getResourceLocator().getImage("full/obj16/SingleClickTreeItemContextMenuEntry.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/SingleClickTreeItemContextMenuEntry.svg"));
     }
 
     /**
@@ -113,41 +107,38 @@ public class SingleClickTreeItemContextMenuEntryItemProvider extends TreeItemCon
     }
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     @Override
     public String getText(Object object) {
         String label = ((SingleClickTreeItemContextMenuEntry) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_SingleClickTreeItemContextMenuEntry_type")
-                : this.getString("_UI_SingleClickTreeItemContextMenuEntry_type") + " " + label;
+        return label == null || label.length() == 0 ? getString("_UI_SingleClickTreeItemContextMenuEntry_type") : getString("_UI_SingleClickTreeItemContextMenuEntry_type") + " " + label;
     }
 
     /**
-     * This handles model notifications by calling {@link #updateChildren} to update
-     * any cached children and by creating a viewer notification, which it passes to
-     * {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
+     * a viewer notification, which it passes to {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
      * @generated
      */
     @Override
     public void notifyChanged(Notification notification) {
-        this.updateChildren(notification);
+        updateChildren(notification);
 
         switch (notification.getFeatureID(SingleClickTreeItemContextMenuEntry.class)) {
             case TreePackage.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__BODY:
-                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+                fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
         super.notifyChanged(notification);
     }
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing
-     * the children that can be created under this object. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
+     * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -155,37 +146,21 @@ public class SingleClickTreeItemContextMenuEntryItemProvider extends TreeItemCon
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors
-                .add(this.createChildParameter(TreePackage.Literals.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__BODY,
-                        ViewFactory.eINSTANCE.createChangeContext()));
+        newChildDescriptors.add(createChildParameter(TreePackage.Literals.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__BODY, ViewFactory.eINSTANCE.createChangeContext()));
 
-        newChildDescriptors
-                .add(this.createChildParameter(TreePackage.Literals.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__BODY,
-                        ViewFactory.eINSTANCE.createCreateInstance()));
+        newChildDescriptors.add(createChildParameter(TreePackage.Literals.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__BODY, ViewFactory.eINSTANCE.createCreateInstance()));
 
-        newChildDescriptors
-                .add(this.createChildParameter(TreePackage.Literals.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__BODY,
-                        ViewFactory.eINSTANCE.createSetValue()));
+        newChildDescriptors.add(createChildParameter(TreePackage.Literals.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__BODY, ViewFactory.eINSTANCE.createSetValue()));
 
-        newChildDescriptors
-                .add(this.createChildParameter(TreePackage.Literals.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__BODY,
-                        ViewFactory.eINSTANCE.createUnsetValue()));
+        newChildDescriptors.add(createChildParameter(TreePackage.Literals.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__BODY, ViewFactory.eINSTANCE.createUnsetValue()));
 
-        newChildDescriptors
-                .add(this.createChildParameter(TreePackage.Literals.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__BODY,
-                        ViewFactory.eINSTANCE.createDeleteElement()));
+        newChildDescriptors.add(createChildParameter(TreePackage.Literals.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__BODY, ViewFactory.eINSTANCE.createDeleteElement()));
 
-        newChildDescriptors
-                .add(this.createChildParameter(TreePackage.Literals.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__BODY,
-                        ViewFactory.eINSTANCE.createLet()));
+        newChildDescriptors.add(createChildParameter(TreePackage.Literals.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__BODY, ViewFactory.eINSTANCE.createLet()));
 
-        newChildDescriptors
-                .add(this.createChildParameter(TreePackage.Literals.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__BODY,
-                        ViewFactory.eINSTANCE.createIf()));
+        newChildDescriptors.add(createChildParameter(TreePackage.Literals.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__BODY, ViewFactory.eINSTANCE.createIf()));
 
-        newChildDescriptors
-                .add(this.createChildParameter(TreePackage.Literals.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__BODY,
-                        ViewFactory.eINSTANCE.createFor()));
+        newChildDescriptors.add(createChildParameter(TreePackage.Literals.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__BODY, ViewFactory.eINSTANCE.createFor()));
     }
 
 }

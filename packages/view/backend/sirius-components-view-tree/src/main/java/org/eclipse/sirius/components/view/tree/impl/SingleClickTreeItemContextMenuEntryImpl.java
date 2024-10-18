@@ -43,9 +43,9 @@ public class SingleClickTreeItemContextMenuEntryImpl extends TreeItemContextMenu
      * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
+     * @see #getBody()
      * @generated
      * @ordered
-     * @see #getBody()
      */
     protected EList<Operation> body;
 

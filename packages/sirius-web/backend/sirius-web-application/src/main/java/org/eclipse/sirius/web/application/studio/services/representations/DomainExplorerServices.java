@@ -294,6 +294,13 @@ public class DomainExplorerServices {
         return self;
     }
 
+    public boolean isAbstractEntity(Object self) {
+        if (self instanceof Entity entity) {
+            return entity.isAbstract();
+        }
+        return false;
+    }
+
     /**
      * Wrapper for {@link org.eclipse.emf.ecore.EStructuralFeature.Setting} to avoid AQL interpreter sees this element as an list.
      */

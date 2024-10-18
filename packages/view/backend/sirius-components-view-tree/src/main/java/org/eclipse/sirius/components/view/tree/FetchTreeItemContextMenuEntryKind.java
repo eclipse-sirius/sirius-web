@@ -22,46 +22,46 @@ import org.eclipse.emf.common.util.Enumerator;
  * <!-- begin-user-doc --> A representation of the literals of the enumeration '<em><b>Fetch Tree Item Context Menu
  * Entry Kind</b></em>', and utility methods for working with them. <!-- end-user-doc -->
  *
+ * @see org.eclipse.sirius.components.view.tree.TreePackage#getFetchTreeItemContextMenuEntryKind()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.view.tree.TreePackage#getFetchTreeItemContextMenuEntryKind()
  */
 public enum FetchTreeItemContextMenuEntryKind implements Enumerator {
     /**
      * The '<em><b>DOWNLOAD</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #DOWNLOAD_VALUE
      * @generated
      * @ordered
-     * @see #DOWNLOAD_VALUE
      */
     DOWNLOAD(0, "DOWNLOAD", "DOWNLOAD"),
 
     /**
      * The '<em><b>OPEN</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #OPEN_VALUE
      * @generated
      * @ordered
-     * @see #OPEN_VALUE
      */
     OPEN(1, "OPEN", "OPEN");
 
     /**
      * The '<em><b>DOWNLOAD</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #DOWNLOAD
      * @model
      * @generated
      * @ordered
-     * @see #DOWNLOAD
      */
     public static final int DOWNLOAD_VALUE = 0;
 
     /**
      * The '<em><b>OPEN</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #OPEN
      * @model
      * @generated
      * @ordered
-     * @see #OPEN
      */
     public static final int OPEN_VALUE = 1;
 
@@ -80,18 +80,21 @@ public enum FetchTreeItemContextMenuEntryKind implements Enumerator {
      * @generated
      */
     public static final List<FetchTreeItemContextMenuEntryKind> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private final int value;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private final String name;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -104,7 +107,7 @@ public enum FetchTreeItemContextMenuEntryKind implements Enumerator {
      *
      * @generated
      */
-    FetchTreeItemContextMenuEntryKind(int value, String name, String literal) {
+    private FetchTreeItemContextMenuEntryKind(int value, String name, String literal) {
         this.value = value;
         this.name = name;
         this.literal = literal;
@@ -115,7 +118,7 @@ public enum FetchTreeItemContextMenuEntryKind implements Enumerator {
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param literal
-     *         the literal.
+     *            the literal.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
@@ -134,7 +137,7 @@ public enum FetchTreeItemContextMenuEntryKind implements Enumerator {
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @param name
-     *         the name.
+     *            the name.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
@@ -153,7 +156,7 @@ public enum FetchTreeItemContextMenuEntryKind implements Enumerator {
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the integer value.
+     *            the integer value.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */

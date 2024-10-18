@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry;
+import org.eclipse.sirius.components.view.tree.IfTreeItemLabelElementDescription;
 import org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.TreeDescription;
 import org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry;
@@ -35,6 +36,7 @@ import org.eclipse.sirius.components.view.tree.TreePackage;
  * @generated
  */
 public class TreeSwitch<T> extends Switch<T> {
+
     /**
      * The cached model package <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -88,6 +90,15 @@ public class TreeSwitch<T> extends Switch<T> {
             case TreePackage.TREE_ITEM_LABEL_DESCRIPTION: {
                 TreeItemLabelDescription treeItemLabelDescription = (TreeItemLabelDescription) theEObject;
                 T result = this.caseTreeItemLabelDescription(treeItemLabelDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case TreePackage.IF_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION: {
+                IfTreeItemLabelElementDescription ifTreeItemLabelElementDescription = (IfTreeItemLabelElementDescription) theEObject;
+                T result = this.caseIfTreeItemLabelElementDescription(ifTreeItemLabelElementDescription);
+                if (result == null)
+                    result = this.caseTreeItemLabelElementDescription(ifTreeItemLabelElementDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -164,6 +175,22 @@ public class TreeSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseTreeItemLabelDescription(TreeItemLabelDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>If Tree Item Label Element
+     * Description</em>'. <!-- begin-user-doc --> This implementation returns null; returning a non-null result will
+     * terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>If Tree Item Label Element
+     *         Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseIfTreeItemLabelElementDescription(IfTreeItemLabelElementDescription object) {
         return null;
     }
 
