@@ -17,6 +17,15 @@ export interface EditProjectNavbarProps {
 
 export interface EditProjectNavbarSubtitleProps {}
 
+export interface EditProjectNavbarMenuContainerProps {
+  children?: React.ReactNode;
+}
+
+export interface EditProjectNavbarMenuEntryProps {
+  projectId: string;
+  onCloseContextMenu: () => void;
+}
+
 export interface GQLProjectEventSubscription {
   projectEvent: GQLProjectEventPayload;
 }
