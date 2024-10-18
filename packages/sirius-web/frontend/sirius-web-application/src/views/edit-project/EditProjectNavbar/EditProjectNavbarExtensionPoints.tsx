@@ -12,9 +12,28 @@
  *******************************************************************************/
 
 import { ComponentExtensionPoint } from '@eclipse-sirius/sirius-components-core';
-import { EditProjectNavbarSubtitleProps } from './EditProjectNavbar.types';
+import {
+  EditProjectNavbarMenuContainerProps,
+  EditProjectNavbarMenuEntryProps,
+  EditProjectNavbarSubtitleProps,
+} from './EditProjectNavbar.types';
 
 export const editProjectNavbarSubtitleExtensionPoint: ComponentExtensionPoint<EditProjectNavbarSubtitleProps> = {
   identifier: 'editProjectNavbar#subtitle',
+  FallbackComponent: () => null,
+};
+
+const FallbackEditProjectNavbarMenuContainer = ({ children }: EditProjectNavbarMenuContainerProps) => {
+  return <div>{children}</div>;
+};
+
+export const editProjectNavbarMenuContainerExtensionPoint: ComponentExtensionPoint<EditProjectNavbarMenuContainerProps> =
+  {
+    identifier: 'editProjectNavbarMenu#container',
+    FallbackComponent: FallbackEditProjectNavbarMenuContainer,
+  };
+
+export const editProjectNavbarMenuEntryExtensionPoint: ComponentExtensionPoint<EditProjectNavbarMenuEntryProps> = {
+  identifier: 'editProjectNavbarMenu#entry',
   FallbackComponent: () => null,
 };
