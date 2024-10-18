@@ -84,7 +84,8 @@ This is much more natural and closer to the behavior of usual languages, but cha
 Charts' metadata is only relevant when Charts are used as Representations.
 - https://github.com/eclipse-sirius/sirius-web/issues/3904[#3904] [form] Fix an issue where textfield did not update to reflect backend-set value when it matched the initial value.
 - https://github.com/eclipse-sirius/sirius-web/issues/3836[#3836] [gantt] Prevent task.description from resetting after gantt task change.
-- https://github.com/eclipse-sirius/sirius-web/issues/2399[#2399] [core] When executing successive sibling model operations inside a tool, their execution context (in particular the value of `self`) now stays the same.
+- https://github.com/eclipse-sirius/sirius-web/issues/2399[#2399] [core] When executing successive sibling model operations inside a tool, their execution context (in particular the value of `self`) now stays the same
+- https://github.com/eclipse-sirius/sirius-web/issues/4117[#4117] [core] Fix URLParser for single-character parameter entries (e.g. identifiers).
 
 
 === New Features
