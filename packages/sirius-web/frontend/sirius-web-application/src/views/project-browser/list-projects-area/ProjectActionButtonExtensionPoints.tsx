@@ -10,12 +10,27 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { DataExtensionPoint } from '@eclipse-sirius/sirius-components-core';
+import { ComponentExtensionPoint, DataExtensionPoint } from '@eclipse-sirius/sirius-components-core';
 import { MenuItemProps } from '@mui/material/MenuItem';
+import { ProjectActionButtonProps, ProjectContextMenuContainerProps } from './ProjectActionButton.types';
 
 export const projectActionButtonMenuItemExtensionPoint: DataExtensionPoint<
   Array<MenuItemProps<'li', { button: true }>>
 > = {
   identifier: 'projectActionButton#menuItem',
   fallback: [],
+};
+
+const FallbackProjectContextMenuContainer = ({ children }: ProjectContextMenuContainerProps) => {
+  return <div>{children}</div>;
+};
+
+export const projectContextMenuContainerExtensionPoint: ComponentExtensionPoint<ProjectContextMenuContainerProps> = {
+  identifier: 'projectContextMenu#container',
+  FallbackComponent: FallbackProjectContextMenuContainer,
+};
+
+export const projectContextMenuEntryExtensionPoint: ComponentExtensionPoint<ProjectActionButtonProps> = {
+  identifier: 'projectContextMenu#entry',
+  FallbackComponent: () => null,
 };

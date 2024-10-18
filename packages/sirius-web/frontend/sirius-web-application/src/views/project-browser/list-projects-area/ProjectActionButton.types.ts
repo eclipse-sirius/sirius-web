@@ -22,6 +22,10 @@ export interface ProjectActionButtonState {
   contextMenuAnchorElement: HTMLElement | null;
 }
 
+export interface ProjectContextMenuContainerProps {
+  children?: React.ReactNode;
+}
+
 export interface ProjectContextMenuProps {
   menuAnchor: HTMLElement;
   project: GQLProject;

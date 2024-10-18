@@ -69,6 +69,8 @@ import { createProjectAreaCardExtensionPoint } from '../views/project-browser/cr
 import { NewProjectCard } from '../views/project-browser/create-projects-area/NewProjectCard';
 import { ShowAllProjectTemplatesCard } from '../views/project-browser/create-projects-area/ShowAllProjectTemplatesCard';
 import { UploadProjectCard } from '../views/project-browser/create-projects-area/UploadProjectCard';
+import { projectContextMenuEntryExtensionPoint } from '../views/project-browser/list-projects-area/ProjectActionButtonExtensionPoints';
+import { ProjectDownloadMenuItemExtension } from '../views/project-browser/list-projects-area/ProjectDownloadMenuItemExtension';
 import { ProjectSettingTabContribution } from '../views/project-settings/ProjectSettingsView.types';
 import { projectSettingsTabExtensionPoint } from '../views/project-settings/ProjectSettingsViewExtensionPoints';
 import { ProjectImagesSettings } from '../views/project-settings/images/ProjectImagesSettings';
@@ -345,6 +347,18 @@ const defaultSettingPages: ProjectSettingTabContribution[] = [
 defaultExtensionRegistry.putData(projectSettingsTabExtensionPoint, {
   identifier: `siriusWeb_${projectSettingsTabExtensionPoint.identifier}`,
   data: defaultSettingPages,
+});
+
+/*******************************************************************************
+ *
+ * Project action buttons
+ *
+ * Used to register menu items available on projects in the project browser viewx
+ *
+ *******************************************************************************/
+defaultExtensionRegistry.addComponent(projectContextMenuEntryExtensionPoint, {
+  identifier: `siriusWeb_${projectContextMenuEntryExtensionPoint.identifier}_download`,
+  Component: ProjectDownloadMenuItemExtension,
 });
 
 export { defaultExtensionRegistry };
