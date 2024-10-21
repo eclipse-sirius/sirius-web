@@ -30,7 +30,7 @@
     "@eclipse-sirius/sirius-web-papaya": "*",
     "@mui/icons-material": "5.15.19",
     "@mui/material": "5.15.19",
-    "@ObeoNetwork/gantt-task-react": "0.6.0",
+    "@ObeoNetwork/gantt-task-react": "0.6.1",
     "@ObeoNetwork/react-trello": "2.4.11",
     "@xstate/react": "3.0.0",
     "d3": "7.0.0",
