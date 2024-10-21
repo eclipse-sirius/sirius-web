@@ -125,7 +125,7 @@ export const GanttRepresentation = ({ editingContextId, representationId }: Repr
   const handleEditTask = (task: TaskOrEmpty) => {
     const newDetail: GQLTaskDetail = {
       name: task.name,
-      description: '',
+      description: task.description ?? '',
       startTime: formatDate((task as Task)?.start, (task as SelectableTask)?.temporalType, false),
       endTime: formatDate((task as Task)?.end, (task as SelectableTask)?.temporalType, true),
       progress: (task as Task)?.progress,

@@ -52,7 +52,7 @@ This allows an error to be displayed when there is a problem during uploading
 - https://github.com/eclipse-sirius/sirius-web/issues/3846[#3846] [core] Migrate the frontend to `react 18.3.1`, `react-dom 18.3.1`, `react-router-dom 6.26.0`, `@xstate/react: 3.0.0` and `@ObeoNetwork/gantt-task-react 0.6.0`
 - https://github.com/eclipse-sirius/sirius-web/issues/3840[#3840] [diagram] Migrate to ReactFlow 12
 - [releng] Switch to the final release version of AQL 8.0.2
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3836[#3836] [gantt] Switch to @ObeoNetwork/gantt-task-react 0.6.1 to benefit for enhancements
 
 === Bug fixes
 
@@ -71,6 +71,7 @@ This allows an error to be displayed when there is a problem during uploading
 - https://github.com/eclipse-sirius/sirius-web/issues/4077[#4077] [charts] Remove metadata from Charts widgets.
 Charts' metadata is only relevant when Charts are used as Representations.
 - https://github.com/eclipse-sirius/sirius-web/issues/3904[#3904] [form] Fix an issue where textfield did not update to reflect backend-set value when it matched the initial value.
+- https://github.com/eclipse-sirius/sirius-web/issues/3836[#3836] [gantt] Prevent task.description from resetting after gantt task change.
 
 === New Features
 

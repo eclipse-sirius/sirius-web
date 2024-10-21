@@ -55,6 +55,7 @@ export function getTaskFromGQLTask(gQLTasks: GQLTask[], parentId: string): TaskO
       task = {
         id: gQLTask.id,
         name: gQLTask.detail.name,
+        description: gQLTask.detail.description,
         start: getDateFromString(gQLTask.detail.startTime, gQLTask.detail.temporalType, false),
         end: getDateFromString(gQLTask.detail.endTime, gQLTask.detail.temporalType, true),
         progress: gQLTask.detail.progress,
@@ -71,6 +72,7 @@ export function getTaskFromGQLTask(gQLTasks: GQLTask[], parentId: string): TaskO
       task = {
         id: gQLTask.id,
         name: gQLTask.detail.name,
+        description: gQLTask.detail.description,
         parent: parentId,
         type: 'empty',
         targetObjectId: gQLTask.targetObjectId,
