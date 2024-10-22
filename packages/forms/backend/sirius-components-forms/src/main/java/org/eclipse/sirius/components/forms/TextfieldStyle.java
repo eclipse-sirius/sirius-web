@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,8 @@ public final class TextfieldStyle extends AbstractFontStyle {
 
     private String foregroundColor;
 
+    private WidgetFlexboxLayout widgetFlexboxLayout;
+
     private TextfieldStyle() {
         // Prevent instantiation
     }
@@ -39,6 +41,10 @@ public final class TextfieldStyle extends AbstractFontStyle {
 
     public String getForegroundColor() {
         return this.foregroundColor;
+    }
+
+    public WidgetFlexboxLayout getWidgetFlexboxLayout() {
+        return this.widgetFlexboxLayout;
     }
 
     public static Builder newTextfieldStyle() {
@@ -71,6 +77,8 @@ public final class TextfieldStyle extends AbstractFontStyle {
         private boolean underline;
 
         private boolean strikeThrough;
+
+        private WidgetFlexboxLayout widgetFlexboxLayout;
 
         private Builder() {
         }
@@ -110,6 +118,11 @@ public final class TextfieldStyle extends AbstractFontStyle {
             return this;
         }
 
+        public Builder widgetFlexboxLayout(WidgetFlexboxLayout widgetFlexboxLayout) {
+            this.widgetFlexboxLayout = widgetFlexboxLayout;
+            return this;
+        }
+
         public TextfieldStyle build() {
             TextfieldStyle textfieldStyle = new TextfieldStyle();
             textfieldStyle.backgroundColor = this.backgroundColor;
@@ -119,6 +132,7 @@ public final class TextfieldStyle extends AbstractFontStyle {
             textfieldStyle.bold = this.bold;
             textfieldStyle.underline = this.underline;
             textfieldStyle.strikeThrough = this.strikeThrough;
+            textfieldStyle.widgetFlexboxLayout = this.widgetFlexboxLayout;
             return textfieldStyle;
         }
 

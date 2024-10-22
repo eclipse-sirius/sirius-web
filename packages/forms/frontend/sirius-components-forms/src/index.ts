@@ -22,6 +22,7 @@ export * from './groups/Group.types';
 export type { ButtonStyleProps } from './propertysections/ButtonPropertySection.types';
 export type { CheckboxStyleProps } from './propertysections/CheckboxPropertySection.types';
 export type { DateTimeStyleProps } from './propertysections/DateTimeWidgetPropertySection.types';
+export * from './propertysections/FlexboxHelper';
 export * from './propertysections/getTextDecorationLineValue';
 export type { ImageStyleProps } from './propertysections/ImagePropertySection.types';
 export type { LabelStyleProps } from './propertysections/LabelWidgetPropertySection.types';

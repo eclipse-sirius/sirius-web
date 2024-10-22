@@ -97,6 +97,46 @@ public class ConditionalTextfieldDescriptionStyleBuilder {
         return this;
     }
     /**
+     * Setter for FlexDirection.
+     *
+     * @generated
+     */
+    public ConditionalTextfieldDescriptionStyleBuilder flexDirection(java.lang.String value) {
+        this.getConditionalTextfieldDescriptionStyle().setFlexDirection(value);
+        return this;
+    }
+
+    /**
+     * Setter for Gap.
+     *
+     * @generated
+     */
+    public ConditionalTextfieldDescriptionStyleBuilder gap(java.lang.String value) {
+        this.getConditionalTextfieldDescriptionStyle().setGap(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelFlex.
+     *
+     * @generated
+     */
+    public ConditionalTextfieldDescriptionStyleBuilder labelFlex(java.lang.String value) {
+        this.getConditionalTextfieldDescriptionStyle().setLabelFlex(value);
+        return this;
+    }
+
+    /**
+     * Setter for ValueFlex.
+     *
+     * @generated
+     */
+    public ConditionalTextfieldDescriptionStyleBuilder valueFlex(java.lang.String value) {
+        this.getConditionalTextfieldDescriptionStyle().setValueFlex(value);
+        return this;
+    }
+
+    /**
      * Setter for BackgroundColor.
      *
      * @generated

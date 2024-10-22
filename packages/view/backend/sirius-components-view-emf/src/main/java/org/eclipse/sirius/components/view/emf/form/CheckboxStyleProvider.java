@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.function.Function;
 
 import org.eclipse.sirius.components.forms.CheckboxStyle;
 import org.eclipse.sirius.components.forms.CheckboxStyle.Builder;
+import org.eclipse.sirius.components.forms.WidgetFlexboxLayout;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle;
@@ -36,8 +37,15 @@ public class CheckboxStyleProvider implements Function<VariableManager, Checkbox
 
     @Override
     public CheckboxStyle apply(VariableManager variableManager) {
+        WidgetFlexboxLayout widgetFlexboxLayout = WidgetFlexboxLayout.newWidgetFlexboxLayout()
+                .flexDirection(this.viewStyle.getFlexDirection())
+                .gap(this.viewStyle.getGap())
+                .labelFlex(this.viewStyle.getLabelFlex())
+                .valueFlex(this.viewStyle.getValueFlex())
+                .build();
+
         Builder checkboxStyleBuilder = CheckboxStyle.newCheckboxStyle()
-                .labelPlacement(this.viewStyle.getLabelPlacement().getLiteral());
+                .widgetFlexboxLayout(widgetFlexboxLayout);
 
         if (this.viewStyle.getColor() instanceof FixedColor fixedColor) {
             String color = fixedColor.getValue();

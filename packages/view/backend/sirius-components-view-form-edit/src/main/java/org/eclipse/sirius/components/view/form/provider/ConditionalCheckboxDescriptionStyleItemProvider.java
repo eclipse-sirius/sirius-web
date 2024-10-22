@@ -52,10 +52,60 @@ public class ConditionalCheckboxDescriptionStyleItemProvider extends Conditional
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
+            this.addFlexDirectionPropertyDescriptor(object);
+            this.addGapPropertyDescriptor(object);
+            this.addLabelFlexPropertyDescriptor(object);
+            this.addValueFlexPropertyDescriptor(object);
             this.addColorPropertyDescriptor(object);
-            this.addLabelPlacementPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
+    }
+
+    /**
+     * This adds a property descriptor for the Flex Direction feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addFlexDirectionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_WidgetFlexboxLayout_flexDirection_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetFlexboxLayout_flexDirection_feature", "_UI_WidgetFlexboxLayout_type"),
+                FormPackage.Literals.WIDGET_FLEXBOX_LAYOUT__FLEX_DIRECTION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Gap feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addGapPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_WidgetFlexboxLayout_gap_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetFlexboxLayout_gap_feature", "_UI_WidgetFlexboxLayout_type"),
+                FormPackage.Literals.WIDGET_FLEXBOX_LAYOUT__GAP, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Label Flex feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addLabelFlexPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_WidgetFlexboxLayout_labelFlex_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetFlexboxLayout_labelFlex_feature", "_UI_WidgetFlexboxLayout_type"),
+                FormPackage.Literals.WIDGET_FLEXBOX_LAYOUT__LABEL_FLEX, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Value Flex feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addValueFlexPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_WidgetFlexboxLayout_valueFlex_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetFlexboxLayout_valueFlex_feature", "_UI_WidgetFlexboxLayout_type"),
+                FormPackage.Literals.WIDGET_FLEXBOX_LAYOUT__VALUE_FLEX, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -68,18 +118,6 @@ public class ConditionalCheckboxDescriptionStyleItemProvider extends Conditional
                 this.getString("_UI_CheckboxDescriptionStyle_color_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_CheckboxDescriptionStyle_color_feature", "_UI_CheckboxDescriptionStyle_type"),
                 FormPackage.Literals.CHECKBOX_DESCRIPTION_STYLE__COLOR, true, false, false, null, null, null));
-    }
-
-    /**
-     * This adds a property descriptor for the Label Placement feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addLabelPlacementPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_CheckboxDescriptionStyle_labelPlacement_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_CheckboxDescriptionStyle_labelPlacement_feature", "_UI_CheckboxDescriptionStyle_type"),
-                FormPackage.Literals.CHECKBOX_DESCRIPTION_STYLE__LABEL_PLACEMENT, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -125,8 +163,11 @@ public class ConditionalCheckboxDescriptionStyleItemProvider extends Conditional
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(ConditionalCheckboxDescriptionStyle.class)) {
+            case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__FLEX_DIRECTION:
+            case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__GAP:
+            case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__LABEL_FLEX:
+            case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__VALUE_FLEX:
             case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR:
-            case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__LABEL_PLACEMENT:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }

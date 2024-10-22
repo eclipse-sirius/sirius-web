@@ -52,21 +52,52 @@ public class ConditionalCheckboxDescriptionStyleBuilder {
         return this;
     }
     /**
+     * Setter for FlexDirection.
+     *
+     * @generated
+     */
+    public ConditionalCheckboxDescriptionStyleBuilder flexDirection(java.lang.String value) {
+        this.getConditionalCheckboxDescriptionStyle().setFlexDirection(value);
+        return this;
+    }
+
+    /**
+     * Setter for Gap.
+     *
+     * @generated
+     */
+    public ConditionalCheckboxDescriptionStyleBuilder gap(java.lang.String value) {
+        this.getConditionalCheckboxDescriptionStyle().setGap(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelFlex.
+     *
+     * @generated
+     */
+    public ConditionalCheckboxDescriptionStyleBuilder labelFlex(java.lang.String value) {
+        this.getConditionalCheckboxDescriptionStyle().setLabelFlex(value);
+        return this;
+    }
+
+    /**
+     * Setter for ValueFlex.
+     *
+     * @generated
+     */
+    public ConditionalCheckboxDescriptionStyleBuilder valueFlex(java.lang.String value) {
+        this.getConditionalCheckboxDescriptionStyle().setValueFlex(value);
+        return this;
+    }
+
+    /**
      * Setter for Color.
      *
      * @generated
      */
     public ConditionalCheckboxDescriptionStyleBuilder color(org.eclipse.sirius.components.view.UserColor value) {
         this.getConditionalCheckboxDescriptionStyle().setColor(value);
-        return this;
-    }
-    /**
-     * Setter for LabelPlacement.
-     *
-     * @generated
-     */
-    public ConditionalCheckboxDescriptionStyleBuilder labelPlacement(org.eclipse.sirius.components.view.form.LabelPlacement value) {
-        this.getConditionalCheckboxDescriptionStyle().setLabelPlacement(value);
         return this;
     }
 

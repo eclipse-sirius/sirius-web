@@ -41,6 +41,12 @@ export const widgetFields = `
       bold
       underline
       strikeThrough
+      widgetFlexboxLayout {
+        flexDirection
+        gap
+        labelFlex
+        valueFlex
+      }
     }
   }
 
@@ -57,6 +63,12 @@ export const widgetFields = `
       bold
       underline
       strikeThrough
+      widgetFlexboxLayout {
+        flexDirection
+        gap
+        labelFlex
+        valueFlex
+      }
     }
   }
 
@@ -66,7 +78,12 @@ export const widgetFields = `
     booleanValue: value
     style {
       color
-      labelPlacement
+      widgetFlexboxLayout {
+        flexDirection
+        gap
+        labelFlex
+        valueFlex
+      }
     }
   }
 
@@ -87,6 +104,12 @@ export const widgetFields = `
       bold
       underline
       strikeThrough
+      widgetFlexboxLayout {
+        flexDirection
+        gap
+        labelFlex
+        valueFlex
+      }
     }
   }
 
@@ -107,6 +130,12 @@ export const widgetFields = `
       bold
       underline
       strikeThrough
+      widgetFlexboxLayout {
+        flexDirection
+        gap
+        labelFlex
+        valueFlex
+      }
     }
   }
 
@@ -301,6 +330,12 @@ export const widgetFields = `
       foregroundColor
       italic
       bold
+      widgetFlexboxLayout {
+        flexDirection
+        gap
+        labelFlex
+        valueFlex
+      }
     }
   }
 

@@ -18,3 +18,10 @@ export interface PropertySectionProps {
   widget: GQLWidget;
   readOnly: boolean;
 }
+
+export interface PropertySectionFlexProps {
+  flexDirection: string;
+  gap: string;
+  labelFlex: string;
+  valueFlex: string;
+}

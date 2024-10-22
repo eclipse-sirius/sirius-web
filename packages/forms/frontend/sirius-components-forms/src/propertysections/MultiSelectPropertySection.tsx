@@ -23,6 +23,7 @@ import { useEffect } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLMultiSelect } from '../form/FormEventFragments.types';
+import { getFlexProperties } from './FlexboxHelper';
 import {
   GQLEditMultiSelectMutationData,
   GQLEditMultiSelectPayload,
@@ -34,21 +35,36 @@ import { PropertySectionLabel } from './PropertySectionLabel';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 
 const useStyle = makeStyles<MultiSelectStyleProps>()(
-  (theme, { backgroundColor, foregroundColor, fontSize, italic, bold, underline, strikeThrough }) => ({
-    style: {
-      backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
-      color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
-      fontSize: fontSize ? fontSize : null,
-      fontStyle: italic ? 'italic' : null,
-      fontWeight: bold ? 'bold' : null,
-      textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
-      paddingTop: theme.spacing(0.5),
-      paddingBottom: theme.spacing(0.5),
-    },
-    iconRoot: {
-      minWidth: theme.spacing(1),
-    },
-  })
+  (theme, { backgroundColor, foregroundColor, fontSize, italic, bold, underline, strikeThrough, flexProps }) => {
+    const { flexDirectionCSS, alignItems, gap, labelFlex, valueFlex } = getFlexProperties(flexProps);
+    return {
+      style: {
+        backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
+        color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
+        fontSize: fontSize ? fontSize : null,
+        fontStyle: italic ? 'italic' : null,
+        fontWeight: bold ? 'bold' : null,
+        textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+        paddingTop: theme.spacing(0.5),
+        paddingBottom: theme.spacing(0.5),
+      },
+      iconRoot: {
+        minWidth: theme.spacing(1),
+      },
+      propertySection: {
+        display: 'flex',
+        flexDirection: flexDirectionCSS,
+        alignItems,
+        gap: gap ?? '',
+      },
+      propertySectionLabel: {
+        flex: labelFlex ?? '1 1 auto',
+      },
+      propertySectionValue: {
+        flex: valueFlex ?? '1 1 auto',
+      },
+    };
+  }
 );
 
 export const editMultiSelectMutation = gql`
@@ -91,6 +107,7 @@ export const MultiSelectPropertySection: PropertySectionComponent<GQLMultiSelect
     bold: widget.style?.bold ?? null,
     underline: widget.style?.underline ?? null,
     strikeThrough: widget.style?.strikeThrough ?? null,
+    flexProps: widget.style?.widgetFlexboxLayout ?? null,
   };
   const { classes } = useStyle(props);
 
@@ -127,52 +144,56 @@ export const MultiSelectPropertySection: PropertySectionComponent<GQLMultiSelect
   }, [loading, error, data]);
 
   return (
-    <FormControl error={widget.diagnostics.length > 0}>
-      <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
-      <Select
-        variant="standard"
-        value={widget.values}
-        onChange={onChange}
-        displayEmpty
-        fullWidth
-        data-testid={widget.label}
-        disabled={readOnly || widget.readOnly}
-        renderValue={(selected) =>
-          widget.options
-            .filter((option) => (selected as string[]).includes(option.id))
-            .map((option) => option.label)
-            .join(', ')
-        }
-        multiple
-        inputProps={
-          widget.style
-            ? {
-                className: classes.style,
-              }
-            : {}
-        }>
-        {widget.options.map((option) => (
-          <MenuItem key={option.id} value={option.id}>
-            <Checkbox checked={widget.values.indexOf(option.id) > -1} />
-            {option.iconURL.length > 0 && (
-              <ListItemIcon className={classes.iconRoot}>
-                <IconOverlay iconURL={option.iconURL} alt={option.label} />
-              </ListItemIcon>
-            )}
-            <ListItemText
-              primary={option.label}
-              primaryTypographyProps={
-                widget.style
-                  ? {
-                      className: classes.style,
-                    }
-                  : {}
-              }
-            />
-          </MenuItem>
-        ))}
-      </Select>
-      <FormHelperText>{widget.diagnostics[0]?.message}</FormHelperText>
+    <FormControl error={widget.diagnostics.length > 0} className={classes.propertySection}>
+      <div className={classes.propertySectionLabel}>
+        <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
+      </div>
+      <div className={classes.propertySectionValue}>
+        <Select
+          variant="standard"
+          value={widget.values}
+          onChange={onChange}
+          displayEmpty
+          fullWidth
+          data-testid={widget.label}
+          disabled={readOnly || widget.readOnly}
+          renderValue={(selected) =>
+            widget.options
+              .filter((option) => (selected as string[]).includes(option.id))
+              .map((option) => option.label)
+              .join(', ')
+          }
+          multiple
+          inputProps={
+            widget.style
+              ? {
+                  className: classes.style,
+                }
+              : {}
+          }>
+          {widget.options.map((option) => (
+            <MenuItem key={option.id} value={option.id}>
+              <Checkbox checked={widget.values.indexOf(option.id) > -1} />
+              {option.iconURL.length > 0 && (
+                <ListItemIcon className={classes.iconRoot}>
+                  <IconOverlay iconURL={option.iconURL} alt={option.label} />
+                </ListItemIcon>
+              )}
+              <ListItemText
+                primary={option.label}
+                primaryTypographyProps={
+                  widget.style
+                    ? {
+                        className: classes.style,
+                      }
+                    : {}
+                }
+              />
+            </MenuItem>
+          ))}
+        </Select>
+        <FormHelperText>{widget.diagnostics[0]?.message}</FormHelperText>
+      </div>
     </FormControl>
   );
 };

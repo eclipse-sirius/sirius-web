@@ -11,12 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
+import { PropertySectionFlexProps } from './PropertySection.types';
 
 export interface DateTimeStyleProps {
   foregroundColor: string | null;
   backgroundColor: string | null;
   italic: boolean | null;
   bold: boolean | null;
+  flexProps?: PropertySectionFlexProps;
 }
 
 export interface DataTimeWidgetPropertySectionState {

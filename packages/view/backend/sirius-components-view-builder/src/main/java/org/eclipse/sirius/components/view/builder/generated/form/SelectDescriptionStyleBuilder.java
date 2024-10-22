@@ -88,6 +88,46 @@ public class SelectDescriptionStyleBuilder {
         return this;
     }
     /**
+     * Setter for FlexDirection.
+     *
+     * @generated
+     */
+    public SelectDescriptionStyleBuilder flexDirection(java.lang.String value) {
+        this.getSelectDescriptionStyle().setFlexDirection(value);
+        return this;
+    }
+
+    /**
+     * Setter for Gap.
+     *
+     * @generated
+     */
+    public SelectDescriptionStyleBuilder gap(java.lang.String value) {
+        this.getSelectDescriptionStyle().setGap(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelFlex.
+     *
+     * @generated
+     */
+    public SelectDescriptionStyleBuilder labelFlex(java.lang.String value) {
+        this.getSelectDescriptionStyle().setLabelFlex(value);
+        return this;
+    }
+
+    /**
+     * Setter for ValueFlex.
+     *
+     * @generated
+     */
+    public SelectDescriptionStyleBuilder valueFlex(java.lang.String value) {
+        this.getSelectDescriptionStyle().setValueFlex(value);
+        return this;
+    }
+
+    /**
      * Setter for BackgroundColor.
      *
      * @generated

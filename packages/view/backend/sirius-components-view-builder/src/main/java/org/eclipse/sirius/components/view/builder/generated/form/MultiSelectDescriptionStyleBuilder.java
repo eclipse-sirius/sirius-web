@@ -88,6 +88,46 @@ public class MultiSelectDescriptionStyleBuilder {
         return this;
     }
     /**
+     * Setter for FlexDirection.
+     *
+     * @generated
+     */
+    public MultiSelectDescriptionStyleBuilder flexDirection(java.lang.String value) {
+        this.getMultiSelectDescriptionStyle().setFlexDirection(value);
+        return this;
+    }
+
+    /**
+     * Setter for Gap.
+     *
+     * @generated
+     */
+    public MultiSelectDescriptionStyleBuilder gap(java.lang.String value) {
+        this.getMultiSelectDescriptionStyle().setGap(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelFlex.
+     *
+     * @generated
+     */
+    public MultiSelectDescriptionStyleBuilder labelFlex(java.lang.String value) {
+        this.getMultiSelectDescriptionStyle().setLabelFlex(value);
+        return this;
+    }
+
+    /**
+     * Setter for ValueFlex.
+     *
+     * @generated
+     */
+    public MultiSelectDescriptionStyleBuilder valueFlex(java.lang.String value) {
+        this.getMultiSelectDescriptionStyle().setValueFlex(value);
+        return this;
+    }
+
+    /**
      * Setter for BackgroundColor.
      *
      * @generated

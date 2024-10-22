@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.view.form.ConditionalDateTimeDescriptionSty
 import org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle;
 import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.components.view.form.WidgetDescriptionStyle;
+import org.eclipse.sirius.components.view.form.WidgetFlexboxLayout;
 import org.eclipse.sirius.components.view.impl.ConditionalImpl;
 
 /**
@@ -30,6 +31,14 @@ import org.eclipse.sirius.components.view.impl.ConditionalImpl;
  * The following features are implemented:
  * </p>
  * <ul>
+ * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalDateTimeDescriptionStyleImpl#getFlexDirection
+ * <em>Flex Direction</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalDateTimeDescriptionStyleImpl#getGap
+ * <em>Gap</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalDateTimeDescriptionStyleImpl#getLabelFlex
+ * <em>Label Flex</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalDateTimeDescriptionStyleImpl#getValueFlex
+ * <em>Value Flex</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalDateTimeDescriptionStyleImpl#getBackgroundColor
  * <em>Background Color</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalDateTimeDescriptionStyleImpl#getForegroundColor
@@ -43,6 +52,85 @@ import org.eclipse.sirius.components.view.impl.ConditionalImpl;
  * @generated
  */
 public class ConditionalDateTimeDescriptionStyleImpl extends ConditionalImpl implements ConditionalDateTimeDescriptionStyle {
+    /**
+     * The default value of the '{@link #getFlexDirection() <em>Flex Direction</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #getFlexDirection()
+     * @generated
+     * @ordered
+     */
+    protected static final String FLEX_DIRECTION_EDEFAULT = "column";
+
+    /**
+     * The cached value of the '{@link #getFlexDirection() <em>Flex Direction</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #getFlexDirection()
+     * @generated
+     * @ordered
+     */
+    protected String flexDirection = FLEX_DIRECTION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getGap() <em>Gap</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @see #getGap()
+     * @generated
+     * @ordered
+     */
+    protected static final String GAP_EDEFAULT = "";
+
+    /**
+     * The cached value of the '{@link #getGap() <em>Gap</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getGap()
+     * @generated
+     * @ordered
+     */
+    protected String gap = GAP_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getLabelFlex() <em>Label Flex</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getLabelFlex()
+     * @generated
+     * @ordered
+     */
+    protected static final String LABEL_FLEX_EDEFAULT = "";
+
+    /**
+     * The cached value of the '{@link #getLabelFlex() <em>Label Flex</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getLabelFlex()
+     * @generated
+     * @ordered
+     */
+    protected String labelFlex = LABEL_FLEX_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getValueFlex() <em>Value Flex</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getValueFlex()
+     * @generated
+     * @ordered
+     */
+    protected static final String VALUE_FLEX_EDEFAULT = "";
+
+    /**
+     * The cached value of the '{@link #getValueFlex() <em>Value Flex</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getValueFlex()
+     * @generated
+     * @ordered
+     */
+    protected String valueFlex = VALUE_FLEX_EDEFAULT;
+
     /**
      * The cached value of the '{@link #getBackgroundColor() <em>Background Color</em>}' reference. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
@@ -120,6 +208,98 @@ public class ConditionalDateTimeDescriptionStyleImpl extends ConditionalImpl imp
     @Override
     protected EClass eStaticClass() {
         return FormPackage.Literals.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getFlexDirection() {
+        return this.flexDirection;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setFlexDirection(String newFlexDirection) {
+        String oldFlexDirection = this.flexDirection;
+        this.flexDirection = newFlexDirection;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__FLEX_DIRECTION, oldFlexDirection, this.flexDirection));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getGap() {
+        return this.gap;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setGap(String newGap) {
+        String oldGap = this.gap;
+        this.gap = newGap;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__GAP, oldGap, this.gap));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getLabelFlex() {
+        return this.labelFlex;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setLabelFlex(String newLabelFlex) {
+        String oldLabelFlex = this.labelFlex;
+        this.labelFlex = newLabelFlex;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__LABEL_FLEX, oldLabelFlex, this.labelFlex));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getValueFlex() {
+        return this.valueFlex;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setValueFlex(String newValueFlex) {
+        String oldValueFlex = this.valueFlex;
+        this.valueFlex = newValueFlex;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__VALUE_FLEX, oldValueFlex, this.valueFlex));
     }
 
     /**
@@ -256,6 +436,14 @@ public class ConditionalDateTimeDescriptionStyleImpl extends ConditionalImpl imp
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
+            case FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__FLEX_DIRECTION:
+                return this.getFlexDirection();
+            case FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__GAP:
+                return this.getGap();
+            case FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__LABEL_FLEX:
+                return this.getLabelFlex();
+            case FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__VALUE_FLEX:
+                return this.getValueFlex();
             case FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__BACKGROUND_COLOR:
                 if (resolve)
                     return this.getBackgroundColor();
@@ -277,9 +465,22 @@ public class ConditionalDateTimeDescriptionStyleImpl extends ConditionalImpl imp
      *
      * @generated
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
+            case FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__FLEX_DIRECTION:
+                this.setFlexDirection((String) newValue);
+                return;
+            case FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__GAP:
+                this.setGap((String) newValue);
+                return;
+            case FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__LABEL_FLEX:
+                this.setLabelFlex((String) newValue);
+                return;
+            case FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__VALUE_FLEX:
+                this.setValueFlex((String) newValue);
+                return;
             case FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__BACKGROUND_COLOR:
                 this.setBackgroundColor((UserColor) newValue);
                 return;
@@ -304,6 +505,18 @@ public class ConditionalDateTimeDescriptionStyleImpl extends ConditionalImpl imp
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
+            case FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__FLEX_DIRECTION:
+                this.setFlexDirection(FLEX_DIRECTION_EDEFAULT);
+                return;
+            case FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__GAP:
+                this.setGap(GAP_EDEFAULT);
+                return;
+            case FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__LABEL_FLEX:
+                this.setLabelFlex(LABEL_FLEX_EDEFAULT);
+                return;
+            case FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__VALUE_FLEX:
+                this.setValueFlex(VALUE_FLEX_EDEFAULT);
+                return;
             case FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__BACKGROUND_COLOR:
                 this.setBackgroundColor((UserColor) null);
                 return;
@@ -328,6 +541,14 @@ public class ConditionalDateTimeDescriptionStyleImpl extends ConditionalImpl imp
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
+            case FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__FLEX_DIRECTION:
+                return FLEX_DIRECTION_EDEFAULT == null ? this.flexDirection != null : !FLEX_DIRECTION_EDEFAULT.equals(this.flexDirection);
+            case FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__GAP:
+                return GAP_EDEFAULT == null ? this.gap != null : !GAP_EDEFAULT.equals(this.gap);
+            case FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__LABEL_FLEX:
+                return LABEL_FLEX_EDEFAULT == null ? this.labelFlex != null : !LABEL_FLEX_EDEFAULT.equals(this.labelFlex);
+            case FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__VALUE_FLEX:
+                return VALUE_FLEX_EDEFAULT == null ? this.valueFlex != null : !VALUE_FLEX_EDEFAULT.equals(this.valueFlex);
             case FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__BACKGROUND_COLOR:
                 return this.backgroundColor != null;
             case FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__FOREGROUND_COLOR:
@@ -349,6 +570,20 @@ public class ConditionalDateTimeDescriptionStyleImpl extends ConditionalImpl imp
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
         if (baseClass == WidgetDescriptionStyle.class) {
             switch (derivedFeatureID) {
+                default:
+                    return -1;
+            }
+        }
+        if (baseClass == WidgetFlexboxLayout.class) {
+            switch (derivedFeatureID) {
+                case FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__FLEX_DIRECTION:
+                    return FormPackage.WIDGET_FLEXBOX_LAYOUT__FLEX_DIRECTION;
+                case FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__GAP:
+                    return FormPackage.WIDGET_FLEXBOX_LAYOUT__GAP;
+                case FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__LABEL_FLEX:
+                    return FormPackage.WIDGET_FLEXBOX_LAYOUT__LABEL_FLEX;
+                case FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__VALUE_FLEX:
+                    return FormPackage.WIDGET_FLEXBOX_LAYOUT__VALUE_FLEX;
                 default:
                     return -1;
             }
@@ -383,6 +618,20 @@ public class ConditionalDateTimeDescriptionStyleImpl extends ConditionalImpl imp
                     return -1;
             }
         }
+        if (baseClass == WidgetFlexboxLayout.class) {
+            switch (baseFeatureID) {
+                case FormPackage.WIDGET_FLEXBOX_LAYOUT__FLEX_DIRECTION:
+                    return FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__FLEX_DIRECTION;
+                case FormPackage.WIDGET_FLEXBOX_LAYOUT__GAP:
+                    return FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__GAP;
+                case FormPackage.WIDGET_FLEXBOX_LAYOUT__LABEL_FLEX:
+                    return FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__LABEL_FLEX;
+                case FormPackage.WIDGET_FLEXBOX_LAYOUT__VALUE_FLEX:
+                    return FormPackage.CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__VALUE_FLEX;
+                default:
+                    return -1;
+            }
+        }
         if (baseClass == DateTimeDescriptionStyle.class) {
             switch (baseFeatureID) {
                 case FormPackage.DATE_TIME_DESCRIPTION_STYLE__BACKGROUND_COLOR:
@@ -411,7 +660,15 @@ public class ConditionalDateTimeDescriptionStyleImpl extends ConditionalImpl imp
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (italic: ");
+        result.append(" (flexDirection: ");
+        result.append(this.flexDirection);
+        result.append(", gap: ");
+        result.append(this.gap);
+        result.append(", labelFlex: ");
+        result.append(this.labelFlex);
+        result.append(", valueFlex: ");
+        result.append(this.valueFlex);
+        result.append(", italic: ");
         result.append(this.italic);
         result.append(", bold: ");
         result.append(this.bold);

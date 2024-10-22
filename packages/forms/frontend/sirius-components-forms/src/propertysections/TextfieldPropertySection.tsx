@@ -19,6 +19,7 @@ import { makeStyles } from 'tss-react/mui';
 import { StateMachine } from 'xstate';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLTextarea, GQLTextfield, GQLWidget } from '../form/FormEventFragments.types';
+import { getFlexProperties } from './FlexboxHelper';
 import { GQLSuccessPayload } from './ListPropertySection.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
 import { ProposalsList } from './ProposalsList';
@@ -49,24 +50,40 @@ import {
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 
 const useStyle = makeStyles<TextfieldStyleProps>()(
-  (theme, { backgroundColor, foregroundColor, fontSize, italic, bold, underline, strikeThrough }) => ({
-    style: {
-      backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
-      color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
-      fontSize: fontSize ? fontSize : null,
-      fontStyle: italic ? 'italic' : null,
-      fontWeight: bold ? 'bold' : null,
-      textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
-    },
-    input: {
-      paddingTop: theme.spacing(0.5),
-      paddingBottom: theme.spacing(0.5),
-    },
-    textfield: {
-      marginTop: theme.spacing(0.5),
-      marginBottom: theme.spacing(0.5),
-    },
-  })
+  (theme, { backgroundColor, foregroundColor, fontSize, italic, bold, underline, strikeThrough, flexProps }) => {
+    const { flexDirectionCSS, alignItems, gap, labelFlex, valueFlex } = getFlexProperties(flexProps);
+    return {
+      style: {
+        backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
+        color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
+        fontSize: fontSize ? fontSize : null,
+        fontStyle: italic ? 'italic' : null,
+        fontWeight: bold ? 'bold' : null,
+        textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+      },
+      input: {
+        paddingTop: theme.spacing(0.5),
+        paddingBottom: theme.spacing(0.5),
+      },
+      textfield: {
+        marginTop: theme.spacing(0.5),
+        marginBottom: theme.spacing(0.5),
+      },
+      formControl: {},
+      propertySection: {
+        display: 'flex',
+        flexDirection: flexDirectionCSS,
+        alignItems,
+        gap: gap ?? '',
+      },
+      propertySectionLabel: {
+        flex: labelFlex ?? '1 1 auto',
+      },
+      propertySectionValue: {
+        flex: valueFlex ?? '1 1 auto',
+      },
+    };
+  }
 );
 
 export const getCompletionProposalsQuery = gql`
@@ -141,6 +158,7 @@ export const TextfieldPropertySection: PropertySectionComponent<GQLTextfield | G
     bold: widget.style?.bold ?? null,
     underline: widget.style?.underline ?? null,
     strikeThrough: widget.style?.strikeThrough ?? null,
+    flexProps: widget.style?.widgetFlexboxLayout ?? null,
   };
   const { classes } = useStyle(props);
 
@@ -316,41 +334,46 @@ export const TextfieldPropertySection: PropertySectionComponent<GQLTextfield | G
         if (!event.currentTarget.contains(event.relatedTarget)) {
           onBlur();
         }
-      }}>
-      <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
-      <TextField
-        name={widget.label}
-        placeholder={widget.label}
-        variant="standard"
-        value={value}
-        spellCheck={false}
-        margin="dense"
-        multiline={isTextarea(widget)}
-        maxRows={isTextarea(widget) ? 4 : 1}
-        fullWidth
-        onKeyDown={onKeyDown}
-        onKeyUp={onKeyUp}
-        onChange={onChange}
-        onKeyPress={onKeyPress}
-        data-testid={widget.label}
-        disabled={readOnly || widget.readOnly}
-        error={widget.diagnostics.length > 0}
-        helperText={widget.diagnostics[0]?.message}
-        inputRef={inputElt}
-        className={classes.textfield}
-        InputProps={
-          widget.style
-            ? {
-                className: classes.style,
-              }
-            : {}
-        }
-        inputProps={{
-          'data-testid': `input-${widget.label}`,
-          className: classes.input,
-        }}
-      />
-      {proposalsList}
+      }}
+      className={classes.propertySection}>
+      <div className={classes.propertySectionLabel}>
+        <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
+      </div>
+      <div className={classes.propertySectionValue}>
+        <TextField
+          name={widget.label}
+          placeholder={widget.label}
+          variant="standard"
+          value={value}
+          spellCheck={false}
+          margin="dense"
+          multiline={isTextarea(widget)}
+          maxRows={isTextarea(widget) ? 4 : 1}
+          fullWidth
+          onKeyDown={onKeyDown}
+          onKeyUp={onKeyUp}
+          onChange={onChange}
+          onKeyPress={onKeyPress}
+          data-testid={widget.label}
+          disabled={readOnly || widget.readOnly}
+          error={widget.diagnostics.length > 0}
+          helperText={widget.diagnostics[0]?.message}
+          inputRef={inputElt}
+          className={classes.textfield}
+          InputProps={
+            widget.style
+              ? {
+                  className: classes.style,
+                }
+              : {}
+          }
+          inputProps={{
+            'data-testid': `input-${widget.label}`,
+            className: classes.input,
+          }}
+        />
+        {proposalsList}
+      </div>
     </div>
   );
 };

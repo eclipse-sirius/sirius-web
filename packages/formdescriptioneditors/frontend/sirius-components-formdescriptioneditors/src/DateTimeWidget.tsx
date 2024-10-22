@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { getCSSColor, useSelection } from '@eclipse-sirius/sirius-components-core';
-import { DateTimeStyleProps } from '@eclipse-sirius/sirius-components-forms';
+import { DateTimeStyleProps, getFlexProperties } from '@eclipse-sirius/sirius-components-forms';
 import HelpOutlineOutlined from '@mui/icons-material/HelpOutlineOutlined';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
@@ -21,22 +21,38 @@ import { DataTimeWidgetState } from './DateTimeWidget.types';
 import { DateTimeWidgetProps } from './WidgetEntry.types';
 
 const useDataTimeWidgetStyles = makeStyles<DateTimeStyleProps>()(
-  (theme, { backgroundColor, foregroundColor, italic, bold }) => ({
-    style: {
-      backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
-      color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
-      fontStyle: italic ? 'italic' : null,
-      fontWeight: bold ? 'bold' : null,
-    },
-    textfield: {
-      marginTop: theme.spacing(0.5),
-      marginBottom: theme.spacing(0.5),
-    },
-    selected: {
-      color: theme.palette.primary.main,
-    },
-    input: {},
-  })
+  (theme, { backgroundColor, foregroundColor, italic, bold, flexProps }) => {
+    const { flexDirectionCSS, alignItems, gap, labelFlex, valueFlex } = getFlexProperties(flexProps);
+    return {
+      style: {
+        backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
+        color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
+        fontStyle: italic ? 'italic' : null,
+        fontWeight: bold ? 'bold' : null,
+      },
+      selected: {
+        color: theme.palette.primary.main,
+      },
+      input: {},
+      propertySection: {
+        display: 'flex',
+        flexDirection: flexDirectionCSS,
+        alignItems,
+        gap: gap ?? '',
+      },
+      propertySectionValue: {
+        flex: valueFlex ?? '1 1 auto',
+      },
+      propertySectionLabel: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: theme.spacing(0.5),
+        marginBottom: theme.spacing(0.5),
+        flex: labelFlex ?? '1 1 auto',
+      },
+    };
+  }
 );
 
 export const DateTimeWidget = ({ widget }: DateTimeWidgetProps) => {
@@ -45,6 +61,7 @@ export const DateTimeWidget = ({ widget }: DateTimeWidgetProps) => {
     foregroundColor: widget.style?.foregroundColor ?? null,
     italic: widget.style?.italic ?? null,
     bold: widget.style?.bold ?? null,
+    flexProps: widget.style?.widgetFlexboxLayout ?? null,
   };
   const { classes } = useDataTimeWidgetStyles(props);
 
@@ -66,33 +83,34 @@ export const DateTimeWidget = ({ widget }: DateTimeWidgetProps) => {
   const { value, type } = getValueAndType(widget.type);
 
   return (
-    <div>
-      <div>
+    <div className={classes.propertySection}>
+      <div className={classes.propertySectionLabel}>
         <Typography variant="subtitle2" className={state.selected ? classes.selected : ''}>
           {widget.label}
         </Typography>
         {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
       </div>
-      <TextField
-        variant="standard"
-        id="datetime"
-        type={type}
-        value={value}
-        className={classes.textfield}
-        onFocus={() => setState((prevState) => ({ ...prevState, selected: true }))}
-        onBlur={() => setState((prevState) => ({ ...prevState, selected: false }))}
-        InputProps={
-          widget.style
-            ? {
-                className: classes.style,
-              }
-            : {}
-        }
-        inputProps={{
-          'data-testid': `datetime-${widget.label}`,
-          className: classes.input,
-        }}
-      />
+      <div className={classes.propertySectionValue}>
+        <TextField
+          variant="standard"
+          id="datetime"
+          type={type}
+          value={value}
+          onFocus={() => setState((prevState) => ({ ...prevState, selected: true }))}
+          onBlur={() => setState((prevState) => ({ ...prevState, selected: false }))}
+          InputProps={
+            widget.style
+              ? {
+                  className: classes.style,
+                }
+              : {}
+          }
+          inputProps={{
+            'data-testid': `datetime-${widget.label}`,
+            className: classes.input,
+          }}
+        />
+      </div>
     </div>
   );
 };

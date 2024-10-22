@@ -20,8 +20,8 @@ import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalCheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.form.FormPackage;
-import org.eclipse.sirius.components.view.form.LabelPlacement;
 import org.eclipse.sirius.components.view.form.WidgetDescriptionStyle;
+import org.eclipse.sirius.components.view.form.WidgetFlexboxLayout;
 import org.eclipse.sirius.components.view.impl.ConditionalImpl;
 
 /**
@@ -31,15 +31,100 @@ import org.eclipse.sirius.components.view.impl.ConditionalImpl;
  * The following features are implemented:
  * </p>
  * <ul>
+ * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalCheckboxDescriptionStyleImpl#getFlexDirection
+ * <em>Flex Direction</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalCheckboxDescriptionStyleImpl#getGap
+ * <em>Gap</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalCheckboxDescriptionStyleImpl#getLabelFlex
+ * <em>Label Flex</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalCheckboxDescriptionStyleImpl#getValueFlex
+ * <em>Value Flex</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalCheckboxDescriptionStyleImpl#getColor
  * <em>Color</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalCheckboxDescriptionStyleImpl#getLabelPlacement
- * <em>Label Placement</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ConditionalCheckboxDescriptionStyleImpl extends ConditionalImpl implements ConditionalCheckboxDescriptionStyle {
+
+    /**
+     * The default value of the '{@link #getFlexDirection() <em>Flex Direction</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #getFlexDirection()
+     * @generated NOT
+     * @ordered
+     */
+    protected static final String FLEX_DIRECTION_EDEFAULT = "row-reverse";
+
+    /**
+     * The cached value of the '{@link #getFlexDirection() <em>Flex Direction</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #getFlexDirection()
+     * @generated
+     * @ordered
+     */
+    protected String flexDirection = FLEX_DIRECTION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getGap() <em>Gap</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @see #getGap()
+     * @generated
+     * @ordered
+     */
+    protected static final String GAP_EDEFAULT = "";
+
+    /**
+     * The cached value of the '{@link #getGap() <em>Gap</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getGap()
+     * @generated
+     * @ordered
+     */
+    protected String gap = GAP_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getLabelFlex() <em>Label Flex</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getLabelFlex()
+     * @generated NOT
+     * @ordered
+     */
+    protected static final String LABEL_FLEX_EDEFAULT = "1 1 auto";
+
+    /**
+     * The cached value of the '{@link #getLabelFlex() <em>Label Flex</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getLabelFlex()
+     * @generated
+     * @ordered
+     */
+    protected String labelFlex = LABEL_FLEX_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getValueFlex() <em>Value Flex</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getValueFlex()
+     * @generated
+     * @ordered
+     */
+    protected static final String VALUE_FLEX_EDEFAULT = "";
+
+    /**
+     * The cached value of the '{@link #getValueFlex() <em>Value Flex</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getValueFlex()
+     * @generated
+     * @ordered
+     */
+    protected String valueFlex = VALUE_FLEX_EDEFAULT;
 
     /**
      * The cached value of the '{@link #getColor() <em>Color</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
@@ -50,26 +135,6 @@ public class ConditionalCheckboxDescriptionStyleImpl extends ConditionalImpl imp
      * @see #getColor()
      */
     protected UserColor color;
-
-    /**
-     * The default value of the '{@link #getLabelPlacement() <em>Label Placement</em>}' attribute. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @see #getLabelPlacement()
-     * @generated
-     * @ordered
-     */
-    protected static final LabelPlacement LABEL_PLACEMENT_EDEFAULT = LabelPlacement.END;
-
-    /**
-     * The cached value of the '{@link #getLabelPlacement() <em>Label Placement</em>}' attribute. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @see #getLabelPlacement()
-     * @generated
-     * @ordered
-     */
-    protected LabelPlacement labelPlacement = LABEL_PLACEMENT_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -88,6 +153,98 @@ public class ConditionalCheckboxDescriptionStyleImpl extends ConditionalImpl imp
     @Override
     protected EClass eStaticClass() {
         return FormPackage.Literals.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getFlexDirection() {
+        return this.flexDirection;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setFlexDirection(String newFlexDirection) {
+        String oldFlexDirection = this.flexDirection;
+        this.flexDirection = newFlexDirection;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__FLEX_DIRECTION, oldFlexDirection, this.flexDirection));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getGap() {
+        return this.gap;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setGap(String newGap) {
+        String oldGap = this.gap;
+        this.gap = newGap;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__GAP, oldGap, this.gap));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getLabelFlex() {
+        return this.labelFlex;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setLabelFlex(String newLabelFlex) {
+        String oldLabelFlex = this.labelFlex;
+        this.labelFlex = newLabelFlex;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__LABEL_FLEX, oldLabelFlex, this.labelFlex));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getValueFlex() {
+        return this.valueFlex;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setValueFlex(String newValueFlex) {
+        String oldValueFlex = this.valueFlex;
+        this.valueFlex = newValueFlex;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__VALUE_FLEX, oldValueFlex, this.valueFlex));
     }
 
     /**
@@ -136,37 +293,20 @@ public class ConditionalCheckboxDescriptionStyleImpl extends ConditionalImpl imp
      * @generated
      */
     @Override
-    public LabelPlacement getLabelPlacement() {
-        return this.labelPlacement;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setLabelPlacement(LabelPlacement newLabelPlacement) {
-        LabelPlacement oldLabelPlacement = this.labelPlacement;
-        this.labelPlacement = newLabelPlacement == null ? LABEL_PLACEMENT_EDEFAULT : newLabelPlacement;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__LABEL_PLACEMENT, oldLabelPlacement, this.labelPlacement));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
+            case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__FLEX_DIRECTION:
+                return this.getFlexDirection();
+            case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__GAP:
+                return this.getGap();
+            case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__LABEL_FLEX:
+                return this.getLabelFlex();
+            case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__VALUE_FLEX:
+                return this.getValueFlex();
             case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR:
                 if (resolve)
                     return this.getColor();
                 return this.basicGetColor();
-            case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__LABEL_PLACEMENT:
-                return this.getLabelPlacement();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -176,14 +316,24 @@ public class ConditionalCheckboxDescriptionStyleImpl extends ConditionalImpl imp
      *
      * @generated
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
+            case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__FLEX_DIRECTION:
+                this.setFlexDirection((String) newValue);
+                return;
+            case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__GAP:
+                this.setGap((String) newValue);
+                return;
+            case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__LABEL_FLEX:
+                this.setLabelFlex((String) newValue);
+                return;
+            case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__VALUE_FLEX:
+                this.setValueFlex((String) newValue);
+                return;
             case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR:
                 this.setColor((UserColor) newValue);
-                return;
-            case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__LABEL_PLACEMENT:
-                this.setLabelPlacement((LabelPlacement) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -197,11 +347,20 @@ public class ConditionalCheckboxDescriptionStyleImpl extends ConditionalImpl imp
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR:
-                this.setColor((UserColor) null);
+            case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__FLEX_DIRECTION:
+                this.setFlexDirection(FLEX_DIRECTION_EDEFAULT);
                 return;
-            case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__LABEL_PLACEMENT:
-                this.setLabelPlacement(LABEL_PLACEMENT_EDEFAULT);
+            case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__GAP:
+                this.setGap(GAP_EDEFAULT);
+                return;
+            case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__LABEL_FLEX:
+                this.setLabelFlex(LABEL_FLEX_EDEFAULT);
+                return;
+            case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__VALUE_FLEX:
+                this.setValueFlex(VALUE_FLEX_EDEFAULT);
+                return;
+            case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR:
+                this.setColor(null);
                 return;
         }
         super.eUnset(featureID);
@@ -215,10 +374,16 @@ public class ConditionalCheckboxDescriptionStyleImpl extends ConditionalImpl imp
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
+            case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__FLEX_DIRECTION:
+                return FLEX_DIRECTION_EDEFAULT == null ? this.flexDirection != null : !FLEX_DIRECTION_EDEFAULT.equals(this.flexDirection);
+            case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__GAP:
+                return GAP_EDEFAULT == null ? this.gap != null : !GAP_EDEFAULT.equals(this.gap);
+            case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__LABEL_FLEX:
+                return LABEL_FLEX_EDEFAULT == null ? this.labelFlex != null : !LABEL_FLEX_EDEFAULT.equals(this.labelFlex);
+            case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__VALUE_FLEX:
+                return VALUE_FLEX_EDEFAULT == null ? this.valueFlex != null : !VALUE_FLEX_EDEFAULT.equals(this.valueFlex);
             case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR:
                 return this.color != null;
-            case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__LABEL_PLACEMENT:
-                return this.labelPlacement != LABEL_PLACEMENT_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -236,12 +401,24 @@ public class ConditionalCheckboxDescriptionStyleImpl extends ConditionalImpl imp
                     return -1;
             }
         }
+        if (baseClass == WidgetFlexboxLayout.class) {
+            switch (derivedFeatureID) {
+                case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__FLEX_DIRECTION:
+                    return FormPackage.WIDGET_FLEXBOX_LAYOUT__FLEX_DIRECTION;
+                case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__GAP:
+                    return FormPackage.WIDGET_FLEXBOX_LAYOUT__GAP;
+                case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__LABEL_FLEX:
+                    return FormPackage.WIDGET_FLEXBOX_LAYOUT__LABEL_FLEX;
+                case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__VALUE_FLEX:
+                    return FormPackage.WIDGET_FLEXBOX_LAYOUT__VALUE_FLEX;
+                default:
+                    return -1;
+            }
+        }
         if (baseClass == CheckboxDescriptionStyle.class) {
             switch (derivedFeatureID) {
                 case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR:
                     return FormPackage.CHECKBOX_DESCRIPTION_STYLE__COLOR;
-                case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__LABEL_PLACEMENT:
-                    return FormPackage.CHECKBOX_DESCRIPTION_STYLE__LABEL_PLACEMENT;
                 default:
                     return -1;
             }
@@ -262,12 +439,24 @@ public class ConditionalCheckboxDescriptionStyleImpl extends ConditionalImpl imp
                     return -1;
             }
         }
+        if (baseClass == WidgetFlexboxLayout.class) {
+            switch (baseFeatureID) {
+                case FormPackage.WIDGET_FLEXBOX_LAYOUT__FLEX_DIRECTION:
+                    return FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__FLEX_DIRECTION;
+                case FormPackage.WIDGET_FLEXBOX_LAYOUT__GAP:
+                    return FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__GAP;
+                case FormPackage.WIDGET_FLEXBOX_LAYOUT__LABEL_FLEX:
+                    return FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__LABEL_FLEX;
+                case FormPackage.WIDGET_FLEXBOX_LAYOUT__VALUE_FLEX:
+                    return FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__VALUE_FLEX;
+                default:
+                    return -1;
+            }
+        }
         if (baseClass == CheckboxDescriptionStyle.class) {
             switch (baseFeatureID) {
                 case FormPackage.CHECKBOX_DESCRIPTION_STYLE__COLOR:
                     return FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR;
-                case FormPackage.CHECKBOX_DESCRIPTION_STYLE__LABEL_PLACEMENT:
-                    return FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__LABEL_PLACEMENT;
                 default:
                     return -1;
             }
@@ -285,11 +474,16 @@ public class ConditionalCheckboxDescriptionStyleImpl extends ConditionalImpl imp
         if (this.eIsProxy())
             return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (labelPlacement: ");
-        result.append(this.labelPlacement);
-        result.append(')');
-        return result.toString();
+        String result = super.toString() + " (flexDirection: "
+                + this.flexDirection
+                + ", gap: "
+                + this.gap
+                + ", labelFlex: "
+                + this.labelFlex
+                + ", valueFlex: "
+                + this.valueFlex
+                + ')';
+        return result;
     }
 
 } // ConditionalCheckboxDescriptionStyleImpl

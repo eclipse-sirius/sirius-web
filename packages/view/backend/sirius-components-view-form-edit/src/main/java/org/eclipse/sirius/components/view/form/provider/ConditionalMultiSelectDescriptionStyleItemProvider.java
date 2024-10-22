@@ -58,6 +58,10 @@ public class ConditionalMultiSelectDescriptionStyleItemProvider extends Conditio
             this.addBoldPropertyDescriptor(object);
             this.addUnderlinePropertyDescriptor(object);
             this.addStrikeThroughPropertyDescriptor(object);
+            this.addFlexDirectionPropertyDescriptor(object);
+            this.addGapPropertyDescriptor(object);
+            this.addLabelFlexPropertyDescriptor(object);
+            this.addValueFlexPropertyDescriptor(object);
             this.addBackgroundColorPropertyDescriptor(object);
             this.addForegroundColorPropertyDescriptor(object);
             this.addShowIconPropertyDescriptor(object);
@@ -118,6 +122,53 @@ public class ConditionalMultiSelectDescriptionStyleItemProvider extends Conditio
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_LabelStyle_strikeThrough_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_strikeThrough_feature", "_UI_LabelStyle_type"),
                 ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Flex Direction feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addFlexDirectionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_WidgetFlexboxLayout_flexDirection_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetFlexboxLayout_flexDirection_feature", "_UI_WidgetFlexboxLayout_type"),
+                FormPackage.Literals.WIDGET_FLEXBOX_LAYOUT__FLEX_DIRECTION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Gap feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addGapPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_WidgetFlexboxLayout_gap_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetFlexboxLayout_gap_feature", "_UI_WidgetFlexboxLayout_type"),
+                FormPackage.Literals.WIDGET_FLEXBOX_LAYOUT__GAP, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Label Flex feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addLabelFlexPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_WidgetFlexboxLayout_labelFlex_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetFlexboxLayout_labelFlex_feature", "_UI_WidgetFlexboxLayout_type"),
+                FormPackage.Literals.WIDGET_FLEXBOX_LAYOUT__LABEL_FLEX, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Value Flex feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addValueFlexPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_WidgetFlexboxLayout_valueFlex_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetFlexboxLayout_valueFlex_feature", "_UI_WidgetFlexboxLayout_type"),
+                FormPackage.Literals.WIDGET_FLEXBOX_LAYOUT__VALUE_FLEX, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -205,6 +256,10 @@ public class ConditionalMultiSelectDescriptionStyleItemProvider extends Conditio
             case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BOLD:
             case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE:
             case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH:
+            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FLEX_DIRECTION:
+            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GAP:
+            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_FLEX:
+            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__VALUE_FLEX:
             case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
             case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
             case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON:

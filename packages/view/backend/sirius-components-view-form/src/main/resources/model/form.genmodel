@@ -211,6 +211,12 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//SliderDescription/isEnabledExpression"/>
     </genClasses>
     <genClasses image="false" ecoreClass="form.ecore#//WidgetDescriptionStyle"/>
+    <genClasses image="false" ecoreClass="form.ecore#//WidgetFlexboxLayout">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//WidgetFlexboxLayout/flexDirection"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//WidgetFlexboxLayout/gap"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//WidgetFlexboxLayout/labelFlex"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//WidgetFlexboxLayout/valueFlex"/>
+    </genClasses>
     <genClasses ecoreClass="form.ecore#//BarChartDescriptionStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//BarChartDescriptionStyle/barsColor"/>
     </genClasses>
@@ -222,7 +228,6 @@
     <genClasses ecoreClass="form.ecore#//ConditionalButtonDescriptionStyle"/>
     <genClasses ecoreClass="form.ecore#//CheckboxDescriptionStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EReference form.ecore#//CheckboxDescriptionStyle/color"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//CheckboxDescriptionStyle/labelPlacement"/>
     </genClasses>
     <genClasses ecoreClass="form.ecore#//ConditionalCheckboxDescriptionStyle"/>
     <genClasses ecoreClass="form.ecore#//DateTimeDescriptionStyle">

@@ -24,21 +24,37 @@ import {
   GQLEditDateTimeMutationData,
   GQLEditDateTimeMutationVariables,
 } from './DateTimeWidgetPropertySection.types';
+import { getFlexProperties } from './FlexboxHelper';
 import { PropertySectionLabel } from './PropertySectionLabel';
 
-const useStyle = makeStyles<DateTimeStyleProps>()((theme, { backgroundColor, foregroundColor, italic, bold }) => ({
-  style: {
-    backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
-    color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
-    fontStyle: italic ? 'italic' : null,
-    fontWeight: bold ? 'bold' : null,
-  },
-  textfield: {
-    marginTop: theme.spacing(0.5),
-    marginBottom: theme.spacing(0.5),
-  },
-  input: {},
-}));
+const useStyle = makeStyles<DateTimeStyleProps>()(
+  (theme, { backgroundColor, foregroundColor, italic, bold, flexProps }) => {
+    const { flexDirectionCSS, alignItems, gap, labelFlex, valueFlex } = getFlexProperties(flexProps);
+    return {
+      inputStyle: {
+        backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
+        color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
+        fontStyle: italic ? 'italic' : null,
+        fontWeight: bold ? 'bold' : null,
+      },
+      propertySectionLabel: {
+        marginTop: theme.spacing(0.5),
+        marginBottom: theme.spacing(0.5),
+        flex: labelFlex ?? '1 1 auto',
+      },
+      input: {},
+      propertySection: {
+        display: 'flex',
+        flexDirection: flexDirectionCSS,
+        alignItems,
+        gap: gap ?? '',
+      },
+      propertySectionValue: {
+        flex: valueFlex ?? '1 1 auto',
+      },
+    };
+  }
+);
 
 export const editDateTimeMutation = gql`
   mutation editDateTime($input: EditDateTimeInput!) {
@@ -71,6 +87,7 @@ export const DateTimeWidgetPropertySection: PropertySectionComponent<GQLDateTime
     foregroundColor: widget.style?.foregroundColor ?? null,
     italic: widget.style?.italic ?? null,
     bold: widget.style?.bold ?? null,
+    flexProps: widget.style?.widgetFlexboxLayout ?? null,
   };
   const { classes } = useStyle(props);
 
@@ -127,35 +144,42 @@ export const DateTimeWidgetPropertySection: PropertySectionComponent<GQLDateTime
   } else if (widget.type === 'TIME') {
     type = 'time';
   }
+
   return (
     <div
       onBlur={(event: FocusEvent<HTMLDivElement, Element>) => {
         if (!event.currentTarget.contains(event.relatedTarget)) {
           onBlur();
         }
-      }}>
-      <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
-      <TextField
-        variant="standard"
-        id="datetime"
-        disabled={readOnly || widget.readOnly}
-        value={convertToLocalDateTimeString(widget.type, state.editedValue)}
-        type={type}
-        className={classes.textfield}
-        InputProps={
-          widget.style
-            ? {
-                className: classes.style,
-              }
-            : {}
-        }
-        inputProps={{
-          'data-testid': `datetime-${widget.label}`,
-          className: classes.input,
-        }}
-        onChange={onChange}
-        onKeyPress={onKeyPress}
-      />
+      }}
+      className={classes.propertySection}>
+      <div className={classes.propertySectionLabel}>
+        <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
+      </div>
+      <div className={classes.propertySectionValue}>
+        <TextField
+          variant="standard"
+          id="datetime"
+          disabled={readOnly || widget.readOnly}
+          value={convertToLocalDateTimeString(widget.type, state.editedValue)}
+          type={type}
+          error={widget.diagnostics.length > 0}
+          helperText={widget.diagnostics[0]?.message}
+          InputProps={
+            widget.style
+              ? {
+                  className: classes.inputStyle,
+                }
+              : {}
+          }
+          inputProps={{
+            'data-testid': `datetime-${widget.label}`,
+            className: classes.input,
+          }}
+          onChange={onChange}
+          onKeyPress={onKeyPress}
+        />
+      </div>
     </div>
   );
 };

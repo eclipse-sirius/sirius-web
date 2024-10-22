@@ -52,6 +52,46 @@ public class ConditionalDateTimeDescriptionStyleBuilder {
         return this;
     }
     /**
+     * Setter for FlexDirection.
+     *
+     * @generated
+     */
+    public ConditionalDateTimeDescriptionStyleBuilder flexDirection(java.lang.String value) {
+        this.getConditionalDateTimeDescriptionStyle().setFlexDirection(value);
+        return this;
+    }
+
+    /**
+     * Setter for Gap.
+     *
+     * @generated
+     */
+    public ConditionalDateTimeDescriptionStyleBuilder gap(java.lang.String value) {
+        this.getConditionalDateTimeDescriptionStyle().setGap(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelFlex.
+     *
+     * @generated
+     */
+    public ConditionalDateTimeDescriptionStyleBuilder labelFlex(java.lang.String value) {
+        this.getConditionalDateTimeDescriptionStyle().setLabelFlex(value);
+        return this;
+    }
+
+    /**
+     * Setter for ValueFlex.
+     *
+     * @generated
+     */
+    public ConditionalDateTimeDescriptionStyleBuilder valueFlex(java.lang.String value) {
+        this.getConditionalDateTimeDescriptionStyle().setValueFlex(value);
+        return this;
+    }
+
+    /**
      * Setter for BackgroundColor.
      *
      * @generated

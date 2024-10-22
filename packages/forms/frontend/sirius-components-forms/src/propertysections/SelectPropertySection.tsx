@@ -21,6 +21,7 @@ import { useEffect } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLSelect } from '../form/FormEventFragments.types';
+import { getFlexProperties } from './FlexboxHelper';
 import { PropertySectionLabel } from './PropertySectionLabel';
 import {
   GQLEditSelectMutationData,
@@ -32,19 +33,34 @@ import {
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 
 const useStyle = makeStyles<SelectStyleProps>()(
-  (theme, { backgroundColor, foregroundColor, fontSize, italic, bold, underline, strikeThrough }) => ({
-    style: {
-      backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
-      color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
-      fontSize: fontSize ? fontSize : null,
-      fontStyle: italic ? 'italic' : null,
-      fontWeight: bold ? 'bold' : null,
-      textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
-    },
-    iconRoot: {
-      minWidth: theme.spacing(3),
-    },
-  })
+  (theme, { backgroundColor, foregroundColor, fontSize, italic, bold, underline, strikeThrough, flexProps }) => {
+    const { flexDirectionCSS, alignItems, gap, labelFlex, valueFlex } = getFlexProperties(flexProps);
+    return {
+      style: {
+        backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
+        color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
+        fontSize: fontSize ? fontSize : null,
+        fontStyle: italic ? 'italic' : null,
+        fontWeight: bold ? 'bold' : null,
+        textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+      },
+      iconRoot: {
+        minWidth: theme.spacing(3),
+      },
+      propertySection: {
+        display: 'flex',
+        flexDirection: flexDirectionCSS,
+        alignItems,
+        gap: gap ?? '',
+      },
+      propertySectionLabel: {
+        flex: labelFlex ?? '1 1 auto',
+      },
+      propertySectionValue: {
+        flex: valueFlex ?? '1 1 auto',
+      },
+    };
+  }
 );
 
 export const editSelectMutation = gql`
@@ -86,6 +102,7 @@ export const SelectPropertySection: PropertySectionComponent<GQLSelect> = ({
     bold: widget.style?.bold ?? null,
     underline: widget.style?.underline ?? null,
     strikeThrough: widget.style?.strikeThrough ?? null,
+    flexProps: widget.style?.widgetFlexboxLayout ?? null,
   };
   const { classes } = useStyle(props);
 
@@ -121,38 +138,28 @@ export const SelectPropertySection: PropertySectionComponent<GQLSelect> = ({
   }, [loading, error, data]);
 
   return (
-    <FormControl error={widget.diagnostics.length > 0}>
-      <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
-      <Select
-        variant="standard"
-        value={widget.value || ''}
-        onChange={onChange}
-        displayEmpty
-        fullWidth
-        data-testid={widget.label}
-        disabled={readOnly || widget.readOnly}
-        inputProps={
-          widget.style
-            ? {
-                className: classes.style,
-              }
-            : {}
-        }>
-        <MenuItem
-          value=""
-          classes={
+    <FormControl error={widget.diagnostics.length > 0} className={classes.propertySection}>
+      <div className={classes.propertySectionLabel}>
+        <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
+      </div>
+      <div className={classes.propertySectionValue}>
+        <Select
+          variant="standard"
+          value={widget.value || ''}
+          onChange={onChange}
+          displayEmpty
+          fullWidth
+          data-testid={widget.label}
+          disabled={readOnly || widget.readOnly}
+          inputProps={
             widget.style
               ? {
-                  root: classes.style,
+                  className: classes.style,
                 }
               : {}
           }>
-          <em>None</em>
-        </MenuItem>
-        {widget.options.map((option) => (
           <MenuItem
-            value={option.id}
-            key={option.id}
+            value=""
             classes={
               widget.style
                 ? {
@@ -160,17 +167,31 @@ export const SelectPropertySection: PropertySectionComponent<GQLSelect> = ({
                   }
                 : {}
             }>
-            {option.iconURL.length > 0 && (
-              <ListItemIcon className={classes.iconRoot}>
-                <IconOverlay iconURL={option.iconURL} alt={option.label} />
-              </ListItemIcon>
-            )}
-
-            {option.label}
+            <em>None</em>
           </MenuItem>
-        ))}
-      </Select>
-      <FormHelperText>{widget.diagnostics[0]?.message}</FormHelperText>
+          {widget.options.map((option) => (
+            <MenuItem
+              value={option.id}
+              key={option.id}
+              classes={
+                widget.style
+                  ? {
+                      root: classes.style,
+                    }
+                  : {}
+              }>
+              {option.iconURL.length > 0 && (
+                <ListItemIcon className={classes.iconRoot}>
+                  <IconOverlay iconURL={option.iconURL} alt={option.label} />
+                </ListItemIcon>
+              )}
+
+              {option.label}
+            </MenuItem>
+          ))}
+        </Select>
+        <FormHelperText>{widget.diagnostics[0]?.message}</FormHelperText>
+      </div>
     </FormControl>
   );
 };

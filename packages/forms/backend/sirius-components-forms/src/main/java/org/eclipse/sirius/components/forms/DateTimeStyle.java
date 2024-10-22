@@ -33,6 +33,8 @@ public final class DateTimeStyle {
 
     private boolean bold;
 
+    private WidgetFlexboxLayout widgetFlexboxLayout;
+
     private DateTimeStyle() {
         // Prevent instantiation
     }
@@ -51,6 +53,10 @@ public final class DateTimeStyle {
 
     public boolean isBold() {
         return this.bold;
+    }
+
+    public WidgetFlexboxLayout getWidgetFlexboxLayout() {
+        return this.widgetFlexboxLayout;
     }
 
     public static Builder newDateTimeStyle() {
@@ -78,6 +84,8 @@ public final class DateTimeStyle {
 
         private boolean bold;
 
+        private WidgetFlexboxLayout widgetFlexboxLayout;
+
         private Builder() {
         }
 
@@ -101,12 +109,18 @@ public final class DateTimeStyle {
             return this;
         }
 
+        public Builder widgetFlexboxLayout(WidgetFlexboxLayout widgetFlexboxLayout) {
+            this.widgetFlexboxLayout = widgetFlexboxLayout;
+            return this;
+        }
+
         public DateTimeStyle build() {
             DateTimeStyle dateTimeStyle = new DateTimeStyle();
             dateTimeStyle.backgroundColor = this.backgroundColor;
             dateTimeStyle.foregroundColor = this.foregroundColor;
             dateTimeStyle.italic = this.italic;
             dateTimeStyle.bold = this.bold;
+            dateTimeStyle.widgetFlexboxLayout = this.widgetFlexboxLayout;
             return dateTimeStyle;
         }
 
