@@ -20,6 +20,7 @@ package org.eclipse.sirius.components.collaborative.tables.messages;
 public final class MessageConstants {
 
     public static final String INVALID_INPUT = "INVALID_INPUT";
+    public static final String NO_HANDLER_FOUND = "NO_HANDLER_FOUND";
 
     private MessageConstants() {
         // Prevent instantiation

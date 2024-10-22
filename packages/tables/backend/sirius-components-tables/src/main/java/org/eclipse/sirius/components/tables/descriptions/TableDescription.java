@@ -49,7 +49,7 @@ public final class TableDescription implements IRepresentationDescription {
 
     private List<ColumnDescription> columnDescriptions;
 
-    private CellDescription cellDescription;
+    private List<ICellDescription> cellDescriptions;
 
     private TableDescription() {
         // Prevent instantiation
@@ -89,10 +89,9 @@ public final class TableDescription implements IRepresentationDescription {
         return this.columnDescriptions;
     }
 
-    public CellDescription getCellDescription() {
-        return this.cellDescription;
+    public List<ICellDescription> getCellDescriptions() {
+        return this.cellDescriptions;
     }
-
 
     public static Builder newTableDescription(String id) {
         return new Builder(id);
@@ -128,7 +127,7 @@ public final class TableDescription implements IRepresentationDescription {
 
         private List<ColumnDescription> columnDescriptions;
 
-        private CellDescription cellDescription;
+        private List<ICellDescription> cellDescriptions;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -169,8 +168,8 @@ public final class TableDescription implements IRepresentationDescription {
             return this;
         }
 
-        public Builder cellDescription(CellDescription cellDescription) {
-            this.cellDescription = Objects.requireNonNull(cellDescription);
+        public Builder cellDescriptions(List<ICellDescription> cellDescriptions) {
+            this.cellDescriptions = Objects.requireNonNull(cellDescriptions);
             return this;
         }
 
@@ -184,7 +183,7 @@ public final class TableDescription implements IRepresentationDescription {
             tableDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             tableDescription.lineDescriptions = Objects.requireNonNull(this.lineDescriptions);
             tableDescription.columnDescriptions = Objects.requireNonNull(this.columnDescriptions);
-            tableDescription.cellDescription = Objects.requireNonNull(this.cellDescription);
+            tableDescription.cellDescriptions = Objects.requireNonNull(this.cellDescriptions);
             return tableDescription;
         }
     }

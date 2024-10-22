@@ -13,7 +13,7 @@
 package org.eclipse.sirius.web.papaya.representations.table;
 
 import java.util.Optional;
-import java.util.function.BiFunction;
+import java.util.function.Predicate;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClassifier;
@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
 import org.eclipse.sirius.components.tables.elements.CheckboxCellElementProps;
 import org.eclipse.sirius.components.tables.elements.MultiSelectCellElementProps;
 import org.eclipse.sirius.components.tables.elements.SelectCellElementProps;
@@ -33,12 +34,16 @@ import org.eclipse.sirius.components.tables.elements.TextfieldCellElementProps;
  *
  * @author sbegaudeau
  */
-public class CellTypeProvider implements BiFunction<VariableManager, Object, String> {
-    @Override
-    public String apply(VariableManager variableManager, Object columnTargetObject) {
+public class CellTypePredicate {
+
+    private String getCellType(VariableManager variableManager) {
         String type = "";
         Optional<EObject> optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
-        if (optionalEObject.isPresent() && columnTargetObject instanceof EStructuralFeature eStructuralFeature) {
+        Optional<EStructuralFeature> optionalColumnTargetObject = variableManager.get(ColumnDescription.COLUMN_TARGET_OBJECT, Object.class)
+                .filter(EStructuralFeature.class::isInstance)
+                .map(EStructuralFeature.class::cast);
+        if (optionalEObject.isPresent() && optionalColumnTargetObject.isPresent()) {
+            var eStructuralFeature = optionalColumnTargetObject.get();
             EClassifier eType = eStructuralFeature.getEType();
             if (eStructuralFeature instanceof EAttribute) {
                 if (EcorePackage.Literals.EBOOLEAN.equals(eType) || EcorePackage.Literals.EBOOLEAN_OBJECT.equals(eType)) {
@@ -58,5 +63,21 @@ public class CellTypeProvider implements BiFunction<VariableManager, Object, Str
             }
         }
         return type;
+    }
+
+    public Predicate<VariableManager> isTextfieldCell() {
+        return (variableManager) -> this.getCellType(variableManager).equals(TextfieldCellElementProps.TYPE);
+    }
+
+    public Predicate<VariableManager> isCheckboxCell() {
+        return (variableManager) -> this.getCellType(variableManager).equals(CheckboxCellElementProps.TYPE);
+    }
+
+    public Predicate<VariableManager> isSelectCell() {
+        return (variableManager) -> this.getCellType(variableManager).equals(SelectCellElementProps.TYPE);
+    }
+
+    public Predicate<VariableManager> isMultiselectCell() {
+        return (variableManager) -> this.getCellType(variableManager).equals(MultiSelectCellElementProps.TYPE);
     }
 }

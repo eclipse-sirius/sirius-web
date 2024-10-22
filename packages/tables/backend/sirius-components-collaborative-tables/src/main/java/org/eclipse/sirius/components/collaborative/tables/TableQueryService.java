@@ -40,9 +40,7 @@ public class TableQueryService implements ITableQueryService {
     public Optional<Line> findLineByCellId(Table table, UUID cellId) {
         return table.getLines().stream()
                 .filter(line -> line.getCells().stream()
-                        .filter(cell -> cell.getId().equals(cellId))
-                        .findFirst()
-                        .isPresent())
+                        .anyMatch(cell -> cell.getId().equals(cellId)))
                 .findFirst();
     }
 

@@ -168,9 +168,9 @@ public class FormEventProcessor implements IFormEventProcessor {
 
             if (optionalTableEventHandler.isPresent()) {
                 ITableEventHandler tableEventHandler = optionalTableEventHandler.get();
-                Optional<Table> tableOptional = this.getTable(currentForm.get(), tableInput.tableId());
+                Optional<Table> tableOptional = this.getTable(this.currentForm.get(), tableInput.tableId());
                 if (tableOptional.isPresent()) {
-                    Optional<TableDescription> tableDescriptionOptional = getTableDescription(currentForm.get().getDescriptionId(), tableOptional.get().getDescriptionId());
+                    Optional<TableDescription> tableDescriptionOptional = this.getTableDescription(this.currentForm.get().getDescriptionId(), tableOptional.get().getDescriptionId());
                     if (tableDescriptionOptional.isPresent()) {
                         tableEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, tableOptional.get(), tableDescriptionOptional.get(), tableInput);
                     } else {
@@ -198,7 +198,7 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     private Optional<TableDescription> getTableDescription(String formDescriptionId, String tableDescriptionId) {
         return this.representationDescriptionSearchService
-                .findById(editingContext, formDescriptionId)
+                .findById(this.editingContext, formDescriptionId)
                 .filter(FormDescription.class::isInstance)
                 .map(FormDescription.class::cast)
                 .stream()
@@ -215,9 +215,7 @@ public class FormEventProcessor implements IFormEventProcessor {
     @Override
     public void refresh(ChangeDescription changeDescription) {
         if (this.shouldReload(changeDescription)) {
-            this.representationSearchService.findById(this.editingContext, this.currentForm.get().getId(), Form.class).ifPresent(reloadedForm -> {
-                this.currentForm.set(reloadedForm);
-            });
+            this.representationSearchService.findById(this.editingContext, this.currentForm.get().getId(), Form.class).ifPresent(this.currentForm::set);
         }
         if (this.shouldRefresh(changeDescription) || this.shouldReload(changeDescription)) {
             Form form = this.refreshForm();

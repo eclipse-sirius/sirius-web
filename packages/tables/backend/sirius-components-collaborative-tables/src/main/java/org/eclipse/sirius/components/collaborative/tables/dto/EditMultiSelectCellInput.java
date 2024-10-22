@@ -15,8 +15,6 @@ package org.eclipse.sirius.components.collaborative.tables.dto;
 import java.util.List;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.collaborative.tables.api.ITableInput;
-
 /**
  * The input object for the Multi-Select-based cell edition mutation.
  *
@@ -27,6 +25,7 @@ public record EditMultiSelectCellInput(
         String editingContextId,
         String representationId,
         String tableId,
-        String cellId,
-        List<String> newValues) implements ITableInput {
+        UUID cellId,
+        List<String> newValues) implements IEditCellInput {
+
 }

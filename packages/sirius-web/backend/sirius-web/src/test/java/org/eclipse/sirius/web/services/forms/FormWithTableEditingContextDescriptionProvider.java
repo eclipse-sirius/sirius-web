@@ -34,14 +34,12 @@ import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.core.api.IIdentityService;
-import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.description.FormDescription;
@@ -55,15 +53,15 @@ import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.components.SelectCellComponent;
-import org.eclipse.sirius.components.tables.descriptions.CellDescription;
+import org.eclipse.sirius.components.tables.descriptions.CheckboxCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
+import org.eclipse.sirius.components.tables.descriptions.ICellDescription;
 import org.eclipse.sirius.components.tables.descriptions.LineDescription;
+import org.eclipse.sirius.components.tables.descriptions.MultiSelectCellDescription;
+import org.eclipse.sirius.components.tables.descriptions.SelectCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
-import org.eclipse.sirius.components.tables.elements.CheckboxCellElementProps;
-import org.eclipse.sirius.components.tables.elements.MultiSelectCellElementProps;
-import org.eclipse.sirius.components.tables.elements.SelectCellElementProps;
-import org.eclipse.sirius.components.tables.elements.TextfieldCellElementProps;
-import org.eclipse.sirius.web.papaya.representations.table.CellNewValueHandler;
+import org.eclipse.sirius.components.tables.descriptions.TextfieldCellDescription;
+import org.eclipse.sirius.web.papaya.representations.table.CellTypePredicate;
 import org.eclipse.sirius.web.papaya.representations.table.ColumnTargetObjectIdProvider;
 import org.springframework.stereotype.Service;
 
@@ -76,18 +74,16 @@ import org.springframework.stereotype.Service;
 public class FormWithTableEditingContextDescriptionProvider implements IEditingContextRepresentationDescriptionProvider {
 
     public static final String TASK_FORM_ID = "taskFormDescription";
+    public static final String FORM_WITH_TABLE_ID = "tasksTableId";
 
     private final ComposedAdapterFactory composedAdapterFactory;
 
     private final IIdentityService identityService;
 
-    private final IObjectSearchService objectSearchService;
-
     private final IObjectService objectService;
 
-    public FormWithTableEditingContextDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IIdentityService identityService, IObjectSearchService objectSearchService, IObjectService objectService) {
+    public FormWithTableEditingContextDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IIdentityService identityService, IObjectService objectService) {
         this.identityService = Objects.requireNonNull(identityService);
-        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.objectService = Objects.requireNonNull(objectService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
     }
@@ -144,14 +140,14 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
                 .build();
         lineDescriptions.add(lineDescription);
 
-        TableDescription tableDescription = TableDescription.newTableDescription("tasksTableId")
+        TableDescription tableDescription = TableDescription.newTableDescription(FORM_WITH_TABLE_ID)
                 .label("tasksTableLabel")
                 .targetObjectIdProvider(this::getTargetObjectId)
                 .targetObjectKindProvider(this::getTargetObjectKind)
                 .labelProvider(labelProvider)
                 .lineDescriptions(lineDescriptions)
                 .columnDescriptions(this.getColumnDescriptions())
-                .cellDescription(this.getCellDescription())
+                .cellDescriptions(this.getCellDescriptions())
                 .build();
 
         return TableWidgetDescription.newTableWidgetDescription("tasksTableWidgetId")
@@ -165,17 +161,39 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
                 .build();
     }
 
-    private CellDescription getCellDescription() {
-        return CellDescription.newCellDescription("cells")
+    private List<ICellDescription> getCellDescriptions() {
+        List<ICellDescription> cellDescriptions = new ArrayList<>();
+        cellDescriptions.add(TextfieldCellDescription.newTextfieldCellDescription("textfieldCells")
+                .canCreatePredicate(new CellTypePredicate().isTextfieldCell())
                 .targetObjectIdProvider(variableManager -> "")
                 .targetObjectKindProvider(variableManager -> "")
-                .cellTypeProvider(this.getCellTypeProvider())
-                .cellValueProvider(this.getCellValueProvider())
+                .cellValueProvider(this.getCellStringValueProvider())
+                .build());
+        cellDescriptions.add(CheckboxCellDescription.newCheckboxCellDescription("checkboxCells")
+                .canCreatePredicate(new CellTypePredicate().isCheckboxCell())
+                .targetObjectIdProvider(vm -> "")
+                .targetObjectKindProvider(vm -> "")
+                .cellValueProvider(this.getCellBooleanValueProvider())
+                .build());
+        cellDescriptions.add(SelectCellDescription.newSelectCellDescription("selectCells")
+                .canCreatePredicate(new CellTypePredicate().isSelectCell())
+                .targetObjectIdProvider(vm -> "")
+                .targetObjectKindProvider(vm -> "")
+                .cellValueProvider(this.getCellStringValueProvider())
                 .cellOptionsIdProvider(this.getCellOptionsIdProvider())
                 .cellOptionsLabelProvider(this.getCellOptionsLabelProvider())
                 .cellOptionsProvider(this.getCellOptionsProvider())
-                .newCellValueHandler(new CellNewValueHandler(this.objectSearchService))
-                .build();
+                .build());
+        cellDescriptions.add(MultiSelectCellDescription.newMultiSelectCellDescription("multiselectCells")
+                .canCreatePredicate(new CellTypePredicate().isMultiselectCell())
+                .targetObjectIdProvider(vm -> "")
+                .targetObjectKindProvider(vm -> "")
+                .cellValueProvider(this.getCellStringListValueProvider())
+                .cellOptionsIdProvider(this.getCellOptionsIdProvider())
+                .cellOptionsLabelProvider(this.getCellOptionsLabelProvider())
+                .cellOptionsProvider(this.getCellOptionsProvider())
+                .build());
+        return cellDescriptions;
     }
 
     private String getTargetObjectId(VariableManager variableManager) {
@@ -208,17 +226,15 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
         return List.of(columnDescription);
     }
 
-    private BiFunction<VariableManager, Object, Object> getCellValueProvider() {
+    private BiFunction<VariableManager, Object, String> getCellStringValueProvider() {
         return (variableManager, columnTargetObject) -> {
-            Object value = "";
+            String value = "";
             Optional<EObject> optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
             if (optionalEObject.isPresent() && columnTargetObject instanceof EStructuralFeature eStructuralFeature) {
                 EObject eObject = optionalEObject.get();
                 Object objectValue = eObject.eGet(eStructuralFeature);
                 if (eStructuralFeature instanceof EReference eReference) {
-                    if (eReference.isMany() && !eReference.isContainment() && objectValue instanceof EList<?>) {
-                        value = ((EList<?>) objectValue).stream().map(this.objectService::getId).collect(Collectors.toList());
-                    } else if (!eReference.isMany() && !eReference.isContainment()) {
+                    if (!eReference.isMany() && !eReference.isContainment()) {
                         value = this.objectService.getId(objectValue);
                     }
                 } else if (objectValue != null) {
@@ -229,32 +245,33 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
         };
     }
 
-    private BiFunction<VariableManager, Object, String> getCellTypeProvider() {
+    private BiFunction<VariableManager, Object, List<String>> getCellStringListValueProvider() {
         return (variableManager, columnTargetObject) -> {
-            String type = "";
+            List<String> value = List.of();
             Optional<EObject> optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
             if (optionalEObject.isPresent() && columnTargetObject instanceof EStructuralFeature eStructuralFeature) {
-                EClassifier eType = eStructuralFeature.getEType();
-                if (eStructuralFeature instanceof EAttribute) {
-                    if (EcorePackage.Literals.EBOOLEAN.equals(eType) || EcorePackage.Literals.EBOOLEAN_OBJECT.equals(eType)) {
-                        type = CheckboxCellElementProps.TYPE;
-                    } else if (eType instanceof EEnum) {
-                        type = SelectCellElementProps.TYPE;
+                EObject eObject = optionalEObject.get();
+                Object objectValue = eObject.eGet(eStructuralFeature);
+                if (eStructuralFeature instanceof EReference eReference) {
+                    if (eReference.isMany() && !eReference.isContainment() && objectValue instanceof EList<?>) {
+                        value = ((EList<?>) objectValue).stream().map(this.objectService::getId).collect(Collectors.toList());
                     }
-                } else {
-                    EReference eReference = (EReference) eStructuralFeature;
-                    if (eReference.isMany() && !eReference.isContainment()) {
-                        type = MultiSelectCellElementProps.TYPE;
-                    }
-                    if (!eReference.isMany() && !eReference.isContainment()) {
-                        type = SelectCellElementProps.TYPE;
-                    }
-                }
-                if (type.isEmpty()) {
-                    type = TextfieldCellElementProps.TYPE;
                 }
             }
-            return type;
+            return value;
+        };
+    }
+
+    private BiFunction<VariableManager, Object, Boolean> getCellBooleanValueProvider() {
+        return (variableManager, columnTargetObject) -> {
+            boolean value = false;
+            Optional<EObject> optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
+            if (optionalEObject.isPresent() && columnTargetObject instanceof EStructuralFeature eStructuralFeature) {
+                EObject eObject = optionalEObject.get();
+                Object objectValue = eObject.eGet(eStructuralFeature);
+                value = Boolean.parseBoolean(objectValue.toString());
+            }
+            return value;
         };
     }
 

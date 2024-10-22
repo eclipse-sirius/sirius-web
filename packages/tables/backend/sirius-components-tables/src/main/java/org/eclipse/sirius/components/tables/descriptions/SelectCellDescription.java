@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,30 +17,28 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
- * The description of a cell.
+ * Description of a select cell.
  *
- * @author lfasani
+ * @author frouene
  */
 @Immutable
-public final class CellDescription {
-
-    public static final String LABEL = "label";
+public final class SelectCellDescription implements ICellDescription {
 
     private String id;
+
+    private Predicate<VariableManager> canCreatePredicate;
 
     private Function<VariableManager, String> targetObjectIdProvider;
 
     private Function<VariableManager, String> targetObjectKindProvider;
 
-    private BiFunction<VariableManager, Object, String> cellTypeProvider;
-
-    private BiFunction<VariableManager, Object, Object> cellValueProvider;
+    private BiFunction<VariableManager, Object, String> cellValueProvider;
 
     private Function<VariableManager, String> cellOptionsIdProvider;
 
@@ -48,29 +46,31 @@ public final class CellDescription {
 
     private BiFunction<VariableManager, Object, List<Object>> cellOptionsProvider;
 
-    private BiFunction<VariableManager, Object, IStatus> newCellValueHandler;
-
-    private CellDescription() {
+    private SelectCellDescription() {
         // Prevent instantiation
     }
 
+    @Override
     public String getId() {
-        return this.id;
+        return "";
     }
 
+    @Override
+    public Predicate<VariableManager> getCanCreatePredicate() {
+        return this.canCreatePredicate;
+    }
+
+    @Override
     public Function<VariableManager, String> getTargetObjectIdProvider() {
         return this.targetObjectIdProvider;
     }
 
+    @Override
     public Function<VariableManager, String> getTargetObjectKindProvider() {
         return this.targetObjectKindProvider;
     }
 
-    public BiFunction<VariableManager, Object, String> getCellTypeProvider() {
-        return this.cellTypeProvider;
-    }
-
-    public BiFunction<VariableManager, Object, Object> getCellValueProvider() {
+    public BiFunction<VariableManager, Object, String> getCellValueProvider() {
         return this.cellValueProvider;
     }
 
@@ -86,11 +86,8 @@ public final class CellDescription {
         return this.cellOptionsProvider;
     }
 
-    public BiFunction<VariableManager, Object, IStatus> getNewCellValueHandler() {
-        return this.newCellValueHandler;
-    }
 
-    public static Builder newCellDescription(String id) {
+    public static Builder newSelectCellDescription(String id) {
         return new Builder(id);
     }
 
@@ -101,22 +98,22 @@ public final class CellDescription {
     }
 
     /**
-     * Builder used to create the table description.
+     * Builder used to create a select cell widget description.
      *
-     * @author lfasani
+     * @author frouene
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
         private final String id;
 
+        private Predicate<VariableManager> canCreatePredicate;
+
         private Function<VariableManager, String> targetObjectIdProvider;
 
         private Function<VariableManager, String> targetObjectKindProvider;
 
-        private BiFunction<VariableManager, Object, String> cellTypeProvider;
-
-        private BiFunction<VariableManager, Object, Object> cellValueProvider;
+        private BiFunction<VariableManager, Object, String> cellValueProvider;
 
         private Function<VariableManager, String> cellOptionsIdProvider;
 
@@ -124,10 +121,13 @@ public final class CellDescription {
 
         private BiFunction<VariableManager, Object, List<Object>> cellOptionsProvider;
 
-        private BiFunction<VariableManager, Object, IStatus> newCellValueHandler;
-
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
+        }
+
+        public Builder canCreatePredicate(Predicate<VariableManager> canCreatePredicate) {
+            this.canCreatePredicate = Objects.requireNonNull(canCreatePredicate);
+            return this;
         }
 
         public Builder targetObjectIdProvider(Function<VariableManager, String> targetObjectIdProvider) {
@@ -140,12 +140,7 @@ public final class CellDescription {
             return this;
         }
 
-        public Builder cellTypeProvider(BiFunction<VariableManager, Object, String> cellTypeProvider) {
-            this.cellTypeProvider = Objects.requireNonNull(cellTypeProvider);
-            return this;
-        }
-
-        public Builder cellValueProvider(BiFunction<VariableManager, Object, Object> cellValueProvider) {
+        public Builder cellValueProvider(BiFunction<VariableManager, Object, String> cellValueProvider) {
             this.cellValueProvider = Objects.requireNonNull(cellValueProvider);
             return this;
         }
@@ -165,23 +160,18 @@ public final class CellDescription {
             return this;
         }
 
-        public Builder newCellValueHandler(BiFunction<VariableManager, Object, IStatus> newCellValueHandler) {
-            this.newCellValueHandler = Objects.requireNonNull(newCellValueHandler);
-            return this;
-        }
 
-        public CellDescription build() {
-            CellDescription cellDescription = new CellDescription();
-            cellDescription.id = Objects.requireNonNull(this.id);
-            cellDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
-            cellDescription.targetObjectKindProvider = Objects.requireNonNull(this.targetObjectKindProvider);
-            cellDescription.cellTypeProvider = Objects.requireNonNull(this.cellTypeProvider);
-            cellDescription.cellValueProvider = Objects.requireNonNull(this.cellValueProvider);
-            cellDescription.cellOptionsIdProvider = this.cellOptionsIdProvider;
-            cellDescription.cellOptionsLabelProvider = this.cellOptionsLabelProvider;
-            cellDescription.cellOptionsProvider = this.cellOptionsProvider;
-            cellDescription.newCellValueHandler = Objects.requireNonNull(this.newCellValueHandler);
-            return cellDescription;
+        public SelectCellDescription build() {
+            SelectCellDescription selectCellDescription = new SelectCellDescription();
+            selectCellDescription.id = Objects.requireNonNull(this.id);
+            selectCellDescription.canCreatePredicate = Objects.requireNonNull(this.canCreatePredicate);
+            selectCellDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
+            selectCellDescription.targetObjectKindProvider = Objects.requireNonNull(this.targetObjectKindProvider);
+            selectCellDescription.cellValueProvider = Objects.requireNonNull(this.cellValueProvider);
+            selectCellDescription.cellOptionsIdProvider = Objects.requireNonNull(this.cellOptionsIdProvider);
+            selectCellDescription.cellOptionsLabelProvider = Objects.requireNonNull(this.cellOptionsLabelProvider);
+            selectCellDescription.cellOptionsProvider = Objects.requireNonNull(this.cellOptionsProvider);
+            return selectCellDescription;
         }
     }
 }

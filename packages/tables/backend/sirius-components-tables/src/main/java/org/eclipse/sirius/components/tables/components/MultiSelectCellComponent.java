@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.tables.components;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,7 +20,7 @@ import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.SelectCellOption;
-import org.eclipse.sirius.components.tables.descriptions.CellDescription;
+import org.eclipse.sirius.components.tables.descriptions.MultiSelectCellDescription;
 import org.eclipse.sirius.components.tables.elements.MultiSelectCellElementProps;
 
 /**
@@ -43,18 +42,12 @@ public class MultiSelectCellComponent implements IComponent {
     @Override
     public Element render() {
         VariableManager variableManager = this.props.variableManager();
-        CellDescription cellDescription = this.props.cellDescription();
+        MultiSelectCellDescription cellDescription = this.props.multiSelectCellDescription();
 
         String targetObjectId = cellDescription.getTargetObjectIdProvider().apply(variableManager);
         String targetObjectKind = cellDescription.getTargetObjectKindProvider().apply(variableManager);
 
-        Object value = cellDescription.getCellValueProvider().apply(variableManager, this.props.columnTargetObject());
-        List<String> values = new ArrayList<>();
-        if (value instanceof Collection<?> collectionValue) {
-            values.addAll(collectionValue.stream().map(Object::toString).toList());
-        } else if (value instanceof String stringValue) {
-            values.add(stringValue);
-        }
+        List<String> values = cellDescription.getCellValueProvider().apply(variableManager, this.props.columnTargetObject());
 
         List<Object> optionCandidates = cellDescription.getCellOptionsProvider().apply(variableManager, this.props.columnTargetObject());
 

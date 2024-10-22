@@ -13,7 +13,7 @@
 import { MRT_ColumnDef } from 'material-react-table';
 import { useMemo } from 'react';
 import { Cell } from '../cells/Cell';
-import { GQLCell, GQLLine, GQLTable } from '../table/TableContent.types';
+import { GQLCell, GQLLine, GQLTable } from './TableContent.types';
 import { UseTableColumnsValue } from './useTableColumns.types';
 
 export const useTableColumns = (

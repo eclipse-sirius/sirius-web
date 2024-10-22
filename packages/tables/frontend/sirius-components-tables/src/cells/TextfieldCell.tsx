@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import TextField from '@mui/material/TextField';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TextfieldCellProps, TextfieldCellState } from './TextfieldCell.types';
 import { useEditTextfieldCell } from './useEditTextfieldCell';
 
@@ -20,6 +20,10 @@ export const TextfieldCell = ({ editingContextId, representationId, tableId, cel
   const [state, setState] = useState<TextfieldCellState>({
     value: cell.stringValue,
   });
+
+  useEffect(() => {
+    setState((prevState) => ({ ...prevState, value: cell.stringValue }));
+  }, [cell.stringValue]);
 
   const { editTextfieldCell, loading } = useEditTextfieldCell(editingContextId, representationId, tableId, cell.id);
 

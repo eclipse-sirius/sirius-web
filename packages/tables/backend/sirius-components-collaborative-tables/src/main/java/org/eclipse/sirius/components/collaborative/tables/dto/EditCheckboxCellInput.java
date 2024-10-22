@@ -14,8 +14,6 @@ package org.eclipse.sirius.components.collaborative.tables.dto;
 
 import java.util.UUID;
 
-import org.eclipse.sirius.components.collaborative.tables.api.ITableInput;
-
 /**
  * The input object for the Checkbox-based cell edition mutation.
  *
@@ -26,6 +24,7 @@ public record EditCheckboxCellInput(
         String editingContextId,
         String representationId,
         String tableId,
-        String cellId,
-        boolean newValue) implements ITableInput {
+        UUID cellId,
+        boolean newValue) implements IEditCellInput {
+
 }

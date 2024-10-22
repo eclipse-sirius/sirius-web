@@ -20,7 +20,7 @@ import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.SelectCellOption;
-import org.eclipse.sirius.components.tables.descriptions.CellDescription;
+import org.eclipse.sirius.components.tables.descriptions.SelectCellDescription;
 import org.eclipse.sirius.components.tables.elements.SelectCellElementProps;
 
 /**
@@ -42,16 +42,12 @@ public class SelectCellComponent implements IComponent {
     @Override
     public Element render() {
         VariableManager variableManager = this.props.variableManager();
-        CellDescription cellDescription = this.props.cellDescription();
+        SelectCellDescription cellDescription = this.props.selectCellDescription();
 
         String targetObjectId = cellDescription.getTargetObjectIdProvider().apply(variableManager);
         String targetObjectKind = cellDescription.getTargetObjectKindProvider().apply(variableManager);
 
-        Object value = cellDescription.getCellValueProvider().apply(variableManager, this.props.columnTargetObject());
-        String stringValue = "";
-        if (value instanceof String) {
-            stringValue = (String) value;
-        }
+        String value = cellDescription.getCellValueProvider().apply(variableManager, this.props.columnTargetObject());
         List<Object> optionCandidates = cellDescription.getCellOptionsProvider().apply(variableManager, this.props.columnTargetObject());
 
         List<SelectCellOption> options = new ArrayList<>();
@@ -68,7 +64,7 @@ public class SelectCellComponent implements IComponent {
 
             options.add(option);
         }
-        SelectCellElementProps cellElementProps = new SelectCellElementProps(this.props.cellId(), targetObjectId, targetObjectKind, this.props.columnId(), options, stringValue);
+        SelectCellElementProps cellElementProps = new SelectCellElementProps(this.props.cellId(), targetObjectId, targetObjectKind, this.props.columnId(), options, value);
         return new Element(SelectCellElementProps.TYPE, cellElementProps);
     }
 }

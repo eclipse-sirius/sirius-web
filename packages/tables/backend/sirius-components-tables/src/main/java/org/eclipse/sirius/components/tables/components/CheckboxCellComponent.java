@@ -17,7 +17,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.tables.descriptions.CellDescription;
+import org.eclipse.sirius.components.tables.descriptions.CheckboxCellDescription;
 import org.eclipse.sirius.components.tables.elements.CheckboxCellElementProps;
 
 /**
@@ -36,18 +36,13 @@ public class CheckboxCellComponent implements IComponent {
     @Override
     public Element render() {
         VariableManager variableManager = this.props.variableManager();
-        CellDescription cellDescription = this.props.cellDescription();
+        CheckboxCellDescription cellDescription = this.props.checkboxCellDescription();
 
         String targetObjectId = cellDescription.getTargetObjectIdProvider().apply(variableManager);
         String targetObjectKind = cellDescription.getTargetObjectKindProvider().apply(variableManager);
 
-        Object value = cellDescription.getCellValueProvider().apply(variableManager, this.props.columnTargetObject());
-        String stringValue = "";
-        if (value instanceof String) {
-            stringValue = (String) value;
-        }
-        boolean booleanValue = Boolean.parseBoolean(stringValue);
-        CheckboxCellElementProps cellElementProps = new CheckboxCellElementProps(this.props.cellId(), targetObjectId, targetObjectKind, this.props.columnId(), booleanValue);
+        Boolean value = cellDescription.getCellValueProvider().apply(variableManager, this.props.columnTargetObject());
+        CheckboxCellElementProps cellElementProps = new CheckboxCellElementProps(this.props.cellId(), targetObjectId, targetObjectKind, this.props.columnId(), value);
         return new Element(CheckboxCellElementProps.TYPE, cellElementProps);
     }
 }
