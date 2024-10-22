@@ -2,37 +2,47 @@
 
 exports[`should display the edited value 1`] = `
 <div>
-  <div>
+  <div
+    class="css-b0kbao-propertySection"
+  >
     <div
-      class="css-1ccipwk-propertySectionLabel"
+      class="css-1vrv3vk-propertySectionLabel"
     >
-      <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
-      >
-        Name:
-      </h6>
       <div
-        class="css-vrp56w-decorators"
-      />
+        class="css-1ccipwk-propertySectionLabel"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+        >
+          Name:
+        </h6>
+        <div
+          class="css-vrp56w-decorators"
+        />
+      </div>
     </div>
     <div
-      class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
-      data-testid="Name:"
-      spellcheck="false"
+      class="css-19oeos1-propertySectionWidget"
     >
       <div
-        class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-ve6bqz-style css-953pxc-MuiInputBase-root-MuiInput-root"
+        class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
+        data-testid="Name:"
+        spellcheck="false"
       >
-        <input
-          aria-invalid="false"
-          class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
-          data-testid="input-Name:"
-          id=":r2:"
-          name="Name:"
-          placeholder="Name:"
-          type="text"
-          value="Composite Processor"
-        />
+        <div
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-ve6bqz-style css-953pxc-MuiInputBase-root-MuiInput-root"
+        >
+          <input
+            aria-invalid="false"
+            class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
+            data-testid="input-Name:"
+            id=":r2:"
+            name="Name:"
+            placeholder="Name:"
+            type="text"
+            value="Composite Processor"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -41,37 +51,47 @@ exports[`should display the edited value 1`] = `
 
 exports[`should display the edited value 2`] = `
 <div>
-  <div>
+  <div
+    class="css-b0kbao-propertySection"
+  >
     <div
-      class="css-1ccipwk-propertySectionLabel"
+      class="css-1vrv3vk-propertySectionLabel"
     >
-      <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
-      >
-        Name:
-      </h6>
       <div
-        class="css-vrp56w-decorators"
-      />
+        class="css-1ccipwk-propertySectionLabel"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+        >
+          Name:
+        </h6>
+        <div
+          class="css-vrp56w-decorators"
+        />
+      </div>
     </div>
     <div
-      class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
-      data-testid="Name:"
-      spellcheck="false"
+      class="css-19oeos1-propertySectionWidget"
     >
       <div
-        class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth Mui-focused MuiInputBase-formControl css-ve6bqz-style css-953pxc-MuiInputBase-root-MuiInput-root"
+        class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
+        data-testid="Name:"
+        spellcheck="false"
       >
-        <input
-          aria-invalid="false"
-          class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
-          data-testid="input-Name:"
-          id=":r2:"
-          name="Name:"
-          placeholder="Name:"
-          type="text"
-          value="Composite Processor"
-        />
+        <div
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth Mui-focused MuiInputBase-formControl css-ve6bqz-style css-953pxc-MuiInputBase-root-MuiInput-root"
+        >
+          <input
+            aria-invalid="false"
+            class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
+            data-testid="input-Name:"
+            id=":r2:"
+            name="Name:"
+            placeholder="Name:"
+            type="text"
+            value="Composite Processor"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -80,37 +100,47 @@ exports[`should display the edited value 2`] = `
 
 exports[`should display the edited value 3`] = `
 <div>
-  <div>
+  <div
+    class="css-b0kbao-propertySection"
+  >
     <div
-      class="css-1ccipwk-propertySectionLabel"
+      class="css-1vrv3vk-propertySectionLabel"
     >
-      <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
-      >
-        Name:
-      </h6>
       <div
-        class="css-vrp56w-decorators"
-      />
+        class="css-1ccipwk-propertySectionLabel"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+        >
+          Name:
+        </h6>
+        <div
+          class="css-vrp56w-decorators"
+        />
+      </div>
     </div>
     <div
-      class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
-      data-testid="Name:"
-      spellcheck="false"
+      class="css-19oeos1-propertySectionWidget"
     >
       <div
-        class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth Mui-focused MuiInputBase-formControl css-ve6bqz-style css-953pxc-MuiInputBase-root-MuiInput-root"
+        class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
+        data-testid="Name:"
+        spellcheck="false"
       >
-        <input
-          aria-invalid="false"
-          class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
-          data-testid="input-Name:"
-          id=":r2:"
-          name="Name:"
-          placeholder="Name:"
-          type="text"
-          value="Main Composite Processor"
-        />
+        <div
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth Mui-focused MuiInputBase-formControl css-ve6bqz-style css-953pxc-MuiInputBase-root-MuiInput-root"
+        >
+          <input
+            aria-invalid="false"
+            class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
+            data-testid="input-Name:"
+            id=":r2:"
+            name="Name:"
+            placeholder="Name:"
+            type="text"
+            value="Main Composite Processor"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -122,37 +152,47 @@ exports[`should not trigger completion request if not configured 1`] = `
   style=""
 >
   <div>
-    <div>
+    <div
+      class="css-b0kbao-propertySection"
+    >
       <div
-        class="css-1ccipwk-propertySectionLabel"
+        class="css-1vrv3vk-propertySectionLabel"
       >
-        <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
-        >
-          Text:
-        </h6>
         <div
-          class="css-vrp56w-decorators"
-        />
+          class="css-1ccipwk-propertySectionLabel"
+        >
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          >
+            Text:
+          </h6>
+          <div
+            class="css-vrp56w-decorators"
+          />
+        </div>
       </div>
       <div
-        class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
-        data-testid="Text:"
-        spellcheck="false"
+        class="css-19oeos1-propertySectionWidget"
       >
         <div
-          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-7cz39r-style css-953pxc-MuiInputBase-root-MuiInput-root"
+          class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
+          data-testid="Text:"
+          spellcheck="false"
         >
-          <input
-            aria-invalid="false"
-            class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
-            data-testid="input-Text:"
-            id=":r9:"
-            name="Text:"
-            placeholder="Text:"
-            type="text"
-            value="fo"
-          />
+          <div
+            class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-7cz39r-style css-953pxc-MuiInputBase-root-MuiInput-root"
+          >
+            <input
+              aria-invalid="false"
+              class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
+              data-testid="input-Text:"
+              id=":r9:"
+              name="Text:"
+              placeholder="Text:"
+              type="text"
+              value="fo"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -165,37 +205,47 @@ exports[`should not trigger completion request if not configured 2`] = `
   style=""
 >
   <div>
-    <div>
+    <div
+      class="css-b0kbao-propertySection"
+    >
       <div
-        class="css-1ccipwk-propertySectionLabel"
+        class="css-1vrv3vk-propertySectionLabel"
       >
-        <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
-        >
-          Text:
-        </h6>
         <div
-          class="css-vrp56w-decorators"
-        />
+          class="css-1ccipwk-propertySectionLabel"
+        >
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          >
+            Text:
+          </h6>
+          <div
+            class="css-vrp56w-decorators"
+          />
+        </div>
       </div>
       <div
-        class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
-        data-testid="Text:"
-        spellcheck="false"
+        class="css-19oeos1-propertySectionWidget"
       >
         <div
-          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth Mui-focused MuiInputBase-formControl css-7cz39r-style css-953pxc-MuiInputBase-root-MuiInput-root"
+          class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
+          data-testid="Text:"
+          spellcheck="false"
         >
-          <input
-            aria-invalid="false"
-            class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
-            data-testid="input-Text:"
-            id=":r9:"
-            name="Text:"
-            placeholder="Text:"
-            type="text"
-            value="fo"
-          />
+          <div
+            class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth Mui-focused MuiInputBase-formControl css-7cz39r-style css-953pxc-MuiInputBase-root-MuiInput-root"
+          >
+            <input
+              aria-invalid="false"
+              class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
+              data-testid="input-Text:"
+              id=":r9:"
+              name="Text:"
+              placeholder="Text:"
+              type="text"
+              value="fo"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -208,37 +258,47 @@ exports[`should not trigger completion request if not configured 3`] = `
   style=""
 >
   <div>
-    <div>
+    <div
+      class="css-b0kbao-propertySection"
+    >
       <div
-        class="css-1ccipwk-propertySectionLabel"
+        class="css-1vrv3vk-propertySectionLabel"
       >
-        <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
-        >
-          Text:
-        </h6>
         <div
-          class="css-vrp56w-decorators"
-        />
+          class="css-1ccipwk-propertySectionLabel"
+        >
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          >
+            Text:
+          </h6>
+          <div
+            class="css-vrp56w-decorators"
+          />
+        </div>
       </div>
       <div
-        class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
-        data-testid="Text:"
-        spellcheck="false"
+        class="css-19oeos1-propertySectionWidget"
       >
         <div
-          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth Mui-focused MuiInputBase-formControl css-7cz39r-style css-953pxc-MuiInputBase-root-MuiInput-root"
+          class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
+          data-testid="Text:"
+          spellcheck="false"
         >
-          <input
-            aria-invalid="false"
-            class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
-            data-testid="input-Text:"
-            id=":r9:"
-            name="Text:"
-            placeholder="Text:"
-            type="text"
-            value="fo"
-          />
+          <div
+            class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth Mui-focused MuiInputBase-formControl css-7cz39r-style css-953pxc-MuiInputBase-root-MuiInput-root"
+          >
+            <input
+              aria-invalid="false"
+              class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
+              data-testid="input-Text:"
+              id=":r9:"
+              name="Text:"
+              placeholder="Text:"
+              type="text"
+              value="fo"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -248,127 +308,12 @@ exports[`should not trigger completion request if not configured 3`] = `
 
 exports[`should render a readOnly textfield 1`] = `
 <div>
-  <div>
+  <div
+    class="css-b0kbao-propertySection"
+  >
     <div
-      class="css-1ccipwk-propertySectionLabel"
+      class="css-1vrv3vk-propertySectionLabel"
     >
-      <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
-      >
-        Name:
-      </h6>
-      <div
-        class="css-vrp56w-decorators"
-      />
-    </div>
-    <div
-      class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
-      data-testid="Name:"
-      spellcheck="false"
-    >
-      <div
-        class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary Mui-disabled MuiInputBase-fullWidth MuiInputBase-formControl css-ve6bqz-style css-953pxc-MuiInputBase-root-MuiInput-root"
-      >
-        <input
-          aria-invalid="false"
-          class="MuiInputBase-input MuiInput-input Mui-disabled css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
-          data-testid="input-Name:"
-          disabled=""
-          id=":r1:"
-          name="Name:"
-          placeholder="Name:"
-          type="text"
-          value="Composite Processor"
-        />
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`should render a readOnly textfield from widget properties 1`] = `
-<div>
-  <div>
-    <div
-      class="css-1ccipwk-propertySectionLabel"
-    >
-      <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
-      >
-        Name:
-      </h6>
-      <div
-        class="css-vrp56w-decorators"
-      />
-    </div>
-    <div
-      class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
-      data-testid="Name:"
-      spellcheck="false"
-    >
-      <div
-        class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary Mui-disabled MuiInputBase-fullWidth MuiInputBase-formControl css-ve6bqz-style css-953pxc-MuiInputBase-root-MuiInput-root"
-      >
-        <input
-          aria-invalid="false"
-          class="MuiInputBase-input MuiInput-input Mui-disabled css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
-          data-testid="input-Name:"
-          disabled=""
-          id=":rc:"
-          name="Name:"
-          placeholder="Name:"
-          type="text"
-          value="Composite Processor"
-        />
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`should render the textfield 1`] = `
-<div>
-  <div>
-    <div
-      class="css-1ccipwk-propertySectionLabel"
-    >
-      <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
-      >
-        Name:
-      </h6>
-      <div
-        class="css-vrp56w-decorators"
-      />
-    </div>
-    <div
-      class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
-      data-testid="Name:"
-      spellcheck="false"
-    >
-      <div
-        class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-ve6bqz-style css-953pxc-MuiInputBase-root-MuiInput-root"
-      >
-        <input
-          aria-invalid="false"
-          class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
-          data-testid="input-Name:"
-          id=":r0:"
-          name="Name:"
-          placeholder="Name:"
-          type="text"
-          value="Composite Processor"
-        />
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`should render the textfield with empty style 1`] = `
-<body>
-  <div>
-    <div>
       <div
         class="css-1ccipwk-propertySectionLabel"
       >
@@ -381,6 +326,110 @@ exports[`should render the textfield with empty style 1`] = `
           class="css-vrp56w-decorators"
         />
       </div>
+    </div>
+    <div
+      class="css-19oeos1-propertySectionWidget"
+    >
+      <div
+        class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
+        data-testid="Name:"
+        spellcheck="false"
+      >
+        <div
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary Mui-disabled MuiInputBase-fullWidth MuiInputBase-formControl css-ve6bqz-style css-953pxc-MuiInputBase-root-MuiInput-root"
+        >
+          <input
+            aria-invalid="false"
+            class="MuiInputBase-input MuiInput-input Mui-disabled css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
+            data-testid="input-Name:"
+            disabled=""
+            id=":r1:"
+            name="Name:"
+            placeholder="Name:"
+            type="text"
+            value="Composite Processor"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`should render a readOnly textfield from widget properties 1`] = `
+<div>
+  <div
+    class="css-b0kbao-propertySection"
+  >
+    <div
+      class="css-1vrv3vk-propertySectionLabel"
+    >
+      <div
+        class="css-1ccipwk-propertySectionLabel"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+        >
+          Name:
+        </h6>
+        <div
+          class="css-vrp56w-decorators"
+        />
+      </div>
+    </div>
+    <div
+      class="css-19oeos1-propertySectionWidget"
+    >
+      <div
+        class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
+        data-testid="Name:"
+        spellcheck="false"
+      >
+        <div
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary Mui-disabled MuiInputBase-fullWidth MuiInputBase-formControl css-ve6bqz-style css-953pxc-MuiInputBase-root-MuiInput-root"
+        >
+          <input
+            aria-invalid="false"
+            class="MuiInputBase-input MuiInput-input Mui-disabled css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
+            data-testid="input-Name:"
+            disabled=""
+            id=":rc:"
+            name="Name:"
+            placeholder="Name:"
+            type="text"
+            value="Composite Processor"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`should render the textfield 1`] = `
+<div>
+  <div
+    class="css-b0kbao-propertySection"
+  >
+    <div
+      class="css-1vrv3vk-propertySectionLabel"
+    >
+      <div
+        class="css-1ccipwk-propertySectionLabel"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+        >
+          Name:
+        </h6>
+        <div
+          class="css-vrp56w-decorators"
+        />
+      </div>
+    </div>
+    <div
+      class="css-19oeos1-propertySectionWidget"
+    >
       <div
         class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
         data-testid="Name:"
@@ -393,7 +442,7 @@ exports[`should render the textfield with empty style 1`] = `
             aria-invalid="false"
             class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
             data-testid="input-Name:"
-            id=":r5:"
+            id=":r0:"
             name="Name:"
             placeholder="Name:"
             type="text"
@@ -403,67 +452,68 @@ exports[`should render the textfield with empty style 1`] = `
       </div>
     </div>
   </div>
+</div>
+`;
+
+exports[`should render the textfield with empty style 1`] = `
+<body>
+  <div>
+    <div
+      class="css-b0kbao-propertySection"
+    >
+      <div
+        class="css-1vrv3vk-propertySectionLabel"
+      >
+        <div
+          class="css-1ccipwk-propertySectionLabel"
+        >
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          >
+            Name:
+          </h6>
+          <div
+            class="css-vrp56w-decorators"
+          />
+        </div>
+      </div>
+      <div
+        class="css-19oeos1-propertySectionWidget"
+      >
+        <div
+          class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
+          data-testid="Name:"
+          spellcheck="false"
+        >
+          <div
+            class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-ve6bqz-style css-953pxc-MuiInputBase-root-MuiInput-root"
+          >
+            <input
+              aria-invalid="false"
+              class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
+              data-testid="input-Name:"
+              id=":r5:"
+              name="Name:"
+              placeholder="Name:"
+              type="text"
+              value="Composite Processor"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 `;
 
 exports[`should render the textfield with help hint 1`] = `
 <div>
-  <div>
+  <div
+    class="css-b0kbao-propertySection"
+  >
     <div
-      class="css-1ccipwk-propertySectionLabel"
+      class="css-1vrv3vk-propertySectionLabel"
     >
-      <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
-      >
-        Name:
-      </h6>
-      <div
-        class="css-vrp56w-decorators"
-      >
-        <svg
-          aria-hidden="true"
-          aria-label=""
-          class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeMedium css-kw0y8f-MuiSvgIcon-root"
-          data-mui-internal-clone-element="true"
-          data-testid="HelpOutlineOutlinedIcon"
-          focusable="false"
-          style="margin-left: 8px; font-size: 16px;"
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="M11 18h2v-2h-2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4"
-          />
-        </svg>
-      </div>
-    </div>
-    <div
-      class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
-      data-testid="Name:"
-      spellcheck="false"
-    >
-      <div
-        class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-ve6bqz-style css-953pxc-MuiInputBase-root-MuiInput-root"
-      >
-        <input
-          aria-invalid="false"
-          class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
-          data-testid="input-Name:"
-          id=":rb:"
-          name="Name:"
-          placeholder="Name:"
-          type="text"
-          value="Composite Processor"
-        />
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`should render the textfield with style 1`] = `
-<body>
-  <div>
-    <div>
       <div
         class="css-1ccipwk-propertySectionLabel"
       >
@@ -474,26 +524,96 @@ exports[`should render the textfield with style 1`] = `
         </h6>
         <div
           class="css-vrp56w-decorators"
-        />
+        >
+          <svg
+            aria-hidden="true"
+            aria-label=""
+            class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeMedium css-kw0y8f-MuiSvgIcon-root"
+            data-mui-internal-clone-element="true"
+            data-testid="HelpOutlineOutlinedIcon"
+            focusable="false"
+            style="margin-left: 8px; font-size: 16px;"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M11 18h2v-2h-2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4"
+            />
+          </svg>
+        </div>
       </div>
+    </div>
+    <div
+      class="css-19oeos1-propertySectionWidget"
+    >
       <div
         class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
         data-testid="Name:"
         spellcheck="false"
       >
         <div
-          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-ijey5v-style css-953pxc-MuiInputBase-root-MuiInput-root"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-ve6bqz-style css-953pxc-MuiInputBase-root-MuiInput-root"
         >
           <input
             aria-invalid="false"
             class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
             data-testid="input-Name:"
-            id=":r4:"
+            id=":rb:"
             name="Name:"
             placeholder="Name:"
             type="text"
             value="Composite Processor"
           />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`should render the textfield with style 1`] = `
+<body>
+  <div>
+    <div
+      class="css-b0kbao-propertySection"
+    >
+      <div
+        class="css-1vrv3vk-propertySectionLabel"
+      >
+        <div
+          class="css-1ccipwk-propertySectionLabel"
+        >
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          >
+            Name:
+          </h6>
+          <div
+            class="css-vrp56w-decorators"
+          />
+        </div>
+      </div>
+      <div
+        class="css-19oeos1-propertySectionWidget"
+      >
+        <div
+          class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
+          data-testid="Name:"
+          spellcheck="false"
+        >
+          <div
+            class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-ijey5v-style css-953pxc-MuiInputBase-root-MuiInput-root"
+          >
+            <input
+              aria-invalid="false"
+              class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
+              data-testid="input-Name:"
+              id=":r4:"
+              name="Name:"
+              placeholder="Name:"
+              type="text"
+              value="Composite Processor"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -504,37 +624,47 @@ exports[`should render the textfield with style 1`] = `
 exports[`should render the textfield without style 1`] = `
 <body>
   <div>
-    <div>
+    <div
+      class="css-b0kbao-propertySection"
+    >
       <div
-        class="css-1ccipwk-propertySectionLabel"
+        class="css-1vrv3vk-propertySectionLabel"
       >
-        <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
-        >
-          Name:
-        </h6>
         <div
-          class="css-vrp56w-decorators"
-        />
+          class="css-1ccipwk-propertySectionLabel"
+        >
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          >
+            Name:
+          </h6>
+          <div
+            class="css-vrp56w-decorators"
+          />
+        </div>
       </div>
       <div
-        class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
-        data-testid="Name:"
-        spellcheck="false"
+        class="css-19oeos1-propertySectionWidget"
       >
         <div
-          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-ve6bqz-style css-953pxc-MuiInputBase-root-MuiInput-root"
+          class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
+          data-testid="Name:"
+          spellcheck="false"
         >
-          <input
-            aria-invalid="false"
-            class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
-            data-testid="input-Name:"
-            id=":r3:"
-            name="Name:"
-            placeholder="Name:"
-            type="text"
-            value="Composite Processor"
-          />
+          <div
+            class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-ve6bqz-style css-953pxc-MuiInputBase-root-MuiInput-root"
+          >
+            <input
+              aria-invalid="false"
+              class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
+              data-testid="input-Name:"
+              id=":r3:"
+              name="Name:"
+              placeholder="Name:"
+              type="text"
+              value="Composite Processor"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -545,37 +675,47 @@ exports[`should render the textfield without style 1`] = `
 exports[`should support completion if configured 1`] = `
 <body>
   <div>
-    <div>
+    <div
+      class="css-b0kbao-propertySection"
+    >
       <div
-        class="css-1ccipwk-propertySectionLabel"
+        class="css-1vrv3vk-propertySectionLabel"
       >
-        <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
-        >
-          Text:
-        </h6>
         <div
-          class="css-vrp56w-decorators"
-        />
+          class="css-1ccipwk-propertySectionLabel"
+        >
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          >
+            Text:
+          </h6>
+          <div
+            class="css-vrp56w-decorators"
+          />
+        </div>
       </div>
       <div
-        class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
-        data-testid="Text:"
-        spellcheck="false"
+        class="css-19oeos1-propertySectionWidget"
       >
         <div
-          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-7cz39r-style css-953pxc-MuiInputBase-root-MuiInput-root"
+          class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
+          data-testid="Text:"
+          spellcheck="false"
         >
-          <input
-            aria-invalid="false"
-            class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
-            data-testid="input-Text:"
-            id=":r6:"
-            name="Text:"
-            placeholder="Text:"
-            type="text"
-            value="fo"
-          />
+          <div
+            class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-7cz39r-style css-953pxc-MuiInputBase-root-MuiInput-root"
+          >
+            <input
+              aria-invalid="false"
+              class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
+              data-testid="input-Text:"
+              id=":r6:"
+              name="Text:"
+              placeholder="Text:"
+              type="text"
+              value="fo"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -586,37 +726,47 @@ exports[`should support completion if configured 1`] = `
 exports[`should support completion if configured 2`] = `
 <body>
   <div>
-    <div>
+    <div
+      class="css-b0kbao-propertySection"
+    >
       <div
-        class="css-1ccipwk-propertySectionLabel"
+        class="css-1vrv3vk-propertySectionLabel"
       >
-        <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
-        >
-          Text:
-        </h6>
         <div
-          class="css-vrp56w-decorators"
-        />
+          class="css-1ccipwk-propertySectionLabel"
+        >
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          >
+            Text:
+          </h6>
+          <div
+            class="css-vrp56w-decorators"
+          />
+        </div>
       </div>
       <div
-        class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
-        data-testid="Text:"
-        spellcheck="false"
+        class="css-19oeos1-propertySectionWidget"
       >
         <div
-          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth Mui-focused MuiInputBase-formControl css-7cz39r-style css-953pxc-MuiInputBase-root-MuiInput-root"
+          class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
+          data-testid="Text:"
+          spellcheck="false"
         >
-          <input
-            aria-invalid="false"
-            class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
-            data-testid="input-Text:"
-            id=":r6:"
-            name="Text:"
-            placeholder="Text:"
-            type="text"
-            value="fo"
-          />
+          <div
+            class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth Mui-focused MuiInputBase-formControl css-7cz39r-style css-953pxc-MuiInputBase-root-MuiInput-root"
+          >
+            <input
+              aria-invalid="false"
+              class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
+              data-testid="input-Text:"
+              id=":r6:"
+              name="Text:"
+              placeholder="Text:"
+              type="text"
+              value="fo"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -631,37 +781,47 @@ exports[`should support completion if configured 3`] = `
   <div
     aria-hidden="true"
   >
-    <div>
+    <div
+      class="css-b0kbao-propertySection"
+    >
       <div
-        class="css-1ccipwk-propertySectionLabel"
+        class="css-1vrv3vk-propertySectionLabel"
       >
-        <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
-        >
-          Text:
-        </h6>
         <div
-          class="css-vrp56w-decorators"
-        />
+          class="css-1ccipwk-propertySectionLabel"
+        >
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          >
+            Text:
+          </h6>
+          <div
+            class="css-vrp56w-decorators"
+          />
+        </div>
       </div>
       <div
-        class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
-        data-testid="Text:"
-        spellcheck="false"
+        class="css-19oeos1-propertySectionWidget"
       >
         <div
-          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-7cz39r-style css-953pxc-MuiInputBase-root-MuiInput-root"
+          class="MuiFormControl-root MuiFormControl-marginDense MuiFormControl-fullWidth MuiTextField-root css-xhyru6-textfield css-1z10yd4-MuiFormControl-root-MuiTextField-root"
+          data-testid="Text:"
+          spellcheck="false"
         >
-          <input
-            aria-invalid="false"
-            class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
-            data-testid="input-Text:"
-            id=":r6:"
-            name="Text:"
-            placeholder="Text:"
-            type="text"
-            value="fo"
-          />
+          <div
+            class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-7cz39r-style css-953pxc-MuiInputBase-root-MuiInput-root"
+          >
+            <input
+              aria-invalid="false"
+              class="MuiInputBase-input MuiInput-input css-3klcbk-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
+              data-testid="input-Text:"
+              id=":r6:"
+              name="Text:"
+              placeholder="Text:"
+              type="text"
+              value="fo"
+            />
+          </div>
         </div>
       </div>
     </div>

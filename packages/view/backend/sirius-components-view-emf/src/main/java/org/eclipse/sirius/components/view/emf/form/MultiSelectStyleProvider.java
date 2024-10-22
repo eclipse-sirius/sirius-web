@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.function.Function;
 
 import org.eclipse.sirius.components.forms.MultiSelectStyle;
 import org.eclipse.sirius.components.forms.MultiSelectStyle.Builder;
+import org.eclipse.sirius.components.forms.WidgetGridLayout;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.form.MultiSelectDescriptionStyle;
@@ -58,6 +59,16 @@ public class MultiSelectStyleProvider implements Function<VariableManager, Multi
         boolean underline = this.viewStyle.isUnderline();
         boolean strikeThrough = this.viewStyle.isStrikeThrough();
         boolean isShowIcon = this.viewStyle.isShowIcon();
+        WidgetGridLayout widgetGridLayout = WidgetGridLayout.newWidgetGridLayout()
+                .gridTemplateColumns(this.viewStyle.getGridTemplateColumns())
+                .gridTemplateRows(this.viewStyle.getGridTemplateRows())
+                .labelGridColumn(this.viewStyle.getLabelGridColumn())
+                .labelGridRow(this.viewStyle.getLabelGridRow())
+                .widgetGridColumn(this.viewStyle.getWidgetGridColumn())
+                .widgetGridRow(this.viewStyle.getWidgetGridRow())
+                .gap(this.viewStyle.getGap())
+                .build();
+
 
         // @formatter:off
         return multiSelectStyleBuilder
@@ -67,6 +78,7 @@ public class MultiSelectStyleProvider implements Function<VariableManager, Multi
                 .underline(underline)
                 .strikeThrough(strikeThrough)
                 .showIcon(isShowIcon)
+                .widgetGridLayout(widgetGridLayout)
                 .build();
         // @formatter:on
     }

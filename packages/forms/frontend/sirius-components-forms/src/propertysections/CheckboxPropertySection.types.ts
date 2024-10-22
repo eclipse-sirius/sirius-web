@@ -11,9 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+import { GQLWidgetGridLayout } from '../form/FormEventFragments.types';
 
 export interface CheckboxStyleProps {
   color: string | null;
+  gridLayout: GQLWidgetGridLayout | null;
 }
 
 export interface GQLEditCheckboxMutationData {

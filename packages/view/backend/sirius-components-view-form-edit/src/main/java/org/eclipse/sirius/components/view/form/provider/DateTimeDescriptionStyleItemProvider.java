@@ -50,12 +50,103 @@ public class DateTimeDescriptionStyleItemProvider extends WidgetDescriptionStyle
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
+            this.addGridTemplateColumnsPropertyDescriptor(object);
+            this.addGridTemplateRowsPropertyDescriptor(object);
+            this.addLabelGridRowPropertyDescriptor(object);
+            this.addLabelGridColumnPropertyDescriptor(object);
+            this.addWidgetGridRowPropertyDescriptor(object);
+            this.addWidgetGridColumnPropertyDescriptor(object);
+            this.addGapPropertyDescriptor(object);
             this.addBackgroundColorPropertyDescriptor(object);
             this.addForegroundColorPropertyDescriptor(object);
             this.addItalicPropertyDescriptor(object);
             this.addBoldPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
+    }
+
+    /**
+     * This adds a property descriptor for the Grid Template Columns feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addGridTemplateColumnsPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_WidgetGridLayout_gridTemplateColumns_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetGridLayout_gridTemplateColumns_feature", "_UI_WidgetGridLayout_type"),
+                FormPackage.Literals.WIDGET_GRID_LAYOUT__GRID_TEMPLATE_COLUMNS, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Grid Template Rows feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addGridTemplateRowsPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_WidgetGridLayout_gridTemplateRows_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetGridLayout_gridTemplateRows_feature", "_UI_WidgetGridLayout_type"),
+                FormPackage.Literals.WIDGET_GRID_LAYOUT__GRID_TEMPLATE_ROWS, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Label Grid Row feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addLabelGridRowPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_WidgetGridLayout_labelGridRow_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetGridLayout_labelGridRow_feature", "_UI_WidgetGridLayout_type"), FormPackage.Literals.WIDGET_GRID_LAYOUT__LABEL_GRID_ROW,
+                true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Label Grid Column feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addLabelGridColumnPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_WidgetGridLayout_labelGridColumn_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetGridLayout_labelGridColumn_feature", "_UI_WidgetGridLayout_type"),
+                FormPackage.Literals.WIDGET_GRID_LAYOUT__LABEL_GRID_COLUMN, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Widget Grid Row feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addWidgetGridRowPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_WidgetGridLayout_widgetGridRow_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetGridLayout_widgetGridRow_feature", "_UI_WidgetGridLayout_type"),
+                FormPackage.Literals.WIDGET_GRID_LAYOUT__WIDGET_GRID_ROW, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Widget Grid Column feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addWidgetGridColumnPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_WidgetGridLayout_widgetGridColumn_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetGridLayout_widgetGridColumn_feature", "_UI_WidgetGridLayout_type"),
+                FormPackage.Literals.WIDGET_GRID_LAYOUT__WIDGET_GRID_COLUMN, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Gap feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addGapPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_WidgetGridLayout_gap_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetGridLayout_gap_feature", "_UI_WidgetGridLayout_type"),
+                FormPackage.Literals.WIDGET_GRID_LAYOUT__GAP, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -133,8 +224,8 @@ public class DateTimeDescriptionStyleItemProvider extends WidgetDescriptionStyle
      */
     @Override
     public String getText(Object object) {
-        DateTimeDescriptionStyle dateTimeDescriptionStyle = (DateTimeDescriptionStyle) object;
-        return this.getString("_UI_DateTimeDescriptionStyle_type") + " " + dateTimeDescriptionStyle.isItalic();
+        String label = ((DateTimeDescriptionStyle) object).getGridTemplateColumns();
+        return label == null || label.length() == 0 ? this.getString("_UI_DateTimeDescriptionStyle_type") : this.getString("_UI_DateTimeDescriptionStyle_type") + " " + label;
     }
 
     /**
@@ -149,6 +240,13 @@ public class DateTimeDescriptionStyleItemProvider extends WidgetDescriptionStyle
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(DateTimeDescriptionStyle.class)) {
+            case FormPackage.DATE_TIME_DESCRIPTION_STYLE__GRID_TEMPLATE_COLUMNS:
+            case FormPackage.DATE_TIME_DESCRIPTION_STYLE__GRID_TEMPLATE_ROWS:
+            case FormPackage.DATE_TIME_DESCRIPTION_STYLE__LABEL_GRID_ROW:
+            case FormPackage.DATE_TIME_DESCRIPTION_STYLE__LABEL_GRID_COLUMN:
+            case FormPackage.DATE_TIME_DESCRIPTION_STYLE__WIDGET_GRID_ROW:
+            case FormPackage.DATE_TIME_DESCRIPTION_STYLE__WIDGET_GRID_COLUMN:
+            case FormPackage.DATE_TIME_DESCRIPTION_STYLE__GAP:
             case FormPackage.DATE_TIME_DESCRIPTION_STYLE__ITALIC:
             case FormPackage.DATE_TIME_DESCRIPTION_STYLE__BOLD:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));

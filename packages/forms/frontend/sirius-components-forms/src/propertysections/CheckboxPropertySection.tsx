@@ -14,7 +14,6 @@ import { gql, useMutation } from '@apollo/client';
 import { getCSSColor, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import { useEffect } from 'react';
 import { makeStyles } from 'tss-react/mui';
@@ -31,17 +30,38 @@ import {
 } from './CheckboxPropertySection.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
 
-const useStyle = makeStyles<CheckboxStyleProps>()((theme, { color }) => ({
-  formControl: {
-    alignItems: 'flex-start',
-  },
-  style: {
-    color: color ? getCSSColor(color, theme) : theme.palette.primary.light,
-    paddingTop: theme.spacing(0.5),
-    paddingBottom: theme.spacing(0.5),
-  },
-  disabled: {},
-}));
+const useStyle = makeStyles<CheckboxStyleProps>()((theme, { color, gridLayout }) => {
+  const { gridTemplateColumns, gridTemplateRows, labelGridColumn, labelGridRow, widgetGridColumn, widgetGridRow, gap } =
+    {
+      ...gridLayout,
+    };
+
+  return {
+    checkboxStyle: {
+      color: color ? getCSSColor(color, theme) : theme.palette.primary.light,
+      padding: '0',
+    },
+    disabled: {},
+    propertySection: {
+      display: 'grid',
+      gridTemplateColumns: gridTemplateColumns ?? 'min-content 1fr',
+      gridTemplateRows,
+      alignItems: 'center',
+      gap: gap ?? theme.spacing(1),
+    },
+    propertySectionLabel: {
+      gridColumn: labelGridColumn ?? '2/3',
+      gridRow: labelGridRow,
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    propertySectionWidget: {
+      gridColumn: widgetGridColumn,
+      gridRow: widgetGridRow ?? '1/2',
+    },
+  };
+});
 
 export const editCheckboxMutation = gql`
   mutation editCheckbox($input: EditCheckboxInput!) {
@@ -76,6 +96,7 @@ export const CheckboxPropertySection: PropertySectionComponent<GQLCheckbox> = ({
 }: PropertySectionComponentProps<GQLCheckbox>) => {
   const props: CheckboxStyleProps = {
     color: widget.style?.color ?? null,
+    gridLayout: widget.style?.widgetGridLayout ?? null,
   };
   const { classes } = useStyle(props);
 
@@ -112,23 +133,22 @@ export const CheckboxPropertySection: PropertySectionComponent<GQLCheckbox> = ({
   }, [loading, error, data]);
 
   return (
-    <FormControl classes={{ root: classes.formControl }} error={widget.diagnostics.length > 0}>
-      <FormControlLabel
-        labelPlacement={widget.style?.labelPlacement ?? 'end'}
-        label={<PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />}
-        control={
-          <Checkbox
-            name={widget.label}
-            color="default"
-            checked={widget.booleanValue}
-            onChange={onChange}
-            data-testid={widget.label}
-            disabled={readOnly || widget.readOnly}
-            classes={{ root: classes.style, disabled: classes.disabled }}
-          />
-        }
-      />
-      <FormHelperText>{widget.diagnostics[0]?.message}</FormHelperText>
+    <FormControl classes={{ root: classes.propertySection }} error={widget.diagnostics.length > 0}>
+      <div className={classes.propertySectionLabel}>
+        <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
+      </div>
+      <div className={classes.propertySectionWidget}>
+        <Checkbox
+          name={widget.label}
+          color="default"
+          checked={widget.booleanValue}
+          onChange={onChange}
+          data-testid={widget.label}
+          disabled={readOnly || widget.readOnly}
+          classes={{ root: classes.checkboxStyle, disabled: classes.disabled }}
+        />
+        {widget.diagnostics[0]?.message ? <FormHelperText>{widget.diagnostics[0]?.message}</FormHelperText> : null}
+      </div>
     </FormControl>
   );
 };

@@ -43,6 +43,76 @@ public class DateTimeDescriptionStyleBuilder {
     }
 
     /**
+     * Setter for GridTemplateColumns.
+     *
+     * @generated
+     */
+    public DateTimeDescriptionStyleBuilder gridTemplateColumns(java.lang.String value) {
+        this.getDateTimeDescriptionStyle().setGridTemplateColumns(value);
+        return this;
+    }
+
+    /**
+     * Setter for GridTemplateRows.
+     *
+     * @generated
+     */
+    public DateTimeDescriptionStyleBuilder gridTemplateRows(java.lang.String value) {
+        this.getDateTimeDescriptionStyle().setGridTemplateRows(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelGridRow.
+     *
+     * @generated
+     */
+    public DateTimeDescriptionStyleBuilder labelGridRow(java.lang.String value) {
+        this.getDateTimeDescriptionStyle().setLabelGridRow(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelGridColumn.
+     *
+     * @generated
+     */
+    public DateTimeDescriptionStyleBuilder labelGridColumn(java.lang.String value) {
+        this.getDateTimeDescriptionStyle().setLabelGridColumn(value);
+        return this;
+    }
+
+    /**
+     * Setter for WidgetGridRow.
+     *
+     * @generated
+     */
+    public DateTimeDescriptionStyleBuilder widgetGridRow(java.lang.String value) {
+        this.getDateTimeDescriptionStyle().setWidgetGridRow(value);
+        return this;
+    }
+
+    /**
+     * Setter for WidgetGridColumn.
+     *
+     * @generated
+     */
+    public DateTimeDescriptionStyleBuilder widgetGridColumn(java.lang.String value) {
+        this.getDateTimeDescriptionStyle().setWidgetGridColumn(value);
+        return this;
+    }
+
+    /**
+     * Setter for Gap.
+     *
+     * @generated
+     */
+    public DateTimeDescriptionStyleBuilder gap(java.lang.String value) {
+        this.getDateTimeDescriptionStyle().setGap(value);
+        return this;
+    }
+
+    /**
      * Setter for BackgroundColor.
      *
      * @generated

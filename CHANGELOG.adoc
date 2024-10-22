@@ -17,7 +17,7 @@
 
 === Breaking changes
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4110[#4110] [view] CheckboxDescriptionStyle.labelPlacement is replaced by Grid layout properties
 
 === Dependency update
 
@@ -29,7 +29,7 @@
 
 === New Features
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4110[#4110] [form] Add layout capabilities for form widgets
 
 === Improvements
 

@@ -88,6 +88,76 @@ public class TextareaDescriptionStyleBuilder {
         return this;
     }
     /**
+     * Setter for GridTemplateColumns.
+     *
+     * @generated
+     */
+    public TextareaDescriptionStyleBuilder gridTemplateColumns(java.lang.String value) {
+        this.getTextareaDescriptionStyle().setGridTemplateColumns(value);
+        return this;
+    }
+
+    /**
+     * Setter for GridTemplateRows.
+     *
+     * @generated
+     */
+    public TextareaDescriptionStyleBuilder gridTemplateRows(java.lang.String value) {
+        this.getTextareaDescriptionStyle().setGridTemplateRows(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelGridRow.
+     *
+     * @generated
+     */
+    public TextareaDescriptionStyleBuilder labelGridRow(java.lang.String value) {
+        this.getTextareaDescriptionStyle().setLabelGridRow(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelGridColumn.
+     *
+     * @generated
+     */
+    public TextareaDescriptionStyleBuilder labelGridColumn(java.lang.String value) {
+        this.getTextareaDescriptionStyle().setLabelGridColumn(value);
+        return this;
+    }
+
+    /**
+     * Setter for WidgetGridRow.
+     *
+     * @generated
+     */
+    public TextareaDescriptionStyleBuilder widgetGridRow(java.lang.String value) {
+        this.getTextareaDescriptionStyle().setWidgetGridRow(value);
+        return this;
+    }
+
+    /**
+     * Setter for WidgetGridColumn.
+     *
+     * @generated
+     */
+    public TextareaDescriptionStyleBuilder widgetGridColumn(java.lang.String value) {
+        this.getTextareaDescriptionStyle().setWidgetGridColumn(value);
+        return this;
+    }
+
+    /**
+     * Setter for Gap.
+     *
+     * @generated
+     */
+    public TextareaDescriptionStyleBuilder gap(java.lang.String value) {
+        this.getTextareaDescriptionStyle().setGap(value);
+        return this;
+    }
+
+    /**
      * Setter for BackgroundColor.
      *
      * @generated

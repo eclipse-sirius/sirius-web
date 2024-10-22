@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.forms.TextareaStyle;
 import org.eclipse.sirius.components.forms.TextareaStyle.Builder;
+import org.eclipse.sirius.components.forms.WidgetGridLayout;
 import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.form.TextareaDescriptionStyle;
 
@@ -55,6 +56,15 @@ public class TextareaStyleProvider {
         boolean bold = this.viewStyle.isBold();
         boolean underline = this.viewStyle.isUnderline();
         boolean strikeThrough = this.viewStyle.isStrikeThrough();
+        WidgetGridLayout widgetGridLayout = WidgetGridLayout.newWidgetGridLayout()
+                .gridTemplateColumns(this.viewStyle.getGridTemplateColumns())
+                .gridTemplateRows(this.viewStyle.getGridTemplateRows())
+                .labelGridColumn(this.viewStyle.getLabelGridColumn())
+                .labelGridRow(this.viewStyle.getLabelGridRow())
+                .widgetGridColumn(this.viewStyle.getWidgetGridColumn())
+                .widgetGridRow(this.viewStyle.getWidgetGridRow())
+                .gap(this.viewStyle.getGap())
+                .build();
 
         // @formatter:off
         return textareaStyleBuilder
@@ -63,6 +73,7 @@ public class TextareaStyleProvider {
                 .bold(bold)
                 .underline(underline)
                 .strikeThrough(strikeThrough)
+                .widgetGridLayout(widgetGridLayout)
                 .build();
         // @formatter:on
     }

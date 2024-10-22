@@ -59,6 +59,10 @@ public final class MigrationIdentifiers {
     
     public static final String MIGRATION_INSIDE_LABEL_STYLE_HEADER_SEPARATOR_DISPLAY_STUDIO_NODE_1 = "migration Node 1";
 
+    public static final UUID MIGRATION_WIDGET_DESCRIPTION_STYLE_LAYOUT_PROPERTIES_MIGRATION_PARTICIPANT_STUDIO = UUID.fromString("01234836-0902-418a-900a-4c0afd20323e");
+
+    public static final String MIGRATION_WIDGET_DESCRIPTION_STYLE_LAYOUT_PROPERTIES_MIGRATION_PARTICIPANT_STUDIO_FORM = "Form View for WidgetDescriptionStyleLayoutPropertiesMigrationParticipant";
+
     private MigrationIdentifiers() {
         // Prevent instantiation
     }

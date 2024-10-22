@@ -75,6 +75,7 @@ import org.eclipse.sirius.components.view.form.TextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.form.TreeDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescriptionStyle;
+import org.eclipse.sirius.components.view.form.WidgetGridLayout;
 
 /**
  * <!-- begin-user-doc --> The <b>Switch</b> for the model's inheritance hierarchy. It supports the call
@@ -389,6 +390,13 @@ public class FormSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
+            case FormPackage.WIDGET_GRID_LAYOUT: {
+                WidgetGridLayout widgetGridLayout = (WidgetGridLayout) theEObject;
+                T result = this.caseWidgetGridLayout(widgetGridLayout);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
             case FormPackage.BAR_CHART_DESCRIPTION_STYLE: {
                 BarChartDescriptionStyle barChartDescriptionStyle = (BarChartDescriptionStyle) theEObject;
                 T result = this.caseBarChartDescriptionStyle(barChartDescriptionStyle);
@@ -447,6 +455,8 @@ public class FormSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseWidgetDescriptionStyle(checkboxDescriptionStyle);
                 if (result == null)
+                    result = this.caseWidgetGridLayout(checkboxDescriptionStyle);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -460,6 +470,8 @@ public class FormSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseWidgetDescriptionStyle(conditionalCheckboxDescriptionStyle);
                 if (result == null)
+                    result = this.caseWidgetGridLayout(conditionalCheckboxDescriptionStyle);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -468,6 +480,8 @@ public class FormSwitch<T> extends Switch<T> {
                 T result = this.caseDateTimeDescriptionStyle(dateTimeDescriptionStyle);
                 if (result == null)
                     result = this.caseWidgetDescriptionStyle(dateTimeDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetGridLayout(dateTimeDescriptionStyle);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -481,6 +495,8 @@ public class FormSwitch<T> extends Switch<T> {
                     result = this.caseDateTimeDescriptionStyle(conditionalDateTimeDescriptionStyle);
                 if (result == null)
                     result = this.caseWidgetDescriptionStyle(conditionalDateTimeDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetGridLayout(conditionalDateTimeDescriptionStyle);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -571,6 +587,8 @@ public class FormSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseLabelStyle(multiSelectDescriptionStyle);
                 if (result == null)
+                    result = this.caseWidgetGridLayout(multiSelectDescriptionStyle);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -585,6 +603,8 @@ public class FormSwitch<T> extends Switch<T> {
                     result = this.caseWidgetDescriptionStyle(conditionalMultiSelectDescriptionStyle);
                 if (result == null)
                     result = this.caseLabelStyle(conditionalMultiSelectDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetGridLayout(conditionalMultiSelectDescriptionStyle);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -649,6 +669,8 @@ public class FormSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseLabelStyle(selectDescriptionStyle);
                 if (result == null)
+                    result = this.caseWidgetGridLayout(selectDescriptionStyle);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -664,6 +686,8 @@ public class FormSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseLabelStyle(conditionalSelectDescriptionStyle);
                 if (result == null)
+                    result = this.caseWidgetGridLayout(conditionalSelectDescriptionStyle);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -674,6 +698,8 @@ public class FormSwitch<T> extends Switch<T> {
                     result = this.caseWidgetDescriptionStyle(textareaDescriptionStyle);
                 if (result == null)
                     result = this.caseLabelStyle(textareaDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetGridLayout(textareaDescriptionStyle);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -690,6 +716,8 @@ public class FormSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseLabelStyle(conditionalTextareaDescriptionStyle);
                 if (result == null)
+                    result = this.caseWidgetGridLayout(conditionalTextareaDescriptionStyle);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -700,6 +728,8 @@ public class FormSwitch<T> extends Switch<T> {
                     result = this.caseWidgetDescriptionStyle(textfieldDescriptionStyle);
                 if (result == null)
                     result = this.caseLabelStyle(textfieldDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetGridLayout(textfieldDescriptionStyle);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -715,6 +745,8 @@ public class FormSwitch<T> extends Switch<T> {
                     result = this.caseWidgetDescriptionStyle(conditionalTextfieldDescriptionStyle);
                 if (result == null)
                     result = this.caseLabelStyle(conditionalTextfieldDescriptionStyle);
+                if (result == null)
+                    result = this.caseWidgetGridLayout(conditionalTextfieldDescriptionStyle);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1145,6 +1177,21 @@ public class FormSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseWidgetDescriptionStyle(WidgetDescriptionStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Widget Grid Layout</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Widget Grid Layout</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseWidgetGridLayout(WidgetGridLayout object) {
         return null;
     }
 

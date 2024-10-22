@@ -21,22 +21,52 @@ import { DataTimeWidgetState } from './DateTimeWidget.types';
 import { DateTimeWidgetProps } from './WidgetEntry.types';
 
 const useDataTimeWidgetStyles = makeStyles<DateTimeStyleProps>()(
-  (theme, { backgroundColor, foregroundColor, italic, bold }) => ({
-    style: {
-      backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
-      color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
-      fontStyle: italic ? 'italic' : null,
-      fontWeight: bold ? 'bold' : null,
-    },
-    textfield: {
-      marginTop: theme.spacing(0.5),
-      marginBottom: theme.spacing(0.5),
-    },
-    selected: {
-      color: theme.palette.primary.main,
-    },
-    input: {},
-  })
+  (theme, { backgroundColor, foregroundColor, italic, bold, gridLayout }) => {
+    const {
+      gridTemplateColumns,
+      gridTemplateRows,
+      labelGridColumn,
+      labelGridRow,
+      widgetGridColumn,
+      widgetGridRow,
+      gap,
+    } = {
+      ...gridLayout,
+    };
+    return {
+      style: {
+        backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
+        color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
+        fontStyle: italic ? 'italic' : null,
+        fontWeight: bold ? 'bold' : null,
+      },
+      selected: {
+        color: theme.palette.primary.main,
+      },
+      input: {},
+      propertySection: {
+        display: 'grid',
+        gridTemplateColumns,
+        gridTemplateRows,
+        alignItems: 'center',
+        gap: gap ?? '',
+      },
+      propertySectionLabel: {
+        gridColumn: labelGridColumn,
+        gridRow: labelGridRow,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      },
+      propertySectionWidget: {
+        marginTop: theme.spacing(0.5),
+        marginBottom: theme.spacing(0.5),
+        gridColumn: widgetGridColumn,
+        gridRow: widgetGridRow,
+      },
+    };
+  }
 );
 
 export const DateTimeWidget = ({ widget }: DateTimeWidgetProps) => {
@@ -45,6 +75,7 @@ export const DateTimeWidget = ({ widget }: DateTimeWidgetProps) => {
     foregroundColor: widget.style?.foregroundColor ?? null,
     italic: widget.style?.italic ?? null,
     bold: widget.style?.bold ?? null,
+    gridLayout: widget.style?.widgetGridLayout ?? null,
   };
   const { classes } = useDataTimeWidgetStyles(props);
 
@@ -66,33 +97,34 @@ export const DateTimeWidget = ({ widget }: DateTimeWidgetProps) => {
   const { value, type } = getValueAndType(widget.type);
 
   return (
-    <div>
-      <div>
+    <div className={classes.propertySection}>
+      <div className={classes.propertySectionLabel}>
         <Typography variant="subtitle2" className={state.selected ? classes.selected : ''}>
           {widget.label}
         </Typography>
         {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
       </div>
-      <TextField
-        variant="standard"
-        id="datetime"
-        type={type}
-        value={value}
-        className={classes.textfield}
-        onFocus={() => setState((prevState) => ({ ...prevState, selected: true }))}
-        onBlur={() => setState((prevState) => ({ ...prevState, selected: false }))}
-        InputProps={
-          widget.style
-            ? {
-                className: classes.style,
-              }
-            : {}
-        }
-        inputProps={{
-          'data-testid': `datetime-${widget.label}`,
-          className: classes.input,
-        }}
-      />
+      <div className={classes.propertySectionWidget}>
+        <TextField
+          variant="standard"
+          id="datetime"
+          type={type}
+          value={value}
+          onFocus={() => setState((prevState) => ({ ...prevState, selected: true }))}
+          onBlur={() => setState((prevState) => ({ ...prevState, selected: false }))}
+          InputProps={
+            widget.style
+              ? {
+                  className: classes.style,
+                }
+              : {}
+          }
+          inputProps={{
+            'data-testid': `datetime-${widget.label}`,
+            className: classes.input,
+          }}
+        />
+      </div>
     </div>
   );
 };

@@ -97,6 +97,76 @@ public class ConditionalTextareaDescriptionStyleBuilder {
         return this;
     }
     /**
+     * Setter for GridTemplateColumns.
+     *
+     * @generated
+     */
+    public ConditionalTextareaDescriptionStyleBuilder gridTemplateColumns(java.lang.String value) {
+        this.getConditionalTextareaDescriptionStyle().setGridTemplateColumns(value);
+        return this;
+    }
+
+    /**
+     * Setter for GridTemplateRows.
+     *
+     * @generated
+     */
+    public ConditionalTextareaDescriptionStyleBuilder gridTemplateRows(java.lang.String value) {
+        this.getConditionalTextareaDescriptionStyle().setGridTemplateRows(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelGridRow.
+     *
+     * @generated
+     */
+    public ConditionalTextareaDescriptionStyleBuilder labelGridRow(java.lang.String value) {
+        this.getConditionalTextareaDescriptionStyle().setLabelGridRow(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelGridColumn.
+     *
+     * @generated
+     */
+    public ConditionalTextareaDescriptionStyleBuilder labelGridColumn(java.lang.String value) {
+        this.getConditionalTextareaDescriptionStyle().setLabelGridColumn(value);
+        return this;
+    }
+
+    /**
+     * Setter for WidgetGridRow.
+     *
+     * @generated
+     */
+    public ConditionalTextareaDescriptionStyleBuilder widgetGridRow(java.lang.String value) {
+        this.getConditionalTextareaDescriptionStyle().setWidgetGridRow(value);
+        return this;
+    }
+
+    /**
+     * Setter for WidgetGridColumn.
+     *
+     * @generated
+     */
+    public ConditionalTextareaDescriptionStyleBuilder widgetGridColumn(java.lang.String value) {
+        this.getConditionalTextareaDescriptionStyle().setWidgetGridColumn(value);
+        return this;
+    }
+
+    /**
+     * Setter for Gap.
+     *
+     * @generated
+     */
+    public ConditionalTextareaDescriptionStyleBuilder gap(java.lang.String value) {
+        this.getConditionalTextareaDescriptionStyle().setGap(value);
+        return this;
+    }
+
+    /**
      * Setter for BackgroundColor.
      *
      * @generated

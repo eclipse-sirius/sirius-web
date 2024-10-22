@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,8 @@ public final class MultiSelectStyle extends AbstractFontStyle {
 
     private boolean showIcon;
 
+    private WidgetGridLayout widgetGridLayout;
+
     private MultiSelectStyle() {
         // Prevent instantiation
     }
@@ -45,6 +47,10 @@ public final class MultiSelectStyle extends AbstractFontStyle {
 
     public boolean isShowIcon() {
         return this.showIcon;
+    }
+
+    public WidgetGridLayout getWidgetGridLayout() {
+        return this.widgetGridLayout;
     }
 
     public static Builder newMultiSelectStyle() {
@@ -79,6 +85,8 @@ public final class MultiSelectStyle extends AbstractFontStyle {
         private boolean strikeThrough;
 
         private boolean showIcon;
+
+        private WidgetGridLayout widgetGridLayout;
 
         private Builder() {
         }
@@ -123,6 +131,11 @@ public final class MultiSelectStyle extends AbstractFontStyle {
             return this;
         }
 
+        public Builder widgetGridLayout(WidgetGridLayout widgetGridLayout) {
+            this.widgetGridLayout = Objects.requireNonNull(widgetGridLayout);
+            return this;
+        }
+
         public MultiSelectStyle build() {
             MultiSelectStyle multiSelectStyle = new MultiSelectStyle();
             multiSelectStyle.backgroundColor = this.backgroundColor;
@@ -133,6 +146,7 @@ public final class MultiSelectStyle extends AbstractFontStyle {
             multiSelectStyle.underline = this.underline;
             multiSelectStyle.strikeThrough = this.strikeThrough;
             multiSelectStyle.showIcon = this.showIcon;
+            multiSelectStyle.widgetGridLayout = this.widgetGridLayout;
             return multiSelectStyle;
         }
 

@@ -24,12 +24,6 @@
       <genEnumLiterals ecoreEnumLiteral="form.ecore#//GroupDisplayMode/LIST"/>
       <genEnumLiterals ecoreEnumLiteral="form.ecore#//GroupDisplayMode/TOGGLEABLE_AREAS"/>
     </genEnums>
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="form.ecore#//LabelPlacement">
-      <genEnumLiterals ecoreEnumLiteral="form.ecore#//LabelPlacement/end"/>
-      <genEnumLiterals ecoreEnumLiteral="form.ecore#//LabelPlacement/top"/>
-      <genEnumLiterals ecoreEnumLiteral="form.ecore#//LabelPlacement/start"/>
-      <genEnumLiterals ecoreEnumLiteral="form.ecore#//LabelPlacement/bottom"/>
-    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="form.ecore#//ContainerBorderLineStyle">
       <genEnumLiterals ecoreEnumLiteral="form.ecore#//ContainerBorderLineStyle/Solid"/>
       <genEnumLiterals ecoreEnumLiteral="form.ecore#//ContainerBorderLineStyle/Dashed"/>
@@ -211,6 +205,15 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//SliderDescription/isEnabledExpression"/>
     </genClasses>
     <genClasses image="false" ecoreClass="form.ecore#//WidgetDescriptionStyle"/>
+    <genClasses image="false" ecoreClass="form.ecore#//WidgetGridLayout">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//WidgetGridLayout/gridTemplateColumns"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//WidgetGridLayout/gridTemplateRows"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//WidgetGridLayout/labelGridRow"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//WidgetGridLayout/labelGridColumn"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//WidgetGridLayout/widgetGridRow"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//WidgetGridLayout/widgetGridColumn"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//WidgetGridLayout/gap"/>
+    </genClasses>
     <genClasses ecoreClass="form.ecore#//BarChartDescriptionStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//BarChartDescriptionStyle/barsColor"/>
     </genClasses>
@@ -222,7 +225,6 @@
     <genClasses ecoreClass="form.ecore#//ConditionalButtonDescriptionStyle"/>
     <genClasses ecoreClass="form.ecore#//CheckboxDescriptionStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EReference form.ecore#//CheckboxDescriptionStyle/color"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//CheckboxDescriptionStyle/labelPlacement"/>
     </genClasses>
     <genClasses ecoreClass="form.ecore#//ConditionalCheckboxDescriptionStyle"/>
     <genClasses ecoreClass="form.ecore#//DateTimeDescriptionStyle">

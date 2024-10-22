@@ -11,12 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
+import { GQLWidgetGridLayout } from '../form/FormEventFragments.types';
 
 export interface DateTimeStyleProps {
   foregroundColor: string | null;
   backgroundColor: string | null;
   italic: boolean | null;
   bold: boolean | null;
+  gridLayout: GQLWidgetGridLayout | null;
 }
 
 export interface DataTimeWidgetPropertySectionState {

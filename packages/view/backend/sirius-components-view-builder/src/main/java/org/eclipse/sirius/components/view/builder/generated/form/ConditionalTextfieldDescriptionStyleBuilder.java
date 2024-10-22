@@ -97,6 +97,76 @@ public class ConditionalTextfieldDescriptionStyleBuilder {
         return this;
     }
     /**
+     * Setter for GridTemplateColumns.
+     *
+     * @generated
+     */
+    public ConditionalTextfieldDescriptionStyleBuilder gridTemplateColumns(java.lang.String value) {
+        this.getConditionalTextfieldDescriptionStyle().setGridTemplateColumns(value);
+        return this;
+    }
+
+    /**
+     * Setter for GridTemplateRows.
+     *
+     * @generated
+     */
+    public ConditionalTextfieldDescriptionStyleBuilder gridTemplateRows(java.lang.String value) {
+        this.getConditionalTextfieldDescriptionStyle().setGridTemplateRows(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelGridRow.
+     *
+     * @generated
+     */
+    public ConditionalTextfieldDescriptionStyleBuilder labelGridRow(java.lang.String value) {
+        this.getConditionalTextfieldDescriptionStyle().setLabelGridRow(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelGridColumn.
+     *
+     * @generated
+     */
+    public ConditionalTextfieldDescriptionStyleBuilder labelGridColumn(java.lang.String value) {
+        this.getConditionalTextfieldDescriptionStyle().setLabelGridColumn(value);
+        return this;
+    }
+
+    /**
+     * Setter for WidgetGridRow.
+     *
+     * @generated
+     */
+    public ConditionalTextfieldDescriptionStyleBuilder widgetGridRow(java.lang.String value) {
+        this.getConditionalTextfieldDescriptionStyle().setWidgetGridRow(value);
+        return this;
+    }
+
+    /**
+     * Setter for WidgetGridColumn.
+     *
+     * @generated
+     */
+    public ConditionalTextfieldDescriptionStyleBuilder widgetGridColumn(java.lang.String value) {
+        this.getConditionalTextfieldDescriptionStyle().setWidgetGridColumn(value);
+        return this;
+    }
+
+    /**
+     * Setter for Gap.
+     *
+     * @generated
+     */
+    public ConditionalTextfieldDescriptionStyleBuilder gap(java.lang.String value) {
+        this.getConditionalTextfieldDescriptionStyle().setGap(value);
+        return this;
+    }
+
+    /**
      * Setter for BackgroundColor.
      *
      * @generated

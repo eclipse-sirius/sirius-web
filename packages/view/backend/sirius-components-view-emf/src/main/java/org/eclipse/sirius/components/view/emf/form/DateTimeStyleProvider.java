@@ -17,6 +17,7 @@ import java.util.function.Function;
 
 import org.eclipse.sirius.components.forms.DateTimeStyle;
 import org.eclipse.sirius.components.forms.DateTimeStyle.Builder;
+import org.eclipse.sirius.components.forms.WidgetGridLayout;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle;
@@ -54,10 +55,20 @@ public class DateTimeStyleProvider implements Function<VariableManager, DateTime
 
         boolean italic = this.viewStyle.isItalic();
         boolean bold = this.viewStyle.isBold();
+        WidgetGridLayout widgetGridLayout = WidgetGridLayout.newWidgetGridLayout()
+                .gridTemplateColumns(this.viewStyle.getGridTemplateColumns())
+                .gridTemplateRows(this.viewStyle.getGridTemplateRows())
+                .labelGridColumn(this.viewStyle.getLabelGridColumn())
+                .labelGridRow(this.viewStyle.getLabelGridRow())
+                .widgetGridColumn(this.viewStyle.getWidgetGridColumn())
+                .widgetGridRow(this.viewStyle.getWidgetGridRow())
+                .gap(this.viewStyle.getGap())
+                .build();
 
         return dateTimeStyleBuilder
                 .italic(italic)
                 .bold(bold)
+                .widgetGridLayout(widgetGridLayout)
                 .build();
     }
 }

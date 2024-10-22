@@ -58,7 +58,6 @@ import org.eclipse.sirius.components.view.form.GroupDisplayMode;
 import org.eclipse.sirius.components.view.form.ImageDescription;
 import org.eclipse.sirius.components.view.form.LabelDescription;
 import org.eclipse.sirius.components.view.form.LabelDescriptionStyle;
-import org.eclipse.sirius.components.view.form.LabelPlacement;
 import org.eclipse.sirius.components.view.form.LinkDescription;
 import org.eclipse.sirius.components.view.form.LinkDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ListDescription;
@@ -82,6 +81,7 @@ import org.eclipse.sirius.components.view.form.TextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.form.TreeDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescriptionStyle;
+import org.eclipse.sirius.components.view.form.WidgetGridLayout;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!-- end-user-doc -->
@@ -270,6 +270,13 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     private EClass widgetDescriptionStyleEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass widgetGridLayoutEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -494,13 +501,6 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     private EEnum groupDisplayModeEEnum = null;
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    private EEnum labelPlacementEEnum = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2046,6 +2046,86 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     @Override
+    public EClass getWidgetGridLayout() {
+        return this.widgetGridLayoutEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getWidgetGridLayout_GridTemplateColumns() {
+        return (EAttribute) this.widgetGridLayoutEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getWidgetGridLayout_GridTemplateRows() {
+        return (EAttribute) this.widgetGridLayoutEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getWidgetGridLayout_LabelGridRow() {
+        return (EAttribute) this.widgetGridLayoutEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getWidgetGridLayout_LabelGridColumn() {
+        return (EAttribute) this.widgetGridLayoutEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getWidgetGridLayout_WidgetGridRow() {
+        return (EAttribute) this.widgetGridLayoutEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getWidgetGridLayout_WidgetGridColumn() {
+        return (EAttribute) this.widgetGridLayoutEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getWidgetGridLayout_Gap() {
+        return (EAttribute) this.widgetGridLayoutEClass.getEStructuralFeatures().get(6);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getBarChartDescriptionStyle() {
         return this.barChartDescriptionStyleEClass;
     }
@@ -2128,16 +2208,6 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
     @Override
     public EReference getCheckboxDescriptionStyle_Color() {
         return (EReference) this.checkboxDescriptionStyleEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EAttribute getCheckboxDescriptionStyle_LabelPlacement() {
-        return (EAttribute) this.checkboxDescriptionStyleEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -2716,16 +2786,6 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     @Override
-    public EEnum getLabelPlacement() {
-        return this.labelPlacementEEnum;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public EEnum getContainerBorderLineStyle() {
         return this.containerBorderLineStyleEEnum;
     }
@@ -2941,6 +3001,15 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
 
         this.widgetDescriptionStyleEClass = this.createEClass(WIDGET_DESCRIPTION_STYLE);
 
+        this.widgetGridLayoutEClass = this.createEClass(WIDGET_GRID_LAYOUT);
+        this.createEAttribute(this.widgetGridLayoutEClass, WIDGET_GRID_LAYOUT__GRID_TEMPLATE_COLUMNS);
+        this.createEAttribute(this.widgetGridLayoutEClass, WIDGET_GRID_LAYOUT__GRID_TEMPLATE_ROWS);
+        this.createEAttribute(this.widgetGridLayoutEClass, WIDGET_GRID_LAYOUT__LABEL_GRID_ROW);
+        this.createEAttribute(this.widgetGridLayoutEClass, WIDGET_GRID_LAYOUT__LABEL_GRID_COLUMN);
+        this.createEAttribute(this.widgetGridLayoutEClass, WIDGET_GRID_LAYOUT__WIDGET_GRID_ROW);
+        this.createEAttribute(this.widgetGridLayoutEClass, WIDGET_GRID_LAYOUT__WIDGET_GRID_COLUMN);
+        this.createEAttribute(this.widgetGridLayoutEClass, WIDGET_GRID_LAYOUT__GAP);
+
         this.barChartDescriptionStyleEClass = this.createEClass(BAR_CHART_DESCRIPTION_STYLE);
         this.createEAttribute(this.barChartDescriptionStyleEClass, BAR_CHART_DESCRIPTION_STYLE__BARS_COLOR);
 
@@ -2954,7 +3023,6 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
 
         this.checkboxDescriptionStyleEClass = this.createEClass(CHECKBOX_DESCRIPTION_STYLE);
         this.createEReference(this.checkboxDescriptionStyleEClass, CHECKBOX_DESCRIPTION_STYLE__COLOR);
-        this.createEAttribute(this.checkboxDescriptionStyleEClass, CHECKBOX_DESCRIPTION_STYLE__LABEL_PLACEMENT);
 
         this.conditionalCheckboxDescriptionStyleEClass = this.createEClass(CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE);
 
@@ -3039,7 +3107,6 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         // Create enums
         this.flexDirectionEEnum = this.createEEnum(FLEX_DIRECTION);
         this.groupDisplayModeEEnum = this.createEEnum(GROUP_DISPLAY_MODE);
-        this.labelPlacementEEnum = this.createEEnum(LABEL_PLACEMENT);
         this.containerBorderLineStyleEEnum = this.createEEnum(CONTAINER_BORDER_LINE_STYLE);
         this.dateTimeTypeEEnum = this.createEEnum(DATE_TIME_TYPE);
     }
@@ -3105,9 +3172,11 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.conditionalButtonDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
         this.conditionalButtonDescriptionStyleEClass.getESuperTypes().add(this.getButtonDescriptionStyle());
         this.checkboxDescriptionStyleEClass.getESuperTypes().add(this.getWidgetDescriptionStyle());
+        this.checkboxDescriptionStyleEClass.getESuperTypes().add(this.getWidgetGridLayout());
         this.conditionalCheckboxDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
         this.conditionalCheckboxDescriptionStyleEClass.getESuperTypes().add(this.getCheckboxDescriptionStyle());
         this.dateTimeDescriptionStyleEClass.getESuperTypes().add(this.getWidgetDescriptionStyle());
+        this.dateTimeDescriptionStyleEClass.getESuperTypes().add(this.getWidgetGridLayout());
         this.conditionalDateTimeDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
         this.conditionalDateTimeDescriptionStyleEClass.getESuperTypes().add(this.getDateTimeDescriptionStyle());
         this.labelDescriptionStyleEClass.getESuperTypes().add(this.getWidgetDescriptionStyle());
@@ -3124,6 +3193,7 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.conditionalListDescriptionStyleEClass.getESuperTypes().add(this.getListDescriptionStyle());
         this.multiSelectDescriptionStyleEClass.getESuperTypes().add(this.getWidgetDescriptionStyle());
         this.multiSelectDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getLabelStyle());
+        this.multiSelectDescriptionStyleEClass.getESuperTypes().add(this.getWidgetGridLayout());
         this.conditionalMultiSelectDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
         this.conditionalMultiSelectDescriptionStyleEClass.getESuperTypes().add(this.getMultiSelectDescriptionStyle());
         this.pieChartDescriptionStyleEClass.getESuperTypes().add(this.getWidgetDescriptionStyle());
@@ -3136,14 +3206,17 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.conditionalRadioDescriptionStyleEClass.getESuperTypes().add(this.getRadioDescriptionStyle());
         this.selectDescriptionStyleEClass.getESuperTypes().add(this.getWidgetDescriptionStyle());
         this.selectDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getLabelStyle());
+        this.selectDescriptionStyleEClass.getESuperTypes().add(this.getWidgetGridLayout());
         this.conditionalSelectDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
         this.conditionalSelectDescriptionStyleEClass.getESuperTypes().add(this.getSelectDescriptionStyle());
         this.textareaDescriptionStyleEClass.getESuperTypes().add(this.getWidgetDescriptionStyle());
         this.textareaDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getLabelStyle());
+        this.textareaDescriptionStyleEClass.getESuperTypes().add(this.getWidgetGridLayout());
         this.conditionalTextareaDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
         this.conditionalTextareaDescriptionStyleEClass.getESuperTypes().add(this.getTextareaDescriptionStyle());
         this.textfieldDescriptionStyleEClass.getESuperTypes().add(this.getWidgetDescriptionStyle());
         this.textfieldDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getLabelStyle());
+        this.textfieldDescriptionStyleEClass.getESuperTypes().add(this.getWidgetGridLayout());
         this.conditionalTextfieldDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
         this.conditionalTextfieldDescriptionStyleEClass.getESuperTypes().add(this.getTextfieldDescriptionStyle());
         this.conditionalContainerBorderStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
@@ -3452,6 +3525,22 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
 
         this.initEClass(this.widgetDescriptionStyleEClass, WidgetDescriptionStyle.class, "WidgetDescriptionStyle", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+        this.initEClass(this.widgetGridLayoutEClass, WidgetGridLayout.class, "WidgetGridLayout", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getWidgetGridLayout_GridTemplateColumns(), this.ecorePackage.getEString(), "gridTemplateColumns", "", 1, 1, WidgetGridLayout.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getWidgetGridLayout_GridTemplateRows(), this.ecorePackage.getEString(), "gridTemplateRows", "", 1, 1, WidgetGridLayout.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getWidgetGridLayout_LabelGridRow(), this.ecorePackage.getEString(), "labelGridRow", "", 1, 1, WidgetGridLayout.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getWidgetGridLayout_LabelGridColumn(), this.ecorePackage.getEString(), "labelGridColumn", "", 1, 1, WidgetGridLayout.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getWidgetGridLayout_WidgetGridRow(), this.ecorePackage.getEString(), "widgetGridRow", "", 1, 1, WidgetGridLayout.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getWidgetGridLayout_WidgetGridColumn(), this.ecorePackage.getEString(), "widgetGridColumn", "", 1, 1, WidgetGridLayout.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getWidgetGridLayout_Gap(), this.ecorePackage.getEString(), "gap", "", 1, 1, WidgetGridLayout.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
         this.initEClass(this.barChartDescriptionStyleEClass, BarChartDescriptionStyle.class, "BarChartDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getBarChartDescriptionStyle_BarsColor(), this.ecorePackage.getEString(), "barsColor", null, 0, 1, BarChartDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3471,8 +3560,6 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.initEClass(this.checkboxDescriptionStyleEClass, CheckboxDescriptionStyle.class, "CheckboxDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getCheckboxDescriptionStyle_Color(), theViewPackage.getUserColor(), null, "color", null, 0, 1, CheckboxDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getCheckboxDescriptionStyle_LabelPlacement(), this.getLabelPlacement(), "labelPlacement", "end", 1, 1, CheckboxDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalCheckboxDescriptionStyleEClass, ConditionalCheckboxDescriptionStyle.class, "ConditionalCheckboxDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
@@ -3604,12 +3691,6 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.initEEnum(this.groupDisplayModeEEnum, GroupDisplayMode.class, "GroupDisplayMode");
         this.addEEnumLiteral(this.groupDisplayModeEEnum, GroupDisplayMode.LIST);
         this.addEEnumLiteral(this.groupDisplayModeEEnum, GroupDisplayMode.TOGGLEABLE_AREAS);
-
-        this.initEEnum(this.labelPlacementEEnum, LabelPlacement.class, "LabelPlacement");
-        this.addEEnumLiteral(this.labelPlacementEEnum, LabelPlacement.END);
-        this.addEEnumLiteral(this.labelPlacementEEnum, LabelPlacement.TOP);
-        this.addEEnumLiteral(this.labelPlacementEEnum, LabelPlacement.START);
-        this.addEEnumLiteral(this.labelPlacementEEnum, LabelPlacement.BOTTOM);
 
         this.initEEnum(this.containerBorderLineStyleEEnum, ContainerBorderLineStyle.class, "ContainerBorderLineStyle");
         this.addEEnumLiteral(this.containerBorderLineStyleEEnum, ContainerBorderLineStyle.SOLID);

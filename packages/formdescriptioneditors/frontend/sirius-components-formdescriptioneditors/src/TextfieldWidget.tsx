@@ -20,24 +20,51 @@ import { makeStyles } from 'tss-react/mui';
 import { TextfieldWidgetProps } from './WidgetEntry.types';
 
 const useStyles = makeStyles<TextfieldStyleProps>()(
-  (theme, { backgroundColor, foregroundColor, fontSize, italic, bold, underline, strikeThrough }) => ({
-    style: {
-      backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
-      color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
-      fontSize: fontSize ? fontSize : null,
-      fontStyle: italic ? 'italic' : null,
-      fontWeight: bold ? 'bold' : null,
-      textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
-    },
-    selected: {
-      color: theme.palette.primary.main,
-    },
-    propertySectionLabel: {
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-  })
+  (theme, { backgroundColor, foregroundColor, fontSize, italic, bold, underline, strikeThrough, gridLayout }) => {
+    const {
+      gridTemplateColumns,
+      gridTemplateRows,
+      labelGridColumn,
+      labelGridRow,
+      widgetGridColumn,
+      widgetGridRow,
+      gap,
+    } = {
+      ...gridLayout,
+    };
+    return {
+      style: {
+        backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
+        color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
+        fontSize: fontSize ? fontSize : null,
+        fontStyle: italic ? 'italic' : null,
+        fontWeight: bold ? 'bold' : null,
+        textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+      },
+      selected: {
+        color: theme.palette.primary.main,
+      },
+      propertySection: {
+        display: 'grid',
+        gridTemplateColumns,
+        gridTemplateRows,
+        alignItems: 'center',
+        gap: gap ?? '',
+      },
+      propertySectionLabel: {
+        gridColumn: labelGridColumn,
+        gridRow: labelGridRow,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      },
+      propertySectionWidget: {
+        gridColumn: widgetGridColumn,
+        gridRow: widgetGridRow,
+      },
+    };
+  }
 );
 
 export const TextfieldWidget = ({ widget }: TextfieldWidgetProps) => {
@@ -49,6 +76,7 @@ export const TextfieldWidget = ({ widget }: TextfieldWidgetProps) => {
     bold: widget.style?.bold ?? null,
     underline: widget.style?.underline ?? null,
     strikeThrough: widget.style?.strikeThrough ?? null,
+    gridLayout: widget.style?.widgetGridLayout ?? null,
   };
   const { classes } = useStyles(props);
 
@@ -66,7 +94,7 @@ export const TextfieldWidget = ({ widget }: TextfieldWidgetProps) => {
   }, [selection, widget]);
 
   return (
-    <div>
+    <div className={classes.propertySection}>
       <div className={classes.propertySectionLabel}>
         <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
           {widget.label}
@@ -74,6 +102,7 @@ export const TextfieldWidget = ({ widget }: TextfieldWidgetProps) => {
         {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
       </div>
       <TextField
+        className={classes.propertySectionWidget}
         variant="standard"
         data-testid={widget.label}
         fullWidth

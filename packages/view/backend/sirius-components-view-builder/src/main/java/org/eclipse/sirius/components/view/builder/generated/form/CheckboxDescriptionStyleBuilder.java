@@ -43,21 +43,82 @@ public class CheckboxDescriptionStyleBuilder {
     }
 
     /**
+     * Setter for GridTemplateColumns.
+     *
+     * @generated
+     */
+    public CheckboxDescriptionStyleBuilder gridTemplateColumns(java.lang.String value) {
+        this.getCheckboxDescriptionStyle().setGridTemplateColumns(value);
+        return this;
+    }
+
+    /**
+     * Setter for GridTemplateRows.
+     *
+     * @generated
+     */
+    public CheckboxDescriptionStyleBuilder gridTemplateRows(java.lang.String value) {
+        this.getCheckboxDescriptionStyle().setGridTemplateRows(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelGridRow.
+     *
+     * @generated
+     */
+    public CheckboxDescriptionStyleBuilder labelGridRow(java.lang.String value) {
+        this.getCheckboxDescriptionStyle().setLabelGridRow(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelGridColumn.
+     *
+     * @generated
+     */
+    public CheckboxDescriptionStyleBuilder labelGridColumn(java.lang.String value) {
+        this.getCheckboxDescriptionStyle().setLabelGridColumn(value);
+        return this;
+    }
+
+    /**
+     * Setter for WidgetGridRow.
+     *
+     * @generated
+     */
+    public CheckboxDescriptionStyleBuilder widgetGridRow(java.lang.String value) {
+        this.getCheckboxDescriptionStyle().setWidgetGridRow(value);
+        return this;
+    }
+
+    /**
+     * Setter for WidgetGridColumn.
+     *
+     * @generated
+     */
+    public CheckboxDescriptionStyleBuilder widgetGridColumn(java.lang.String value) {
+        this.getCheckboxDescriptionStyle().setWidgetGridColumn(value);
+        return this;
+    }
+
+    /**
+     * Setter for Gap.
+     *
+     * @generated
+     */
+    public CheckboxDescriptionStyleBuilder gap(java.lang.String value) {
+        this.getCheckboxDescriptionStyle().setGap(value);
+        return this;
+    }
+
+    /**
      * Setter for Color.
      *
      * @generated
      */
     public CheckboxDescriptionStyleBuilder color(org.eclipse.sirius.components.view.UserColor value) {
         this.getCheckboxDescriptionStyle().setColor(value);
-        return this;
-    }
-    /**
-     * Setter for LabelPlacement.
-     *
-     * @generated
-     */
-    public CheckboxDescriptionStyleBuilder labelPlacement(org.eclipse.sirius.components.view.form.LabelPlacement value) {
-        this.getCheckboxDescriptionStyle().setLabelPlacement(value);
         return this;
     }
 

@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.forms.tests.assertions;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.assertj.core.api.AbstractAssert;
 import org.eclipse.sirius.components.forms.MultiSelect;
 
@@ -24,5 +26,23 @@ public class MultiSelectAssert extends AbstractAssert<MultiSelectAssert, MultiSe
 
     public MultiSelectAssert(MultiSelect multiSelect) {
         super(multiSelect, MultiSelectAssert.class);
+    }
+
+    public MultiSelectAssert hasLabel(String label) {
+        assertThat(this.actual.getLabel()).isEqualTo(label);
+        return this;
+    }
+
+    public MultiSelectAssert hasOption(String option) {
+        assertThat(this.actual.getOptions())
+                .isNotEmpty()
+                .anySatisfy(multiSelectOption -> assertThat(multiSelectOption.getLabel()).isEqualTo(option));
+        return this;
+    }
+
+    public MultiSelectAssert hasValue(String value) {
+        assertThat(this.actual.getValues()).isNotEmpty()
+                .anySatisfy(multiSelectValue -> assertThat(multiSelectValue).isEqualTo(value));
+        return this;
     }
 }

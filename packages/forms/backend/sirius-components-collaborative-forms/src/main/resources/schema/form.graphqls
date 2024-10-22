@@ -65,6 +65,16 @@ interface Widget {
   readOnly: Boolean!
 }
 
+type WidgetGridLayout {
+  gridTemplateColumns: String!
+  gridTemplateRows: String!
+  labelGridColumn: String!
+  labelGridRow: String!
+  widgetGridColumn: String!
+  widgetGridRow: String!
+  gap: String!
+}
+
 type Checkbox implements Widget {
   id: ID!
   label: String!
@@ -78,7 +88,7 @@ type Checkbox implements Widget {
 
 type CheckboxStyle {
   color: String
-  labelPlacement: String!
+  widgetGridLayout: WidgetGridLayout
 }
 
 type List implements Widget {
@@ -129,6 +139,7 @@ type MultiSelectStyle {
   bold: Boolean
   underline: Boolean
   strikeThrough: Boolean
+  widgetGridLayout: WidgetGridLayout
 }
 
 type Radio implements Widget {
@@ -183,6 +194,7 @@ type SelectStyle {
   bold: Boolean
   underline: Boolean
   strikeThrough: Boolean
+  widgetGridLayout: WidgetGridLayout
 }
 
 type Textarea implements Widget {
@@ -205,6 +217,7 @@ type TextareaStyle {
   bold: Boolean
   underline: Boolean
   strikeThrough: Boolean
+  widgetGridLayout: WidgetGridLayout
 }
 
 type Textfield implements Widget {
@@ -227,6 +240,7 @@ type TextfieldStyle {
   bold: Boolean
   underline: Boolean
   strikeThrough: Boolean
+  widgetGridLayout: WidgetGridLayout
 }
 
 type LabelWidget implements Widget {
@@ -418,6 +432,7 @@ type DateTimeStyle {
   backgroundColor: String
   italic: Boolean
   bold: Boolean
+  widgetGridLayout: WidgetGridLayout
 }
 
 type TableWidget implements Widget {
