@@ -97,6 +97,76 @@ public class ConditionalMultiSelectDescriptionStyleBuilder {
         return this;
     }
     /**
+     * Setter for GridTemplateColumns.
+     *
+     * @generated
+     */
+    public ConditionalMultiSelectDescriptionStyleBuilder gridTemplateColumns(java.lang.String value) {
+        this.getConditionalMultiSelectDescriptionStyle().setGridTemplateColumns(value);
+        return this;
+    }
+
+    /**
+     * Setter for GridTemplateRows.
+     *
+     * @generated
+     */
+    public ConditionalMultiSelectDescriptionStyleBuilder gridTemplateRows(java.lang.String value) {
+        this.getConditionalMultiSelectDescriptionStyle().setGridTemplateRows(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelGridRow.
+     *
+     * @generated
+     */
+    public ConditionalMultiSelectDescriptionStyleBuilder labelGridRow(java.lang.String value) {
+        this.getConditionalMultiSelectDescriptionStyle().setLabelGridRow(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelGridColumn.
+     *
+     * @generated
+     */
+    public ConditionalMultiSelectDescriptionStyleBuilder labelGridColumn(java.lang.String value) {
+        this.getConditionalMultiSelectDescriptionStyle().setLabelGridColumn(value);
+        return this;
+    }
+
+    /**
+     * Setter for WidgetGridRow.
+     *
+     * @generated
+     */
+    public ConditionalMultiSelectDescriptionStyleBuilder widgetGridRow(java.lang.String value) {
+        this.getConditionalMultiSelectDescriptionStyle().setWidgetGridRow(value);
+        return this;
+    }
+
+    /**
+     * Setter for WidgetGridColumn.
+     *
+     * @generated
+     */
+    public ConditionalMultiSelectDescriptionStyleBuilder widgetGridColumn(java.lang.String value) {
+        this.getConditionalMultiSelectDescriptionStyle().setWidgetGridColumn(value);
+        return this;
+    }
+
+    /**
+     * Setter for Gap.
+     *
+     * @generated
+     */
+    public ConditionalMultiSelectDescriptionStyleBuilder gap(java.lang.String value) {
+        this.getConditionalMultiSelectDescriptionStyle().setGap(value);
+        return this;
+    }
+
+    /**
      * Setter for BackgroundColor.
      *
      * @generated

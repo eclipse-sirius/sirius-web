@@ -88,6 +88,76 @@ public class MultiSelectDescriptionStyleBuilder {
         return this;
     }
     /**
+     * Setter for GridTemplateColumns.
+     *
+     * @generated
+     */
+    public MultiSelectDescriptionStyleBuilder gridTemplateColumns(java.lang.String value) {
+        this.getMultiSelectDescriptionStyle().setGridTemplateColumns(value);
+        return this;
+    }
+
+    /**
+     * Setter for GridTemplateRows.
+     *
+     * @generated
+     */
+    public MultiSelectDescriptionStyleBuilder gridTemplateRows(java.lang.String value) {
+        this.getMultiSelectDescriptionStyle().setGridTemplateRows(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelGridRow.
+     *
+     * @generated
+     */
+    public MultiSelectDescriptionStyleBuilder labelGridRow(java.lang.String value) {
+        this.getMultiSelectDescriptionStyle().setLabelGridRow(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelGridColumn.
+     *
+     * @generated
+     */
+    public MultiSelectDescriptionStyleBuilder labelGridColumn(java.lang.String value) {
+        this.getMultiSelectDescriptionStyle().setLabelGridColumn(value);
+        return this;
+    }
+
+    /**
+     * Setter for WidgetGridRow.
+     *
+     * @generated
+     */
+    public MultiSelectDescriptionStyleBuilder widgetGridRow(java.lang.String value) {
+        this.getMultiSelectDescriptionStyle().setWidgetGridRow(value);
+        return this;
+    }
+
+    /**
+     * Setter for WidgetGridColumn.
+     *
+     * @generated
+     */
+    public MultiSelectDescriptionStyleBuilder widgetGridColumn(java.lang.String value) {
+        this.getMultiSelectDescriptionStyle().setWidgetGridColumn(value);
+        return this;
+    }
+
+    /**
+     * Setter for Gap.
+     *
+     * @generated
+     */
+    public MultiSelectDescriptionStyleBuilder gap(java.lang.String value) {
+        this.getMultiSelectDescriptionStyle().setGap(value);
+        return this;
+    }
+
+    /**
      * Setter for BackgroundColor.
      *
      * @generated

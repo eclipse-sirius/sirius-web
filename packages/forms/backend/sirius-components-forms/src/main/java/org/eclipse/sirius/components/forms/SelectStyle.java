@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.forms;
 
 import java.text.MessageFormat;
+import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 
@@ -30,6 +31,8 @@ public final class SelectStyle extends AbstractFontStyle {
 
     private boolean showIcon;
 
+    private WidgetGridLayout widgetGridLayout;
+
     private SelectStyle() {
         // Prevent instantiation
     }
@@ -44,6 +47,10 @@ public final class SelectStyle extends AbstractFontStyle {
 
     public boolean isShowIcon() {
         return this.showIcon;
+    }
+
+    public WidgetGridLayout getWidgetGridLayout() {
+        return this.widgetGridLayout;
     }
 
     public static Builder newSelectStyle() {
@@ -78,6 +85,8 @@ public final class SelectStyle extends AbstractFontStyle {
         private boolean strikeThrough;
 
         private boolean showIcon;
+
+        private WidgetGridLayout widgetGridLayout;
 
         private Builder() {
         }
@@ -122,6 +131,11 @@ public final class SelectStyle extends AbstractFontStyle {
             return this;
         }
 
+        public Builder widgetGridLayout(WidgetGridLayout widgetGridLayout) {
+            this.widgetGridLayout = Objects.requireNonNull(widgetGridLayout);
+            return this;
+        }
+
         public SelectStyle build() {
             SelectStyle selectStyle = new SelectStyle();
             selectStyle.backgroundColor = this.backgroundColor;
@@ -132,6 +146,7 @@ public final class SelectStyle extends AbstractFontStyle {
             selectStyle.underline = this.underline;
             selectStyle.strikeThrough = this.strikeThrough;
             selectStyle.showIcon = this.showIcon;
+            selectStyle.widgetGridLayout = this.widgetGridLayout;
             return selectStyle;
         }
 

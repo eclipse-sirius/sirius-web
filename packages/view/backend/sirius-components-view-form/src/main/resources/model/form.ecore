@@ -11,12 +11,6 @@
     <eLiterals name="LIST"/>
     <eLiterals name="TOGGLEABLE_AREAS" value="1"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="LabelPlacement">
-    <eLiterals name="end"/>
-    <eLiterals name="top" value="1"/>
-    <eLiterals name="start" value="2"/>
-    <eLiterals name="bottom" value="3"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="ContainerBorderLineStyle">
     <eLiterals name="Solid"/>
     <eLiterals name="Dashed" value="1"/>
@@ -277,6 +271,22 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isEnabledExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="WidgetDescriptionStyle" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="WidgetGridLayout" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="gridTemplateColumns" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral=""/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="gridTemplateRows" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral=""/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelGridRow" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral=""/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelGridColumn" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral=""/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="widgetGridRow" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral=""/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="widgetGridColumn" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral=""/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="gap" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral=""/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BarChartDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//LabelStyle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="barsColor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
@@ -287,14 +297,12 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="foregroundColor" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalButtonDescriptionStyle" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Conditional #//ButtonDescriptionStyle"/>
-  <eClassifiers xsi:type="ecore:EClass" name="CheckboxDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle">
+  <eClassifiers xsi:type="ecore:EClass" name="CheckboxDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//WidgetGridLayout">
     <eStructuralFeatures xsi:type="ecore:EReference" name="color" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelPlacement" lowerBound="1"
-        eType="#//LabelPlacement" defaultValueLiteral="end"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalCheckboxDescriptionStyle"
       eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Conditional #//CheckboxDescriptionStyle"/>
-  <eClassifiers xsi:type="ecore:EClass" name="DateTimeDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle">
+  <eClassifiers xsi:type="ecore:EClass" name="DateTimeDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle #//WidgetGridLayout">
     <eStructuralFeatures xsi:type="ecore:EReference" name="backgroundColor" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="foregroundColor" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="italic" lowerBound="1"
@@ -316,7 +324,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="color" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalListDescriptionStyle" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Conditional #//ListDescriptionStyle"/>
-  <eClassifiers xsi:type="ecore:EClass" name="MultiSelectDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//LabelStyle">
+  <eClassifiers xsi:type="ecore:EClass" name="MultiSelectDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//LabelStyle #//WidgetGridLayout">
     <eStructuralFeatures xsi:type="ecore:EReference" name="backgroundColor" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="foregroundColor" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="showIcon" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -334,19 +342,19 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="color" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalRadioDescriptionStyle" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Conditional #//RadioDescriptionStyle"/>
-  <eClassifiers xsi:type="ecore:EClass" name="SelectDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//LabelStyle">
+  <eClassifiers xsi:type="ecore:EClass" name="SelectDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//LabelStyle #//WidgetGridLayout">
     <eStructuralFeatures xsi:type="ecore:EReference" name="backgroundColor" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="foregroundColor" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="showIcon" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalSelectDescriptionStyle" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Conditional #//SelectDescriptionStyle"/>
-  <eClassifiers xsi:type="ecore:EClass" name="TextareaDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//LabelStyle">
+  <eClassifiers xsi:type="ecore:EClass" name="TextareaDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//LabelStyle #//WidgetGridLayout">
     <eStructuralFeatures xsi:type="ecore:EReference" name="backgroundColor" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="foregroundColor" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalTextareaDescriptionStyle"
       eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Conditional #//TextareaDescriptionStyle"/>
-  <eClassifiers xsi:type="ecore:EClass" name="TextfieldDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//LabelStyle">
+  <eClassifiers xsi:type="ecore:EClass" name="TextfieldDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//LabelStyle #//WidgetGridLayout">
     <eStructuralFeatures xsi:type="ecore:EReference" name="backgroundColor" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="foregroundColor" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
   </eClassifiers>

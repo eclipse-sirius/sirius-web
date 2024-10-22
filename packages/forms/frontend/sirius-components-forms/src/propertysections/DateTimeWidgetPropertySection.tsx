@@ -26,19 +26,50 @@ import {
 } from './DateTimeWidgetPropertySection.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
 
-const useStyle = makeStyles<DateTimeStyleProps>()((theme, { backgroundColor, foregroundColor, italic, bold }) => ({
-  style: {
-    backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
-    color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
-    fontStyle: italic ? 'italic' : null,
-    fontWeight: bold ? 'bold' : null,
-  },
-  textfield: {
-    marginTop: theme.spacing(0.5),
-    marginBottom: theme.spacing(0.5),
-  },
-  input: {},
-}));
+const useStyle = makeStyles<DateTimeStyleProps>()(
+  (theme, { backgroundColor, foregroundColor, italic, bold, gridLayout }) => {
+    const {
+      gridTemplateColumns,
+      gridTemplateRows,
+      labelGridColumn,
+      labelGridRow,
+      widgetGridColumn,
+      widgetGridRow,
+      gap,
+    } = {
+      ...gridLayout,
+    };
+    return {
+      inputStyle: {
+        backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
+        color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
+        fontStyle: italic ? 'italic' : null,
+        fontWeight: bold ? 'bold' : null,
+      },
+      propertySectionLabel: {
+        marginTop: theme.spacing(0.5),
+        marginBottom: theme.spacing(0.5),
+        gridColumn: labelGridColumn,
+        gridRow: labelGridRow,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+      },
+      input: {},
+      propertySection: {
+        display: 'grid',
+        gridTemplateColumns,
+        gridTemplateRows,
+        alignItems: 'center',
+        gap: gap ?? '',
+      },
+      propertySectionWidget: {
+        gridColumn: widgetGridColumn,
+        gridRow: widgetGridRow,
+      },
+    };
+  }
+);
 
 export const editDateTimeMutation = gql`
   mutation editDateTime($input: EditDateTimeInput!) {
@@ -71,6 +102,7 @@ export const DateTimeWidgetPropertySection: PropertySectionComponent<GQLDateTime
     foregroundColor: widget.style?.foregroundColor ?? null,
     italic: widget.style?.italic ?? null,
     bold: widget.style?.bold ?? null,
+    gridLayout: widget.style?.widgetGridLayout ?? null,
   };
   const { classes } = useStyle(props);
 
@@ -127,35 +159,42 @@ export const DateTimeWidgetPropertySection: PropertySectionComponent<GQLDateTime
   } else if (widget.type === 'TIME') {
     type = 'time';
   }
+
   return (
     <div
       onBlur={(event: FocusEvent<HTMLDivElement, Element>) => {
         if (!event.currentTarget.contains(event.relatedTarget)) {
           onBlur();
         }
-      }}>
-      <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
-      <TextField
-        variant="standard"
-        id="datetime"
-        disabled={readOnly || widget.readOnly}
-        value={convertToLocalDateTimeString(widget.type, state.editedValue)}
-        type={type}
-        className={classes.textfield}
-        InputProps={
-          widget.style
-            ? {
-                className: classes.style,
-              }
-            : {}
-        }
-        inputProps={{
-          'data-testid': `datetime-${widget.label}`,
-          className: classes.input,
-        }}
-        onChange={onChange}
-        onKeyPress={onKeyPress}
-      />
+      }}
+      className={classes.propertySection}>
+      <div className={classes.propertySectionLabel}>
+        <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
+      </div>
+      <div className={classes.propertySectionWidget}>
+        <TextField
+          variant="standard"
+          id="datetime"
+          disabled={readOnly || widget.readOnly}
+          value={convertToLocalDateTimeString(widget.type, state.editedValue)}
+          type={type}
+          error={widget.diagnostics.length > 0}
+          helperText={widget.diagnostics[0]?.message}
+          InputProps={
+            widget.style
+              ? {
+                  className: classes.inputStyle,
+                }
+              : {}
+          }
+          inputProps={{
+            'data-testid': `datetime-${widget.label}`,
+            className: classes.input,
+          }}
+          onChange={onChange}
+          onKeyPress={onKeyPress}
+        />
+      </div>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,15 +23,13 @@ import org.eclipse.sirius.components.view.UserColor;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle#getColor <em>Color</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle#getLabelPlacement <em>Label
- * Placement</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.form.FormPackage#getCheckboxDescriptionStyle()
  * @model
  * @generated
  */
-public interface CheckboxDescriptionStyle extends WidgetDescriptionStyle {
+public interface CheckboxDescriptionStyle extends WidgetDescriptionStyle, WidgetGridLayout {
 
     /**
      * Returns the value of the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -54,31 +52,5 @@ public interface CheckboxDescriptionStyle extends WidgetDescriptionStyle {
      * @generated
      */
     void setColor(UserColor value);
-
-    /**
-     * Returns the value of the '<em><b>Label Placement</b></em>' attribute. The default value is <code>"end"</code>.
-     * The literals are from the enumeration {@link org.eclipse.sirius.components.view.form.LabelPlacement}. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Label Placement</em>' attribute.
-     * @model default="end" required="true"
-     * @generated
-     * @see org.eclipse.sirius.components.view.form.LabelPlacement
-     * @see #setLabelPlacement(LabelPlacement)
-     * @see org.eclipse.sirius.components.view.form.FormPackage#getCheckboxDescriptionStyle_LabelPlacement()
-     */
-    LabelPlacement getLabelPlacement();
-
-    /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle#getLabelPlacement
-     * <em>Label Placement</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Label Placement</em>' attribute.
-     * @see org.eclipse.sirius.components.view.form.LabelPlacement
-     * @see #getLabelPlacement()
-     * @generated
-     */
-    void setLabelPlacement(LabelPlacement value);
 
 } // CheckboxDescriptionStyle

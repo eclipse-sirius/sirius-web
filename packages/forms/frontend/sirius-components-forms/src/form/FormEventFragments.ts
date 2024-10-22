@@ -25,6 +25,18 @@ export const commonFields = `
   }
 `;
 
+export const widgetGridLayout = `
+      widgetGridLayout {
+        gridTemplateColumns
+        gridTemplateRows
+        labelGridColumn
+        labelGridRow
+        widgetGridColumn
+        widgetGridRow
+        gap
+      }
+`;
+
 export const widgetFields = `
   ${commonFields}
   
@@ -41,6 +53,7 @@ export const widgetFields = `
       bold
       underline
       strikeThrough
+      ${widgetGridLayout}
     }
   }
 
@@ -57,6 +70,7 @@ export const widgetFields = `
       bold
       underline
       strikeThrough
+      ${widgetGridLayout}
     }
   }
 
@@ -66,7 +80,7 @@ export const widgetFields = `
     booleanValue: value
     style {
       color
-      labelPlacement
+      ${widgetGridLayout}
     }
   }
 
@@ -87,6 +101,7 @@ export const widgetFields = `
       bold
       underline
       strikeThrough
+      ${widgetGridLayout}
     }
   }
 
@@ -107,6 +122,7 @@ export const widgetFields = `
       bold
       underline
       strikeThrough
+      ${widgetGridLayout}
     }
   }
 
@@ -301,6 +317,7 @@ export const widgetFields = `
       foregroundColor
       italic
       bold
+      ${widgetGridLayout}
     }
   }
 

@@ -88,6 +88,76 @@ public class TextfieldDescriptionStyleBuilder {
         return this;
     }
     /**
+     * Setter for GridTemplateColumns.
+     *
+     * @generated
+     */
+    public TextfieldDescriptionStyleBuilder gridTemplateColumns(java.lang.String value) {
+        this.getTextfieldDescriptionStyle().setGridTemplateColumns(value);
+        return this;
+    }
+
+    /**
+     * Setter for GridTemplateRows.
+     *
+     * @generated
+     */
+    public TextfieldDescriptionStyleBuilder gridTemplateRows(java.lang.String value) {
+        this.getTextfieldDescriptionStyle().setGridTemplateRows(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelGridRow.
+     *
+     * @generated
+     */
+    public TextfieldDescriptionStyleBuilder labelGridRow(java.lang.String value) {
+        this.getTextfieldDescriptionStyle().setLabelGridRow(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelGridColumn.
+     *
+     * @generated
+     */
+    public TextfieldDescriptionStyleBuilder labelGridColumn(java.lang.String value) {
+        this.getTextfieldDescriptionStyle().setLabelGridColumn(value);
+        return this;
+    }
+
+    /**
+     * Setter for WidgetGridRow.
+     *
+     * @generated
+     */
+    public TextfieldDescriptionStyleBuilder widgetGridRow(java.lang.String value) {
+        this.getTextfieldDescriptionStyle().setWidgetGridRow(value);
+        return this;
+    }
+
+    /**
+     * Setter for WidgetGridColumn.
+     *
+     * @generated
+     */
+    public TextfieldDescriptionStyleBuilder widgetGridColumn(java.lang.String value) {
+        this.getTextfieldDescriptionStyle().setWidgetGridColumn(value);
+        return this;
+    }
+
+    /**
+     * Setter for Gap.
+     *
+     * @generated
+     */
+    public TextfieldDescriptionStyleBuilder gap(java.lang.String value) {
+        this.getTextfieldDescriptionStyle().setGap(value);
+        return this;
+    }
+
+    /**
      * Setter for BackgroundColor.
      *
      * @generated

@@ -88,6 +88,76 @@ public class SelectDescriptionStyleBuilder {
         return this;
     }
     /**
+     * Setter for GridTemplateColumns.
+     *
+     * @generated
+     */
+    public SelectDescriptionStyleBuilder gridTemplateColumns(java.lang.String value) {
+        this.getSelectDescriptionStyle().setGridTemplateColumns(value);
+        return this;
+    }
+
+    /**
+     * Setter for GridTemplateRows.
+     *
+     * @generated
+     */
+    public SelectDescriptionStyleBuilder gridTemplateRows(java.lang.String value) {
+        this.getSelectDescriptionStyle().setGridTemplateRows(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelGridRow.
+     *
+     * @generated
+     */
+    public SelectDescriptionStyleBuilder labelGridRow(java.lang.String value) {
+        this.getSelectDescriptionStyle().setLabelGridRow(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelGridColumn.
+     *
+     * @generated
+     */
+    public SelectDescriptionStyleBuilder labelGridColumn(java.lang.String value) {
+        this.getSelectDescriptionStyle().setLabelGridColumn(value);
+        return this;
+    }
+
+    /**
+     * Setter for WidgetGridRow.
+     *
+     * @generated
+     */
+    public SelectDescriptionStyleBuilder widgetGridRow(java.lang.String value) {
+        this.getSelectDescriptionStyle().setWidgetGridRow(value);
+        return this;
+    }
+
+    /**
+     * Setter for WidgetGridColumn.
+     *
+     * @generated
+     */
+    public SelectDescriptionStyleBuilder widgetGridColumn(java.lang.String value) {
+        this.getSelectDescriptionStyle().setWidgetGridColumn(value);
+        return this;
+    }
+
+    /**
+     * Setter for Gap.
+     *
+     * @generated
+     */
+    public SelectDescriptionStyleBuilder gap(java.lang.String value) {
+        this.getSelectDescriptionStyle().setGap(value);
+        return this;
+    }
+
+    /**
      * Setter for BackgroundColor.
      *
      * @generated

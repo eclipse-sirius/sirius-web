@@ -23,24 +23,51 @@ import { makeStyles } from 'tss-react/mui';
 import { MultiSelectWidgetProps } from './WidgetEntry.types';
 
 const useStyles = makeStyles<MultiSelectStyleProps>()(
-  (theme, { backgroundColor, foregroundColor, fontSize, italic, bold, underline, strikeThrough }) => ({
-    style: {
-      backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
-      color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
-      fontSize: fontSize ? fontSize : null,
-      fontStyle: italic ? 'italic' : null,
-      fontWeight: bold ? 'bold' : null,
-      textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
-    },
-    selected: {
-      color: theme.palette.primary.main,
-    },
-    propertySectionLabel: {
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-  })
+  (theme, { backgroundColor, foregroundColor, fontSize, italic, bold, underline, strikeThrough, gridLayout }) => {
+    const {
+      gridTemplateColumns,
+      gridTemplateRows,
+      labelGridColumn,
+      labelGridRow,
+      widgetGridColumn,
+      widgetGridRow,
+      gap,
+    } = {
+      ...gridLayout,
+    };
+    return {
+      style: {
+        backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
+        color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
+        fontSize: fontSize ? fontSize : null,
+        fontStyle: italic ? 'italic' : null,
+        fontWeight: bold ? 'bold' : null,
+        textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+      },
+      selected: {
+        color: theme.palette.primary.main,
+      },
+      propertySection: {
+        display: 'grid',
+        gridTemplateColumns,
+        gridTemplateRows,
+        alignItems: 'center',
+        gap: gap ?? '',
+      },
+      propertySectionLabel: {
+        gridColumn: labelGridColumn,
+        gridRow: labelGridRow,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      },
+      propertySectionWidget: {
+        gridColumn: widgetGridColumn,
+        gridRow: widgetGridRow,
+      },
+    };
+  }
 );
 
 export const MultiSelectWidget = ({ widget }: MultiSelectWidgetProps) => {
@@ -52,6 +79,7 @@ export const MultiSelectWidget = ({ widget }: MultiSelectWidgetProps) => {
     bold: widget.style?.bold ?? null,
     underline: widget.style?.underline ?? null,
     strikeThrough: widget.style?.strikeThrough ?? null,
+    gridLayout: widget.style?.widgetGridLayout ?? null,
   };
   const { classes } = useStyles(props);
 
@@ -77,71 +105,73 @@ export const MultiSelectWidget = ({ widget }: MultiSelectWidgetProps) => {
   }, [selection, widget]);
 
   return (
-    <div>
+    <div className={classes.propertySection}>
       <div className={classes.propertySectionLabel}>
         <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
           {widget.label}
         </Typography>
         {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
       </div>
-      <Select
-        variant="standard"
-        data-testid={widget.label}
-        label={widget.label}
-        multiple
-        fullWidth
-        value={['value1', 'value3']}
-        renderValue={() => 'Value 1, Value 3'}
-        inputRef={ref}
-        onFocus={() => setSelected(true)}
-        onBlur={() => setSelected(false)}
-        inputProps={
-          widget.style
-            ? {
-                className: classes.style,
+      <div className={classes.propertySectionWidget}>
+        <Select
+          variant="standard"
+          data-testid={widget.label}
+          label={widget.label}
+          multiple
+          fullWidth
+          value={['value1', 'value3']}
+          renderValue={() => 'Value 1, Value 3'}
+          inputRef={ref}
+          onFocus={() => setSelected(true)}
+          onBlur={() => setSelected(false)}
+          inputProps={
+            widget.style
+              ? {
+                  className: classes.style,
+                }
+              : {}
+          }>
+          <MenuItem key={'value1'} value={'value1'}>
+            <Checkbox checked={true} />
+            <ListItemText
+              primary={'Value 1'}
+              primaryTypographyProps={
+                widget.style
+                  ? {
+                      className: classes.style,
+                    }
+                  : {}
               }
-            : {}
-        }>
-        <MenuItem key={'value1'} value={'value1'}>
-          <Checkbox checked={true} />
-          <ListItemText
-            primary={'Value 1'}
-            primaryTypographyProps={
-              widget.style
-                ? {
-                    className: classes.style,
-                  }
-                : {}
-            }
-          />
-        </MenuItem>
-        <MenuItem key={'value2'} value={'value2'}>
-          <Checkbox checked={false} />
-          <ListItemText
-            primary={'Value 2'}
-            primaryTypographyProps={
-              widget.style
-                ? {
-                    className: classes.style,
-                  }
-                : {}
-            }
-          />
-        </MenuItem>
-        <MenuItem key={'value3'} value={'value3'}>
-          <Checkbox checked={true} />
-          <ListItemText
-            primary={'Value 3'}
-            primaryTypographyProps={
-              widget.style
-                ? {
-                    className: classes.style,
-                  }
-                : {}
-            }
-          />
-        </MenuItem>
-      </Select>
+            />
+          </MenuItem>
+          <MenuItem key={'value2'} value={'value2'}>
+            <Checkbox checked={false} />
+            <ListItemText
+              primary={'Value 2'}
+              primaryTypographyProps={
+                widget.style
+                  ? {
+                      className: classes.style,
+                    }
+                  : {}
+              }
+            />
+          </MenuItem>
+          <MenuItem key={'value3'} value={'value3'}>
+            <Checkbox checked={true} />
+            <ListItemText
+              primary={'Value 3'}
+              primaryTypographyProps={
+                widget.style
+                  ? {
+                      className: classes.style,
+                    }
+                  : {}
+              }
+            />
+          </MenuItem>
+        </Select>
+      </div>
     </div>
   );
 };

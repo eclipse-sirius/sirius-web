@@ -56,7 +56,6 @@ import org.eclipse.sirius.components.view.form.GroupDisplayMode;
 import org.eclipse.sirius.components.view.form.ImageDescription;
 import org.eclipse.sirius.components.view.form.LabelDescription;
 import org.eclipse.sirius.components.view.form.LabelDescriptionStyle;
-import org.eclipse.sirius.components.view.form.LabelPlacement;
 import org.eclipse.sirius.components.view.form.LinkDescription;
 import org.eclipse.sirius.components.view.form.LinkDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ListDescription;
@@ -242,8 +241,6 @@ public class FormFactoryImpl extends EFactoryImpl implements FormFactory {
                 return this.createFlexDirectionFromString(eDataType, initialValue);
             case FormPackage.GROUP_DISPLAY_MODE:
                 return this.createGroupDisplayModeFromString(eDataType, initialValue);
-            case FormPackage.LABEL_PLACEMENT:
-                return this.createLabelPlacementFromString(eDataType, initialValue);
             case FormPackage.CONTAINER_BORDER_LINE_STYLE:
                 return this.createContainerBorderLineStyleFromString(eDataType, initialValue);
             case FormPackage.DATE_TIME_TYPE:
@@ -265,8 +262,6 @@ public class FormFactoryImpl extends EFactoryImpl implements FormFactory {
                 return this.convertFlexDirectionToString(eDataType, instanceValue);
             case FormPackage.GROUP_DISPLAY_MODE:
                 return this.convertGroupDisplayModeToString(eDataType, instanceValue);
-            case FormPackage.LABEL_PLACEMENT:
-                return this.convertLabelPlacementToString(eDataType, instanceValue);
             case FormPackage.CONTAINER_BORDER_LINE_STYLE:
                 return this.convertContainerBorderLineStyleToString(eDataType, instanceValue);
             case FormPackage.DATE_TIME_TYPE:
@@ -898,27 +893,6 @@ public class FormFactoryImpl extends EFactoryImpl implements FormFactory {
      * @generated
      */
     public String convertGroupDisplayModeToString(EDataType eDataType, Object instanceValue) {
-        return instanceValue == null ? null : instanceValue.toString();
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    public LabelPlacement createLabelPlacementFromString(EDataType eDataType, String initialValue) {
-        LabelPlacement result = LabelPlacement.get(initialValue);
-        if (result == null)
-            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
-        return result;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    public String convertLabelPlacementToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
     }
 

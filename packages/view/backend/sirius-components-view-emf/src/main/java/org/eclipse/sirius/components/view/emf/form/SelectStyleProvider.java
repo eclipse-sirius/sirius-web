@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.function.Function;
 
 import org.eclipse.sirius.components.forms.SelectStyle;
 import org.eclipse.sirius.components.forms.SelectStyle.Builder;
+import org.eclipse.sirius.components.forms.WidgetGridLayout;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.form.SelectDescriptionStyle;
@@ -58,6 +59,15 @@ public class SelectStyleProvider implements Function<VariableManager, SelectStyl
         boolean underline = this.viewStyle.isUnderline();
         boolean strikeThrough = this.viewStyle.isStrikeThrough();
         boolean isShowIcon = this.viewStyle.isShowIcon();
+        WidgetGridLayout widgetGridLayout = WidgetGridLayout.newWidgetGridLayout()
+                .gridTemplateColumns(this.viewStyle.getGridTemplateColumns())
+                .gridTemplateRows(this.viewStyle.getGridTemplateRows())
+                .labelGridColumn(this.viewStyle.getLabelGridColumn())
+                .labelGridRow(this.viewStyle.getLabelGridRow())
+                .widgetGridColumn(this.viewStyle.getWidgetGridColumn())
+                .widgetGridRow(this.viewStyle.getWidgetGridRow())
+                .gap(this.viewStyle.getGap())
+                .build();
 
         // @formatter:off
         return selectStyleBuilder
@@ -67,6 +77,7 @@ public class SelectStyleProvider implements Function<VariableManager, SelectStyl
                 .underline(underline)
                 .strikeThrough(strikeThrough)
                 .showIcon(isShowIcon)
+                .widgetGridLayout(widgetGridLayout)
                 .build();
         // @formatter:on
     }

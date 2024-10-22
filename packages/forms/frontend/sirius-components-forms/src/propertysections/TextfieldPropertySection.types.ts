@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+import { GQLWidgetGridLayout } from '../form/FormEventFragments.types';
 
 export interface TextfieldStyleProps {
   backgroundColor: string | null;
@@ -20,6 +21,7 @@ export interface TextfieldStyleProps {
   bold: boolean | null;
   underline: boolean | null;
   strikeThrough: boolean | null;
+  gridLayout: GQLWidgetGridLayout | null;
 }
 
 export interface TextFieldState {

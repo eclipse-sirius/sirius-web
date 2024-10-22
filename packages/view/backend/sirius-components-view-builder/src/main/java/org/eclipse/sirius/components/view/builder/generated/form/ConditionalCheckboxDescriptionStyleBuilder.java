@@ -52,21 +52,82 @@ public class ConditionalCheckboxDescriptionStyleBuilder {
         return this;
     }
     /**
+     * Setter for GridTemplateColumns.
+     *
+     * @generated
+     */
+    public ConditionalCheckboxDescriptionStyleBuilder gridTemplateColumns(java.lang.String value) {
+        this.getConditionalCheckboxDescriptionStyle().setGridTemplateColumns(value);
+        return this;
+    }
+
+    /**
+     * Setter for GridTemplateRows.
+     *
+     * @generated
+     */
+    public ConditionalCheckboxDescriptionStyleBuilder gridTemplateRows(java.lang.String value) {
+        this.getConditionalCheckboxDescriptionStyle().setGridTemplateRows(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelGridRow.
+     *
+     * @generated
+     */
+    public ConditionalCheckboxDescriptionStyleBuilder labelGridRow(java.lang.String value) {
+        this.getConditionalCheckboxDescriptionStyle().setLabelGridRow(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelGridColumn.
+     *
+     * @generated
+     */
+    public ConditionalCheckboxDescriptionStyleBuilder labelGridColumn(java.lang.String value) {
+        this.getConditionalCheckboxDescriptionStyle().setLabelGridColumn(value);
+        return this;
+    }
+
+    /**
+     * Setter for WidgetGridRow.
+     *
+     * @generated
+     */
+    public ConditionalCheckboxDescriptionStyleBuilder widgetGridRow(java.lang.String value) {
+        this.getConditionalCheckboxDescriptionStyle().setWidgetGridRow(value);
+        return this;
+    }
+
+    /**
+     * Setter for WidgetGridColumn.
+     *
+     * @generated
+     */
+    public ConditionalCheckboxDescriptionStyleBuilder widgetGridColumn(java.lang.String value) {
+        this.getConditionalCheckboxDescriptionStyle().setWidgetGridColumn(value);
+        return this;
+    }
+
+    /**
+     * Setter for Gap.
+     *
+     * @generated
+     */
+    public ConditionalCheckboxDescriptionStyleBuilder gap(java.lang.String value) {
+        this.getConditionalCheckboxDescriptionStyle().setGap(value);
+        return this;
+    }
+
+    /**
      * Setter for Color.
      *
      * @generated
      */
     public ConditionalCheckboxDescriptionStyleBuilder color(org.eclipse.sirius.components.view.UserColor value) {
         this.getConditionalCheckboxDescriptionStyle().setColor(value);
-        return this;
-    }
-    /**
-     * Setter for LabelPlacement.
-     *
-     * @generated
-     */
-    public ConditionalCheckboxDescriptionStyleBuilder labelPlacement(org.eclipse.sirius.components.view.form.LabelPlacement value) {
-        this.getConditionalCheckboxDescriptionStyle().setLabelPlacement(value);
         return this;
     }
 

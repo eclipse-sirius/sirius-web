@@ -97,6 +97,76 @@ public class ConditionalSelectDescriptionStyleBuilder {
         return this;
     }
     /**
+     * Setter for GridTemplateColumns.
+     *
+     * @generated
+     */
+    public ConditionalSelectDescriptionStyleBuilder gridTemplateColumns(java.lang.String value) {
+        this.getConditionalSelectDescriptionStyle().setGridTemplateColumns(value);
+        return this;
+    }
+
+    /**
+     * Setter for GridTemplateRows.
+     *
+     * @generated
+     */
+    public ConditionalSelectDescriptionStyleBuilder gridTemplateRows(java.lang.String value) {
+        this.getConditionalSelectDescriptionStyle().setGridTemplateRows(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelGridRow.
+     *
+     * @generated
+     */
+    public ConditionalSelectDescriptionStyleBuilder labelGridRow(java.lang.String value) {
+        this.getConditionalSelectDescriptionStyle().setLabelGridRow(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelGridColumn.
+     *
+     * @generated
+     */
+    public ConditionalSelectDescriptionStyleBuilder labelGridColumn(java.lang.String value) {
+        this.getConditionalSelectDescriptionStyle().setLabelGridColumn(value);
+        return this;
+    }
+
+    /**
+     * Setter for WidgetGridRow.
+     *
+     * @generated
+     */
+    public ConditionalSelectDescriptionStyleBuilder widgetGridRow(java.lang.String value) {
+        this.getConditionalSelectDescriptionStyle().setWidgetGridRow(value);
+        return this;
+    }
+
+    /**
+     * Setter for WidgetGridColumn.
+     *
+     * @generated
+     */
+    public ConditionalSelectDescriptionStyleBuilder widgetGridColumn(java.lang.String value) {
+        this.getConditionalSelectDescriptionStyle().setWidgetGridColumn(value);
+        return this;
+    }
+
+    /**
+     * Setter for Gap.
+     *
+     * @generated
+     */
+    public ConditionalSelectDescriptionStyleBuilder gap(java.lang.String value) {
+        this.getConditionalSelectDescriptionStyle().setGap(value);
+        return this;
+    }
+
+    /**
      * Setter for BackgroundColor.
      *
      * @generated

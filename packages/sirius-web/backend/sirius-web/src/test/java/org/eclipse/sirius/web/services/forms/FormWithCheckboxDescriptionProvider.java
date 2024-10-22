@@ -87,8 +87,6 @@ public class FormWithCheckboxDescriptionProvider implements IEditingContextProce
     }
 
     private FormDescription createFormDescription() {
-        var defaultStyle = new FormBuilders().newCheckboxDescriptionStyle()
-                .build();
 
         var editCheckbox = new ChangeContextBuilder()
                 .expression("aql:self")
@@ -105,7 +103,6 @@ public class FormWithCheckboxDescriptionProvider implements IEditingContextProce
                 .labelExpression("aql:'Name'")
                 .helpExpression("Does the object have a name?")
                 .valueExpression("aql:self.name.size() > 0")
-                .style(defaultStyle)
                 .body(editCheckbox)
                 .build();
 

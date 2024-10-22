@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.forms.Slider;
 import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.forms.TreeWidget;
+import org.eclipse.sirius.components.forms.WidgetGridLayout;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
 
 /**
@@ -94,6 +95,10 @@ public class FormAssertions extends Assertions {
 
     public static ListWidgetAssert assertThat(List listWidget) {
         return new ListWidgetAssert(listWidget);
+    }
+
+    public static WidgetGridLayoutAssert assertThat(WidgetGridLayout widgetGridLayout) {
+        return new WidgetGridLayoutAssert(widgetGridLayout);
     }
 
 }

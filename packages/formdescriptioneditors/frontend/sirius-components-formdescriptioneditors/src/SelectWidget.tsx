@@ -21,24 +21,51 @@ import { makeStyles } from 'tss-react/mui';
 import { SelectWidgetProps } from './WidgetEntry.types';
 
 const useStyles = makeStyles<SelectStyleProps>()(
-  (theme, { backgroundColor, foregroundColor, fontSize, italic, bold, underline, strikeThrough }) => ({
-    style: {
-      backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
-      color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
-      fontSize: fontSize ? fontSize : null,
-      fontStyle: italic ? 'italic' : null,
-      fontWeight: bold ? 'bold' : null,
-      textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
-    },
-    selected: {
-      color: theme.palette.primary.main,
-    },
-    propertySectionLabel: {
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-  })
+  (theme, { backgroundColor, foregroundColor, fontSize, italic, bold, underline, strikeThrough, gridLayout }) => {
+    const {
+      gridTemplateColumns,
+      gridTemplateRows,
+      labelGridColumn,
+      labelGridRow,
+      widgetGridColumn,
+      widgetGridRow,
+      gap,
+    } = {
+      ...gridLayout,
+    };
+    return {
+      style: {
+        backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
+        color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
+        fontSize: fontSize ? fontSize : null,
+        fontStyle: italic ? 'italic' : null,
+        fontWeight: bold ? 'bold' : null,
+        textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+      },
+      selected: {
+        color: theme.palette.primary.main,
+      },
+      propertySection: {
+        display: 'grid',
+        gridTemplateColumns,
+        gridTemplateRows,
+        alignItems: 'center',
+        gap: gap ?? '',
+      },
+      propertySectionLabel: {
+        gridColumn: labelGridColumn,
+        gridRow: labelGridRow,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      },
+      propertySectionWidget: {
+        gridColumn: widgetGridColumn,
+        gridRow: widgetGridRow,
+      },
+    };
+  }
 );
 
 export const SelectWidget = ({ widget }: SelectWidgetProps) => {
@@ -50,6 +77,7 @@ export const SelectWidget = ({ widget }: SelectWidgetProps) => {
     bold: widget.style?.bold ?? null,
     underline: widget.style?.underline ?? null,
     strikeThrough: widget.style?.strikeThrough ?? null,
+    gridLayout: widget.style?.widgetGridLayout ?? null,
   };
   const { classes } = useStyles(props);
 
@@ -77,74 +105,76 @@ export const SelectWidget = ({ widget }: SelectWidgetProps) => {
   }, [selection, widget]);
 
   return (
-    <div>
+    <div className={classes.propertySection}>
       <div className={classes.propertySectionLabel}>
         <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
           {widget.label}
         </Typography>
         {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
       </div>
-      <Select
-        variant="standard"
-        data-testid={widget.label}
-        label={widget.label}
-        fullWidth
-        value="value1"
-        inputRef={ref}
-        onFocus={() => setSelected(true)}
-        onBlur={() => setSelected(false)}
-        inputProps={
-          widget.style
-            ? {
-                className: classes.style,
-              }
-            : {}
-        }>
-        <MenuItem
-          value=""
-          classes={
-            widget.style
-              ? {
-                  root: classes.style,
-                }
-              : {}
-          }>
-          <em>None</em>
-        </MenuItem>
-        <MenuItem
+      <div className={classes.propertySectionWidget}>
+        <Select
+          variant="standard"
+          data-testid={widget.label}
+          label={widget.label}
+          fullWidth
           value="value1"
-          classes={
+          inputRef={ref}
+          onFocus={() => setSelected(true)}
+          onBlur={() => setSelected(false)}
+          inputProps={
             widget.style
               ? {
-                  root: classes.style,
+                  className: classes.style,
                 }
               : {}
           }>
-          Value 1
-        </MenuItem>
-        <MenuItem
-          value="value2"
-          classes={
-            widget.style
-              ? {
-                  root: classes.style,
-                }
-              : {}
-          }>
-          Value 2
-        </MenuItem>
-        <MenuItem
-          value="value3"
-          classes={
-            widget.style
-              ? {
-                  root: classes.style,
-                }
-              : {}
-          }>
-          Value 3
-        </MenuItem>
-      </Select>
+          <MenuItem
+            value=""
+            classes={
+              widget.style
+                ? {
+                    root: classes.style,
+                  }
+                : {}
+            }>
+            <em>None</em>
+          </MenuItem>
+          <MenuItem
+            value="value1"
+            classes={
+              widget.style
+                ? {
+                    root: classes.style,
+                  }
+                : {}
+            }>
+            Value 1
+          </MenuItem>
+          <MenuItem
+            value="value2"
+            classes={
+              widget.style
+                ? {
+                    root: classes.style,
+                  }
+                : {}
+            }>
+            Value 2
+          </MenuItem>
+          <MenuItem
+            value="value3"
+            classes={
+              widget.style
+                ? {
+                    root: classes.style,
+                  }
+                : {}
+            }>
+            Value 3
+          </MenuItem>
+        </Select>
+      </div>
     </div>
   );
 };

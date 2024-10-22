@@ -76,6 +76,7 @@ import org.eclipse.sirius.components.view.form.TextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.form.TreeDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescriptionStyle;
+import org.eclipse.sirius.components.view.form.WidgetGridLayout;
 
 /**
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides an adapter <code>createXXX</code>
@@ -256,6 +257,11 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseWidgetDescriptionStyle(WidgetDescriptionStyle object) {
             return FormAdapterFactory.this.createWidgetDescriptionStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseWidgetGridLayout(WidgetGridLayout object) {
+            return FormAdapterFactory.this.createWidgetGridLayoutAdapter();
         }
 
         @Override
@@ -803,6 +809,20 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createWidgetDescriptionStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.WidgetGridLayout
+     * <em>Widget Grid Layout</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.form.WidgetGridLayout
+     * @generated
+     */
+    public Adapter createWidgetGridLayoutAdapter() {
         return null;
     }
 
