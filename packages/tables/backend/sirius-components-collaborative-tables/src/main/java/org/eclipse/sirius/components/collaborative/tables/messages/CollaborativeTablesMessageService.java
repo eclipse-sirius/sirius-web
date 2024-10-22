@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CollaborativeTablesMessageService implements ICollaborativeTableMessageService {
+
     private final MessageSourceAccessor messageSourceAccessor;
 
     public CollaborativeTablesMessageService(@Qualifier("collaborativeTablesMessageSourceAccessor") MessageSourceAccessor messageSourceAccessor) {
@@ -33,7 +34,12 @@ public class CollaborativeTablesMessageService implements ICollaborativeTableMes
 
     @Override
     public String invalidInput(String expectedInputTypeName, String receivedInputTypeName) {
-        return this.messageSourceAccessor.getMessage(MessageConstants.INVALID_INPUT, new Object[] { expectedInputTypeName, receivedInputTypeName });
+        return this.messageSourceAccessor.getMessage(MessageConstants.INVALID_INPUT, new Object[] {expectedInputTypeName, receivedInputTypeName});
+    }
+
+    @Override
+    public String noHandlerFound() {
+        return this.messageSourceAccessor.getMessage(MessageConstants.NO_HANDLER_FOUND);
     }
 
 }

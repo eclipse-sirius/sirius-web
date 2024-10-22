@@ -66,7 +66,7 @@ import reactor.test.StepVerifier;
  */
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"sirius.web.test.enabled=studio"})
 public class TableControllerTests extends AbstractIntegrationTests {
 
     @Autowired
@@ -100,8 +100,8 @@ public class TableControllerTests extends AbstractIntegrationTests {
 
     @Test
     @DisplayName("Given a table widget, when it is displayed, then it is properly initialized")
-    @Sql(scripts = { "/scripts/papaya.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenTableWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
         var flux = this.givenSubscriptionToFormWithTableWidget();
 
@@ -127,8 +127,8 @@ public class TableControllerTests extends AbstractIntegrationTests {
 
     @Test
     @DisplayName("Given a table widget, when the cells are edited, then the values are updated")
-    @Sql(scripts = { "/scripts/papaya.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenTableWidgetWhenValuesAreEditedThenValuesAreUpdated() {
         var flux = this.givenSubscriptionToFormWithTableWidget();
 
@@ -144,7 +144,7 @@ public class TableControllerTests extends AbstractIntegrationTests {
                 .map(FormRefreshedEventPayload::form).ifPresentOrElse(form -> {
                     formId.set(form.getId());
 
-                    var table = getTable(form);
+                    var table = this.getTable(form);
                     tableId.set(table.getId());
                     Line line = table.getLines().get(0);
                     LineNavigator lineNavigator = new LineNavigator(line);
@@ -156,44 +156,44 @@ public class TableControllerTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing form"));
 
         Runnable editNameTextfieldCell = () -> {
-            var input = new EditTextfieldCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), tableId.get(), textfieldCellId.get().toString(), "newName");
+            var input = new EditTextfieldCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), tableId.get(), textfieldCellId.get(), "newName");
             var result = this.editTextfieldCellMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editTextfieldCell.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> editNameConsumer = getEditNameConsumer(tableId, selectCellId);
+        Consumer<Object> editNameConsumer = this.getEditNameConsumer(tableId, selectCellId);
 
         Runnable editPrioritySelectCell = () -> {
-            var input = new EditSelectCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), tableId.get(), selectCellId.get().toString(), "P2");
+            var input = new EditSelectCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), tableId.get(), selectCellId.get(), "P2");
             var result = this.editSelectCellMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editSelectCell.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> editPriorityConsumer = getEditPriorityConsumer(tableId, multiSelectCellId);
+        Consumer<Object> editPriorityConsumer = this.getEditPriorityConsumer(tableId, multiSelectCellId);
 
         Runnable editDependenciesMultiSelectCell = () -> {
-            var input = new EditMultiSelectCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), tableId.get(), multiSelectCellId.get().toString(), List.of("e6e8f081-27f5-40e3-a8ab-1e6f0f13df12", "e1c5bd66-54c2-45f1-ae3a-99d3f039affd"));
+            var input = new EditMultiSelectCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), tableId.get(), multiSelectCellId.get(), List.of("e6e8f081-27f5-40e3-a8ab-1e6f0f13df12", "e1c5bd66-54c2-45f1-ae3a-99d3f039affd"));
             var result = this.editMultiSelectCellMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editMultiSelectCell.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> editDependenciesConsumer = getEditDependenciesConsumer(tableId, checkboxCellId);
+        Consumer<Object> editDependenciesConsumer = this.getEditDependenciesConsumer(tableId, checkboxCellId);
 
         Runnable editIsDoneCheckboxCell = () -> {
-            var input = new EditCheckboxCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), tableId.get(), checkboxCellId.get().toString(), true);
+            var input = new EditCheckboxCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), tableId.get(), checkboxCellId.get(), true);
             var result = this.editCheckboxCellMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editCheckboxCell.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> editIsDoneConsumer = getEditIsDoneConsumer();
+        Consumer<Object> editIsDoneConsumer = this.getEditIsDoneConsumer();
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)
@@ -210,78 +210,75 @@ public class TableControllerTests extends AbstractIntegrationTests {
     }
 
     private Consumer<Object> getEditIsDoneConsumer() {
-        Consumer<Object> editIsDoneConsumer = payload -> Optional.of(payload)
-            .filter(FormRefreshedEventPayload.class::isInstance)
-            .map(FormRefreshedEventPayload.class::cast)
-            .map(FormRefreshedEventPayload::form)
-            .ifPresentOrElse(form -> {
-                var table = getTable(form);
-                TableNavigator tableNavigator = new TableNavigator(table);
-                Line line = table.getLines().get(0);
-                LineNavigator lineNavigator = new LineNavigator(line);
+        return payload -> Optional.of(payload)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
+                .map(FormRefreshedEventPayload::form)
+                .ifPresentOrElse(form -> {
+                    var table = this.getTable(form);
+                    TableNavigator tableNavigator = new TableNavigator(table);
+                    Line line = table.getLines().get(0);
+                    LineNavigator lineNavigator = new LineNavigator(line);
 
-                assertThat(lineNavigator.checkboxCellByColumnId(tableNavigator.column("Done").getId())).hasValue(true);
+                    assertThat(lineNavigator.checkboxCellByColumnId(tableNavigator.column("Done").getId())).hasValue(true);
 
-            }, () -> fail("Missing form"));
-        return editIsDoneConsumer;
+                }, () -> fail("Missing form"));
     }
 
     private Consumer<Object> getEditDependenciesConsumer(AtomicReference<String> tableId, AtomicReference<UUID> checkboxCellId) {
-        Consumer<Object> editDependenciesConsumer = payload -> Optional.of(payload)
-            .filter(FormRefreshedEventPayload.class::isInstance)
-            .map(FormRefreshedEventPayload.class::cast)
-            .map(FormRefreshedEventPayload::form)
-            .ifPresentOrElse(form -> {
-                var table = getTable(form);
-                tableId.set(table.getId());
-                TableNavigator tableNavigator = new TableNavigator(table);
-                Line line = table.getLines().get(0);
-                LineNavigator lineNavigator = new LineNavigator(line);
-                checkboxCellId.set(lineNavigator.checkboxCellByColumnId(tableNavigator.column("Done").getId()).getId());
+        return payload -> Optional.of(payload)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
+                .map(FormRefreshedEventPayload::form)
+                .ifPresentOrElse(form -> {
+                    var table = this.getTable(form);
+                    tableId.set(table.getId());
+                    TableNavigator tableNavigator = new TableNavigator(table);
+                    Line line = table.getLines().get(0);
+                    LineNavigator lineNavigator = new LineNavigator(line);
+                    checkboxCellId.set(lineNavigator.checkboxCellByColumnId(tableNavigator.column("Done").getId()).getId());
 
-                assertThat(lineNavigator.multiSelectCellByColumnId(tableNavigator.column("Dependencies").getId())).hasValues(List.of("e6e8f081-27f5-40e3-a8ab-1e6f0f13df12", "e1c5bd66-54c2-45f1-ae3a-99d3f039affd"));
+                    assertThat(lineNavigator.multiSelectCellByColumnId(tableNavigator.column("Dependencies")
+                            .getId())).hasValues(List.of("e6e8f081-27f5-40e3-a8ab-1e6f0f13df12", "e1c5bd66-54c2-45f1-ae3a-99d3f039affd"));
 
-            }, () -> fail("Missing form"));
-        return editDependenciesConsumer;
+                }, () -> fail("Missing form"));
     }
 
     private Consumer<Object> getEditPriorityConsumer(AtomicReference<String> tableId, AtomicReference<UUID> multiSelectCellId) {
-        Consumer<Object> editPriorityConsumer = payload -> Optional.of(payload)
-            .filter(FormRefreshedEventPayload.class::isInstance)
-            .map(FormRefreshedEventPayload.class::cast)
-            .map(FormRefreshedEventPayload::form)
-            .ifPresentOrElse(form -> {
-                var table = getTable(form);
-                tableId.set(table.getId());
-                TableNavigator tableNavigator = new TableNavigator(table);
-                Line line = table.getLines().get(0);
-                LineNavigator lineNavigator = new LineNavigator(line);
-                multiSelectCellId.set(lineNavigator.multiSelectCellByColumnId(tableNavigator.column("Dependencies").getId()).getId());
+        return payload -> Optional.of(payload)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
+                .map(FormRefreshedEventPayload::form)
+                .ifPresentOrElse(form -> {
+                    var table = this.getTable(form);
+                    tableId.set(table.getId());
+                    TableNavigator tableNavigator = new TableNavigator(table);
+                    Line line = table.getLines().get(0);
+                    LineNavigator lineNavigator = new LineNavigator(line);
+                    multiSelectCellId.set(lineNavigator.multiSelectCellByColumnId(tableNavigator.column("Dependencies").getId()).getId());
 
-                assertThat(lineNavigator.selectCellByColumnId(tableNavigator.column("Priority").getId())).hasValue("P2");
+                    assertThat(lineNavigator.selectCellByColumnId(tableNavigator.column("Priority").getId())).hasValue("P2");
 
-            }, () -> fail("Missing form"));
-        return editPriorityConsumer;
+                }, () -> fail("Missing form"));
     }
 
     private Consumer<Object> getEditNameConsumer(AtomicReference<String> tableId, AtomicReference<UUID> selectCellId) {
-        Consumer<Object> editNameConsumer = payload -> Optional.of(payload)
-            .filter(FormRefreshedEventPayload.class::isInstance)
-            .map(FormRefreshedEventPayload.class::cast)
-            .map(FormRefreshedEventPayload::form)
-            .ifPresentOrElse(form -> {
-                var table = getTable(form);
-                tableId.set(table.getId());
-                TableNavigator tableNavigator = new TableNavigator(table);
-                Line line = table.getLines().get(0);
-                LineNavigator lineNavigator = new LineNavigator(line);
+        return payload -> Optional.of(payload)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
+                .map(FormRefreshedEventPayload::form)
+                .ifPresentOrElse(form -> {
+                    var table = this.getTable(form);
+                    tableId.set(table.getId());
+                    TableNavigator tableNavigator = new TableNavigator(table);
+                    Line line = table.getLines().get(0);
+                    LineNavigator lineNavigator = new LineNavigator(line);
 
-                selectCellId.set(lineNavigator.selectCellByColumnId(tableNavigator.column("Priority").getId()).getId());
+                    selectCellId.set(lineNavigator.selectCellByColumnId(tableNavigator.column("Priority").getId()).getId());
 
-                assertThat(lineNavigator.textfieldCellByColumnId(tableNavigator.column("Name").getId())).hasValue("newName");
+                    assertThat(lineNavigator.textfieldCellByColumnId(tableNavigator.column("Name").getId())).hasValue("newName");
 
-            }, () -> fail("Missing form"));
-        return editNameConsumer;
+                }, () -> fail("Missing form"));
     }
 
     private Table getTable(Form form) {

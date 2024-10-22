@@ -17,18 +17,18 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.tables.descriptions.CellDescription;
+import org.eclipse.sirius.components.tables.descriptions.TextfieldCellDescription;
 
 /**
  * The props of the Textfield-based cell component.
  *
  * @author lfasani
  */
-public record TextfieldCellComponentProps(VariableManager variableManager, CellDescription cellDescription, UUID cellId, UUID columnId, Object columnTargetObject) implements IProps {
+public record TextfieldCellComponentProps(VariableManager variableManager, TextfieldCellDescription textfieldCellDescription, UUID cellId, UUID columnId, Object columnTargetObject) implements IProps {
 
     public TextfieldCellComponentProps {
         Objects.requireNonNull(variableManager);
-        Objects.requireNonNull(cellDescription);
+        Objects.requireNonNull(textfieldCellDescription);
         Objects.requireNonNull(cellId);
         Objects.requireNonNull(columnId);
         Objects.requireNonNull(columnTargetObject);

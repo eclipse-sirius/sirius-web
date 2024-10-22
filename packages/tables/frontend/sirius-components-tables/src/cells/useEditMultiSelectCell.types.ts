@@ -13,8 +13,9 @@
 import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
 
 export interface UseEditMultiSelectCellValue {
-  editMultiSelectCell(newValues: string[]): void;
   loading: boolean;
+
+  editMultiSelectCell(newValues: string[]): void;
 }
 
 export interface GQLEditMultiSelectCellMutationData {
@@ -33,4 +34,5 @@ export interface GQLEditMultiSelectCellInput {
   cellId: string;
   newValues: string[];
 }
+
 export type GQLEditMultiSelectCellPayload = GQLErrorPayload | GQLSuccessPayload;

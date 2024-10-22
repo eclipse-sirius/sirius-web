@@ -12,33 +12,34 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.tables.handlers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
+import org.eclipse.sirius.components.collaborative.tables.api.IEditCellHandler;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableInput;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableQueryService;
+import org.eclipse.sirius.components.collaborative.tables.dto.EditCheckboxCellInput;
+import org.eclipse.sirius.components.collaborative.tables.dto.EditMultiSelectCellInput;
+import org.eclipse.sirius.components.collaborative.tables.dto.EditSelectCellInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.EditTextfieldCellInput;
+import org.eclipse.sirius.components.collaborative.tables.dto.IEditCellInput;
 import org.eclipse.sirius.components.collaborative.tables.messages.ICollaborativeTableMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.representations.Failure;
+import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Message;
-import org.eclipse.sirius.components.representations.MessageLevel;
-import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.tables.Column;
 import org.eclipse.sirius.components.tables.ICell;
-import org.eclipse.sirius.components.tables.Line;
 import org.eclipse.sirius.components.tables.Table;
-import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,14 +51,12 @@ import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
 /**
- * Handle "Edit Textfield Cell" events.
+ * Handle "Edit Checkbox Cell" events.
  *
  * @author arichard
  */
 @Service
-public class EditTextfieldCellEventHandler implements ITableEventHandler {
-
-    private final IObjectService objectService;
+public class EditCellEventHandler implements ITableEventHandler {
 
     private final ITableQueryService tableQueryService;
 
@@ -65,16 +64,17 @@ public class EditTextfieldCellEventHandler implements ITableEventHandler {
 
     private final ICollaborativeTableMessageService messageService;
 
+    private final List<IEditCellHandler> editCellHandlers;
+
     private final Counter counter;
 
-    private final Logger logger = LoggerFactory.getLogger(EditTextfieldCellEventHandler.class);
+    private final Logger logger = LoggerFactory.getLogger(EditCellEventHandler.class);
 
-    public EditTextfieldCellEventHandler(IObjectService objectService, ITableQueryService tableQueryService, ICollaborativeTableMessageService messageService,
-            IFeedbackMessageService feedbackMessageService, MeterRegistry meterRegistry) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public EditCellEventHandler(ITableQueryService tableQueryService, IFeedbackMessageService feedbackMessageService, ICollaborativeTableMessageService messageService, List<IEditCellHandler> editCellHandlers, MeterRegistry meterRegistry) {
         this.tableQueryService = Objects.requireNonNull(tableQueryService);
-        this.messageService = Objects.requireNonNull(messageService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
+        this.messageService = Objects.requireNonNull(messageService);
+        this.editCellHandlers = Objects.requireNonNull(editCellHandlers);
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
@@ -82,7 +82,7 @@ public class EditTextfieldCellEventHandler implements ITableEventHandler {
 
     @Override
     public boolean canHandle(ITableInput tableInput) {
-        return tableInput instanceof EditTextfieldCellInput;
+        return tableInput instanceof IEditCellInput;
     }
 
     @Override
@@ -90,11 +90,11 @@ public class EditTextfieldCellEventHandler implements ITableEventHandler {
         this.counter.increment();
 
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, tableInput.representationId(), tableInput);
-        String message = this.messageService.invalidInput(tableInput.getClass().getSimpleName(), EditTextfieldCellInput.class.getSimpleName());
+        String message = this.messageService.invalidInput(tableInput.getClass().getSimpleName(), EditCheckboxCellInput.class.getSimpleName());
         IPayload payload = new ErrorPayload(tableInput.id(), message);
 
-        if (tableInput instanceof EditTextfieldCellInput editTextfieldCellInput) {
-            var optCell = this.tableQueryService.findCellById(table, UUID.fromString(editTextfieldCellInput.cellId()));
+        if (tableInput instanceof IEditCellInput editCellInput) {
+            var optCell = this.tableQueryService.findCellById(table, editCellInput.cellId());
 
             if (optCell.isPresent()) {
                 ICell cell = optCell.get();
@@ -102,10 +102,15 @@ public class EditTextfieldCellEventHandler implements ITableEventHandler {
                 var optCol = this.tableQueryService.findColumnById(table, cell.getColumnId());
 
                 if (optLine.isPresent() && optCol.isPresent()) {
-                    this.invokeEditCell(cell, optLine.get(), optCol.get(), editingContext, tableDescription, editTextfieldCellInput.newValue());
+                    Object newValue = this.getNewValue(editCellInput);
+                    var status = this.editCellHandlers.stream()
+                            .filter(handler -> handler.canHandle(tableDescription))
+                            .findFirst()
+                            .map(handler -> handler.handle(editingContext, tableDescription, cell, optLine.get(), optCol.get(), newValue))
+                            .orElseGet(() -> new Failure(this.messageService.noHandlerFound()));
 
-                    changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editTextfieldCellInput.representationId(), editTextfieldCellInput);
-                    payload = this.getPayload(editTextfieldCellInput.id());
+                    changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editCellInput.representationId(), editCellInput);
+                    payload = this.getPayload(editCellInput.id(), status);
                 }
             }
         }
@@ -114,29 +119,35 @@ public class EditTextfieldCellEventHandler implements ITableEventHandler {
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private void invokeEditCell(ICell cell, Line line, Column column, IEditingContext editingContext, TableDescription tableDescription, String newValue) {
-        var optionalSelf = this.objectService.getObject(editingContext, line.getTargetObjectId());
-        if (optionalSelf.isPresent()) {
-            Object self = optionalSelf.get();
-
-            VariableManager variableManager = new VariableManager();
-            variableManager.put(VariableManager.SELF, self);
-            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
-            variableManager.put(ColumnDescription.COLUMN_TARGET_OBJECT_ID, column.getTargetObjectId());
-            tableDescription.getCellDescription().getNewCellValueHandler().apply(variableManager, newValue);
-            this.logger.debug("Edited cell with id {} to new value {}", cell.getId(), newValue);
+    private Object getNewValue(IEditCellInput editCellInput) {
+        Object newValue = null;
+        if (editCellInput instanceof EditTextfieldCellInput editTextfieldCellInput) {
+            newValue = editTextfieldCellInput.newValue();
         }
+        if (editCellInput instanceof EditCheckboxCellInput editCheckboxCellInput) {
+            newValue = editCheckboxCellInput.newValue();
+        }
+        if (editCellInput instanceof EditSelectCellInput editSelectCellInput) {
+            newValue = editSelectCellInput.newValue();
+        }
+        if (editCellInput instanceof EditMultiSelectCellInput editMultiSelectCellInput) {
+            newValue = editMultiSelectCellInput.newValues();
+        }
+
+        return newValue;
     }
 
-    private IPayload getPayload(UUID payloadId) {
-        IPayload payload = null;
+    private IPayload getPayload(UUID payloadId, IStatus status) {
+        IPayload payload;
         List<Message> feedbackMessages = this.feedbackMessageService.getFeedbackMessages();
-        Optional<Message> optionalErrorMessage = feedbackMessages.stream().filter(msg -> MessageLevel.ERROR.equals(msg.level())).findFirst();
-        if (optionalErrorMessage.isPresent()) {
-            payload = new ErrorPayload(payloadId, optionalErrorMessage.get().body(), feedbackMessages);
+        if (status instanceof Failure failure) {
+            List<Message> mergedList = new ArrayList<>(feedbackMessages);
+            mergedList.addAll(failure.getMessages());
+            payload = new ErrorPayload(payloadId, mergedList);
         } else {
             payload = new SuccessPayload(payloadId, feedbackMessages);
         }
         return payload;
     }
+
 }

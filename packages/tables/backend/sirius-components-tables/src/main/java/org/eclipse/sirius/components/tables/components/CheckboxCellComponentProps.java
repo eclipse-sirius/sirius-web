@@ -17,18 +17,18 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.tables.descriptions.CellDescription;
+import org.eclipse.sirius.components.tables.descriptions.CheckboxCellDescription;
 
 /**
  * The props of the Checkbox-based cell component.
  *
  * @author lfasani
  */
-public record CheckboxCellComponentProps(VariableManager variableManager, CellDescription cellDescription, UUID cellId, UUID columnId, Object columnTargetObject) implements IProps {
+public record CheckboxCellComponentProps(VariableManager variableManager, CheckboxCellDescription checkboxCellDescription, UUID cellId, UUID columnId, Object columnTargetObject) implements IProps {
 
     public CheckboxCellComponentProps {
         Objects.requireNonNull(variableManager);
-        Objects.requireNonNull(cellDescription);
+        Objects.requireNonNull(checkboxCellDescription);
         Objects.requireNonNull(cellId);
         Objects.requireNonNull(columnId);
         Objects.requireNonNull(columnTargetObject);

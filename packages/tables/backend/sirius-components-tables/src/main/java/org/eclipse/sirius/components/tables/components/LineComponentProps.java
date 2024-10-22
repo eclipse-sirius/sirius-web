@@ -12,11 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.tables.components;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.tables.descriptions.CellDescription;
+import org.eclipse.sirius.components.tables.descriptions.ICellDescription;
 import org.eclipse.sirius.components.tables.descriptions.LineDescription;
 import org.eclipse.sirius.components.tables.renderer.TableRenderingCache;
 
@@ -31,7 +32,7 @@ public class LineComponentProps implements IProps {
 
     private final LineDescription lineDescription;
 
-    private final CellDescription cellDescription;
+    private final List<ICellDescription> cellDescriptions;
 
     private final ILinesRequestor linesRequestor;
 
@@ -39,10 +40,10 @@ public class LineComponentProps implements IProps {
 
     private final String parentElementId;
 
-    public LineComponentProps(VariableManager variableManager, LineDescription lineDescription, CellDescription cellDescription, ILinesRequestor linesRequestor, TableRenderingCache cache, String parentElementId) {
+    public LineComponentProps(VariableManager variableManager, LineDescription lineDescription, List<ICellDescription> cellDescriptions, ILinesRequestor linesRequestor, TableRenderingCache cache, String parentElementId) {
         this.variableManager = Objects.requireNonNull(variableManager);
         this.lineDescription = Objects.requireNonNull(lineDescription);
-        this.cellDescription = Objects.requireNonNull(cellDescription);
+        this.cellDescriptions = Objects.requireNonNull(cellDescriptions);
         this.linesRequestor = Objects.requireNonNull(linesRequestor);
         this.cache = Objects.requireNonNull(cache);
         this.parentElementId = Objects.requireNonNull(parentElementId);
@@ -56,8 +57,8 @@ public class LineComponentProps implements IProps {
         return this.lineDescription;
     }
 
-    public CellDescription getCellDescription() {
-        return this.cellDescription;
+    public List<ICellDescription> getCellDescriptions() {
+        return this.cellDescriptions;
     }
 
     public ILinesRequestor getLinesRequestor() {

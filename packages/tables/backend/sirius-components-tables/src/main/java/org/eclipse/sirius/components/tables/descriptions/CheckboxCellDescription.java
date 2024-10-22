@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,62 +13,62 @@
 package org.eclipse.sirius.components.tables.descriptions;
 
 import java.text.MessageFormat;
-import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
+import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
- * The description of the column.
+ * Description of a checkbox cell.
  *
- * @author arichard
- * @author lfasani
+ * @author frouene
  */
 @Immutable
-public final class ColumnDescription {
+public final class CheckboxCellDescription implements ICellDescription {
 
-    public static final String COLUMN_TARGET_OBJECT = "columTargetObject";
+    private String id;
 
-    public static final String COLUMN_TARGET_OBJECT_ID = "columTargetObjectId";
-
-    private UUID id;
+    private Predicate<VariableManager> canCreatePredicate;
 
     private Function<VariableManager, String> targetObjectIdProvider;
 
     private Function<VariableManager, String> targetObjectKindProvider;
 
-    private Function<VariableManager, String> labelProvider;
+    private BiFunction<VariableManager, Object, Boolean> cellValueProvider;
 
-    private Function<VariableManager, List<Object>> semanticElementsProvider;
-
-    private ColumnDescription() {
+    private CheckboxCellDescription() {
         // Prevent instantiation
     }
 
-    public UUID getId() {
-        return this.id;
+    @Override
+    public String getId() {
+        return "";
     }
 
-    public Function<VariableManager, String> getLabelProvider() {
-        return this.labelProvider;
+    @Override
+    public Predicate<VariableManager> getCanCreatePredicate() {
+        return this.canCreatePredicate;
     }
 
+    @Override
     public Function<VariableManager, String> getTargetObjectIdProvider() {
         return this.targetObjectIdProvider;
     }
 
+    @Override
     public Function<VariableManager, String> getTargetObjectKindProvider() {
         return this.targetObjectKindProvider;
     }
 
-    public Function<VariableManager, List<Object>> getSemanticElementsProvider() {
-        return this.semanticElementsProvider;
+    public BiFunction<VariableManager, Object, Boolean> getCellValueProvider() {
+        return this.cellValueProvider;
     }
 
-    public static Builder newColumnDescription(UUID id) {
+
+    public static Builder newCheckboxCellDescription(String id) {
         return new Builder(id);
     }
 
@@ -79,29 +79,30 @@ public final class ColumnDescription {
     }
 
     /**
-     * The builder used to create the column description.
+     * Builder used to create a checkbox cell widget description.
      *
-     * @author arichard
+     * @author frouene
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
-        private final UUID id;
+        private final String id;
+
+        private Predicate<VariableManager> canCreatePredicate;
 
         private Function<VariableManager, String> targetObjectIdProvider;
 
         private Function<VariableManager, String> targetObjectKindProvider;
 
-        private Function<VariableManager, String> labelProvider;
+        private BiFunction<VariableManager, Object, Boolean> cellValueProvider;
 
-        private Function<VariableManager, List<Object>> semanticElementsProvider;
 
-        public Builder(UUID id) {
+        private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
 
-        public Builder labelProvider(Function<VariableManager, String> labelProvider) {
-            this.labelProvider = Objects.requireNonNull(labelProvider);
+        public Builder canCreatePredicate(Predicate<VariableManager> canCreatePredicate) {
+            this.canCreatePredicate = Objects.requireNonNull(canCreatePredicate);
             return this;
         }
 
@@ -115,21 +116,20 @@ public final class ColumnDescription {
             return this;
         }
 
-
-        public Builder semanticElementsProvider(Function<VariableManager, List<Object>> semanticElementsProvider) {
-            this.semanticElementsProvider = Objects.requireNonNull(semanticElementsProvider);
+        public Builder cellValueProvider(BiFunction<VariableManager, Object, Boolean> cellValueProvider) {
+            this.cellValueProvider = Objects.requireNonNull(cellValueProvider);
             return this;
         }
 
-        public ColumnDescription build() {
-            ColumnDescription columnDescription = new ColumnDescription();
-            columnDescription.id = Objects.requireNonNull(this.id);
-            columnDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
-            columnDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
-            columnDescription.targetObjectKindProvider = Objects.requireNonNull(this.targetObjectKindProvider);
-            columnDescription.semanticElementsProvider = Objects.requireNonNull(this.semanticElementsProvider);
 
-            return columnDescription;
+        public CheckboxCellDescription build() {
+            CheckboxCellDescription checkboxCellDescription = new CheckboxCellDescription();
+            checkboxCellDescription.id = Objects.requireNonNull(this.id);
+            checkboxCellDescription.canCreatePredicate = Objects.requireNonNull(this.canCreatePredicate);
+            checkboxCellDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
+            checkboxCellDescription.targetObjectKindProvider = Objects.requireNonNull(this.targetObjectKindProvider);
+            checkboxCellDescription.cellValueProvider = Objects.requireNonNull(this.cellValueProvider);
+            return checkboxCellDescription;
         }
     }
 }

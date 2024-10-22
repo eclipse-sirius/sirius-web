@@ -20,4 +20,24 @@ package org.eclipse.sirius.components.collaborative.tables.messages;
 public interface ICollaborativeTableMessageService {
 
     String invalidInput(String expectedInputTypeName, String receivedInputTypeName);
+
+    String noHandlerFound();
+
+    /**
+     * Implementation which does nothing, used for mocks in unit tests.
+     *
+     * @author frouene
+     */
+    class NoOp implements ICollaborativeTableMessageService {
+
+        @Override
+        public String invalidInput(String expectedInputTypeName, String receivedInputTypeName) {
+            return "invalidInput";
+        }
+
+        @Override
+        public String noHandlerFound() {
+            return "noHandlerFound";
+        }
+    }
 }

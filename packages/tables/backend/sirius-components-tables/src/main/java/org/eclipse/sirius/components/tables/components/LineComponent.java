@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.BiFunction;
 
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Fragment;
@@ -26,14 +25,14 @@ import org.eclipse.sirius.components.representations.FragmentProps;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.Line;
-import org.eclipse.sirius.components.tables.descriptions.CellDescription;
+import org.eclipse.sirius.components.tables.descriptions.CheckboxCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
+import org.eclipse.sirius.components.tables.descriptions.ICellDescription;
 import org.eclipse.sirius.components.tables.descriptions.LineDescription;
-import org.eclipse.sirius.components.tables.elements.CheckboxCellElementProps;
+import org.eclipse.sirius.components.tables.descriptions.MultiSelectCellDescription;
+import org.eclipse.sirius.components.tables.descriptions.SelectCellDescription;
+import org.eclipse.sirius.components.tables.descriptions.TextfieldCellDescription;
 import org.eclipse.sirius.components.tables.elements.LineElementProps;
-import org.eclipse.sirius.components.tables.elements.MultiSelectCellElementProps;
-import org.eclipse.sirius.components.tables.elements.SelectCellElementProps;
-import org.eclipse.sirius.components.tables.elements.TextfieldCellElementProps;
 
 /**
  * The component used to render lines.
@@ -96,30 +95,28 @@ public class LineComponent implements IComponent {
     private List<Element> getCells(VariableManager lineVariableManager, UUID parentLineId) {
         List<Element> elements = new ArrayList<>();
         Map<UUID, Object> columnIdToObject = this.props.getCache().getColumnIdToObject();
-        CellDescription cellDescription = this.props.getCellDescription();
 
         columnIdToObject.forEach((columnId, columTargetObject) -> {
-            VariableManager columnVariableManager = lineVariableManager.createChild();
-            columnVariableManager.put(ColumnDescription.COLUMN_TARGET_OBJECT, columTargetObject);
+            VariableManager variableManager = lineVariableManager.createChild();
+            variableManager.put(ColumnDescription.COLUMN_TARGET_OBJECT, columTargetObject);
 
             String rawIdentifier = parentLineId.toString() + columnId;
             UUID cellId = UUID.nameUUIDFromBytes(rawIdentifier.getBytes());
 
-            BiFunction<VariableManager, Object, String> cellTypeProvider = cellDescription.getCellTypeProvider();
-            String cellType = cellTypeProvider.apply(lineVariableManager, columTargetObject);
+            ICellDescription cellDescription = this.props.getCellDescriptions().stream().filter(cell -> cell.getCanCreatePredicate().test(variableManager)).findFirst().orElse(null);
 
             Element cellElement = null;
-            if (SelectCellElementProps.TYPE.equals(cellType)) {
-                var cellComponentProps = new SelectCellComponentProps(columnVariableManager, cellDescription, cellId, columnId, columTargetObject);
+            if (cellDescription instanceof SelectCellDescription selectCellDescription) {
+                var cellComponentProps = new SelectCellComponentProps(variableManager, selectCellDescription, cellId, columnId, columTargetObject);
                 cellElement = new Element(SelectCellComponent.class, cellComponentProps);
-            } else if (MultiSelectCellElementProps.TYPE.equals(cellType)) {
-                var cellComponentProps = new MultiSelectCellComponentProps(columnVariableManager, cellDescription, cellId, columnId, columTargetObject);
+            } else if (cellDescription instanceof MultiSelectCellDescription multiSelectCellDescription) {
+                var cellComponentProps = new MultiSelectCellComponentProps(variableManager, multiSelectCellDescription, cellId, columnId, columTargetObject);
                 cellElement = new Element(MultiSelectCellComponent.class, cellComponentProps);
-            } else if (CheckboxCellElementProps.TYPE.equals(cellType)) {
-                var cellComponentProps = new CheckboxCellComponentProps(columnVariableManager, cellDescription, cellId, columnId, columTargetObject);
+            } else if (cellDescription instanceof CheckboxCellDescription checkboxCellDescription) {
+                var cellComponentProps = new CheckboxCellComponentProps(variableManager, checkboxCellDescription, cellId, columnId, columTargetObject);
                 cellElement = new Element(CheckboxCellComponent.class, cellComponentProps);
-            } else if (TextfieldCellElementProps.TYPE.equals(cellType)) {
-                var cellComponentProps = new TextfieldCellComponentProps(columnVariableManager, cellDescription, cellId, columnId, columTargetObject);
+            } else if (cellDescription instanceof TextfieldCellDescription textfieldCellDescription) {
+                var cellComponentProps = new TextfieldCellComponentProps(variableManager, textfieldCellDescription, cellId, columnId, columTargetObject);
                 cellElement = new Element(TextfieldCellComponent.class, cellComponentProps);
             }
             if (cellElement != null) {

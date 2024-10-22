@@ -17,18 +17,19 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.tables.descriptions.CellDescription;
+import org.eclipse.sirius.components.tables.descriptions.MultiSelectCellDescription;
 
 /**
- * The props of the Select-based cell component.
+ * The props of the Multi-Select-based cell component.
  *
  * @author lfasani
  */
-public record MultiSelectCellComponentProps(VariableManager variableManager, CellDescription cellDescription, UUID cellId, UUID columnId, Object columnTargetObject) implements IProps {
+public record MultiSelectCellComponentProps(VariableManager variableManager, MultiSelectCellDescription multiSelectCellDescription, UUID cellId, UUID columnId,
+                                            Object columnTargetObject) implements IProps {
 
     public MultiSelectCellComponentProps {
         Objects.requireNonNull(variableManager);
-        Objects.requireNonNull(cellDescription);
+        Objects.requireNonNull(multiSelectCellDescription);
         Objects.requireNonNull(cellId);
         Objects.requireNonNull(columnId);
         Objects.requireNonNull(columnTargetObject);

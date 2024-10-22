@@ -17,7 +17,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.tables.descriptions.CellDescription;
+import org.eclipse.sirius.components.tables.descriptions.TextfieldCellDescription;
 import org.eclipse.sirius.components.tables.elements.TextfieldCellElementProps;
 
 /**
@@ -36,17 +36,14 @@ public class TextfieldCellComponent implements IComponent {
     @Override
     public Element render() {
         VariableManager variableManager = this.props.variableManager();
-        CellDescription cellDescription = this.props.cellDescription();
+        TextfieldCellDescription cellDescription = this.props.textfieldCellDescription();
 
         String targetObjectId = cellDescription.getTargetObjectIdProvider().apply(variableManager);
         String targetObjectKind = cellDescription.getTargetObjectKindProvider().apply(variableManager);
 
-        Object value = cellDescription.getCellValueProvider().apply(variableManager, this.props.columnTargetObject());
-        String stringValue = "";
-        if (value instanceof String) {
-            stringValue = (String) value;
-        }
-        TextfieldCellElementProps cellElementProps = new TextfieldCellElementProps(this.props.cellId(), targetObjectId, targetObjectKind, this.props.columnId(), stringValue);
+        String value = cellDescription.getCellValueProvider().apply(variableManager, this.props.columnTargetObject());
+
+        TextfieldCellElementProps cellElementProps = new TextfieldCellElementProps(this.props.cellId(), targetObjectId, targetObjectKind, this.props.columnId(), value);
         return new Element(TextfieldCellElementProps.TYPE, cellElementProps);
     }
 }

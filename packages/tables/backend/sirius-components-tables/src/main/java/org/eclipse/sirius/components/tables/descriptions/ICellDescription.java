@@ -10,17 +10,26 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.tables;
+package org.eclipse.sirius.components.tables.descriptions;
 
-import java.util.UUID;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
-import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
- * The input of the table event subscription.
+ * Common interface for cell description.
  *
  * @author frouene
  */
-public record TableEventInput(UUID id, String editingContextId, String representationId) implements IInput {
+public interface ICellDescription {
+
+    String getId();
+
+    Predicate<VariableManager> getCanCreatePredicate();
+
+    Function<VariableManager, String> getTargetObjectIdProvider();
+
+    Function<VariableManager, String> getTargetObjectKindProvider();
 
 }

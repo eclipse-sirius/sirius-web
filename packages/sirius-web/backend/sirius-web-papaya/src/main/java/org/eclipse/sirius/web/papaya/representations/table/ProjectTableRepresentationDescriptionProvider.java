@@ -27,15 +27,18 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
-import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.spec.ProjectSpec;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.tables.descriptions.CellDescription;
+import org.eclipse.sirius.components.tables.descriptions.CheckboxCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
+import org.eclipse.sirius.components.tables.descriptions.ICellDescription;
 import org.eclipse.sirius.components.tables.descriptions.LineDescription;
+import org.eclipse.sirius.components.tables.descriptions.MultiSelectCellDescription;
+import org.eclipse.sirius.components.tables.descriptions.SelectCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
+import org.eclipse.sirius.components.tables.descriptions.TextfieldCellDescription;
 import org.springframework.stereotype.Service;
 
 /**
@@ -48,35 +51,20 @@ public class ProjectTableRepresentationDescriptionProvider implements IEditingCo
 
     public static final String TABLE_DESCRIPTION_ID = "papaya_project_table_description";
 
-    public static final String CELL_DESCRIPTION_ID = "papaya_project_cell_description";
-
     private final IIdentityService identityService;
-
-    private final IObjectSearchService objectSearchService;
 
     private final ILabelService labelService;
 
     private final ComposedAdapterFactory composedAdapterFactory;
 
-    public ProjectTableRepresentationDescriptionProvider(IIdentityService identityService, IObjectSearchService objectSearchService, ILabelService labelService, ComposedAdapterFactory composedAdapterFactory) {
+    public ProjectTableRepresentationDescriptionProvider(IIdentityService identityService, ILabelService labelService, ComposedAdapterFactory composedAdapterFactory) {
         this.identityService = Objects.requireNonNull(identityService);
-        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.labelService = Objects.requireNonNull(labelService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
     }
 
     @Override
     public List<IRepresentationDescription> getRepresentationDescriptions(IEditingContext editingContext) {
-        var cellDescription = CellDescription.newCellDescription(CELL_DESCRIPTION_ID)
-                .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
-                .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
-                .cellTypeProvider(new CellTypeProvider())
-                .cellValueProvider(new CellValueProvider(this.identityService))
-                .cellOptionsIdProvider(new CellOptionIdProvider(this.identityService, this.labelService))
-                .cellOptionsLabelProvider(new CellOptionLabelProvider(this.labelService))
-                .cellOptionsProvider(new CellOptionsProvider(this.composedAdapterFactory))
-                .newCellValueHandler(new CellNewValueHandler(this.objectSearchService))
-                .build();
 
         var lineDescription = LineDescription.newLineDescription(UUID.nameUUIDFromBytes("Table - Line".getBytes()))
                 .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
@@ -92,7 +80,7 @@ public class ProjectTableRepresentationDescriptionProvider implements IEditingCo
                 .columnDescriptions(this.getColumnDescriptions())
                 .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
-                .cellDescription(cellDescription)
+                .cellDescriptions(this.getCellDescriptions())
                 .build();
 
         return List.of(tableDescription);
@@ -193,5 +181,40 @@ public class ProjectTableRepresentationDescriptionProvider implements IEditingCo
                 result.put(key, value);
             }
         });
+    }
+
+    private List<ICellDescription> getCellDescriptions() {
+        List<ICellDescription> cellDescriptions = new ArrayList<>();
+        cellDescriptions.add(TextfieldCellDescription.newTextfieldCellDescription("textfieldCells")
+                .canCreatePredicate(new CellTypePredicate().isTextfieldCell())
+                .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
+                .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
+                .cellValueProvider(new CellStringValueProvider(this.identityService))
+                .build());
+        cellDescriptions.add(CheckboxCellDescription.newCheckboxCellDescription("checkboxCells")
+                .canCreatePredicate(new CellTypePredicate().isCheckboxCell())
+                .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
+                .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
+                .cellValueProvider(new CellBooleanValueProvider())
+                .build());
+        cellDescriptions.add(SelectCellDescription.newSelectCellDescription("selectCells")
+                .canCreatePredicate(new CellTypePredicate().isSelectCell())
+                .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
+                .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
+                .cellValueProvider(new CellStringValueProvider(this.identityService))
+                .cellOptionsIdProvider(new CellOptionIdProvider(this.identityService, this.labelService))
+                .cellOptionsLabelProvider(new CellOptionLabelProvider(this.labelService))
+                .cellOptionsProvider(new CellOptionsProvider(this.composedAdapterFactory))
+                .build());
+        cellDescriptions.add(MultiSelectCellDescription.newMultiSelectCellDescription("multiselectCells")
+                .canCreatePredicate(new CellTypePredicate().isMultiselectCell())
+                .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
+                .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
+                .cellValueProvider(new CellStringListValueProvider(this.identityService))
+                .cellOptionsIdProvider(new CellOptionIdProvider(this.identityService, this.labelService))
+                .cellOptionsLabelProvider(new CellOptionLabelProvider(this.labelService))
+                .cellOptionsProvider(new CellOptionsProvider(this.composedAdapterFactory))
+                .build());
+        return cellDescriptions;
     }
 }

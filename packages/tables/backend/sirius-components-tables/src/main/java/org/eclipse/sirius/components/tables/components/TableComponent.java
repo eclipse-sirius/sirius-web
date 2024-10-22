@@ -64,7 +64,7 @@ public class TableComponent implements IComponent {
                 .map(lineDescription -> {
                     var previousLines = optionalPreviousTable.map(previousTable -> tableElementRequestor.getRootLines(previousTable, lineDescription)).orElse(List.of());
                     ILinesRequestor linesRequestor = new LinesRequestor(previousLines);
-                    var lineComponentProps = new LineComponentProps(variableManager, lineDescription, tableDescription.getCellDescription(), linesRequestor, cache, id);
+                    var lineComponentProps = new LineComponentProps(variableManager, lineDescription, tableDescription.getCellDescriptions(), linesRequestor, cache, id);
                     return new Element(LineComponent.class, lineComponentProps);
                 }).toList();
 
