@@ -1,0 +1,39 @@
+= ADR-XXX Introduce ICellDescription in Table Description
+
+== Context
+
+In a table description, a cell can be represented by various widget (textfield, checkbox, select, …).
+To manage this, we had introduced a cellTypeProvider in CellDescription with the aim of returning the cell type.
+As a result, we ended up with a single description that had to handle all types of widgets, with the consequence, among others, of having to define providers that were only useful for certain types, such as the cellOptionsIdProvider.
+
+== Decision
+
+* Introduce `ICellDescription`
+[source, java]
+----
+public interface ICellDescription {
+    String getId();
+    Predicate<VariableManager> getCanCreatePredicate();
+    Function<VariableManager, String> getTargetObjectIdProvider();
+    Function<VariableManager, String> getTargetObjectKindProvider();
+}
+----
+
+* `TableDescription`
+[source, java]
+----
+private List<ICellDescription> cellDescriptions;
+----
+
+* Declare implementations `CheckboxCellDescription`, `TextfieldCellDescription`, `SelectCellDescription`, `MultiSelectCellDescription`.
+
+* retrieve the good implementation in `LineComponent`:
+[source, java]
+----
+ICellDescription cellDescription = this.props.getCellDescriptions().stream().filter(cell -> cell.getCanCreatePredicate().test(variableManager)).findFirst().orElse(null);
+----
+
+== Status
+
+Work in progress
+
