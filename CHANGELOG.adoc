@@ -10,6 +10,7 @@
 
 - [ADR-172] Add support for Project Data Versioning REST APIs
 - [ADR-173] Add support for forking table description from representation
+- [ADR-174] Adapt support for table description in view DSL
 
 
 === Deprecation warning

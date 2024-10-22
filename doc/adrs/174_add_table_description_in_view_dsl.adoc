@@ -1,0 +1,143 @@
+= ADR-174 Add Table Description in View DSL
+
+== Context
+
+Add table description to View DSL.
+
+== Decision
+
+=== View DSL
+
+class TableDescription extends RepresentationDescription {
+    InterpretedExpression useStripedRowsExpression //enable or disable background color fading on lines.
+    contains ColumnDescription[] columnDescriptions
+    contains RowDescription rowDescription
+    contains CellDescription[] cellDescriptions
+}
+
+class ColumnDescription extends TableElementDescription {
+    InterpretedExpression headerExpression // label for the column header
+    InterpretedExpression labelExpression
+    InterpretedExpression iconExpression
+    InterpretedExpression initialWidthExpression // initial width to apply on the column
+    InterpretedExpression isResizableExpression // enable or disable the resize for the column
+    InterpretedExpression filterWidgetExpression // widget type to apply as filter on the column
+}
+
+class RowDescription extends TableElementDescription {
+    InterpretedExpression labelExpression
+    InterpretedExpression iconExpression
+}
+
+class CellDescription extends TableElementDescription {
+    InterpretedExpression valueExpression
+    InterpretedExpression tooltipExpression
+    contains CellWidgetDescription cellWidgetDescription
+}
+
+class TableElementDescription {
+    Identifier name
+    DomainType domainType
+    InterpretedExpression semanticCandidatesExpression
+    InterpretedExpression preconditionExpression
+}
+
+class abstract CellWidgetDescription {
+}
+
+==== Cell Widget Implementations
+
+For this first iteration, only two cell widget implementations will be added:
+
+class CellTextfieldWidgetDescription implement CellWidgetDescription {
+    contains Operation[] body
+}
+
+class CellLabelWidgetDescription implement CellWidgetDescription {
+    InterpretedExpression iconExpression
+}
+
+==== `filterWidgetExpression`
+
+For the filterWidget expression, the goal is to retrieve the type (Material React Table variant) of widget to be applied to the column.
+This is a list defined by Material React Table ('text' | 'select' | 'multi-select' | 'range' | 'range-slider' | 'checkbox' | 'autocomplete' | 'date' | 'date-range' | 'datetime' | 'datetime-range' | 'time' | 'time-range').
+
+=== Backend
+
+In this section, we will outline the necessary additions to the Java description classes.
+
+==== `TableDescription`
+
+[source, java]
+----
+private Predicate<VariableManager> isStripeRowPredicate;
+private RowDescription rowDescription;
+private List<CellDescription> cellDescriptions;
+----
+
+==== `ColumnDescription`
+
+[source, java]
+----
+private Function<VariableManager, String> headerProvider;
+private Function<VariableManager, List<String>> iconURLProvider;
+private Function<VariableManager, Integer> initialWidthProvider;
+private Predicate<VariableManager> isResizablePredicate;
+private Function<VariableManager, String> filteringProvider;
+----
+
+==== `RowDescription`
+
+NOTE: rename _line_ usage (in favor of _row_) to maintain consistency between DSL view and material react table naming.
+
+[source, java]
+----
+private Function<VariableManager, String> labelProvider;
+private Function<VariableManager, List<String>> iconURLProvider;
+----
+
+==== `CellDescription`
+
+[source, java]
+----
+private Predicate<VariableManager> canCreatePredicate;
+private Function<VariableManager, String> valueProvider;
+private Function<VariableManager, String> tooltipProvider;
+----
+
+== Add ICellDescription in Table Description
+
+In a table description, a cell can be represented by various widget (textfield, checkbox, select, …).
+To manage this, we had introduced a cellTypeProvider in CellDescription with the aim of returning the cell type.
+As a result, we ended up with a single description that had to handle all types of widgets, with the consequence,
+among others, of having to define providers that were only useful for certain types, such as the cellOptionsIdProvider.
+
+* Introduce `ICellDescription`
+[source, java]
+----
+public interface ICellDescription {
+    String getId();
+    Predicate<VariableManager> getCanCreatePredicate();
+    Function<VariableManager, String> getTargetObjectIdProvider();
+    Function<VariableManager, String> getTargetObjectKindProvider();
+}
+----
+
+* `TableDescription`
+[source, java]
+----
+private List<ICellDescription> cellDescriptions;
+----
+
+* Declare implementations `CheckboxCellDescription`, `TextfieldCellDescription`, `SelectCellDescription`, `MultiSelectCellDescription`.
+
+* retrieve the good implementation in `LineComponent`:
+[source, java]
+----
+ICellDescription cellDescription = this.props.getCellDescriptions().stream().filter(cell -> cell.getCanCreatePredicate().test(variableManager)).findFirst().orElse(null);
+----
+
+== Status
+
+Work in progress
+
