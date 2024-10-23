@@ -28,5 +28,5 @@ export interface UsePaletteQuickAccessToolBarProps {
 }
 
 export interface UsePaletteQuickAccessToolBarValue {
-  element: JSX.Element | null;
+  quickAccessToolComponents: JSX.Element[];
 }
