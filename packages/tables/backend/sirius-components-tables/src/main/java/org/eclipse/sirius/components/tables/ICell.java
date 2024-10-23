@@ -15,33 +15,20 @@ package org.eclipse.sirius.components.tables;
 import java.util.UUID;
 
 /**
- * Abstract class to be extended by all the cells of the table-based representation.
+ * Interface of all the cells of the table-based representation.
  *
  * @author arichard
  * @author lfasani
  */
-public abstract class AbstractCell {
-    protected UUID id;
+public interface ICell {
 
-    protected String targetObjectId;
+    UUID getId();
 
-    protected String targetObjectKind;
+    String getType();
 
-    protected UUID columnId;
+    String getTargetObjectId();
 
-    public UUID getId() {
-        return this.id;
-    }
+    String getTargetObjectKind();
 
-    public String getTargetObjectId() {
-        return this.targetObjectId;
-    }
-
-    public String getTargetObjectKind() {
-        return this.targetObjectKind;
-    }
-
-    public UUID getColumnId() {
-        return this.columnId;
-    }
+    UUID getColumnId();
 }

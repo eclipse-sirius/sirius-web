@@ -12,15 +12,13 @@
  *******************************************************************************/
 import { useMutation } from '@apollo/client/react/hooks/useMutation';
 import { useReporting } from '@eclipse-sirius/sirius-components-core';
-import { TextFieldProps } from '@mui/material/TextField';
-import { GQLLine, GQLTextfieldCell } from './TableContent.types';
 import {
   GQLEditTextfieldCellMutationData,
   GQLEditTextfieldCellMutationVariables,
-} from './useEditableTextfieldCell.types';
+  UseEditTextfieldCellValue,
+} from './useEditTextfieldCell.types';
 
 import { gql } from '@apollo/client/core';
-import { MRT_Cell, MRT_Row } from 'material-react-table';
 
 const editTextfieldCellMutation = gql`
   mutation editTextfieldCell($input: EditTextfieldCellInput!) {
@@ -42,7 +40,12 @@ const editTextfieldCellMutation = gql`
   }
 `;
 
-export const useEditableTextfieldCell = (editingContextId: string, representationId: string, tableId: string) => {
+export const useEditTextfieldCell = (
+  editingContextId: string,
+  representationId: string,
+  tableId: string,
+  cellId: string
+): UseEditTextfieldCellValue => {
   const [mutationEditTextfieldCell, mutationEditTextfieldCellResult] = useMutation<
     GQLEditTextfieldCellMutationData,
     GQLEditTextfieldCellMutationVariables
@@ -50,13 +53,13 @@ export const useEditableTextfieldCell = (editingContextId: string, representatio
 
   useReporting(mutationEditTextfieldCellResult, (data: GQLEditTextfieldCellMutationData) => data?.editTextfieldCell);
 
-  const editTextfieldCell = (cellId: string, newValue: string) => {
+  const editTextfieldCell = (newValue: string) => {
     const variables: GQLEditTextfieldCellMutationVariables = {
       input: {
         id: crypto.randomUUID(),
         editingContextId,
-        representationId: representationId,
-        tableId: tableId,
+        representationId,
+        tableId,
         cellId,
         newValue,
       },
@@ -64,36 +67,8 @@ export const useEditableTextfieldCell = (editingContextId: string, representatio
     mutationEditTextfieldCell({ variables });
   };
 
-  const getMuiEditTextFieldProps = (
-    textFieldCell: GQLTextfieldCell,
-    cell: MRT_Cell<GQLLine, string>,
-    row: MRT_Row<GQLLine>,
-    setEditedLines: React.Dispatch<React.SetStateAction<GQLLine[]>>
-  ): TextFieldProps => {
-    const cellValue = cell.getValue<string>();
-
-    return {
-      type: 'text',
-      required: true,
-      onBlur: (event) => {
-        if (event.target.value !== cellValue) {
-          setEditedLines((prevEditedLines) => {
-            return prevEditedLines.map((line) => {
-              if (row.original.id == line.id) {
-                const newCells = row.original.cells.map((gqlCell) =>
-                  cell.column.id == gqlCell.columnId ? { ...gqlCell, stringValue: event.target.value } : gqlCell
-                );
-                return { ...line, cells: newCells };
-              }
-              return line;
-            });
-          });
-
-          editTextfieldCell(textFieldCell.id, event.target.value);
-        }
-      },
-    };
+  return {
+    editTextfieldCell,
+    loading: mutationEditTextfieldCellResult.loading,
   };
-
-  return getMuiEditTextFieldProps;
 };

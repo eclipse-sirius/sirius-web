@@ -12,15 +12,20 @@
  *******************************************************************************/
 import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
 
-export interface GQLEditTextfieldCellMutationData {
-  editTextfieldCell: GQLEditTextfieldCellPayload;
+export interface EditSelectCellValue {
+  editSelectCell: (newValue: string) => void;
+  loading: boolean;
 }
 
-export interface GQLEditTextfieldCellMutationVariables {
-  input: GQLEditTextfieldCellInput;
+export interface GQLEditSelectCellMutationData {
+  editSelectCell: GQLEditSelectCellPayload;
 }
 
-export interface GQLEditTextfieldCellInput {
+export interface GQLEditSelectCellMutationVariables {
+  input: GQLEditSelectCellInput;
+}
+
+export interface GQLEditSelectCellInput {
   id: string;
   editingContextId: string;
   representationId: string;
@@ -29,4 +34,4 @@ export interface GQLEditTextfieldCellInput {
   newValue: string;
 }
 
-export type GQLEditTextfieldCellPayload = GQLErrorPayload | GQLSuccessPayload;
+export type GQLEditSelectCellPayload = GQLErrorPayload | GQLSuccessPayload;

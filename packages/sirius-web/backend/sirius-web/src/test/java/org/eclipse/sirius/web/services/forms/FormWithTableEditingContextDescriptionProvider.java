@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.services.forms;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -30,20 +29,19 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
-import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.description.FormDescription;
@@ -53,11 +51,8 @@ import org.eclipse.sirius.components.forms.description.TableWidgetDescription;
 import org.eclipse.sirius.components.papaya.Iteration;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
-import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
-import org.eclipse.sirius.components.representations.IStatus;
-import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.components.SelectCellComponent;
 import org.eclipse.sirius.components.tables.descriptions.CellDescription;
@@ -68,6 +63,8 @@ import org.eclipse.sirius.components.tables.elements.CheckboxCellElementProps;
 import org.eclipse.sirius.components.tables.elements.MultiSelectCellElementProps;
 import org.eclipse.sirius.components.tables.elements.SelectCellElementProps;
 import org.eclipse.sirius.components.tables.elements.TextfieldCellElementProps;
+import org.eclipse.sirius.web.papaya.representations.table.CellNewValueHandler;
+import org.eclipse.sirius.web.papaya.representations.table.ColumnTargetObjectIdProvider;
 import org.springframework.stereotype.Service;
 
 /**
@@ -84,10 +81,13 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
 
     private final IIdentityService identityService;
 
+    private final IObjectSearchService objectSearchService;
+
     private final IObjectService objectService;
 
-    public FormWithTableEditingContextDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IIdentityService identityService, IObjectService objectService) {
+    public FormWithTableEditingContextDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IIdentityService identityService, IObjectSearchService objectSearchService, IObjectService objectService) {
         this.identityService = Objects.requireNonNull(identityService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.objectService = Objects.requireNonNull(objectService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
     }
@@ -95,7 +95,7 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
     @Override
     public List<IRepresentationDescription> getRepresentationDescriptions(IEditingContext editingContext) {
 
-        TableWidgetDescription tableWidgetDescription = getTableWidgetDescription();
+        TableWidgetDescription tableWidgetDescription = this.getTableWidgetDescription();
 
         GroupDescription taskGroup = GroupDescription.newGroupDescription("iterationGroupId")
                 .idProvider(variableManager -> "iterationGroupId")
@@ -112,7 +112,7 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
                 .canCreatePredicate(variableManager -> true)
                 .build();
 
-        FormDescription formDescription =  FormDescription.newFormDescription(TASK_FORM_ID)
+        FormDescription formDescription = FormDescription.newFormDescription(TASK_FORM_ID)
                 .label("Iteration form description")
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .labelProvider(variableManager -> "Iteration Form")
@@ -145,12 +145,13 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
         lineDescriptions.add(lineDescription);
 
         TableDescription tableDescription = TableDescription.newTableDescription("tasksTableId")
+                .label("tasksTableLabel")
                 .targetObjectIdProvider(this::getTargetObjectId)
                 .targetObjectKindProvider(this::getTargetObjectKind)
                 .labelProvider(labelProvider)
                 .lineDescriptions(lineDescriptions)
-                .columnDescriptions(getColumnDescriptions())
-                .cellDescription(getCellDescription())
+                .columnDescriptions(this.getColumnDescriptions())
+                .cellDescription(this.getCellDescription())
                 .build();
 
         return TableWidgetDescription.newTableWidgetDescription("tasksTableWidgetId")
@@ -166,14 +167,14 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
 
     private CellDescription getCellDescription() {
         return CellDescription.newCellDescription("cells")
-                .targetObjectIdProvider(vm-> "")
-                .targetObjectKindProvider(vm-> "")
+                .targetObjectIdProvider(variableManager -> "")
+                .targetObjectKindProvider(variableManager -> "")
                 .cellTypeProvider(this.getCellTypeProvider())
                 .cellValueProvider(this.getCellValueProvider())
                 .cellOptionsIdProvider(this.getCellOptionsIdProvider())
                 .cellOptionsLabelProvider(this.getCellOptionsLabelProvider())
                 .cellOptionsProvider(this.getCellOptionsProvider())
-                .newCellValueHandler(getNewCellValueHandler())
+                .newCellValueHandler(new CellNewValueHandler(this.objectSearchService))
                 .build();
     }
 
@@ -199,23 +200,22 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
         Map<EStructuralFeature, String> featureToDisplayName = this.getColumnsStructuralFeaturesDisplayName(PapayaFactory.eINSTANCE.createTask(), PapayaPackage.eINSTANCE.getTask());
 
         ColumnDescription columnDescription = ColumnDescription.newColumnDescription(UUID.nameUUIDFromBytes("features".getBytes()))
-                .semanticElementsProvider(vm -> featureToDisplayName.keySet().stream().map(Object.class::cast).toList())
-                .labelProvider(vm -> vm.get(VariableManager.SELF, EStructuralFeature.class).map(featureToDisplayName::get).orElse(""))
-                .targetObjectIdProvider(vm -> vm.get(VariableManager.SELF, EStructuralFeature.class).map(EStructuralFeature::getName).orElse(""))
-                .targetObjectKindProvider(vm -> "")
+                .semanticElementsProvider(variableManager -> featureToDisplayName.keySet().stream().map(Object.class::cast).toList())
+                .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, EStructuralFeature.class).map(featureToDisplayName::get).orElse(""))
+                .targetObjectIdProvider(new ColumnTargetObjectIdProvider())
+                .targetObjectKindProvider(variableManager -> "")
                 .build();
         return List.of(columnDescription);
     }
 
-    private  BiFunction<VariableManager, Object, Object> getCellValueProvider() {
+    private BiFunction<VariableManager, Object, Object> getCellValueProvider() {
         return (variableManager, columnTargetObject) -> {
             Object value = "";
             Optional<EObject> optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
             if (optionalEObject.isPresent() && columnTargetObject instanceof EStructuralFeature eStructuralFeature) {
                 EObject eObject = optionalEObject.get();
                 Object objectValue = eObject.eGet(eStructuralFeature);
-                if (eStructuralFeature instanceof EReference) {
-                    EReference eReference = (EReference) eStructuralFeature;
+                if (eStructuralFeature instanceof EReference eReference) {
                     if (eReference.isMany() && !eReference.isContainment() && objectValue instanceof EList<?>) {
                         value = ((EList<?>) objectValue).stream().map(this.objectService::getId).collect(Collectors.toList());
                     } else if (!eReference.isMany() && !eReference.isContainment()) {
@@ -269,7 +269,7 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
     }
 
     private Function<VariableManager, String> getCellOptionsLabelProvider() {
-        return  variableManager -> {
+        return variableManager -> {
             Object candidate = variableManager.getVariables().get(SelectCellComponent.CANDIDATE_VARIABLE);
             if (candidate instanceof EEnumLiteral) {
                 return this.objectService.getLabel(candidate);
@@ -289,14 +289,12 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
                     options.addAll(((EEnum) eType).getELiterals());
                 } else {
                     Object adapter = this.composedAdapterFactory.adapt(eObject, IItemPropertySource.class);
-                    if (adapter instanceof IItemPropertySource) {
-                        IItemPropertySource itemPropertySource = (IItemPropertySource) adapter;
+                    if (adapter instanceof IItemPropertySource itemPropertySource) {
                         IItemPropertyDescriptor descriptor = itemPropertySource.getPropertyDescriptor(eObject, eStructuralFeature);
                         if (descriptor != null) {
-                            List<Object> choiceOfValues = descriptor.getChoiceOfValues(eObject).stream()
+                            return descriptor.getChoiceOfValues(eObject).stream()
                                     .filter(Objects::nonNull)
                                     .collect(Collectors.toList());
-                            return choiceOfValues;
                         }
                     }
                 }
@@ -308,11 +306,11 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
     private Map<EStructuralFeature, String> getColumnsStructuralFeaturesDisplayName(EObject eObject, EClass eClass) {
         Map<EStructuralFeature, String> featureToDisplayName = new LinkedHashMap<>();
         EList<EStructuralFeature> eAllStructuralFeatures = eClass.getEAllStructuralFeatures();
-        for (EStructuralFeature eSF : eAllStructuralFeatures) {
-            if (eSF instanceof EAttribute && !eSF.isMany() && !eSF.isDerived()) {
-                featureToDisplayName.put(eSF, this.getDisplayName(eObject, eSF));
-            } else if (eSF instanceof EReference ref && !eSF.isDerived() && !ref.isContainment()) {
-                featureToDisplayName.put(eSF, this.getDisplayName(eObject, eSF));
+        for (EStructuralFeature eStructuralFeature : eAllStructuralFeatures) {
+            if (eStructuralFeature instanceof EAttribute && !eStructuralFeature.isMany() && !eStructuralFeature.isDerived()) {
+                featureToDisplayName.put(eStructuralFeature, this.getDisplayName(eObject, eStructuralFeature));
+            } else if (eStructuralFeature instanceof EReference ref && !eStructuralFeature.isDerived() && !ref.isContainment()) {
+                featureToDisplayName.put(eStructuralFeature, this.getDisplayName(eObject, eStructuralFeature));
             }
         }
         return featureToDisplayName;
@@ -320,67 +318,13 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
 
     private String getDisplayName(EObject eObject, EStructuralFeature eStructuralFeature) {
         Adapter adapter = this.composedAdapterFactory.adapt(eObject, IItemPropertySource.class);
-        if (adapter instanceof IItemPropertySource) {
-            IItemPropertySource itemPropertySource = (IItemPropertySource) adapter;
+        if (adapter instanceof IItemPropertySource itemPropertySource) {
             IItemPropertyDescriptor descriptor = itemPropertySource.getPropertyDescriptor(eObject, eStructuralFeature);
             if (descriptor != null) {
-                String displayName = descriptor.getDisplayName(eStructuralFeature);
-                return displayName;
+                return descriptor.getDisplayName(eStructuralFeature);
             }
         }
         return eStructuralFeature.getName();
     }
 
-    private BiFunction<VariableManager, Object, IStatus> getNewCellValueHandler() {
-        BiFunction<VariableManager, Object, IStatus> newCellValueHandler = (variableManager, newValue) -> {
-            IStatus status = new Failure("");
-            var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
-            var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
-            var optionalFeatureName = variableManager.get(ColumnDescription.COLUMN_TARGET_OBJECT_ID, String.class);
-            if (optionalEObject.isPresent() && optionalFeatureName.isPresent()) {
-                EObject eObject = optionalEObject.get();
-                String featureName = optionalFeatureName.get();
-                EStructuralFeature eStructuralFeature = eObject.eClass().getEStructuralFeature(featureName);
-                if (eStructuralFeature != null) {
-                    EClassifier eType = eStructuralFeature.getEType();
-                    if (eStructuralFeature.isMany() && eType instanceof EClass && newValue instanceof Collection<?>) {
-                        EList<EObject> refElements = (EList<EObject>) eObject.eGet(eStructuralFeature);
-                        List<EObject> newValuesToSet = new ArrayList<>();
-                        List<String> newValues = ((Collection<?>) newValue).stream().map(elt -> elt.toString()).collect(Collectors.toList());
-                        for (String newStringValue : newValues) {
-                            var optionalNewValueToSet = this.objectService.getObject(optionalEditingContext.get(), newStringValue);
-                            if (optionalNewValueToSet.isEmpty()) {
-                                continue;
-                            }
-                            EObject newValueToSet = (EObject) optionalNewValueToSet.get();
-                            newValuesToSet.add(newValueToSet);
-                            try {
-                                if (!refElements.contains(newValueToSet)) {
-                                    refElements.add(newValueToSet);
-                                }
-                            } catch (IllegalArgumentException | ClassCastException | ArrayStoreException exception) {
-                                return new Failure("");
-                            }
-                        }
-                        refElements.removeIf(refElt -> !newValuesToSet.contains(refElt));
-                    } else if (!eStructuralFeature.isMany() && eType instanceof EClass && newValue instanceof String newStringValue) {
-                        var optionalNewValueToSet = this.objectService.getObject(optionalEditingContext.get(), newStringValue);
-                        if (optionalNewValueToSet.isPresent()) {
-                            eObject.eSet(eStructuralFeature, optionalNewValueToSet.get());
-                        }
-                    } else if (eType instanceof EEnum && newValue instanceof String) {
-                        EEnumLiteral eEnumLiteral = ((EEnum) eType).getEEnumLiteral((String) newValue);
-                        eObject.eSet(eStructuralFeature, eEnumLiteral.getInstance());
-                    } else if (eType instanceof EDataType) {
-                        String newValueAsString = EcoreUtil.convertToString((EDataType) eStructuralFeature.getEType(), newValue);
-                        Object value = EcoreUtil.createFromString((EDataType) eStructuralFeature.getEType(), newValueAsString);
-                        eObject.eSet(eStructuralFeature, value);
-                    }
-                    status = new Success();
-                }
-            }
-            return status;
-        };
-        return newCellValueHandler;
-    }
 }

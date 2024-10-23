@@ -37,6 +37,7 @@ import { GanttRepresentation } from '@eclipse-sirius/sirius-components-gantt';
 import { OmniboxButton } from '@eclipse-sirius/sirius-components-omnibox';
 import { PortalRepresentation } from '@eclipse-sirius/sirius-components-portals';
 import { SelectionDialog } from '@eclipse-sirius/sirius-components-selection';
+import { TableRepresentation } from '@eclipse-sirius/sirius-components-tables';
 import { TreeRepresentation, treeItemContextMenuEntryExtensionPoint } from '@eclipse-sirius/sirius-components-trees';
 import { ValidationView } from '@eclipse-sirius/sirius-components-validation';
 import {
@@ -162,6 +163,7 @@ const representationFactories: RepresentationComponentFactory[] = [
   (representationMetadata) => (getType(representationMetadata) === 'Deck' ? DeckRepresentation : null),
   (representationMetadata) => (getType(representationMetadata) === 'Portal' ? PortalRepresentation : null),
   (representationMetadata) => (getType(representationMetadata) === 'Tree' ? TreeRepresentation : null),
+  (representationMetadata) => (getType(representationMetadata) === 'Table' ? TableRepresentation : null),
 ];
 
 defaultExtensionRegistry.putData(representationFactoryExtensionPoint, {

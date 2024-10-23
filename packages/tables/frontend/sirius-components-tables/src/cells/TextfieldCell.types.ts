@@ -10,22 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
 
-export interface GQLEditMultiSelectCellMutationData {
-  editMultiSelectCell: GQLEditMultiSelectCellPayload;
-}
+import { GQLTextfieldCell } from '../table/TableContent.types';
 
-export interface GQLEditMultiSelectCellMutationVariables {
-  input: GQLEditMultiSelectCellInput;
-}
-
-export interface GQLEditMultiSelectCellInput {
-  id: string;
+export interface TextfieldCellProps {
   editingContextId: string;
   representationId: string;
   tableId: string;
-  cellId: string;
-  newValues: string[];
+  cell: GQLTextfieldCell;
+  disabled: boolean;
 }
-export type GQLEditMultiSelectCellPayload = GQLErrorPayload | GQLSuccessPayload;
+
+export interface TextfieldCellState {
+  value: string;
+}

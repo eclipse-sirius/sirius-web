@@ -35,7 +35,7 @@ public final class Line {
 
     private UUID descriptionId;
 
-    private List<AbstractCell> cells;
+    private List<ICell> cells;
 
     private Line() {
         // Prevent instantiation
@@ -57,7 +57,7 @@ public final class Line {
         return this.descriptionId;
     }
 
-    public List<AbstractCell> getCells() {
+    public List<ICell> getCells() {
         return this.cells;
     }
 
@@ -87,7 +87,7 @@ public final class Line {
 
         private UUID descriptionId;
 
-        private List<AbstractCell> cells;
+        private List<ICell> cells;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -115,7 +115,7 @@ public final class Line {
             return this;
         }
 
-        public Builder cells(List<AbstractCell> cells) {
+        public Builder cells(List<ICell> cells) {
             this.cells = Objects.requireNonNull(cells);
             return this;
         }

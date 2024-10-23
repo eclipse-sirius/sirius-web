@@ -64,7 +64,32 @@ INSERT INTO document (
                "id":"fad0f4c9-e668-44f3-8deb-aef0edb6ddff",
                "eClass":"papaya:Component",
                "data":{
-                 "name":"sirius-web-domain"
+                 "name":"sirius-web-domain",
+                 "packages": [
+                   {
+                     "id": "569d3f9b-2a43-4254-b609-511258251d96",
+                     "eClass": "papaya:Package",
+                     "data": {
+                       "name": "services",
+                       "types": [
+                         {
+                           "id": "c715807f-73f6-44fb-b17b-df6d12558458",
+                           "eClass": "papaya:Class",
+                           "data": {
+                             "name": "Success"
+                           }
+                         },
+                         {
+                           "id": "b0f27d20-4705-40a7-9d28-67d605b5e9d1",
+                           "eClass": "papaya:Class",
+                           "data": {
+                             "name": "Failure"
+                           }
+                         }
+                       ]
+                     }
+                   }
+                 ]
                }
              },
              {

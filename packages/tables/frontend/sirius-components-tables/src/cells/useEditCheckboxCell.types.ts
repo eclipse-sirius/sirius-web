@@ -12,6 +12,11 @@
  *******************************************************************************/
 import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
 
+export interface UseEditCheckboxCellValue {
+  editCheckboxCell: (newValue: boolean) => void;
+  loading: boolean;
+}
+
 export interface GQLEditCheckboxCellMutationData {
   editCheckboxCell: GQLEditCheckboxCellPayload;
 }

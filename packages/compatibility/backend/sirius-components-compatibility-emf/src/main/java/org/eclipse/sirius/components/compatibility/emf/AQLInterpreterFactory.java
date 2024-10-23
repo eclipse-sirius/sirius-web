@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -78,24 +78,23 @@ public class AQLInterpreterFactory implements IAQLInterpreterFactory {
     private List<Class<?>> getJavaServices(Viewpoint viewpoint) {
         List<Class<?>> classes = new ArrayList<>();
 
-        // @formatter:off
         List<String> qualifiedNames = viewpoint.getOwnedJavaExtensions().stream()
                 .map(JavaExtension::getQualifiedClassName)
                 .toList();
-        // @formatter:on
 
         for (String qualifiedName : qualifiedNames) {
             if (qualifiedName.contains("::")) {
                 this.logger.warn("Sirius Web does not support Acceleo-style :: references");
-                continue;
-            }
-            try {
-                Class<?> aClass = Class.forName(qualifiedName);
-                classes.add(aClass);
-            } catch (ClassNotFoundException exception) {
-                this.logger.warn("Could not load class '{}'", qualifiedName);
-            } catch (NoClassDefFoundError exception) {
-                this.logger.error("Could not load class '{}'; not all dependencies could be " + "instantiated by the JVM: {}", qualifiedName, exception.getMessage());
+            } else {
+                try {
+                    Class<?> aClass = Class.forName(qualifiedName);
+                    classes.add(aClass);
+                } catch (ClassNotFoundException exception) {
+                    this.logger.warn("Could not load class '{}'", qualifiedName);
+                } catch (NoClassDefFoundError exception) {
+                    this.logger.error("Could not load class '{}'; not all dependencies could be " + "instantiated by the JVM: {}", qualifiedName, exception.getMessage());
+                }
+
             }
         }
 

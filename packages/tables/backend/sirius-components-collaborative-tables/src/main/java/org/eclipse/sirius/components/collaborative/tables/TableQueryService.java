@@ -17,8 +17,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.tables.api.ITableQueryService;
-import org.eclipse.sirius.components.tables.AbstractCell;
 import org.eclipse.sirius.components.tables.Column;
+import org.eclipse.sirius.components.tables.ICell;
 import org.eclipse.sirius.components.tables.Line;
 import org.eclipse.sirius.components.tables.Table;
 import org.springframework.stereotype.Service;
@@ -32,7 +32,7 @@ import org.springframework.stereotype.Service;
 public class TableQueryService implements ITableQueryService {
 
     @Override
-    public Optional<AbstractCell> findCellById(Table table, UUID cellId) {
+    public Optional<ICell> findCellById(Table table, UUID cellId) {
         return table.getLines().stream().flatMap(line -> line.getCells().stream()).filter(cell -> cell.getId().equals(cellId)).findFirst();
     }
 

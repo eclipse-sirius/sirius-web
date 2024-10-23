@@ -10,23 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
 
-export interface GQLEditSelectCellMutationData {
-  editSelectCell: GQLEditSelectCellPayload;
-}
+import { GQLCheckboxCell } from '../table/TableContent.types';
 
-export interface GQLEditSelectCellMutationVariables {
-  input: GQLEditSelectCellInput;
-}
-
-export interface GQLEditSelectCellInput {
-  id: string;
+export interface CheckboxCellProps {
   editingContextId: string;
   representationId: string;
   tableId: string;
-  cellId: string;
-  newValue: string;
+  cell: GQLCheckboxCell;
+  disabled: boolean;
 }
-
-export type GQLEditSelectCellPayload = GQLErrorPayload | GQLSuccessPayload;

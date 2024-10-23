@@ -25,7 +25,17 @@ import org.eclipse.sirius.components.annotations.Immutable;
  * @author arichard
  */
 @Immutable
-public final class SelectCell extends AbstractCell {
+public final class SelectCell implements ICell {
+
+    public static final String TYPE = "SELECT";
+
+    private UUID id;
+
+    private String targetObjectId;
+
+    private String targetObjectKind;
+
+    private UUID columnId;
 
     private List<SelectCellOption> options;
 
@@ -51,6 +61,31 @@ public final class SelectCell extends AbstractCell {
     public String toString() {
         String pattern = "{0} '{'id: {1}, columnId: {2}, value: {3}', options: {4}}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.columnId, this.value, this.options);
+    }
+
+    @Override
+    public UUID getId() {
+        return this.id;
+    }
+
+    @Override
+    public String getType() {
+        return TYPE;
+    }
+
+    @Override
+    public String getTargetObjectId() {
+        return this.targetObjectId;
+    }
+
+    @Override
+    public String getTargetObjectKind() {
+        return this.targetObjectKind;
+    }
+
+    @Override
+    public UUID getColumnId() {
+        return this.columnId;
     }
 
     /**

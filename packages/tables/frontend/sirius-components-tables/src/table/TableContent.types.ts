@@ -19,6 +19,7 @@ export interface TableProps {
 }
 
 export type SortOrder = 'asc' | 'desc';
+
 export interface TableState {
   order: SortOrder;
   orderBy: string;
@@ -51,9 +52,6 @@ export interface GQLTable {
 export interface GQLColumn {
   id: string;
   label: string;
-}
-export interface ExportData {
-  [key: string]: string;
 }
 
 export interface GQLLine {

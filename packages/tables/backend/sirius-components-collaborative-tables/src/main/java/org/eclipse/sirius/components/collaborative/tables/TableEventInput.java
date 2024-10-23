@@ -21,5 +21,6 @@ import org.eclipse.sirius.components.core.api.IInput;
  *
  * @author arichard
  */
-public record TableEventInput(UUID id, String editingContextId, String tableId) implements IInput {
+public record TableEventInput(UUID id, String editingContextId, String representationId) implements IInput {
+
 }
