@@ -52,6 +52,8 @@ This allows an error to be displayed when there is a problem during uploading
 - https://github.com/eclipse-sirius/sirius-web/issues/3846[#3846] [core] Migrate the frontend to `react 18.3.1`, `react-dom 18.3.1`, `react-router-dom 6.26.0`, `@xstate/react: 3.0.0` and `@ObeoNetwork/gantt-task-react 0.6.0`
 - https://github.com/eclipse-sirius/sirius-web/issues/3840[#3840] [diagram] Migrate to ReactFlow 12
 - [releng] Switch to the final release version of AQL 8.0.2
+- https://github.com/eclipse-sirius/sirius-web/issues/3868[#3868] [diagram] Add dependency to `react-draggable 4.4.6`
+- https://github.com/eclipse-sirius/sirius-web/issues/3868[#3868] [diagram] Add dependency to `svg-path-parser 1.1.0`
 
 
 === Bug fixes
@@ -86,7 +88,7 @@ description (optional).
 - https://github.com/eclipse-sirius/sirius-web/issues/3873[#3873] [diagram] Make the Selection Dialog available for the EdgeTool
 - https://github.com/eclipse-sirius/sirius-web/issues/3950[#3950] [diagram] Have the multiple selection on the Selection Dialog
 - https://github.com/eclipse-sirius/sirius-web/issues/3982[#3982] [core] Add support for the command palette.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3868[#3868] [diagram] Make path of edges editable
 
 === Improvements
 

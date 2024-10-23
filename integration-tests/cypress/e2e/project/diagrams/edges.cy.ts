@@ -15,6 +15,7 @@ import { Studio } from '../../../usecases/Studio';
 import { Details } from '../../../workbench/Details';
 import { Diagram } from '../../../workbench/Diagram';
 import { Explorer } from '../../../workbench/Explorer';
+import { Flow } from '../../../usecases/Flow';
 
 describe('Diagram - edges', () => {
   context.skip('Given a studio template', () => {
@@ -283,6 +284,35 @@ describe('Diagram - edges', () => {
             );
           });
       });
+    });
+  });
+
+  context('Given a flow project', () => {
+    let projectId: string = '';
+    beforeEach(() => {
+      new Flow().createFlowProject().then((createdProjectData) => {
+        projectId = createdProjectData.projectId;
+        const project = new Project();
+        project.visit(projectId);
+        const explorer = new Explorer();
+        explorer.expand('Flow');
+        explorer.expand('NewSystem');
+        explorer.selectRepresentation('Topography');
+      });
+    });
+
+    afterEach(() => cy.deleteProject(projectId));
+
+    it('Check bend points are available when selecting an edge', () => {
+      const diagram = new Diagram();
+      const explorer = new Explorer();
+      explorer.expand('DataSource1');
+      diagram.getNodes('Topography', 'DataSource1').should('exist');
+      explorer.select('standard');
+      cy.getByTestId('bend-point-0');
+      cy.getByTestId('temporary-bend-point-0');
+      cy.getByTestId('bend-point-1');
+      cy.getByTestId('temporary-bend-point-1');
     });
   });
 });

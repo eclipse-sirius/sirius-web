@@ -74,3 +74,31 @@ NOTE: the reference node (i.e., the node that will be used as the basis for the 
 A node cannot be reduced smaller than its children require.
 
 NOTE: Distribute tools can only be applied to elements on the same level, and cannot move pinned elements or resize non-resizable elements.
+
+
+== Edge path
+
+=== Editable edge
+
+The new feature allows users to edit the paths of edges in a diagram.
+This includes modifying the path, adding new nodes, and resetting the path to its original state.
+
+image::images/editable-edge-path.png[Editable edge path, 60%]
+
+==== Path Modification
+
+Users can modify the path of an edge by dragging black discs located at each node of the edge.
+
+==== Adding Nodes
+
+Users can add new nodes to the edge by dragging a gray circles located at the midpoint of each segment.
+
+==== Deleting Nodes
+
+Users can delete a node by double-clicking on it.
+
+==== Reset Path
+
+A tool in the edge palette allows users to reset the custom path to the original path of the edge.
+
+image::images/editable-edge-reset-tool.png[]
