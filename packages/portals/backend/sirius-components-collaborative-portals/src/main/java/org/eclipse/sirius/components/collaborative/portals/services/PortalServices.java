@@ -109,7 +109,7 @@ public class PortalServices {
         return Portal.newPortal(portal).layoutData(newLayoutData).build();
     }
 
-    private String getPortalViewId(Portal parentPortal, String viewRepresentationId) {
+    public String getPortalViewId(Portal parentPortal, String viewRepresentationId) {
         String rawId = parentPortal.getId() + viewRepresentationId;
         return UUID.nameUUIDFromBytes(rawId.getBytes()).toString();
     }

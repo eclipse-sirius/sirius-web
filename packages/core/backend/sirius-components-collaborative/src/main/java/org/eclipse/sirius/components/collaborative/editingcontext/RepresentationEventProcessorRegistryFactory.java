@@ -12,11 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.editingcontext;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.api.IDanglingRepresentationDeletionService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorRegistryFactory;
+import org.eclipse.sirius.components.core.api.representations.IRepresentationChangeEventRecorder;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.MeterRegistry;
@@ -33,17 +35,20 @@ public class RepresentationEventProcessorRegistryFactory implements IRepresentat
 
     private final IDanglingRepresentationDeletionService danglingRepresentationDeletionService;
 
+    private final List<IRepresentationChangeEventRecorder> representationChangeEventRecorders;
+
     private final MeterRegistry meterRegistry;
 
     public RepresentationEventProcessorRegistryFactory(RepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory,
-            IDanglingRepresentationDeletionService danglingRepresentationDeletionService, MeterRegistry meterRegistry) {
+            IDanglingRepresentationDeletionService danglingRepresentationDeletionService, List<IRepresentationChangeEventRecorder> representationChangeEventRecorders, MeterRegistry meterRegistry) {
         this.representationEventProcessorComposedFactory = Objects.requireNonNull(representationEventProcessorComposedFactory);
         this.danglingRepresentationDeletionService = Objects.requireNonNull(danglingRepresentationDeletionService);
+        this.representationChangeEventRecorders = Objects.requireNonNull(representationChangeEventRecorders);
         this.meterRegistry = Objects.requireNonNull(meterRegistry);
     }
 
     @Override
     public IRepresentationEventProcessorRegistry createRepresentationEventProcessorRegistry() {
-        return new RepresentationEventProcessorRegistry(this.representationEventProcessorComposedFactory, this.danglingRepresentationDeletionService, this.meterRegistry);
+        return new RepresentationEventProcessorRegistry(this.representationEventProcessorComposedFactory, this.danglingRepresentationDeletionService, this.representationChangeEventRecorders, this.meterRegistry);
     }
 }

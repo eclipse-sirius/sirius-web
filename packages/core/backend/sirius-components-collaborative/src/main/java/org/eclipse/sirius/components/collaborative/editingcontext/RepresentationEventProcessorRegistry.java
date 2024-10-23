@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationInput;
+import org.eclipse.sirius.components.core.api.representations.IRepresentationChangeEventRecorder;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,14 +57,17 @@ public class RepresentationEventProcessorRegistry implements IRepresentationEven
 
     private final IDanglingRepresentationDeletionService danglingRepresentationDeletionService;
 
+    private final List<IRepresentationChangeEventRecorder> representationChangeEventRecorders;
+
     private final MeterRegistry meterRegistry;
 
     private final Logger logger = LoggerFactory.getLogger(RepresentationEventProcessorRegistry.class);
 
     public RepresentationEventProcessorRegistry(RepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory,
-            IDanglingRepresentationDeletionService danglingRepresentationDeletionService, MeterRegistry meterRegistry) {
+            IDanglingRepresentationDeletionService danglingRepresentationDeletionService, List<IRepresentationChangeEventRecorder> representationChangeEventRecorders, MeterRegistry meterRegistry) {
         this.representationEventProcessorComposedFactory = Objects.requireNonNull(representationEventProcessorComposedFactory);
         this.danglingRepresentationDeletionService = Objects.requireNonNull(danglingRepresentationDeletionService);
+        this.representationChangeEventRecorders = Objects.requireNonNull(representationChangeEventRecorders);
         this.meterRegistry = Objects.requireNonNull(meterRegistry);
     }
 
@@ -132,7 +136,15 @@ public class RepresentationEventProcessorRegistry implements IRepresentationEven
         if (representationEventProcessorEntry != null) {
             try {
                 IRepresentationEventProcessor representationEventProcessor = representationEventProcessorEntry.getRepresentationEventProcessor();
+                var previousRepresentation = representationEventProcessor.getRepresentation();
                 representationEventProcessor.refresh(changeDescription);
+                var refreshedRepresentation = representationEventProcessor.getRepresentation();
+                var input = changeDescription.getInput();
+
+                this.representationChangeEventRecorders.stream()
+                        .filter(recorder -> recorder.canHandle(editingContext, input))
+                        .forEach(recorder -> recorder.recordChanges(editingContext, input, previousRepresentation, refreshedRepresentation));
+
                 representationEventProcessor.postRefresh(changeDescription);
             } catch (Exception exception) {
                 this.logger.warn(exception.getMessage(), exception);

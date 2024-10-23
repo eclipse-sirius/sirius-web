@@ -22,6 +22,7 @@ import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.undo.dto.RedoInput;
 import org.eclipse.sirius.web.application.undo.dto.UndoInput;
 import org.springframework.stereotype.Service;
+
 import reactor.core.publisher.Sinks;
 
 /**
@@ -38,7 +39,7 @@ public class UndoRedoRecorder implements IInputPreProcessor, IInputPostProcessor
 
     @Override
     public IInput preProcess(IEditingContext editingContext, IInput input, Sinks.Many<ChangeDescription> changeDescriptionSink) {
-        if (editingContext instanceof EditingContext siriusEditingContext && canHandle(input)) {
+        if (editingContext instanceof EditingContext siriusEditingContext && this.canHandle(input)) {
             siriusEditingContext.getChangeRecorder().beginRecording(siriusEditingContext.getDomain().getResourceSet().getResources());
         }
         return input;
@@ -46,7 +47,7 @@ public class UndoRedoRecorder implements IInputPreProcessor, IInputPostProcessor
 
     @Override
     public void postProcess(IEditingContext editingContext, IInput input, Sinks.Many<ChangeDescription> changeDescriptionSink) {
-        if (editingContext instanceof EditingContext siriusEditingContext && canHandle(input)) {
+        if (editingContext instanceof EditingContext siriusEditingContext && this.canHandle(input)) {
             var changeDescription = siriusEditingContext.getChangeRecorder().summarize();
             siriusEditingContext.getInputId2change().put(input.id().toString(), changeDescription);
             siriusEditingContext.getChangeRecorder().endRecording();
