@@ -19,6 +19,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.representations.Element;
+import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.Table;
@@ -45,7 +46,7 @@ public class TableComponent implements IComponent {
         TableDescription tableDescription = this.props.getTableDescription();
         Optional<Table> optionalPreviousTable = this.props.getPreviousTable();
 
-        String id = optionalPreviousTable.map(Table::getId).orElseGet(() -> UUID.randomUUID().toString());
+        String id = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class).orElseGet(() -> UUID.randomUUID().toString());
         String targetObjectId = tableDescription.getTargetObjectIdProvider().apply(variableManager);
         String targetObjectKind = tableDescription.getTargetObjectKindProvider().apply(variableManager);
 

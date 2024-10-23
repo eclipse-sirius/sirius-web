@@ -50,8 +50,10 @@ public class MultiSelectCellComponent implements IComponent {
 
         Object value = cellDescription.getCellValueProvider().apply(variableManager, this.props.columnTargetObject());
         List<String> values = new ArrayList<>();
-        if (value instanceof Collection<?>) {
-            values.addAll(((Collection<?>) value).stream().map(Object::toString).toList());
+        if (value instanceof Collection<?> collectionValue) {
+            values.addAll(collectionValue.stream().map(Object::toString).toList());
+        } else if (value instanceof String stringValue) {
+            values.add(stringValue);
         }
 
         List<Object> optionCandidates = cellDescription.getCellOptionsProvider().apply(variableManager, this.props.columnTargetObject());

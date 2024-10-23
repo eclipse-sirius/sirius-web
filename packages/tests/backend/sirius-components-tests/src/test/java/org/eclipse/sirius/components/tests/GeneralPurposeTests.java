@@ -74,6 +74,8 @@ public class GeneralPurposeTests {
 
     private static final String BUILDER = "Builder";
 
+    private static final String CONTINUE = "continue;";
+
     private static final String CHECKSTYLE_OFF = "CHECKSTYLE:OFF";
 
     private static final String ESLINT_DISABLE = "eslint-disable";
@@ -195,6 +197,7 @@ public class GeneralPurposeTests {
                             this.testNoCheckstyleOff(index, line, javaFilePath);
                             this.testNoThrowNewException(index, line, javaFilePath, lines);
                             this.testNoNonNls(index, line, javaFilePath);
+                            this.testNoContinue(index, line, javaFilePath);
                         }
                     }
 
@@ -263,6 +266,12 @@ public class GeneralPurposeTests {
     private void testNoNonNls(int index, String line, Path javaFilePath) {
         if (line.contains(NON_NLS)) {
             fail(this.createErrorMessage("$NON-NLS-", javaFilePath, index));
+        }
+    }
+
+    private void testNoContinue(int index, String line, Path javaFilePath) {
+        if (line.contains(CONTINUE)) {
+            fail(this.createErrorMessage("continue;", javaFilePath, index));
         }
     }
 

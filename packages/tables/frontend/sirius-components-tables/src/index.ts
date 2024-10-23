@@ -10,5 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-export { TableContent } from './TableContent';
-export * from './TableContent.types';
+export { TableRepresentation } from './representation/TableRepresentation';
+export { TableContent } from './table/TableContent';
+export * from './table/TableContent.types';

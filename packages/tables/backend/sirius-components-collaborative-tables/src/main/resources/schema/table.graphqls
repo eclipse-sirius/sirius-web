@@ -1,4 +1,21 @@
-type Table {
+extend type Subscription {
+  tableEvent(input: TableEventInput!): TableEventPayload!
+}
+
+input TableEventInput {
+  id: ID!
+  representationId: ID!
+  editingContextId: ID!
+}
+
+union TableEventPayload = ErrorPayload | TableRefreshedEventPayload
+
+type TableRefreshedEventPayload {
+  id: ID!
+  table: Table!
+}
+
+type Table implements Representation {
   id: ID!
   metadata: RepresentationMetadata!
   targetObjectId: ID!

@@ -15,8 +15,8 @@ package org.eclipse.sirius.components.collaborative.tables.api;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.tables.AbstractCell;
 import org.eclipse.sirius.components.tables.Column;
+import org.eclipse.sirius.components.tables.ICell;
 import org.eclipse.sirius.components.tables.Line;
 import org.eclipse.sirius.components.tables.Table;
 
@@ -27,7 +27,7 @@ import org.eclipse.sirius.components.tables.Table;
  */
 public interface ITableQueryService {
 
-    Optional<AbstractCell> findCellById(Table table, UUID cellId);
+    Optional<ICell> findCellById(Table table, UUID cellId);
 
     Optional<Line> findLineByCellId(Table table, UUID lineId);
 

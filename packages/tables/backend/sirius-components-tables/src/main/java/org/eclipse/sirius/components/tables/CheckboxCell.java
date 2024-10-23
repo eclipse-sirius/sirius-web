@@ -24,7 +24,17 @@ import org.eclipse.sirius.components.annotations.Immutable;
  * @author arichard
  */
 @Immutable
-public final class CheckboxCell extends AbstractCell {
+public final class CheckboxCell implements ICell {
+
+    public static final String TYPE = "CHECKBOX";
+
+    private UUID id;
+
+    private String targetObjectId;
+
+    private String targetObjectKind;
+
+    private UUID columnId;
 
     private boolean value;
 
@@ -44,6 +54,31 @@ public final class CheckboxCell extends AbstractCell {
     public String toString() {
         String pattern = "{0} '{'id: {1}, columnId: {2}, value: {3}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.columnId, this.value);
+    }
+
+    @Override
+    public UUID getId() {
+        return this.id;
+    }
+
+    @Override
+    public String getType() {
+        return TYPE;
+    }
+
+    @Override
+    public String getTargetObjectId() {
+        return this.targetObjectId;
+    }
+
+    @Override
+    public String getTargetObjectKind() {
+        return this.targetObjectKind;
+    }
+
+    @Override
+    public UUID getColumnId() {
+        return this.columnId;
     }
 
     /**

@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.representations.IElementFactory;
 import org.eclipse.sirius.components.representations.IProps;
-import org.eclipse.sirius.components.tables.AbstractCell;
 import org.eclipse.sirius.components.tables.CheckboxCell;
 import org.eclipse.sirius.components.tables.Column;
+import org.eclipse.sirius.components.tables.ICell;
 import org.eclipse.sirius.components.tables.Line;
 import org.eclipse.sirius.components.tables.MultiSelectCell;
 import org.eclipse.sirius.components.tables.SelectCell;
@@ -43,103 +43,118 @@ public class TableElementFactory implements IElementFactory {
     @Override
     @SuppressWarnings("checkstyle:JavaNCSS")
     public Object instantiateElement(String type, IProps props, List<Object> children) {
-        Object object = null;
-        if (TableElementProps.TYPE.equals(type) && props instanceof TableElementProps) {
-            object = this.instantiateTable((TableElementProps) props, children);
-        } else if (LineElementProps.TYPE.equals(type) && props instanceof LineElementProps) {
-            object = this.instantiateLine((LineElementProps) props, children);
-        } else if (ColumnElementProps.TYPE.equals(type) && props instanceof ColumnElementProps) {
-            object = this.instantiateColumn((ColumnElementProps) props);
-        } else if (TextfieldCellElementProps.TYPE.equals(type) && props instanceof TextfieldCellElementProps) {
-            object = this.instantiateCell((TextfieldCellElementProps) props);
-        } else if (CheckboxCellElementProps.TYPE.equals(type) && props instanceof CheckboxCellElementProps) {
-            object = this.instantiateCell((CheckboxCellElementProps) props);
-        } else if (SelectCellElementProps.TYPE.equals(type) && props instanceof SelectCellElementProps) {
-            object = this.instantiateCell((SelectCellElementProps) props);
-        } else if (MultiSelectCellElementProps.TYPE.equals(type) && props instanceof MultiSelectCellElementProps) {
-            object = this.instantiateCell((MultiSelectCellElementProps) props);
+        return switch (type) {
+            case TableElementProps.TYPE -> this.instantiateTable(props, children);
+            case LineElementProps.TYPE -> this.instantiateLine(props, children);
+            case ColumnElementProps.TYPE -> this.instantiateColumn(props);
+            case TextfieldCellElementProps.TYPE, CheckboxCellElementProps.TYPE, SelectCellElementProps.TYPE, MultiSelectCellElementProps.TYPE -> this.instantiateCell(props);
+            default -> null;
+        };
+    }
+
+    private Table instantiateTable(IProps props, List<Object> children) {
+        if (props instanceof TableElementProps tableElementProps) {
+            List<Line> lines = children.stream()
+                    .filter(Line.class::isInstance)
+                    .map(Line.class::cast)
+                    .collect(Collectors.toList());
+
+            List<Column> columns = children.stream()
+                    .filter(Column.class::isInstance)
+                    .map(Column.class::cast)
+                    .collect(Collectors.toList());
+
+            return Table.newTable(tableElementProps.id())
+                    .targetObjectId(tableElementProps.targetObjectId())
+                    .targetObjectKind(tableElementProps.targetObjectKind())
+                    .descriptionId(tableElementProps.descriptionId())
+                    .lines(lines)
+                    .columns(columns)
+                    .build();
         }
-        return object;
+        return null;
     }
 
-    private Table instantiateTable(TableElementProps props, List<Object> children) {
-        List<Line> lines = children.stream()
-                .filter(Line.class::isInstance)
-                .map(Line.class::cast)
-                .collect(Collectors.toList());
+    private Line instantiateLine(IProps props, List<Object> children) {
+        if (props instanceof LineElementProps lineElementProps) {
+            List<ICell> cells = children.stream()
+                    .filter(TextfieldCell.class::isInstance)
+                    .map(TextfieldCell.class::cast)
+                    .collect(Collectors.toList());
 
-        List<Column> columns = children.stream()
-                .filter(Column.class::isInstance)
-                .map(Column.class::cast)
-                .collect(Collectors.toList());
+            cells.addAll(children.stream()
+                    .filter(CheckboxCell.class::isInstance)
+                    .map(CheckboxCell.class::cast)
+                    .toList());
 
-        return Table.newTable(props.id())
-                .targetObjectId(props.targetObjectId())
-                .targetObjectKind(props.targetObjectKind())
-                .descriptionId(props.descriptionId())
-                .lines(lines)
-                .columns(columns)
-                .build();
+            cells.addAll(children.stream()
+                    .filter(SelectCell.class::isInstance)
+                    .map(SelectCell.class::cast)
+                    .toList());
+
+            cells.addAll(children.stream()
+                    .filter(MultiSelectCell.class::isInstance)
+                    .map(MultiSelectCell.class::cast)
+                    .toList());
+
+            return Line.newLine(lineElementProps.id())
+                    .targetObjectId(lineElementProps.targetObjectId())
+                    .targetObjectKind(lineElementProps.targetObjectKind())
+                    .descriptionId(lineElementProps.descriptionId())
+                    .cells(cells)
+                    .build();
+        }
+        return null;
     }
 
-    private Line instantiateLine(LineElementProps props, List<Object> children) {
-        List<AbstractCell> cells = children.stream()
-                .filter(AbstractCell.class::isInstance)
-                .map(AbstractCell.class::cast)
-                .collect(Collectors.toList());
+    private Column instantiateColumn(IProps props) {
+        if (props instanceof ColumnElementProps columnElementProps) {
 
-        return Line.newLine(props.id())
-                .targetObjectId(props.targetObjectId())
-                .targetObjectKind(props.targetObjectKind())
-                .descriptionId(props.descriptionId())
-                .cells(cells)
-                .build();
+            return Column.newColumn(columnElementProps.id())
+                    .descriptionId(columnElementProps.descriptionId())
+                    .label(columnElementProps.label())
+                    .targetObjectId(columnElementProps.targetObjectId())
+                    .targetObjectKind(columnElementProps.targetObjectKind())
+                    .build();
+        }
+        return null;
     }
 
-    private Column instantiateColumn(ColumnElementProps props) {
-        return Column.newColumn(props.id())
-                .descriptionId(props.descriptionId())
-                .label(props.label())
-                .targetObjectId(props.targetObjectId())
-                .targetObjectKind(props.targetObjectKind())
-                .build();
+    private ICell instantiateCell(IProps props) {
+        ICell cell = null;
+        if (props instanceof TextfieldCellElementProps textfieldCellElementProps) {
+            cell = TextfieldCell.newTextfieldCell(textfieldCellElementProps.id())
+                    .columnId(textfieldCellElementProps.columnId())
+                    .targetObjectId(textfieldCellElementProps.targetObjectId())
+                    .targetObjectKind(textfieldCellElementProps.targetObjectKind())
+                    .value(textfieldCellElementProps.value())
+                    .build();
+        } else if (props instanceof CheckboxCellElementProps checkboxCellElementProps) {
+            cell = CheckboxCell.newCheckboxCell(checkboxCellElementProps.id())
+                    .columnId(checkboxCellElementProps.columnId())
+                    .targetObjectId(checkboxCellElementProps.targetObjectId())
+                    .targetObjectKind(checkboxCellElementProps.targetObjectKind())
+                    .value(checkboxCellElementProps.value())
+                    .build();
+        } else if (props instanceof SelectCellElementProps selectCellElementProps) {
+            cell = SelectCell.newSelectCell(selectCellElementProps.id())
+                    .columnId(selectCellElementProps.columnId())
+                    .targetObjectId(selectCellElementProps.targetObjectId())
+                    .targetObjectKind(selectCellElementProps.targetObjectKind())
+                    .options(selectCellElementProps.options())
+                    .value(selectCellElementProps.value())
+                    .build();
+        } else if (props instanceof MultiSelectCellElementProps multiSelectCellElementProps) {
+            cell = MultiSelectCell.newMultiSelectCell(multiSelectCellElementProps.id())
+                    .columnId(multiSelectCellElementProps.columnId())
+                    .targetObjectId(multiSelectCellElementProps.targetObjectId())
+                    .targetObjectKind(multiSelectCellElementProps.targetObjectKind())
+                    .options(multiSelectCellElementProps.options())
+                    .values(multiSelectCellElementProps.values())
+                    .build();
+        }
+        return cell;
+
     }
 
-    private TextfieldCell instantiateCell(TextfieldCellElementProps props) {
-        return TextfieldCell.newTextfieldCell(props.id())
-                .columnId(props.columnId())
-                .targetObjectId(props.targetObjectId())
-                .targetObjectKind(props.targetObjectKind())
-                .value(props.value())
-                .build();
-    }
-
-    private CheckboxCell instantiateCell(CheckboxCellElementProps props) {
-        return CheckboxCell.newCheckboxCell(props.id())
-                .columnId(props.columnId())
-                .targetObjectId(props.targetObjectId())
-                .targetObjectKind(props.targetObjectKind())
-                .value(props.value())
-                .build();
-    }
-
-    private SelectCell instantiateCell(SelectCellElementProps props) {
-        return SelectCell.newSelectCell(props.id())
-                .columnId(props.columnId())
-                .targetObjectId(props.targetObjectId())
-                .targetObjectKind(props.targetObjectKind())
-                .options(props.options())
-                .value(props.value())
-                .build();
-    }
-
-    private MultiSelectCell instantiateCell(MultiSelectCellElementProps props) {
-        return MultiSelectCell.newMultiSelectCell(props.id())
-                .columnId(props.columnId())
-                .targetObjectId(props.targetObjectId())
-                .targetObjectKind(props.targetObjectKind())
-                .options(props.options())
-                .values(props.values())
-                .build();
-    }
 }

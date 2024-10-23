@@ -34,8 +34,8 @@ import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.tables.AbstractCell;
 import org.eclipse.sirius.components.tables.Column;
+import org.eclipse.sirius.components.tables.ICell;
 import org.eclipse.sirius.components.tables.Line;
 import org.eclipse.sirius.components.tables.Table;
 import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
@@ -96,7 +96,7 @@ public class EditCheckboxCellEventHandler implements ITableEventHandler {
             var optCell = this.tableQueryService.findCellById(table, UUID.fromString(editCheckboxCellInput.cellId()));
 
             if (optCell.isPresent()) {
-                AbstractCell cell = optCell.get();
+                ICell cell = optCell.get();
                 var optLine = this.tableQueryService.findLineByCellId(table, cell.getId());
                 var optCol = this.tableQueryService.findColumnById(table, cell.getColumnId());
 
@@ -112,7 +112,7 @@ public class EditCheckboxCellEventHandler implements ITableEventHandler {
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private void invokeEditCell(AbstractCell cell, Line line, Column column, IEditingContext editingContext, TableDescription tableDescription, boolean newValue) {
+    private void invokeEditCell(ICell cell, Line line, Column column, IEditingContext editingContext, TableDescription tableDescription, boolean newValue) {
         var optionalSelf = this.objectService.getObject(editingContext, line.getTargetObjectId());
         if (optionalSelf.isPresent()) {
             Object self = optionalSelf.get();

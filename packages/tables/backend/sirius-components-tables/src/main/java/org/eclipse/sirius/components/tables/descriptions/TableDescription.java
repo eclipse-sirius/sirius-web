@@ -16,8 +16,10 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
@@ -27,11 +29,15 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * @author lfasani
  */
 @Immutable
-public final class TableDescription {
+public final class TableDescription implements IRepresentationDescription {
 
     public static final String LABEL = "label";
 
     private String id;
+
+    private String label;
+
+    private Predicate<VariableManager> canCreatePredicate;
 
     private Function<VariableManager, String> targetObjectIdProvider;
 
@@ -51,6 +57,16 @@ public final class TableDescription {
 
     public String getId() {
         return this.id;
+    }
+
+    @Override
+    public String getLabel() {
+        return this.label;
+    }
+
+    @Override
+    public Predicate<VariableManager> getCanCreatePredicate() {
+        return this.canCreatePredicate;
     }
 
     public Function<VariableManager, String> getTargetObjectIdProvider() {
@@ -98,6 +114,10 @@ public final class TableDescription {
 
         private final String id;
 
+        private String label;
+
+        private Predicate<VariableManager> canCreatePredicate;
+
         private Function<VariableManager, String> targetObjectIdProvider;
 
         private Function<VariableManager, String> targetObjectKindProvider;
@@ -112,6 +132,16 @@ public final class TableDescription {
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
+        }
+
+        public Builder label(String label) {
+            this.label = Objects.requireNonNull(label);
+            return this;
+        }
+
+        public Builder canCreatePredicate(Predicate<VariableManager> canCreatePredicate) {
+            this.canCreatePredicate = Objects.requireNonNull(canCreatePredicate);
+            return this;
         }
 
         public Builder targetObjectIdProvider(Function<VariableManager, String> targetObjectIdProvider) {
@@ -147,6 +177,8 @@ public final class TableDescription {
         public TableDescription build() {
             TableDescription tableDescription = new TableDescription();
             tableDescription.id = Objects.requireNonNull(this.id);
+            tableDescription.label = Objects.requireNonNull(this.label);
+            tableDescription.canCreatePredicate = this.canCreatePredicate;
             tableDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             tableDescription.targetObjectKindProvider = Objects.requireNonNull(this.targetObjectKindProvider);
             tableDescription.labelProvider = Objects.requireNonNull(this.labelProvider);

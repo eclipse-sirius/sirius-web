@@ -12,12 +12,13 @@
  *******************************************************************************/
 import { useMutation } from '@apollo/client/react/hooks/useMutation';
 import { useReporting } from '@eclipse-sirius/sirius-components-core';
-import { TextFieldProps } from '@mui/material/TextField';
-import { GQLCheckboxCell, GQLLine } from './TableContent.types';
 
 import { gql } from '@apollo/client/core';
-import { MRT_Cell, MRT_Row } from 'material-react-table';
-import { GQLEditCheckboxCellMutationData, GQLEditCheckboxCellMutationVariables } from './useEditableCheckboxCell.types';
+import {
+  GQLEditCheckboxCellMutationData,
+  GQLEditCheckboxCellMutationVariables,
+  UseEditCheckboxCellValue,
+} from './useEditCheckboxCell.types';
 
 const editCheckboxCellMutation = gql`
   mutation editCheckboxCell($input: EditCheckboxCellInput!) {
@@ -39,7 +40,12 @@ const editCheckboxCellMutation = gql`
   }
 `;
 
-export const useEditableCheckboxCell = (editingContextId: string, representationId: string, tableId: string) => {
+export const useEditCheckboxCell = (
+  editingContextId: string,
+  representationId: string,
+  tableId: string,
+  cellId: string
+): UseEditCheckboxCellValue => {
   const [mutationEditCheckboxCell, mutationEditCheckboxCellResult] = useMutation<
     GQLEditCheckboxCellMutationData,
     GQLEditCheckboxCellMutationVariables
@@ -47,13 +53,13 @@ export const useEditableCheckboxCell = (editingContextId: string, representation
 
   useReporting(mutationEditCheckboxCellResult, (data: GQLEditCheckboxCellMutationData) => data?.editCheckboxCell);
 
-  const editCheckboxCell = (cellId: string, newValue: boolean) => {
+  const editCheckboxCell = (newValue: boolean) => {
     const variables: GQLEditCheckboxCellMutationVariables = {
       input: {
         id: crypto.randomUUID(),
         editingContextId,
-        representationId: representationId,
-        tableId: tableId,
+        representationId,
+        tableId,
         cellId,
         newValue,
       },
@@ -61,36 +67,8 @@ export const useEditableCheckboxCell = (editingContextId: string, representation
     mutationEditCheckboxCell({ variables });
   };
 
-  const getMuiEditTextFieldProps = (
-    checkboxCell: GQLCheckboxCell,
-    cell: MRT_Cell<GQLLine, string>,
-    row: MRT_Row<GQLLine>,
-    setEditedLines: React.Dispatch<React.SetStateAction<GQLLine[]>>
-  ): TextFieldProps => {
-    const cellValue = cell.getValue<string>();
-
-    return {
-      type: 'text',
-      required: true,
-      onBlur: (event) => {
-        if (event.target.value !== cellValue) {
-          setEditedLines((prevEditedLines) => {
-            return prevEditedLines.map((line) => {
-              if (row.original.id == line.id) {
-                const newCells = row.original.cells.map((gqlCell) =>
-                  cell.column.id == gqlCell.columnId ? { ...gqlCell, booleanValue: event.target.value } : gqlCell
-                );
-                return { ...line, cells: newCells };
-              }
-              return line;
-            });
-          });
-
-          editCheckboxCell(checkboxCell.id, event.target.value as unknown as boolean);
-        }
-      },
-    };
+  return {
+    editCheckboxCell,
+    loading: mutationEditCheckboxCellResult.loading,
   };
-
-  return getMuiEditTextFieldProps;
 };

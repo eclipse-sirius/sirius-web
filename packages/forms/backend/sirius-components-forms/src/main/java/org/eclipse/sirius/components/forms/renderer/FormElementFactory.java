@@ -84,6 +84,7 @@ import org.eclipse.sirius.components.tables.renderer.TableElementFactory;
  * @author sbegaudeau
  */
 public class FormElementFactory implements IElementFactory {
+
     private final List<IWidgetDescriptor> widgetDescriptors;
 
     private final TableElementFactory tableElementFactory = new TableElementFactory();
@@ -149,7 +150,7 @@ public class FormElementFactory implements IElementFactory {
         } else if (TableWidgetElementProps.TYPE.equals(type) && props instanceof TableWidgetElementProps) {
             object = this.instantiateTableWidget((TableWidgetElementProps) props, children);
         } else {
-            object = tableElementFactory.instantiateElement(type, props, children);
+            object = this.tableElementFactory.instantiateElement(type, props, children);
             if (object == null) {
                 object = this.widgetDescriptors.stream()
                         .map(widgetDescriptor -> widgetDescriptor.instanciate(type, props, children))
@@ -488,9 +489,9 @@ public class FormElementFactory implements IElementFactory {
     private SplitButton instantiateSplitButton(SplitButtonElementProps props, List<Object> children) {
         List<Diagnostic> diagnostics = this.getDiagnosticsFromChildren(children);
         List<Button> actions = children.stream()
-                    .filter(Button.class::isInstance)
-                    .map(Button.class::cast)
-                    .toList();
+                .filter(Button.class::isInstance)
+                .map(Button.class::cast)
+                .toList();
 
         SplitButton.Builder buttonBuilder = SplitButton.newSplitButton(props.getId())
                 .label(props.getLabel())
