@@ -27,7 +27,8 @@ export class ApolloLinkUndoRedoStack extends ApolloLink {
       !(
         operation.operationName === 'undo' ||
         operation.operationName === 'redo' ||
-        operation.operationName === 'layoutDiagram'
+        operation.operationName === 'layoutDiagram' ||
+        operation.operationName === 'layoutPortal'
       )
     ) {
       var storedUndoStack = sessionStorage.getItem('undoStack');

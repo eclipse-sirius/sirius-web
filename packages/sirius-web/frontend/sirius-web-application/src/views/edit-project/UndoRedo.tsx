@@ -111,6 +111,10 @@ export const UndoRedo = ({ children }: { children: React.ReactNode }) => {
         //Put the element in the 1st position of the redo stack
         var redoStack = JSON.parse(storedRedoStack);
         sessionStorage.setItem('redoStack', JSON.stringify([lastElement, ...redoStack]));
+      } else {
+        // Clear stack if there is an error
+        sessionStorage.setItem('undoStack', JSON.stringify([]));
+        sessionStorage.setItem('redoStack', JSON.stringify([]));
       }
     }
   }, [undoData]);
