@@ -1,0 +1,99 @@
+= ADR-XXX Add Table Description in View DSL
+
+== Context
+
+Add table description to View DSL.
+
+== Decision
+
+=== View DSL
+
+* *Name*: _view#Identifier_, name of the representation.
+* *Label Expression*: _AQL expression_, default name for an instance of this representation.
+* *Icon URLs Expression*: _AQL expression_, icons for this representation.
+* *Description Expression*: _AQL expression_, default description for an instance of this representation.
+* *Precondition Expression*: _AQL expression_, predicate to create representation.
+* *Domain Type*: _view#DomainType_, type of element on which a representation can be created.
+* *Is Stripe Row Semantic Elements Expression*: _AQL expression_, enable or disable background color fading on lines.
+* *Column Descriptions*: _containment multivalued_
+** *Column Header Expression*: _AQL expression_, label for the column header.
+** *Column Semantic Elements Expression*: _AQL expression_, element to display in the form of column.
+** *Column Label Expression*: _AQL expression_, label for the column.
+** *Column Icon URLs Expression*: _AQL expression_, icons for the column.
+** *Column Initial Width Expression*: _AQL expression_, initial width to apply on the column.
+** *Column Can Resize Expression*: _AQL expression_, enable or disable the resize for the column.
+** *Column Filter Widget Expression*: _AQL expression_, widget type to apply as filter on the column.
+** *Column Actions*: TBD
+* *Row Descriptions*: _containment multivalued_
+** *Row Semantic Elements Expression*: _AQL expression_, element to display in the form of row.
+** *Row Label Expression*: _AQL expression_, label for the row.
+** *Row Icon URLs Expression*: _AQL expression_, icons for the row.
+** *Row Initial Height Expression*: _AQL expression_, initial height to apply on the row.
+** *Row Can Resize Expression*: _AQL expression_, enable or disable the resize for the row.
+* *Cell Semantic Elements Expression*: _AQL expression_, element to display in the form of cell, depending on the row and the column.
+* *Cell Widget*: _containment multivalued abstract_
+** *Cell Precondition Expression*: _AQL expression_, predicate to use this widget on a cell.
+** *Cell Icon URLs Expression*: _AQL expression_, icons to display on the cell.
+** *Cell Value Expression*: _AQL expression_, label for the cell.
+** *Cell Tooltip Expression*: _AQL expression_, tooltip for the cell.
+* *Pagination*: TBD
+
+==== Cell Widget Implementations
+
+For this first iteration, only two cell widget implementations will be added:
+
+* *Cell TextField Widget*
+** *body*: _view#Operation_ _containment multivalued_
+
+* *Cell Label Widget*
+
+=== Backend
+
+In this section, we will outline the necessary additions to the Java description classes.
+
+==== `TableDescription`
+
+[source, java]
+----
+private Predicate<VariableManager> isStripeRowPredicate;
+private Function<VariableManager, List<Object>> cellSemanticElementsProvider;
+private List<AbstractCellWidgetDescription> cellWidgetDescriptions;
+----
+
+==== `ColumnDescription`
+
+[source, java]
+----
+private Function<VariableManager, String> headerProvider;
+private Function<VariableManager, List<String>> iconURLProvider;
+private Function<VariableManager, Integer> initialWidthProvider;
+private Predicate<VariableManager> canResizePredicate;
+private Function<VariableManager, String> filteringProvider;
+----
+
+==== `RowDescription`
+
+NOTE: rename _line_ usage (in favor of _row_) to maintain consistency between DSL view and material react table naming.
+
+[source, java]
+----
+private Function<VariableManager, String> labelProvider;
+private Function<VariableManager, List<String>> iconURLProvider;
+private Function<VariableManager, Integer> initialHeightProvider;
+private Predicate<VariableManager> canResizePredicate;
+----
+
+==== `AbstractCellWidgetDescription`
+
+[source, java]
+----
+private Predicate<VariableManager> canCreatePredicate;
+private Function<VariableManager, List<String>> iconURLProvider;
+private Function<VariableManager, String> valueProvider;
+private Function<VariableManager, String> tooltipProvider;
+----
+
+== Status
+
+Work in progress
+
