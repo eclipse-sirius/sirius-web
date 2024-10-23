@@ -49,9 +49,9 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
  * Entries</em>}</li>
  * </ul>
  *
+ * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeDescription()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeDescription()
  */
 public interface TreeDescription extends RepresentationDescription {
 
@@ -60,10 +60,10 @@ public interface TreeDescription extends RepresentationDescription {
      * -->
      *
      * @return the value of the '<em>Kind Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setKindExpression(String)
      * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeDescription_KindExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getKindExpression();
 
@@ -72,9 +72,9 @@ public interface TreeDescription extends RepresentationDescription {
      * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Kind Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Kind Expression</em>' attribute.
      * @see #getKindExpression()
+     * @generated
      */
     void setKindExpression(String value);
 
@@ -83,10 +83,10 @@ public interface TreeDescription extends RepresentationDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Icon URL Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setIconURLExpression(String)
      * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeDescription_IconURLExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getIconURLExpression();
 
@@ -95,9 +95,9 @@ public interface TreeDescription extends RepresentationDescription {
      * <em>Icon URL Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Icon URL Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Icon URL Expression</em>' attribute.
      * @see #getIconURLExpression()
+     * @generated
      */
     void setIconURLExpression(String value);
 
@@ -106,10 +106,10 @@ public interface TreeDescription extends RepresentationDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Tree Item Id Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setTreeItemIdExpression(String)
      * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeDescription_TreeItemIdExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getTreeItemIdExpression();
 
@@ -118,9 +118,9 @@ public interface TreeDescription extends RepresentationDescription {
      * <em>Tree Item Id Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Tree Item Id Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Tree Item Id Expression</em>' attribute.
      * @see #getTreeItemIdExpression()
+     * @generated
      */
     void setTreeItemIdExpression(String value);
 
@@ -129,10 +129,10 @@ public interface TreeDescription extends RepresentationDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Tree Item Object Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setTreeItemObjectExpression(String)
      * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeDescription_TreeItemObjectExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getTreeItemObjectExpression();
 
@@ -141,9 +141,9 @@ public interface TreeDescription extends RepresentationDescription {
      * <em>Tree Item Object Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Tree Item Object Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Tree Item Object Expression</em>' attribute.
      * @see #getTreeItemObjectExpression()
+     * @generated
      */
     void setTreeItemObjectExpression(String value);
 
@@ -152,10 +152,10 @@ public interface TreeDescription extends RepresentationDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Elements Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setElementsExpression(String)
      * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeDescription_ElementsExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getElementsExpression();
 
@@ -164,9 +164,9 @@ public interface TreeDescription extends RepresentationDescription {
      * <em>Elements Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Elements Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Elements Expression</em>' attribute.
      * @see #getElementsExpression()
+     * @generated
      */
     void setElementsExpression(String value);
 
@@ -175,10 +175,10 @@ public interface TreeDescription extends RepresentationDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Has Children Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setHasChildrenExpression(String)
      * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeDescription_HasChildrenExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getHasChildrenExpression();
 
@@ -187,9 +187,9 @@ public interface TreeDescription extends RepresentationDescription {
      * <em>Has Children Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Has Children Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Has Children Expression</em>' attribute.
      * @see #getHasChildrenExpression()
+     * @generated
      */
     void setHasChildrenExpression(String value);
 
@@ -198,10 +198,10 @@ public interface TreeDescription extends RepresentationDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Children Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setChildrenExpression(String)
      * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeDescription_ChildrenExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getChildrenExpression();
 
@@ -210,9 +210,9 @@ public interface TreeDescription extends RepresentationDescription {
      * <em>Children Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Children Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Children Expression</em>' attribute.
      * @see #getChildrenExpression()
+     * @generated
      */
     void setChildrenExpression(String value);
 
@@ -221,10 +221,10 @@ public interface TreeDescription extends RepresentationDescription {
      * -->
      *
      * @return the value of the '<em>Parent Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setParentExpression(String)
      * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeDescription_ParentExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getParentExpression();
 
@@ -233,9 +233,9 @@ public interface TreeDescription extends RepresentationDescription {
      * <em>Parent Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Parent Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Parent Expression</em>' attribute.
      * @see #getParentExpression()
+     * @generated
      */
     void setParentExpression(String value);
 
@@ -244,10 +244,10 @@ public interface TreeDescription extends RepresentationDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Editable Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setEditableExpression(String)
      * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeDescription_EditableExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getEditableExpression();
 
@@ -256,9 +256,9 @@ public interface TreeDescription extends RepresentationDescription {
      * <em>Editable Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Editable Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Editable Expression</em>' attribute.
      * @see #getEditableExpression()
+     * @generated
      */
     void setEditableExpression(String value);
 
@@ -267,10 +267,10 @@ public interface TreeDescription extends RepresentationDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Selectable Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setSelectableExpression(String)
      * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeDescription_SelectableExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getSelectableExpression();
 
@@ -279,9 +279,9 @@ public interface TreeDescription extends RepresentationDescription {
      * <em>Selectable Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Selectable Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Selectable Expression</em>' attribute.
      * @see #getSelectableExpression()
+     * @generated
      */
     void setSelectableExpression(String value);
 
@@ -290,10 +290,10 @@ public interface TreeDescription extends RepresentationDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Deletable Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setDeletableExpression(String)
      * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeDescription_DeletableExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getDeletableExpression();
 
@@ -302,9 +302,9 @@ public interface TreeDescription extends RepresentationDescription {
      * <em>Deletable Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Deletable Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Deletable Expression</em>' attribute.
      * @see #getDeletableExpression()
+     * @generated
      */
     void setDeletableExpression(String value);
 
@@ -314,9 +314,9 @@ public interface TreeDescription extends RepresentationDescription {
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Tree Item Label Descriptions</em>' containment reference list.
-     * @model containment="true"
-     * @generated
      * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeDescription_TreeItemLabelDescriptions()
+     * @model containment="true" keys="name"
+     * @generated
      */
     EList<TreeItemLabelDescription> getTreeItemLabelDescriptions();
 
@@ -326,9 +326,9 @@ public interface TreeDescription extends RepresentationDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Context Menu Entries</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeDescription_ContextMenuEntries()
      * @model containment="true"
      * @generated
-     * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeDescription_ContextMenuEntries()
      */
     EList<TreeItemContextMenuEntry> getContextMenuEntries();
 

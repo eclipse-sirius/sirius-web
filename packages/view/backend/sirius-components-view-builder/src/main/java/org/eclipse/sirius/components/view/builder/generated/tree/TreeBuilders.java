@@ -40,6 +40,16 @@ public class TreeBuilders {
     }
 
     /**
+     * Instantiate a IfTreeItemLabelElementDescriptionBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public IfTreeItemLabelElementDescriptionBuilder newIfTreeItemLabelElementDescription() {
+        return new IfTreeItemLabelElementDescriptionBuilder();
+    }
+
+    /**
      * Instantiate a TreeItemLabelFragmentDescriptionBuilder .
      *
      * @author BuilderGenerator
@@ -68,6 +78,5 @@ public class TreeBuilders {
     public FetchTreeItemContextMenuEntryBuilder newFetchTreeItemContextMenuEntry() {
         return new FetchTreeItemContextMenuEntryBuilder();
     }
-
 
 }

@@ -33,18 +33,16 @@ import org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.TreePackage;
 
 /**
- * This is the item provider adapter for a
- * {@link org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry}
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry}
  * object. <!-- begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
  */
-public class TreeItemContextMenuEntryItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider,
-        IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
+public class TreeItemContextMenuEntryItemProvider extends ItemProviderAdapter
+        implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
 
     /**
-     * This constructs an instance from a factory and a notifier. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -53,87 +51,71 @@ public class TreeItemContextMenuEntryItemProvider extends ItemProviderAdapter im
     }
 
     /**
-     * This returns the property descriptors for the adapted class. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (this.itemPropertyDescriptors == null) {
+        if (itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            this.addNamePropertyDescriptor(object);
-            this.addLabelExpressionPropertyDescriptor(object);
-            this.addIconURLExpressionPropertyDescriptor(object);
-            this.addPreconditionExpressionPropertyDescriptor(object);
+            addNamePropertyDescriptor(object);
+            addLabelExpressionPropertyDescriptor(object);
+            addIconURLExpressionPropertyDescriptor(object);
+            addPreconditionExpressionPropertyDescriptor(object);
         }
-        return this.itemPropertyDescriptors;
+        return itemPropertyDescriptors;
     }
 
     /**
-     * This adds a property descriptor for the Name feature. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This adds a property descriptor for the Name feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     protected void addNamePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
-                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_TreeItemContextMenuEntry_name_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_TreeItemContextMenuEntry_name_feature",
-                        "_UI_TreeItemContextMenuEntry_type"),
-                TreePackage.Literals.TREE_ITEM_CONTEXT_MENU_ENTRY__NAME, true, false, false,
-                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+        itemPropertyDescriptors
+                .add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(), getString("_UI_TreeItemContextMenuEntry_name_feature"),
+                        getString("_UI_PropertyDescriptor_description", "_UI_TreeItemContextMenuEntry_name_feature", "_UI_TreeItemContextMenuEntry_type"),
+                        TreePackage.Literals.TREE_ITEM_CONTEXT_MENU_ENTRY__NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This adds a property descriptor for the Label Expression feature. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Label Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     protected void addLabelExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
-                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_TreeItemContextMenuEntry_labelExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_TreeItemContextMenuEntry_labelExpression_feature",
-                        "_UI_TreeItemContextMenuEntry_type"),
-                TreePackage.Literals.TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION, true, false, false,
-                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+        itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+                getString("_UI_TreeItemContextMenuEntry_labelExpression_feature"),
+                getString("_UI_PropertyDescriptor_description", "_UI_TreeItemContextMenuEntry_labelExpression_feature", "_UI_TreeItemContextMenuEntry_type"),
+                TreePackage.Literals.TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This adds a property descriptor for the Icon URL Expression feature. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Icon URL Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
      * @generated
      */
     protected void addIconURLExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
-                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_TreeItemContextMenuEntry_iconURLExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description",
-                        "_UI_TreeItemContextMenuEntry_iconURLExpression_feature", "_UI_TreeItemContextMenuEntry_type"),
-                TreePackage.Literals.TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION, true, false, false,
-                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+        itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+                getString("_UI_TreeItemContextMenuEntry_iconURLExpression_feature"),
+                getString("_UI_PropertyDescriptor_description", "_UI_TreeItemContextMenuEntry_iconURLExpression_feature", "_UI_TreeItemContextMenuEntry_type"),
+                TreePackage.Literals.TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This adds a property descriptor for the Precondition Expression feature. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Precondition Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      */
     protected void addPreconditionExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors
-                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                        this.getResourceLocator(), this.getString("_UI_TreeItemContextMenuEntry_preconditionExpression_feature"),
-                        this.getString("_UI_PropertyDescriptor_description",
-                                "_UI_TreeItemContextMenuEntry_preconditionExpression_feature",
-                                "_UI_TreeItemContextMenuEntry_type"),
-                        TreePackage.Literals.TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION, true, false, false,
-                        ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+        itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+                getString("_UI_TreeItemContextMenuEntry_preconditionExpression_feature"),
+                getString("_UI_PropertyDescriptor_description", "_UI_TreeItemContextMenuEntry_preconditionExpression_feature", "_UI_TreeItemContextMenuEntry_type"),
+                TreePackage.Literals.TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -147,44 +129,41 @@ public class TreeItemContextMenuEntryItemProvider extends ItemProviderAdapter im
     }
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     @Override
     public String getText(Object object) {
         String label = ((TreeItemContextMenuEntry) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_TreeItemContextMenuEntry_type")
-                : this.getString("_UI_TreeItemContextMenuEntry_type") + " " + label;
+        return label == null || label.length() == 0 ? getString("_UI_TreeItemContextMenuEntry_type") : getString("_UI_TreeItemContextMenuEntry_type") + " " + label;
     }
 
     /**
-     * This handles model notifications by calling {@link #updateChildren} to update
-     * any cached children and by creating a viewer notification, which it passes to
-     * {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
+     * a viewer notification, which it passes to {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
      * @generated
      */
     @Override
     public void notifyChanged(Notification notification) {
-        this.updateChildren(notification);
+        updateChildren(notification);
 
         switch (notification.getFeatureID(TreeItemContextMenuEntry.class)) {
             case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__NAME:
             case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION:
             case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION:
             case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION:
-                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }
         super.notifyChanged(notification);
     }
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing
-     * the children that can be created under this object. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
+     * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -194,14 +173,13 @@ public class TreeItemContextMenuEntryItemProvider extends ItemProviderAdapter im
     }
 
     /**
-     * Return the resource locator for this item provider's resources. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * Return the resource locator for this item provider's resources. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     @Override
     public ResourceLocator getResourceLocator() {
-        return ((IChildCreationExtender) this.adapterFactory).getResourceLocator();
+        return ((IChildCreationExtender) adapterFactory).getResourceLocator();
     }
 
 }
