@@ -17,9 +17,9 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
-import org.eclipse.sirius.components.emf.services.EditingContextCrossReferenceAdapter;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextLoader;
@@ -60,6 +60,7 @@ public class EditingContextLoader implements IEditingContextLoader {
         this.migrationParticipantPredicates = Objects.requireNonNull(migrationParticipantPredicates);
     }
 
+    @Override
     public void load(EditingContext editingContext, UUID projectId) {
         this.editingContextProcessors.forEach(processor -> processor.preProcess(editingContext));
 
@@ -81,9 +82,9 @@ public class EditingContextLoader implements IEditingContextLoader {
         semanticData.getDocuments().forEach(document -> this.resourceLoader.toResource(resourceSet, document.getId().toString(), document.getName(), document.getContent(),
                 this.migrationParticipantPredicates.stream().anyMatch(predicate -> predicate.test(editingContext))));
 
-        // The ECrossReferenceAdapter must be set after the resource loading because it needs to resolve proxies in case
-        // of inter-resources references
-        resourceSet.eAdapters().add(new EditingContextCrossReferenceAdapter());
+        // Install an ECrossReferenceAdapter so that we can find inverse cross references of an element efficiently.
+        // This is required for IncomingTreeDescriptionProvider to be efficient for example.
+        resourceSet.eAdapters().add(new ECrossReferenceAdapter());
 
         this.logger.debug("{} documents loaded for the editing context {}", resourceSet.getResources().size(), editingContext.getId());
     }
