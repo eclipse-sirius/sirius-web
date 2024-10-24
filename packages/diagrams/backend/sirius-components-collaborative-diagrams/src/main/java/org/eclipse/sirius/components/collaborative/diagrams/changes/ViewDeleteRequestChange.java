@@ -10,16 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.undo.dto;
+package org.eclipse.sirius.components.collaborative.diagrams.changes;
 
-import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.core.api.representations.IRepresentationChangeEvent;
+import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
- * The input for undo mutation.
+ * Diagram view delete change.
  *
  * @author mcharfadi
  */
-public record UndoInput(UUID id, String  editingContextId, String mutationId) implements IInput {
+public record ViewDeleteRequestChange(UUID representationId, ViewDeletionRequest viewDeletionRequest, Node deletedNode, Optional<Node> parentNode) implements IRepresentationChangeEvent {
 }

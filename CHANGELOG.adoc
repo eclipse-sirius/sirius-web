@@ -87,6 +87,7 @@ description (optional).
 - https://github.com/eclipse-sirius/sirius-web/issues/3982[#3982] [core] Add support for the command palette.
 - https://github.com/eclipse-sirius/sirius-web/issues/4048[#4048] [core] Add the ability to undo/redo a mutation on the the edit project view with ctrl+z or ctrl+y (restoring a deleted resource is not yet supported).
 - https://github.com/eclipse-sirius/sirius-web/issues/4106[#4106] [portal] Add undo/redo for portal representation
+- https://github.com/eclipse-sirius/sirius-web/issues/4131[#4131] [diagram] Add undo/redo for diagram representation
 
 === Improvements
 

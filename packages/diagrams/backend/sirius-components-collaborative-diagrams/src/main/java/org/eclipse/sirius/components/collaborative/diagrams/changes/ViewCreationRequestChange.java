@@ -10,16 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.undo.dto;
 
-import org.eclipse.sirius.components.core.api.IInput;
+package org.eclipse.sirius.components.collaborative.diagrams.changes;
 
+import org.eclipse.sirius.components.core.api.representations.IRepresentationChangeEvent;
+import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
+
+import java.util.List;
 import java.util.UUID;
 
 /**
- * The input for redo mutation.
+ * Diagram view creation change.
  *
  * @author mcharfadi
  */
-public record RedoInput(UUID id, String  editingContextId, String mutationId) implements IInput {
+public record ViewCreationRequestChange(UUID representationId, ViewCreationRequest viewCreationRequest, List<Node> addedNodes) implements IRepresentationChangeEvent {
 }

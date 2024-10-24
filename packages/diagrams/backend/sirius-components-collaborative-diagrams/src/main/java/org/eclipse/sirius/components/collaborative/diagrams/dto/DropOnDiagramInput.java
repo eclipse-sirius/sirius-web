@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.components.core.api.IUndoableInput;
 
 /**
  * The input for the "drop on diagram" mutation.
@@ -23,5 +24,5 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
  * @author hmarchadour
  */
 public record DropOnDiagramInput(UUID id, String editingContextId, String representationId, String diagramTargetElementId, List<String> objectIds, double startingPositionX, double startingPositionY)
-        implements IDiagramInput {
+        implements IDiagramInput, IUndoableInput {
 }

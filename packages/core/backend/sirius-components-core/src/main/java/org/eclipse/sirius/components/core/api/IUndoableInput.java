@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,16 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.forms.api;
 
-import org.eclipse.sirius.components.core.api.IRepresentationInput;
-import org.eclipse.sirius.components.core.api.IUndoableInput;
+package org.eclipse.sirius.components.core.api;
 
 /**
- * Represents an input sent by a client which concerns a form representation.
+ * Interface implemented by all the inputs that can be undo or redo
  *
- * @author sbegaudeau
+ * @author mcharfadi
  */
-public interface IFormInput extends IRepresentationInput, IUndoableInput {
-
+public interface IUndoableInput extends IInput {
 }

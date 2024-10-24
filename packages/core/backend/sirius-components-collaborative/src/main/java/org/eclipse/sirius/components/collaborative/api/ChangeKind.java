@@ -37,6 +37,8 @@ public final class ChangeKind {
 
     public static final String RELOAD_REPRESENTATION = "RELOAD_REPRESENTATION";
 
+    public static final String UNDO_REDO_REPRESENTATION_CHANGE = "UNDO_REDO_REPRESENTATION";
+
     private ChangeKind() {
         // Prevent instantiation
     }

@@ -18,10 +18,9 @@ import org.eclipse.sirius.components.collaborative.api.IInputPreProcessor;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.LayoutDiagramInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.core.api.IUndoableInput;
 import org.eclipse.sirius.components.core.api.representations.IRepresentationChangeEventRecorder;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
-import org.eclipse.sirius.web.application.undo.dto.RedoInput;
-import org.eclipse.sirius.web.application.undo.dto.UndoInput;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Sinks;
 
@@ -41,19 +40,21 @@ public class UndoRedoRecorder implements IInputPreProcessor, IInputPostProcessor
         this.representationChangeEventRecorders = representationChangeEventRecorders;
     }
 
-    private boolean canHandle(IInput input)  {
-        return !(input instanceof UndoInput || input instanceof RedoInput || input instanceof LayoutDiagramInput);
-    }
-
     @Override
     public IInput preProcess(IEditingContext editingContext, IInput input, Sinks.Many<ChangeDescription> changeDescriptionSink) {
-        if (editingContext instanceof EditingContext siriusEditingContext && canHandle(input)) {
+        if (editingContext instanceof EditingContext siriusEditingContext && input instanceof IUndoableInput) {
             siriusEditingContext.getChangeRecorder().beginRecording(siriusEditingContext.getDomain().getResourceSet().getResources());
+        }
+        if (editingContext instanceof EditingContext siriusEditingContext && (input instanceof IUndoableInput || input instanceof LayoutDiagramInput)) {
             this.representationChangeEventRecorders.stream()
                     .filter(recorder -> recorder.canHandle(editingContext, input))
                     .forEach(recorder -> {
                         var changes = recorder.getChanges(editingContext, input);
-                        siriusEditingContext.getRepresentationChangesDescription().put(input.id().toString(), changes);
+                        if (siriusEditingContext.getRepresentationChangesDescription().get(input.id().toString()) != null) {
+                            siriusEditingContext.getRepresentationChangesDescription().get(input.id().toString()).addAll(changes);
+                        } else {
+                            siriusEditingContext.getRepresentationChangesDescription().put(input.id().toString(), changes);
+                        }
                     });
         }
         return input;
@@ -61,7 +62,7 @@ public class UndoRedoRecorder implements IInputPreProcessor, IInputPostProcessor
 
     @Override
     public void postProcess(IEditingContext editingContext, IInput input, Sinks.Many<ChangeDescription> changeDescriptionSink) {
-        if (editingContext instanceof EditingContext siriusEditingContext && canHandle(input)) {
+        if (editingContext instanceof EditingContext siriusEditingContext && input instanceof IUndoableInput) {
             var changeDescription = siriusEditingContext.getChangeRecorder().summarize();
             siriusEditingContext.getInputId2change().put(input.id().toString(), changeDescription);
             siriusEditingContext.getChangeRecorder().endRecording();

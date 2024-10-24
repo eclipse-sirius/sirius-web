@@ -15,7 +15,14 @@ package org.eclipse.sirius.web.application.undo.handlers;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
+import org.eclipse.sirius.components.collaborative.diagrams.changes.DiagramEventChange;
+import org.eclipse.sirius.components.collaborative.diagrams.changes.LayoutDiagramRepresentionChange;
+import org.eclipse.sirius.components.collaborative.diagrams.changes.ViewCreationRequestChange;
+import org.eclipse.sirius.components.collaborative.diagrams.changes.ViewDeleteRequestChange;
 import org.eclipse.sirius.components.collaborative.portals.PortalChangeKind;
 import org.eclipse.sirius.components.collaborative.portals.api.IPortalEventHandler;
 import org.eclipse.sirius.components.collaborative.portals.changes.AddPortalRepresentionChange;
@@ -28,13 +35,18 @@ import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.core.api.representations.IRepresentationChangeEvent;
+import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
+import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
 import org.eclipse.sirius.components.portals.Portal;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
-import org.eclipse.sirius.web.application.undo.dto.RedoInput;
+import org.eclipse.sirius.components.core.api.RedoInput;
 import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
+
+import java.util.Map;
 
 
 /**
@@ -47,10 +59,16 @@ public class RedoEventHandler implements IEditingContextEventHandler {
 
     private final IRepresentationSearchService representationSearchService;
 
+    private final IRepresentationPersistenceService representationPersistenceService;
+
+    private final IDiagramCreationService diagramCreationService;
+
     private IPayload payload;
 
-    public RedoEventHandler(IRepresentationSearchService representationSearchService) {
+    public RedoEventHandler(IRepresentationSearchService representationSearchService, IRepresentationPersistenceService representationPersistenceService, IDiagramCreationService diagramCreationService) {
         this.representationSearchService = representationSearchService;
+        this.representationPersistenceService = representationPersistenceService;
+        this.diagramCreationService = diagramCreationService;
     }
 
     @Override
@@ -82,12 +100,99 @@ public class RedoEventHandler implements IEditingContextEventHandler {
                     if (change instanceof RemovePortalRepresentionChange removePortalRepresentionChange) {
                         changeDescription = handleRemovePortalChange(editingContext, redoInput, removePortalRepresentionChange);
                     }
+                    if (change instanceof LayoutDiagramRepresentionChange layoutDiagramRepresentionChange) {
+                        changeDescription = handleLayoutDiagramChange(editingContext, redoInput, layoutDiagramRepresentionChange);
+                    }
+                    if (change instanceof DiagramEventChange diagramEventChange) {
+                        changeDescription = handleDiagramEventChange(editingContext, redoInput, diagramEventChange);
+                    }
+                    if (change instanceof ViewCreationRequestChange viewCreationRequestChange) {
+                        changeDescription = handleViewCreationRequestChange(editingContext, redoInput, viewCreationRequestChange);
+                    }
+                    if (change instanceof ViewDeleteRequestChange viewDeleteRequestChange) {
+                        changeDescription = handleViewDeleteRequestChange(editingContext, redoInput, viewDeleteRequestChange);
+                    }
                 }
             }
 
         }
         payloadSink.tryEmitValue(payload);
         changeDescriptionSink.tryEmitNext(changeDescription);
+    }
+
+    private ChangeDescription handleViewDeleteRequestChange(IEditingContext editingContext, RedoInput redoInput, ViewDeleteRequestChange viewDeleteRequestChange) {
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), redoInput);
+        var representationId = viewDeleteRequestChange.representationId();
+        var currentDiagram = this.representationSearchService.findById(editingContext, representationId.toString(), Diagram.class);
+        if (currentDiagram.isPresent()) {
+            var diagramContext = new DiagramContext(currentDiagram.get());
+            //Should check if the node still exist
+            diagramContext.getViewDeletionRequests().add(viewDeleteRequestChange.viewDeletionRequest());
+
+            var laidOutDiagram = this.diagramCreationService.refresh(editingContext, diagramContext);
+            this.representationPersistenceService.save(redoInput, editingContext, laidOutDiagram.get());
+            changeDescription = new ChangeDescription(ChangeKind.UNDO_REDO_REPRESENTATION_CHANGE, redoInput.mutationId(), redoInput);
+            this.payload = new SuccessPayload(redoInput.id());
+        }
+        return changeDescription;
+    }
+
+    private ChangeDescription handleViewCreationRequestChange(IEditingContext editingContext, RedoInput redoInput, ViewCreationRequestChange viewCreationRequestChange) {
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), redoInput);
+        var representationId = viewCreationRequestChange.representationId();
+        var currentDiagram = this.representationSearchService.findById(editingContext, representationId.toString(), Diagram.class);
+
+        if (currentDiagram.isPresent()) {
+            var diagramContext = new DiagramContext(currentDiagram.get());
+            //Should check if the node still exist
+            diagramContext.getViewCreationRequests().add(viewCreationRequestChange.viewCreationRequest());
+
+            var laidOutDiagram = this.diagramCreationService.refresh(editingContext, diagramContext);
+            this.representationPersistenceService.save(redoInput, editingContext, laidOutDiagram.get());
+            changeDescription = new ChangeDescription(ChangeKind.UNDO_REDO_REPRESENTATION_CHANGE, redoInput.mutationId(), redoInput);
+            this.payload = new SuccessPayload(redoInput.id());
+        }
+
+        return changeDescription;
+    }
+
+    private ChangeDescription handleDiagramEventChange(IEditingContext editingContext, RedoInput redoInput, DiagramEventChange diagramEventChange) {
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), redoInput);
+        var representationId = diagramEventChange.representationId();
+        var currentDiagram = this.representationSearchService.findById(editingContext, representationId.toString(), Diagram.class);
+
+        if (currentDiagram.isPresent()) {
+            var diagramContext = new DiagramContext(currentDiagram.get());
+            //Should check if the node still exist
+            diagramContext.getDiagramEvents().add(diagramEventChange.diagramEvent());
+
+            var laidOutDiagram = this.diagramCreationService.refresh(editingContext, diagramContext);
+            this.representationPersistenceService.save(redoInput, editingContext, laidOutDiagram.get());
+            changeDescription = new ChangeDescription(ChangeKind.UNDO_REDO_REPRESENTATION_CHANGE, redoInput.mutationId(), redoInput);
+            this.payload = new SuccessPayload(redoInput.id());
+        }
+
+        return changeDescription;
+    }
+
+    private ChangeDescription handleLayoutDiagramChange(IEditingContext editingContext, RedoInput redoInput, LayoutDiagramRepresentionChange layoutDiagramRepresentionChange) {
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), redoInput);
+        var representationId = layoutDiagramRepresentionChange.representationId();
+        var currentDiagram = this.representationSearchService.findById(editingContext, representationId.toString(), Diagram.class);
+
+        //Should check if the new position is valid
+        if (currentDiagram.isPresent()) {
+            var newLayout = layoutDiagramRepresentionChange.newValue();
+            var layoutData = new DiagramLayoutData(newLayout, Map.of(), Map.of());
+            var laidOutDiagram = Diagram.newDiagram(currentDiagram.get())
+                    .layoutData(layoutData)
+                    .build();
+            this.representationPersistenceService.save(redoInput, editingContext, laidOutDiagram);
+            changeDescription = new ChangeDescription(ChangeKind.UNDO_REDO_REPRESENTATION_CHANGE, redoInput.mutationId(), redoInput);
+            this.payload = new SuccessPayload(redoInput.id());
+        }
+
+        return changeDescription;
     }
 
     private ChangeDescription handleLayoutPortalChange(IEditingContext editingContext, RedoInput redoInput, LayoutPortalRepresentionChange layoutPortalRepresentionChange) {

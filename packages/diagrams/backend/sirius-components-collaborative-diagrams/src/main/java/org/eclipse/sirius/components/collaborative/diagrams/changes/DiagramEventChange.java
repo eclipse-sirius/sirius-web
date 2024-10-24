@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,16 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.forms.api;
+package org.eclipse.sirius.components.collaborative.diagrams.changes;
 
-import org.eclipse.sirius.components.core.api.IRepresentationInput;
-import org.eclipse.sirius.components.core.api.IUndoableInput;
+import org.eclipse.sirius.components.core.api.representations.IRepresentationChangeEvent;
+import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
+
+import java.util.UUID;
 
 /**
- * Represents an input sent by a client which concerns a form representation.
+ * Diagram event change.
  *
- * @author sbegaudeau
+ * @author mcharfadi
  */
-public interface IFormInput extends IRepresentationInput, IUndoableInput {
+public record DiagramEventChange(UUID representationId, IDiagramEvent diagramEvent) implements IRepresentationChangeEvent {
 
 }
