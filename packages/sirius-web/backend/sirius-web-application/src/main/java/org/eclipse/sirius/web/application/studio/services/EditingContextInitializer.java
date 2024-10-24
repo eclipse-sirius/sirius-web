@@ -24,7 +24,6 @@ import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
 import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.DomainPackage;
 import org.eclipse.sirius.components.domain.emf.DomainConverter;
-import org.eclipse.sirius.components.emf.services.EditingContextCrossReferenceAdapter;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.deck.DeckPackage;
@@ -97,7 +96,6 @@ public class EditingContextInitializer implements IEditingContextProcessor {
                 this.studioColorPalettesLoader.loadStudioColorPalettes(resourceSet);
 
                 semanticData.getDocuments().forEach(document -> this.toResource(semanticData.getId().toString(), resourceSet, document));
-                resourceSet.eAdapters().add(new EditingContextCrossReferenceAdapter());
 
                 var treeIterator = resourceSet.getAllContents();
                 while (treeIterator.hasNext()) {
