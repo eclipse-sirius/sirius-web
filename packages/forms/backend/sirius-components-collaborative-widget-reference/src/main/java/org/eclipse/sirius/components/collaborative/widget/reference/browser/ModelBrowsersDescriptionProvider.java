@@ -35,7 +35,6 @@ import org.eclipse.emf.edit.command.CommandParameter;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.collaborative.widget.reference.api.IReferenceWidgetRootCandidateSearchProvider;
 import org.eclipse.sirius.components.core.CoreImageConstants;
-import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -177,7 +176,7 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
         var optionalTreeId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class);
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class);
         if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(PREFIX) && optionalEditingContext.isPresent()) {
-            Map<String, List<String>> parameters = new URLParser().getParameterValues(optionalTreeId.get());
+            Map<String, List<String>> parameters = this.urlParser.getParameterValues(optionalTreeId.get());
             String ownerId = parameters.get("ownerId").get(0);
 
             return this.objectService.getObject(optionalEditingContext.get(), ownerId)
@@ -193,7 +192,7 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class);
         if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(PREFIX) && optionalEditingContext.isPresent()) {
             Registry ePackageRegistry = optionalEditingContext.get().getDomain().getResourceSet().getPackageRegistry();
-            Map<String, List<String>> parameters = new URLParser().getParameterValues(optionalTreeId.get());
+            Map<String, List<String>> parameters = this.urlParser.getParameterValues(optionalTreeId.get());
             String refContainer = parameters.get("ownerKind").get(0);
 
             String ePackageName = this.emfKindService.getEPackageName(refContainer);
@@ -213,7 +212,7 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class);
         if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(PREFIX) && optionalEditingContext.isPresent()) {
             Registry ePackageRegistry = optionalEditingContext.get().getDomain().getResourceSet().getPackageRegistry();
-            Map<String, List<String>> parameters = new URLParser().getParameterValues(optionalTreeId.get());
+            Map<String, List<String>> parameters = this.urlParser.getParameterValues(optionalTreeId.get());
             String kind = parameters.get("targetType").get(0);
 
             String ePackageName = this.emfKindService.getEPackageName(kind);
@@ -231,7 +230,7 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
     private boolean resolveIsContainment(VariableManager variableManager) {
         var optionalTreeId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class);
         if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(PREFIX)) {
-            Map<String, List<String>> parameters = new URLParser().getParameterValues(optionalTreeId.get());
+            Map<String, List<String>> parameters = this.urlParser.getParameterValues(optionalTreeId.get());
             String isContainment = parameters.get("isContainment").get(0);
             return Boolean.parseBoolean(isContainment);
         } else {
@@ -321,7 +320,7 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
         var optionalTreeId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class);
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class);
         if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(PREFIX) && optionalEditingContext.isPresent()) {
-            Map<String, List<String>> parameters = new URLParser().getParameterValues(optionalTreeId.get());
+            Map<String, List<String>> parameters = this.urlParser.getParameterValues(optionalTreeId.get());
             String descriptionId = parameters.get("descriptionId").get(0);
             String ownerId = parameters.get("ownerId").get(0);
             var semanticOwner = this.objectService.getObject(optionalEditingContext.get(), ownerId).get();
