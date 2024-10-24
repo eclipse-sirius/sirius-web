@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,18 +10,24 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLTool, GQLToolSection } from '../Palette.types';
 
-import { Edge, Node } from '@xyflow/react';
-import { EdgeData, NodeData } from '../DiagramRenderer.types';
-
-export interface DiagramPaletteToolContributionProps {
-  canHandle: (element: Node<NodeData> | Edge<EdgeData>) => boolean;
-  component: React.ComponentType<DiagramPaletteToolContributionComponentProps>;
-}
-
-export interface DiagramPaletteToolContributionComponentProps {
-  x: number;
-  y: number;
-  diagramElementId: string;
-  key: string;
+export interface PaletteToolSectionListProps {
+  onToolClick: (tool: GQLTool) => void;
+  onBackToMainList: () => void;
+  toolSection: GQLToolSection;
+  tooltipDelay?: number;
+  tooltipPlacement?:
+    | 'bottom-end'
+    | 'bottom-start'
+    | 'bottom'
+    | 'left-end'
+    | 'left-start'
+    | 'left'
+    | 'right-end'
+    | 'right-start'
+    | 'right'
+    | 'top-end'
+    | 'top-start'
+    | 'top';
 }

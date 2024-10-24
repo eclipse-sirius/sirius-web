@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,18 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
-import { Edge, Node } from '@xyflow/react';
-import { EdgeData, NodeData } from '../DiagramRenderer.types';
+/**
+ * The common interface for elements displayed in the palette.
+ *
+ * @author fbarbin
+ */
 
-export interface DiagramPaletteToolContributionProps {
-  canHandle: (element: Node<NodeData> | Edge<EdgeData>) => boolean;
-  component: React.ComponentType<DiagramPaletteToolContributionComponentProps>;
-}
+public interface IPaletteEntry {
 
-export interface DiagramPaletteToolContributionComponentProps {
-  x: number;
-  y: number;
-  diagramElementId: string;
-  key: string;
+    String id();
 }

@@ -22,8 +22,13 @@ import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescrip
  *
  * @author mcharfadi
  */
-public record SingleClickOnDiagramElementTool(String id, String label, List<String> iconURL, List<IDiagramElementDescription> targetDescriptions, String dialogDescriptionId,
-                                              boolean appliesToDiagramRoot) implements ITool {
+public record SingleClickOnDiagramElementTool(
+        String id,
+        String label,
+        List<String> iconURL,
+        List<IDiagramElementDescription> targetDescriptions,
+        String dialogDescriptionId,
+        boolean appliesToDiagramRoot) implements ITool {
 
     public SingleClickOnDiagramElementTool {
         Objects.requireNonNull(id);
