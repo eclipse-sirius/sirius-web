@@ -31,6 +31,13 @@ public class DeleteImageMutationRunner implements IMutationRunner<DeleteImageInp
             mutation deleteImage($input: DeleteImageInput!) {
               deleteImage(input: $input) {
                 __typename
+               ... on ErrorPayload {
+                    message
+                    messages {
+                      level
+                      body
+                    }
+                }
               }
             }
             """;

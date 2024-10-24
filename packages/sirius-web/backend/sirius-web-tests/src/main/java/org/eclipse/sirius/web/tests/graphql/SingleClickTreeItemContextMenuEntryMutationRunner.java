@@ -32,8 +32,12 @@ public class SingleClickTreeItemContextMenuEntryMutationRunner implements IMutat
             mutation invokeSingleClickTreeItemContextMenuEntry($input: InvokeSingleClickTreeItemContextMenuEntryInput!) {
               invokeSingleClickTreeItemContextMenuEntry(input: $input) {
                 __typename
-                ... on ErrorPayload {
-                  message
+               ... on ErrorPayload {
+                    message
+                    messages {
+                      level
+                      body
+                    }
                 }
               }
             }

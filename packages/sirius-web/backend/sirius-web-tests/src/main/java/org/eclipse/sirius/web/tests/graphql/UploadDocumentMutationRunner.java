@@ -35,6 +35,13 @@ public class UploadDocumentMutationRunner implements IMutationRunner<UploadDocum
                 ... on UploadDocumentSuccessPayload {
                     report
                 }
+               ... on ErrorPayload {
+                    message
+                    messages {
+                      level
+                      body
+                    }
+                }
               }
             }
             """;
