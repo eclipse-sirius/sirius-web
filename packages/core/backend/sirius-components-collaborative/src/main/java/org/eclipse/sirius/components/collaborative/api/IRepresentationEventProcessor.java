@@ -75,10 +75,6 @@ public interface IRepresentationEventProcessor extends IDisposablePublisher {
         }
 
         @Override
-        public void postRefresh(ChangeDescription changeDescription) {
-        }
-
-        @Override
         public ISubscriptionManager getSubscriptionManager() {
             return new ISubscriptionManager.NoOp();
         }

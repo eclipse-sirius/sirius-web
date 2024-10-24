@@ -73,14 +73,15 @@ public class EditingContext implements IEMFEditingContext {
     }
 
     public ChangeRecorder getChangeRecorder() {
-        return changeRecorder;
+        return this.changeRecorder;
     }
 
     public Map<String, ChangeDescription> getInputId2change() {
-        return inputId2change;
+        return this.inputId2change;
     }
 
+    @Override
     public Map<String, List<IRepresentationChangeEvent>> getRepresentationChangesDescription() {
-        return representationChangesDescription;
+        return this.representationChangesDescription;
     }
 }

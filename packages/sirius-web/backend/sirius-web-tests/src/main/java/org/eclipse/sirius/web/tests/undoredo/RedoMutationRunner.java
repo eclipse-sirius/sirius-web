@@ -15,7 +15,7 @@ package org.eclipse.sirius.web.tests.undoredo;
 
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
-import org.eclipse.sirius.web.application.undo.dto.RedoInput;
+import org.eclipse.sirius.components.core.api.RedoInput;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;

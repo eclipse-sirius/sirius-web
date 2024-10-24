@@ -14,16 +14,14 @@
 package org.eclipse.sirius.components.collaborative.diagrams.changes;
 
 import org.eclipse.sirius.components.core.api.representations.IRepresentationChangeEvent;
-import org.eclipse.sirius.components.diagrams.layoutdata.NodeLayoutData;
-
-import java.util.Map;
-import java.util.UUID;
+import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
 
 /**
  * Layout diagram event.
  *
  * @author mcharfadi
  */
-public record LayoutDiagramRepresentionChange(UUID representationId, Map<String, NodeLayoutData> oldValue, Map<String, NodeLayoutData> newValue) implements IRepresentationChangeEvent {
+// TODO: See if previousLayout or newLayout can be removed when undo/redo of layout change will be handled correctly.
+public record LayoutDiagramRepresentationChange(String representationId, DiagramLayoutData previousLayout, DiagramLayoutData newLayout, DiagramLayoutDataChanges changes) implements IRepresentationChangeEvent {
 
 }

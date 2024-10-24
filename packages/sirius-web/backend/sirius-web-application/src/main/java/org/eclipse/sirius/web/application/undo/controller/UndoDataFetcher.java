@@ -20,7 +20,7 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
-import org.eclipse.sirius.web.application.undo.dto.UndoInput;
+import org.eclipse.sirius.components.core.api.UndoInput;
 
 
 import java.util.Objects;

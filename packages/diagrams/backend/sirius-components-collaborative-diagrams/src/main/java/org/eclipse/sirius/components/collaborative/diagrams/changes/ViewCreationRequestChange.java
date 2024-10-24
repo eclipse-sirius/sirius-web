@@ -10,14 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.core.api.representations;
+
+package org.eclipse.sirius.components.collaborative.diagrams.changes;
+
+import java.util.List;
+
+import org.eclipse.sirius.components.core.api.representations.IRepresentationChangeEvent;
+import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 
 /**
- * Interface used to declare change event.
+ * Diagram view creation change.
  *
  * @author mcharfadi
  */
-public interface IRepresentationChangeEvent {
-
-    String representationId();
+public record ViewCreationRequestChange(String representationId, ViewCreationRequest viewCreationRequest, List<Node> addedNodes) implements IRepresentationChangeEvent {
 }

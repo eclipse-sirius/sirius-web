@@ -37,6 +37,7 @@ https://github.com/eclipse-sirius/sirius-web/issues/4145[#4145] [core] Remove `C
 - https://github.com/eclipse-sirius/sirius-web/issues/4177[#4177] [table] Add table representation support
 - https://github.com/eclipse-sirius/sirius-web/issues/4143[#4143] [core] Add postRefresh method in IRepresentationEventProcessor
 - https://github.com/eclipse-sirius/sirius-web/issues/4106[#4106] [portal] Add undo/redo for portal representation
+- https://github.com/eclipse-sirius/sirius-web/issues/4131[#4131] [diagram] Add undo/redo for diagram representation
 
 === Improvements
 

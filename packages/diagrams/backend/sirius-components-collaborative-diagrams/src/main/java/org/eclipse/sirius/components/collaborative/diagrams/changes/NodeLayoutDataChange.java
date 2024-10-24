@@ -10,16 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.undo.dto;
+package org.eclipse.sirius.components.collaborative.diagrams.changes;
 
-import org.eclipse.sirius.components.core.api.IInput;
+import java.util.Optional;
 
-import java.util.UUID;
+import org.eclipse.sirius.components.diagrams.layoutdata.NodeLayoutData;
 
 /**
- * The input for undo mutation.
+ * The previous and new node layout data.
  *
- * @author mcharfadi
+ * @author gcoutable
  */
-public record UndoInput(UUID id, String  editingContextId, String mutationId) implements IInput {
+public record NodeLayoutDataChange(Optional<NodeLayoutData> previousNodeLayoutData, Optional<NodeLayoutData> newNodeLayoutData) {
 }

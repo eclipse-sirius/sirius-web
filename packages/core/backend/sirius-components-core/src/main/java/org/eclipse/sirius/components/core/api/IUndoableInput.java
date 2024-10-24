@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,16 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
-import java.util.UUID;
-
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
+package org.eclipse.sirius.components.core.api;
 
 /**
- * Input used to layout diagrams.
+ * Interface implemented by all the inputs that can be undo or redo.
  *
- * @author sbegaudeau
+ * @author mcharfadi
  */
-public record LayoutDiagramInput(UUID id, String editingContextId, String representationId, DiagramLayoutDataInput diagramLayoutData) implements IDiagramInput {
+public interface IUndoableInput extends IInput {
 }

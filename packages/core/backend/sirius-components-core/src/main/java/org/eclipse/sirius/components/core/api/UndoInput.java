@@ -10,19 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.portals.changes;
+package org.eclipse.sirius.components.core.api;
 
-import org.eclipse.sirius.components.core.api.representations.IRepresentationChangeEvent;
-import org.eclipse.sirius.components.portals.PortalViewLayoutData;
-
-import java.util.List;
 import java.util.UUID;
 
 /**
- * Move Portal representation event.
+ * The input for undo mutation.
  *
  * @author mcharfadi
  */
-public record LayoutPortalRepresentionChange(UUID representationId, List<PortalViewLayoutData> oldValue, List<PortalViewLayoutData> newValue) implements IRepresentationChangeEvent {
-
+public record UndoInput(UUID id, String editingContextId, String mutationId) implements IInput {
 }

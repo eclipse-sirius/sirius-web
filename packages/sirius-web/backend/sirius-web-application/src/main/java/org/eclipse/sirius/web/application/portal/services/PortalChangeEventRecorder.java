@@ -12,16 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.portal.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.portals.api.IPortalInput;
-import org.eclipse.sirius.components.collaborative.portals.changes.AddPortalRepresentionChange;
-import org.eclipse.sirius.components.collaborative.portals.changes.LayoutPortalRepresentionChange;
-import org.eclipse.sirius.components.collaborative.portals.changes.RemovePortalRepresentionChange;
+import org.eclipse.sirius.components.collaborative.portals.changes.AddPortalRepresentationChange;
+import org.eclipse.sirius.components.collaborative.portals.changes.LayoutPortalRepresentationChange;
+import org.eclipse.sirius.components.collaborative.portals.changes.RemovePortalRepresentationChange;
 import org.eclipse.sirius.components.collaborative.portals.dto.AddPortalViewInput;
 import org.eclipse.sirius.components.collaborative.portals.dto.LayoutPortalInput;
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalViewLayoutDataInput;
@@ -34,15 +32,13 @@ import org.eclipse.sirius.components.core.api.representations.IRepresentationCha
 import org.eclipse.sirius.components.portals.Portal;
 import org.eclipse.sirius.components.portals.PortalViewLayoutData;
 import org.eclipse.sirius.components.representations.IRepresentation;
-import org.eclipse.sirius.web.application.editingcontext.EditingContext;
-import org.springframework.stereotype.Service;
 
 /**
  * Portal change event recorder.
  *
  * @author mcharfadi
  */
-@Service
+// TODO: to remove
 public class PortalChangeEventRecorder implements IRepresentationChangeEventRecorder {
 
     private final IRepresentationSearchService representationSearchService;
@@ -58,25 +54,25 @@ public class PortalChangeEventRecorder implements IRepresentationChangeEventReco
 
     @Override
     public void recordChanges(IEditingContext editingContext, IInput input, IRepresentation previousRepresentation, IRepresentation newRepresentation) {
-        var listChanges = new ArrayList<IRepresentationChangeEvent>();
-        if (editingContext instanceof EditingContext siriusEditingContext && previousRepresentation instanceof Portal previousPortal && newRepresentation instanceof Portal newPortal) {
-            if (input instanceof LayoutPortalInput layoutPortalInput) {
-                listChanges.addAll(this.handleLayoutPortalInput(previousPortal, layoutPortalInput));
-            }
-            if (input instanceof AddPortalViewInput addPortalViewInput) {
-                listChanges.addAll(this.handleAddPortalViewInput(editingContext, previousPortal, addPortalViewInput));
-            }
-            if (input instanceof RemovePortalViewInput removePortalViewInput) {
-                listChanges.addAll(this.handleRemovePortalViewInput(previousPortal, removePortalViewInput));
-            }
-            siriusEditingContext.getRepresentationChangesDescription().computeIfAbsent(input.id().toString(), key -> new ArrayList<>()).addAll(listChanges);
-        }
+//        var listChanges = new ArrayList<IRepresentationChangeEvent>();
+//        if (editingContext instanceof EditingContext siriusEditingContext && previousRepresentation instanceof Portal previousPortal && newRepresentation instanceof Portal newPortal) {
+//            if (input instanceof LayoutPortalInput layoutPortalInput) {
+//                listChanges.addAll(this.handleLayoutPortalInput(previousPortal, layoutPortalInput));
+//            }
+//            if (input instanceof AddPortalViewInput addPortalViewInput) {
+//                listChanges.addAll(this.handleAddPortalViewInput(editingContext, previousPortal, addPortalViewInput));
+//            }
+//            if (input instanceof RemovePortalViewInput removePortalViewInput) {
+//                listChanges.addAll(this.handleRemovePortalViewInput(previousPortal, removePortalViewInput));
+//            }
+//            siriusEditingContext.getRepresentationChangesDescription().computeIfAbsent(input.id().toString(), key -> new ArrayList<>()).addAll(listChanges);
+//        }
     }
 
     private List<IRepresentationChangeEvent> handleLayoutPortalInput(Portal currentPortal, LayoutPortalInput layoutPortalInput) {
         var currentPortalPortalLayoutData = currentPortal.getLayoutData();
         var newPortalPortalLayoutData = layoutPortalInput.layoutData().stream().map(this::convert).toList();
-        var portalLayoutChange = new LayoutPortalRepresentionChange(UUID.fromString(layoutPortalInput.representationId()), currentPortalPortalLayoutData, newPortalPortalLayoutData);
+        var portalLayoutChange = new LayoutPortalRepresentationChange(layoutPortalInput.representationId(), currentPortalPortalLayoutData, newPortalPortalLayoutData);
         return List.of(portalLayoutChange);
     }
 
@@ -89,7 +85,7 @@ public class PortalChangeEventRecorder implements IRepresentationChangeEventReco
                 .width(addPortalViewInput.width())
                 .height(addPortalViewInput.height())
                 .build();
-        var portalLayoutChange = new AddPortalRepresentionChange(UUID.fromString(addPortalViewInput.representationId()), currentPortalPortalLayoutData, newPortalPortalLayoutData, addPortalViewInput);
+        var portalLayoutChange = new AddPortalRepresentationChange(addPortalViewInput.representationId(), currentPortalPortalLayoutData, addPortalViewInput.viewRepresentationId(), newPortalPortalLayoutData);
         return List.of(portalLayoutChange);
     }
 
@@ -97,7 +93,7 @@ public class PortalChangeEventRecorder implements IRepresentationChangeEventReco
         var currentLayoutData = currentPortal.getLayoutData().stream().filter(layoutData -> layoutData.getPortalViewId().equals(removePortalViewInput.portalViewId())).findAny();
         var currentPortalView = currentPortal.getViews().stream().filter(view -> view.getId().equals(removePortalViewInput.portalViewId())).findAny();
         if (currentLayoutData.isPresent() && currentPortalView.isPresent()) {
-            var portalLayoutChange = new RemovePortalRepresentionChange(UUID.fromString(removePortalViewInput.representationId()), currentLayoutData.get(), currentPortalView.get());
+            var portalLayoutChange = new RemovePortalRepresentationChange(removePortalViewInput.representationId(), currentLayoutData.get(), currentPortalView.get());
             return List.of(portalLayoutChange);
         }
         return List.of();

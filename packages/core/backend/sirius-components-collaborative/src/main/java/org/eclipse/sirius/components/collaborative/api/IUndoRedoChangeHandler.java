@@ -10,22 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.core.api.representations;
+package org.eclipse.sirius.components.collaborative.api;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IInput;
-import org.eclipse.sirius.components.representations.IRepresentation;
+import org.eclipse.sirius.components.core.api.UndoInput;
+import org.eclipse.sirius.components.core.api.representations.IRepresentationChangeEvent;
 
 /**
- * Interface used to declare change event recorder.
+ * Interface used to declare services to handle change for undo/redo.
  *
  * @author mcharfadi
  */
-// TODO: to remove, or to rework regarding what is needed.
-public interface IRepresentationChangeEventRecorder {
-
-    boolean canHandle(IEditingContext editingContext, IInput input);
-
-    void recordChanges(IEditingContext editingContext, IInput input, IRepresentation previousRepresentation, IRepresentation newRepresentation);
-
+public interface IUndoRedoChangeHandler {
+    ChangeDescription undo(IRepresentationChangeEvent change, IEditingContext editingContext, UndoInput undoInput);
+    ChangeDescription redo(IRepresentationChangeEvent change, IEditingContext editingContext, UndoInput undoInput);
 }
+

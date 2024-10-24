@@ -15,11 +15,12 @@ package org.eclipse.sirius.components.collaborative.portals.dto;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.portals.api.IPortalInput;
+import org.eclipse.sirius.components.core.api.IUndoableInput;
 
 /**
  * The input for the Portal mutation to add a new view to a Portal.
  *
  * @author pcdavid
  */
-public record AddPortalViewInput(UUID id, String editingContextId, String representationId, String viewRepresentationId, int x, int y, int width, int height) implements IPortalInput {
+public record AddPortalViewInput(UUID id, String editingContextId, String representationId, String viewRepresentationId, int x, int y, int width, int height) implements IPortalInput, IUndoableInput {
 }

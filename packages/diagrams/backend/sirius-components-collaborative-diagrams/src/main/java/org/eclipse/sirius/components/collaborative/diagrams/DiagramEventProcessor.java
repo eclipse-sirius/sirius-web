@@ -12,9 +12,15 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -29,7 +35,19 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHan
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventProcessor;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInputReferencePositionProvider;
+import org.eclipse.sirius.components.collaborative.diagrams.changes.DiagramEventChange;
+import org.eclipse.sirius.components.collaborative.diagrams.changes.DiagramLayoutDataChanges;
+import org.eclipse.sirius.components.collaborative.diagrams.changes.EdgeLayoutDataChange;
+import org.eclipse.sirius.components.collaborative.diagrams.changes.LayoutDiagramRepresentationChange;
+import org.eclipse.sirius.components.collaborative.diagrams.changes.NodeLayoutDataChange;
+import org.eclipse.sirius.components.collaborative.diagrams.changes.ViewCreationRequestChange;
+import org.eclipse.sirius.components.collaborative.diagrams.changes.ViewDeleteRequestChange;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRedoInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramUndoInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.EdgeLayoutDataInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.LayoutDiagramInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.NodeLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ReferencePosition;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
@@ -37,7 +55,11 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationInput;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
+import org.eclipse.sirius.components.diagrams.layoutdata.EdgeLayoutData;
+import org.eclipse.sirius.components.diagrams.layoutdata.NodeLayoutData;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -124,7 +146,6 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
         if (representationInput instanceof IDiagramInput diagramInput) {
             Optional<IDiagramEventHandler> optionalDiagramEventHandler = this.diagramEventHandlers.stream().filter(handler -> handler.canHandle(diagramInput)).findFirst();
-
             if (optionalDiagramEventHandler.isPresent()) {
                 IDiagramEventHandler diagramEventHandler = optionalDiagramEventHandler.get();
                 diagramEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, this.diagramContext, diagramInput);
@@ -134,10 +155,26 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         }
     }
 
+    private boolean shouldRecordChanges(ChangeDescription changeDescription) {
+        var input = changeDescription.getInput();
+        return !(input instanceof DiagramUndoInput) && !(input instanceof DiagramRedoInput);
+    }
+
     @Override
     public void refresh(ChangeDescription changeDescription) {
         if (this.shouldRefresh(changeDescription)) {
+            // TODO: Appliquer un tool fait passer par ici dans le doute que le tool fasse plein de chose
+            // TODO: Faire le refresh dans le cas d'un changement semantique, changement de visibilité, ajout ou suppression d'élément graphique uniquement.
+            // TODO: verifier l'assertion suivant que le handler gérera les view xxx requests
+            // view creation request and view deletion request have been put in the diagram context during the undo or redo handler for diagram
+            if (changeDescription.getParameters().get(IDiagramEventHandler.NEXT_DIAGRAM_PARAMETER) instanceof Diagram laidOutDiagram) {
+                this.diagramContext.update(laidOutDiagram);
+            }
             Diagram refreshedDiagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
+
+            if (this.shouldRecordChanges(changeDescription)) {
+                this.recordChanges(changeDescription, refreshedDiagram);
+            }
             this.representationPersistenceService.save(changeDescription.getInput(), this.editingContext, refreshedDiagram);
 
             if (refreshedDiagram != null) {
@@ -161,6 +198,11 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
                 this.diagramEventFlux.diagramRefreshed(changeDescription.getInput().id(), reloadedDiagram.get(), DiagramRefreshedEventPayload.CAUSE_LAYOUT, referencePosition);
             }
         } else if (changeDescription.getKind().equals(ChangeKind.LAYOUT_DIAGRAM) && changeDescription.getParameters().get(IDiagramEventHandler.NEXT_DIAGRAM_PARAMETER) instanceof Diagram laidOutDiagram) {
+            // TODO: Juste un move déclanche un layout et on passe par ici.
+            // TODO: Un changement semantique envoyé au front déclanche un layout côté front
+            if (this.shouldRecordChanges(changeDescription)) {
+                this.recordLayoutChange((LayoutDiagramInput) changeDescription.getInput(), this.diagramContext.getDiagram());
+            }
             this.representationPersistenceService.save(changeDescription.getInput(), this.editingContext, laidOutDiagram);
             this.diagramContext.update(laidOutDiagram);
             this.diagramEventFlux.diagramRefreshed(changeDescription.getInput().id(), laidOutDiagram, DiagramRefreshedEventPayload.CAUSE_LAYOUT, null);
@@ -173,6 +215,116 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         if (this.shouldRefresh(changeDescription) || changeDescription.getKind().equals(ChangeKind.LAYOUT_DIAGRAM)) {
             this.diagramContext.reset();
         }
+    }
+
+    private void recordLayoutChange(LayoutDiagramInput layoutDiagramInput, Diagram previousDiagram) {
+        var newNodeLayoutData = layoutDiagramInput.diagramLayoutData().nodeLayoutData().stream()
+                .map(this::toNodeLayoutData)
+                .collect(Collectors.toMap(
+                        NodeLayoutData::id,
+                        Function.identity()
+                ));
+        Map<String, NodeLayoutDataChange> nodeLayoutDataChanges = new HashMap<>();
+        nodeLayoutDataChanges.putAll(this.computeDeletedNodeDataLayoutChanges(previousDiagram.getLayoutData().nodeLayoutData(), newNodeLayoutData));
+        nodeLayoutDataChanges.putAll(this.computeAddedNodeDataLayoutChanges(previousDiagram.getLayoutData().nodeLayoutData(), newNodeLayoutData));
+        nodeLayoutDataChanges.putAll(this.computeAlreadyExistingNodeDataLayoutChanges(previousDiagram.getLayoutData().nodeLayoutData(), newNodeLayoutData));
+
+
+        // TODO: Do the same for with Edge Layout Change
+        Map<String, EdgeLayoutDataChange> edgeLayoutDataChanges = new HashMap<>();
+        var previousMapOfEdgeLayoutData = previousDiagram.getLayoutData().edgeLayoutData();
+        var edgeLayoutData = layoutDiagramInput.diagramLayoutData().edgeLayoutData().stream()
+                .map(this::toEdgeLayoutData)
+                .peek(peekedEdgeLayoutData -> {
+                    var previousEdgeLayoutData = previousMapOfEdgeLayoutData.get(peekedEdgeLayoutData.id());
+//                    if (!peekedEdgeLayoutData.equals(previousEdgeLayoutData)) {
+//                        edgeLayoutDataChanges.put(peekedEdgeLayoutData.id(), peekedEdgeLayoutData);
+//                    }
+                })
+                .collect(Collectors.toMap(
+                        EdgeLayoutData::id,
+                        Function.identity()
+                ));
+        var diagramLayoutDataChanges = new DiagramLayoutDataChanges(nodeLayoutDataChanges, edgeLayoutDataChanges);
+
+        var layoutDiagramRepresentationChange = new LayoutDiagramRepresentationChange(layoutDiagramInput.representationId(), previousDiagram.getLayoutData(),
+                new DiagramLayoutData(newNodeLayoutData, edgeLayoutData, Map.of()), diagramLayoutDataChanges);
+        this.editingContext.getRepresentationChangesDescription().computeIfAbsent(layoutDiagramInput.id().toString(), key -> new ArrayList<>()).add(layoutDiagramRepresentationChange);
+    }
+
+    private Map<String, NodeLayoutDataChange> computeDeletedNodeDataLayoutChanges(Map<String, NodeLayoutData> previousNodeLayoutData, Map<String, NodeLayoutData> newNodeLayoutData) {
+        Map<String, NodeLayoutDataChange> deletedNodeDataLayoutChanges = new HashMap<>();
+        // if a node in previous does not have a layout in the input, it is a deletion.
+        previousNodeLayoutData.entrySet().stream()
+                .filter(previousEntry -> !newNodeLayoutData.containsKey(previousEntry.getKey()))
+                .forEach(previousEntry -> deletedNodeDataLayoutChanges.put(previousEntry.getKey(), new NodeLayoutDataChange(Optional.of(previousEntry.getValue()), Optional.empty())));
+        return deletedNodeDataLayoutChanges;
+    }
+
+    private Map<String, NodeLayoutDataChange> computeAddedNodeDataLayoutChanges(Map<String, NodeLayoutData> previousNodeLayoutData, Map<String, NodeLayoutData> newNodeLayoutData) {
+        Map<String, NodeLayoutDataChange> addedNodeDataLayoutChanges = new HashMap<>();
+        // if a node is present in new but not in previous, it is an addition
+        newNodeLayoutData.entrySet().stream()
+                .filter(newEntry -> !previousNodeLayoutData.containsKey(newEntry.getKey()))
+                .forEach(newEntry -> addedNodeDataLayoutChanges.put(newEntry.getKey(), new NodeLayoutDataChange(Optional.empty(), Optional.of(newEntry.getValue()))));
+        return addedNodeDataLayoutChanges;
+    }
+
+    private Map<String, NodeLayoutDataChange> computeAlreadyExistingNodeDataLayoutChanges(Map<String, NodeLayoutData> previousNodeLayoutData, Map<String, NodeLayoutData> newNodeLayoutData) {
+        Map<String, NodeLayoutDataChange> existingNodeDataLayoutChanges = new HashMap<>();
+        // all nodes that exists in previous and in new
+        newNodeLayoutData.entrySet().stream()
+                .filter(newEntry -> previousNodeLayoutData.containsKey(newEntry.getKey()))
+                .filter(newEntry -> !newEntry.getValue().equals(previousNodeLayoutData.get(newEntry.getKey())))
+                .forEach(newEntry -> existingNodeDataLayoutChanges.put(newEntry.getKey(), new NodeLayoutDataChange(Optional.of(previousNodeLayoutData.get(newEntry.getKey())), Optional.of(newEntry.getValue()))));
+        return existingNodeDataLayoutChanges;
+    }
+
+    private NodeLayoutData toNodeLayoutData(NodeLayoutDataInput nodeLayoutDataInput) {
+        return new NodeLayoutData(nodeLayoutDataInput.id(), nodeLayoutDataInput.position(), nodeLayoutDataInput.size(), nodeLayoutDataInput.resizedByUser());
+    }
+
+    private EdgeLayoutData toEdgeLayoutData(EdgeLayoutDataInput edgeLayoutDataInput) {
+        return new EdgeLayoutData(edgeLayoutDataInput.id(), edgeLayoutDataInput.bendingPoints());
+    }
+
+    private void recordChanges(ChangeDescription changeDescription, Diagram refreshedDiagram) {
+        var changes = this.editingContext.getRepresentationChangesDescription().computeIfAbsent(changeDescription.getInput().id().toString(), key -> new ArrayList<>());
+        //Save visibility events
+        this.diagramContext.getDiagramEvents().forEach(event -> changes.add(new DiagramEventChange(this.diagramContext.getDiagram().getId(), event)));
+
+        //Save viewCreationRequest
+        this.diagramContext.getViewCreationRequests().forEach(viewCreationRequest -> {
+            var descriptionId = viewCreationRequest.getDescriptionId();
+
+            //This would be too slow
+            var addedNodes = this.flattenNodes(refreshedDiagram.getNodes()).stream()
+                    .filter(node -> node.getDescriptionId().equals(descriptionId))
+                    .filter(node -> this.diagramContext.getDiagram().getNodes().stream().map(Node::getId)
+                            .noneMatch(id -> id.equals(node.getId()))).toList();
+
+            changes.add(new ViewCreationRequestChange(this.diagramContext.getDiagram().getId(), viewCreationRequest, addedNodes));
+        });
+
+        //Save viewDeletionRequest
+        this.diagramContext.getViewDeletionRequests().forEach(viewDeletionRequest -> {
+            var currentNodes = this.flattenNodes(this.diagramContext.getDiagram().getNodes());
+            //This would be too slow
+            var parentId = currentNodes.stream().filter(node -> Stream.concat(node.getBorderNodes().stream(), node.getChildNodes().stream()).anyMatch(n -> n.getId().equals(viewDeletionRequest.getElementId()))).findFirst();
+            //NEED TO CHECK IF SOME CHILDREN WERE ALSO DELETED ...
+            var deletedNode = this.flattenNodes(this.diagramContext.getDiagram().getNodes()).stream().filter(node -> node.getId().equals(viewDeletionRequest.getElementId())).findFirst();
+            deletedNode.ifPresent(node -> changes.add(new ViewDeleteRequestChange(this.diagramContext.getDiagram().getId(), viewDeletionRequest, node, parentId)));
+        });
+    }
+
+    //This would be too slow
+    private List<Node> flattenNodes(List<Node> nodes) {
+        var flattenMap = new ArrayList<>(nodes);
+        for (Node n : nodes) {
+            flattenMap.addAll(this.flattenNodes(n.getChildNodes()));
+            flattenMap.addAll(this.flattenNodes(n.getBorderNodes()));
+        }
+        return flattenMap;
     }
 
     private ReferencePosition getReferencePosition(IInput diagramInput) {
@@ -204,10 +356,9 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
     private IRepresentationRefreshPolicy getDefaultRefreshPolicy() {
         return changeDescription -> {
-            boolean shouldRefresh = false;
-            shouldRefresh = shouldRefresh || ChangeKind.SEMANTIC_CHANGE.equals(changeDescription.getKind());
+            boolean shouldRefresh = ChangeKind.SEMANTIC_CHANGE.equals(changeDescription.getKind());
             if (!shouldRefresh && changeDescription.getSourceId().equals(this.diagramContext.getDiagram().getId())) {
-                shouldRefresh = shouldRefresh || DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE.equals(changeDescription.getKind());
+                shouldRefresh = DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE.equals(changeDescription.getKind());
                 shouldRefresh = shouldRefresh || DiagramChangeKind.DIAGRAM_ELEMENT_VISIBILITY_CHANGE.equals(changeDescription.getKind());
                 shouldRefresh = shouldRefresh || DiagramChangeKind.DIAGRAM_ELEMENT_COLLAPSING_STATE_CHANGE.equals(changeDescription.getKind());
             }

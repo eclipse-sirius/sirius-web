@@ -10,16 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.undo.dto;
+package org.eclipse.sirius.components.collaborative.portals.changes;
 
-import org.eclipse.sirius.components.core.api.IInput;
-
-import java.util.UUID;
+import org.eclipse.sirius.components.core.api.representations.IRepresentationChangeEvent;
+import org.eclipse.sirius.components.portals.PortalView;
+import org.eclipse.sirius.components.portals.PortalViewLayoutData;
 
 /**
- * The input for redo mutation.
+ * Remove Portal representation event.
  *
  * @author mcharfadi
  */
-public record RedoInput(UUID id, String  editingContextId, String mutationId) implements IInput {
+public record RemovePortalRepresentationChange(String representationId, PortalViewLayoutData oldLayout, PortalView oldPortalView) implements IRepresentationChangeEvent {
 }
