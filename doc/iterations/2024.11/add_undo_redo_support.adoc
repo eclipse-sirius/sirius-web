@@ -38,6 +38,34 @@ Pressing ctrl+y will redo the action that was previously undone.
 
 This should work regardless of the representation.
 
+=== Scenario (serialized representation)
+
+Serialized representation currently used in Sirius Web contains a layout part that is not contained in an EMF resource.
+
+On an unsynchronized representation the same scenarios as above should work.
+
+1. Several users are working on the same node 1
+- An user u1 resize a node from 10*10 to 100*100
+- An user u2 add sub nodes to the same node
+- If An user u1 press ctrl+z
+- *Expected*: the node will be not be resize to 10*10 if the sub nodes added by u2 do not fit inside, it will be resized to a default size.
+
+2. Several users are working on the same node 2
+- An user u1 move a node from 0,0 to 10,10
+- An user u2 move this node from 10,10 to 20,20
+- If An user u1 press ctrl+z
+- *Expected*: nothing will change since it would create a conflict with the change from u2
+- If An user u2 press ctrl+z
+- *Expected*: the node is moved back to 10,10 and u1 can press ctrl-z to move it back to 0,0
+
+3. Several users are working on the same node 3
+- An user u1 move a node from 0,0 to 10,10
+- An user u2 move this node from 10,10 to 20,20
+- An user u2 press ctrl+z to move back the node to 10,10
+- An user u1 move the node from 10,10 to 0,0
+- If An user u2 press ctrl+y
+- *Expected*: nothing will change since it would create a conflict with the change from u1
+
 === Cutting backs
 
 The undo redo will revert all semantic changes at first.
