@@ -1,0 +1,85 @@
+= [ADR-177] Add support for undo redo on Diagram representation
+
+
+== Context
+
+We want to be able to undo or redo an action performed on a serialized Diagram representation.
+This is different from the undo redo on semantic changes because we can't use the EMF mechanism to track changes.
+
+=== Current behavior
+
+none.
+
+== Decision
+
+=== Front-End
+
+In order to know when a layout mutation has been sent because of a direct user interaction or because a new diagramRefreshedEventPayload has been received.
+We need to send a unique mutationID when sending the layout after `handleNodesChange` as such `layoutOnBoundsChange` will generate a new ID for the mutation instead of using the diagramRefreshedEventPayload id.
+
+
+=== Backend
+
+* In order to track changes we will keep using `UndoRedoRecorder` that implements `IInputPreProcessor` and `IInputPostProcessor`.
+* We will implement an `IRepresentationChangeEventRecorder` and several `IRepresentationChangeEvent` to handle Diagram changes.
+
+`IRepresentationChangeEvent` will represent a specific change, we will have several `changeEvent` for handling Diagrams.
+
+[source,java]
+----
+public record ViewCreationRequestChange(UUID representationId, ViewCreationRequest viewCreationRequest, List<Node> addedNodes) implements IRepresentationChangeEvent {
+}
+public record ViewDeleteRequestChange(UUID representationId, ViewDeletionRequest viewDeletionRequest, Node deletedNode, Optional<Node> parentNode) implements IRepresentationChangeEvent {
+}
+public record DiagramEventChange(UUID representationId, IDiagramEvent diagramEvent) implements IRepresentationChangeEvent {
+}
+public record LayoutDiagramRepresentionChange(UUID representationId, Map<String, NodeLayoutData> oldValue, Map<String, NodeLayoutData> newValue) implements IRepresentationChangeEvent {
+}
+----
+
+
+=== Things to improve
+
+== IInputPreProcessor
+
+We don't have enough information to record all needed changes in `UndoRedoRecorder`, and as such we will need to capture some of the changes in the `DiagramEventProcessor`.
+For example the visibility events are only accessible with the mutationId used to create these events in the refresh method where we have access to the diagramContext.
+
+[source,java]
+----
+this.diagramContext.getDiagramEvents().forEach(event -> {
+    this.editingContext.getIdToChanges().get(changeDescription.getInput().id().toString())
+            .add(new DiagramEventChange(UUID.fromString(this.diagramContext.getDiagram().getId()), event));
+});
+----
+
+We might want to improve `IInputPreProcessor` so it gains access to `diagramContext`.
+
+== Nodes
+
+When undoing a `ViewDeleteRequest` we need the old parentId of the node that was deleted, we don't have this information and computing it would be slow on diagrams with lots of elements.
+
+When redoing a `ViewCreationRequest` we need to know what are the nodes that have been created during the first `ViewCreationRequest` and save them.
+We can't easily know without comparing all the old nodes and the new and finding the newly added ones.
+
+[source,java]
+----
+this.diagramContext.getViewCreationRequests().forEach(viewCreationRequest -> {
+    var descriptionId = viewCreationRequest.getDescriptionId();
+
+    //This would be too slow
+    var addedNodes = flattenNodes(refreshedDiagram.getNodes()).stream()
+            .filter(node -> node.getDescriptionId().equals(descriptionId))
+            .filter(node -> this.diagramContext.getDiagram().getNodes().stream().map(Node::getId)
+                    .noneMatch(id -> id.equals(node.getId()))).toList();
+
+    this.editingContext.getIdToChanges().get(changeDescription.getInput().id().toString())
+            .add(new ViewCreationRequestChange(UUID.fromString(this.diagramContext.getDiagram().getId()), viewCreationRequest, addedNodes));
+});
+----
+
+== Status
+
+Work in progress
+
+== Consequences
