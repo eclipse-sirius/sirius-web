@@ -1,0 +1,27 @@
+= Features
+
+Fundamentally, {sw} is a framework for defining custom domain-specific studios, so its key features focus on:
+
+* Editing _xref:maker-manual:studio-definitions.adoc[{stddefs}]_:
+** A {stddef} specifies the domain-specific *data model* and *view model* that comprises the custom studio.
+** _{stdmkrs}_ can specify their _{stddef}_ using the *low-code* approach to {sw}, which requires no programming experience.
+** _{stddevs}_ can specify their _{stddef}_ using the *programmatic* approach to {sw}, which can leverage the full power of the {sw} APIs for a finer control over the details of the resulting custom studio.
+** In the _view model_, a _{stddef}_ can rely on 6 types of ready-to-use graphical representations for both *visualizing* and *editing* their domain-specific data:
+*** xref:user-manual:studio-runtime.adoc#_deck[Deck Representations] for representing the data in the form of a Kanban board.
+*** xref:user-manual:studio-runtime.adoc#_diagram[Diagram Representations] for representing the data as nodes and edges.
+*** xref:user-manual:studio-runtime.adoc#_form[Form Representations] for representing the domain data as a form.
+*** xref:user-manual:studio-runtime.adoc#_gantt[Gantt Representations] for representing the domain data as a https://en.wikipedia.org/wiki/Gantt_chart:[Gantt Chart] (i.e. tasks in a timeline).
+*** xref:user-manual:studio-runtime.adoc#_portal[Portal Representations] for representing the domain data as composite representations made by assembling other representations.
+*** xref:user-manual:studio-runtime.adoc#_tree[Tree Representations] for representing the domain data hierarchically as a tree.
+
+* The xref:user-manual:studio-runtime.adoc[_{stdrt}_]:
+** Renders a _{stddef}_ as part of a web application
+** Provides a *default workbench* in which users may organize into projects their data and associated graphical representations.
+
+{sw} also provides resources for _Developers_, detailed in the xref:developer-guide:index.adoc[].
+In particular:
+
+* How to create your own _xref:developer-guide:application-development.adoc[custom application]_ used to deploy your _{stddefs}_.
+* Extensibility:
+** With the {sw} APIs, _{stddevs}_ may extend their custom studio in ways which are not accessible through the low-code approach.
+** In particular, xref:developer-guide:studio-development.adoc#_custom_representation_description_apis[custom types] of graphical representations can be created in order to better fit the domain-specific data to edit.

@@ -1,0 +1,35 @@
+= {ui-view-details}
+
+The *{ui-view-details}* tab in the right sidebar of the _xref:user-manual:workbench-ui/project-homepage.adoc[]_ displays properties about the currently-selected project element. The values of the properties can also be edited through this tab.
+
+.The _{ui-view-details}_ tab on a _Flow CompositeProcessor_
+image::Details.png["{ui-view-details} Sample Snapshot on a Flow CompositeProcessor"]
+
+TIP: This tab is actually an example of _xref:user-manual:studio-runtime/representation-editors/form.adoc[Form Representation]_.
+
+By default, the generic workbench represents, and allows editing the value of, each property differently depending on its declared _type_:
+
+[cols="1,1,2"]
+|===
+|*Property type*
+|*Represented as*
+|*Example*
+
+|Text
+|Text field
+|image:Details_TextField.png["{ui-view-details} Text Field Sample Snapshot"]
+
+|Numeric
+|Number field
+|image:Details_NumberField.png["{ui-view-details} Number Field Sample Snapshot"]
+
+|Enumeration
+|Radio buttons
+|image:Details_RadioButtons.png["{ui-view-details} Radio Buttons Sample Snapshot"]
+
+|Object Reference
+|Selection field
+|image:Details_SelectionField.png["{ui-view-details} Selection Field Sample Snapshot"]
+|=== 
+
+NOTE: It is possible for contributed _{usr-data-models}_ to customize how their properties should be represented and edited as part of the {ui-view-details} tab, so the mapping above may not always apply.
