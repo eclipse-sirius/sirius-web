@@ -35,6 +35,13 @@ public class UploadImageMutationRunner implements IMutationRunner<UploadImageInp
                 ... on UploadImageSuccessPayload {
                   imageId
                 }
+               ... on ErrorPayload {
+                    message
+                    messages {
+                      level
+                      body
+                    }
+                }
               }
             }
             """;
