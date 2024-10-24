@@ -1,0 +1,120 @@
+= [ADR-176] Add support for undo redo on Portal representation
+
+
+== Context
+
+We want to be able to undo or redo an action performed on a serialized Portal representation.
+This is different from the undo redo on semantic changes because we can't use the EMF mechanism to track changes.
+
+=== Current behavior
+
+none.
+
+== Decision
+
+=== Front-End
+
+Each time we interact with a Portal representation, it rerenders and sends a `layoutPortalMutation`.
+In order to save only revelants mutations in the mutation stack we will save the `mutationId` when :
+
+* A resize or a move of one of the view is finished
+* A view is successfully added into a Portal
+* A view is successfully removed from a Portal
+
+We will use the props of the ResponsiveGridLayout component to handle these events.
+[source,typescript]
+----
+onResizeStart={handleLayoutStart}
+onDragStart={handleLayoutStart}
+onResizeStop={handleLayoutStop}
+onDragStop={handleLayoutStop}
+----
+
+A state will be added to know when we should save the mutationId : `const [isUndoable, setIsUndoable] = useState<boolean>(false);`
+
+=== Backend
+
+* In order to track changes we will keep using `UndoRedoRecorder` that implements `IInputPreProcessor` and `IInputPostProcessor`.
+* We will add a 2 new interfaces :
+
+[source,java]
+----
+public interface IRepresentationChangeEventRecorder {
+    List<IRepresentationChangeEvent> getChanges(IEditingContext editingContext, IInput input);
+    boolean canHandle(IEditingContext editingContext, IInput input);
+}
+----
+
+[source,java]
+----
+    @Override
+    public IInput preProcess(IEditingContext editingContext, IInput input, Sinks.Many<ChangeDescription> changeDescriptionSink) {
+        if (editingContext instanceof EditingContext siriusEditingContext && canHandle(input)) {
+            siriusEditingContext.getChangeRecorder().beginRecording(siriusEditingContext.getDomain().getResourceSet().getResources());
+            this.representationChangeEventRecorders.stream()
+                    .filter(recorder -> recorder.canHandle(editingContext, input))
+                    .forEach(recorder -> {
+                        var changes = recorder.getChanges(editingContext, input);
+                        siriusEditingContext.getRepresentationChangesDescription().put(input.id().toString(), changes);
+                    });
+        }
+        return input;
+    }
+----
+
+IRepresentationChangeEventRecorder will allow us to track specific changes from an input.
+
+[source,java]
+----
+public interface IRepresentationChangeEvent {
+    UUID representationId();
+}
+----
+
+IRepresentationChangeEvent will represent a specific change, we will have several changeEvent for handling Portal.
+
+[source,java]
+----
+public record AddPortalRepresentionChange(UUID representationId, List<PortalViewLayoutData> oldValue, PortalViewLayoutData portalViewLayoutData, AddPortalViewInput previousInput) implements IRepresentationChangeEvent {
+}
+public record RemovePortalRepresentionChange(UUID representationId, PortalViewLayoutData oldLayout, PortalView oldPortalView) implements IRepresentationChangeEvent {
+}
+public record LayoutPortalRepresentionChange(UUID representationId, List<PortalViewLayoutData> oldValue, List<PortalViewLayoutData> newValue) implements IRepresentationChangeEvent {
+}
+----
+
+We will handle how to apply the changes after receiving an undo or redo mutation if the corresponding handler
+We can apply either undo or redo with the `applyAndReverse` method.
+
+[source,java]
+----
+@Override
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
+        if (editingContext instanceof EditingContext siriusEditingContext && input instanceof UndoInput undoInput) {
+            if (siriusEditingContext.getRepresentationChangesDescription().get(undoInput.mutationId()) != null) {
+                var changes = siriusEditingContext.getRepresentationChangesDescription().get(undoInput.mutationId());
+                for (IRepresentationChangeEvent change : changes) {
+                    if (change instanceof LayoutPortalRepresentionChange layoutPortalRepresentionChange) {
+                        changeDescription = handleLayoutPortalChange(payloadSink, editingContext, undoInput, layoutPortalRepresentionChange);
+                    }
+                    if (change instanceof AddPortalRepresentionChange addPortalRepresentionChange) {
+                        changeDescription = handleAddPortalChange(payloadSink, editingContext, undoInput, addPortalRepresentionChange);
+                    }
+                    if (change instanceof RemovePortalRepresentionChange removePortalRepresentionChange) {
+                        changeDescription = handleRemovePortalChange(payloadSink, editingContext, undoInput, removePortalRepresentionChange);
+                    }
+                }
+            }
+        }
+    }
+----
+
+=== Things to improve
+
+We should add a new API for handling the changes in the `UndoEventHandler` and `ReddoEventHandler`
+
+== Status
+
+Work in progress
+
+== Consequences

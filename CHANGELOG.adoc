@@ -12,6 +12,7 @@
 - [ADR-173] Add support for forking table description from representation
 - [ADR-174] Adapt support for table description in view DSL
 - [ADR-175] Add support for Pagination in REST APIs
+- [ADR-176] Add support for undo redo on Portal representation
 
 
 === Deprecation warning
