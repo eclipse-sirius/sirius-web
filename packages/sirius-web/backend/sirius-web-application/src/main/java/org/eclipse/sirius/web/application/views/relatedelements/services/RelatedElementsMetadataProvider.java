@@ -30,7 +30,12 @@ public class RelatedElementsMetadataProvider implements IRepresentationMetadataP
     @Override
     public Optional<RepresentationMetadata> getMetadata(String representationId) {
         if (representationId.startsWith("relatedElements://")) {
-            return Optional.of(new RepresentationMetadata(representationId, Form.KIND, RelatedElementsDescriptionProvider.FORM_TITLE, RelatedElementsDescriptionProvider.FORM_DESCRIPTION_ID));
+            var representationMetadata = RepresentationMetadata.newRepresentationMetadata(representationId)
+                    .kind(Form.KIND)
+                    .label(RelatedElementsDescriptionProvider.FORM_TITLE)
+                    .descriptionId(RelatedElementsDescriptionProvider.FORM_DESCRIPTION_ID)
+                    .build();
+            return Optional.of(representationMetadata);
         }
         return Optional.empty();
     }

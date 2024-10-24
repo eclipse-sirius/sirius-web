@@ -50,6 +50,8 @@ This allows an error to be displayed when there is a problem during uploading
 - https://github.com/eclipse-sirius/sirius-web/issues/3679[#3679] [sirius-web] aql service `hasChildren` requires the editing context like the aql service `getChildren`.
 - https://github.com/eclipse-sirius/sirius-web/issues/3680[#3680] [core] The label has been removed from the content of all representations.
 + The label of a representation is available through its metadata that can be retrieve thanks to the service `IRepresentationMetadataSearchService` from sirius-web-domain or, `IRepresentationMetadataProvider` from sirius-components-collaborative.
+- https://github.com/eclipse-sirius/sirius-web/issues/3681[#3681] [sirius-web] Replace all representation specific rename event handlers by `RenameRepresentationEventHandler`.
++ It means that an application that only use sirius-components should provide its own means to rename a representation.
 
 === Dependency update
 
@@ -77,6 +79,7 @@ This allows an error to be displayed when there is a problem during uploading
 Charts' metadata is only relevant when Charts are used as Representations.
 - https://github.com/eclipse-sirius/sirius-web/issues/3904[#3904] [form] Fix an issue where textfield did not update to reflect backend-set value when it matched the initial value.
 - https://github.com/eclipse-sirius/sirius-web/issues/3836[#3836] [gantt] Prevent task.description from resetting after gantt task change.
+- https://github.com/eclipse-sirius/sirius-web/issues/3681[#3681] [core] Fix the representation rename
 
 === New Features
 

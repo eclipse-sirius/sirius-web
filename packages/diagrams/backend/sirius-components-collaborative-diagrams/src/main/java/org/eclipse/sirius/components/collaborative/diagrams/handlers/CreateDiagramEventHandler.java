@@ -113,7 +113,12 @@ public class CreateDiagramEventHandler implements IEditingContextEventHandler {
                 String label = diagramDescription.getLabelProvider().apply(variableManager);
 
                 Diagram diagram = this.diagramCreationService.create(object, diagramDescription, editingContext);
-                var representationMetadata = new RepresentationMetadata(diagram.getId(), diagram.getKind(), label, diagram.getDescriptionId());
+                var representationMetadata = RepresentationMetadata.newRepresentationMetadata(diagram.getId())
+                        .kind(diagram.getKind())
+                        .label(label)
+                        .descriptionId(diagram.getDescriptionId())
+                        .build();
+
                 this.representationMetadataPersistenceService.save(createRepresentationInput, editingContext, representationMetadata, diagram.getTargetObjectId());
                 this.representationPersistenceService.save(createRepresentationInput, editingContext, diagram);
 
