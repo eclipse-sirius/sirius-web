@@ -12,11 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -31,6 +33,9 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHan
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventProcessor;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInputReferencePositionProvider;
+import org.eclipse.sirius.components.collaborative.diagrams.changes.DiagramEventChange;
+import org.eclipse.sirius.components.collaborative.diagrams.changes.ViewCreationRequestChange;
+import org.eclipse.sirius.components.collaborative.diagrams.changes.ViewDeleteRequestChange;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.LayoutDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.NodeLayoutDataInput;
@@ -44,6 +49,7 @@ import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchSe
 import org.eclipse.sirius.components.core.api.IRepresentationInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.layoutdata.NodeLayoutData;
@@ -132,48 +138,42 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
         if (representationInput instanceof LayoutDiagramInput layoutDiagramInput) {
-            if (layoutDiagramInput.id().equals(this.currentRevisionId)) {
-                var diagram = this.diagramContext.getDiagram();
-                var nodeLayoutData = layoutDiagramInput.diagramLayoutData().nodeLayoutData().stream()
-                        .collect(Collectors.toMap(
-                                NodeLayoutDataInput::id,
-                                nodeLayoutDataInput -> new NodeLayoutData(nodeLayoutDataInput.id(), nodeLayoutDataInput.position(), nodeLayoutDataInput.size(), nodeLayoutDataInput.resizedByUser()),
-                                (oldValue, newValue) -> newValue
-                        ));
+            var diagram = this.diagramContext.getDiagram();
+            var nodeLayoutData = layoutDiagramInput.diagramLayoutData().nodeLayoutData().stream()
+                    .collect(Collectors.toMap(
+                            NodeLayoutDataInput::id,
+                            nodeLayoutDataInput -> new NodeLayoutData(nodeLayoutDataInput.id(), nodeLayoutDataInput.position(), nodeLayoutDataInput.size(), nodeLayoutDataInput.resizedByUser()),
+                            (oldValue, newValue) -> newValue
+                    ));
 
-                var layoutData = new DiagramLayoutData(nodeLayoutData, Map.of(), Map.of());
-                var laidOutDiagram = Diagram.newDiagram(diagram)
-                        .layoutData(layoutData)
-                        .build();
+            var layoutData = new DiagramLayoutData(nodeLayoutData, Map.of(), Map.of());
+            var laidOutDiagram = Diagram.newDiagram(diagram)
+                    .layoutData(layoutData)
+                    .build();
 
-                this.representationPersistenceService.save(layoutDiagramInput, this.editingContext, laidOutDiagram);
-                this.diagramContext.reset();
-                this.diagramContext.update(laidOutDiagram);
-                this.diagramEventFlux.diagramRefreshed(layoutDiagramInput.id(), laidOutDiagram, DiagramRefreshedEventPayload.CAUSE_LAYOUT, null);
+            this.representationPersistenceService.save(layoutDiagramInput, this.editingContext, laidOutDiagram);
+            this.diagramContext.reset();
+            this.diagramContext.update(laidOutDiagram);
+            this.diagramEventFlux.diagramRefreshed(layoutDiagramInput.id(), laidOutDiagram, DiagramRefreshedEventPayload.CAUSE_LAYOUT, null);
 
-                this.currentRevisionCause = DiagramRefreshedEventPayload.CAUSE_LAYOUT;
+            this.currentRevisionCause = DiagramRefreshedEventPayload.CAUSE_LAYOUT;
 
-                payloadSink.tryEmitValue(new SuccessPayload(layoutDiagramInput.id()));
-            } else {
-                payloadSink.tryEmitValue(new SuccessPayload(layoutDiagramInput.id()));
+            payloadSink.tryEmitValue(new SuccessPayload(layoutDiagramInput.id()));
+        } else {
+            IRepresentationInput effectiveInput = representationInput;
+            if (representationInput instanceof RenameRepresentationInput renameRepresentationInput) {
+                effectiveInput = new RenameDiagramInput(renameRepresentationInput.id(), renameRepresentationInput.editingContextId(), renameRepresentationInput.representationId(),
+                        renameRepresentationInput.newLabel());
             }
+            if (effectiveInput instanceof IDiagramInput diagramInput) {
+                Optional<IDiagramEventHandler> optionalDiagramEventHandler = this.diagramEventHandlers.stream().filter(handler -> handler.canHandle(diagramInput)).findFirst();
 
-            return;
-        }
-
-        IRepresentationInput effectiveInput = representationInput;
-        if (representationInput instanceof RenameRepresentationInput renameRepresentationInput) {
-            effectiveInput = new RenameDiagramInput(renameRepresentationInput.id(), renameRepresentationInput.editingContextId(), renameRepresentationInput.representationId(),
-                    renameRepresentationInput.newLabel());
-        }
-        if (effectiveInput instanceof IDiagramInput diagramInput) {
-            Optional<IDiagramEventHandler> optionalDiagramEventHandler = this.diagramEventHandlers.stream().filter(handler -> handler.canHandle(diagramInput)).findFirst();
-
-            if (optionalDiagramEventHandler.isPresent()) {
-                IDiagramEventHandler diagramEventHandler = optionalDiagramEventHandler.get();
-                diagramEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, this.diagramContext, diagramInput);
-            } else {
-                this.logger.warn("No handler found for event: {}", diagramInput);
+                if (optionalDiagramEventHandler.isPresent()) {
+                    IDiagramEventHandler diagramEventHandler = optionalDiagramEventHandler.get();
+                    diagramEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, this.diagramContext, diagramInput);
+                } else {
+                    this.logger.warn("No handler found for event: {}", diagramInput);
+                }
             }
         }
     }
@@ -182,6 +182,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     public void refresh(ChangeDescription changeDescription) {
         if (this.shouldRefresh(changeDescription)) {
             Diagram refreshedDiagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
+            recordChanges(changeDescription, refreshedDiagram);
             this.representationPersistenceService.save(changeDescription.getInput(), this.editingContext, refreshedDiagram);
 
             if (refreshedDiagram != null) {
@@ -205,7 +206,72 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
                 ReferencePosition referencePosition = this.getReferencePosition(changeDescription.getInput());
                 this.diagramEventFlux.diagramRefreshed(changeDescription.getInput().id(), reloadedDiagram.get(), DiagramRefreshedEventPayload.CAUSE_LAYOUT, referencePosition);
             }
+        } else if (changeDescription.getKind().equals(ChangeKind.UNDO_REDO_REPRESENTATION_CHANGE)) {
+            Optional<Diagram> reloadedDiagram = this.representationSearchService.findById(this.editingContext, this.diagramContext.getDiagram().getId(), Diagram.class);
+            if (reloadedDiagram.isPresent()) {
+                this.diagramContext.update(reloadedDiagram.get());
+                this.currentRevisionId = changeDescription.getInput().id();
+                this.currentRevisionCause = DiagramRefreshedEventPayload.CAUSE_LAYOUT;
+                ReferencePosition referencePosition = this.getReferencePosition(changeDescription.getInput());
+                this.diagramEventFlux.diagramRefreshed(changeDescription.getInput().id(), reloadedDiagram.get(), DiagramRefreshedEventPayload.CAUSE_LAYOUT, referencePosition);
+            }
         }
+    }
+
+    private void recordChanges(ChangeDescription changeDescription, Diagram refreshedDiagram) {
+        if (this.editingContext.getRepresentationChangesDescription().get(changeDescription.getInput().id().toString()) != null) {
+            var changes = this.editingContext.getRepresentationChangesDescription().get(changeDescription.getInput().id().toString());
+            if (changes != null) {
+                //Save visibility events
+                this.diagramContext.getDiagramEvents().forEach(event -> {
+                    this.editingContext.getRepresentationChangesDescription().get(changeDescription.getInput().id().toString())
+                            .add(new DiagramEventChange(UUID.fromString(this.diagramContext.getDiagram().getId()), event));
+                });
+                //Save viewCreationRequest
+                this.diagramContext.getViewCreationRequests().forEach(viewCreationRequest -> {
+                    var descriptionId = viewCreationRequest.getDescriptionId();
+
+                    //This would be too slow
+                    var addedNodes = flattenNodes(refreshedDiagram.getNodes()).stream()
+                            .filter(node -> node.getDescriptionId().equals(descriptionId))
+                            .filter(node -> this.diagramContext.getDiagram().getNodes().stream().map(Node::getId)
+                                    .noneMatch(id -> id.equals(node.getId()))).toList();
+
+                    this.editingContext.getRepresentationChangesDescription().get(changeDescription.getInput().id().toString())
+                            .add(new ViewCreationRequestChange(UUID.fromString(this.diagramContext.getDiagram().getId()), viewCreationRequest, addedNodes));
+                });
+                //Save viewDeletionRequest
+                this.diagramContext.getViewDeletionRequests().forEach(viewDeletionRequest -> {
+                    var currentNodes = flattenNodes(this.diagramContext.getDiagram().getNodes());
+                    //This would be too slow
+                    var parentId = currentNodes.stream().filter(node -> Stream.concat(node.getBorderNodes().stream(), node.getChildNodes().stream()).anyMatch(n -> n.getId().equals(viewDeletionRequest.getElementId()))).findFirst();
+                    //NEED TO CHECK IF SOME CHILDS WERE ALSO DELETED ...
+                    var deletedNode = flattenNodes(this.diagramContext.getDiagram().getNodes()).stream().filter(node -> node.getId().equals(viewDeletionRequest.getElementId())).findFirst();
+                    deletedNode.ifPresent(node -> this.editingContext.getRepresentationChangesDescription().get(changeDescription.getInput().id().toString())
+                            .add(new ViewDeleteRequestChange(UUID.fromString(this.diagramContext.getDiagram().getId()), viewDeletionRequest, node, parentId)));
+                });
+            }
+        }
+    }
+
+    //This would be too slow
+    private List<Node> flattenNodes2(List<Node> nodes, String id) {
+        var flattenMap = new ArrayList<>(nodes);
+        for (Node n : nodes) {
+            flattenMap.addAll(flattenNodes(n.getChildNodes()));
+            flattenMap.addAll(flattenNodes(n.getBorderNodes()));
+        }
+        return flattenMap;
+    }
+
+    //This would be too slow
+    private List<Node> flattenNodes(List<Node> nodes) {
+        var flattenMap = new ArrayList<>(nodes);
+        for (Node n : nodes) {
+            flattenMap.addAll(flattenNodes(n.getChildNodes()));
+            flattenMap.addAll(flattenNodes(n.getBorderNodes()));
+        }
+        return flattenMap;
     }
 
     private ReferencePosition getReferencePosition(IInput diagramInput) {

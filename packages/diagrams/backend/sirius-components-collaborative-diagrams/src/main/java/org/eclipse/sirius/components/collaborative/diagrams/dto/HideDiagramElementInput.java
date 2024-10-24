@@ -16,11 +16,12 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.components.core.api.IUndoableInput;
 
 /**
  * The class of the inputs for the "hide element" mutation.
  *
  * @author tgiraudet
  */
-public record HideDiagramElementInput(UUID id, String editingContextId, String representationId, Set<String> elementIds, boolean hide) implements IDiagramInput {
+public record HideDiagramElementInput(UUID id, String editingContextId, String representationId, Set<String> elementIds, boolean hide) implements IDiagramInput, IUndoableInput {
 }

@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.collaborative.diagrams.dto;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.components.core.api.IUndoableInput;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
 
 /**
@@ -22,5 +23,5 @@ import org.eclipse.sirius.components.diagrams.CollapsingState;
  *
  * @author gcoutable
  */
-public record UpdateCollapsingStateInput(UUID id, String editingContextId, String representationId, String diagramElementId, CollapsingState collapsingState) implements IDiagramInput {
+public record UpdateCollapsingStateInput(UUID id, String editingContextId, String representationId, String diagramElementId, CollapsingState collapsingState) implements IDiagramInput, IUndoableInput {
 }
