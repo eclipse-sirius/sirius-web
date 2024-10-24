@@ -23,7 +23,8 @@
 
 === Breaking changes
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4134[#4134] [core] Our custom `EditingContextCrossReferenceAdapter` has been removed and replaced by EMF's default `ECrossReferenceAdapter`.
+Use `org.eclipse.emf.ecore.util.ECrossReferenceAdapter.getCrossReferenceAdapter(Notifier)` to obtain it instead of looking for an `EditingContextCrossReferenceAdapter`.
 
 === Dependency update
 
@@ -36,6 +37,8 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/5491[#5491] [test] Add missing module in tsconfig for the playwright package
 - https://github.com/eclipse-sirius/sirius-web/issues/5627[#5627] [sirius-web] Fix the duplication of an element with incoming non changeable references
 - https://github.com/eclipse-sirius/sirius-web/issues/5617[#5617] [sirius-web] Fix duplication of an element to a mono valued containment feature while updating incoming reference.
+- https://github.com/eclipse-sirius/sirius-web/issues/4134[#4134] [core] Our custom `EditingContextCrossReferenceAdapter` has been removed and replaced by EMF's default `ECrossReferenceAdapter`.
+Use `org.eclipse.emf.ecore.util.ECrossReferenceAdapter.getCrossReferenceAdapter(Notifier)` to obtain it instead of looking for an `EditingContextCrossReferenceAdapter`.
 
 
 === New Features
