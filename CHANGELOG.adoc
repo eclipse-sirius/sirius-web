@@ -13,11 +13,12 @@
 - [ADR-174] Adapt support for table description in view DSL
 - [ADR-175] Add support for Pagination in REST APIs
 - [ADR-176] Add support for undo redo on Portal representation
+- [ADR-177] Add support for undo redo on Diagram representation
 
 
 === Deprecation warning
 
-- [form] The project `sirius-components-collecborative-forms` has always decided that any change performed by a widget must be a `ChangeKind.SEMANTIC_CHANGE`.
+- [form] The project `sirius-components-collaborative-forms` has always decided that any change performed by a widget must be a `ChangeKind.SEMANTIC_CHANGE`.
 This decision has created some limit on what can really be edited by a form.
 We will soon change this default behavior to use the change kind and parameters returned by the specifier in the `Success` result from the event handler.
 As a result, if we consider a textfield widget, in order to keep the existing behavior, specifier will have to create a result with the proper change kind like `new Success(ChangeKind.SEMANTIC_CHANGE, Map.of())` instead of `new Success()`.
@@ -139,6 +140,7 @@ This is now fixed.
 - [ADR-169] Compute the icon of a representation
 - [ADR-170] Add support for representations in the Details View
 - [ADR-171] Add support for Sorting and Filtering in Tables
+
 
 === Deprecation warning
 
