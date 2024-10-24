@@ -10,15 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.diagrams.dto;
+package org.eclipse.sirius.components.view.emf.diagram.api;
+
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
+
+import java.util.List;
 
 /**
- * The common interface for elements displayed in the palette.
+ * Common interface for services providing extra tools to the palette.
  *
  * @author fbarbin
  */
+public interface IPaletteToolsProvider {
 
-public interface IPaletteEntry {
+    List<ToolSection> createExtraToolSections(Object diagramElementDescription, Object diagramElement);
 
-    String id();
+    List<ITool> createQuickAccessTools(Object diagramElementDescription, Object diagramElement);
 }

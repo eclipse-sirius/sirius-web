@@ -11,10 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Node } from '@xyflow/react';
-import { NodeData } from '../../DiagramRenderer.types';
+import { Edge, Node } from '@xyflow/react';
+import { EdgeData, NodeData } from '../../DiagramRenderer.types';
 import { DiagramPaletteToolContributionComponentProps } from '../DiagramPaletteToolContribution.types';
-import { GQLPalette, GQLTool } from '../Palette.types';
+import { GQLTool } from '../Palette.types';
 
 export interface PaletteQuickAccessToolBarProps {
   x: number;
@@ -23,6 +23,6 @@ export interface PaletteQuickAccessToolBarProps {
   hideableDiagramElement?: boolean;
   paletteToolComponents: React.ComponentType<DiagramPaletteToolContributionComponentProps>[];
   onToolClick: (tool: GQLTool) => void;
-  palette: GQLPalette | null;
-  node: Node<NodeData> | undefined;
+  quickAccessTools: GQLTool[];
+  diagramElement: Node<NodeData> | Edge<EdgeData> | null;
 }

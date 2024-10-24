@@ -13,8 +13,8 @@
 import { GQLTool, GQLToolSection } from '../Palette.types';
 
 export interface PaletteToolSectionListProps {
-  onToolClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, tool: GQLTool) => void;
-  onBackToMainList: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  onToolClick: (tool: GQLTool) => void;
+  onBackToMainList: () => void;
   toolSection: GQLToolSection;
   tooltipDelay?: number;
   tooltipPlacement?:

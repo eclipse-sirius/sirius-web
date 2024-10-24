@@ -86,7 +86,7 @@ export const Palette = ({
   onDirectEditClick,
   hideableDiagramElement,
 }: PaletteProps) => {
-  const { getNodes } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const { getNodes, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { domNode } = useStoreApi().getState();
   const { x: viewportWidth, y: viewportHeight } = computeDraggableBounds(domNode?.getBoundingClientRect());
 
@@ -108,10 +108,11 @@ export const Palette = ({
     diagramPaletteToolExtensionPoint
   );
 
-  const node = getNodes().find((node) => node.id === diagramElementId);
+  const diagramElement: Node<NodeData> | Edge<EdgeData> | undefined =
+    getEdges().find((edge) => edge.id === diagramElementId) ?? getNodes().find((node) => node.id === diagramElementId);
 
-  const paletteToolComponents: React.ComponentType<DiagramPaletteToolContributionComponentProps>[] = node
-    ? paletteToolData.data.filter((data) => data.canHandle(node)).map((data) => data.component)
+  const paletteToolComponents: React.ComponentType<DiagramPaletteToolContributionComponentProps>[] = diagramElement
+    ? paletteToolData.data.filter((data) => data.canHandle(diagramElement)).map((data) => data.component)
     : [];
 
   const toolCount =
@@ -122,11 +123,11 @@ export const Palette = ({
           .filter(isToolSection)
           .filter((toolSection) => toolSection.tools.filter(isSingleClickOnDiagramElementTool).length > 0).length
       : 0) +
-    (hideableDiagramElement ? (node ? 3 : 1) : 0) +
+    (hideableDiagramElement ? (diagramElement ? 3 : 1) : 0) +
     paletteToolComponents.length;
   const { classes } = usePaletteStyle({ paletteWidth: `${paletteWidth}px`, paletteHeight: `${paletteHeight}px` });
 
-  const shouldRender = palette && (node || (!node && toolCount > 0));
+  const shouldRender = palette && (diagramElement || (!diagramElement && toolCount > 0));
   if (!shouldRender) {
     return null;
   }
@@ -134,10 +135,6 @@ export const Palette = ({
   const onPaletteDragStop = (_event, data: DraggableData) => {
     setControlledPosition(data);
   };
-
-  // If running in React Strict mode, ReactDOM.findDOMNode() is deprecated.
-  // Unfortunately, in order for <Draggable> to work properly, it needs raw access
-  // to the underlying DOM node. To avoid the warning, we pass a `nodeRef`
 
   const nodeRef = React.createRef<HTMLDivElement>();
   const draggableBounds = {
@@ -166,8 +163,8 @@ export const Palette = ({
         <PaletteQuickAccessToolBar
           diagramElementId={diagramElementId}
           onToolClick={handleToolClick}
-          node={node}
-          palette={palette}
+          diagramElement={diagramElement ?? null}
+          quickAccessTools={palette.quickAccessTools}
           paletteToolComponents={paletteToolComponents}
           x={x}
           y={y}

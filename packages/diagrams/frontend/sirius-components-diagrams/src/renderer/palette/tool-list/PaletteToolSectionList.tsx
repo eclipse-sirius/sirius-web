@@ -18,6 +18,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
 import { makeStyles } from 'tss-react/mui';
+import { GQLTool } from '../Palette.types';
 import { PaletteToolSectionListProps } from './PaletteToolSectionList.types';
 
 const useStyle = makeStyles()((theme) => ({
@@ -59,6 +60,16 @@ export const PaletteToolSectionList = ({
 }: PaletteToolSectionListProps) => {
   const { classes } = useStyle();
 
+  const handleBackToMainListClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
+    event.stopPropagation();
+    onBackToMainList();
+  };
+
+  const handleOnToolClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, tool: GQLTool): void => {
+    event.stopPropagation();
+    onToolClick(tool);
+  };
+
   return (
     <List className={classes.toolList} component="nav">
       <Tooltip
@@ -66,14 +77,14 @@ export const PaletteToolSectionList = ({
         placement={tooltipPlacement}
         title={toolSection.label}
         key={'tooltip_' + toolSection.id}>
-        <ListItemButton className={classes.toolListItemButton} onClick={onBackToMainList}>
+        <ListItemButton className={classes.toolListItemButton} onClick={handleBackToMainListClick}>
           <NavigateBeforeIcon />
           <ListItemText className={classes.sectionTitleListItemText} primary={toolSection.label} />
         </ListItemButton>
       </Tooltip>
       {toolSection?.tools.map((tool) => (
         <Tooltip enterDelay={tooltipDelay} placement={tooltipPlacement} title={tool.label} key={'tooltip_' + tool.id}>
-          <ListItemButton className={classes.toolListItemButton} onClick={(event) => onToolClick(event, tool)}>
+          <ListItemButton className={classes.toolListItemButton} onClick={(event) => handleOnToolClick(event, tool)}>
             <ListItemIcon className={classes.toolListItemIcon}>
               <IconOverlay iconURL={tool.iconURL} alt={tool.label} customIconHeight={16} customIconWidth={16} />
             </ListItemIcon>

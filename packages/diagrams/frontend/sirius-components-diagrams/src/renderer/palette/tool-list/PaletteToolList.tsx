@@ -77,8 +77,7 @@ export const PaletteToolList = ({ palette, onToolClick }: PaletteToolListProps) 
     onToolClick(tool);
   };
 
-  const onBackToMainList = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    event.stopPropagation();
+  const onBackToMainList = () => {
     setState((prevState) => ({ ...prevState, toolSection: null }));
   };
 
@@ -140,7 +139,7 @@ export const PaletteToolList = ({ palette, onToolClick }: PaletteToolListProps) 
           <div className={classes.toolList}>
             <PaletteToolSectionList
               toolSection={entry as GQLToolSection}
-              onToolClick={handleToolClick}
+              onToolClick={onToolClick}
               onBackToMainList={onBackToMainList}
               tooltipDelay={tooltipDelay}
               tooltipPlacement={tooltipPlacement}

@@ -221,8 +221,8 @@ public class ViewPaletteProviderTests {
             }
         };
 
-        return new ViewPaletteProvider(urlParser, representationDescription -> true, viewDiagramDescriptionSearchService, new IDiagramDescriptionService.NoOp(),
-                new IDiagramIdProvider.NoOp(), new ViewAQLInterpreterFactory(List.of(), new StaticApplicationContext()));
+        return new ViewPaletteProvider(urlParser, representationDescription -> true, viewDiagramDescriptionSearchService, new IDiagramDescriptionService.NoOp(), new IDiagramIdProvider.NoOp(),
+                new ViewAQLInterpreterFactory(List.of(), new StaticApplicationContext()), List.of(new PaletteDefaultToolsProvider()));
     }
 
     private DiagramDescription createDiagramDescription() {

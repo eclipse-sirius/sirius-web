@@ -53,6 +53,7 @@ import org.eclipse.sirius.components.view.diagram.Tool;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionIdProvider;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionPredicate;
 import org.eclipse.sirius.components.view.emf.api.IViewAQLInterpreterFactory;
+import org.eclipse.sirius.components.view.emf.diagram.api.IPaletteToolsProvider;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.springframework.stereotype.Service;
 
@@ -89,13 +90,18 @@ public class ViewPaletteProvider implements IPaletteProvider {
 
     private final Function<EObject, UUID> idProvider = (eObject) -> UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes());
 
-    public ViewPaletteProvider(IURLParser urlParser, IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IDiagramDescriptionService diagramDescriptionService, IDiagramIdProvider diagramIdProvider, IViewAQLInterpreterFactory aqlInterpreterFactory) {
+    private final List<IPaletteToolsProvider> paletteToolsProviders;
+
+    public ViewPaletteProvider(IURLParser urlParser, IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate,
+            IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IDiagramDescriptionService diagramDescriptionService, IDiagramIdProvider diagramIdProvider,
+            IViewAQLInterpreterFactory aqlInterpreterFactory, List<IPaletteToolsProvider> paletteToolsProviders) {
         this.urlParser = Objects.requireNonNull(urlParser);
         this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(viewRepresentationDescriptionPredicate);
         this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
         this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
         this.aqlInterpreterFactory = Objects.requireNonNull(aqlInterpreterFactory);
+        this.paletteToolsProviders = Objects.requireNonNull(paletteToolsProviders);
     }
 
     @Override
@@ -197,9 +203,12 @@ public class ViewPaletteProvider implements IPaletteProvider {
             var optionalNodeDescription = this.viewDiagramDescriptionSearchService.findViewNodeDescriptionById(editingContext, nodeDescription.getId());
 
             if (optionalNodeDescription.isPresent()) {
-                var paletteDefaultToolsProvider = new PaletteDefaultToolsProvider();
-                List<ToolSection> extraToolSections = paletteDefaultToolsProvider.createExtraToolSections(nodeDescription, diagramElement);
-                List<ITool> extraTools = paletteDefaultToolsProvider.createExtraTools(nodeDescription, diagramElement);
+                List<ToolSection> extraToolSections = new ArrayList<>();
+                paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createExtraToolSections(nodeDescription, diagramElement)).flatMap(List::stream)
+                        .forEach(extraToolSections::add);
+                List<ITool> quickAccessTools = new ArrayList<>();
+                paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createQuickAccessTools(nodeDescription, diagramElement)).flatMap(List::stream)
+                        .forEach(quickAccessTools::add);
                 org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription = optionalNodeDescription.get();
 
                 var paletteEntries = new ArrayList<IPaletteEntry>();
@@ -220,8 +229,7 @@ public class ViewPaletteProvider implements IPaletteProvider {
                 paletteEntries.addAll(extraToolSections);
 
                 String nodePaletteId = "siriusComponents://nodePalette?nodeId=" + sourceElementId.get();
-                nodePalette = Palette.newPalette(nodePaletteId)
-                        .quickAccessTools(extraTools)
+                nodePalette = Palette.newPalette(nodePaletteId).quickAccessTools(quickAccessTools)
                         .paletteEntries(paletteEntries)
                         .build();
             }

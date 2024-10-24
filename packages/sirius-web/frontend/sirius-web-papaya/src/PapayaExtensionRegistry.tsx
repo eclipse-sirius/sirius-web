@@ -73,8 +73,10 @@ const papayaDiagramPanelExtension: DataExtension<Array<ReactFlowPropsCustomizer>
 papayaExtensionRegistry.putData(diagramRendererReactFlowPropsCustomizerExtensionPoint, papayaDiagramPanelExtension);
 const diagramPaletteToolContributions: DiagramPaletteToolContributionProps[] = [
   {
-    canHandle: (node: Node<NodeData>) => {
-      return node.data.targetObjectKind.startsWith('siriusComponents://semantic?domain=papaya&entity=Component');
+    canHandle: (diagamElement: Node<NodeData> | Edge<EdgeData>) => {
+      return diagamElement.data
+        ? diagamElement.data.targetObjectKind.startsWith('siriusComponents://semantic?domain=papaya&entity=Component')
+        : false;
     },
     component: PapayaComponentLabelDetailToolContribution,
   },

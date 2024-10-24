@@ -26,14 +26,17 @@ import org.eclipse.sirius.components.diagrams.description.EdgeLabelKind;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
+import org.eclipse.sirius.components.view.emf.diagram.api.IPaletteToolsProvider;
+import org.springframework.stereotype.Service;
 
 /**
  * An helper to build default tools in the palette.
  * @author fbarbin
  */
-public class PaletteDefaultToolsProvider {
+@Service
+public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
 
-
+    @Override
     public List<ToolSection> createExtraToolSections(Object diagramElementDescription, Object diagramElement) {
         List<ToolSection> extraToolSections = new ArrayList<>();
 
@@ -51,7 +54,12 @@ public class PaletteDefaultToolsProvider {
         return extraToolSections;
     }
 
-    public List<ITool> createExtraTools(Object diagramElementDescription, Object diagramElement) {
+    @Override
+    public List<ITool> createQuickAccessTools(Object diagramElementDescription, Object diagramElement) {
+        return this.createExtraTools(diagramElementDescription, diagramElement);
+    }
+
+    private List<ITool> createExtraTools(Object diagramElementDescription, Object diagramElement) {
         List<IDiagramElementDescription> targetDescriptions = new ArrayList<>();
         boolean unsynchronizedMapping = false;
         if (diagramElementDescription instanceof NodeDescription nodeDescription) {
