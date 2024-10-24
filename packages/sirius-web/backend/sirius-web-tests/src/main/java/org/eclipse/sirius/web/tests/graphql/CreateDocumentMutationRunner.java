@@ -38,6 +38,13 @@ public class CreateDocumentMutationRunner implements IMutationRunner<CreateDocum
                     kind
                   }
                 }
+               ... on ErrorPayload {
+                    message
+                    messages {
+                      level
+                      body
+                    }
+                }
               }
             }
             """;

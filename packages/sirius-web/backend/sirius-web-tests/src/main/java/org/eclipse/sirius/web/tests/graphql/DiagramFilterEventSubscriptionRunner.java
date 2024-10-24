@@ -14,9 +14,9 @@ package org.eclipse.sirius.web.tests.graphql;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.web.application.diagram.dto.DiagramFilterEventInput;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.ISubscriptionRunner;
+import org.eclipse.sirius.web.application.diagram.dto.DiagramFilterEventInput;
 import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Flux;
@@ -33,6 +33,13 @@ public class DiagramFilterEventSubscriptionRunner implements ISubscriptionRunner
             subscription diagramFilterEvent($input: DiagramFilterEventInput!) {
               diagramFilterEvent(input: $input) {
                 __typename
+               ... on ErrorPayload {
+                    message
+                    messages {
+                      level
+                      body
+                    }
+                }
               }
             }
             """;

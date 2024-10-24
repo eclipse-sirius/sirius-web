@@ -31,6 +31,13 @@ public class RenameImageMutationRunner implements IMutationRunner<RenameImageInp
             mutation renameImage($input: RenameImageInput!) {
               renameImage(input: $input) {
                 __typename
+               ... on ErrorPayload {
+                    message
+                    messages {
+                      level
+                      body
+                    }
+                }
               }
             }
             """;

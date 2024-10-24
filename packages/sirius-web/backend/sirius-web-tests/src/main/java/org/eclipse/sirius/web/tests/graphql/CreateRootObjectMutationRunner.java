@@ -38,6 +38,13 @@ public class CreateRootObjectMutationRunner implements IMutationRunner<CreateRoo
                     kind
                   }
                 }
+               ... on ErrorPayload {
+                    message
+                    messages {
+                      level
+                      body
+                    }
+                }
               }
             }
             """;

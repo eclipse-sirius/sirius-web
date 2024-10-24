@@ -30,6 +30,13 @@ public class DeleteProjectMutationRunner implements IMutationRunner<DeleteProjec
             mutation deleteProject($input: DeleteProjectInput!) {
               deleteProject(input: $input) {
                 __typename
+               ... on ErrorPayload {
+                    message
+                    messages {
+                      level
+                      body
+                    }
+                }
               }
             }
             """;
