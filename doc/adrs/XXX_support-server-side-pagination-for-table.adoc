@@ -1,0 +1,146 @@
+= ADR-XXX Support Server-Side Pagination for Table Representation
+
+== Context
+
+The default pagination features of Material React Table are client-side.
+This means you have to have all of your data fetched and stored in the table all at once.
+This may not be ideal for large datasets.
+
+== Decision
+
+To address the limitations of client-side pagination, we will implement server-side pagination for Material React Table.
+This approach will allow us to fetch and display data more efficiently, especially for large datasets.
+
+=== Cursor-Based vs. Page-Based Pagination
+
+When implementing server-side pagination, there are two primary approaches to consider: cursor-based and page-based pagination.
+
+==== Page-Based Pagination
+
+===== Advantages
+* Simplicity: Page-based pagination is simpler to implement and understand.
+* User Experience: It allows users to navigate directly to specific pages.
+
+===== Disadvantages
+* Performance: For large datasets, counting the total number of rows can be resource-intensive and slow down the response time.
+
+==== Cursor-Based Pagination
+
+===== Advantages
+* Efficiency: Cursor-based pagination is generally more efficient for large datasets as it avoids the need to count the total number of rows.
+* Consistency: It ensures consistency in the results, especially when the dataset is frequently updated.
+ The cursor acts as a pointer to the last fetched item, allowing for more accurate pagination.
+* Scalability: This approach scales better with large datasets and high-frequency updates.
+
+===== Disadvantages
+* Complexity: cursor-based pagination can be more complex to implement.
+* User Experience: It may not provide a straightforward way to jump to a specific page.
+* We cannot manage multiple `rowDescription` instances because we are unable to determine the number of rows returned for each description.
+
+==== Conclusion
+
+Performance considerations led us to choose the *cursor-based* pagination approach.
+The constraint of having only one instance of `rowDescription` is not inherently problematic.
+
+=== Material React Table
+
+To enable server-side pagination, we will set `manualPagination: true` in Material React Table.
+This will allow us to take control of pagination on the backend, ensuring that we can efficiently manage large datasets and accurately display the true total number of rows.
+The pagination must be managed within our own state, and listeners must be added to handle pagination state changes, allowing the backend to be called with the updated pagination data.
+
+[source, typescript]
+----
+const [pagination, setPagination] = useState({
+  pageIndex,
+  pageSize,
+});
+
+useEffect(() => {
+  //do something when the pagination state changes
+}, [pagination.pageIndex, pagination.pageSize]);
+
+const table = useMaterialReactTable({
+  onPaginationChange: setPagination,
+  state: { pagination },
+});
+
+
+----
+
+=== Frontend
+
+The pagination data will be added to the `representationId` of the subscription:
+
+[source, typescript]
+----
+`${tableId}?cursor=${cursor}&pageSize=${pageSize}`
+----
+
+=== GraphQL
+
+* Add pagination data in `Table` type
+
+[source, graphql]
+----
+type Table {
+
+  pagination: Pagination
+}
+
+type Pagination {
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+  rowCount: Int
+}
+----
+
+NOTE: `rowCount` is optional for performance reasons.
+
+NOTE: the `lines` that is passed to the table already has had the pagination logic applied.
+
+=== Backend
+
+The following variables need to be passed to the line semantic candidat expression:
+* cursor (object retrieve with the cursor param from the front)
+* pageSize
+
+== Customize row per page options
+
+Another issue to address is the ability to define the possible values for the number of rows per page.
+To address this, we will enhance the table description capabilities by adding a list of integers corresponding to the options that will be available on the frontend.
+
+* backend:
+
+[source, java]
+----
+public final class TableDescription {
+    private PaginationOptions paginationOptions;
+}
+
+public final class PaginationOptions {
+    private List<Integer> rowsPerPageOptions;
+}
+----
+
+Note: This customization may also be available at the view DSL level.
+
+* frontend:
+
+[source, typescript]
+----
+const table = useMaterialReactTable({
+  muiPaginationProps: {
+    rowsPerPageOptions: [5, 10, 20],// data from backend
+  },
+});
+----
+
+== Status
+
+Work in progress
+
+== Consequences
+
+* All filters must be applied on the backend to update the list of rows (by default, this is handled by Material React Table, client-side).
+* As we will be sharing information at both the synchronized (e.g., filters) and non-synchronized (pagination) levels,
+we will need to address the challenge of synchronizing all representations in memory simultaneously, regardless of their pagination state.
