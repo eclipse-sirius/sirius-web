@@ -11,10 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
-import { Selection, SelectionContext } from '@eclipse-sirius/sirius-components-core';
+import { Selection, SelectionContext, theme } from '@eclipse-sirius/sirius-components-core';
 import { GQLGroup, GQLPage, GQLToolbarAction } from '@eclipse-sirius/sirius-components-forms';
-import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import React from 'react';
+import { ThemeProvider } from '@mui/material/styles';
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act } from 'react';
 import { afterEach, expect, test, vi } from 'vitest';
 import {
   addToolbarActionMutation,
@@ -117,19 +118,21 @@ const emptySetSelection = (_: Selection) => {};
 
 const TestContextProvider = ({ mocks, formDescriptionEditor, children }) => {
   return (
-    <MockedProvider mocks={mocks}>
-      <FormDescriptionEditorContext.Provider
-        value={{
-          editingContextId: 'editingContextId',
-          representationId: 'formDescriptionEditorId',
-          formDescriptionEditor,
-          readOnly: false,
-        }}>
-        <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
-          {children}
-        </SelectionContext.Provider>
-      </FormDescriptionEditorContext.Provider>
-    </MockedProvider>
+    <ThemeProvider theme={theme}>
+      <MockedProvider mocks={mocks}>
+        <FormDescriptionEditorContext.Provider
+          value={{
+            editingContextId: 'editingContextId',
+            representationId: 'formDescriptionEditorId',
+            formDescriptionEditor,
+            readOnly: false,
+          }}>
+          <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
+            {children}
+          </SelectionContext.Provider>
+        </FormDescriptionEditorContext.Provider>
+      </MockedProvider>
+    </ThemeProvider>
   );
 };
 
@@ -151,6 +154,8 @@ test('add ToolbarAction by clicking on the Add Toolbar Action button', async () 
       underline: null,
       strikeThrough: null,
     },
+    hasHelpText: false,
+    readOnly: false,
   };
 
   const group: GQLGroup = {
@@ -160,6 +165,12 @@ test('add ToolbarAction by clicking on the Add Toolbar Action button', async () 
     label: 'group1',
     widgets: [],
     toolbarActions: [toolbarAction],
+    borderStyle: {
+      color: null,
+      lineStyle: 'solid',
+      radius: 0,
+      size: 0,
+    },
   };
 
   const page: GQLPage = {
@@ -223,6 +234,8 @@ test('delete the ToolbarAction from the ToolbarActions', async () => {
       underline: null,
       strikeThrough: null,
     },
+    hasHelpText: false,
+    readOnly: false,
   };
   const toolbarAction2: GQLToolbarAction = {
     id: 'ToolbarAction2',
@@ -241,6 +254,8 @@ test('delete the ToolbarAction from the ToolbarActions', async () => {
       underline: null,
       strikeThrough: null,
     },
+    hasHelpText: false,
+    readOnly: false,
   };
 
   const group: GQLGroup = {
@@ -250,6 +265,12 @@ test('delete the ToolbarAction from the ToolbarActions', async () => {
     label: 'group1',
     widgets: [],
     toolbarActions: [toolbarAction1, toolbarAction2],
+    borderStyle: {
+      color: null,
+      lineStyle: 'solid',
+      radius: 0,
+      size: 0,
+    },
   };
 
   const page: GQLPage = {
@@ -315,6 +336,8 @@ test('move the existing ToolbarAction from/into the drop area', async () => {
       underline: null,
       strikeThrough: null,
     },
+    hasHelpText: false,
+    readOnly: false,
   };
   const toolbarAction2: GQLToolbarAction = {
     id: 'ToolbarAction2',
@@ -333,6 +356,8 @@ test('move the existing ToolbarAction from/into the drop area', async () => {
       underline: null,
       strikeThrough: null,
     },
+    hasHelpText: false,
+    readOnly: false,
   };
 
   const group: GQLGroup = {
@@ -342,6 +367,12 @@ test('move the existing ToolbarAction from/into the drop area', async () => {
     label: 'group1',
     widgets: [],
     toolbarActions: [toolbarAction1, toolbarAction2],
+    borderStyle: {
+      color: null,
+      lineStyle: 'solid',
+      radius: 0,
+      size: 0,
+    },
   };
 
   const page: GQLPage = {
@@ -409,6 +440,8 @@ test('move the existing ToolbarAction from/into the drop area located at the end
       underline: null,
       strikeThrough: null,
     },
+    hasHelpText: false,
+    readOnly: false,
   };
   const toolbarAction2: GQLToolbarAction = {
     id: 'ToolbarAction2',
@@ -427,6 +460,8 @@ test('move the existing ToolbarAction from/into the drop area located at the end
       underline: null,
       strikeThrough: null,
     },
+    hasHelpText: false,
+    readOnly: false,
   };
 
   const group: GQLGroup = {
@@ -436,6 +471,12 @@ test('move the existing ToolbarAction from/into the drop area located at the end
     label: 'group1',
     widgets: [],
     toolbarActions: [toolbarAction1, toolbarAction2],
+    borderStyle: {
+      color: null,
+      lineStyle: 'solid',
+      radius: 0,
+      size: 0,
+    },
   };
 
   const page: GQLPage = {
@@ -503,6 +544,8 @@ test('add ToolbarAction by clicking on the Add Toolbar Action button for a page'
       underline: null,
       strikeThrough: null,
     },
+    hasHelpText: false,
+    readOnly: false,
   };
 
   const page: GQLPage = {

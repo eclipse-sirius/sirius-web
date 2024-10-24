@@ -25,8 +25,8 @@ import Paper from '@mui/material/Paper';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Typography from '@mui/material/Typography';
-import { makeStyles, withStyles } from 'tss-react/mui';
 import { useEffect, useRef, useState } from 'react';
+import { makeStyles, withStyles } from 'tss-react/mui';
 import { RichTextWidgetProps } from './WidgetEntry.types';
 
 const useStyles = makeStyles()((theme) => ({
@@ -100,7 +100,7 @@ export const RichTextWidget = ({ widget }: RichTextWidgetProps) => {
         <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
           {widget.label}
         </Typography>
-        {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
+        {widget.hasHelpText ? <HelpOutlineOutlined color="inherit" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
       </div>
       <div onFocus={() => setSelected(true)} onBlur={() => setSelected(false)} ref={ref} tabIndex={0}>
         <Paper elevation={0} className={classes.paper}>

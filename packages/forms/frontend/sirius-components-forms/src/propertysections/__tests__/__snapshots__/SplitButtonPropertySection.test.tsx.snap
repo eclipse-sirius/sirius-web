@@ -310,7 +310,7 @@ exports[`should render the button with help hint 1`] = `
           <svg
             aria-hidden="true"
             aria-label=""
-            class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeMedium css-kw0y8f-MuiSvgIcon-root"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
             data-mui-internal-clone-element="true"
             data-testid="HelpOutlineOutlinedIcon"
             focusable="false"

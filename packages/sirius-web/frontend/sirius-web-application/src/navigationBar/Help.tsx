@@ -10,10 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import HelpIcon from '@mui/icons-material/Help';
 import IconButton from '@mui/material/IconButton';
 import { emphasize } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
-import HelpIcon from '@mui/icons-material/Help';
 import { NavigationBarMenuIconProps } from './NavigationBarMenu.types';
 
 const useHelpStyle = makeStyles()((theme) => ({

@@ -11,8 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { theme } from '@eclipse-sirius/sirius-components-core';
-import { Theme, createTheme } from '@mui/material/styles';
+import { darkTheme, theme } from '@eclipse-sirius/sirius-components-core';
+import { Theme } from '@mui/material/styles';
+import createTheme from '@mui/material/styles/createTheme';
 
 export const baseTheme: Theme = createTheme({
   ...theme,
@@ -66,6 +67,24 @@ export const baseTheme: Theme = createTheme({
       hover: '#BE1A7826',
       selected: '#BE1A7842',
     },
+    dropArea: {
+      backgroundColor: theme.palette.grey[100],
+      color: theme.palette.grey[600],
+      borderColor: theme.palette.grey[400],
+    },
+    formdescriptioneditor: {
+      widget: {
+        defaultBorderColor: 'whitesmoke',
+      },
+    },
+    portal: {
+      representationFrame: {
+        borderColor: theme.palette.grey[500],
+      },
+      frameHeader: {
+        backgroundColor: theme.palette.grey[300],
+      },
+    },
   },
 });
 
@@ -94,4 +113,104 @@ export const siriusWebTheme = createTheme(
     },
   },
   baseTheme
+);
+
+const baseDarkTheme: Theme = createTheme({
+  ...darkTheme,
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#BE1A78',
+      dark: '#851254',
+      light: '#CB4793',
+    },
+    secondary: {
+      main: '#261E58',
+      dark: '#1A153D',
+      light: '#514B79',
+    },
+    text: {
+      primary: '#FFF',
+      disabled: '#B3BFC5',
+    },
+    error: {
+      main: '#DE1000',
+      dark: '#9B0B00',
+      light: '#E43F33',
+    },
+    success: {
+      main: '#43A047',
+      dark: '#327836',
+      light: '#4EBA54',
+    },
+    warning: {
+      main: '#FF9800',
+      dark: '#D98200',
+      light: '#FFB800',
+    },
+    info: {
+      main: '#2196F3',
+      dark: '#1D7DCC',
+      light: '#24A7FF',
+    },
+    divider: '#B3BFC5',
+    navigation: {
+      leftBackground: '#BE1A7880',
+      rightBackground: '#261E5880',
+    },
+    navigationBar: {
+      border: '#BE1A78',
+      background: '#261E58',
+    },
+    selected: '#BE1A78',
+    action: {
+      hover: '#BE1A7826',
+      selected: '#BE1A7842',
+    },
+    dropArea: {
+      backgroundColor: '#1E1E1E',
+      color: '#585A5C',
+      borderColor: theme.palette.grey[400],
+    },
+    formdescriptioneditor: {
+      widget: {
+        defaultBorderColor: theme.palette.grey[400],
+      },
+    },
+    portal: {
+      representationFrame: {
+        borderColor: 'whitesmoke',
+      },
+      frameHeader: {
+        backgroundColor: theme.palette.grey[500],
+      },
+    },
+  },
+});
+
+export const siriusWebDarkTheme = createTheme(
+  {
+    components: {
+      MuiAvatar: {
+        styleOverrides: {
+          colorDefault: {
+            backgroundColor: darkTheme.palette.primary.main,
+          },
+        },
+      },
+      MuiTooltip: {
+        styleOverrides: {
+          tooltip: {
+            backgroundColor: darkTheme.palette.common.black,
+          },
+        },
+      },
+      MuiLink: {
+        defaultProps: {
+          underline: 'hover',
+        },
+      },
+    },
+  },
+  baseDarkTheme
 );
