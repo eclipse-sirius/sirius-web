@@ -131,9 +131,9 @@ export const usePortalMutations = (editingContextId: string, portalId: string): 
     GQLLayoutPortalMutationVariables
   >(layoutPortalMutation);
 
-  const layoutPortal = (layoutData: GQLLayoutPortalLayoutData[]) => {
+  const layoutPortal = (id, layoutData: GQLLayoutPortalLayoutData[]) => {
     const input: GQLLayoutPortalInput = {
-      id: crypto.randomUUID(),
+      id,
       editingContextId,
       representationId: portalId,
       layoutData,

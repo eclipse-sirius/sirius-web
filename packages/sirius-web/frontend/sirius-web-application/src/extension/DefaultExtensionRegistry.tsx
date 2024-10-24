@@ -53,6 +53,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import WarningIcon from '@mui/icons-material/Warning';
 import { useMatch } from 'react-router-dom';
 import { DiagramFilter } from '../diagrams/DiagramFilter';
+import { ApolloLinkUndoRedoStack } from '../graphql/ApolloLinkUndoRedoStack';
 import { ApolloClientOptionsConfigurer } from '../graphql/useCreateApolloClient.types';
 import { apolloClientOptionsConfigurersExtensionPoint } from '../graphql/useCreateApolloClientExtensionPoints';
 import { NavigationBarRightContributionProps } from '../navigationBar/NavigationBar.types';
@@ -277,6 +278,7 @@ const nodesApolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (curre
   return {
     ...currentOptions,
     documentTransform: newDocumentTransform,
+    link: new ApolloLinkUndoRedoStack().concat(currentOptions.link),
   };
 };
 

@@ -149,7 +149,7 @@ INSERT INTO representation_data (
   '69030a1b-0b5f-3c1d-8399-8ca260e4a672',
   'Portal',
   'siriusComponents://representation?type=Portal',
-  '{"id":"e81eec5c-42d6-491c-8bcc-9beb951356f8","kind":"siriusComponents://representation?type=Portal","descriptionId":"69030a1b-0b5f-3c1d-8399-8ca260e4a672","label":"Portal","targetObjectId":"3237b215-ae23-48d7-861e-f542a4b9a4b8","views":[{"id":"9e277e97-7f71-4bdd-99af-9eeb8bd7f2df","representationId":"05e44ccc-9363-443f-a816-25fc73e3e7f7"}],"layoutData":[{"portalViewId":"9e277e97-7f71-4bdd-99af-9eeb8bd7f2df","x":0,"y":0,"width":500,"height":200}]}',
+  '{"id":"e81eec5c-42d6-491c-8bcc-9beb951356f8","kind":"siriusComponents://representation?type=Portal","descriptionId":"69030a1b-0b5f-3c1d-8399-8ca260e4a672","label":"Portal","targetObjectId":"3237b215-ae23-48d7-861e-f542a4b9a4b8","views":[{"id":"bbf6c9b9-ee36-32c5-aee0-f4d64efcccb7","representationId":"05e44ccc-9363-443f-a816-25fc73e3e7f7"}],"layoutData":[{"portalViewId":"bbf6c9b9-ee36-32c5-aee0-f4d64efcccb7","x":0,"y":0,"width":500,"height":200}]}',
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000',
   'none',
