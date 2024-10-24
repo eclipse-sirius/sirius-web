@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,17 +33,14 @@ public class HierarchyElementProps implements IProps {
 
     private final String targetObjectId;
 
-    private final String label;
-
     private final String kind;
 
     private final List<Element> children;
 
-    public HierarchyElementProps(String id, String descriptionId, String targetObjectId, String label, String kind, List<Element> children) {
+    public HierarchyElementProps(String id, String descriptionId, String targetObjectId, String kind, List<Element> children) {
         this.id = Objects.requireNonNull(id);
         this.descriptionId = Objects.requireNonNull(descriptionId);
         this.targetObjectId = Objects.requireNonNull(targetObjectId);
-        this.label = Objects.requireNonNull(label);
         this.kind = Objects.requireNonNull(kind);
         this.children = Objects.requireNonNull(children);
     }
@@ -58,10 +55,6 @@ public class HierarchyElementProps implements IProps {
 
     public String getTargetObjectId() {
         return this.targetObjectId;
-    }
-
-    public String getLabel() {
-        return this.label;
     }
 
     public String getKind() {

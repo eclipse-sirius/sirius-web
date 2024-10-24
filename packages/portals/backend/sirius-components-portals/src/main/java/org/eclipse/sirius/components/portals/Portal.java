@@ -35,8 +35,6 @@ public final class Portal implements IRepresentation {
 
     private String descriptionId;
 
-    private String label;
-
     private String targetObjectId;
 
     private List<PortalView> views;
@@ -63,11 +61,6 @@ public final class Portal implements IRepresentation {
     }
 
     @Override
-    public String getLabel() {
-        return this.label;
-    }
-
-    @Override
     public String getTargetObjectId() {
         return this.targetObjectId;
     }
@@ -87,7 +80,6 @@ public final class Portal implements IRepresentation {
     public static Builder newPortal(Portal portal) {
         return Portal.newPortal(portal.getId())
                 .descriptionId(portal.getDescriptionId())
-                .label(portal.getLabel())
                 .targetObjectId(portal.getTargetObjectId())
                 .views(portal.getViews())
                 .layoutData(portal.getLayoutData());
@@ -95,8 +87,8 @@ public final class Portal implements IRepresentation {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, descriptionId: {2}, label: {3}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.descriptionId, this.label);
+        String pattern = "{0} '{'id: {1}, descriptionId: {2}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.descriptionId);
     }
 
     /**
@@ -112,8 +104,6 @@ public final class Portal implements IRepresentation {
 
         private String descriptionId;
 
-        private String label;
-
         private String targetObjectId;
 
         private List<PortalView> views = List.of();
@@ -126,11 +116,6 @@ public final class Portal implements IRepresentation {
 
         public Builder descriptionId(String descriptionId) {
             this.descriptionId = Objects.requireNonNull(descriptionId);
-            return this;
-        }
-
-        public Builder label(String label) {
-            this.label = Objects.requireNonNull(label);
             return this;
         }
 
@@ -154,7 +139,6 @@ public final class Portal implements IRepresentation {
             portal.id = Objects.requireNonNull(this.id);
             portal.kind = Objects.requireNonNull(this.kind);
             portal.descriptionId = Objects.requireNonNull(this.descriptionId);
-            portal.label = Objects.requireNonNull(this.label);
             portal.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             portal.views = Objects.requireNonNull(this.views);
             portal.layoutData = Objects.requireNonNull(this.layoutData);

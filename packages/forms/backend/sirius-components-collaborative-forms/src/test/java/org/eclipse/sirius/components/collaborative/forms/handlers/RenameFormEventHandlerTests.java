@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -50,14 +50,11 @@ public class RenameFormEventHandlerTests {
         String representationId = UUID.randomUUID().toString();
         UUID targetObjectId = UUID.randomUUID();
 
-        // @formatter:off
         Form form = Form.newForm(representationId)
-                .label(OLD_LABEL)
                 .descriptionId(formDescriptionId)
                 .targetObjectId(targetObjectId.toString())
                 .pages(List.of())
                 .build();
-        // @formatter:on
 
         RenameFormEventHandler handler = new RenameFormEventHandler(new IRepresentationPersistenceService.NoOp(), new ICollaborativeFormMessageService.NoOp(), new SimpleMeterRegistry());
 
@@ -74,6 +71,5 @@ public class RenameFormEventHandlerTests {
 
         IPayload payload = payloadSink.asMono().block();
         assertThat(payload).isInstanceOf(RenameRepresentationSuccessPayload.class);
-        assertThat(((RenameRepresentationSuccessPayload) payload).representation().getLabel()).isEqualTo(NEW_LABEL);
     }
 }

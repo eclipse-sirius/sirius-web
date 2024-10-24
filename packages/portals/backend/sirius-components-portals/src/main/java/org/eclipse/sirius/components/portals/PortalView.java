@@ -46,10 +46,6 @@ public final class PortalView {
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.getId(), this.getRepresentationId());
     }
 
-    public static Builder newPortalView(PortalView portalView) {
-        return new Builder(portalView.id).representationId(portalView.getRepresentationId());
-    }
-
     public static Builder newPortalView(String id) {
         return new Builder(id);
     }
@@ -65,11 +61,6 @@ public final class PortalView {
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
-        }
-
-        public Builder id(String id) {
-            this.id = Objects.requireNonNull(id);
-            return this;
         }
 
         public Builder representationId(String representationId) {

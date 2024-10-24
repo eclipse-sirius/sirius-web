@@ -31,6 +31,7 @@ import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.ReflectiveItemProvider;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
 import org.eclipse.sirius.components.core.api.IDefaultLabelService;
+import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.representations.IRepresentation;
@@ -50,6 +51,8 @@ public class DefaultLabelService implements IDefaultLabelService {
 
     private static final String DEFAULT_LABEL_FEATURE = "name";
 
+    private final List<IRepresentationMetadataProvider> representationMetadataProviders;
+
     private final LabelFeatureProviderRegistry labelFeatureProviderRegistry;
 
     private final ComposedAdapterFactory composedAdapterFactory;
@@ -58,7 +61,9 @@ public class DefaultLabelService implements IDefaultLabelService {
 
     private final Logger logger = LoggerFactory.getLogger(LabelFeatureProviderRegistry.class);
 
-    public DefaultLabelService(LabelFeatureProviderRegistry labelFeatureProviderRegistry, ComposedAdapterFactory composedAdapterFactory, List<IRepresentationImageProvider> representationImageProviders) {
+    public DefaultLabelService(List<IRepresentationMetadataProvider> representationMetadataProviders, LabelFeatureProviderRegistry labelFeatureProviderRegistry, ComposedAdapterFactory composedAdapterFactory,
+            List<IRepresentationImageProvider> representationImageProviders) {
+        this.representationMetadataProviders = Objects.requireNonNull(representationMetadataProviders);
         this.labelFeatureProviderRegistry = Objects.requireNonNull(labelFeatureProviderRegistry);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.representationImageProviders = Objects.requireNonNull(representationImageProviders);
@@ -78,7 +83,12 @@ public class DefaultLabelService implements IDefaultLabelService {
                     .map(Object::toString)
                     .orElse("");
         } else if (object instanceof IRepresentation representation) {
-            label = representation.getLabel();
+            var optionalRepresentationMetadata = this.representationMetadataProviders.stream()
+                    .flatMap(provider -> provider.getMetadata(representation.getId()).stream())
+                    .findFirst();
+            if (optionalRepresentationMetadata.isPresent()) {
+                label = optionalRepresentationMetadata.get().getLabel();
+            }
         } else if (object instanceof Resource resource) {
             label = this.getResourceLabel(resource);
         }
@@ -103,8 +113,6 @@ public class DefaultLabelService implements IDefaultLabelService {
             if (label != null && !label.isEmpty()) {
                 fullLabel += " " + label;
             }
-        } else if (object instanceof IRepresentation representation) {
-            fullLabel = representation.getLabel();
         } else if (object instanceof Resource resource) {
             fullLabel = this.getResourceLabel(resource);
         } else {

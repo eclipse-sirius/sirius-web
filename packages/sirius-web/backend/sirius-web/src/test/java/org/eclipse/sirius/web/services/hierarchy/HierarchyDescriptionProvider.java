@@ -61,8 +61,7 @@ public class HierarchyDescriptionProvider implements IEditingContextProcessor  {
                 .map(this.objectService::getId)
                 .orElse(null);
 
-        Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.objectService::getLabel)
+        Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(HierarchyDescription.LABEL, String.class)
                 .orElse(null);
 
         Function<VariableManager, List<Object>> childSemanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, EObject.class)

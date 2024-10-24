@@ -56,7 +56,6 @@ public class GanttComponent implements IComponent {
 
         String ganttId = optionalPreviousGantt.map(Gantt::getId).orElseGet(() -> UUID.randomUUID().toString());
         String targetObjectId = ganttDescription.targetObjectIdProvider().apply(variableManager);
-        String label = optionalPreviousGantt.map(Gantt::getLabel).orElseGet(() -> ganttDescription.labelProvider().apply(variableManager));
         List<GanttColumn> columns = computeColumn(optionalPreviousGantt);
         String dateRoundingString = ganttDescription.dateRoundingProvider().apply(variableManager);
         GanttDateRounding dateRounding = getDateRounding(dateRoundingString);
@@ -72,7 +71,7 @@ public class GanttComponent implements IComponent {
                     return new Element(TaskDescriptionComponent.class, taskComponentProps);
                 }).toList();
 
-        GanttElementProps ganttElementProps = new GanttElementProps(ganttId, ganttDescription.getId(), targetObjectId, label, children, columns, dateRounding);
+        GanttElementProps ganttElementProps = new GanttElementProps(ganttId, ganttDescription.getId(), targetObjectId, children, columns, dateRounding);
         return new Element(GanttElementProps.TYPE, ganttElementProps);
     }
 

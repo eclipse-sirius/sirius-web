@@ -53,13 +53,11 @@ public class CreateFormDescriptionEditorEventHandlerTests {
         IRepresentationDescriptionSearchService representationDescriptionSearchService = new IRepresentationDescriptionSearchService.NoOp() {
             @Override
             public Optional<IRepresentationDescription> findById(IEditingContext editingContext, String id) {
-                // @formatter:off
                 FormDescriptionEditorDescription formDescriptionEditorDescription = FormDescriptionEditorDescription.newFormDescriptionEditorDescription(UUID.randomUUID().toString())
                         .label("label")
                         .canCreatePredicate(variableManager -> Boolean.TRUE)
                         .targetObjectIdProvider(variableManager -> "targetObjectId")
                         .build();
-                // @formatter:on
 
                 return Optional.of(formDescriptionEditorDescription);
             }
@@ -68,7 +66,7 @@ public class CreateFormDescriptionEditorEventHandlerTests {
         AtomicBoolean hasBeenCalled = new AtomicBoolean();
         IFormDescriptionEditorCreationService formDescriptionEditorCreationService = new IFormDescriptionEditorCreationService.NoOp() {
             @Override
-            public FormDescriptionEditor create(ICause cause, String label, Object targetObject, FormDescriptionEditorDescription formDescriptionEditorDescription, IEditingContext editingContext) {
+            public FormDescriptionEditor create(ICause cause, Object targetObject, FormDescriptionEditorDescription formDescriptionEditorDescription, IEditingContext editingContext) {
                 hasBeenCalled.set(true);
                 return new TestFormDescriptionEditorBuilder().getFormDescriptionEditor(UUID.randomUUID().toString());
             }

@@ -127,6 +127,7 @@ public final class InsideLabel {
             this.isHeader = insideLabel.isIsHeader();
             this.headerSeparatorDisplayMode = insideLabel.getHeaderSeparatorDisplayMode();
             this.overflowStrategy = insideLabel.getOverflowStrategy();
+            this.textAlign = insideLabel.getTextAlign();
         }
 
         public Builder text(String text) {

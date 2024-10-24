@@ -58,8 +58,8 @@ public class DeckCreationService implements IDeckCreationService {
     }
 
     @Override
-    public Deck create(String label, Object targetObject, DeckDescription deckDescription, IEditingContext editingContext) {
-        return this.doRender(label, targetObject, editingContext, deckDescription, Optional.empty());
+    public Deck create(Object targetObject, DeckDescription deckDescription, IEditingContext editingContext) {
+        return this.doRender(targetObject, editingContext, deckDescription, Optional.empty());
     }
 
     @Override
@@ -73,17 +73,16 @@ public class DeckCreationService implements IDeckCreationService {
         if (optionalObject.isPresent() && optionalDeckDescription.isPresent()) {
             Object object = optionalObject.get();
             DeckDescription deckDescription = optionalDeckDescription.get();
-            Deck deck = this.doRender(previousDeck.getLabel(), object, editingContext, deckDescription, Optional.of(deckContext));
+            Deck deck = this.doRender(object, editingContext, deckDescription, Optional.of(deckContext));
             return Optional.of(deck);
         }
         return Optional.empty();
     }
 
-    private Deck doRender(String label, Object targetObject, IEditingContext editingContext, DeckDescription deckDescription, Optional<IDeckContext> optionalDeckContext) {
+    private Deck doRender(Object targetObject, IEditingContext editingContext, DeckDescription deckDescription, Optional<IDeckContext> optionalDeckContext) {
         long start = System.currentTimeMillis();
 
         VariableManager variableManager = new VariableManager();
-        variableManager.put(DeckDescription.LABEL, label);
         variableManager.put(VariableManager.SELF, targetObject);
         variableManager.put(DeckDescription.DECK_TARGET, targetObject);
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
