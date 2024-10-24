@@ -71,7 +71,11 @@ export { type CreateProjectAreaCardProps } from './views/project-browser/create-
 export { createProjectAreaCardExtensionPoint } from './views/project-browser/create-projects-area/CreateProjectAreaExtensionPoints';
 export { ProjectActionButton } from './views/project-browser/list-projects-area/ProjectActionButton';
 export { type ProjectActionButtonProps } from './views/project-browser/list-projects-area/ProjectActionButton.types';
-export { projectActionButtonMenuItemExtensionPoint } from './views/project-browser/list-projects-area/ProjectActionButtonExtensionPoints';
+export {
+  projectActionButtonMenuItemExtensionPoint,
+  projectContextMenuContainerExtensionPoint,
+  projectContextMenuEntryExtensionPoint,
+} from './views/project-browser/list-projects-area/ProjectActionButtonExtensionPoints';
 export { type ProjectRowProps } from './views/project-browser/list-projects-area/ProjectRow.types';
 export { projectsTableRowExtensionPoint } from './views/project-browser/list-projects-area/ProjectsTableExtensionPoints';
 export { type ProjectImagesSettingsModal } from './views/project-settings/images/ProjectImagesSettings.types';
