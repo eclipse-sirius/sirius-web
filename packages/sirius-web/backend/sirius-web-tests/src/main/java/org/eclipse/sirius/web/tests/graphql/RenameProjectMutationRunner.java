@@ -31,6 +31,13 @@ public class RenameProjectMutationRunner implements IMutationRunner<RenameProjec
             mutation renameProject($input: RenameProjectInput!) {
               renameProject(input: $input) {
                 __typename
+               ... on ErrorPayload {
+                    message
+                    messages {
+                      level
+                      body
+                    }
+                }
               }
             }
             """;

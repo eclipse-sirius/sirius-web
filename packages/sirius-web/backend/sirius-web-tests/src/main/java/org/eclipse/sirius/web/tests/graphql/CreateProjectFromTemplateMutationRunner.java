@@ -39,6 +39,13 @@ public class CreateProjectFromTemplateMutationRunner implements IMutationRunner<
                     id
                   }
                 }
+               ... on ErrorPayload {
+                    message
+                    messages {
+                      level
+                      body
+                    }
+                }
               }
             }
             """;
