@@ -53,6 +53,8 @@ This allows an error to be displayed when there is a problem during uploading
 - https://github.com/eclipse-sirius/sirius-web/issues/3840[#3840] [diagram] Migrate to ReactFlow 12
 - [releng] Switch to the final release version of AQL 8.0.2
 - https://github.com/eclipse-sirius/sirius-web/issues/3836[#3836] [gantt] Switch to @ObeoNetwork/gantt-task-react 0.6.1 to benefit for enhancements
+- https://github.com/eclipse-sirius/sirius-web/issues/3823[#3823] [table] Add a dependency to `material-react-table "2.13.3"` and `export-to-csv "1.3.0"`
+
 
 === Bug fixes
 
@@ -87,7 +89,7 @@ description (optional).
 - https://github.com/eclipse-sirius/sirius-web/issues/3873[#3873] [diagram] Make the Selection Dialog available for the EdgeTool
 - https://github.com/eclipse-sirius/sirius-web/issues/3950[#3950] [diagram] Have the multiple selection on the Selection Dialog
 - https://github.com/eclipse-sirius/sirius-web/issues/3982[#3982] [core] Add support for the command palette.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3823[#3823] [form][table] Add table widget in form.
 
 === Improvements
 

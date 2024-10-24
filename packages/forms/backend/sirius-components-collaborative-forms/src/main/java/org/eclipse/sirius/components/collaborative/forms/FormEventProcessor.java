@@ -23,7 +23,6 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPol
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
-import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.api.FormCreationParameters;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventProcessor;
@@ -31,23 +30,29 @@ import org.eclipse.sirius.components.collaborative.forms.api.IFormInput;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
-import org.eclipse.sirius.components.collaborative.forms.dto.RenameFormInput;
 import org.eclipse.sirius.components.collaborative.forms.variables.FormVariableProvider;
+import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
+import org.eclipse.sirius.components.collaborative.tables.api.ITableInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationInput;
 import org.eclipse.sirius.components.forms.Form;
+import org.eclipse.sirius.components.forms.TableWidget;
 import org.eclipse.sirius.components.forms.components.FormComponent;
 import org.eclipse.sirius.components.forms.components.FormComponentProps;
 import org.eclipse.sirius.components.forms.description.FormDescription;
+import org.eclipse.sirius.components.forms.description.TableWidgetDescription;
 import org.eclipse.sirius.components.forms.renderer.FormRenderer;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.tables.Table;
+import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -78,9 +83,13 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     private final List<IFormEventHandler> formEventHandlers;
 
+    private final List<ITableEventHandler> tableEventHandlers;
+
     private final ISubscriptionManager subscriptionManager;
 
     private final IRepresentationSearchService representationSearchService;
+
+    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
@@ -95,6 +104,7 @@ public class FormEventProcessor implements IFormEventProcessor {
     public FormEventProcessor(FormEventProcessorConfiguration configuration,
             ISubscriptionManager subscriptionManager,
             IRepresentationSearchService representationSearchService,
+            IRepresentationDescriptionSearchService representationDescriptionSearchService,
             IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry, IFormPostProcessor formPostProcessor) {
         this.logger.trace("Creating the form event processor {}", configuration.formCreationParameters().getId());
         this.editingContext = Objects.requireNonNull(configuration.editingContext());
@@ -103,9 +113,11 @@ public class FormEventProcessor implements IFormEventProcessor {
         this.widgetDescriptors = Objects.requireNonNull(configuration.widgetDescriptors());
         this.formEventHandlers = Objects.requireNonNull(configuration.formEventHandlers());
         this.representationSearchService = Objects.requireNonNull(representationSearchService);
+        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
         this.formPostProcessor = Objects.requireNonNull(formPostProcessor);
+        this.tableEventHandlers = Objects.requireNonNull(configuration.tableEventHandlers());
 
         this.variableManager = this.initializeVariableManager(this.formCreationParameters);
 
@@ -145,12 +157,7 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
-        IRepresentationInput effectiveInput = representationInput;
-        if (representationInput instanceof RenameRepresentationInput renameRepresentationInput) {
-            effectiveInput = new RenameFormInput(renameRepresentationInput.id(), renameRepresentationInput.editingContextId(), renameRepresentationInput.representationId(),
-                    renameRepresentationInput.newLabel());
-        }
-        if (effectiveInput instanceof IFormInput formInput) {
+        if (representationInput instanceof IFormInput formInput) {
 
             Optional<IFormEventHandler> optionalFormEventHandler = this.formEventHandlers.stream().filter(handler -> handler.canHandle(formInput)).findFirst();
 
@@ -160,7 +167,61 @@ public class FormEventProcessor implements IFormEventProcessor {
             } else {
                 this.logger.warn("No handler found for event: {}", formInput);
             }
+        } else if (representationInput instanceof ITableInput tableInput) {
+
+            Optional<ITableEventHandler> optionalTableEventHandler = this.tableEventHandlers.stream().filter(handler -> handler.canHandle(tableInput)).findFirst();
+
+            if (optionalTableEventHandler.isPresent()) {
+                ITableEventHandler tableEventHandler = optionalTableEventHandler.get();
+                Optional<Table> tableOptional = getTable(currentForm.get(), tableInput.getTableId());
+                if (tableOptional.isPresent()) {
+                    Optional<TableDescription> tableDescriptionOptional = getTableDescription(currentForm.get().getDescriptionId(), tableOptional.get().getDescriptionId());
+                    if (tableDescriptionOptional.isPresent()) {
+                        tableEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, tableOptional.get(), tableDescriptionOptional.get(), tableInput);
+                    } else {
+                        this.logger.warn("No table description found for event: {}", tableInput);
+                    }
+                } else {
+                    this.logger.warn("No table found for event: {}", tableInput);
+                }
+            } else {
+                this.logger.warn("No handler found for event: {}", tableInput);
+            }
         }
+    }
+
+    private Optional<Table> getTable(Form form, String tableId) {
+        return form.getPages().stream()
+                .flatMap(page -> page.getGroups().stream())
+                .flatMap(group -> group.getWidgets().stream())
+                .filter(TableWidget.class::isInstance)
+                .map(TableWidget.class::cast)
+                .map(TableWidget::getTable)
+                .filter(table -> tableId.equals(table.getId()))
+                .findFirst();
+    }
+
+    private Optional<TableDescription> getTableDescription(String formDescriptionId, String tableDescriptionId) {
+        return this.representationDescriptionSearchService
+                .findById(editingContext, formDescriptionId)
+                .filter(FormDescription.class::isInstance)
+                .map(FormDescription.class::cast)
+                .stream()
+                .flatMap(form -> form.getPageDescriptions().stream())
+                .flatMap(page -> page.getGroupDescriptions().stream())
+                .flatMap(group -> group.getControlDescriptions().stream())
+                .filter(TableWidgetDescription.class::isInstance)
+                .map(TableWidgetDescription.class::cast)
+                .map(TableWidgetDescription::getTableDescription)
+                .filter(tableDescription -> tableDescriptionId.equals(tableDescription.getId()))
+                .findFirst();
+    }
+
+    private Optional<FormDescription> findFormDescription(String formDescriptionId) {
+        return this.representationDescriptionSearchService
+                .findById(editingContext, formDescriptionId)
+                .filter(FormDescription.class::isInstance)
+                .map(FormDescription.class::cast);
     }
 
     @Override

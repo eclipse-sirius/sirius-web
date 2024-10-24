@@ -12,12 +12,26 @@
  *******************************************************************************/
 
 import DeleteIcon from '@mui/icons-material/Delete';
-import { CardDeleteIconButton } from '../styled/DeckCardStyledComponents';
+import IconButton from '@mui/material/IconButton';
+import { makeStyles } from 'tss-react/mui';
+
+const useStyles = makeStyles()(() => ({
+  icon: {
+    position: 'absolute',
+    top: '2px',
+    right: '2px',
+    padding: '0',
+    ' & .MuiSvgIcon-fontSizeSmall': {
+      fontSize: '12px',
+    },
+  },
+}));
 
 export const DeckDeleteButton = (props) => {
+  const { classes } = useStyles();
   return (
-    <CardDeleteIconButton tabIndex={-1} aria-label="deleteCard" {...props}>
+    <IconButton className={classes.icon} tabIndex={-1} aria-label="deleteCard" {...props}>
       <DeleteIcon fontSize={'small'} />
-    </CardDeleteIconButton>
+    </IconButton>
   );
 };
