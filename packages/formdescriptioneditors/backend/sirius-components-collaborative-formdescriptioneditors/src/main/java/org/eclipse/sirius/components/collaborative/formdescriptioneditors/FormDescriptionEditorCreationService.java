@@ -76,16 +76,12 @@ public class FormDescriptionEditorCreationService implements IFormDescriptionEdi
 
     @Override
     public FormDescriptionEditor create(ICause cause, String label, Object targetObject, FormDescriptionEditorDescription formDescriptionEditorDescription, IEditingContext editingContext) {
-        FormDescriptionEditor newFormDescriptionEditor = FormDescriptionEditor.newFormDescriptionEditor(UUID.randomUUID().toString())
+        return FormDescriptionEditor.newFormDescriptionEditor(UUID.randomUUID().toString())
                 .label(label)
                 .targetObjectId(this.objectService.getId(targetObject))
                 .descriptionId(formDescriptionEditorDescription.getId())
                 .pages(List.of()) // We don't store form description editor pages, it will be re-render by the FormDescriptionEditorProcessor.
                 .build();
-
-        this.representationPersistenceService.save(cause, editingContext, newFormDescriptionEditor);
-
-        return newFormDescriptionEditor;
     }
 
     @Override

@@ -21,10 +21,10 @@ import java.util.Map;
 
 import org.eclipse.sirius.components.graphql.tests.AllRepresentationDescriptionsQueryRunner;
 import org.eclipse.sirius.components.graphql.tests.AllRepresentationMetadataQueryRunner;
-import org.eclipse.sirius.components.graphql.tests.RepresentationMetadataQueryRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.services.api.IDomainEventCollector;
+import org.eclipse.sirius.web.tests.graphql.RepresentationMetadataQueryRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

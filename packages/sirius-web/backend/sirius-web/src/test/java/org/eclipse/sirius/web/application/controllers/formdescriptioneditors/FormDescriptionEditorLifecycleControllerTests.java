@@ -36,8 +36,8 @@ import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationData;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationDataRepository;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationMetadataRepository;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedFormDescriptionEditorSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.formdescriptioneditors.AddWidgetMutationRunner;
@@ -79,7 +79,7 @@ public class FormDescriptionEditorLifecycleControllerTests extends AbstractInteg
     private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
     @Autowired
-    private IRepresentationDataRepository representationDataRepository;
+    private IRepresentationMetadataRepository representationMetadataRepository;
 
     @BeforeEach
     public void beforeEach() {
@@ -101,7 +101,7 @@ public class FormDescriptionEditorLifecycleControllerTests extends AbstractInteg
         var flux = this.givenCreatedFormDescriptionEditorSubscription.createAndSubscribe(input);
 
         var formDescriptionEditorId = new AtomicReference<String>();
-        var representationData = new AtomicReference<RepresentationData>();
+        var representationMetadata = new AtomicReference<RepresentationMetadata>();
         var newWidgetId = new AtomicReference<String>();
 
         Consumer<Object> initialFormDescriptionEditorContentConsumer = payload -> Optional.of(payload)
@@ -114,8 +114,8 @@ public class FormDescriptionEditorLifecycleControllerTests extends AbstractInteg
                     assertThat(firstGroup.getWidgets()).hasSize(4);
 
                     var representationId = new UUIDParser().parse(formDescriptionEditor.getId()).orElseThrow(() -> new IllegalArgumentException("Invalid identifier"));
-                    this.representationDataRepository.findById(representationId)
-                            .ifPresentOrElse(representationData::set, () -> fail("Missing representation data"));
+                    this.representationMetadataRepository.findById(representationId)
+                            .ifPresentOrElse(representationMetadata::set, () -> fail("Missing representation data"));
                 }, () -> fail("Missing form description editor"));
 
         Runnable addWidget = () -> {
@@ -158,7 +158,7 @@ public class FormDescriptionEditorLifecycleControllerTests extends AbstractInteg
             TestTransaction.start();
 
             // Ask the FormDescriptionEditor to reload (and thus refresh on the restored FormDescription state)
-            this.representationDataRepository.save(representationData.get());
+            this.representationMetadataRepository.save(representationMetadata.get());
             TestTransaction.flagForCommit();
             TestTransaction.end();
             TestTransaction.start();
