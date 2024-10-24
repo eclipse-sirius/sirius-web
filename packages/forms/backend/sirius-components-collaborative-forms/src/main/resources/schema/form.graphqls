@@ -65,6 +65,13 @@ interface Widget {
   readOnly: Boolean!
 }
 
+type WidgetFlexboxLayout {
+  flexDirection: String!
+  gap: String!
+  labelFlex: String!
+  valueFlex: String!
+}
+
 type Checkbox implements Widget {
   id: ID!
   label: String!
@@ -78,7 +85,7 @@ type Checkbox implements Widget {
 
 type CheckboxStyle {
   color: String
-  labelPlacement: String!
+  widgetFlexboxLayout: WidgetFlexboxLayout
 }
 
 type List implements Widget {
@@ -129,6 +136,7 @@ type MultiSelectStyle {
   bold: Boolean
   underline: Boolean
   strikeThrough: Boolean
+  widgetFlexboxLayout: WidgetFlexboxLayout
 }
 
 type Radio implements Widget {
@@ -183,6 +191,7 @@ type SelectStyle {
   bold: Boolean
   underline: Boolean
   strikeThrough: Boolean
+  widgetFlexboxLayout: WidgetFlexboxLayout
 }
 
 type Textarea implements Widget {
@@ -205,6 +214,7 @@ type TextareaStyle {
   bold: Boolean
   underline: Boolean
   strikeThrough: Boolean
+  widgetFlexboxLayout: WidgetFlexboxLayout
 }
 
 type Textfield implements Widget {
@@ -227,6 +237,7 @@ type TextfieldStyle {
   bold: Boolean
   underline: Boolean
   strikeThrough: Boolean
+  widgetFlexboxLayout: WidgetFlexboxLayout
 }
 
 type LabelWidget implements Widget {
@@ -418,6 +429,7 @@ type DateTimeStyle {
   backgroundColor: String
   italic: Boolean
   bold: Boolean
+  widgetFlexboxLayout: WidgetFlexboxLayout
 }
 
 type FormDescription implements RepresentationDescription {

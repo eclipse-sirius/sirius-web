@@ -23,6 +23,7 @@ const usePropertySectionLabelStyles = makeStyles()((theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
     gap: theme.spacing(1),
+    justifyContent: 'space-between',
   },
   typography: {
     lineHeight: '1.5',

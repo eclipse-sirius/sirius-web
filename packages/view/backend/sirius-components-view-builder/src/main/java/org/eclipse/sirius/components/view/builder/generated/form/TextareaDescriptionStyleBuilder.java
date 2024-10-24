@@ -88,6 +88,46 @@ public class TextareaDescriptionStyleBuilder {
         return this;
     }
     /**
+     * Setter for FlexDirection.
+     *
+     * @generated
+     */
+    public TextareaDescriptionStyleBuilder flexDirection(java.lang.String value) {
+        this.getTextareaDescriptionStyle().setFlexDirection(value);
+        return this;
+    }
+
+    /**
+     * Setter for Gap.
+     *
+     * @generated
+     */
+    public TextareaDescriptionStyleBuilder gap(java.lang.String value) {
+        this.getTextareaDescriptionStyle().setGap(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelFlex.
+     *
+     * @generated
+     */
+    public TextareaDescriptionStyleBuilder labelFlex(java.lang.String value) {
+        this.getTextareaDescriptionStyle().setLabelFlex(value);
+        return this;
+    }
+
+    /**
+     * Setter for ValueFlex.
+     *
+     * @generated
+     */
+    public TextareaDescriptionStyleBuilder valueFlex(java.lang.String value) {
+        this.getTextareaDescriptionStyle().setValueFlex(value);
+        return this;
+    }
+
+    /**
      * Setter for BackgroundColor.
      *
      * @generated

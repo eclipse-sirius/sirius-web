@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.components.view.form.SelectDescriptionStyle;
+import org.eclipse.sirius.components.view.form.WidgetFlexboxLayout;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Select Description Style</b></em>'. <!--
@@ -37,6 +38,13 @@ import org.eclipse.sirius.components.view.form.SelectDescriptionStyle;
  * <em>Underline</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.form.impl.SelectDescriptionStyleImpl#isStrikeThrough <em>Strike
  * Through</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.form.impl.SelectDescriptionStyleImpl#getFlexDirection <em>Flex
+ * Direction</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.form.impl.SelectDescriptionStyleImpl#getGap <em>Gap</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.form.impl.SelectDescriptionStyleImpl#getLabelFlex <em>Label
+ * Flex</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.form.impl.SelectDescriptionStyleImpl#getValueFlex <em>Value
+ * Flex</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.form.impl.SelectDescriptionStyleImpl#getBackgroundColor <em>Background
  * Color</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.form.impl.SelectDescriptionStyleImpl#getForegroundColor <em>Foreground
@@ -147,6 +155,85 @@ public class SelectDescriptionStyleImpl extends WidgetDescriptionStyleImpl imple
      * @ordered
      */
     protected boolean strikeThrough = STRIKE_THROUGH_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getFlexDirection() <em>Flex Direction</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #getFlexDirection()
+     * @generated
+     * @ordered
+     */
+    protected static final String FLEX_DIRECTION_EDEFAULT = "column";
+
+    /**
+     * The cached value of the '{@link #getFlexDirection() <em>Flex Direction</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #getFlexDirection()
+     * @generated
+     * @ordered
+     */
+    protected String flexDirection = FLEX_DIRECTION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getGap() <em>Gap</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @see #getGap()
+     * @generated
+     * @ordered
+     */
+    protected static final String GAP_EDEFAULT = "";
+
+    /**
+     * The cached value of the '{@link #getGap() <em>Gap</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getGap()
+     * @generated
+     * @ordered
+     */
+    protected String gap = GAP_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getLabelFlex() <em>Label Flex</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getLabelFlex()
+     * @generated
+     * @ordered
+     */
+    protected static final String LABEL_FLEX_EDEFAULT = "";
+
+    /**
+     * The cached value of the '{@link #getLabelFlex() <em>Label Flex</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getLabelFlex()
+     * @generated
+     * @ordered
+     */
+    protected String labelFlex = LABEL_FLEX_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getValueFlex() <em>Value Flex</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getValueFlex()
+     * @generated
+     * @ordered
+     */
+    protected static final String VALUE_FLEX_EDEFAULT = "";
+
+    /**
+     * The cached value of the '{@link #getValueFlex() <em>Value Flex</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getValueFlex()
+     * @generated
+     * @ordered
+     */
+    protected String valueFlex = VALUE_FLEX_EDEFAULT;
 
     /**
      * The cached value of the '{@link #getBackgroundColor() <em>Background Color</em>}' reference. <!-- begin-user-doc
@@ -328,6 +415,98 @@ public class SelectDescriptionStyleImpl extends WidgetDescriptionStyleImpl imple
      * @generated
      */
     @Override
+    public String getFlexDirection() {
+        return this.flexDirection;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setFlexDirection(String newFlexDirection) {
+        String oldFlexDirection = this.flexDirection;
+        this.flexDirection = newFlexDirection;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.SELECT_DESCRIPTION_STYLE__FLEX_DIRECTION, oldFlexDirection, this.flexDirection));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getGap() {
+        return this.gap;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setGap(String newGap) {
+        String oldGap = this.gap;
+        this.gap = newGap;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.SELECT_DESCRIPTION_STYLE__GAP, oldGap, this.gap));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getLabelFlex() {
+        return this.labelFlex;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setLabelFlex(String newLabelFlex) {
+        String oldLabelFlex = this.labelFlex;
+        this.labelFlex = newLabelFlex;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.SELECT_DESCRIPTION_STYLE__LABEL_FLEX, oldLabelFlex, this.labelFlex));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getValueFlex() {
+        return this.valueFlex;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setValueFlex(String newValueFlex) {
+        String oldValueFlex = this.valueFlex;
+        this.valueFlex = newValueFlex;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.SELECT_DESCRIPTION_STYLE__VALUE_FLEX, oldValueFlex, this.valueFlex));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public UserColor getBackgroundColor() {
         if (this.backgroundColor != null && this.backgroundColor.eIsProxy()) {
             InternalEObject oldBackgroundColor = (InternalEObject) this.backgroundColor;
@@ -443,6 +622,14 @@ public class SelectDescriptionStyleImpl extends WidgetDescriptionStyleImpl imple
                 return this.isUnderline();
             case FormPackage.SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH:
                 return this.isStrikeThrough();
+            case FormPackage.SELECT_DESCRIPTION_STYLE__FLEX_DIRECTION:
+                return this.getFlexDirection();
+            case FormPackage.SELECT_DESCRIPTION_STYLE__GAP:
+                return this.getGap();
+            case FormPackage.SELECT_DESCRIPTION_STYLE__LABEL_FLEX:
+                return this.getLabelFlex();
+            case FormPackage.SELECT_DESCRIPTION_STYLE__VALUE_FLEX:
+                return this.getValueFlex();
             case FormPackage.SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
                 if (resolve)
                     return this.getBackgroundColor();
@@ -462,6 +649,7 @@ public class SelectDescriptionStyleImpl extends WidgetDescriptionStyleImpl imple
      *
      * @generated
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
@@ -479,6 +667,18 @@ public class SelectDescriptionStyleImpl extends WidgetDescriptionStyleImpl imple
                 return;
             case FormPackage.SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH:
                 this.setStrikeThrough((Boolean) newValue);
+                return;
+            case FormPackage.SELECT_DESCRIPTION_STYLE__FLEX_DIRECTION:
+                this.setFlexDirection((String) newValue);
+                return;
+            case FormPackage.SELECT_DESCRIPTION_STYLE__GAP:
+                this.setGap((String) newValue);
+                return;
+            case FormPackage.SELECT_DESCRIPTION_STYLE__LABEL_FLEX:
+                this.setLabelFlex((String) newValue);
+                return;
+            case FormPackage.SELECT_DESCRIPTION_STYLE__VALUE_FLEX:
+                this.setValueFlex((String) newValue);
                 return;
             case FormPackage.SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
                 this.setBackgroundColor((UserColor) newValue);
@@ -516,6 +716,18 @@ public class SelectDescriptionStyleImpl extends WidgetDescriptionStyleImpl imple
             case FormPackage.SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH:
                 this.setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
                 return;
+            case FormPackage.SELECT_DESCRIPTION_STYLE__FLEX_DIRECTION:
+                this.setFlexDirection(FLEX_DIRECTION_EDEFAULT);
+                return;
+            case FormPackage.SELECT_DESCRIPTION_STYLE__GAP:
+                this.setGap(GAP_EDEFAULT);
+                return;
+            case FormPackage.SELECT_DESCRIPTION_STYLE__LABEL_FLEX:
+                this.setLabelFlex(LABEL_FLEX_EDEFAULT);
+                return;
+            case FormPackage.SELECT_DESCRIPTION_STYLE__VALUE_FLEX:
+                this.setValueFlex(VALUE_FLEX_EDEFAULT);
+                return;
             case FormPackage.SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
                 this.setBackgroundColor((UserColor) null);
                 return;
@@ -547,6 +759,14 @@ public class SelectDescriptionStyleImpl extends WidgetDescriptionStyleImpl imple
                 return this.underline != UNDERLINE_EDEFAULT;
             case FormPackage.SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH:
                 return this.strikeThrough != STRIKE_THROUGH_EDEFAULT;
+            case FormPackage.SELECT_DESCRIPTION_STYLE__FLEX_DIRECTION:
+                return FLEX_DIRECTION_EDEFAULT == null ? this.flexDirection != null : !FLEX_DIRECTION_EDEFAULT.equals(this.flexDirection);
+            case FormPackage.SELECT_DESCRIPTION_STYLE__GAP:
+                return GAP_EDEFAULT == null ? this.gap != null : !GAP_EDEFAULT.equals(this.gap);
+            case FormPackage.SELECT_DESCRIPTION_STYLE__LABEL_FLEX:
+                return LABEL_FLEX_EDEFAULT == null ? this.labelFlex != null : !LABEL_FLEX_EDEFAULT.equals(this.labelFlex);
+            case FormPackage.SELECT_DESCRIPTION_STYLE__VALUE_FLEX:
+                return VALUE_FLEX_EDEFAULT == null ? this.valueFlex != null : !VALUE_FLEX_EDEFAULT.equals(this.valueFlex);
             case FormPackage.SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
                 return this.backgroundColor != null;
             case FormPackage.SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
@@ -580,6 +800,20 @@ public class SelectDescriptionStyleImpl extends WidgetDescriptionStyleImpl imple
                     return -1;
             }
         }
+        if (baseClass == WidgetFlexboxLayout.class) {
+            switch (derivedFeatureID) {
+                case FormPackage.SELECT_DESCRIPTION_STYLE__FLEX_DIRECTION:
+                    return FormPackage.WIDGET_FLEXBOX_LAYOUT__FLEX_DIRECTION;
+                case FormPackage.SELECT_DESCRIPTION_STYLE__GAP:
+                    return FormPackage.WIDGET_FLEXBOX_LAYOUT__GAP;
+                case FormPackage.SELECT_DESCRIPTION_STYLE__LABEL_FLEX:
+                    return FormPackage.WIDGET_FLEXBOX_LAYOUT__LABEL_FLEX;
+                case FormPackage.SELECT_DESCRIPTION_STYLE__VALUE_FLEX:
+                    return FormPackage.WIDGET_FLEXBOX_LAYOUT__VALUE_FLEX;
+                default:
+                    return -1;
+            }
+        }
         return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
     }
 
@@ -602,6 +836,20 @@ public class SelectDescriptionStyleImpl extends WidgetDescriptionStyleImpl imple
                     return FormPackage.SELECT_DESCRIPTION_STYLE__UNDERLINE;
                 case ViewPackage.LABEL_STYLE__STRIKE_THROUGH:
                     return FormPackage.SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH;
+                default:
+                    return -1;
+            }
+        }
+        if (baseClass == WidgetFlexboxLayout.class) {
+            switch (baseFeatureID) {
+                case FormPackage.WIDGET_FLEXBOX_LAYOUT__FLEX_DIRECTION:
+                    return FormPackage.SELECT_DESCRIPTION_STYLE__FLEX_DIRECTION;
+                case FormPackage.WIDGET_FLEXBOX_LAYOUT__GAP:
+                    return FormPackage.SELECT_DESCRIPTION_STYLE__GAP;
+                case FormPackage.WIDGET_FLEXBOX_LAYOUT__LABEL_FLEX:
+                    return FormPackage.SELECT_DESCRIPTION_STYLE__LABEL_FLEX;
+                case FormPackage.WIDGET_FLEXBOX_LAYOUT__VALUE_FLEX:
+                    return FormPackage.SELECT_DESCRIPTION_STYLE__VALUE_FLEX;
                 default:
                     return -1;
             }
@@ -630,6 +878,14 @@ public class SelectDescriptionStyleImpl extends WidgetDescriptionStyleImpl imple
         result.append(this.underline);
         result.append(", strikeThrough: ");
         result.append(this.strikeThrough);
+        result.append(", flexDirection: ");
+        result.append(this.flexDirection);
+        result.append(", gap: ");
+        result.append(this.gap);
+        result.append(", labelFlex: ");
+        result.append(this.labelFlex);
+        result.append(", valueFlex: ");
+        result.append(this.valueFlex);
         result.append(", showIcon: ");
         result.append(this.showIcon);
         result.append(')');

@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.forms.DateTimeStyle;
 import org.eclipse.sirius.components.forms.DateTimeStyle.Builder;
+import org.eclipse.sirius.components.forms.WidgetFlexboxLayout;
 import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle;
 
@@ -52,10 +53,17 @@ public class DateTimeStyleProvider {
 
         boolean italic = this.viewStyle.isItalic();
         boolean bold = this.viewStyle.isBold();
+        WidgetFlexboxLayout widgetFlexboxLayout = WidgetFlexboxLayout.newWidgetFlexboxLayout()
+                .flexDirection(this.viewStyle.getFlexDirection())
+                .gap(this.viewStyle.getGap())
+                .labelFlex(this.viewStyle.getLabelFlex())
+                .valueFlex(this.viewStyle.getValueFlex())
+                .build();
 
         return dateTimeStyleBuilder
                 .italic(italic)
                 .bold(bold)
+                .widgetFlexboxLayout(widgetFlexboxLayout)
                 .build();
     }
 

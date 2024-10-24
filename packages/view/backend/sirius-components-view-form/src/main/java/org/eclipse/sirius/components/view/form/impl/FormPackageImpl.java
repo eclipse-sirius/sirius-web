@@ -82,6 +82,7 @@ import org.eclipse.sirius.components.view.form.TextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.form.TreeDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescriptionStyle;
+import org.eclipse.sirius.components.view.form.WidgetFlexboxLayout;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!-- end-user-doc -->
@@ -270,6 +271,13 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     private EClass widgetDescriptionStyleEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass widgetFlexboxLayoutEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2046,6 +2054,56 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     @Override
+    public EClass getWidgetFlexboxLayout() {
+        return this.widgetFlexboxLayoutEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getWidgetFlexboxLayout_FlexDirection() {
+        return (EAttribute) this.widgetFlexboxLayoutEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getWidgetFlexboxLayout_Gap() {
+        return (EAttribute) this.widgetFlexboxLayoutEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getWidgetFlexboxLayout_LabelFlex() {
+        return (EAttribute) this.widgetFlexboxLayoutEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getWidgetFlexboxLayout_ValueFlex() {
+        return (EAttribute) this.widgetFlexboxLayoutEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getBarChartDescriptionStyle() {
         return this.barChartDescriptionStyleEClass;
     }
@@ -2128,16 +2186,6 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
     @Override
     public EReference getCheckboxDescriptionStyle_Color() {
         return (EReference) this.checkboxDescriptionStyleEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EAttribute getCheckboxDescriptionStyle_LabelPlacement() {
-        return (EAttribute) this.checkboxDescriptionStyleEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -2941,6 +2989,12 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
 
         this.widgetDescriptionStyleEClass = this.createEClass(WIDGET_DESCRIPTION_STYLE);
 
+        this.widgetFlexboxLayoutEClass = this.createEClass(WIDGET_FLEXBOX_LAYOUT);
+        this.createEAttribute(this.widgetFlexboxLayoutEClass, WIDGET_FLEXBOX_LAYOUT__FLEX_DIRECTION);
+        this.createEAttribute(this.widgetFlexboxLayoutEClass, WIDGET_FLEXBOX_LAYOUT__GAP);
+        this.createEAttribute(this.widgetFlexboxLayoutEClass, WIDGET_FLEXBOX_LAYOUT__LABEL_FLEX);
+        this.createEAttribute(this.widgetFlexboxLayoutEClass, WIDGET_FLEXBOX_LAYOUT__VALUE_FLEX);
+
         this.barChartDescriptionStyleEClass = this.createEClass(BAR_CHART_DESCRIPTION_STYLE);
         this.createEAttribute(this.barChartDescriptionStyleEClass, BAR_CHART_DESCRIPTION_STYLE__BARS_COLOR);
 
@@ -2954,7 +3008,6 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
 
         this.checkboxDescriptionStyleEClass = this.createEClass(CHECKBOX_DESCRIPTION_STYLE);
         this.createEReference(this.checkboxDescriptionStyleEClass, CHECKBOX_DESCRIPTION_STYLE__COLOR);
-        this.createEAttribute(this.checkboxDescriptionStyleEClass, CHECKBOX_DESCRIPTION_STYLE__LABEL_PLACEMENT);
 
         this.conditionalCheckboxDescriptionStyleEClass = this.createEClass(CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE);
 
@@ -3105,9 +3158,11 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.conditionalButtonDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
         this.conditionalButtonDescriptionStyleEClass.getESuperTypes().add(this.getButtonDescriptionStyle());
         this.checkboxDescriptionStyleEClass.getESuperTypes().add(this.getWidgetDescriptionStyle());
+        this.checkboxDescriptionStyleEClass.getESuperTypes().add(this.getWidgetFlexboxLayout());
         this.conditionalCheckboxDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
         this.conditionalCheckboxDescriptionStyleEClass.getESuperTypes().add(this.getCheckboxDescriptionStyle());
         this.dateTimeDescriptionStyleEClass.getESuperTypes().add(this.getWidgetDescriptionStyle());
+        this.dateTimeDescriptionStyleEClass.getESuperTypes().add(this.getWidgetFlexboxLayout());
         this.conditionalDateTimeDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
         this.conditionalDateTimeDescriptionStyleEClass.getESuperTypes().add(this.getDateTimeDescriptionStyle());
         this.labelDescriptionStyleEClass.getESuperTypes().add(this.getWidgetDescriptionStyle());
@@ -3124,6 +3179,7 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.conditionalListDescriptionStyleEClass.getESuperTypes().add(this.getListDescriptionStyle());
         this.multiSelectDescriptionStyleEClass.getESuperTypes().add(this.getWidgetDescriptionStyle());
         this.multiSelectDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getLabelStyle());
+        this.multiSelectDescriptionStyleEClass.getESuperTypes().add(this.getWidgetFlexboxLayout());
         this.conditionalMultiSelectDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
         this.conditionalMultiSelectDescriptionStyleEClass.getESuperTypes().add(this.getMultiSelectDescriptionStyle());
         this.pieChartDescriptionStyleEClass.getESuperTypes().add(this.getWidgetDescriptionStyle());
@@ -3136,14 +3192,17 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.conditionalRadioDescriptionStyleEClass.getESuperTypes().add(this.getRadioDescriptionStyle());
         this.selectDescriptionStyleEClass.getESuperTypes().add(this.getWidgetDescriptionStyle());
         this.selectDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getLabelStyle());
+        this.selectDescriptionStyleEClass.getESuperTypes().add(this.getWidgetFlexboxLayout());
         this.conditionalSelectDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
         this.conditionalSelectDescriptionStyleEClass.getESuperTypes().add(this.getSelectDescriptionStyle());
         this.textareaDescriptionStyleEClass.getESuperTypes().add(this.getWidgetDescriptionStyle());
         this.textareaDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getLabelStyle());
+        this.textareaDescriptionStyleEClass.getESuperTypes().add(this.getWidgetFlexboxLayout());
         this.conditionalTextareaDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
         this.conditionalTextareaDescriptionStyleEClass.getESuperTypes().add(this.getTextareaDescriptionStyle());
         this.textfieldDescriptionStyleEClass.getESuperTypes().add(this.getWidgetDescriptionStyle());
         this.textfieldDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getLabelStyle());
+        this.textfieldDescriptionStyleEClass.getESuperTypes().add(this.getWidgetFlexboxLayout());
         this.conditionalTextfieldDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
         this.conditionalTextfieldDescriptionStyleEClass.getESuperTypes().add(this.getTextfieldDescriptionStyle());
         this.conditionalContainerBorderStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
@@ -3452,6 +3511,16 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
 
         this.initEClass(this.widgetDescriptionStyleEClass, WidgetDescriptionStyle.class, "WidgetDescriptionStyle", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+        this.initEClass(this.widgetFlexboxLayoutEClass, WidgetFlexboxLayout.class, "WidgetFlexboxLayout", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getWidgetFlexboxLayout_FlexDirection(), this.ecorePackage.getEString(), "flexDirection", "column", 1, 1, WidgetFlexboxLayout.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getWidgetFlexboxLayout_Gap(), this.ecorePackage.getEString(), "gap", "", 1, 1, WidgetFlexboxLayout.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getWidgetFlexboxLayout_LabelFlex(), this.ecorePackage.getEString(), "labelFlex", "", 1, 1, WidgetFlexboxLayout.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getWidgetFlexboxLayout_ValueFlex(), this.ecorePackage.getEString(), "valueFlex", "", 1, 1, WidgetFlexboxLayout.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
         this.initEClass(this.barChartDescriptionStyleEClass, BarChartDescriptionStyle.class, "BarChartDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getBarChartDescriptionStyle_BarsColor(), this.ecorePackage.getEString(), "barsColor", null, 0, 1, BarChartDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3471,8 +3540,6 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.initEClass(this.checkboxDescriptionStyleEClass, CheckboxDescriptionStyle.class, "CheckboxDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getCheckboxDescriptionStyle_Color(), theViewPackage.getUserColor(), null, "color", null, 0, 1, CheckboxDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getCheckboxDescriptionStyle_LabelPlacement(), this.getLabelPlacement(), "labelPlacement", "end", 1, 1, CheckboxDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalCheckboxDescriptionStyleEClass, ConditionalCheckboxDescriptionStyle.class, "ConditionalCheckboxDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);

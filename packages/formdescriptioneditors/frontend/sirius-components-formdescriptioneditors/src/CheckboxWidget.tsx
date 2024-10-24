@@ -11,35 +11,49 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { getCSSColor, useSelection } from '@eclipse-sirius/sirius-components-core';
-import { CheckboxStyleProps } from '@eclipse-sirius/sirius-components-forms';
+import { CheckboxStyleProps, getFlexProperties } from '@eclipse-sirius/sirius-components-forms';
 import HelpOutlineOutlined from '@mui/icons-material/HelpOutlineOutlined';
 import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
 import Typography from '@mui/material/Typography';
 import { useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { CheckboxWidgetProps } from './WidgetEntry.types';
 
-const useStyles = makeStyles<CheckboxStyleProps>()((theme, { color }) => ({
-  style: {
-    color: color ? getCSSColor(color, theme) : theme.palette.primary.light,
-    '&.Mui-checked': {
+const useStyles = makeStyles<CheckboxStyleProps>()((theme, { color, flexProps }) => {
+  const { flexDirectionCSS, alignItems, gap, labelFlex, valueFlex } = getFlexProperties(flexProps, 'row-reverse');
+  return {
+    style: {
       color: color ? getCSSColor(color, theme) : theme.palette.primary.light,
+      '&.Mui-checked': {
+        color: color ? getCSSColor(color, theme) : theme.palette.primary.light,
+      },
     },
-  },
-  selected: {
-    color: theme.palette.primary.main,
-  },
-  propertySectionLabel: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-}));
+    selected: {
+      color: theme.palette.primary.main,
+    },
+    propertySectionLabel: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      flex: labelFlex ?? '1 1 auto',
+    },
+    propertySection: {
+      display: 'flex',
+      flexDirection: flexDirectionCSS,
+      alignItems,
+      gap: gap ?? theme.spacing(0.5),
+    },
+    propertySectionValue: {
+      flex: valueFlex ?? '',
+    },
+  };
+});
 
 export const CheckboxWidget = ({ widget }: CheckboxWidgetProps) => {
   const props: CheckboxStyleProps = {
     color: widget.style?.color ?? null,
+    flexProps: widget.style?.widgetFlexboxLayout ?? null,
   };
   const { classes } = useStyles(props);
 
@@ -58,19 +72,14 @@ export const CheckboxWidget = ({ widget }: CheckboxWidgetProps) => {
   }, [selection, widget]);
 
   return (
-    <FormControlLabel
-      labelPlacement={widget.style?.labelPlacement ?? 'end'}
-      label={
-        <div className={classes.propertySectionLabel}>
-          <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
-            {widget.label}
-          </Typography>
-          {widget.hasHelpText ? (
-            <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} />
-          ) : null}
-        </div>
-      }
-      control={
+    <FormControl classes={{ root: classes.propertySection }}>
+      <div className={classes.propertySectionLabel}>
+        <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
+          {widget.label}
+        </Typography>
+        {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
+      </div>
+      <div className={classes.propertySectionValue}>
         <Checkbox
           data-testid={widget.label}
           checked
@@ -79,7 +88,7 @@ export const CheckboxWidget = ({ widget }: CheckboxWidgetProps) => {
           onBlur={() => setSelected(false)}
           classes={{ root: classes.style }}
         />
-      }
-    />
+      </div>
+    </FormControl>
   );
 };

@@ -34,7 +34,7 @@ import org.eclipse.sirius.components.view.UserColor;
  * @model
  * @generated
  */
-public interface MultiSelectDescriptionStyle extends WidgetDescriptionStyle, LabelStyle {
+public interface MultiSelectDescriptionStyle extends WidgetDescriptionStyle, LabelStyle, WidgetFlexboxLayout {
     /**
      * Returns the value of the '<em><b>Background Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
      * -->

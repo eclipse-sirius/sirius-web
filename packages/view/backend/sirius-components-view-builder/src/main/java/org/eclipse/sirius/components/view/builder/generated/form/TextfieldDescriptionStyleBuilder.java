@@ -88,6 +88,46 @@ public class TextfieldDescriptionStyleBuilder {
         return this;
     }
     /**
+     * Setter for FlexDirection.
+     *
+     * @generated
+     */
+    public TextfieldDescriptionStyleBuilder flexDirection(java.lang.String value) {
+        this.getTextfieldDescriptionStyle().setFlexDirection(value);
+        return this;
+    }
+
+    /**
+     * Setter for Gap.
+     *
+     * @generated
+     */
+    public TextfieldDescriptionStyleBuilder gap(java.lang.String value) {
+        this.getTextfieldDescriptionStyle().setGap(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelFlex.
+     *
+     * @generated
+     */
+    public TextfieldDescriptionStyleBuilder labelFlex(java.lang.String value) {
+        this.getTextfieldDescriptionStyle().setLabelFlex(value);
+        return this;
+    }
+
+    /**
+     * Setter for ValueFlex.
+     *
+     * @generated
+     */
+    public TextfieldDescriptionStyleBuilder valueFlex(java.lang.String value) {
+        this.getTextfieldDescriptionStyle().setValueFlex(value);
+        return this;
+    }
+
+    /**
      * Setter for BackgroundColor.
      *
      * @generated

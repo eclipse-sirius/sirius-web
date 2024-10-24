@@ -11,9 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+import { PropertySectionFlexProps } from './PropertySection.types';
 
 export interface CheckboxStyleProps {
   color: string | null;
+  flexProps?: PropertySectionFlexProps;
 }
 
 export interface GQLEditCheckboxMutationData {

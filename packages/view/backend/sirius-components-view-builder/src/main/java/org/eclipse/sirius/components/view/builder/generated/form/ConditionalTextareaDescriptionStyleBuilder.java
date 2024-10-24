@@ -97,6 +97,46 @@ public class ConditionalTextareaDescriptionStyleBuilder {
         return this;
     }
     /**
+     * Setter for FlexDirection.
+     *
+     * @generated
+     */
+    public ConditionalTextareaDescriptionStyleBuilder flexDirection(java.lang.String value) {
+        this.getConditionalTextareaDescriptionStyle().setFlexDirection(value);
+        return this;
+    }
+
+    /**
+     * Setter for Gap.
+     *
+     * @generated
+     */
+    public ConditionalTextareaDescriptionStyleBuilder gap(java.lang.String value) {
+        this.getConditionalTextareaDescriptionStyle().setGap(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelFlex.
+     *
+     * @generated
+     */
+    public ConditionalTextareaDescriptionStyleBuilder labelFlex(java.lang.String value) {
+        this.getConditionalTextareaDescriptionStyle().setLabelFlex(value);
+        return this;
+    }
+
+    /**
+     * Setter for ValueFlex.
+     *
+     * @generated
+     */
+    public ConditionalTextareaDescriptionStyleBuilder valueFlex(java.lang.String value) {
+        this.getConditionalTextareaDescriptionStyle().setValueFlex(value);
+        return this;
+    }
+
+    /**
      * Setter for BackgroundColor.
      *
      * @generated

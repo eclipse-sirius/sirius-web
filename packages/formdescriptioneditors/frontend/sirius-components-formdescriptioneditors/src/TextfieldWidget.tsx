@@ -11,7 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { getCSSColor, useSelection } from '@eclipse-sirius/sirius-components-core';
-import { TextfieldStyleProps, getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
+import {
+  TextfieldStyleProps,
+  getFlexProperties,
+  getTextDecorationLineValue,
+} from '@eclipse-sirius/sirius-components-forms';
 import HelpOutlineOutlined from '@mui/icons-material/HelpOutlineOutlined';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
@@ -20,24 +24,37 @@ import { makeStyles } from 'tss-react/mui';
 import { TextfieldWidgetProps } from './WidgetEntry.types';
 
 const useStyles = makeStyles<TextfieldStyleProps>()(
-  (theme, { backgroundColor, foregroundColor, fontSize, italic, bold, underline, strikeThrough }) => ({
-    style: {
-      backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
-      color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
-      fontSize: fontSize ? fontSize : null,
-      fontStyle: italic ? 'italic' : null,
-      fontWeight: bold ? 'bold' : null,
-      textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
-    },
-    selected: {
-      color: theme.palette.primary.main,
-    },
-    propertySectionLabel: {
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-  })
+  (theme, { backgroundColor, foregroundColor, fontSize, italic, bold, underline, strikeThrough, flexProps }) => {
+    const { flexDirectionCSS, alignItems, gap, labelFlex, valueFlex } = getFlexProperties(flexProps);
+    return {
+      style: {
+        backgroundColor: backgroundColor ? getCSSColor(backgroundColor, theme) : null,
+        color: foregroundColor ? getCSSColor(foregroundColor, theme) : null,
+        fontSize: fontSize ? fontSize : null,
+        fontStyle: italic ? 'italic' : null,
+        fontWeight: bold ? 'bold' : null,
+        textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+      },
+      selected: {
+        color: theme.palette.primary.main,
+      },
+      propertySectionLabel: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        flex: labelFlex ?? '1 1 auto',
+      },
+      propertySection: {
+        display: 'flex',
+        flexDirection: flexDirectionCSS,
+        alignItems: alignItems,
+        gap: gap ?? '',
+      },
+      propertySectionValue: {
+        flex: valueFlex ?? '1 1 auto',
+      },
+    };
+  }
 );
 
 export const TextfieldWidget = ({ widget }: TextfieldWidgetProps) => {
@@ -49,6 +66,7 @@ export const TextfieldWidget = ({ widget }: TextfieldWidgetProps) => {
     bold: widget.style?.bold ?? null,
     underline: widget.style?.underline ?? null,
     strikeThrough: widget.style?.strikeThrough ?? null,
+    flexProps: widget.style?.widgetFlexboxLayout ?? null,
   };
   const { classes } = useStyles(props);
 
@@ -66,7 +84,7 @@ export const TextfieldWidget = ({ widget }: TextfieldWidgetProps) => {
   }, [selection, widget]);
 
   return (
-    <div>
+    <div className={classes.propertySection}>
       <div className={classes.propertySectionLabel}>
         <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
           {widget.label}
@@ -74,6 +92,7 @@ export const TextfieldWidget = ({ widget }: TextfieldWidgetProps) => {
         {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
       </div>
       <TextField
+        className={classes.propertySectionValue}
         variant="standard"
         data-testid={widget.label}
         fullWidth

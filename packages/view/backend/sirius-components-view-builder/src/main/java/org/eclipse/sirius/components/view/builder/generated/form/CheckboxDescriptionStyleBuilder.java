@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,21 +43,52 @@ public class CheckboxDescriptionStyleBuilder {
     }
 
     /**
+     * Setter for FlexDirection.
+     *
+     * @generated
+     */
+    public CheckboxDescriptionStyleBuilder flexDirection(java.lang.String value) {
+        this.getCheckboxDescriptionStyle().setFlexDirection(value);
+        return this;
+    }
+
+    /**
+     * Setter for Gap.
+     *
+     * @generated
+     */
+    public CheckboxDescriptionStyleBuilder gap(java.lang.String value) {
+        this.getCheckboxDescriptionStyle().setGap(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelFlex.
+     *
+     * @generated
+     */
+    public CheckboxDescriptionStyleBuilder labelFlex(java.lang.String value) {
+        this.getCheckboxDescriptionStyle().setLabelFlex(value);
+        return this;
+    }
+
+    /**
+     * Setter for ValueFlex.
+     *
+     * @generated
+     */
+    public CheckboxDescriptionStyleBuilder valueFlex(java.lang.String value) {
+        this.getCheckboxDescriptionStyle().setValueFlex(value);
+        return this;
+    }
+
+    /**
      * Setter for Color.
      *
      * @generated
      */
     public CheckboxDescriptionStyleBuilder color(org.eclipse.sirius.components.view.UserColor value) {
         this.getCheckboxDescriptionStyle().setColor(value);
-        return this;
-    }
-    /**
-     * Setter for LabelPlacement.
-     *
-     * @generated
-     */
-    public CheckboxDescriptionStyleBuilder labelPlacement(org.eclipse.sirius.components.view.form.LabelPlacement value) {
-        this.getCheckboxDescriptionStyle().setLabelPlacement(value);
         return this;
     }
 

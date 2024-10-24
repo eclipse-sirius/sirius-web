@@ -2364,6 +2364,66 @@ public interface FormPackage extends EPackage {
     int WIDGET_DESCRIPTION_STYLE_OPERATION_COUNT = 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.form.impl.WidgetFlexboxLayoutImpl
+     * <em>Widget Flexbox Layout</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.form.impl.WidgetFlexboxLayoutImpl
+     * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getWidgetFlexboxLayout()
+     * @generated
+     */
+    int WIDGET_FLEXBOX_LAYOUT = 26;
+
+    /**
+     * The feature id for the '<em><b>Flex Direction</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int WIDGET_FLEXBOX_LAYOUT__FLEX_DIRECTION = 0;
+
+    /**
+     * The feature id for the '<em><b>Gap</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int WIDGET_FLEXBOX_LAYOUT__GAP = 1;
+
+    /**
+     * The feature id for the '<em><b>Label Flex</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int WIDGET_FLEXBOX_LAYOUT__LABEL_FLEX = 2;
+
+    /**
+     * The feature id for the '<em><b>Value Flex</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int WIDGET_FLEXBOX_LAYOUT__VALUE_FLEX = 3;
+
+    /**
+     * The number of structural features of the '<em>Widget Flexbox Layout</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int WIDGET_FLEXBOX_LAYOUT_FEATURE_COUNT = 4;
+
+    /**
+     * The number of operations of the '<em>Widget Flexbox Layout</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int WIDGET_FLEXBOX_LAYOUT_OPERATION_COUNT = 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.form.impl.BarChartDescriptionStyleImpl
      * <em>Bar Chart Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -2371,7 +2431,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getBarChartDescriptionStyle()
      * @generated
      */
-    int BAR_CHART_DESCRIPTION_STYLE = 26;
+    int BAR_CHART_DESCRIPTION_STYLE = 27;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2448,7 +2508,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalBarChartDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_BAR_CHART_DESCRIPTION_STYLE = 27;
+    int CONDITIONAL_BAR_CHART_DESCRIPTION_STYLE = 28;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2532,7 +2592,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getButtonDescriptionStyle()
      * @generated
      */
-    int BUTTON_DESCRIPTION_STYLE = 28;
+    int BUTTON_DESCRIPTION_STYLE = 29;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2619,7 +2679,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalButtonDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_BUTTON_DESCRIPTION_STYLE = 29;
+    int CONDITIONAL_BUTTON_DESCRIPTION_STYLE = 30;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2713,7 +2773,39 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getCheckboxDescriptionStyle()
      * @generated
      */
-    int CHECKBOX_DESCRIPTION_STYLE = 30;
+    int CHECKBOX_DESCRIPTION_STYLE = 31;
+
+    /**
+     * The feature id for the '<em><b>Flex Direction</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CHECKBOX_DESCRIPTION_STYLE__FLEX_DIRECTION = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Gap</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CHECKBOX_DESCRIPTION_STYLE__GAP = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Label Flex</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CHECKBOX_DESCRIPTION_STYLE__LABEL_FLEX = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Value Flex</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CHECKBOX_DESCRIPTION_STYLE__VALUE_FLEX = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 3;
 
     /**
      * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2721,15 +2813,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CHECKBOX_DESCRIPTION_STYLE__COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 0;
-
-    /**
-     * The feature id for the '<em><b>Label Placement</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int CHECKBOX_DESCRIPTION_STYLE__LABEL_PLACEMENT = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 1;
+    int CHECKBOX_DESCRIPTION_STYLE__COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 4;
 
     /**
      * The number of structural features of the '<em>Checkbox Description Style</em>' class. <!-- begin-user-doc -->
@@ -2738,7 +2822,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CHECKBOX_DESCRIPTION_STYLE_FEATURE_COUNT = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 2;
+    int CHECKBOX_DESCRIPTION_STYLE_FEATURE_COUNT = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 5;
 
     /**
      * The number of operations of the '<em>Checkbox Description Style</em>' class. <!-- begin-user-doc --> <!--
@@ -2758,7 +2842,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalCheckboxDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE = 31;
+    int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE = 32;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2769,20 +2853,44 @@ public interface FormPackage extends EPackage {
     int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__CONDITION = ViewPackage.CONDITIONAL__CONDITION;
 
     /**
+     * The feature id for the '<em><b>Flex Direction</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__FLEX_DIRECTION = ViewPackage.CONDITIONAL_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Gap</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__GAP = ViewPackage.CONDITIONAL_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Label Flex</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__LABEL_FLEX = ViewPackage.CONDITIONAL_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Value Flex</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__VALUE_FLEX = ViewPackage.CONDITIONAL_FEATURE_COUNT + 3;
+
+    /**
      * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT + 0;
-
-    /**
-     * The feature id for the '<em><b>Label Placement</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__LABEL_PLACEMENT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 1;
+    int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT + 4;
 
     /**
      * The number of structural features of the '<em>Conditional Checkbox Description Style</em>' class. <!--
@@ -2791,7 +2899,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 2;
+    int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 5;
 
     /**
      * The number of operations of the '<em>Conditional Checkbox Description Style</em>' class. <!-- begin-user-doc -->
@@ -2810,7 +2918,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getLabelDescriptionStyle()
      * @generated
      */
-    int LABEL_DESCRIPTION_STYLE = 34;
+    int LABEL_DESCRIPTION_STYLE = 35;
 
     /**
      * The meta object id for the
@@ -2821,7 +2929,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalLabelDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_LABEL_DESCRIPTION_STYLE = 35;
+    int CONDITIONAL_LABEL_DESCRIPTION_STYLE = 36;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.form.impl.LinkDescriptionStyleImpl <em>Link
@@ -2831,7 +2939,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getLinkDescriptionStyle()
      * @generated
      */
-    int LINK_DESCRIPTION_STYLE = 36;
+    int LINK_DESCRIPTION_STYLE = 37;
 
     /**
      * The meta object id for the
@@ -2842,7 +2950,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalLinkDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_LINK_DESCRIPTION_STYLE = 37;
+    int CONDITIONAL_LINK_DESCRIPTION_STYLE = 38;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.form.impl.ListDescriptionStyleImpl <em>List
@@ -2852,7 +2960,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getListDescriptionStyle()
      * @generated
      */
-    int LIST_DESCRIPTION_STYLE = 38;
+    int LIST_DESCRIPTION_STYLE = 39;
 
     /**
      * The meta object id for the
@@ -2863,7 +2971,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalListDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_LIST_DESCRIPTION_STYLE = 39;
+    int CONDITIONAL_LIST_DESCRIPTION_STYLE = 40;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.form.impl.MultiSelectDescriptionStyleImpl
@@ -2873,7 +2981,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getMultiSelectDescriptionStyle()
      * @generated
      */
-    int MULTI_SELECT_DESCRIPTION_STYLE = 40;
+    int MULTI_SELECT_DESCRIPTION_STYLE = 41;
 
     /**
      * The meta object id for the
@@ -2884,7 +2992,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalMultiSelectDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE = 41;
+    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE = 42;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.form.impl.PieChartDescriptionStyleImpl
@@ -2894,7 +3002,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getPieChartDescriptionStyle()
      * @generated
      */
-    int PIE_CHART_DESCRIPTION_STYLE = 42;
+    int PIE_CHART_DESCRIPTION_STYLE = 43;
 
     /**
      * The meta object id for the
@@ -2905,7 +3013,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalPieChartDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE = 43;
+    int CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE = 44;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.form.impl.RadioDescriptionStyleImpl
@@ -2915,7 +3023,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getRadioDescriptionStyle()
      * @generated
      */
-    int RADIO_DESCRIPTION_STYLE = 44;
+    int RADIO_DESCRIPTION_STYLE = 45;
 
     /**
      * The meta object id for the
@@ -2926,7 +3034,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalRadioDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_RADIO_DESCRIPTION_STYLE = 45;
+    int CONDITIONAL_RADIO_DESCRIPTION_STYLE = 46;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.form.impl.SelectDescriptionStyleImpl
@@ -2936,7 +3044,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getSelectDescriptionStyle()
      * @generated
      */
-    int SELECT_DESCRIPTION_STYLE = 46;
+    int SELECT_DESCRIPTION_STYLE = 47;
 
     /**
      * The meta object id for the
@@ -2947,7 +3055,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalSelectDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_SELECT_DESCRIPTION_STYLE = 47;
+    int CONDITIONAL_SELECT_DESCRIPTION_STYLE = 48;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.form.impl.TextareaDescriptionStyleImpl
@@ -2957,7 +3065,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getTextareaDescriptionStyle()
      * @generated
      */
-    int TEXTAREA_DESCRIPTION_STYLE = 48;
+    int TEXTAREA_DESCRIPTION_STYLE = 49;
 
     /**
      * The meta object id for the
@@ -2968,7 +3076,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalTextareaDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE = 49;
+    int CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE = 50;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.form.impl.TextfieldDescriptionStyleImpl
@@ -2978,7 +3086,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getTextfieldDescriptionStyle()
      * @generated
      */
-    int TEXTFIELD_DESCRIPTION_STYLE = 50;
+    int TEXTFIELD_DESCRIPTION_STYLE = 51;
 
     /**
      * The meta object id for the
@@ -2989,7 +3097,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalTextfieldDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE = 51;
+    int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE = 52;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.form.impl.DateTimeDescriptionStyleImpl
@@ -2999,7 +3107,39 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getDateTimeDescriptionStyle()
      * @generated
      */
-    int DATE_TIME_DESCRIPTION_STYLE = 32;
+    int DATE_TIME_DESCRIPTION_STYLE = 33;
+
+    /**
+     * The feature id for the '<em><b>Flex Direction</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DATE_TIME_DESCRIPTION_STYLE__FLEX_DIRECTION = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Gap</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DATE_TIME_DESCRIPTION_STYLE__GAP = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Label Flex</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DATE_TIME_DESCRIPTION_STYLE__LABEL_FLEX = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Value Flex</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DATE_TIME_DESCRIPTION_STYLE__VALUE_FLEX = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 3;
 
     /**
      * The feature id for the '<em><b>Background Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
@@ -3008,7 +3148,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DATE_TIME_DESCRIPTION_STYLE__BACKGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 0;
+    int DATE_TIME_DESCRIPTION_STYLE__BACKGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 4;
 
     /**
      * The feature id for the '<em><b>Foreground Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
@@ -3017,7 +3157,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DATE_TIME_DESCRIPTION_STYLE__FOREGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 1;
+    int DATE_TIME_DESCRIPTION_STYLE__FOREGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 5;
 
     /**
      * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3025,7 +3165,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DATE_TIME_DESCRIPTION_STYLE__ITALIC = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 2;
+    int DATE_TIME_DESCRIPTION_STYLE__ITALIC = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 6;
 
     /**
      * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3033,7 +3173,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DATE_TIME_DESCRIPTION_STYLE__BOLD = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 3;
+    int DATE_TIME_DESCRIPTION_STYLE__BOLD = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 7;
 
     /**
      * The number of structural features of the '<em>Date Time Description Style</em>' class. <!-- begin-user-doc -->
@@ -3042,7 +3182,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DATE_TIME_DESCRIPTION_STYLE_FEATURE_COUNT = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 4;
+    int DATE_TIME_DESCRIPTION_STYLE_FEATURE_COUNT = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 8;
 
     /**
      * The number of operations of the '<em>Date Time Description Style</em>' class. <!-- begin-user-doc --> <!--
@@ -3062,7 +3202,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalDateTimeDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE = 33;
+    int CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE = 34;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3073,13 +3213,45 @@ public interface FormPackage extends EPackage {
     int CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__CONDITION = ViewPackage.CONDITIONAL__CONDITION;
 
     /**
+     * The feature id for the '<em><b>Flex Direction</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__FLEX_DIRECTION = ViewPackage.CONDITIONAL_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Gap</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__GAP = ViewPackage.CONDITIONAL_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Label Flex</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__LABEL_FLEX = ViewPackage.CONDITIONAL_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Value Flex</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__VALUE_FLEX = ViewPackage.CONDITIONAL_FEATURE_COUNT + 3;
+
+    /**
      * The feature id for the '<em><b>Background Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__BACKGROUND_COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT + 0;
+    int CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__BACKGROUND_COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT + 4;
 
     /**
      * The feature id for the '<em><b>Foreground Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
@@ -3088,7 +3260,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__FOREGROUND_COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT + 1;
+    int CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__FOREGROUND_COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT + 5;
 
     /**
      * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3096,7 +3268,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__ITALIC = ViewPackage.CONDITIONAL_FEATURE_COUNT + 2;
+    int CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__ITALIC = ViewPackage.CONDITIONAL_FEATURE_COUNT + 6;
 
     /**
      * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3104,7 +3276,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__BOLD = ViewPackage.CONDITIONAL_FEATURE_COUNT + 3;
+    int CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE__BOLD = ViewPackage.CONDITIONAL_FEATURE_COUNT + 7;
 
     /**
      * The number of structural features of the '<em>Conditional Date Time Description Style</em>' class. <!--
@@ -3113,7 +3285,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 4;
+    int CONDITIONAL_DATE_TIME_DESCRIPTION_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 8;
 
     /**
      * The number of operations of the '<em>Conditional Date Time Description Style</em>' class. <!-- begin-user-doc -->
@@ -3585,13 +3757,45 @@ public interface FormPackage extends EPackage {
     int MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 4;
 
     /**
+     * The feature id for the '<em><b>Flex Direction</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MULTI_SELECT_DESCRIPTION_STYLE__FLEX_DIRECTION = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 5;
+
+    /**
+     * The feature id for the '<em><b>Gap</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MULTI_SELECT_DESCRIPTION_STYLE__GAP = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 6;
+
+    /**
+     * The feature id for the '<em><b>Label Flex</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MULTI_SELECT_DESCRIPTION_STYLE__LABEL_FLEX = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 7;
+
+    /**
+     * The feature id for the '<em><b>Value Flex</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MULTI_SELECT_DESCRIPTION_STYLE__VALUE_FLEX = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 8;
+
+    /**
      * The feature id for the '<em><b>Background Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 5;
+    int MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 9;
 
     /**
      * The feature id for the '<em><b>Foreground Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
@@ -3600,7 +3804,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 6;
+    int MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 10;
 
     /**
      * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3608,7 +3812,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 7;
+    int MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 11;
 
     /**
      * The number of structural features of the '<em>Multi Select Description Style</em>' class. <!-- begin-user-doc -->
@@ -3617,7 +3821,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int MULTI_SELECT_DESCRIPTION_STYLE_FEATURE_COUNT = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 8;
+    int MULTI_SELECT_DESCRIPTION_STYLE_FEATURE_COUNT = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 12;
 
     /**
      * The number of operations of the '<em>Multi Select Description Style</em>' class. <!-- begin-user-doc --> <!--
@@ -3677,13 +3881,45 @@ public interface FormPackage extends EPackage {
     int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH = ViewPackage.CONDITIONAL_FEATURE_COUNT + 4;
 
     /**
+     * The feature id for the '<em><b>Flex Direction</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FLEX_DIRECTION = ViewPackage.CONDITIONAL_FEATURE_COUNT + 5;
+
+    /**
+     * The feature id for the '<em><b>Gap</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GAP = ViewPackage.CONDITIONAL_FEATURE_COUNT + 6;
+
+    /**
+     * The feature id for the '<em><b>Label Flex</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_FLEX = ViewPackage.CONDITIONAL_FEATURE_COUNT + 7;
+
+    /**
+     * The feature id for the '<em><b>Value Flex</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__VALUE_FLEX = ViewPackage.CONDITIONAL_FEATURE_COUNT + 8;
+
+    /**
      * The feature id for the '<em><b>Background Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT + 5;
+    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT + 9;
 
     /**
      * The feature id for the '<em><b>Foreground Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
@@ -3692,7 +3928,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT + 6;
+    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT + 10;
 
     /**
      * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3700,7 +3936,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON = ViewPackage.CONDITIONAL_FEATURE_COUNT + 7;
+    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON = ViewPackage.CONDITIONAL_FEATURE_COUNT + 11;
 
     /**
      * The number of structural features of the '<em>Conditional Multi Select Description Style</em>' class. <!--
@@ -3709,7 +3945,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 8;
+    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 12;
 
     /**
      * The number of operations of the '<em>Conditional Multi Select Description Style</em>' class. <!-- begin-user-doc
@@ -4073,13 +4309,45 @@ public interface FormPackage extends EPackage {
     int SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 4;
 
     /**
+     * The feature id for the '<em><b>Flex Direction</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECT_DESCRIPTION_STYLE__FLEX_DIRECTION = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 5;
+
+    /**
+     * The feature id for the '<em><b>Gap</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECT_DESCRIPTION_STYLE__GAP = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 6;
+
+    /**
+     * The feature id for the '<em><b>Label Flex</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECT_DESCRIPTION_STYLE__LABEL_FLEX = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 7;
+
+    /**
+     * The feature id for the '<em><b>Value Flex</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECT_DESCRIPTION_STYLE__VALUE_FLEX = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 8;
+
+    /**
      * The feature id for the '<em><b>Background Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 5;
+    int SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 9;
 
     /**
      * The feature id for the '<em><b>Foreground Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
@@ -4088,7 +4356,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 6;
+    int SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 10;
 
     /**
      * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4096,7 +4364,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int SELECT_DESCRIPTION_STYLE__SHOW_ICON = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 7;
+    int SELECT_DESCRIPTION_STYLE__SHOW_ICON = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 11;
 
     /**
      * The number of structural features of the '<em>Select Description Style</em>' class. <!-- begin-user-doc --> <!--
@@ -4105,7 +4373,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int SELECT_DESCRIPTION_STYLE_FEATURE_COUNT = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 8;
+    int SELECT_DESCRIPTION_STYLE_FEATURE_COUNT = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 12;
 
     /**
      * The number of operations of the '<em>Select Description Style</em>' class. <!-- begin-user-doc --> <!--
@@ -4165,13 +4433,45 @@ public interface FormPackage extends EPackage {
     int CONDITIONAL_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH = ViewPackage.CONDITIONAL_FEATURE_COUNT + 4;
 
     /**
+     * The feature id for the '<em><b>Flex Direction</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_SELECT_DESCRIPTION_STYLE__FLEX_DIRECTION = ViewPackage.CONDITIONAL_FEATURE_COUNT + 5;
+
+    /**
+     * The feature id for the '<em><b>Gap</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_SELECT_DESCRIPTION_STYLE__GAP = ViewPackage.CONDITIONAL_FEATURE_COUNT + 6;
+
+    /**
+     * The feature id for the '<em><b>Label Flex</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_SELECT_DESCRIPTION_STYLE__LABEL_FLEX = ViewPackage.CONDITIONAL_FEATURE_COUNT + 7;
+
+    /**
+     * The feature id for the '<em><b>Value Flex</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_SELECT_DESCRIPTION_STYLE__VALUE_FLEX = ViewPackage.CONDITIONAL_FEATURE_COUNT + 8;
+
+    /**
      * The feature id for the '<em><b>Background Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int CONDITIONAL_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT + 5;
+    int CONDITIONAL_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT + 9;
 
     /**
      * The feature id for the '<em><b>Foreground Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
@@ -4180,7 +4480,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT + 6;
+    int CONDITIONAL_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT + 10;
 
     /**
      * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4188,7 +4488,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_SELECT_DESCRIPTION_STYLE__SHOW_ICON = ViewPackage.CONDITIONAL_FEATURE_COUNT + 7;
+    int CONDITIONAL_SELECT_DESCRIPTION_STYLE__SHOW_ICON = ViewPackage.CONDITIONAL_FEATURE_COUNT + 11;
 
     /**
      * The number of structural features of the '<em>Conditional Select Description Style</em>' class. <!--
@@ -4197,7 +4497,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_SELECT_DESCRIPTION_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 8;
+    int CONDITIONAL_SELECT_DESCRIPTION_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 12;
 
     /**
      * The number of operations of the '<em>Conditional Select Description Style</em>' class. <!-- begin-user-doc -->
@@ -4249,13 +4549,45 @@ public interface FormPackage extends EPackage {
     int TEXTAREA_DESCRIPTION_STYLE__STRIKE_THROUGH = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 4;
 
     /**
+     * The feature id for the '<em><b>Flex Direction</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXTAREA_DESCRIPTION_STYLE__FLEX_DIRECTION = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 5;
+
+    /**
+     * The feature id for the '<em><b>Gap</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXTAREA_DESCRIPTION_STYLE__GAP = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 6;
+
+    /**
+     * The feature id for the '<em><b>Label Flex</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXTAREA_DESCRIPTION_STYLE__LABEL_FLEX = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 7;
+
+    /**
+     * The feature id for the '<em><b>Value Flex</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXTAREA_DESCRIPTION_STYLE__VALUE_FLEX = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 8;
+
+    /**
      * The feature id for the '<em><b>Background Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int TEXTAREA_DESCRIPTION_STYLE__BACKGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 5;
+    int TEXTAREA_DESCRIPTION_STYLE__BACKGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 9;
 
     /**
      * The feature id for the '<em><b>Foreground Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
@@ -4264,7 +4596,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TEXTAREA_DESCRIPTION_STYLE__FOREGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 6;
+    int TEXTAREA_DESCRIPTION_STYLE__FOREGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 10;
 
     /**
      * The number of structural features of the '<em>Textarea Description Style</em>' class. <!-- begin-user-doc -->
@@ -4273,7 +4605,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TEXTAREA_DESCRIPTION_STYLE_FEATURE_COUNT = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 7;
+    int TEXTAREA_DESCRIPTION_STYLE_FEATURE_COUNT = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 11;
 
     /**
      * The number of operations of the '<em>Textarea Description Style</em>' class. <!-- begin-user-doc --> <!--
@@ -4333,13 +4665,45 @@ public interface FormPackage extends EPackage {
     int CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE__STRIKE_THROUGH = ViewPackage.CONDITIONAL_FEATURE_COUNT + 4;
 
     /**
+     * The feature id for the '<em><b>Flex Direction</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE__FLEX_DIRECTION = ViewPackage.CONDITIONAL_FEATURE_COUNT + 5;
+
+    /**
+     * The feature id for the '<em><b>Gap</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE__GAP = ViewPackage.CONDITIONAL_FEATURE_COUNT + 6;
+
+    /**
+     * The feature id for the '<em><b>Label Flex</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE__LABEL_FLEX = ViewPackage.CONDITIONAL_FEATURE_COUNT + 7;
+
+    /**
+     * The feature id for the '<em><b>Value Flex</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE__VALUE_FLEX = ViewPackage.CONDITIONAL_FEATURE_COUNT + 8;
+
+    /**
      * The feature id for the '<em><b>Background Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE__BACKGROUND_COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT + 5;
+    int CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE__BACKGROUND_COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT + 9;
 
     /**
      * The feature id for the '<em><b>Foreground Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
@@ -4348,7 +4712,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE__FOREGROUND_COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT + 6;
+    int CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE__FOREGROUND_COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT + 10;
 
     /**
      * The number of structural features of the '<em>Conditional Textarea Description Style</em>' class. <!--
@@ -4357,7 +4721,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 7;
+    int CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 11;
 
     /**
      * The number of operations of the '<em>Conditional Textarea Description Style</em>' class. <!-- begin-user-doc -->
@@ -4409,13 +4773,45 @@ public interface FormPackage extends EPackage {
     int TEXTFIELD_DESCRIPTION_STYLE__STRIKE_THROUGH = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 4;
 
     /**
+     * The feature id for the '<em><b>Flex Direction</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXTFIELD_DESCRIPTION_STYLE__FLEX_DIRECTION = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 5;
+
+    /**
+     * The feature id for the '<em><b>Gap</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXTFIELD_DESCRIPTION_STYLE__GAP = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 6;
+
+    /**
+     * The feature id for the '<em><b>Label Flex</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXTFIELD_DESCRIPTION_STYLE__LABEL_FLEX = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 7;
+
+    /**
+     * The feature id for the '<em><b>Value Flex</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXTFIELD_DESCRIPTION_STYLE__VALUE_FLEX = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 8;
+
+    /**
      * The feature id for the '<em><b>Background Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int TEXTFIELD_DESCRIPTION_STYLE__BACKGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 5;
+    int TEXTFIELD_DESCRIPTION_STYLE__BACKGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 9;
 
     /**
      * The feature id for the '<em><b>Foreground Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
@@ -4424,7 +4820,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TEXTFIELD_DESCRIPTION_STYLE__FOREGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 6;
+    int TEXTFIELD_DESCRIPTION_STYLE__FOREGROUND_COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 10;
 
     /**
      * The number of structural features of the '<em>Textfield Description Style</em>' class. <!-- begin-user-doc -->
@@ -4433,7 +4829,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TEXTFIELD_DESCRIPTION_STYLE_FEATURE_COUNT = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 7;
+    int TEXTFIELD_DESCRIPTION_STYLE_FEATURE_COUNT = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 11;
 
     /**
      * The number of operations of the '<em>Textfield Description Style</em>' class. <!-- begin-user-doc --> <!--
@@ -4493,13 +4889,45 @@ public interface FormPackage extends EPackage {
     int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE__STRIKE_THROUGH = ViewPackage.CONDITIONAL_FEATURE_COUNT + 4;
 
     /**
+     * The feature id for the '<em><b>Flex Direction</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE__FLEX_DIRECTION = ViewPackage.CONDITIONAL_FEATURE_COUNT + 5;
+
+    /**
+     * The feature id for the '<em><b>Gap</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE__GAP = ViewPackage.CONDITIONAL_FEATURE_COUNT + 6;
+
+    /**
+     * The feature id for the '<em><b>Label Flex</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE__LABEL_FLEX = ViewPackage.CONDITIONAL_FEATURE_COUNT + 7;
+
+    /**
+     * The feature id for the '<em><b>Value Flex</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE__VALUE_FLEX = ViewPackage.CONDITIONAL_FEATURE_COUNT + 8;
+
+    /**
      * The feature id for the '<em><b>Background Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE__BACKGROUND_COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT + 5;
+    int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE__BACKGROUND_COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT + 9;
 
     /**
      * The feature id for the '<em><b>Foreground Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
@@ -4508,7 +4936,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE__FOREGROUND_COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT + 6;
+    int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE__FOREGROUND_COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT + 10;
 
     /**
      * The number of structural features of the '<em>Conditional Textfield Description Style</em>' class. <!--
@@ -4517,7 +4945,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 7;
+    int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 11;
 
     /**
      * The number of operations of the '<em>Conditional Textfield Description Style</em>' class. <!-- begin-user-doc -->
@@ -4536,7 +4964,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getContainerBorderStyle()
      * @generated
      */
-    int CONTAINER_BORDER_STYLE = 52;
+    int CONTAINER_BORDER_STYLE = 53;
 
     /**
      * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4598,7 +5026,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalContainerBorderStyle()
      * @generated
      */
-    int CONDITIONAL_CONTAINER_BORDER_STYLE = 53;
+    int CONDITIONAL_CONTAINER_BORDER_STYLE = 54;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4667,7 +5095,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getFormElementFor()
      * @generated
      */
-    int FORM_ELEMENT_FOR = 54;
+    int FORM_ELEMENT_FOR = 55;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4728,7 +5156,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getFormElementIf()
      * @generated
      */
-    int FORM_ELEMENT_IF = 55;
+    int FORM_ELEMENT_IF = 56;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4781,7 +5209,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getFlexDirection()
      * @generated
      */
-    int FLEX_DIRECTION = 56;
+    int FLEX_DIRECTION = 57;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.form.GroupDisplayMode <em>Group Display
@@ -4791,7 +5219,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getGroupDisplayMode()
      * @generated
      */
-    int GROUP_DISPLAY_MODE = 57;
+    int GROUP_DISPLAY_MODE = 58;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.form.LabelPlacement <em>Label
@@ -4801,7 +5229,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getLabelPlacement()
      * @generated
      */
-    int LABEL_PLACEMENT = 58;
+    int LABEL_PLACEMENT = 59;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.form.ContainerBorderLineStyle <em>Container
@@ -4811,7 +5239,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getContainerBorderLineStyle()
      * @generated
      */
-    int CONTAINER_BORDER_LINE_STYLE = 59;
+    int CONTAINER_BORDER_LINE_STYLE = 60;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.form.DateTimeType <em>Date Time Type</em>}'
@@ -4821,7 +5249,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getDateTimeType()
      * @generated
      */
-    int DATE_TIME_TYPE = 60;
+    int DATE_TIME_TYPE = 61;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.FormDescription
@@ -6522,6 +6950,64 @@ public interface FormPackage extends EPackage {
     EClass getWidgetDescriptionStyle();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.WidgetFlexboxLayout <em>Widget
+     * Flexbox Layout</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Widget Flexbox Layout</em>'.
+     * @see org.eclipse.sirius.components.view.form.WidgetFlexboxLayout
+     * @generated
+     */
+    EClass getWidgetFlexboxLayout();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.WidgetFlexboxLayout#getFlexDirection <em>Flex Direction</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Flex Direction</em>'.
+     * @see org.eclipse.sirius.components.view.form.WidgetFlexboxLayout#getFlexDirection()
+     * @see #getWidgetFlexboxLayout()
+     * @generated
+     */
+    EAttribute getWidgetFlexboxLayout_FlexDirection();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.WidgetFlexboxLayout#getGap <em>Gap</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Gap</em>'.
+     * @see org.eclipse.sirius.components.view.form.WidgetFlexboxLayout#getGap()
+     * @see #getWidgetFlexboxLayout()
+     * @generated
+     */
+    EAttribute getWidgetFlexboxLayout_Gap();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.WidgetFlexboxLayout#getLabelFlex <em>Label Flex</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Label Flex</em>'.
+     * @see org.eclipse.sirius.components.view.form.WidgetFlexboxLayout#getLabelFlex()
+     * @see #getWidgetFlexboxLayout()
+     * @generated
+     */
+    EAttribute getWidgetFlexboxLayout_LabelFlex();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.WidgetFlexboxLayout#getValueFlex <em>Value Flex</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Value Flex</em>'.
+     * @see org.eclipse.sirius.components.view.form.WidgetFlexboxLayout#getValueFlex()
+     * @see #getWidgetFlexboxLayout()
+     * @generated
+     */
+    EAttribute getWidgetFlexboxLayout_ValueFlex();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.BarChartDescriptionStyle
      * <em>Bar Chart Description Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -6620,18 +7106,6 @@ public interface FormPackage extends EPackage {
      * @generated
      */
     EReference getCheckboxDescriptionStyle_Color();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle#getLabelPlacement <em>Label
-     * Placement</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Label Placement</em>'.
-     * @see org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle#getLabelPlacement()
-     * @see #getCheckboxDescriptionStyle()
-     * @generated
-     */
-    EAttribute getCheckboxDescriptionStyle_LabelPlacement();
 
     /**
      * Returns the meta object for class
@@ -8550,6 +9024,48 @@ public interface FormPackage extends EPackage {
         EClass WIDGET_DESCRIPTION_STYLE = eINSTANCE.getWidgetDescriptionStyle();
 
         /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.impl.WidgetFlexboxLayoutImpl
+         * <em>Widget Flexbox Layout</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.form.impl.WidgetFlexboxLayoutImpl
+         * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getWidgetFlexboxLayout()
+         * @generated
+         */
+        EClass WIDGET_FLEXBOX_LAYOUT = eINSTANCE.getWidgetFlexboxLayout();
+
+        /**
+         * The meta object literal for the '<em><b>Flex Direction</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute WIDGET_FLEXBOX_LAYOUT__FLEX_DIRECTION = eINSTANCE.getWidgetFlexboxLayout_FlexDirection();
+
+        /**
+         * The meta object literal for the '<em><b>Gap</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute WIDGET_FLEXBOX_LAYOUT__GAP = eINSTANCE.getWidgetFlexboxLayout_Gap();
+
+        /**
+         * The meta object literal for the '<em><b>Label Flex</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute WIDGET_FLEXBOX_LAYOUT__LABEL_FLEX = eINSTANCE.getWidgetFlexboxLayout_LabelFlex();
+
+        /**
+         * The meta object literal for the '<em><b>Value Flex</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute WIDGET_FLEXBOX_LAYOUT__VALUE_FLEX = eINSTANCE.getWidgetFlexboxLayout_ValueFlex();
+
+        /**
          * The meta object literal for the
          * '{@link org.eclipse.sirius.components.view.form.impl.BarChartDescriptionStyleImpl <em>Bar Chart Description
          * Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -8635,14 +9151,6 @@ public interface FormPackage extends EPackage {
          * @generated
          */
         EReference CHECKBOX_DESCRIPTION_STYLE__COLOR = eINSTANCE.getCheckboxDescriptionStyle_Color();
-
-        /**
-         * The meta object literal for the '<em><b>Label Placement</b></em>' attribute feature. <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute CHECKBOX_DESCRIPTION_STYLE__LABEL_PLACEMENT = eINSTANCE.getCheckboxDescriptionStyle_LabelPlacement();
 
         /**
          * The meta object literal for the

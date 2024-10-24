@@ -43,6 +43,46 @@ public class DateTimeDescriptionStyleBuilder {
     }
 
     /**
+     * Setter for FlexDirection.
+     *
+     * @generated
+     */
+    public DateTimeDescriptionStyleBuilder flexDirection(java.lang.String value) {
+        this.getDateTimeDescriptionStyle().setFlexDirection(value);
+        return this;
+    }
+
+    /**
+     * Setter for Gap.
+     *
+     * @generated
+     */
+    public DateTimeDescriptionStyleBuilder gap(java.lang.String value) {
+        this.getDateTimeDescriptionStyle().setGap(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelFlex.
+     *
+     * @generated
+     */
+    public DateTimeDescriptionStyleBuilder labelFlex(java.lang.String value) {
+        this.getDateTimeDescriptionStyle().setLabelFlex(value);
+        return this;
+    }
+
+    /**
+     * Setter for ValueFlex.
+     *
+     * @generated
+     */
+    public DateTimeDescriptionStyleBuilder valueFlex(java.lang.String value) {
+        this.getDateTimeDescriptionStyle().setValueFlex(value);
+        return this;
+    }
+
+    /**
      * Setter for BackgroundColor.
      *
      * @generated

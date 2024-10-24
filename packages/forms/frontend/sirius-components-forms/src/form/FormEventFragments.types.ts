@@ -114,6 +114,13 @@ export interface GQLTextfield extends GQLWidget {
   style: GQLTextfieldStyle;
 }
 
+export interface GQLWidgetFlexLayout {
+  flexDirection: string;
+  gap: string;
+  labelFlex: string;
+  valueFlex: string;
+}
+
 export interface GQLTextfieldStyle {
   backgroundColor: string | null;
   foregroundColor: string | null;
@@ -122,6 +129,7 @@ export interface GQLTextfieldStyle {
   bold: boolean | null;
   underline: boolean | null;
   strikeThrough: boolean | null;
+  widgetFlexboxLayout: GQLWidgetFlexLayout | null;
 }
 
 export interface GQLTextarea extends GQLWidget {
@@ -138,6 +146,7 @@ export interface GQLTextareaStyle {
   bold: boolean | null;
   underline: boolean | null;
   strikeThrough: boolean | null;
+  widgetFlexboxLayout: GQLWidgetFlexLayout | null;
 }
 
 export interface GQLCheckbox extends GQLWidget {
@@ -147,7 +156,7 @@ export interface GQLCheckbox extends GQLWidget {
 
 export interface GQLCheckboxStyle {
   color: string | null;
-  labelPlacement: 'end' | 'start' | 'top' | 'bottom';
+  widgetFlexboxLayout: GQLWidgetFlexLayout | null;
 }
 
 export interface GQLSelect extends GQLWidget {
@@ -164,6 +173,7 @@ export interface GQLSelectStyle {
   bold: boolean | null;
   underline: boolean | null;
   strikeThrough: boolean | null;
+  widgetFlexboxLayout: GQLWidgetFlexLayout | null;
 }
 
 export interface GQLMultiSelect extends GQLWidget {
@@ -180,6 +190,7 @@ export interface GQLMultiSelectStyle {
   bold: boolean | null;
   underline: boolean | null;
   strikeThrough: boolean | null;
+  widgetFlexboxLayout: GQLWidgetFlexLayout | null;
 }
 
 export interface GQLSelectOption {
@@ -391,4 +402,5 @@ export interface GQLDateTimeStyle {
   backgroundColor: string | null;
   italic: boolean | null;
   bold: boolean | null;
+  widgetFlexboxLayout: GQLWidgetFlexLayout | null;
 }

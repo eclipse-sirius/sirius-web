@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.forms.TextfieldStyle;
 import org.eclipse.sirius.components.forms.TextfieldStyle.Builder;
+import org.eclipse.sirius.components.forms.WidgetFlexboxLayout;
 import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.form.TextfieldDescriptionStyle;
 
@@ -55,6 +56,12 @@ public class TextfieldStyleProvider {
         boolean bold = this.viewStyle.isBold();
         boolean underline = this.viewStyle.isUnderline();
         boolean strikeThrough = this.viewStyle.isStrikeThrough();
+        WidgetFlexboxLayout widgetFlexboxLayout = WidgetFlexboxLayout.newWidgetFlexboxLayout()
+                .flexDirection(this.viewStyle.getFlexDirection())
+                .gap(this.viewStyle.getGap())
+                .labelFlex(this.viewStyle.getLabelFlex())
+                .valueFlex(this.viewStyle.getValueFlex())
+                .build();
 
         // @formatter:off
         return textfieldStyleBuilder
@@ -63,6 +70,7 @@ public class TextfieldStyleProvider {
                 .bold(bold)
                 .underline(underline)
                 .strikeThrough(strikeThrough)
+                .widgetFlexboxLayout(widgetFlexboxLayout)
                 .build();
         // @formatter:on
     }

@@ -97,6 +97,46 @@ public class ConditionalMultiSelectDescriptionStyleBuilder {
         return this;
     }
     /**
+     * Setter for FlexDirection.
+     *
+     * @generated
+     */
+    public ConditionalMultiSelectDescriptionStyleBuilder flexDirection(java.lang.String value) {
+        this.getConditionalMultiSelectDescriptionStyle().setFlexDirection(value);
+        return this;
+    }
+
+    /**
+     * Setter for Gap.
+     *
+     * @generated
+     */
+    public ConditionalMultiSelectDescriptionStyleBuilder gap(java.lang.String value) {
+        this.getConditionalMultiSelectDescriptionStyle().setGap(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelFlex.
+     *
+     * @generated
+     */
+    public ConditionalMultiSelectDescriptionStyleBuilder labelFlex(java.lang.String value) {
+        this.getConditionalMultiSelectDescriptionStyle().setLabelFlex(value);
+        return this;
+    }
+
+    /**
+     * Setter for ValueFlex.
+     *
+     * @generated
+     */
+    public ConditionalMultiSelectDescriptionStyleBuilder valueFlex(java.lang.String value) {
+        this.getConditionalMultiSelectDescriptionStyle().setValueFlex(value);
+        return this;
+    }
+
+    /**
      * Setter for BackgroundColor.
      *
      * @generated

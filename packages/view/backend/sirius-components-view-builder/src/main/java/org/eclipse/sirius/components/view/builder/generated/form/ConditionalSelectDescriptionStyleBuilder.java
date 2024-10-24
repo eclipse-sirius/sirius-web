@@ -97,6 +97,46 @@ public class ConditionalSelectDescriptionStyleBuilder {
         return this;
     }
     /**
+     * Setter for FlexDirection.
+     *
+     * @generated
+     */
+    public ConditionalSelectDescriptionStyleBuilder flexDirection(java.lang.String value) {
+        this.getConditionalSelectDescriptionStyle().setFlexDirection(value);
+        return this;
+    }
+
+    /**
+     * Setter for Gap.
+     *
+     * @generated
+     */
+    public ConditionalSelectDescriptionStyleBuilder gap(java.lang.String value) {
+        this.getConditionalSelectDescriptionStyle().setGap(value);
+        return this;
+    }
+
+    /**
+     * Setter for LabelFlex.
+     *
+     * @generated
+     */
+    public ConditionalSelectDescriptionStyleBuilder labelFlex(java.lang.String value) {
+        this.getConditionalSelectDescriptionStyle().setLabelFlex(value);
+        return this;
+    }
+
+    /**
+     * Setter for ValueFlex.
+     *
+     * @generated
+     */
+    public ConditionalSelectDescriptionStyleBuilder valueFlex(java.lang.String value) {
+        this.getConditionalSelectDescriptionStyle().setValueFlex(value);
+        return this;
+    }
+
+    /**
      * Setter for BackgroundColor.
      *
      * @generated

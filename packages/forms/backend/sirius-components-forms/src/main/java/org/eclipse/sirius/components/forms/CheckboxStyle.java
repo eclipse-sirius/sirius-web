@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,7 @@ public final class CheckboxStyle {
 
     private String color;
 
-    private String labelPlacement;
+    private WidgetFlexboxLayout widgetFlexboxLayout;
 
     private CheckboxStyle() {
         // Prevent instantiation
@@ -37,8 +37,8 @@ public final class CheckboxStyle {
         return this.color;
     }
 
-    public String getLabelPlacement() {
-        return this.labelPlacement;
+    public WidgetFlexboxLayout widgetFlexboxLayout() {
+        return this.widgetFlexboxLayout;
     }
 
     public static Builder newCheckboxStyle() {
@@ -48,7 +48,7 @@ public final class CheckboxStyle {
     @Override
     public String toString() {
         String pattern = "{0} '{'color: {1}, labelPlacement: {2}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.color, this.labelPlacement);
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.color, this.widgetFlexboxLayout);
     }
 
     /**
@@ -61,7 +61,7 @@ public final class CheckboxStyle {
 
         private String color;
 
-        private String labelPlacement;
+        private WidgetFlexboxLayout widgetFlexboxLayout;
 
         private Builder() {
         }
@@ -71,15 +71,15 @@ public final class CheckboxStyle {
             return this;
         }
 
-        public Builder labelPlacement(String labelPlacement) {
-            this.labelPlacement = Objects.requireNonNull(labelPlacement);
+        public Builder widgetFlexboxLayout(WidgetFlexboxLayout widgetFlexboxLayout) {
+            this.widgetFlexboxLayout = Objects.requireNonNull(widgetFlexboxLayout);
             return this;
         }
 
         public CheckboxStyle build() {
             CheckboxStyle checkboxStyle = new CheckboxStyle();
             checkboxStyle.color = this.color; // Optional on purpose
-            checkboxStyle.labelPlacement = Objects.requireNonNull(this.labelPlacement);
+            checkboxStyle.widgetFlexboxLayout = this.widgetFlexboxLayout;
             return checkboxStyle;
         }
 

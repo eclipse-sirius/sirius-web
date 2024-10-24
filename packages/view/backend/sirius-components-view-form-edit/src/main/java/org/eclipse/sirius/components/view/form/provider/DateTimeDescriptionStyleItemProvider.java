@@ -50,12 +50,63 @@ public class DateTimeDescriptionStyleItemProvider extends WidgetDescriptionStyle
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
+            this.addFlexDirectionPropertyDescriptor(object);
+            this.addGapPropertyDescriptor(object);
+            this.addLabelFlexPropertyDescriptor(object);
+            this.addValueFlexPropertyDescriptor(object);
             this.addBackgroundColorPropertyDescriptor(object);
             this.addForegroundColorPropertyDescriptor(object);
             this.addItalicPropertyDescriptor(object);
             this.addBoldPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
+    }
+
+    /**
+     * This adds a property descriptor for the Flex Direction feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addFlexDirectionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_WidgetFlexboxLayout_flexDirection_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetFlexboxLayout_flexDirection_feature", "_UI_WidgetFlexboxLayout_type"),
+                FormPackage.Literals.WIDGET_FLEXBOX_LAYOUT__FLEX_DIRECTION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Gap feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addGapPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_WidgetFlexboxLayout_gap_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetFlexboxLayout_gap_feature", "_UI_WidgetFlexboxLayout_type"),
+                FormPackage.Literals.WIDGET_FLEXBOX_LAYOUT__GAP, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Label Flex feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addLabelFlexPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_WidgetFlexboxLayout_labelFlex_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetFlexboxLayout_labelFlex_feature", "_UI_WidgetFlexboxLayout_type"),
+                FormPackage.Literals.WIDGET_FLEXBOX_LAYOUT__LABEL_FLEX, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Value Flex feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addValueFlexPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_WidgetFlexboxLayout_valueFlex_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetFlexboxLayout_valueFlex_feature", "_UI_WidgetFlexboxLayout_type"),
+                FormPackage.Literals.WIDGET_FLEXBOX_LAYOUT__VALUE_FLEX, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -133,8 +184,8 @@ public class DateTimeDescriptionStyleItemProvider extends WidgetDescriptionStyle
      */
     @Override
     public String getText(Object object) {
-        DateTimeDescriptionStyle dateTimeDescriptionStyle = (DateTimeDescriptionStyle) object;
-        return this.getString("_UI_DateTimeDescriptionStyle_type") + " " + dateTimeDescriptionStyle.isItalic();
+        String label = ((DateTimeDescriptionStyle) object).getFlexDirection();
+        return label == null || label.length() == 0 ? this.getString("_UI_DateTimeDescriptionStyle_type") : this.getString("_UI_DateTimeDescriptionStyle_type") + " " + label;
     }
 
     /**
@@ -149,6 +200,10 @@ public class DateTimeDescriptionStyleItemProvider extends WidgetDescriptionStyle
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(DateTimeDescriptionStyle.class)) {
+            case FormPackage.DATE_TIME_DESCRIPTION_STYLE__FLEX_DIRECTION:
+            case FormPackage.DATE_TIME_DESCRIPTION_STYLE__GAP:
+            case FormPackage.DATE_TIME_DESCRIPTION_STYLE__LABEL_FLEX:
+            case FormPackage.DATE_TIME_DESCRIPTION_STYLE__VALUE_FLEX:
             case FormPackage.DATE_TIME_DESCRIPTION_STYLE__ITALIC:
             case FormPackage.DATE_TIME_DESCRIPTION_STYLE__BOLD:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
