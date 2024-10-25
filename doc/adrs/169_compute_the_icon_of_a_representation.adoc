@@ -1,0 +1,72 @@
+= ADR-169 - Compute the icon of a representation
+
+== Context
+
+The icon of a representation is hardcoded depending on the kind of the representation (diagram, form, table, etc).
+We want to let specifiers change the icon of the representations.
+
+
+== Decision
+
+The icon of a representation should thus be computed by the specifier.
+
+For that we will introduce a `IRepresentationDescription#iconURLsProvider: Function<VariableManager, List<String>>` and after that a `RepresentationDescription#iconExpression` in the view DSL.
+The icon cannot be computed using the semantic elements of the editing context because we need to manipulate it while the representation is not opened.
+The iconURLs will be persisted in the backend because computing them on the fly would prove very complex given the fact that we would need to propagate the editing context in tons of new places.
+
+The type `o.e.s.c.core.RepresentationMetadata` will now have an `iconURLs: List<String>` field.
+The various event handlers used to create new representations like `CreateDiagramEventHandler` will have to be updated to compute the `iconURLs` thanks to the `IRepresentationDescription#iconURLsProvider` in a similar fashion as the label.
+If no iconURLs are provided, for example in the case of an empty `iconExpression`, we should ask the `IRepresentationImageProvider` for a default value.
+
+To persist the `iconURLs`, we will add this field in `o.e.s.w.d.boundedcontexts.representationdata.RepresentationMetadata`:
+
+```
+public class RepresentationMetadata extends AbstractValidatingAggregateRoot<RepresentationMetadata> implements Persistable<UUID> {
+    @MappedCollection(idColumn = "representation_metadata_id", keyColumn = "index")
+    private List<RepresentationIconURL> iconURLs = new ArrayList<>();
+}
+```
+
+with
+
+```
+@Table("representation_metadata_icon_url")
+public record RepresentationIconURL(String url) {
+  public RepresentationIconURL {
+    Objects.requireNonNull(url);
+  }
+}
+```
+
+This will require the creation of a new table with the following content:
+
+```
+<createTable tableName="representation_metadata_icon_url">
+    <column name="representation_metadata_id" type="UUID">
+        <constraints nullable="false"/>
+    </column>
+    <column name="url" type="TEXT">
+        <constraints nullable="false" />
+    </column>
+    <column name="index" type="INTEGER">
+        <constraints nullable="false" />
+    </column>
+</createTable>
+```
+
+The column `representation_metadata_id` will have to be a foreign key for the id of the representation metadata.
+
+Transient representation metadata providers like `o.e.s.w.a.views.explorer.services.ExplorerMetadataProvider` will have to use the url of the icon of their representations which will have to be contained by the backend (i.e. o.e.s.web.application/src/main/resources/views/Explorer.svg).
+They are currently in the frontend only.
+
+The `RepresentationMetadataMapper` will thus stop relying on `IRepresentationImageProvider` and instead it will leverage the `iconURLs` persisted in the database.
+
+== Status
+
+Accepted.
+
+== Consequences
+
+Existing representations persisted in the database should have an entry in `representation_metadata_icon_url` in order to enter the existing hardcoded value for the icon URL.
+For example something like `/diagram-images/diagram.svg` for existing diagrams.
+It will have to be done using a SQL script within the liquibase changeset using the kind of representation metadata.

@@ -24,6 +24,9 @@
 - [ADR-165] Add support for actions in tree item menu
 - [ADR-166] Support Server-Side Pagination for Table Representation
 - [ADR-167] Support REST APIs
+- [ADR-168] Display the icon of the representation in the workbench tab
+- [ADR-169] Compute the icon of a representation
+- [ADR-170] Add support for representations in the Details View
 
 === Deprecation warning
 
