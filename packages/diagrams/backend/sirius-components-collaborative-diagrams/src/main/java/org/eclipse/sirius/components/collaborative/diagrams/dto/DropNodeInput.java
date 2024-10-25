@@ -16,13 +16,14 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.components.core.api.IUndoableInput;
 
 /**
  * The input for the "drop node" mutation.
  *
  * @author pcdavid
  */
-public record DropNodeInput(UUID id, String editingContextId, String representationId, String droppedElementId, String targetElementId, double x, double y) implements IDiagramInput {
+public record DropNodeInput(UUID id, String editingContextId, String representationId, String droppedElementId, String targetElementId, double x, double y) implements IDiagramInput, IUndoableInput {
     public DropNodeInput {
         Objects.requireNonNull(id);
         Objects.requireNonNull(editingContextId);

@@ -16,12 +16,13 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.components.core.api.IUndoableInput;
 
 /**
  * The class of the inputs for the "pin element" mutation.
  *
  * @author frouene
  */
-public record PinDiagramElementInput(UUID id, String editingContextId, String representationId, Set<String> elementIds, boolean pinned) implements IDiagramInput {
+public record PinDiagramElementInput(UUID id, String editingContextId, String representationId, Set<String> elementIds, boolean pinned) implements IDiagramInput, IUndoableInput {
 
 }

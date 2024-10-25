@@ -16,7 +16,7 @@ import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-compo
 export interface UsePortalMutationsValue {
   addPortalView: (viewRepresentationId: string, x: number, y: number, width: number, height: number) => void;
   removePortalView: (portalViewId: string) => void;
-  layoutPortal: (layoutData: GQLLayoutPortalLayoutData[]) => void;
+  layoutPortal: (id: string, layoutData: GQLLayoutPortalLayoutData[]) => void;
   layoutInProgress: boolean;
 }
 

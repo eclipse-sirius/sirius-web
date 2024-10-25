@@ -13,12 +13,13 @@
 package org.eclipse.sirius.components.collaborative.forms.api;
 
 import org.eclipse.sirius.components.core.api.IRepresentationInput;
+import org.eclipse.sirius.components.core.api.IUndoableInput;
 
 /**
  * Represents an input sent by a client which concerns a form representation.
  *
  * @author sbegaudeau
  */
-public interface IFormInput extends IRepresentationInput {
+public interface IFormInput extends IRepresentationInput, IUndoableInput {
 
 }

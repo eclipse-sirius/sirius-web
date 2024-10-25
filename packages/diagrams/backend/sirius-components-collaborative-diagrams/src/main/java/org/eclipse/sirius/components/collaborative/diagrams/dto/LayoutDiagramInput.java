@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.collaborative.diagrams.dto;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.components.core.api.IUndoableInput;
 
 /**
  * Input used to layout diagrams.

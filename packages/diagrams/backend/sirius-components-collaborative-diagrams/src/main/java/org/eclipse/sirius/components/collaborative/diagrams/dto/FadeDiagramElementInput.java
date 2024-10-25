@@ -16,11 +16,12 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.components.core.api.IUndoableInput;
 
 /**
  * The class of the inputs for the "fade element" mutation.
  *
  * @author tgiraudet
  */
-public record FadeDiagramElementInput(UUID id, String editingContextId, String representationId, Set<String> elementIds, boolean fade) implements IDiagramInput {
+public record FadeDiagramElementInput(UUID id, String editingContextId, String representationId, Set<String> elementIds, boolean fade) implements IDiagramInput, IUndoableInput {
 }
