@@ -73,8 +73,8 @@ export const SelectionDialogTreeView = ({
   );
 };
 
-const SelectionDialogTreeItemAction = ({ onExpandAll, item, isHovered }: TreeItemActionProps) => {
-  if (!onExpandAll || !item || !item.hasChildren || !isHovered) {
+const SelectionDialogTreeItemAction = ({ onExpandAll, item }: TreeItemActionProps) => {
+  if (!onExpandAll || !item || !item.hasChildren) {
     return null;
   }
   return (

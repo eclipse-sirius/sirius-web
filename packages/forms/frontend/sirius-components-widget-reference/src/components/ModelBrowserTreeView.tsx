@@ -92,8 +92,8 @@ export const ModelBrowserTreeView = ({
   );
 };
 
-const WidgetReferenceTreeItemAction = ({ onExpandAll, item, isHovered }: TreeItemActionProps) => {
-  if (!onExpandAll || !item || !item.hasChildren || !isHovered) {
+const WidgetReferenceTreeItemAction = ({ onExpandAll, item }: TreeItemActionProps) => {
+  if (!onExpandAll || !item || !item.hasChildren) {
     return null;
   }
   return (
