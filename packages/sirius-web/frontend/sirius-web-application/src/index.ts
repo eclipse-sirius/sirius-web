@@ -72,9 +72,21 @@ export type { UseCurrentProjectValue } from './views/edit-project/useCurrentProj
 export type { GQLProject } from './views/edit-project/useProjectAndRepresentationMetadata.types';
 export { DetailsView } from './views/edit-project/workbench-views/DetailsView';
 export type { GQLDetailsEventPayload } from './views/edit-project/workbench-views/useDetailsViewSubscription.types';
+export { useRelatedElementsViewSubscription } from './views/edit-project/workbench-views/useRelatedElementsViewSubscription';
+export {
+  type GQLFormRefreshedEventPayload,
+  type GQLRelatedElementsEventPayload,
+  type UseRelatedElementsViewSubscriptionValue,
+} from './views/edit-project/workbench-views/useRelatedElementsViewSubscription.types';
 export { ErrorView } from './views/error/ErrorView';
 export { type ErrorMessageProvider } from './views/error/ErrorView.types';
 export { errorMessageProvidersExtensionPoint } from './views/error/ErrorViewExtensionPoints';
+export { useExplorerSubscription } from './views/explorer/useExplorerSubscription';
+export {
+  type GQLTreeEventPayload,
+  type GQLTreeRefreshedEventPayload,
+  type UseExplorerSubscriptionValue,
+} from './views/explorer/useExplorerSubscription.types';
 export { type CreateProjectAreaCardProps } from './views/project-browser/create-projects-area/CreateProjectArea.types';
 export { createProjectAreaCardExtensionPoint } from './views/project-browser/create-projects-area/CreateProjectAreaExtensionPoints';
 export { ProjectActionButton } from './views/project-browser/list-projects-area/ProjectActionButton';
