@@ -31,5 +31,4 @@ export interface TreeItemProps {
 export interface TreeItemState {
   editingMode: boolean;
   editingKey: string | null;
-  isHovered: boolean;
 }

@@ -28,7 +28,7 @@ import { TreeItemArrow } from './TreeItemArrow';
 import { TreeItemDirectEditInput } from './TreeItemDirectEditInput';
 import { isFilterCandidate } from './filterTreeItem';
 
-const useTreeItemStyle = makeStyles()((theme) => ({
+const useTreeItemStyle = makeStyles<void, 'treeItemAction'>()((theme, _params, classes) => ({
   treeItem: {
     display: 'flex',
     flexDirection: 'row',
@@ -41,9 +41,15 @@ const useTreeItemStyle = makeStyles()((theme) => ({
       borderColor: 'black',
       borderStyle: 'dotted',
     },
+    '&:hover': {
+      backgroundColor: theme.palette.action.hover,
+    },
+    [`&:hover .${classes.treeItemAction}`]: {
+      display: 'inline',
+    },
   },
-  treeItemHover: {
-    backgroundColor: theme.palette.action.hover,
+  treeItemAction: {
+    display: 'none',
   },
   selected: {
     backgroundColor: theme.palette.action.selected,
@@ -121,7 +127,6 @@ export const TreeItem = ({
   const initialState: TreeItemState = {
     editingMode: false,
     editingKey: null,
-    isHovered: false,
   };
 
   const [state, setState] = useState<TreeItemState>(initialState);
@@ -130,24 +135,6 @@ export const TreeItem = ({
   const refDom = useRef() as any;
 
   const { selection, setSelection } = useSelection();
-
-  const handleMouseEnter = () => {
-    setState((prevState) => {
-      return { ...prevState, isHovered: true };
-    });
-  };
-
-  const handleMouseLeave = () => {
-    setState((prevState) => {
-      return { ...prevState, isHovered: false };
-    });
-  };
-
-  const onTreeItemAction = () => {
-    setState((prevState) => {
-      return { ...prevState, isHovered: false };
-    });
-  };
 
   const enterEditingMode = () => {
     setState((prevState) => ({
@@ -193,9 +180,7 @@ export const TreeItem = ({
     className = `${className} ${classes.selected}`;
     dataTestid = 'selected';
   }
-  if (state.isHovered && item.selectable) {
-    className = `${className} ${classes.treeItemHover}`;
-  }
+
   useEffect(() => {
     if (selected) {
       if (refDom.current?.scrollIntoViewIfNeeded) {
@@ -322,14 +307,7 @@ export const TreeItem = ({
     /* ref, tabindex and onFocus are used to set the React component focusabled and to set the focus to the corresponding DOM part */
     currentTreeItem = (
       <>
-        <div
-          className={className}
-          draggable={true}
-          onClick={onClick}
-          onDragStart={dragStart}
-          onDragOver={dragOver}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}>
+        <div className={className} draggable={true} onClick={onClick} onDragStart={dragStart} onDragOver={dragOver}>
           <TreeItemArrow item={item} depth={depth} onExpand={onExpand} data-testid={`${label}-toggle`} />
           <div
             ref={refDom}
@@ -351,7 +329,7 @@ export const TreeItem = ({
                 {image}
                 {text}
               </div>
-              <div onClick={onTreeItemAction}>
+              <div className={classes.treeItemAction}>
                 {treeItemActionRender ? (
                   treeItemActionRender({
                     editingContextId: editingContextId,
@@ -362,7 +340,6 @@ export const TreeItem = ({
                     onExpandAll: onExpandAll,
                     readOnly: readOnly,
                     onEnterEditingMode: enterEditingMode,
-                    isHovered: state.isHovered,
                   })
                 ) : (
                   <TreeItemAction
@@ -374,7 +351,6 @@ export const TreeItem = ({
                     onExpandAll={onExpandAll}
                     readOnly={readOnly}
                     onEnterEditingMode={enterEditingMode}
-                    isHovered={state.isHovered}
                   />
                 )}
               </div>

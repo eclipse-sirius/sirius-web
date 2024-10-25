@@ -21,7 +21,6 @@ export interface TreeItemActionProps {
   onExpandAll: (treeItem: GQLTreeItem) => void;
   onEnterEditingMode: () => void;
   readOnly: boolean;
-  isHovered: boolean;
 }
 
 export interface TreeItemActionState {
