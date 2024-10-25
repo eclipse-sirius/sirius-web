@@ -135,6 +135,7 @@ This will allow specifier to create images that fir perfectly in the project tem
 - https://github.com/eclipse-sirius/sirius-web/issues/2163[#2163] [form] Make EMF default form support non changeable features
 - https://github.com/eclipse-sirius/sirius-web/issues/4086[#4086] [form] Wrap widget returned by property section in a div with a specific classname
 - https://github.com/eclipse-sirius/sirius-web/issues/4088[#4088] Change tree item context menu entries internal management
+- https://github.com/eclipse-sirius/sirius-web/issues/3895[#3895] [trees] Memoize the explorer
 
 
 == v2024.9.0

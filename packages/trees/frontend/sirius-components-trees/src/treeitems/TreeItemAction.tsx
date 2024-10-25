@@ -10,10 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import IconButton from '@mui/material/IconButton';
-import { makeStyles } from 'tss-react/mui';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { useState } from 'react';
+import IconButton from '@mui/material/IconButton';
+import { memo, useCallback, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { getString } from './TreeItem';
 import { TreeItemActionProps, TreeItemActionState } from './TreeItemAction.types';
 import { TreeItemContextMenu } from './TreeItemContextMenu';
@@ -29,77 +29,79 @@ const useTreeItemActionStyle = makeStyles()((theme) => ({
   },
 }));
 
-export const TreeItemAction = ({
-  editingContextId,
-  treeId,
-  item,
-  readOnly,
-  depth,
-  onExpand,
-  onExpandAll,
-  onEnterEditingMode,
-}: TreeItemActionProps) => {
-  const { classes } = useTreeItemActionStyle();
-  const [state, setState] = useState<TreeItemActionState>({
-    showContextMenu: false,
-    menuAnchor: null,
-  });
+export const TreeItemAction = memo(
+  ({
+    editingContextId,
+    treeId,
+    item,
+    readOnly,
+    depth,
+    onExpand,
+    onExpandAll,
+    onEnterEditingMode,
+  }: TreeItemActionProps) => {
+    const { classes } = useTreeItemActionStyle();
+    const [state, setState] = useState<TreeItemActionState>({
+      showContextMenu: false,
+      menuAnchor: null,
+    });
 
-  const openContextMenu = (event) => {
-    if (!state.showContextMenu) {
-      const { currentTarget } = event;
-      setState((prevState) => ({
-        ...prevState,
-        showContextMenu: true,
-        menuAnchor: currentTarget,
-      }));
+    const openContextMenu = (event) => {
+      if (!state.showContextMenu) {
+        const { currentTarget } = event;
+        setState((prevState) => ({
+          ...prevState,
+          showContextMenu: true,
+          menuAnchor: currentTarget,
+        }));
+      }
+    };
+
+    let contextMenu = null;
+    if (state.showContextMenu) {
+      const closeContextMenu = () => {
+        setState((prevState) => ({
+          ...prevState,
+          showContextMenu: false,
+          menuAnchor: null,
+        }));
+      };
+      const enterEditingMode = useCallback(() => {
+        setState((prevState) => ({
+          ...prevState,
+          showContextMenu: false,
+          menuAnchor: null,
+        }));
+        onEnterEditingMode();
+      }, []);
+
+      contextMenu = (
+        <TreeItemContextMenu
+          menuAnchor={state.menuAnchor}
+          editingContextId={editingContextId}
+          treeId={treeId}
+          item={item}
+          readOnly={readOnly}
+          depth={depth}
+          onExpand={onExpand}
+          onExpandAll={onExpandAll}
+          enterEditingMode={enterEditingMode}
+          onClose={closeContextMenu}
+        />
+      );
     }
-  };
 
-  let contextMenu = null;
-  if (state.showContextMenu) {
-    const closeContextMenu = () => {
-      setState((prevState) => ({
-        ...prevState,
-        showContextMenu: false,
-        menuAnchor: null,
-      }));
-    };
-    const enterEditingMode = () => {
-      setState((prevState) => ({
-        ...prevState,
-        showContextMenu: false,
-        menuAnchor: null,
-      }));
-      onEnterEditingMode();
-    };
-
-    contextMenu = (
-      <TreeItemContextMenu
-        menuAnchor={state.menuAnchor}
-        editingContextId={editingContextId}
-        treeId={treeId}
-        item={item}
-        readOnly={readOnly}
-        depth={depth}
-        onExpand={onExpand}
-        onExpandAll={onExpandAll}
-        enterEditingMode={enterEditingMode}
-        onClose={closeContextMenu}
-      />
+    return (
+      <>
+        <IconButton
+          className={classes.more}
+          size="small"
+          onClick={openContextMenu}
+          data-testid={`${getString(item.label)}-more`}>
+          <MoreVertIcon style={{ fontSize: 12 }} />
+        </IconButton>
+        {contextMenu}
+      </>
     );
   }
-
-  return (
-    <>
-      <IconButton
-        className={classes.more}
-        size="small"
-        onClick={openContextMenu}
-        data-testid={`${getString(item.label)}-more`}>
-        <MoreVertIcon style={{ fontSize: 12 }} />
-      </IconButton>
-      {contextMenu}
-    </>
-  );
-};
+);

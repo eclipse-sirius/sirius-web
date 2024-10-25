@@ -21,7 +21,7 @@ import {
   useTreeFilters,
 } from '@eclipse-sirius/sirius-components-trees';
 import { Theme } from '@mui/material/styles';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { ExplorerViewState } from './ExplorerView.types';
 import { TreeDescriptionsMenu } from './TreeDescriptionsMenu';
@@ -40,11 +40,10 @@ const useStyles = makeStyles()((theme: Theme) => ({
     overflow: 'auto',
   },
 }));
-
 const isTreeRefreshedEventPayload = (payload: GQLTreeEventPayload): payload is GQLTreeRefreshedEventPayload =>
   payload && payload.__typename === 'TreeRefreshedEventPayload';
 
-export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewComponentProps) => {
+export const ExplorerView = memo(({ editingContextId, readOnly }: WorkbenchViewComponentProps) => {
   const { classes: styles } = useStyles();
 
   const initialState: ExplorerViewState = {
@@ -58,6 +57,7 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
     maxDepth: {},
     tree: null,
   };
+
   const [state, setState] = useState<ExplorerViewState>(initialState);
   const treeToolBarContributionComponents = useContext<TreeToolBarContextValue>(TreeToolBarContext).map(
     (contribution) => contribution.props.component
@@ -146,7 +146,8 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
       />
     );
   }
-  const onExpandedElementChange = (expanded: string[], maxDepth: number) => {
+
+  const onExpandedElementChange = useCallback((expanded: string[], maxDepth: number) => {
     setState((prevState) => ({
       ...prevState,
       expanded: {
@@ -158,7 +159,7 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
         [prevState.activeTreeDescriptionId]: maxDepth,
       },
     }));
-  };
+  }, []);
 
   const treeDescriptionSelector: JSX.Element = explorerDescriptions.length > 1 && (
     <TreeDescriptionsMenu
@@ -200,7 +201,7 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
           <TreeView
             editingContextId={editingContextId}
             readOnly={readOnly}
-            treeId={'explorer://'}
+            treeId="'explorer://"
             tree={state.tree}
             enableMultiSelection={true}
             synchronizedWithSelection={state.synchronizedWithSelection}
@@ -214,4 +215,4 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
       </div>
     </div>
   );
-};
+});

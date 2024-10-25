@@ -10,13 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLTree, GQLTreeItem } from '../views/TreeView.types';
 import { TreeItemActionProps } from '../treeitems/TreeItemAction.types';
+import { GQLTree, GQLTreeItem } from '../views/TreeView.types';
 
 export interface TreeProps {
   editingContextId: string;
   tree: GQLTree;
-  onExpand: (id: string, depth: number) => void;
   onExpandAll: (treeItem: GQLTreeItem) => void;
   readOnly: boolean;
   enableMultiSelection: boolean;

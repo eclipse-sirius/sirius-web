@@ -12,6 +12,7 @@
  *******************************************************************************/
 import Typography from '@mui/material/Typography';
 import { Theme } from '@mui/material/styles';
+import { memo } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { GQLStyledString, GQLStyledStringFragmentStyle, StyledLabelInputProps } from './StyledLabel.type';
 
@@ -131,7 +132,7 @@ const getStyledString = (styledString: GQLStyledString) => {
   });
 };
 
-export const StyledLabel = ({ styledString, selected, textToHighlight, marked }: StyledLabelInputProps) => {
+export const StyledLabel = memo(({ styledString, selected, textToHighlight, marked }: StyledLabelInputProps) => {
   const { classes } = useTreeItemStyle();
   const textLabel = getTextFromStyledString(styledString);
   let itemLabel: JSX.Element;
@@ -172,4 +173,4 @@ export const StyledLabel = ({ styledString, selected, textToHighlight, marked }:
       </Typography>
     </>
   );
-};
+});
