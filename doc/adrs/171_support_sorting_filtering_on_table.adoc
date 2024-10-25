@@ -1,0 +1,117 @@
+= ADR-171 Support for Sorting and Filtering in Tables
+
+== Context
+
+With the introduction of Material React Table to display table data,
+to ensure efficient data management from the outset, we have decided to adopt a server-side approach for filtering and sorting data.
+
+== Decision
+
+=== Global Searching
+
+==== Material React Table
+
+To turn on server-side filtering (client-side by default), we must enable `manuelFiltering`.
+
+[source, typescript]
+----
+const [globalFilter, setGlobalFilter] = useState('');
+
+useEffect(() => {
+    // retrieve data filtered from backend
+    setData([...filteredData]);
+}, [globalFilter]);
+
+const table = useMaterialReactTable({
+  columns,
+  data, // this will already be filtered on the server
+  manualFiltering: true, //turn off client-side filtering
+  onGlobalFilterChange: setGlobalFilter, //hoist internal global state to your state
+  state: { globalFilter }, //pass in your own managed globalFilter state
+});
+----
+
+==== Backend
+
+The following variable needs to be passed to the row semantic candidates expression:
+* globalFilterValue: text for filtering, empty if no global filtering set
+
+=== Column Filtering
+
+==== Material React Table
+
+To turn on server-side filtering (client-side by default), we must enable `manuelFiltering`.
+
+[source, typescript]
+----
+const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+
+useEffect(() => {
+    // retrieve data filtered from backend
+    setData([...filteredData]);
+}, [columnFilters]);
+
+const table = useMaterialReactTable({
+  columns,
+  data, // this will already be filtered on the server
+  manualFiltering: true, //turn off client-side filtering
+  onColumnFiltersChange: setColumnFilters, //hoist internal columnFilters state to your state
+  state: { columnFilters }, //pass in your own managed columnFilters state
+});
+----
+
+[source, typescript]
+----
+export type ColumnFiltersState = ColumnFilter[];
+export interface ColumnFilter {
+    id: string; // column id
+    value: unknown; // depending on filterVariant
+}
+----
+
+==== Backend
+
+The following variable needs to be passed to the row semantic candidates expression:
+* filterEntries: list of FilterEntry
+
+=== Sorting
+
+==== Material React Table
+
+To turn on server-side filtering (client-side by default), we must enable `manualSorting`.
+
+[source, typescript]
+----
+const [sorting, setSorting] = useState<SortingState>([]);
+
+useEffect(() => {
+    // retrieve data sorted from backend
+    setData([...filteredData]);
+}, [sorting]);
+
+const table = useMaterialReactTable({
+  columns,
+  data, // this will already be sorted on the server
+  manualFiltering: true, //turn off client-side sorting
+  onSortingChange: setSorting,
+  state: { sorting },
+});
+----
+
+[source, typescript]
+----
+export interface ColumnSort {
+    desc: boolean;
+    id: string;  // column id
+}
+export type SortingState = ColumnSort[];
+----
+
+==== Backend
+
+The following variable needs to be passed to the row semantic candidates expression:
+* sortEntries: list de SortEntry
+
+== Status
+
+Work in progress
