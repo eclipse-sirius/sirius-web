@@ -1,0 +1,23 @@
+= ADR-170 - Add support for representations in the Details View
+
+== Context
+
+Currently, when a user selects a representation, nothing is displayed in the details view.
+We want users to see and edit the label and a new property named documentation for the representation thanks to the details view.
+
+== Decision
+
+We will declare a new `IPropertiesDescriptionRegistryConfigurer` whose role will be to compute the page for representation metadata in the details view.
+In order to support updating the label of the representation metadata, we will have to leverage the same kind of behavior as in `o.e.s.w.a.views.explorer.services.RenameRepresentationTreeItemHandler` (without reusing this class directly).
+
+To display and edit the documentation of the representation, we will create a new field named `documentation` in `o.e.s.w.d.boundedcontexts.representationdata.RepresentationMetadata`.
+
+== Status
+
+Work in progress
+
+== Consequences
+
+While it may not create an issue for now, it may be relevant to create a new type of `ChangeKind` to indicate that the representation metadata have been updated.
+We currently only support propagating an event when the name of the representation has been updated.
+It may be done later as part of the refactoring of the `EditingContextEventProcessor`.

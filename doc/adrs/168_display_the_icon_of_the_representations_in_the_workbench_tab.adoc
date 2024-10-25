@@ -1,0 +1,24 @@
+= ADR-168 - Display the icon of the representation in the workbench tab
+
+== Context
+
+The workbench tabs do not display the icon for the representation, only their label.
+
+== Decision
+
+We will fetch the icon of the representation along with its metadata in `useRepresentationMetadata` thanks to the addition of a new GraphQL field `RepresentationMetadata#iconURLs: [String!]!`.
+We will use this icon in `RepresentationNavigation` to display the icon next to the label of the representation.
+
+For that the service `RepresentationApplicationService` will have to return instances of `RepresentationMetadataDTO` with the new `iconURLs` field.
+They will have to be created by the `RepresentationMetadataMapper` with additional information.
+
+It will thus have to compute the icon for a given `o.e.s.w.d.boundedcontexts.representationdata.RepresentationMetadata`.
+For that it can leverage the various `IRepresentationImageProvider` to find the image from the kind of the representation.
+
+== Status
+
+Accepted.
+
+== Consequences
+
+Nothing specific
