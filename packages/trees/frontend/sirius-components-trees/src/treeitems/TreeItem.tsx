@@ -22,7 +22,7 @@ import {
 import CropDinIcon from '@mui/icons-material/CropDin';
 import React, { useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { TreeItemProps, TreeItemState, PartHovered } from './TreeItem.types';
+import { PartHovered, TreeItemProps, TreeItemState } from './TreeItem.types';
 import { TreeItemAction } from './TreeItemAction';
 import { TreeItemArrow } from './TreeItemArrow';
 import { TreeItemDirectEditInput } from './TreeItemDirectEditInput';
@@ -356,7 +356,8 @@ export const TreeItem = ({
           onDragExit={handleMouseLeave}
           onDrop={onDropItem}
           onMouseEnter={() => handleMouseEnter('item')}
-          onMouseLeave={handleMouseLeave}>
+          onMouseLeave={handleMouseLeave}
+          data-testid={`${label}-fullrow`}>
           <TreeItemArrow item={item} depth={depth} onExpand={onExpand} data-testid={`${label}-toggle`} />
           <div
             ref={refDom}
