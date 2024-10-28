@@ -18,8 +18,8 @@ import org.eclipse.emf.ecore.EFactory;
  * <!-- begin-user-doc --> The <b>Factory</b> for the model. It provides a create method for each non-abstract class of
  * the model. <!-- end-user-doc -->
  *
- * @generated
  * @see org.eclipse.sirius.components.view.tree.TreePackage
+ * @generated
  */
 public interface TreeFactory extends EFactory {
 
@@ -45,6 +45,15 @@ public interface TreeFactory extends EFactory {
      * @generated
      */
     TreeItemLabelDescription createTreeItemLabelDescription();
+
+    /**
+     * Returns a new object of class '<em>If Tree Item Label Element Description</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>If Tree Item Label Element Description</em>'.
+     * @generated
+     */
+    IfTreeItemLabelElementDescription createIfTreeItemLabelElementDescription();
 
     /**
      * Returns a new object of class '<em>Item Label Fragment Description</em>'. <!-- begin-user-doc --> <!--

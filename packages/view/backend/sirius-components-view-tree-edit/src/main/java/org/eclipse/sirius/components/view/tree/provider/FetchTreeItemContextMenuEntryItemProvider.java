@@ -25,8 +25,7 @@ import org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.TreePackage;
 
 /**
- * This is the item provider adapter for a
- * {@link org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry}
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry}
  * object. <!-- begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
@@ -34,8 +33,7 @@ import org.eclipse.sirius.components.view.tree.TreePackage;
 public class FetchTreeItemContextMenuEntryItemProvider extends TreeItemContextMenuEntryItemProvider {
 
     /**
-     * This constructs an instance from a factory and a notifier. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -44,65 +42,53 @@ public class FetchTreeItemContextMenuEntryItemProvider extends TreeItemContextMe
     }
 
     /**
-     * This returns the property descriptors for the adapted class. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (this.itemPropertyDescriptors == null) {
+        if (itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            this.addUrlExressionPropertyDescriptor(object);
-            this.addKindPropertyDescriptor(object);
+            addUrlExressionPropertyDescriptor(object);
+            addKindPropertyDescriptor(object);
         }
-        return this.itemPropertyDescriptors;
+        return itemPropertyDescriptors;
     }
 
     /**
-     * This adds a property descriptor for the Url Exression feature. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Url Exression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     protected void addUrlExressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors
-                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                        this.getResourceLocator(), this.getString("_UI_FetchTreeItemContextMenuEntry_urlExression_feature"),
-                        this.getString("_UI_PropertyDescriptor_description",
-                                "_UI_FetchTreeItemContextMenuEntry_urlExression_feature",
-                                "_UI_FetchTreeItemContextMenuEntry_type"),
-                        TreePackage.Literals.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__URL_EXRESSION, true, false, false,
-                        ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+        itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+                getString("_UI_FetchTreeItemContextMenuEntry_urlExression_feature"),
+                getString("_UI_PropertyDescriptor_description", "_UI_FetchTreeItemContextMenuEntry_urlExression_feature", "_UI_FetchTreeItemContextMenuEntry_type"),
+                TreePackage.Literals.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__URL_EXRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This adds a property descriptor for the Kind feature. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This adds a property descriptor for the Kind feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     protected void addKindPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
-                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_FetchTreeItemContextMenuEntry_kind_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_FetchTreeItemContextMenuEntry_kind_feature",
-                        "_UI_FetchTreeItemContextMenuEntry_type"),
-                TreePackage.Literals.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__KIND, true, false, false,
-                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+        itemPropertyDescriptors.add(
+                createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(), getString("_UI_FetchTreeItemContextMenuEntry_kind_feature"),
+                        getString("_UI_PropertyDescriptor_description", "_UI_FetchTreeItemContextMenuEntry_kind_feature", "_UI_FetchTreeItemContextMenuEntry_type"),
+                        TreePackage.Literals.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__KIND, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This returns FetchTreeItemContextMenuEntry.gif. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * This returns FetchTreeItemContextMenuEntry.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object,
-                this.getResourceLocator().getImage("full/obj16/FetchTreeItemContextMenuEntry.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/FetchTreeItemContextMenuEntry.svg"));
     }
 
     /**
@@ -116,42 +102,39 @@ public class FetchTreeItemContextMenuEntryItemProvider extends TreeItemContextMe
     }
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     @Override
     public String getText(Object object) {
         String label = ((FetchTreeItemContextMenuEntry) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_FetchTreeItemContextMenuEntry_type")
-                : this.getString("_UI_FetchTreeItemContextMenuEntry_type") + " " + label;
+        return label == null || label.length() == 0 ? getString("_UI_FetchTreeItemContextMenuEntry_type") : getString("_UI_FetchTreeItemContextMenuEntry_type") + " " + label;
     }
 
     /**
-     * This handles model notifications by calling {@link #updateChildren} to update
-     * any cached children and by creating a viewer notification, which it passes to
-     * {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
+     * a viewer notification, which it passes to {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
      * @generated
      */
     @Override
     public void notifyChanged(Notification notification) {
-        this.updateChildren(notification);
+        updateChildren(notification);
 
         switch (notification.getFeatureID(FetchTreeItemContextMenuEntry.class)) {
             case TreePackage.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__URL_EXRESSION:
             case TreePackage.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__KIND:
-                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }
         super.notifyChanged(notification);
     }
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing
-     * the children that can be created under this object. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
+     * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */

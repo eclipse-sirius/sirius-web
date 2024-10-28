@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.application.controllers.trees;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
-import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
@@ -26,10 +25,10 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import org.eclipse.sirius.components.collaborative.trees.dto.InvokeSingleClickTreeItemContextMenuEntryInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
-import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.trees.Tree;
+import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
@@ -54,14 +53,14 @@ import graphql.execution.DataFetcherResult;
 import reactor.test.StepVerifier;
 
 /**
- * Integration tests of the tree item context menu controllers.
+ * Integration tests of the tree item label description controllers.
  *
  * @author Jerome Gout
  */
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
-public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests {
+public class TreeItemLabelDescriptionControllerTests extends AbstractIntegrationTests {
 
     private static final String ROOT_ENTITY_ID = "c341bf91-d315-4264-9787-c51b121a6375";
 
@@ -92,97 +91,52 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
     }
 
     @Test
-    @DisplayName("Given a studio, when the context menu actions are requested on an Entity, then the correct actions are returned")
+    @DisplayName("Given a studio, when the tree item labels are requested, then the correct styles are returned")
     @Sql(scripts = { "/scripts/studio.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenAStudioWhenTheContextMenuActionsAreRequestedOnAnEntityThenTheCorrectActionsAreReturned() {
+    public void givenAStudioWhenTheTreeItemLabelsAreRequestedThenTheCorrectStylesAreReturned() {
 
         // 1- retrieve the tree description id of the DSL Domain explorer example
         var explorerDescriptionId = new AtomicReference<String>();
 
         Map<String, Object> explorerVariables = Map.of(
                 "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString()
-                );
-        var explorerResult = TreeItemContextMenuControllerTests.this.explorerDescriptionsQueryRunner.run(explorerVariables);
+        );
+        var explorerResult = TreeItemLabelDescriptionControllerTests.this.explorerDescriptionsQueryRunner.run(explorerVariables);
         List<String> explorerIds = JsonPath.read(explorerResult, "$.data.viewer.editingContext.explorerDescriptions[*].id");
-        assertThat(explorerIds).isNotEmpty().hasSize(2);
+        assertThat(explorerIds).isNotEmpty()
+                .hasSize(2);
         assertThat(explorerIds.get(0)).isEqualTo(ExplorerDescriptionProvider.DESCRIPTION_ID);
         assertThat(explorerIds.get(1)).startsWith("siriusComponents://representationDescription?kind=treeDescription");
         explorerDescriptionId.set(explorerIds.get(1));
 
-        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(explorerDescriptionId.get(), List.of(StudioIdentifiers.DOMAIN_DOCUMENT.toString(), StudioIdentifiers.DOMAIN_OBJECT.toString(), ROOT_ENTITY_ID), List.of());
-        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), explorerRepresentationId);
-        var flux = this.explorerEventSubscriptionRunner.run(input);
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(explorerDescriptionId.get(),
+                List.of(StudioIdentifiers.DOMAIN_DOCUMENT.toString(), StudioIdentifiers.DOMAIN_OBJECT.toString(), ROOT_ENTITY_ID), List.of());
 
-        // 2- Retrieve the representation id (the id of DSL Domain explorer example tree)
-        var treeId = new AtomicReference<String>();
+        // 2- check that styles are properly applied
+        //      - check that the ROOT entity has not the abstract style applied.
+        //      - check that the NamedElement entity has the abstract style (if style)
+        var inputStyle = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), explorerRepresentationId);
+        var fluxStyle = this.explorerEventSubscriptionRunner.run(inputStyle);
 
-        Consumer<Object> initialTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+        Consumer<Object> styleTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
             assertThat(tree).isNotNull();
-            treeId.set(tree.getId());
+            List<TreeItem> domainChildren = tree.getChildren()
+                    .get(0)
+                    .getChildren()
+                    .get(0)
+                    .getChildren();
+            StyledString rootLabel = domainChildren.get(0).getLabel();
+            StyledString namedElementLabel = domainChildren.get(1).getLabel();
+            assertThat(rootLabel.styledStringFragments()).hasSize(2);
+            assertThat(namedElementLabel.styledStringFragments()).hasSize(3);
+            assertThat(namedElementLabel.toString()).isEqualTo("[Entity] NamedElement [abstract]");
         });
 
-        var helpId = new AtomicReference<String>();
-        var toggleAbstractAction = new AtomicReference<String>();
-        // 3- retrieve all context menu actions defined for an Entity tree item
-        Runnable getContextMenuActions = () -> {
-            Map<String, Object> variables = Map.of(
-                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
-                    "representationId", treeId.get(),
-                    "treeItemId", ROOT_ENTITY_ID
-            );
-            var result = this.treeItemContextMenuQueryRunner.run(variables);
-
-            Object document = Configuration.defaultConfiguration().jsonProvider().parse(result);
-
-            List<String> actionLabels = JsonPath.read(document, "$.data.viewer.editingContext.representation.description.contextMenu[*].label");
-            assertThat(actionLabels).isNotEmpty().hasSize(2);
-            assertThat(actionLabels.get(0)).isEqualTo("Help");
-            assertThat(actionLabels.get(1)).isEqualTo("Toggle abstract");
-
-            helpId.set(JsonPath.read(document, "$.data.viewer.editingContext.representation.description.contextMenu[0].id"));
-            toggleAbstractAction.set(JsonPath.read(document, "$.data.viewer.editingContext.representation.description.contextMenu[1].id"));
-        };
-
-        // 4- invoke fetch action data query to retrieve the fetch action data
-        Runnable getFetchActionData = () -> {
-            Map<String, Object> variables = Map.of(
-                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
-                    "representationId", treeId.get(),
-                    "treeItemId", ROOT_ENTITY_ID,
-                    "menuEntryId", helpId.get()
-                    );
-            var result = this.treeItemFetchContextActionDataQueryRunner.run(variables);
-
-            Object document = Configuration.defaultConfiguration().jsonProvider().parse(result);
-            String urlToFetch = JsonPath.read(document, "$.data.viewer.editingContext.representation.description.fetchTreeItemContextMenuEntryData.urlToFetch");
-            String fetchKind = JsonPath.read(document, "$.data.viewer.editingContext.representation.description.fetchTreeItemContextMenuEntryData.fetchKind");
-
-            assertThat(urlToFetch).isEqualTo("https://eclipse.dev/sirius/sirius-web.html");
-            assertThat(fetchKind).isEqualTo("OPEN");
-        };
-
-        // 5- invoke simple action mutation
-        Runnable invokeToggleAbstractAction = () -> {
-            var toggleAbstractActionParameters = new InvokeSingleClickTreeItemContextMenuEntryInput(
-                    UUID.randomUUID(),
-                    StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
-                    treeId.get(),
-                    ROOT_ENTITY_ID,
-                    toggleAbstractAction.get()
-                    );
-            var result = this.singleClickTreeItemContexteMenuEntryMutationRunner.run(toggleAbstractActionParameters);
-            String typename = JsonPath.read(result, "$.data.invokeSingleClickTreeItemContextMenuEntry.__typename");
-            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
-        };
-
-        StepVerifier.create(flux)
-            .consumeNextWith(initialTreeContentConsumer)
-            .then(getContextMenuActions)
-            .then(getFetchActionData)
-            .then(invokeToggleAbstractAction)
-            .thenCancel()
-            .verify(Duration.ofSeconds(30));
+        StepVerifier.create(fluxStyle)
+                .consumeNextWith(styleTreeContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(30));
     }
 
     private Consumer<Object> getTreeSubscriptionConsumer(Consumer<Tree> treeConsumer) {
