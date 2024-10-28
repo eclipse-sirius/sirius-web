@@ -36,7 +36,7 @@ export const coreWidgets: WidgetDescriptor[] = [
   },
   {
     name: 'Button',
-    icon: <Button width={'24px'} height={'24px'} color={'secondary'} />,
+    icon: <Button width={'24px'} height={'24px'} />,
   },
   {
     name: 'Checkbox',
@@ -45,11 +45,11 @@ export const coreWidgets: WidgetDescriptor[] = [
   {
     name: 'FlexboxContainer',
     label: 'Flexbox Container',
-    icon: <ViewColumnIcon width={'24px'} height={'24px'} color={'secondary'} />,
+    icon: <ViewColumnIcon width={'24px'} height={'24px'} />,
   },
   {
     name: 'Image',
-    icon: <ImageIcon width={'24px'} height={'24px'} color={'secondary'} />,
+    icon: <ImageIcon width={'24px'} height={'24px'} />,
   },
   {
     name: 'Label',
@@ -95,7 +95,7 @@ export const coreWidgets: WidgetDescriptor[] = [
   {
     name: 'SplitButton',
     label: 'Split Button',
-    icon: <Button width={'24px'} height={'24px'} color={'secondary'} />,
+    icon: <Button width={'24px'} height={'24px'} />,
   },
   {
     name: 'TextArea',

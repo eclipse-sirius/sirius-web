@@ -81,7 +81,7 @@ export const LinkWidget = ({ widget }: LinkWidgetProps) => {
           target="_blank">
           {widget.label}
         </Link>
-        {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
+        {widget.hasHelpText ? <HelpOutlineOutlined color="inherit" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
       </div>
     </div>
   );

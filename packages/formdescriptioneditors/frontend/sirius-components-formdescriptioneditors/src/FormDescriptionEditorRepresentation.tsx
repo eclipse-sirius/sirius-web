@@ -44,15 +44,12 @@ import { FormDescriptionEditorContextProvider } from './hooks/FormDescriptionEdi
 import { ForIcon } from './icons/ForIcon';
 import { IfIcon } from './icons/IfIcon';
 
-const useFormDescriptionEditorStyles = makeStyles()((theme) => ({
+const useFormDescriptionEditorStyles = makeStyles()(() => ({
   formDescriptionEditor: {
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
     overflowX: 'auto',
-  },
-  hover: {
-    borderColor: theme.palette.primary.main,
   },
   header: {
     padding: '4px 8px 4px 8px',
@@ -94,36 +91,6 @@ const useFormDescriptionEditorStyles = makeStyles()((theme) => ({
     flexDirection: 'column',
     alignItems: 'stretch',
     overflowX: 'auto',
-  },
-  bottomDropArea: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'whitesmoke',
-    borderRadius: '10px',
-    color: 'gray',
-    height: '60px',
-  },
-  dragOver: {
-    borderWidth: '1px',
-    borderStyle: 'dashed',
-    borderColor: theme.palette.primary.main,
-  },
-  subscribers: {
-    marginLeft: 'auto',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    '& > *': {
-      marginLeft: theme.spacing(0.5),
-      marginRight: theme.spacing(0.5),
-    },
-  },
-  avatar: {
-    fontSize: '1rem',
-    width: theme.spacing(3),
-    height: theme.spacing(3),
   },
   noFormDescriptionEditor: {
     display: 'flex',

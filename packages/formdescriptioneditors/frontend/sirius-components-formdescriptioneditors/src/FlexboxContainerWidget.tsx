@@ -46,7 +46,8 @@ const useStyles = makeStyles<FlexboxContainerWidgetStyleProps>()((theme, { flexD
     margin: borderStyle ? theme.spacing(0.5) : 0,
     padding: borderStyle ? theme.spacing(0.5) : 0,
     borderWidth: borderStyle?.size || 1,
-    borderColor: getCSSColor(borderStyle?.color, theme) || 'gray',
+    borderColor:
+      getCSSColor(borderStyle?.color, theme) || theme.palette.formdescriptioneditor.widget.defaultBorderColor,
     borderStyle: borderStyle?.lineStyle || 'solid',
     borderRadius: borderStyle?.radius || 0,
   },
@@ -64,9 +65,9 @@ const useStyles = makeStyles<FlexboxContainerWidgetStyleProps>()((theme, { flexD
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'whitesmoke',
+    backgroundColor: theme.palette.dropArea.backgroundColor,
     borderRadius: '10px',
-    color: 'gray',
+    color: theme.palette.dropArea.color,
     height: '30px',
     width: '100%',
   },
@@ -240,7 +241,7 @@ export const FlexboxContainerWidget = ({ page, widget }: FlexboxContainerWidgetP
           }>
           {widget.label}
         </Typography>
-        {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
+        {widget.hasHelpText ? <HelpOutlineOutlined color="inherit" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
       </div>
       <div className={classes.container}>{children}</div>
       <div

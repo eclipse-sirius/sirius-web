@@ -14,9 +14,9 @@ import { useMutation } from '@apollo/client';
 import {
   Selection,
   Toast,
+  useData,
   useDeletionConfirmationDialog,
   useSelection,
-  useData,
 } from '@eclipse-sirius/sirius-components-core';
 import {
   GQLButton,
@@ -45,8 +45,8 @@ import {
 } from '@eclipse-sirius/sirius-components-forms';
 import Tooltip from '@mui/material/Tooltip';
 import { Theme } from '@mui/material/styles';
-import { makeStyles, withStyles } from 'tss-react/mui';
 import React, { useEffect, useState } from 'react';
+import { makeStyles, withStyles } from 'tss-react/mui';
 import { BarChartWidget } from './BarChartWidget';
 import { ButtonWidget } from './ButtonWidget';
 import { CheckboxWidget } from './CheckboxWidget';
@@ -113,8 +113,10 @@ const useWidgetEntryStyles = makeStyles<
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'whitesmoke',
-    border: '1px solid whitesmoke',
+    backgroundColor: theme.palette.dropArea.backgroundColor,
+    borderWidth: '1px',
+    borderStyle: 'solid',
+    borderColor: theme.palette.dropArea.borderColor,
     borderRadius: '5px',
   },
   dragOver: {

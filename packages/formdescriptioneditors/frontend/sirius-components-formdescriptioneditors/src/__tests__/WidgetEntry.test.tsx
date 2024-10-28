@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
-import { ConfirmationDialogContext, Selection, SelectionContext } from '@eclipse-sirius/sirius-components-core';
+import { ConfirmationDialogContext, Selection, SelectionContext, theme } from '@eclipse-sirius/sirius-components-core';
 import {
   GQLChartWidget,
   GQLContainerBorderStyle,
@@ -20,8 +20,9 @@ import {
   GQLPieChart,
   GQLTextfield,
 } from '@eclipse-sirius/sirius-components-forms';
-import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import React from 'react';
+import { ThemeProvider } from '@mui/material/styles';
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act } from 'react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { addWidgetMutation, deleteWidgetMutation, moveWidgetMutation } from '../FormDescriptionEditorEventFragment';
 import {
@@ -104,19 +105,21 @@ const emptySetSelection = (_: Selection) => {};
 
 const TestContextProvider = ({ mocks, formDescriptionEditor, children }) => {
   return (
-    <MockedProvider mocks={mocks}>
-      <FormDescriptionEditorContext.Provider
-        value={{
-          editingContextId: 'editingContextId',
-          representationId: 'formDescriptionEditorId',
-          formDescriptionEditor,
-          readOnly: false,
-        }}>
-        <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
-          {children}
-        </SelectionContext.Provider>
-      </FormDescriptionEditorContext.Provider>
-    </MockedProvider>
+    <ThemeProvider theme={theme}>
+      <MockedProvider mocks={mocks}>
+        <FormDescriptionEditorContext.Provider
+          value={{
+            editingContextId: 'editingContextId',
+            representationId: 'formDescriptionEditorId',
+            formDescriptionEditor,
+            readOnly: false,
+          }}>
+          <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
+            {children}
+          </SelectionContext.Provider>
+        </FormDescriptionEditorContext.Provider>
+      </MockedProvider>
+    </ThemeProvider>
   );
 };
 
@@ -298,10 +301,6 @@ test('should delete the Textfield from the drop area', async () => {
 test('should delete the PieChart from the drop area', async () => {
   const pieChart: GQLPieChart = {
     __typename: 'PieChart',
-    metadata: {
-      label: 'PieChart1',
-    },
-    label: 'PieChart1',
     entries: [{ key: 'entry1', value: 1 }],
     style: {
       fontSize: null,

@@ -13,8 +13,8 @@
 import { useMutation } from '@apollo/client';
 import { Toast, useSelection } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
-import { makeStyles } from 'tss-react/mui';
 import React, { useEffect, useRef, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { addGroupMutation, moveGroupMutation } from './FormDescriptionEditorEventFragment';
 import {
   GQLAddGroupInput,
@@ -53,9 +53,9 @@ const usePageStyles = makeStyles()((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'whitesmoke',
+    backgroundColor: theme.palette.dropArea.backgroundColor,
     borderRadius: '10px',
-    color: 'gray',
+    color: theme.palette.dropArea.color,
     height: '60px',
   },
   dragOver: {

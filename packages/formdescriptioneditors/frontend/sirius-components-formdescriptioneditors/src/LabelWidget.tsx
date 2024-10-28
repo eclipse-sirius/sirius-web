@@ -69,7 +69,7 @@ export const LabelWidget = ({ widget }: LabelWidgetProps) => {
         <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
           {widget.label}
         </Typography>
-        {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
+        {widget.hasHelpText ? <HelpOutlineOutlined color="inherit" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
       </div>
       <Typography
         ref={ref}
