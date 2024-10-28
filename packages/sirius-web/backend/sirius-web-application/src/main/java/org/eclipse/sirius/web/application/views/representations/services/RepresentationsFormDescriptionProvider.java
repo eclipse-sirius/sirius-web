@@ -48,7 +48,6 @@ import org.eclipse.sirius.components.forms.description.TreeDescription;
 import org.eclipse.sirius.components.portals.Portal;
 import org.eclipse.sirius.components.portals.PortalView;
 import org.eclipse.sirius.components.representations.Failure;
-import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -71,6 +70,10 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
     public static final String PREFIX = "representations://";
 
     public static final String FORM_DESCRIPTION_ID = "representations_form_description";
+
+    public static final String PAGE_LABEL = "Representations Page";
+
+    public static final String GROUP_LABEL = "Representations Group";
 
     private final IIdentityService identityService;
 
@@ -117,8 +120,8 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
 
     private PageDescription getPageDescription() {
         return PageDescription.newPageDescription("representationPageId")
-                .idProvider(variableManager -> "Representations Page")
-                .labelProvider(variableManager -> "Representations Page")
+                .idProvider(variableManager -> PAGE_LABEL)
+                .labelProvider(variableManager -> PAGE_LABEL)
                 .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(VariableManager.SELF)))
                 .groupDescriptions(List.of(this.getGroupDescription()))
                 .canCreatePredicate(variableManager -> true)
@@ -150,7 +153,7 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
                 .targetObjectIdProvider(this::getTargetObjectId)
                 .predicate(variableManager -> {
                     var optionalSelf = variableManager.get(VariableManager.SELF, Object.class);
-                    if (optionalSelf.isEmpty() || optionalSelf.get() instanceof IRepresentation) {
+                    if (optionalSelf.isEmpty() || optionalSelf.get() instanceof RepresentationMetadata) {
                         return false;
                     } else {
                         return this.identityService.getId(optionalSelf.get()) != null;
@@ -183,14 +186,14 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
 
         IfDescription ifPortalDescription = IfDescription.newIfDescription("ifPortal")
                 .targetObjectIdProvider(this::getTargetObjectId)
-                .predicate(variableManager -> variableManager.get(VariableManager.SELF, Portal.class).isPresent())
+                .predicate(variableManager -> variableManager.get(VariableManager.SELF, RepresentationMetadata.class).map(RepresentationMetadata::getKind).filter(Portal.KIND::equals).isPresent())
                 .controlDescriptions(List.of(treeDescription))
                 .build();
         controlDescriptions.add(ifPortalDescription);
 
         return GroupDescription.newGroupDescription("representationsGroupId")
-                .idProvider(variableManager -> "Representations Group")
-                .labelProvider(variableManager -> "Representations Group")
+                .idProvider(variableManager -> GROUP_LABEL)
+                .labelProvider(variableManager -> GROUP_LABEL)
                 .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(VariableManager.SELF)))
                 .controlDescriptions(controlDescriptions)
                 .build();
@@ -266,19 +269,22 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
         if (optionalEditingContext.isPresent()) {
             IEditingContext editingContext = optionalEditingContext.get();
-            Object object = variableManager.getVariables().get(VariableManager.SELF);
-            String id = this.identityService.getId(object);
-            if (object instanceof Portal portal) {
-                items = this.getPortalChildren(portal);
-            } else if (id != null) {
-                var optionalProjectId = new UUIDParser().parse(editingContext.getId());
-                if (optionalProjectId.isPresent()) {
-                    var projectId = optionalProjectId.get();
-                    items = this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(projectId), id).stream().toList();
+            var optionalObject = variableManager.get(VariableManager.SELF, Object.class);
+            if (optionalObject.isPresent()) {
+                var object = optionalObject.get();
+                String id = this.identityService.getId(object);
+                if (object instanceof RepresentationMetadata representationMetadata && Portal.KIND.equals(representationMetadata.getKind())) {
+                    var optionalPortal = this.representationSearchService.findById(editingContext, representationMetadata.getId().toString(), Portal.class);
+                    if (optionalPortal.isPresent()) {
+                        items = this.getPortalChildren(optionalPortal.get());
+                    }
+                } else if (id != null) {
+                    var optionalProjectId = new UUIDParser().parse(editingContext.getId());
+                    if (optionalProjectId.isPresent()) {
+                        var projectId = optionalProjectId.get();
+                        items = this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(projectId), id).stream().toList();
+                    }
                 }
-            } else if (object instanceof RepresentationMetadata representationMetadata && Portal.KIND.equals(representationMetadata.getKind())) {
-                Optional<Portal> optionalPortal = this.representationSearchService.findById(editingContext, representationMetadata.getId().toString(), Portal.class);
-                items = optionalPortal.map(this::getPortalChildren).orElse(List.of());
             }
         }
         return items;

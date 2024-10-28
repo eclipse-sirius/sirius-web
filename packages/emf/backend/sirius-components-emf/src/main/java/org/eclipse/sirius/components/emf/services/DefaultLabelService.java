@@ -34,7 +34,6 @@ import org.eclipse.sirius.components.core.api.IDefaultLabelService;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
-import org.eclipse.sirius.components.representations.IRepresentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -78,17 +77,7 @@ public class DefaultLabelService implements IDefaultLabelService {
     public StyledString getStyledLabel(Object object) {
         String label = "";
         if (object instanceof EObject eObject) {
-            label = this.getLabelEAttribute(eObject)
-                    .map(eObject::eGet)
-                    .map(Object::toString)
-                    .orElse("");
-        } else if (object instanceof IRepresentation representation) {
-            var optionalRepresentationMetadata = this.representationMetadataProviders.stream()
-                    .flatMap(provider -> provider.getMetadata(representation.getId()).stream())
-                    .findFirst();
-            if (optionalRepresentationMetadata.isPresent()) {
-                label = optionalRepresentationMetadata.get().label();
-            }
+            label = this.getLabelEAttribute(eObject).map(eObject::eGet).map(Object::toString).orElse("");
         } else if (object instanceof Resource resource) {
             label = this.getResourceLabel(resource);
         }
@@ -166,11 +155,6 @@ public class DefaultLabelService implements IDefaultLabelService {
                     this.logger.warn("Missing icon for {}", eObject);
                 }
             }
-        } else if (object instanceof IRepresentation representation) {
-            result = this.representationImageProviders.stream()
-                    .map(provider -> provider.getImageURL(representation.getKind()))
-                    .flatMap(Optional::stream)
-                    .toList();
         } else if (object instanceof Resource) {
             result = List.of("/icons/Resource.svg");
         }

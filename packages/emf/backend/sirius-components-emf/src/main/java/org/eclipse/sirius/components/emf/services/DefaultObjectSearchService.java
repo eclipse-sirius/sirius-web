@@ -19,11 +19,9 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.core.api.IDefaultObjectSearchService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
-import org.eclipse.sirius.components.representations.IRepresentation;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,12 +34,6 @@ import org.springframework.stereotype.Service;
 public class DefaultObjectSearchService implements IDefaultObjectSearchService {
     private static final String ID_SEPARATOR = "#";
 
-    private final IRepresentationSearchService representationSearchService;
-
-    public DefaultObjectSearchService(IRepresentationSearchService representationSearchService) {
-        this.representationSearchService = Objects.requireNonNull(representationSearchService);
-    }
-
     @Override
     public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
         var optionalObject = Optional.of(editingContext)
@@ -52,7 +44,6 @@ public class DefaultObjectSearchService implements IDefaultObjectSearchService {
                 .flatMap(resourceSet -> this.getEObject(resourceSet, objectId));
 
         return optionalObject
-                .or(() -> this.getRepresentation(editingContext, objectId))
                 .or(() -> {
                     if (Objects.equals(editingContext.getId(), objectId)) {
                         return Optional.of(editingContext);
@@ -87,13 +78,5 @@ public class DefaultObjectSearchService implements IDefaultObjectSearchService {
             }
         }
         return optionalEObject.map(Object.class::cast);
-    }
-
-    private Optional<Object> getRepresentation(IEditingContext editingContext, String representationId) {
-        if (representationId != null && !representationId.isBlank()) {
-            return this.representationSearchService.findById(editingContext, representationId, IRepresentation.class)
-                    .map(Object.class::cast);
-        }
-        return Optional.empty();
     }
 }

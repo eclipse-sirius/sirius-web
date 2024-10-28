@@ -287,7 +287,10 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
         if (self instanceof RepresentationMetadata && optionalTreeItemId.isPresent() && optionalEditingContext.isPresent()) {
             var optionalRepresentationMetadata = new UUIDParser().parse(optionalTreeItemId.get()).flatMap(this.representationMetadataSearchService::findMetadataById);
             var repId = optionalRepresentationMetadata.map(RepresentationMetadata::getTargetObjectId).orElse(null);
-            result = this.objectService.getObject(optionalEditingContext.get(), repId);
+            var optionalObject = this.objectService.getObject(optionalEditingContext.get(), repId);
+            if (optionalObject.isPresent()) {
+                result = optionalObject.get();
+            }
         } else if (self instanceof EObject eObject) {
             Object semanticContainer = eObject.eContainer();
             if (semanticContainer == null) {

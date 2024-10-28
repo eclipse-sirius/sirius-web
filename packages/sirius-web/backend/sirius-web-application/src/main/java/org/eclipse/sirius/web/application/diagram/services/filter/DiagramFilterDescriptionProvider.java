@@ -25,6 +25,7 @@ import java.util.stream.Stream;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramEventProcessor;
 import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramImageConstants;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventProcessor;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -48,6 +49,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.application.diagram.services.filter.api.IDiagramFilterActionContributionProvider;
 import org.eclipse.sirius.web.application.diagram.services.filter.api.IDiagramFilterDescriptionProvider;
 import org.eclipse.sirius.web.application.diagram.services.filter.api.IDiagramFilterHelper;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -106,31 +108,33 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
                 .targetObjectIdProvider(targetObjectIdProvider)
                 .canCreatePredicate(variableManager -> false)
                 .variableManagerInitializer(vm -> {
-                    if (this.editingContextEventProcessorRegistry != null) {
-                        String editingContextId = vm.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).orElse("");
-                        Optional<Diagram> optDiagram = vm.get(VariableManager.SELF, Object.class)
-                                .filter(Diagram.class::isInstance)
-                                .map(Diagram.class::cast);
-                        String diagramId = optDiagram
-                                .map(Diagram::getId).orElse(null);
+                    String editingContextId = vm.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).orElse("");
+                    Optional<RepresentationMetadata> optionalRepresentationMetadata = vm.get(VariableManager.SELF, RepresentationMetadata.class);
+                    String representationId = optionalRepresentationMetadata
+                            .map(RepresentationMetadata::getId)
+                            .map(UUID::toString)
+                            .orElse(null);
 
-                        IEditingContextEventProcessor editingContextEventProcessor = this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
-                                .filter(processor -> processor.getEditingContextId().equals(editingContextId))
-                                .findFirst()
-                                .orElse(null);
-                        IRepresentationEventProcessor diagramEventProcessor = Optional.ofNullable(editingContextEventProcessor)
-                                .flatMap(processor -> processor.getRepresentationEventProcessors().stream()
-                                        .filter(IDiagramEventProcessor.class::isInstance)
-                                        .map(IDiagramEventProcessor.class::cast)
-                                        .filter(p -> p.getRepresentation().getId().equals(diagramId))
-                                        .findFirst()
-                                )
-                                .orElse(null);
-                        vm.put(SELECTED_TREE_NODES, this.getCheckMap(optDiagram.get()));
-                        vm.put(EDITING_CONTEXT_EVENT_PROCESSOR, editingContextEventProcessor);
-                        vm.put(DIAGRAM_EVENT_PROCESSOR, diagramEventProcessor);
-                        vm.put(DIAGRAM, diagramEventProcessor.getRepresentation());
-                    }
+                    IEditingContextEventProcessor editingContextEventProcessor = this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
+                            .filter(processor -> processor.getEditingContextId().equals(editingContextId))
+                            .findFirst()
+                            .orElse(null);
+                    IDiagramEventProcessor diagramEventProcessor = Optional.ofNullable(editingContextEventProcessor)
+                            .flatMap(processor -> processor.getRepresentationEventProcessors().stream()
+                                    .filter(IDiagramEventProcessor.class::isInstance)
+                                    .map(IDiagramEventProcessor.class::cast)
+                                    .filter(p -> p.getRepresentation().getId().equals(representationId))
+                                    .findFirst()
+                            )
+                            .orElse(null);
+                    var optDiagram = Optional.ofNullable(diagramEventProcessor)
+                            .map(IRepresentationEventProcessor::getRepresentation)
+                            .filter(Diagram.class::isInstance)
+                            .map(Diagram.class::cast);
+                    vm.put(SELECTED_TREE_NODES, this.getCheckMap(optDiagram));
+                    vm.put(EDITING_CONTEXT_EVENT_PROCESSOR, editingContextEventProcessor);
+                    vm.put(DIAGRAM_EVENT_PROCESSOR, diagramEventProcessor);
+                    vm.put(DIAGRAM, optDiagram.orElse(null));
                     return vm;
                 })
                 .pageDescriptions(List.of(this.getPageDescription(groupDescriptions)))
@@ -292,9 +296,12 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
 
     private List<Node> getNodeChildren(VariableManager vm) {
         var self = vm.get(VariableManager.SELF, Object.class).orElse(null);
-        final List<Node> result;
-        if (self instanceof Diagram diagram) {
-            result = diagram.getNodes();
+        List<Node> result = new ArrayList<>();
+        if (self instanceof RepresentationMetadata) {
+            var diagramEventProcessor = vm.get(DIAGRAM_EVENT_PROCESSOR, DiagramEventProcessor.class).orElse(null);
+            if (diagramEventProcessor != null && diagramEventProcessor.getRepresentation() instanceof Diagram diagram) {
+                result = diagram.getNodes();
+            }
         } else if (self instanceof Node node) {
             result = node.getChildNodes();
         } else {
@@ -324,10 +331,13 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
         return result;
     }
 
-    private Map<String, Boolean> getCheckMap(Diagram diagram) {
+    private Map<String, Boolean> getCheckMap(Optional<Diagram> optDiagram) {
         Map<String, Boolean> checkMap = new HashMap<>();
-        for (Node node : diagram.getNodes()) {
-            this.fillCheckMap(node, checkMap);
+        if (optDiagram.isPresent()) {
+            var diagram = optDiagram.get();
+            for (Node node : diagram.getNodes()) {
+                this.fillCheckMap(node, checkMap);
+            }
         }
         return checkMap;
     }

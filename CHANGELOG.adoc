@@ -141,6 +141,8 @@ Charts' metadata is only relevant when Charts are used as Representations.
 - https://github.com/eclipse-sirius/sirius-web/issues/4149[#4149] [diagram] Fix the synchronization on group tool layout
 - https://github.com/eclipse-sirius/sirius-web/issues/4148[#4148] [diagram] Fix an issue when moving child node in free form container.
 - https://github.com/eclipse-sirius/sirius-web/issues/4154[#4154] [diagram] Restore feedback while resizing a list container
+- https://github.com/eclipse-sirius/sirius-web/issues/4141[#4141] [sirius-web] Fix a bug where opening a representation from its URL or from the onboarding area no longer revealed it in the Explorer view.
+
 
 === New Features
 

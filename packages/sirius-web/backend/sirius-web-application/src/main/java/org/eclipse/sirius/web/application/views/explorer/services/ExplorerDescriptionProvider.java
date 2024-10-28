@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.views.explorer.services;
 
-
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -327,7 +326,7 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
         if (self instanceof RepresentationMetadata && optionalTreeItemId.isPresent() && optionalEditingContext.isPresent()) {
             var optionalRepresentationMetadata = new UUIDParser().parse(optionalTreeItemId.get()).flatMap(this.representationMetadataSearchService::findMetadataById);
             var targetObjectId = optionalRepresentationMetadata.map(RepresentationMetadata::getTargetObjectId).orElse(null);
-            result = this.objectService.getObject(optionalEditingContext.get(), targetObjectId);
+            result = this.objectService.getObject(optionalEditingContext.get(), targetObjectId).orElse(null);
         } else if (self instanceof EObject eObject) {
             Object semanticContainer = eObject.eContainer();
             if (semanticContainer == null) {

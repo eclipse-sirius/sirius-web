@@ -21,7 +21,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.core.api.IDefaultIdentityService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
-import org.eclipse.sirius.components.representations.IRepresentation;
 import org.springframework.stereotype.Service;
 
 /**
@@ -50,8 +49,6 @@ public class DefaultIdentityService implements IDefaultIdentityService {
             if (id == null && eObject.eIsProxy()) {
                 id = ((InternalEObject) eObject).eProxyURI().toString();
             }
-        } else if (object instanceof IRepresentation representation) {
-            id = representation.getId();
         } else if (object instanceof IEditingContext editingContext) {
             id = editingContext.getId();
         } else if (object instanceof Resource resource) {
@@ -65,8 +62,6 @@ public class DefaultIdentityService implements IDefaultIdentityService {
         String kind = "";
         if (object instanceof EObject eObject) {
             kind = this.emfKindService.getKind(eObject.eClass());
-        } else if (object instanceof IRepresentation representation) {
-            kind = representation.getKind();
         } else if (object instanceof IEditingContext) {
             return "siriusComponents://" + IEditingContext.EDITING_CONTEXT;
         }

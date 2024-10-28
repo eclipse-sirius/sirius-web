@@ -17,6 +17,7 @@ import org.eclipse.sirius.components.forms.Checkbox;
 import org.eclipse.sirius.components.forms.DateTime;
 import org.eclipse.sirius.components.forms.Group;
 import org.eclipse.sirius.components.forms.Link;
+import org.eclipse.sirius.components.forms.List;
 import org.eclipse.sirius.components.forms.MultiSelect;
 import org.eclipse.sirius.components.forms.Page;
 import org.eclipse.sirius.components.forms.Radio;
@@ -89,6 +90,10 @@ public class FormAssertions extends Assertions {
 
     public static TreeWidgetAssert assertThat(TreeWidget treeWidget) {
         return new TreeWidgetAssert(treeWidget);
+    }
+
+    public static ListWidgetAssert assertThat(List listWidget) {
+        return new ListWidgetAssert(listWidget);
     }
 
 }
