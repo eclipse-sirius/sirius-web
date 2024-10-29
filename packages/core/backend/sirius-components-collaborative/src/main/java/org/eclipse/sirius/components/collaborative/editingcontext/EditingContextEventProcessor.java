@@ -13,43 +13,32 @@
 package org.eclipse.sirius.components.collaborative.editingcontext;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
-import org.eclipse.sirius.components.collaborative.api.IDanglingRepresentationDeletionService;
+import org.eclipse.sirius.components.collaborative.api.IChangeDescriptionListener;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IInputPostProcessor;
 import org.eclipse.sirius.components.collaborative.api.IInputPreProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorComposedFactory;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
-import org.eclipse.sirius.components.collaborative.dto.DeleteRepresentationInput;
-import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationInput;
-import org.eclipse.sirius.components.collaborative.dto.RepresentationRenamedEventPayload;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationInput;
-import org.eclipse.sirius.components.representations.IRepresentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,7 +52,6 @@ import reactor.core.publisher.Sinks;
 import reactor.core.publisher.Sinks.EmitResult;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
-import reactor.core.scheduler.Schedulers;
 
 /**
  * Handles all the inputs which concern a particular editing context one at a time, in order of arrival, and in a
@@ -74,10 +62,6 @@ import reactor.core.scheduler.Schedulers;
  */
 public class EditingContextEventProcessor implements IEditingContextEventProcessor {
 
-    public static final String REPRESENTATION_ID = "representationId";
-
-    public static final String REPRESENTATION_LABEL = "representationLabel";
-
     public static final String INPUT = "INPUT";
 
     private final Logger logger = LoggerFactory.getLogger(EditingContextEventProcessor.class);
@@ -86,15 +70,11 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     private final IEditingContext editingContext;
 
-    private final IEditingContextPersistenceService editingContextPersistenceService;
-
     private final List<IEditingContextEventHandler> editingContextEventHandlers;
 
-    private final IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory;
+    private final IChangeDescriptionListener changeDescriptionListener;
 
-    private final IDanglingRepresentationDeletionService danglingRepresentationDeletionService;
-
-    private final Map<String, RepresentationEventProcessorEntry> representationEventProcessors = new ConcurrentHashMap<>();
+    private final IRepresentationEventProcessorRegistry representationEventProcessorRegistry;
 
     private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
 
@@ -112,13 +92,12 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     private final MeterRegistry meterRegistry;
 
-    public EditingContextEventProcessor(EditingContextEventProcessorParameters parameters) {
+    public EditingContextEventProcessor(IRepresentationEventProcessorRegistry representationEventProcessorRegistry, EditingContextEventProcessorParameters parameters) {
+        this.representationEventProcessorRegistry = Objects.requireNonNull(representationEventProcessorRegistry);
         this.messageService = parameters.messageService();
         this.editingContext = parameters.editingContext();
-        this.editingContextPersistenceService = parameters.editingContextPersistenceService();
+        this.changeDescriptionListener = parameters.changeDescriptionListener();
         this.editingContextEventHandlers = parameters.editingContextEventHandlers();
-        this.representationEventProcessorComposedFactory = parameters.representationEventProcessorComposedFactory();
-        this.danglingRepresentationDeletionService = parameters.danglingRepresentationDeletionService();
         this.executorService = parameters.executorServiceProvider().getExecutorService(this.editingContext);
         this.inputPreProcessors = parameters.inputPreProcessors();
         this.inputPostProcessors = parameters.inputPostProcessors();
@@ -129,90 +108,17 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     @SuppressWarnings("checkstyle:IllegalCatch")
     private Disposable setupChangeDescriptionSinkConsumer() {
         Consumer<ChangeDescription> consumer = changeDescription -> {
-            if (ChangeKind.REPRESENTATION_TO_DELETE.equals(changeDescription.getKind())) {
-                Object representationId = changeDescription.getParameters().get(REPRESENTATION_ID);
-                if (representationId instanceof String) {
-                    DeleteRepresentationInput deleteRepresentationInput = new DeleteRepresentationInput(UUID.randomUUID(), (String) representationId);
-                    this.doHandle(Sinks.one(), deleteRepresentationInput);
-                }
-            } else if (ChangeKind.REPRESENTATION_TO_RENAME.equals(changeDescription.getKind())) {
-                Object representationId = changeDescription.getParameters().get(REPRESENTATION_ID);
-                Object representationLabel = changeDescription.getParameters().get(REPRESENTATION_LABEL);
-                if (representationId instanceof String && representationLabel instanceof String) {
-                    RenameRepresentationInput renameRepresentationInput = new RenameRepresentationInput(UUID.randomUUID(), this.getEditingContextId(), (String) representationId,
-                            (String) representationLabel);
-                    this.doHandle(Sinks.one(), renameRepresentationInput);
-                }
-            } else if (ChangeKind.NOTHING.equals(changeDescription.getKind())) {
+            if (ChangeKind.NOTHING.equals(changeDescription.getKind())) {
                 return;
             }
 
-            this.publishEvent(changeDescription);
-            this.disposeRepresentationIfNeeded();
-
-            var refreshRepresentationSample = Timer.start(this.meterRegistry);
-
-            RepresentationEventProcessorEntry representationEventProcessorEntry = this.representationEventProcessors.get(changeDescription.getSourceId());
-            if (representationEventProcessorEntry != null) {
-                try {
-                    IRepresentationEventProcessor representationEventProcessor = representationEventProcessorEntry.getRepresentationEventProcessor();
-                    representationEventProcessor.refresh(changeDescription);
-                    representationEventProcessor.postRefresh(changeDescription);
-                } catch (Exception exception) {
-                    this.logger.warn(exception.getMessage(), exception);
-                }
-            }
-
-            this.refreshOtherRepresentations(changeDescription);
-
-            var timer = this.meterRegistry.timer(Monitoring.TIMER_REFRESH_REPRESENTATION, "changeDescription", changeDescription.getSourceId());
-            refreshRepresentationSample.stop(timer);
-
-            if (this.shouldPersistTheEditingContext(changeDescription)) {
-                this.editingContextPersistenceService.persist(changeDescription.getInput(), this.editingContext);
-            }
-            this.danglingRepresentationDeletionService.deleteDanglingRepresentations(changeDescription.getInput(), this.editingContext);
-
+            this.representationEventProcessorRegistry.onChange(changeDescription, this.editingContext, this.sink, this.canBeDisposedSink);
+            this.changeDescriptionListener.onChangeDescription(changeDescription, this.editingContext, this.sink, this.canBeDisposedSink);
         };
 
         Consumer<Throwable> errorConsumer = throwable -> this.logger.warn(throwable.getMessage(), throwable);
 
         return this.changeDescriptionSink.asFlux().subscribe(consumer, errorConsumer);
-    }
-
-    private void publishEvent(ChangeDescription changeDescription) {
-        if (this.sink.currentSubscriberCount() > 0) {
-            IInput input = changeDescription.getInput();
-            UUID correlationId = input.id();
-            if (input instanceof RenameRepresentationInput renameRepresentationInput && ChangeKind.REPRESENTATION_RENAMING.equals(changeDescription.getKind())) {
-                String representationId = renameRepresentationInput.representationId();
-                String newLabel = renameRepresentationInput.newLabel();
-                this.tryEmitRepresentationRenamedEvent(correlationId, representationId, newLabel);
-            } else if (ChangeKind.REPRESENTATION_TO_RENAME.equals(changeDescription.getKind()) && !changeDescription.getParameters().isEmpty()) {
-                Map<String, Object> parameters = changeDescription.getParameters();
-
-                var optionalRepresentationId = Optional.ofNullable(parameters.get(REPRESENTATION_ID))
-                        .filter(String.class::isInstance)
-                        .map(String.class::cast);
-                var optionalRepresentationLabel = Optional.ofNullable(parameters.get(REPRESENTATION_LABEL))
-                        .filter(String.class::isInstance)
-                        .map(String.class::cast);
-
-                if (optionalRepresentationId.isPresent() && optionalRepresentationLabel.isPresent()) {
-                    this.tryEmitRepresentationRenamedEvent(correlationId, optionalRepresentationId.get(), optionalRepresentationLabel.get());
-                }
-            }
-        }
-    }
-
-    private void tryEmitRepresentationRenamedEvent(UUID correlationId, String representationId, String newLabel) {
-        if (this.sink.currentSubscriberCount() > 0) {
-            EmitResult emitResult = this.sink.tryEmitNext(new RepresentationRenamedEventPayload(correlationId, representationId, newLabel));
-            if (emitResult.isFailure()) {
-                String pattern = "An error has occurred while emitting a RepresentationRenamedEventPayload: {}";
-                this.logger.warn(pattern, emitResult);
-            }
-        }
     }
 
     @Override
@@ -273,53 +179,9 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         }
 
         this.inputPostProcessors.forEach(postProcessor -> postProcessor.postProcess(this.editingContext, inputAfterPreProcessing.get(), this.changeDescriptionSink));
-
-    }
-
-    /**
-     * Refresh all the representations except the one with the given representationId.
-     *
-     * @param changeDescription
-     *         The description of change to consider in order to determine if the representation should be refreshed
-     */
-    private void refreshOtherRepresentations(ChangeDescription changeDescription) {
-        this.representationEventProcessors.entrySet().stream()
-            .filter(entry -> !Objects.equals(entry.getKey(), changeDescription.getSourceId()))
-            .map(Entry::getValue)
-            .map(RepresentationEventProcessorEntry::getRepresentationEventProcessor)
-            .forEach(representationEventProcessor -> {
-                representationEventProcessor.refresh(changeDescription);
-                representationEventProcessor.postRefresh(changeDescription);
-            });
-    }
-
-    private boolean shouldPersistTheEditingContext(ChangeDescription changeDescription) {
-        return ChangeKind.SEMANTIC_CHANGE.equals(changeDescription.getKind());
-    }
-
-    /**
-     * Disposes the representation when its target object has been removed.
-     */
-    private void disposeRepresentationIfNeeded() {
-        List<RepresentationEventProcessorEntry> entriesToDispose = new ArrayList<>();
-        for (var entry : this.representationEventProcessors.values()) {
-            if (this.danglingRepresentationDeletionService.isDangling(this.editingContext, entry.getRepresentationEventProcessor().getRepresentation())) {
-                entriesToDispose.add(entry);
-            }
-        }
-
-        entriesToDispose.stream()
-            .map(RepresentationEventProcessorEntry::getRepresentationEventProcessor)
-            .map(IRepresentationEventProcessor::getRepresentation)
-            .map(IRepresentation::getId)
-            .forEach(this::disposeRepresentation);
     }
 
     private void handleInput(One<IPayload> payloadSink, IInput input) {
-        if (input instanceof DeleteRepresentationInput deleteRepresentationInput) {
-            this.disposeRepresentation(deleteRepresentationInput.representationId());
-        }
-
         Optional<IEditingContextEventHandler> optionalEditingContextEventHandler = this.editingContextEventHandlers.stream()
                 .filter(handler -> handler.canHandle(this.editingContext, input))
                 .findFirst();
@@ -345,63 +207,12 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     @Override
     public Optional<IRepresentationEventProcessor> acquireRepresentationEventProcessor(String representationId, IInput input) {
-        var getRepresentationEventProcessorSample = Timer.start(this.meterRegistry);
-
-        var optionalRepresentationEventProcessor = Optional.ofNullable(this.representationEventProcessors.get(representationId))
-                .map(RepresentationEventProcessorEntry::getRepresentationEventProcessor);
-
-        if (optionalRepresentationEventProcessor.isEmpty()) {
-            optionalRepresentationEventProcessor = this.representationEventProcessorComposedFactory.createRepresentationEventProcessor(this.editingContext, representationId);
-            if (optionalRepresentationEventProcessor.isPresent()) {
-                var representationEventProcessor = optionalRepresentationEventProcessor.get();
-
-                Disposable subscription = representationEventProcessor.canBeDisposed()
-                        .delayElements(Duration.ofSeconds(5))
-                        .publishOn(Schedulers.fromExecutorService(this.executorService))
-                        .subscribe(canBeDisposed -> {
-                            if (canBeDisposed.booleanValue() && representationEventProcessor.getSubscriptionManager().isEmpty()) {
-                                this.disposeRepresentation(representationId);
-                            } else {
-                                this.logger.trace("Stopping the disposal of the representation event processor {}", representationId);
-                            }
-                        }, throwable -> this.logger.warn(throwable.getMessage(), throwable));
-
-                var representationEventProcessorEntry = new RepresentationEventProcessorEntry(representationEventProcessor, subscription);
-                this.representationEventProcessors.put(representationId, representationEventProcessorEntry);
-            } else {
-                this.logger.debug("The representation with the id {} does not exist", representationId);
-            }
-        } else {
-            var timer = this.meterRegistry.timer(Monitoring.TIMER_CREATE_REPRESENATION_EVENT_PROCESSOR,
-                    "editingContext", this.editingContext.getId(),
-                    "input", input.getClass().getSimpleName(),
-                    REPRESENTATION_ID, representationId);
-            getRepresentationEventProcessorSample.stop(timer);
-        }
-
-        this.logger.trace("Representation event processors count: {}", this.representationEventProcessors.size());
-        return optionalRepresentationEventProcessor;
+        return this.representationEventProcessorRegistry.getOrCreateRepresentationEventProcessor(representationId, this.editingContext, this.canBeDisposedSink, this.executorService);
     }
 
     @Override
     public List<IRepresentationEventProcessor> getRepresentationEventProcessors() {
-        // @formatter:off
-        return this.representationEventProcessors.values().stream()
-                .map(RepresentationEventProcessorEntry::getRepresentationEventProcessor)
-                .collect(Collectors.toUnmodifiableList());
-        // @formatter:on
-    }
-
-    private void disposeRepresentation(String representationId) {
-        Optional.ofNullable(this.representationEventProcessors.remove(representationId)).ifPresent(RepresentationEventProcessorEntry::dispose);
-
-        if (this.representationEventProcessors.isEmpty()) {
-            EmitResult emitResult = this.canBeDisposedSink.tryEmitNext(Boolean.TRUE);
-            if (emitResult.isFailure()) {
-                String pattern = "An error has occurred while emitting that the processor can be disposed: {}";
-                this.logger.warn(pattern, emitResult);
-            }
-        }
+        return this.representationEventProcessorRegistry.values();
     }
 
     @Override
@@ -427,8 +238,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
         this.executorService.shutdown();
 
-        this.representationEventProcessors.values().forEach(RepresentationEventProcessorEntry::dispose);
-        this.representationEventProcessors.clear();
+        this.representationEventProcessorRegistry.dispose();
 
         this.editingContext.dispose();
 
