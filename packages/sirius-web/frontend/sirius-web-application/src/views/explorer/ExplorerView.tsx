@@ -10,11 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useSelection, WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
+import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
 import {
   FilterBar,
-  GQLTree,
-  GQLTreeItem,
   TreeFilter,
   TreeToolBar,
   TreeToolBarContext,
@@ -46,36 +44,8 @@ const useStyles = makeStyles()((theme: Theme) => ({
 const isTreeRefreshedEventPayload = (payload: GQLTreeEventPayload): payload is GQLTreeRefreshedEventPayload =>
   payload && payload.__typename === 'TreeRefreshedEventPayload';
 
-const findTreeItemById = (items: GQLTreeItem[], id: string) => {
-  for (const child of items) {
-    if (child.id === id) {
-      return child;
-    } else if (child.hasChildren) {
-      const descendant = findTreeItemById(child.children, id);
-      if (descendant) {
-        return descendant;
-      }
-    }
-  }
-  return null;
-};
-
-const findSelectedDescendants = (tree: GQLTree, rootIds: string[], selectedIds: string[]) => {
-  const result = [];
-  for (const rootId of rootIds) {
-    const root = findTreeItemById(tree.children, rootId);
-    for (const selectedId of selectedIds) {
-      if (findTreeItemById(root.children, selectedId)) {
-        result.push(selectedId);
-      }
-    }
-  }
-  return result;
-};
-
 export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewComponentProps) => {
   const { classes: styles } = useStyles();
-  const { selection, setSelection } = useSelection();
 
   const initialState: ExplorerViewState = {
     synchronizedWithSelection: true,
@@ -178,20 +148,6 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
   }
 
   const onExpandedElementChange = (expanded: string[], maxDepth: number) => {
-    // Remove all descendants of collapsed elements from the selection
-    const expandedBefore = state.expanded[state.activeTreeDescriptionId] || [];
-    const collapsedElements = [...expandedBefore].filter((item) => !expanded.includes(item));
-    if (collapsedElements) {
-      const selectedDescendants = findSelectedDescendants(
-        state.tree,
-        collapsedElements,
-        selection.entries.map((entry) => entry.id)
-      );
-      setSelection({
-        entries: selection.entries.filter((entry) => !selectedDescendants.includes(entry.id)),
-      });
-    }
-
     setState((prevState) => ({
       ...prevState,
       expanded: {

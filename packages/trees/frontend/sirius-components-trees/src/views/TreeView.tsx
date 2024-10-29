@@ -53,6 +53,31 @@ const getExpandAllTreePathQuery = gql`
   }
 `;
 
+const findTreeItemById = (items: GQLTreeItem[], id: string) => {
+  for (const child of items) {
+    if (child.id === id) {
+      return child;
+    } else if (child.hasChildren) {
+      const descendant = findTreeItemById(child.children, id);
+      if (descendant) {
+        return descendant;
+      }
+    }
+  }
+  return null;
+};
+
+const findSelectedDescendants = (tree: GQLTree, rootId: string, selectedIds: string[]) => {
+  const result = [];
+  const root = findTreeItemById(tree.children, rootId);
+  for (const selectedId of selectedIds) {
+    if (findTreeItemById(root.children, selectedId)) {
+      result.push(selectedId);
+    }
+  }
+  return result;
+};
+
 export const TreeView = ({
   editingContextId,
   readOnly,
@@ -72,7 +97,7 @@ export const TreeView = ({
     expanded: expanded,
     maxDepth: maxDepth,
   });
-  const { selection } = useSelection();
+  const { selection, setSelection } = useSelection();
 
   const [getTreePath, { loading: treePathLoading, data: treePathData, error: treePathError }] = useLazyQuery<
     GQLGetTreePathData,
@@ -163,8 +188,20 @@ export const TreeView = ({
     const { expanded, maxDepth } = state;
 
     if (expanded.includes(id)) {
+      // Actually a collapse
+
       const newExpanded = [...expanded];
       newExpanded.splice(newExpanded.indexOf(id), 1);
+
+      // Remove all descendants of collapsed element from the selection
+      const selectedDescendants = findSelectedDescendants(
+        tree,
+        id,
+        selection.entries.map((entry) => entry.id)
+      );
+      setSelection({
+        entries: selection.entries.filter((entry) => !selectedDescendants.includes(entry.id)),
+      });
 
       setState((prevState) => ({
         ...prevState,
