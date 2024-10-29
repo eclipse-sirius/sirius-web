@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@
 
 package org.eclipse.sirius.web.application.representation.services;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -25,7 +24,7 @@ import java.util.function.Predicate;
 
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
-import org.eclipse.sirius.components.collaborative.editingcontext.EditingContextEventProcessor;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.core.api.IIdentityService;
@@ -119,19 +118,18 @@ public class RepresentationMetadataDetailsViewPageDescriptionProvider implements
                 .map(RepresentationMetadata::getLabel)
                 .orElse("");
 
-        BiFunction<VariableManager, String, IStatus> newValueHandler = (variableManager, newValue) -> {
-            var self = variableManager.get(VariableManager.SELF, RepresentationMetadata.class);
-            if (self.isPresent()) {
-                var representationMetadata = self.get();
-
-                // delegate the renaming of the representation to EditingContextEventProcessor
-                Map<String, Object> parameters = new HashMap<>();
-                parameters.put(EditingContextEventProcessor.REPRESENTATION_ID, representationMetadata.getId().toString());
-                parameters.put(EditingContextEventProcessor.REPRESENTATION_LABEL, newValue);
-                return new Success(ChangeKind.REPRESENTATION_TO_RENAME, parameters);
-            }
-            return new Failure("");
-        };
+        BiFunction<VariableManager, String, IStatus> newValueHandler = (variableManager, newValue) -> variableManager.get(VariableManager.SELF, RepresentationMetadata.class)
+                .map(RepresentationMetadata::getId)
+                .map(representationId -> {
+                    var result = this.representationMetadataUpdateService.updateLabel(null, representationId, newValue);
+                    if (result instanceof org.eclipse.sirius.web.domain.services.Success<Void>) {
+                        Map<String, Object> parameters = Map.of(IRepresentationEventProcessorRegistry.REPRESENTATION_LABEL, newValue, IRepresentationEventProcessorRegistry.REPRESENTATION_ID,
+                                representationId.toString());
+                        return new Success(ChangeKind.REPRESENTATION_RENAMING, parameters);
+                    }
+                    return new Failure("");
+                })
+                .orElseGet(() -> new Failure(""));
 
         Function<VariableManager, String> semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
                 .map(this.identityService::getId)

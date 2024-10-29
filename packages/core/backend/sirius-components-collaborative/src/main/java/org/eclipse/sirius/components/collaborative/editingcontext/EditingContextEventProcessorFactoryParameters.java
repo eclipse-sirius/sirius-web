@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,14 +15,14 @@ package org.eclipse.sirius.components.collaborative.editingcontext;
 import java.util.List;
 import java.util.Objects;
 
-import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.components.collaborative.api.IInputPostProcessor;
 import org.eclipse.sirius.components.collaborative.api.IInputPreProcessor;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorComposedFactory;
 import org.eclipse.sirius.components.collaborative.editingcontext.api.IEditingContextEventProcessorExecutorServiceProvider;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.springframework.stereotype.Service;
+
+import io.micrometer.core.instrument.MeterRegistry;
 
 /**
  * Bundles the bean dependencies that {@link EditingContextEventProcessorFactory} needs into a single object for convenience.
@@ -37,8 +37,6 @@ public class EditingContextEventProcessorFactoryParameters {
 
     private final List<IEditingContextEventHandler> editingContextEventHandlers;
 
-    private final IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory;
-
     private final IEditingContextEventProcessorExecutorServiceProvider executorServiceProvider;
 
     private final List<IInputPreProcessor> inputPreProcessors;
@@ -47,11 +45,10 @@ public class EditingContextEventProcessorFactoryParameters {
     private final MeterRegistry meterRegistry;
 
     public EditingContextEventProcessorFactoryParameters(IEditingContextPersistenceService editingContextPersistenceService, List<IEditingContextEventHandler> editingContextEventHandlers,
-            IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory, IEditingContextEventProcessorExecutorServiceProvider executorServiceProvider,
+            IEditingContextEventProcessorExecutorServiceProvider executorServiceProvider,
             List<IInputPreProcessor> inputPreProcessors, List<IInputPostProcessor> inputPostProcessors, MeterRegistry meterRegistry) {
         this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
         this.editingContextEventHandlers = Objects.requireNonNull(editingContextEventHandlers);
-        this.representationEventProcessorComposedFactory = Objects.requireNonNull(representationEventProcessorComposedFactory);
         this.executorServiceProvider = Objects.requireNonNull(executorServiceProvider);
         this.inputPreProcessors = Objects.requireNonNull(inputPreProcessors);
         this.inputPostProcessors = Objects.requireNonNull(inputPostProcessors);
@@ -64,10 +61,6 @@ public class EditingContextEventProcessorFactoryParameters {
 
     public List<IEditingContextEventHandler> getEditingContextEventHandlers() {
         return this.editingContextEventHandlers;
-    }
-
-    public IRepresentationEventProcessorComposedFactory getRepresentationEventProcessorComposedFactory() {
-        return this.representationEventProcessorComposedFactory;
     }
 
     public IEditingContextEventProcessorExecutorServiceProvider getExecutorServiceProvider() {

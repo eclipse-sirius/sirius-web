@@ -1,0 +1,63 @@
+= ADR-XXX - Split editing context event processor responsibility
+
+== Context
+
+The _editing context event processor_ is a core component of Sirius-Web.
+It has gain more and more responsibilities and its complexity increased a lot over time.
+
+== Decision
+
+We will split the _editing context event processor_ into smaller parts.
+
+=== Representation event processor registry
+
+The _representation event processor registry_ will handle the lifecycle of representations in an editing context event processor.
+It will handle the refresh, the disposal and sometime the deletion of representations in a reaction of a change made in the editing context.
+
+Because it holds a state, it cannot be a spring service.
+It will be initialized by the _representation event processor registry factory_.
+
+==== Consequences
+
+We do not need a _rename representation event handler_ to rename representations.
+The rename is done where it is started, everywhere an element that can represent a representation and propose a rename of that element.
+In Sirius Web the rename of a representation can only be started in the explorer.
+It allows renaming a tree item which can be a representation.
+We do not need to go through `EditingContextEventProcessor#doHandle` with a `RenameRepresentationInput` which dispatch to the `RenameRepresentationEventHandler` anymore.
+
+=== Editing context executor
+
+The _editing context executor_ will be used to execute handlers.
+It will hold the _executor service_ as well as _input pre-processors_ and _input post-processors_.
+It will delegate to the _compose editing context event handler_ the dispatch to the right _editing context event handler_.
+
+Because it holds the thread of the editing context, it cannot be a spring service.
+
+=== Composed editing context event handler
+
+The _composed editing context event handler_ will dispatch the input received by the executor to the right _editing context handler_.
+It will contain the _editing context manager_.
+
+This component is stateless, and thus, can be a spring service.
+It will be a dependency of the _editing context event processor factory_.
+
+=== Editing context manager
+
+The _editing context manager_ will handle the persistence of the editing context.
+The _editing context manager_ will listen to change description and update the editing context accordingly.
+
+Because it holds the state of the _editing context_, it cannot be a spring service.
+
+=== Change description Listener (Optional)
+
+Its purpose would allow a component to respond to any change description emitted by a _representation event processor registry_ or a _editing context event manager_.
+It's optional because its only purpose would be to be implemented by something else that needs to respond to an emitted changed description.
+
+== Consequences
+
+The _editing context event processor_ will only take input and return payloads.
+After that, any responsibility change to the _editing context_ must have been thought carefully.
+
+== Status
+
+Work in progress
