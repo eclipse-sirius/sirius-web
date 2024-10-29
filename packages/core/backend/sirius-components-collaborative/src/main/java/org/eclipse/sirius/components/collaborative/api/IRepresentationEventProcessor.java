@@ -33,6 +33,9 @@ public interface IRepresentationEventProcessor extends IDisposablePublisher {
 
     void refresh(ChangeDescription changeDescription);
 
+    default void postRefresh(ChangeDescription changeDescription) {
+    }
+
     ISubscriptionManager getSubscriptionManager();
 
     @Override

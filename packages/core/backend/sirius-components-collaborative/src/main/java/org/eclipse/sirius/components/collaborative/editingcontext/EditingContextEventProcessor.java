@@ -41,7 +41,6 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProce
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.dto.DeleteRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationInput;
-import org.eclipse.sirius.components.collaborative.dto.RepresentationRefreshedEvent;
 import org.eclipse.sirius.components.collaborative.dto.RepresentationRenamedEventPayload;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
@@ -53,7 +52,6 @@ import org.eclipse.sirius.components.core.api.IRepresentationInput;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationEventPublisher;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
@@ -90,8 +88,6 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     private final IEditingContextPersistenceService editingContextPersistenceService;
 
-    private final ApplicationEventPublisher applicationEventPublisher;
-
     private final List<IEditingContextEventHandler> editingContextEventHandlers;
 
     private final IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory;
@@ -120,7 +116,6 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         this.messageService = parameters.messageService();
         this.editingContext = parameters.editingContext();
         this.editingContextPersistenceService = parameters.editingContextPersistenceService();
-        this.applicationEventPublisher = parameters.applicationEventPublisher();
         this.editingContextEventHandlers = parameters.editingContextEventHandlers();
         this.representationEventProcessorComposedFactory = parameters.representationEventProcessorComposedFactory();
         this.danglingRepresentationDeletionService = parameters.danglingRepresentationDeletionService();
@@ -162,12 +157,12 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
                 try {
                     IRepresentationEventProcessor representationEventProcessor = representationEventProcessorEntry.getRepresentationEventProcessor();
                     representationEventProcessor.refresh(changeDescription);
-                    IRepresentation representation = representationEventProcessor.getRepresentation();
-                    this.applicationEventPublisher.publishEvent(new RepresentationRefreshedEvent(this.editingContext.getId(), representation));
+                    representationEventProcessor.postRefresh(changeDescription);
                 } catch (Exception exception) {
                     this.logger.warn(exception.getMessage(), exception);
                 }
             }
+
             this.refreshOtherRepresentations(changeDescription);
 
             var timer = this.meterRegistry.timer(Monitoring.TIMER_REFRESH_REPRESENTATION, "changeDescription", changeDescription.getSourceId());
@@ -294,8 +289,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             .map(RepresentationEventProcessorEntry::getRepresentationEventProcessor)
             .forEach(representationEventProcessor -> {
                 representationEventProcessor.refresh(changeDescription);
-                IRepresentation representation = representationEventProcessor.getRepresentation();
-                this.applicationEventPublisher.publishEvent(new RepresentationRefreshedEvent(this.editingContext.getId(), representation));
+                representationEventProcessor.postRefresh(changeDescription);
             });
     }
 
