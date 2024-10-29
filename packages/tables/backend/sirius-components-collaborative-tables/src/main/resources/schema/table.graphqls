@@ -23,6 +23,7 @@ type Table implements Representation {
   stripeRow: Boolean!
   columns: [Column!]!
   lines: [Line!]!
+  paginationData: PaginationData
 }
 
 type Column {
@@ -45,6 +46,12 @@ type Line {
   headerLabel: String!
   headerIconURLs: [String!]!
   headerIndexLabel: String!
+}
+
+type PaginationData {
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+  totalRowCount: Int
 }
 
 interface Cell {

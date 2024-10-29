@@ -57,6 +57,7 @@ import org.eclipse.sirius.components.tables.descriptions.CheckboxCellDescription
 import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
 import org.eclipse.sirius.components.tables.descriptions.ICellDescription;
 import org.eclipse.sirius.components.tables.descriptions.LineDescription;
+import org.eclipse.sirius.components.tables.descriptions.PaginatedData;
 import org.eclipse.sirius.components.tables.descriptions.MultiSelectCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.SelectCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
@@ -120,19 +121,18 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
     }
 
     private TableWidgetDescription getTableWidgetDescription() {
-        Function<VariableManager, List<Object>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Iteration.class)
+        Function<VariableManager, PaginatedData> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Iteration.class)
                 .map(eObject -> {
                     List<Object> objects = new ArrayList<>();
                     objects.addAll(eObject.getTasks());
-                    return objects;
+                    return new PaginatedData(objects, false, false, objects.size());
                 })
-                .orElse(List.of());
+                .orElse(new PaginatedData(List.of(), false, false, 0));
 
         Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
                 .map(this.objectService::getLabel)
                 .orElse(null);
 
-        List<LineDescription> lineDescriptions = new ArrayList<>();
         LineDescription lineDescription = LineDescription.newLineDescription(UUID.nameUUIDFromBytes("Table - Line".getBytes()))
                 .targetObjectIdProvider(this::getTargetObjectId)
                 .targetObjectKindProvider(this::getTargetObjectKind)
@@ -141,14 +141,13 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
                 .headerIconURLsProvider(variableManager -> List.of())
                 .headerIndexLabelProvider(variableManager -> "")
                 .build();
-        lineDescriptions.add(lineDescription);
 
         TableDescription tableDescription = TableDescription.newTableDescription(FORM_WITH_TABLE_ID)
                 .label("tasksTableLabel")
                 .targetObjectIdProvider(this::getTargetObjectId)
                 .targetObjectKindProvider(this::getTargetObjectKind)
                 .labelProvider(labelProvider)
-                .lineDescriptions(lineDescriptions)
+                .lineDescription(lineDescription)
                 .columnDescriptions(this.getColumnDescriptions())
                 .cellDescriptions(this.getCellDescriptions())
                 .iconURLsProvider(variableManager -> List.of())

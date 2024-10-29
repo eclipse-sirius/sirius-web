@@ -13,17 +13,10 @@
 package org.eclipse.sirius.components.collaborative.tables;
 
 /**
- * Description of the changes performed by table event handlers.
+ * Data for table cursor-based paginationData.
  *
  * @author frouene
  */
-public final class TableChangeKind {
+public record CursorBasedPaginationData(Object cursor, String direction, int size) {
 
-    public static final String TABLE_LAYOUT_CHANGE = "TABLE_LAYOUT_CHANGE";
-
-    public static final String TABLE_EVENTS_PARAM = "TABLE_EVENTS";
-
-    private TableChangeKind() {
-        // Prevent instantiation
-    }
 }

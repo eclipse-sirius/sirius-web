@@ -35,7 +35,7 @@ public final class LineDescription {
 
     private Function<VariableManager, String> targetObjectKindProvider;
 
-    private Function<VariableManager, List<Object>> semanticElementsProvider;
+    private Function<VariableManager, PaginatedData> semanticElementsProvider;
 
     private Function<VariableManager, String> headerLabelProvider;
 
@@ -59,7 +59,7 @@ public final class LineDescription {
         return this.targetObjectKindProvider;
     }
 
-    public Function<VariableManager, List<Object>> getSemanticElementsProvider() {
+    public Function<VariableManager, PaginatedData> getSemanticElementsProvider() {
         return this.semanticElementsProvider;
     }
 
@@ -99,7 +99,7 @@ public final class LineDescription {
 
         private Function<VariableManager, String> targetObjectKindProvider;
 
-        private Function<VariableManager, List<Object>> semanticElementsProvider;
+        private Function<VariableManager, PaginatedData> semanticElementsProvider;
 
         private Function<VariableManager, String> headerLabelProvider;
 
@@ -121,7 +121,7 @@ public final class LineDescription {
             return this;
         }
 
-        public Builder semanticElementsProvider(Function<VariableManager, List<Object>> semanticElementsProvider) {
+        public Builder semanticElementsProvider(Function<VariableManager, PaginatedData> semanticElementsProvider) {
             this.semanticElementsProvider = Objects.requireNonNull(semanticElementsProvider);
             return this;
         }

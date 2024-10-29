@@ -47,7 +47,7 @@ public final class TableDescription implements IRepresentationDescription {
 
     private Predicate<VariableManager> isStripeRowPredicate;
 
-    private List<LineDescription> lineDescriptions;
+    private LineDescription lineDescription;
 
     private List<ColumnDescription> columnDescriptions;
 
@@ -89,8 +89,8 @@ public final class TableDescription implements IRepresentationDescription {
         return this.isStripeRowPredicate;
     }
 
-    public List<LineDescription> getLineDescriptions() {
-        return this.lineDescriptions;
+    public LineDescription getLineDescription() {
+        return this.lineDescription;
     }
 
     public List<ColumnDescription> getColumnDescriptions() {
@@ -137,7 +137,7 @@ public final class TableDescription implements IRepresentationDescription {
 
         private Predicate<VariableManager> isStripeRowPredicate;
 
-        private List<LineDescription> lineDescriptions;
+        private LineDescription lineDescription;
 
         private List<ColumnDescription> columnDescriptions;
 
@@ -179,8 +179,8 @@ public final class TableDescription implements IRepresentationDescription {
             return this;
         }
 
-        public Builder lineDescriptions(List<LineDescription> lineDescriptions) {
-            this.lineDescriptions = Objects.requireNonNull(lineDescriptions);
+        public Builder lineDescription(LineDescription lineDescription) {
+            this.lineDescription = Objects.requireNonNull(lineDescription);
             return this;
         }
 
@@ -208,7 +208,7 @@ public final class TableDescription implements IRepresentationDescription {
             tableDescription.targetObjectKindProvider = Objects.requireNonNull(this.targetObjectKindProvider);
             tableDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             tableDescription.isStripeRowPredicate = Objects.requireNonNull(this.isStripeRowPredicate);
-            tableDescription.lineDescriptions = Objects.requireNonNull(this.lineDescriptions);
+            tableDescription.lineDescription = Objects.requireNonNull(this.lineDescription);
             tableDescription.columnDescriptions = Objects.requireNonNull(this.columnDescriptions);
             tableDescription.cellDescriptions = Objects.requireNonNull(this.cellDescriptions);
             tableDescription.iconURLsProvider = Objects.requireNonNull(this.iconURLsProvider);

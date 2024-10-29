@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.tables.handlers;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
@@ -69,9 +71,11 @@ public class ResizeTableColumnEventHandler implements ITableEventHandler {
         IPayload payload = new ErrorPayload(tableInput.id(), message);
 
         if (tableInput instanceof ResizeTableColumnInput resizeTableColumnInput) {
-            tableContext.getTableEvents().add(new ResizeTableColumnEvent(resizeTableColumnInput.columnId(), resizeTableColumnInput.width()));
+            var resizeTableColumnEvent = new ResizeTableColumnEvent(resizeTableColumnInput.columnId(), resizeTableColumnInput.width());
+            tableContext.getTableEvents().add(resizeTableColumnEvent);
             payload = new SuccessPayload(resizeTableColumnInput.id());
-            changeDescription = new ChangeDescription(TableChangeKind.TABLE_LAYOUT_CHANGE, tableInput.representationId(), tableInput);
+            changeDescription = new ChangeDescription(TableChangeKind.TABLE_LAYOUT_CHANGE, tableInput.representationId(), tableInput,
+                    Map.of(TableChangeKind.TABLE_EVENTS_PARAM, List.of(resizeTableColumnEvent)));
         }
 
         payloadSink.tryEmitValue(payload);

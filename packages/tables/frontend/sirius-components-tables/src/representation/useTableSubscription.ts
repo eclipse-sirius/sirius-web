@@ -31,6 +31,11 @@ export const getTableEventSubscription = `
       ... on TableRefreshedEventPayload {
         table {
           id
+          paginationData {
+            hasPreviousPage
+            hasNextPage
+            totalRowCount
+          }
           stripeRow
           columns {
             id
@@ -91,7 +96,13 @@ export const getTableEventSubscription = `
 const isTableRefreshedEventPayload = (payload: GQLTableEventPayload): payload is GQLTableRefreshedEventPayload =>
   payload.__typename === 'TableRefreshedEventPayload';
 
-export const useTableSubscription = (editingContextId: string, tableId: string): UseTableSubscriptionValue => {
+export const useTableSubscription = (
+  editingContextId: string,
+  tableId: string,
+  cursor: string | null,
+  direction: 'PREV' | 'NEXT' | null,
+  size: number
+): UseTableSubscriptionValue => {
   const [state, setState] = useState<UseTableSubscriptionState>({
     id: crypto.randomUUID(),
     table: null,
@@ -101,7 +112,7 @@ export const useTableSubscription = (editingContextId: string, tableId: string):
   const input: GQLTableEventInput = {
     id: state.id,
     editingContextId,
-    representationId: `${tableId}`,
+    representationId: `${tableId}?cursor=${cursor}&direction=${direction}&size=${size}`,
   };
 
   const variables: GQLTableEventVariables = { input };

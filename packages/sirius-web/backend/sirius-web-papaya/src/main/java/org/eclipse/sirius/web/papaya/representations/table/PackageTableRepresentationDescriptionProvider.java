@@ -20,30 +20,31 @@ import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
-import org.eclipse.sirius.components.papaya.Package;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
+import org.eclipse.sirius.components.papaya.Type;
 import org.eclipse.sirius.components.papaya.spec.PackageSpec;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.tables.descriptions.CheckboxCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
 import org.eclipse.sirius.components.tables.descriptions.ICellDescription;
 import org.eclipse.sirius.components.tables.descriptions.IconLabelCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.LineDescription;
 import org.eclipse.sirius.components.tables.descriptions.MultiSelectCellDescription;
+import org.eclipse.sirius.components.tables.descriptions.PaginatedData;
 import org.eclipse.sirius.components.tables.descriptions.SelectCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 import org.eclipse.sirius.components.tables.descriptions.TextfieldCellDescription;
+import org.eclipse.sirius.components.tables.renderer.TableRenderer;
 import org.springframework.stereotype.Service;
 
 /**
@@ -95,7 +96,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .label("Papaya package table")
                 .labelProvider(new TableLabelProvider(this.labelService))
                 .canCreatePredicate(this::canCreate)
-                .lineDescriptions(List.of(lineDescription))
+                .lineDescription(lineDescription)
                 .columnDescriptions(this.getColumnDescriptions())
                 .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
@@ -114,20 +115,15 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .isPresent();
     }
 
-    private List<Object> getAllTypesOfPackage(Package aPackage) {
-        var result = aPackage.getTypes().stream()
-                .map(Object.class::cast)
-                .collect(Collectors.toList());
-        result.addAll(aPackage.getPackages().stream()
-                .flatMap(pack -> this.getAllTypesOfPackage(pack).stream())
-                .toList());
-        return result;
-    }
+    private PaginatedData getSemanticElements(VariableManager variableManager) {
+        var self = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
+        var cursor = variableManager.get(TableRenderer.PAGINATION_CURSOR, EObject.class).orElse(null);
+        var direction = variableManager.get(TableRenderer.PAGINATION_DIRECTION, String.class).orElse(null);
+        var size = variableManager.get(TableRenderer.PAGINATION_SIZE, Integer.class).orElse(0);
 
-    private List<Object> getSemanticElements(VariableManager variableManager) {
-        return variableManager.get(VariableManager.SELF, PackageSpec.class)
-                .map(this::getAllTypesOfPackage)
-                .orElse(List.of());
+        Predicate<EObject> predicate = eObject -> eObject instanceof Type && EcoreUtil.isAncestor(self, eObject);
+
+        return new CursorBasedNavigationServices().collect(self, cursor, direction, size, predicate);
     }
 
     private List<ColumnDescription> getColumnDescriptions() {
@@ -178,13 +174,6 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
                 .cellValueProvider(new CellStringValueProvider(this.identityService))
-                .build());
-
-        cellDescriptions.add(CheckboxCellDescription.newCheckboxCellDescription("checkboxCells")
-                .canCreatePredicate(new CellTypePredicate().isCheckboxCell())
-                .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
-                .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
-                .cellValueProvider(new CellBooleanValueProvider())
                 .build());
 
         cellDescriptions.add(SelectCellDescription.newSelectCellDescription("selectCells")
