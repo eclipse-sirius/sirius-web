@@ -45,6 +45,8 @@ public final class Table implements IRepresentation {
 
     private List<Column> columns;
 
+    private PaginationData paginationData;
+
     private Table() {
         // Prevent instantiation
     }
@@ -85,12 +87,12 @@ public final class Table implements IRepresentation {
         return this.columns;
     }
 
-    public static Builder newTable(String id) {
-        return new Builder(id);
+    public PaginationData getPaginationData() {
+        return this.paginationData;
     }
 
-    public static Builder newTable(Table table) {
-        return new Builder(table);
+    public static Builder newTable(String id) {
+        return new Builder(id);
     }
 
     @Override
@@ -123,16 +125,10 @@ public final class Table implements IRepresentation {
 
         private List<Column> columns;
 
+        private PaginationData paginationData;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
-        }
-
-        private Builder(Table table) {
-            this.id = table.getId();
-            this.targetObjectId = table.getTargetObjectId();
-            this.descriptionId = table.getDescriptionId();
-            this.lines = table.getLines();
-            this.columns = table.getColumns();
         }
 
         public Builder targetObjectId(String targetObjectId) {
@@ -165,6 +161,11 @@ public final class Table implements IRepresentation {
             return this;
         }
 
+        public Builder paginationData(PaginationData paginationData) {
+            this.paginationData = Objects.requireNonNull(paginationData);
+            return this;
+        }
+
         public Table build() {
             Table table = new Table();
             table.id = Objects.requireNonNull(this.id);
@@ -175,6 +176,7 @@ public final class Table implements IRepresentation {
             table.stripeRow = this.stripeRow;
             table.lines = Objects.requireNonNull(this.lines);
             table.columns = Objects.requireNonNull(this.columns);
+            table.paginationData = Objects.requireNonNull(this.paginationData);
             return table;
         }
     }

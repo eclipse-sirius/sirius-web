@@ -10,20 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.tables;
 
-/**
- * Description of the changes performed by table event handlers.
- *
- * @author frouene
- */
-public final class TableChangeKind {
-
-    public static final String TABLE_LAYOUT_CHANGE = "TABLE_LAYOUT_CHANGE";
-
-    public static final String TABLE_EVENTS_PARAM = "TABLE_EVENTS";
-
-    private TableChangeKind() {
-        // Prevent instantiation
-    }
+export interface CursorBasedPaginationProps {
+  hasPrev: boolean;
+  hasNext: boolean;
+  onPrev: () => void;
+  onNext: () => void;
+  pageSize: number;
+  onPageSizeChange: (pageSize: number) => void;
 }

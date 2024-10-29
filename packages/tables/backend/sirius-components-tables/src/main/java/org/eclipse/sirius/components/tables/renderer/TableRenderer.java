@@ -25,6 +25,10 @@ import org.eclipse.sirius.components.tables.Table;
  */
 public class TableRenderer {
 
+    public static final String PAGINATION_CURSOR = "cursor";
+    public static final String PAGINATION_DIRECTION = "direction";
+    public static final String PAGINATION_SIZE = "size";
+
     private final BaseRenderer baseRenderer;
 
     public TableRenderer() {

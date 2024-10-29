@@ -74,6 +74,7 @@ public class TableElementFactory implements IElementFactory {
                     .stripeRow(tableElementProps.stripeRow())
                     .lines(lines)
                     .columns(columns)
+                    .paginationData(tableElementProps.paginationData())
                     .build();
         }
         return null;

@@ -22,10 +22,12 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenc
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
+import org.eclipse.sirius.components.collaborative.api.RepresentationEventProcessorFactoryConfiguration;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.tables.Table;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 import org.springframework.stereotype.Service;
@@ -40,6 +42,10 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 @Service
 public class TableEventProcessorFactory implements IRepresentationEventProcessorFactory {
 
+    private static final String URL_PARAM = "?";
+    private static final String CURSOR = "cursor";
+    private static final String DIRECTION = "direction";
+    private static final String SIZE = "size";
 
     private final IRepresentationSearchService representationSearchService;
 
@@ -55,26 +61,28 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
 
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
-    public TableEventProcessorFactory(IRepresentationSearchService representationSearchService, IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationPersistenceService representationPersistenceService,
-            IObjectService objectService, List<ITableEventHandler> tableEventHandlers, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry,
-            ISubscriptionManagerFactory subscriptionManagerFactory) {
-        this.representationSearchService = Objects.requireNonNull(representationSearchService);
-        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+    private final IURLParser urlParser;
+
+    public TableEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, IRepresentationPersistenceService representationPersistenceService,
+            IObjectService objectService, List<ITableEventHandler> tableEventHandlers, IURLParser urlParser) {
+        this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
+        this.representationDescriptionSearchService = Objects.requireNonNull(configuration.getRepresentationDescriptionSearchService());
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
         this.objectService = Objects.requireNonNull(objectService);
         this.tableEventHandlers = Objects.requireNonNull(tableEventHandlers);
-        this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
-        this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
+        this.subscriptionManagerFactory = Objects.requireNonNull(configuration.getSubscriptionManagerFactory());
+        this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
+        this.urlParser = Objects.requireNonNull(urlParser);
     }
 
     @Override
     public boolean canHandle(IEditingContext editingContext, String representationId) {
-        return this.representationSearchService.existByIdAndKind(representationId, List.of(Table.KIND));
+        return this.representationSearchService.existByIdAndKind(this.getTableIdFromRepresentationId(representationId), List.of(Table.KIND));
     }
 
     @Override
     public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IEditingContext editingContext, String representationId) {
-        Optional<Table> optionalTable = this.representationSearchService.findById(editingContext, representationId, Table.class);
+        Optional<Table> optionalTable = this.representationSearchService.findById(editingContext, this.getTableIdFromRepresentationId(representationId), Table.class);
         if (optionalTable.isPresent()) {
             Table table = optionalTable.get();
             Optional<TableDescription> optionalTableDescription = this.representationDescriptionSearchService.findById(editingContext, table.getDescriptionId())
@@ -85,10 +93,11 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
                 TableDescription tableDescription = optionalTableDescription.get();
                 Object object = optionalObject.get();
 
-                TableCreationParameters tableCreationParameters = TableCreationParameters.newTableCreationParameters(representationId)
+                TableCreationParameters tableCreationParameters = TableCreationParameters.newTableCreationParameters(this.getTableIdFromRepresentationId(representationId))
                         .tableDescription(tableDescription)
                         .editingContext(editingContext)
                         .targetObject(object)
+                        .cursorBasedPaginationData(this.getCursorBasedPaginationData(editingContext, representationId))
                         .build();
 
                 IRepresentationEventProcessor tableEventProcessor = new TableEventProcessor(tableCreationParameters, this.tableEventHandlers, new TableContext(table),
@@ -97,6 +106,36 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
             }
         }
         return Optional.empty();
+    }
+
+    private String getTableIdFromRepresentationId(String representationId) {
+        if (representationId.indexOf(URL_PARAM) > 0) {
+            return representationId.substring(0, representationId.indexOf(URL_PARAM));
+        }
+        return representationId;
+    }
+
+    private CursorBasedPaginationData getCursorBasedPaginationData(IEditingContext editingContext, String representationId) {
+        Object cursor = null;
+        String direction = "NEXT";
+        int size = 10;
+        if (representationId.indexOf(CURSOR) > 0) {
+            var param = this.urlParser.getParameterValues(representationId);
+            if (param.containsKey(CURSOR)) {
+                cursor = param.get(CURSOR).stream()
+                        .filter(cursorValue -> !cursorValue.equals("null"))
+                        .findFirst()
+                        .flatMap(cursorId -> this.objectService.getObject(editingContext, cursorId))
+                        .orElse(null);
+            }
+            if (param.containsKey(SIZE)) {
+                size = param.get(SIZE).stream().mapToInt(Integer::parseInt).findFirst().orElse(0);
+            }
+            if (param.containsKey(DIRECTION)) {
+                direction = param.get(DIRECTION).stream().filter(dir -> !dir.equals("null")).findFirst().orElse(null);
+            }
+        }
+        return new CursorBasedPaginationData(cursor, direction, size);
     }
 
 

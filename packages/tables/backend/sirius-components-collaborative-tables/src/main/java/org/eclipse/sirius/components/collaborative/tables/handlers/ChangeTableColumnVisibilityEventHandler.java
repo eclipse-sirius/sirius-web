@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.tables.handlers;
 
+import java.util.Map;
+
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
@@ -67,11 +69,13 @@ public class ChangeTableColumnVisibilityEventHandler implements ITableEventHandl
         IPayload payload = new ErrorPayload(tableInput.id(), message);
 
         if (tableInput instanceof ChangeTableColumnVisibilityInput changeTableColumnVisibilityInput) {
-            changeTableColumnVisibilityInput.columnsVisibility().stream()
+            var tableEvents = changeTableColumnVisibilityInput.columnsVisibility().stream()
                     .map(columnVisibility -> new ChangeTableColumnVisibilityEvent(columnVisibility.columnId(), columnVisibility.visible()))
-                    .forEach(tableContext.getTableEvents()::add);
+                    .toList();
+            tableContext.getTableEvents().addAll(tableEvents);
             payload = new SuccessPayload(changeTableColumnVisibilityInput.id());
-            changeDescription = new ChangeDescription(TableChangeKind.TABLE_LAYOUT_CHANGE, tableInput.representationId(), tableInput);
+            changeDescription = new ChangeDescription(TableChangeKind.TABLE_LAYOUT_CHANGE, tableInput.representationId(), tableInput,
+                    Map.of(TableChangeKind.TABLE_EVENTS_PARAM, tableEvents));
         }
 
         payloadSink.tryEmitValue(payload);

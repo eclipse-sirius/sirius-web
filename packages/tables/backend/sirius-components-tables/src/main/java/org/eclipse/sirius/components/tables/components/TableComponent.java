@@ -22,7 +22,9 @@ import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.tables.PaginationData;
 import org.eclipse.sirius.components.tables.Table;
+import org.eclipse.sirius.components.tables.descriptions.PaginatedData;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 import org.eclipse.sirius.components.tables.elements.TableElementProps;
 import org.eclipse.sirius.components.tables.renderer.TableRenderingCache;
@@ -59,20 +61,19 @@ public class TableComponent implements IComponent {
                     var previousColumns = optionalPreviousTable.map(previousTable -> tableElementRequestor.getColumns(previousTable, columnDescription)).orElse(List.of());
                     var columnComponentProps = new ColumnComponentProps(variableManager, columnDescription, previousColumns, cache, this.props.tableEvents());
                     return new Element(ColumnComponent.class, columnComponentProps);
-                }).toList();
-
-        var childrenLines = tableDescription.getLineDescriptions().stream()
-                .map(lineDescription -> {
-                    var previousLines = optionalPreviousTable.map(previousTable -> tableElementRequestor.getRootLines(previousTable, lineDescription)).orElse(List.of());
-                    ILinesRequestor linesRequestor = new LinesRequestor(previousLines);
-                    var lineComponentProps = new LineComponentProps(variableManager, lineDescription, tableDescription.getCellDescriptions(), linesRequestor, cache, id);
-                    return new Element(LineComponent.class, lineComponentProps);
-                }).toList();
+                })
+                .toList();
 
 
-        List<Element> children = new ArrayList<>();
-        children.addAll(childrenColumns);
-        children.addAll(childrenLines);
+        PaginatedData paginatedData = tableDescription.getLineDescription().getSemanticElementsProvider().apply(variableManager);
+
+        var previousLines = optionalPreviousTable.map(previousTable -> tableElementRequestor.getRootLines(previousTable, tableDescription.getLineDescription())).orElse(List.of());
+        ILinesRequestor linesRequestor = new LinesRequestor(previousLines);
+        var lineComponentProps = new LineComponentProps(variableManager, tableDescription.getLineDescription(), tableDescription.getCellDescriptions(), linesRequestor, cache, id, paginatedData.rows());
+        var childrenLine = new Element(LineComponent.class, lineComponentProps);
+
+        List<Element> children = new ArrayList<>(childrenColumns);
+        children.add(childrenLine);
 
         TableElementProps tableElementProps = TableElementProps.newTableElementProps(id)
                 .targetObjectId(targetObjectId)
@@ -80,6 +81,7 @@ public class TableComponent implements IComponent {
                 .descriptionId(tableDescription.getId())
                 .stripeRow(stripeRow)
                 .children(children)
+                .paginationData(new PaginationData(paginatedData.hasPreviousPage(), paginatedData.hasNextPage(), paginatedData.totalRowCount()))
                 .build();
 
         return new Element(TableElementProps.TYPE, tableElementProps);

@@ -16,17 +16,13 @@ export interface TableProps {
   representationId: string;
   table: GQLTable;
   readOnly: boolean;
+  onPaginationChange?: (cursor: string | null, direction: 'PREV' | 'NEXT', size: number) => void;
 }
 
-export type SortOrder = 'asc' | 'desc';
-
-export interface TableState {
-  order: SortOrder;
-  orderBy: string;
-  page: number;
-  rowsPerPage: number;
-  selectedRow: string | null;
-  globalFilter: string;
+export interface TablePaginationState {
+  cursor: string | null;
+  direction: 'PREV' | 'NEXT';
+  size: number;
 }
 
 export interface GQLTableEventSubscription {
@@ -48,6 +44,7 @@ export interface GQLTable {
   stripeRow: boolean;
   columns: GQLColumn[];
   lines: GQLLine[];
+  paginationData: GQLPaginationData;
 }
 
 export interface GQLColumn {
@@ -67,6 +64,12 @@ export interface GQLLine {
   headerLabel: string;
   headerIconURLs: string[];
   headerIndexLabel: string;
+}
+
+export interface GQLPaginationData {
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+  totalRowCount: number;
 }
 
 export interface GQLCell {

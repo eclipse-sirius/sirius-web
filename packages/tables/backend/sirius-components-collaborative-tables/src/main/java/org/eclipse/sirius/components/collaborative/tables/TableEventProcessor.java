@@ -126,6 +126,15 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
         if (this.shouldRefresh(changeDescription)) {
             long start = System.currentTimeMillis();
 
+            if (changeDescription.getKind().equals(TableChangeKind.TABLE_LAYOUT_CHANGE) && changeDescription.getParameters() != null) {
+                if (changeDescription.getSourceId().startsWith(this.tableCreationParameters.getId())) {
+                    Optional.ofNullable(changeDescription.getParameters().get(TableChangeKind.TABLE_EVENTS_PARAM))
+                            .filter(List.class::isInstance)
+                            .map(List.class::cast)
+                            .ifPresent(this.tableContext.getTableEvents()::addAll);
+                }
+            }
+
             Table table = this.refreshTable();
 
             this.tableContext.reset();
@@ -165,6 +174,9 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
         variableManager.put(VariableManager.SELF, this.tableCreationParameters.getTargetObject());
         variableManager.put(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, this.tableCreationParameters.getId());
         variableManager.put(IEditingContext.EDITING_CONTEXT, this.tableCreationParameters.getEditingContext());
+        variableManager.put(TableRenderer.PAGINATION_CURSOR, this.tableCreationParameters.getCursorBasedPaginationData().cursor());
+        variableManager.put(TableRenderer.PAGINATION_DIRECTION, this.tableCreationParameters.getCursorBasedPaginationData().direction());
+        variableManager.put(TableRenderer.PAGINATION_SIZE, this.tableCreationParameters.getCursorBasedPaginationData().size());
 
         TableComponentProps props = new TableComponentProps(variableManager, this.tableCreationParameters.getTableDescription(), Optional.ofNullable(this.tableContext.getTable()),
                 this.tableContext.getTableEvents());

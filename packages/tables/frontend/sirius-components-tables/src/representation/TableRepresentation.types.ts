@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024 CEA List.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,20 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.tables;
 
-/**
- * Description of the changes performed by table event handlers.
- *
- * @author frouene
- */
-public final class TableChangeKind {
-
-    public static final String TABLE_LAYOUT_CHANGE = "TABLE_LAYOUT_CHANGE";
-
-    public static final String TABLE_EVENTS_PARAM = "TABLE_EVENTS";
-
-    private TableChangeKind() {
-        // Prevent instantiation
-    }
+export interface TableRepresentationState {
+  cursor: string | null;
+  direction: 'PREV' | 'NEXT';
+  size: number;
 }

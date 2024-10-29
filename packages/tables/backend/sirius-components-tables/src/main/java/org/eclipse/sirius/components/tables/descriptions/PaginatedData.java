@@ -10,20 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.tables;
+package org.eclipse.sirius.components.tables.descriptions;
+
+import java.util.List;
+import java.util.Objects;
 
 /**
- * Description of the changes performed by table event handlers.
+ * Paginated lines in a table.
  *
  * @author frouene
  */
-public final class TableChangeKind {
+public record PaginatedData(List<Object> rows, boolean hasPreviousPage, boolean hasNextPage, int totalRowCount) {
 
-    public static final String TABLE_LAYOUT_CHANGE = "TABLE_LAYOUT_CHANGE";
-
-    public static final String TABLE_EVENTS_PARAM = "TABLE_EVENTS";
-
-    private TableChangeKind() {
-        // Prevent instantiation
+    public PaginatedData {
+        Objects.requireNonNull(rows);
     }
 }

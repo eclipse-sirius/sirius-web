@@ -36,9 +36,11 @@ import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
 import org.eclipse.sirius.components.tables.descriptions.ICellDescription;
 import org.eclipse.sirius.components.tables.descriptions.LineDescription;
 import org.eclipse.sirius.components.tables.descriptions.MultiSelectCellDescription;
+import org.eclipse.sirius.components.tables.descriptions.PaginatedData;
 import org.eclipse.sirius.components.tables.descriptions.SelectCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 import org.eclipse.sirius.components.tables.descriptions.TextfieldCellDescription;
+import org.eclipse.sirius.components.tables.renderer.TableRenderer;
 import org.springframework.stereotype.Service;
 
 /**
@@ -78,7 +80,7 @@ public class ProjectTableRepresentationDescriptionProvider implements IEditingCo
                 .label("Papaya project table")
                 .labelProvider(new TableLabelProvider(this.labelService))
                 .canCreatePredicate(this::canCreate)
-                .lineDescriptions(List.of(lineDescription))
+                .lineDescription(lineDescription)
                 .columnDescriptions(this.getColumnDescriptions())
                 .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
@@ -96,19 +98,13 @@ public class ProjectTableRepresentationDescriptionProvider implements IEditingCo
                 .isPresent();
     }
 
-    private List<Object> getAllContents(EObject object) {
-        var result = new ArrayList<>();
-        var iterator = object.eAllContents();
-        while (iterator.hasNext()) {
-            result.add(iterator.next());
-        }
-        return result;
-    }
+    private PaginatedData getSemanticElements(VariableManager variableManager) {
+        var self = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
+        var cursor = variableManager.get(TableRenderer.PAGINATION_CURSOR, EObject.class).orElse(null);
+        var direction = variableManager.get(TableRenderer.PAGINATION_DIRECTION, String.class).orElse(null);
+        var size = variableManager.get(TableRenderer.PAGINATION_SIZE, Integer.class).orElse(0);
 
-    private List<Object> getSemanticElements(VariableManager variableManager) {
-        return variableManager.get(VariableManager.SELF, ProjectSpec.class)
-                .map(this::getAllContents)
-                .orElse(List.of());
+        return new CursorBasedNavigationServices().collect(self, cursor, direction, size);
     }
 
     private List<ColumnDescription> getColumnDescriptions() {
