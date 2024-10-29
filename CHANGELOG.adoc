@@ -9,7 +9,7 @@
 === Architectural decision records
 
 - [ADR-172] Add support for Project Data Versioning REST APIs
-
+- [ADR-XXX] Split editing context event processor responsibility
 
 === Deprecation warning
 
@@ -18,6 +18,10 @@
 === Breaking changes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4110[#4110] [view] CheckboxDescriptionStyle.labelPlacement is replaced by Grid layout properties
+https://github.com/eclipse-sirius/sirius-web/issues/4145[#4145] [core] Remove `ChangeKind#REPRESENTATION_TO_RENAME`.
++ The rename of a representation needs to be done anywhere an object that can be rename represents a representation.
++ An example can be found in `RenameRepresentationTreeItemHandler`.
++ You will have nothing to do if you are based on sirius web application.
 
 === Dependency update
 
@@ -36,6 +40,9 @@
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4219[#4219] [table] Improve front-end performance
+- https://github.com/eclipse-sirius/sirius-web/issues/4145[#4145] [core] Add IChangeDescriptionListener to allow subscribing to change made in an editing context.
+- https://github.com/eclipse-sirius/sirius-web/issues/4145[#4145] [core] Split the _editing context event processor_.
+** The `RepresentationEventProcessorRegistry` which handles the lifecyle of representations in the editing context.
 
 
 

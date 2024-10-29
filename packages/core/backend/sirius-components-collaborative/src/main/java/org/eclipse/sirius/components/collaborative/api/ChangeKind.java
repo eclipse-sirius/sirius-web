@@ -35,8 +35,6 @@ public final class ChangeKind {
 
     public static final String REPRESENTATION_TO_DELETE = "REPRESENTATION_TO_DELETE";
 
-    public static final String REPRESENTATION_TO_RENAME = "REPRESENTATION_TO_RENAME";
-
     public static final String RELOAD_REPRESENTATION = "RELOAD_REPRESENTATION";
 
     private ChangeKind() {
