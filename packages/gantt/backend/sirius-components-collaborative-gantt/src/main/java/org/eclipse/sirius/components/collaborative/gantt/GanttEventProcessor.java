@@ -116,7 +116,6 @@ public class GanttEventProcessor implements IGanttEventProcessor {
             String ganttId = this.ganttContext.getGantt().getId();
             Gantt refreshedGanttRepresentation = this.ganttCreationService.refresh(this.editingContext, this.ganttContext).orElse(null);
 
-            this.ganttContext.reset();
             this.ganttContext.update(refreshedGanttRepresentation);
 
             if (refreshedGanttRepresentation != null) {
@@ -133,6 +132,13 @@ public class GanttEventProcessor implements IGanttEventProcessor {
                 this.ganttContext.update(reloadedGantt.get());
                 this.ganttEventFlux.ganttRefreshed(changeDescription.getInput(), this.ganttContext.getGantt());
             }
+        }
+    }
+
+    @Override
+    public void postRefresh(ChangeDescription changeDescription) {
+        if (this.shouldRefresh(changeDescription)) {
+            this.ganttContext.reset();
         }
     }
 

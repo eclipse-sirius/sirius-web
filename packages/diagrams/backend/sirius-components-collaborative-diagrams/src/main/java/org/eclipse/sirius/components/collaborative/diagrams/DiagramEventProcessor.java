@@ -13,10 +13,8 @@
 package org.eclipse.sirius.components.collaborative.diagrams;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -32,21 +30,14 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventPro
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInputReferencePositionProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.EdgeLayoutDataInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.LayoutDiagramInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.NodeLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ReferencePosition;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationInput;
-import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
-import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
-import org.eclipse.sirius.components.diagrams.layoutdata.EdgeLayoutData;
-import org.eclipse.sirius.components.diagrams.layoutdata.NodeLayoutData;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -131,43 +122,6 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
-        if (representationInput instanceof LayoutDiagramInput layoutDiagramInput) {
-            if (layoutDiagramInput.id().equals(this.currentRevisionId)) {
-                var diagram = this.diagramContext.getDiagram();
-                var nodeLayoutData = layoutDiagramInput.diagramLayoutData().nodeLayoutData().stream()
-                        .collect(Collectors.toMap(
-                                NodeLayoutDataInput::id,
-                                nodeLayoutDataInput -> new NodeLayoutData(nodeLayoutDataInput.id(), nodeLayoutDataInput.position(), nodeLayoutDataInput.size(), nodeLayoutDataInput.resizedByUser()),
-                                (oldValue, newValue) -> newValue
-                        ));
-
-                var edgeLayoutData = layoutDiagramInput.diagramLayoutData().edgeLayoutData().stream()
-                        .collect(Collectors.toMap(
-                                EdgeLayoutDataInput::id,
-                                edgeLayoutDataInput -> new EdgeLayoutData(edgeLayoutDataInput.id(), edgeLayoutDataInput.bendingPoints()),
-                                (oldValue, newValue) -> newValue
-                        ));
-
-                var layoutData = new DiagramLayoutData(nodeLayoutData, edgeLayoutData, Map.of());
-                var laidOutDiagram = Diagram.newDiagram(diagram)
-                        .layoutData(layoutData)
-                        .build();
-
-                this.representationPersistenceService.save(layoutDiagramInput, this.editingContext, laidOutDiagram);
-                this.diagramContext.reset();
-                this.diagramContext.update(laidOutDiagram);
-                this.diagramEventFlux.diagramRefreshed(layoutDiagramInput.id(), laidOutDiagram, DiagramRefreshedEventPayload.CAUSE_LAYOUT, null);
-
-                this.currentRevisionCause = DiagramRefreshedEventPayload.CAUSE_LAYOUT;
-
-                payloadSink.tryEmitValue(new SuccessPayload(layoutDiagramInput.id()));
-            } else {
-                payloadSink.tryEmitValue(new SuccessPayload(layoutDiagramInput.id()));
-            }
-
-            return;
-        }
-
         if (representationInput instanceof IDiagramInput diagramInput) {
             Optional<IDiagramEventHandler> optionalDiagramEventHandler = this.diagramEventHandlers.stream().filter(handler -> handler.canHandle(diagramInput)).findFirst();
 
@@ -190,7 +144,6 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
                 this.logger.trace("Diagram refreshed: {}", refreshedDiagram.getId());
             }
 
-            this.diagramContext.reset();
             this.diagramContext.update(refreshedDiagram);
 
             this.currentRevisionId = changeDescription.getInput().id();
@@ -207,6 +160,18 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
                 ReferencePosition referencePosition = this.getReferencePosition(changeDescription.getInput());
                 this.diagramEventFlux.diagramRefreshed(changeDescription.getInput().id(), reloadedDiagram.get(), DiagramRefreshedEventPayload.CAUSE_LAYOUT, referencePosition);
             }
+        } else if (changeDescription.getKind().equals(ChangeKind.LAYOUT_DIAGRAM) && changeDescription.getParameters().get(IDiagramEventHandler.NEXT_DIAGRAM_PARAMETER) instanceof Diagram laidOutDiagram && changeDescription.getInput().id().equals(this.currentRevisionId)) {
+            this.representationPersistenceService.save(changeDescription.getInput(), this.editingContext, laidOutDiagram);
+            this.diagramContext.update(laidOutDiagram);
+            this.diagramEventFlux.diagramRefreshed(changeDescription.getInput().id(), laidOutDiagram, DiagramRefreshedEventPayload.CAUSE_LAYOUT, null);
+            this.currentRevisionCause = DiagramRefreshedEventPayload.CAUSE_LAYOUT;
+        }
+    }
+
+    @Override
+    public void postRefresh(ChangeDescription changeDescription) {
+        if (this.shouldRefresh(changeDescription) || changeDescription.getKind().equals(ChangeKind.LAYOUT_DIAGRAM)) {
+            this.diagramContext.reset();
         }
     }
 

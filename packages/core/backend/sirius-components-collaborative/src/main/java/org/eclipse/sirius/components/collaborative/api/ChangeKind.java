@@ -31,6 +31,8 @@ public final class ChangeKind {
 
     public static final String FOCUS_CHANGE = "FOCUS_CHANGE";
 
+    public static final String LAYOUT_DIAGRAM = "LAYOUT_DIAGRAM";
+
     public static final String REPRESENTATION_TO_DELETE = "REPRESENTATION_TO_DELETE";
 
     public static final String REPRESENTATION_TO_RENAME = "REPRESENTATION_TO_RENAME";

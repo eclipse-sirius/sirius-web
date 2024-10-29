@@ -22,6 +22,7 @@
 
 === New Features
 
+- https://github.com/eclipse-sirius/sirius-web/issues/4143[#4143] [core] Add postRefresh method in IRepresentationEventProcessor
 
 === Improvements
 

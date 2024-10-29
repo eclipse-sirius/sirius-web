@@ -26,6 +26,8 @@ import reactor.core.publisher.Sinks.One;
  */
 public interface IDiagramEventHandler {
 
+    String NEXT_DIAGRAM_PARAMETER = "nextDiagram";
+
     boolean canHandle(IDiagramInput diagramInput);
 
     void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput);
