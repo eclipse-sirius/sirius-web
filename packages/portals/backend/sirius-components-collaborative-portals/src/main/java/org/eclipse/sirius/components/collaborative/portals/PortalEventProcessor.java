@@ -18,6 +18,7 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
@@ -109,11 +110,14 @@ public class PortalEventProcessor implements IPortalEventProcessor {
     @Override
     public void refresh(ChangeDescription changeDescription) {
         PortalServices portalServices = new PortalServices(this.representationSearchService, this.editingContext);
-        if (changeDescription.getKind().equals(ChangeKind.REPRESENTATION_DELETION) && changeDescription.getInput() instanceof DeleteRepresentationInput deleteRepresentationInput) {
-            var deletedRepresentationId = deleteRepresentationInput.representationId();
-            if (portalServices.referencesRepresentation(this.currentPortal, deletedRepresentationId)) {
-                var newPortal = portalServices.removeRepresentation(this.currentPortal, deletedRepresentationId);
-                this.updatePortal(deleteRepresentationInput, newPortal);
+        if (changeDescription.getKind().equals(ChangeKind.REPRESENTATION_DELETION)) {
+            if (changeDescription.getInput() instanceof DeleteRepresentationInput deleteRepresentationInput) {
+                this.removeRepresentationFromPortal(changeDescription, deleteRepresentationInput.representationId(), portalServices);
+            } else {
+                var representationIdObject = changeDescription.getParameters().get(IRepresentationEventProcessorRegistry.REPRESENTATION_ID);
+                if (representationIdObject instanceof String deletedRepresentationId) {
+                    this.removeRepresentationFromPortal(changeDescription, deletedRepresentationId, portalServices);
+                }
             }
         } else if (changeDescription.getKind().equals(ChangeKind.REPRESENTATION_RENAMING)) {
             // Re-send the portal to all subscribers if one of the embedded representations has been renamed.
@@ -129,6 +133,13 @@ public class PortalEventProcessor implements IPortalEventProcessor {
             }
         } else if (changeDescription.getSourceId().equals(this.currentPortal.getId()) && changeDescription.getParameters().get(IPortalEventHandler.NEXT_PORTAL_PARAMETER) instanceof Portal nextPortal) {
             this.updatePortal(changeDescription.getInput(), nextPortal);
+        }
+    }
+
+    private void removeRepresentationFromPortal(ChangeDescription changeDescription, String deletedRepresentationId, PortalServices portalServices) {
+        if (portalServices.referencesRepresentation(this.currentPortal, deletedRepresentationId)) {
+            var newPortal = portalServices.removeRepresentation(this.currentPortal, deletedRepresentationId);
+            this.updatePortal(changeDescription.getInput(), newPortal);
         }
     }
 

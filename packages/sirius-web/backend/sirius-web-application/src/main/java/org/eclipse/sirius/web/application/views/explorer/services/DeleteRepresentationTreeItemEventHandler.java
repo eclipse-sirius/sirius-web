@@ -12,18 +12,22 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.views.explorer.services;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
-import org.eclipse.sirius.components.collaborative.editingcontext.EditingContextEventProcessor;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.trees.api.IDeleteTreeItemHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
+import org.eclipse.sirius.web.application.UUIDParser;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataDeletionService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -34,6 +38,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class DeleteRepresentationTreeItemEventHandler implements IDeleteTreeItemHandler {
 
+    private final IRepresentationMetadataSearchService representationMetadataSearchService;
+
+    private final IRepresentationMetadataDeletionService representationMetadataDeletionService;
+
+    public DeleteRepresentationTreeItemEventHandler(IRepresentationMetadataSearchService representationMetadataSearchService,
+            IRepresentationMetadataDeletionService representationMetadataDeletionService) {
+        this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
+        this.representationMetadataDeletionService = Objects.requireNonNull(representationMetadataDeletionService);
+    }
+
     @Override
     public boolean canHandle(IEditingContext editingContext, TreeItem treeItem) {
         return treeItem.getKind().startsWith(IRepresentation.KIND_PREFIX);
@@ -41,8 +55,11 @@ public class DeleteRepresentationTreeItemEventHandler implements IDeleteTreeItem
 
     @Override
     public IStatus handle(IEditingContext editingContext, TreeItem treeItem, Tree tree) {
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put(EditingContextEventProcessor.REPRESENTATION_ID, treeItem.getId());
-        return new Success(ChangeKind.REPRESENTATION_TO_DELETE, parameters);
+        return new UUIDParser().parse(treeItem.getId())
+                .filter(this.representationMetadataSearchService::existsById)
+                .map(representationId -> this.representationMetadataDeletionService.delete(null, representationId))
+                .filter(org.eclipse.sirius.web.domain.services.Success.class::isInstance)
+                .map(success -> (IStatus) new Success(ChangeKind.REPRESENTATION_DELETION, Map.of(IRepresentationEventProcessorRegistry.REPRESENTATION_ID, treeItem.getId())))
+                .orElseGet(() -> new Failure(""));
     }
 }

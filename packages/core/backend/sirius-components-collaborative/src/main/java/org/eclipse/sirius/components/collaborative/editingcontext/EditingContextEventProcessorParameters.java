@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,18 +15,16 @@ package org.eclipse.sirius.components.collaborative.editingcontext;
 import java.util.List;
 import java.util.Objects;
 
-import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.annotations.Builder;
-import org.eclipse.sirius.components.collaborative.api.IDanglingRepresentationDeletionService;
+import org.eclipse.sirius.components.collaborative.api.IChangeDescriptionListener;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.components.collaborative.api.IInputPostProcessor;
 import org.eclipse.sirius.components.collaborative.api.IInputPreProcessor;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorComposedFactory;
 import org.eclipse.sirius.components.collaborative.editingcontext.api.IEditingContextEventProcessorExecutorServiceProvider;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
-import org.springframework.context.ApplicationEventPublisher;
+
+import io.micrometer.core.instrument.MeterRegistry;
 
 /**
  * Parameters of the editing context event processor.
@@ -36,11 +34,8 @@ import org.springframework.context.ApplicationEventPublisher;
 public record EditingContextEventProcessorParameters(
         ICollaborativeMessageService messageService,
         IEditingContext editingContext,
-        IEditingContextPersistenceService editingContextPersistenceService,
-        ApplicationEventPublisher applicationEventPublisher,
+        IChangeDescriptionListener changeDescriptionListener,
         List<IEditingContextEventHandler> editingContextEventHandlers,
-        IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory,
-        IDanglingRepresentationDeletionService danglingRepresentationDeletionService,
         IEditingContextEventProcessorExecutorServiceProvider executorServiceProvider,
         List<IInputPreProcessor> inputPreProcessors,
         List<IInputPostProcessor> inputPostProcessors,
@@ -50,11 +45,8 @@ public record EditingContextEventProcessorParameters(
     public EditingContextEventProcessorParameters {
         Objects.requireNonNull(messageService);
         Objects.requireNonNull(editingContext);
-        Objects.requireNonNull(editingContextPersistenceService);
-        Objects.requireNonNull(applicationEventPublisher);
+        Objects.requireNonNull(changeDescriptionListener);
         Objects.requireNonNull(editingContextEventHandlers);
-        Objects.requireNonNull(representationEventProcessorComposedFactory);
-        Objects.requireNonNull(danglingRepresentationDeletionService);
         Objects.requireNonNull(executorServiceProvider);
         Objects.requireNonNull(inputPreProcessors);
         Objects.requireNonNull(inputPostProcessors);
@@ -78,15 +70,9 @@ public record EditingContextEventProcessorParameters(
 
         private IEditingContext editingContext;
 
-        private IEditingContextPersistenceService editingContextPersistenceService;
-
-        private ApplicationEventPublisher applicationEventPublisher;
+        private IChangeDescriptionListener changeDescriptionListener;
 
         private List<IEditingContextEventHandler> editingContextEventHandlers;
-
-        private IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory;
-
-        private IDanglingRepresentationDeletionService danglingRepresentationDeletionService;
 
         private IEditingContextEventProcessorExecutorServiceProvider executorServiceProvider;
 
@@ -110,28 +96,13 @@ public record EditingContextEventProcessorParameters(
             return this;
         }
 
-        public EditingContextEventProcessorParametersBuilder editingContextPersistenceService(IEditingContextPersistenceService editingContextPersistenceService) {
-            this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
-            return this;
-        }
-
-        public EditingContextEventProcessorParametersBuilder applicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
-            this.applicationEventPublisher = Objects.requireNonNull(applicationEventPublisher);
+        public EditingContextEventProcessorParametersBuilder changeDescriptionListener(IChangeDescriptionListener changeDescriptionListener) {
+            this.changeDescriptionListener = Objects.requireNonNull(changeDescriptionListener);
             return this;
         }
 
         public EditingContextEventProcessorParametersBuilder editingContextEventHandlers(List<IEditingContextEventHandler> editingContextEventHandlers) {
             this.editingContextEventHandlers = Objects.requireNonNull(editingContextEventHandlers);
-            return this;
-        }
-
-        public EditingContextEventProcessorParametersBuilder representationEventProcessorComposedFactory(IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory) {
-            this.representationEventProcessorComposedFactory = Objects.requireNonNull(representationEventProcessorComposedFactory);
-            return this;
-        }
-
-        public EditingContextEventProcessorParametersBuilder danglingRepresentationDeletionService(IDanglingRepresentationDeletionService danglingRepresentationDeletionService) {
-            this.danglingRepresentationDeletionService = Objects.requireNonNull(danglingRepresentationDeletionService);
             return this;
         }
 
@@ -159,11 +130,8 @@ public record EditingContextEventProcessorParameters(
             return new EditingContextEventProcessorParameters(
                     this.messageService,
                     this.editingContext,
-                    this.editingContextPersistenceService,
-                    this.applicationEventPublisher,
+                    this.changeDescriptionListener,
                     this.editingContextEventHandlers,
-                    this.representationEventProcessorComposedFactory,
-                    this.danglingRepresentationDeletionService,
                     this.executorServiceProvider,
                     this.inputPreProcessors,
                     this.inputPostProcessors,
