@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -143,11 +143,9 @@ public class ValidationEventProcessor implements IValidationEventProcessor {
     }
 
     private boolean shouldRefresh(ChangeDescription changeDescription) {
-        // @formatter:off
         return this.representationRefreshPolicyRegistry.getRepresentationRefreshPolicy(this.validationDescription)
                 .orElseGet(this::getDefaultRefreshPolicy)
                 .shouldRefresh(changeDescription);
-        // @formatter:on
     }
 
     private IRepresentationRefreshPolicy getDefaultRefreshPolicy() {

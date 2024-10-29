@@ -31,6 +31,7 @@
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4110[#4110] [form] Add layout capabilities for form widgets
 - https://github.com/eclipse-sirius/sirius-web/issues/4177[#4177] [table] Add table representation support
+- https://github.com/eclipse-sirius/sirius-web/issues/4143[#4143] [core] Add postRefresh method in IRepresentationEventProcessor
 
 === Improvements
 
