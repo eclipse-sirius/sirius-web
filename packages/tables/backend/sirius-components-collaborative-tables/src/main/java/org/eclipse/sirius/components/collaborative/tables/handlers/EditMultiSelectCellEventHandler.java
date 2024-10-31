@@ -12,9 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.tables.handlers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
@@ -31,8 +31,9 @@ import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.representations.Failure;
+import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Message;
-import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.AbstractCell;
 import org.eclipse.sirius.components.tables.Column;
@@ -101,10 +102,10 @@ public class EditMultiSelectCellEventHandler implements ITableEventHandler {
                 var optCol = this.tableQueryService.findColumnById(table, cell.getColumnId());
 
                 if (optLine.isPresent() && optCol.isPresent()) {
-                    this.invokeEditCell(cell, optLine.get(), optCol.get(), editingContext, tableDescription, editMultiSelectCellInput.newValues());
+                    IStatus status = this.invokeEditCell(cell, optLine.get(), optCol.get(), editingContext, tableDescription, editMultiSelectCellInput.newValues());
 
                     changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editMultiSelectCellInput.representationId(), editMultiSelectCellInput);
-                    payload = this.getPayload(editMultiSelectCellInput.id());
+                    payload = this.getPayload(editMultiSelectCellInput.id(), status);
                 }
             }
         }
@@ -113,7 +114,7 @@ public class EditMultiSelectCellEventHandler implements ITableEventHandler {
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private void invokeEditCell(AbstractCell cell, Line line, Column column, IEditingContext editingContext, TableDescription tableDescription, List<String> newValues) {
+    private IStatus invokeEditCell(AbstractCell cell, Line line, Column column, IEditingContext editingContext, TableDescription tableDescription, List<String> newValues) {
         var optionalSelf = this.objectService.getObject(editingContext, line.getTargetObjectId());
         if (optionalSelf.isPresent()) {
             Object self = optionalSelf.get();
@@ -122,21 +123,22 @@ public class EditMultiSelectCellEventHandler implements ITableEventHandler {
             variableManager.put(VariableManager.SELF, self);
             variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
             variableManager.put(ColumnDescription.COLUMN_TARGET_OBJECT_ID, column.getTargetObjectId());
-            tableDescription.getCellDescription().getNewCellValueHandler().apply(variableManager, newValues);
             this.logger.debug("Edited cell with id {} to new values {}", cell.getId(), newValues);
+            return tableDescription.getCellDescription().getNewCellValueHandler().apply(variableManager, newValues);
         }
+        return new Failure("The semantic object associated to the line was not found");
     }
 
-    private IPayload getPayload(UUID payloadId) {
-        IPayload payload = null;
+    private IPayload getPayload(UUID payloadId, IStatus status) {
+        IPayload payload;
         List<Message> feedbackMessages = this.feedbackMessageService.getFeedbackMessages();
-        Optional<Message> optionalErrorMessage = feedbackMessages.stream().filter(msg -> MessageLevel.ERROR.equals(msg.level())).findFirst();
-        if (optionalErrorMessage.isPresent()) {
-            payload = new ErrorPayload(payloadId, optionalErrorMessage.get().body(), feedbackMessages);
+        if (status instanceof Failure failure) {
+            List<Message> mergedList = new ArrayList<>(feedbackMessages);
+            mergedList.addAll(failure.getMessages());
+            payload = new ErrorPayload(payloadId, mergedList);
         } else {
             payload = new SuccessPayload(payloadId, feedbackMessages);
         }
         return payload;
     }
-
 }
