@@ -96,6 +96,7 @@ Charts' metadata is only relevant when Charts are used as Representations.
 - https://github.com/eclipse-sirius/sirius-web/issues/2399[#2399] [core] When executing successive sibling model operations inside a tool, their execution context (in particular the value of `self`) now stays the same
 - https://github.com/eclipse-sirius/sirius-web/issues/4117[#4117] [core] Fix URLParser for single-character parameter entries (e.g. identifiers).
 - https://github.com/eclipse-sirius/sirius-web/issues/3681[#3681] [core] Fix the representation rename
+- https://github.com/eclipse-sirius/sirius-web/issues/4149[#4149] [diagram] Fix the synchronization on group tool layout
 
 === New Features
 
