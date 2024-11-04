@@ -53,6 +53,7 @@ const applyResizeToListContain = (
           id: node.id,
           type: 'dimensions',
           resizing: true,
+          setAttributes: true,
           dimensions: { width: change.dimensions?.width - borderWidth, height: node.height ?? 0 },
         });
         newChanges.push(...applyResizeToListContain(node, nodes, change));
