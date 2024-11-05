@@ -1,0 +1,50 @@
+= ADR-173 Add support for forking table description from representation
+
+== Context
+
+On a table representation, we want to be able to modify the specification used as description of this table and then reload the table with this new specification.
+
+== Decision
+
+We will allow users to open a new studio from an opened table representation.
+This new studio will contain a copy of the table description used to instantiate the table.
+After modifying this new studio, the user will be able to re open the previous table representation that will use the updated table description.
+
+=== Back-end
+
+We will implement a new mutation `createForkedStudio` that will fork the description used by the table.
+`createForkedStudio(input: CreateForkedStudioInput!): CreateForkedStudioPayload!`
+
+```
+input CreateForkedStudioInput {
+  id: ID!
+  editingContextId: String!
+  representationId: String!
+}
+```
+
+The data fetcher will then call an event handler that will :
+
+* Dispose the current editing context
+* Create a new Studio that will be a fork of the description used by the representation
+* Update the representation with the representationId given in the input with the new descriptionId
+* Return the url of the newly created studio (so the front-end can redirect to this url)
+
+=== Front-end
+
+We will add an extension point to contribute to the settings menu item.
+One contribution will add a menu item in order to send the createForkedStudio mutation.
+
+== Advantages
+
+* This solution does not require deep modification on how we reload representation.
+
+== Disadvantages
+
+* User Experience: The user that wants to make a change will need to reopen his representation after the changes.
+
+== Status
+
+Accepted
+
+== Consequences

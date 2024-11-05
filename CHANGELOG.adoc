@@ -9,6 +9,7 @@
 === Architectural decision records
 
 - [ADR-172] Add support for Project Data Versioning REST APIs
+- [ADR-173] Add support for forking table description from representation
 
 
 === Deprecation warning
