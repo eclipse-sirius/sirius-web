@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -44,6 +45,10 @@ public final class ColumnDescription {
 
     private Function<VariableManager, List<Object>> semanticElementsProvider;
 
+    private Function<VariableManager, Integer> initialWidthProvider;
+
+    private Predicate<VariableManager> isResizablePredicate;
+
     private ColumnDescription() {
         // Prevent instantiation
     }
@@ -66,6 +71,14 @@ public final class ColumnDescription {
 
     public Function<VariableManager, List<Object>> getSemanticElementsProvider() {
         return this.semanticElementsProvider;
+    }
+
+    public Function<VariableManager, Integer> getInitialWidthProvider() {
+        return this.initialWidthProvider;
+    }
+
+    public Predicate<VariableManager> getIsResizablePredicate() {
+        return this.isResizablePredicate;
     }
 
     public static Builder newColumnDescription(UUID id) {
@@ -96,6 +109,10 @@ public final class ColumnDescription {
 
         private Function<VariableManager, List<Object>> semanticElementsProvider;
 
+        private Function<VariableManager, Integer> initialWidthProvider = variableManager -> 150;
+
+        private Predicate<VariableManager> isResizablePredicate = variableManager -> false;
+
         public Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -121,6 +138,16 @@ public final class ColumnDescription {
             return this;
         }
 
+        public Builder initialWidthProvider(Function<VariableManager, Integer> initialWidthProvider) {
+            this.initialWidthProvider = Objects.requireNonNull(initialWidthProvider);
+            return this;
+        }
+
+        public Builder isResizablePredicate(Predicate<VariableManager> isResizablePredicate) {
+            this.isResizablePredicate = Objects.requireNonNull(isResizablePredicate);
+            return this;
+        }
+
         public ColumnDescription build() {
             ColumnDescription columnDescription = new ColumnDescription();
             columnDescription.id = Objects.requireNonNull(this.id);
@@ -128,7 +155,8 @@ public final class ColumnDescription {
             columnDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             columnDescription.targetObjectKindProvider = Objects.requireNonNull(this.targetObjectKindProvider);
             columnDescription.semanticElementsProvider = Objects.requireNonNull(this.semanticElementsProvider);
-
+            columnDescription.initialWidthProvider = Objects.requireNonNull(this.initialWidthProvider);
+            columnDescription.isResizablePredicate = Objects.requireNonNull(this.isResizablePredicate);
             return columnDescription;
         }
     }

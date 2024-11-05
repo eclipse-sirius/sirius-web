@@ -27,7 +27,8 @@ export const useTableColumns = (
       return {
         id: column.id,
         header: column.label,
-        size: 150,
+        size: column.width ?? column.initialWidth,
+        enableResizing: column.isResizable,
         Cell: ({ row }) => {
           const cell: GQLCell | null = row.original.cells.find((cell) => column.id === cell.columnId) ?? null;
           return (

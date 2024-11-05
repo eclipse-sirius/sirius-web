@@ -15,19 +15,20 @@ package org.eclipse.sirius.web.application.controllers.tables;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
+import com.jayway.jsonpath.JsonPath;
+
 import java.time.Duration;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
-import org.eclipse.sirius.components.collaborative.api.ChangeKind;
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.tables.TableRefreshedEventPayload;
-import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.collaborative.tables.dto.ResizeTableColumnInput;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.tables.Column;
+import org.eclipse.sirius.components.tables.tests.graphql.ResizeTableColumnMutationRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedTableSubscription;
@@ -39,21 +40,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 /**
- * Integration tests of the table representation with a papaya model.
+ * Integration tests of the table's column with a papaya model.
  *
  * @author frouene
  */
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"sirius.web.test.enabled=studio"})
-public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTests {
+public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegrationTests {
 
     private static final String MISSING_TABLE = "Missing table";
 
@@ -64,7 +64,7 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
     private IGivenCreatedTableSubscription givenCreatedTableSubscription;
 
     @Autowired
-    private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+    private ResizeTableColumnMutationRunner resizeTableColumnMutationRunner;
 
 
     @BeforeEach
@@ -84,35 +84,14 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
-    @DisplayName("Given a table representation, when we subscribe to its event, then the representation data are received")
+    @DisplayName("Given a table, when a column resize mutation is triggered, then the representation is refreshed with the new column size")
     @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenTableRepresentationWhenWeSubscribeToItsEventThenTheRepresentationDataAreReceived() {
+    public void givenTableWhenColumnResizeMutationTriggeredThenTheRepresentationIsRefreshedWithNewColumnSize() {
         var flux = this.givenSubscriptionToTable();
 
-        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
-                .filter(TableRefreshedEventPayload.class::isInstance)
-                .map(TableRefreshedEventPayload.class::cast)
-                .map(TableRefreshedEventPayload::table)
-                .ifPresentOrElse(table -> {
-                    assertThat(table).isNotNull();
-                    assertThat(table.getColumns()).hasSize(4);
-                    assertThat(table.getLines()).hasSize(2);
-                }, () -> fail(MISSING_TABLE));
 
-        StepVerifier.create(flux)
-                .consumeNextWith(initialTableContentConsumer)
-                .thenCancel()
-                .verify(Duration.ofSeconds(10));
-    }
-
-    @Test
-    @DisplayName("Given a table, when a refresh is triggered, then the table is refreshed")
-    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenTableWhenRefreshTriggeredThenTableIsRefreshed() {
-        var flux = this.givenSubscriptionToTable();
-
+        var columnRef = new AtomicReference<Column>();
         var tableId = new AtomicReference<String>();
 
         Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
@@ -122,39 +101,38 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
                 .ifPresentOrElse(table -> {
                     assertThat(table).isNotNull();
                     assertThat(table.getColumns()).hasSize(4);
-                    assertThat(table.getLines()).hasSize(2);
-
+                    columnRef.set(table.getColumns().get(0));
+                    assertThat(table.getColumns().get(0).getWidth()).isNull();
                     tableId.set(table.getId());
-                }, () -> fail("Missing table"));
+                }, () -> fail(MISSING_TABLE));
 
-        Runnable refreshTable = () -> {
+        Runnable resizeColumn = () -> {
+            var columnToChange = columnRef.get();
+            var resizeTableColumnInput = new ResizeTableColumnInput(
+                    UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    tableId.get(), tableId.get(), columnToChange.getId().toString(), 50);
+            var result = this.resizeTableColumnMutationRunner.run(resizeTableColumnInput);
 
-            Consumer<IEditingContextEventProcessor> editingContextEventProcessorConsumer = editingContextEventProcessor -> {
-                editingContextEventProcessor.getRepresentationEventProcessors().stream()
-                        .filter(representationEventProcessor -> representationEventProcessor.getRepresentation().getId().equals(tableId.get()))
-                        .findFirst()
-                        .ifPresentOrElse(representationEventProcessor -> {
-                            IInput refreshInput = UUID::randomUUID;
-                            representationEventProcessor.refresh(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, tableId.get(), refreshInput));
-                        }, () -> fail("Missing representation event processor"));
-            };
-
-
-            this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
-                    .filter(editingContextEventProcessor -> editingContextEventProcessor.getEditingContextId().equals(PapayaIdentifiers.PAPAYA_PROJECT.toString()))
-                    .findFirst()
-                    .ifPresentOrElse(editingContextEventProcessorConsumer, () -> fail("Missing editing context event processor"));
-
-
-            TestTransaction.flagForCommit();
-            TestTransaction.end();
-            TestTransaction.start();
+            String typename = JsonPath.read(result, "$.data.resizeTableColumn.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
+
+
+        Consumer<Object> updatedTableContentConsumer = payload -> Optional.of(payload)
+                .filter(TableRefreshedEventPayload.class::isInstance)
+                .map(TableRefreshedEventPayload.class::cast)
+                .map(TableRefreshedEventPayload::table)
+                .ifPresentOrElse(table -> {
+                    assertThat(table).isNotNull();
+                    assertThat(table.getColumns()).hasSize(4);
+                    assertThat(table.getColumns().get(0).getWidth()).isEqualTo(50);
+                }, () -> fail(MISSING_TABLE));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTableContentConsumer)
-                .then(refreshTable)
-                .consumeNextWith(initialTableContentConsumer)
+                .then(resizeColumn)
+                .consumeNextWith(updatedTableContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

@@ -18,6 +18,7 @@ import { makeStyles } from 'tss-react/mui';
 import { ExportAllDataButton } from '../actions/ExportAllDataButton';
 import { TableProps } from './TableContent.types';
 import { useTableColumns } from './useTableColumns';
+import { useTableColumnSizing } from './column/useTableColumnSizing';
 
 const useStyles = makeStyles()((theme) => ({
   rowMain: {
@@ -37,6 +38,7 @@ export const TableContent = memo(({ editingContextId, representationId, table, r
   const { selection, setSelection } = useSelection();
 
   const { columns } = useTableColumns(editingContextId, representationId, table, readOnly);
+  const { columnSizing, setColumnSizing } = useTableColumnSizing(editingContextId, representationId, table);
 
   const muiTable = useMaterialReactTable({
     columns,
@@ -44,6 +46,11 @@ export const TableContent = memo(({ editingContextId, representationId, table, r
     editDisplayMode: 'cell',
     enableEditing: !readOnly,
     enableStickyHeader: true,
+    enableColumnResizing: true,
+    columnResizeMode: 'onEnd',
+    enableSorting: false,
+    onColumnSizingChange: setColumnSizing,
+    state: { columnSizing },
     muiTableBodyRowProps: ({ row }) => {
       return {
         onClick: () => {

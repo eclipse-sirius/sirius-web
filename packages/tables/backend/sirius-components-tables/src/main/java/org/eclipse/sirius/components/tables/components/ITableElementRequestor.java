@@ -19,7 +19,6 @@ import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
 import org.eclipse.sirius.components.tables.descriptions.LineDescription;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Used to find some elements in the previous table.
@@ -31,6 +30,6 @@ public interface ITableElementRequestor {
 
     List<Column> getColumns(Table table);
 
-    Optional<Column> getColumn(Table table, ColumnDescription columnDescription);
+    List<Column> getColumns(Table table, ColumnDescription columnDescription);
 
 }

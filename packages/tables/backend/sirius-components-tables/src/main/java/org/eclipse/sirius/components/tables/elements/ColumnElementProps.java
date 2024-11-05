@@ -22,7 +22,7 @@ import org.eclipse.sirius.components.representations.IProps;
  *
  * @author lfasani
  */
-public record ColumnElementProps(UUID id, UUID descriptionId, String label, String targetObjectId, String targetObjectKind) implements IProps {
+public record ColumnElementProps(UUID id, UUID descriptionId, String label, String targetObjectId, String targetObjectKind, Integer initialWidth, Integer width, boolean resizable) implements IProps {
 
     public static final String TYPE = "Column";
 
@@ -32,6 +32,7 @@ public record ColumnElementProps(UUID id, UUID descriptionId, String label, Stri
         Objects.requireNonNull(descriptionId);
         Objects.requireNonNull(targetObjectId);
         Objects.requireNonNull(targetObjectKind);
+        Objects.requireNonNull(initialWidth);
     }
 
     public static Builder newColumnElementProps(UUID id) {
@@ -55,6 +56,12 @@ public record ColumnElementProps(UUID id, UUID descriptionId, String label, Stri
         private String targetObjectKind;
 
         private String label;
+
+        private Integer initialWidth;
+
+        private Integer width;
+
+        private boolean resizable;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -80,8 +87,23 @@ public record ColumnElementProps(UUID id, UUID descriptionId, String label, Stri
             return this;
         }
 
+        public Builder initialWidth(Integer initialWidth) {
+            this.initialWidth = Objects.requireNonNull(initialWidth);
+            return this;
+        }
+
+        public Builder width(Integer width) {
+            this.width = Objects.requireNonNull(width);
+            return this;
+        }
+
+        public Builder resizable(boolean resizable) {
+            this.resizable = resizable;
+            return this;
+        }
+
         public ColumnElementProps build() {
-            return new ColumnElementProps(this.id, this.descriptionId, this.label, this.targetObjectId, this.targetObjectKind);
+            return new ColumnElementProps(this.id, this.descriptionId, this.label, this.targetObjectId, this.targetObjectKind, this.initialWidth, this.width, this.resizable);
         }
     }
 }

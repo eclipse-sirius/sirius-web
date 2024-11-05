@@ -128,6 +128,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, EStructuralFeature.class).map(featureToDisplayName::get).orElse(""))
                 .targetObjectIdProvider(new ColumnTargetObjectIdProvider())
                 .targetObjectKindProvider(variableManager -> "")
+                .isResizablePredicate(vm -> true)
                 .build();
         return List.of(columnDescription);
     }

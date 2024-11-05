@@ -29,6 +29,9 @@ type Column {
   targetObjectId: ID!
   targetObjectKind: String!
   label: String!
+  initialWidth: Int!
+  width: Int
+  isResizable: Boolean!
 }
 
 type Line {
@@ -94,6 +97,7 @@ extend type Mutation {
   editSelectCell(input: EditSelectCellInput!): EditSelectCellPayload!
   editMultiSelectCell(input: EditMultiSelectCellInput!): EditMultiSelectCellPayload!
   editTextfieldCell(input: EditTextfieldCellInput!): EditTextfieldCellPayload!
+  resizeTableColumn(input: ResizeTableColumnInput!): ResizeTableColumnPayload!
 }
 
 input EditCheckboxCellInput {
@@ -139,3 +143,14 @@ input EditTextfieldCellInput {
 }
 
 union EditTextfieldCellPayload = ErrorPayload | SuccessPayload
+
+input ResizeTableColumnInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  tableId: ID!
+  columnId: ID!
+  width: Int
+}
+
+union ResizeTableColumnPayload = ErrorPayload | SuccessPayload

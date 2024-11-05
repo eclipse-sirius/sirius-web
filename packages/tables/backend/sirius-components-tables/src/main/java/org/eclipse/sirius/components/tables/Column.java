@@ -37,6 +37,12 @@ public final class Column {
 
     private String label;
 
+    private Integer initialWidth;
+
+    private Integer width;
+
+    private boolean resizable;
+
     private Column() {
         // Prevent instantiation
     }
@@ -59,6 +65,18 @@ public final class Column {
 
     public String getLabel() {
         return this.label;
+    }
+
+    public Integer getInitialWidth() {
+        return this.initialWidth;
+    }
+
+    public Integer getWidth() {
+        return this.width;
+    }
+
+    public boolean isResizable() {
+        return this.resizable;
     }
 
     public static Builder newColumn(UUID id) {
@@ -93,6 +111,12 @@ public final class Column {
 
         private String label;
 
+        private Integer initialWidth;
+
+        private Integer width;
+
+        private boolean resizable;
+
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -101,6 +125,9 @@ public final class Column {
             this.id = column.getId();
             this.descriptionId = column.getDescriptionId();
             this.label = column.getLabel();
+            this.initialWidth = column.getInitialWidth();
+            this.width = column.getWidth();
+            this.resizable = column.isResizable();
         }
 
         public Builder descriptionId(UUID descriptionId) {
@@ -123,6 +150,21 @@ public final class Column {
             return this;
         }
 
+        public Builder initialWidth(Integer initialWidth) {
+            this.initialWidth = Objects.requireNonNull(initialWidth);
+            return this;
+        }
+
+        public Builder width(Integer width) {
+            this.width = Objects.requireNonNull(width);
+            return this;
+        }
+
+        public Builder resizable(boolean resizable) {
+            this.resizable = resizable;
+            return this;
+        }
+
         public Column build() {
             Column column = new Column();
             column.id = Objects.requireNonNull(this.id);
@@ -130,6 +172,9 @@ public final class Column {
             column.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             column.targetObjectKind = Objects.requireNonNull(this.targetObjectKind);
             column.label = Objects.requireNonNull(this.label);
+            column.initialWidth = Objects.requireNonNull(this.initialWidth);
+            column.width = this.width; // Optional on purpose
+            column.resizable = this.resizable;
             return column;
         }
     }

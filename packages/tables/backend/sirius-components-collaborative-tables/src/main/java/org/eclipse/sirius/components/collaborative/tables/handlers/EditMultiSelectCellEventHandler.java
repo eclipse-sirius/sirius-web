@@ -20,6 +20,7 @@ import java.util.UUID;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
+import org.eclipse.sirius.components.collaborative.tables.api.ITableContext;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableInput;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableQueryService;
@@ -37,7 +38,6 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.Column;
 import org.eclipse.sirius.components.tables.ICell;
 import org.eclipse.sirius.components.tables.Line;
-import org.eclipse.sirius.components.tables.Table;
 import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 import org.slf4j.Logger;
@@ -85,7 +85,7 @@ public class EditMultiSelectCellEventHandler implements ITableEventHandler {
     }
 
     @Override
-    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, Table table, TableDescription tableDescription, ITableInput tableInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, ITableContext tableContext, TableDescription tableDescription, ITableInput tableInput) {
         this.counter.increment();
 
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, tableInput.representationId(), tableInput);
@@ -93,12 +93,12 @@ public class EditMultiSelectCellEventHandler implements ITableEventHandler {
         IPayload payload = new ErrorPayload(tableInput.id(), message);
 
         if (tableInput instanceof EditMultiSelectCellInput editMultiSelectCellInput) {
-            var optCell = this.tableQueryService.findCellById(table, UUID.fromString(editMultiSelectCellInput.cellId()));
+            var optCell = this.tableQueryService.findCellById(tableContext.getTable(), UUID.fromString(editMultiSelectCellInput.cellId()));
 
             if (optCell.isPresent()) {
                 ICell cell = optCell.get();
-                var optLine = this.tableQueryService.findLineByCellId(table, cell.getId());
-                var optCol = this.tableQueryService.findColumnById(table, cell.getColumnId());
+                var optLine = this.tableQueryService.findLineByCellId(tableContext.getTable(), cell.getId());
+                var optCol = this.tableQueryService.findColumnById(tableContext.getTable(), cell.getColumnId());
 
                 if (optLine.isPresent() && optCol.isPresent()) {
                     this.invokeEditCell(cell, optLine.get(), optCol.get(), editingContext, tableDescription, editMultiSelectCellInput.newValues());

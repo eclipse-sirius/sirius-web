@@ -110,12 +110,19 @@ public class TableElementFactory implements IElementFactory {
     private Column instantiateColumn(IProps props) {
         if (props instanceof ColumnElementProps columnElementProps) {
 
-            return Column.newColumn(columnElementProps.id())
+            var builder = Column.newColumn(columnElementProps.id())
                     .descriptionId(columnElementProps.descriptionId())
                     .label(columnElementProps.label())
                     .targetObjectId(columnElementProps.targetObjectId())
                     .targetObjectKind(columnElementProps.targetObjectKind())
-                    .build();
+                    .initialWidth(columnElementProps.initialWidth())
+                    .resizable(columnElementProps.resizable());
+
+            if (columnElementProps.width() != null) {
+                builder.width(columnElementProps.width());
+            }
+
+            return builder.build();
         }
         return null;
     }

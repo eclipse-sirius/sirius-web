@@ -35,7 +35,10 @@ export const getTableEventSubscription = `
             id
             label
             targetObjectId
-            targetObjectKind 
+            targetObjectKind
+            initialWidth
+            width
+            isResizable 
           }
           lines {
             id

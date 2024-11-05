@@ -12,13 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.tables.components;
 
+import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.Column;
 import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
+import org.eclipse.sirius.components.tables.events.ITableEvent;
 import org.eclipse.sirius.components.tables.renderer.TableRenderingCache;
 
 /**
@@ -26,36 +27,14 @@ import org.eclipse.sirius.components.tables.renderer.TableRenderingCache;
  *
  * @author arichard
  */
-public class ColumnComponentProps implements IProps {
+public record ColumnComponentProps(VariableManager variableManager, ColumnDescription columnDescription, List<Column> previousColumns, TableRenderingCache cache,
+                                   List<ITableEvent> tableEvents) implements IProps {
 
-    private final VariableManager variableManager;
-
-    private final ColumnDescription columnDescription;
-
-    private final Optional<Column> previousColumn;
-
-    private final TableRenderingCache cache;
-
-    public ColumnComponentProps(VariableManager variableManager, ColumnDescription columnDescription, Optional<Column> previousColumn, TableRenderingCache cache) {
-        this.variableManager = Objects.requireNonNull(variableManager);
-        this.columnDescription = Objects.requireNonNull(columnDescription);
-        this.previousColumn = Objects.requireNonNull(previousColumn);
-        this.cache = Objects.requireNonNull(cache);
-    }
-
-    public VariableManager getVariableManager() {
-        return this.variableManager;
-    }
-
-    public ColumnDescription getColumnDescription() {
-        return this.columnDescription;
-    }
-
-    public Optional<Column> getPreviousColumn() {
-        return this.previousColumn;
-    }
-
-    public TableRenderingCache getCache() {
-        return this.cache;
+    public ColumnComponentProps {
+        Objects.requireNonNull(variableManager);
+        Objects.requireNonNull(columnDescription);
+        Objects.requireNonNull(previousColumns);
+        Objects.requireNonNull(cache);
+        Objects.requireNonNull(tableEvents);
     }
 }
