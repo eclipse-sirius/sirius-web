@@ -17,13 +17,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { useStore } from '../../representation/useStore';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 
-// Compute a deterministic key from a selection
-const selectionKey = (entries: SelectionEntry[]) => {
-  return JSON.stringify(
-    entries.map((selectionEntry) => selectionEntry.id).sort((id1: string, id2: string) => id1.localeCompare(id2))
-  );
-};
-
 export const useDiagramSelection = (onShiftSelection: boolean): void => {
   const { selection, setSelection } = useSelection();
   const [shiftSelection, setShiftSelection] = useState<SelectionEntry[]>([]);
@@ -31,107 +24,82 @@ export const useDiagramSelection = (onShiftSelection: boolean): void => {
   const { fitView } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { getNodes, setNodes, getEdges, setEdges } = useStore();
 
-  // Called when the worbench-level selection is changed.
-  // Apply it on our diagram by selecting exactly the diagram elements
-  // present which correspond to the workbench-selected semantic elements.
   useEffect(() => {
-    const allDiagramElements = [...getNodes(), ...getEdges()];
-    const displayedSemanticElements: Set<string> = new Set([
+    const diagramElementIds: string[] = [
       ...getNodes().map((node) => node.data.targetObjectId),
       ...getEdges().map((edge) => edge.data?.targetObjectId ?? ''),
-    ]);
-    const displayedSemanticElementsToSelect = selection.entries
+    ];
+
+    const selectionDiagramEntryIds = selection.entries
       .map((entry) => entry.id)
-      .filter((id) => displayedSemanticElements.has(id))
+      .filter((id) => diagramElementIds.includes(id))
       .sort((id1: string, id2: string) => id1.localeCompare(id2));
-
-    const semanticElementsAlreadySelectedOnDiagram = allDiagramElements
-      .filter((element) => element.selected)
-      .map((element) => element.data?.targetObjectId ?? '')
-      .sort((id1: string, id2: string) => id1.localeCompare(id2));
-
-    if (
-      JSON.stringify(displayedSemanticElementsToSelect) !== JSON.stringify(semanticElementsAlreadySelectedOnDiagram)
-    ) {
-      const nodesToReveal: Set<string> = new Set();
-      const newNodes = getNodes().map((node) => {
-        const selected = displayedSemanticElementsToSelect.includes(node.data.targetObjectId);
-        const newNode = { ...node, selected };
-        if (selected) {
-          nodesToReveal.add(newNode.id);
-        }
-        return newNode;
+    const selectedDiagramElementIds = [
+      ...new Set(
+        [...getNodes(), ...getEdges()]
+          .filter((element) => element.selected)
+          .map((element) => element.data?.targetObjectId ?? '')
+      ),
+    ];
+    selectedDiagramElementIds.sort((id1: string, id2: string) => id1.localeCompare(id2));
+    if (JSON.stringify(selectionDiagramEntryIds) !== JSON.stringify(selectedDiagramElementIds)) {
+      const newNodeSelection = getNodes().map((node) => {
+        return { ...node, selected: selectionDiagramEntryIds.includes(node.data.targetObjectId) };
       });
-      const newEdges = getEdges().map((edge) => {
-        const selected = displayedSemanticElementsToSelect.includes(edge.data ? edge.data.targetObjectId : '');
-        const newEdge = { ...edge, selected };
-        if (selected) {
-          // React Flow does not support "fit on edge", so include its source & target nodes
-          // to ensure the edge is visible and in context
-          nodesToReveal.add(newEdge.source);
-          nodesToReveal.add(newEdge.target);
-        }
-        return newEdge;
+      const newEdgeSelection = getEdges().map((edge) => {
+        return { ...edge, selected: selectionDiagramEntryIds.includes(edge.data ? edge.data.targetObjectId : '') };
       });
 
-      setEdges(newEdges);
-      setNodes(newNodes);
+      setEdges(newEdgeSelection);
+      setNodes(newNodeSelection);
 
-      fitView({ nodes: getNodes().filter((node) => nodesToReveal.has(node.id)), maxZoom: 1.5, duration: 1000 });
+      const fitViewNodes = newNodeSelection.filter((node) => {
+        // React Flow does not support "fit on edge", so fit on its source & target nodes to ensure it is visible and in context
+        return (
+          node.selected ||
+          newEdgeSelection
+            .filter((edge) => edge.selected)
+            .flatMap((edge) => [edge.source, edge.target])
+            .includes(node.id)
+        );
+      });
+      fitView({ nodes: fitViewNodes, maxZoom: 1.5, duration: 1000 });
     }
   }, [selection]);
 
   const onChange = useCallback(
     ({ nodes, edges }) => {
-      const semanticElementsDisplayedOnDiagram: Set<string> = new Set([
+      const diagramElementIds: string[] = [
         ...getNodes().map((node) => node.data.targetObjectId),
         ...getEdges().map((edge) => edge.data?.targetObjectId ?? ''),
-      ]);
-
-      const semanticElementsSelectedOnDiagram: Set<string> = new Set([
-        ...nodes.map((node) => node.data.targetObjectId),
-        ...edges.map((edge) => edge.data?.targetObjectId ?? ''),
-      ]);
-
-      const semanticElementsUnselectedOnDiagram: Set<string> = new Set(
-        [...semanticElementsDisplayedOnDiagram].filter((id) => !semanticElementsSelectedOnDiagram.has(id))
-      );
-
-      const semanticElementsSelectedInWorkbench: Set<string> = new Set(
-        selection.entries
-          .filter((entry) => entry.kind.startsWith('siriusComponents://semantic?'))
-          .map((entry) => entry.id)
-      );
-
-      const nextSemanticElementsToSelect: Set<string> = new Set(
-        [...semanticElementsSelectedOnDiagram, ...semanticElementsSelectedInWorkbench].filter(
-          (id) => !semanticElementsUnselectedOnDiagram.has(id)
-        )
-      );
-
-      const selectionEntriesFromDiagram: SelectionEntry[] = [...nodes, ...edges].map((node) => {
-        const { targetObjectId, targetObjectKind } = node.data;
-        return {
-          id: targetObjectId,
-          kind: targetObjectKind,
-        };
-      });
-      const selectionEntriesFromWorkbench: SelectionEntry[] = selection.entries.filter(
-        (entry) => entry.kind.startsWith('siriusComponents://semantic?') && nextSemanticElementsToSelect.has(entry.id)
-      );
-
-      const nextSelectionEntries = [...selectionEntriesFromDiagram];
-      selectionEntriesFromWorkbench.forEach((candidate) => {
-        if (!nextSelectionEntries.find((entry) => entry.id === candidate.id)) {
-          nextSelectionEntries.push(candidate);
+      ];
+      const selectionEntries: SelectionEntry[] = [...nodes, ...edges].reduce((uniqueIds, node) => {
+        const { targetObjectId, targetObjectKind, targetObjectLabel } = node.data;
+        const existingEntry = uniqueIds.find((entry: SelectionEntry) => entry.id === targetObjectId);
+        if (!existingEntry) {
+          uniqueIds.push({
+            id: targetObjectId,
+            kind: targetObjectKind,
+            label: targetObjectLabel,
+          });
         }
-      });
+        return uniqueIds;
+      }, []);
 
-      if (selectionKey(nextSelectionEntries) !== selectionKey(selection.entries)) {
+      const selectionDiagramEntryIds = selection.entries
+        .map((selectionEntry) => selectionEntry.id)
+        .filter((id) => diagramElementIds.includes(id))
+        .sort((id1: string, id2: string) => id1.localeCompare(id2));
+
+      const selectedDiagramElementIds = selectionEntries
+        .map((entry) => entry.id)
+        .sort((id1: string, id2: string) => id1.localeCompare(id2));
+
+      if (JSON.stringify(selectedDiagramElementIds) !== JSON.stringify(selectionDiagramEntryIds)) {
         if (onShiftSelection) {
-          setShiftSelection(nextSelectionEntries);
+          setShiftSelection(selectionEntries);
         } else {
-          setSelection({ entries: nextSelectionEntries });
+          setSelection({ entries: selectionEntries });
         }
       }
     },
