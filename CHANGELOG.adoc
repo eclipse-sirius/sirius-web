@@ -29,6 +29,7 @@
 - [ADR-169] Compute the icon of a representation
 - [ADR-170] Add support for representations in the Details View
 - [ADR-171] Add support for Sorting and Filtering in Tables
+- [ADR-172] Add support for forking table description from representation
 
 === Deprecation warning
 
