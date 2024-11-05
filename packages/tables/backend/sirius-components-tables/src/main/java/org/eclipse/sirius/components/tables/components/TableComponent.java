@@ -42,9 +42,9 @@ public class TableComponent implements IComponent {
 
     @Override
     public Element render() {
-        VariableManager variableManager = this.props.getVariableManager();
-        TableDescription tableDescription = this.props.getTableDescription();
-        Optional<Table> optionalPreviousTable = this.props.getPreviousTable();
+        VariableManager variableManager = this.props.variableManager();
+        TableDescription tableDescription = this.props.tableDescription();
+        Optional<Table> optionalPreviousTable = this.props.previousTable();
 
         String id = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class).orElseGet(() -> UUID.randomUUID().toString());
         String targetObjectId = tableDescription.getTargetObjectIdProvider().apply(variableManager);
@@ -56,8 +56,8 @@ public class TableComponent implements IComponent {
 
         var childrenColumns = tableDescription.getColumnDescriptions().stream()
                 .map(columnDescription -> {
-                    var previousColumn = optionalPreviousTable.flatMap(previousTable -> tableElementRequestor.getColumn(previousTable, columnDescription));
-                    var columnComponentProps = new ColumnComponentProps(variableManager, columnDescription, previousColumn, cache);
+                    var previousColumns = optionalPreviousTable.map(previousTable -> tableElementRequestor.getColumns(previousTable, columnDescription)).orElse(List.of());
+                    var columnComponentProps = new ColumnComponentProps(variableManager, columnDescription, previousColumns, cache, this.props.tableEvents());
                     return new Element(ColumnComponent.class, columnComponentProps);
                 }).toList();
 

@@ -125,6 +125,8 @@ public class ProjectTableRepresentationDescriptionProvider implements IEditingCo
                 .headerLabelProvider(headerLabelProvider)
                 .headerIconURLsProvider(variableManager -> List.of())
                 .headerIndexLabelProvider(variableManager -> "")
+                .isResizablePredicate(variableManager -> false)
+                .initialWidthProvider(variableManager -> -1)
                 .build();
         return List.of(columnDescription);
     }

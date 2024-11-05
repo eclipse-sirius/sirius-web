@@ -42,6 +42,10 @@ public final class Column {
 
     private String headerIndexLabel;
 
+    private int width;
+
+    private boolean resizable;
+
     private Column() {
         // Prevent instantiation
     }
@@ -72,6 +76,14 @@ public final class Column {
 
     public String getHeaderIndexLabel() {
         return this.headerIndexLabel;
+    }
+
+    public int getWidth() {
+        return this.width;
+    }
+
+    public boolean isResizable() {
+        return this.resizable;
     }
 
     public static Builder newColumn(UUID id) {
@@ -105,6 +117,10 @@ public final class Column {
         private List<String> headerIconURLs;
 
         private String headerIndexLabel;
+
+        private int width;
+
+        private boolean resizable;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -140,6 +156,16 @@ public final class Column {
             return this;
         }
 
+        public Builder width(int width) {
+            this.width = width;
+            return this;
+        }
+
+        public Builder resizable(boolean resizable) {
+            this.resizable = resizable;
+            return this;
+        }
+
         public Column build() {
             Column column = new Column();
             column.id = Objects.requireNonNull(this.id);
@@ -149,6 +175,8 @@ public final class Column {
             column.headerLabel = Objects.requireNonNull(this.headerLabel);
             column.headerIconURLs = Objects.requireNonNull(this.headerIconURLs);
             column.headerIndexLabel = Objects.requireNonNull(this.headerIndexLabel);
+            column.width = this.width;
+            column.resizable = this.resizable;
             return column;
         }
     }

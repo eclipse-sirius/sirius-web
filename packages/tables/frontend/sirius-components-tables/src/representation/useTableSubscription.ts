@@ -38,7 +38,9 @@ export const getTableEventSubscription = `
             headerIconURLs
             headerIndexLabel
             targetObjectId
-            targetObjectKind 
+            targetObjectKind
+            width
+            isResizable 
           }
           lines {
             id

@@ -55,7 +55,7 @@ public class TableWidgetComponent implements IComponent {
         Boolean readOnly = tableWidgetDescription.getIsReadOnlyProvider().apply(variableManager);
 
         Element tableElement = new Element(TableComponent.class,
-                new TableComponentProps(variableManager, tableWidgetDescription.getTableDescription(), Optional.empty()));
+                new TableComponentProps(variableManager, tableWidgetDescription.getTableDescription(), Optional.empty(), List.of()));
 
         List<Element> children = new ArrayList<>();
         children.add(tableElement);

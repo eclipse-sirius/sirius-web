@@ -129,7 +129,10 @@ public class TableElementFactory implements IElementFactory {
                     .headerIndexLabel(columnElementProps.headerIndexLabel())
                     .targetObjectId(columnElementProps.targetObjectId())
                     .targetObjectKind(columnElementProps.targetObjectKind())
+                    .width(columnElementProps.width())
+                    .resizable(columnElementProps.resizable())
                     .build();
+
         }
         return null;
     }

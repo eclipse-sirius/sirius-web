@@ -30,7 +30,7 @@ public record ColumnElementProps(
         List<String> headerIconURLs,
         String headerIndexLabel,
         String targetObjectId,
-        String targetObjectKind) implements IProps {
+        String targetObjectKind, int width, boolean resizable) implements IProps {
 
     public static final String TYPE = "Column";
 
@@ -70,6 +70,10 @@ public record ColumnElementProps(
 
         private String headerIndexLabel;
 
+        private int width;
+
+        private boolean resizable;
+
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -104,8 +108,19 @@ public record ColumnElementProps(
             return this;
         }
 
+        public Builder width(int width) {
+            this.width = width;
+            return this;
+        }
+
+        public Builder resizable(boolean resizable) {
+            this.resizable = resizable;
+            return this;
+        }
+
         public ColumnElementProps build() {
-            return new ColumnElementProps(this.id, this.descriptionId, this.headerLabel, this.headerIconURLs, this.headerIndexLabel, this.targetObjectId, this.targetObjectKind);
+            return new ColumnElementProps(this.id, this.descriptionId, this.headerLabel, this.headerIconURLs, this.headerIndexLabel, this.targetObjectId, this.targetObjectKind, this.width,
+                    this.resizable);
         }
     }
 }

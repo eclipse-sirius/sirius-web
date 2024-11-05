@@ -233,6 +233,8 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
                 .headerLabelProvider(headerLabelProvider)
                 .headerIconURLsProvider(variableManager -> List.of())
                 .headerIndexLabelProvider(variableManager -> "")
+                .initialWidthProvider(variableManager -> -1)
+                .isResizablePredicate(variableManager -> false)
                 .build();
         return List.of(columnDescription);
     }

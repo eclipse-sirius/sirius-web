@@ -22,8 +22,10 @@ import org.eclipse.sirius.components.representations.Fragment;
 import org.eclipse.sirius.components.representations.FragmentProps;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.tables.Column;
 import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
 import org.eclipse.sirius.components.tables.elements.ColumnElementProps;
+import org.eclipse.sirius.components.tables.events.ResizeTableColumnEvent;
 
 /**
  * The component used to render lines.
@@ -40,8 +42,8 @@ public class ColumnComponent implements IComponent {
 
     @Override
     public Element render() {
-        VariableManager variableManager = this.props.getVariableManager();
-        ColumnDescription columnDescription = this.props.getColumnDescription();
+        VariableManager variableManager = this.props.variableManager();
+        ColumnDescription columnDescription = this.props.columnDescription();
 
         List<Object> elements = columnDescription.getSemanticElementsProvider().apply(variableManager);
 
@@ -54,7 +56,7 @@ public class ColumnComponent implements IComponent {
     }
 
     private Element doRender(VariableManager variableManager, Object object, int index) {
-        ColumnDescription columnDescription = this.props.getColumnDescription();
+        ColumnDescription columnDescription = this.props.columnDescription();
 
         VariableManager columnVariableManager = variableManager.createChild();
         columnVariableManager.put(VariableManager.SELF, object);
@@ -66,24 +68,37 @@ public class ColumnComponent implements IComponent {
 
         List<String> headerIconURLs = columnDescription.getHeaderIconURLsProvider().apply(columnVariableManager);
         String headerIndexLabel = columnDescription.getHeaderIndexLabelProvider().apply(columnVariableManager);
-
+        Integer initialWidth = columnDescription.getInitialWidthProvider().apply(columnVariableManager);
+        boolean resizable = columnDescription.getIsResizablePredicate().test(columnVariableManager);
         UUID columnId = this.computeColumnId(targetObjectId);
-        this.props.getCache().putColumnObject(columnId, object);
+        this.props.cache().putColumnObject(columnId, object);
 
-        var columnElementProps = ColumnElementProps.newColumnElementProps(columnId)
+        var width = this.props.tableEvents().stream()
+                .filter(ResizeTableColumnEvent.class::isInstance)
+                .map(ResizeTableColumnEvent.class::cast)
+                .filter(resizeTableColumnEvent -> resizeTableColumnEvent.columnId().equals(columnId.toString()))
+                .findFirst()
+                .map(ResizeTableColumnEvent::width)
+                .orElseGet(() -> this.props.previousColumns().stream()
+                        .filter(column -> column.getId().equals(columnId))
+                        .map(Column::getWidth)
+                        .findFirst().orElse(initialWidth));
+
+        ColumnElementProps.Builder columnElementProps = ColumnElementProps.newColumnElementProps(columnId)
                 .descriptionId(columnDescription.getId())
                 .headerLabel(headerLabel)
                 .headerIconURLs(headerIconURLs)
                 .headerIndexLabel(headerIndexLabel)
                 .targetObjectId(targetObjectId)
                 .targetObjectKind(targetObjectKind)
-                .build();
+                .resizable(resizable)
+                .width(width);
 
-        return new Element(ColumnElementProps.TYPE, columnElementProps);
+        return new Element(ColumnElementProps.TYPE, columnElementProps.build());
     }
 
     private UUID computeColumnId(String targetObjectId) {
-        ColumnDescription columnDescription = this.props.getColumnDescription();
+        ColumnDescription columnDescription = this.props.columnDescription();
 
         String rawIdentifier = columnDescription.getId().toString() + targetObjectId;
         return UUID.nameUUIDFromBytes(rawIdentifier.getBytes());

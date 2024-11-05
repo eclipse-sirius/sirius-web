@@ -15,6 +15,7 @@ import Box from '@mui/material/Box';
 import { MaterialReactTable, MRT_TableOptions, useMaterialReactTable } from 'material-react-table';
 import { memo } from 'react';
 import { SettingsButton } from '../actions/SettingsButton';
+import { useTableColumnSizing } from '../columns/useTableColumnSizing';
 import { RowHeader } from '../rows/RowHeader';
 import { GQLLine, TableProps } from './TableContent.types';
 import { useTableColumns } from './useTableColumns';
@@ -23,6 +24,7 @@ export const TableContent = memo(({ editingContextId, representationId, table, r
   const { selection, setSelection } = useSelection();
 
   const { columns } = useTableColumns(editingContextId, representationId, table, readOnly);
+  const { columnSizing, setColumnSizing } = useTableColumnSizing(editingContextId, representationId, table);
 
   const tableOptions: MRT_TableOptions<GQLLine> = {
     columns,
@@ -31,6 +33,11 @@ export const TableContent = memo(({ editingContextId, representationId, table, r
     enableEditing: !readOnly,
     enableStickyHeader: true,
     enableRowActions: true,
+    enableColumnResizing: true,
+    columnResizeMode: 'onEnd',
+    enableSorting: false,
+    onColumnSizingChange: setColumnSizing,
+    state: { columnSizing },
     muiTableBodyRowProps: ({ row }) => {
       return {
         onClick: () => {
@@ -52,6 +59,7 @@ export const TableContent = memo(({ editingContextId, representationId, table, r
     displayColumnDefOptions: {
       'mrt-row-actions': {
         header: '',
+        size: 120,
       },
     },
     renderRowActions: ({ row }) => <RowHeader row={row.original} />,
