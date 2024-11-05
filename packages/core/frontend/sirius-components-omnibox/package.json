@@ -42,8 +42,13 @@
     "xstate": "4.32.1"
   },
   "devDependencies": {
+    "@apollo/client": "3.10.4",
     "@eclipse-sirius/sirius-components-core": "*",
     "@eclipse-sirius/sirius-components-tsconfig": "*",
+    "@xstate/react": "3.0.0",
+    "graphql": "16.8.1",
+    "tss-react": "4.9.7",
+    "xstate": "4.32.1",
     "@mui/icons-material": "5.15.19",
     "@mui/material": "5.15.19",
     "@types/node": "20.12.12",

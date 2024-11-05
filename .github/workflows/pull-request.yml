@@ -57,3 +57,8 @@ jobs:
         env:
           GITHUB_EVENT: ${{ toJSON(github.event) }}
         run: node scripts/check-ts.js
+
+      - name: Check that the frontend dependencies are ok
+        env:
+          GITHUB_EVENT: ${{ toJSON(github.event) }}
+        run: node scripts/check-frontend-dependencies.js
