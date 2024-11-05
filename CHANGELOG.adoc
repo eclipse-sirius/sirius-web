@@ -116,6 +116,7 @@ This is now fixed.
 - Add custom bending points to edges
 - Add support for draggable labels
 - Improve form property section layout
+- Update table description from representation
 
 
 === Architectural decision records
