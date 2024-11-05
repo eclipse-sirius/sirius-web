@@ -1,0 +1,45 @@
+= (M) Shape
+
+== Problem
+
+On a table representation, we want to be able to modify the specification used as description of a table and then reload the table with this new specification.
+
+== Key Result
+
+Enable user to modify the description used by a table representation and update existing representation with the new description.
+From a table representation, an user will be able to click a setting button to be redirected to a new studio that contain the description of the current table.
+After updating this new studio, the user can go back to his previous representation and find it updated with the new description.
+Other users viewing the table will be redirected to the updated representation.
+
+=== Scenario
+
+==== An user wants to modify the description used by the table he's viewing
+
+* The user open a table representation
+* The user click on the setting button
+* He is redirected to a new studio containing a fork of the table description used to create the representation he had open
+* He does some modifications to the studio
+* He open the same table representation
+* The table is now taking the new studio as description
+
+==== An user is viewing a table that is forked by another
+
+* As soon as the table is forked by another user, the current user is redirected to the new instance
+* The current limitation then apply meaning that the editing context will need to be disposed before seeing the changes
+
+==== Another user is trying to make a fork
+
+* The representation will always be described by the last fork
+
+=== Breadboarding
+
+
+=== Cutting backs
+
+* When working with several users on the same representation, everybody will use the newly updated representation.
+
+== Rabbit holes
+
+* This solution will only work with descriptions declared with a view or the builder API.
+
+== No-gos
