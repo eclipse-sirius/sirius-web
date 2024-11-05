@@ -39,6 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.core.publisher.Flux;
@@ -64,6 +65,7 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
 
     @Autowired
     private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+
 
     @BeforeEach
     public void beforeEach() {
@@ -121,6 +123,7 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
                     assertThat(table).isNotNull();
                     assertThat(table.getColumns()).hasSize(5);
                     assertThat(table.getLines()).hasSize(2);
+
                     tableId.set(table.getId());
                 }, () -> fail("Missing table"));
 
@@ -135,10 +138,17 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
                             representationEventProcessor.refresh(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, tableId.get(), refreshInput));
                         }, () -> fail("Missing representation event processor"));
             };
+
+
             this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
                     .filter(editingContextEventProcessor -> editingContextEventProcessor.getEditingContextId().equals(PapayaIdentifiers.PAPAYA_PROJECT.toString()))
                     .findFirst()
                     .ifPresentOrElse(editingContextEventProcessorConsumer, () -> fail("Missing editing context event processor"));
+
+
+            TestTransaction.flagForCommit();
+            TestTransaction.end();
+            TestTransaction.start();
         };
 
         StepVerifier.create(flux)

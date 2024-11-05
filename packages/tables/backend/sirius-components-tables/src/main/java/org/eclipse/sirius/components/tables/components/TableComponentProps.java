@@ -12,44 +12,27 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.tables.components;
 
-import org.eclipse.sirius.components.tables.Table;
-import org.eclipse.sirius.components.tables.descriptions.TableDescription;
-
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.tables.Table;
+import org.eclipse.sirius.components.tables.descriptions.TableDescription;
+import org.eclipse.sirius.components.tables.events.ITableEvent;
 
 /**
  * The props of the table component.
  *
  * @author arichard
  */
-public class TableComponentProps implements IProps {
+public record TableComponentProps(VariableManager variableManager, TableDescription tableDescription, Optional<Table> previousTable, List<ITableEvent> tableEvents) implements IProps {
 
-    private final VariableManager variableManager;
-
-    private final TableDescription tableDescription;
-
-    private final Optional<Table> previousTable;
-
-    public TableComponentProps(VariableManager variableManager, TableDescription tableDescription, Optional<Table> previousTable) {
+    public TableComponentProps(VariableManager variableManager, TableDescription tableDescription, Optional<Table> previousTable, List<ITableEvent> tableEvents) {
         this.variableManager = Objects.requireNonNull(variableManager);
         this.tableDescription = Objects.requireNonNull(tableDescription);
         this.previousTable = Objects.requireNonNull(previousTable);
+        this.tableEvents = Objects.requireNonNull(tableEvents);
     }
-
-    public VariableManager getVariableManager() {
-        return this.variableManager;
-    }
-
-    public TableDescription getTableDescription() {
-        return this.tableDescription;
-    }
-
-    public Optional<Table> getPreviousTable() {
-        return this.previousTable;
-    }
-
 }

@@ -18,6 +18,7 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
@@ -44,6 +45,8 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
+    private final IRepresentationPersistenceService representationPersistenceService;
+
     private final IObjectService objectService;
 
     private final List<ITableEventHandler> tableEventHandlers;
@@ -52,11 +55,12 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
 
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
-    public TableEventProcessorFactory(IRepresentationSearchService representationSearchService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
+    public TableEventProcessorFactory(IRepresentationSearchService representationSearchService, IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationPersistenceService representationPersistenceService,
             IObjectService objectService, List<ITableEventHandler> tableEventHandlers, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry,
             ISubscriptionManagerFactory subscriptionManagerFactory) {
         this.representationSearchService = Objects.requireNonNull(representationSearchService);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+        this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
         this.objectService = Objects.requireNonNull(objectService);
         this.tableEventHandlers = Objects.requireNonNull(tableEventHandlers);
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
@@ -87,8 +91,8 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
                         .targetObject(object)
                         .build();
 
-                IRepresentationEventProcessor tableEventProcessor = new TableEventProcessor(editingContext, tableCreationParameters, this.tableEventHandlers,
-                        this.subscriptionManagerFactory.create(), new SimpleMeterRegistry(), this.representationRefreshPolicyRegistry);
+                IRepresentationEventProcessor tableEventProcessor = new TableEventProcessor(tableCreationParameters, this.tableEventHandlers, new TableContext(table),
+                        this.subscriptionManagerFactory.create(), new SimpleMeterRegistry(), this.representationRefreshPolicyRegistry, this.representationPersistenceService);
                 return Optional.of(tableEventProcessor);
             }
         }

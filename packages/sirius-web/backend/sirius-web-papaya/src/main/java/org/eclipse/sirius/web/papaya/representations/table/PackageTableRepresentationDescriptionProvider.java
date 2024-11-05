@@ -141,6 +141,8 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .headerIndexLabelProvider(variableManager -> "")
                 .targetObjectIdProvider(new ColumnTargetObjectIdProvider())
                 .targetObjectKindProvider(variableManager -> "")
+                .initialWidthProvider(variableManager -> 130)
+                .isResizablePredicate(variableManager -> false)
                 .build();
 
         Function<VariableManager, String> headerLabelProvider = variableManager -> variableManager.get(VariableManager.SELF, EStructuralFeature.class)
@@ -162,6 +164,8 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .headerIndexLabelProvider(headerIndexLabelProvider)
                 .targetObjectIdProvider(new ColumnTargetObjectIdProvider())
                 .targetObjectKindProvider(variableManager -> "")
+                .initialWidthProvider(variableManager -> 180)
+                .isResizablePredicate(variableManager -> true)
                 .build();
         return List.of(iconColumnDescription, columnDescription);
     }

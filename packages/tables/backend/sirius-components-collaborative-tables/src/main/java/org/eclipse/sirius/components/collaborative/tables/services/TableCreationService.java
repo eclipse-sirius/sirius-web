@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.tables.services;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -56,7 +57,7 @@ public class TableCreationService {
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
 
 
-        TableComponentProps tableComponentProps = new TableComponentProps(variableManager, tableDescription, Optional.empty());
+        TableComponentProps tableComponentProps = new TableComponentProps(variableManager, tableDescription, Optional.empty(), List.of());
 
         Element element = new Element(TableComponent.class, tableComponentProps);
         Table newTable = new TableRenderer().render(element);
