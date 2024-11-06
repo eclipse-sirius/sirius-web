@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import static org.assertj.core.api.Assertions.fail;
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -25,14 +26,18 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
+import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
+import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.tests.graphql.ExpandAllTreePathQueryRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.studio.services.representations.DomainViewTreeDescriptionProvider;
+import org.eclipse.sirius.web.application.studio.services.representations.api.IDomainDiagramDescriptionProvider;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
+import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
@@ -43,6 +48,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import graphql.execution.DataFetcherResult;
@@ -69,6 +75,12 @@ public class DomainExplorerControllerTests extends AbstractIntegrationTests {
 
     @Autowired
     private DomainViewTreeDescriptionProvider domainViewTreeDescriptionProvider;
+
+    @Autowired
+    private IGivenCreatedDiagramSubscription givenCreatedDiagramSubscription;
+
+    @Autowired
+    private IDomainDiagramDescriptionProvider domainDiagramDescriptionProvider;
 
     @BeforeEach
     public void beforeEach() {
@@ -181,5 +193,43 @@ public class DomainExplorerControllerTests extends AbstractIntegrationTests {
                 .map(TreeRefreshedEventPayload.class::cast)
                 .map(TreeRefreshedEventPayload::tree)
                 .ifPresentOrElse(treeConsumer, () -> fail("Missing tree"));
+    }
+
+    @Test
+    @DisplayName("Given a domain studio with a domain model and domain representation, when we subscribe to the domain view tree representation, then the tree item representing the domain representation is correct ")
+    @Sql(scripts = { "/scripts/studio.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenAStudioWithADomainModelAndDomainRepresentationWhenSubscribeToTheDomainViewTreeRepresentationThenTheTreeItemRepresentingTheDomainRepresentationIsCorrect() {
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
+
+        var createRepresentationInput = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), this.domainDiagramDescriptionProvider.getDescriptionId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), "Domain");
+        this.givenCreatedDiagramSubscription.createAndSubscribe(createRepresentationInput);
+
+        List<String> treeItemIds = new ArrayList<>();
+        treeItemIds.add(StudioIdentifiers.DOMAIN_DOCUMENT.toString());
+        treeItemIds.add(StudioIdentifiers.DOMAIN_OBJECT.toString());
+        var representationId = new RepresentationIdBuilder().buildExplorerRepresentationId(this.domainViewTreeDescriptionProvider.getRepresentationDescriptionId(), treeItemIds, List.of());
+        var expandedTreeInput = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), representationId);
+        var expandedTreeFlux = this.explorerEventSubscriptionRunner.run(expandedTreeInput);
+
+        Consumer<Object> expandedExplorerContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+            assertThat(tree).isNotNull();
+            assertThat(tree.getChildren()).hasSize(1);
+            assertThat(tree.getChildren().get(0).getLabel().toString()).isEqualTo("Domain");
+            assertThat(tree.getChildren().get(0).getChildren()).hasSize(1);
+            assertThat(tree.getChildren().get(0).getChildren().get(0).getLabel().toString()).isEqualTo("buck");
+            assertThat(tree.getChildren().get(0).getChildren().get(0).getChildren()).hasSize(4);
+            var treeItem = tree.getChildren().get(0).getChildren().get(0).getChildren().get(0);
+            assertThat(treeItem.getId()).isNotBlank();
+            assertThat(treeItem.getKind()).isEqualTo(Diagram.KIND);
+            assertThat(treeItem.getLabel().toString()).isEqualTo("Domain");
+        });
+
+        StepVerifier.create(expandedTreeFlux)
+                .consumeNextWith(expandedExplorerContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 }
