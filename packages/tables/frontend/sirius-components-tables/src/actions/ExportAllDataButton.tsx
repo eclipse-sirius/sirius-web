@@ -11,7 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import Button from '@mui/material/Button';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import MenuItem from '@mui/material/MenuItem';
 import { download, generateCsv, mkConfig } from 'export-to-csv';
 import { GQLCell, GQLMultiSelectCell, GQLSelectCell, GQLTable, GQLTextfieldCell } from '../table/TableContent.types';
 import { CsvData, ExportAllDataButtonProps } from './ExportAllDataButton.types';
@@ -59,8 +61,11 @@ export const handleExportData = (table: GQLTable, getCellLabel: (cell: GQLCell) 
 
 export const ExportAllDataButton = ({ table }: ExportAllDataButtonProps) => {
   return (
-    <Button onClick={() => handleExportData(table, getCellLabel)} startIcon={<FileDownloadIcon />}>
-      Export All Data
-    </Button>
+    <MenuItem onClick={() => handleExportData(table, getCellLabel)}>
+      <ListItemIcon>
+        <FileDownloadIcon fontSize="small" />
+      </ListItemIcon>
+      <ListItemText>Export All Data</ListItemText>
+    </MenuItem>
   );
 };

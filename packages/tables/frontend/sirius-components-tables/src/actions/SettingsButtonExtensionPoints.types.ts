@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,8 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-export * from './actions/SettingsButtonExtensionPoints';
-export type { SettingsButtonMenuEntryProps } from './actions/SettingsButtonExtensionPoints.types';
-export { TableRepresentation } from './representation/TableRepresentation';
-export { TableContent } from './table/TableContent';
-export * from './table/TableContent.types';
+
+export interface SettingsButtonMenuEntryProps {
+  editingContextId: string;
+  representationId: string;
+  tableId: string;
+}

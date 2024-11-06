@@ -14,7 +14,7 @@ import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core'
 import Box from '@mui/material/Box';
 import { MaterialReactTable, MRT_TableOptions, useMaterialReactTable } from 'material-react-table';
 import { memo } from 'react';
-import { ExportAllDataButton } from '../actions/ExportAllDataButton';
+import { SettingsButton } from '../actions/SettingsButton';
 import { RowHeader } from '../rows/RowHeader';
 import { GQLLine, TableProps } from './TableContent.types';
 import { useTableColumns } from './useTableColumns';
@@ -46,7 +46,7 @@ export const TableContent = memo(({ editingContextId, representationId, table, r
     },
     renderTopToolbarCustomActions: () => (
       <Box>
-        <ExportAllDataButton table={table} />
+        <SettingsButton editingContextId={editingContextId} representationId={representationId} table={table} />
       </Box>
     ),
     displayColumnDefOptions: {
