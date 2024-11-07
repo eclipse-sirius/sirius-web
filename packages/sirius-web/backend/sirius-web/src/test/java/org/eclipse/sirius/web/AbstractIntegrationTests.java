@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web;
 
-import org.eclipse.sirius.web.infrastructure.persistence.JDBCConfiguration;
+import org.eclipse.sirius.web.infrastructure.configuration.persistence.JDBCConfiguration;
 import org.eclipse.sirius.web.starter.SiriusWebStarterConfiguration;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.DynamicPropertyRegistry;

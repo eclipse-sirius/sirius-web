@@ -67,7 +67,7 @@ public class EditingContextExplorerDescriptionEventHandler implements IEditingCo
         payloadSink.tryEmitValue(new EditingContextExplorerDescriptionsPayload(input.id(), explorerDescriptions));
     }
 
-    List<ExplorerDescriptionMetadata> findAllExplorerTreeDescriptions(IEditingContext editingContext) {
+    private List<ExplorerDescriptionMetadata> findAllExplorerTreeDescriptions(IEditingContext editingContext) {
         var optionalDefaultExplorerDescription = this.representationDescriptionSearchService.findById(editingContext, ExplorerDescriptionProvider.DESCRIPTION_ID)
                 .filter(TreeDescription.class::isInstance)
                 .map(TreeDescription.class::cast);

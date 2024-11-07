@@ -39,6 +39,18 @@
 		</repository>
 	</distributionManagement>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.jmolecules</groupId>
+				<artifactId>jmolecules-bom</artifactId>
+				<version>2023.1.7</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
@@ -149,6 +161,12 @@
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tables-tests</artifactId>
 			<version>2024.11.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jmolecules.integrations</groupId>
+			<artifactId>jmolecules-archunit</artifactId>
+			<version>0.23.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

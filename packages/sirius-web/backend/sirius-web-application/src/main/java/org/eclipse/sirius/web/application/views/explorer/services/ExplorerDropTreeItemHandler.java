@@ -160,7 +160,7 @@ public class ExplorerDropTreeItemHandler implements IDropTreeItemHandler {
         return new Failure(this.messageService.alreadySetFeature());
     }
 
-    Optional<String> getContainmentFeatureName(EObject source, EObject target) {
+    private Optional<String> getContainmentFeatureName(EObject source, EObject target) {
         EClass containedObjectEClass = source.eClass();
         return target.eClass().getEAllContainments().stream()
                 .filter(eReference -> containedObjectEClass.equals(eReference.getEReferenceType()) || containedObjectEClass.getEAllSuperTypes().stream()
@@ -169,7 +169,7 @@ public class ExplorerDropTreeItemHandler implements IDropTreeItemHandler {
                 .findFirst();
     }
 
-    List<TreeItem> getContainerChild(TreeItem treeItem, String containerId) {
+    private List<TreeItem> getContainerChild(TreeItem treeItem, String containerId) {
         if (treeItem.getId().equals(containerId)) {
             return treeItem.getChildren();
         }

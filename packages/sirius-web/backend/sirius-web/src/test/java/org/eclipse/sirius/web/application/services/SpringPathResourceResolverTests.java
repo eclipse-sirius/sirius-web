@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.infrastructure.mvc.SpringPathResourceResolver;
+import org.eclipse.sirius.web.infrastructure.configuration.mvc.SpringPathResourceResolver;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

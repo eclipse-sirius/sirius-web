@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,7 @@ public class CompatibilityMessageServiceConfiguration {
     private static final String PATH = "messages/sirius-components-compatibility";
 
     @Bean
-    MessageSourceAccessor compatibilityMessageAccessor() {
+    public MessageSourceAccessor compatibilityMessageAccessor() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.addBasenames(PATH);
         return new MessageSourceAccessor(messageSource);

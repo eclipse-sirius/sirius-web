@@ -15,7 +15,7 @@ package org.eclipse.sirius.web.application.services;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.infrastructure.graphql.GraphQLWiringFactory;
+import org.eclipse.sirius.web.infrastructure.configuration.graphql.GraphQLWiringFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

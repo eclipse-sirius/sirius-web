@@ -13,6 +13,8 @@
 package org.eclipse.sirius.web.domain.boundedcontexts.project.repositories;
 
 import java.util.Optional;
+
+import org.eclipse.sirius.components.annotations.RepositoryFragment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -24,6 +26,7 @@ import org.springframework.data.domain.Pageable;
  * @param <T> The type of entity
  * @param <ID> The type of the identifier
  */
+@RepositoryFragment
 public interface ProjectSearchRepository<T, ID> {
     boolean existsById(ID id);
 
