@@ -107,14 +107,14 @@ public class TreeEventProcessorFactory implements IRepresentationEventProcessorF
         return Optional.empty();
     }
 
-    String getTreeIdFromRepresentationId(String representationId) {
+    private String getTreeIdFromRepresentationId(String representationId) {
         if (representationId.indexOf(EXPANDED_IDS) > 0) {
             return representationId.substring(0, representationId.indexOf(EXPANDED_IDS));
         }
         return "";
     }
 
-    List<String> getExpandedIdsFromRepresentationId(String representationId) {
+    private List<String> getExpandedIdsFromRepresentationId(String representationId) {
         if (representationId.indexOf(EXPANDED_IDS) > 0) {
             String rowExpanded = representationId.substring(representationId.indexOf(EXPANDED_IDS) + EXPANDED_IDS.length());
             return this.urlParser.getParameterEntries(rowExpanded);

@@ -14,7 +14,7 @@ package org.eclipse.sirius.web.application.services;
 
 import java.util.Optional;
 
-import org.eclipse.sirius.web.infrastructure.graphql.IGraphQLCodeRegistryTransformer;
+import org.eclipse.sirius.web.infrastructure.configuration.graphql.IGraphQLCodeRegistryTransformer;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;

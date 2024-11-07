@@ -26,13 +26,13 @@ import com.tngtech.archunit.lang.SimpleConditionEvent;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 import com.tngtech.archunit.library.GeneralCodingRules;
 
-import java.lang.annotation.Target;
 import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.sirius.components.annotations.Builder;
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.annotations.RepositoryFragment;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -190,6 +190,18 @@ public abstract class AbstractCodingRulesTests {
     }
 
     @Test
+    public void noMethodsShouldHavePackageVisibility() {
+        ArchRule rule = ArchRuleDefinition.noMethods()
+                .that()
+                .areDeclaredInClassesThat()
+                .resideInAPackage(this.getProjectRootPackage())
+                .should()
+                .bePackagePrivate();
+
+        rule.check(this.getClasses());
+    }
+
+    @Test
     public void noClassesShouldUseSpringStringUtils() {
         ArchRule rule = ArchRuleDefinition.noClasses()
                 .that()
@@ -291,7 +303,11 @@ public abstract class AbstractCodingRulesTests {
                 .and()
                 .areInterfaces()
                 .and()
-                .areNotAnnotatedWith(Target.class)
+                .areNotAnnotations()
+                .and()
+                .areNotAnnotatedWith(RepositoryFragment.class)
+                .and()
+                .haveSimpleNameNotEndingWith("package-info")
                 .should()
                 .haveSimpleNameStartingWith("I")
                 .allowEmptyShould(true);
@@ -426,7 +442,7 @@ public abstract class AbstractCodingRulesTests {
                 .and(this.isNotLambda())
                 .and(this.isNotSwitchTable())
                 .and(this.isNotRecordStaticBuilder())
-                .and(this.isNotReturningAnnotatedBuilder())
+                .and(this.isNotBuilder())
                 .should()
                 .beStatic()
                 .allowEmptyShould(true);
@@ -491,11 +507,11 @@ public abstract class AbstractCodingRulesTests {
      *
      * @return A predicate used to ignore some static methods
      */
-    private DescribedPredicate<JavaMethod> isNotReturningAnnotatedBuilder() {
+    private DescribedPredicate<JavaMethod> isNotBuilder() {
         return new DescribedPredicate<>("is not returning a type annotated with @Builder") {
             @Override
             public boolean test(JavaMethod javaMethod) {
-                return !javaMethod.getRawReturnType().isAnnotatedWith(Builder.class);
+                return !(javaMethod.getRawReturnType().isAnnotatedWith(Builder.class) || javaMethod.getRawReturnType().getSimpleName().endsWith("Builder"));
             }
         };
     }
