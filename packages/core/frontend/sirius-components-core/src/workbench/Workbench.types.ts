@@ -30,6 +30,7 @@ export type RepresentationMetadata = {
   id: string;
   label: string;
   kind: string;
+  iconURLs: string[];
 };
 
 export type WorkbenchViewSide = 'left' | 'right';

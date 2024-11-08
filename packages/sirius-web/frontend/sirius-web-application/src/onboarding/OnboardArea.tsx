@@ -12,8 +12,8 @@
  *******************************************************************************/
 import { gql, useLazyQuery } from '@apollo/client';
 import { MainAreaComponentProps, useSelection } from '@eclipse-sirius/sirius-components-core';
-import { makeStyles } from 'tss-react/mui';
 import { useEffect, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { NewDocumentArea } from './NewDocumentArea';
 import { NewRepresentationArea } from './NewRepresentationArea';
 import { OnboardAreaState } from './OnboardArea.types';
@@ -38,6 +38,7 @@ const getOnboardDataQuery = gql`
               id
               label
               kind
+              iconURLs
             }
           }
         }

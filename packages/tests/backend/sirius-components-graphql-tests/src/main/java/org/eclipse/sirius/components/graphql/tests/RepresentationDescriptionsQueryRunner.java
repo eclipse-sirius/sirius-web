@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
  * @author gdaniel
  */
 @Service
-public class AllRepresentationDescriptionsQueryRunner implements IQueryRunner {
+public class RepresentationDescriptionsQueryRunner implements IQueryRunner {
 
     private static final String ALL_REPRESENTATION_DESCRIPTIONS_QUERY = """
             query getAllRepresentationMetadata($editingContextId: ID!, $objectId: ID!) {
@@ -53,7 +53,7 @@ public class AllRepresentationDescriptionsQueryRunner implements IQueryRunner {
 
     private final IGraphQLRequestor graphQLRequestor;
 
-    public AllRepresentationDescriptionsQueryRunner(IGraphQLRequestor graphQLRequestor) {
+    public RepresentationDescriptionsQueryRunner(IGraphQLRequestor graphQLRequestor) {
         this.graphQLRequestor = Objects.requireNonNull(graphQLRequestor);
     }
 

@@ -30,6 +30,7 @@ const getRepresentationMetadata = gql`
               id
               label
               kind
+              iconURLs
             }
           }
         }

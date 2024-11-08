@@ -50,4 +50,5 @@ export type GQLRepresentationMetadata = {
   id: string;
   label: string;
   kind: string;
+  iconURLs: string[];
 };
