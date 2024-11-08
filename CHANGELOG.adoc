@@ -30,6 +30,8 @@ The following records parameters have been modified:
 * RestProject
 ** from RestProject(UUID id, String resourceIdentifier, List<String> alias, String humanIdentifier, String description, List<RestQuery> queries)
 ** to RestProject(UUID id, String type, OffsetDateTime created, Identified defaultBranch, String description, String name)
+- https://github.com/eclipse-sirius/sirius-web/issues/4190[#4190] [core] The graphQL type `RepresentationMetadata` has now a property to hold icons for the representation.
+This can be retrieve using either `EditingContext#representations` or `EditingContext#representation`
 
 === Dependency update
 
@@ -42,6 +44,7 @@ The following records parameters have been modified:
 
 === New Features
 
+- https://github.com/eclipse-sirius/sirius-web/issues/4190[#4190] [core] Display the icon of the representation in the workbench tab
 - https://github.com/eclipse-sirius/sirius-web/issues/4110[#4110] [form] Add layout capabilities for form widgets
 - https://github.com/eclipse-sirius/sirius-web/issues/4177[#4177] [table] Add table representation support
 - https://github.com/eclipse-sirius/sirius-web/issues/3990[#3990] [diagram] The palette can now be dragged
@@ -64,6 +67,7 @@ Specifiers are also encouraged to implement their own `IRestDataVersionPayloadSe
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4219[#4219] [table] Improve front-end performance
 - https://github.com/eclipse-sirius/sirius-web/issues/3823[#3823] [table] Remove cell type to use `ICellDescription`
+
 
 == v2024.11.0
 

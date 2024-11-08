@@ -14,6 +14,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import { makeStyles } from 'tss-react/mui';
+import { IconOverlay } from '../icon/IconOverlay';
 import { RepresentationNavigationProps } from './RepresentationNavigation.types';
 import { RepresentationMetadata } from './Workbench.types';
 
@@ -33,6 +34,9 @@ const useRepresentationNavigationStyles = makeStyles()((theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
     width: 'inherit',
+  },
+  tabRepresentationIcon: {
+    marginRight: theme.spacing(1),
   },
   tabLabelText: {
     textOverflow: 'ellipsis',
@@ -62,11 +66,12 @@ export const RepresentationNavigation = ({
   const onChange = (_event: React.ChangeEvent<{}>, value: string) => {
     const representationSelected = representations.find((representation) => representation.id === value);
     if (representationSelected) {
-      const { id, label, kind } = representationSelected;
+      const { id, label, kind, iconURLs } = representationSelected;
       const representation: RepresentationMetadata = {
         id,
         label,
         kind,
+        iconURLs,
       };
       onRepresentationClick(representation);
     }
@@ -94,6 +99,11 @@ export const RepresentationNavigation = ({
             value={representation.id}
             label={
               <div className={classes.tabLabel}>
+                {representation.iconURLs && (
+                  <div className={classes.tabRepresentationIcon}>
+                    <IconOverlay iconURL={representation.iconURLs} alt="representation icon" />
+                  </div>
+                )}
                 <div className={classes.tabLabelText}>{representation.label}</div>
                 <CloseIcon
                   className={classes.tabCloseIcon}

@@ -10,8 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useSelection } from '@eclipse-sirius/sirius-components-core';
-import Collections from '@mui/icons-material/Collections';
+import { IconOverlay, useSelection } from '@eclipse-sirius/sirius-components-core';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import List from '@mui/material/List';
@@ -60,7 +59,7 @@ export const RepresentationsArea = ({ representations }: RepresentationAreaProps
                     })
                   }>
                   <ListItemIcon>
-                    <Collections htmlColor="primary" fontSize="small" />
+                    <IconOverlay iconURL={representation.iconURLs} alt="representation icon" />
                   </ListItemIcon>
                   <ListItemText primary={representation.label} />
                 </ListItem>

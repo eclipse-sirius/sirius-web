@@ -38,6 +38,7 @@ export interface GQLRepresentationMetadata {
   id: string;
   label: string;
   kind: string;
+  iconURLs: string[];
 }
 
 export interface GQLRepresentationMetadataQueryVariables {

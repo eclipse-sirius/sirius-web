@@ -26,6 +26,7 @@ export const ProjectAndRepresentationFragment = gql`
         id
         label
         kind
+        iconURLs
       }
     }
   }

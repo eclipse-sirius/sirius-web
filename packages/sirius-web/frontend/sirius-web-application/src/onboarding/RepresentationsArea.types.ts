@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { RepresentationMetadata } from '@eclipse-sirius/sirius-components-core';
+import { GQLRepresentationMetadata } from './OnboardArea.types';
 
 export interface RepresentationAreaProps {
-  representations: RepresentationMetadata[];
+  representations: GQLRepresentationMetadata[];
 }

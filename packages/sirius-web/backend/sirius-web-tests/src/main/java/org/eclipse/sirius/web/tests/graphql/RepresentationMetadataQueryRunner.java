@@ -35,6 +35,7 @@ public class RepresentationMetadataQueryRunner implements IQueryRunner {
                     id
                     kind
                     label
+                    iconURLs
                   }
                 }
               }

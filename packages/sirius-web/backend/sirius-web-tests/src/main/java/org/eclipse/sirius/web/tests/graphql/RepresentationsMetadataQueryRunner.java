@@ -37,7 +37,15 @@ public class RepresentationsMetadataQueryRunner implements IQueryRunner {
                         id
                         label
                         kind
+                        iconURLs
                       }
+                    }
+                    pageInfo {
+                      hasPreviousPage
+                      hasNextPage
+                      startCursor
+                      endCursor
+                      count
                     }
                   }
                 }

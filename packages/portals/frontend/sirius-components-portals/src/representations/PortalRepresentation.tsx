@@ -189,7 +189,7 @@ export const PortalRepresentation = ({
               style={{ display: 'grid' }}>
               <RepresentationFrame
                 editingContextId={editingContextId}
-                representation={view.representationMetadata}
+                representation={{ ...view.representationMetadata, iconURLs: [] }}
                 portalMode={mode}
                 onDelete={() => {
                   if (mode !== 'read-only') {

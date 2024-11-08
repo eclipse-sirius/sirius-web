@@ -19,8 +19,7 @@ import com.jayway.jsonpath.JsonPath;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.sirius.components.graphql.tests.AllRepresentationDescriptionsQueryRunner;
-import org.eclipse.sirius.components.graphql.tests.AllRepresentationMetadataQueryRunner;
+import org.eclipse.sirius.components.graphql.tests.RepresentationDescriptionsQueryRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.services.api.IDomainEventCollector;
@@ -50,13 +49,10 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
     private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
+    private RepresentationDescriptionsQueryRunner representationDescriptionsQueryRunner;
+
+    @Autowired
     private RepresentationMetadataQueryRunner representationMetadataQueryRunner;
-
-    @Autowired
-    private AllRepresentationMetadataQueryRunner allRepresentationMetadataQueryRunner;
-
-    @Autowired
-    private AllRepresentationDescriptionsQueryRunner allRepresentationDescriptionsQueryRunner;
 
     @Autowired
     private RepresentationsMetadataQueryRunner representationsMetadataQueryRunner;
@@ -89,6 +85,11 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
 
         String label = JsonPath.read(result, "$.data.viewer.editingContext.representation.label");
         assertThat(label).isEqualTo("Portal");
+
+        List<String> iconURLs = JsonPath.read(result, "$.data.viewer.editingContext.representation.iconURLs");
+        assertThat(iconURLs)
+                .isNotEmpty()
+                .satisfiesOnlyOnce(iconURL -> assertThat(iconURL).endsWith("/portal-images/portal.svg"));
     }
 
     @Test
@@ -111,6 +112,11 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
 
         String label = JsonPath.read(result, "$.data.viewer.editingContext.representation.label");
         assertThat(label).isEqualTo("Explorer");
+
+        List<String> iconURLs = JsonPath.read(result, "$.data.viewer.editingContext.representation.iconURLs");
+        assertThat(iconURLs)
+                .isNotEmpty()
+                .satisfiesOnlyOnce(iconURL -> assertThat(iconURL).endsWith("/tree-images/tree.svg"));
     }
 
     @Test
@@ -121,7 +127,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         Map<String, Object> variables = Map.of(
                 "editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString()
         );
-        var result = this.allRepresentationMetadataQueryRunner.run(variables);
+        var result = this.representationsMetadataQueryRunner.run(variables);
 
         boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.editingContext.representations.pageInfo.hasPreviousPage");
         assertThat(hasPreviousPage).isFalse();
@@ -142,6 +148,13 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         assertThat(representationIds)
             .contains(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString())
             .contains(TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString());
+
+        List<List<String>> allIconURLs = JsonPath.read(result, "$.data.viewer.editingContext.representations.edges[*].node.iconURLs");
+        assertThat(allIconURLs)
+                .isNotEmpty()
+                .allSatisfy(iconURLs -> assertThat(iconURLs)
+                        .isNotEmpty()
+                        .satisfiesOnlyOnce(iconURL -> assertThat(iconURL).endsWith("/portal-images/portal.svg")));
     }
 
     @Test
@@ -170,7 +183,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
                 "editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(),
                 "objectId", TestIdentifiers.EPACKAGE_OBJECT.toString()
         );
-        var result = this.allRepresentationDescriptionsQueryRunner.run(variables);
+        var result = this.representationDescriptionsQueryRunner.run(variables);
 
         boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.pageInfo.hasPreviousPage");
         assertThat(hasPreviousPage).isFalse();

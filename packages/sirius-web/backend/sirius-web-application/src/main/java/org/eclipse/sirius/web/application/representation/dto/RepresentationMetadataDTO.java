@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.representation.dto;
 
-import java.util.UUID;
+import java.util.List;
 
 /**
  * The DTO for representation metadata.
@@ -20,9 +20,9 @@ import java.util.UUID;
  * @author gcoutable
  */
 public record RepresentationMetadataDTO(
-        UUID id,
+        String id,
         String label,
         String kind,
-        String targetObjectId,
-        String descriptionId) {
+        String descriptionId,
+        List<String> iconURLs) {
 }
