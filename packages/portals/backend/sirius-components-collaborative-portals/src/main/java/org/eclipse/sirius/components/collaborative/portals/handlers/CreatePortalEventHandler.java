@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.portals.handlers;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
@@ -101,12 +102,14 @@ public class CreatePortalEventHandler implements IEditingContextEventHandler {
                     variableManager.put(VariableManager.SELF, object);
                     variableManager.put("name", createRepresentationInput.representationName());
                     String label = portalDescription.getLabelProvider().apply(variableManager);
+                    List<String> iconURLs = portalDescription.getIconURLsProvider().apply(variableManager);
 
                     Portal portal = new PortalRenderer(variableManager, portalDescription).render();
                     var representationMetadata = RepresentationMetadata.newRepresentationMetadata(portal.getId())
                             .kind(portal.getKind())
                             .label(label)
                             .descriptionId(portal.getDescriptionId())
+                            .iconURLs(iconURLs)
                             .build();
 
                     this.representationMetadataPersistenceService.save(createRepresentationInput, editingContext, representationMetadata, portal.getTargetObjectId());

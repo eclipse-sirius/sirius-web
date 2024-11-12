@@ -52,6 +52,7 @@ import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.application.UUIDParser;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationIconURL;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -106,6 +107,7 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
                 .targetObjectIdProvider(this::getTargetObjectId)
                 .canCreatePredicate(variableManager -> false)
                 .pageDescriptions(List.of(this.getPageDescription()))
+                .iconURLsProvider(variableManager -> List.of())
                 .build();
     }
 
@@ -238,16 +240,26 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
     }
 
     private List<String> getItemIconURL(VariableManager variableManager) {
+        List<String> result = List.of(CoreImageConstants.DEFAULT_SVG);
+
         var optionalRepresentationMetadata = variableManager.get(ListComponent.CANDIDATE_VARIABLE, RepresentationMetadata.class);
         if (optionalRepresentationMetadata.isPresent()) {
             RepresentationMetadata representationMetadata = optionalRepresentationMetadata.get();
-
-            return this.representationImageProviders.stream()
-                    .map(representationImageProvider -> representationImageProvider.getImageURL(representationMetadata.getKind()))
-                    .flatMap(Optional::stream)
-                    .toList();
+            if (representationMetadata.getIconURLs().isEmpty()) {
+                result = this.representationImageProviders.stream()
+                        .map(representationImageProvider -> representationImageProvider.getImageURL(representationMetadata.getKind()))
+                        .filter(Optional::isPresent)
+                        .flatMap(Optional::stream)
+                        .findFirst()
+                        .map(List::of)
+                        .orElse(List.of());
+            } else {
+                result = representationMetadata.getIconURLs().stream()
+                        .map(RepresentationIconURL::url)
+                        .toList();
+            }
         }
-        return List.of(CoreImageConstants.DEFAULT_SVG);
+        return result;
     }
 
     private IStatus deleteItem(VariableManager variableManager) {

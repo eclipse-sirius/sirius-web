@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.compatibility.diagrams;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
@@ -57,6 +58,7 @@ public class SelectModelElementVariableConverter implements ISelectModelElementV
                 .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
                 .label("Selection Description")
                 .canCreatePredicate(variableManager -> false)
+                .iconURLsProvider(variableManager -> List.of())
                 .build();
     }
 

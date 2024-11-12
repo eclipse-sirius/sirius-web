@@ -138,6 +138,7 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
                     return vm;
                 })
                 .pageDescriptions(List.of(this.getPageDescription(groupDescriptions)))
+                .iconURLsProvider(variableManager -> List.of())
                 .build();
     }
 

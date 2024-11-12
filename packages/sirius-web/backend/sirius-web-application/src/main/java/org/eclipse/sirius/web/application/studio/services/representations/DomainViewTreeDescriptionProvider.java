@@ -118,7 +118,7 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
                 .domainType("domain::Domain")
                 .titleExpression("aql:'Domain explorer DSL'")
                 .kindExpression("aql:self.getKind()")
-                .iconURLExpression("aql:self.getIconURL()")
+                .treeItemIconExpression("aql:self.getIconURL()")
                 .deletableExpression("aql:self.isDeletable()")
                 .editableExpression("aql:self.isEditable()")
                 .selectableExpression("aql:self.isSelectable()")

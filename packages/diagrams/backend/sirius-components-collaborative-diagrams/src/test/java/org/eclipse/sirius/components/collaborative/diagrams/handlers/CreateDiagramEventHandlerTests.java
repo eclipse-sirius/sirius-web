@@ -64,6 +64,7 @@ public class CreateDiagramEventHandlerTests {
                         .nodeDescriptions(new ArrayList<>())
                         .targetObjectIdProvider(variableManager -> "targetObjectId")
                         .dropHandler(variableManager -> new Failure(""))
+                        .iconURLsProvider(variableManager -> List.of())
                         .build();
 
                 return Optional.of(diagramDescription);

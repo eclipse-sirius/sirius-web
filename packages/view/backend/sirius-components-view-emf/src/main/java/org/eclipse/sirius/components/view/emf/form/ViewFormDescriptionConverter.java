@@ -23,10 +23,10 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.ComposedSwitch;
 import org.eclipse.emf.ecore.util.Switch;
-import org.eclipse.sirius.components.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.forms.ContainerBorderStyle;
 import org.eclipse.sirius.components.forms.GroupDisplayMode;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
@@ -42,8 +42,8 @@ import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
+import org.eclipse.sirius.components.view.emf.ViewIconURLsProvider;
 import org.eclipse.sirius.components.view.form.FormVariable;
-
 import org.springframework.stereotype.Service;
 
 /**
@@ -121,6 +121,7 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
                 .targetObjectIdProvider(targetObjectIdProvider)
                 .pageDescriptions(pageDescriptions)
                 .variableManagerInitializer(variableManagerInitializer)
+                .iconURLsProvider(new ViewIconURLsProvider(interpreter, viewFormDescription.getIconExpression()))
                 .build();
     }
 

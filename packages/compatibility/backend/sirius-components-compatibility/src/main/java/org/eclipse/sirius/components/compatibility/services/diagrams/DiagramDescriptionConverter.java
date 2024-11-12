@@ -66,6 +66,7 @@ public class DiagramDescriptionConverter implements IDiagramDescriptionConverter
         Builder builder = DiagramDescription.newDiagramDescription(this.identifierProvider.getIdentifier(siriusDiagramDescription))
                 .canCreatePredicate(canCreatePredicate)
                 .labelProvider(labelProvider)
+                .iconURLsProvider(variableManager -> List.of())
                 .autoLayout(this.isAutoLayoutMode(siriusDiagramDescription))
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED);
 

@@ -15,8 +15,7 @@ package org.eclipse.sirius.components.view.tree;
 import org.eclipse.emf.ecore.EFactory;
 
 /**
- * <!-- begin-user-doc --> The <b>Factory</b> for the model. It provides a create method for each non-abstract class of
- * the model. <!-- end-user-doc -->
+ * <!-- begin-user-doc --> The <b>Factory</b> for the model. It provides a create method for each non-abstract class of the model. <!-- end-user-doc -->
  *
  * @generated
  * @see org.eclipse.sirius.components.view.tree.TreePackage
@@ -47,8 +46,7 @@ public interface TreeFactory extends EFactory {
     TreeItemLabelDescription createTreeItemLabelDescription();
 
     /**
-     * Returns a new object of class '<em>Item Label Fragment Description</em>'. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * Returns a new object of class '<em>Item Label Fragment Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Item Label Fragment Description</em>'.
      * @generated
@@ -56,8 +54,7 @@ public interface TreeFactory extends EFactory {
     TreeItemLabelFragmentDescription createTreeItemLabelFragmentDescription();
 
     /**
-     * Returns a new object of class '<em>Single Click Tree Item Context Menu Entry</em>'. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * Returns a new object of class '<em>Single Click Tree Item Context Menu Entry</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Single Click Tree Item Context Menu Entry</em>'.
      * @generated
@@ -65,8 +62,7 @@ public interface TreeFactory extends EFactory {
     SingleClickTreeItemContextMenuEntry createSingleClickTreeItemContextMenuEntry();
 
     /**
-     * Returns a new object of class '<em>Fetch Tree Item Context Menu Entry</em>'. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * Returns a new object of class '<em>Fetch Tree Item Context Menu Entry</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Fetch Tree Item Context Menu Entry</em>'.
      * @generated

@@ -32,6 +32,9 @@ The following records parameters have been modified:
 ** to RestProject(UUID id, String type, OffsetDateTime created, Identified defaultBranch, String description, String name)
 - https://github.com/eclipse-sirius/sirius-web/issues/4190[#4190] [core] The graphQL type `RepresentationMetadata` has now a property to hold icons for the representation.
 This can be retrieve using either `EditingContext#representations` or `EditingContext#representation`
+- https://github.com/eclipse-sirius/sirius-web/issues/4192[#4192] [core] `IRepresentationDescription` has a new provide `getIconURLsProvider`.
+This provider is in charge of getting the icon list of the representation.
+- https://github.com/eclipse-sirius/sirius-web/issues/4192[#4192] [tree] The expression `TreeDescription#iconURLExpression` has now been replaced by `TreeDescription#itemIconExpression`, in a similar fashion the provider `TreeDescription#iconURLProvider` has been replaced by `TreeDescription#treeItemIconURLsProvider` not to be confused with the newly introduced `TreeDescription#iconURLsProvider`.
 
 === Dependency update
 
@@ -46,6 +49,7 @@ This can be retrieve using either `EditingContext#representations` or `EditingCo
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4190[#4190] [core] Display the icon of the representation in the workbench tab
 - https://github.com/eclipse-sirius/sirius-web/issues/4110[#4110] [form] Add layout capabilities for form widgets
+- https://github.com/eclipse-sirius/sirius-web/issues/4192[#4192] [core] Compute the icon of a representation
 - https://github.com/eclipse-sirius/sirius-web/issues/4177[#4177] [table] Add table representation support
 - https://github.com/eclipse-sirius/sirius-web/issues/3990[#3990] [diagram] The palette can now be dragged
 - https://github.com/eclipse-sirius/sirius-web/issues/3981[#3981] [diagram] The palette sections are showed as list

@@ -51,6 +51,8 @@ public final class FormDescription implements IRepresentationDescription {
 
     private Function<VariableManager, VariableManager> variableManagerInitializer;
 
+    private Function<VariableManager, List<String>> iconURLsProvider;
+
     private FormDescription() {
         // Prevent instantiation
     }
@@ -88,6 +90,10 @@ public final class FormDescription implements IRepresentationDescription {
 
     public Function<VariableManager, VariableManager> getVariableManagerInitializer() {
         return this.variableManagerInitializer;
+    }
+
+    public Function<VariableManager, List<String>> getIconURLsProvider() {
+        return this.iconURLsProvider;
     }
 
     public static Builder newFormDescription(String id) {
@@ -128,6 +134,8 @@ public final class FormDescription implements IRepresentationDescription {
 
         private Function<VariableManager, VariableManager> variableManagerInitializer = Function.identity();
 
+        private Function<VariableManager, List<String>> iconURLsProvider;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -140,6 +148,7 @@ public final class FormDescription implements IRepresentationDescription {
             this.targetObjectIdProvider = formDescription.getTargetObjectIdProvider();
             this.canCreatePredicate = formDescription.getCanCreatePredicate();
             this.pageDescriptions = formDescription.getPageDescriptions();
+            this.iconURLsProvider = formDescription.getIconURLsProvider();
         }
 
         public Builder id(String id) {
@@ -182,6 +191,11 @@ public final class FormDescription implements IRepresentationDescription {
             return this;
         }
 
+        public Builder iconURLsProvider(Function<VariableManager, List<String>> iconURLsProvider) {
+            this.iconURLsProvider =  Objects.requireNonNull(iconURLsProvider);
+            return this;
+        }
+
         public FormDescription build() {
             FormDescription formDescription = new FormDescription();
             formDescription.id = Objects.requireNonNull(this.id);
@@ -192,6 +206,7 @@ public final class FormDescription implements IRepresentationDescription {
             formDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             formDescription.pageDescriptions = Objects.requireNonNull(this.pageDescriptions);
             formDescription.variableManagerInitializer = Objects.requireNonNull(this.variableManagerInitializer);
+            formDescription.iconURLsProvider = Objects.requireNonNull(this.iconURLsProvider);
             return formDescription;
         }
     }

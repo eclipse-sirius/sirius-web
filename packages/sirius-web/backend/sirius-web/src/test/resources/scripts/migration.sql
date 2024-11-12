@@ -1487,3 +1487,161 @@ INSERT INTO document (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+-- Test project for TreeDescriptionIconURLExpressionMigrationParticipantTests 
+INSERT INTO project (
+  id,
+  name,
+  created_on,
+  last_modified_on
+) VALUES (
+  '718868e6-de6d-4b00-b84f-56802aa6d5d0',
+  'Studio',
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000'
+);
+INSERT INTO nature (
+  project_id,
+  name
+) VALUES (
+  '718868e6-de6d-4b00-b84f-56802aa6d5d0',
+  'siriusComponents://nature?kind=studio'
+);
+INSERT INTO semantic_data (
+  id,
+  project_id,
+  created_on,
+  last_modified_on
+) VALUES (
+  '340026b5-1363-4c93-8c2b-7f11188cca8b',
+  '718868e6-de6d-4b00-b84f-56802aa6d5d0',
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000'
+);
+INSERT INTO semantic_data_domain (
+  semantic_data_id,
+  uri
+) VALUES (
+  '340026b5-1363-4c93-8c2b-7f11188cca8b',
+  'http://www.eclipse.org/sirius-web/tree'
+);
+INSERT INTO semantic_data_domain (
+  semantic_data_id,
+  uri
+) VALUES (
+  '340026b5-1363-4c93-8c2b-7f11188cca8b',
+  'http://www.eclipse.org/sirius-web/view'
+);
+INSERT INTO document (
+  id,
+  semantic_data_id,
+  name,
+  content,
+  created_on,
+  last_modified_on
+) VALUES (
+  'd92b61ec-46a3-4c69-9e08-c5f625a9ac6d',
+  '340026b5-1363-4c93-8c2b-7f11188cca8b',
+  'TreeDescription#iconUrlDescription migration',
+  '{
+     "json": {
+     "version": "1.0",
+     "encoding": "utf-8"
+     },
+     "ns": {
+       "tree": "http://www.eclipse.org/sirius-web/tree",
+       "view": "http://www.eclipse.org/sirius-web/view"
+     },
+     "migration": {
+       "lastMigrationPerformed": "WidgetDescriptionStyleLayoutPropertiesMigrationParticipant",
+       "migrationVersion": "2024.1.0-202411081600"
+     },
+     "content": [
+       {
+         "id": "a4168469-6c99-4685-a847-7a81d9684ce9",
+         "eClass": "view:View",
+         "data": {
+           "descriptions": [
+             {
+               "id": "df899cf6-2f11-47d4-b9ac-def01094b84e",
+               "eClass": "tree:TreeDescription",
+               "data": {
+                 "name": "TreeDescription#iconUrlDescription migration",
+                 "domainType": "buck::Human",
+                 "titleExpression": "New Tree Representation",
+                 "kindExpression": "root",
+                 "iconURLExpression": "iconUrl",
+                 "treeItemIdExpression": "root",
+                 "treeItemObjectExpression": "aql:self",
+                 "elementsExpression": "aql:self",
+                 "hasChildrenExpression": "aql:false",
+                 "treeItemLabelDescriptions": [
+                   {
+                     "id": "6fb8754f-b51a-42ac-b9ce-e2c4a7194af9",
+                     "eClass": "tree:TreeItemLabelDescription",
+                     "data": {
+                       "name": "Label",
+                       "children": [
+                         {
+                           "id": "fecd22d2-66b0-4ced-95d1-04f969c04aac",
+                           "eClass": "tree:TreeItemLabelFragmentDescription",
+                           "data": {
+                           "labelExpression": "aql:self.name"
+                           }
+                         }
+                       ]
+                     }
+                   }
+                 ]
+               }
+             }
+           ],
+           "colorPalettes": [
+             {
+               "id": "648a95a6-5ec3-462f-8e68-f3206463e53f",
+               "eClass": "view:ColorPalette",
+               "data": {
+                 "colors": [
+                   {
+                     "id": "0ea0f185-849a-4644-a811-713406eabb8c",
+                     "eClass": "view:FixedColor",
+                     "data": { "name": "color_dark", "value": "#002639" }
+                   },
+                   {
+                     "id": "03cadcd8-a8e7-4b11-a404-df32bb72b6fc",
+                     "eClass": "view:FixedColor",
+                     "data": { "name": "color_blue", "value": "#E5F5F8" }
+                   },
+                   {
+                     "id": "07fc0265-6a78-4ecc-842f-7867dc4f634e",
+                     "eClass": "view:FixedColor",
+                     "data": { "name": "color_green", "value": "#B1D8B7" }
+                   },
+                   {
+                     "id": "4dfe7438-03b0-453b-a6fd-57ae128b4a39",
+                     "eClass": "view:FixedColor",
+                     "data": { "name": "border_blue", "value": "#33B0C3" }
+                   },
+                   {
+                     "id": "a48045ae-dd76-47e9-8b28-02f8f9ed0d1a",
+                     "eClass": "view:FixedColor",
+                     "data": { "name": "border_green", "value": "#76B947" }
+                   },
+                   {
+                     "id": "afcc8880-c5ea-4fb7-a35f-f91c9fb44e55",
+                     "eClass": "view:FixedColor",
+                     "data": {
+                       "name": "color_transparent",
+                       "value": "transparent"
+                     }
+                   }
+                 ]
+               }
+             }
+           ]
+         }
+       }
+     ]
+   }',
+  '2024-04-12 9:42:0.000',
+  '2024-04-12 9:42:0.000'
+);

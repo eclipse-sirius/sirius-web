@@ -72,6 +72,15 @@ public class HierarchyDescriptionProvider implements IEditingContextProcessor  {
                 })
                 .orElse(List.of());
 
-        return new HierarchyDescription(HIERARCHY_DESCRIPTION_ID, "Sample Hierarchy Description", KIND, canCreatePredicate, targetObjectIdProvider, labelProvider, childSemanticElementsProvider);
+        var builder = HierarchyDescription.newHierarchyDescription(HIERARCHY_DESCRIPTION_ID)
+                .label("Sample Hierarchy Description")
+                .kind(KIND)
+                .canCreatePredicate(canCreatePredicate)
+                .targetObjectIdProvider(targetObjectIdProvider)
+                .labelProvider(labelProvider)
+                .childSemanticElementsProvider(childSemanticElementsProvider)
+                .iconURLsProvider(variableManager -> List.of());
+
+        return builder.build();
     }
 }

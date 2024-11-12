@@ -282,13 +282,21 @@ public interface ViewPackage extends EPackage {
     int REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION = 3;
 
     /**
+     * The feature id for the '<em><b>Icon Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REPRESENTATION_DESCRIPTION__ICON_EXPRESSION = 4;
+
+    /**
      * The number of structural features of the '<em>Representation Description</em>' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int REPRESENTATION_DESCRIPTION_FEATURE_COUNT = 4;
+    int REPRESENTATION_DESCRIPTION_FEATURE_COUNT = 5;
 
     /**
      * The number of operations of the '<em>Representation Description</em>' class. <!-- begin-user-doc --> <!--
@@ -1181,6 +1189,18 @@ public interface ViewPackage extends EPackage {
     EAttribute getRepresentationDescription_TitleExpression();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.RepresentationDescription#getIconExpression <em>Icon
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Icon Expression</em>'.
+     * @see org.eclipse.sirius.components.view.RepresentationDescription#getIconExpression()
+     * @see #getRepresentationDescription()
+     * @generated
+     */
+    EAttribute getRepresentationDescription_IconExpression();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.LabelStyle <em>Label Style</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1840,6 +1860,14 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EAttribute REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION = eINSTANCE.getRepresentationDescription_TitleExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Icon Expression</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute REPRESENTATION_DESCRIPTION__ICON_EXPRESSION = eINSTANCE.getRepresentationDescription_IconExpression();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.LabelStyleImpl <em>Label

@@ -79,6 +79,16 @@ public class DiagramDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for IconExpression.
+     *
+     * @generated
+     */
+    public DiagramDescriptionBuilder iconExpression(java.lang.String value) {
+        this.getDiagramDescription().setIconExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for AutoLayout.
      *
      * @generated

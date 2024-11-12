@@ -235,6 +235,7 @@ public class ViewPaletteProviderTests {
                 .nodeDescriptions(List.of())
                 .edgeDescriptions(List.of())
                 .dropHandler(variableManager -> new Failure(""))
+                .iconURLsProvider(variableManager -> List.of())
                 .build();
     }
 

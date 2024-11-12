@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.selection.services;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -49,6 +50,7 @@ public class SelectionRepresentationMetadataProvider implements IRepresentationM
                         .kind("SelectionRepresentation")
                         .label("Selection Representation")
                         .descriptionId(optionalRepresentationDescriptionId.get())
+                        .iconURLs(List.of())
                         .build();
 
                 return Optional.of(representationMetadata);

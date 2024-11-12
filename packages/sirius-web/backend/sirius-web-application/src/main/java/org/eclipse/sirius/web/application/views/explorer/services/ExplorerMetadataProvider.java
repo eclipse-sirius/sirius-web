@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.views.explorer.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.RepresentationMetadata;
@@ -34,6 +35,7 @@ public class ExplorerMetadataProvider implements IRepresentationMetadataProvider
                     .kind(Tree.KIND)
                     .label(ExplorerDescriptionProvider.REPRESENTATION_NAME)
                     .descriptionId(ExplorerDescriptionProvider.DESCRIPTION_ID)
+                    .iconURLs(List.of("/explorer/explorer.svg"))
                     .build();
 
             return Optional.of(representationMetadata);

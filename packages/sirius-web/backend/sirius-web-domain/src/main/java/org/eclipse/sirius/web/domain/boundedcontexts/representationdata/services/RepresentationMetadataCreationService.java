@@ -13,15 +13,12 @@
 package org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services;
 
 import java.util.Objects;
-import java.util.UUID;
 
-import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationMetadataRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataCreationService;
 import org.eclipse.sirius.web.domain.services.IResult;
 import org.eclipse.sirius.web.domain.services.Success;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -39,16 +36,7 @@ public class RepresentationMetadataCreationService implements IRepresentationMet
     }
 
     @Override
-    public IResult<RepresentationMetadata> create(ICause cause, UUID representationId, UUID projectId, String label, String kind, String descriptionId, String targetObjectId) {
-
-        var representationMetadata = RepresentationMetadata.newRepresentationMetadata(representationId)
-                .project(AggregateReference.to(projectId))
-                .label(label)
-                .kind(kind)
-                .descriptionId(descriptionId)
-                .targetObjectId(targetObjectId)
-                .build(cause);
-
+    public IResult<RepresentationMetadata> create(RepresentationMetadata representationMetadata) {
         this.representationMetadataRepository.save(representationMetadata);
         return new Success<>(representationMetadata);
     }

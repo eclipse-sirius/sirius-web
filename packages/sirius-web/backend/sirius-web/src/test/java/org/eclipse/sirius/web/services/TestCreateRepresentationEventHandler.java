@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
@@ -59,6 +60,7 @@ public class TestCreateRepresentationEventHandler implements IEditingContextEven
                 .kind(test.getKind())
                 .label("Test")
                 .descriptionId(test.getDescriptionId())
+                .iconURLs(List.of())
                 .build();
 
         this.representationMetadataPersistenceService.save(input, editingContext, representationMetadata, test.getTargetObjectId());

@@ -67,6 +67,7 @@ public class DetailsViewFormDescriptionAggregator {
                 .targetObjectIdProvider(targetObjectIdProvider)
                 .canCreatePredicate(variableManager -> false)
                 .pageDescriptions(eligiblePageDescriptions)
+                .iconURLsProvider(variableManager -> List.of())
                 .build());
     }
 }

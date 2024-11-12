@@ -79,6 +79,16 @@ public class FormDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for IconExpression.
+     *
+     * @generated
+     */
+    public FormDescriptionBuilder iconExpression(java.lang.String value) {
+        this.getFormDescription().setIconExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for Pages.
      *
      * @generated

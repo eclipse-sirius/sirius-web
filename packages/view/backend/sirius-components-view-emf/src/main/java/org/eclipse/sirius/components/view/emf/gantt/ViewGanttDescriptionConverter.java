@@ -40,6 +40,7 @@ import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.OperationInterpreter;
+import org.eclipse.sirius.components.view.emf.ViewIconURLsProvider;
 import org.springframework.stereotype.Service;
 
 /**
@@ -65,7 +66,6 @@ public class ViewGanttDescriptionConverter implements IRepresentationDescription
     private final Function<VariableManager, String> semanticTargetLabelProvider;
 
     private final GanttIdProvider ganttIdProvider;
-
 
     public ViewGanttDescriptionConverter(IObjectService objectService, IEditService editService, GanttIdProvider ganttIdProvider) {
         this.objectService = Objects.requireNonNull(objectService);
@@ -115,6 +115,7 @@ public class ViewGanttDescriptionConverter implements IRepresentationDescription
                         }))
                 .taskDescriptions(taskDescriptions)
                 .dateRoundingProvider(variableManager -> this.evaluateString(interpreter, variableManager, viewGanttDescription.getDateRoundingExpression()))
+                .iconURLsProvider(new ViewIconURLsProvider(interpreter, viewGanttDescription.getIconExpression()))
                 .build();
     }
 

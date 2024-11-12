@@ -53,6 +53,7 @@ public class FormEventProcessorTests {
                 .label("formLabel")
                 .labelProvider(variableManager -> "label")
                 .pageDescriptions(List.of())
+                .iconURLsProvider(variableManager -> List.of())
                 .build();
     }
 

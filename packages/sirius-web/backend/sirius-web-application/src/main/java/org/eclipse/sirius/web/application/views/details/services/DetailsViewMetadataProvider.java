@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.views.details.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.RepresentationMetadata;
@@ -34,6 +35,7 @@ public class DetailsViewMetadataProvider implements IRepresentationMetadataProvi
                     .kind(Form.KIND)
                     .label("Properties")
                     .descriptionId(PropertiesEventProcessorFactory.DETAILS_VIEW_ID)
+                    .iconURLs(List.of("/details/details.svg"))
                     .build();
 
             return Optional.of(representationMetadata);

@@ -256,18 +256,21 @@ public class DomainExplorerServices {
     }
 
     public List<String> getIconURL(Object self) {
-        List<String> imageURL = List.of(CoreImageConstants.DEFAULT_SVG);
+        List<String> result = List.of(CoreImageConstants.DEFAULT_SVG);
         if (self instanceof EObject) {
-            imageURL = this.objectService.getImagePath(self);
+            result = this.objectService.getImagePath(self);
         } else if (self instanceof RepresentationMetadata representationMetadata) {
-            imageURL = this.representationImageProviders.stream()
-                    .map(representationImageProvider -> representationImageProvider.getImageURL(representationMetadata.kind()))
-                    .flatMap(Optional::stream)
-                    .toList();
+            if (!representationMetadata.iconURLs().isEmpty()) {
+                result = representationMetadata.iconURLs();
+            } else {
+                result = this.representationImageProviders.stream()
+                        .flatMap(provider -> provider.getImageURL(representationMetadata.kind()).stream())
+                        .toList();
+            }
         } else if (self instanceof Resource) {
-            imageURL = List.of("/explorer/Resource.svg");
+            result = List.of("/explorer/Resource.svg");
         }
-        return imageURL;
+        return result;
     }
 
     public boolean isDeletable(Object self) {
