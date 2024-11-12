@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
+import org.eclipse.sirius.components.view.emf.ViewIconURLsProvider;
 import org.springframework.stereotype.Service;
 
 /**
@@ -82,7 +83,7 @@ public class ViewTreeDescriptionConverter implements IRepresentationDescriptionC
                 .treeItemIdProvider(variableManager -> this.evaluateString(interpreter, variableManager, viewTreeDescription.getTreeItemIdExpression()))
                 .treeItemObjectProvider(variableManager -> this.evaluateObject(interpreter, variableManager, viewTreeDescription.getTreeItemObjectExpression()))
                 .treeItemLabelProvider(variableManager -> this.getTreeItemLabel(interpreter, variableManager, viewTreeDescription))
-                .iconURLProvider(variableManager -> this.evaluateStringList(interpreter, variableManager, viewTreeDescription.getIconURLExpression()))
+                .treeItemIconURLsProvider(variableManager -> this.evaluateStringList(interpreter, variableManager, viewTreeDescription.getTreeItemIconExpression()))
                 .editableProvider(variableManager -> this.evaluateBoolean(interpreter, variableManager, viewTreeDescription.getEditableExpression()))
                 .deletableProvider(variableManager -> this.evaluateBoolean(interpreter, variableManager, viewTreeDescription.getDeletableExpression()))
                 .selectableProvider(variableManager -> this.evaluateBoolean(interpreter, variableManager, viewTreeDescription.getSelectableExpression()))
@@ -90,6 +91,7 @@ public class ViewTreeDescriptionConverter implements IRepresentationDescriptionC
                 .hasChildrenProvider(variableManager -> this.evaluateBoolean(interpreter, variableManager, viewTreeDescription.getHasChildrenExpression()))
                 .childrenProvider(variableManager -> this.evaluateObjectList(interpreter, variableManager, viewTreeDescription.getChildrenExpression()))
                 .parentObjectProvider(variableManager -> this.evaluateObject(interpreter, variableManager, viewTreeDescription.getParentExpression()))
+                .iconURLsProvider(new ViewIconURLsProvider(interpreter, viewTreeDescription.getIconExpression()))
                 .deleteHandler(this::getDeleteHandler)
                 .renameHandler(this::getRenameHandler)
                 ;

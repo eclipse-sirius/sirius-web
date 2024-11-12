@@ -51,6 +51,8 @@ public final class TableDescription implements IRepresentationDescription {
 
     private List<ICellDescription> cellDescriptions;
 
+    private Function<VariableManager, List<String>> iconURLsProvider;
+
     private TableDescription() {
         // Prevent instantiation
     }
@@ -93,6 +95,10 @@ public final class TableDescription implements IRepresentationDescription {
         return this.cellDescriptions;
     }
 
+    public Function<VariableManager, List<String>> getIconURLsProvider() {
+        return this.iconURLsProvider;
+    }
+
     public static Builder newTableDescription(String id) {
         return new Builder(id);
     }
@@ -128,6 +134,8 @@ public final class TableDescription implements IRepresentationDescription {
         private List<ColumnDescription> columnDescriptions;
 
         private List<ICellDescription> cellDescriptions;
+
+        private Function<VariableManager, List<String>> iconURLsProvider;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -173,6 +181,11 @@ public final class TableDescription implements IRepresentationDescription {
             return this;
         }
 
+        public Builder iconURLsProvider(Function<VariableManager, List<String>> iconURLsProvider) {
+            this.iconURLsProvider =  Objects.requireNonNull(iconURLsProvider);
+            return this;
+        }
+
         public TableDescription build() {
             TableDescription tableDescription = new TableDescription();
             tableDescription.id = Objects.requireNonNull(this.id);
@@ -184,6 +197,7 @@ public final class TableDescription implements IRepresentationDescription {
             tableDescription.lineDescriptions = Objects.requireNonNull(this.lineDescriptions);
             tableDescription.columnDescriptions = Objects.requireNonNull(this.columnDescriptions);
             tableDescription.cellDescriptions = Objects.requireNonNull(this.cellDescriptions);
+            tableDescription.iconURLsProvider = Objects.requireNonNull(this.iconURLsProvider);
             return tableDescription;
         }
     }

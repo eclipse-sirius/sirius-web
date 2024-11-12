@@ -47,6 +47,7 @@ public class ComponentDiagramDescriptionProvider implements IRepresentationDescr
         componentDiagramDescription.setTitleExpression("aql:self.name + ' component diagram'");
         componentDiagramDescription.setAutoLayout(false);
         componentDiagramDescription.setArrangeLayoutDirection(ArrangeLayoutDirection.DOWN);
+        componentDiagramDescription.setIconExpression("aql:'/papaya-representations/component-diagram.svg'");
 
         var cache = new DefaultViewDiagramElementFinder();
 

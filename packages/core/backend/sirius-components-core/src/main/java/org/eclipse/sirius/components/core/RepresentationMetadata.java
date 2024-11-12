@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.core;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -20,12 +21,13 @@ import java.util.Objects;
  *
  * @author sbegaudeau
  */
-public record RepresentationMetadata(String id, String kind, String label, String descriptionId) {
+public record RepresentationMetadata(String id, String kind, String label, String descriptionId, List<String> iconURLs) {
     public RepresentationMetadata {
         Objects.requireNonNull(id);
         Objects.requireNonNull(kind);
         Objects.requireNonNull(label);
         Objects.requireNonNull(descriptionId);
+        Objects.requireNonNull(iconURLs);
     }
 
     public static Builder newRepresentationMetadata(String id) {
@@ -57,6 +59,8 @@ public record RepresentationMetadata(String id, String kind, String label, Strin
 
         private String descriptionId;
 
+        private List<String> iconURLs;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -83,12 +87,18 @@ public record RepresentationMetadata(String id, String kind, String label, Strin
             return this;
         }
 
+        public Builder iconURLs(List<String> iconURLs) {
+            this.iconURLs = Objects.requireNonNull(iconURLs);
+            return this;
+        }
+
         public RepresentationMetadata build() {
             return new RepresentationMetadata(
                     Objects.requireNonNull(this.id),
                     Objects.requireNonNull(this.kind),
                     Objects.requireNonNull(this.label),
-                    Objects.requireNonNull(this.descriptionId)
+                    Objects.requireNonNull(this.descriptionId),
+                    Objects.requireNonNull(this.iconURLs)
             );
         }
 

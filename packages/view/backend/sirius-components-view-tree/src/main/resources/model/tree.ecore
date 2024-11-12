@@ -3,7 +3,8 @@
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="tree" nsURI="http://www.eclipse.org/sirius-web/tree" nsPrefix="tree">
   <eClassifiers xsi:type="ecore:EClass" name="TreeDescription" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//RepresentationDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="kindExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="iconURLExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="treeItemIconExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="treeItemIdExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="treeItemObjectExpression"
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>

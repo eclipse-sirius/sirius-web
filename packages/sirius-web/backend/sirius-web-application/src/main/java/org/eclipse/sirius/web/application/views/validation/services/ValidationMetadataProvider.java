@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.views.validation.services;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -35,6 +36,7 @@ public class ValidationMetadataProvider implements IRepresentationMetadataProvid
                     .kind(Validation.KIND)
                     .label(ValidationDescriptionProvider.LABEL)
                     .descriptionId(ValidationDescriptionProvider.DESCRIPTION_ID)
+                    .iconURLs(List.of("validation/validation.svg"))
                     .build();
 
             return Optional.of(representationMetadata);

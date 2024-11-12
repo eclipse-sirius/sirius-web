@@ -79,6 +79,16 @@ public class DeckDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for IconExpression.
+     *
+     * @generated
+     */
+    public DeckDescriptionBuilder iconExpression(java.lang.String value) {
+        this.getDeckDescription().setIconExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for LaneDescriptions.
      *
      * @generated

@@ -52,6 +52,7 @@ public class ValidationDescriptionProvider implements IValidationDescriptionProv
                 .diagnosticsProvider(this::getDiagnosticsProvider)
                 .kindProvider(this::kindProvider)
                 .messageProvider(this::messageProvider)
+                .iconURLsProvider(variableManager -> List.of())
                 .build();
     }
 

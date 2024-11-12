@@ -175,6 +175,15 @@ INSERT INTO representation_metadata (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+INSERT INTO representation_metadata_icon_url (
+  representation_metadata_id,
+  url,
+  index
+) VALUES (
+  'e81eec5c-42d6-491c-8bcc-9beb951356f8',
+  '/portal-images/portal.svg',
+  0
+);
 INSERT INTO representation_content (
   id,
   content,

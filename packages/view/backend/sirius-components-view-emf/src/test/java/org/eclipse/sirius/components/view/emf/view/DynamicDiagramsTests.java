@@ -66,7 +66,7 @@ public class DynamicDiagramsTests {
     private EPackage fixture;
 
     @BeforeEach
-    void buildFixture() {
+    public void buildFixture() {
         this.fixture = EcoreFactory.eINSTANCE.createEPackage();
         this.fixture.setName("fixture");
         EClass klass1 = EcoreFactory.eINSTANCE.createEClass();
@@ -87,7 +87,7 @@ public class DynamicDiagramsTests {
     }
 
     @Test
-    void testRenderSynchronizedEcoreDiagram() throws Exception {
+    public void testRenderSynchronizedEcoreDiagram() {
         DiagramDescription diagramDescription = DiagramFactory.eINSTANCE.createDiagramDescription();
         diagramDescription.setName("Simple Ecore Diagram");
         diagramDescription.setTitleExpression(NAME_EXPRESSION);
@@ -118,7 +118,7 @@ public class DynamicDiagramsTests {
     }
 
     @Test
-    void testRenderUnsynchronizedEcoreDiagram() throws Exception {
+    public void testRenderUnsynchronizedEcoreDiagram() {
         DiagramDescription diagramDescription = DiagramFactory.eINSTANCE.createDiagramDescription();
         diagramDescription.setName("Simple Ecore Diagram");
         diagramDescription.setTitleExpression(NAME_EXPRESSION);

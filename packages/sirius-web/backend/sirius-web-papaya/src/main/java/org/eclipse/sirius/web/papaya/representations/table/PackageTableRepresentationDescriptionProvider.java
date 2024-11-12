@@ -65,7 +65,6 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
 
     @Override
     public List<IRepresentationDescription> getRepresentationDescriptions(IEditingContext editingContext) {
-
         var lineDescription = LineDescription.newLineDescription(UUID.nameUUIDFromBytes("Table - Line".getBytes()))
                 .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
@@ -81,6 +80,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
                 .cellDescriptions(this.getCellDescriptions())
+                .iconURLsProvider(variableManager -> List.of("/papaya-representations/package-table.svg"))
                 .build();
 
         return List.of(tableDescription);

@@ -37,8 +37,8 @@ import org.eclipse.sirius.components.view.tree.TreePackage;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getKindExpression <em>Kind
  * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getIconURLExpression <em>Icon URL
- * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getTreeItemIconExpression <em>Tree Item
+ * Icon Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getTreeItemIdExpression <em>Tree Item Id
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getTreeItemObjectExpression <em>Tree Item
@@ -68,197 +68,196 @@ import org.eclipse.sirius.components.view.tree.TreePackage;
 public class TreeDescriptionImpl extends RepresentationDescriptionImpl implements TreeDescription {
 
     /**
-     * The default value of the '{@link #getKindExpression() <em>Kind Expression</em>}' attribute. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
+     * The default value of the '{@link #getKindExpression() <em>Kind Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      * @see #getKindExpression()
      */
     protected static final String KIND_EXPRESSION_EDEFAULT = null;
+
     /**
-     * The default value of the '{@link #getIconURLExpression() <em>Icon URL Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getIconURLExpression()
-     */
-    protected static final String ICON_URL_EXPRESSION_EDEFAULT = null;
-    /**
-     * The default value of the '{@link #getTreeItemIdExpression() <em>Tree Item Id Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getTreeItemIdExpression()
-     */
-    protected static final String TREE_ITEM_ID_EXPRESSION_EDEFAULT = null;
-    /**
-     * The default value of the '{@link #getTreeItemObjectExpression() <em>Tree Item Object Expression</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getTreeItemObjectExpression()
-     */
-    protected static final String TREE_ITEM_OBJECT_EXPRESSION_EDEFAULT = null;
-    /**
-     * The default value of the '{@link #getElementsExpression() <em>Elements Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getElementsExpression()
-     */
-    protected static final String ELEMENTS_EXPRESSION_EDEFAULT = null;
-    /**
-     * The default value of the '{@link #getHasChildrenExpression() <em>Has Children Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getHasChildrenExpression()
-     */
-    protected static final String HAS_CHILDREN_EXPRESSION_EDEFAULT = null;
-    /**
-     * The default value of the '{@link #getChildrenExpression() <em>Children Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getChildrenExpression()
-     */
-    protected static final String CHILDREN_EXPRESSION_EDEFAULT = null;
-    /**
-     * The default value of the '{@link #getParentExpression() <em>Parent Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getParentExpression()
-     */
-    protected static final String PARENT_EXPRESSION_EDEFAULT = null;
-    /**
-     * The default value of the '{@link #getEditableExpression() <em>Editable Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getEditableExpression()
-     */
-    protected static final String EDITABLE_EXPRESSION_EDEFAULT = null;
-    /**
-     * The default value of the '{@link #getSelectableExpression() <em>Selectable Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getSelectableExpression()
-     */
-    protected static final String SELECTABLE_EXPRESSION_EDEFAULT = null;
-    /**
-     * The default value of the '{@link #getDeletableExpression() <em>Deletable Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getDeletableExpression()
-     */
-    protected static final String DELETABLE_EXPRESSION_EDEFAULT = null;
-    /**
-     * The cached value of the '{@link #getKindExpression() <em>Kind Expression</em>}' attribute. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
+     * The cached value of the '{@link #getKindExpression() <em>Kind Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      * @see #getKindExpression()
      */
     protected String kindExpression = KIND_EXPRESSION_EDEFAULT;
+
     /**
-     * The cached value of the '{@link #getIconURLExpression() <em>Icon URL Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The default value of the '{@link #getTreeItemIconExpression() <em>Tree Item Icon Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
-     * @see #getIconURLExpression()
+     * @see #getTreeItemIconExpression()
      */
-    protected String iconURLExpression = ICON_URL_EXPRESSION_EDEFAULT;
+    protected static final String TREE_ITEM_ICON_EXPRESSION_EDEFAULT = null;
+
     /**
-     * The cached value of the '{@link #getTreeItemIdExpression() <em>Tree Item Id Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The cached value of the '{@link #getTreeItemIconExpression() <em>Tree Item Icon Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getTreeItemIconExpression()
+     */
+    protected String treeItemIconExpression = TREE_ITEM_ICON_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getTreeItemIdExpression() <em>Tree Item Id Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getTreeItemIdExpression()
+     */
+    protected static final String TREE_ITEM_ID_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getTreeItemIdExpression() <em>Tree Item Id Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      * @see #getTreeItemIdExpression()
      */
     protected String treeItemIdExpression = TREE_ITEM_ID_EXPRESSION_EDEFAULT;
+
     /**
-     * The cached value of the '{@link #getTreeItemObjectExpression() <em>Tree Item Object Expression</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The default value of the '{@link #getTreeItemObjectExpression() <em>Tree Item Object Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getTreeItemObjectExpression()
+     */
+    protected static final String TREE_ITEM_OBJECT_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getTreeItemObjectExpression() <em>Tree Item Object Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      * @see #getTreeItemObjectExpression()
      */
     protected String treeItemObjectExpression = TREE_ITEM_OBJECT_EXPRESSION_EDEFAULT;
+
     /**
-     * The cached value of the '{@link #getElementsExpression() <em>Elements Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The default value of the '{@link #getElementsExpression() <em>Elements Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getElementsExpression()
+     */
+    protected static final String ELEMENTS_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getElementsExpression() <em>Elements Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      * @see #getElementsExpression()
      */
     protected String elementsExpression = ELEMENTS_EXPRESSION_EDEFAULT;
+
     /**
-     * The cached value of the '{@link #getHasChildrenExpression() <em>Has Children Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The default value of the '{@link #getHasChildrenExpression() <em>Has Children Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getHasChildrenExpression()
+     */
+    protected static final String HAS_CHILDREN_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getHasChildrenExpression() <em>Has Children Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      * @see #getHasChildrenExpression()
      */
     protected String hasChildrenExpression = HAS_CHILDREN_EXPRESSION_EDEFAULT;
+
     /**
-     * The cached value of the '{@link #getChildrenExpression() <em>Children Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The default value of the '{@link #getChildrenExpression() <em>Children Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getChildrenExpression()
+     */
+    protected static final String CHILDREN_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getChildrenExpression() <em>Children Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      * @see #getChildrenExpression()
      */
     protected String childrenExpression = CHILDREN_EXPRESSION_EDEFAULT;
+
     /**
-     * The cached value of the '{@link #getParentExpression() <em>Parent Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The default value of the '{@link #getParentExpression() <em>Parent Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getParentExpression()
+     */
+    protected static final String PARENT_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getParentExpression() <em>Parent Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      * @see #getParentExpression()
      */
     protected String parentExpression = PARENT_EXPRESSION_EDEFAULT;
+
     /**
-     * The cached value of the '{@link #getEditableExpression() <em>Editable Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The default value of the '{@link #getEditableExpression() <em>Editable Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getEditableExpression()
+     */
+    protected static final String EDITABLE_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getEditableExpression() <em>Editable Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      * @see #getEditableExpression()
      */
     protected String editableExpression = EDITABLE_EXPRESSION_EDEFAULT;
+
     /**
-     * The cached value of the '{@link #getSelectableExpression() <em>Selectable Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The default value of the '{@link #getSelectableExpression() <em>Selectable Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getSelectableExpression()
+     */
+    protected static final String SELECTABLE_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getSelectableExpression() <em>Selectable Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      * @see #getSelectableExpression()
      */
     protected String selectableExpression = SELECTABLE_EXPRESSION_EDEFAULT;
+
     /**
-     * The cached value of the '{@link #getDeletableExpression() <em>Deletable Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The default value of the '{@link #getDeletableExpression() <em>Deletable Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getDeletableExpression()
+     */
+    protected static final String DELETABLE_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getDeletableExpression() <em>Deletable Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -267,8 +266,7 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
     protected String deletableExpression = DELETABLE_EXPRESSION_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getTreeItemLabelDescriptions() <em>Tree Item Label Descriptions</em>}'
-     * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The cached value of the '{@link #getTreeItemLabelDescriptions() <em>Tree Item Label Descriptions</em>}' containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -277,8 +275,7 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
     protected EList<TreeItemLabelDescription> treeItemLabelDescriptions;
 
     /**
-     * The cached value of the '{@link #getContextMenuEntries() <em>Context Menu Entries</em>}' reference list. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The cached value of the '{@link #getContextMenuEntries() <em>Context Menu Entries</em>}' reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
@@ -334,8 +331,8 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
      * @generated
      */
     @Override
-    public String getIconURLExpression() {
-        return this.iconURLExpression;
+    public String getTreeItemIconExpression() {
+        return this.treeItemIconExpression;
     }
 
     /**
@@ -344,11 +341,11 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
      * @generated
      */
     @Override
-    public void setIconURLExpression(String newIconURLExpression) {
-        String oldIconURLExpression = this.iconURLExpression;
-        this.iconURLExpression = newIconURLExpression;
+    public void setTreeItemIconExpression(String newTreeItemIconExpression) {
+        String oldTreeItemIconExpression = this.treeItemIconExpression;
+        this.treeItemIconExpression = newTreeItemIconExpression;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_DESCRIPTION__ICON_URL_EXPRESSION, oldIconURLExpression, this.iconURLExpression));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_DESCRIPTION__TREE_ITEM_ICON_EXPRESSION, oldTreeItemIconExpression, this.treeItemIconExpression));
     }
 
     /**
@@ -610,8 +607,8 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
         switch (featureID) {
             case TreePackage.TREE_DESCRIPTION__KIND_EXPRESSION:
                 return this.getKindExpression();
-            case TreePackage.TREE_DESCRIPTION__ICON_URL_EXPRESSION:
-                return this.getIconURLExpression();
+            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ICON_EXPRESSION:
+                return this.getTreeItemIconExpression();
             case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ID_EXPRESSION:
                 return this.getTreeItemIdExpression();
             case TreePackage.TREE_DESCRIPTION__TREE_ITEM_OBJECT_EXPRESSION:
@@ -650,8 +647,8 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
             case TreePackage.TREE_DESCRIPTION__KIND_EXPRESSION:
                 this.setKindExpression((String) newValue);
                 return;
-            case TreePackage.TREE_DESCRIPTION__ICON_URL_EXPRESSION:
-                this.setIconURLExpression((String) newValue);
+            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ICON_EXPRESSION:
+                this.setTreeItemIconExpression((String) newValue);
                 return;
             case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ID_EXPRESSION:
                 this.setTreeItemIdExpression((String) newValue);
@@ -703,8 +700,8 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
             case TreePackage.TREE_DESCRIPTION__KIND_EXPRESSION:
                 this.setKindExpression(KIND_EXPRESSION_EDEFAULT);
                 return;
-            case TreePackage.TREE_DESCRIPTION__ICON_URL_EXPRESSION:
-                this.setIconURLExpression(ICON_URL_EXPRESSION_EDEFAULT);
+            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ICON_EXPRESSION:
+                this.setTreeItemIconExpression(TREE_ITEM_ICON_EXPRESSION_EDEFAULT);
                 return;
             case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ID_EXPRESSION:
                 this.setTreeItemIdExpression(TREE_ITEM_ID_EXPRESSION_EDEFAULT);
@@ -752,9 +749,9 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case TreePackage.TREE_DESCRIPTION__KIND_EXPRESSION:
-                return !Objects.equals(KIND_EXPRESSION_EDEFAULT, this.kindExpression);
-            case TreePackage.TREE_DESCRIPTION__ICON_URL_EXPRESSION:
-                return !Objects.equals(ICON_URL_EXPRESSION_EDEFAULT, this.iconURLExpression);
+            	return !Objects.equals(KIND_EXPRESSION_EDEFAULT, this.kindExpression);
+            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ICON_EXPRESSION:
+                return !Objects.equals(TREE_ITEM_ICON_EXPRESSION_EDEFAULT, this.treeItemIconExpression);
             case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ID_EXPRESSION:
                 return !Objects.equals(TREE_ITEM_ID_EXPRESSION_EDEFAULT, this.treeItemIdExpression);
             case TreePackage.TREE_DESCRIPTION__TREE_ITEM_OBJECT_EXPRESSION:
@@ -793,8 +790,8 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
 
         String result = super.toString() + " (kindExpression: " +
                 this.kindExpression +
-                ", iconURLExpression: " +
-                this.iconURLExpression +
+                ", treeItemIconExpression: " +
+                this.treeItemIconExpression +
                 ", treeItemIdExpression: " +
                 this.treeItemIdExpression +
                 ", treeItemObjectExpression: " +

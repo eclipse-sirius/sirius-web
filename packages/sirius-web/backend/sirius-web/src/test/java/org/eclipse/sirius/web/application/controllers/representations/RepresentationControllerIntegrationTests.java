@@ -70,7 +70,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
     @DisplayName("Given a persistent representation id, when a query is performed, then the representation metadata are returned")
     @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenPresistentRepresentationIdWhenQueryIsPerformedThenTheRepresentationMetadataAreReturned() {
+    public void givenPersistentRepresentationIdWhenQueryIsPerformedThenTheRepresentationMetadataAreReturned() {
         Map<String, Object> variables = Map.of(
                 "editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(),
                 "representationId", TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()
@@ -89,7 +89,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         List<String> iconURLs = JsonPath.read(result, "$.data.viewer.editingContext.representation.iconURLs");
         assertThat(iconURLs)
                 .isNotEmpty()
-                .satisfiesOnlyOnce(iconURL -> assertThat(iconURL).endsWith("/portal-images/portal.svg"));
+                .allSatisfy(iconURL -> assertThat(iconURL).isEqualTo("/api/images/portal-images/portal.svg"));
     }
 
     @Test
@@ -116,7 +116,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         List<String> iconURLs = JsonPath.read(result, "$.data.viewer.editingContext.representation.iconURLs");
         assertThat(iconURLs)
                 .isNotEmpty()
-                .satisfiesOnlyOnce(iconURL -> assertThat(iconURL).endsWith("/tree-images/tree.svg"));
+                .satisfiesOnlyOnce(iconURL -> assertThat(iconURL).isEqualTo("/api/images/explorer/explorer.svg"));
     }
 
     @Test
@@ -154,7 +154,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
                 .isNotEmpty()
                 .allSatisfy(iconURLs -> assertThat(iconURLs)
                         .isNotEmpty()
-                        .satisfiesOnlyOnce(iconURL -> assertThat(iconURL).endsWith("/portal-images/portal.svg")));
+                        .satisfiesOnlyOnce(iconURL -> assertThat(iconURL).endsWith("/api/images/portal-images/portal.svg")));
     }
 
     @Test
@@ -172,6 +172,13 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         assertThat(representationIds)
                 .isNotEmpty()
                 .allMatch("Portal"::equals);
+
+        List<List<String>> allIconURLs = JsonPath.read(result, "$.data.viewer.editingContext.representations.edges[*].node.iconURLs");
+        assertThat(allIconURLs)
+                .isNotEmpty()
+                .allSatisfy(iconURLs -> assertThat(iconURLs)
+                        .isNotEmpty()
+                        .satisfiesOnlyOnce(iconURL -> assertThat(iconURL).endsWith("/api/images/portal-images/portal.svg")));
     }
 
     @Test

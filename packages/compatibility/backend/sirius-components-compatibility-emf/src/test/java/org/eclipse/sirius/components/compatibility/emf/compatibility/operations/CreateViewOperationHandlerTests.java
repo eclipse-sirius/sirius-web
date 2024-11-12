@@ -87,6 +87,7 @@ public class CreateViewOperationHandlerTests {
                 .nodeDescriptions(List.of(this.getNodeDescription(UUID.randomUUID().toString())))
                 .edgeDescriptions(List.of())
                 .dropHandler(variableManager -> new Failure(""))
+                .iconURLsProvider(variableManager -> List.of())
                 .build();
 
         Diagram diagram = Diagram.newDiagram(UUID.randomUUID().toString())

@@ -61,7 +61,7 @@ public final class TreeDescription implements IRepresentationDescription {
 
     private Function<VariableManager, Object> parentObjectProvider;
 
-    private Function<VariableManager, List<String>> iconURLProvider;
+    private Function<VariableManager, List<String>> treeItemIconURLsProvider;
 
     private Function<VariableManager, Boolean> editableProvider;
 
@@ -84,6 +84,8 @@ public final class TreeDescription implements IRepresentationDescription {
     private Function<VariableManager, Object> treeItemObjectProvider;
 
     private Function<VariableManager, StyledString> treeItemLabelProvider;
+
+    private Function<VariableManager, List<String>> iconURLsProvider;
 
     private TreeDescription() {
         // Prevent instantiation
@@ -131,8 +133,8 @@ public final class TreeDescription implements IRepresentationDescription {
         return this.parentObjectProvider;
     }
 
-    public Function<VariableManager, List<String>> getIconURLProvider() {
-        return this.iconURLProvider;
+    public Function<VariableManager, List<String>> getTreeItemIconURLsProvider() {
+        return this.treeItemIconURLsProvider;
     }
 
     public Function<VariableManager, Boolean> getEditableProvider() {
@@ -180,6 +182,10 @@ public final class TreeDescription implements IRepresentationDescription {
         return this.treeItemLabelProvider;
     }
 
+    public Function<VariableManager, List<String>> getIconURLsProvider() {
+        return this.iconURLsProvider;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}'}'";
@@ -210,7 +216,7 @@ public final class TreeDescription implements IRepresentationDescription {
 
         private Function<VariableManager, Object> parentObjectProvider;
 
-        private Function<VariableManager, List<String>> iconURLProvider;
+        private Function<VariableManager, List<String>> treeItemIconURLsProvider;
 
         private Function<VariableManager, Boolean> editableProvider;
 
@@ -234,6 +240,8 @@ public final class TreeDescription implements IRepresentationDescription {
 
         private Function<VariableManager, StyledString> treeItemLabelProvider;
 
+        private Function<VariableManager, List<String>> iconURLsProvider;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -247,7 +255,7 @@ public final class TreeDescription implements IRepresentationDescription {
             this.labelProvider = treeDescription.getLabelProvider();
             this.targetObjectIdProvider = treeDescription.getTargetObjectIdProvider();
             this.parentObjectProvider = treeDescription.getParentObjectProvider();
-            this.iconURLProvider = treeDescription.getIconURLProvider();
+            this.treeItemIconURLsProvider = treeDescription.getTreeItemIconURLsProvider();
             this.editableProvider = treeDescription.getEditableProvider();
             this.deletableProvider = treeDescription.getDeletableProvider();
             this.selectableProvider = treeDescription.getSelectableProvider();
@@ -259,6 +267,7 @@ public final class TreeDescription implements IRepresentationDescription {
             this.renameHandler = treeDescription.getRenameHandler();
             this.treeItemObjectProvider = treeDescription.getTreeItemObjectProvider();
             this.treeItemLabelProvider = treeDescription.getTreeItemLabelProvider();
+            this.iconURLsProvider = treeDescription.getIconURLsProvider();
         }
 
         public Builder id(String id) {
@@ -301,8 +310,8 @@ public final class TreeDescription implements IRepresentationDescription {
             return this;
         }
 
-        public Builder iconURLProvider(Function<VariableManager, List<String>> iconURLProvider) {
-            this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
+        public Builder treeItemIconURLsProvider(Function<VariableManager, List<String>> treeItemIconURLsProvider) {
+            this.treeItemIconURLsProvider = Objects.requireNonNull(treeItemIconURLsProvider);
             return this;
         }
 
@@ -361,6 +370,11 @@ public final class TreeDescription implements IRepresentationDescription {
             return this;
         }
 
+        public Builder iconURLsProvider(Function<VariableManager, List<String>> iconURLsProvider) {
+            this.iconURLsProvider =  Objects.requireNonNull(iconURLsProvider);
+            return this;
+        }
+
         public TreeDescription build() {
             TreeDescription treeDescription = new TreeDescription();
             treeDescription.id = Objects.requireNonNull(this.id);
@@ -371,7 +385,7 @@ public final class TreeDescription implements IRepresentationDescription {
             treeDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             treeDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             treeDescription.parentObjectProvider = Objects.requireNonNull(this.parentObjectProvider);
-            treeDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
+            treeDescription.treeItemIconURLsProvider = Objects.requireNonNull(this.treeItemIconURLsProvider);
             treeDescription.editableProvider = Objects.requireNonNull(this.editableProvider);
             treeDescription.deletableProvider = Objects.requireNonNull(this.deletableProvider);
             treeDescription.selectableProvider = Objects.requireNonNull(this.selectableProvider);
@@ -383,6 +397,7 @@ public final class TreeDescription implements IRepresentationDescription {
             treeDescription.renameHandler = Objects.requireNonNull(this.renameHandler);
             treeDescription.treeItemObjectProvider = Objects.requireNonNull(this.treeItemObjectProvider);
             treeDescription.treeItemLabelProvider = Objects.requireNonNull(this.treeItemLabelProvider);
+            treeDescription.iconURLsProvider = Objects.requireNonNull(this.iconURLsProvider);
             return treeDescription;
         }
     }

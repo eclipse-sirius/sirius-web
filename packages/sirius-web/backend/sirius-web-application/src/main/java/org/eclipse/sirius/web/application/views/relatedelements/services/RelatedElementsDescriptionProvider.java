@@ -81,6 +81,7 @@ public class RelatedElementsDescriptionProvider implements IRelatedElementsDescr
                 .targetObjectIdProvider(targetObjectIdProvider)
                 .canCreatePredicate(variableManager -> false)
                 .pageDescriptions(List.of(this.getPageDescription(groupDescriptions)))
+                .iconURLsProvider(variableManager -> List.of())
                 .build();
     }
 

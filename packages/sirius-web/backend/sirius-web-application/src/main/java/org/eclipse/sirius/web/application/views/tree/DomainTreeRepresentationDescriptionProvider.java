@@ -40,6 +40,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.web.application.UUIDParser;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationIconURL;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -87,7 +88,7 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
                 .labelProvider(this::getLabel)
                 .treeItemLabelProvider(this::getLabel)
                 .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
-                .iconURLProvider(this::getImageURL)
+                .treeItemIconURLsProvider(this::getImageURL)
                 .editableProvider(variableManager -> false)
                 .deletableProvider(variableManager -> false)
                 .selectableProvider(variableManager -> true)
@@ -98,6 +99,7 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
                 .deleteHandler(variableManager -> new Success())
                 .renameHandler((variableManager, newName) -> new Success())
                 .treeItemObjectProvider(this::getTreeItemObject)
+                .iconURLsProvider(variableManager -> List.of())
                 .build();
         return List.of(treeDescription);
     }
@@ -161,10 +163,16 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
         if (self instanceof EObject) {
             imageURL = this.objectService.getImagePath(self);
         } else if (self instanceof RepresentationMetadata representationMetadata) {
-            imageURL = this.representationImageProviders.stream()
-                    .map(representationImageProvider -> representationImageProvider.getImageURL(representationMetadata.getKind()))
-                    .flatMap(Optional::stream)
-                    .toList();
+            if (representationMetadata.getIconURLs().isEmpty()) {
+                imageURL = this.representationImageProviders.stream()
+                        .map(representationImageProvider -> representationImageProvider.getImageURL(representationMetadata.getKind()))
+                        .flatMap(Optional::stream)
+                        .toList();
+            } else {
+                imageURL = representationMetadata.getIconURLs().stream()
+                        .map(RepresentationIconURL::url)
+                        .toList();
+            }
         }
         return imageURL;
     }

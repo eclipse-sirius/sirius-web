@@ -13,7 +13,9 @@
 package org.eclipse.sirius.web.services;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
@@ -38,5 +40,9 @@ public class TestRepresentationDescription implements IRepresentationDescription
     @Override
     public Predicate<VariableManager> getCanCreatePredicate() {
         return variableManager -> true;
+    }
+
+    public Function<VariableManager, List<String>> getIconURLsProvider() {
+        return variableManager -> List.of();
     }
 }

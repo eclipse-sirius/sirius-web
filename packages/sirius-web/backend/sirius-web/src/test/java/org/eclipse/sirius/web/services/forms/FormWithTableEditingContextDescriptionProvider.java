@@ -90,7 +90,6 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
 
     @Override
     public List<IRepresentationDescription> getRepresentationDescriptions(IEditingContext editingContext) {
-
         TableWidgetDescription tableWidgetDescription = this.getTableWidgetDescription();
 
         GroupDescription taskGroup = GroupDescription.newGroupDescription("iterationGroupId")
@@ -115,6 +114,7 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
                 .targetObjectIdProvider(this::getTargetObjectId)
                 .canCreatePredicate(this::canCreate)
                 .pageDescriptions(List.of(pageDescription))
+                .iconURLsProvider(variableManager -> List.of())
                 .build();
         return List.of(formDescription);
     }
@@ -148,6 +148,7 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
                 .lineDescriptions(lineDescriptions)
                 .columnDescriptions(this.getColumnDescriptions())
                 .cellDescriptions(this.getCellDescriptions())
+                .iconURLsProvider(variableManager -> List.of())
                 .build();
 
         return TableWidgetDescription.newTableWidgetDescription("tasksTableWidgetId")

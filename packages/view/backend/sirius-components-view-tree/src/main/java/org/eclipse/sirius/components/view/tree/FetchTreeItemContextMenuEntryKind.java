@@ -19,8 +19,8 @@ import java.util.List;
 import org.eclipse.emf.common.util.Enumerator;
 
 /**
- * <!-- begin-user-doc --> A representation of the literals of the enumeration '<em><b>Fetch Tree Item Context Menu
- * Entry Kind</b></em>', and utility methods for working with them. <!-- end-user-doc -->
+ * <!-- begin-user-doc --> A representation of the literals of the enumeration '<em><b>Fetch Tree Item Context Menu Entry Kind</b></em>', and utility methods for working with them. <!-- end-user-doc
+ * -->
  *
  * @model
  * @generated
@@ -66,32 +66,33 @@ public enum FetchTreeItemContextMenuEntryKind implements Enumerator {
     public static final int OPEN_VALUE = 1;
 
     /**
-     * An array of all the '<em><b>Fetch Tree Item Context Menu Entry Kind</b></em>' enumerators. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
+     * An array of all the '<em><b>Fetch Tree Item Context Menu Entry Kind</b></em>' enumerators. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private static final FetchTreeItemContextMenuEntryKind[] VALUES_ARRAY = new FetchTreeItemContextMenuEntryKind[] { DOWNLOAD, OPEN, };
 
     /**
-     * A public read-only list of all the '<em><b>Fetch Tree Item Context Menu Entry Kind</b></em>' enumerators. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * A public read-only list of all the '<em><b>Fetch Tree Item Context Menu Entry Kind</b></em>' enumerators. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     public static final List<FetchTreeItemContextMenuEntryKind> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private final int value;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private final String name;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -104,15 +105,14 @@ public enum FetchTreeItemContextMenuEntryKind implements Enumerator {
      *
      * @generated
      */
-    FetchTreeItemContextMenuEntryKind(int value, String name, String literal) {
+    private FetchTreeItemContextMenuEntryKind(int value, String name, String literal) {
         this.value = value;
         this.name = name;
         this.literal = literal;
     }
 
     /**
-     * Returns the '<em><b>Fetch Tree Item Context Menu Entry Kind</b></em>' literal with the specified literal value.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the '<em><b>Fetch Tree Item Context Menu Entry Kind</b></em>' literal with the specified literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param literal
      *         the literal.
@@ -130,8 +130,7 @@ public enum FetchTreeItemContextMenuEntryKind implements Enumerator {
     }
 
     /**
-     * Returns the '<em><b>Fetch Tree Item Context Menu Entry Kind</b></em>' literal with the specified name. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * Returns the '<em><b>Fetch Tree Item Context Menu Entry Kind</b></em>' literal with the specified name. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param name
      *         the name.
@@ -149,8 +148,7 @@ public enum FetchTreeItemContextMenuEntryKind implements Enumerator {
     }
 
     /**
-     * Returns the '<em><b>Fetch Tree Item Context Menu Entry Kind</b></em>' literal with the specified integer value.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the '<em><b>Fetch Tree Item Context Menu Entry Kind</b></em>' literal with the specified integer value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
      *         the integer value.
@@ -198,8 +196,7 @@ public enum FetchTreeItemContextMenuEntryKind implements Enumerator {
     }
 
     /**
-     * Returns the literal value of the enumerator, which is its string representation. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * Returns the literal value of the enumerator, which is its string representation. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */

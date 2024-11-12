@@ -111,6 +111,7 @@ public class CreateFormEventHandler implements IEditingContextEventHandler {
                     variableManager.put(VariableManager.SELF, object);
                     variableManager.put(FormDescription.LABEL, createRepresentationInput.representationName());
                     String label = formDescription.getLabelProvider().apply(variableManager);
+                    List<String> iconURLs = formDescription.getIconURLsProvider().apply(variableManager);
 
                     Form form = Form.newForm(UUID.randomUUID().toString())
                             .targetObjectId(targetObjectId)
@@ -122,6 +123,7 @@ public class CreateFormEventHandler implements IEditingContextEventHandler {
                             .kind(form.getKind())
                             .label(label)
                             .descriptionId(form.getDescriptionId())
+                            .iconURLs(iconURLs)
                             .build();
 
                     this.representationMetadataPersistenceService.save(createRepresentationInput, editingContext, representationMetadata, targetObjectId);

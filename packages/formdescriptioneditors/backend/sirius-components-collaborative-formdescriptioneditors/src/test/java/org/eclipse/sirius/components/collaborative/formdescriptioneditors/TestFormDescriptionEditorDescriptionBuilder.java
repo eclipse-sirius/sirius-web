@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.formdescriptioneditors;
 
+import java.util.List;
+
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorDescription;
 
 /**
@@ -22,12 +24,11 @@ import org.eclipse.sirius.components.formdescriptioneditors.description.FormDesc
 public class TestFormDescriptionEditorDescriptionBuilder {
 
     public FormDescriptionEditorDescription getFormDescriptionEditorDescription(String formDescriptionEditorDescriptionId) {
-        // @formatter:off
         return FormDescriptionEditorDescription.newFormDescriptionEditorDescription(formDescriptionEditorDescriptionId)
-            .label("")
-            .canCreatePredicate(variableManager -> Boolean.TRUE)
-            .targetObjectIdProvider(variableManager -> "targetObjectId")
-            .build();
-        // @formatter:on
+                .label("")
+                .canCreatePredicate(variableManager -> Boolean.TRUE)
+                .targetObjectIdProvider(variableManager -> "targetObjectId")
+                .iconURLsProvider(variableManager -> List.of())
+                .build();
     }
 }

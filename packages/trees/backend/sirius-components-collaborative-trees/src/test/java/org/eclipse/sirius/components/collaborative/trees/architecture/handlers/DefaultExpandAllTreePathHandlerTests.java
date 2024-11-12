@@ -42,7 +42,6 @@ public class DefaultExpandAllTreePathHandlerTests {
 
     @Test
     public void testMaximumDepthReached() {
-
         AtomicBoolean  isIndexVariableAvailableForGetChildren = new AtomicBoolean(true);
         AtomicBoolean  isAncestorVariableAvaibleForGetChildren = new AtomicBoolean(true);
         AtomicBoolean  isIndexVariableAvailableForHasChildren = new AtomicBoolean(true);
@@ -52,25 +51,26 @@ public class DefaultExpandAllTreePathHandlerTests {
             @Override
             public Optional<IRepresentationDescription> findById(IEditingContext editingContext, String id) {
                 TreeDescription diagramDescription = TreeDescription.newTreeDescription("descriptionId")
-                        .canCreatePredicate(v -> true)
+                        .canCreatePredicate(variableManager -> true)
                         .childrenProvider(this::getChildren)
-                        .deletableProvider(v -> false)
-                        .deleteHandler(v -> new Success())
-                        .editableProvider(v -> true)
-                        .elementsProvider(v -> List.of())
+                        .deletableProvider(variableManager -> false)
+                        .deleteHandler(variableManager -> new Success())
+                        .editableProvider(variableManager -> true)
+                        .elementsProvider(variableManager -> List.of())
                         .hasChildrenProvider(this::hasChildren)
-                        .iconURLProvider(v -> List.of())
-                        .idProvider(v -> "id")
-                        .kindProvider(v -> "kind")
+                        .treeItemIconURLsProvider(variableManager -> List.of())
+                        .idProvider(variableManager -> "id")
+                        .kindProvider(variableManager -> "kind")
                         .label("Fake tree")
-                        .labelProvider(v -> null)
-                        .parentObjectProvider(v -> null)
+                        .labelProvider(variableManager -> null)
+                        .parentObjectProvider(variableManager -> null)
                         .renameHandler((v, name) -> new Success())
-                        .selectableProvider(v -> true)
-                        .targetObjectIdProvider(v -> null)
-                        .treeItemIdProvider(v -> "itemId")
-                        .treeItemObjectProvider(v -> new Object())
-                        .treeItemLabelProvider(v -> null)
+                        .selectableProvider(variableManager -> true)
+                        .targetObjectIdProvider(variableManager -> null)
+                        .treeItemIdProvider(variableManager -> "itemId")
+                        .treeItemObjectProvider(variableManager -> new Object())
+                        .treeItemLabelProvider(variableManager -> null)
+                        .iconURLsProvider(variableManager -> List.of())
                         .build();
 
                 return Optional.of(diagramDescription);

@@ -85,7 +85,7 @@ public class TreeRenderer {
         boolean editable = this.treeDescription.getEditableProvider().apply(treeItemVariableManager);
         boolean deletable = this.treeDescription.getDeletableProvider().apply(treeItemVariableManager);
         boolean selectable = this.treeDescription.getSelectableProvider().apply(treeItemVariableManager);
-        List<String> iconURLs = this.treeDescription.getIconURLProvider().apply(treeItemVariableManager);
+        List<String> iconURLs = this.treeDescription.getTreeItemIconURLsProvider().apply(treeItemVariableManager);
 
         if (this.loopDetected(treeItemVariableManager, id)) {
             return this.renderWarningTreeItem(id, kind, label, iconURLs, treeItemVariableManager);

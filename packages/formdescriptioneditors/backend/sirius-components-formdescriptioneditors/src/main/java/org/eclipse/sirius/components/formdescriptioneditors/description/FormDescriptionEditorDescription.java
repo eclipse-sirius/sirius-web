@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.formdescriptioneditors.description;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -39,6 +40,8 @@ public final class FormDescriptionEditorDescription implements IRepresentationDe
 
     private Predicate<VariableManager> canCreatePredicate;
 
+    private Function<VariableManager, List<String>> iconURLsProvider;
+
     private FormDescriptionEditorDescription() {
         // Prevent instantiation
     }
@@ -60,6 +63,10 @@ public final class FormDescriptionEditorDescription implements IRepresentationDe
     @Override
     public Predicate<VariableManager> getCanCreatePredicate() {
         return this.canCreatePredicate;
+    }
+
+    public Function<VariableManager, List<String>> getIconURLsProvider() {
+        return this.iconURLsProvider;
     }
 
     public static Builder newFormDescriptionEditorDescription(String id) {
@@ -87,6 +94,8 @@ public final class FormDescriptionEditorDescription implements IRepresentationDe
 
         private Predicate<VariableManager> canCreatePredicate;
 
+        private Function<VariableManager, List<String>> iconURLsProvider;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -106,12 +115,18 @@ public final class FormDescriptionEditorDescription implements IRepresentationDe
             return this;
         }
 
+        public Builder iconURLsProvider(Function<VariableManager, List<String>> iconURLsProvider) {
+            this.iconURLsProvider =  Objects.requireNonNull(iconURLsProvider);
+            return this;
+        }
+
         public FormDescriptionEditorDescription build() {
             FormDescriptionEditorDescription formDescriptionEditorDescription = new FormDescriptionEditorDescription();
             formDescriptionEditorDescription.id = Objects.requireNonNull(this.id);
             formDescriptionEditorDescription.label = Objects.requireNonNull(this.label);
             formDescriptionEditorDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             formDescriptionEditorDescription.canCreatePredicate = Objects.requireNonNull(this.canCreatePredicate);
+            formDescriptionEditorDescription.iconURLsProvider = Objects.requireNonNull(this.iconURLsProvider);
             return formDescriptionEditorDescription;
         }
     }

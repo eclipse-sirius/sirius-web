@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.view.deck.DeckDescriptionStyle;
 import org.eclipse.sirius.components.view.deck.DeckElementDescriptionStyle;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.OperationInterpreter;
+import org.eclipse.sirius.components.view.emf.ViewIconURLsProvider;
 import org.springframework.stereotype.Service;
 
 /**
@@ -108,8 +109,17 @@ public class ViewDeckDescriptionConverter implements IRepresentationDescriptionC
             return new DeckStyleProvider(effectiveStyle).apply(variableManager);
         };
 
-        return new org.eclipse.sirius.components.deck.description.DeckDescription(id, label, idProvider, labelProvider, this::getTargetObjectId, canCreatePredicate, laneDescriptions, dropLaneProvider,
-                styleProvider);
+        return new org.eclipse.sirius.components.deck.description.DeckDescription(
+                id,
+                label,
+                idProvider,
+                labelProvider,
+                this::getTargetObjectId,
+                canCreatePredicate,
+                laneDescriptions,
+                dropLaneProvider,
+                styleProvider,
+                new ViewIconURLsProvider(interpreter, viewDeckDescription.getIconExpression()));
     }
 
     private Consumer<VariableManager> getOperationsHandler(List<Operation> operations, AQLInterpreter interpreter) {
@@ -160,7 +170,6 @@ public class ViewDeckDescriptionConverter implements IRepresentationDescriptionC
     }
 
     private CardDescription convert(org.eclipse.sirius.components.view.deck.CardDescription viewCardDescription, AQLInterpreter interpreter) {
-
         var id = this.deckIdProvider.getId(viewCardDescription);
         Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> this.getSemanticElements(viewCardDescription, variableManager, interpreter);
         Function<VariableManager, String> titleProvider = variableManager -> this.evaluateString(interpreter, variableManager, viewCardDescription.getTitleExpression());

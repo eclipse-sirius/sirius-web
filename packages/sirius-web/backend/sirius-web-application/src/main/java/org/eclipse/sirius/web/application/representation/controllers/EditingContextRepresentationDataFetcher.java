@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.representation.controllers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,11 +22,9 @@ import java.util.Optional;
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
-import org.eclipse.sirius.components.core.api.IImageURLSanitizer;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
-import org.eclipse.sirius.components.graphql.api.URLConstants;
 import org.eclipse.sirius.web.application.representation.dto.RepresentationMetadataDTO;
 
 import graphql.execution.DataFetcherResult;
@@ -45,12 +44,9 @@ public class EditingContextRepresentationDataFetcher implements IDataFetcherWith
 
     private final List<IRepresentationImageProvider> representationImageProviders;
 
-    private final IImageURLSanitizer imageURLSanitizer;
-
-    public EditingContextRepresentationDataFetcher(List<IRepresentationMetadataProvider> representationMetadataProviders, List<IRepresentationImageProvider> representationImageProviders, IImageURLSanitizer imageURLSanitizer) {
+    public EditingContextRepresentationDataFetcher(List<IRepresentationMetadataProvider> representationMetadataProviders, List<IRepresentationImageProvider> representationImageProviders) {
         this.representationMetadataProviders = Objects.requireNonNull(representationMetadataProviders);
         this.representationImageProviders = Objects.requireNonNull(representationImageProviders);
-        this.imageURLSanitizer = Objects.requireNonNull(imageURLSanitizer);
     }
 
     @Override
@@ -73,12 +69,17 @@ public class EditingContextRepresentationDataFetcher implements IDataFetcherWith
     }
 
     private RepresentationMetadataDTO toDTO(RepresentationMetadata representationMetadata) {
-        var icons = this.representationImageProviders.stream()
-                .map(representationImageProvider -> representationImageProvider.getImageURL(representationMetadata.kind()))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .map(url -> this.imageURLSanitizer.sanitize(URLConstants.IMAGE_BASE_PATH, url))
-                .toList();
+        List<String> icons = new ArrayList<>();
+        if (representationMetadata.iconURLs().isEmpty()) {
+            icons = this.representationImageProviders.stream()
+                    .map(representationImageProvider -> representationImageProvider.getImageURL(representationMetadata.kind()))
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .toList();
+        } else {
+            icons = representationMetadata.iconURLs();
+        }
+
         return new RepresentationMetadataDTO(representationMetadata.id(), representationMetadata.label(), representationMetadata.kind(), representationMetadata.descriptionId(), icons);
     }
 }

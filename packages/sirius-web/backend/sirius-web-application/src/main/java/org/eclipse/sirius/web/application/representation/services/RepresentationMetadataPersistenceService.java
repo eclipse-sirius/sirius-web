@@ -18,7 +18,10 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationMetadataPe
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.application.UUIDParser;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationIconURL;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataCreationService;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,8 +48,19 @@ public class RepresentationMetadataPersistenceService implements IRepresentation
         if (optionalProjectId.isPresent() && optionalRepresentationId.isPresent()) {
             var projectId = optionalProjectId.get();
             var representationId = optionalRepresentationId.get();
-            this.representationMetadataCreationService.create(cause, representationId, projectId, representationMetadata.label(), representationMetadata.kind(),
-                    representationMetadata.descriptionId(), targetObjectId);
+
+            var boundedRepresentationMetadata = RepresentationMetadata.newRepresentationMetadata(representationId)
+                    .project(AggregateReference.to(projectId))
+                    .label(representationMetadata.label())
+                    .kind(representationMetadata.kind())
+                    .descriptionId(representationMetadata.descriptionId())
+                    .targetObjectId(targetObjectId)
+                    .iconURLs(representationMetadata.iconURLs().stream()
+                            .map(RepresentationIconURL::new)
+                            .toList())
+                    .build(cause);
+
+            this.representationMetadataCreationService.create(boundedRepresentationMetadata);
         }
     }
 }

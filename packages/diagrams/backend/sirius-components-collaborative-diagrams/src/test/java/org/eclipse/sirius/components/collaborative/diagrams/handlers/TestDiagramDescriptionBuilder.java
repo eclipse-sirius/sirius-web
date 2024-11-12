@@ -55,6 +55,7 @@ public class TestDiagramDescriptionBuilder {
                 .edgeDescriptions(edgeDescriptions)
                 .palettes(palettes)
                 .dropHandler(variableManager -> new Failure(""))
+                .iconURLsProvider(variableManager -> List.of())
                 .build();
     }
 

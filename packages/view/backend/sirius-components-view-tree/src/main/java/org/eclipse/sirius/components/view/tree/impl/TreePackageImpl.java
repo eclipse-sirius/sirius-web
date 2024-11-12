@@ -92,18 +92,21 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
      * @generated
      */
     private EEnum fetchTreeItemContextMenuEntryKindEEnum = null;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private static boolean isInited = false;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private boolean isCreated = false;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -112,12 +115,10 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
     private boolean isInitialized = false;
 
     /**
-     * Creates an instance of the model <b>Package</b>, registered with {@link org.eclipse.emf.ecore.EPackage.Registry
-     * EPackage.Registry} by the package package URI value.
+     * Creates an instance of the model <b>Package</b>, registered with {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package package URI value.
      * <p>
-     * Note: the correct way to create the package is via the static factory method {@link #init init()}, which also
-     * performs initialization of the package, or returns the registered package, if one already exists. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * Note: the correct way to create the package is via the static factory method {@link #init init()}, which also performs initialization of the package, or returns the registered package, if one
+     * already exists. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @see org.eclipse.emf.ecore.EPackage.Registry
@@ -132,9 +133,8 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
      * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
      *
      * <p>
-     * This method is used to initialize {@link TreePackage#eINSTANCE} when that field is accessed. Clients should not
-     * invoke it directly. Instead, they should simply access that field to obtain the package. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This method is used to initialize {@link TreePackage#eINSTANCE} when that field is accessed. Clients should not invoke it directly. Instead, they should simply access that field to obtain the
+     * package. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @see #eNS_URI
@@ -194,7 +194,7 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
      * @generated
      */
     @Override
-    public EAttribute getTreeDescription_IconURLExpression() {
+    public EAttribute getTreeDescription_TreeItemIconExpression() {
         return (EAttribute) this.treeDescriptionEClass.getEStructuralFeatures().get(1);
     }
 
@@ -509,8 +509,7 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
     }
 
     /**
-     * Creates the meta-model objects for the package. This method is guarded to have no affect on any invocation but
-     * its first. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Creates the meta-model objects for the package. This method is guarded to have no affect on any invocation but its first. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -522,7 +521,7 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
         // Create classes and their features
         this.treeDescriptionEClass = this.createEClass(TREE_DESCRIPTION);
         this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__KIND_EXPRESSION);
-        this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__ICON_URL_EXPRESSION);
+        this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__TREE_ITEM_ICON_EXPRESSION);
         this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__TREE_ITEM_ID_EXPRESSION);
         this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__TREE_ITEM_OBJECT_EXPRESSION);
         this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__ELEMENTS_EXPRESSION);
@@ -564,8 +563,7 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
     }
 
     /**
-     * Complete the initialization of the package and its meta-model. This method is guarded to have no affect on any
-     * invocation but its first. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Complete the initialization of the package and its meta-model. This method is guarded to have no affect on any invocation but its first. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -596,8 +594,8 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
         this.initEClass(this.treeDescriptionEClass, TreeDescription.class, "TreeDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getTreeDescription_KindExpression(), theViewPackage.getInterpretedExpression(), "kindExpression", null, 0, 1, TreeDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getTreeDescription_IconURLExpression(), theViewPackage.getInterpretedExpression(), "iconURLExpression", null, 0, 1, TreeDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTreeDescription_TreeItemIconExpression(), theViewPackage.getInterpretedExpression(), "treeItemIconExpression", null, 0, 1, TreeDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getTreeDescription_TreeItemIdExpression(), theViewPackage.getInterpretedExpression(), "treeItemIdExpression", null, 0, 1, TreeDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getTreeDescription_TreeItemObjectExpression(), theViewPackage.getInterpretedExpression(), "treeItemObjectExpression", null, 0, 1, TreeDescription.class, !IS_TRANSIENT,

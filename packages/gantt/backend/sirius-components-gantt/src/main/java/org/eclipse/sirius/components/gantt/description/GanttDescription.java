@@ -32,7 +32,8 @@ import org.eclipse.sirius.components.representations.VariableManager;
 public record GanttDescription(String id, String label, Function<VariableManager, String> idProvider, Function<VariableManager, String> labelProvider,
         Function<VariableManager, String> targetObjectIdProvider, Predicate<VariableManager> canCreatePredicate, List<TaskDescription> taskDescriptions, Consumer<VariableManager> createTaskProvider,
         Consumer<VariableManager> editTaskProvider, Consumer<VariableManager> deleteTaskProvider, Consumer<VariableManager> dropTaskProvider, Consumer<VariableManager> createTaskDependencyProvider,
-        Consumer<VariableManager> deleteTaskDependencyProvider, Function<VariableManager, String> dateRoundingProvider) implements IRepresentationDescription {
+        Consumer<VariableManager> deleteTaskDependencyProvider, Function<VariableManager, String> dateRoundingProvider,
+        Function<VariableManager, List<String>> iconURLsProvider) implements IRepresentationDescription {
 
     public static final String LABEL = "label";
 
@@ -65,6 +66,7 @@ public record GanttDescription(String id, String label, Function<VariableManager
         Objects.requireNonNull(targetObjectIdProvider);
         Objects.requireNonNull(taskDescriptions);
         Objects.requireNonNull(dateRoundingProvider);
+        Objects.requireNonNull(iconURLsProvider);
     }
 
     @Override
@@ -80,6 +82,10 @@ public record GanttDescription(String id, String label, Function<VariableManager
     @Override
     public Predicate<VariableManager> getCanCreatePredicate() {
         return this.canCreatePredicate;
+    }
+
+    public Function<VariableManager, List<String>> getIconURLsProvider() {
+        return this.iconURLsProvider;
     }
 
     public static Builder newGanttDescription(String id) {
@@ -127,6 +133,8 @@ public record GanttDescription(String id, String label, Function<VariableManager
         private List<TaskDescription> taskDescriptions;
 
         private Function<VariableManager, String> dateRoundingProvider;
+
+        private Function<VariableManager, List<String>> iconURLsProvider;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -197,11 +205,15 @@ public record GanttDescription(String id, String label, Function<VariableManager
             return this;
         }
 
+        public Builder iconURLsProvider(Function<VariableManager, List<String>> iconURLsProvider) {
+            this.iconURLsProvider = Objects.requireNonNull(iconURLsProvider);
+            return this;
+        }
+
         public GanttDescription build() {
-            GanttDescription ganttDescription = new GanttDescription(this.id, this.label, this.idProvider, this.labelProvider, this.targetObjectIdProvider, this.canCreatePredicate,
+            return new GanttDescription(this.id, this.label, this.idProvider, this.labelProvider, this.targetObjectIdProvider, this.canCreatePredicate,
                     this.taskDescriptions, this.createTaskProvider, this.editTaskProvider, this.deleteTaskProvider, this.dropTaskProvider, this.createTaskDependencyProvider,
-                    this.deleteTaskDependencyProvider, this.dateRoundingProvider);
-            return ganttDescription;
+                    this.deleteTaskDependencyProvider, this.dateRoundingProvider, this.iconURLsProvider);
         }
     }
 }
