@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { useDeletionConfirmationDialog, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { useDeletionConfirmationDialog, useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { Edge, Node, useStoreApi } from '@xyflow/react';
 import { useCallback, useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
@@ -98,6 +98,12 @@ const invokeSingleClickOnDiagramElementToolMutation = gql`
     invokeSingleClickOnDiagramElementTool(input: $input) {
       __typename
       ... on InvokeSingleClickOnDiagramElementToolSuccessPayload {
+        newSelection {
+          entries {
+            id
+            kind
+          }
+        }
         messages {
           body
           level
@@ -177,6 +183,7 @@ export const usePalette = ({
   const { addErrorMessage, addMessages } = useMultiToast();
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
   const { showDialog } = useDialog();
+  const { setSelection } = useSelection();
 
   const { data: paletteData, error: paletteError } = useQuery<GQLGetToolSectionsData, GQLGetToolSectionsVariables>(
     getPaletteQuery,
@@ -228,6 +235,10 @@ export const usePalette = ({
         if (data) {
           const { invokeSingleClickOnDiagramElementTool } = data;
           if (isInvokeSingleClickSuccessPayload(invokeSingleClickOnDiagramElementTool)) {
+            const { newSelection } = invokeSingleClickOnDiagramElementTool;
+            if (newSelection?.entries.length ?? 0 > 0) {
+              setSelection(newSelection);
+            }
             addMessages(invokeSingleClickOnDiagramElementTool.messages);
           }
           if (isErrorPayload(invokeSingleClickOnDiagramElementTool)) {

@@ -90,6 +90,9 @@ Specifiers are also encouraged to implement their own `IRestDataVersionPayloadSe
 - https://github.com/eclipse-sirius/sirius-web/issues/4210[#4210] [table] Add the ability to fork the studio used by a table representation
 - https://github.com/eclipse-sirius/sirius-web/issues/4273[#4273] [table] Add support to column filtering in table
 
+- https://github.com/eclipse-sirius/sirius-web/issues/3980[#3980] Add the ability to select newly created nodes.
+The backend part (the ability to define an _Elements to Select Expression_ on diagram tools) was added in Sirius Web 2024.11.0 but the frontend did not apply the requested selection.
+This is now fixed.
 
 === Improvements
 
