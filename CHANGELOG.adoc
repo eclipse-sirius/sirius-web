@@ -86,6 +86,9 @@ Specifiers are also encouraged to implement their own `IRestDataVersionPayloadSe
 - https://github.com/eclipse-sirius/sirius-web/issues/4203[#4203] [core] Add support for representations in the Details View
 - https://github.com/eclipse-sirius/sirius-web/issues/4259[#4259] [table] Add support to global search in table
 
+- https://github.com/eclipse-sirius/sirius-web/issues/3980[#3980] Add the ability to select newly created nodes.
+The backend part (the ability to define an _Elements to Select Expression_ on diagram tools) was added in Sirius Web 2024.11.0 but the frontend did not apply the requested selection.
+This is now fixed.
 
 === Improvements
 
