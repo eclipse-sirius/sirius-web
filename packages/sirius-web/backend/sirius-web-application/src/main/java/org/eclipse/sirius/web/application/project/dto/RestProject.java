@@ -12,11 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.dto;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.time.OffsetDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.application.dto.IRestRecord;
-import org.eclipse.sirius.web.application.query.dto.RestQuery;
+import org.eclipse.sirius.web.application.dto.Identified;
 
 /**
  * REST Project DTO.
@@ -24,12 +26,28 @@ import org.eclipse.sirius.web.application.query.dto.RestQuery;
  * @author arichard
  */
 public record RestProject(
-        UUID id,
-        String resourceIdentifier,
-        List<String> alias,
-        String humanIdentifier,
-        String decription,
-        String name,
-        List<RestQuery> queries) implements IRestRecord {
+        @JsonProperty("@id") UUID id,
+        @JsonProperty("@type") String type,
+        OffsetDateTime created,
+        Identified defaultBranch,
+        String description,
+        String name) {
 
+    public RestProject {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(created);
+        Objects.requireNonNull(defaultBranch);
+        // description can be null
+        Objects.requireNonNull(name);
+
+    }
+
+    public RestProject(
+            UUID id,
+            OffsetDateTime created,
+            Identified defaultBranch,
+            String description,
+            String name) {
+        this(id, "Project", created, defaultBranch, description, name);
+    }
 }

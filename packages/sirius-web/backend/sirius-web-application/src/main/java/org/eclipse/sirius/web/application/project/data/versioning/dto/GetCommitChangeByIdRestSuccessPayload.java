@@ -12,18 +12,19 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.data.versioning.dto;
 
-import java.time.OffsetDateTime;
+import java.util.Objects;
+import java.util.UUID;
 
-import org.eclipse.sirius.web.application.dto.IRestRecord;
+import org.eclipse.sirius.components.core.api.IPayload;
 
 /**
- * Interface for the REST CommitReference DTO.
+ * The payload for the "getCommitChangeById" REST API on success.
  *
  * @author arichard
  */
-public interface IRestCommitReference extends IRestRecord {
-
-    OffsetDateTime created();
-
-    String name();
+public record GetCommitChangeByIdRestSuccessPayload(UUID id, RestDataVersion commitChange) implements IPayload {
+    public GetCommitChangeByIdRestSuccessPayload {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(commitChange);
+    }
 }

@@ -18,6 +18,18 @@
 === Breaking changes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4110[#4110] [view] CheckboxDescriptionStyle.labelPlacement is replaced by Grid layout properties
+- https://github.com/eclipse-sirius/sirius-web/issues/4193[#4193] [core] Implement Project Data Versioning REST APIs.
+The following classes/interfaces have been removed, they are not used anymore:
+* RestQuery
+* IRestRecord
+* IRestCommitReference
+The following records parameters have been modified:
+* RestBranch:
+** from RestBranch(UUID id, String resourceIdentifier, List<String> alias, String humanIdentifier, String description, OffsetDateTime created)
+** to RestBranch(UUID id, String type, OffsetDateTime created, Identified head, Identified owningProject, Identified referencedCommit)
+* RestProject
+** from RestProject(UUID id, String resourceIdentifier, List<String> alias, String humanIdentifier, String description, List<RestQuery> queries)
+** to RestProject(UUID id, String type, OffsetDateTime created, Identified defaultBranch, String description, String name)
 
 === Dependency update
 
@@ -27,6 +39,7 @@
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4195[#4195] [sirius-web] Prevent objects disappearing when dropped on themselves (or a descendant) in the _Explorer_.
 
+
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4110[#4110] [form] Add layout capabilities for form widgets
@@ -35,12 +48,21 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/3981[#3981] [diagram] The palette sections are showed as list
 - https://github.com/eclipse-sirius/sirius-web/issues/4240[#4240] [diagram] Add a Search tool field in the Palette
 - https://github.com/eclipse-sirius/sirius-web/issues/4241[#4241] [diagram] Add the last used tool entry in the palette
+- https://github.com/eclipse-sirius/sirius-web/issues/4193[#4193] [core] Implement Project Data Versioning REST APIs.
+The new endpoints are:
+** getCommits (`GET /api/rest/projects/{projectId}/commits`): Get all commits in the given project. There is only one commit per project in Sirius Web for now, and its Id is the same as the project Id. It represents the current state of the project, without taking care of data created/updated/deleted since the creation of the project.
+** createCommit (`POST /api/rest/projects/{projectId}/commits`): Create a commit in the given project. There is only one commit per project in Sirius Web for now, so the default implementation of this method does nothing.
+** getCommitById (`GET /api/rest/projects/{projectId}/commits/{commitId}`): Get the commit represented by its Id for the given project. There is only one commit per project in Sirius Web for now, and its Id is the same as the project Id. It represents the current state of the project, without taking care of data created/updated/deleted since the creation of the project.
+** getCommitChange (`GET /api/rest/projects/{projectId}/commits/{commitId}/changes`): Get all changes of the commit represented by its Id for the given project. There is only one commit per project in Sirius Web for now, and its Id is the same as the project Id. The default implementation retrieves all elements containing in the project, without taking care of data created/updated/deleted since the creation of the project.
+** getCommitChangeById (`GET /api/rest/projects/{projectId}/commits/{commitId}/changes/{changeId}`): Get the changes associated to the given change Id for the commit represented by its Id for the given project. There is only one commit per project in Sirius Web for now, and its Id is the same as the project Id. The default implementation retrieves all changes containing in the project, without taking care of data created/updated/deleted since the creation of the project. The change Id parameter should be randomly generated but constant for an unlimited period. We decided to generate this Id from it's commit Id and element Id, to be able to compute it.
+A new `IProjectDataVersioningRestServiceDelegate` interface is available, allowing to customize the default implementation of services related to Project Data Versioning related REST APIs.
+Specifiers can implement this new interface with a spring `Service`.
+A new `IRestDataVersionPayloadSerializerService` interface is available, allowing to customize the default implementation of the JSON serialization of the payload object of `RestDataVersion`.
+Specifiers are also encouraged to implement their own `IRestDataVersionPayloadSerializerService` for their domains, as the default one may not return expected results.
 
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4219[#4219] [table] Improve front-end performance
-
-
 
 == v2024.11.0
 

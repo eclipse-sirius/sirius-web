@@ -10,25 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.dto;
+package org.eclipse.sirius.web.application.project.data.versioning.dto;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.core.api.IPayload;
+
 /**
- * Interface for the REST Record DTO.
+ * The payload for the "getCommits" REST API on success.
  *
  * @author arichard
  */
-public interface IRestRecord {
-
-    UUID id();
-
-    String resourceIdentifier();
-
-    List<String> alias();
-
-    String humanIdentifier();
-
-    String decription();
+public record GetCommitsRestSuccessPayload(UUID id, List<RestCommit> commits) implements IPayload {
+    public GetCommitsRestSuccessPayload {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(commits);
+    }
 }

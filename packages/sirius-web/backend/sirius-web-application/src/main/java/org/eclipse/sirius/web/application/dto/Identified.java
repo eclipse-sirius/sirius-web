@@ -10,22 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.query.dto;
+package org.eclipse.sirius.web.application.dto;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.application.dto.IRestRecord;
-
 /**
- * REST Query DTO.
- *
+ * Simple record allowing to serialize an object with only its id.
  * @author arichard
  */
-public record RestQuery(
-        UUID id,
-        String resourceIdentifier,
-        List<String> alias,
-        String humanIdentifier,
-        String decription) implements IRestRecord {
+public record Identified(@JsonProperty("@id") UUID id) {
+    public Identified {
+        Objects.requireNonNull(id);
+    }
 }
