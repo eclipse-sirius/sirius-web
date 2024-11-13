@@ -13,44 +13,36 @@
 package org.eclipse.sirius.web.application.project.data.versioning.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.application.dto.Identified;
+import org.eclipse.sirius.web.application.project.data.versioning.services.RestDataVersionPayloadSerializer;
 
 /**
- * REST Branch DTO.
+ * REST DataVersion DTO.
  *
  * @author arichard
  */
-public record RestBranch(
+public record RestDataVersion(
         @JsonProperty("@id") UUID id,
         @JsonProperty("@type") String type,
-        OffsetDateTime created,
-        Identified head,
-        String name,
-        Identified owningProject,
-        Identified referencedCommit) {
+        RestDataIdentity identity,
+        @JsonSerialize(using = RestDataVersionPayloadSerializer.class)
+        Object payload) {
 
-    public RestBranch {
+    public RestDataVersion {
         Objects.requireNonNull(id);
         Objects.requireNonNull(type);
-        Objects.requireNonNull(created);
-        // head can be null
-        Objects.requireNonNull(name);
-        Objects.requireNonNull(owningProject);
-        Objects.requireNonNull(referencedCommit);
+        Objects.requireNonNull(identity);
+        // payload can be null
     }
 
-    public RestBranch(
+    public RestDataVersion(
             UUID id,
-            OffsetDateTime created,
-            Identified head,
-            String name,
-            Identified owningProject,
-            Identified referencedCommit) {
-        this(id, "Branch", created, head, name, owningProject, referencedCommit);
+            RestDataIdentity identity,
+            Object payload) {
+        this(id, "DataVersion", identity, payload);
     }
 }

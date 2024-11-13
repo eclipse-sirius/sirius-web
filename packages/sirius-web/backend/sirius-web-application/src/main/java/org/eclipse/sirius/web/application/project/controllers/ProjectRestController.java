@@ -12,12 +12,16 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.controllers;
 
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.ErrorPayload;
+import org.eclipse.sirius.web.application.dto.Identified;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.RestBranch;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectSuccessPayload;
@@ -47,6 +51,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/rest/projects")
 public class ProjectRestController {
 
+    private static final OffsetDateTime DEFAULT_CREATED = Instant.EPOCH.atOffset(ZoneOffset.UTC);
+
     private final IProjectApplicationService projectApplicationService;
 
     public ProjectRestController(IProjectApplicationService projectApplicationService) {
@@ -56,7 +62,7 @@ public class ProjectRestController {
     @GetMapping
     public ResponseEntity<List<RestProject>> getProjects() {
         var restProjects = this.projectApplicationService.findAll(PageRequest.of(0, 20))
-            .map(project -> new RestProject(project.id(), null, List.of(), null, null, project.name(), List.of()))
+            .map(project -> new RestProject(project.id(), DEFAULT_CREATED, new Identified(project.id()), null, project.name()))
             .toList();
 
         return new ResponseEntity<>(restProjects, HttpStatus.OK);
@@ -65,7 +71,7 @@ public class ProjectRestController {
     @GetMapping(path = "/{projectId}")
     public ResponseEntity<RestProject> getProjectById(@PathVariable UUID projectId) {
         var restProject = this.projectApplicationService.findById(projectId)
-            .map(project -> new RestProject(project.id(), null, List.of(), null, null, project.name(), List.of()));
+            .map(project -> new RestProject(project.id(), DEFAULT_CREATED, new Identified(project.id()), null, project.name()));
 
         if (restProject.isPresent()) {
             return new ResponseEntity<>(restProject.get(), HttpStatus.OK);
@@ -81,7 +87,7 @@ public class ProjectRestController {
 
         if (newProjectPayload instanceof CreateProjectSuccessPayload createProjectSuccessPayload) {
             var projectDTO = createProjectSuccessPayload.project();
-            var restProject = new RestProject(projectDTO.id(), null, List.of(), null, null, projectDTO.name(), List.of());
+            var restProject = new RestProject(projectDTO.id(), DEFAULT_CREATED, new Identified(projectDTO.id()), null, projectDTO.name());
             return new ResponseEntity<>(restProject, HttpStatus.CREATED);
         }
         // The specification does not handle other HttpStatus than HttpStatus.CREATED for this endpoint
@@ -94,7 +100,7 @@ public class ProjectRestController {
             var renameProjectInput = new RenameProjectInput(UUID.randomUUID(), projectId, name.get());
             var renamedProjectPayload = this.projectApplicationService.renameProject(renameProjectInput);
             if (renamedProjectPayload instanceof RenameProjectSuccessPayload) {
-                var restProject = new RestProject(projectId, null, List.of(), null, null, name.get(), List.of());
+                var restProject = new RestProject(projectId, DEFAULT_CREATED, new Identified(projectId), null, name.get());
                 return new ResponseEntity<>(restProject, HttpStatus.OK);
             }
         }
@@ -105,7 +111,7 @@ public class ProjectRestController {
     @DeleteMapping(path = "/{projectId}")
     public ResponseEntity<RestProject> deleteProject(@PathVariable UUID projectId) {
         var restProject = this.projectApplicationService.findById(projectId)
-                .map(project -> new RestProject(project.id(), null, List.of(), null, null, project.name(), List.of()))
+                .map(project -> new RestProject(project.id(), DEFAULT_CREATED, new Identified(project.id()), null, project.name()))
                 .orElse(null);
 
         var deleteProjectInput = new DeleteProjectInput(UUID.randomUUID(), projectId);

@@ -15,42 +15,40 @@ package org.eclipse.sirius.web.application.project.data.versioning.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.application.dto.Identified;
 
 /**
- * REST Branch DTO.
+ * REST Commit DTO.
  *
  * @author arichard
  */
-public record RestBranch(
+public record RestCommit(
         @JsonProperty("@id") UUID id,
         @JsonProperty("@type") String type,
         OffsetDateTime created,
-        Identified head,
-        String name,
+        String description,
         Identified owningProject,
-        Identified referencedCommit) {
+        List<Identified> previousCommits) {
 
-    public RestBranch {
+    public RestCommit {
         Objects.requireNonNull(id);
         Objects.requireNonNull(type);
         Objects.requireNonNull(created);
-        // head can be null
-        Objects.requireNonNull(name);
+        // description can be null
         Objects.requireNonNull(owningProject);
-        Objects.requireNonNull(referencedCommit);
+        Objects.requireNonNull(previousCommits);
     }
 
-    public RestBranch(
+    public RestCommit(
             UUID id,
             OffsetDateTime created,
-            Identified head,
-            String name,
+            String description,
             Identified owningProject,
-            Identified referencedCommit) {
-        this(id, "Branch", created, head, name, owningProject, referencedCommit);
+            List<Identified> previousCommits) {
+        this(id, "Commit", created, description, owningProject, previousCommits);
     }
 }

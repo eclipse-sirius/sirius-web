@@ -83,7 +83,7 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
                 .build();
 
         var uri = String.format("/api/rest/projects/%s", TestIdentifiers.UML_SAMPLE_PROJECT);
-        var response = webTestClient
+        webTestClient
                 .get()
                 .uri(uri)
                 .exchange()
@@ -93,6 +93,7 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
                 .consumeWith(result -> {
                     var restProject = result.getResponseBody();
                     assertEquals(TestIdentifiers.UML_SAMPLE_PROJECT, restProject.id());
+                    assertEquals("Project", restProject.type());
                     assertEquals("UML Sample", restProject.name());
                 });
     }
@@ -210,6 +211,7 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
                 .consumeWith(result -> {
                     var restProject = result.getResponseBody();
                     assertEquals(TestIdentifiers.UML_SAMPLE_PROJECT, restProject.id());
+                    assertEquals("Project", restProject.type());
                     assertEquals("UML Sample", restProject.name());
                 });
     }
