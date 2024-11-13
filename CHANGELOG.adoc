@@ -25,7 +25,7 @@
 
 === Bug fixes
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4195[#4195] [sirius-web] Prevent objects disappearing when dropped on themselves (or a descendant) in the _Explorer_.
 
 === New Features
 
