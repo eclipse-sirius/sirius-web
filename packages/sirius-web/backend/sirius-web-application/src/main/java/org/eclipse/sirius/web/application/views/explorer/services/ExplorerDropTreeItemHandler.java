@@ -92,6 +92,7 @@ public class ExplorerDropTreeItemHandler implements IDropTreeItemHandler {
                 .flatMap(children -> this.getContainerChild(children, this.objectService.getId(targetContainer)).stream())
                 .toList();
         return objectsToMove.stream()
+                .filter(eObject -> !EcoreUtil.isAncestor(eObject, targetContainer))
                 .map(source -> {
                     Optional<EStructuralFeature> optionalFeature = this.getContainmentFeatureName(source, targetContainer)
                             .map(featureName -> targetContainer.eClass().getEStructuralFeature(featureName));

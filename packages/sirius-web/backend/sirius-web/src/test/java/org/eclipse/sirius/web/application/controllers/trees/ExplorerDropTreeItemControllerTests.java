@@ -25,6 +25,7 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.trees.dto.DropTreeItemInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
+import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.trees.tests.graphql.DropTreeItemMutationRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -220,6 +221,60 @@ public class ExplorerDropTreeItemControllerTests extends AbstractIntegrationTest
                 .consumeNextWith(initialTreeContentConsumer)
                 .then(dropItemMutation)
                 .consumeNextWith(updateTreeContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a studio, when we drag and drop an item on itself in the explorer, then nothing is changed")
+    @Sql(scripts = { "/scripts/studio.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenStudioWhenWeDragAndDropAnItemOnItselfTheNothingIsChanged() {
+        var expandedIds = List.of(
+                StudioIdentifiers.DOMAIN_DOCUMENT.toString(),
+                StudioIdentifiers.DOMAIN_OBJECT.toString(),
+                StudioIdentifiers.ROOT_ENTITY_OBJECT.toString(),
+                StudioIdentifiers.NAMED_ELEMENT_ENTITY_OBJECT.toString()
+        );
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, expandedIds, List.of());
+        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), explorerRepresentationId);
+        var flux = this.treeEventSubscriptionRunner.run(input);
+
+
+        Consumer<Object> initialTreeContentConsumer = object -> Optional.of(object)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData)
+                .filter(TreeRefreshedEventPayload.class::isInstance)
+                .map(TreeRefreshedEventPayload.class::cast)
+                .map(TreeRefreshedEventPayload::tree)
+                .ifPresentOrElse(tree -> {
+                    assertThat(tree).isNotNull();
+                    assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(0).getChildren()).hasSize(3);
+                    assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).hasSize(1);
+                    assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).anyMatch(treeItem -> treeItem.getId().equals(StudioIdentifiers.NAME_ATTRIBUTE_OBJECT.toString()));
+                }, () -> fail("Missing tree"));
+
+        Runnable dropItemMutation = () -> {
+            DropTreeItemInput dropTreeItemInput = new DropTreeItemInput(
+                    UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                    explorerRepresentationId,
+                    List.of(StudioIdentifiers.NAME_ATTRIBUTE_OBJECT.toString()),
+                    StudioIdentifiers.NAME_ATTRIBUTE_OBJECT.toString(),
+                    -1
+            );
+            var result = this.dropTreeItemMutationRunner.run(dropTreeItemInput);
+            String typename = JsonPath.read(result, "$.data.dropTreeItem.__typename");
+            assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
+
+            TestTransaction.flagForCommit();
+            TestTransaction.end();
+            TestTransaction.start();
+        };
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialTreeContentConsumer)
+                .then(dropItemMutation)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
