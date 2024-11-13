@@ -39,4 +39,10 @@ public class CodingRulesTests extends AbstractCodingRulesTests {
     public void noClassesShouldUseApacheCommons() {
         super.noClassesShouldUseApacheCommons();
     }
+
+    @Test
+    @Override
+    public void noClassesShouldUseJacksonAnnotations() {
+        // Jackson annotations are used by REST APIs
+    }
 }
