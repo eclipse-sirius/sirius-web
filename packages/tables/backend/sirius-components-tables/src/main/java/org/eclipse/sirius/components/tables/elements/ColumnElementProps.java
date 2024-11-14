@@ -25,7 +25,7 @@ import org.eclipse.sirius.components.representations.IProps;
  */
 public record ColumnElementProps(
         UUID id,
-        UUID descriptionId,
+        String descriptionId,
         String headerLabel,
         List<String> headerIconURLs,
         String headerIndexLabel,
@@ -59,7 +59,7 @@ public record ColumnElementProps(
 
         private final UUID id;
 
-        private UUID descriptionId;
+        private String descriptionId;
 
         private String targetObjectId;
 
@@ -81,7 +81,7 @@ public record ColumnElementProps(
             this.id = Objects.requireNonNull(id);
         }
 
-        public Builder descriptionId(UUID descriptionId) {
+        public Builder descriptionId(String descriptionId) {
             this.descriptionId = Objects.requireNonNull(descriptionId);
             return this;
         }

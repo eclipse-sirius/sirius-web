@@ -46,7 +46,12 @@ public class ColumnComponent implements IComponent {
         VariableManager variableManager = this.props.variableManager();
         ColumnDescription columnDescription = this.props.columnDescription();
 
-        List<Object> elements = columnDescription.getSemanticElementsProvider().apply(variableManager);
+        List<Object> elements = columnDescription.getSemanticElementsProvider().apply(variableManager).stream()
+                .filter(object -> {
+                    var instanceVariableManager = variableManager.createChild();
+                    instanceVariableManager.put(VariableManager.SELF, object);
+                    return columnDescription.getShouldRenderPredicate().test(instanceVariableManager);
+                }).toList();
 
         List<Element> children = IntStream.range(0, elements.size())
                 .mapToObj(index -> this.doRender(variableManager, elements.get(index), index))
@@ -114,7 +119,7 @@ public class ColumnComponent implements IComponent {
     private UUID computeColumnId(String targetObjectId) {
         ColumnDescription columnDescription = this.props.columnDescription();
 
-        String rawIdentifier = columnDescription.getId().toString() + targetObjectId;
+        String rawIdentifier = columnDescription.getId() + targetObjectId;
         return UUID.nameUUIDFromBytes(rawIdentifier.getBytes());
     }
 }

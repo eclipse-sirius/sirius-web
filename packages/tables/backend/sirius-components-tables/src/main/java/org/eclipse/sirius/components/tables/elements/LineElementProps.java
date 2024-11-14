@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.representations.IProps;
  */
 public record LineElementProps(
         UUID id,
-        UUID descriptionId,
+        String descriptionId,
         String targetObjectId,
         String targetObjectKind,
         List<Element> children,
@@ -70,7 +70,7 @@ public record LineElementProps(
 
         private String targetObjectKind;
 
-        private UUID descriptionId;
+        private String descriptionId;
 
         private List<Element> children;
 
@@ -94,7 +94,7 @@ public record LineElementProps(
             return this;
         }
 
-        public Builder descriptionId(UUID descriptionId) {
+        public Builder descriptionId(String descriptionId) {
             this.descriptionId = Objects.requireNonNull(descriptionId);
             return this;
         }

@@ -83,7 +83,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .map(String::valueOf)
                 .orElse(null);
 
-        var lineDescription = LineDescription.newLineDescription(UUID.nameUUIDFromBytes("Table - Line".getBytes()))
+        var lineDescription = LineDescription.newLineDescription(UUID.nameUUIDFromBytes("Table - Line".getBytes()).toString())
                 .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
                 .semanticElementsProvider(this::getSemanticElements)
@@ -130,7 +130,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
         var provider = new StructuralFeatureToDisplayNameProvider(new DisplayNameProvider(this.composedAdapterFactory));
         Map<EStructuralFeature, String> featureToDisplayName = provider.getColumnsStructuralFeaturesDisplayName(PapayaFactory.eINSTANCE.createClass(), PapayaPackage.eINSTANCE.getType());
 
-        ColumnDescription iconColumnDescription = ColumnDescription.newColumnDescription(UUID.nameUUIDFromBytes("icon".getBytes()))
+        ColumnDescription iconColumnDescription = ColumnDescription.newColumnDescription(UUID.nameUUIDFromBytes("icon".getBytes()).toString())
                 .semanticElementsProvider(variableManager -> List.of("IconColumn"))
                 .headerLabelProvider(variableManager -> "Icon")
                 .headerIconURLsProvider(variableManager -> List.of("/icons/svg/Default.svg"))
@@ -153,7 +153,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .map(index -> String.valueOf((char) (index + 'A')))
                 .orElse("");
 
-        ColumnDescription columnDescription = ColumnDescription.newColumnDescription(UUID.nameUUIDFromBytes("features".getBytes()))
+        ColumnDescription columnDescription = ColumnDescription.newColumnDescription(UUID.nameUUIDFromBytes("features".getBytes()).toString())
                 .semanticElementsProvider(variableManager -> featureToDisplayName.keySet().stream().map(Object.class::cast).toList())
                 .headerLabelProvider(headerLabelProvider)
                 .headerIconURLsProvider(headerIconURLsProvider)
