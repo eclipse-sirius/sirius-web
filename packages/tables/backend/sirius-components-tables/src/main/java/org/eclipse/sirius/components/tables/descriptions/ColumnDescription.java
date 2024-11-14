@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.tables.descriptions;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -35,7 +34,7 @@ public final class ColumnDescription {
 
     public static final String COLUMN_TARGET_OBJECT_ID = "columTargetObjectId";
 
-    private UUID id;
+    private String id;
 
     private Function<VariableManager, String> targetObjectIdProvider;
 
@@ -49,6 +48,8 @@ public final class ColumnDescription {
 
     private Function<VariableManager, List<Object>> semanticElementsProvider;
 
+    private Predicate<VariableManager> shouldRenderPredicate;
+
     private Function<VariableManager, Integer> initialWidthProvider;
 
     private Predicate<VariableManager> isResizablePredicate;
@@ -57,7 +58,7 @@ public final class ColumnDescription {
         // Prevent instantiation
     }
 
-    public UUID getId() {
+    public String getId() {
         return this.id;
     }
 
@@ -85,6 +86,10 @@ public final class ColumnDescription {
         return this.semanticElementsProvider;
     }
 
+    public Predicate<VariableManager> getShouldRenderPredicate() {
+        return this.shouldRenderPredicate;
+    }
+
     public Function<VariableManager, Integer> getInitialWidthProvider() {
         return this.initialWidthProvider;
     }
@@ -93,7 +98,7 @@ public final class ColumnDescription {
         return this.isResizablePredicate;
     }
 
-    public static Builder newColumnDescription(UUID id) {
+    public static Builder newColumnDescription(String id) {
         return new Builder(id);
     }
 
@@ -111,7 +116,7 @@ public final class ColumnDescription {
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
-        private final UUID id;
+        private final String id;
 
         private Function<VariableManager, String> targetObjectIdProvider;
 
@@ -125,11 +130,13 @@ public final class ColumnDescription {
 
         private Function<VariableManager, List<Object>> semanticElementsProvider;
 
+        private Predicate<VariableManager> shouldRenderPredicate = variableManager -> true;
+
         private Function<VariableManager, Integer> initialWidthProvider;
 
         private Predicate<VariableManager> isResizablePredicate;
 
-        public Builder(UUID id) {
+        public Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
 
@@ -163,6 +170,11 @@ public final class ColumnDescription {
             return this;
         }
 
+        public Builder shouldRenderPredicate(Predicate<VariableManager> shouldRenderPredicate) {
+            this.shouldRenderPredicate = Objects.requireNonNull(shouldRenderPredicate);
+            return this;
+        }
+
         public Builder initialWidthProvider(Function<VariableManager, Integer> initialWidthProvider) {
             this.initialWidthProvider = Objects.requireNonNull(initialWidthProvider);
             return this;
@@ -182,6 +194,7 @@ public final class ColumnDescription {
             columnDescription.headerIndexLabelProvider = Objects.requireNonNull(this.headerIndexLabelProvider);
             columnDescription.targetObjectKindProvider = Objects.requireNonNull(this.targetObjectKindProvider);
             columnDescription.semanticElementsProvider = Objects.requireNonNull(this.semanticElementsProvider);
+            columnDescription.shouldRenderPredicate = Objects.requireNonNull(this.shouldRenderPredicate);
             columnDescription.initialWidthProvider = Objects.requireNonNull(this.initialWidthProvider);
             columnDescription.isResizablePredicate = Objects.requireNonNull(this.isResizablePredicate);
             return columnDescription;

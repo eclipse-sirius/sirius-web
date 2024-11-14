@@ -133,7 +133,8 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
                 .map(this.objectService::getLabel)
                 .orElse(null);
 
-        LineDescription lineDescription = LineDescription.newLineDescription(UUID.nameUUIDFromBytes("Table - Line".getBytes()))
+        List<LineDescription> lineDescriptions = new ArrayList<>();
+        LineDescription lineDescription = LineDescription.newLineDescription(UUID.nameUUIDFromBytes("Table - Line".getBytes()).toString())
                 .targetObjectIdProvider(this::getTargetObjectId)
                 .targetObjectKindProvider(this::getTargetObjectKind)
                 .semanticElementsProvider(semanticElementsProvider)
@@ -225,7 +226,7 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
                 .map(featureToDisplayName::get)
                 .orElse("");
 
-        ColumnDescription columnDescription = ColumnDescription.newColumnDescription(UUID.nameUUIDFromBytes("features".getBytes()))
+        ColumnDescription columnDescription = ColumnDescription.newColumnDescription(UUID.nameUUIDFromBytes("features".getBytes()).toString())
                 .semanticElementsProvider(variableManager -> featureToDisplayName.keySet().stream().map(Object.class::cast).toList())
                 .targetObjectIdProvider(new ColumnTargetObjectIdProvider())
                 .targetObjectKindProvider(variableManager -> "")
@@ -266,7 +267,9 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
                 Object objectValue = eObject.eGet(eStructuralFeature);
                 if (eStructuralFeature instanceof EReference eReference) {
                     if (eReference.isMany() && !eReference.isContainment() && objectValue instanceof EList<?>) {
-                        value = ((EList<?>) objectValue).stream().map(this.objectService::getId).collect(Collectors.toList());
+                        value = ((EList<?>) objectValue).stream()
+                                .map(this.objectService::getId)
+                                .toList();
                     }
                 }
             }

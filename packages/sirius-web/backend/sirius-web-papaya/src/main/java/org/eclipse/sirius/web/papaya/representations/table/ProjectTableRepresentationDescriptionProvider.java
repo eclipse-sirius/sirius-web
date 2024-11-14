@@ -67,7 +67,7 @@ public class ProjectTableRepresentationDescriptionProvider implements IEditingCo
 
     @Override
     public List<IRepresentationDescription> getRepresentationDescriptions(IEditingContext editingContext) {
-        var lineDescription = LineDescription.newLineDescription(UUID.nameUUIDFromBytes("Table - Line".getBytes()))
+        var lineDescription = LineDescription.newLineDescription(UUID.nameUUIDFromBytes("Table - Line".getBytes()).toString())
                 .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
                 .semanticElementsProvider(this::getSemanticElements)
@@ -114,7 +114,7 @@ public class ProjectTableRepresentationDescriptionProvider implements IEditingCo
                 .map(featureToDisplayName::get)
                 .orElse("");
 
-        ColumnDescription columnDescription = ColumnDescription.newColumnDescription(UUID.nameUUIDFromBytes("features".getBytes()))
+        ColumnDescription columnDescription = ColumnDescription.newColumnDescription(UUID.nameUUIDFromBytes("features".getBytes()).toString())
                 .semanticElementsProvider(this.getSemanticColumnElementsProvider(featureToDisplayName))
                 .targetObjectIdProvider(new ColumnTargetObjectIdProvider())
                 .targetObjectKindProvider(variableManager -> "")

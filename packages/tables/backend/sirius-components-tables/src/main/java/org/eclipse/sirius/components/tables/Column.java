@@ -34,7 +34,7 @@ public final class Column {
 
     private String targetObjectKind;
 
-    private UUID descriptionId;
+    private String descriptionId;
 
     private String headerLabel;
 
@@ -64,7 +64,7 @@ public final class Column {
         return this.targetObjectKind;
     }
 
-    public UUID getDescriptionId() {
+    public String getDescriptionId() {
         return this.descriptionId;
     }
 
@@ -112,7 +112,7 @@ public final class Column {
 
         private final UUID id;
 
-        private UUID descriptionId;
+        private String descriptionId;
 
         private String targetObjectId;
 
@@ -134,7 +134,7 @@ public final class Column {
             this.id = Objects.requireNonNull(id);
         }
 
-        public Builder descriptionId(UUID descriptionId) {
+        public Builder descriptionId(String descriptionId) {
             this.descriptionId = Objects.requireNonNull(descriptionId);
             return this;
         }

@@ -33,7 +33,7 @@ public final class Line {
 
     private String targetObjectKind;
 
-    private UUID descriptionId;
+    private String descriptionId;
 
     private List<ICell> cells;
 
@@ -59,7 +59,7 @@ public final class Line {
         return this.targetObjectKind;
     }
 
-    public UUID getDescriptionId() {
+    public String getDescriptionId() {
         return this.descriptionId;
     }
 
@@ -103,7 +103,7 @@ public final class Line {
 
         private String targetObjectKind;
 
-        private UUID descriptionId;
+        private String descriptionId;
 
         private List<ICell> cells;
 
@@ -127,7 +127,7 @@ public final class Line {
             return this;
         }
 
-        public Builder descriptionId(UUID descriptionId) {
+        public Builder descriptionId(String descriptionId) {
             this.descriptionId = Objects.requireNonNull(descriptionId);
             return this;
         }

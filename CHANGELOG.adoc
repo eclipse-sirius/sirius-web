@@ -75,11 +75,13 @@ Specifiers are also encouraged to implement their own `IRestDataVersionPayloadSe
 - https://github.com/eclipse-sirius/sirius-web/issues/4231[#4231] [table] Make table's column resizable
 - https://github.com/eclipse-sirius/sirius-web/issues/4238[#4238] [table] Make table's column hideable
 - https://github.com/eclipse-sirius/sirius-web/issues/4221[#4221] [table] Add server-side pagination in table representation
+- https://github.com/eclipse-sirius/sirius-web/issues/4200[#4200] [table] Add table representation in the view DSL
 
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4219[#4219] [table] Improve front-end performance
 - https://github.com/eclipse-sirius/sirius-web/issues/3823[#3823] [table] Remove cell type to use `ICellDescription`
+
 
 == v2024.11.0
 

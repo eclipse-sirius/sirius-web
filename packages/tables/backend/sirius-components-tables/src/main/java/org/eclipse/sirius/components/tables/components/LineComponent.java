@@ -65,8 +65,11 @@ public class LineComponent implements IComponent {
             String targetObjectId = lineDescription.getTargetObjectIdProvider().apply(lineVariableManager);
             var optionalPreviousLine = linesRequestor.getByTargetObjectId(targetObjectId);
 
-            Element lineElement = this.doRender(lineVariableManager, targetObjectId, optionalPreviousLine);
-            children.add(lineElement);
+            if (lineDescription.getShouldRenderPredicate().test(lineVariableManager)) {
+                Element lineElement = this.doRender(lineVariableManager, targetObjectId, optionalPreviousLine);
+                children.add(lineElement);
+            }
+
         }
 
         FragmentProps fragmentProps = new FragmentProps(children);
@@ -112,7 +115,10 @@ public class LineComponent implements IComponent {
             String rawIdentifier = parentLineId.toString() + columnId;
             UUID cellId = UUID.nameUUIDFromBytes(rawIdentifier.getBytes());
 
-            ICellDescription cellDescription = this.props.cellDescriptions().stream().filter(cell -> cell.getCanCreatePredicate().test(variableManager)).findFirst().orElse(null);
+            ICellDescription cellDescription = this.props.cellDescriptions().stream()
+                    .filter(cell -> cell.getCanCreatePredicate().test(variableManager))
+                    .findFirst()
+                    .orElse(null);
 
             Element cellElement = null;
             if (cellDescription instanceof SelectCellDescription selectCellDescription) {
@@ -144,7 +150,7 @@ public class LineComponent implements IComponent {
         String parentElementId = this.props.parentElementId();
         LineDescription lineDescription = this.props.lineDescription();
 
-        String rawIdentifier = parentElementId + lineDescription.getId().toString() + targetObjectId;
+        String rawIdentifier = parentElementId + lineDescription.getId() + targetObjectId;
         return UUID.nameUUIDFromBytes(rawIdentifier.getBytes());
     }
 }
