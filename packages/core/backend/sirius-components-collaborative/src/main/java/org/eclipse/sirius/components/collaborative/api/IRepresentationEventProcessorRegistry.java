@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.collaborative.api;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ExecutorService;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -33,7 +32,7 @@ public interface IRepresentationEventProcessorRegistry {
     String REPRESENTATION_LABEL = "representationLabel";
 
     Optional<IRepresentationEventProcessor> getOrCreateRepresentationEventProcessor(String representationId, IEditingContext editingContext, Sinks.Many<Boolean> canBeDisposedSink,
-            ExecutorService executorService);
+            IEditingContextExecutor executorService);
 
     List<IRepresentationEventProcessor> values();
 
