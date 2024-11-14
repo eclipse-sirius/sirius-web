@@ -20,11 +20,11 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IDanglingRepresentationDeletionService;
+import org.eclipse.sirius.components.collaborative.api.IEditingContextExecutor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
@@ -69,7 +69,7 @@ public class RepresentationEventProcessorRegistry implements IRepresentationEven
 
     @Override
     public Optional<IRepresentationEventProcessor> getOrCreateRepresentationEventProcessor(String representationId, IEditingContext editingContext, Sinks.Many<Boolean> canBeDisposedSink,
-            ExecutorService executorService) {
+            IEditingContextExecutor editingContextExecutor) {
         var getRepresentationEventProcessorSample = Timer.start(this.meterRegistry);
 
         var optionalRepresentationEventProcessor = Optional.ofNullable(this.representationEventProcessors.get(representationId))
@@ -82,7 +82,7 @@ public class RepresentationEventProcessorRegistry implements IRepresentationEven
 
                 Disposable subscription = representationEventProcessor.canBeDisposed()
                         .delayElements(Duration.ofSeconds(5))
-                        .publishOn(Schedulers.fromExecutorService(executorService))
+                        .publishOn(Schedulers.fromExecutorService(editingContextExecutor.getExecutorService()))
                         .subscribe(canBeDisposed -> {
                             if (canBeDisposed && representationEventProcessor.getSubscriptionManager().isEmpty()) {
                                 this.disposeRepresentation(canBeDisposedSink, representationId);
