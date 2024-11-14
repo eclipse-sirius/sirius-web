@@ -1,0 +1,66 @@
+= [ADR-175] Support Pagination in REST APIs
+
+== Context
+
+REST APIs may return a huge amount of data in Sirius Web.
+
+=== Current behavior
+
+The REST APIs don't support pagination options in Sirius Web contrary to some parts of the GraphQL API.
+
+== Decision
+
+The decision is to support pagination in all appropriate GET REST APIs described in the Systems Modeling Application Programming Interface (API) and Services section "8.1 REST/HTTP PSM" coming from https://www.omg.org/spec/SystemsModelingAPI/.
+
+The following text has been extracted form the specification:
+
+```
+The REST/HTTP PSM uses a Cursor-based pagination strategy for the responses received from the GET requests.
+The following 3 query parameters can be specified in any GET request that returns a collection of records.
+1. `page[size]` specifies the maximum number of records that will be returned per page in the response
+2. `page[before]` specifies the URL of the page succeeding the page being requested
+3. and `page[after]` specifies the URL of a page preceding the page being requested
+If neither `page[before]` nor `page[after]` is specified, the first page is returned with the same number of records as specified in the `page[size]` query parameter.
+If the `page[size]` parameter is not specified, then a default page size is used, which can be set by the API provider.
+The `Link` header in the response includes links (URLs) to the previous page and the next page, if any, for the given page in the response.
+The specification of these links is conformant to the https://datatracker.ietf.org/doc/html/rfc5988[IETF Web Linking standard].
+As an example, the value of the `Link` response header is shown below.
+The `rel` value associated with each page link specifies the type of relationship the linked  page has with the page returned in the response.
+Page link specified with `rel` value as `next` is the link for the next (or succeeding) page to the page returned in the response, and the page link specified with `rel` value as `prev` is the link for the previous (or preceding) page to the page returned in the response.
+
+Examples:
+
+<http://sysml2-api-host:9000/projects?
+page[after]=MTYxODg2MTQ5NjYzMnwyMDEwOWY0MC00ODI1LTQxNmEtODZmNi03NTA4YWM0MmEwMjE&
+page[size]=3>; rel="next",
+<http://sysml2-api-host:9000/projects?
+page[before]=MTYxODg2MTQ5NjYzMnwxMDg2MDFjMS1iNzk1LTRkMGEtYTFiYy1lZjEyYmMwNTU5ZjI&
+page[size]=3>; rel="prev"
+```
+
+The https://docs.spring.io/spring-data/rest/reference/data-commons/repositories/scrolling.html#page-title[cursor-based pagination in spring data] will be used.
+
+This will need to be prototyped on projects first since they are the perfect candidate for that.
+We will try to remove support for page-based APIs in favor of scroll based ones entirely to have something like the example below:
+
+[source, java]
+----
+import org.springframework.data.domain.KeysetScrollPosition;
+import org.springframework.data.domain.Window;
+
+public interface IProjectSearchService {
+    boolean existsById(UUID projectId);
+    Optional<Project> findById(UUID projectId);
+    Window<Project> findAll(KeyScrollPosition position, int limit);
+}
+----
+
+It was always the plan to make it disappear in the GraphQL API to follow https://relay.dev/graphql/connections.htm[Relay best practices] that are supported by GraphQL Java.
+
+However the https://docs.spring.io/spring-data/rest/reference/data-commons/repositories/scrolling.html#page-title[cursor-based pagination in spring data] does not looks exactly the same than the one proposed by the SystemsModelingAPI specification.
+For example, with the SystemsModelingAPI specification, the following request `\http://sysml2-api-host:9000/projects?page[size]=3` would be `\http://sysml2-api-host:9000/projects?page=0&size=3` with spring data.
+So we will use `@RequestParam("page[size]")` to map the syntax from SystemsModelingAPI specification to spring syntax.
+
+== Status
+
+Work in progress
