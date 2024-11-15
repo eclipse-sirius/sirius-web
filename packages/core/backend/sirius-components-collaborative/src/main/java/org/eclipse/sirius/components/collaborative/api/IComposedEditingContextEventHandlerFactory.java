@@ -12,14 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.api;
 
-import org.eclipse.sirius.components.core.api.IEditingContext;
-
 /**
- * The factory used to create an editing context executor.
+ * Used to create {@link IComposedEditingContextEventHandler}.
  *
  * @author gcoutable
  */
-public interface IEditingContextExecutorFactory {
+public interface IComposedEditingContextEventHandlerFactory {
 
-    IEditingContextExecutor createEditingContextExecutor(IEditingContext editingContext, IRepresentationEventProcessorRegistry representationEventProcessorRegistry);
+    IComposedEditingContextEventHandler createComposedEditingContextEventHandler(IRepresentationEventProcessorRegistry representationEventProcessorRegistry);
 }
