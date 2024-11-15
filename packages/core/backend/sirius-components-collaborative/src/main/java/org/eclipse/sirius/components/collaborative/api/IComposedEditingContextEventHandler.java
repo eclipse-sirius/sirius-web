@@ -12,29 +12,19 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.api;
 
-import java.util.concurrent.ExecutorService;
-
-import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 
-import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 
 /**
- * Used to execute editing context event handlers in an executor service.
+ * Editing context event handler that dispatch the input to the right handler.
  *
  * @author gcoutable
  */
-public interface IEditingContextExecutor {
+public interface IComposedEditingContextEventHandler {
 
-    String INPUT = "INPUT";
+    void handle(Sinks.One<IPayload> payloadSink, Sinks.Many<ChangeDescription> changeDescriptionSink, Sinks.Many<Boolean> canBeDisposedSink, IEditingContextExecutor editingContextExecutor,
+            IInput input);
 
-    ExecutorService getExecutorService();
-
-    IEditingContext getEditingContext();
-
-    Mono<IPayload> handle(Sinks.Many<ChangeDescription> changeDescriptionSink, Sinks.Many<Boolean> canBeDisposedSink, IInput input);
-
-    void dispose();
 }
