@@ -15,24 +15,24 @@ package org.eclipse.sirius.components.collaborative.editingcontext;
 import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
+import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
+import org.eclipse.sirius.components.collaborative.api.IComposedEditingContextEventHandler;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextExecutor;
 import org.eclipse.sirius.components.collaborative.api.IInputPostProcessor;
 import org.eclipse.sirius.components.collaborative.api.IInputPreProcessor;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
+import org.eclipse.sirius.components.collaborative.editingcontext.api.IEditingContextEventProcessorExecutorServiceProvider;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.core.api.IRepresentationInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,11 +51,13 @@ public class EditingContextExecutor implements IEditingContextExecutor {
 
     private final Logger logger = LoggerFactory.getLogger(EditingContextExecutor.class);
 
+    private final IEditingContext editingContext;
+
+    private final IComposedEditingContextEventHandler composedEditingContextEventHandler;
+
     private final ExecutorService executorService;
 
     private final ICollaborativeMessageService messageService;
-
-    private final List<IEditingContextEventHandler> editingContextEventHandlers;
 
     private final List<IInputPreProcessor> inputPreProcessors;
 
@@ -63,11 +65,13 @@ public class EditingContextExecutor implements IEditingContextExecutor {
 
     private final MeterRegistry meterRegistry;
 
-    public EditingContextExecutor(ExecutorService executorService, ICollaborativeMessageService messageService, List<IEditingContextEventHandler> editingContextEventHandlers,
+    public EditingContextExecutor(IEditingContext editingContext, IEditingContextEventProcessorExecutorServiceProvider executorServiceProvider,
+            IComposedEditingContextEventHandler composedEditingContextEventHandler, ICollaborativeMessageService messageService,
             List<IInputPreProcessor> inputPreProcessors, List<IInputPostProcessor> inputPostProcessors, MeterRegistry meterRegistry) {
-        this.executorService = Objects.requireNonNull(executorService);
+        this.editingContext = Objects.requireNonNull(editingContext);
+        this.composedEditingContextEventHandler = Objects.requireNonNull(composedEditingContextEventHandler);
+        this.executorService = Objects.requireNonNull(executorServiceProvider.getExecutorService(editingContext));
         this.messageService = Objects.requireNonNull(messageService);
-        this.editingContextEventHandlers = Objects.requireNonNull(editingContextEventHandlers);
         this.inputPreProcessors = Objects.requireNonNull(inputPreProcessors);
         this.inputPostProcessors = Objects.requireNonNull(inputPostProcessors);
         this.meterRegistry = Objects.requireNonNull(meterRegistry);
@@ -79,7 +83,12 @@ public class EditingContextExecutor implements IEditingContextExecutor {
     }
 
     @Override
-    public Mono<IPayload> handle(IInput input) {
+    public IEditingContext getEditingContext() {
+        return this.editingContext;
+    }
+
+    @Override
+    public Mono<IPayload> handle(Sinks.Many<ChangeDescription> changeDescriptionSink, Sinks.Many<Boolean> canBeDisposedSink, IInput input) {
         Timer.Sample handleTimer = Timer.start(this.meterRegistry);
         if (this.executorService.isShutdown()) {
             this.logger.warn("Handler for editing context {} is shutdown", this.editingContext.getId());
@@ -91,7 +100,7 @@ public class EditingContextExecutor implements IEditingContextExecutor {
         this.logger.trace(input.toString());
 
         Sinks.One<IPayload> payloadSink = Sinks.one();
-        Future<?> future = this.executorService.submit(() -> this.doHandle(payloadSink, input));
+        Future<?> future = this.executorService.submit(() -> this.doHandle(payloadSink, changeDescriptionSink, canBeDisposedSink, input));
         try {
             // Block until the event has been processed
             future.get();
@@ -114,51 +123,14 @@ public class EditingContextExecutor implements IEditingContextExecutor {
         this.executorService.shutdown();
     }
 
-    /**
-     * Finds the proper event handler to perform the task matching the given input event.
-     *
-     * @param payloadSink
-     *         The sink to publish payload
-     * @param input
-     *         The input event
-
-     */
-    private void doHandle(Sinks.One<IPayload> payloadSink, IInput input) {
+    private void doHandle(Sinks.One<IPayload> payloadSink, Sinks.Many<ChangeDescription> changeDescriptionSink, Sinks.Many<Boolean> canBeDisposedSink, IInput input) {
         this.logger.trace("Input received: {}", input);
 
         AtomicReference<IInput> inputAfterPreProcessing = new AtomicReference<>(input);
-        this.inputPreProcessors.forEach(preProcessor -> inputAfterPreProcessing.set(preProcessor.preProcess(this.editingContext, inputAfterPreProcessing.get(), this.changeDescriptionSink)));
+        this.inputPreProcessors.forEach(preProcessor -> inputAfterPreProcessing.set(preProcessor.preProcess(this.editingContext, inputAfterPreProcessing.get(), changeDescriptionSink)));
 
-        if (inputAfterPreProcessing.get() instanceof IRepresentationInput representationInput) {
-            this.handleRepresentationInput(payloadSink, representationInput);
-        } else {
-            this.handleInput(payloadSink, inputAfterPreProcessing.get());
-        }
+        this.composedEditingContextEventHandler.handle(payloadSink, changeDescriptionSink, canBeDisposedSink, this, inputAfterPreProcessing.get());
 
-        this.inputPostProcessors.forEach(postProcessor -> postProcessor.postProcess(this.editingContext, inputAfterPreProcessing.get(), this.changeDescriptionSink));
-    }
-
-    private void handleInput(Sinks.One<IPayload> payloadSink, IInput input) {
-        Optional<IEditingContextEventHandler> optionalEditingContextEventHandler = this.editingContextEventHandlers.stream()
-                .filter(handler -> handler.canHandle(this.editingContext, input))
-                .findFirst();
-
-        if (optionalEditingContextEventHandler.isPresent()) {
-            IEditingContextEventHandler editingContextEventHandler = optionalEditingContextEventHandler.get();
-            editingContextEventHandler.handle(payloadSink, this.changeDescriptionSink, this.editingContext, input);
-        } else {
-            this.logger.warn("No handler found for event: {}", input);
-        }
-    }
-
-    private void handleRepresentationInput(Sinks.One<IPayload> payloadSink, IRepresentationInput representationInput) {
-        Optional<IRepresentationEventProcessor> optionalRepresentationEventProcessor = this.acquireRepresentationEventProcessor(representationInput.representationId(), representationInput);
-
-        if (optionalRepresentationEventProcessor.isPresent()) {
-            IRepresentationEventProcessor representationEventProcessor = optionalRepresentationEventProcessor.get();
-            representationEventProcessor.handle(payloadSink, this.changeDescriptionSink, representationInput);
-        } else {
-            this.logger.warn("No representation event processor found for event: {}", representationInput);
-        }
+        this.inputPostProcessors.forEach(postProcessor -> postProcessor.postProcess(this.editingContext, inputAfterPreProcessing.get(), changeDescriptionSink));
     }
 }

@@ -12,22 +12,16 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.editingcontext;
 
-import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.api.IChangeDescriptionListener;
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorFactory;
-import org.eclipse.sirius.components.collaborative.api.IInputPostProcessor;
-import org.eclipse.sirius.components.collaborative.api.IInputPreProcessor;
+import org.eclipse.sirius.components.collaborative.api.IEditingContextExecutorFactory;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorRegistryFactory;
-import org.eclipse.sirius.components.collaborative.editingcontext.api.IEditingContextEventProcessorExecutorServiceProvider;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.springframework.stereotype.Service;
-
-import io.micrometer.core.instrument.MeterRegistry;
 
 /**
  * Used to create an {@link IEditingContextEventProcessor}.
@@ -37,49 +31,25 @@ import io.micrometer.core.instrument.MeterRegistry;
 @Service
 public class EditingContextEventProcessorFactory implements IEditingContextEventProcessorFactory {
 
-    private final ICollaborativeMessageService messageService;
-
     private final IRepresentationEventProcessorRegistryFactory representationEventProcessorRegistryFactory;
 
-    private final List<IEditingContextEventHandler> editingContextEventHandlers;
-
-    private final IEditingContextEventProcessorExecutorServiceProvider executorServiceProvider;
-
-    private final List<IInputPreProcessor> inputPreProcessors;
-
-    private final List<IInputPostProcessor> inputPostProcessors;
+    private final IEditingContextExecutorFactory editingContextExecutorFactory;
 
     private final IChangeDescriptionListener changeDescriptionListener;
 
-    private final MeterRegistry meterRegistry;
-
     public EditingContextEventProcessorFactory(ICollaborativeMessageService messageService,
-            IRepresentationEventProcessorRegistryFactory representationEventProcessorRegistryFactory,
-            IChangeDescriptionListener changeDescriptionListener,
-            EditingContextEventProcessorFactoryParameters parameters) {
-        this.messageService = Objects.requireNonNull(messageService);
+            IRepresentationEventProcessorRegistryFactory representationEventProcessorRegistryFactory, IEditingContextExecutorFactory editingContextExecutorFactory,
+            IChangeDescriptionListener changeDescriptionListener) {
         this.representationEventProcessorRegistryFactory = Objects.requireNonNull(representationEventProcessorRegistryFactory);
+        this.editingContextExecutorFactory = Objects.requireNonNull(editingContextExecutorFactory);
         this.changeDescriptionListener = Objects.requireNonNull(changeDescriptionListener);
-        this.editingContextEventHandlers = parameters.getEditingContextEventHandlers();
-        this.executorServiceProvider = parameters.getExecutorServiceProvider();
-        this.inputPreProcessors = parameters.getInputPreProcessors();
-        this.inputPostProcessors = parameters.getInputPostProcessors();
-        this.meterRegistry = parameters.getMeterRegistry();
     }
 
     @Override
     public IEditingContextEventProcessor createEditingContextEventProcessor(IEditingContext editingContext) {
-        var parameters = EditingContextEventProcessorParameters.newEditingContextEventProcessorParameters()
-                .messageService(this.messageService)
-                .editingContext(editingContext)
-                .changeDescriptionListener(this.changeDescriptionListener)
-                .editingContextEventHandlers(this.editingContextEventHandlers)
-                .executorServiceProvider(this.executorServiceProvider)
-                .inputPreProcessors(this.inputPreProcessors)
-                .inputPostProcessors(this.inputPostProcessors)
-                .meterRegistry(this.meterRegistry)
-                .build();
-        return new EditingContextEventProcessor(this.representationEventProcessorRegistryFactory.createRepresentationEventProcessorRegistry(), parameters);
+        var representationEventProcessorRegistry = this.representationEventProcessorRegistryFactory.createRepresentationEventProcessorRegistry();
+        var editingContextExecutor = this.editingContextExecutorFactory.createEditingContextExecutor(editingContext, representationEventProcessorRegistry);
+        return new EditingContextEventProcessor(representationEventProcessorRegistry, editingContextExecutor, editingContext, this.changeDescriptionListener);
     }
 
 }
