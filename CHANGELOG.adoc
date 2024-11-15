@@ -76,6 +76,7 @@ Specifiers are also encouraged to implement their own `IRestDataVersionPayloadSe
 - https://github.com/eclipse-sirius/sirius-web/issues/4238[#4238] [table] Make table's column hideable
 - https://github.com/eclipse-sirius/sirius-web/issues/4221[#4221] [table] Add server-side pagination in table representation
 - https://github.com/eclipse-sirius/sirius-web/issues/4200[#4200] [table] Add table representation in the view DSL
+- https://github.com/eclipse-sirius/sirius-web/issues/4203[#4203] [core] Add support for representations in the Details View
 
 === Improvements
 
