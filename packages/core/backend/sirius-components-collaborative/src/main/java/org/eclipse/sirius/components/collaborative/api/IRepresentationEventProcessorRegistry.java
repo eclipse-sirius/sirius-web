@@ -31,7 +31,7 @@ public interface IRepresentationEventProcessorRegistry {
 
     String REPRESENTATION_LABEL = "representationLabel";
 
-    Optional<IRepresentationEventProcessor> getOrCreateRepresentationEventProcessor(String representationId, IEditingContext editingContext, Sinks.Many<Boolean> canBeDisposedSink,
+    Optional<IRepresentationEventProcessor> getOrCreateRepresentationEventProcessor(String representationId, Sinks.Many<Boolean> canBeDisposedSink,
             IEditingContextExecutor executorService);
 
     List<IRepresentationEventProcessor> values();

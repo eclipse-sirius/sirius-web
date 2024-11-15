@@ -15,10 +15,6 @@ package org.eclipse.sirius.components.collaborative.editingcontext;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
@@ -28,9 +24,6 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProce
 import org.eclipse.sirius.components.collaborative.api.IEditingContextExecutor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorRegistry;
-import org.eclipse.sirius.components.collaborative.api.Monitoring;
-import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
-import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -71,18 +64,12 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     private final IEditingContext editingContext;
 
-    public EditingContextEventProcessor(IRepresentationEventProcessorRegistry representationEventProcessorRegistry, IEditingContextExecutor editingContextExecutor, EditingContextEventProcessorParameters parameters) {
+    public EditingContextEventProcessor(IRepresentationEventProcessorRegistry representationEventProcessorRegistry, IEditingContextExecutor editingContextExecutor, IEditingContext editingContext, IChangeDescriptionListener changeDescriptionListener) {
         this.representationEventProcessorRegistry = Objects.requireNonNull(representationEventProcessorRegistry);
-        this.messageService = parameters.messageService();
-        this.editingContext = parameters.editingContext();
-        this.changeDescriptionListener = parameters.changeDescriptionListener();
-        this.editingContextEventHandlers = parameters.editingContextEventHandlers();
-        this.executorService = parameters.executorServiceProvider().getExecutorService(this.editingContext);
-        this.inputPreProcessors = parameters.inputPreProcessors();
-        this.inputPostProcessors = parameters.inputPostProcessors();
         this.editingContextExecutor = Objects.requireNonNull(editingContextExecutor);
+        this.editingContext = Objects.requireNonNull(editingContext);
+        this.changeDescriptionListener = Objects.requireNonNull(changeDescriptionListener);
         this.changeDescriptionDisposable = this.setupChangeDescriptionSinkConsumer();
-        this.meterRegistry = parameters.meterRegistry();
     }
 
     @SuppressWarnings("checkstyle:IllegalCatch")
@@ -108,12 +95,12 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     @Override
     public Mono<IPayload> handle(IInput input) {
-        return this.editingContextExecutor.handle(input);
+        return this.editingContextExecutor.handle(this.changeDescriptionSink, this.canBeDisposedSink, input);
     }
 
     @Override
     public Optional<IRepresentationEventProcessor> acquireRepresentationEventProcessor(String representationId, IInput input) {
-        return this.representationEventProcessorRegistry.getOrCreateRepresentationEventProcessor(representationId, this.editingContext, this.canBeDisposedSink, this.editingContextExecutor);
+        return this.representationEventProcessorRegistry.getOrCreateRepresentationEventProcessor(representationId, this.canBeDisposedSink, this.editingContextExecutor);
     }
 
     @Override
@@ -153,6 +140,5 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             String pattern = "An error has occurred while marking the publisher as complete: {}";
             this.logger.warn(pattern, emitResult);
         }
-
     }
 }

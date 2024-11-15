@@ -68,7 +68,7 @@ public class RepresentationEventProcessorRegistry implements IRepresentationEven
     }
 
     @Override
-    public Optional<IRepresentationEventProcessor> getOrCreateRepresentationEventProcessor(String representationId, IEditingContext editingContext, Sinks.Many<Boolean> canBeDisposedSink,
+    public Optional<IRepresentationEventProcessor> getOrCreateRepresentationEventProcessor(String representationId, Sinks.Many<Boolean> canBeDisposedSink,
             IEditingContextExecutor editingContextExecutor) {
         var getRepresentationEventProcessorSample = Timer.start(this.meterRegistry);
 
@@ -76,7 +76,7 @@ public class RepresentationEventProcessorRegistry implements IRepresentationEven
                 .map(RepresentationEventProcessorEntry::getRepresentationEventProcessor);
 
         if (optionalRepresentationEventProcessor.isEmpty()) {
-            optionalRepresentationEventProcessor = this.representationEventProcessorComposedFactory.createRepresentationEventProcessor(editingContext, representationId);
+            optionalRepresentationEventProcessor = this.representationEventProcessorComposedFactory.createRepresentationEventProcessor(editingContextExecutor.getEditingContext(), representationId);
             if (optionalRepresentationEventProcessor.isPresent()) {
                 var representationEventProcessor = optionalRepresentationEventProcessor.get();
 
@@ -98,7 +98,7 @@ public class RepresentationEventProcessorRegistry implements IRepresentationEven
             }
         } else {
             var timer = this.meterRegistry.timer(Monitoring.TIMER_CREATE_REPRESENATION_EVENT_PROCESSOR,
-                    "editingContext", editingContext.getId(),
+                    "editingContext", editingContextExecutor.getEditingContext().getId(),
                     REPRESENTATION_ID, representationId);
             getRepresentationEventProcessorSample.stop(timer);
         }
