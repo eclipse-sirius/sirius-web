@@ -157,18 +157,18 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
             var refreshRepresentationSample = Timer.start(this.meterRegistry);
 
-            RepresentationEventProcessorEntry representationEventProcessorEntry = this.representationEventProcessors.get(changeDescription.getSourceId());
-            if (representationEventProcessorEntry != null) {
-                try {
+            try {
+                RepresentationEventProcessorEntry representationEventProcessorEntry = this.representationEventProcessors.get(changeDescription.getSourceId());
+                if (representationEventProcessorEntry != null) {
                     IRepresentationEventProcessor representationEventProcessor = representationEventProcessorEntry.getRepresentationEventProcessor();
                     representationEventProcessor.refresh(changeDescription);
                     IRepresentation representation = representationEventProcessor.getRepresentation();
                     this.applicationEventPublisher.publishEvent(new RepresentationRefreshedEvent(this.editingContext.getId(), representation));
-                } catch (Exception exception) {
-                    this.logger.warn(exception.getMessage(), exception);
                 }
+                this.refreshOtherRepresentations(changeDescription);
+            } catch (Exception exception) {
+                this.logger.warn(exception.getMessage(), exception);
             }
-            this.refreshOtherRepresentations(changeDescription);
 
             var timer = this.meterRegistry.timer(Monitoring.TIMER_REFRESH_REPRESENTATION, "changeDescription", changeDescription.getSourceId());
             refreshRepresentationSample.stop(timer);
