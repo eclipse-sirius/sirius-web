@@ -10,13 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useRef, RefObject } from 'react';
-import { useViewport } from '@xyflow/react';
+import { RefObject, useRef } from 'react';
 import Draggable, { DraggableData } from 'react-draggable';
+import { useViewportZoom } from '../core/useViewportZoom';
 import { BendPointProps, TemporaryBendPointProps } from './BendPoint.types';
 
 export const BendPoint = ({ x, y, index, onDrag, onDragStop, onDoubleClick }: BendPointProps) => {
-  const { zoom } = useViewport();
+  const zoom = useViewportZoom();
   const nodeRef = useRef<SVGCircleElement>(null);
 
   return (
@@ -39,7 +39,7 @@ export const BendPoint = ({ x, y, index, onDrag, onDragStop, onDoubleClick }: Be
 };
 
 export const TemporaryBendPoint = ({ x, y, index, onDrag, onDragStop }: TemporaryBendPointProps) => {
-  const { zoom } = useViewport();
+  const zoom = useViewportZoom();
   const nodeRef = useRef<SVGCircleElement>(null);
   return (
     <Draggable
