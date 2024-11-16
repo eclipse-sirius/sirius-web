@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { Edge, Node, useReactFlow, useViewport } from '@xyflow/react';
+import { Edge, Node, useReactFlow, useStoreApi } from '@xyflow/react';
 import { LayoutOptions } from 'elkjs/lib/elk-api';
 import ELK, { ElkLabel, ElkNode } from 'elkjs/lib/elk.bundled';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';
@@ -116,7 +116,7 @@ const computeLabels = (
 
 export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivElement | null>): UseArrangeAllValue => {
   const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
-  const viewport = useViewport();
+  const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
   const { diagramDescription } = useDiagramDescription();
@@ -132,11 +132,12 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
     parentNodeId: string,
     headerVerticalFootprint: number
   ): Promise<any> => {
+    const zoom = store.getState().transform[2];
     const graph: ElkNode = {
       id: parentNodeId,
       layoutOptions: options,
       children: nodes.map((node) => ({
-        labels: computeLabels(node, viewport.zoom, reactFlowWrapper),
+        labels: computeLabels(node, zoom, reactFlowWrapper),
         ...node,
       })),
       edges,
@@ -178,11 +179,8 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
         layoutedAllNodes = [...layoutedAllNodes, ...nodes.reverse()];
         continue;
       }
-      const headerVerticalFootprint: number = computeHeaderVerticalFootprint(
-        parentNode,
-        viewport.zoom,
-        reactFlowWrapper
-      );
+      const zoom = store.getState().transform[2];
+      const headerVerticalFootprint: number = computeHeaderVerticalFootprint(parentNode, zoom, reactFlowWrapper);
       const subGroupNodes: Node<NodeData>[] = nodes
         .filter((node) => !node.data.isBorderNode)
         .map((node) => {
