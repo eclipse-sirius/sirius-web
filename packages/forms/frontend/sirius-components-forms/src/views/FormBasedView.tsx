@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { DataExtension, useData } from '@eclipse-sirius/sirius-components-core';
+import { memo } from 'react';
 import { Form } from '../form/Form';
 import { GQLForm } from '../form/FormEventFragments.types';
 import { FormBasedViewProps, FormConverter } from './FormBasedView.types';
@@ -19,7 +20,7 @@ import { formBasedViewFormConverterExtensionPoint } from './FormBasedViewExtensi
 /**
  * Used to define workbench views based on a form.
  */
-export const FormBasedView = ({ editingContextId, form, readOnly, postProcessor }: FormBasedViewProps) => {
+export const FormBasedView = memo(({ editingContextId, form, readOnly, postProcessor }: FormBasedViewProps) => {
   const { data: formConverters }: DataExtension<FormConverter[]> = useData(formBasedViewFormConverterExtensionPoint);
 
   let convertedForm: GQLForm = form;
@@ -31,4 +32,4 @@ export const FormBasedView = ({ editingContextId, form, readOnly, postProcessor 
     return postProcessor({ editingContextId, readOnly }, convertedForm);
   }
   return <Form editingContextId={editingContextId} form={convertedForm} readOnly={readOnly} />;
-};
+});
