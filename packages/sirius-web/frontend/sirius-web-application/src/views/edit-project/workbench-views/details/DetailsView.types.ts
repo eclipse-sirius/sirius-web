@@ -11,10 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { GQLForm } from '@eclipse-sirius/sirius-components-forms';
 
 export interface DetailsViewState {
-  currentSelection: Selection;
   form: GQLForm | null;
 }

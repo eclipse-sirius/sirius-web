@@ -135,6 +135,7 @@ Except for the specific case where `cause === 'refresh'` in `DiagramRenderer` (w
 - https://github.com/eclipse-sirius/sirius-web/issues/4464[#4464] [diagram] [portal] Reduce usage of the selection kind
 - https://github.com/eclipse-sirius/sirius-web/issues/4204[#4204] [core] Prevent the changeDescriptionSink from crashing because of the related representation refresh
 - https://github.com/eclipse-sirius/sirius-web/issues/4206[#4206] [diagram] Improve performance of diagram when moving or zooming the viewport
+- https://github.com/eclipse-sirius/sirius-web/issues/4208[#4208] [form] Improve performance of details view rendering on selection change
 
 
 
