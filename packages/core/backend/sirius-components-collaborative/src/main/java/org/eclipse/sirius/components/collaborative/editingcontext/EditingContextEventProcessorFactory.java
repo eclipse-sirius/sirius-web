@@ -12,12 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.editingcontext;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.api.IChangeDescriptionListener;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextExecutorFactory;
+import org.eclipse.sirius.components.collaborative.api.IEditingContextManagerFactory;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorRegistryFactory;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -33,23 +35,27 @@ public class EditingContextEventProcessorFactory implements IEditingContextEvent
 
     private final IRepresentationEventProcessorRegistryFactory representationEventProcessorRegistryFactory;
 
+    private final IEditingContextManagerFactory editingContextManagerFactory;
+
     private final IEditingContextExecutorFactory editingContextExecutorFactory;
 
-    private final IChangeDescriptionListener changeDescriptionListener;
+    private final List<IChangeDescriptionListener> changeDescriptionListeners;
 
     public EditingContextEventProcessorFactory(ICollaborativeMessageService messageService,
-            IRepresentationEventProcessorRegistryFactory representationEventProcessorRegistryFactory, IEditingContextExecutorFactory editingContextExecutorFactory,
-            IChangeDescriptionListener changeDescriptionListener) {
+            IRepresentationEventProcessorRegistryFactory representationEventProcessorRegistryFactory, IEditingContextManagerFactory editingContextManagerFactory, IEditingContextExecutorFactory editingContextExecutorFactory,
+            List<IChangeDescriptionListener> changeDescriptionListeners) {
         this.representationEventProcessorRegistryFactory = Objects.requireNonNull(representationEventProcessorRegistryFactory);
+        this.editingContextManagerFactory = Objects.requireNonNull(editingContextManagerFactory);
         this.editingContextExecutorFactory = Objects.requireNonNull(editingContextExecutorFactory);
-        this.changeDescriptionListener = Objects.requireNonNull(changeDescriptionListener);
+        this.changeDescriptionListeners = Objects.requireNonNull(changeDescriptionListeners);
     }
 
     @Override
     public IEditingContextEventProcessor createEditingContextEventProcessor(IEditingContext editingContext) {
         var representationEventProcessorRegistry = this.representationEventProcessorRegistryFactory.createRepresentationEventProcessorRegistry();
+        var editingContextManager = this.editingContextManagerFactory.createEditingContextManager();
         var editingContextExecutor = this.editingContextExecutorFactory.createEditingContextExecutor(editingContext, representationEventProcessorRegistry);
-        return new EditingContextEventProcessor(representationEventProcessorRegistry, editingContextExecutor, editingContext, this.changeDescriptionListener);
+        return new EditingContextEventProcessor(representationEventProcessorRegistry, editingContextManager, editingContextExecutor, editingContext, this.changeDescriptionListeners);
     }
 
 }
