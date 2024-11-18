@@ -29,6 +29,9 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/4145[#4145] [core] Add IChangeDescriptionListener to allow subscribing to change made in an editing context.
 - https://github.com/eclipse-sirius/sirius-web/issues/4145[#4145] [core] Split the _editing context event processor_.
 ** The `RepresentationEventProcessorRegistry` which handles the lifecyle of representations in the editing context.
+** The `EditingContextExecutor` encapsulate editing context event handlers with _input pre-processors_ and _input post-processors_, all in their own thread.
+** The `ComposedEditingContextEventHandler` which dispatches editing context events to the right handler.
+** The `EditingContextManager` which is used to react to change made and thus, persist them is need.
 
 
 == v2025.1.0
@@ -45,7 +48,7 @@
 - [ADR-175] Add support for Pagination in REST APIs
 - [ADR-176] Add support for undo redo on Portal representation
 - [ADR-177] Add support for undo redo on Diagram representation
-- [ADR-XXX] Split editing context event processor responsibility
+- [ADR-178] Split editing context event processor responsibility
 
 === Deprecation warning
 

@@ -10,32 +10,31 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.collaborative.editingcontext;
 
-package org.eclipse.sirius.components.collaborative.api;
+import java.util.Objects;
 
+import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
+import org.eclipse.sirius.components.collaborative.api.ChangeKind;
+import org.eclipse.sirius.components.collaborative.api.IEditingContextManager;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
-import org.eclipse.sirius.components.core.api.IPayload;
-import org.springframework.stereotype.Service;
-
-import reactor.core.publisher.Sinks;
 
 /**
- * Used to call services that will be called when receiving a ChangeDescription.
+ * Reacts to semantic changes made in the editing context.
  *
- * @author mcharfadi
+ * @author gcoutable
  */
-@Service
-public class ChangeDescriptionListener implements IChangeDescriptionListener {
+public class EditingContextManager implements IEditingContextManager {
 
     private final IEditingContextPersistenceService editingContextPersistenceService;
 
-    public ChangeDescriptionListener(IEditingContextPersistenceService editingContextPersistenceService) {
-        this.editingContextPersistenceService = editingContextPersistenceService;
+    public EditingContextManager(IEditingContextPersistenceService editingContextPersistenceService) {
+        this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
     }
 
     @Override
-    public void onChangeDescription(ChangeDescription changeDescription, IEditingContext editingContext, Sinks.Many<IPayload> payloadSink, Sinks.Many<Boolean> canBeDisposedSink) {
+    public void onChange(ChangeDescription changeDescription, IEditingContext editingContext) {
         if (this.shouldPersistTheEditingContext(changeDescription)) {
             this.editingContextPersistenceService.persist(changeDescription.getInput(), editingContext);
         }

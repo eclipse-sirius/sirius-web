@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IChangeDescriptionListener;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextExecutor;
+import org.eclipse.sirius.components.collaborative.api.IEditingContextManager;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorRegistry;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -48,7 +49,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     private final Logger logger = LoggerFactory.getLogger(EditingContextEventProcessor.class);
 
-    private final IChangeDescriptionListener changeDescriptionListener;
+    private final List<IChangeDescriptionListener> changeDescriptionListeners;
 
     private final IRepresentationEventProcessorRegistry representationEventProcessorRegistry;
 
@@ -60,19 +61,21 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     private final Disposable changeDescriptionDisposable;
 
+    private final IEditingContextManager editingContextManager;
+
     private final IEditingContextExecutor editingContextExecutor;
 
     private final IEditingContext editingContext;
 
-    public EditingContextEventProcessor(IRepresentationEventProcessorRegistry representationEventProcessorRegistry, IEditingContextExecutor editingContextExecutor, IEditingContext editingContext, IChangeDescriptionListener changeDescriptionListener) {
+    public EditingContextEventProcessor(IRepresentationEventProcessorRegistry representationEventProcessorRegistry, IEditingContextManager editingContextManager, IEditingContextExecutor editingContextExecutor, IEditingContext editingContext, List<IChangeDescriptionListener> changeDescriptionListeners) {
         this.representationEventProcessorRegistry = Objects.requireNonNull(representationEventProcessorRegistry);
+        this.editingContextManager = Objects.requireNonNull(editingContextManager);
         this.editingContextExecutor = Objects.requireNonNull(editingContextExecutor);
         this.editingContext = Objects.requireNonNull(editingContext);
-        this.changeDescriptionListener = Objects.requireNonNull(changeDescriptionListener);
+        this.changeDescriptionListeners = Objects.requireNonNull(changeDescriptionListeners);
         this.changeDescriptionDisposable = this.setupChangeDescriptionSinkConsumer();
     }
 
-    @SuppressWarnings("checkstyle:IllegalCatch")
     private Disposable setupChangeDescriptionSinkConsumer() {
         Consumer<ChangeDescription> consumer = changeDescription -> {
             if (ChangeKind.NOTHING.equals(changeDescription.getKind())) {
@@ -80,7 +83,8 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             }
 
             this.representationEventProcessorRegistry.onChange(changeDescription, this.editingContext, this.sink, this.canBeDisposedSink);
-            this.changeDescriptionListener.onChangeDescription(changeDescription, this.editingContext, this.sink, this.canBeDisposedSink);
+            this.editingContextManager.onChange(changeDescription, this.editingContext);
+            this.changeDescriptionListeners.forEach(changeDescriptionListener -> changeDescriptionListener.onChangeDescription(changeDescription, this.editingContext, this.sink, this.canBeDisposedSink));
         };
 
         Consumer<Throwable> errorConsumer = throwable -> this.logger.warn(throwable.getMessage(), throwable);

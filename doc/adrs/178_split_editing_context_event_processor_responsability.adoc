@@ -1,4 +1,4 @@
-= ADR-XXX - Split editing context event processor responsibility
+= ADR-178 - Split editing context event processor responsibility
 
 == Context
 
@@ -16,14 +16,6 @@ It will handle the refresh, the disposal and sometime the deletion of representa
 
 Because it holds a state, it cannot be a spring service.
 It will be initialized by the _representation event processor registry factory_.
-
-==== Consequences
-
-We do not need a _rename representation event handler_ to rename representations.
-The rename is done where it is started, everywhere an element that can represent a representation and propose a rename of that element.
-In Sirius Web the rename of a representation can only be started in the explorer.
-It allows renaming a tree item which can be a representation.
-We do not need to go through `EditingContextEventProcessor#doHandle` with a `RenameRepresentationInput` which dispatch to the `RenameRepresentationEventHandler` anymore.
 
 === Editing context executor
 
@@ -48,16 +40,19 @@ The _editing context manager_ will listen to change description and update the e
 
 Because it holds the state of the _editing context_, it cannot be a spring service.
 
-=== Change description Listener (Optional)
+=== Change description Listener
 
 Its purpose would allow a component to respond to any change description emitted by a _representation event processor registry_ or a _editing context event manager_.
 It's optional because its only purpose would be to be implemented by something else that needs to respond to an emitted changed description.
 
 == Consequences
 
-The _editing context event processor_ will only take input and return payloads.
-After that, any responsibility change to the _editing context_ must have been thought carefully.
+The _editing context event processor_ contract does not change, but it should be taken as a processor, something that only takes input and return payloads.
+After that, any responsibility change to the _editing context event processor_ must have been thought carefully.
+
+The _rename representation event handler_ is not needed to rename representation anymore.
+All new kind of representation that can represent a representation and allow renaming the representation should perform the rename directly in the action, like it is done in the `RenameTreeItemEventHandler`.
 
 == Status
 
-Work in progress
+Accepted
