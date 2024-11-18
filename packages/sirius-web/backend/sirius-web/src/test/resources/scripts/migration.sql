@@ -269,6 +269,7 @@ INSERT INTO representation_metadata (
   target_object_id,
   description_id,
   label,
+  documentation,
   kind,
   created_on,
   last_modified_on
@@ -278,6 +279,7 @@ INSERT INTO representation_metadata (
   '719d2b8f-ab70-438d-a999-306de10654a7',
   'siriusComponents://representationDescription?kind=TreeMap',
   'Hierarchy Migration',
+  '',
   'siriusComponents://representation?type=TreeMap',
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
@@ -460,6 +462,7 @@ INSERT INTO representation_metadata (
   target_object_id,
   description_id,
   label,
+  documentation,
   kind,
   created_on,
   last_modified_on
@@ -469,6 +472,7 @@ INSERT INTO representation_metadata (
   '79752a18-c7d8-41c0-8a27-a79ea9de09d8',
   'siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=e932123d-b916-3537-84d2-86a4f5873d93',
   'Diagram UserResizable Migration',
+  '',
   'siriusComponents://representation?type=Diagram',
   '2024-07-04 9:42:0.000',
   '2024-07-04 9:42:0.000'

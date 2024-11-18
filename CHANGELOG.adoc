@@ -13,6 +13,13 @@
 
 === Deprecation warning
 
+- [form] The project `sirius-components-collecborative-forms` has always decided that any change performed by a widget must be a `ChangeKind.SEMANTIC_CHANGE`.
+This decision has created some limit on what can really be edited by a form.
+We will soon change this default behavior to use the change kind and parameters returned by the specifier in the `Success` result from the event handler.
+As a result, if we consider a textfield widget, in order to keep the existing behavior, specifier will have to create a result with the proper change kind like `new Success(ChangeKind.SEMANTIC_CHANGE, Map.of())` instead of `new Success()`.
+If the status returned by the event handler is still something like `new Success()` then, Sirius Components will ignore the change performed by the event handler.
+While it can be useful to indicate that nothing has changed in some cases, if it's not done on purpose some representations will not be updated, semantic data may not be saved, etc.
+This change will also be propagated over time to other kind of representations.
 
 
 === Breaking changes

@@ -58,6 +58,7 @@ public class RepresentationMetadataPersistenceService implements IRepresentation
                     .iconURLs(representationMetadata.iconURLs().stream()
                             .map(RepresentationIconURL::new)
                             .toList())
+                    .documentation("")
                     .build(cause);
 
             this.representationMetadataCreationService.create(boundedRepresentationMetadata);

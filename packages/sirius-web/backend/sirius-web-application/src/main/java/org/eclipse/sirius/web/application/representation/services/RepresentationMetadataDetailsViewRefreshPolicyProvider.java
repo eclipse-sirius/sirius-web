@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,13 +17,12 @@ import java.util.Set;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicy;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyProvider;
-import org.eclipse.sirius.components.collaborative.portals.PortalChangeKind;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.web.application.views.details.services.PropertiesEventProcessorFactory;
 import org.springframework.stereotype.Service;
 
 /**
- * The representation refresh policy provider for the representation representations.
+ * The representation refresh policy provider for the representation metadata properties page.
  *
  * @author Jerome Gout
  */
@@ -36,9 +35,7 @@ public class RepresentationMetadataDetailsViewRefreshPolicyProvider implements I
             ChangeKind.REPRESENTATION_RENAMING,
             ChangeKind.REPRESENTATION_TO_DELETE,
             ChangeKind.REPRESENTATION_METADATA_UPDATE,
-            ChangeKind.SEMANTIC_CHANGE,
-            PortalChangeKind.PORTAL_VIEW_ADDITION.name(),
-            PortalChangeKind.PORTAL_VIEW_REMOVAL.name());
+            ChangeKind.SEMANTIC_CHANGE);
 
 
     @Override
