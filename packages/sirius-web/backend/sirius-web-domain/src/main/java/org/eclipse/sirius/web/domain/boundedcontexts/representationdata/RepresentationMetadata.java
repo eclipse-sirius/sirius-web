@@ -65,6 +65,8 @@ public class RepresentationMetadata extends AbstractValidatingAggregateRoot<Repr
     @MappedCollection(idColumn = "representation_metadata_id", keyColumn = "index")
     private List<RepresentationIconURL> iconURLs = new ArrayList<>();
 
+    private String documentation;
+
     @Override
     public UUID getId() {
         return this.id;
@@ -113,6 +115,21 @@ public class RepresentationMetadata extends AbstractValidatingAggregateRoot<Repr
         return Collections.unmodifiableList(this.iconURLs);
     }
 
+    public String getDocumentation() {
+        return this.documentation;
+    }
+
+    public void updateDocumentation(ICause cause, String newDocumentation) {
+        if (this.documentation.isEmpty() || !this.documentation.equals(newDocumentation)) {
+            this.documentation = newDocumentation;
+
+            var now = Instant.now();
+            this.lastModifiedOn = now;
+
+            this.registerEvent(new RepresentationMetadataUpdatedEvent(UUID.randomUUID(), now, cause, this));
+        }
+    }
+
     public void dispose(ICause cause) {
         this.registerEvent(new RepresentationMetadataDeletedEvent(UUID.randomUUID(), Instant.now(), cause, this));
     }
@@ -148,6 +165,8 @@ public class RepresentationMetadata extends AbstractValidatingAggregateRoot<Repr
 
         private List<RepresentationIconURL> iconURLs;
 
+        private String documentation;
+
         public Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -182,6 +201,11 @@ public class RepresentationMetadata extends AbstractValidatingAggregateRoot<Repr
             return this;
         }
 
+        public Builder documentation(String documentation) {
+            this.documentation = Objects.requireNonNull(documentation);
+            return this;
+        }
+
         public RepresentationMetadata build(ICause cause) {
             var representationMetadata = new RepresentationMetadata();
             representationMetadata.isNew = true;
@@ -192,6 +216,7 @@ public class RepresentationMetadata extends AbstractValidatingAggregateRoot<Repr
             representationMetadata.label = Objects.requireNonNull(this.label);
             representationMetadata.kind = Objects.requireNonNull(this.kind);
             representationMetadata.iconURLs = Objects.requireNonNull(this.iconURLs);
+            representationMetadata.documentation = Objects.requireNonNull(this.documentation);
 
             var now = Instant.now();
             representationMetadata.createdOn = now;

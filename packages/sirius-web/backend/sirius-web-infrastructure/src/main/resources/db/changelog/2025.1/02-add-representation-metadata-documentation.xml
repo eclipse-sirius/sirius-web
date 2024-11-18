@@ -15,6 +15,17 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
-    <include file="db/changelog/2025.1/01-add-representation-metadata-icon-url.xml" />
-    <include file="db/changelog/2025.1/02-add-representation-metadata-documentation.xml" />
+
+    <changeSet id="02-add-representation-metadata-documentation" author="Jerome Gout">
+        <addColumn tableName="representation_metadata">
+            <column name="documentation" type="TEXT"/>
+        </addColumn>
+
+        <sql>
+            UPDATE representation_metadata
+            SET documentation = ''
+        </sql>
+
+        <addNotNullConstraint tableName="representation_metadata" columnName="documentation" />
+    </changeSet>
 </databaseChangeLog>

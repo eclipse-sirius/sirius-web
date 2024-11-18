@@ -13,19 +13,39 @@
 package org.eclipse.sirius.web.application.controllers.representations;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 import com.jayway.jsonpath.JsonPath;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
+import org.eclipse.sirius.components.collaborative.forms.dto.EditTextfieldInput;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.forms.Form;
+import org.eclipse.sirius.components.forms.Textarea;
+import org.eclipse.sirius.components.forms.Textfield;
+import org.eclipse.sirius.components.forms.tests.assertions.FormAssertions;
+import org.eclipse.sirius.components.forms.tests.graphql.EditTextfieldMutationRunner;
+import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.components.graphql.tests.RepresentationDescriptionsQueryRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.services.api.IDomainEventCollector;
+import org.eclipse.sirius.web.tests.graphql.DetailsEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.graphql.RepresentationMetadataQueryRunner;
 import org.eclipse.sirius.web.tests.graphql.RepresentationsMetadataQueryRunner;
+import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,6 +54,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
+
+import graphql.execution.DataFetcherResult;
+import reactor.test.StepVerifier;
 
 /**
  * Integration tests of the representation controllers.
@@ -59,6 +82,18 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
 
     @Autowired
     private IDomainEventCollector domainEventCollector;
+
+    @Autowired
+    private RepresentationIdBuilder representationIdBuilder;
+
+    @Autowired
+    private IGivenCommittedTransaction givenCommittedTransaction;
+
+    @Autowired
+    private DetailsEventSubscriptionRunner detailsEventSubscriptionRunner;
+
+    @Autowired
+    private EditTextfieldMutationRunner editTextfieldMutationRunner;
 
     @BeforeEach
     public void beforeEach() {
@@ -210,4 +245,139 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         List<String> representationIds = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.edges[*].node.id");
         assertThat(representationIds).hasSize(3);
     }
+
+    @Test
+    @DisplayName("Given a Portal representation, when we subscribe to its properties events, then the form is sent")
+    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenPortalRepresentationWhenWeSubscribeToItsPropertiesEventsThenTheFormIsSent() {
+        var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
+        var input = new DetailsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), detailsRepresentationId);
+        var flux = this.detailsEventSubscriptionRunner.run(input);
+
+        Predicate<Form> formPredicate = form -> {
+            var groupNavigator = new FormNavigator(form).page("Portal").group("Core Properties");
+
+            var labelTextField = groupNavigator.findWidget("Label", Textfield.class);
+            FormAssertions.assertThat(labelTextField).isNotNull();
+            FormAssertions.assertThat(labelTextField.getValue()).isEqualTo("Portal");
+
+            var documentationTextArea = groupNavigator.findWidget("Documentation", Textarea.class);
+            FormAssertions.assertThat(documentationTextArea).isNotNull();
+            FormAssertions.assertThat(documentationTextArea.getValue()).isEqualTo("documentation");
+
+            return true;
+        };
+
+        Predicate<Object> formContentMatcher = object -> Optional.of(object)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
+                .map(FormRefreshedEventPayload::form)
+                .filter(formPredicate)
+                .isPresent();
+
+        StepVerifier.create(flux)
+                .expectNextMatches(formContentMatcher)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a Portal representation, when we edit its label in the Details view, then the label is changed.")
+    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenPortalRepresentationWhenWeEditItsLabelInTheDetailsViewThenTheLabelIsChanged() {
+        this.givenCommittedTransaction.commit();
+
+        var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
+        var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), detailsRepresentationId);
+        var flux = this.detailsEventSubscriptionRunner.run(detailsEventInput);
+
+        var formId = new AtomicReference<String>();
+
+        Consumer<Object> initialFormContentConsumer = this.getFormConsumer(form -> {
+            formId.set(form.getId());
+        });
+
+        Runnable editLabel = () -> {
+            var editLabelInput = new EditTextfieldInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), formId.get(), "metadata.label", "NewPortal");
+            var result = this.editTextfieldMutationRunner.run(editLabelInput);
+
+            String typename = JsonPath.read(result, "$.data.editTextfield.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> updateFormLabel = this.getFormConsumer(form -> {
+            var groupNavigator = new FormNavigator(form).page("NewPortal").group("Core Properties");
+
+            var labelTextfield = groupNavigator.findWidget("Label", Textfield.class);
+            FormAssertions.assertThat(labelTextfield).isNotNull();
+            FormAssertions.assertThat(labelTextfield.getValue()).isEqualTo("NewPortal");
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialFormContentConsumer)
+                .then(editLabel)
+                .consumeNextWith(updateFormLabel)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a Portal representation, when we edit its documentation in the Details view, then the documentation is changed.")
+    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenPortalRepresentationWhenWeEditItsDocumentationInTheDetailsViewThenTheDocumentationIsChanged() {
+
+        this.givenCommittedTransaction.commit();
+
+        var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
+        var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), detailsRepresentationId);
+        var flux = this.detailsEventSubscriptionRunner.run(detailsEventInput);
+
+        var formId = new AtomicReference<String>();
+
+        Consumer<Object> initialFormContentConsumer = this.getFormConsumer(form -> {
+            formId.set(form.getId());
+        });
+
+        Runnable editDocumentation = () -> {
+            var editDocumentationInput = new EditTextfieldInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), formId.get(), "metadata.documentation", "This is a documentation");
+            var result = this.editTextfieldMutationRunner.run(editDocumentationInput);
+
+            String typename = JsonPath.read(result, "$.data.editTextfield.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> updateFormDocumentation = this.getFormConsumer(form -> {
+            var groupNavigator = new FormNavigator(form).page("Portal").group("Core Properties");
+
+            var documentationTextArea = groupNavigator.findWidget("Documentation", Textarea.class);
+            FormAssertions.assertThat(documentationTextArea).isNotNull();
+            FormAssertions.assertThat(documentationTextArea.getValue()).isEqualTo("This is a documentation");
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialFormContentConsumer)
+                .then(editDocumentation)
+                .consumeNextWith(updateFormDocumentation)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    private Consumer<Object> getFormConsumer(Consumer<Form> formConsumer) {
+        return object -> Optional.of(object)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
+                .map(FormRefreshedEventPayload::form)
+                .ifPresentOrElse(formConsumer, () -> fail("Missing form"));
+
+    }
+
 }

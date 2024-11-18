@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@
 
 package org.eclipse.sirius.web.application.representation.services;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +33,7 @@ import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
+import org.eclipse.sirius.components.forms.description.TextareaDescription;
 import org.eclipse.sirius.components.forms.description.TextfieldDescription;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -82,31 +82,18 @@ public class RepresentationMetadataDetailsViewPageDescriptionProvider implements
     }
 
     private List<AbstractControlDescription> createControlDescriptions() {
-        List<AbstractControlDescription> controls = new ArrayList<>();
+        var labelControl = this.createLabelTextField();
+        var documentationControl = this.createDocumentationTextArea();
 
-        BiFunction<Object, String, IStatus> representationLabelWriter = (metadata, newLabel) -> {
-            // delegate the renaming of the representation to EditingContextEventProcessor
-            var representationId = ((RepresentationMetadata) metadata).getId();
-            Map<String, Object> parameters = new HashMap<>();
-            parameters.put(EditingContextEventProcessor.REPRESENTATION_ID, representationId.toString());
-            parameters.put(EditingContextEventProcessor.REPRESENTATION_LABEL, newLabel);
-            return new Success(ChangeKind.REPRESENTATION_TO_RENAME, parameters);
-        };
-
-        var label = this.createTextField("metadata.label", "Label",
-                metadata -> ((RepresentationMetadata) metadata).getLabel(),
-                representationLabelWriter);
-        controls.add(label);
-        return controls;
+        return List.of(labelControl, documentationControl);
     }
-
 
     private GroupDescription createGroupDescription(List<AbstractControlDescription> controls) {
         Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().toList();
 
         return GroupDescription.newGroupDescription("group")
                 .idProvider(variableManager -> "group")
-                .labelProvider(variableManager -> "Core properties")
+                .labelProvider(variableManager -> "Core Properties")
                 .semanticElementsProvider(semanticElementsProvider)
                 .controlDescriptions(controls)
                 .build();
@@ -127,28 +114,67 @@ public class RepresentationMetadataDetailsViewPageDescriptionProvider implements
                 .build();
     }
 
-    private TextfieldDescription createTextField(String id, String title, Function<Object, String> reader, BiFunction<Object, String, IStatus> writer) {
-        Function<VariableManager, String> valueProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(reader)
+    private TextfieldDescription createLabelTextField() {
+        Function<VariableManager, String> valueProvider = variableManager -> variableManager.get(VariableManager.SELF, RepresentationMetadata.class)
+                .map(RepresentationMetadata::getLabel)
                 .orElse("");
 
         BiFunction<VariableManager, String, IStatus> newValueHandler = (variableManager, newValue) -> {
-            var self = variableManager.get(VariableManager.SELF, Object.class);
+            var self = variableManager.get(VariableManager.SELF, RepresentationMetadata.class);
             if (self.isPresent()) {
-                return writer.apply(self.get(), newValue);
-            } else {
-                return new Failure("");
+                var representationMetadata = self.get();
+
+                // delegate the renaming of the representation to EditingContextEventProcessor
+                Map<String, Object> parameters = new HashMap<>();
+                parameters.put(EditingContextEventProcessor.REPRESENTATION_ID, representationMetadata.getId().toString());
+                parameters.put(EditingContextEventProcessor.REPRESENTATION_LABEL, newValue);
+                return new Success(ChangeKind.REPRESENTATION_TO_RENAME, parameters);
             }
+            return new Failure("");
         };
 
         Function<VariableManager, String> semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
                 .map(this.identityService::getId)
                 .orElse(null);
 
-        return org.eclipse.sirius.components.forms.description.TextfieldDescription.newTextfieldDescription(id)
-                .idProvider(variableManager -> id)
+        return TextfieldDescription.newTextfieldDescription("metadata.label")
+                .idProvider(variableManager -> "metadata.label")
                 .targetObjectIdProvider(semanticTargetIdProvider)
-                .labelProvider(variableManager -> title)
+                .labelProvider(variableManager -> "Label")
+                .valueProvider(valueProvider)
+                .newValueHandler(newValueHandler)
+                .diagnosticsProvider(variableManager -> List.of())
+                .kindProvider(this::kindProvider)
+                .messageProvider(this::messageProvider)
+                .isReadOnlyProvider(variableManager -> false)
+                .build();
+    }
+
+    private TextareaDescription createDocumentationTextArea() {
+        Function<VariableManager, String> valueProvider = variableManager -> variableManager.get(VariableManager.SELF, RepresentationMetadata.class)
+                .map(RepresentationMetadata::getDocumentation)
+                .orElse("");
+
+        BiFunction<VariableManager, String, IStatus> newValueHandler = (variableManager, newValue) -> {
+            var self = variableManager.get(VariableManager.SELF, RepresentationMetadata.class);
+            if (self.isPresent()) {
+                var representationMetadata = self.get();
+                return Optional.of(this.representationMetadataUpdateService.updateDocumentation(null, representationMetadata.getId(), newValue))
+                        .filter(org.eclipse.sirius.web.domain.services.Success.class::isInstance)
+                        .map(success -> (IStatus) new Success(ChangeKind.REPRESENTATION_METADATA_UPDATE, Map.of()))
+                        .orElseGet(() -> new Failure(""));
+            }
+            return new Failure("");
+        };
+
+        Function<VariableManager, String> semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .map(this.identityService::getId)
+                .orElse(null);
+
+        return TextareaDescription.newTextareaDescription("metadata.documentation")
+                .idProvider(variableManager -> "metadata.documentation")
+                .targetObjectIdProvider(semanticTargetIdProvider)
+                .labelProvider(variableManager -> "Documentation")
                 .valueProvider(valueProvider)
                 .newValueHandler(newValueHandler)
                 .diagnosticsProvider(variableManager -> List.of())

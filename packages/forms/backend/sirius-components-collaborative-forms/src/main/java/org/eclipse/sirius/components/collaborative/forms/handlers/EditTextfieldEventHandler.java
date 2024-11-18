@@ -101,7 +101,7 @@ public class EditTextfieldEventHandler implements IFormEventHandler {
             }
             if (status instanceof Success success) {
                 payload = new SuccessPayload(formInput.id(), success.getMessages());
-                if (success.getChangeKind() == null || success.getChangeKind().isBlank()) {
+                if (success.getChangeKind().isBlank()) {
                     changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.representationId(), formInput);
                 } else {
                     changeDescription = new ChangeDescription(success.getChangeKind(), formInput.representationId(), formInput, success.getParameters());
