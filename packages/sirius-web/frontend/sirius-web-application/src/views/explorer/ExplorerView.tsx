@@ -146,6 +146,7 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
       />
     );
   }
+
   const onExpandedElementChange = (expanded: string[], maxDepth: number) => {
     setState((prevState) => ({
       ...prevState,
