@@ -29,7 +29,6 @@ import org.eclipse.emf.edit.provider.IItemStyledLabelProvider;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.emf.edit.provider.StyledString;
-import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
 import org.eclipse.sirius.components.core.api.labels.BorderStyle;
 import org.eclipse.sirius.components.core.api.labels.UnderLineStyle;
 import org.junit.jupiter.api.Test;
@@ -45,7 +44,7 @@ public class DefaultLabelServiceTests {
         ComposedAdapterFactory composedAdapterFactory = new ComposedAdapterFactory(List.of(new EcoreItemProviderAdapterFactory()));
         composedAdapterFactory.addAdapterFactory(new EcoreAdapterFactory());
         composedAdapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
-        DefaultLabelService labelService = new DefaultLabelService(List.of(new IRepresentationMetadataProvider.NoOp()), new LabelFeatureProviderRegistry(), composedAdapterFactory, List.of());
+        DefaultLabelService labelService = new DefaultLabelService(new LabelFeatureProviderRegistry(), composedAdapterFactory);
         EAttribute attr = EcoreFactory.eINSTANCE.createEAttribute();
         List<String> imagePath = labelService.getImagePath(attr);
         assertThat(imagePath).hasSize(1);
@@ -111,7 +110,7 @@ public class DefaultLabelServiceTests {
 
         @Override
         public String getText(Object object) {
-            return getStyledText(object).toString();
+            return this.getStyledText(object).toString();
         }
     }
 }
