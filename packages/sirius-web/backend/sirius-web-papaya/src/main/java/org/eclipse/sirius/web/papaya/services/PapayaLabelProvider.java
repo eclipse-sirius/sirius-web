@@ -12,16 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.papaya.services;
 
-import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemStyledLabelProvider;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
 import org.eclipse.sirius.components.core.api.ILabelServiceDelegate;
-import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.emf.services.DefaultLabelService;
 import org.eclipse.sirius.components.emf.services.LabelFeatureProviderRegistry;
@@ -40,8 +37,8 @@ public class PapayaLabelProvider extends DefaultLabelService implements ILabelSe
 
     private final IStyledStringConverter styledStringConverter;
 
-    public PapayaLabelProvider(List<IRepresentationMetadataProvider> representationMetadataProviders, LabelFeatureProviderRegistry labelFeatureProviderRegistry, ComposedAdapterFactory composedAdapterFactory, List<IRepresentationImageProvider> representationImageProviders, IStyledStringConverter styledStringConverter) {
-        super(representationMetadataProviders, labelFeatureProviderRegistry, composedAdapterFactory, representationImageProviders);
+    public PapayaLabelProvider(LabelFeatureProviderRegistry labelFeatureProviderRegistry, ComposedAdapterFactory composedAdapterFactory, IStyledStringConverter styledStringConverter) {
+        super(labelFeatureProviderRegistry, composedAdapterFactory);
         this.styledStringConverter = Objects.requireNonNull(styledStringConverter);
     }
 

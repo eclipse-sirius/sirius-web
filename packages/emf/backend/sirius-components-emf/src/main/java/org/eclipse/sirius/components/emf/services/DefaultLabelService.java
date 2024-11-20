@@ -29,9 +29,7 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedImage;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.ReflectiveItemProvider;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
 import org.eclipse.sirius.components.core.api.IDefaultLabelService;
-import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.slf4j.Logger;
@@ -50,22 +48,15 @@ public class DefaultLabelService implements IDefaultLabelService {
 
     private static final String DEFAULT_LABEL_FEATURE = "name";
 
-    private final List<IRepresentationMetadataProvider> representationMetadataProviders;
-
     private final LabelFeatureProviderRegistry labelFeatureProviderRegistry;
 
     private final ComposedAdapterFactory composedAdapterFactory;
 
-    private final List<IRepresentationImageProvider> representationImageProviders;
+    private final Logger logger = LoggerFactory.getLogger(DefaultLabelService.class);
 
-    private final Logger logger = LoggerFactory.getLogger(LabelFeatureProviderRegistry.class);
-
-    public DefaultLabelService(List<IRepresentationMetadataProvider> representationMetadataProviders, LabelFeatureProviderRegistry labelFeatureProviderRegistry, ComposedAdapterFactory composedAdapterFactory,
-            List<IRepresentationImageProvider> representationImageProviders) {
-        this.representationMetadataProviders = Objects.requireNonNull(representationMetadataProviders);
+    public DefaultLabelService(LabelFeatureProviderRegistry labelFeatureProviderRegistry, ComposedAdapterFactory composedAdapterFactory) {
         this.labelFeatureProviderRegistry = Objects.requireNonNull(labelFeatureProviderRegistry);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
-        this.representationImageProviders = Objects.requireNonNull(representationImageProviders);
     }
 
     @Override
