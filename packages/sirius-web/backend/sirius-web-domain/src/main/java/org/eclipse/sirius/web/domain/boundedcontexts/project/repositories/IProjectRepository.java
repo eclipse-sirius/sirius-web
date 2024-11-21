@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,8 +16,8 @@ import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.springframework.data.repository.ListCrudRepository;
-import org.springframework.data.repository.ListPagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
+
 
 /**
  * Repository used to persist the project aggregate.
@@ -25,5 +25,5 @@ import org.springframework.stereotype.Repository;
  * @author sbegaudeau
  */
 @Repository
-public interface IProjectRepository extends ListPagingAndSortingRepository<Project, UUID>, ListCrudRepository<Project, UUID>, ProjectSearchRepository<Project, UUID> {
+public interface IProjectRepository extends ListCrudRepository<Project, UUID>, ProjectSearchRepository<Project, UUID> {
 }

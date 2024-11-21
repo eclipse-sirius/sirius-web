@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,8 +16,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.eclipse.sirius.web.domain.boundedcontexts.project.services.Window;
+import org.springframework.data.domain.KeysetScrollPosition;
 
 /**
  * Used to retrieve projects.
@@ -30,5 +30,5 @@ public interface IProjectSearchService {
 
     Optional<Project> findById(UUID projectId);
 
-    Page<Project> findAll(Pageable pageable);
+    Window<Project> findAll(KeysetScrollPosition position, int limit);
 }

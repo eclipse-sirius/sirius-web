@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.projects;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,9 +20,6 @@ import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.api.IProjectSearchRepositoryDelegate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.simple.JdbcClient;
 
 /**
@@ -46,17 +44,29 @@ public class ProjectSearchControllerConfiguration {
             }
 
             @Override
-            public Page<Project> findAll(Pageable pageable) {
+            public List<Project> findAllBefore(UUID cursorProjectId, int limit) {
                 var query = """
                         SELECT project.* FROM project
                         JOIN nature ON project.id = nature.project_id
                         WHERE nature.name = 'ecore'
                         """;
-                var projects = jdbcClient.sql(query)
+                return jdbcClient.sql(query)
                         .query(Project.class)
                         .list();
-                return new PageImpl<>(projects, pageable, projects.size());
             }
+
+            @Override
+            public List<Project> findAllAfter(UUID cursorProjectId, int limit) {
+                var query = """
+                        SELECT project.* FROM project
+                        JOIN nature ON project.id = nature.project_id
+                        WHERE nature.name = 'ecore'
+                        """;
+                return jdbcClient.sql(query)
+                        .query(Project.class)
+                        .list();
+            }
+
         };
     }
 }
