@@ -11,11 +11,26 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { GQLProject } from './useProjects.types';
+
 export interface ListProjectsAreaProps {}
 
 export interface ListProjectsAreaState {
-  page: number;
-  limit: number;
+  pageSize: number;
+  projects: GQLProject[];
+  hasPrev: boolean;
+  hasNext: boolean;
+  startCursor: string | null;
+  endCursor: string | null;
+  onRefreshProjects: () => void;
+  beforeRefreshProjects: boolean;
+  afterRefreshProjects: boolean;
+  beforeRefreshNeeded: boolean;
+  afterRefreshNeeded: boolean;
+  previousPageRequired: boolean;
+  nextPageRequired: boolean;
 }
 
 export interface NoProjectsFoundProps {}
+
+export interface FetchingProjectsProps {}
