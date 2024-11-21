@@ -28,13 +28,14 @@ import org.springframework.stereotype.Service;
 public class ProjectsQueryRunner implements IQueryRunner {
 
     private static final String PROJECTS_QUERY = """
-            query getProjects($page: Int!, $limit: Int!) {
+            query getProjects($after: String, $before: String, $first: Int, $last: Int) {
               viewer {
-                projects(page: $page, limit: $limit) {
+                projects(after: $after, before: $before, first: $first, last: $last) {
                   edges {
                     node {
                       id
                     }
+                    cursor
                   }
                   pageInfo {
                     hasPreviousPage
