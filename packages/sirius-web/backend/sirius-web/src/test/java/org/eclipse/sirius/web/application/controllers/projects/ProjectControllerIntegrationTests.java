@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,6 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProce
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectSuccessPayload;
 import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
@@ -34,6 +33,7 @@ import org.eclipse.sirius.web.application.project.dto.ProjectEventInput;
 import org.eclipse.sirius.web.application.project.dto.ProjectRenamedEventPayload;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectInput;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectSuccessPayload;
+import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectDeletedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
@@ -49,12 +49,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.ScrollPosition;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
+import graphql.relay.Relay;
 import reactor.test.StepVerifier;
 
 /**
@@ -130,11 +131,11 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     }
 
     @Test
-    @DisplayName("Given a set of projects, when a query is performed, then the projects are returned")
+    @DisplayName("Given a set of projects, when a valid first query is performed, then the projects are returned")
     @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenSetOfProjectsWhenQueryIsPerformedThenTheProjectsAreReturned() {
-        Map<String, Object> variables = Map.of("page", 0, "limit", 2);
+    public void givenSetOfProjectsWhenValidFirstQueryIsPerformedThenTheProjectsAreReturned() {
+        Map<String, Object> variables = Map.of("first", 2);
         var result = this.projectsQueryRunner.run(variables);
 
         boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasPreviousPage");
@@ -150,7 +151,138 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         assertThat(endCursor).isNotBlank();
 
         int count = JsonPath.read(result, "$.data.viewer.projects.pageInfo.count");
-        assertThat(count).isGreaterThan(2);
+        assertThat(count).isEqualTo(2);
+
+        List<String> projectIds = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.id");
+        assertThat(projectIds).hasSize(2);
+    }
+
+    @Test
+    @DisplayName("Given a set of projects, when a valid first query is performed, then the projects are returned")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenSetOfProjectsWhenValidLastQueryIsPerformedThenTheProjectsAreReturned() {
+        Map<String, Object> variables = Map.of("last", 2);
+        var result = this.projectsQueryRunner.run(variables);
+
+        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasPreviousPage");
+        assertThat(hasPreviousPage).isFalse();
+
+        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasNextPage");
+        assertThat(hasNextPage).isTrue();
+
+        String startCursor = JsonPath.read(result, "$.data.viewer.projects.pageInfo.startCursor");
+        assertThat(startCursor).isNotBlank();
+
+        String endCursor = JsonPath.read(result, "$.data.viewer.projects.pageInfo.endCursor");
+        assertThat(endCursor).isNotBlank();
+
+        int count = JsonPath.read(result, "$.data.viewer.projects.pageInfo.count");
+        assertThat(count).isEqualTo(2);
+
+        List<String> projectIds = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.id");
+        assertThat(projectIds).hasSize(2);
+    }
+
+    @Test
+    @DisplayName("Given a set of projects, when a 0 first query is performed, then the projects are returned")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenSetOfProjectsWhenA0FirstProjectsQueryIsPerformedThenTheProjectsAreReturned() {
+        Map<String, Object> variables = Map.of("first", 0);
+        var result = this.projectsQueryRunner.run(variables);
+
+        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasPreviousPage");
+        assertThat(hasPreviousPage).isFalse();
+
+        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasNextPage");
+        assertThat(hasNextPage).isFalse();
+
+        String startCursor = JsonPath.read(result, "$.data.viewer.projects.pageInfo.startCursor");
+        assertThat(startCursor).isBlank();
+
+        String endCursor = JsonPath.read(result, "$.data.viewer.projects.pageInfo.endCursor");
+        assertThat(endCursor).isBlank();
+
+        int count = JsonPath.read(result, "$.data.viewer.projects.pageInfo.count");
+        assertThat(count).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("Given a set of projects, when a 0 last query is performed, then the projects are returned")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenSetOfProjectsWhenA0LastProjectsQueryIsPerformedThenTheProjectsAreReturned() {
+        Map<String, Object> variables = Map.of("last", 0);
+        var result = this.projectsQueryRunner.run(variables);
+
+        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasPreviousPage");
+        assertThat(hasPreviousPage).isFalse();
+
+        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasNextPage");
+        assertThat(hasNextPage).isFalse();
+
+        String startCursor = JsonPath.read(result, "$.data.viewer.projects.pageInfo.startCursor");
+        assertThat(startCursor).isBlank();
+
+        String endCursor = JsonPath.read(result, "$.data.viewer.projects.pageInfo.endCursor");
+        assertThat(endCursor).isBlank();
+
+        int count = JsonPath.read(result, "$.data.viewer.projects.pageInfo.count");
+        assertThat(count).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("Given a set of projects, when a valid after query is performed, then the projects are returned")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenSetOfProjectsWhenValidAfterQueryIsPerformedThenTheProjectsAreReturned() {
+        var cursorProjectId = new Relay().toGlobalId("Project", TestIdentifiers.UML_SAMPLE_PROJECT.toString());
+        Map<String, Object> variables = Map.of("after", cursorProjectId);
+        var result = this.projectsQueryRunner.run(variables);
+
+        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasPreviousPage");
+        assertThat(hasPreviousPage).isTrue();
+
+        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasNextPage");
+        assertThat(hasNextPage).isFalse();
+
+        String startCursor = JsonPath.read(result, "$.data.viewer.projects.pageInfo.startCursor");
+        assertThat(startCursor).isNotBlank();
+
+        String endCursor = JsonPath.read(result, "$.data.viewer.projects.pageInfo.endCursor");
+        assertThat(endCursor).isNotBlank();
+
+        int count = JsonPath.read(result, "$.data.viewer.projects.pageInfo.count");
+        assertThat(count).isEqualTo(2);
+
+        List<String> projectIds = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.id");
+        assertThat(projectIds).hasSize(2);
+    }
+
+    @Test
+    @DisplayName("Given a set of projects, when a valid before query is performed, then the projects are returned")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenSetOfProjectsWhenValidBeforeQueryIsPerformedThenTheProjectsAreReturned() {
+        var cursorProjectId = new Relay().toGlobalId("Project", TestIdentifiers.UML_SAMPLE_PROJECT.toString());
+        Map<String, Object> variables = Map.of("before", cursorProjectId);
+        var result = this.projectsQueryRunner.run(variables);
+
+        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasPreviousPage");
+        assertThat(hasPreviousPage).isFalse();
+
+        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasNextPage");
+        assertThat(hasNextPage).isTrue();
+
+        String startCursor = JsonPath.read(result, "$.data.viewer.projects.pageInfo.startCursor");
+        assertThat(startCursor).isNotBlank();
+
+        String endCursor = JsonPath.read(result, "$.data.viewer.projects.pageInfo.endCursor");
+        assertThat(endCursor).isNotBlank();
+
+        int count = JsonPath.read(result, "$.data.viewer.projects.pageInfo.count");
+        assertThat(count).isEqualTo(2);
 
         List<String> projectIds = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.id");
         assertThat(projectIds).hasSize(2);
@@ -160,8 +292,9 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @DisplayName("Given a valid project to create, when the mutation is performed, then the project is created")
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenValidProjectToCreateWhenMutationIsPerformedThenProjectIsCreated() {
-        var page = this.projectSearchService.findAll(PageRequest.of(1, 1));
-        assertThat(page.getTotalElements()).isZero();
+        var window = this.projectSearchService.findAll(ScrollPosition.keyset(), 1);
+        assertThat(window).isNotNull();
+        assertThat(window.size()).isZero();
 
         var input = new CreateProjectInput(UUID.randomUUID(), "New Project", List.of());
         var result = this.createProjectMutationRunner.run(input);
@@ -181,6 +314,49 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         assertThat(this.domainEventCollector.getDomainEvents()).hasSize(2);
         var event = this.domainEventCollector.getDomainEvents().get(0);
         assertThat(event).isInstanceOf(ProjectCreatedEvent.class);
+    }
+
+    @Test
+    @DisplayName("Given a valid input, when a forward findAll is performed, then the returned window contains the projects after the input project")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenAValidInputWhenAForwardFindallIsPerformedThenTheReturnedWindowContainsTheProjectsAfterTheInputProject() {
+        var keyset = ScrollPosition.forward(Map.of("id", TestIdentifiers.UML_SAMPLE_PROJECT.toString()));
+        var window = this.projectSearchService.findAll(keyset, 1);
+        assertThat(window).isNotNull();
+        assertThat(window.size()).isOne();
+        assertThat(window.getContent().get(0).getId()).isEqualByComparingTo(TestIdentifiers.ECORE_SAMPLE_PROJECT);
+    }
+
+    @Test
+    @DisplayName("Given a valid input, when a forward findAll is performed, then the returned window contains the projects after the input project")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenAValidInputWhenABackwardFindallIsPerformedThenTheReturnedWindowContainsTheProjectsAfterTheInputProject() {
+        var keyset = ScrollPosition.backward(Map.of("id", TestIdentifiers.UML_SAMPLE_PROJECT.toString()));
+        var window = this.projectSearchService.findAll(keyset, 1);
+        assertThat(window).isNotNull();
+        assertThat(window.size()).isOne();
+        assertThat(window.getContent().get(0).getId()).isEqualByComparingTo(TestIdentifiers.ECORE_SAMPLE_PROJECT);
+    }
+
+    @Test
+    @DisplayName("Given an invalid project id, when findAll is performed, then the returned window is empty")
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenAnInvalidProjectIdWhenFindallIsPerformedThenTheReturnedWindowIsNull() {
+        var keyset = ScrollPosition.forward(Map.of("id", "invalid-id"));
+        var window = this.projectSearchService.findAll(keyset, 1);
+        assertThat(window).isNotNull();
+        assertThat(window.size()).isZero();
+    }
+
+    @Test
+    @DisplayName("Given an invalid limit, when findAll is performed, then the returned window is empty")
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenAnInvalidLimitWhenFindallIsPerformedThenTheReturnedWindowIsNull() {
+        var window = this.projectSearchService.findAll(ScrollPosition.keyset(), 0);
+        assertThat(window).isNotNull();
+        assertThat(window.size()).isZero();
     }
 
     @Test

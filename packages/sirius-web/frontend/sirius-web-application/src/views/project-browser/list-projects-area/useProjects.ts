@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,17 +17,19 @@ import { useEffect } from 'react';
 import { GQLGetProjectsQueryData, GQLGetProjectsQueryVariables, UseProjectsValue } from './useProjects.types';
 
 const getProjectsQuery = gql`
-  query getProjects($page: Int!, $limit: Int!) {
+  query getProjects($after: String, $before: String, $first: Int, $last: Int) {
     viewer {
       ...ViewerProjects
     }
   }
 `;
 
-export const useProjects = (page: number, limit: number): UseProjectsValue => {
+export const useProjects = (after: string, before: string, pageSize: number): UseProjectsValue => {
   const variables: GQLGetProjectsQueryVariables = {
-    page,
-    limit,
+    after,
+    before,
+    first: after ? pageSize : before ? null : pageSize,
+    last: before ? pageSize : null,
   };
   const { data, loading, error, refetch } = useQuery<GQLGetProjectsQueryData, GQLGetProjectsQueryVariables>(
     getProjectsQuery,
@@ -35,7 +37,6 @@ export const useProjects = (page: number, limit: number): UseProjectsValue => {
       variables,
     }
   );
-
   const { addErrorMessage } = useMultiToast();
   useEffect(() => {
     if (error) {

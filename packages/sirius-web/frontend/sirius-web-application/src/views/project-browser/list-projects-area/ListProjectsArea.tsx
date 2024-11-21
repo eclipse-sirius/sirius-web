@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,12 +12,11 @@
  *******************************************************************************/
 
 import Typography from '@mui/material/Typography';
-import { makeStyles } from 'tss-react/mui';
 import { useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { ListProjectsAreaProps, ListProjectsAreaState, NoProjectsFoundProps } from './ListProjectsArea.types';
 import { ProjectsTable } from './ProjectsTable';
 import { useProjects } from './useProjects';
-import { GQLProject } from './useProjects.types';
 
 const useListProjectsAreaStyles = makeStyles()((theme) => ({
   listProjectsArea: {
@@ -34,37 +33,73 @@ const useListProjectsAreaStyles = makeStyles()((theme) => ({
 }));
 
 export const ListProjectsArea = ({}: ListProjectsAreaProps) => {
+  const { classes } = useListProjectsAreaStyles();
+
   const [state, setState] = useState<ListProjectsAreaState>({
-    page: 0,
-    limit: 20,
+    pageSize: 20,
+    startCursor: null,
+    endCursor: null,
   });
 
-  const onPageChange = (page: number) => setState((prevState) => ({ ...prevState, page }));
+  const { data, loading, refreshProjects } = useProjects(state.startCursor, state.endCursor, state.pageSize);
 
-  const { data, refreshProjects } = useProjects(state.page, state.limit);
-  const projects: GQLProject[] = data?.viewer.projects.edges.map((edge) => edge.node) ?? [];
-  const count: number = data?.viewer.projects.pageInfo.count ?? 0;
+  const onPreviousPage = () => {
+    setState((prevState) => ({
+      ...prevState,
+      startCursor: null,
+      endCursor: data.viewer.projects.pageInfo.startCursor ?? null,
+    }));
+  };
 
-  const { classes } = useListProjectsAreaStyles();
+  const onNextPage = () => {
+    setState((prevState) => ({
+      ...prevState,
+      startCursor: data.viewer.projects.pageInfo.endCursor ?? null,
+      endCursor: null,
+    }));
+  };
+
+  const onPageSizeChange = (pageSize: number) =>
+    setState((prevState) => ({
+      ...prevState,
+      pageSize,
+      startCursor: null,
+      endCursor: null,
+    }));
+
+  const onRefreshProjects = () => {
+    refreshProjects();
+  };
+
+  let projectsComponent: JSX.Element | null;
+  if (loading) {
+    projectsComponent = null;
+  } else if (data) {
+    if (data.viewer.projects.edges.length === 0) {
+      projectsComponent = <NoProjectsFound />;
+    } else {
+      const hasPrev = data.viewer.projects.pageInfo.hasPreviousPage;
+      const hasNext = data.viewer.projects.pageInfo.hasNextPage;
+      projectsComponent = (
+        <ProjectsTable
+          projects={data.viewer.projects.edges.map((edge) => edge.node)}
+          hasPrev={hasPrev}
+          hasNext={hasNext}
+          onPrev={onPreviousPage}
+          onNext={onNextPage}
+          pageSize={state.pageSize}
+          onChange={onRefreshProjects}
+          onPageSizeChange={onPageSizeChange}
+        />
+      );
+    }
+  }
   return (
     <div className={classes.listProjectsArea}>
       <div className={classes.header}>
         <Typography variant="h4">Existing Projects</Typography>
       </div>
-      <div>
-        {projects.length === 0 ? (
-          <NoProjectsFound />
-        ) : (
-          <ProjectsTable
-            projects={projects}
-            page={state.page}
-            limit={state.limit}
-            count={count}
-            onChange={() => refreshProjects()}
-            onPageChange={onPageChange}
-          />
-        )}
-      </div>
+      <div>{projectsComponent}</div>
     </div>
   );
 };

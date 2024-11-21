@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,8 +18,10 @@ export interface UseProjectsValue {
 }
 
 export interface GQLGetProjectsQueryVariables {
-  page: number;
-  limit: number;
+  after: string | null;
+  before: string | null;
+  first: number | null;
+  last: number | null;
 }
 
 export interface GQLGetProjectsQueryData {
@@ -37,6 +39,7 @@ export interface GQLViewerProjectConnection {
 
 export interface GQLViewerProjectEdge {
   node: GQLProject;
+  cursor: string;
 }
 
 export interface GQLProject {
@@ -47,5 +50,7 @@ export interface GQLProject {
 export interface GQLPageInfo {
   hasPreviousPage: boolean;
   hasNextPage: boolean;
+  startCursor: string | null;
+  endCursor: string | null;
   count: number;
 }

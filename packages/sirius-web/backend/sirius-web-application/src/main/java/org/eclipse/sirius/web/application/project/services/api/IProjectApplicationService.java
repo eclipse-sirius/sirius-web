@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,8 +20,8 @@ import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
 import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
 import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectInput;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.eclipse.sirius.web.domain.boundedcontexts.project.services.Window;
+import org.springframework.data.domain.KeysetScrollPosition;
 
 /**
  * Application services used to manipulate projects.
@@ -31,7 +31,7 @@ import org.springframework.data.domain.Pageable;
 public interface IProjectApplicationService {
     Optional<ProjectDTO> findById(UUID id);
 
-    Page<ProjectDTO> findAll(Pageable pageable);
+    Window<ProjectDTO> findAll(KeysetScrollPosition position, int limit);
 
     IPayload createProject(CreateProjectInput input);
 
