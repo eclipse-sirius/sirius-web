@@ -16,8 +16,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.KeysetScrollPosition;
+import org.springframework.data.domain.Window;
 
 /**
  * Used to retrieve projects.
@@ -30,5 +30,5 @@ public interface IProjectSearchService {
 
     Optional<Project> findById(UUID projectId);
 
-    Page<Project> findAll(Pageable pageable);
+    Window<Project> findAll(KeysetScrollPosition position, int limit);
 }

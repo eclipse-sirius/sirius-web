@@ -34,8 +34,8 @@ import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProje
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectUpdateService;
 import org.eclipse.sirius.web.domain.services.Failure;
 import org.eclipse.sirius.web.domain.services.Success;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.KeysetScrollPosition;
+import org.springframework.data.domain.Window;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,8 +72,8 @@ public class ProjectApplicationService implements IProjectApplicationService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<ProjectDTO> findAll(Pageable pageable) {
-        return this.projectSearchService.findAll(pageable).map(this.projectMapper::toDTO);
+    public Window<ProjectDTO> findAll(KeysetScrollPosition position, int limit) {
+        return this.projectSearchService.findAll(position, limit).map(this.projectMapper::toDTO);
     }
 
     @Override
