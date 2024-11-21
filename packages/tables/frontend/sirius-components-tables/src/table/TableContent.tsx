@@ -13,6 +13,7 @@
 import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
 import Box from '@mui/material/Box';
 import { MaterialReactTable, useMaterialReactTable } from 'material-react-table';
+import { memo } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { ExportAllDataButton } from '../actions/ExportAllDataButton';
 import { TableProps } from './TableContent.types';
@@ -24,12 +25,6 @@ const useStyles = makeStyles()((theme) => ({
       backgroundColor: theme.palette.action.hover,
     },
   },
-  rowSelected: {
-    backgroundColor: theme.palette.action.selected,
-    '&:hover': {
-      backgroundColor: theme.palette.action.selected,
-    },
-  },
   cell: {
     '&:hover': {
       outline: `1px solid ${theme.palette.action.selected}`,
@@ -37,7 +32,7 @@ const useStyles = makeStyles()((theme) => ({
   },
 }));
 
-export const TableContent = ({ editingContextId, representationId, table, readOnly }: TableProps) => {
+export const TableContent = memo(({ editingContextId, representationId, table, readOnly }: TableProps) => {
   const { classes } = useStyles();
   const { selection, setSelection } = useSelection();
 
@@ -50,17 +45,13 @@ export const TableContent = ({ editingContextId, representationId, table, readOn
     enableEditing: !readOnly,
     enableStickyHeader: true,
     muiTableBodyRowProps: ({ row }) => {
-      const selected = selection.entries.map((entry) => entry.id).includes(row.original.targetObjectId);
-      let classNames = classes.rowMain;
-      if (selected) {
-        classNames = classes.rowSelected;
-      }
       return {
         onClick: () => {
           const newSelection: Selection = { entries: [{ id: row.original.targetObjectId, kind: 'Object' }] };
           setSelection(newSelection);
         },
-        className: classNames,
+        selected: selection.entries.map((entry) => entry.id).includes(row.original.targetObjectId),
+        className: classes.rowMain,
         sx: {
           backgroundColor: 'transparent', // required to remove the default mui backgroundColor that is defined as !important
           cursor: 'pointer',
@@ -75,4 +66,4 @@ export const TableContent = ({ editingContextId, representationId, table, readOn
   });
 
   return <MaterialReactTable table={muiTable} />;
-};
+});

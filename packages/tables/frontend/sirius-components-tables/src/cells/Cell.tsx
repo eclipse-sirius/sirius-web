@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import Typography from '@mui/material/Typography';
+import { memo } from 'react';
 import {
   GQLCell,
   GQLCheckboxCell,
@@ -30,7 +31,7 @@ const isSelectCell = (cell: GQLCell): cell is GQLSelectCell => cell.__typename =
 const isMultiSelectCell = (cell: GQLCell): cell is GQLMultiSelectCell => cell.__typename === 'MultiSelectCell';
 const isTextfieldCell = (cell: GQLCell): cell is GQLTextfieldCell => cell.__typename === 'TextfieldCell';
 
-export const Cell = ({ editingContextId, representationId, tableId, cell, disabled }: CellProps) => {
+export const Cell = memo(({ editingContextId, representationId, tableId, cell, disabled }: CellProps) => {
   if (cell) {
     if (isCheckboxCell(cell)) {
       return (
@@ -75,4 +76,4 @@ export const Cell = ({ editingContextId, representationId, tableId, cell, disabl
     }
   }
   return <Typography></Typography>;
-};
+});
