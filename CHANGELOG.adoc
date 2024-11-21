@@ -57,6 +57,23 @@ Specifiers can contribute dedicated AQL services for this feature using implemen
 - https://github.com/eclipse-sirius/sirius-web/issues/1047[#1047] [sirius-web] In the _Domain_ diagram, when using direct-edit on a relatin edge, the initial text now only includes the name of the relation (without the cardinality)
 - https://github.com/eclipse-sirius/sirius-web/issues/4095[#4095] [tree] Add conditional tree item label element description
 - https://github.com/eclipse-sirius/sirius-web/issues/4101[#4101] [tree] Add loop tree item label element description
+- https://github.com/eclipse-sirius/sirius-web/issues/4233[#4233] [core] Add cursor-based pagination for Project related GET REST APIs.
+New optional attributes are available on all Project related GET REST APIs returning a list of objects, allowing to paginate the data returned by those APIs.
+The following APIs are concerned:
+** getProjects (`GET /api/rest/projects`)
+The new optional attributes are:
+** `page[size]` specifies the maximum number of records that will be returned per page in the response
+** `page[before]` specifies the URL of the page succeeding the page being requested
+** `page[after]` specifies the URL of a page preceding the page being requested
+If neither `page[before]` nor `page[after]` is specified, the first page is returned with the same number of records as specified in the `page[size]` query parameter.
+If the `page[size]` parameter is not specified, then the default page size is used, which is 20.
+Example:
+ ** `http://my-sirius-web-server:8080/api/rest/projects?
+page[after]=MTYxODg2MTQ5NjYzMnwyMDEwOWY0MC00ODI1LTQxNmEtODZmNi03NTA4YWM0MmEwMjE&
+page[size]=3` will ask for the 3 projects following the one identified by the URL of the page succeeding the page being requested `MTYxODg2MTQ5NjYzMnwyMDEwOWY0MC00ODI1LTQxNmEtODZmNi03NTA4YWM0MmEwMjE`.
+Note that you can retrieve the URL of a page in the response header of `GET /api/rest/projects`.
+Note that you may need to encode special characters like `[`(by `%5B`) and `]` (by `%5D`) in your requests.
+
 
 == v2025.1.0
 

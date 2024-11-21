@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,9 +15,11 @@ import { GQLProject } from './useProjects.types';
 
 export interface ProjectsTableProps {
   projects: GQLProject[];
-  page: number;
-  limit: number;
-  count: number;
+  hasPrev: boolean;
+  hasNext: boolean;
+  onPrev: () => void;
+  onNext: () => void;
+  pageSize: number;
   onChange: () => void;
-  onPageChange: (page: number) => void;
+  onPageSizeChange: (page: number) => void;
 }

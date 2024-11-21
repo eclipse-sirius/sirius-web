@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,15 +15,18 @@ import { gql } from '@apollo/client';
 
 export const ViewerProjectsFragment = gql`
   fragment ViewerProjects on Viewer {
-    projects(page: $page, limit: $limit) {
+    projects(after: $after, before: $before, first: $first, last: $last) {
       edges {
         node {
           ...Project
         }
+        cursor
       }
       pageInfo {
         hasNextPage
         hasPreviousPage
+        startCursor
+        endCursor
         count
       }
     }

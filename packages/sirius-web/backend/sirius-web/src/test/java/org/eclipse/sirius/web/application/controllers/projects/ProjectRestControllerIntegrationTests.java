@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.transaction.annotation.Transactional;
+
+import graphql.relay.Relay;
 
 /**
  * Integration tests of the project REST controller.
@@ -64,13 +66,218 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
                 .build();
 
         var uri = "/api/rest/projects";
-        var response = webTestClient
+        webTestClient
                 .get()
                 .uri(uri)
-                .exchange();
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBodyList(RestProject.class)
+                .hasSize(3);
+    }
 
-        response.expectStatus().isOk();
-        response.expectBodyList(RestProject.class).hasSize(3);
+    @Test
+    @DisplayName("Given the Sirius Web REST API, when we ask for all projects with a page size, then it should return a max number of projects corresponding to the size")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenSiriusWebRestAPIWhenWeAskForAllProjectsWithAPageSizeThenItShouldReturnAMaxNumberOfProjectsCorrespondingToTheSize() {
+        var webTestClient = WebTestClient.bindToServer()
+                .baseUrl(this.getHTTPBaseUrl())
+                .build();
+
+        var uri = "/api/rest/projects?page[size]=1";
+        webTestClient
+                .get()
+                .uri(uri)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBodyList(RestProject.class)
+                .hasSize(1);
+    }
+
+    @Test
+    @DisplayName("Given the Sirius Web REST API, when we ask for all projects with a page size > projects size, then it should return a max number of projects corresponding to the projects size")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenSiriusWebRestAPIWhenWeAskForAllProjectsWithAPageSizeSupToProjectsSizeThenItShouldReturnAMaxNumberOfProjectsCorrespondingToTheProjectsSize() {
+        var webTestClient = WebTestClient.bindToServer()
+                .baseUrl(this.getHTTPBaseUrl())
+                .build();
+
+        var uri = "/api/rest/projects?page[size]=10";
+        webTestClient
+                .get()
+                .uri(uri)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBodyList(RestProject.class)
+                .hasSize(3);
+    }
+
+    @Test
+    @DisplayName("Given the Sirius Web REST API, when we ask for all projects with a page size = 0, then it should return an empty list")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenSiriusWebRestAPIWhenWeAskForAllProjectsWithAPageSizeEq0ThenItShouldReturnAnEmptyList() {
+        var webTestClient = WebTestClient.bindToServer()
+                .baseUrl(this.getHTTPBaseUrl())
+                .build();
+
+        var uri = "/api/rest/projects?page[size]=0";
+        webTestClient
+                .get()
+                .uri(uri)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBodyList(RestProject.class)
+                .hasSize(0);
+    }
+
+    @Test
+    @DisplayName("Given the Sirius Web REST API, when we ask for all projects after a specific one, then it should return all projects after the specific one")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenSiriusWebRestAPIWhenWeAskForAllProjectsAfterASpecificOneThenItShouldReturnAllProjectsAfterTheSpecificOne() {
+        var webTestClient = WebTestClient.bindToServer()
+                .baseUrl(this.getHTTPBaseUrl())
+                .build();
+
+        var link = new Relay().toGlobalId("Project", TestIdentifiers.UML_SAMPLE_PROJECT.toString());
+        var uri = String.format("/api/rest/projects?page[after]=%s", link);
+        webTestClient
+                .get()
+                .uri(uri)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBodyList(RestProject.class)
+                .hasSize(2)
+                .consumeWith(result -> {
+                    var restProjects = result.getResponseBody();
+                    assertEquals(TestIdentifiers.ECORE_SAMPLE_PROJECT, restProjects.get(0).id());
+                    assertEquals(TestIdentifiers.SYSML_SAMPLE_PROJECT, restProjects.get(1).id());
+                });
+    }
+
+    @Test
+    @DisplayName("Given the Sirius Web REST API, when we ask for N projects after a specific one, then it should return N projects after the specific one")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenSiriusWebRestAPIWhenWeAskForNProjectsAfterASpecificOneThenItShouldReturnNProjectsAfterTheSpecificOne() {
+        var webTestClient = WebTestClient.bindToServer()
+                .baseUrl(this.getHTTPBaseUrl())
+                .build();
+
+        var link = new Relay().toGlobalId("Project", TestIdentifiers.UML_SAMPLE_PROJECT.toString());
+        var uri = String.format("/api/rest/projects?page[after]=%s&page[size]=1", link);
+        webTestClient
+                .get()
+                .uri(uri)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBodyList(RestProject.class)
+                .hasSize(1)
+                .consumeWith(result -> {
+                    var restProjects = result.getResponseBody();
+                    assertEquals(TestIdentifiers.ECORE_SAMPLE_PROJECT, restProjects.get(0).id());
+                });
+    }
+
+    @Test
+    @DisplayName("Given the Sirius Web REST API, when we ask for all projects before a specific one, then it should return all projects before the specific one")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenSiriusWebRestAPIWhenWeAskForAllProjectsBeforeASpecificOneThenItShouldReturnAllProjectsBeforeTheSpecificOne() {
+        var webTestClient = WebTestClient.bindToServer()
+                .baseUrl(this.getHTTPBaseUrl())
+                .build();
+
+        var link = new Relay().toGlobalId("Project", TestIdentifiers.UML_SAMPLE_PROJECT.toString());
+        var uri = String.format("/api/rest/projects?page[before]=%s", link);
+        webTestClient
+                .get()
+                .uri(uri)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBodyList(RestProject.class)
+                .hasSize(2)
+                .consumeWith(result -> {
+                    var restProjects = result.getResponseBody();
+                    assertEquals(TestIdentifiers.ECORE_SAMPLE_PROJECT, restProjects.get(0).id());
+                    assertEquals(TestIdentifiers.SYSML_SAMPLE_PROJECT, restProjects.get(1).id());
+                });
+    }
+
+    @Test
+    @DisplayName("Given the Sirius Web REST API, when we ask for N projects before a specific one, then it should return N projects after the specific one")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenSiriusWebRestAPIWhenWeAskForNProjectsBeforeASpecificOneThenItShouldReturnNProjectsAfterTheSpecificOne() {
+        var webTestClient = WebTestClient.bindToServer()
+                .baseUrl(this.getHTTPBaseUrl())
+                .build();
+
+        var link = new Relay().toGlobalId("Project", TestIdentifiers.UML_SAMPLE_PROJECT.toString());
+        var uri = String.format("/api/rest/projects?page[before]=%s&page[size]=1", link);
+        webTestClient
+                .get()
+                .uri(uri)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBodyList(RestProject.class)
+                .hasSize(1)
+                .consumeWith(result -> {
+                    var restProjects = result.getResponseBody();
+                    assertEquals(TestIdentifiers.ECORE_SAMPLE_PROJECT, restProjects.get(0).id());
+                });
+    }
+
+    @Test
+    @DisplayName("Given the Sirius Web REST API, when we ask for all projects after an unkwnown, then it should return an empty list")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenSiriusWebRestAPIWhenWeAskForAllProjectsAfterAnUnknownThenItShouldReturnAnEmptyList() {
+        var webTestClient = WebTestClient.bindToServer()
+                .baseUrl(this.getHTTPBaseUrl())
+                .build();
+
+        var link = new Relay().toGlobalId("Project", TestIdentifiers.INVALID_PROJECT.toString());
+        var uri = String.format("/api/rest/projects?page[after]=%s", link);
+        webTestClient
+                .get()
+                .uri(uri)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBodyList(RestProject.class)
+                .hasSize(0);
+    }
+
+    @Test
+    @DisplayName("Given the Sirius Web REST API, when we ask for all projects before an unkwnown, then it should return an empty list")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenSiriusWebRestAPIWhenWeAskForAllProjectsBeforeAnUnknownThenItShouldReturnAnEmptyList() {
+        var webTestClient = WebTestClient.bindToServer()
+                .baseUrl(this.getHTTPBaseUrl())
+                .build();
+
+        var link = new Relay().toGlobalId("Project", TestIdentifiers.INVALID_PROJECT.toString());
+        var uri = String.format("/api/rest/projects?page[before]=%s", link);
+        webTestClient
+                .get()
+                .uri(uri)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBodyList(RestProject.class)
+                .hasSize(0);
     }
 
     @Test

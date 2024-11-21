@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.project.services;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -19,8 +20,7 @@ import java.util.UUID;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.IProjectRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.KeysetScrollPosition;
 import org.springframework.stereotype.Service;
 
 /**
@@ -48,7 +48,42 @@ public class ProjectSearchService implements IProjectSearchService {
     }
 
     @Override
-    public Page<Project> findAll(Pageable pageable) {
-        return this.projectRepository.findAll(pageable);
+    public Window<Project> findAll(KeysetScrollPosition position, int limit) {
+        Window<Project> window = new Window<>(List.of(), (i) -> position, false, false);
+        if (limit > 0) {
+            var cursorProjectKey = position.getKeys().get("id");
+            if (cursorProjectKey instanceof String cursorProjectId) {
+                var cursorProjectUUID = this.parse(cursorProjectId);
+                if (cursorProjectUUID.isPresent() && this.existsById(cursorProjectUUID.get())) {
+                    if (position.scrollsForward()) {
+                        var projects = this.projectRepository.findAllAfter(cursorProjectUUID.get(), limit + 1);
+                        boolean hasNext = projects.size() > limit;
+                        boolean hasPrevious = !this.projectRepository.findAllBefore(cursorProjectUUID.get(), 1).isEmpty();
+                        window = new Window<>(projects.subList(0, Math.min(projects.size(), limit)), (i) -> position, hasNext, hasPrevious);
+                    } else if (position.scrollsBackward()) {
+                        var projects = this.projectRepository.findAllBefore(cursorProjectUUID.get(), limit + 1);
+                        boolean hasPrevious = projects.size() > limit;
+                        boolean hasNext = !this.projectRepository.findAllAfter(cursorProjectUUID.get(), 1).isEmpty();
+                        window = new Window<>(projects.subList(0, Math.min(projects.size(), limit)), (i) -> position, hasNext, hasPrevious);
+                    }
+                }
+            } else {
+                var projects = this.projectRepository.findAllAfter(null, limit + 1);
+                boolean hasNext = projects.size() > limit;
+                boolean hasPrevious = false;
+                window = new Window<>(projects.subList(0, Math.min(projects.size(), limit)), (i) -> position, hasNext, hasPrevious);
+            }
+        }
+        return window;
+    }
+
+    private Optional<UUID> parse(String id) {
+        try {
+            UUID uuid = UUID.fromString(id);
+            return Optional.of(uuid);
+        } catch (IllegalArgumentException exception) {
+            // Ignore, the information that the id is invalid is returned as an empty Optional.
+        }
+        return Optional.empty();
     }
 }
