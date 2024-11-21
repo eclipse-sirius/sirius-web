@@ -34,7 +34,7 @@
 
 === Improvements
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4219[#4219] [table] Improve front-end performance
 
 
 
