@@ -135,13 +135,7 @@ public class EEnumIfDescriptionProvider {
     }
 
     private Function<VariableManager, String> getOptionLabelProvider() {
-        return variableManager -> {
-            Object litteral = variableManager.getVariables().get(SelectComponent.CANDIDATE_VARIABLE);
-            if (litteral instanceof Enumerator) {
-                return ((Enumerator) litteral).getLiteral();
-            }
-            return "";
-        };
+        return new EEnumLiteralLabelProvider(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
     }
 
     private Function<VariableManager, Boolean> getOptionSelectedProvider() {
