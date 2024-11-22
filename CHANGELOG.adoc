@@ -37,6 +37,7 @@
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4219[#4219] [table] Improve front-end performance
+- https://github.com/eclipse-sirius/sirius-web/issues/4225[#4225] [form] Add support for localized enumeration literals in EMF property forms
 
 
 
