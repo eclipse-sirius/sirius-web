@@ -54,4 +54,17 @@ export class Papaya {
       }
     });
   }
+
+  public createPapayaTableExempleProject(): Cypress.Chainable<CreatedProjectData> {
+    return cy.createProjectFromTemplate('papaya-table-template').then((res) => {
+      const payload = res.body.data.createProjectFromTemplate;
+      if (isCreateProjectFromTemplateSuccessPayload(payload)) {
+        const projectId = payload.project.id;
+        const data: CreatedProjectData = { projectId };
+        return cy.wrap(data);
+      } else {
+        throw new Error(`The project papaya table exemple has not been created`);
+      }
+    });
+  }
 }

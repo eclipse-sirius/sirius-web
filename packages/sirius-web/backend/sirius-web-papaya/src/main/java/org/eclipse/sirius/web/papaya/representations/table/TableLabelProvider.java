@@ -17,6 +17,7 @@ import java.util.function.Function;
 
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 
 /**
  * Used to compute the label of the table.
@@ -33,8 +34,9 @@ public class TableLabelProvider implements Function<VariableManager, String> {
 
     @Override
     public String apply(VariableManager variableManager) {
-        return variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.labelService::getLabel)
-                .orElse(null);
+        return variableManager.get(TableDescription.LABEL, String.class)
+                .orElseGet(() -> variableManager.get(VariableManager.SELF, Object.class)
+                        .map(this.labelService::getLabel)
+                        .orElse(null));
     }
 }
