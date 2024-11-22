@@ -109,7 +109,7 @@ This is now fixed
 - https://github.com/eclipse-sirius/sirius-web/issues/4254[#4254] [sirius-web] Make explorer services reusable
 - https://github.com/eclipse-sirius/sirius-web/issues/4264[#4264] [table] Reset all custom rows height
 - https://github.com/eclipse-sirius/sirius-web/issues/4261[#4261] [core] Enable image cache
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4225[#4225] [emf] Add support for localized enumeration literals in EMF property forms
 
 
 == v2024.11.0
