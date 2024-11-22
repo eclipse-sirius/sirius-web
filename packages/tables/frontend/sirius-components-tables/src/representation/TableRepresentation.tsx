@@ -39,7 +39,7 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
     );
   }
   return (
-    <div>
+    <div data-testid={'table-representation'}>
       {table !== null && !complete ? (
         <TableContent
           editingContextId={editingContextId}
