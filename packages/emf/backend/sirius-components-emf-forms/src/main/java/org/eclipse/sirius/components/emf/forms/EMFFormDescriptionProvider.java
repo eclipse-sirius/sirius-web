@@ -189,7 +189,9 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
                 EcorePackage.Literals.ELONG,
                 EcorePackage.Literals.ELONG_OBJECT,
                 EcorePackage.Literals.ESHORT,
-                EcorePackage.Literals.ESHORT_OBJECT
+                EcorePackage.Literals.ESHORT_OBJECT,
+                EcorePackage.Literals.EBIG_INTEGER,
+                EcorePackage.Literals.EBIG_DECIMAL
         );
 
         for (var dataType : numericDataTypes) {
