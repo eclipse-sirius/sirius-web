@@ -71,7 +71,7 @@ public class NumberIfDescriptionProvider {
     private Function<VariableManager, Boolean> getPredicate() {
         return variableManager -> {
             var optionalEAttribute = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
-            return optionalEAttribute.filter(eAttribute -> !eAttribute.isMany() && eAttribute.getEType().equals(this.eDataType)).isPresent();
+            return optionalEAttribute.filter(eAttribute -> !eAttribute.isMany() && Objects.equals(eAttribute.getEType().getInstanceClassName(), this.eDataType.getInstanceClassName())).isPresent();
         };
     }
 
