@@ -17,6 +17,7 @@ import {
   useComponents,
   useDeletionConfirmationDialog,
   useMultiToast,
+  useSelection,
 } from '@eclipse-sirius/sirius-components-core';
 import AdjustIcon from '@mui/icons-material/Adjust';
 import DirectionsOffIcon from '@mui/icons-material/DirectionsOff';
@@ -35,7 +36,6 @@ import { UnpinIcon } from '../../icons/UnpinIcon';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { Tool } from '../Tool';
 import { useAdjustSize } from '../adjust-size/useAdjustSize';
-import { useEditableEdgePath } from '../edge/useEditableEdgePath';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
 import { usePinDiagramElements } from '../pin/usePinDiagramElements';
 import {
@@ -69,6 +69,7 @@ import {
 import { ToolSection } from './tool-section/ToolSection';
 import { DiagramPaletteToolComponentProps } from './tool/DiagramPaletteTool.types';
 import { diagramPaletteToolExtensionPoint } from './tool/DiagramPaletteToolExtensionPoints';
+import { useEditableEdgePath } from '../edge/useEditableEdgePath';
 
 const usePaletteStyle = makeStyles()((theme) => ({
   palette: {
@@ -232,6 +233,7 @@ export const Palette = ({
   const { addErrorMessage, addMessages } = useMultiToast();
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
   const { showDialog } = useDialog();
+  const { setSelection } = useSelection();
 
   const paletteToolComponents: ComponentExtension<DiagramPaletteToolComponentProps>[] = useComponents(
     diagramPaletteToolExtensionPoint
@@ -370,6 +372,10 @@ export const Palette = ({
         if (data) {
           const { invokeSingleClickOnDiagramElementTool } = data;
           if (isInvokeSingleClickSuccessPayload(invokeSingleClickOnDiagramElementTool)) {
+            const { newSelection } = invokeSingleClickOnDiagramElementTool;
+            if (newSelection?.entries.length ?? 0 > 0) {
+              setSelection(newSelection);
+            }
             addMessages(invokeSingleClickOnDiagramElementTool.messages);
           }
           if (isErrorPayload(invokeSingleClickOnDiagramElementTool)) {

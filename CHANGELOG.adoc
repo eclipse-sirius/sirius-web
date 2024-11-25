@@ -31,6 +31,9 @@
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4110[#4110] [form] Add layout capabilities for form widgets
 - https://github.com/eclipse-sirius/sirius-web/issues/4177[#4177] [table] Add table representation support
+- https://github.com/eclipse-sirius/sirius-web/issues/3980[#3980] Add the ability to select newly created nodes.
+The backend part (the ability to define an _Elements to Select Expression_ on diagram tools) was added in Sirius Web 2024.11.0 but the frontend did not apply the requested selection.
+This is now fixed.
 
 === Improvements
 
