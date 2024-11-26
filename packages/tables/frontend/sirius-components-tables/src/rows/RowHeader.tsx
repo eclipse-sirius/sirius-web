@@ -19,7 +19,7 @@ import { RowHeaderProps } from './RowHeader.types';
 export const RowHeader = ({ row }: RowHeaderProps) => {
   const theme = useTheme();
   return (
-    <Box display="flex" alignItems="center" justifyContent="space-between">
+    <Box display="flex" alignItems="center" justifyContent="space-between" gap={theme.spacing(2)}>
       <Box>
         <Typography noWrap>{row.headerIndexLabel}</Typography>
       </Box>

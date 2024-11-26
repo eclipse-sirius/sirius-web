@@ -141,6 +141,8 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
                 .headerLabelProvider(variableManager -> "")
                 .headerIconURLsProvider(variableManager -> List.of())
                 .headerIndexLabelProvider(variableManager -> "")
+                .isResizablePredicate(variableManager -> false)
+                .initialHeightProvider(variableManager -> 0)
                 .build();
 
         TableDescription tableDescription = TableDescription.newTableDescription(FORM_WITH_TABLE_ID)

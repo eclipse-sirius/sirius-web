@@ -32,7 +32,9 @@ public record LineElementProps(
         List<Element> children,
         String headerLabel,
         List<String> headerIconURLs,
-        String headerIndexLabel) implements IProps {
+        String headerIndexLabel,
+        int height,
+        boolean resizable) implements IProps {
 
     public static final String TYPE = "Line";
 
@@ -80,6 +82,10 @@ public record LineElementProps(
 
         private String headerIndexLabel;
 
+        private int height;
+
+        private boolean resizable;
+
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -119,8 +125,19 @@ public record LineElementProps(
             return this;
         }
 
+        public Builder height(int height) {
+            this.height = height;
+            return this;
+        }
+
+        public Builder resizable(boolean resizable) {
+            this.resizable = resizable;
+            return this;
+        }
+
+
         public LineElementProps build() {
-            return new LineElementProps(this.id, this.descriptionId, this.targetObjectId, this.targetObjectKind, this.children, this.headerLabel, this.headerIconURLs, this.headerIndexLabel);
+            return new LineElementProps(this.id, this.descriptionId, this.targetObjectId, this.targetObjectKind, this.children, this.headerLabel, this.headerIconURLs, this.headerIndexLabel, this.height, this.resizable);
         }
     }
 }

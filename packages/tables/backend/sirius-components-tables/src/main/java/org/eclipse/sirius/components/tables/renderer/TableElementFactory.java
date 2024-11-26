@@ -115,6 +115,8 @@ public class TableElementFactory implements IElementFactory {
                     .headerIconURLs(lineElementProps.headerIconURLs())
                     .headerIndexLabel(lineElementProps.headerIndexLabel())
                     .cells(cells)
+                    .resizable(lineElementProps.resizable())
+                    .height(lineElementProps.height())
                     .build();
         }
         return null;

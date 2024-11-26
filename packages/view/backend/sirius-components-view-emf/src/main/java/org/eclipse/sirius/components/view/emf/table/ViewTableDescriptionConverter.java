@@ -127,6 +127,8 @@ public class ViewTableDescriptionConverter implements IRepresentationDescription
                 .headerLabelProvider(variableManager -> this.evaluateString(interpreter, variableManager, rowDescription.getHeaderLabelExpression()))
                 .headerIconURLsProvider(new ViewIconURLsProvider(interpreter, rowDescription.getHeaderIconExpression()))
                 .headerIndexLabelProvider(variableManager -> this.evaluateString(interpreter, variableManager, rowDescription.getHeaderIndexLabelExpression()))
+                .isResizablePredicate(variableManager -> interpreter.evaluateExpression(variableManager.getVariables(), rowDescription.getIsResizableExpression()).asBoolean().orElse(false))
+                .initialHeightProvider(variableManager -> interpreter.evaluateExpression(variableManager.getVariables(), rowDescription.getInitialHeightExpression()).asInt().orElse(-1))
                 .build();
     }
 
