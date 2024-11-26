@@ -57,6 +57,7 @@ export interface GQLColumn {
   headerIndexLabel: string;
   width: number;
   isResizable: boolean;
+  hidden: boolean;
 }
 
 export interface GQLLine {

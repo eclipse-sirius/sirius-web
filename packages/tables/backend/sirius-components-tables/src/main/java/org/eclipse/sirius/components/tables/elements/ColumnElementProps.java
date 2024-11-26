@@ -30,7 +30,8 @@ public record ColumnElementProps(
         List<String> headerIconURLs,
         String headerIndexLabel,
         String targetObjectId,
-        String targetObjectKind, int width, boolean resizable) implements IProps {
+        String targetObjectKind, int width, boolean resizable,
+                                 boolean hidden) implements IProps {
 
     public static final String TYPE = "Column";
 
@@ -73,6 +74,8 @@ public record ColumnElementProps(
         private int width;
 
         private boolean resizable;
+
+        private boolean hidden;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -118,9 +121,14 @@ public record ColumnElementProps(
             return this;
         }
 
+        public Builder hidden(boolean hidden) {
+            this.hidden = hidden;
+            return this;
+        }
+
         public ColumnElementProps build() {
             return new ColumnElementProps(this.id, this.descriptionId, this.headerLabel, this.headerIconURLs, this.headerIndexLabel, this.targetObjectId, this.targetObjectKind, this.width,
-                    this.resizable);
+                    this.resizable, this.hidden);
         }
     }
 }

@@ -16,6 +16,7 @@ import { MaterialReactTable, MRT_TableOptions, useMaterialReactTable } from 'mat
 import { memo } from 'react';
 import { SettingsButton } from '../actions/SettingsButton';
 import { useTableColumnSizing } from '../columns/useTableColumnSizing';
+import { useTableColumnVisibility } from '../columns/useTableColumnVisibility';
 import { RowHeader } from '../rows/RowHeader';
 import { GQLLine, TableProps } from './TableContent.types';
 import { useTableColumns } from './useTableColumns';
@@ -25,6 +26,7 @@ export const TableContent = memo(({ editingContextId, representationId, table, r
 
   const { columns } = useTableColumns(editingContextId, representationId, table, readOnly);
   const { columnSizing, setColumnSizing } = useTableColumnSizing(editingContextId, representationId, table);
+  const { columnVisibility, setColumnVisibility } = useTableColumnVisibility(editingContextId, representationId, table);
 
   const tableOptions: MRT_TableOptions<GQLLine> = {
     columns,
@@ -37,7 +39,8 @@ export const TableContent = memo(({ editingContextId, representationId, table, r
     columnResizeMode: 'onEnd',
     enableSorting: false,
     onColumnSizingChange: setColumnSizing,
-    state: { columnSizing },
+    onColumnVisibilityChange: setColumnVisibility,
+    state: { columnSizing, columnVisibility },
     muiTableBodyRowProps: ({ row }) => {
       return {
         onClick: () => {

@@ -46,6 +46,8 @@ public final class Column {
 
     private boolean resizable;
 
+    private boolean hidden;
+
     private Column() {
         // Prevent instantiation
     }
@@ -86,6 +88,10 @@ public final class Column {
         return this.resizable;
     }
 
+    public boolean isHidden() {
+        return this.hidden;
+    }
+
     public static Builder newColumn(UUID id) {
         return new Builder(id);
     }
@@ -121,6 +127,8 @@ public final class Column {
         private int width;
 
         private boolean resizable;
+
+        private boolean hidden;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -166,6 +174,11 @@ public final class Column {
             return this;
         }
 
+        public Builder hidden(boolean visible) {
+            this.hidden = visible;
+            return this;
+        }
+
         public Column build() {
             Column column = new Column();
             column.id = Objects.requireNonNull(this.id);
@@ -177,6 +190,7 @@ public final class Column {
             column.headerIndexLabel = Objects.requireNonNull(this.headerIndexLabel);
             column.width = this.width;
             column.resizable = this.resizable;
+            column.hidden = this.hidden;
             return column;
         }
     }

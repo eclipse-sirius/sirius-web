@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.Column;
 import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
 import org.eclipse.sirius.components.tables.elements.ColumnElementProps;
+import org.eclipse.sirius.components.tables.events.ChangeTableColumnVisibilityEvent;
 import org.eclipse.sirius.components.tables.events.ResizeTableColumnEvent;
 
 /**
@@ -84,6 +85,18 @@ public class ColumnComponent implements IComponent {
                         .map(Column::getWidth)
                         .findFirst().orElse(initialWidth));
 
+        boolean hidden = this.props.tableEvents().stream()
+                .filter(ChangeTableColumnVisibilityEvent.class::isInstance)
+                .map(ChangeTableColumnVisibilityEvent.class::cast)
+                .filter(changeTableColumnsVisibilityEvent -> changeTableColumnsVisibilityEvent.columnId().equals(columnId.toString()))
+                .findFirst()
+                .map(changeTableColumnsVisibilityEvent -> !changeTableColumnsVisibilityEvent.visible())
+                .orElseGet(() -> this.props.previousColumns().stream()
+                        .filter(column -> column.getId().equals(columnId))
+                        .map(Column::isHidden)
+                        .findFirst()
+                        .orElse(false));
+
         ColumnElementProps.Builder columnElementProps = ColumnElementProps.newColumnElementProps(columnId)
                 .descriptionId(columnDescription.getId())
                 .headerLabel(headerLabel)
@@ -92,7 +105,8 @@ public class ColumnComponent implements IComponent {
                 .targetObjectId(targetObjectId)
                 .targetObjectKind(targetObjectKind)
                 .resizable(resizable)
-                .width(width);
+                .width(width)
+                .hidden(hidden);
 
         return new Element(ColumnElementProps.TYPE, columnElementProps.build());
     }

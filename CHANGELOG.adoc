@@ -73,7 +73,7 @@ Specifiers are also encouraged to implement their own `IRestDataVersionPayloadSe
 - https://github.com/eclipse-sirius/sirius-web/issues/4252[#4252] [table] Add IconLabel cell to tables
 - https://github.com/eclipse-sirius/sirius-web/issues/4178[#4178] [table] Add `settingButtonMenuEntryExtensionPoint` to contribute menu item to table's setting button
 - https://github.com/eclipse-sirius/sirius-web/issues/4231[#4231] [table] Make table's column resizable
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4238[#4238] [table] Make table's column hideable
 
 === Improvements
 

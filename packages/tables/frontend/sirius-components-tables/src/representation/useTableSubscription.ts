@@ -41,6 +41,7 @@ export const getTableEventSubscription = `
             targetObjectKind
             width
             isResizable 
+            hidden
           }
           lines {
             id
