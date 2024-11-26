@@ -74,6 +74,8 @@ public class ProjectTableRepresentationDescriptionProvider implements IEditingCo
                 .headerLabelProvider(variableManager -> "")
                 .headerIconURLsProvider(variableManager -> List.of())
                 .headerIndexLabelProvider(variableManager -> "")
+                .isResizablePredicate(variableManager -> false)
+                .initialHeightProvider(variableManager -> -1)
                 .build();
 
         var tableDescription = TableDescription.newTableDescription(TABLE_DESCRIPTION_ID)

@@ -45,6 +45,10 @@ public final class LineDescription {
 
     private Function<VariableManager, String> headerIndexLabelProvider;
 
+    private Function<VariableManager, Integer> initialHeightProvider;
+
+    private Predicate<VariableManager> isResizablePredicate;
+
     private LineDescription() {
         // Prevent instantiation
     }
@@ -81,6 +85,14 @@ public final class LineDescription {
         return this.headerIndexLabelProvider;
     }
 
+    public Function<VariableManager, Integer> getInitialHeightProvider() {
+        return this.initialHeightProvider;
+    }
+
+    public Predicate<VariableManager> getIsResizablePredicate() {
+        return this.isResizablePredicate;
+    }
+
     public static Builder newLineDescription(String id) {
         return new Builder(id);
     }
@@ -114,6 +126,10 @@ public final class LineDescription {
         private Function<VariableManager, List<String>> headerIconURLsProvider;
 
         private Function<VariableManager, String> headerIndexLabelProvider;
+
+        private Function<VariableManager, Integer> initialHeightProvider;
+
+        private Predicate<VariableManager> isResizablePredicate;
 
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -154,6 +170,16 @@ public final class LineDescription {
             return this;
         }
 
+        public Builder initialHeightProvider(Function<VariableManager, Integer> initialHeightProvider) {
+            this.initialHeightProvider = Objects.requireNonNull(initialHeightProvider);
+            return this;
+        }
+
+        public Builder isResizablePredicate(Predicate<VariableManager> isResizablePredicate) {
+            this.isResizablePredicate = Objects.requireNonNull(isResizablePredicate);
+            return this;
+        }
+
         public LineDescription build() {
             LineDescription lineDescription = new LineDescription();
             lineDescription.id = Objects.requireNonNull(this.id);
@@ -164,6 +190,8 @@ public final class LineDescription {
             lineDescription.headerLabelProvider = Objects.requireNonNull(this.headerLabelProvider);
             lineDescription.headerIconURLsProvider = Objects.requireNonNull(this.headerIconURLsProvider);
             lineDescription.headerIndexLabelProvider = Objects.requireNonNull(this.headerIndexLabelProvider);
+            lineDescription.initialHeightProvider = Objects.requireNonNull(this.initialHeightProvider);
+            lineDescription.isResizablePredicate = Objects.requireNonNull(this.isResizablePredicate);
             return lineDescription;
         }
     }

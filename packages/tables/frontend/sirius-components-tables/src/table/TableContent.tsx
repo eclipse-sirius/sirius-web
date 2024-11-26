@@ -14,12 +14,13 @@ import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core'
 import Box from '@mui/material/Box';
 import { MaterialReactTable, MRT_TableOptions, useMaterialReactTable } from 'material-react-table';
 import { memo, useEffect, useState } from 'react';
-import { CursorBasedPagination } from './CursorBasedPagination';
 import { SettingsButton } from '../actions/SettingsButton';
 import { useTableColumnSizing } from '../columns/useTableColumnSizing';
 import { useTableColumnVisibility } from '../columns/useTableColumnVisibility';
+import { ResizeRowHandler } from '../rows/ResizeRowHandler';
 import { RowHeader } from '../rows/RowHeader';
-import { GQLLine, TableProps, TablePaginationState } from './TableContent.types';
+import { CursorBasedPagination } from './CursorBasedPagination';
+import { GQLLine, TablePaginationState, TableProps } from './TableContent.types';
 import { useTableColumns } from './useTableColumns';
 
 export const TableContent = memo(
@@ -105,6 +106,7 @@ export const TableContent = memo(
           sx: {
             backgroundColor: 'transparent', // required to remove the default mui backgroundColor that is defined as !important
             cursor: 'pointer',
+            height: row.original.height,
           },
         };
       },
@@ -129,13 +131,24 @@ export const TableContent = memo(
           size: 120,
         },
       },
-      renderRowActions: ({ row }) => <RowHeader row={row.original} />,
+      renderRowActions: ({ row }) => (
+        <>
+          <RowHeader row={row.original} />
+          <ResizeRowHandler
+            editingContextId={editingContextId}
+            representationId={representationId}
+            table={table}
+            readOnly={readOnly}
+            row={row.original}
+          />
+        </>
+      ),
     };
 
     if (table.stripeRow) {
       tableOptions.muiTableBodyProps = {
         sx: {
-          '& tr:nth-of-type(odd) > td': {
+          '& tr:nth-of-type(odd):not(.Mui-selected) > td': {
             backgroundColor: '#f5f5f5',
           },
         },

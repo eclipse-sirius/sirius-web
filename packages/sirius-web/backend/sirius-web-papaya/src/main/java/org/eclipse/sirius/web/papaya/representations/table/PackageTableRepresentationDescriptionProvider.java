@@ -90,6 +90,8 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .headerLabelProvider(headerLabelProvider)
                 .headerIconURLsProvider(headerIconURLsProvider)
                 .headerIndexLabelProvider(headerIndexLabelProvider)
+                .isResizablePredicate(variableManager -> true)
+                .initialHeightProvider(variableManager -> 53)
                 .build();
 
         var tableDescription = TableDescription.newTableDescription(TABLE_DESCRIPTION_ID)
