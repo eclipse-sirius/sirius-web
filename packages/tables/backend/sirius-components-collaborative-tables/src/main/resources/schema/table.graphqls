@@ -46,6 +46,8 @@ type Line {
   headerLabel: String!
   headerIconURLs: [String!]!
   headerIndexLabel: String!
+  height: Int!
+  isResizable: Boolean!
 }
 
 type PaginationData {
@@ -121,6 +123,7 @@ extend type Mutation {
   editTextfieldCell(input: EditTextfieldCellInput!): EditTextfieldCellPayload!
   resizeTableColumn(input: ResizeTableColumnInput!): ResizeTableColumnPayload!
   changeTableColumnVisibility(input: ChangeTableColumnVisibilityInput!): ChangeTableColumnVisibilityPayload!
+  resizeTableRow(input: ResizeTableRowInput!): ResizeTableRowPayload!
 }
 
 input EditCheckboxCellInput {
@@ -192,3 +195,14 @@ input ColumnVisibility {
 }
 
 union ChangeTableColumnVisibilityPayload = ErrorPayload | SuccessPayload
+
+input ResizeTableRowInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  tableId: ID!
+  rowId: ID!
+  height: Int!
+}
+
+union ResizeTableRowPayload = ErrorPayload | SuccessPayload

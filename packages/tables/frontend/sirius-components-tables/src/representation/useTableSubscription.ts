@@ -55,6 +55,8 @@ export const getTableEventSubscription = `
             headerLabel
             headerIconURLs
             headerIndexLabel
+            height
+            isResizable
             cells {
               __typename
               id

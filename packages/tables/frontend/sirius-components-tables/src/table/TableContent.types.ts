@@ -64,6 +64,8 @@ export interface GQLLine {
   headerLabel: string;
   headerIconURLs: string[];
   headerIndexLabel: string;
+  height: number;
+  isResizable: boolean;
 }
 
 export interface GQLPaginationData {

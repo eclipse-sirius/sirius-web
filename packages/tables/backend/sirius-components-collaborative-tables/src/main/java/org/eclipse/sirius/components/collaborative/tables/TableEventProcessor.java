@@ -164,7 +164,7 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
 
     private IRepresentationRefreshPolicy getDefaultRefreshPolicy() {
         return changeDescription -> switch (changeDescription.getKind()) {
-            case ChangeKind.SEMANTIC_CHANGE, ChangeKind.REPRESENTATION_RENAMING, ChangeKind.REPRESENTATION_DELETION, ChangeKind.REPRESENTATION_CREATION, TableChangeKind.TABLE_LAYOUT_CHANGE -> true;
+            case ChangeKind.SEMANTIC_CHANGE, TableChangeKind.TABLE_LAYOUT_CHANGE -> true;
             default -> false;
         };
     }

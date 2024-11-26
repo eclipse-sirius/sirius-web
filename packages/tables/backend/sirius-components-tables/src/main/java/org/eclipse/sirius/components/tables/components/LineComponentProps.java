@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.descriptions.ICellDescription;
 import org.eclipse.sirius.components.tables.descriptions.LineDescription;
+import org.eclipse.sirius.components.tables.events.ITableEvent;
 import org.eclipse.sirius.components.tables.renderer.TableRenderingCache;
 
 /**
@@ -26,16 +27,24 @@ import org.eclipse.sirius.components.tables.renderer.TableRenderingCache;
  *
  * @author arichard
  */
-public record LineComponentProps(VariableManager variableManager, LineDescription lineDescription, List<ICellDescription> cellDescriptions, ILinesRequestor linesRequestor, TableRenderingCache cache,
-                                 String parentElementId, List<Object> semanticRowElements) implements IProps {
+public record LineComponentProps(
+        VariableManager variableManager,
+        LineDescription lineDescription,
+        List<ICellDescription> cellDescriptions,
+        ILinesRequestor linesRequestor,
+        TableRenderingCache cache,
+        String parentElementId,
+        List<Object> semanticRowElements,
+        List<ITableEvent> tableEvents) implements IProps {
 
-    public LineComponentProps(VariableManager variableManager, LineDescription lineDescription, List<ICellDescription> cellDescriptions, ILinesRequestor linesRequestor, TableRenderingCache cache, String parentElementId, List<Object> semanticRowElements) {
-        this.variableManager = Objects.requireNonNull(variableManager);
-        this.lineDescription = Objects.requireNonNull(lineDescription);
-        this.cellDescriptions = Objects.requireNonNull(cellDescriptions);
-        this.linesRequestor = Objects.requireNonNull(linesRequestor);
-        this.cache = Objects.requireNonNull(cache);
-        this.parentElementId = Objects.requireNonNull(parentElementId);
-        this.semanticRowElements = Objects.requireNonNull(semanticRowElements);
+    public LineComponentProps {
+        Objects.requireNonNull(variableManager);
+        Objects.requireNonNull(lineDescription);
+        Objects.requireNonNull(cellDescriptions);
+        Objects.requireNonNull(linesRequestor);
+        Objects.requireNonNull(cache);
+        Objects.requireNonNull(parentElementId);
+        Objects.requireNonNull(semanticRowElements);
+        Objects.requireNonNull(tableEvents);
     }
 }

@@ -43,6 +43,10 @@ public final class Line {
 
     private String headerIndexLabel;
 
+    private int height;
+
+    private boolean resizable;
+
     private Line() {
         // Prevent instantiation
     }
@@ -79,6 +83,14 @@ public final class Line {
         return this.headerIndexLabel;
     }
 
+    public int getHeight() {
+        return this.height;
+    }
+
+    public boolean isResizable() {
+        return this.resizable;
+    }
+
     public static Builder newLine(UUID id) {
         return new Builder(id);
     }
@@ -112,6 +124,10 @@ public final class Line {
         private List<String> headerIconURLs;
 
         private String headerIndexLabel;
+
+        private int height;
+
+        private boolean resizable;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -152,6 +168,16 @@ public final class Line {
             return this;
         }
 
+        public Builder height(int height) {
+            this.height = height;
+            return this;
+        }
+
+        public Builder resizable(boolean resizable) {
+            this.resizable = resizable;
+            return this;
+        }
+
         public Line build() {
             Line line = new Line();
             line.id = Objects.requireNonNull(this.id);
@@ -162,6 +188,8 @@ public final class Line {
             line.headerLabel = Objects.requireNonNull(this.headerLabel);
             line.headerIconURLs = Objects.requireNonNull(this.headerIconURLs);
             line.headerIndexLabel = Objects.requireNonNull(this.headerIndexLabel);
+            line.height = this.height;
+            line.resizable = this.resizable;
             return line;
         }
     }

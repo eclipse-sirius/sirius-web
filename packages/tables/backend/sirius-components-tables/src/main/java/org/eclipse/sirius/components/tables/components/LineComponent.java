@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.tables.descriptions.MultiSelectCellDescript
 import org.eclipse.sirius.components.tables.descriptions.SelectCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.TextfieldCellDescription;
 import org.eclipse.sirius.components.tables.elements.LineElementProps;
+import org.eclipse.sirius.components.tables.events.ResizeTableRowEvent;
 
 /**
  * The component used to render lines.
@@ -78,7 +79,7 @@ public class LineComponent implements IComponent {
 
     private Element doRender(VariableManager lineVariableManager, String targetObjectId, Optional<Line> optionalPreviousLine) {
         LineDescription lineDescription = this.props.lineDescription();
-        UUID lineId = optionalPreviousLine.map(Line::getId).orElseGet(() -> this.computeLineId(targetObjectId));
+        UUID rowId = optionalPreviousLine.map(Line::getId).orElseGet(() -> this.computeLineId(targetObjectId));
 
         String targetObjectKind = lineDescription.getTargetObjectKindProvider().apply(lineVariableManager);
 
@@ -86,12 +87,25 @@ public class LineComponent implements IComponent {
         List<String> headerIconURLs = lineDescription.getHeaderIconURLsProvider().apply(lineVariableManager);
         String headerIndexLabel = lineDescription.getHeaderIndexLabelProvider().apply(lineVariableManager);
 
-        var cells = this.getCells(lineVariableManager, lineId);
+        var cells = this.getCells(lineVariableManager, rowId);
+        boolean resizable = lineDescription.getIsResizablePredicate().test(lineVariableManager);
+        Integer initialHeight = lineDescription.getInitialHeightProvider().apply(lineVariableManager);
 
         List<Element> children = new ArrayList<>();
         children.addAll(cells);
 
-        var lineElementProps = LineElementProps.newLineElementProps(lineId)
+        var height = this.props.tableEvents().stream()
+                .filter(ResizeTableRowEvent.class::isInstance)
+                .map(ResizeTableRowEvent.class::cast)
+                .filter(resizeTableRowEvent -> resizeTableRowEvent.rowId().equals(rowId.toString()))
+                .findFirst()
+                .map(ResizeTableRowEvent::height)
+                .orElseGet(() -> optionalPreviousLine.stream()
+                        .map(Line::getHeight)
+                        .findFirst()
+                        .orElse(initialHeight));
+
+        var rowElementProps = LineElementProps.newLineElementProps(rowId)
                 .descriptionId(lineDescription.getId())
                 .targetObjectId(targetObjectId)
                 .targetObjectKind(targetObjectKind)
@@ -99,9 +113,11 @@ public class LineComponent implements IComponent {
                 .headerIconURLs(headerIconURLs)
                 .headerIndexLabel(headerIndexLabel)
                 .children(children)
+                .resizable(resizable)
+                .height(height)
                 .build();
 
-        return new Element(LineElementProps.TYPE, lineElementProps);
+        return new Element(LineElementProps.TYPE, rowElementProps);
     }
 
     private List<Element> getCells(VariableManager lineVariableManager, UUID parentLineId) {
