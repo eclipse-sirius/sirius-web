@@ -18,6 +18,7 @@ import static org.assertj.core.api.Assertions.fail;
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -25,9 +26,12 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.tables.TableRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.tables.dto.ChangeTableColumnVisibilityInput;
+import org.eclipse.sirius.components.collaborative.tables.dto.ColumnVisibility;
 import org.eclipse.sirius.components.collaborative.tables.dto.ResizeTableColumnInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.tables.Column;
+import org.eclipse.sirius.components.tables.tests.graphql.ChangeTableColumnVisibilityMutationRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.ResizeTableColumnMutationRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
@@ -65,6 +69,9 @@ public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegra
 
     @Autowired
     private ResizeTableColumnMutationRunner resizeTableColumnMutationRunner;
+
+    @Autowired
+    private ChangeTableColumnVisibilityMutationRunner changeTableColumnVisibilityMutationRunner;
 
 
     @BeforeEach
@@ -132,6 +139,73 @@ public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegra
         StepVerifier.create(flux)
                 .consumeNextWith(initialTableContentConsumer)
                 .then(resizeColumn)
+                .consumeNextWith(updatedTableContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a table, when column visibility changes mutation is triggered, then the representation is refreshed with the new column visibilities")
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenTableWhenColumnVisibilityChangesMutationTriggeredThenTheRepresentationIsRefreshedWithNewColumnVisibilities() {
+        var flux = this.givenSubscriptionToTable();
+
+
+        var columnNameRef = new AtomicReference<Column>();
+        var columnDescRef = new AtomicReference<Column>();
+        var columnAnnotationRef = new AtomicReference<Column>();
+        var tableId = new AtomicReference<String>();
+
+        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
+                .filter(TableRefreshedEventPayload.class::isInstance)
+                .map(TableRefreshedEventPayload.class::cast)
+                .map(TableRefreshedEventPayload::table)
+                .ifPresentOrElse(table -> {
+                    assertThat(table).isNotNull();
+                    assertThat(table.getColumns()).hasSize(5);
+                    columnNameRef.set(table.getColumns().get(0));
+                    columnDescRef.set(table.getColumns().get(1));
+                    columnAnnotationRef.set(table.getColumns().get(2));
+                    assertThat(table.getColumns().get(0).isHidden()).isFalse();
+                    assertThat(table.getColumns().get(1).isHidden()).isFalse();
+                    assertThat(table.getColumns().get(2).isHidden()).isFalse();
+                    assertThat(table.getColumns().get(3).isHidden()).isFalse();
+                    tableId.set(table.getId());
+                }, () -> fail(MISSING_TABLE));
+
+        Runnable changeColumnVisibility = () -> {
+            var changeTableColumnVisibilityInput = new ChangeTableColumnVisibilityInput(
+                    UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    tableId.get(), tableId.get(),
+                    List.of(
+                            new ColumnVisibility(columnNameRef.get().getId().toString(), false),
+                            new ColumnVisibility(columnDescRef.get().getId().toString(), true),
+                            new ColumnVisibility(columnAnnotationRef.get().getId().toString(), false)));
+            var result = this.changeTableColumnVisibilityMutationRunner.run(changeTableColumnVisibilityInput);
+
+            String typename = JsonPath.read(result, "$.data.changeTableColumnVisibility.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+
+        Consumer<Object> updatedTableContentConsumer = payload -> Optional.of(payload)
+                .filter(TableRefreshedEventPayload.class::isInstance)
+                .map(TableRefreshedEventPayload.class::cast)
+                .map(TableRefreshedEventPayload::table)
+                .ifPresentOrElse(table -> {
+                    assertThat(table).isNotNull();
+                    assertThat(table.getColumns()).hasSize(5);
+                    assertThat(table.getColumns().get(0).isHidden()).isTrue();
+                    assertThat(table.getColumns().get(1).isHidden()).isFalse();
+                    assertThat(table.getColumns().get(2).isHidden()).isTrue();
+                    assertThat(table.getColumns().get(3).isHidden()).isFalse();
+                }, () -> fail(MISSING_TABLE));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialTableContentConsumer)
+                .then(changeColumnVisibility)
                 .consumeNextWith(updatedTableContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));

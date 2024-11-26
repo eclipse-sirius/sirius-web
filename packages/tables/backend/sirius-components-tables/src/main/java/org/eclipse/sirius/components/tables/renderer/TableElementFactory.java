@@ -131,6 +131,7 @@ public class TableElementFactory implements IElementFactory {
                     .targetObjectKind(columnElementProps.targetObjectKind())
                     .width(columnElementProps.width())
                     .resizable(columnElementProps.resizable())
+                    .hidden(columnElementProps.hidden())
                     .build();
 
         }
