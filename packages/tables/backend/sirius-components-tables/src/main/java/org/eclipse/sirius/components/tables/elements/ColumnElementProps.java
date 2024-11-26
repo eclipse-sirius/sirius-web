@@ -22,7 +22,8 @@ import org.eclipse.sirius.components.representations.IProps;
  *
  * @author lfasani
  */
-public record ColumnElementProps(UUID id, UUID descriptionId, String label, String targetObjectId, String targetObjectKind, Integer initialWidth, Integer width, boolean resizable) implements IProps {
+public record ColumnElementProps(UUID id, UUID descriptionId, String label, String targetObjectId, String targetObjectKind, Integer initialWidth, Integer width, boolean resizable,
+                                 boolean hidden) implements IProps {
 
     public static final String TYPE = "Column";
 
@@ -63,6 +64,8 @@ public record ColumnElementProps(UUID id, UUID descriptionId, String label, Stri
 
         private boolean resizable;
 
+        private boolean hidden;
+
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -102,8 +105,13 @@ public record ColumnElementProps(UUID id, UUID descriptionId, String label, Stri
             return this;
         }
 
+        public Builder hidden(boolean hidden) {
+            this.hidden = hidden;
+            return this;
+        }
+
         public ColumnElementProps build() {
-            return new ColumnElementProps(this.id, this.descriptionId, this.label, this.targetObjectId, this.targetObjectKind, this.initialWidth, this.width, this.resizable);
+            return new ColumnElementProps(this.id, this.descriptionId, this.label, this.targetObjectId, this.targetObjectKind, this.initialWidth, this.width, this.resizable, this.hidden);
         }
     }
 }

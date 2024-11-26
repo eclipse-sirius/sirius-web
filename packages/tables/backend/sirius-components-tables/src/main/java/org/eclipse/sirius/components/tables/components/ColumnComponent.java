@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.Column;
 import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
 import org.eclipse.sirius.components.tables.elements.ColumnElementProps;
+import org.eclipse.sirius.components.tables.events.ChangeTableColumnVisibilityEvent;
 import org.eclipse.sirius.components.tables.events.ResizeTableColumnEvent;
 
 /**
@@ -84,6 +85,18 @@ public class ColumnComponent implements IComponent {
                                 .filter(Objects::nonNull)
                                 .findFirst()
                                 .ifPresent(columnElementProps::width));
+
+        this.props.tableEvents().stream()
+                .filter(ChangeTableColumnVisibilityEvent.class::isInstance)
+                .map(ChangeTableColumnVisibilityEvent.class::cast)
+                .filter(changeTableColumnsVisibilityEvent -> changeTableColumnsVisibilityEvent.columnId().equals(columnId.toString()))
+                .findFirst()
+                .ifPresentOrElse(changeTableColumnsVisibilityEvent -> columnElementProps.hidden(!changeTableColumnsVisibilityEvent.visible()),
+                        () -> this.props.previousColumns().stream()
+                                .filter(column -> column.getId().equals(columnId))
+                                .map(Column::isHidden)
+                                .findFirst()
+                                .ifPresent(columnElementProps::hidden));
 
         return new Element(ColumnElementProps.TYPE, columnElementProps.build());
     }

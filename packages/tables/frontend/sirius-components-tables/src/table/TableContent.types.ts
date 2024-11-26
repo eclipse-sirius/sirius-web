@@ -55,6 +55,7 @@ export interface GQLColumn {
   initialWidth: number;
   width: number | undefined;
   isResizable: boolean;
+  hidden: boolean;
 }
 
 export interface GQLLine {

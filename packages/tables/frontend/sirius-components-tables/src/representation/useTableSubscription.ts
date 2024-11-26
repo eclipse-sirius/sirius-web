@@ -39,6 +39,7 @@ export const getTableEventSubscription = `
             initialWidth
             width
             isResizable 
+            hidden
           }
           lines {
             id

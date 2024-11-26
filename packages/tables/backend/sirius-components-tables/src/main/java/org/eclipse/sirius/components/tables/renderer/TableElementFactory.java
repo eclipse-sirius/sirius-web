@@ -116,7 +116,8 @@ public class TableElementFactory implements IElementFactory {
                     .targetObjectId(columnElementProps.targetObjectId())
                     .targetObjectKind(columnElementProps.targetObjectKind())
                     .initialWidth(columnElementProps.initialWidth())
-                    .resizable(columnElementProps.resizable());
+                    .resizable(columnElementProps.resizable())
+                    .hidden(columnElementProps.hidden());
 
             if (columnElementProps.width() != null) {
                 builder.width(columnElementProps.width());

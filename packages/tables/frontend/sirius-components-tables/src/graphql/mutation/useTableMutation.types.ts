@@ -14,6 +14,7 @@ import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-compo
 
 export interface UseTableMutationValue {
   resizeColumn: (columnId: string, width: number) => void;
+  changeColumnVisibility: (columnsVisibility: GQLColumnVisibility[]) => void;
 }
 
 export interface GQLResizeColumnInput {
@@ -34,3 +35,26 @@ export interface GQLResizeColumnData {
 }
 
 export type GQLResizeTableColumnPayload = GQLErrorPayload | GQLSuccessPayload;
+
+export interface GQLChangeColumnVisibilityInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  tableId: string;
+  columnsVisibility: GQLColumnVisibility[];
+}
+
+export interface GQLColumnVisibility {
+  columnId: string;
+  visible: boolean;
+}
+
+export interface GQLChangeColumnVisibilityVariables {
+  input: GQLChangeColumnVisibilityInput;
+}
+
+export interface GQLChangeColumnVisibilityData {
+  changeTableColumnVisibility: GQLChangeTableColumnVisibilityPayload;
+}
+
+export type GQLChangeTableColumnVisibilityPayload = GQLErrorPayload | GQLSuccessPayload;

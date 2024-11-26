@@ -11,14 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
+import { useReporting } from '@eclipse-sirius/sirius-components-core';
+import { resizeColumnMutation, changeColumnVisibilityMutation } from './tableMutation';
 import {
-  UseTableMutationValue,
+  GQLChangeColumnVisibilityData,
+  GQLChangeColumnVisibilityVariables,
+  GQLChangeColumnVisibilityInput,
   GQLResizeColumnInput,
   GQLResizeColumnData,
   GQLResizeColumnVariables,
+  UseTableMutationValue,
+  GQLColumnVisibility,
 } from './useTableMutation.types';
-import { useReporting } from '@eclipse-sirius/sirius-components-core';
-import { resizeColumnMutation } from './tableMutation';
 
 export const useTableMutations = (
   editingContextId: string,
@@ -43,7 +47,29 @@ export const useTableMutations = (
     mutationResizeColumn({ variables: { input } });
   };
 
+  const [mutationChangeColumnVisibility, mutationChangeColumnVisibilityResult] = useMutation<
+    GQLChangeColumnVisibilityData,
+    GQLChangeColumnVisibilityVariables
+  >(changeColumnVisibilityMutation);
+  useReporting(
+    mutationChangeColumnVisibilityResult,
+    (data: GQLChangeColumnVisibilityData) => data.changeTableColumnVisibility
+  );
+
+  const changeColumnVisibility = (columnsVisibility: GQLColumnVisibility[]) => {
+    const input: GQLChangeColumnVisibilityInput = {
+      id: crypto.randomUUID(),
+      editingContextId,
+      representationId,
+      tableId,
+      columnsVisibility,
+    };
+
+    mutationChangeColumnVisibility({ variables: { input } });
+  };
+
   return {
     resizeColumn,
+    changeColumnVisibility,
   };
 };

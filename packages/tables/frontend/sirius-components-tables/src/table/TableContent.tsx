@@ -19,6 +19,7 @@ import { ExportAllDataButton } from '../actions/ExportAllDataButton';
 import { TableProps } from './TableContent.types';
 import { useTableColumns } from './useTableColumns';
 import { useTableColumnSizing } from './column/useTableColumnSizing';
+import { useTableColumnVisibility } from './column/useTableColumnVisibility';
 
 const useStyles = makeStyles()((theme) => ({
   rowMain: {
@@ -39,6 +40,7 @@ export const TableContent = memo(({ editingContextId, representationId, table, r
 
   const { columns } = useTableColumns(editingContextId, representationId, table, readOnly);
   const { columnSizing, setColumnSizing } = useTableColumnSizing(editingContextId, representationId, table);
+  const { columnVisibility, setColumnVisibility } = useTableColumnVisibility(editingContextId, representationId, table);
 
   const muiTable = useMaterialReactTable({
     columns,
@@ -50,7 +52,8 @@ export const TableContent = memo(({ editingContextId, representationId, table, r
     columnResizeMode: 'onEnd',
     enableSorting: false,
     onColumnSizingChange: setColumnSizing,
-    state: { columnSizing },
+    onColumnVisibilityChange: setColumnVisibility,
+    state: { columnSizing, columnVisibility },
     muiTableBodyRowProps: ({ row }) => {
       return {
         onClick: () => {

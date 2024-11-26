@@ -32,6 +32,7 @@ type Column {
   initialWidth: Int!
   width: Int
   isResizable: Boolean!
+  hidden: Boolean!
 }
 
 type Line {
@@ -98,6 +99,7 @@ extend type Mutation {
   editMultiSelectCell(input: EditMultiSelectCellInput!): EditMultiSelectCellPayload!
   editTextfieldCell(input: EditTextfieldCellInput!): EditTextfieldCellPayload!
   resizeTableColumn(input: ResizeTableColumnInput!): ResizeTableColumnPayload!
+  changeTableColumnVisibility(input: ChangeTableColumnVisibilityInput!): ChangeTableColumnVisibilityPayload!
 }
 
 input EditCheckboxCellInput {
@@ -154,3 +156,18 @@ input ResizeTableColumnInput {
 }
 
 union ResizeTableColumnPayload = ErrorPayload | SuccessPayload
+
+input ChangeTableColumnVisibilityInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  tableId: ID!
+  columnsVisibility: [ColumnVisibility!]!
+}
+
+input ColumnVisibility {
+  columnId: ID!
+  visible: Boolean!
+}
+
+union ChangeTableColumnVisibilityPayload = ErrorPayload | SuccessPayload

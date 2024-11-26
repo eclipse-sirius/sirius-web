@@ -31,3 +31,23 @@ export const resizeColumnMutation = gql`
     }
   }
 `;
+
+export const changeColumnVisibilityMutation = gql`
+  mutation changeTableColumnVisibility($input: ChangeTableColumnVisibilityInput!) {
+    changeTableColumnVisibility(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
+    }
+  }
+`;
