@@ -12,12 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.tables.components;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.descriptions.CellDescription;
 import org.eclipse.sirius.components.tables.descriptions.LineDescription;
+import org.eclipse.sirius.components.tables.events.ITableEvent;
 import org.eclipse.sirius.components.tables.renderer.TableRenderingCache;
 
 /**
@@ -25,50 +27,16 @@ import org.eclipse.sirius.components.tables.renderer.TableRenderingCache;
  *
  * @author arichard
  */
-public class LineComponentProps implements IProps {
+public record LineComponentProps(VariableManager variableManager, LineDescription lineDescription, CellDescription cellDescription, ILinesRequestor linesRequestor, TableRenderingCache cache, String parentElementId, List<ITableEvent> tableEvents) implements IProps {
 
-    private final VariableManager variableManager;
+    public LineComponentProps {
+        Objects.requireNonNull(variableManager);
+        Objects.requireNonNull(lineDescription);
+        Objects.requireNonNull(cellDescription);
+        Objects.requireNonNull(linesRequestor);
+        Objects.requireNonNull(cache);
+        Objects.requireNonNull(parentElementId);
+        Objects.requireNonNull(tableEvents);
 
-    private final LineDescription lineDescription;
-
-    private final CellDescription cellDescription;
-
-    private final ILinesRequestor linesRequestor;
-
-    private final TableRenderingCache cache;
-
-    private final String parentElementId;
-
-    public LineComponentProps(VariableManager variableManager, LineDescription lineDescription, CellDescription cellDescription, ILinesRequestor linesRequestor, TableRenderingCache cache, String parentElementId) {
-        this.variableManager = Objects.requireNonNull(variableManager);
-        this.lineDescription = Objects.requireNonNull(lineDescription);
-        this.cellDescription = Objects.requireNonNull(cellDescription);
-        this.linesRequestor = Objects.requireNonNull(linesRequestor);
-        this.cache = Objects.requireNonNull(cache);
-        this.parentElementId = Objects.requireNonNull(parentElementId);
-    }
-
-    public VariableManager getVariableManager() {
-        return this.variableManager;
-    }
-
-    public LineDescription getLineDescription() {
-        return this.lineDescription;
-    }
-
-    public CellDescription getCellDescription() {
-        return this.cellDescription;
-    }
-
-    public ILinesRequestor getLinesRequestor() {
-        return this.linesRequestor;
-    }
-
-    public TableRenderingCache getCache() {
-        return this.cache;
-    }
-
-    public String getParentElementId() {
-        return this.parentElementId;
     }
 }

@@ -81,6 +81,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
                 .semanticElementsProvider(this::getSemanticElements)
+                .isResizablePredicate(variableManager -> true)
                 .build();
 
         var tableDescription = TableDescription.newTableDescription(TABLE_DESCRIPTION_ID)

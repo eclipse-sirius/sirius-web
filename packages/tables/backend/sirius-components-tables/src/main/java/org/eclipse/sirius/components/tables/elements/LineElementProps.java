@@ -24,7 +24,7 @@ import org.eclipse.sirius.components.representations.IProps;
  *
  * @author lfasani
  */
-public record LineElementProps(UUID id, UUID descriptionId, String targetObjectId, String targetObjectKind, List<Element> children) implements IProps {
+public record LineElementProps(UUID id, UUID descriptionId, String targetObjectId, String targetObjectKind, List<Element> children, Integer initialHeight, Integer height, boolean resizable) implements IProps {
 
     public static final String TYPE = "Line";
 
@@ -34,6 +34,7 @@ public record LineElementProps(UUID id, UUID descriptionId, String targetObjectI
         Objects.requireNonNull(targetObjectId);
         Objects.requireNonNull(targetObjectKind);
         Objects.requireNonNull(children);
+        Objects.requireNonNull(initialHeight);
     }
 
     @Override
@@ -63,6 +64,12 @@ public record LineElementProps(UUID id, UUID descriptionId, String targetObjectI
 
         private List<Element> children;
 
+        private Integer initialHeight;
+
+        private Integer height;
+
+        private boolean resizable;
+
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -87,8 +94,24 @@ public record LineElementProps(UUID id, UUID descriptionId, String targetObjectI
             return this;
         }
 
+        public Builder initialHeight(Integer initialHeight) {
+            this.initialHeight = Objects.requireNonNull(initialHeight);
+            return this;
+        }
+
+        public Builder height(Integer height) {
+            this.height = Objects.requireNonNull(height);
+            return this;
+        }
+
+        public Builder resizable(boolean resizable) {
+            this.resizable = resizable;
+            return this;
+        }
+
+
         public LineElementProps build() {
-            return new LineElementProps(this.id, this.descriptionId, this.targetObjectId, this.targetObjectKind, this.children);
+            return new LineElementProps(this.id, this.descriptionId, this.targetObjectId, this.targetObjectKind, this.children, this.initialHeight, this.height, this.resizable);
         }
     }
 }

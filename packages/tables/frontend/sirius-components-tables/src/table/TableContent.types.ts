@@ -62,6 +62,9 @@ export interface GQLLine {
   id: string;
   targetObjectId: string;
   cells: GQLCell[];
+  height: number | null;
+  isResizable: boolean;
+  initialHeight: number;
 }
 
 export interface GQLCell {

@@ -37,6 +37,12 @@ public final class Line {
 
     private List<ICell> cells;
 
+    private Integer initialHeight;
+
+    private Integer height;
+
+    private boolean resizable;
+
     private Line() {
         // Prevent instantiation
     }
@@ -59,6 +65,18 @@ public final class Line {
 
     public List<ICell> getCells() {
         return this.cells;
+    }
+
+    public Integer getInitialHeight() {
+        return this.initialHeight;
+    }
+
+    public Integer getHeight() {
+        return this.height;
+    }
+
+    public boolean isResizable() {
+        return this.resizable;
     }
 
     public static Builder newLine(UUID id) {
@@ -89,6 +107,12 @@ public final class Line {
 
         private List<ICell> cells;
 
+        private Integer initialHeight;
+
+        private Integer height;
+
+        private boolean resizable;
+
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -98,6 +122,9 @@ public final class Line {
             this.targetObjectId = line.getTargetObjectId();
             this.descriptionId = line.getDescriptionId();
             this.cells = line.getCells();
+            this.initialHeight = line.getInitialHeight();
+            this.height = line.getHeight();
+            this.resizable = line.isResizable();
         }
 
         public Builder targetObjectId(String targetObjectId) {
@@ -119,6 +146,20 @@ public final class Line {
             this.cells = Objects.requireNonNull(cells);
             return this;
         }
+        public Builder initialHeight(Integer initialHeight) {
+            this.initialHeight = Objects.requireNonNull(initialHeight);
+            return this;
+        }
+
+        public Builder height(Integer height) {
+            this.height = Objects.requireNonNull(height);
+            return this;
+        }
+
+        public Builder resizable(boolean resizable) {
+            this.resizable = resizable;
+            return this;
+        }
 
         public Line build() {
             Line line = new Line();
@@ -127,6 +168,9 @@ public final class Line {
             line.targetObjectKind = Objects.requireNonNull(this.targetObjectKind);
             line.descriptionId = Objects.requireNonNull(this.descriptionId);
             line.cells = Objects.requireNonNull(this.cells);
+            line.initialHeight = Objects.requireNonNull(this.initialHeight);
+            line.height = this.height; // Optional on purpose
+            line.resizable = this.resizable;
             return line;
         }
     }

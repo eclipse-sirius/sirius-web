@@ -40,6 +40,9 @@ type Line {
   targetObjectId: ID!
   targetObjectKind: String!
   cells: [Cell!]!
+  initialHeight: Int!
+  height: Int
+  isResizable: Boolean!
 }
 
 interface Cell {
@@ -100,6 +103,7 @@ extend type Mutation {
   editTextfieldCell(input: EditTextfieldCellInput!): EditTextfieldCellPayload!
   resizeTableColumn(input: ResizeTableColumnInput!): ResizeTableColumnPayload!
   changeTableColumnVisibility(input: ChangeTableColumnVisibilityInput!): ChangeTableColumnVisibilityPayload!
+  resizeTableRow(input: ResizeTableRowInput!): ResizeTableRowPayload!
 }
 
 input EditCheckboxCellInput {
@@ -171,3 +175,14 @@ input ColumnVisibility {
 }
 
 union ChangeTableColumnVisibilityPayload = ErrorPayload | SuccessPayload
+
+input ResizeTableRowInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  tableId: ID!
+  rowId: ID!
+  height: Int
+}
+
+union ResizeTableRowPayload = ErrorPayload | SuccessPayload

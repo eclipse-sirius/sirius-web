@@ -12,16 +12,19 @@
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
 import { useReporting } from '@eclipse-sirius/sirius-components-core';
-import { resizeColumnMutation, changeColumnVisibilityMutation } from './tableMutation';
+import { changeColumnVisibilityMutation, resizeColumnMutation, resizeRowMutation } from './tableMutation';
 import {
   GQLChangeColumnVisibilityData,
-  GQLChangeColumnVisibilityVariables,
   GQLChangeColumnVisibilityInput,
-  GQLResizeColumnInput,
-  GQLResizeColumnData,
-  GQLResizeColumnVariables,
-  UseTableMutationValue,
+  GQLChangeColumnVisibilityVariables,
   GQLColumnVisibility,
+  GQLResizeColumnData,
+  GQLResizeColumnInput,
+  GQLResizeColumnVariables,
+  GQLResizeRowData,
+  GQLResizeRowInput,
+  GQLResizeRowVariables,
+  UseTableMutationValue,
 } from './useTableMutation.types';
 
 export const useTableMutations = (
@@ -68,8 +71,27 @@ export const useTableMutations = (
     mutationChangeColumnVisibility({ variables: { input } });
   };
 
+  const [mutationResizeRow, mutationResizeRowResult] = useMutation<GQLResizeRowData, GQLResizeRowVariables>(
+    resizeRowMutation
+  );
+  useReporting(mutationResizeRowResult, (data: GQLResizeRowData) => data.resizeTableRow);
+
+  const resizeRow = (rowId: string, height: number) => {
+    const input: GQLResizeRowInput = {
+      id: crypto.randomUUID(),
+      editingContextId,
+      representationId,
+      tableId,
+      rowId,
+      height,
+    };
+
+    mutationResizeRow({ variables: { input } });
+  };
+
   return {
     resizeColumn,
     changeColumnVisibility,
+    resizeRow,
   };
 };

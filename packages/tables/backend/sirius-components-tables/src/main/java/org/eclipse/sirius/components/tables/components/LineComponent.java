@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.tables.elements.LineElementProps;
 import org.eclipse.sirius.components.tables.elements.MultiSelectCellElementProps;
 import org.eclipse.sirius.components.tables.elements.SelectCellElementProps;
 import org.eclipse.sirius.components.tables.elements.TextfieldCellElementProps;
+import org.eclipse.sirius.components.tables.events.ResizeTableRowEvent;
 
 /**
  * The component used to render lines.
@@ -51,9 +52,9 @@ public class LineComponent implements IComponent {
 
     @Override
     public Element render() {
-        VariableManager variableManager = this.props.getVariableManager();
-        LineDescription lineDescription = this.props.getLineDescription();
-        ILinesRequestor linesRequestor = this.props.getLinesRequestor();
+        VariableManager variableManager = this.props.variableManager();
+        LineDescription lineDescription = this.props.lineDescription();
+        ILinesRequestor linesRequestor = this.props.linesRequestor();
 
         List<Element> children = new ArrayList<>();
         List<Object> semanticElements = lineDescription.getSemanticElementsProvider().apply(variableManager);
@@ -73,30 +74,46 @@ public class LineComponent implements IComponent {
     }
 
     private Element doRender(VariableManager lineVariableManager, String targetObjectId, Optional<Line> optionalPreviousLine) {
-        LineDescription lineDescription = this.props.getLineDescription();
-        UUID lineId = optionalPreviousLine.map(Line::getId).orElseGet(() -> this.computeLineId(targetObjectId));
+        LineDescription lineDescription = this.props.lineDescription();
+        UUID rowId = optionalPreviousLine.map(Line::getId).orElseGet(() -> this.computeLineId(targetObjectId));
 
         String targetObjectKind = lineDescription.getTargetObjectKindProvider().apply(lineVariableManager);
 
-        var cells = this.getCells(lineVariableManager, lineId);
+        var cells = this.getCells(lineVariableManager, rowId);
+        boolean resizable = lineDescription.getIsResizablePredicate().test(lineVariableManager);
+        Integer initialHeight = lineDescription.getInitialHeightProvider().apply(lineVariableManager);
 
         List<Element> children = new ArrayList<>();
         children.addAll(cells);
 
-        LineElementProps lineElementProps = LineElementProps.newLineElementProps(lineId)
+        LineElementProps.Builder rowElementProps = LineElementProps.newLineElementProps(rowId)
                 .descriptionId(lineDescription.getId())
                 .targetObjectId(targetObjectId)
                 .targetObjectKind(targetObjectKind)
                 .children(children)
-                .build();
+                .resizable(resizable)
+                .initialHeight(initialHeight);
 
-        return new Element(LineElementProps.TYPE, lineElementProps);
+        this.props.tableEvents().stream()
+                .filter(ResizeTableRowEvent.class::isInstance)
+                .map(ResizeTableRowEvent.class::cast)
+                .filter(resizeTableRowEvent -> resizeTableRowEvent.rowId().equals(rowId.toString()))
+                .findFirst()
+                .ifPresentOrElse(resizeTableRowEvent -> rowElementProps.height(resizeTableRowEvent.height()),
+                        () -> optionalPreviousLine.stream()
+                                .filter(line -> line.getId().equals(rowId))
+                                .map(Line::getHeight)
+                                .filter(Objects::nonNull)
+                                .findFirst()
+                                .ifPresent(rowElementProps::height));
+
+        return new Element(LineElementProps.TYPE, rowElementProps.build());
     }
 
     private List<Element> getCells(VariableManager lineVariableManager, UUID parentLineId) {
         List<Element> elements = new ArrayList<>();
-        Map<UUID, Object> columnIdToObject = this.props.getCache().getColumnIdToObject();
-        CellDescription cellDescription = this.props.getCellDescription();
+        Map<UUID, Object> columnIdToObject = this.props.cache().getColumnIdToObject();
+        CellDescription cellDescription = this.props.cellDescription();
 
         columnIdToObject.forEach((columnId, columTargetObject) -> {
             VariableManager columnVariableManager = lineVariableManager.createChild();
@@ -132,8 +149,8 @@ public class LineComponent implements IComponent {
     }
 
     private UUID computeLineId(String targetObjectId) {
-        String parentElementId = this.props.getParentElementId();
-        LineDescription lineDescription = this.props.getLineDescription();
+        String parentElementId = this.props.parentElementId();
+        LineDescription lineDescription = this.props.lineDescription();
 
         String rawIdentifier = parentElementId + lineDescription.getId().toString() + targetObjectId;
         return UUID.nameUUIDFromBytes(rawIdentifier.getBytes());

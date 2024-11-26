@@ -51,3 +51,23 @@ export const changeColumnVisibilityMutation = gql`
     }
   }
 `;
+
+export const resizeRowMutation = gql`
+  mutation resizeTableRow($input: ResizeTableRowInput!) {
+    resizeTableRow(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
+    }
+  }
+`;

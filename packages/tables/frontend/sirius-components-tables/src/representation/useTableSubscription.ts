@@ -15,13 +15,13 @@ import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 
 import { useEffect, useState } from 'react';
 import {
-  UseTableSubscriptionValue,
-  UseTableSubscriptionState,
-  GQLTableEventPayload,
-  GQLTableRefreshedEventPayload,
-  GQLTableEventInput,
-  GQLTableEventVariables,
   GQLTableEventData,
+  GQLTableEventInput,
+  GQLTableEventPayload,
+  GQLTableEventVariables,
+  GQLTableRefreshedEventPayload,
+  UseTableSubscriptionState,
+  UseTableSubscriptionValue,
 } from './useTableSubscription.types';
 
 export const getTableEventSubscription = `
@@ -45,6 +45,9 @@ export const getTableEventSubscription = `
             id
             targetObjectId
             targetObjectKind
+            initialHeight
+            height
+            isResizable
             cells {
               __typename
               id

@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -37,6 +38,10 @@ public final class LineDescription {
 
     private Function<VariableManager, List<Object>> semanticElementsProvider;
 
+    private Function<VariableManager, Integer> initialHeightProvider;
+
+    private Predicate<VariableManager> isResizablePredicate;
+
     private LineDescription() {
         // Prevent instantiation
     }
@@ -55,6 +60,14 @@ public final class LineDescription {
 
     public Function<VariableManager, List<Object>> getSemanticElementsProvider() {
         return this.semanticElementsProvider;
+    }
+
+    public Function<VariableManager, Integer> getInitialHeightProvider() {
+        return this.initialHeightProvider;
+    }
+
+    public Predicate<VariableManager> getIsResizablePredicate() {
+        return this.isResizablePredicate;
     }
 
     public static Builder newLineDescription(UUID id) {
@@ -83,6 +96,10 @@ public final class LineDescription {
 
         private Function<VariableManager, List<Object>> semanticElementsProvider;
 
+        private Function<VariableManager, Integer> initialHeightProvider = variableManager -> 53; // 'comfortable' height by default
+
+        private Predicate<VariableManager> isResizablePredicate = variableManager -> false;
+
         public Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -102,12 +119,24 @@ public final class LineDescription {
             return this;
         }
 
+        public Builder initialHeightProvider(Function<VariableManager, Integer> initialHeightProvider) {
+            this.initialHeightProvider = Objects.requireNonNull(initialHeightProvider);
+            return this;
+        }
+
+        public Builder isResizablePredicate(Predicate<VariableManager> isResizablePredicate) {
+            this.isResizablePredicate = Objects.requireNonNull(isResizablePredicate);
+            return this;
+        }
+
         public LineDescription build() {
             LineDescription lineDescription = new LineDescription();
             lineDescription.id = Objects.requireNonNull(this.id);
             lineDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             lineDescription.targetObjectKindProvider = Objects.requireNonNull(this.targetObjectKindProvider);
             lineDescription.semanticElementsProvider = Objects.requireNonNull(this.semanticElementsProvider);
+            lineDescription.initialHeightProvider = Objects.requireNonNull(this.initialHeightProvider);
+            lineDescription.isResizablePredicate = Objects.requireNonNull(this.isResizablePredicate);
             return lineDescription;
         }
     }

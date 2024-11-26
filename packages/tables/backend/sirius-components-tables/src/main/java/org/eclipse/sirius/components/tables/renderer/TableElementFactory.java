@@ -97,12 +97,17 @@ public class TableElementFactory implements IElementFactory {
                     .map(MultiSelectCell.class::cast)
                     .toList());
 
-            return Line.newLine(lineElementProps.id())
+            var builder = Line.newLine(lineElementProps.id())
                     .targetObjectId(lineElementProps.targetObjectId())
                     .targetObjectKind(lineElementProps.targetObjectKind())
                     .descriptionId(lineElementProps.descriptionId())
                     .cells(cells)
-                    .build();
+                    .initialHeight(lineElementProps.initialHeight())
+                    .resizable(lineElementProps.resizable());
+            if (lineElementProps.height() != null) {
+                builder.height(lineElementProps.height());
+            }
+            return builder.build();
         }
         return null;
     }

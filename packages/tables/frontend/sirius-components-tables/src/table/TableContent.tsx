@@ -16,10 +16,11 @@ import { MaterialReactTable, useMaterialReactTable } from 'material-react-table'
 import { memo } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { ExportAllDataButton } from '../actions/ExportAllDataButton';
-import { TableProps } from './TableContent.types';
-import { useTableColumns } from './useTableColumns';
 import { useTableColumnSizing } from './column/useTableColumnSizing';
 import { useTableColumnVisibility } from './column/useTableColumnVisibility';
+import { ResizeRowHandler } from './row/ResizeRowHandler';
+import { TableProps } from './TableContent.types';
+import { useTableColumns } from './useTableColumns';
 
 const useStyles = makeStyles()((theme) => ({
   rowMain: {
@@ -37,7 +38,6 @@ const useStyles = makeStyles()((theme) => ({
 export const TableContent = memo(({ editingContextId, representationId, table, readOnly }: TableProps) => {
   const { classes } = useStyles();
   const { selection, setSelection } = useSelection();
-
   const { columns } = useTableColumns(editingContextId, representationId, table, readOnly);
   const { columnSizing, setColumnSizing } = useTableColumnSizing(editingContextId, representationId, table);
   const { columnVisibility, setColumnVisibility } = useTableColumnVisibility(editingContextId, representationId, table);
@@ -65,6 +65,7 @@ export const TableContent = memo(({ editingContextId, representationId, table, r
         sx: {
           backgroundColor: 'transparent', // required to remove the default mui backgroundColor that is defined as !important
           cursor: 'pointer',
+          height: row.original.height ?? row.original.initialHeight,
         },
       };
     },
@@ -72,6 +73,16 @@ export const TableContent = memo(({ editingContextId, representationId, table, r
       <Box>
         <ExportAllDataButton table={table} />
       </Box>
+    ),
+    enableRowActions: true,
+    renderRowActions: ({ row }) => (
+      <ResizeRowHandler
+        editingContextId={editingContextId}
+        representationId={representationId}
+        table={table}
+        readOnly={readOnly}
+        row={row.original}
+      />
     ),
   });
 

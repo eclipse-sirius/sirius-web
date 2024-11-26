@@ -37,7 +37,7 @@
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4219[#4219] [table] Improve front-end performance
 - https://github.com/eclipse-sirius/sirius-web/issues/4231[#4231] [table] Make table's column resizable
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4234[#4234] [table] Make table's row resizable
 
 
 == v2024.11.0
