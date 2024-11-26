@@ -149,4 +149,30 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
                 .verify(Duration.ofSeconds(10));
     }
 
+    @Test
+    @DisplayName("Given a table representation with a column header provide, when we subscribe to its event, then data received contain the header")
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenTableRepresentationWithColumnHeaderProvideWhenWeSubscribeToItsEventThenDataReceivedContainTheHeader() {
+        var flux = this.givenSubscriptionToTable();
+
+        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
+                .filter(TableRefreshedEventPayload.class::isInstance)
+                .map(TableRefreshedEventPayload.class::cast)
+                .map(TableRefreshedEventPayload::table)
+                .ifPresentOrElse(table -> {
+                    assertThat(table).isNotNull();
+                    assertThat(table.getColumns()).hasSize(4);
+                    assertThat(table.getColumns().get(0).getHeaderIndexLabel()).isEqualTo("A");
+                    assertThat(table.getColumns().get(1).getHeaderIndexLabel()).isEqualTo("B");
+                    assertThat(table.getColumns().get(2).getHeaderIndexLabel()).isEqualTo("C");
+                    assertThat(table.getColumns().get(3).getHeaderIndexLabel()).isEqualTo("D");
+                }, () -> fail(MISSING_TABLE));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialTableContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
 }

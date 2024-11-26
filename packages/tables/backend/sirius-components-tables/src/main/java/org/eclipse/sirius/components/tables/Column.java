@@ -36,9 +36,11 @@ public final class Column {
 
     private UUID descriptionId;
 
-    private String label;
+    private String headerLabel;
 
-    private List<String> iconURLs;
+    private List<String> headerIconURLs;
+
+    private String headerIndexLabel;
 
     private Column() {
         // Prevent instantiation
@@ -60,12 +62,16 @@ public final class Column {
         return this.descriptionId;
     }
 
-    public String getLabel() {
-        return this.label;
+    public String getHeaderLabel() {
+        return this.headerLabel;
     }
 
-    public List<String> getIconURLs() {
-        return this.iconURLs;
+    public List<String> getHeaderIconURLs() {
+        return this.headerIconURLs;
+    }
+
+    public String getHeaderIndexLabel() {
+        return this.headerIndexLabel;
     }
 
     public static Builder newColumn(UUID id) {
@@ -75,7 +81,7 @@ public final class Column {
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, descriptionId: {2}, label: {3}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.descriptionId, this.label);
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.descriptionId, this.headerLabel);
     }
 
     /**
@@ -94,9 +100,11 @@ public final class Column {
 
         private String targetObjectKind;
 
-        private String label;
+        private String headerLabel;
 
-        private List<String> iconURLs;
+        private List<String> headerIconURLs;
+
+        private String headerIndexLabel;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -117,13 +125,18 @@ public final class Column {
             return this;
         }
 
-        public Builder label(String label) {
-            this.label = Objects.requireNonNull(label);
+        public Builder headerLabel(String headerLabel) {
+            this.headerLabel = Objects.requireNonNull(headerLabel);
             return this;
         }
 
-        public Builder iconURLs(List<String> iconURLs) {
-            this.iconURLs = Objects.requireNonNull(iconURLs);
+        public Builder headerIconURLs(List<String> headerIconURLs) {
+            this.headerIconURLs = Objects.requireNonNull(headerIconURLs);
+            return this;
+        }
+
+        public Builder headerIndexLabel(String headerIndexLabel) {
+            this.headerIndexLabel = Objects.requireNonNull(headerIndexLabel);
             return this;
         }
 
@@ -133,8 +146,9 @@ public final class Column {
             column.descriptionId = Objects.requireNonNull(this.descriptionId);
             column.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             column.targetObjectKind = Objects.requireNonNull(this.targetObjectKind);
-            column.label = Objects.requireNonNull(this.label);
-            column.iconURLs = Objects.requireNonNull(this.iconURLs);
+            column.headerLabel = Objects.requireNonNull(this.headerLabel);
+            column.headerIconURLs = Objects.requireNonNull(this.headerIconURLs);
+            column.headerIndexLabel = Objects.requireNonNull(this.headerIndexLabel);
             return column;
         }
     }

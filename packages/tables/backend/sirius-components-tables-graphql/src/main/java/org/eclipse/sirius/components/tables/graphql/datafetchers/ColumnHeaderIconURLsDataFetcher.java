@@ -28,12 +28,12 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author frouene
  */
-@QueryDataFetcher(type = "Column", field = "iconURLs")
-public class ColumnIconURLsDataFetcher implements IDataFetcherWithFieldCoordinates<List<String>> {
+@QueryDataFetcher(type = "Column", field = "headerIconURLs")
+public class ColumnHeaderIconURLsDataFetcher implements IDataFetcherWithFieldCoordinates<List<String>> {
 
     private final IImageURLSanitizer imageURLSanitizer;
 
-    public ColumnIconURLsDataFetcher(IImageURLSanitizer imageURLSanitizer) {
+    public ColumnHeaderIconURLsDataFetcher(IImageURLSanitizer imageURLSanitizer) {
         this.imageURLSanitizer = Objects.requireNonNull(imageURLSanitizer);
     }
 
@@ -41,7 +41,7 @@ public class ColumnIconURLsDataFetcher implements IDataFetcherWithFieldCoordinat
     public List<String> get(DataFetchingEnvironment environment) throws Exception {
         Column source = environment.getSource();
 
-        return source.getIconURLs().stream()
+        return source.getHeaderIconURLs().stream()
                 .map(url -> this.imageURLSanitizer.sanitize(URLConstants.IMAGE_BASE_PATH, url))
                 .toList();
     }

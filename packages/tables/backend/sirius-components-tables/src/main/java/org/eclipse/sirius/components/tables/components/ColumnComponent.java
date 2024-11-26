@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.tables.components;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.IntStream;
 
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Fragment;
@@ -42,32 +43,42 @@ public class ColumnComponent implements IComponent {
         VariableManager variableManager = this.props.getVariableManager();
         ColumnDescription columnDescription = this.props.getColumnDescription();
 
-        List<Element> children = columnDescription.getSemanticElementsProvider().apply(variableManager).stream()
-                .map(object -> this.doRender(variableManager, object))
+        List<Object> elements = columnDescription.getSemanticElementsProvider().apply(variableManager);
+
+        List<Element> children = IntStream.range(0, elements.size())
+                .mapToObj(index -> this.doRender(variableManager, elements.get(index), index))
                 .toList();
+
         FragmentProps fragmentProps = new FragmentProps(children);
         return new Fragment(fragmentProps);
     }
 
-    private Element doRender(VariableManager variableManager, Object object) {
+    private Element doRender(VariableManager variableManager, Object object, int index) {
         ColumnDescription columnDescription = this.props.getColumnDescription();
 
         VariableManager columnVariableManager = variableManager.createChild();
         columnVariableManager.put(VariableManager.SELF, object);
+        columnVariableManager.put("columnIndex", index);
         String targetObjectId = columnDescription.getTargetObjectIdProvider().apply(columnVariableManager);
         String targetObjectKind = columnDescription.getTargetObjectKindProvider().apply(columnVariableManager);
-        String label = columnDescription.getLabelProvider().apply(columnVariableManager);
-        List<String> iconURLs = columnDescription.getIconURLsProvider().apply(columnVariableManager);
+
+        String headerLabel = columnDescription.getHeaderLabelProvider().apply(columnVariableManager);
+
+        List<String> headerIconURLs = columnDescription.getHeaderIconURLsProvider().apply(columnVariableManager);
+        String headerIndexLabel = columnDescription.getHeaderIndexLabelProvider().apply(columnVariableManager);
+
         UUID columnId = this.computeColumnId(targetObjectId);
         this.props.getCache().putColumnObject(columnId, object);
 
-        ColumnElementProps columnElementProps = ColumnElementProps.newColumnElementProps(columnId)
+        var columnElementProps = ColumnElementProps.newColumnElementProps(columnId)
                 .descriptionId(columnDescription.getId())
-                .label(label)
-                .iconURLs(iconURLs)
+                .headerLabel(headerLabel)
+                .headerIconURLs(headerIconURLs)
+                .headerIndexLabel(headerIndexLabel)
                 .targetObjectId(targetObjectId)
                 .targetObjectKind(targetObjectKind)
                 .build();
+
         return new Element(ColumnElementProps.TYPE, columnElementProps);
     }
 

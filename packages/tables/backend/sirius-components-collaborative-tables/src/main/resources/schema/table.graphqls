@@ -28,8 +28,9 @@ type Column {
   id: ID!
   targetObjectId: ID!
   targetObjectKind: String!
-  label: String!
-  iconURLs: [String!]!
+  headerLabel: String!
+  headerIconURLs: [String!]!
+  headerIndexLabel: String!
 }
 
 type Line {

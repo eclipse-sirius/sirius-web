@@ -129,10 +129,23 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
         var provider = new StructuralFeatureToDisplayNameProvider(new DisplayNameProvider(this.composedAdapterFactory));
         Map<EStructuralFeature, String> featureToDisplayName = provider.getColumnsStructuralFeaturesDisplayName(PapayaFactory.eINSTANCE.createClass(), PapayaPackage.eINSTANCE.getType());
 
+        Function<VariableManager, String> headerLabelProvider = variableManager -> variableManager.get(VariableManager.SELF, EStructuralFeature.class)
+                .map(featureToDisplayName::get)
+                .orElse("");
+
+        Function<VariableManager, List<String>> headerIconURLsProvider = variableManager -> variableManager.get(VariableManager.SELF, EStructuralFeature.class)
+                .map(this.labelService::getImagePath)
+                .orElse(List.of());
+
+        Function<VariableManager, String> headerIndexLabelProvider = variableManager -> variableManager.get("columnIndex", Integer.class)
+                .map(index -> String.valueOf((char) (index + 'A')))
+                .orElse("");
+
         ColumnDescription columnDescription = ColumnDescription.newColumnDescription(UUID.nameUUIDFromBytes("features".getBytes()))
                 .semanticElementsProvider(variableManager -> featureToDisplayName.keySet().stream().map(Object.class::cast).toList())
-                .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, EStructuralFeature.class).map(featureToDisplayName::get).orElse(""))
-                .iconURLsProvider(variableManager -> variableManager.get(VariableManager.SELF, EStructuralFeature.class).map(this.labelService::getImagePath).orElse(List.of()))
+                .headerLabelProvider(headerLabelProvider)
+                .headerIconURLsProvider(headerIconURLsProvider)
+                .headerIndexLabelProvider(headerIndexLabelProvider)
                 .targetObjectIdProvider(new ColumnTargetObjectIdProvider())
                 .targetObjectKindProvider(variableManager -> "")
                 .build();
@@ -173,5 +186,4 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .build());
         return cellDescriptions;
     }
-
 }

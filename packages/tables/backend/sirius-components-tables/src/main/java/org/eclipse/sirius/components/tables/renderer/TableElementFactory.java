@@ -115,8 +115,9 @@ public class TableElementFactory implements IElementFactory {
 
             return Column.newColumn(columnElementProps.id())
                     .descriptionId(columnElementProps.descriptionId())
-                    .label(columnElementProps.label())
-                    .iconURLs(columnElementProps.iconURLs())
+                    .headerLabel(columnElementProps.headerLabel())
+                    .headerIconURLs(columnElementProps.headerIconURLs())
+                    .headerIndexLabel(columnElementProps.headerIndexLabel())
                     .targetObjectId(columnElementProps.targetObjectId())
                     .targetObjectKind(columnElementProps.targetObjectKind())
                     .build();
