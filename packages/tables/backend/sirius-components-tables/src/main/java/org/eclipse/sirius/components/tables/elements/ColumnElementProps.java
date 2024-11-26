@@ -23,14 +23,22 @@ import org.eclipse.sirius.components.representations.IProps;
  *
  * @author lfasani
  */
-public record ColumnElementProps(UUID id, UUID descriptionId, String label, List<String> iconURLs, String targetObjectId, String targetObjectKind) implements IProps {
+public record ColumnElementProps(
+        UUID id,
+        UUID descriptionId,
+        String headerLabel,
+        List<String> headerIconURLs,
+        String headerIndexLabel,
+        String targetObjectId,
+        String targetObjectKind) implements IProps {
 
     public static final String TYPE = "Column";
 
     public ColumnElementProps {
         Objects.requireNonNull(id);
-        Objects.requireNonNull(label);
-        Objects.requireNonNull(iconURLs);
+        Objects.requireNonNull(headerLabel);
+        Objects.requireNonNull(headerIconURLs);
+        Objects.requireNonNull(headerIndexLabel);
         Objects.requireNonNull(descriptionId);
         Objects.requireNonNull(targetObjectId);
         Objects.requireNonNull(targetObjectKind);
@@ -56,9 +64,11 @@ public record ColumnElementProps(UUID id, UUID descriptionId, String label, List
 
         private String targetObjectKind;
 
-        private String label;
+        private String headerLabel;
 
-        private List<String> iconURLs;
+        private List<String> headerIconURLs;
+
+        private String headerIndexLabel;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -69,13 +79,18 @@ public record ColumnElementProps(UUID id, UUID descriptionId, String label, List
             return this;
         }
 
-        public Builder label(String label) {
-            this.label = Objects.requireNonNull(label);
+        public Builder headerLabel(String headerLabel) {
+            this.headerLabel = Objects.requireNonNull(headerLabel);
             return this;
         }
 
-        public Builder iconURLs(List<String> iconURLs) {
-            this.iconURLs = Objects.requireNonNull(iconURLs);
+        public Builder headerIconURLs(List<String> headerIconURLs) {
+            this.headerIconURLs = Objects.requireNonNull(headerIconURLs);
+            return this;
+        }
+
+        public Builder headerIndexLabel(String headerIndexLabel) {
+            this.headerIndexLabel = Objects.requireNonNull(headerIndexLabel);
             return this;
         }
 
@@ -90,7 +105,7 @@ public record ColumnElementProps(UUID id, UUID descriptionId, String label, List
         }
 
         public ColumnElementProps build() {
-            return new ColumnElementProps(this.id, this.descriptionId, this.label, this.iconURLs, this.targetObjectId, this.targetObjectKind);
+            return new ColumnElementProps(this.id, this.descriptionId, this.headerLabel, this.headerIconURLs, this.headerIndexLabel, this.targetObjectId, this.targetObjectKind);
         }
     }
 }

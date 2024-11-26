@@ -10,22 +10,28 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
 import { IconOverlay } from '@eclipse-sirius/sirius-components-core';
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import { RowHeaderProps } from './RowHeader.types';
+import { ColumnHeaderProps } from './ColumnHeader.types';
 
-export const RowHeader = ({ row }: RowHeaderProps) => {
+export const ColumnHeader = ({ column }: ColumnHeaderProps) => {
   const theme = useTheme();
   return (
-    <Box display="flex" alignItems="center" justifyContent="space-between">
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="space-between"
+      paddingX={theme.spacing(2)}>
       <Box>
-        <Typography noWrap>{row.headerIndexLabel}</Typography>
+        <Typography noWrap>{column.headerIndexLabel}</Typography>
       </Box>
       <Box display="flex" alignItems="center" gap={theme.spacing(1)}>
-        <IconOverlay iconURL={row.headerIconURLs} alt={row.headerLabel} />
-        <Typography noWrap>{row.headerLabel}</Typography>
+        <IconOverlay iconURL={column.headerIconURLs} alt={column.headerLabel} />
+        <Typography noWrap>{column.headerLabel}</Typography>
       </Box>
     </Box>
   );

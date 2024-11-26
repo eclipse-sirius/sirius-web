@@ -51,8 +51,9 @@ export interface GQLTable {
 
 export interface GQLColumn {
   id: string;
-  label: string;
-  iconURLs: string[];
+  headerLabel: string;
+  headerIconURLs: string[];
+  headerIndexLabel: string;
 }
 
 export interface GQLLine {

@@ -117,13 +117,6 @@ public final class Line {
             this.id = Objects.requireNonNull(id);
         }
 
-        private Builder(Line line) {
-            this.id = line.getId();
-            this.targetObjectId = line.getTargetObjectId();
-            this.descriptionId = line.getDescriptionId();
-            this.cells = line.getCells();
-        }
-
         public Builder targetObjectId(String targetObjectId) {
             this.targetObjectId = Objects.requireNonNull(targetObjectId);
             return this;

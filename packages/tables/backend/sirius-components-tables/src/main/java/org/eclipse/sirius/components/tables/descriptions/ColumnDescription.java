@@ -40,9 +40,11 @@ public final class ColumnDescription {
 
     private Function<VariableManager, String> targetObjectKindProvider;
 
-    private Function<VariableManager, String> labelProvider;
+    private Function<VariableManager, String> headerLabelProvider;
 
-    private Function<VariableManager, List<String>> iconURLsProvider;
+    private Function<VariableManager, List<String>> headerIconURLsProvider;
+
+    private Function<VariableManager, String> headerIndexLabelProvider;
 
     private Function<VariableManager, List<Object>> semanticElementsProvider;
 
@@ -54,12 +56,16 @@ public final class ColumnDescription {
         return this.id;
     }
 
-    public Function<VariableManager, String> getLabelProvider() {
-        return this.labelProvider;
+    public Function<VariableManager, String> getHeaderLabelProvider() {
+        return this.headerLabelProvider;
     }
 
-    public Function<VariableManager, List<String>> getIconURLsProvider() {
-        return this.iconURLsProvider;
+    public Function<VariableManager, List<String>> getHeaderIconURLsProvider() {
+        return this.headerIconURLsProvider;
+    }
+
+    public Function<VariableManager, String> getHeaderIndexLabelProvider() {
+        return this.headerIndexLabelProvider;
     }
 
     public Function<VariableManager, String> getTargetObjectIdProvider() {
@@ -98,9 +104,11 @@ public final class ColumnDescription {
 
         private Function<VariableManager, String> targetObjectKindProvider;
 
-        private Function<VariableManager, String> labelProvider;
+        private Function<VariableManager, String> headerLabelProvider;
 
-        private Function<VariableManager, List<String>> iconURLsProvider = variableManager -> List.of();
+        private Function<VariableManager, List<String>> headerIconURLsProvider;
+
+        private Function<VariableManager, String> headerIndexLabelProvider;
 
         private Function<VariableManager, List<Object>> semanticElementsProvider;
 
@@ -108,13 +116,18 @@ public final class ColumnDescription {
             this.id = Objects.requireNonNull(id);
         }
 
-        public Builder labelProvider(Function<VariableManager, String> labelProvider) {
-            this.labelProvider = Objects.requireNonNull(labelProvider);
+        public Builder headerLabelProvider(Function<VariableManager, String> headerLabelProvider) {
+            this.headerLabelProvider = Objects.requireNonNull(headerLabelProvider);
             return this;
         }
 
-        public Builder iconURLsProvider(Function<VariableManager, List<String>> iconURLsProvider) {
-            this.iconURLsProvider = Objects.requireNonNull(iconURLsProvider);
+        public Builder headerIconURLsProvider(Function<VariableManager, List<String>> headerIconURLsProvider) {
+            this.headerIconURLsProvider = Objects.requireNonNull(headerIconURLsProvider);
+            return this;
+        }
+
+        public Builder headerIndexLabelProvider(Function<VariableManager, String> headerIndexLabelProvider) {
+            this.headerIndexLabelProvider = Objects.requireNonNull(headerIndexLabelProvider);
             return this;
         }
 
@@ -128,7 +141,6 @@ public final class ColumnDescription {
             return this;
         }
 
-
         public Builder semanticElementsProvider(Function<VariableManager, List<Object>> semanticElementsProvider) {
             this.semanticElementsProvider = Objects.requireNonNull(semanticElementsProvider);
             return this;
@@ -138,8 +150,9 @@ public final class ColumnDescription {
             ColumnDescription columnDescription = new ColumnDescription();
             columnDescription.id = Objects.requireNonNull(this.id);
             columnDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
-            columnDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
-            columnDescription.iconURLsProvider = Objects.requireNonNull(this.iconURLsProvider);
+            columnDescription.headerLabelProvider = Objects.requireNonNull(this.headerLabelProvider);
+            columnDescription.headerIconURLsProvider = Objects.requireNonNull(this.headerIconURLsProvider);
+            columnDescription.headerIndexLabelProvider = Objects.requireNonNull(this.headerIndexLabelProvider);
             columnDescription.targetObjectKindProvider = Objects.requireNonNull(this.targetObjectKindProvider);
             columnDescription.semanticElementsProvider = Objects.requireNonNull(this.semanticElementsProvider);
 

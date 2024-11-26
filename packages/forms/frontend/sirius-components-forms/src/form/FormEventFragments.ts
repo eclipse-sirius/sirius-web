@@ -328,7 +328,7 @@ export const widgetFields = `
       id
       columns {
         id
-        label
+        headerLabel
         targetObjectId
         targetObjectKind 
       }

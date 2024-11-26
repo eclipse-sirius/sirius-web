@@ -31,12 +31,11 @@ public class TableNavigator {
         this.table = Objects.requireNonNull(table);
     }
 
-
-    public Column column(String label) {
+    public Column column(String headerLabel) {
         return this.table.getColumns().stream()
-                .filter(cell ->  cell.getLabel().equals(label))
+                .filter(column ->  column.getHeaderLabel().equals(headerLabel))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("No column found with the given value \"" + label + "\""));
+                .orElseThrow(() -> new IllegalArgumentException("No column found with the given value \"" + headerLabel + "\""));
     }
 
     public LineNavigator line(UUID id) {

@@ -45,7 +45,7 @@ const csvConfig = mkConfig({
 
 export const handleExportData = (table: GQLTable, getCellLabel: (cell: GQLCell) => string) => {
   const columIdToLabel = {};
-  table.columns.map((column) => (columIdToLabel[column.id] = column.label));
+  table.columns.map((column) => (columIdToLabel[column.id] = column.headerLabel));
 
   const csvData: CsvData[] = table.lines.map((line) => {
     const csvDatum: CsvData = {};

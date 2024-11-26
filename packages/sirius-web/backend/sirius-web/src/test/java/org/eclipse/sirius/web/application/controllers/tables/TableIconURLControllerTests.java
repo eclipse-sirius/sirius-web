@@ -63,7 +63,7 @@ public class TableIconURLControllerTests extends AbstractIntegrationTests {
                   id
                   columns {
                     id
-                    iconURLs
+                    headerIconURLs
                   }
                   lines {
                     id
@@ -114,7 +114,7 @@ public class TableIconURLControllerTests extends AbstractIntegrationTests {
                     String typename = JsonPath.read(body, "$.data.tableEvent.__typename");
                     assertThat(typename).isEqualTo(TableRefreshedEventPayload.class.getSimpleName());
 
-                    List<List<String>> columnIconURLs = JsonPath.read(body, "$.data.tableEvent.table.columns[*].iconURLs");
+                    List<List<String>> columnIconURLs = JsonPath.read(body, "$.data.tableEvent.table.columns[*].headerIconURLs");
                     assertThat(columnIconURLs)
                             .isNotEmpty()
                             .allSatisfy(iconURLs -> {
