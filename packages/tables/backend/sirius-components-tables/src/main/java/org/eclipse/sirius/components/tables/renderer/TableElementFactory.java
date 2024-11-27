@@ -101,6 +101,9 @@ public class TableElementFactory implements IElementFactory {
                     .targetObjectId(lineElementProps.targetObjectId())
                     .targetObjectKind(lineElementProps.targetObjectKind())
                     .descriptionId(lineElementProps.descriptionId())
+                    .headerLabel(lineElementProps.headerLabel())
+                    .headerIconURLs(lineElementProps.headerIconURLs())
+                    .headerIndexLabel(lineElementProps.headerIndexLabel())
                     .cells(cells)
                     .build();
         }

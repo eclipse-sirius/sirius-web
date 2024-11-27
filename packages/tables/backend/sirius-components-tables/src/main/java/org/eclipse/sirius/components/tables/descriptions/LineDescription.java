@@ -37,6 +37,12 @@ public final class LineDescription {
 
     private Function<VariableManager, List<Object>> semanticElementsProvider;
 
+    private Function<VariableManager, String> headerLabelProvider;
+
+    private Function<VariableManager, List<String>> headerIconURLsProvider;
+
+    private Function<VariableManager, String> headerIndexLabelProvider;
+
     private LineDescription() {
         // Prevent instantiation
     }
@@ -55,6 +61,18 @@ public final class LineDescription {
 
     public Function<VariableManager, List<Object>> getSemanticElementsProvider() {
         return this.semanticElementsProvider;
+    }
+
+    public Function<VariableManager, String> getHeaderLabelProvider() {
+        return this.headerLabelProvider;
+    }
+
+    public Function<VariableManager, List<String>> getHeaderIconURLsProvider() {
+        return this.headerIconURLsProvider;
+    }
+
+    public Function<VariableManager, String> getHeaderIndexLabelProvider() {
+        return this.headerIndexLabelProvider;
     }
 
     public static Builder newLineDescription(UUID id) {
@@ -83,6 +101,12 @@ public final class LineDescription {
 
         private Function<VariableManager, List<Object>> semanticElementsProvider;
 
+        private Function<VariableManager, String> headerLabelProvider;
+
+        private Function<VariableManager, List<String>> headerIconURLsProvider;
+
+        private Function<VariableManager, String> headerIndexLabelProvider;
+
         public Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -102,12 +126,30 @@ public final class LineDescription {
             return this;
         }
 
+        public Builder headerLabelProvider(Function<VariableManager, String> headerLabelProvider) {
+            this.headerLabelProvider = Objects.requireNonNull(headerLabelProvider);
+            return this;
+        }
+
+        public Builder headerIconURLsProvider(Function<VariableManager, List<String>> headerIconURLsProvider) {
+            this.headerIconURLsProvider = Objects.requireNonNull(headerIconURLsProvider);
+            return this;
+        }
+
+        public Builder headerIndexLabelProvider(Function<VariableManager, String> headerIndexLabelProvider) {
+            this.headerIndexLabelProvider = Objects.requireNonNull(headerIndexLabelProvider);
+            return this;
+        }
+
         public LineDescription build() {
             LineDescription lineDescription = new LineDescription();
             lineDescription.id = Objects.requireNonNull(this.id);
             lineDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             lineDescription.targetObjectKindProvider = Objects.requireNonNull(this.targetObjectKindProvider);
             lineDescription.semanticElementsProvider = Objects.requireNonNull(this.semanticElementsProvider);
+            lineDescription.headerLabelProvider = Objects.requireNonNull(this.headerLabelProvider);
+            lineDescription.headerIconURLsProvider = Objects.requireNonNull(this.headerIconURLsProvider);
+            lineDescription.headerIndexLabelProvider = Objects.requireNonNull(this.headerIndexLabelProvider);
             return lineDescription;
         }
     }

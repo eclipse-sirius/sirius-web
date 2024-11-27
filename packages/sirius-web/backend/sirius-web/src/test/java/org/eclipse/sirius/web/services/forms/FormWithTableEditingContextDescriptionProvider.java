@@ -137,6 +137,9 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
                 .targetObjectIdProvider(this::getTargetObjectId)
                 .targetObjectKindProvider(this::getTargetObjectKind)
                 .semanticElementsProvider(semanticElementsProvider)
+                .headerLabelProvider(variableManager -> "")
+                .headerIconURLsProvider(variableManager -> List.of())
+                .headerIndexLabelProvider(variableManager -> "")
                 .build();
         lineDescriptions.add(lineDescription);
 

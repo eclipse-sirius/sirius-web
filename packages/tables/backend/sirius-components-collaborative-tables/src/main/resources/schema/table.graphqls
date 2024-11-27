@@ -37,6 +37,9 @@ type Line {
   targetObjectId: ID!
   targetObjectKind: String!
   cells: [Cell!]!
+  headerLabel: String!
+  headerIconURLs: [String!]!
+  headerIndexLabel: String!
 }
 
 interface Cell {

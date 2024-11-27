@@ -37,6 +37,12 @@ public final class Line {
 
     private List<ICell> cells;
 
+    private String headerLabel;
+
+    private List<String> headerIconURLs;
+
+    private String headerIndexLabel;
+
     private Line() {
         // Prevent instantiation
     }
@@ -59,6 +65,18 @@ public final class Line {
 
     public List<ICell> getCells() {
         return this.cells;
+    }
+
+    public String getHeaderLabel() {
+        return this.headerLabel;
+    }
+
+    public List<String> getHeaderIconURLs() {
+        return this.headerIconURLs;
+    }
+
+    public String getHeaderIndexLabel() {
+        return this.headerIndexLabel;
     }
 
     public static Builder newLine(UUID id) {
@@ -88,6 +106,12 @@ public final class Line {
         private UUID descriptionId;
 
         private List<ICell> cells;
+
+        private String headerLabel;
+
+        private List<String> headerIconURLs;
+
+        private String headerIndexLabel;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -120,6 +144,21 @@ public final class Line {
             return this;
         }
 
+        public Builder headerLabel(String headerLabel) {
+            this.headerLabel = Objects.requireNonNull(headerLabel);
+            return this;
+        }
+
+        public Builder headerIconURLs(List<String> headerIconURLs) {
+            this.headerIconURLs = Objects.requireNonNull(headerIconURLs);
+            return this;
+        }
+
+        public Builder headerIndexLabel(String headerIndexLabel) {
+            this.headerIndexLabel = Objects.requireNonNull(headerIndexLabel);
+            return this;
+        }
+
         public Line build() {
             Line line = new Line();
             line.id = Objects.requireNonNull(this.id);
@@ -127,6 +166,9 @@ public final class Line {
             line.targetObjectKind = Objects.requireNonNull(this.targetObjectKind);
             line.descriptionId = Objects.requireNonNull(this.descriptionId);
             line.cells = Objects.requireNonNull(this.cells);
+            line.headerLabel = Objects.requireNonNull(this.headerLabel);
+            line.headerIconURLs = Objects.requireNonNull(this.headerIconURLs);
+            line.headerIndexLabel = Objects.requireNonNull(this.headerIndexLabel);
             return line;
         }
     }

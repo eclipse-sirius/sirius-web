@@ -59,6 +59,9 @@ export interface GQLLine {
   id: string;
   targetObjectId: string;
   cells: GQLCell[];
+  headerLabel: string;
+  headerIconURLs: string[];
+  headerIndexLabel: string;
 }
 
 export interface GQLCell {
