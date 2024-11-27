@@ -45,6 +45,8 @@ public final class TableDescription implements IRepresentationDescription {
 
     private Function<VariableManager, String> labelProvider;
 
+    private Predicate<VariableManager> isStripeRowPredicate;
+
     private List<LineDescription> lineDescriptions;
 
     private List<ColumnDescription> columnDescriptions;
@@ -81,6 +83,10 @@ public final class TableDescription implements IRepresentationDescription {
 
     public Function<VariableManager, String> getLabelProvider() {
         return this.labelProvider;
+    }
+
+    public Predicate<VariableManager> getIsStripeRowPredicate() {
+        return this.isStripeRowPredicate;
     }
 
     public List<LineDescription> getLineDescriptions() {
@@ -129,6 +135,8 @@ public final class TableDescription implements IRepresentationDescription {
 
         private Function<VariableManager, String> labelProvider;
 
+        private Predicate<VariableManager> isStripeRowPredicate;
+
         private List<LineDescription> lineDescriptions;
 
         private List<ColumnDescription> columnDescriptions;
@@ -166,6 +174,11 @@ public final class TableDescription implements IRepresentationDescription {
             return this;
         }
 
+        public Builder isStripeRowPredicate(Predicate<VariableManager> isStripeRowPredicate) {
+            this.isStripeRowPredicate = Objects.requireNonNull(isStripeRowPredicate);
+            return this;
+        }
+
         public Builder lineDescriptions(List<LineDescription> lineDescriptions) {
             this.lineDescriptions = Objects.requireNonNull(lineDescriptions);
             return this;
@@ -194,6 +207,7 @@ public final class TableDescription implements IRepresentationDescription {
             tableDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             tableDescription.targetObjectKindProvider = Objects.requireNonNull(this.targetObjectKindProvider);
             tableDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
+            tableDescription.isStripeRowPredicate = Objects.requireNonNull(this.isStripeRowPredicate);
             tableDescription.lineDescriptions = Objects.requireNonNull(this.lineDescriptions);
             tableDescription.columnDescriptions = Objects.requireNonNull(this.columnDescriptions);
             tableDescription.cellDescriptions = Objects.requireNonNull(this.cellDescriptions);

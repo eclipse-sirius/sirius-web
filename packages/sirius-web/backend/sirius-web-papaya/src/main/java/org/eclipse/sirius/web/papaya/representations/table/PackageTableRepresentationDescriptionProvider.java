@@ -97,6 +97,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
                 .cellDescriptions(this.getCellDescriptions())
                 .iconURLsProvider(variableManager -> List.of("/papaya-representations/package-table.svg"))
+                .isStripeRowPredicate(variableManager -> true)
                 .build();
 
         return List.of(tableDescription);

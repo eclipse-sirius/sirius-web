@@ -68,6 +68,7 @@ public class TableElementFactory implements IElementFactory {
                     .targetObjectId(tableElementProps.targetObjectId())
                     .targetObjectKind(tableElementProps.targetObjectKind())
                     .descriptionId(tableElementProps.descriptionId())
+                    .stripeRow(tableElementProps.stripeRow())
                     .lines(lines)
                     .columns(columns)
                     .build();
