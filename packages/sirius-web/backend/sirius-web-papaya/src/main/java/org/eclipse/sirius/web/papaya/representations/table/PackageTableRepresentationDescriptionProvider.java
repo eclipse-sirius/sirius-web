@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -65,10 +66,25 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
 
     @Override
     public List<IRepresentationDescription> getRepresentationDescriptions(IEditingContext editingContext) {
+        Function<VariableManager, String> headerLabelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .map(this.labelService::getLabel)
+                .orElse(null);
+
+        Function<VariableManager, List<String>> headerIconURLsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .map(this.labelService::getImagePath)
+                .orElse(List.of());
+
+        Function<VariableManager, String> headerIndexLabelProvider = variableManager -> variableManager.get("rowIndex", Integer.class)
+                .map(String::valueOf)
+                .orElse(null);
+
         var lineDescription = LineDescription.newLineDescription(UUID.nameUUIDFromBytes("Table - Line".getBytes()))
                 .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
                 .semanticElementsProvider(this::getSemanticElements)
+                .headerLabelProvider(headerLabelProvider)
+                .headerIconURLsProvider(headerIconURLsProvider)
+                .headerIndexLabelProvider(headerIndexLabelProvider)
                 .build();
 
         var tableDescription = TableDescription.newTableDescription(TABLE_DESCRIPTION_ID)
@@ -85,6 +101,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
 
         return List.of(tableDescription);
     }
+
 
     private boolean canCreate(VariableManager variableManager) {
         return variableManager.get(VariableManager.SELF, Object.class)

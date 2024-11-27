@@ -55,21 +55,25 @@ import reactor.test.StepVerifier;
 public class TableIconURLControllerTests extends AbstractIntegrationTests {
 
     private static final String TABLE_EVENT_SUBSCRIPTION = """
-            subscription tableEvent($input: TableEventInput!) {
-                       tableEvent(input: $input) {
-                         __typename
-                         ... on TableRefreshedEventPayload {
-                            table {
-                              id
-                              columns {
-                                id
-                                iconURLs
-                              }
-                           }
-                         }
-                       }
-            }
-            """;
+           subscription tableEvent($input: TableEventInput!) {
+             tableEvent(input: $input) {
+               __typename
+               ... on TableRefreshedEventPayload {
+                table {
+                  id
+                  columns {
+                    id
+                    iconURLs
+                  }
+                  lines {
+                    id
+                    headerIconURLs
+                  }
+                }
+              }
+             }
+           }
+           """;
 
     @Autowired
     private IGivenCreatedRepresentation givenCreatedRepresentation;
@@ -110,13 +114,23 @@ public class TableIconURLControllerTests extends AbstractIntegrationTests {
                     String typename = JsonPath.read(body, "$.data.tableEvent.__typename");
                     assertThat(typename).isEqualTo(TableRefreshedEventPayload.class.getSimpleName());
 
-                    List<List<String>> tableStubRowIconURLs = JsonPath.read(body, "$.data.tableEvent.table.columns[*].iconURLs");
-                    assertThat(tableStubRowIconURLs)
+                    List<List<String>> columnIconURLs = JsonPath.read(body, "$.data.tableEvent.table.columns[*].iconURLs");
+                    assertThat(columnIconURLs)
                             .isNotEmpty()
                             .allSatisfy(iconURLs -> {
                                 assertThat(iconURLs)
                                         .isNotEmpty()
                                         .hasSize(1)
+                                        .allSatisfy(iconURL -> assertThat(iconURL).startsWith(URLConstants.IMAGE_BASE_PATH));
+                            });
+
+                    List<List<String>> rowIconURLs = JsonPath.read(body, "$.data.tableEvent.table.lines[*].headerIconURLs");
+                    assertThat(rowIconURLs)
+                            .isNotEmpty()
+                            .allSatisfy(iconURLs -> {
+                                assertThat(iconURLs)
+                                        .isNotEmpty()
+                                        .hasSize(2)
                                         .allSatisfy(iconURL -> assertThat(iconURL).startsWith(URLConstants.IMAGE_BASE_PATH));
                             });
                 }, () -> fail("Missing table"));

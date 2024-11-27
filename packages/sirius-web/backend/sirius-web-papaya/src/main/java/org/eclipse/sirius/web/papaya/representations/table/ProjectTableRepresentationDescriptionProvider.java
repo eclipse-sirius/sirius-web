@@ -69,6 +69,9 @@ public class ProjectTableRepresentationDescriptionProvider implements IEditingCo
                 .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
                 .semanticElementsProvider(this::getSemanticElements)
+                .headerLabelProvider(variableManager -> "")
+                .headerIconURLsProvider(variableManager -> List.of())
+                .headerIndexLabelProvider(variableManager -> "")
                 .build();
 
         var tableDescription = TableDescription.newTableDescription(TABLE_DESCRIPTION_ID)

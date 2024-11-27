@@ -16,6 +16,7 @@ import { MaterialReactTable, useMaterialReactTable } from 'material-react-table'
 import { memo } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { ExportAllDataButton } from '../actions/ExportAllDataButton';
+import { RowHeader } from '../rows/RowHeader';
 import { TableProps } from './TableContent.types';
 import { useTableColumns } from './useTableColumns';
 
@@ -44,6 +45,7 @@ export const TableContent = memo(({ editingContextId, representationId, table, r
     editDisplayMode: 'cell',
     enableEditing: !readOnly,
     enableStickyHeader: true,
+    enableRowActions: true,
     muiTableBodyRowProps: ({ row }) => {
       return {
         onClick: () => {
@@ -63,6 +65,12 @@ export const TableContent = memo(({ editingContextId, representationId, table, r
         <ExportAllDataButton table={table} />
       </Box>
     ),
+    displayColumnDefOptions: {
+      'mrt-row-actions': {
+        header: '',
+      },
+    },
+    renderRowActions: ({ row }) => <RowHeader row={row.original} />,
   });
 
   return <MaterialReactTable table={muiTable} />;

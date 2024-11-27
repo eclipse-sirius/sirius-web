@@ -56,10 +56,11 @@ public class LineComponent implements IComponent {
 
         List<Element> children = new ArrayList<>();
         List<Object> semanticElements = lineDescription.getSemanticElementsProvider().apply(variableManager);
-
+        var index = 0;
         for (Object semanticElement : semanticElements) {
             VariableManager lineVariableManager = variableManager.createChild();
             lineVariableManager.put(VariableManager.SELF, semanticElement);
+            lineVariableManager.put("rowIndex", index++);
 
             String targetObjectId = lineDescription.getTargetObjectIdProvider().apply(lineVariableManager);
             var optionalPreviousLine = linesRequestor.getByTargetObjectId(targetObjectId);
@@ -77,15 +78,22 @@ public class LineComponent implements IComponent {
 
         String targetObjectKind = lineDescription.getTargetObjectKindProvider().apply(lineVariableManager);
 
+        String headerLabel = lineDescription.getHeaderLabelProvider().apply(lineVariableManager);
+        List<String> headerIconURLs = lineDescription.getHeaderIconURLsProvider().apply(lineVariableManager);
+        String headerIndexLabel = lineDescription.getHeaderIndexLabelProvider().apply(lineVariableManager);
+
         var cells = this.getCells(lineVariableManager, lineId);
 
         List<Element> children = new ArrayList<>();
         children.addAll(cells);
 
-        LineElementProps lineElementProps = LineElementProps.newLineElementProps(lineId)
+        var lineElementProps = LineElementProps.newLineElementProps(lineId)
                 .descriptionId(lineDescription.getId())
                 .targetObjectId(targetObjectId)
                 .targetObjectKind(targetObjectKind)
+                .headerLabel(headerLabel)
+                .headerIconURLs(headerIconURLs)
+                .headerIndexLabel(headerIndexLabel)
                 .children(children)
                 .build();
 
