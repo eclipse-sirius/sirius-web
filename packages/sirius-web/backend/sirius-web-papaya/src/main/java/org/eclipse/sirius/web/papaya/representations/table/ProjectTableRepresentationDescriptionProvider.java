@@ -84,6 +84,7 @@ public class ProjectTableRepresentationDescriptionProvider implements IEditingCo
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
                 .cellDescriptions(this.getCellDescriptions())
                 .iconURLsProvider(variableManager -> List.of("/papaya-representations/project-table.svg"))
+                .isStripeRowPredicate(variableManager -> false)
                 .build();
 
         return List.of(tableDescription);

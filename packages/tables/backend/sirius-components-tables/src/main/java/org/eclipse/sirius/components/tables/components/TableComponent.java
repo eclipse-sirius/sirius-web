@@ -49,6 +49,7 @@ public class TableComponent implements IComponent {
         String id = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class).orElseGet(() -> UUID.randomUUID().toString());
         String targetObjectId = tableDescription.getTargetObjectIdProvider().apply(variableManager);
         String targetObjectKind = tableDescription.getTargetObjectKindProvider().apply(variableManager);
+        boolean stripeRow = tableDescription.getIsStripeRowPredicate().test(variableManager);
 
         TableRenderingCache cache = new TableRenderingCache();
         ITableElementRequestor tableElementRequestor = new TableElementRequestor();
@@ -77,6 +78,7 @@ public class TableComponent implements IComponent {
                 .targetObjectId(targetObjectId)
                 .targetObjectKind(targetObjectKind)
                 .descriptionId(tableDescription.getId())
+                .stripeRow(stripeRow)
                 .children(children)
                 .build();
 

@@ -45,6 +45,7 @@ export interface GQLTableRefreshedEventPayload extends GQLTableEventPayload {
 export interface GQLTable {
   id: string;
   targetObjectId: string;
+  stripeRow: boolean;
   columns: GQLColumn[];
   lines: GQLLine[];
 }

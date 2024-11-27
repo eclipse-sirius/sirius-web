@@ -31,6 +31,7 @@ export const getTableEventSubscription = `
       ... on TableRefreshedEventPayload {
         table {
           id
+          stripeRow
           columns {
             id
             headerLabel

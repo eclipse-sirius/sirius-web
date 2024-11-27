@@ -20,6 +20,7 @@ type Table implements Representation {
   metadata: RepresentationMetadata!
   targetObjectId: ID!
   targetObjectKind: String!
+  stripeRow: Boolean!
   columns: [Column!]!
   lines: [Line!]!
 }

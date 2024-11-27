@@ -39,6 +39,8 @@ public final class Table implements IRepresentation {
 
     private String descriptionId;
 
+    private boolean stripeRow;
+
     private List<Line> lines;
 
     private List<Column> columns;
@@ -69,6 +71,10 @@ public final class Table implements IRepresentation {
     @Override
     public String getDescriptionId() {
         return this.descriptionId;
+    }
+
+    public boolean isStripeRow() {
+        return this.stripeRow;
     }
 
     public List<Line> getLines() {
@@ -103,13 +109,15 @@ public final class Table implements IRepresentation {
 
         private final String id;
 
-        private String kind = KIND;
+        private final String kind = KIND;
 
         private String targetObjectId;
 
         private String targetObjectKind;
 
         private String descriptionId;
+
+        private boolean stripeRow;
 
         private List<Line> lines;
 
@@ -142,6 +150,11 @@ public final class Table implements IRepresentation {
             return this;
         }
 
+        public Builder stripeRow(boolean stripeRow) {
+            this.stripeRow = stripeRow;
+            return this;
+        }
+
         public Builder lines(List<Line> lines) {
             this.lines = Objects.requireNonNull(lines);
             return this;
@@ -159,6 +172,7 @@ public final class Table implements IRepresentation {
             table.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             table.targetObjectKind = Objects.requireNonNull(this.targetObjectKind);
             table.descriptionId = Objects.requireNonNull(this.descriptionId);
+            table.stripeRow = this.stripeRow;
             table.lines = Objects.requireNonNull(this.lines);
             table.columns = Objects.requireNonNull(this.columns);
             return table;
