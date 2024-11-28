@@ -14,10 +14,12 @@ package org.eclipse.sirius.web.application.controllers.projects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.RestCommit;
+import org.eclipse.sirius.web.application.project.data.versioning.dto.RestCommitRequest;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -106,9 +108,11 @@ public class CommitRestControllerIntegrationTests extends AbstractIntegrationTes
                 .build();
 
         var uri = String.format("/api/rest/projects/%s/commits", TestIdentifiers.UML_SAMPLE_PROJECT);
+        var requestBody = new RestCommitRequest(List.of(), null);
         webTestClient
                 .post()
                 .uri(uri)
+                .bodyValue(requestBody)
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -118,16 +122,18 @@ public class CommitRestControllerIntegrationTests extends AbstractIntegrationTes
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given the Sirius Web REST API, when we ask for the creation of a commit on an ivalid project, then it should return an empty response")
+    @DisplayName("Given the Sirius Web REST API, when we ask for the creation of a commit on an invalid project, then it should return an empty response")
     public void givenSiriusWebRestAPIWhenWeAskForTheCreationOfACommitOnAnInvalidProjectThenItShouldReturnAnEmptyResponse() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
                 .build();
 
         var uri = String.format("/api/rest/projects/%s/commits", TestIdentifiers.INVALID_PROJECT);
+        var requestBody = new RestCommitRequest(List.of(), null);
         webTestClient
                 .post()
                 .uri(uri)
+                .bodyValue(requestBody)
                 .exchange()
                 .expectStatus()
                 .isOk()

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,17 +12,19 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.data.versioning.dto;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.core.api.IPayload;
 
 /**
- * The input object of the CreateCommitRestEventHandler.
+ * The payload for the "deleteBranch" REST API on success.
  *
  * @author arichard
  */
-public record CreateCommitRestInput(UUID id, Optional<UUID> branchId, List<RestDataVersion> change, String description) implements IInput {
-
+public record DeleteBranchRestSuccessPayload(UUID id, RestBranch branch) implements IPayload {
+    public DeleteBranchRestSuccessPayload {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(branch);
+    }
 }

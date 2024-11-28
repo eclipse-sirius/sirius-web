@@ -36,7 +36,8 @@ public record RestDataVersion(
         UUID id,
 
         @Schema(requiredMode = RequiredMode.REQUIRED, description = "DataVersion")
-        @JsonProperty("@type") String type,
+        @JsonProperty("@type")
+        String type,
 
         @Schema(requiredMode = RequiredMode.REQUIRED, description = "The Data Identity common to all versions of the same Data")
         RestDataIdentity identity,
