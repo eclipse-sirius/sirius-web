@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.ChangeType;
+import org.eclipse.sirius.web.application.project.data.versioning.dto.RestBranch;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.RestCommit;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.RestDataVersion;
 
@@ -37,4 +38,12 @@ public interface IDefaultProjectDataVersioningRestService {
     List<RestDataVersion> getCommitChange(IEditingContext editingContext, UUID commitId, List<ChangeType> changeTypes);
 
     RestDataVersion getCommitChangeById(IEditingContext editingContext, UUID commitId, UUID changeId);
+
+    List<RestBranch> getBranches(IEditingContext editingContext);
+
+    RestBranch createBranch(IEditingContext editingContext, String branchName, UUID commitId);
+
+    RestBranch getBranchById(IEditingContext editingContext, UUID branchId);
+
+    RestBranch deleteBranch(IEditingContext editingContext, UUID branchId);
 }

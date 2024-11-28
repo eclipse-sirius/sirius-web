@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,27 +21,35 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 
 /**
- * REST DataIdentity DTO.
+ * REST ExternalDataRequest DTO.
  *
  * @author arichard
  */
-@Schema(name = "DataIdentity", description = "DataIdentity is a subclass of Record that represents a unique, version-independent representation of Data through its lifecycle. A DataIdentity is associated with 1 or more DataVersion records that represent different versions of the same Data.")
-public record RestDataIdentity(
-
+@Schema(name = "ExternalRelationship", description = """
+        ExternalData is a realization of Data, and represents a resource external to a given tool or
+        repository. ExternalData is defined only for the purpose of defining an ExternalRelationship.
+        """)
+public record RestExternalDataRequest(
         @Schema(requiredMode = RequiredMode.REQUIRED, description = "The UUID assigned to the record")
         @JsonProperty("@id")
         UUID id,
 
-        @Schema(requiredMode = RequiredMode.REQUIRED, description = "DataIdentity")
+        @Schema(requiredMode = RequiredMode.REQUIRED, description = "ExternalData")
         @JsonProperty("@type")
-        String type) {
+        String type,
 
-    public RestDataIdentity {
+        @Schema(requiredMode = RequiredMode.REQUIRED, description = "The URI of the resource represented by the ExternalData")
+        String resourceIdentifier) implements IRestDataRequest {
+
+    public RestExternalDataRequest {
         Objects.requireNonNull(id);
         Objects.requireNonNull(type);
+        Objects.requireNonNull(resourceIdentifier);
     }
 
-    public RestDataIdentity(UUID id) {
-        this(id, "DataIdentity");
+    public RestExternalDataRequest(
+            UUID id,
+            String resourceIdentifier) {
+        this(id, "ExternalData", resourceIdentifier);
     }
 }

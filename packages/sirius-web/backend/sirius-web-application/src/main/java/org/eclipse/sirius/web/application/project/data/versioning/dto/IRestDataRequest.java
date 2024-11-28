@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,17 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.data.versioning.dto;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-import org.eclipse.sirius.components.core.api.IInput;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
- * The input object of the CreateCommitRestEventHandler.
+ * REST DataRequest DTO.
  *
  * @author arichard
  */
-public record CreateCommitRestInput(UUID id, Optional<UUID> branchId, List<RestDataVersion> change, String description) implements IInput {
-
+@Schema(name = "DataRequest", description = "DataRequest is used by DataVersionRequest in CommitRequest in the createCommit POST request. It's one of ElementRequest, ExternalDataRequest, ExternalRelationshipRequest or ProjectUsageRequest.")
+public interface IRestDataRequest {
 }

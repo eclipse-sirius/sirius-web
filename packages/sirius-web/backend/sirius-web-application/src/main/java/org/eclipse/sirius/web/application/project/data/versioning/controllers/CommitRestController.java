@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.application.project.data.versioning.controllers;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -31,12 +32,16 @@ import org.eclipse.sirius.web.application.project.data.versioning.dto.GetCommitC
 import org.eclipse.sirius.web.application.project.data.versioning.dto.GetCommitsRestInput;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.GetCommitsRestSuccessPayload;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.RestCommit;
+import org.eclipse.sirius.web.application.project.data.versioning.dto.RestCommitRequest;
+import org.eclipse.sirius.web.application.project.data.versioning.dto.RestDataIdentity;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.RestDataVersion;
+import org.eclipse.sirius.web.application.project.data.versioning.dto.RestDataVersionRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -119,8 +124,15 @@ public class CommitRestController {
         })
     })
     @PostMapping
-    public ResponseEntity<RestCommit> createCommit(@PathVariable String projectId, @RequestParam Optional<UUID> branchId) {
-        var payload = this.editingContextDispatcher.dispatchMutation(projectId, new CreateCommitRestInput(UUID.randomUUID(), branchId)).block(Duration.ofSeconds(TIMEOUT));
+    public ResponseEntity<RestCommit> createCommit(@PathVariable String projectId, @RequestParam Optional<UUID> branchId, @RequestBody RestCommitRequest requestBody) {
+        List<RestDataVersionRequest> dataVersionRequests = requestBody.change();
+        List<RestDataVersion> change = new ArrayList<>();
+        if (dataVersionRequests != null) {
+            for (RestDataVersionRequest dataVersionRequest : dataVersionRequests) {
+                change.add(new RestDataVersion(UUID.randomUUID(), new RestDataIdentity(dataVersionRequest.identity().id()), dataVersionRequest.payload()));
+            }
+        }
+        var payload = this.editingContextDispatcher.dispatchMutation(projectId, new CreateCommitRestInput(UUID.randomUUID(), branchId, change, requestBody.description())).block(Duration.ofSeconds(TIMEOUT));
         if (payload instanceof CreateCommitRestSuccessPayload successPayload) {
             return new ResponseEntity<>(successPayload.commit(), HttpStatus.CREATED);
         }
