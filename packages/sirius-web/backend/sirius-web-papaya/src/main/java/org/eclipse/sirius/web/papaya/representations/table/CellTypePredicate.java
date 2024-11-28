@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
 import org.eclipse.sirius.components.tables.elements.CheckboxCellElementProps;
+import org.eclipse.sirius.components.tables.elements.IconLabelCellElementProps;
 import org.eclipse.sirius.components.tables.elements.MultiSelectCellElementProps;
 import org.eclipse.sirius.components.tables.elements.SelectCellElementProps;
 import org.eclipse.sirius.components.tables.elements.TextfieldCellElementProps;
@@ -79,5 +80,9 @@ public class CellTypePredicate {
 
     public Predicate<VariableManager> isMultiselectCell() {
         return (variableManager) -> this.getCellType(variableManager).equals(MultiSelectCellElementProps.TYPE);
+    }
+
+    public Predicate<VariableManager> isIconLabelCell() {
+        return (variableManager) -> this.getCellType(variableManager).equals(IconLabelCellElementProps.TYPE);
     }
 }

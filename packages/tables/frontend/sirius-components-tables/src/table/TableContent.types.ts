@@ -76,6 +76,11 @@ export interface GQLTextfieldCell extends GQLCell {
   stringValue: string;
 }
 
+export interface GQLIconLabelCell extends GQLCell {
+  label: string;
+  iconURLs: string[];
+}
+
 export interface GQLCheckboxCell extends GQLCell {
   booleanValue: boolean;
 }

@@ -17,9 +17,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -35,6 +38,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.descriptions.CheckboxCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
 import org.eclipse.sirius.components.tables.descriptions.ICellDescription;
+import org.eclipse.sirius.components.tables.descriptions.IconLabelCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.LineDescription;
 import org.eclipse.sirius.components.tables.descriptions.MultiSelectCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.SelectCellDescription;
@@ -130,6 +134,15 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
         var provider = new StructuralFeatureToDisplayNameProvider(new DisplayNameProvider(this.composedAdapterFactory));
         Map<EStructuralFeature, String> featureToDisplayName = provider.getColumnsStructuralFeaturesDisplayName(PapayaFactory.eINSTANCE.createClass(), PapayaPackage.eINSTANCE.getType());
 
+        ColumnDescription iconColumnDescription = ColumnDescription.newColumnDescription(UUID.nameUUIDFromBytes("icon".getBytes()))
+                .semanticElementsProvider(variableManager -> List.of("IconColumn"))
+                .headerLabelProvider(variableManager -> "Icon")
+                .headerIconURLsProvider(variableManager -> List.of("/icons/svg/Default.svg"))
+                .headerIndexLabelProvider(variableManager -> "")
+                .targetObjectIdProvider(new ColumnTargetObjectIdProvider())
+                .targetObjectKindProvider(variableManager -> "")
+                .build();
+
         Function<VariableManager, String> headerLabelProvider = variableManager -> variableManager.get(VariableManager.SELF, EStructuralFeature.class)
                 .map(featureToDisplayName::get)
                 .orElse("");
@@ -150,23 +163,26 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .targetObjectIdProvider(new ColumnTargetObjectIdProvider())
                 .targetObjectKindProvider(variableManager -> "")
                 .build();
-        return List.of(columnDescription);
+        return List.of(iconColumnDescription, columnDescription);
     }
 
     private List<ICellDescription> getCellDescriptions() {
         List<ICellDescription> cellDescriptions = new ArrayList<>();
+
         cellDescriptions.add(TextfieldCellDescription.newTextfieldCellDescription("textfieldCells")
                 .canCreatePredicate(new CellTypePredicate().isTextfieldCell())
                 .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
                 .cellValueProvider(new CellStringValueProvider(this.identityService))
                 .build());
+
         cellDescriptions.add(CheckboxCellDescription.newCheckboxCellDescription("checkboxCells")
                 .canCreatePredicate(new CellTypePredicate().isCheckboxCell())
                 .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
                 .cellValueProvider(new CellBooleanValueProvider())
                 .build());
+
         cellDescriptions.add(SelectCellDescription.newSelectCellDescription("selectCells")
                 .canCreatePredicate(new CellTypePredicate().isSelectCell())
                 .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
@@ -176,6 +192,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .cellOptionsLabelProvider(new CellOptionLabelProvider(this.labelService))
                 .cellOptionsProvider(new CellOptionsProvider(this.composedAdapterFactory))
                 .build());
+
         cellDescriptions.add(MultiSelectCellDescription.newMultiSelectCellDescription("multiselectCells")
                 .canCreatePredicate(new CellTypePredicate().isMultiselectCell())
                 .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
@@ -184,6 +201,25 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .cellOptionsIdProvider(new CellOptionIdProvider(this.identityService, this.labelService))
                 .cellOptionsLabelProvider(new CellOptionLabelProvider(this.labelService))
                 .cellOptionsProvider(new CellOptionsProvider(this.composedAdapterFactory))
+                .build());
+
+
+        Predicate<VariableManager> canCreateIconLabelPredicate = variableManager -> variableManager.get(ColumnDescription.COLUMN_TARGET_OBJECT, Object.class)
+                .filter(String.class::isInstance)
+                .map(String.class::cast)
+                .filter(value -> value.equals("IconColumn"))
+                .isPresent();
+
+        BiFunction<VariableManager, Object, List<String>> iconLabelCellIconURLsProvider = (variableManager, columnTargetObject) -> variableManager.get(VariableManager.SELF, EObject.class)
+                .map(this.labelService::getImagePath)
+                .orElse(List.of());
+
+        cellDescriptions.add(IconLabelCellDescription.newIconLabelCellDescription("iconLabelCells")
+                .canCreatePredicate(canCreateIconLabelPredicate)
+                .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
+                .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
+                .cellValueProvider((variableManager, columnTargetObject) -> "")
+                .cellIconURLsProvider(iconLabelCellIconURLsProvider)
                 .build());
         return cellDescriptions;
     }

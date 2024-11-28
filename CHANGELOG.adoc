@@ -70,6 +70,7 @@ Specifiers are also encouraged to implement their own `IRestDataVersionPayloadSe
 - https://github.com/eclipse-sirius/sirius-web/issues/4242[#4242] [table] Add support for the customization of the header of each row
 - https://github.com/eclipse-sirius/sirius-web/issues/4235[#4235] [table] Add support for the customization of the header of each column
 - https://github.com/eclipse-sirius/sirius-web/issues/4244[#4244] [table] Add support to stripe rows in table
+- https://github.com/eclipse-sirius/sirius-web/issues/4252[#4252] [table] Add IconLabel cell to tables
 
 
 === Improvements

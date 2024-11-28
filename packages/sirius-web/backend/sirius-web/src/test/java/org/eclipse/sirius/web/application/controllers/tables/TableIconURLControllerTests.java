@@ -68,6 +68,11 @@ public class TableIconURLControllerTests extends AbstractIntegrationTests {
                   lines {
                     id
                     headerIconURLs
+                    cells {
+                      ... on IconLabelCell {
+                        iconURLs
+                      }
+                    }
                   }
                 }
               }
@@ -126,6 +131,45 @@ public class TableIconURLControllerTests extends AbstractIntegrationTests {
 
                     List<List<String>> rowIconURLs = JsonPath.read(body, "$.data.tableEvent.table.lines[*].headerIconURLs");
                     assertThat(rowIconURLs)
+                            .isNotEmpty()
+                            .allSatisfy(iconURLs -> {
+                                assertThat(iconURLs)
+                                        .isNotEmpty()
+                                        .hasSize(2)
+                                        .allSatisfy(iconURL -> assertThat(iconURL).startsWith(URLConstants.IMAGE_BASE_PATH));
+                            });
+                }, () -> fail("Missing table"));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(tableContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a papaya package, when we subscribe to a table with icon label cell define, then the URL of its icons are valid")
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenPapayaPackageWhenWeSubscribeToTableWithIconLabelCellThenURLOfItsIconsAreValid() {
+        this.givenCommittedTransaction.commit();
+        var input = new CreateRepresentationInput(
+                UUID.randomUUID(),
+                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                "papaya_package_table_description",
+                PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString(),
+                "Table"
+        );
+        String representationId = this.givenCreatedRepresentation.createRepresentation(input);
+        var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), representationId);
+        var flux = this.graphQLRequestor.subscribeToSpecification(TABLE_EVENT_SUBSCRIPTION, tableEventInput);
+
+        Consumer<String> tableContentConsumer = payload -> Optional.of(payload)
+                .ifPresentOrElse(body -> {
+                    String typename = JsonPath.read(body, "$.data.tableEvent.__typename");
+                    assertThat(typename).isEqualTo(TableRefreshedEventPayload.class.getSimpleName());
+
+                    List<List<String>> iconLabelCellIconURLs = JsonPath.read(body, "$.data.tableEvent.table.lines[*].cells[*].iconURLs");
+                    assertThat(iconLabelCellIconURLs)
                             .isNotEmpty()
                             .allSatisfy(iconURLs -> {
                                 assertThat(iconURLs)

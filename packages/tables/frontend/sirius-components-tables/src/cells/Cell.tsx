@@ -19,9 +19,11 @@ import {
   GQLMultiSelectCell,
   GQLSelectCell,
   GQLTextfieldCell,
+  GQLIconLabelCell,
 } from '../table/TableContent.types';
 import { CellProps } from './Cell.types';
 import { CheckboxCell } from './CheckboxCell';
+import { IconLabelCell } from './IconLabelCell';
 import { MultiSelectCell } from './MultiSelectCell';
 import { SelectCell } from './SelectCell';
 import { TextfieldCell } from './TextfieldCell';
@@ -30,6 +32,7 @@ const isCheckboxCell = (cell: GQLCell): cell is GQLCheckboxCell => cell.__typena
 const isSelectCell = (cell: GQLCell): cell is GQLSelectCell => cell.__typename === 'SelectCell';
 const isMultiSelectCell = (cell: GQLCell): cell is GQLMultiSelectCell => cell.__typename === 'MultiSelectCell';
 const isTextfieldCell = (cell: GQLCell): cell is GQLTextfieldCell => cell.__typename === 'TextfieldCell';
+const isIconLabelCell = (cell: GQLCell): cell is GQLIconLabelCell => cell.__typename === 'IconLabelCell';
 
 export const Cell = memo(({ editingContextId, representationId, tableId, cell, disabled }: CellProps) => {
   if (cell) {
@@ -71,6 +74,15 @@ export const Cell = memo(({ editingContextId, representationId, tableId, cell, d
           tableId={tableId}
           cell={cell}
           disabled={disabled}
+        />
+      );
+    } else if (isIconLabelCell(cell)) {
+      return (
+        <IconLabelCell
+          editingContextId={editingContextId}
+          representationId={representationId}
+          tableId={tableId}
+          cell={cell}
         />
       );
     }

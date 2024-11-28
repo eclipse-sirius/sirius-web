@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.tables.Line;
 import org.eclipse.sirius.components.tables.descriptions.CheckboxCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
 import org.eclipse.sirius.components.tables.descriptions.ICellDescription;
+import org.eclipse.sirius.components.tables.descriptions.IconLabelCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.LineDescription;
 import org.eclipse.sirius.components.tables.descriptions.MultiSelectCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.SelectCellDescription;
@@ -126,6 +127,9 @@ public class LineComponent implements IComponent {
             } else if (cellDescription instanceof TextfieldCellDescription textfieldCellDescription) {
                 var cellComponentProps = new TextfieldCellComponentProps(variableManager, textfieldCellDescription, cellId, columnId, columTargetObject);
                 cellElement = new Element(TextfieldCellComponent.class, cellComponentProps);
+            } else if (cellDescription instanceof IconLabelCellDescription iconLabelCellDescription) {
+                var cellComponentProps = new IconLabelCellComponentProps(variableManager, iconLabelCellDescription, cellId, columnId, columTargetObject);
+                cellElement = new Element(IconLabelCellComponent.class, cellComponentProps);
             }
             if (cellElement != null) {
                 elements.add(cellElement);

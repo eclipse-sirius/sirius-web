@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.tables.descriptions;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -22,12 +23,12 @@ import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
- * Description of a textfield cell.
+ * Description of an icon label cell.
  *
  * @author frouene
  */
 @Immutable
-public final class TextfieldCellDescription implements ICellDescription {
+public final class IconLabelCellDescription implements ICellDescription {
 
     private String id;
 
@@ -39,7 +40,9 @@ public final class TextfieldCellDescription implements ICellDescription {
 
     private BiFunction<VariableManager, Object, String> cellValueProvider;
 
-    private TextfieldCellDescription() {
+    private BiFunction<VariableManager, Object, List<String>> cellIconURLsProvider;
+
+    private IconLabelCellDescription() {
         // Prevent instantiation
     }
 
@@ -67,8 +70,11 @@ public final class TextfieldCellDescription implements ICellDescription {
         return this.cellValueProvider;
     }
 
+    public BiFunction<VariableManager, Object, List<String>> getCellIconURLsProvider() {
+        return this.cellIconURLsProvider;
+    }
 
-    public static Builder newTextfieldCellDescription(String id) {
+    public static Builder newIconLabelCellDescription(String id) {
         return new Builder(id);
     }
 
@@ -79,7 +85,7 @@ public final class TextfieldCellDescription implements ICellDescription {
     }
 
     /**
-     * Builder used to create a textfield cell widget description.
+     * Builder used to create an icon label cell widget description.
      *
      * @author frouene
      */
@@ -95,6 +101,8 @@ public final class TextfieldCellDescription implements ICellDescription {
         private Function<VariableManager, String> targetObjectKindProvider;
 
         private BiFunction<VariableManager, Object, String> cellValueProvider;
+
+        private BiFunction<VariableManager, Object, List<String>> cellIconURLsProvider;
 
 
         private Builder(String id) {
@@ -121,15 +129,21 @@ public final class TextfieldCellDescription implements ICellDescription {
             return this;
         }
 
+        public Builder cellIconURLsProvider(BiFunction<VariableManager, Object, List<String>> cellIconURLsProvider) {
+            this.cellIconURLsProvider = Objects.requireNonNull(cellIconURLsProvider);
+            return this;
+        }
 
-        public TextfieldCellDescription build() {
-            TextfieldCellDescription textfieldCellDescription = new TextfieldCellDescription();
-            textfieldCellDescription.id = Objects.requireNonNull(this.id);
-            textfieldCellDescription.canCreatePredicate = Objects.requireNonNull(this.canCreatePredicate);
-            textfieldCellDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
-            textfieldCellDescription.targetObjectKindProvider = Objects.requireNonNull(this.targetObjectKindProvider);
-            textfieldCellDescription.cellValueProvider = Objects.requireNonNull(this.cellValueProvider);
-            return textfieldCellDescription;
+
+        public IconLabelCellDescription build() {
+            IconLabelCellDescription iconLabelCellDescription = new IconLabelCellDescription();
+            iconLabelCellDescription.id = Objects.requireNonNull(this.id);
+            iconLabelCellDescription.canCreatePredicate = Objects.requireNonNull(this.canCreatePredicate);
+            iconLabelCellDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
+            iconLabelCellDescription.targetObjectKindProvider = Objects.requireNonNull(this.targetObjectKindProvider);
+            iconLabelCellDescription.cellValueProvider = Objects.requireNonNull(this.cellValueProvider);
+            iconLabelCellDescription.cellIconURLsProvider = Objects.requireNonNull(this.cellIconURLsProvider);
+            return iconLabelCellDescription;
         }
     }
 
