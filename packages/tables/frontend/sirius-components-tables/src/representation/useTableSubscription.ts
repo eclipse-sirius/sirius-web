@@ -73,6 +73,10 @@ export const getTableEventSubscription = `
               ... on TextfieldCell {
                 stringValue: value
               }
+              ... on IconLabelCell {
+                label: value
+                iconURLs
+              }
             }
           }
         }

@@ -45,7 +45,7 @@ public final class CheckboxCellDescription implements ICellDescription {
 
     @Override
     public String getId() {
-        return "";
+        return this.id;
     }
 
     @Override

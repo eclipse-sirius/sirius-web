@@ -94,7 +94,7 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
                 .map(TableRefreshedEventPayload::table)
                 .ifPresentOrElse(table -> {
                     assertThat(table).isNotNull();
-                    assertThat(table.getColumns()).hasSize(4);
+                    assertThat(table.getColumns()).hasSize(5);
                     assertThat(table.getLines()).hasSize(2);
                 }, () -> fail(MISSING_TABLE));
 
@@ -119,7 +119,7 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
                 .map(TableRefreshedEventPayload::table)
                 .ifPresentOrElse(table -> {
                     assertThat(table).isNotNull();
-                    assertThat(table.getColumns()).hasSize(4);
+                    assertThat(table.getColumns()).hasSize(5);
                     assertThat(table.getLines()).hasSize(2);
                     tableId.set(table.getId());
                 }, () -> fail("Missing table"));
@@ -150,10 +150,10 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
-    @DisplayName("Given a table representation with a column header provide, when we subscribe to its event, then data received contain the header")
+    @DisplayName("Given a table representation with a column header, when we subscribe to its event, then data received contain the header")
     @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenTableRepresentationWithColumnHeaderProvideWhenWeSubscribeToItsEventThenDataReceivedContainTheHeader() {
+    public void givenTableRepresentationWithColumnHeaderWhenWeSubscribeToItsEventThenDataReceivedContainTheHeader() {
         var flux = this.givenSubscriptionToTable();
 
         Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
@@ -162,11 +162,12 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
                 .map(TableRefreshedEventPayload::table)
                 .ifPresentOrElse(table -> {
                     assertThat(table).isNotNull();
-                    assertThat(table.getColumns()).hasSize(4);
-                    assertThat(table.getColumns().get(0).getHeaderIndexLabel()).isEqualTo("A");
-                    assertThat(table.getColumns().get(1).getHeaderIndexLabel()).isEqualTo("B");
-                    assertThat(table.getColumns().get(2).getHeaderIndexLabel()).isEqualTo("C");
-                    assertThat(table.getColumns().get(3).getHeaderIndexLabel()).isEqualTo("D");
+                    assertThat(table.getColumns()).hasSize(5);
+                    assertThat(table.getColumns().get(0).getHeaderIndexLabel()).isEqualTo("");
+                    assertThat(table.getColumns().get(1).getHeaderIndexLabel()).isEqualTo("A");
+                    assertThat(table.getColumns().get(2).getHeaderIndexLabel()).isEqualTo("B");
+                    assertThat(table.getColumns().get(3).getHeaderIndexLabel()).isEqualTo("C");
+                    assertThat(table.getColumns().get(4).getHeaderIndexLabel()).isEqualTo("D");
                 }, () -> fail(MISSING_TABLE));
 
         StepVerifier.create(flux)

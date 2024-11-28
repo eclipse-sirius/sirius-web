@@ -90,6 +90,15 @@ type CheckboxCell implements Cell {
   value: Boolean!
 }
 
+type IconLabelCell implements Cell {
+  id: ID!
+  columnId: ID!
+  targetObjectId: ID!
+  targetObjectKind: String!
+  value: String!
+  iconURLs: [String!]!
+}
+
 type TableDescription implements RepresentationDescription {
   id: ID!
   label: String!
