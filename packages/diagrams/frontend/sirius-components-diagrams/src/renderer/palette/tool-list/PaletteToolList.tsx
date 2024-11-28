@@ -89,7 +89,7 @@ export const PaletteToolList = ({ palette, onToolClick }: PaletteToolListProps) 
       return <ToolListItem onToolClick={onToolClick} tool={paletteEntry} key={'toolItem_' + paletteEntry.id} />;
     } else if (isToolSection(paletteEntry)) {
       return (
-        <Tooltip key={'tooltip_' + paletteEntry.id} title={paletteEntry.label}>
+        <Tooltip key={'tooltip_' + paletteEntry.id} title={paletteEntry.label} placement="right">
           <ListItemButton
             className={classes.listItemButton}
             onClick={(event) => handleToolSectionClick(event, paletteEntry)}
