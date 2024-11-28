@@ -29,6 +29,7 @@ type Column {
   targetObjectId: ID!
   targetObjectKind: String!
   label: String!
+  iconURLs: [String!]!
 }
 
 type Line {

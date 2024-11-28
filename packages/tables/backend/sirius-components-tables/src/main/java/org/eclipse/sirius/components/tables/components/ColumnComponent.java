@@ -57,12 +57,14 @@ public class ColumnComponent implements IComponent {
         String targetObjectId = columnDescription.getTargetObjectIdProvider().apply(columnVariableManager);
         String targetObjectKind = columnDescription.getTargetObjectKindProvider().apply(columnVariableManager);
         String label = columnDescription.getLabelProvider().apply(columnVariableManager);
+        List<String> iconURLs = columnDescription.getIconURLsProvider().apply(columnVariableManager);
         UUID columnId = this.computeColumnId(targetObjectId);
         this.props.getCache().putColumnObject(columnId, object);
 
         ColumnElementProps columnElementProps = ColumnElementProps.newColumnElementProps(columnId)
                 .descriptionId(columnDescription.getId())
                 .label(label)
+                .iconURLs(iconURLs)
                 .targetObjectId(targetObjectId)
                 .targetObjectKind(targetObjectKind)
                 .build();

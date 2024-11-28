@@ -10,6 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { IconOverlay } from '@eclipse-sirius/sirius-components-core';
+import Box from '@mui/material/Box';
+import { useTheme } from '@mui/material/styles';
 import { MRT_ColumnDef } from 'material-react-table';
 import { useMemo } from 'react';
 import { Cell } from '../cells/Cell';
@@ -22,11 +25,25 @@ export const useTableColumns = (
   table: GQLTable,
   readOnly
 ): UseTableColumnsValue => {
+  const theme = useTheme();
+
   const columns = useMemo<MRT_ColumnDef<GQLLine, string>[]>(() => {
     const columnDefs: MRT_ColumnDef<GQLLine, string>[] = table.columns.map((column) => {
       return {
         id: column.id,
         header: column.label,
+        Header: ({}) => {
+          return (
+            <Box display="flex" alignItems="center">
+              <IconOverlay
+                iconURL={column.iconURLs}
+                alt={column.label}
+                customIconStyle={{ marginRight: theme.spacing(1) }}
+              />
+              {column.label}
+            </Box>
+          );
+        },
         size: 150,
         Cell: ({ row }) => {
           const cell: GQLCell | null = row.original.cells.find((cell) => column.id === cell.columnId) ?? null;

@@ -66,6 +66,7 @@ A new `IProjectDataVersioningRestServiceDelegate` interface is available, allowi
 Specifiers can implement this new interface with a spring `Service`.
 A new `IRestDataVersionPayloadSerializerService` interface is available, allowing to customize the default implementation of the JSON serialization of the payload object of `RestDataVersion`.
 Specifiers are also encouraged to implement their own `IRestDataVersionPayloadSerializerService` for their domains, as the default one may not return expected results.
+- https://github.com/eclipse-sirius/sirius-web/issues/4250[#4250] [table] Add icons to table column headers
 
 === Improvements
 

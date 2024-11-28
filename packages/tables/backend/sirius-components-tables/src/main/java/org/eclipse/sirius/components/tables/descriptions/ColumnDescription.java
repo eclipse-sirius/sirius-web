@@ -42,6 +42,8 @@ public final class ColumnDescription {
 
     private Function<VariableManager, String> labelProvider;
 
+    private Function<VariableManager, List<String>> iconURLsProvider;
+
     private Function<VariableManager, List<Object>> semanticElementsProvider;
 
     private ColumnDescription() {
@@ -54,6 +56,10 @@ public final class ColumnDescription {
 
     public Function<VariableManager, String> getLabelProvider() {
         return this.labelProvider;
+    }
+
+    public Function<VariableManager, List<String>> getIconURLsProvider() {
+        return this.iconURLsProvider;
     }
 
     public Function<VariableManager, String> getTargetObjectIdProvider() {
@@ -94,6 +100,8 @@ public final class ColumnDescription {
 
         private Function<VariableManager, String> labelProvider;
 
+        private Function<VariableManager, List<String>> iconURLsProvider = variableManager -> List.of();
+
         private Function<VariableManager, List<Object>> semanticElementsProvider;
 
         public Builder(UUID id) {
@@ -102,6 +110,11 @@ public final class ColumnDescription {
 
         public Builder labelProvider(Function<VariableManager, String> labelProvider) {
             this.labelProvider = Objects.requireNonNull(labelProvider);
+            return this;
+        }
+
+        public Builder iconURLsProvider(Function<VariableManager, List<String>> iconURLsProvider) {
+            this.iconURLsProvider = Objects.requireNonNull(iconURLsProvider);
             return this;
         }
 
@@ -126,6 +139,7 @@ public final class ColumnDescription {
             columnDescription.id = Objects.requireNonNull(this.id);
             columnDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             columnDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
+            columnDescription.iconURLsProvider = Objects.requireNonNull(this.iconURLsProvider);
             columnDescription.targetObjectKindProvider = Objects.requireNonNull(this.targetObjectKindProvider);
             columnDescription.semanticElementsProvider = Objects.requireNonNull(this.semanticElementsProvider);
 

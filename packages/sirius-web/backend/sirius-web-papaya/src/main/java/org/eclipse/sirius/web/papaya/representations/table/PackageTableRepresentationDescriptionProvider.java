@@ -115,6 +115,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
         ColumnDescription columnDescription = ColumnDescription.newColumnDescription(UUID.nameUUIDFromBytes("features".getBytes()))
                 .semanticElementsProvider(variableManager -> featureToDisplayName.keySet().stream().map(Object.class::cast).toList())
                 .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, EStructuralFeature.class).map(featureToDisplayName::get).orElse(""))
+                .iconURLsProvider(variableManager -> variableManager.get(VariableManager.SELF, EStructuralFeature.class).map(this.labelService::getImagePath).orElse(List.of()))
                 .targetObjectIdProvider(new ColumnTargetObjectIdProvider())
                 .targetObjectKindProvider(variableManager -> "")
                 .build();

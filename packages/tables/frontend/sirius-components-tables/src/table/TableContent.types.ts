@@ -52,6 +52,7 @@ export interface GQLTable {
 export interface GQLColumn {
   id: string;
   label: string;
+  iconURLs: string[];
 }
 
 export interface GQLLine {
@@ -65,6 +66,7 @@ export interface GQLCell {
   id: string;
   columnId: string;
 }
+
 export interface GQLTextfieldCell extends GQLCell {
   stringValue: string;
 }
@@ -82,6 +84,7 @@ export interface GQLMultiSelectCell extends GQLCell {
   values: string[];
   options: GQLSelectCellOption[];
 }
+
 export interface GQLSelectCellOption {
   id: string;
   label: string;
