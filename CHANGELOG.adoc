@@ -39,8 +39,7 @@
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4219[#4219] [table] Improve front-end performance
-
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3892[#3892] [core] Only persist the editing context if there's been actual semantic changes
 
 == v2024.11.0
 

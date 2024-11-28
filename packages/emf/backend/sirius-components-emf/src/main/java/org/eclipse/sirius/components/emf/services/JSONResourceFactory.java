@@ -47,6 +47,7 @@ public class JSONResourceFactory extends ResourceFactoryImpl {
 
         var resource = new JsonResourceImpl(uri, options);
         resource.setIntrinsicIDToEObjectMap(new HashMap<>());
+        resource.setTrackingModification(true);
         return resource;
     }
 
