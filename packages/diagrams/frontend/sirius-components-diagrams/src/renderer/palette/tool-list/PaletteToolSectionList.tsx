@@ -59,7 +59,7 @@ export const PaletteToolSectionList = ({ toolSection, onToolClick, onBackToMainL
 
   return (
     <List className={classes.toolList} component="nav">
-      <Tooltip title={toolSection.label} key={'tooltip_' + toolSection.id}>
+      <Tooltip title={toolSection.label} key={'tooltip_' + toolSection.id} placement="right">
         <ListItemButton
           className={classes.toolListItemButton}
           onClick={handleBackToMainListClick}
