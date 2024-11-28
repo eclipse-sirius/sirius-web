@@ -57,7 +57,7 @@ export const ToolListItem = ({ tool, onToolClick }: ToolListItemProps) => {
   };
 
   return (
-    <Tooltip title={tool.label}>
+    <Tooltip title={tool.label} placement="right">
       <ListItemButton
         className={classes.listItemButton}
         onClick={(event) => handleToolClick(event, tool)}

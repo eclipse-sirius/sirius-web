@@ -52,13 +52,13 @@ export const PaletteSearchField = ({ onValueChanged, onEscape }: PaletteSearchFi
             <SearchIcon fontSize="small" />
           </InputAdornment>
         ),
-        endAdornment: (
+        endAdornment: state.value ? (
           <InputAdornment position="end">
             <IconButton aria-label="clear" size="small" onClick={onTextClear}>
               <ClearIcon fontSize="small" />
             </IconButton>
           </InputAdornment>
-        ),
+        ) : null,
       }}
       variant="standard"
       onChange={onChange}
