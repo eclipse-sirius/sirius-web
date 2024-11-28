@@ -32,10 +32,12 @@ import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 @Schema(name = "Commit", description = "Commit is a subclass of Record that represents the changes made to a Project at a specific point in time in its lifecycle, such as the creation, update, or deletion of data in a Project. A Project has 0 or more Commits.")
 public record RestCommit(
         @Schema(requiredMode = RequiredMode.REQUIRED, description = "The UUID assigned to the record")
-        @JsonProperty("@id") UUID id,
+        @JsonProperty("@id")
+        UUID id,
 
         @Schema(requiredMode = RequiredMode.REQUIRED, description = "Commit")
-        @JsonProperty("@type") String type,
+        @JsonProperty("@type")
+        String type,
 
         @Schema(requiredMode = RequiredMode.REQUIRED, description = "The timestamp at which the Commit was created, in ISO8601DateTime format")
         OffsetDateTime created,

@@ -39,7 +39,7 @@ Downstream applications which were using it to change the image of the home butt
 === Dependency update
 
 - [releng] Upgrade `turbo` to version 2.3.3 (from 1.13.3 before).
-The `start` task used in our turbo configuration is now marked as `persistent` and as a result we have separated the `start` script from `sirius-web` used to run the frontend in dev from from the `start` script from other packages used to build them in development mode by remaning the later to `build-dev`.
+The `start` task used in our turbo configuration is now marked as `persistent` and as a result we have separated the `start` script from `sirius-web` used to run the frontend in dev from from the `start` script from other packages used to build them in development mode by renaming the later to `build-dev`.
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.1[Spring Boot 3.4.1].
 As part of this switch, the way we redirect the HTTP requests of frontend views to the `index.html` file on the backend has been updated.
 The previous strategy relied on an odd configuration of the `WebMvcConfigurer#addResourceHandlers` in order to redirect those requests to the `index.html` file.
@@ -77,7 +77,7 @@ Specifiers can contribute dedicated AQL services for this feature using implemen
 - https://github.com/eclipse-sirius/sirius-web/issues/4346[#4346] [query] Add some feedback for long running evaluations
 - https://github.com/eclipse-sirius/sirius-web/issues/4338[#4338] [core] A Spring log group dedicated to performance issues has been created.
 As a result, one can use `logging.level.sirius.web.performance=DEBUG` in order to display key performance metrics in a Sirius Web instance.
-Some log messages have been updated in order to provide more information and make them easier to read to idenfity key performance issues.
+Some log messages have been updated in order to provide more information and make them easier to read to identify key performance issues.
 The configuration property `sirius.web.graphql.tracing` has also been added to active the tracing mode of the GraphQL API.
 It can be activated using `sirius.web.graphql.tracing=true` since it is not enabled by default to not have any impact on the performance of the application.
 Some additional log has also been contributed on the frontend in order to view more easily the order and time of the GraphQL requests and responses.
@@ -87,6 +87,12 @@ Some additional log has also been contributed on the frontend in order to view m
 This can be used to add support for new kinds of static resources (e.g. PDF files) or new Spring controllers.
 - https://github.com/eclipse-sirius/sirius-web/issues/4346[#4346] [query] Deactivate the spell checker on the query view
 - https://github.com/eclipse-sirius/sirius-web/issues/4404[#4404] [sirius-web] The extension point `navigationBarIconExtensionPoint` can now let specifiers customize fully the appearance and behavior of the top left icon
+- https://github.com/eclipse-sirius/sirius-web/issues/4193[#4193] [core] Implement Project Data Versioning REST APIs.
+The new endpoints are:
+** getBranches (`GET /api/rest/projects/{projectId}/branches`): Get all branches in the given project. There is only one branch per project in Sirius Web for now, and its Id is the same as the project Id. It represents the current state of the project, without taking care of data created/updated/deleted since the creation of the project.
+** createBranch (`POST /api/rest/projects/{projectId}/branches`): Create a branch in the given project. There is only one branch per project in Sirius Web for now, so the default implementation of this method does nothing.
+** getBranchById (`GET /api/rest/projects/{projectId}/branches/{branchId}`): Get the branch represented by its Id for the given project. There is only one branch per project in Sirius Web for now, and its Id is the same as the project Id. It represents the current state of the project, without taking care of data created/updated/deleted since the creation of the project.
+** deleteBranch (`DELETE /api/rest/projects/{projectId}/branches/{branchId}`): Delete the branch with the given Id in the given project. There is only one branch per project in Sirius Web for now, so the default implementation of this method does nothing.
 
 
 === Improvements
@@ -94,7 +100,7 @@ This can be used to add support for new kinds of static resources (e.g. PDF file
 - https://github.com/eclipse-sirius/sirius-web/issues/4368[#4368] [sirius-web] Add GraphQL subscription exception handler
 - [charts] Make the npm package `sirius-components-charts` use the strict version of our TypeScript configuration
 - [trees] Make the npm package `sirius-components-trees` use the strict version of our TypeScript configuration
-- https://github.com/eclipse-sirius/sirius-web/issues/1047[#1047] [sirius-web] In the _Domain_ diagram, when using direct-edit on a relatin edge, the initial text now only includes the name of the relation (without the cardinality)
+- https://github.com/eclipse-sirius/sirius-web/issues/1047[#1047] [sirius-web] In the _Domain_ diagram, when using direct-edit on a relation edge, the initial text now only includes the name of the relation (without the cardinality)
 - https://github.com/eclipse-sirius/sirius-web/issues/4095[#4095] [tree] Add conditional tree item label element description
 - https://github.com/eclipse-sirius/sirius-web/issues/4101[#4101] [tree] Add loop tree item label element description
 - https://github.com/eclipse-sirius/sirius-web/issues/4233[#4233] [core] Add cursor-based pagination for Project related GET REST APIs.
