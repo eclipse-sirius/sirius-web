@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.tables.elements;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -22,13 +23,14 @@ import org.eclipse.sirius.components.representations.IProps;
  *
  * @author lfasani
  */
-public record ColumnElementProps(UUID id, UUID descriptionId, String label, String targetObjectId, String targetObjectKind) implements IProps {
+public record ColumnElementProps(UUID id, UUID descriptionId, String label, List<String> iconURLs, String targetObjectId, String targetObjectKind) implements IProps {
 
     public static final String TYPE = "Column";
 
     public ColumnElementProps {
         Objects.requireNonNull(id);
         Objects.requireNonNull(label);
+        Objects.requireNonNull(iconURLs);
         Objects.requireNonNull(descriptionId);
         Objects.requireNonNull(targetObjectId);
         Objects.requireNonNull(targetObjectKind);
@@ -56,6 +58,8 @@ public record ColumnElementProps(UUID id, UUID descriptionId, String label, Stri
 
         private String label;
 
+        private List<String> iconURLs;
+
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -70,6 +74,11 @@ public record ColumnElementProps(UUID id, UUID descriptionId, String label, Stri
             return this;
         }
 
+        public Builder iconURLs(List<String> iconURLs) {
+            this.iconURLs = Objects.requireNonNull(iconURLs);
+            return this;
+        }
+
         public Builder targetObjectId(String targetObjectId) {
             this.targetObjectId = Objects.requireNonNull(targetObjectId);
             return this;
@@ -81,7 +90,7 @@ public record ColumnElementProps(UUID id, UUID descriptionId, String label, Stri
         }
 
         public ColumnElementProps build() {
-            return new ColumnElementProps(this.id, this.descriptionId, this.label, this.targetObjectId, this.targetObjectKind);
+            return new ColumnElementProps(this.id, this.descriptionId, this.label, this.iconURLs, this.targetObjectId, this.targetObjectKind);
         }
     }
 }

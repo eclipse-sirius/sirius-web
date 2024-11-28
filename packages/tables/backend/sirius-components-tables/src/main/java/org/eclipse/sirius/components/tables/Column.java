@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.tables;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -36,6 +37,8 @@ public final class Column {
     private UUID descriptionId;
 
     private String label;
+
+    private List<String> iconURLs;
 
     private Column() {
         // Prevent instantiation
@@ -61,12 +64,12 @@ public final class Column {
         return this.label;
     }
 
-    public static Builder newColumn(UUID id) {
-        return new Builder(id);
+    public List<String> getIconURLs() {
+        return this.iconURLs;
     }
 
-    public static Builder newColumn(Column column) {
-        return new Builder(column);
+    public static Builder newColumn(UUID id) {
+        return new Builder(id);
     }
 
     @Override
@@ -93,14 +96,10 @@ public final class Column {
 
         private String label;
 
+        private List<String> iconURLs;
+
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
-        }
-
-        private Builder(Column column) {
-            this.id = column.getId();
-            this.descriptionId = column.getDescriptionId();
-            this.label = column.getLabel();
         }
 
         public Builder descriptionId(UUID descriptionId) {
@@ -123,6 +122,11 @@ public final class Column {
             return this;
         }
 
+        public Builder iconURLs(List<String> iconURLs) {
+            this.iconURLs = Objects.requireNonNull(iconURLs);
+            return this;
+        }
+
         public Column build() {
             Column column = new Column();
             column.id = Objects.requireNonNull(this.id);
@@ -130,6 +134,7 @@ public final class Column {
             column.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             column.targetObjectKind = Objects.requireNonNull(this.targetObjectKind);
             column.label = Objects.requireNonNull(this.label);
+            column.iconURLs = Objects.requireNonNull(this.iconURLs);
             return column;
         }
     }

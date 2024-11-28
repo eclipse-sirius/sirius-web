@@ -34,6 +34,7 @@ export const getTableEventSubscription = `
           columns {
             id
             label
+            iconURLs
             targetObjectId
             targetObjectKind 
           }
