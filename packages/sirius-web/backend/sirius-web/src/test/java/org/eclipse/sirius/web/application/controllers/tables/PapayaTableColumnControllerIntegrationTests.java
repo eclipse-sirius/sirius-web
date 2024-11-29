@@ -97,7 +97,6 @@ public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegra
     public void givenTableWhenColumnResizeMutationTriggeredThenTheRepresentationIsRefreshedWithNewColumnSize() {
         var flux = this.givenSubscriptionToTable();
 
-
         var columnRef = new AtomicReference<Column>();
         var tableId = new AtomicReference<String>();
 

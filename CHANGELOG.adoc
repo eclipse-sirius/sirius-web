@@ -86,6 +86,7 @@ Specifiers are also encouraged to implement their own `IRestDataVersionPayloadSe
 - https://github.com/eclipse-sirius/sirius-web/issues/4203[#4203] [core] Add support for representations in the Details View
 - https://github.com/eclipse-sirius/sirius-web/issues/4259[#4259] [table] Add support to global search in table
 - https://github.com/eclipse-sirius/sirius-web/issues/4210[#4210] [table] Add the ability to fork the studio used by a table representation
+- https://github.com/eclipse-sirius/sirius-web/issues/4273[#4273] [table] Add support to column filtering in table
 
 
 === Improvements

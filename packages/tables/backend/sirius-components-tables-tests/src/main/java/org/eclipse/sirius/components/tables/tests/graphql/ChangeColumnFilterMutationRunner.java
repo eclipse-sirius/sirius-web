@@ -14,47 +14,47 @@ package org.eclipse.sirius.components.tables.tests.graphql;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.collaborative.tables.dto.ChangeGlobalFilterValueInput;
+import org.eclipse.sirius.components.collaborative.tables.dto.ChangeColumnFilterInput;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to change the global filter in table with the GraphQL API.
+ * Used to change the column filter in table with the GraphQL API.
  *
  * @author frouene
  */
 @Service
-public class ChangeGlobalFilterMutationRunner implements IMutationRunner<ChangeGlobalFilterValueInput> {
+public class ChangeColumnFilterMutationRunner implements IMutationRunner<ChangeColumnFilterInput> {
 
-    private static final String CHANGE_GLOBAL_FILTER_MUTATION = """
-            mutation changeGlobalFilterValue($input: ChangeGlobalFilterValueInput!) {
-                changeGlobalFilterValue(input: $input) {
-                    __typename
-                    ... on ErrorPayload {
-                      messages {
-                        body
-                        level
-                      }
+    private static final String CHANGE_COLUMN_FILTER_MUTATION = """
+            mutation changeColumnFilter($input: ChangeColumnFilterInput!) {
+                changeColumnFilter(input: $input) {
+                  __typename
+                  ... on ErrorPayload {
+                    messages {
+                      body
+                      level
                     }
-                    ... on SuccessPayload {
-                      messages {
-                        body
-                        level
-                      }
+                  }
+                  ... on SuccessPayload {
+                    messages {
+                      body
+                      level
                     }
                   }
                 }
+              }
             """;
 
     private final IGraphQLRequestor graphQLRequestor;
 
-    public ChangeGlobalFilterMutationRunner(IGraphQLRequestor graphQLRequestor) {
+    public ChangeColumnFilterMutationRunner(IGraphQLRequestor graphQLRequestor) {
         this.graphQLRequestor = Objects.requireNonNull(graphQLRequestor);
     }
 
     @Override
-    public String run(ChangeGlobalFilterValueInput input) {
-        return this.graphQLRequestor.execute(CHANGE_GLOBAL_FILTER_MUTATION, input);
+    public String run(ChangeColumnFilterInput input) {
+        return this.graphQLRequestor.execute(CHANGE_COLUMN_FILTER_MUTATION, input);
     }
 }

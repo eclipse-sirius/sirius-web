@@ -76,6 +76,7 @@ public class ColumnComponent implements IComponent {
         String headerIndexLabel = columnDescription.getHeaderIndexLabelProvider().apply(columnVariableManager);
         Integer initialWidth = columnDescription.getInitialWidthProvider().apply(columnVariableManager);
         boolean resizable = columnDescription.getIsResizablePredicate().test(columnVariableManager);
+        String filterVariant = columnDescription.getFilterVariantProvider().apply(columnVariableManager);
         UUID columnId = this.computeColumnId(targetObjectId);
         this.props.cache().putColumnObject(columnId, object);
 
@@ -111,7 +112,8 @@ public class ColumnComponent implements IComponent {
                 .targetObjectKind(targetObjectKind)
                 .resizable(resizable)
                 .width(width)
-                .hidden(hidden);
+                .hidden(hidden)
+                .filterVariant(filterVariant);
 
         return new Element(ColumnElementProps.TYPE, columnElementProps.build());
     }

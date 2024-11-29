@@ -17,6 +17,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
+import org.eclipse.sirius.components.tables.ColumnFilter;
 import org.eclipse.sirius.components.tables.PaginationData;
 
 /**
@@ -24,7 +25,8 @@ import org.eclipse.sirius.components.tables.PaginationData;
  *
  * @author lfasani
  */
-public record TableElementProps(String id, String descriptionId, String targetObjectId, String targetObjectKind, PaginationData paginationData, boolean stripeRow, List<Element> children, String globalFilter) implements IProps {
+public record TableElementProps(String id, String descriptionId, String targetObjectId, String targetObjectKind,
+                                PaginationData paginationData, boolean stripeRow, List<Element> children, String globalFilter, List<ColumnFilter> columnFilters) implements IProps {
 
     public static final String TYPE = "Table";
 
@@ -35,6 +37,7 @@ public record TableElementProps(String id, String descriptionId, String targetOb
         Objects.requireNonNull(targetObjectKind);
         Objects.requireNonNull(children);
         Objects.requireNonNull(paginationData);
+        Objects.requireNonNull(columnFilters);
     }
 
     @Override
@@ -69,6 +72,8 @@ public record TableElementProps(String id, String descriptionId, String targetOb
         private List<Element> children;
 
         private String globalFilter;
+
+        private List<ColumnFilter> columnFilters;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -109,8 +114,13 @@ public record TableElementProps(String id, String descriptionId, String targetOb
             return this;
         }
 
+        public Builder columnFilters(List<ColumnFilter> columnFilters) {
+            this.columnFilters = Objects.requireNonNull(columnFilters);
+            return this;
+        }
+
         public TableElementProps build() {
-            return new TableElementProps(this.id, this.descriptionId, this.targetObjectId, this.targetObjectKind, this.paginationData, this.stripeRow, this.children, this.globalFilter);
+            return new TableElementProps(this.id, this.descriptionId, this.targetObjectId, this.targetObjectKind, this.paginationData, this.stripeRow, this.children, this.globalFilter, this.columnFilters);
         }
     }
 }

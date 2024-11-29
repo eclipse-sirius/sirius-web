@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLColumnFilter } from '../columns/useTableColumnFiltering.types';
 
 export interface TableProps {
   editingContextId: string;
@@ -18,6 +19,7 @@ export interface TableProps {
   readOnly: boolean;
   onPaginationChange: (cursor: string | null, direction: 'PREV' | 'NEXT', size: number) => void;
   onGlobalFilterChange: (globalFilter: string) => void;
+  onColumnFiltersChange: (columFilters: ColumnFilter[]) => void;
 }
 
 export interface TablePaginationState {
@@ -47,6 +49,7 @@ export interface GQLTable {
   columns: GQLColumn[];
   lines: GQLLine[];
   paginationData: GQLPaginationData;
+  columnFilters: GQLColumnFilter[];
 }
 
 export interface GQLColumn {
@@ -57,6 +60,21 @@ export interface GQLColumn {
   width: number;
   isResizable: boolean;
   hidden: boolean;
+  filterVariant:
+    | 'autocomplete'
+    | 'checkbox'
+    | 'date'
+    | 'date-range'
+    | 'datetime'
+    | 'datetime-range'
+    | 'multi-select'
+    | 'range'
+    | 'range-slider'
+    | 'select'
+    | 'text'
+    | 'time'
+    | 'time-range'
+    | undefined;
 }
 
 export interface GQLLine {
@@ -108,4 +126,9 @@ export interface GQLMultiSelectCell extends GQLCell {
 export interface GQLSelectCellOption {
   id: string;
   label: string;
+}
+
+export interface ColumnFilter {
+  id: string;
+  value: unknown;
 }

@@ -18,6 +18,7 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.tables.ColumnFilter;
 import org.eclipse.sirius.components.tables.Table;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 import org.eclipse.sirius.components.tables.events.ITableEvent;
@@ -27,8 +28,13 @@ import org.eclipse.sirius.components.tables.events.ITableEvent;
  *
  * @author arichard
  */
-public record TableComponentProps(VariableManager variableManager, TableDescription tableDescription, Optional<Table> previousTable, List<ITableEvent> tableEvents,
-                                  String globalFilter) implements IProps {
+public record TableComponentProps(
+        VariableManager variableManager,
+        TableDescription tableDescription,
+        Optional<Table> previousTable,
+        List<ITableEvent> tableEvents,
+        String globalFilter,
+        List<ColumnFilter> columnFilters) implements IProps {
 
     public TableComponentProps {
         Objects.requireNonNull(variableManager);

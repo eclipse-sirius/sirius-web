@@ -27,10 +27,12 @@ export const useTableColumns = (
     const columnDefs: MRT_ColumnDef<GQLLine, string>[] = table.columns.map((column) => {
       return {
         id: column.id,
+        accessorKey: column.id,
         header: column.headerLabel,
         Header: ({}) => {
           return <ColumnHeader column={column} />;
         },
+        filterVariant: column.filterVariant,
         size: column.width > 0 ? column.width : undefined,
         enableResizing: column.isResizable,
         Cell: ({ row }) => {

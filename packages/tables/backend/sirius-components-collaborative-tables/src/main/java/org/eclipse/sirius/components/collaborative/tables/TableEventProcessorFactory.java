@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.IURLParser;
+import org.eclipse.sirius.components.tables.ColumnFilter;
 import org.eclipse.sirius.components.tables.Table;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 import org.springframework.stereotype.Service;
@@ -47,7 +48,8 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
     private static final String DIRECTION = "direction";
     private static final String SIZE = "size";
     private static final String GLOBAL_FILTER = "globalFilter";
-
+    private static final String COLUMN_FILTERS = "columnFilters";
+    
     private final IRepresentationSearchService representationSearchService;
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
@@ -104,6 +106,10 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
                 if (globalFilter != null) {
                     tableCreationParametersBuilder.globalFilter(globalFilter);
                 }
+                var columnFilters = this.getColumnFilters(representationId);
+                if (columnFilters != null) {
+                    tableCreationParametersBuilder.columnFilters(columnFilters);
+                }
 
                 IRepresentationEventProcessor tableEventProcessor = new TableEventProcessor(tableCreationParametersBuilder.build(), this.tableEventHandlers, new TableContext(table),
                         this.subscriptionManagerFactory.create(), new SimpleMeterRegistry(), this.representationRefreshPolicyRegistry, this.representationPersistenceService);
@@ -144,7 +150,7 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
     }
 
     private String getGlobalFilter(String representationId) {
-        String globalFilter = null;
+        String globalFilter = "";
         if (representationId.indexOf(GLOBAL_FILTER) > 0) {
             var param = this.urlParser.getParameterValues(representationId);
             if (param.containsKey(GLOBAL_FILTER)) {
@@ -155,5 +161,19 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
         }
         return globalFilter;
     }
+
+    private List<ColumnFilter> getColumnFilters(String representationId) {
+        if (representationId.indexOf(COLUMN_FILTERS) > 0) {
+            var param = this.urlParser.getParameterValues(representationId);
+            if (param.containsKey(COLUMN_FILTERS)) {
+                return this.urlParser.getParameterEntries(param.get(COLUMN_FILTERS).get(0)).stream().map(s -> {
+                    String[] parts = s.split(":");
+                    return new ColumnFilter(parts[0], parts[1]);
+                }).toList();
+            }
+        }
+        return List.of();
+    }
+
 
 }

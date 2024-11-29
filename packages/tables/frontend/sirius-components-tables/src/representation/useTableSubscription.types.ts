@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { GQLTable } from '../table/TableContent.types';
+import { GQLColumnFilter } from '../columns/useTableColumnFiltering.types';
 
 export interface UseTableSubscriptionValue {
   loading: boolean;
@@ -50,4 +51,9 @@ export interface GQLTableRefreshedEventPayload extends GQLTableEventPayload {
 export interface GQLTableGlobalFilterValuePayload extends GQLTableEventPayload {
   id: string;
   globalFilterValue: string;
+}
+
+export interface GQLTableColumnFilterPayload extends GQLTableEventPayload {
+  id: string;
+  columnFilters: GQLColumnFilter[];
 }

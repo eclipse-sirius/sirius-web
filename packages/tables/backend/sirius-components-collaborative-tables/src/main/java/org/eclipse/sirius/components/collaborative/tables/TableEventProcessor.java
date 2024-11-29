@@ -169,6 +169,18 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
                             }
                         });
             }
+        } else if (changeDescription.getKind().equals(TableChangeKind.TABLE_COLUMNS_FILTER_CHANGE) && changeDescription.getParameters() != null) {
+            if (this.sink.currentSubscriberCount() > 0) {
+                Optional.ofNullable(changeDescription.getParameters().get(TableChangeKind.COLUMN_FILTER_LIST_PARAM))
+                        .filter(List.class::isInstance)
+                        .map(List.class::cast)
+                        .ifPresent(newColumnFilters -> {
+                            EmitResult emitResult = this.sink.tryEmitNext(new TableColumnFilterPayload(changeDescription.getInput().id(), newColumnFilters));
+                            if (emitResult.isFailure()) {
+                                this.logger.warn("An error has occurred while emitting a TableColumnFilterPayload: {}", emitResult);
+                            }
+                        });
+            }
         }
     }
 
@@ -195,8 +207,14 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
         variableManager.put(TableRenderer.PAGINATION_SIZE, this.tableCreationParameters.getCursorBasedPaginationData().size());
         variableManager.put(TableRenderer.GLOBAL_FILTER_DATA, this.tableCreationParameters.getGlobalFilter());
 
-        TableComponentProps props = new TableComponentProps(variableManager, this.tableCreationParameters.getTableDescription(), Optional.ofNullable(this.tableContext.getTable()),
-                this.tableContext.getTableEvents(), this.tableCreationParameters.getGlobalFilter());
+        TableComponentProps props = new TableComponentProps(
+                variableManager,
+                this.tableCreationParameters.getTableDescription(),
+                Optional.ofNullable(this.tableContext.getTable()),
+                this.tableContext.getTableEvents(),
+                this.tableCreationParameters.getGlobalFilter(),
+                this.tableCreationParameters.getColumnFilters()
+        );
         Element element = new Element(TableComponent.class, props);
 
         Table table = new TableRenderer().render(element);

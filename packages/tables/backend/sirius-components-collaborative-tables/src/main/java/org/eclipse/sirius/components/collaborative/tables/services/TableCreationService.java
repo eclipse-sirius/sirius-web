@@ -57,7 +57,7 @@ public class TableCreationService {
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
 
 
-        TableComponentProps tableComponentProps = new TableComponentProps(variableManager, tableDescription, Optional.empty(), List.of(), null);
+        TableComponentProps tableComponentProps = new TableComponentProps(variableManager, tableDescription, Optional.empty(), List.of(), "", List.of());
 
         Element element = new Element(TableComponent.class, tableComponentProps);
         Table newTable = new TableRenderer().render(element);
