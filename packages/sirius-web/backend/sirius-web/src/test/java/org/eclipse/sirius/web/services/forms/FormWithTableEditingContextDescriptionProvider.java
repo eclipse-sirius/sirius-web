@@ -57,8 +57,8 @@ import org.eclipse.sirius.components.tables.descriptions.CheckboxCellDescription
 import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
 import org.eclipse.sirius.components.tables.descriptions.ICellDescription;
 import org.eclipse.sirius.components.tables.descriptions.LineDescription;
-import org.eclipse.sirius.components.tables.descriptions.PaginatedData;
 import org.eclipse.sirius.components.tables.descriptions.MultiSelectCellDescription;
+import org.eclipse.sirius.components.tables.descriptions.PaginatedData;
 import org.eclipse.sirius.components.tables.descriptions.SelectCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 import org.eclipse.sirius.components.tables.descriptions.TextfieldCellDescription;
@@ -237,6 +237,7 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
                 .headerIndexLabelProvider(variableManager -> "")
                 .initialWidthProvider(variableManager -> -1)
                 .isResizablePredicate(variableManager -> false)
+                .filterVariantProvider(variableManager -> "text")
                 .build();
         return List.of(columnDescription);
     }

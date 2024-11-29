@@ -48,6 +48,8 @@ public final class Column {
 
     private boolean hidden;
 
+    private String filterVariant;
+
     private Column() {
         // Prevent instantiation
     }
@@ -92,6 +94,10 @@ public final class Column {
         return this.hidden;
     }
 
+    public String getFilterVariant() {
+        return this.filterVariant;
+    }
+
     public static Builder newColumn(UUID id) {
         return new Builder(id);
     }
@@ -129,6 +135,8 @@ public final class Column {
         private boolean resizable;
 
         private boolean hidden;
+
+        private String filterVariant;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -179,6 +187,11 @@ public final class Column {
             return this;
         }
 
+        public Builder filterVariant(String filterVariant) {
+            this.filterVariant = Objects.requireNonNull(filterVariant);
+            return this;
+        }
+
         public Column build() {
             Column column = new Column();
             column.id = Objects.requireNonNull(this.id);
@@ -191,6 +204,7 @@ public final class Column {
             column.width = this.width;
             column.resizable = this.resizable;
             column.hidden = this.hidden;
+            column.filterVariant = Objects.requireNonNull(this.filterVariant);
             return column;
         }
     }

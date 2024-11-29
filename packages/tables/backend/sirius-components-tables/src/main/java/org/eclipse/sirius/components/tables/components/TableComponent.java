@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.tables.ColumnFilter;
 import org.eclipse.sirius.components.tables.PaginationData;
 import org.eclipse.sirius.components.tables.Table;
 import org.eclipse.sirius.components.tables.descriptions.PaginatedData;
@@ -63,6 +64,13 @@ public class TableComponent implements IComponent {
             variableManager.put(TableRenderer.GLOBAL_FILTER_DATA, globalFilter);
         }
 
+        List<ColumnFilter> columnsFilters;
+        if (this.props.columnFilters() == null) {
+            columnsFilters = optionalPreviousTable.map(Table::getColumnFilters).orElse(List.of());
+        } else {
+            columnsFilters = this.props.columnFilters();
+        }
+
         var childrenColumns = tableDescription.getColumnDescriptions().stream()
                 .map(columnDescription -> {
                     var previousColumns = optionalPreviousTable.map(previousTable -> tableElementRequestor.getColumns(previousTable, columnDescription)).orElse(List.of());
@@ -71,6 +79,19 @@ public class TableComponent implements IComponent {
                 })
                 .toList();
 
+        var columnFiltersMapped = optionalPreviousTable
+                .map(previousTable -> columnsFilters.stream()
+                        .map(columnFilter ->
+                                tableElementRequestor.getColumn(previousTable, columnFilter.id())
+                                        .map(column -> new ColumnFilter(column.getTargetObjectId(), columnFilter.value()))
+                        )
+                        .filter(Optional::isPresent)
+                        .map(Optional::get)
+                        .toList()
+                )
+                .orElse(List.of());
+
+        variableManager.put(TableRenderer.COLUMN_FILTERS, columnFiltersMapped);
 
         PaginatedData paginatedData = tableDescription.getLineDescription().getSemanticElementsProvider().apply(variableManager);
 
@@ -90,6 +111,7 @@ public class TableComponent implements IComponent {
                 .children(children)
                 .paginationData(new PaginationData(paginatedData.hasPreviousPage(), paginatedData.hasNextPage(), paginatedData.totalRowCount()))
                 .globalFilter(globalFilter)
+                .columnFilters(columnsFilters)
                 .build();
 
         return new Element(TableElementProps.TYPE, tableElementProps);

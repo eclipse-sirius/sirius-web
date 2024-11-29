@@ -8,7 +8,7 @@ input TableEventInput {
   editingContextId: ID!
 }
 
-union TableEventPayload = ErrorPayload | TableRefreshedEventPayload | TableGlobalFilterValuePayload
+union TableEventPayload = ErrorPayload | TableRefreshedEventPayload | TableGlobalFilterValuePayload | TableColumnFilterPayload
 
 type TableRefreshedEventPayload {
   id: ID!
@@ -18,6 +18,16 @@ type TableRefreshedEventPayload {
 type TableGlobalFilterValuePayload {
   id: ID!
   globalFilterValue: String!
+}
+
+type TableColumnFilterPayload {
+  id: ID!
+  columnFilters: [ColumnFilter!]!
+}
+
+type ColumnFilter {
+  id: ID!
+  value: String!
 }
 
 type Table implements Representation {
@@ -30,6 +40,7 @@ type Table implements Representation {
   lines: [Line!]!
   paginationData: PaginationData
   globalFilter: String
+  columnFilters: [ColumnFilter!]!
 }
 
 type Column {
@@ -42,6 +53,7 @@ type Column {
   width: Int!
   isResizable: Boolean!
   hidden: Boolean!
+  filterVariant: String!
 }
 
 type Line {
@@ -131,6 +143,7 @@ extend type Mutation {
   changeTableColumnVisibility(input: ChangeTableColumnVisibilityInput!): ChangeTableColumnVisibilityPayload!
   resizeTableRow(input: ResizeTableRowInput!): ResizeTableRowPayload!
   changeGlobalFilterValue(input: ChangeGlobalFilterValueInput!): ChangeGlobalFilterValuePayload!
+  changeColumnFilter(input: ChangeColumnFilterInput!): ChangeColumnFilterPayload!
 }
 
 input EditCheckboxCellInput {
@@ -223,3 +236,18 @@ input ChangeGlobalFilterValueInput {
 }
 
 union ChangeGlobalFilterValuePayload = ErrorPayload | SuccessPayload
+
+input ChangeColumnFilterInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  tableId: ID!
+  columnFilters: [ColumnFilterInput!]!
+}
+
+input ColumnFilterInput {
+  id: ID!
+  value: String!
+}
+
+union ChangeColumnFilterPayload = ErrorPayload | SuccessPayload

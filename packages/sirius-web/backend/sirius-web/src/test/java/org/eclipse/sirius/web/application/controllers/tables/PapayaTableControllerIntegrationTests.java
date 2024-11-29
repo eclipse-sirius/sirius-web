@@ -18,6 +18,7 @@ import static org.assertj.core.api.Assertions.fail;
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -28,11 +29,15 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.collaborative.tables.TableColumnFilterPayload;
 import org.eclipse.sirius.components.collaborative.tables.TableGlobalFilterValuePayload;
 import org.eclipse.sirius.components.collaborative.tables.TableRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.tables.dto.ChangeColumnFilterInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.ChangeGlobalFilterValueInput;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.tables.ColumnFilter;
+import org.eclipse.sirius.components.tables.tests.graphql.ChangeColumnFilterMutationRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.ChangeGlobalFilterMutationRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
@@ -74,6 +79,9 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
 
     @Autowired
     private ChangeGlobalFilterMutationRunner changeGlobalFilterMutationRunner;
+
+    @Autowired
+    private ChangeColumnFilterMutationRunner changeColumnFilterMutationRunner;
 
 
     @BeforeEach
@@ -238,6 +246,58 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
         StepVerifier.create(flux)
                 .consumeNextWith(initialTableContentConsumer)
                 .then(changeGlobalFilter)
+                .consumeNextWith(updatedTableContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a table, when a column filter mutation is triggered, then a payload with the new column filter value is received")
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenTableWhenColumnFilterMutationTriggeredThenPayloadWithNewColumnFilterValueReceived() {
+        var flux = this.givenSubscriptionToTable();
+
+        var tableId = new AtomicReference<String>();
+        var columnId = new AtomicReference<String>();
+
+        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
+                .filter(TableRefreshedEventPayload.class::isInstance)
+                .map(TableRefreshedEventPayload.class::cast)
+                .map(TableRefreshedEventPayload::table)
+                .ifPresentOrElse(table -> {
+                    assertThat(table).isNotNull();
+                    assertThat(table.getColumnFilters()).hasSize(0);
+                    tableId.set(table.getId());
+                    columnId.set(table.getColumns().get(0).getId().toString());
+                }, () -> fail(MISSING_TABLE));
+
+        Runnable changeColumnFilter = () -> {
+            var changeColumnFilterInput = new ChangeColumnFilterInput(
+                    UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    tableId.get(), tableId.get(), List.of(new ColumnFilter(columnId.get(), "filter value")));
+            var result = this.changeColumnFilterMutationRunner.run(changeColumnFilterInput);
+
+            String typename = JsonPath.read(result, "$.data.changeColumnFilter.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+
+        Consumer<Object> updatedTableContentConsumer = payload -> Optional.of(payload)
+                .filter(TableColumnFilterPayload.class::isInstance)
+                .map(TableColumnFilterPayload.class::cast)
+                .map(TableColumnFilterPayload::columnFilters)
+                .ifPresentOrElse(columnFilters -> {
+                    assertThat(columnFilters).isNotNull();
+                    assertThat(columnFilters).hasSize(1);
+                    assertThat(columnFilters.get(0).id()).isEqualTo(columnId.get());
+                    assertThat(columnFilters.get(0).value()).isEqualTo("filter value");
+                }, () -> fail("Missing column filter value"));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialTableContentConsumer)
+                .then(changeColumnFilter)
                 .consumeNextWith(updatedTableContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));

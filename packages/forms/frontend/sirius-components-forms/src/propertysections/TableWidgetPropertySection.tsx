@@ -40,6 +40,7 @@ export const TableWidgetPropertySection: PropertySectionComponent<GQLTableWidget
         readOnly={readOnly || widget.readOnly}
         onPaginationChange={() => {}}
         onGlobalFilterChange={() => {}}
+        onColumnFiltersChange={() => {}}
       />
     </div>
   );
