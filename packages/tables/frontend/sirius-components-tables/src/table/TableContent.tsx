@@ -22,9 +22,10 @@ import { RowHeader } from '../rows/RowHeader';
 import { CursorBasedPagination } from './CursorBasedPagination';
 import { GQLLine, TablePaginationState, TableProps } from './TableContent.types';
 import { useTableColumns } from './useTableColumns';
+import { useGlobalFilter } from './useGlobalFilter';
 
 export const TableContent = memo(
-  ({ editingContextId, representationId, table, readOnly, onPaginationChange }: TableProps) => {
+  ({ editingContextId, representationId, table, readOnly, onPaginationChange, onGlobalFilterChange }: TableProps) => {
     const { selection, setSelection } = useSelection();
 
     const { columns } = useTableColumns(editingContextId, representationId, table, readOnly);
@@ -72,6 +73,13 @@ export const TableContent = memo(
       }));
     };
 
+    const { globalFilter, setGlobalFilter } = useGlobalFilter(
+      editingContextId,
+      representationId,
+      table,
+      onGlobalFilterChange
+    );
+
     useEffect(() => {
       if (onPaginationChange) {
         onPaginationChange(pagination.cursor, pagination.direction, pagination.size);
@@ -91,9 +99,12 @@ export const TableContent = memo(
       rowCount: table.paginationData.totalRowCount,
       enableRowActions: true,
       enableSorting: false,
+      manualFiltering: true,
+      onGlobalFilterChange: setGlobalFilter,
+      initialState: { showGlobalFilter: true },
       onColumnSizingChange: setColumnSizing,
       onColumnVisibilityChange: setColumnVisibility,
-      state: { columnSizing, columnVisibility },
+      state: { columnSizing, columnVisibility, globalFilter },
       muiTableBodyRowProps: ({ row }) => {
         return {
           onClick: () => {

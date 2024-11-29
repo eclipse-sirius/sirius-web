@@ -27,12 +27,13 @@ import org.eclipse.sirius.components.tables.events.ITableEvent;
  *
  * @author arichard
  */
-public record TableComponentProps(VariableManager variableManager, TableDescription tableDescription, Optional<Table> previousTable, List<ITableEvent> tableEvents) implements IProps {
+public record TableComponentProps(VariableManager variableManager, TableDescription tableDescription, Optional<Table> previousTable, List<ITableEvent> tableEvents,
+                                  String globalFilter) implements IProps {
 
-    public TableComponentProps(VariableManager variableManager, TableDescription tableDescription, Optional<Table> previousTable, List<ITableEvent> tableEvents) {
-        this.variableManager = Objects.requireNonNull(variableManager);
-        this.tableDescription = Objects.requireNonNull(tableDescription);
-        this.previousTable = Objects.requireNonNull(previousTable);
-        this.tableEvents = Objects.requireNonNull(tableEvents);
+    public TableComponentProps {
+        Objects.requireNonNull(variableManager);
+        Objects.requireNonNull(tableDescription);
+        Objects.requireNonNull(previousTable);
+        Objects.requireNonNull(tableEvents);
     }
 }

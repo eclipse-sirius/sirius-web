@@ -23,6 +23,12 @@ public final class TableChangeKind {
 
     public static final String TABLE_EVENTS_PARAM = "TABLE_EVENTS";
 
+    public static final String TABLE_GLOBAL_FILTER_VALUE_CHANGE = "TABLE_GLOBAL_FILTER_VALUE_CHANGE";
+
+    public static final String TABLE_EVENT_PARAM = "TABLE_EVENT";
+
+    public static final String GLOBAL_FILTER_NEW_VALUE_PARAM = "GLOBAL_FILTER_NEW_VALUE";
+
     private TableChangeKind() {
         // Prevent instantiation
     }

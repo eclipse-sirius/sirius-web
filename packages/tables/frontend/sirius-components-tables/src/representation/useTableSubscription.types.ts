@@ -46,3 +46,8 @@ export interface GQLTableRefreshedEventPayload extends GQLTableEventPayload {
   id: string;
   table: GQLTable;
 }
+
+export interface GQLTableGlobalFilterValuePayload extends GQLTableEventPayload {
+  id: string;
+  globalFilterValue: string;
+}

@@ -15,6 +15,8 @@ package org.eclipse.sirius.web.application.controllers.tables;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
+import com.jayway.jsonpath.JsonPath;
+
 import java.time.Duration;
 import java.util.Optional;
 import java.util.UUID;
@@ -26,8 +28,12 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.collaborative.tables.TableGlobalFilterValuePayload;
 import org.eclipse.sirius.components.collaborative.tables.TableRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.tables.dto.ChangeGlobalFilterValueInput;
 import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.tables.tests.graphql.ChangeGlobalFilterMutationRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedTableSubscription;
@@ -65,6 +71,9 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
 
     @Autowired
     private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+
+    @Autowired
+    private ChangeGlobalFilterMutationRunner changeGlobalFilterMutationRunner;
 
 
     @BeforeEach
@@ -182,6 +191,54 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTableContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a table, when a global filter mutation is triggered, then a payload with the new global filter value is received")
+    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenTableWhenGlobalFilterMutationTriggeredThenPayloadWithNewGlobalFilterValueReceived() {
+        var flux = this.givenSubscriptionToTable();
+
+        var tableId = new AtomicReference<String>();
+
+        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
+                .filter(TableRefreshedEventPayload.class::isInstance)
+                .map(TableRefreshedEventPayload.class::cast)
+                .map(TableRefreshedEventPayload::table)
+                .ifPresentOrElse(table -> {
+                    assertThat(table).isNotNull();
+                    assertThat(table.getGlobalFilter()).isEqualTo("");
+                    tableId.set(table.getId());
+                }, () -> fail(MISSING_TABLE));
+
+        Runnable changeGlobalFilter = () -> {
+            var changeGlobalFilterValueInput = new ChangeGlobalFilterValueInput(
+                    UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    tableId.get(), tableId.get(), "New global filter value");
+            var result = this.changeGlobalFilterMutationRunner.run(changeGlobalFilterValueInput);
+
+            String typename = JsonPath.read(result, "$.data.changeGlobalFilterValue.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+
+        Consumer<Object> updatedTableContentConsumer = payload -> Optional.of(payload)
+                .filter(TableGlobalFilterValuePayload.class::isInstance)
+                .map(TableGlobalFilterValuePayload.class::cast)
+                .map(TableGlobalFilterValuePayload::globalFilterValue)
+                .ifPresentOrElse(globalFilterValue -> {
+                    assertThat(globalFilterValue).isNotNull();
+                    assertThat(globalFilterValue).isEqualTo("New global filter value");
+                }, () -> fail("Missing global filter value"));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialTableContentConsumer)
+                .then(changeGlobalFilter)
+                .consumeNextWith(updatedTableContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

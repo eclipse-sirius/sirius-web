@@ -94,6 +94,9 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
                 .register(meterRegistry);
 
         Table table = this.refreshTable();
+        // We automatically refresh the representation before using it since things may have changed since the moment it
+        // has been saved in the database.
+        this.representationPersistenceService.save(null, this.tableCreationParameters.getEditingContext(), table);
         this.tableContext.update(table);
     }
 
@@ -114,7 +117,8 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
 
             if (optionalTableEventHandler.isPresent()) {
                 ITableEventHandler tableEventHandler = optionalTableEventHandler.get();
-                tableEventHandler.handle(payloadSink, changeDescriptionSink, this.tableCreationParameters.getEditingContext(), this.tableContext, this.tableCreationParameters.getTableDescription(), tableInput);
+                tableEventHandler.handle(payloadSink, changeDescriptionSink, this.tableCreationParameters.getEditingContext(), this.tableContext, this.tableCreationParameters.getTableDescription(),
+                        tableInput);
             } else {
                 this.logger.warn("No handler found for event: {}", tableInput);
             }
@@ -153,6 +157,18 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
 
             long end = System.currentTimeMillis();
             this.timer.record(end - start, TimeUnit.MILLISECONDS);
+        } else if (changeDescription.getKind().equals(TableChangeKind.TABLE_GLOBAL_FILTER_VALUE_CHANGE) && changeDescription.getParameters() != null) {
+            if (this.sink.currentSubscriberCount() > 0 && changeDescription.getSourceId().startsWith(this.tableCreationParameters.getId())) {
+                Optional.ofNullable(changeDescription.getParameters().get(TableChangeKind.GLOBAL_FILTER_NEW_VALUE_PARAM))
+                        .filter(String.class::isInstance)
+                        .map(String.class::cast)
+                        .ifPresent(newGlobalFilter -> {
+                            EmitResult emitResult = this.sink.tryEmitNext(new TableGlobalFilterValuePayload(changeDescription.getInput().id(), newGlobalFilter));
+                            if (emitResult.isFailure()) {
+                                this.logger.warn("An error has occurred while emitting a TableGlobalFilterValuePayload: {}", emitResult);
+                            }
+                        });
+            }
         }
     }
 
@@ -177,9 +193,10 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
         variableManager.put(TableRenderer.PAGINATION_CURSOR, this.tableCreationParameters.getCursorBasedPaginationData().cursor());
         variableManager.put(TableRenderer.PAGINATION_DIRECTION, this.tableCreationParameters.getCursorBasedPaginationData().direction());
         variableManager.put(TableRenderer.PAGINATION_SIZE, this.tableCreationParameters.getCursorBasedPaginationData().size());
+        variableManager.put(TableRenderer.GLOBAL_FILTER_DATA, this.tableCreationParameters.getGlobalFilter());
 
         TableComponentProps props = new TableComponentProps(variableManager, this.tableCreationParameters.getTableDescription(), Optional.ofNullable(this.tableContext.getTable()),
-                this.tableContext.getTableEvents());
+                this.tableContext.getTableEvents(), this.tableCreationParameters.getGlobalFilter());
         Element element = new Element(TableComponent.class, props);
 
         Table table = new TableRenderer().render(element);

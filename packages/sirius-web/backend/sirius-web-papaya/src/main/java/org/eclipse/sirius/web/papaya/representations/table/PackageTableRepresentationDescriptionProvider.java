@@ -122,8 +122,19 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
         var cursor = variableManager.get(TableRenderer.PAGINATION_CURSOR, EObject.class).orElse(null);
         var direction = variableManager.get(TableRenderer.PAGINATION_DIRECTION, String.class).orElse(null);
         var size = variableManager.get(TableRenderer.PAGINATION_SIZE, Integer.class).orElse(0);
+        var globalFilter = variableManager.get(TableRenderer.GLOBAL_FILTER_DATA, String.class).orElse(null);
 
-        Predicate<EObject> predicate = eObject -> eObject instanceof Type && EcoreUtil.isAncestor(self, eObject);
+        Predicate<EObject> predicate = eObject -> {
+            boolean isValidCandidate = eObject instanceof Type && EcoreUtil.isAncestor(self, eObject);
+            if (isValidCandidate && globalFilter != null && !globalFilter.isBlank()) {
+                var type = (Type) eObject;
+                isValidCandidate = type.getName() != null && type.getName().contains(globalFilter);
+                isValidCandidate = isValidCandidate || type.getDescription() != null && type.getDescription().contains(globalFilter);
+                isValidCandidate = isValidCandidate || type.getVisibility() != null && type.getVisibility().getLiteral().contains(globalFilter);
+                isValidCandidate = isValidCandidate || type.getAnnotations().stream().anyMatch(annotation -> annotation.getName().contains(globalFilter));
+            }
+            return isValidCandidate;
+        };
 
         return new CursorBasedNavigationServices().collect(self, cursor, direction, size, predicate);
     }
