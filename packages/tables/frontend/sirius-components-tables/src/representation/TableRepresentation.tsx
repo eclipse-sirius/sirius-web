@@ -33,17 +33,23 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
     cursor: null,
     direction: 'NEXT',
     size: 10,
+    globalFilter: null,
   });
   const { complete, table } = useTableSubscription(
     editingContextId,
     representationId,
     state.cursor,
     state.direction,
-    state.size
+    state.size,
+    state.globalFilter
   );
 
   const onPaginationChange = (cursor: string | null, direction: 'PREV' | 'NEXT', size: number) => {
     setState((prevState) => ({ ...prevState, cursor, direction, size }));
+  };
+
+  const onGlobalFilterChange = (globalFilter: string) => {
+    setState((prevState) => ({ ...prevState, globalFilter }));
   };
 
   let completeMessage: JSX.Element | null = null;
@@ -66,6 +72,7 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
           table={table}
           readOnly={readOnly}
           onPaginationChange={onPaginationChange}
+          onGlobalFilterChange={onGlobalFilterChange}
         />
       ) : null}
       {completeMessage}

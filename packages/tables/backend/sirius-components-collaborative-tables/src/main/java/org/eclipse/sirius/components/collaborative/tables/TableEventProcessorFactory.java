@@ -46,6 +46,7 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
     private static final String CURSOR = "cursor";
     private static final String DIRECTION = "direction";
     private static final String SIZE = "size";
+    private static final String GLOBAL_FILTER = "globalFilter";
 
     private final IRepresentationSearchService representationSearchService;
 
@@ -93,14 +94,18 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
                 TableDescription tableDescription = optionalTableDescription.get();
                 Object object = optionalObject.get();
 
-                TableCreationParameters tableCreationParameters = TableCreationParameters.newTableCreationParameters(this.getTableIdFromRepresentationId(representationId))
+                var tableCreationParametersBuilder = TableCreationParameters.newTableCreationParameters(this.getTableIdFromRepresentationId(representationId))
                         .tableDescription(tableDescription)
                         .editingContext(editingContext)
                         .targetObject(object)
                         .cursorBasedPaginationData(this.getCursorBasedPaginationData(editingContext, representationId))
-                        .build();
+                        .targetObject(object);
+                var globalFilter = this.getGlobalFilter(representationId);
+                if (globalFilter != null) {
+                    tableCreationParametersBuilder.globalFilter(globalFilter);
+                }
 
-                IRepresentationEventProcessor tableEventProcessor = new TableEventProcessor(tableCreationParameters, this.tableEventHandlers, new TableContext(table),
+                IRepresentationEventProcessor tableEventProcessor = new TableEventProcessor(tableCreationParametersBuilder.build(), this.tableEventHandlers, new TableContext(table),
                         this.subscriptionManagerFactory.create(), new SimpleMeterRegistry(), this.representationRefreshPolicyRegistry, this.representationPersistenceService);
                 return Optional.of(tableEventProcessor);
             }
@@ -138,5 +143,17 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
         return new CursorBasedPaginationData(cursor, direction, size);
     }
 
+    private String getGlobalFilter(String representationId) {
+        String globalFilter = null;
+        if (representationId.indexOf(GLOBAL_FILTER) > 0) {
+            var param = this.urlParser.getParameterValues(representationId);
+            if (param.containsKey(GLOBAL_FILTER)) {
+                globalFilter = param.get(GLOBAL_FILTER).stream().findFirst().orElse("");
+            } else {
+                globalFilter = "";
+            }
+        }
+        return globalFilter;
+    }
 
 }

@@ -24,7 +24,7 @@ import org.eclipse.sirius.components.tables.PaginationData;
  *
  * @author lfasani
  */
-public record TableElementProps(String id, String descriptionId, String targetObjectId, String targetObjectKind, PaginationData paginationData, boolean stripeRow, List<Element> children) implements IProps {
+public record TableElementProps(String id, String descriptionId, String targetObjectId, String targetObjectKind, PaginationData paginationData, boolean stripeRow, List<Element> children, String globalFilter) implements IProps {
 
     public static final String TYPE = "Table";
 
@@ -68,6 +68,8 @@ public record TableElementProps(String id, String descriptionId, String targetOb
 
         private List<Element> children;
 
+        private String globalFilter;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -102,8 +104,13 @@ public record TableElementProps(String id, String descriptionId, String targetOb
             return this;
         }
 
+        public Builder globalFilter(String globalFilter) {
+            this.globalFilter = Objects.requireNonNull(globalFilter);
+            return this;
+        }
+
         public TableElementProps build() {
-            return new TableElementProps(this.id, this.descriptionId, this.targetObjectId, this.targetObjectKind, this.paginationData, this.stripeRow, this.children);
+            return new TableElementProps(this.id, this.descriptionId, this.targetObjectId, this.targetObjectKind, this.paginationData, this.stripeRow, this.children, this.globalFilter);
         }
     }
 }

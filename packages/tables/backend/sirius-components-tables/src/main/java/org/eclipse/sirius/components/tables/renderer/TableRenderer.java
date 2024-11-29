@@ -28,6 +28,7 @@ public class TableRenderer {
     public static final String PAGINATION_CURSOR = "cursor";
     public static final String PAGINATION_DIRECTION = "direction";
     public static final String PAGINATION_SIZE = "size";
+    public static final String GLOBAL_FILTER_DATA = "globalFilterData";
 
     private final BaseRenderer baseRenderer;
 

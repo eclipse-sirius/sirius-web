@@ -10,10 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.collaborative.tables.dto;
 
-export interface TableRepresentationState {
-  cursor: string | null;
-  direction: 'PREV' | 'NEXT';
-  size: number;
-  globalFilter: string | null;
+import java.util.UUID;
+
+import org.eclipse.sirius.components.collaborative.tables.api.ITableInput;
+
+/**
+ * The input object for the change of the global filter value.
+ *
+ * @author frouene
+ */
+public record ChangeGlobalFilterValueInput(UUID id, String editingContextId, String representationId, String tableId, String globalFilterValue) implements ITableInput {
+
 }

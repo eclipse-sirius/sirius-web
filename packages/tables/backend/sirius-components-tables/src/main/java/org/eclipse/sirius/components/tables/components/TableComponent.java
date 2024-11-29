@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.tables.Table;
 import org.eclipse.sirius.components.tables.descriptions.PaginatedData;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 import org.eclipse.sirius.components.tables.elements.TableElementProps;
+import org.eclipse.sirius.components.tables.renderer.TableRenderer;
 import org.eclipse.sirius.components.tables.renderer.TableRenderingCache;
 
 /**
@@ -56,6 +57,12 @@ public class TableComponent implements IComponent {
         TableRenderingCache cache = new TableRenderingCache();
         ITableElementRequestor tableElementRequestor = new TableElementRequestor();
 
+        var globalFilter = this.props.globalFilter();
+        if (this.props.globalFilter() == null) {
+            globalFilter = optionalPreviousTable.map(Table::getGlobalFilter).orElse("");
+            variableManager.put(TableRenderer.GLOBAL_FILTER_DATA, globalFilter);
+        }
+
         var childrenColumns = tableDescription.getColumnDescriptions().stream()
                 .map(columnDescription -> {
                     var previousColumns = optionalPreviousTable.map(previousTable -> tableElementRequestor.getColumns(previousTable, columnDescription)).orElse(List.of());
@@ -82,6 +89,7 @@ public class TableComponent implements IComponent {
                 .stripeRow(stripeRow)
                 .children(children)
                 .paginationData(new PaginationData(paginatedData.hasPreviousPage(), paginatedData.hasNextPage(), paginatedData.totalRowCount()))
+                .globalFilter(globalFilter)
                 .build();
 
         return new Element(TableElementProps.TYPE, tableElementProps);

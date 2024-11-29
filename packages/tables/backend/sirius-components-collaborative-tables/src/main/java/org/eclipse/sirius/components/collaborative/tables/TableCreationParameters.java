@@ -36,6 +36,8 @@ public final class TableCreationParameters {
 
     private CursorBasedPaginationData cursorBasedPaginationData;
 
+    private String globalFilter;
+
     private TableCreationParameters() {
         // Prevent instantiation
     }
@@ -60,6 +62,10 @@ public final class TableCreationParameters {
         return this.cursorBasedPaginationData;
     }
 
+    public String getGlobalFilter() {
+        return this.globalFilter;
+    }
+
     public static Builder newTableCreationParameters(String id) {
         return new Builder(id);
     }
@@ -81,6 +87,8 @@ public final class TableCreationParameters {
         private Object targetObject;
 
         private CursorBasedPaginationData cursorBasedPaginationData;
+
+        private String globalFilter;
 
         private Builder(String id) {
             this.id = id;
@@ -106,6 +114,11 @@ public final class TableCreationParameters {
             return this;
         }
 
+        public Builder globalFilter(String globalFilter) {
+            this.globalFilter = Objects.requireNonNull(globalFilter);
+            return this;
+        }
+
         public TableCreationParameters build() {
             TableCreationParameters tableCreationParameters = new TableCreationParameters();
             tableCreationParameters.id = Objects.requireNonNull(this.id);
@@ -113,6 +126,7 @@ public final class TableCreationParameters {
             tableCreationParameters.editingContext = Objects.requireNonNull(this.editingContext);
             tableCreationParameters.cursorBasedPaginationData = Objects.requireNonNull(this.cursorBasedPaginationData);
             tableCreationParameters.targetObject = Objects.requireNonNull(this.targetObject);
+            tableCreationParameters.globalFilter = this.globalFilter;
             return tableCreationParameters;
         }
     }
