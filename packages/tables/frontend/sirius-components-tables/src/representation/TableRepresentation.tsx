@@ -15,6 +15,7 @@ import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { TableContent } from '../table/TableContent';
+import { ColumnFilter } from '../table/TableContent.types';
 import { TableRepresentationState } from './TableRepresentation.types';
 import { useTableSubscription } from './useTableSubscription';
 
@@ -34,6 +35,7 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
     direction: 'NEXT',
     size: 10,
     globalFilter: null,
+    columnFilters: null,
   });
   const { complete, table } = useTableSubscription(
     editingContextId,
@@ -41,7 +43,8 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
     state.cursor,
     state.direction,
     state.size,
-    state.globalFilter
+    state.globalFilter,
+    state.columnFilters
   );
 
   const onPaginationChange = (cursor: string | null, direction: 'PREV' | 'NEXT', size: number) => {
@@ -50,6 +53,10 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
 
   const onGlobalFilterChange = (globalFilter: string) => {
     setState((prevState) => ({ ...prevState, globalFilter }));
+  };
+
+  const onColumnFiltersChange = (columnFilters: ColumnFilter[]) => {
+    setState((prevState) => ({ ...prevState, columnFilters }));
   };
 
   let completeMessage: JSX.Element | null = null;
@@ -73,6 +80,7 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
           readOnly={readOnly}
           onPaginationChange={onPaginationChange}
           onGlobalFilterChange={onGlobalFilterChange}
+          onColumnFiltersChange={onColumnFiltersChange}
         />
       ) : null}
       {completeMessage}

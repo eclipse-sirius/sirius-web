@@ -23,7 +23,9 @@ import {
   UseTableSubscriptionState,
   UseTableSubscriptionValue,
   GQLTableGlobalFilterValuePayload,
+  GQLTableColumnFilterPayload,
 } from './useTableSubscription.types';
+import { ColumnFilter } from '../table/TableContent.types';
 
 export const getTableEventSubscription = `
   subscription tableEvent($input: TableEventInput!) {
@@ -31,6 +33,12 @@ export const getTableEventSubscription = `
       __typename
        ... on TableGlobalFilterValuePayload {
         globalFilterValue
+      }
+      ... on TableColumnFilterPayload {
+        columnFilters {
+          id
+          value
+        }
       }
       ... on TableRefreshedEventPayload {
         table {
@@ -42,6 +50,10 @@ export const getTableEventSubscription = `
           }
           stripeRow
           globalFilter
+          columnFilters {
+            id
+            value
+          }
           columns {
             id
             headerLabel
@@ -52,6 +64,7 @@ export const getTableEventSubscription = `
             width
             isResizable 
             hidden
+            filterVariant
           }
           lines {
             id
@@ -104,13 +117,17 @@ const isTableRefreshedEventPayload = (payload: GQLTableEventPayload): payload is
 const isTableGlobalFilterValuePayload = (payload: GQLTableEventPayload): payload is GQLTableGlobalFilterValuePayload =>
   payload.__typename === 'TableGlobalFilterValuePayload';
 
+const isTableColumnFilterPayload = (payload: GQLTableEventPayload): payload is GQLTableColumnFilterPayload =>
+  payload.__typename === 'TableColumnFilterPayload';
+
 export const useTableSubscription = (
   editingContextId: string,
   tableId: string,
   cursor: string | null,
   direction: 'PREV' | 'NEXT' | null,
   size: number,
-  globalFilter: string | null
+  globalFilter: string | null,
+  columnFilters: ColumnFilter[] | null
 ): UseTableSubscriptionValue => {
   const [state, setState] = useState<UseTableSubscriptionState>({
     id: crypto.randomUUID(),
@@ -119,11 +136,19 @@ export const useTableSubscription = (
   });
 
   const globalFilterParam: string = globalFilter !== null ? `&globalFilter=${encodeURIComponent(globalFilter)}` : '';
-
+  const columnFiltersParam: string =
+    columnFilters !== null
+      ? `&columnFilters=[${columnFilters
+          .map((filter) => {
+            return filter.id + ':' + filter.value;
+          })
+          .map(encodeURIComponent)
+          .join(',')}]`
+      : '';
   const input: GQLTableEventInput = {
     id: state.id,
     editingContextId,
-    representationId: `${tableId}?cursor=${cursor}&direction=${direction}&size=${size}${globalFilterParam}`,
+    representationId: `${tableId}?cursor=${cursor}&direction=${direction}&size=${size}${globalFilterParam}${columnFiltersParam}`,
   };
 
   const variables: GQLTableEventVariables = { input };
@@ -142,6 +167,18 @@ export const useTableSubscription = (
             return {
               ...prevState,
               table: { ...prevState.table, globalFilter: globalFilterValue },
+            };
+          } else {
+            return prevState;
+          }
+        });
+      } else if (isTableColumnFilterPayload(payload)) {
+        const { columnFilters } = payload;
+        setState((prevState) => {
+          if (prevState.table) {
+            return {
+              ...prevState,
+              table: { ...prevState.table, columnFilters: columnFilters },
             };
           } else {
             return prevState;

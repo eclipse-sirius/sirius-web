@@ -10,12 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ColumnFilter } from '../table/TableContent.types';
+package org.eclipse.sirius.components.tables;
 
-export interface TableRepresentationState {
-  cursor: string | null;
-  direction: 'PREV' | 'NEXT';
-  size: number;
-  globalFilter: string | null;
-  columnFilters: ColumnFilter[] | null;
+import java.util.Objects;
+
+/**
+ * Data representing the filter of a column.
+ *
+ * @author frouene
+ */
+public record ColumnFilter(String id, String value) {
+
+    public ColumnFilter {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(value);
+    }
 }

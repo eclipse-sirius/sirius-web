@@ -76,6 +76,7 @@ public class TableElementFactory implements IElementFactory {
                     .columns(columns)
                     .paginationData(tableElementProps.paginationData())
                     .globalFilter(tableElementProps.globalFilter())
+                    .columnFilters(tableElementProps.columnFilters())
                     .build();
         }
         return null;
@@ -134,6 +135,7 @@ public class TableElementFactory implements IElementFactory {
                     .width(columnElementProps.width())
                     .resizable(columnElementProps.resizable())
                     .hidden(columnElementProps.hidden())
+                    .filterVariant(columnElementProps.filterVariant())
                     .build();
 
         }

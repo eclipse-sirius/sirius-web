@@ -111,6 +111,7 @@ public class ViewTableDescriptionConverter implements IRepresentationDescription
                 .shouldRenderPredicate(this.getShouldRenderPredicate(columnDescription.getPreconditionExpression(), interpreter))
                 .isResizablePredicate(variableManager -> interpreter.evaluateExpression(variableManager.getVariables(), columnDescription.getIsResizableExpression()).asBoolean().orElse(false))
                 .initialWidthProvider(variableManager -> interpreter.evaluateExpression(variableManager.getVariables(), columnDescription.getInitialWidthExpression()).asInt().orElse(-1))
+                .filterVariantProvider(variableManager -> this.evaluateString(interpreter, variableManager, columnDescription.getFilterWidgetExpression()))
                 .build();
     }
 
