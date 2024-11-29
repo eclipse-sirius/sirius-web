@@ -17,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import org.eclipse.sirius.components.core.api.IImagePathService;
 import org.eclipse.sirius.components.graphql.api.URLConstants;
@@ -26,6 +27,7 @@ import org.eclipse.sirius.web.application.images.services.api.IProjectImageAppli
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -106,6 +108,7 @@ public class ImagesController {
             if (this.isImagePathAccessible(imagePath)) {
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(mediatype);
+                headers.setCacheControl(CacheControl.maxAge(1, TimeUnit.DAYS).cachePublic());
                 Resource resource = new ClassPathResource(imagePath);
                 if (resource.exists()) {
                     response = new ResponseEntity<>(resource, headers, HttpStatus.OK);
@@ -132,12 +135,14 @@ public class ImagesController {
                 var image = optionalProjectImage.get();
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.valueOf(image.getContentType()));
+                headers.setCacheControl(CacheControl.maxAge(1, TimeUnit.DAYS).cachePublic());
                 Resource resource = new ByteArrayResource(image.getContent());
                 response = new ResponseEntity<>(resource, headers, HttpStatus.OK);
             } else if (optionalImage.isPresent()) {
                 var image = optionalImage.get();
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.valueOf(image.getContentType()));
+                headers.setCacheControl(CacheControl.maxAge(1, TimeUnit.DAYS).cachePublic());
                 Resource resource = new ByteArrayResource(image.getContent());
                 response = new ResponseEntity<>(resource, headers, HttpStatus.OK);
             }
