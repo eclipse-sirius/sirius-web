@@ -40,6 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.test.StepVerifier;
@@ -55,30 +56,30 @@ import reactor.test.StepVerifier;
 public class TableIconURLControllerTests extends AbstractIntegrationTests {
 
     private static final String TABLE_EVENT_SUBSCRIPTION = """
-           subscription tableEvent($input: TableEventInput!) {
-             tableEvent(input: $input) {
-               __typename
-               ... on TableRefreshedEventPayload {
-                table {
-                  id
-                  columns {
-                    id
-                    headerIconURLs
-                  }
-                  lines {
-                    id
-                    headerIconURLs
-                    cells {
-                      ... on IconLabelCell {
-                        iconURLs
-                      }
-                    }
-                  }
-                }
+            subscription tableEvent($input: TableEventInput!) {
+              tableEvent(input: $input) {
+                __typename
+                ... on TableRefreshedEventPayload {
+                 table {
+                   id
+                   columns {
+                     id
+                     headerIconURLs
+                   }
+                   lines {
+                     id
+                     headerIconURLs
+                     cells {
+                       ... on IconLabelCell {
+                         iconURLs
+                       }
+                     }
+                   }
+                 }
+               }
               }
-             }
-           }
-           """;
+            }
+            """;
 
     @Autowired
     private IGivenCreatedRepresentation givenCreatedRepresentation;
@@ -113,6 +114,10 @@ public class TableIconURLControllerTests extends AbstractIntegrationTests {
         String representationId = this.givenCreatedRepresentation.createRepresentation(input);
         var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), representationId);
         var flux = this.graphQLRequestor.subscribeToSpecification(TABLE_EVENT_SUBSCRIPTION, tableEventInput);
+
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
 
         Consumer<String> tableContentConsumer = payload -> Optional.of(payload)
                 .ifPresentOrElse(body -> {
@@ -162,6 +167,10 @@ public class TableIconURLControllerTests extends AbstractIntegrationTests {
         String representationId = this.givenCreatedRepresentation.createRepresentation(input);
         var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), representationId);
         var flux = this.graphQLRequestor.subscribeToSpecification(TABLE_EVENT_SUBSCRIPTION, tableEventInput);
+
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
 
         Consumer<String> tableContentConsumer = payload -> Optional.of(payload)
                 .ifPresentOrElse(body -> {

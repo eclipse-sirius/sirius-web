@@ -75,6 +75,7 @@ public class TableElementFactory implements IElementFactory {
                     .lines(lines)
                     .columns(columns)
                     .paginationData(tableElementProps.paginationData())
+                    .globalFilter(tableElementProps.globalFilter())
                     .build();
         }
         return null;

@@ -17,6 +17,7 @@ export interface TableProps {
   table: GQLTable;
   readOnly: boolean;
   onPaginationChange?: (cursor: string | null, direction: 'PREV' | 'NEXT', size: number) => void;
+  onGlobalFilterChange?: (globalFilter: string) => void;
 }
 
 export interface TablePaginationState {
@@ -42,6 +43,7 @@ export interface GQLTable {
   id: string;
   targetObjectId: string;
   stripeRow: boolean;
+  globalFilter: string | null;
   columns: GQLColumn[];
   lines: GQLLine[];
   paginationData: GQLPaginationData;
