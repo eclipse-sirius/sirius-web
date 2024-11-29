@@ -12,10 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.tables;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.tables.ColumnFilter;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 
 /**
@@ -37,6 +39,8 @@ public final class TableCreationParameters {
     private CursorBasedPaginationData cursorBasedPaginationData;
 
     private String globalFilter;
+
+    private List<ColumnFilter> columnFilters;
 
     private TableCreationParameters() {
         // Prevent instantiation
@@ -66,6 +70,10 @@ public final class TableCreationParameters {
         return this.globalFilter;
     }
 
+    public List<ColumnFilter> getColumnFilters() {
+        return this.columnFilters;
+    }
+
     public static Builder newTableCreationParameters(String id) {
         return new Builder(id);
     }
@@ -89,6 +97,8 @@ public final class TableCreationParameters {
         private CursorBasedPaginationData cursorBasedPaginationData;
 
         private String globalFilter;
+
+        private List<ColumnFilter> columnFilters;
 
         private Builder(String id) {
             this.id = id;
@@ -119,6 +129,11 @@ public final class TableCreationParameters {
             return this;
         }
 
+        public Builder columnFilters(List<ColumnFilter> columnFilters) {
+            this.columnFilters = Objects.requireNonNull(columnFilters);
+            return this;
+        }
+
         public TableCreationParameters build() {
             TableCreationParameters tableCreationParameters = new TableCreationParameters();
             tableCreationParameters.id = Objects.requireNonNull(this.id);
@@ -127,6 +142,7 @@ public final class TableCreationParameters {
             tableCreationParameters.cursorBasedPaginationData = Objects.requireNonNull(this.cursorBasedPaginationData);
             tableCreationParameters.targetObject = Objects.requireNonNull(this.targetObject);
             tableCreationParameters.globalFilter = this.globalFilter;
+            tableCreationParameters.columnFilters = this.columnFilters; // Optional on purpose
             return tableCreationParameters;
         }
     }

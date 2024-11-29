@@ -49,6 +49,8 @@ public final class Table implements IRepresentation {
 
     private String globalFilter;
 
+    private List<ColumnFilter> columnFilters;
+
     private Table() {
         // Prevent instantiation
     }
@@ -97,6 +99,10 @@ public final class Table implements IRepresentation {
         return this.globalFilter;
     }
 
+    public List<ColumnFilter> getColumnFilters() {
+        return this.columnFilters;
+    }
+
     public static Builder newTable(String id) {
         return new Builder(id);
     }
@@ -134,6 +140,8 @@ public final class Table implements IRepresentation {
         private PaginationData paginationData;
 
         private String globalFilter;
+
+        private List<ColumnFilter> columnFilters;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -179,6 +187,11 @@ public final class Table implements IRepresentation {
             return this;
         }
 
+        public Builder columnFilters(List<ColumnFilter> columnFilters) {
+            this.columnFilters = Objects.requireNonNull(columnFilters);
+            return this;
+        }
+
         public Table build() {
             Table table = new Table();
             table.id = Objects.requireNonNull(this.id);
@@ -191,6 +204,7 @@ public final class Table implements IRepresentation {
             table.columns = Objects.requireNonNull(this.columns);
             table.paginationData = Objects.requireNonNull(this.paginationData);
             table.globalFilter = Objects.requireNonNull(this.globalFilter);
+            table.columnFilters = Objects.requireNonNull(this.columnFilters);
             return table;
         }
     }

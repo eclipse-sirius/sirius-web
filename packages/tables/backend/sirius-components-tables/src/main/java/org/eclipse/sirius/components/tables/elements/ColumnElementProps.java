@@ -30,8 +30,11 @@ public record ColumnElementProps(
         List<String> headerIconURLs,
         String headerIndexLabel,
         String targetObjectId,
-        String targetObjectKind, int width, boolean resizable,
-                                 boolean hidden) implements IProps {
+        String targetObjectKind,
+        int width,
+        boolean resizable,
+        boolean hidden,
+        String filterVariant) implements IProps {
 
     public static final String TYPE = "Column";
 
@@ -43,6 +46,7 @@ public record ColumnElementProps(
         Objects.requireNonNull(descriptionId);
         Objects.requireNonNull(targetObjectId);
         Objects.requireNonNull(targetObjectKind);
+        Objects.requireNonNull(filterVariant);
     }
 
     public static Builder newColumnElementProps(UUID id) {
@@ -76,6 +80,8 @@ public record ColumnElementProps(
         private boolean resizable;
 
         private boolean hidden;
+
+        private String filterVariant;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -126,9 +132,14 @@ public record ColumnElementProps(
             return this;
         }
 
+        public Builder filterVariant(String filterVariant) {
+            this.filterVariant = Objects.requireNonNull(filterVariant);
+            return this;
+        }
+
         public ColumnElementProps build() {
             return new ColumnElementProps(this.id, this.descriptionId, this.headerLabel, this.headerIconURLs, this.headerIndexLabel, this.targetObjectId, this.targetObjectKind, this.width,
-                    this.resizable, this.hidden);
+                    this.resizable, this.hidden, this.filterVariant);
         }
     }
 }

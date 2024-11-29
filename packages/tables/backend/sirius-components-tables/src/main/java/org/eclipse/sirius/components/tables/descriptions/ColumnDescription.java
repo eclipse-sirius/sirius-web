@@ -54,6 +54,8 @@ public final class ColumnDescription {
 
     private Predicate<VariableManager> isResizablePredicate;
 
+    private Function<VariableManager, String> filterVariantProvider;
+
     private ColumnDescription() {
         // Prevent instantiation
     }
@@ -98,6 +100,10 @@ public final class ColumnDescription {
         return this.isResizablePredicate;
     }
 
+    public Function<VariableManager, String> getFilterVariantProvider() {
+        return this.filterVariantProvider;
+    }
+
     public static Builder newColumnDescription(String id) {
         return new Builder(id);
     }
@@ -135,6 +141,8 @@ public final class ColumnDescription {
         private Function<VariableManager, Integer> initialWidthProvider;
 
         private Predicate<VariableManager> isResizablePredicate;
+
+        private Function<VariableManager, String> filterVariantProvider;
 
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -185,6 +193,11 @@ public final class ColumnDescription {
             return this;
         }
 
+        public Builder filterVariantProvider(Function<VariableManager, String> filterVariantProvider) {
+            this.filterVariantProvider = Objects.requireNonNull(filterVariantProvider);
+            return this;
+        }
+
         public ColumnDescription build() {
             ColumnDescription columnDescription = new ColumnDescription();
             columnDescription.id = Objects.requireNonNull(this.id);
@@ -197,6 +210,7 @@ public final class ColumnDescription {
             columnDescription.shouldRenderPredicate = Objects.requireNonNull(this.shouldRenderPredicate);
             columnDescription.initialWidthProvider = Objects.requireNonNull(this.initialWidthProvider);
             columnDescription.isResizablePredicate = Objects.requireNonNull(this.isResizablePredicate);
+            columnDescription.filterVariantProvider = Objects.requireNonNull(this.filterVariantProvider);
             return columnDescription;
         }
     }

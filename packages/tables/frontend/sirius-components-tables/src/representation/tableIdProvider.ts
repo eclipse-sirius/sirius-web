@@ -11,13 +11,25 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { ColumnFilter } from '../table/TableContent.types';
+
 export const tableIdProvider = (
   tableId: string,
   cursor: string | null,
   direction: 'PREV' | 'NEXT',
   size: number,
-  globalFilter: string | null
+  globalFilter: string | null,
+  columnFilters: ColumnFilter[] | null
 ) => {
   const globalFilterParam: string = globalFilter !== null ? `&globalFilter=${encodeURIComponent(globalFilter)}` : '';
-  return `${tableId}?cursor=${cursor}&direction=${direction}&size=${size}${globalFilterParam}`;
+  const columnFiltersParam: string =
+    columnFilters !== null
+      ? `&columnFilters=[${columnFilters
+          .map((filter) => {
+            return filter.id + ':' + filter.value;
+          })
+          .map(encodeURIComponent)
+          .join(',')}]`
+      : '';
+  return `${tableId}?cursor=${cursor}&direction=${direction}&size=${size}${globalFilterParam}${columnFiltersParam}`;
 };

@@ -15,6 +15,7 @@ import Box from '@mui/material/Box';
 import { MaterialReactTable, MRT_TableOptions, useMaterialReactTable } from 'material-react-table';
 import { memo, useEffect, useState } from 'react';
 import { SettingsButton } from '../actions/SettingsButton';
+import { useTableColumnFiltering } from '../columns/useTableColumnFiltering';
 import { useTableColumnSizing } from '../columns/useTableColumnSizing';
 import { useTableColumnVisibility } from '../columns/useTableColumnVisibility';
 import { ResizeRowHandler } from '../rows/ResizeRowHandler';
@@ -25,7 +26,15 @@ import { useGlobalFilter } from './useGlobalFilter';
 import { useTableColumns } from './useTableColumns';
 
 export const TableContent = memo(
-  ({ editingContextId, representationId, table, readOnly, onPaginationChange, onGlobalFilterChange }: TableProps) => {
+  ({
+    editingContextId,
+    representationId,
+    table,
+    readOnly,
+    onPaginationChange,
+    onGlobalFilterChange,
+    onColumnFiltersChange,
+  }: TableProps) => {
     const { selection, setSelection } = useSelection();
 
     const { columns } = useTableColumns(editingContextId, representationId, table, readOnly);
@@ -34,6 +43,12 @@ export const TableContent = memo(
       editingContextId,
       representationId,
       table
+    );
+    const { columnFilters, setColumnFilters } = useTableColumnFiltering(
+      editingContextId,
+      representationId,
+      table,
+      onColumnFiltersChange
     );
 
     const [pagination, setPagination] = useState<TablePaginationState>({
@@ -91,6 +106,7 @@ export const TableContent = memo(
       data: table.lines,
       editDisplayMode: 'cell',
       enableEditing: !readOnly,
+      onColumnFiltersChange: setColumnFilters,
       enableStickyHeader: true,
       enablePagination: !serverSidePagination,
       manualPagination: serverSidePagination,
@@ -102,7 +118,7 @@ export const TableContent = memo(
       initialState: { showGlobalFilter: true },
       onColumnSizingChange: setColumnSizing,
       onColumnVisibilityChange: setColumnVisibility,
-      state: { columnSizing, columnVisibility, globalFilter },
+      state: { columnSizing, columnVisibility, globalFilter, columnFilters },
       muiTableBodyRowProps: ({ row }) => {
         return {
           onClick: () => {
