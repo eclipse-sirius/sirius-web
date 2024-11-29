@@ -13,19 +13,16 @@
 package org.eclipse.sirius.web.application.views.explorer.services;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
-import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerElementsProvider;
+import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerTreeAlteredContentProvider;
 import org.springframework.stereotype.Service;
 
@@ -39,8 +36,11 @@ public class ExplorerElementsProvider implements IExplorerElementsProvider {
 
     private final List<IExplorerTreeAlteredContentProvider> alteredContentProviders;
 
-    public ExplorerElementsProvider(List<IExplorerTreeAlteredContentProvider> alteredContentProviders) {
+    private final IExplorerServices explorerServices;
+
+    public ExplorerElementsProvider(List<IExplorerTreeAlteredContentProvider> alteredContentProviders, IExplorerServices explorerServices) {
         this.alteredContentProviders = Objects.requireNonNull(alteredContentProviders);
+        this.explorerServices = Objects.requireNonNull(explorerServices);
     }
 
     @Override
@@ -63,17 +63,8 @@ public class ExplorerElementsProvider implements IExplorerElementsProvider {
     }
 
     private List<Resource> getDefaultElements(VariableManager variableManager) {
-        var optionalEditingContext = Optional.of(variableManager.getVariables().get(IEditingContext.EDITING_CONTEXT));
-        var optionalResourceSet = optionalEditingContext.filter(IEditingContext.class::isInstance)
-                .filter(IEMFEditingContext.class::isInstance)
-                .map(IEMFEditingContext.class::cast)
-                .map(IEMFEditingContext::getDomain)
-                .map(EditingDomain::getResourceSet);
-
-        return optionalResourceSet.map(resourceSet -> resourceSet.getResources().stream()
-                        .sorted(Comparator.nullsLast(Comparator.comparing(this::getResourceLabel, String.CASE_INSENSITIVE_ORDER)))
-                        .toList()
-                ).orElseGet(ArrayList::new);
+        Optional<IEditingContext> optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        return this.explorerServices.getDefaultElements(optionalEditingContext.orElse(null));
     }
 
     private List<String> getActiveFilterIds(VariableManager variableManager) {
@@ -90,12 +81,4 @@ public class ExplorerElementsProvider implements IExplorerElementsProvider {
         return activeFilterIds;
     }
 
-    private String getResourceLabel(Resource resource) {
-        return resource.eAdapters().stream()
-                .filter(ResourceMetadataAdapter.class::isInstance)
-                .map(ResourceMetadataAdapter.class::cast)
-                .findFirst()
-                .map(ResourceMetadataAdapter::getName)
-                .orElse(resource.getURI().lastSegment());
-    }
 }
