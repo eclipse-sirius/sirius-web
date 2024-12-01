@@ -10,17 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { gql, useMutation } from '@apollo/client';
-import { useReporting } from '@eclipse-sirius/sirius-components-core';
 import { memo, useRef } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import {
-  DragState,
-  GQLResizeRowData,
-  GQLResizeRowInput,
-  GQLResizeRowVariables,
-  ResizeRowHandlerProps,
-} from './ResizeRowHandler.types';
+import { useTableMutations } from '../../graphql/mutation/useTableMutation';
+import { DragState, ResizeRowHandlerProps } from './ResizeRowHandler.types';
 
 const useStyles = makeStyles()(() => ({
   handler: {
@@ -29,7 +22,7 @@ const useStyles = makeStyles()(() => ({
     backgroundColor: '#B3BFC5',
     borderColor: '#B3BFC5',
     borderRadius: '2px',
-    width: '80%',
+    width: '24px',
     height: '4px',
     bottom: 0,
     left: '15px',
@@ -37,51 +30,15 @@ const useStyles = makeStyles()(() => ({
   },
 }));
 
-export const resizeRowMutation = gql`
-  mutation resizeTableRow($input: ResizeTableRowInput!) {
-    resizeTableRow(input: $input) {
-      __typename
-      ... on ErrorPayload {
-        messages {
-          body
-          level
-        }
-      }
-      ... on SuccessPayload {
-        messages {
-          body
-          level
-        }
-      }
-    }
-  }
-`;
-
 export const ResizeRowHandler = memo(
   ({ editingContextId, representationId, table, readOnly, row, onRowHeightChanged }: ResizeRowHandlerProps) => {
     const { classes } = useStyles();
-
-    const [mutationResizeRow, mutationResizeRowResult] = useMutation<GQLResizeRowData, GQLResizeRowVariables>(
-      resizeRowMutation
-    );
-    useReporting(mutationResizeRowResult, (data: GQLResizeRowData) => data.resizeTableRow);
-
-    const resizeRow = (rowId: string, height: number) => {
-      const input: GQLResizeRowInput = {
-        id: crypto.randomUUID(),
-        editingContextId,
-        representationId,
-        tableId: table.id,
-        rowId,
-        height,
-      };
-
-      mutationResizeRow({ variables: { input } });
-    };
+    const { resizeRow } = useTableMutations(editingContextId, representationId, table.id);
 
     const dragState = useRef<DragState>({
       isDragging: false,
       height: 0,
+      trElement: undefined,
     });
 
     const handleMouseDown = (e) => {
@@ -90,6 +47,7 @@ export const ResizeRowHandler = memo(
       dragState.current = {
         isDragging: true,
         height: parseInt(window.getComputedStyle(e.target.parentElement.parentElement).height, 10),
+        trElement: e.target.parentElement.parentElement,
       };
 
       const handleMouseMove = (e: MouseEvent) => {
