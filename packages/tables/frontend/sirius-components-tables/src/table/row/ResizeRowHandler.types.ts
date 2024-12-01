@@ -10,8 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
-import { GQLLine, GQLTable } from '../table/TableContent.types';
+import { GQLLine, GQLTable } from '../TableContent.types';
 
 export interface ResizeRowHandlerProps {
   editingContextId: string;
@@ -25,32 +24,5 @@ export interface ResizeRowHandlerProps {
 export interface DragState {
   isDragging: boolean;
   height: number;
+  trElement: HTMLElement | undefined;
 }
-
-export interface GQLResizeColumnInput {
-  id: string;
-  editingContextId: string;
-  representationId: string;
-  tableId: string;
-  columnId: string;
-  width: number;
-}
-
-export interface GQLResizeRowInput {
-  id: string;
-  editingContextId: string;
-  representationId: string;
-  tableId: string;
-  rowId: string;
-  height: number;
-}
-
-export interface GQLResizeRowVariables {
-  input: GQLResizeRowInput;
-}
-
-export interface GQLResizeRowData {
-  resizeTableRow: GQLResizeTableRowPayload;
-}
-
-export type GQLResizeTableRowPayload = GQLErrorPayload | GQLSuccessPayload;

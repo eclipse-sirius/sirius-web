@@ -299,3 +299,201 @@ INSERT INTO document (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+INSERT INTO public.representation_metadata (
+    id,
+    project_id,
+    target_object_id,
+    description_id,
+    label,
+    documentation,
+    kind,
+    created_on,
+    last_modified_on
+) VALUES (
+    'dd0080f8-430d-441f-99a4-f46c7d9b28ef',
+    'c3d7df85-e0bd-472c-aec1-c05cc88276e4',
+    '569d3f9b-2a43-4254-b609-511258251d96',
+    'papaya_package_table_description',
+    '',
+    'test', 'siriusComponents://representation?type=Table',
+    '2024-11-29 14:36:25.346642 +00:00',
+    '2024-11-29 14:36:35.460101 +00:00'
+);
+
+INSERT INTO public.representation_content (
+    id,
+    content,
+    last_migration_performed,
+    migration_version,
+    created_on,
+    last_modified_on
+) VALUES (
+    'dd0080f8-430d-441f-99a4-f46c7d9b28ef',
+    '{
+         "id": "dd0080f8-430d-441f-99a4-f46c7d9b28ef",
+         "kind": "siriusComponents://representation?type=Table",
+         "targetObjectId": "569d3f9b-2a43-4254-b609-511258251d96",
+         "targetObjectKind": "siriusComponents://semantic?domain=papaya&entity=Package",
+         "descriptionId": "papaya_package_table_description",
+         "lines": [
+             {
+                 "id": "0c5b553f-2a78-3071-9c06-f176b134f764",
+                 "targetObjectId": "c715807f-73f6-44fb-b17b-df6d12558458",
+                 "targetObjectKind": "siriusComponents://semantic?domain=papaya&entity=Class",
+                 "descriptionId": "6c9154c7-a924-3bd1-b5e4-28aff1d4e5c8",
+                 "cells": [
+                     {
+                         "id": "b455e4d3-1622-384c-9e56-4b0bf4fc2b7e",
+                         "targetObjectId": "c715807f-73f6-44fb-b17b-df6d12558458",
+                         "targetObjectKind": "siriusComponents://semantic?domain=papaya&entity=Class",
+                         "columnId": "d0fd98f3-dfae-3a2d-9cbe-f9a1d6ebee56",
+                         "value": "Success",
+                         "type": "TEXTFIELD"
+                     },
+                     {
+                         "id": "870da07e-b989-3dea-8ba0-762ad2a3a857",
+                         "targetObjectId": "c715807f-73f6-44fb-b17b-df6d12558458",
+                         "targetObjectKind": "siriusComponents://semantic?domain=papaya&entity=Class",
+                         "columnId": "b6e82202-fe33-3b19-bf2c-5c9648cb96ce",
+                         "value": "",
+                         "type": "TEXTFIELD"
+                     },
+                     {
+                         "id": "56d61ed4-9fd9-3155-83d8-e9ba2a7a6d6d",
+                         "targetObjectId": "c715807f-73f6-44fb-b17b-df6d12558458",
+                         "targetObjectKind": "siriusComponents://semantic?domain=papaya&entity=Class",
+                         "columnId": "eabb569d-f99e-3e6e-86a6-db600b1fa526",
+                         "options": [
+                             {
+                                 "id": "PUBLIC",
+                                 "label": "PUBLIC"
+                             },
+                             {
+                                 "id": "PROTECTED",
+                                 "label": "PROTECTED"
+                             },
+                             {
+                                 "id": "PACKAGE",
+                                 "label": "PACKAGE"
+                             },
+                             {
+                                 "id": "PRIVATE",
+                                 "label": "PRIVATE"
+                             }
+                         ],
+                         "value": "PUBLIC",
+                         "type": "SELECT"
+                     },
+                     {
+                         "id": "b2804d04-40c9-3920-8e0b-49ff5e29d84a",
+                         "targetObjectId": "c715807f-73f6-44fb-b17b-df6d12558458",
+                         "targetObjectKind": "siriusComponents://semantic?domain=papaya&entity=Class",
+                         "columnId": "94277463-12c8-34bc-b69b-99bb5bfb0fc4",
+                         "options": [],
+                         "values": [],
+                         "type": "MULTI_SELECT"
+                     }
+                 ],
+                 "initialHeight": 53,
+                 "resizable": true
+             },
+             {
+                 "id": "e7c3d768-c7fe-32b9-afae-02df39fe7e02",
+                 "targetObjectId": "b0f27d20-4705-40a7-9d28-67d605b5e9d1",
+                 "targetObjectKind": "siriusComponents://semantic?domain=papaya&entity=Class",
+                 "descriptionId": "6c9154c7-a924-3bd1-b5e4-28aff1d4e5c8",
+                 "cells": [
+                     {
+                         "id": "50d21e4d-b3d1-3c9b-b0b4-a6a152773b49",
+                         "targetObjectId": "b0f27d20-4705-40a7-9d28-67d605b5e9d1",
+                         "targetObjectKind": "siriusComponents://semantic?domain=papaya&entity=Class",
+                         "columnId": "d0fd98f3-dfae-3a2d-9cbe-f9a1d6ebee56",
+                         "value": "Failure",
+                         "type": "TEXTFIELD"
+                     },
+                     {
+                         "id": "a5682a49-f9ac-379c-b395-930db0003fd7",
+                         "targetObjectId": "b0f27d20-4705-40a7-9d28-67d605b5e9d1",
+                         "targetObjectKind": "siriusComponents://semantic?domain=papaya&entity=Class",
+                         "columnId": "b6e82202-fe33-3b19-bf2c-5c9648cb96ce",
+                         "value": "",
+                         "type": "TEXTFIELD"
+                     },
+                     {
+                         "id": "dbcdb2ee-0e58-37f2-81dc-ba9d864438a4",
+                         "targetObjectId": "b0f27d20-4705-40a7-9d28-67d605b5e9d1",
+                         "targetObjectKind": "siriusComponents://semantic?domain=papaya&entity=Class",
+                         "columnId": "eabb569d-f99e-3e6e-86a6-db600b1fa526",
+                         "options": [
+                             {
+                                 "id": "PUBLIC",
+                                 "label": "PUBLIC"
+                             },
+                             {
+                                 "id": "PROTECTED",
+                                 "label": "PROTECTED"
+                             },
+                             {
+                                 "id": "PACKAGE",
+                                 "label": "PACKAGE"
+                             },
+                             {
+                                 "id": "PRIVATE",
+                                 "label": "PRIVATE"
+                             }
+                         ],
+                         "value": "PUBLIC",
+                         "type": "SELECT"
+                     },
+                     {
+                         "id": "604237ba-1776-3065-8ea2-57ff06279629",
+                         "targetObjectId": "b0f27d20-4705-40a7-9d28-67d605b5e9d1",
+                         "targetObjectKind": "siriusComponents://semantic?domain=papaya&entity=Class",
+                         "columnId": "94277463-12c8-34bc-b69b-99bb5bfb0fc4",
+                         "options": [],
+                         "values": [],
+                         "type": "MULTI_SELECT"
+                     }
+                 ],
+                 "initialHeight": 53,
+                 "height":100,
+                 "resizable": true
+             }
+         ],
+         "columns": [
+             {
+                 "id": "d0fd98f3-dfae-3a2d-9cbe-f9a1d6ebee56",
+                 "targetObjectId": "papaya.NamedElement#name",
+                 "targetObjectKind": "",
+                 "descriptionId": "9f034b63-9487-33d4-89f9-44319c2eb3de",
+                 "label": "Name"
+             },
+             {
+                 "id": "b6e82202-fe33-3b19-bf2c-5c9648cb96ce",
+                 "targetObjectId": "papaya.NamedElement#description",
+                 "targetObjectKind": "",
+                 "descriptionId": "9f034b63-9487-33d4-89f9-44319c2eb3de",
+                 "label": "Description"
+             },
+             {
+                 "id": "94277463-12c8-34bc-b69b-99bb5bfb0fc4",
+                 "targetObjectId": "papaya.AnnotableElement#annotations",
+                 "targetObjectKind": "",
+                 "descriptionId": "9f034b63-9487-33d4-89f9-44319c2eb3de",
+                 "label": "Annotations"
+             },
+             {
+                 "id": "eabb569d-f99e-3e6e-86a6-db600b1fa526",
+                 "targetObjectId": "papaya.Type#visibility",
+                 "targetObjectKind": "",
+                 "descriptionId": "9f034b63-9487-33d4-89f9-44319c2eb3de",
+                 "label": "Visibility"
+             }
+         ],
+         "globalFilter": ""
+     }',
+     'none',
+     '0',
+     '2024-11-29 14:36:25.905630 +00:00',
+     '2024-11-29 14:36:25.905630 +00:00'
+);

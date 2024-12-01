@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.tables.descriptions.MultiSelectCellDescript
 import org.eclipse.sirius.components.tables.descriptions.SelectCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.TextfieldCellDescription;
 import org.eclipse.sirius.components.tables.elements.LineElementProps;
+import org.eclipse.sirius.components.tables.events.ResetTableRowsHeightEvent;
 import org.eclipse.sirius.components.tables.events.ResizeTableRowEvent;
 
 /**
@@ -105,7 +106,7 @@ public class LineComponent implements IComponent {
                         .findFirst()
                         .orElse(initialHeight));
 
-        var rowElementProps = LineElementProps.newLineElementProps(rowId)
+        LineElementProps.Builder rowElementProps = LineElementProps.newLineElementProps(rowId)
                 .descriptionId(lineDescription.getId())
                 .targetObjectId(targetObjectId)
                 .targetObjectKind(targetObjectKind)
@@ -114,10 +115,14 @@ public class LineComponent implements IComponent {
                 .headerIndexLabel(headerIndexLabel)
                 .children(children)
                 .resizable(resizable)
-                .height(height)
-                .build();
+                .height(height);
 
-        return new Element(LineElementProps.TYPE, rowElementProps);
+        this.props.tableEvents().stream()
+                .filter(ResetTableRowsHeightEvent.class::isInstance)
+                .findFirst()
+                .ifPresent(iTableEvent -> rowElementProps.height(initialHeight));
+
+        return new Element(LineElementProps.TYPE, rowElementProps.build());
     }
 
     private List<Element> getCells(VariableManager lineVariableManager, UUID parentLineId) {

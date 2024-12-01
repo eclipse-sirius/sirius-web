@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
 import Box from '@mui/material/Box';
-import { MaterialReactTable, MRT_TableOptions, useMaterialReactTable } from 'material-react-table';
+import { MaterialReactTable, MRT_DensityState, MRT_TableOptions, useMaterialReactTable } from 'material-react-table';
 import { memo, useEffect, useState } from 'react';
 import { SettingsButton } from '../actions/SettingsButton';
 import { useTableColumnFiltering } from '../columns/useTableColumnFiltering';
@@ -20,6 +20,7 @@ import { useTableColumnSizing } from '../columns/useTableColumnSizing';
 import { useTableColumnVisibility } from '../columns/useTableColumnVisibility';
 import { ResizeRowHandler } from '../rows/ResizeRowHandler';
 import { RowHeader } from '../rows/RowHeader';
+import { useResetRowsMutation } from '../rows/useResetRows';
 import { CursorBasedPagination } from './CursorBasedPagination';
 import { GQLLine, TablePaginationState, TableProps } from './TableContent.types';
 import { useGlobalFilter } from './useGlobalFilter';
@@ -50,6 +51,10 @@ export const TableContent = memo(
       table,
       onColumnFiltersChange
     );
+    const [density, setDensity] = useState<MRT_DensityState>('comfortable');
+    const [linesState, setLinesState] = useState<GQLLine[]>(table.lines);
+
+    const { resetRowsHeight } = useResetRowsMutation(editingContextId, representationId, table.id);
 
     const [pagination, setPagination] = useState<TablePaginationState>({
       size: 10,
@@ -101,9 +106,23 @@ export const TableContent = memo(
 
     const serverSidePagination: boolean = onPaginationChange !== undefined;
 
+    const handleRowHeightChange = (rowId, height) => {
+      setLinesState((prev) => prev.map((line) => (line.id === rowId ? { ...line, height } : line)));
+    };
+
+    useEffect(() => {
+      setLinesState([...table.lines]);
+    }, [table]);
+
+    useEffect(() => {
+      if (density != 'comfortable') {
+        resetRowsHeight();
+      }
+    }, [density]);
+
     const tableOptions: MRT_TableOptions<GQLLine> = {
       columns,
-      data: table.lines,
+      data: linesState,
       editDisplayMode: 'cell',
       enableEditing: !readOnly,
       onColumnFiltersChange: setColumnFilters,
@@ -118,7 +137,8 @@ export const TableContent = memo(
       initialState: { showGlobalFilter: true },
       onColumnSizingChange: setColumnSizing,
       onColumnVisibilityChange: setColumnVisibility,
-      state: { columnSizing, columnVisibility, globalFilter, columnFilters },
+      onDensityChange: setDensity,
+      state: { columnSizing, columnVisibility, globalFilter, density, columnFilters },
       muiTableBodyRowProps: ({ row }) => {
         return {
           onClick: () => {
@@ -163,6 +183,7 @@ export const TableContent = memo(
             table={table}
             readOnly={readOnly}
             row={row.original}
+            onRowHeightChanged={handleRowHeightChange}
           />
         </>
       ),
