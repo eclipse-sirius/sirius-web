@@ -16,6 +16,7 @@ export interface UseTableMutationValue {
   resizeColumn: (columnId: string, width: number) => void;
   changeColumnVisibility: (columnsVisibility: GQLColumnVisibility[]) => void;
   resizeRow: (rowId: string, height: number) => void;
+  resetRowsHeight: () => void;
 }
 
 export interface GQLResizeColumnInput {
@@ -78,3 +79,20 @@ export interface GQLResizeRowData {
 }
 
 export type GQLResizeTableRowPayload = GQLErrorPayload | GQLSuccessPayload;
+
+export interface GQLResetRowsHeightInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  tableId: string;
+}
+
+export interface GQLResetRowsHeightVariables {
+  input: GQLResetRowsHeightInput;
+}
+
+export interface GQLResetRowsHeightData {
+  resetTableRowsHeight: GQLResetRowsHeightPayload;
+}
+
+export type GQLResetRowsHeightPayload = GQLErrorPayload | GQLSuccessPayload;

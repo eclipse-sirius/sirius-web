@@ -12,14 +12,15 @@
  *******************************************************************************/
 import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
 import Box from '@mui/material/Box';
-import { MaterialReactTable, useMaterialReactTable } from 'material-react-table';
-import { memo } from 'react';
+import { MaterialReactTable, MRT_DensityState, useMaterialReactTable } from 'material-react-table';
+import { memo, useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { ExportAllDataButton } from '../actions/ExportAllDataButton';
+import { useTableMutations } from '../graphql/mutation/useTableMutation';
 import { useTableColumnSizing } from './column/useTableColumnSizing';
 import { useTableColumnVisibility } from './column/useTableColumnVisibility';
 import { ResizeRowHandler } from './row/ResizeRowHandler';
-import { TableProps } from './TableContent.types';
+import { GQLLine, TableProps } from './TableContent.types';
 import { useTableColumns } from './useTableColumns';
 
 const useStyles = makeStyles()((theme) => ({
@@ -41,10 +42,28 @@ export const TableContent = memo(({ editingContextId, representationId, table, r
   const { columns } = useTableColumns(editingContextId, representationId, table, readOnly);
   const { columnSizing, setColumnSizing } = useTableColumnSizing(editingContextId, representationId, table);
   const { columnVisibility, setColumnVisibility } = useTableColumnVisibility(editingContextId, representationId, table);
+  const [density, setDensity] = useState<MRT_DensityState>('comfortable');
+  const [linesState, setLinesState] = useState<GQLLine[]>(table.lines);
+
+  const { resetRowsHeight } = useTableMutations(editingContextId, representationId, table.id);
+
+  const handleRowHeightChange = (rowId, height) => {
+    setLinesState((prev) => prev.map((line) => (line.id === rowId ? { ...line, height } : line)));
+  };
+
+  useEffect(() => {
+    setLinesState([...table.lines]);
+  }, [table]);
+
+  useEffect(() => {
+    if (density != 'comfortable') {
+      resetRowsHeight();
+    }
+  }, [density]);
 
   const muiTable = useMaterialReactTable({
     columns,
-    data: table.lines,
+    data: linesState,
     editDisplayMode: 'cell',
     enableEditing: !readOnly,
     enableStickyHeader: true,
@@ -53,7 +72,7 @@ export const TableContent = memo(({ editingContextId, representationId, table, r
     enableSorting: false,
     onColumnSizingChange: setColumnSizing,
     onColumnVisibilityChange: setColumnVisibility,
-    state: { columnSizing, columnVisibility },
+    state: { columnSizing, columnVisibility, density },
     muiTableBodyRowProps: ({ row }) => {
       return {
         onClick: () => {
@@ -82,8 +101,10 @@ export const TableContent = memo(({ editingContextId, representationId, table, r
         table={table}
         readOnly={readOnly}
         row={row.original}
+        onRowHeightChanged={handleRowHeightChange}
       />
     ),
+    onDensityChange: setDensity,
   });
 
   return <MaterialReactTable table={muiTable} />;

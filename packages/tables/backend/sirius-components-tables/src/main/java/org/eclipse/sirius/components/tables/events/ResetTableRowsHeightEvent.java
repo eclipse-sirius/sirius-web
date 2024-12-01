@@ -10,19 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLLine, GQLTable } from '../TableContent.types';
+package org.eclipse.sirius.components.tables.events;
 
-export interface ResizeRowHandlerProps {
-  editingContextId: string;
-  representationId: string;
-  table: GQLTable;
-  readOnly: boolean;
-  row: GQLLine;
-  onRowHeightChanged: (rowId: string, height: number) => void;
-}
-
-export interface DragState {
-  isDragging: boolean;
-  height: number;
-  trElement: HTMLElement | undefined;
+/**
+ * Table Event to handle a reset of the height of all rows.
+ *
+ * @author Jerome Gout
+ */
+public record ResetTableRowsHeightEvent() implements ITableEvent {
 }

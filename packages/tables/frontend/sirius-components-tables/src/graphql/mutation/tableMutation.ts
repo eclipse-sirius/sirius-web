@@ -71,3 +71,23 @@ export const resizeRowMutation = gql`
     }
   }
 `;
+
+export const resetRowsHeightMutation = gql`
+  mutation resetTableRowsHeight($input: ResetTableRowsHeightInput!) {
+    resetTableRowsHeight(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
+    }
+  }
+`;

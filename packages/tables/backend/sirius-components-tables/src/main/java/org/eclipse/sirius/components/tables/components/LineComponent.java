@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.tables.elements.LineElementProps;
 import org.eclipse.sirius.components.tables.elements.MultiSelectCellElementProps;
 import org.eclipse.sirius.components.tables.elements.SelectCellElementProps;
 import org.eclipse.sirius.components.tables.elements.TextfieldCellElementProps;
+import org.eclipse.sirius.components.tables.events.ResetTableRowsHeightEvent;
 import org.eclipse.sirius.components.tables.events.ResizeTableRowEvent;
 
 /**
@@ -106,6 +107,11 @@ public class LineComponent implements IComponent {
                                 .filter(Objects::nonNull)
                                 .findFirst()
                                 .ifPresent(rowElementProps::height));
+
+        this.props.tableEvents().stream()
+                .filter(ResetTableRowsHeightEvent.class::isInstance)
+                .findFirst()
+                .ifPresent(iTableEvent -> rowElementProps.height(null));
 
         return new Element(LineElementProps.TYPE, rowElementProps.build());
     }

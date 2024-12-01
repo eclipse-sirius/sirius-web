@@ -100,7 +100,7 @@ public record LineElementProps(UUID id, UUID descriptionId, String targetObjectI
         }
 
         public Builder height(Integer height) {
-            this.height = Objects.requireNonNull(height);
+            this.height = height; // height could be null, in this case, let the table use default height for this line
             return this;
         }
 

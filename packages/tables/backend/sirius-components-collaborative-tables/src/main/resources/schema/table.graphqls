@@ -104,6 +104,7 @@ extend type Mutation {
   resizeTableColumn(input: ResizeTableColumnInput!): ResizeTableColumnPayload!
   changeTableColumnVisibility(input: ChangeTableColumnVisibilityInput!): ChangeTableColumnVisibilityPayload!
   resizeTableRow(input: ResizeTableRowInput!): ResizeTableRowPayload!
+  resetTableRowsHeight(input: ResetTableRowsHeightInput!): ResetTableRowsHeightPayload!
 }
 
 input EditCheckboxCellInput {
@@ -186,3 +187,12 @@ input ResizeTableRowInput {
 }
 
 union ResizeTableRowPayload = ErrorPayload | SuccessPayload
+
+input ResetTableRowsHeightInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  tableId: ID!
+}
+
+union ResetTableRowsHeightPayload = ErrorPayload | SuccessPayload

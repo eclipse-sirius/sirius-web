@@ -31,7 +31,7 @@ const useStyles = makeStyles()(() => ({
 }));
 
 export const ResizeRowHandler = memo(
-  ({ editingContextId, representationId, table, readOnly, row }: ResizeRowHandlerProps) => {
+  ({ editingContextId, representationId, table, readOnly, row, onRowHeightChanged }: ResizeRowHandlerProps) => {
     const { classes } = useStyles();
     const { resizeRow } = useTableMutations(editingContextId, representationId, table.id);
 
@@ -52,10 +52,8 @@ export const ResizeRowHandler = memo(
 
       const handleMouseMove = (e: MouseEvent) => {
         if (dragState.current.isDragging) {
-          if (dragState.current.trElement) {
-            dragState.current.trElement.style.height = `${dragState.current.height + e.movementY}px`;
-            dragState.current.height += e.movementY;
-          }
+          dragState.current.height += e.movementY;
+          onRowHeightChanged(row.id, dragState.current.height);
         }
       };
 

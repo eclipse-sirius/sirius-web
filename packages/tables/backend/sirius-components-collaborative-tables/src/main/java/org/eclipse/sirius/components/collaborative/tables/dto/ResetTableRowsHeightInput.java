@@ -10,19 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLLine, GQLTable } from '../TableContent.types';
 
-export interface ResizeRowHandlerProps {
-  editingContextId: string;
-  representationId: string;
-  table: GQLTable;
-  readOnly: boolean;
-  row: GQLLine;
-  onRowHeightChanged: (rowId: string, height: number) => void;
-}
+package org.eclipse.sirius.components.collaborative.tables.dto;
 
-export interface DragState {
-  isDragging: boolean;
-  height: number;
-  trElement: HTMLElement | undefined;
+import java.util.UUID;
+
+import org.eclipse.sirius.components.collaborative.tables.api.ITableInput;
+
+/**
+ * The input object for the reset of the height of all rows mutation.
+ *
+ * @author Jerome Gout
+ */
+public record ResetTableRowsHeightInput(UUID id, String editingContextId, String representationId, String tableId) implements ITableInput {
 }
