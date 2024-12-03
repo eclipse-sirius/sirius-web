@@ -1,0 +1,48 @@
+= Add support of non synchronized tables
+
+== Problem
+
+Currently, tables are synchronized with the semantic elements found in the semantic data.
+The table defines, inside its row and column descriptions, what kind of elements the table handles and how they are retrieved.
+So currently, whenever a compatible element is found, it is automatically added as a new row or column of the table.
+
+There is no way to create a table that does not follow this mechanism.
+It is not possible to let the end user choose the elements displayed as rows or columns in the table.
+
+This feature does not seem very relevant for cells which can stay fully synchronized for now.
+
+== Key Result
+
+As a specifier, I want to describe a table that is not fully synchronized just like it can be done with diagrams.
+As a specifier, I want to define tools that allow the end user to add rows or columns.
+As a end-user, I want to perform some operations to add those elements.
+
+One example could leverage the support for a drag and drop tool to drop semantic elements from the explorer in a table.
+For that, the specifier should be able to define a drop tool for the table.
+
+== Solution
+
+Sirius Web should provide a `SynchronizationPolicy` in the `ColumnDescription` and `RowDescription` view DSL that specifier could use.
+Default synchronization policy value should be `Synchronized` for compatibility reason, but new tables could be defined with `Unsynchronized`.
+
+New events for tables like the `ViewCreationRequest` for diagrams will probably be introduced with probably a `RowCreationRequest` and a `ColumnCreationRequest`.
+Similar events should be introduced to delete those unsynchronized elements like the `ViewDeletionRequest` in tables.
+The table representation should react to those events that any table tool should be able to send in order to create new columns and rows during the next table rendering.
+
+=== Scenario : define the TableDescription
+
+As a specifier
+
+* Create a Table description using the view DSL
+* Set the synchronization policy of a row or column description to `Unsynchronized`
+* Add a tool with some operations inside using a create row or column model operation to add new rows or columns
+
+=== Scenario : use the table
+
+As a user
+
+* Create the table representation
+* Assuming we have a compatible element already created in the model
+* Use a tool to add this element to the table representation and trigger the creation of a row or a column
+
+== No-gos
