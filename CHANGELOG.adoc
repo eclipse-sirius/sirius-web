@@ -63,6 +63,7 @@ Specifiers are also encouraged to implement their own `IRestDataVersionPayloadSe
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4219[#4219] [table] Improve front-end performance
+- https://github.com/eclipse-sirius/sirius-web/issues/4208[#4208] [form] Improve performance of details view rendering on selection change
 
 == v2024.11.0
 

@@ -30,33 +30,12 @@ const isFormRefreshedEventPayload = (payload: GQLDetailsEventPayload): payload i
 
 export const DetailsView = ({ editingContextId, readOnly }: WorkbenchViewComponentProps) => {
   const [state, setState] = useState<DetailsViewState>({
-    currentSelection: { entries: [] },
     form: null,
   });
 
   const { selection } = useSelection();
 
-  /**
-   * Displays another form if the selection indicates that we should display another properties view.
-   */
-  const currentSelectionKey: string = state.currentSelection.entries
-    .map((entry) => entry.id)
-    .sort()
-    .join(':');
-  const newSelectionKey: string = selection.entries
-    .map((entry) => entry.id)
-    .sort()
-    .join(':');
-
-  useEffect(() => {
-    if (selection.entries.length > 0 && currentSelectionKey !== newSelectionKey) {
-      setState((prevState) => ({ ...prevState, currentSelection: selection }));
-    } else if (selection.entries.length === 0) {
-      setState((prevState) => ({ ...prevState, currentSelection: { entries: [] } }));
-    }
-  }, [currentSelectionKey, newSelectionKey]);
-
-  const objectIds: string[] = state.currentSelection.entries.map((entry) => entry.id);
+  const objectIds: string[] = selection.entries.map((entry) => entry.id);
   const skip = objectIds.length === 0;
   const { payload, complete } = useDetailsViewSubscription(editingContextId, objectIds, skip);
 
