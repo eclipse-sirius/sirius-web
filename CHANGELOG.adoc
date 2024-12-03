@@ -5,7 +5,8 @@
 === Shapes
 
 - Add support for a query view
-- Lower the coupling between project and editing context 
+- Lower the coupling between project and editing context
+- Add support of non synchronized tables
 
 
 === Architectural decision records
@@ -50,7 +51,6 @@ Specifiers can contribute dedicated AQL services for this feature using implemen
 == v2025.1.0
 
 === Shapes
-
 
 
 === Architectural decision records
