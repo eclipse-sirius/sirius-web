@@ -28,7 +28,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
 import org.eclipse.sirius.components.core.CoreImageConstants;
-import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IURLParser;
@@ -39,6 +38,7 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.application.UUIDParser;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
@@ -75,7 +75,7 @@ public class DomainExplorerServices {
     public String getKind(Object self) {
         String kind = "";
         if (self instanceof RepresentationMetadata representationMetadata) {
-            kind = representationMetadata.kind();
+            kind = representationMetadata.getKind();
         } else if (self instanceof Resource) {
             kind = DOCUMENT_KIND;
         } else if (self instanceof SettingWrapper) {
@@ -188,7 +188,7 @@ public class DomainExplorerServices {
         String label = "";
 
         if (self instanceof RepresentationMetadata representationMetadata) {
-            label = representationMetadata.label();
+            label = representationMetadata.getLabel();
         } else if (self instanceof Resource resource) {
             label = this.getResourceLabel(resource);
         } else if (self instanceof EObject) {
@@ -206,7 +206,7 @@ public class DomainExplorerServices {
     public String getTreeItemId(Object self) {
         String id = null;
         if (self instanceof RepresentationMetadata representationMetadata) {
-            id = representationMetadata.id();
+            id = representationMetadata.getId().toString();
         } else if (self instanceof Resource resource) {
             id = resource.getURI().path().substring(1);
         } else if (self instanceof EObject) {
@@ -261,7 +261,7 @@ public class DomainExplorerServices {
             imageURL = this.objectService.getImagePath(self);
         } else if (self instanceof RepresentationMetadata representationMetadata) {
             imageURL = this.representationImageProviders.stream()
-                    .map(representationImageProvider -> representationImageProvider.getImageURL(representationMetadata.kind()))
+                    .map(representationImageProvider -> representationImageProvider.getImageURL(representationMetadata.getKind()))
                     .flatMap(Optional::stream)
                     .toList();
         } else if (self instanceof Resource) {
