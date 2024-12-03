@@ -13,22 +13,16 @@
 package org.eclipse.sirius.web.application.views.explorer.services;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
-import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerChildrenProvider;
+import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerTreeItemAlteredContentProvider;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -39,36 +33,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExplorerChildrenProvider implements IExplorerChildrenProvider {
 
-    private final IObjectService objectService;
-
-    private final IRepresentationMetadataSearchService representationMetadataSearchService;
-
     private final List<IExplorerTreeItemAlteredContentProvider> alteredContentProviders;
 
-    public ExplorerChildrenProvider(IObjectService objectService, IRepresentationMetadataSearchService representationMetadataSearchService, List<IExplorerTreeItemAlteredContentProvider> alteredContentProviders) {
-        this.objectService = Objects.requireNonNull(objectService);
-        this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
+    private final IExplorerServices explorerServices;
+
+    public ExplorerChildrenProvider(List<IExplorerTreeItemAlteredContentProvider> alteredContentProviders, IExplorerServices explorerServices) {
         this.alteredContentProviders = Objects.requireNonNull(alteredContentProviders);
+        this.explorerServices = Objects.requireNonNull(explorerServices);
     }
 
     @Override
     public boolean hasChildren(VariableManager variableManager) {
         Object self = variableManager.getVariables().get(VariableManager.SELF);
-
-        boolean hasChildren = false;
-        if (self instanceof Resource resource) {
-            hasChildren = !resource.getContents().isEmpty();
-        } else if (self instanceof EObject eObject) {
-            hasChildren = !eObject.eContents().isEmpty();
-            var optionalProjectId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).flatMap(new UUIDParser()::parse);
-
-            if (!hasChildren && optionalProjectId.isPresent()) {
-                var projectId = optionalProjectId.get();
-                String id = this.objectService.getId(eObject);
-                hasChildren = this.representationMetadataSearchService.existAnyRepresentationForProjectAndTargetObjectId(AggregateReference.to(projectId), id);
-            }
-        }
-        return hasChildren;
+        Optional<IEditingContext> optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        return this.explorerServices.hasChildren(self, optionalEditingContext.orElse(null));
     }
 
     @Override
@@ -90,8 +68,6 @@ public class ExplorerChildrenProvider implements IExplorerChildrenProvider {
     }
 
     private List<Object> getDefaultChildren(VariableManager variableManager) {
-        List<Object> result = new ArrayList<>();
-
         List<String> expandedIds = new ArrayList<>();
         Object objects = variableManager.getVariables().get(TreeRenderer.EXPANDED);
         if (objects instanceof List<?> list) {
@@ -100,30 +76,9 @@ public class ExplorerChildrenProvider implements IExplorerChildrenProvider {
                     .map(String.class::cast)
                     .toList();
         }
-
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
-
-        if (optionalEditingContext.isPresent()) {
-            IEditingContext editingContext = optionalEditingContext.get();
-
-            String id = this.getTreeItemId(variableManager);
-            if (expandedIds.contains(id)) {
-                Object self = variableManager.getVariables().get(VariableManager.SELF);
-
-                if (self instanceof Resource resource) {
-                    result.addAll(resource.getContents());
-                } else if (self instanceof EObject) {
-                    new UUIDParser().parse(editingContext.getId()).ifPresent(projectId -> {
-                        var representationMetadata = new ArrayList<>(this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(projectId), id));
-                        representationMetadata.sort(Comparator.comparing(RepresentationMetadata::getLabel));
-                        result.addAll(representationMetadata);
-                        List<Object> contents = this.objectService.getContents(self);
-                        result.addAll(contents);
-                    });
-                }
-            }
-        }
-        return result;
+        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        return this.explorerServices.getDefaultChildren(self, optionalEditingContext.orElse(null), expandedIds);
     }
 
     private List<String> getActiveFilterIds(VariableManager variableManager) {
@@ -135,19 +90,5 @@ public class ExplorerChildrenProvider implements IExplorerChildrenProvider {
             activeFilterIds = new ArrayList<>();
         }
         return activeFilterIds;
-    }
-
-    private String getTreeItemId(VariableManager variableManager) {
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
-
-        String id = null;
-        if (self instanceof RepresentationMetadata representationMetadata) {
-            id = representationMetadata.getId().toString();
-        } else if (self instanceof Resource resource) {
-            id = resource.getURI().path().substring(1);
-        } else if (self instanceof EObject) {
-            id = this.objectService.getId(self);
-        }
-        return id;
     }
 }
