@@ -65,8 +65,9 @@ public class EBooleanIfDescriptionProvider {
     private Function<VariableManager, Boolean> getPredicate() {
         return variableManager -> {
             var optionalEAttribute = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EAttribute.class);
-            return optionalEAttribute.filter(eAttribute -> !eAttribute.isMany() && (eAttribute.getEType().equals(EcorePackage.Literals.EBOOLEAN) || eAttribute.getEType()
-                    .equals(EcorePackage.Literals.EBOOLEAN_OBJECT))).isPresent();
+            return optionalEAttribute.filter(eAttribute -> !eAttribute.isMany()
+                    && (Objects.equals(eAttribute.getEType().getInstanceClassName(), EcorePackage.Literals.EBOOLEAN.getInstanceClassName())
+                            || Objects.equals(eAttribute.getEType().getInstanceClassName(), EcorePackage.Literals.EBOOLEAN_OBJECT.getInstanceClassName()))).isPresent();
         };
     }
 
