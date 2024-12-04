@@ -14,6 +14,8 @@ package org.eclipse.sirius.web.application.project.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.UUID;
@@ -25,13 +27,27 @@ import org.eclipse.sirius.web.application.dto.Identified;
  *
  * @author arichard
  */
+
+@Schema(name = "Project", description = "Project is a subclass of Record that represents a container for other Records and an entry point for version management and data navigation.")
 public record RestProject(
-        @JsonProperty("@id") UUID id,
-        @JsonProperty("@type") String type,
+        @Schema(required = true, description = "The UUID assigned to the record")
+        @JsonProperty("@id")
+        UUID id,
+
+        @JsonProperty("@type")
+        String type,
+
         OffsetDateTime created,
+
+        @Schema(required = true, description = "The default branch in the Project and a subset of branches")
         Identified defaultBranch,
+
+        @Schema(description = "The statement that provides details about the record")
         String description,
+
+        @Schema(required = true, description = "The name of the Project")
         String name) {
+            
 
     public RestProject {
         Objects.requireNonNull(id);
