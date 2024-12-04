@@ -42,6 +42,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 /**
  * REST Controller for the Project Endpoint.
  *
@@ -59,6 +61,7 @@ public class ProjectRestController {
         this.projectApplicationService = Objects.requireNonNull(projectApplicationService);
     }
 
+    @Operation(description = "Get all projects.")
     @GetMapping
     public ResponseEntity<List<RestProject>> getProjects() {
         var restProjects = this.projectApplicationService.findAll(PageRequest.of(0, 20))
@@ -68,6 +71,7 @@ public class ProjectRestController {
         return new ResponseEntity<>(restProjects, HttpStatus.OK);
     }
 
+    @Operation(description = "Get project with the given id (projectId).")
     @GetMapping(path = "/{projectId}")
     public ResponseEntity<RestProject> getProjectById(@PathVariable UUID projectId) {
         var restProject = this.projectApplicationService.findById(projectId)
@@ -80,6 +84,7 @@ public class ProjectRestController {
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
+    @Operation(description = "Create a new project with the given name and description (optional).")
     @PostMapping
     public ResponseEntity<RestProject> createProject(@RequestParam String name, @RequestParam Optional<String> description) {
         var createProjectInput = new CreateProjectInput(UUID.randomUUID(), name, List.of());
@@ -94,6 +99,7 @@ public class ProjectRestController {
         return null;
     }
 
+    @Operation(description = "Update the project with the given id (projectId).")
     @PutMapping(path = "/{projectId}")
     public ResponseEntity<RestProject> updateProject(@PathVariable UUID projectId, @RequestParam Optional<String> name, @RequestParam Optional<String> description, @RequestParam Optional<RestBranch> branch) {
         if (name.isPresent()) {
@@ -108,6 +114,7 @@ public class ProjectRestController {
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
+    @Operation(description = "Delete the project with the given id (projectId).")
     @DeleteMapping(path = "/{projectId}")
     public ResponseEntity<RestProject> deleteProject(@PathVariable UUID projectId) {
         var restProject = this.projectApplicationService.findById(projectId)

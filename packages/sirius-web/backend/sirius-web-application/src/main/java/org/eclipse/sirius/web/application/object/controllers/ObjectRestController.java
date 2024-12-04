@@ -35,6 +35,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 /**
  * REST Controller for the Object Endpoint.
  *
@@ -52,6 +54,7 @@ public class ObjectRestController {
         this.editingContextDispatcher = Objects.requireNonNull(editingContextDispatcher);
     }
 
+    @Operation(description = "Get all the elements in a given project at the given commit.")
     @GetMapping(path = "/elements")
     public ResponseEntity<List<Object>> getElements(@PathVariable UUID projectId, @PathVariable UUID commitId) {
         var payload = this.editingContextDispatcher.dispatchQuery(projectId.toString(), new GetElementsRestInput(UUID.randomUUID()))
@@ -62,6 +65,7 @@ public class ObjectRestController {
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
+    @Operation(description = "Get element with the given id (elementId) in the given project at the given commit.")
     @GetMapping(path = "/elements/{elementId}")
     public ResponseEntity<Object> getElementById(@PathVariable UUID projectId, @PathVariable UUID commitId, @PathVariable UUID elementId) {
         var payload = this.editingContextDispatcher.dispatchQuery(projectId.toString(), new GetElementByIdRestInput(UUID.randomUUID(), elementId.toString()))
@@ -72,6 +76,7 @@ public class ObjectRestController {
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
+    @Operation(description = "Get relationships that are incoming, outgoing, or both relative to the given related element.")
     @GetMapping(path = "/elements/{relatedElementId}/relationships")
     public ResponseEntity<List<Object>> getRelationshipsByRelatedElement(@PathVariable UUID projectId, @PathVariable UUID commitId, @PathVariable UUID relatedElementId, Optional<Direction> direction) {
         Direction directionParam = direction.orElse(Direction.BOTH);
@@ -84,6 +89,7 @@ public class ObjectRestController {
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
+    @Operation(description = "Get all the root elements in the given project at the given commit.")
     @GetMapping(path = "/roots")
     public ResponseEntity<List<Object>> getRootElements(@PathVariable UUID projectId, @PathVariable UUID commitId) {
         var payload = this.editingContextDispatcher.dispatchQuery(projectId.toString(), new GetRootElementsRestInput(UUID.randomUUID()))
