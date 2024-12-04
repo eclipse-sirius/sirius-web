@@ -14,6 +14,8 @@ package org.eclipse.sirius.web.application.project.data.versioning.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -26,6 +28,7 @@ import org.eclipse.sirius.web.application.dto.Identified;
  *
  * @author arichard
  */
+@Schema(name = "Commit")
 public record RestCommit(
         @JsonProperty("@id") UUID id,
         @JsonProperty("@type") String type,

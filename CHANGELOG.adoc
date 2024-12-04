@@ -100,6 +100,9 @@ Specifiers are also encouraged to implement their own `IRestDataVersionPayloadSe
 The backend part (the ability to define an _Elements to Select Expression_ on diagram tools) was added in Sirius Web 2024.11.0 but the frontend did not apply the requested selection.
 This is now fixed
 - https://github.com/eclipse-sirius/sirius-web/issues/4297[#4297] Improve the size of the Docker image by optimizing the use of caching
+- https://github.com/eclipse-sirius/sirius-web/issues/4291[#4291] [core] Implement REST API documentation with openAPI v3 and swagger
+* Documentation is availlable in the url : /v3/api-docs
+* Swagger UI is availlable in the url : /swagger-ui/index.html#/
 
 === Improvements
 
