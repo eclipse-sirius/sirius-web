@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-tables-graphql</artifactId>
-	<version>2024.11.1</version>
+	<version>v2024.11.2</version>
 	<name>sirius-components-tables-graphql</name>
 	<description>Sirius Components Tables GraphQL</description>
 
@@ -47,17 +47,17 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-graphql-api</artifactId>
-			<version>2024.11.1</version>
+			<version>v2024.11.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-tables</artifactId>
-			<version>2024.11.1</version>
+			<version>v2024.11.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2024.11.1</version>
+			<version>v2024.11.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
