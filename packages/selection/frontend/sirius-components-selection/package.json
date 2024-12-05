@@ -1,6 +1,6 @@
 {
   "name": "@eclipse-sirius/sirius-components-selection",
-  "version": "2024.11.1",
+  "version": "2024.11.2",
   "author": "Eclipse Sirius",
   "license": "EPL-2.0",
   "repository": {
@@ -65,7 +65,6 @@
     "html-to-image": "1.11.11",
     "pathfinding": "0.4.18",
     "svg-path-parser": "1.1.0",
-    "react-draggable": "4.4.6",
     "@xyflow/react": "12.2.1",
     "graphql": "16.8.1",
     "prettier": "2.7.1",
