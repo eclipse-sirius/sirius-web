@@ -10,10 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.collaborative.tables;
 
-export interface TableRepresentationState {
-  cursor: string | null;
-  direction: 'PREV' | 'NEXT';
-  size: number;
-  globalFilter: string | null;
+import java.util.Objects;
+import java.util.UUID;
+
+import org.eclipse.sirius.components.core.api.IPayload;
+
+/**
+ * Payload used to indicate that the global filter value of a table has changed.
+ *
+ * @author frouene
+ */
+public record TableGlobalFilterValuePayload(UUID id, String globalFilterValue) implements IPayload {
+
+    public TableGlobalFilterValuePayload {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(globalFilterValue);
+    }
 }

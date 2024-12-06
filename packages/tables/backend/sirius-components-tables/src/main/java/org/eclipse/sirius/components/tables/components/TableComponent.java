@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
@@ -27,6 +28,7 @@ import org.eclipse.sirius.components.tables.Table;
 import org.eclipse.sirius.components.tables.descriptions.PaginatedData;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 import org.eclipse.sirius.components.tables.elements.TableElementProps;
+import org.eclipse.sirius.components.tables.renderer.TableRenderer;
 import org.eclipse.sirius.components.tables.renderer.TableRenderingCache;
 
 /**
@@ -56,6 +58,16 @@ public class TableComponent implements IComponent {
         TableRenderingCache cache = new TableRenderingCache();
         ITableElementRequestor tableElementRequestor = new TableElementRequestor();
 
+        AtomicReference<String> globalFilter = new AtomicReference<>("");
+        if (this.props.globalFilter() == null) {
+            optionalPreviousTable.ifPresent(previousTable -> {
+                globalFilter.set(previousTable.getGlobalFilter());
+                variableManager.put(TableRenderer.GLOBAL_FILTER_DATA, previousTable.getGlobalFilter());
+            });
+        } else {
+            globalFilter.set(this.props.globalFilter());
+        }
+
         var childrenColumns = tableDescription.getColumnDescriptions().stream()
                 .map(columnDescription -> {
                     var previousColumns = optionalPreviousTable.map(previousTable -> tableElementRequestor.getColumns(previousTable, columnDescription)).orElse(List.of());
@@ -82,6 +94,7 @@ public class TableComponent implements IComponent {
                 .stripeRow(stripeRow)
                 .children(children)
                 .paginationData(new PaginationData(paginatedData.hasPreviousPage(), paginatedData.hasNextPage(), paginatedData.totalRowCount()))
+                .globalFilter(globalFilter.get())
                 .build();
 
         return new Element(TableElementProps.TYPE, tableElementProps);
