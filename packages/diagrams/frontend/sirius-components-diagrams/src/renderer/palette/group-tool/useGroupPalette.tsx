@@ -34,6 +34,38 @@ export const useGroupPalette = (): UseGroupPaletteValue => {
     }
   }, [escapePressed]);
 
+  //There is an issue where releasing ctrl does not stop the multi selection behaviour with the palette opened
+  //This force the multi selection to end
+  const handleKeyUp = useCallback((event) => {
+    const { multiSelectionActive } = store.getState();
+    if (event.key === 'Control' && multiSelectionActive) {
+      const setMultiSelection = (active: boolean) => store.setState({ multiSelectionActive: active });
+      setMultiSelection(false);
+    }
+  }, []);
+
+  const handleKeyDown = useCallback((event) => {
+    const { multiSelectionActive } = store.getState();
+    if (event.key === 'Control' && !multiSelectionActive) {
+      const setMultiSelection = (active: boolean) => store.setState({ multiSelectionActive: active });
+      setMultiSelection(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('keyup', handleKeyUp);
+    return () => {
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, [handleKeyUp]);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleKeyDown]);
+
   const onDiagramElementClick = useCallback(
     (event: React.MouseEvent<Element, MouseEvent>, refElement: Node<NodeData> | Edge<EdgeData> | null) => {
       const { domNode } = store.getState();

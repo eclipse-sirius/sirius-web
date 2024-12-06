@@ -11,92 +11,35 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
-import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
-import Paper from '@mui/material/Paper';
-import { Edge, Node, useStoreApi, useViewport, XYPosition } from '@xyflow/react';
-import React, { useEffect, useState } from 'react';
-import Draggable, { DraggableData } from 'react-draggable';
-import { makeStyles } from 'tss-react/mui';
+import { DataExtension, useData } from '@eclipse-sirius/sirius-components-core';
+import { Edge, Node, useReactFlow, useViewport } from '@xyflow/react';
+import React from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { DraggablePalette } from './draggable-palette/DraggablePalette';
+import { PaletteEntry, ToolSection } from './draggable-palette/DraggablePalette.types';
 import {
-  GQLPalette,
+  DiagramPaletteToolContributionComponentProps,
+  DiagramPaletteToolContributionProps,
+} from './extensions/DiagramPaletteToolContribution.types';
+import { diagramPaletteToolExtensionPoint } from './extensions/DiagramPaletteToolExtensionPoints';
+import {
   GQLPaletteDivider,
   GQLPaletteEntry,
   GQLSingleClickOnDiagramElementTool,
   GQLToolSection,
   PaletteProps,
-  PaletteState,
-  PaletteStyleProps,
 } from './Palette.types';
-import { PaletteQuickAccessToolBar } from './quick-access-tool/PaletteQuickAccessToolBar';
-import { PaletteSearchField } from './search/PaletteSearchField';
-import { PaletteSearchResult } from './search/PaletteSearchResult';
-import { PaletteToolList } from './tool-list/PaletteToolList';
+import { useSingleElementQuickAccessTools } from './quick-access-tool/useSingleElementQuickAccessTools';
+import { useDiagramPalette } from './useDiagramPalette';
 import { usePalette } from './usePalette';
-
-const usePaletteStyle = makeStyles<PaletteStyleProps>()((theme, props) => ({
-  palette: {
-    display: 'grid',
-    gridAutoRows: `fit-content(100%)`,
-    border: `1px solid ${theme.palette.divider}`,
-    borderRadius: '10px',
-    zIndex: 5,
-    position: 'fixed',
-    width: props.paletteWidth,
-    height: props.paletteHeight,
-  },
-  paletteHeader: {
-    cursor: 'move',
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    color: theme.palette.grey[400],
-  },
-}));
 
 export const isSingleClickOnDiagramElementTool = (tool: GQLPaletteEntry): tool is GQLSingleClickOnDiagramElementTool =>
   tool.__typename === 'SingleClickOnDiagramElementTool';
 
 export const isToolSection = (entry: GQLPaletteEntry): entry is GQLToolSection => entry.__typename === 'ToolSection';
 
-export const isPaletteDivider = (entry: GQLPaletteDivider): entry is GQLToolSection =>
+export const isPaletteDivider = (entry: GQLPaletteEntry): entry is GQLPaletteDivider =>
   entry.__typename === 'PaletteDivider';
-
-const computeDraggableBounds = (bounds?: DOMRect): XYPosition => {
-  return {
-    x: bounds?.width ?? 0,
-    y: bounds?.height ?? 0,
-  };
-};
-
-const paletteWidth = 200;
-const paletteHeight = 275;
-
-const getPaletteToolCount = (palette: GQLPalette): number => {
-  return (
-    palette.paletteEntries.filter(isSingleClickOnDiagramElementTool).length +
-    palette.quickAccessTools.filter(isSingleClickOnDiagramElementTool).length +
-    palette.paletteEntries
-      .filter(isToolSection)
-      .filter((toolSection) => toolSection.tools.filter(isSingleClickOnDiagramElementTool).length > 0).length
-  );
-};
-
-const computePaletteLocation = (
-  paletteX: number,
-  paletteY: number,
-  viewportWidth: number,
-  viewportHeight: number
-): XYPosition => {
-  return {
-    x: paletteX + paletteWidth < viewportWidth ? paletteX : viewportWidth - paletteWidth,
-    y: paletteY + paletteHeight < viewportHeight ? paletteY : viewportHeight - paletteHeight,
-  };
-};
 
 export const Palette = ({
   x: paletteX,
@@ -106,15 +49,7 @@ export const Palette = ({
   onDirectEditClick,
   onEscape,
 }: PaletteProps) => {
-  const { domNode, nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
-  const { x: viewportWidth, y: viewportHeight } = computeDraggableBounds(domNode?.getBoundingClientRect());
-
-  const [state, setState] = useState<PaletteState>({
-    searchToolValue: '',
-    controlledPosition: { x: 0, y: 0 },
-  });
-
-  const diagramElement = nodeLookup.get(diagramElementId) || edgeLookup.get(diagramElementId);
+  const { getNodes, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
   let x: number = 0;
   let y: number = 0;
@@ -125,70 +60,71 @@ export const Palette = ({
   }
   const { handleToolClick, palette } = usePalette({ x, y, diagramElementId, onDirectEditClick, targetObjectId });
 
-  useEffect(() => {
-    const paletteLocation: XYPosition = computePaletteLocation(paletteX, paletteY, viewportWidth, viewportHeight);
-    setState((prevState) => ({ ...prevState, controlledPosition: paletteLocation }));
-  }, [paletteX, paletteY, viewportWidth, viewportHeight]);
+  const paletteToolData: DataExtension<DiagramPaletteToolContributionProps[]> = useData(
+    diagramPaletteToolExtensionPoint
+  );
 
-  const { classes } = usePaletteStyle({ paletteWidth: `${paletteWidth}px`, paletteHeight: `${paletteHeight}px` });
+  const diagramElement: Node<NodeData> | Edge<EdgeData> | undefined =
+    getEdges().find((edge) => edge.id === diagramElementId) ?? getNodes().find((node) => node.id === diagramElementId);
 
-  const shouldRender = palette && (getPaletteToolCount(palette) > 0 || !!diagramElement);
+  const paletteToolComponents: React.ComponentType<DiagramPaletteToolContributionComponentProps>[] = diagramElement
+    ? paletteToolData.data.filter((data) => data.canHandle(diagramElement)).map((data) => data.component)
+    : [];
 
+  const paletteEntries: PaletteEntry[] = palette ? filterSingleClickOnDiagramElementTool(palette?.paletteEntries) : [];
+
+  const { quickAccessToolComponents } = useSingleElementQuickAccessTools({
+    diagramElementId: diagramElementId,
+    onToolClick: handleToolClick,
+    diagramElement: diagramElement ?? null,
+    quickAccessTools: palette?.quickAccessTools ?? [],
+    paletteToolComponents,
+    x,
+    y,
+  });
+
+  const toolCount = paletteEntries.length + quickAccessToolComponents.length;
+
+  const { getLastToolInvoked } = useDiagramPalette();
+  const lastToolInvoked = palette ? getLastToolInvoked(palette.id) : null;
+  const lastSingleClickOnDiagramElementToolInvoked =
+    lastToolInvoked && isSingleClickOnDiagramElementTool(lastToolInvoked) ? lastToolInvoked : null;
+  const shouldRender = palette && (diagramElement || (!diagramElement && toolCount > 0));
   if (!shouldRender) {
     return null;
   }
 
-  const onPaletteDragStop = (_event, data: DraggableData) => {
-    setState((prevState) => ({ ...prevState, controlledPosition: data }));
-  };
-
-  const nodeRef = React.createRef<HTMLDivElement>();
-  const draggableBounds = {
-    left: 0,
-    top: 0,
-    bottom: viewportHeight - paletteHeight,
-    right: viewportWidth - paletteWidth,
-  };
-
-  const onSearchFieldValueChanged = (newValue: string): void => {
-    setState((prevState) => ({ ...prevState, searchToolValue: newValue }));
-  };
-
   return (
-    <Draggable
-      nodeRef={nodeRef}
-      bounds={draggableBounds}
-      handle="#tool-palette-header"
-      position={state.controlledPosition}
-      onStop={onPaletteDragStop}>
-      <Paper
-        ref={nodeRef}
-        className={classes.palette}
-        data-testid="Palette"
-        elevation={3}
-        onClick={(event) => event.stopPropagation()}>
-        <Box id="tool-palette-header" className={classes.paletteHeader}>
-          <DragIndicatorIcon />
-        </Box>
-        <Divider />
-        <PaletteSearchField onValueChanged={onSearchFieldValueChanged} onEscape={onEscape} />
-        <PaletteQuickAccessToolBar
-          diagramElementId={diagramElementId}
-          onToolClick={handleToolClick}
-          quickAccessTools={palette.quickAccessTools}
-          x={x}
-          y={y}
-        />
-        {state.searchToolValue.length > 0 ? (
-          <PaletteSearchResult
-            searchToolValue={state.searchToolValue}
-            palette={palette}
-            onToolClick={handleToolClick}
-          />
-        ) : (
-          <PaletteToolList palette={palette} onToolClick={handleToolClick} />
-        )}
-      </Paper>
-    </Draggable>
+    <DraggablePalette
+      x={paletteX}
+      y={paletteY}
+      onToolClick={handleToolClick}
+      paletteEntries={paletteEntries}
+      quickAccessToolComponents={quickAccessToolComponents}
+      lastToolInvoked={lastSingleClickOnDiagramElementToolInvoked}
+      onEscape={onEscape}
+    />
   );
+};
+
+// This Palette is only intended to be use following a single click on the diagram or a diagram element.
+const filterSingleClickOnDiagramElementTool = (paletteEntries: GQLPaletteEntry[]): PaletteEntry[] => {
+  const filteredPaletteEntries: PaletteEntry[] = [];
+  paletteEntries.forEach((paletteEntry) => {
+    if (isSingleClickOnDiagramElementTool(paletteEntry) || isPaletteDivider(paletteEntry)) {
+      filteredPaletteEntries.push(paletteEntry);
+    } else if (isToolSection(paletteEntry)) {
+      const currentToolSection = paletteEntry as GQLToolSection;
+      const filteredTools = currentToolSection.tools.filter(isSingleClickOnDiagramElementTool);
+      if (filteredTools.length > 0) {
+        const filteredToolSection: ToolSection = {
+          ...currentToolSection,
+          tools: filteredTools,
+          __typename: 'ToolSection',
+        };
+        filteredPaletteEntries.push(filteredToolSection);
+      }
+    }
+  });
+  return filteredPaletteEntries;
 };

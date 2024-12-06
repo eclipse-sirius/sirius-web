@@ -11,13 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLPalette, GQLTool, GQLToolSection } from '../Palette.types';
+import { PaletteEntry, Tool, ToolSection } from './../draggable-palette/DraggablePalette.types';
 
 export interface PaletteToolListProps {
-  onToolClick: (tool: GQLTool) => void;
-  palette: GQLPalette;
+  onToolClick: (tool: Tool) => void;
+  paletteEntries: PaletteEntry[];
+  lastToolInvoked: Tool | null;
 }
 
 export interface PaletteToolListStateValue {
-  toolSection: GQLToolSection | null;
+  toolSection: ToolSection | null;
 }

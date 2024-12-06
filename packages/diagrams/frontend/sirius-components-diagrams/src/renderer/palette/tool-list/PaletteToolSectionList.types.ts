@@ -10,10 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLTool, GQLToolSection } from '../Palette.types';
+import { GQLToolSection } from '../Palette.types';
+import { Tool } from './../draggable-palette/DraggablePalette.types';
 
 export interface PaletteToolSectionListProps {
-  onToolClick: (tool: GQLTool) => void;
+  onToolClick: (tool: Tool) => void;
   onBackToMainList: () => void;
   toolSection: GQLToolSection;
 }

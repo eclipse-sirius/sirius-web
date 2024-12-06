@@ -16,8 +16,9 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
 import { makeStyles } from 'tss-react/mui';
-import { ToolListItem } from '../tool-list-item/ToolListItem';
+import { Tool } from './../draggable-palette/DraggablePalette.types';
 import { PaletteToolSectionListProps } from './PaletteToolSectionList.types';
+import { ToolListItem } from './ToolListItem';
 
 const useStyle = makeStyles()((theme) => ({
   toolListItemIcon: {
@@ -69,7 +70,7 @@ export const PaletteToolSectionList = ({ toolSection, onToolClick, onBackToMainL
         </ListItemButton>
       </Tooltip>
       {toolSection.tools.map((tool) => (
-        <ToolListItem onToolClick={onToolClick} tool={tool} key={tool.id} />
+        <ToolListItem onToolClick={onToolClick} tool={tool as Tool} key={tool.id} />
       ))}
     </List>
   );

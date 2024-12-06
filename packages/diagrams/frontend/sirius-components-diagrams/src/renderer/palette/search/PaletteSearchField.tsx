@@ -43,7 +43,6 @@ export const PaletteSearchField = ({ onValueChanged, onEscape }: PaletteSearchFi
       value={state.value}
       size="small"
       onKeyDown={handleKeyDown}
-      onClick={(event) => event.stopPropagation()}
       placeholder="Search Tool"
       InputProps={{
         disableUnderline: true,

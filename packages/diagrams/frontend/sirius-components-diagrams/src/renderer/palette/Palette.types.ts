@@ -54,12 +54,12 @@ export interface PaletteStyleProps {
 export interface GQLTool extends GQLPaletteEntry {
   label: string;
   iconURL: string[];
-  __typename: string;
 }
 
 export interface GQLSingleClickOnDiagramElementTool extends GQLTool {
   appliesToDiagramRoot: boolean;
   dialogDescriptionId: string;
+  __typename: 'SingleClickOnDiagramElementTool';
 }
 
 export interface GQLPalette {
