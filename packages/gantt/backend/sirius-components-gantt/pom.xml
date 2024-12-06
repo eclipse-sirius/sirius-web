@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-gantt</artifactId>
-	<version>v2024.11.2</version>
+	<version>2024.11.3</version>
 	<name>sirius-components-gantt</name>
 	<description>Sirius Components Gantt</description>
 
@@ -43,7 +43,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-representations</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -53,7 +53,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
