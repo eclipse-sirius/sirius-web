@@ -15,6 +15,7 @@ import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { TableContent } from '../table/TableContent';
+import { tableIdProvider } from './tableIdProvider';
 import { TableRepresentationState } from './TableRepresentation.types';
 import { useTableSubscription } from './useTableSubscription';
 
@@ -35,14 +36,9 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
     size: 10,
     globalFilter: null,
   });
-  const { complete, table } = useTableSubscription(
-    editingContextId,
-    representationId,
-    state.cursor,
-    state.direction,
-    state.size,
-    state.globalFilter
-  );
+
+  const tableId = tableIdProvider(representationId, state.cursor, state.direction, state.size, state.globalFilter);
+  const { complete, table } = useTableSubscription(editingContextId, tableId);
 
   const onPaginationChange = (cursor: string | null, direction: 'PREV' | 'NEXT', size: number) => {
     setState((prevState) => ({ ...prevState, cursor, direction, size }));
@@ -68,7 +64,7 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
       {table !== null && !complete ? (
         <TableContent
           editingContextId={editingContextId}
-          representationId={table.id}
+          representationId={tableId}
           table={table}
           readOnly={readOnly}
           onPaginationChange={onPaginationChange}

@@ -88,6 +88,11 @@
 			<artifactId>sirius-web-e2e-tests</artifactId>
 			<version>2024.11.4</version>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-table</artifactId>
+			<version>2024.11.4</version>
+		</dependency>
 
 		<!-- Test Dependencies -->
 		<dependency>

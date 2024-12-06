@@ -20,6 +20,7 @@ import {
   SiriusWebApplication,
 } from '@eclipse-sirius/sirius-web-application';
 import { papayaExtensionRegistry } from '@eclipse-sirius/sirius-web-papaya';
+import { tableRegistry } from '@eclipse-sirius/sirius-web-table';
 import { createRoot } from 'react-dom/client';
 import { httpOrigin, wsOrigin } from './core/URL';
 import { EllipseNode } from './nodes/EllipseNode';
@@ -38,6 +39,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const registry = new ExtensionRegistry();
+registry.addAll(tableRegistry, new DefaultExtensionRegistryMergeStrategy());
 registry.addAll(papayaExtensionRegistry, new DefaultExtensionRegistryMergeStrategy());
 
 const nodeTypeRegistry: NodeTypeRegistry = {
