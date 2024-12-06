@@ -61,6 +61,11 @@ public final class StudioIdentifiers {
 
     public static final UUID HUMAN_INSIDE_LABEL_STYLE_OBJECT = UUID.fromString("c8338087-e98e-43bd-ae1a-879b64308a7d");
 
+    public static final String TABLE_ID = "d28d9ecb-102a-4eee-9d26-55543c5acb7f";
+
+    public static final String TABLE_DESCRIPTION_ID = "siriusComponents://representationDescription?kind=tableDescription&sourceKind=view&sourceId=" +
+            StudioIdentifiers.VIEW_DOCUMENT + "&sourceElementId=" + StudioIdentifiers.TABLE_ID;
+
     private StudioIdentifiers() {
         // Prevent instantiation
     }

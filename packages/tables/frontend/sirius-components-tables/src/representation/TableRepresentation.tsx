@@ -34,7 +34,7 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
     direction: 'NEXT',
     size: 10,
   });
-  const { complete, table } = useTableSubscription(
+  const { complete, table, representationIdWithParam } = useTableSubscription(
     editingContextId,
     representationId,
     state.cursor,
@@ -62,7 +62,7 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
       {table !== null && !complete ? (
         <TableContent
           editingContextId={editingContextId}
-          representationId={table.id}
+          representationId={representationIdWithParam}
           table={table}
           readOnly={readOnly}
           onPaginationChange={onPaginationChange}

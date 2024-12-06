@@ -16,6 +16,7 @@ export interface UseTableSubscriptionValue {
   loading: boolean;
   table: GQLTable | null;
   complete: boolean;
+  representationIdWithParam: string;
 }
 
 export interface UseTableSubscriptionState {

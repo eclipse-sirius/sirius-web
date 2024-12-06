@@ -81,6 +81,13 @@ INSERT INTO semantic_data_domain (
   'e344d967-a639-4f6c-9c00-a466d51063c6',
   'http://www.eclipse.org/sirius-web/form'
 );
+INSERT INTO semantic_data_domain (
+  semantic_data_id,
+  uri
+) VALUES (
+  'e344d967-a639-4f6c-9c00-a466d51063c6',
+  'http://www.eclipse.org/sirius-web/table'
+);
 INSERT INTO document (
   id,
   semantic_data_id,
@@ -215,151 +222,199 @@ INSERT INTO document (
   'e344d967-a639-4f6c-9c00-a466d51063c6',
   'Form View',
   '{
-     "json":{
-       "version":"1.0",
-       "encoding":"utf-8"
-     },
-     "ns":{
-       "form":"http://www.eclipse.org/sirius-web/form",
-       "view":"http://www.eclipse.org/sirius-web/view"
-     },
-     "content":[
-       {
-         "id":"c4591605-8ea8-4e92-bb17-05c4538248f8",
-         "eClass":"view:View",
-         "data":{
-           "descriptions":[
-             {
-               "id":"ed20cb85-a58a-47ad-bc0d-749ec8b2ea03",
-               "eClass":"form:FormDescription",
-               "data":{
-                 "name":"Human Form",
-                 "domainType":"buck::Human",
-                 "pages":[
-                   {
-                     "id":"b0c73654-6f1b-4be5-832d-b97f053b5196",
-                     "eClass":"form:PageDescription",
-                     "data":{
-                       "name":"Human",
-                       "labelExpression":"aql:self.name",
-                       "domainType":"buck::Human",
-                       "groups":[
-                         {
-                           "id":"28d8d6de-7d6f-4434-9293-0ac4ef2461ac",
-                           "eClass":"form:GroupDescription",
-                           "data":{
-                             "name":"Properties",
-                             "labelExpression":"Properties",
-                             "children":[
-                               {
-                                 "id":"b02b89b7-6c06-40f8-9366-83d5f885ada1",
-                                 "eClass":"form:TextfieldDescription",
-                                 "data":{
-                                   "name":"Name",
-                                   "labelExpression":"Name",
-                                   "helpExpression":"The name of the human",
-                                   "valueExpression":"aql:self.name",
-                                   "body":[
-                                     {
-                                       "id":"ecdc23ff-fd4b-47a4-939d-1bc03e656d3d",
-                                       "eClass":"view:ChangeContext",
-                                       "data":{
-                                         "children":[
-                                           {
-                                             "id":"a8b95d5b-833a-4b19-b783-3025225613de",
-                                             "eClass":"view:SetValue",
-                                             "data":{
-                                               "featureName":"name",
-                                               "valueExpression":"aql:newValue"
-                                             }
-                                           }
-                                         ]
-                                       }
-                                     }
-                                   ]
-                                 }
-                               },
-                               {
-                                 "id":"98e756a2-305f-4767-b75c-4130996ae6da",
-                                 "eClass":"form:TextAreaDescription",
-                                 "data":{
-                                   "name":"Description",
-                                   "labelExpression":"Description",
-                                   "helpExpression":"The description of the human",
-                                   "valueExpression":"aql:self.description",
-                                   "body":[
-                                     {
-                                       "id":"59ea57d5-c365-4421-9648-f38a74644768",
-                                       "eClass":"view:ChangeContext",
-                                       "data":{
-                                         "children":[
-                                           {
-                                             "id":"811bb719-ab53-49ea-9281-6558f7022ecc",
-                                             "eClass":"view:SetValue",
-                                             "data":{
-                                               "featureName":"description",
-                                               "valueExpression":"aql:newValue"
-                                             }
-                                           }
-                                         ]
-                                       }
-                                     }
-                                   ]
-                                 }
-                               },
-                               {
-                                 "id":"ba20babb-0e75-4f66-a382-a2f02bce904a",
-                                 "eClass":"form:CheckboxDescription",
-                                 "data":{
-                                   "name":"Promoted",
-                                   "labelExpression":"Promoted",
-                                   "helpExpression":"Has this human been promoted?",
-                                   "valueExpression":"aql:self.promoted",
-                                   "body":[
-                                     {
-                                       "id":"afac13bd-71ac-4287-baf6-3669f23ac806",
-                                       "eClass":"view:ChangeContext",
-                                       "data":{
-                                         "children":[
-                                           {
-                                             "id":"0eaeca64-ee2b-4f2c-9454-c528181d0d64",
-                                             "eClass":"view:SetValue",
-                                             "data":{
-                                               "featureName":"promoted",
-                                               "valueExpression":"aql:newValue"
-                                             }
-                                           }
-                                         ]
-                                       }
-                                     }
-                                   ]
-                                 }
-                               },
-                               {
-                                 "id":"91a4fcd9-a176-4df1-8f88-52a406fc3f73",
-                                 "eClass":"form:DateTimeDescription",
-                                 "data":{
-                                   "name":"BirthDate",
-                                   "labelExpression":"Birth Date",
-                                   "helpExpression":"The birth date of the human",
-                                   "stringValueExpression":"aql:self.birthDate",
-                                   "type":"DATE"
-                                 }
-                               }
-                             ]
-                           }
-                         }
-                       ]
-                     }
-                   }
-                 ]
-               }
-             }
-           ]
-         }
-       }
-     ]
-   }',
+    "json":{
+      "version":"1.0",
+      "encoding":"utf-8"
+    },
+    "ns":{
+      "form":"http://www.eclipse.org/sirius-web/form",
+      "table":"http://www.eclipse.org/sirius-web/table",
+      "view":"http://www.eclipse.org/sirius-web/view"
+    },
+    "content":[
+      {
+        "id":"c4591605-8ea8-4e92-bb17-05c4538248f8",
+        "eClass":"view:View",
+        "data":{
+          "descriptions":[
+            {
+              "id":"ed20cb85-a58a-47ad-bc0d-749ec8b2ea03",
+              "eClass":"form:FormDescription",
+              "data":{
+                "name":"Human Form",
+                "domainType":"buck::Human",
+                "pages":[
+                  {
+                    "id":"b0c73654-6f1b-4be5-832d-b97f053b5196",
+                    "eClass":"form:PageDescription",
+                    "data":{
+                      "name":"Human",
+                      "labelExpression":"aql:self.name",
+                      "domainType":"buck::Human",
+                      "groups":[
+                        {
+                          "id":"28d8d6de-7d6f-4434-9293-0ac4ef2461ac",
+                          "eClass":"form:GroupDescription",
+                          "data":{
+                            "name":"Properties",
+                            "labelExpression":"Properties",
+                            "children":[
+                              {
+                                "id":"b02b89b7-6c06-40f8-9366-83d5f885ada1",
+                                "eClass":"form:TextfieldDescription",
+                                "data":{
+                                  "name":"Name",
+                                  "labelExpression":"Name",
+                                  "helpExpression":"The name of the human",
+                                  "valueExpression":"aql:self.name",
+                                  "body":[
+                                    {
+                                      "id":"ecdc23ff-fd4b-47a4-939d-1bc03e656d3d",
+                                      "eClass":"view:ChangeContext",
+                                      "data":{
+                                        "children":[
+                                          {
+                                            "id":"a8b95d5b-833a-4b19-b783-3025225613de",
+                                            "eClass":"view:SetValue",
+                                            "data":{
+                                              "featureName":"name",
+                                              "valueExpression":"aql:newValue"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "id":"98e756a2-305f-4767-b75c-4130996ae6da",
+                                "eClass":"form:TextAreaDescription",
+                                "data":{
+                                  "name":"Description",
+                                  "labelExpression":"Description",
+                                  "helpExpression":"The description of the human",
+                                  "valueExpression":"aql:self.description",
+                                  "body":[
+                                    {
+                                      "id":"59ea57d5-c365-4421-9648-f38a74644768",
+                                      "eClass":"view:ChangeContext",
+                                      "data":{
+                                        "children":[
+                                          {
+                                            "id":"811bb719-ab53-49ea-9281-6558f7022ecc",
+                                            "eClass":"view:SetValue",
+                                            "data":{
+                                              "featureName":"description",
+                                              "valueExpression":"aql:newValue"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "id":"ba20babb-0e75-4f66-a382-a2f02bce904a",
+                                "eClass":"form:CheckboxDescription",
+                                "data":{
+                                  "name":"Promoted",
+                                  "labelExpression":"Promoted",
+                                  "helpExpression":"Has this human been promoted?",
+                                  "valueExpression":"aql:self.promoted",
+                                  "body":[
+                                    {
+                                      "id":"afac13bd-71ac-4287-baf6-3669f23ac806",
+                                      "eClass":"view:ChangeContext",
+                                      "data":{
+                                        "children":[
+                                          {
+                                            "id":"0eaeca64-ee2b-4f2c-9454-c528181d0d64",
+                                            "eClass":"view:SetValue",
+                                            "data":{
+                                              "featureName":"promoted",
+                                              "valueExpression":"aql:newValue"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "id":"91a4fcd9-a176-4df1-8f88-52a406fc3f73",
+                                "eClass":"form:DateTimeDescription",
+                                "data":{
+                                  "name":"BirthDate",
+                                  "labelExpression":"Birth Date",
+                                  "helpExpression":"The birth date of the human",
+                                  "stringValueExpression":"aql:self.birthDate",
+                                  "type":"DATE"
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "id": "d28d9ecb-102a-4eee-9d26-55543c5acb7f",
+              "eClass": "table:TableDescription",
+              "data":
+                  {
+                "name": "New Table Description",
+                "domainType": "buck::Root",
+                "titleExpression": "aql:New Table",
+                "columnDescriptions": [
+                  {
+                    "id": "3db9745f-6da7-445a-b768-9d5480105eca",
+                    "eClass": "table:ColumnDescription",
+                    "data": {
+                      "name": "Column",
+                      "domainType": "buck::Root",
+                      "semanticCandidatesExpression": "aql:self",
+                      "headerLabelExpression": "aql:self.name"
+                    }
+                  }
+                ],
+                "rowDescription": {
+                  "id": "6c4c05cb-0e95-4556-adf5-54269fbf0843",
+                  "eClass": "table:RowDescription",
+                  "data": {
+                    "name": "Row",
+                    "domainType": "buck::Human",
+                    "semanticCandidatesExpression": "aql:self.humans"
+                  }
+                },
+                "cellDescriptions": [
+                  {
+                    "id": "5cf0f787-43dc-4b8d-b513-51296053a96e",
+                    "eClass": "table:CellDescription",
+                    "data": {
+                      "name": "Cell",
+                      "domainType": "vaughan::Human",
+                      "semanticCandidatesExpression": "aql:self",
+                      "valueExpression": "aql:self.name",
+                      "cellWidgetDescription": {
+                      "id": "9b3400c9-d5f0-46db-9d60-60ec4016d383",
+                      "eClass": "table:CellLabelWidgetDescription"
+                    }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }',
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );

@@ -111,10 +111,12 @@ export const useTableSubscription = (
     complete: false,
   });
 
+  const representationIdWithParam: string = `${tableId}?cursor=${cursor}&direction=${direction}&size=${size}`;
+
   const input: GQLTableEventInput = {
     id: state.id,
     editingContextId,
-    representationId: `${tableId}?cursor=${cursor}&direction=${direction}&size=${size}`,
+    representationId: representationIdWithParam,
   };
 
   const variables: GQLTableEventVariables = { input };
@@ -153,5 +155,6 @@ export const useTableSubscription = (
     loading,
     table: state.table,
     complete: state.complete,
+    representationIdWithParam,
   };
 };
