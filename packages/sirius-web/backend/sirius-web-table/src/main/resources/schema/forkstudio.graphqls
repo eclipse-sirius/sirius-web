@@ -1,0 +1,17 @@
+extend type Mutation {
+  createForkedStudio(input: CreateForkedStudioInput!): CreateForkedStudioPayload!
+}
+
+input CreateForkedStudioInput {
+  id: ID!
+  editingContextId: String!
+  representationId: String!
+  tableId: String!
+}
+
+union CreateForkedStudioPayload = ErrorPayload | CreateProjectSuccessPayload
+
+type CreateForkedStudioSuccessPayload {
+  id: ID!
+  project: Project!
+}
