@@ -90,8 +90,6 @@ export const TableContent = memo(
       manualPagination: serverSidePagination,
       rowCount: table.paginationData.totalRowCount,
       enableRowActions: true,
-      enableColumnResizing: true,
-      columnResizeMode: 'onEnd',
       enableSorting: false,
       onColumnSizingChange: setColumnSizing,
       onColumnVisibilityChange: setColumnVisibility,
@@ -153,6 +151,12 @@ export const TableContent = memo(
           },
         },
       };
+    }
+
+    const enableColumnResizing: boolean = table.columns.filter((column) => column.isResizable).length > 0;
+    if (enableColumnResizing) {
+      tableOptions.enableColumnResizing = enableColumnResizing;
+      tableOptions.columnResizeMode = 'onEnd';
     }
 
     const muiTable = useMaterialReactTable(tableOptions);
