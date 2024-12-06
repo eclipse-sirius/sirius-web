@@ -83,6 +83,7 @@ import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
+import org.eclipse.sirius.components.view.emf.ViewIconURLsProvider;
 import org.eclipse.sirius.components.view.emf.diagram.providers.api.IViewToolImageProvider;
 import org.springframework.stereotype.Service;
 
@@ -164,7 +165,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .nodeDescriptions(nodeDescriptions)
                 .edgeDescriptions(edgeDescriptions)
                 .palettes(toolConverter.createPaletteBasedToolSections(viewDiagramDescription, converterContext))
-                .dropHandler(this.createDiagramDropHandler(viewDiagramDescription, converterContext));
+                .dropHandler(this.createDiagramDropHandler(viewDiagramDescription, converterContext))
+                .iconURLsProvider(new ViewIconURLsProvider(interpreter, viewDiagramDescription.getIconExpression()));
 
         new ToolFinder().findDropNodeTool(viewDiagramDescription).ifPresent(dropNoteTool -> {
             builder.dropNodeHandler(this.createDropNodeHandler(dropNoteTool, converterContext));
@@ -469,7 +471,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .build());
     }
 
-    private Function<VariableManager, List<?>> getSemanticElementsProvider(org.eclipse.sirius.components.view.diagram.DiagramElementDescription elementDescription, AQLInterpreter interpreter) {
+    private Function<VariableManager, List<?>> getSemanticElementsProvider(DiagramElementDescription elementDescription, AQLInterpreter interpreter) {
         return variableManager -> {
             Result result = interpreter.evaluateExpression(variableManager.getVariables(), elementDescription.getSemanticCandidatesExpression());
             List<Object> candidates = result.asObjects().orElse(List.of());

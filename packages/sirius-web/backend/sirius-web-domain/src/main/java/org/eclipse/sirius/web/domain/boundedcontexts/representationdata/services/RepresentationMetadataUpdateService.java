@@ -16,6 +16,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationMetadataRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataUpdateService;
 import org.eclipse.sirius.web.domain.services.Failure;
@@ -52,6 +53,22 @@ public class RepresentationMetadataUpdateService implements IRepresentationMetad
             this.representationMetadataRepository.save(representationMetadata);
 
             result = new Success<>(null);
+        }
+
+        return result;
+    }
+
+    @Override
+    public IResult<RepresentationMetadata> updateDocumentation(ICause cause, UUID representationMetadataId, String documentation) {
+        IResult<RepresentationMetadata> result = new Failure<>(this.messageService.notFound());
+
+        var optionalRepresentationMetadata = this.representationMetadataRepository.findMetadataById(representationMetadataId);
+        if (optionalRepresentationMetadata.isPresent()) {
+            var representationMetadata = optionalRepresentationMetadata.get();
+            representationMetadata.updateDocumentation(cause, documentation);
+            this.representationMetadataRepository.save(representationMetadata);
+
+            result = new Success<>(representationMetadata);
         }
 
         return result;

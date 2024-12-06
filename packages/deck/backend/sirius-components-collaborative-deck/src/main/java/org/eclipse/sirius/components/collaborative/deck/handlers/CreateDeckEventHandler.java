@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.deck.handlers;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -110,12 +111,14 @@ public class CreateDeckEventHandler implements IEditingContextEventHandler {
                 variableManager.put(VariableManager.SELF, object);
                 variableManager.put(DeckDescription.LABEL, createRepresentationInput.representationName());
                 String label = deckDescription.labelProvider().apply(variableManager);
+                List<String> iconURLs = deckDescription.getIconURLsProvider().apply(variableManager);
 
                 Deck deckDiagram = this.deckCreationService.create(object, deckDescription, editingContext);
                 var representationMetadata = RepresentationMetadata.newRepresentationMetadata(deckDiagram.id())
                         .kind(deckDiagram.getKind())
                         .label(label)
                         .descriptionId(deckDiagram.getDescriptionId())
+                        .iconURLs(iconURLs)
                         .build();
 
                 this.representationMetadataPersistenceService.save(createRepresentationInput, editingContext, representationMetadata, deckDiagram.getTargetObjectId());

@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.views.relatedelements.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.RepresentationMetadata;
@@ -34,6 +35,7 @@ public class RelatedElementsMetadataProvider implements IRepresentationMetadataP
                     .kind(Form.KIND)
                     .label(RelatedElementsDescriptionProvider.FORM_TITLE)
                     .descriptionId(RelatedElementsDescriptionProvider.FORM_DESCRIPTION_ID)
+                    .iconURLs(List.of("related-elements/related_elements.svg"))
                     .build();
             return Optional.of(representationMetadata);
         }

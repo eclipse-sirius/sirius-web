@@ -15,8 +15,8 @@ package org.eclipse.sirius.components.tables.descriptions;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -29,19 +29,27 @@ import org.eclipse.sirius.components.representations.VariableManager;
 @Immutable
 public final class LineDescription {
 
-    private UUID id;
+    private String id;
 
     private Function<VariableManager, String> targetObjectIdProvider;
 
     private Function<VariableManager, String> targetObjectKindProvider;
 
-    private Function<VariableManager, List<Object>> semanticElementsProvider;
+    private Function<VariableManager, PaginatedData> semanticElementsProvider;
+
+    private Predicate<VariableManager> shouldRenderPredicate;
+
+    private Function<VariableManager, String> headerLabelProvider;
+
+    private Function<VariableManager, List<String>> headerIconURLsProvider;
+
+    private Function<VariableManager, String> headerIndexLabelProvider;
 
     private LineDescription() {
         // Prevent instantiation
     }
 
-    public UUID getId() {
+    public String getId() {
         return this.id;
     }
 
@@ -53,11 +61,27 @@ public final class LineDescription {
         return this.targetObjectKindProvider;
     }
 
-    public Function<VariableManager, List<Object>> getSemanticElementsProvider() {
+    public Function<VariableManager, PaginatedData> getSemanticElementsProvider() {
         return this.semanticElementsProvider;
     }
 
-    public static Builder newLineDescription(UUID id) {
+    public Predicate<VariableManager> getShouldRenderPredicate() {
+        return this.shouldRenderPredicate;
+    }
+
+    public Function<VariableManager, String> getHeaderLabelProvider() {
+        return this.headerLabelProvider;
+    }
+
+    public Function<VariableManager, List<String>> getHeaderIconURLsProvider() {
+        return this.headerIconURLsProvider;
+    }
+
+    public Function<VariableManager, String> getHeaderIndexLabelProvider() {
+        return this.headerIndexLabelProvider;
+    }
+
+    public static Builder newLineDescription(String id) {
         return new Builder(id);
     }
 
@@ -75,15 +99,23 @@ public final class LineDescription {
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
-        private final UUID id;
+        private final String id;
 
         private Function<VariableManager, String> targetObjectIdProvider;
 
         private Function<VariableManager, String> targetObjectKindProvider;
 
-        private Function<VariableManager, List<Object>> semanticElementsProvider;
+        private Function<VariableManager, PaginatedData> semanticElementsProvider;
 
-        public Builder(UUID id) {
+        private Predicate<VariableManager> shouldRenderPredicate = variableManager -> true;
+
+        private Function<VariableManager, String> headerLabelProvider;
+
+        private Function<VariableManager, List<String>> headerIconURLsProvider;
+
+        private Function<VariableManager, String> headerIndexLabelProvider;
+
+        public Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
 
@@ -97,8 +129,28 @@ public final class LineDescription {
             return this;
         }
 
-        public Builder semanticElementsProvider(Function<VariableManager, List<Object>> semanticElementsProvider) {
+        public Builder semanticElementsProvider(Function<VariableManager, PaginatedData> semanticElementsProvider) {
             this.semanticElementsProvider = Objects.requireNonNull(semanticElementsProvider);
+            return this;
+        }
+
+        public Builder shouldRenderPredicate(Predicate<VariableManager> shouldRenderPredicate) {
+            this.shouldRenderPredicate = Objects.requireNonNull(shouldRenderPredicate);
+            return this;
+        }
+
+        public Builder headerLabelProvider(Function<VariableManager, String> headerLabelProvider) {
+            this.headerLabelProvider = Objects.requireNonNull(headerLabelProvider);
+            return this;
+        }
+
+        public Builder headerIconURLsProvider(Function<VariableManager, List<String>> headerIconURLsProvider) {
+            this.headerIconURLsProvider = Objects.requireNonNull(headerIconURLsProvider);
+            return this;
+        }
+
+        public Builder headerIndexLabelProvider(Function<VariableManager, String> headerIndexLabelProvider) {
+            this.headerIndexLabelProvider = Objects.requireNonNull(headerIndexLabelProvider);
             return this;
         }
 
@@ -108,6 +160,10 @@ public final class LineDescription {
             lineDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             lineDescription.targetObjectKindProvider = Objects.requireNonNull(this.targetObjectKindProvider);
             lineDescription.semanticElementsProvider = Objects.requireNonNull(this.semanticElementsProvider);
+            lineDescription.shouldRenderPredicate = Objects.requireNonNull(this.shouldRenderPredicate);
+            lineDescription.headerLabelProvider = Objects.requireNonNull(this.headerLabelProvider);
+            lineDescription.headerIconURLsProvider = Objects.requireNonNull(this.headerIconURLsProvider);
+            lineDescription.headerIndexLabelProvider = Objects.requireNonNull(this.headerIndexLabelProvider);
             return lineDescription;
         }
     }

@@ -124,7 +124,7 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
                 .targetObjectIdProvider(variableManager -> variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
                         .map(IEditingContext::getId)
                         .orElse(null))
-                .iconURLProvider(this::getImageURL)
+                .treeItemIconURLsProvider(this::getImageURL)
                 .editableProvider(this::isEditable)
                 .deletableProvider(this::isDeletable)
                 .selectableProvider(isSelectableProvider)
@@ -139,6 +139,7 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
                 .treeItemObjectProvider(this::getTreeItemObject)
                 .parentObjectProvider(this::getParentObject)
                 .treeItemLabelProvider(this::getLabel)
+                .iconURLsProvider(variableManager -> List.of())
                 .build();
     }
 

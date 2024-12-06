@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.trees.handlers;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -110,12 +111,14 @@ public class CreateTreeEventHandler implements IEditingContextEventHandler {
                 variableManager.put(VariableManager.SELF, object);
                 variableManager.put(TreeDescription.LABEL, createRepresentationInput.representationName());
                 String label = treeDescription.getLabelProvider().apply(variableManager).toString();
+                List<String> iconURLs = treeDescription.getIconURLsProvider().apply(variableManager);
 
                 Tree tree = this.treeCreationService.create(object, treeDescription, editingContext);
                 var representationMetadata = RepresentationMetadata.newRepresentationMetadata(tree.getId())
                         .kind(tree.getKind())
                         .label(label)
                         .descriptionId(tree.getDescriptionId())
+                        .iconURLs(iconURLs)
                         .build();
 
                 this.representationMetadataPersistenceService.save(createRepresentationInput, editingContext, representationMetadata, tree.getTargetObjectId());

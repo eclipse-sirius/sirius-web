@@ -17,13 +17,14 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
+import org.eclipse.sirius.components.tables.PaginationData;
 
 /**
  * Properties of the table element.
  *
  * @author lfasani
  */
-public record TableElementProps(String id, String descriptionId, String targetObjectId, String targetObjectKind, List<Element> children) implements IProps {
+public record TableElementProps(String id, String descriptionId, String targetObjectId, String targetObjectKind, PaginationData paginationData, boolean stripeRow, List<Element> children) implements IProps {
 
     public static final String TYPE = "Table";
 
@@ -33,6 +34,7 @@ public record TableElementProps(String id, String descriptionId, String targetOb
         Objects.requireNonNull(targetObjectId);
         Objects.requireNonNull(targetObjectKind);
         Objects.requireNonNull(children);
+        Objects.requireNonNull(paginationData);
     }
 
     @Override
@@ -60,6 +62,10 @@ public record TableElementProps(String id, String descriptionId, String targetOb
 
         private String descriptionId;
 
+        private PaginationData paginationData;
+
+        private boolean stripeRow;
+
         private List<Element> children;
 
         private Builder(String id) {
@@ -81,13 +87,23 @@ public record TableElementProps(String id, String descriptionId, String targetOb
             return this;
         }
 
+        public Builder paginationData(PaginationData paginationData) {
+            this.paginationData = Objects.requireNonNull(paginationData);
+            return this;
+        }
+
+        public Builder stripeRow(boolean stripeRow) {
+            this.stripeRow = stripeRow;
+            return this;
+        }
+
         public Builder children(List<Element> children) {
             this.children = Objects.requireNonNull(children);
             return this;
         }
 
         public TableElementProps build() {
-            return new TableElementProps(this.id, this.descriptionId, this.targetObjectId, this.targetObjectKind, this.children);
+            return new TableElementProps(this.id, this.descriptionId, this.targetObjectId, this.targetObjectKind, this.paginationData, this.stripeRow, this.children);
         }
     }
 }

@@ -122,6 +122,7 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
                 .canCreatePredicate(variableManager -> false)
                 .treeDescription(treeDescription)
                 .multiple(selectionDescription.isMultiple())
+                .iconURLsProvider(variableManager -> List.of())
                 .build();
     }
 
@@ -213,11 +214,12 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
                 .kindProvider(kindProvider)
                 .labelProvider(labelProvider)
                 .targetObjectIdProvider(targetObjectIdProvider)
-                .iconURLProvider(imageURLProvider)
+                .treeItemIconURLsProvider(imageURLProvider)
                 .selectableProvider(isSelectableProvider)
                 .treeItemObjectProvider(this::getTreeItemObject)
                 .parentObjectProvider(this::getParentObject)
                 .treeItemLabelProvider(labelProvider)
+                .iconURLsProvider(variableManager -> List.of())
                 .build();
     }
 

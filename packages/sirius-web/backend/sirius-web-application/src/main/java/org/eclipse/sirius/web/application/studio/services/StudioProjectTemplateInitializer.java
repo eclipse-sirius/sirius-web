@@ -115,12 +115,14 @@ public class StudioProjectTemplateInitializer implements IProjectTemplateInitial
                         variableManager.put(VariableManager.SELF, semanticTarget);
                         variableManager.put(DiagramDescription.LABEL, domainDiagramDescription.getLabel());
                         String label = domainDiagramDescription.getLabelProvider().apply(variableManager);
+                        List<String> iconURLs = domainDiagramDescription.getIconURLsProvider().apply(variableManager);
 
                         Diagram diagram = this.diagramCreationService.create(semanticTarget, domainDiagramDescription, editingContext);
                         var representationMetadata = RepresentationMetadata.newRepresentationMetadata(diagram.getId())
                                 .kind(diagram.getKind())
                                 .label(label)
                                 .descriptionId(diagram.getDescriptionId())
+                                .iconURLs(iconURLs)
                                 .build();
 
                         this.representationMetadataPersistenceService.save(cause, editingContext, representationMetadata, diagram.getTargetObjectId());

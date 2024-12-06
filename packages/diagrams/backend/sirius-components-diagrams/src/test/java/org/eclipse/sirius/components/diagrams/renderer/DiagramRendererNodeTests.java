@@ -246,6 +246,7 @@ public class DiagramRendererNodeTests {
                 .edgeDescriptions(new ArrayList<>())
                 .palettes(List.of())
                 .dropHandler(variableManager -> new Failure(""))
+                .iconURLsProvider(variableManager -> List.of())
                 .build();
 
         VariableManager variableManager = new VariableManager();

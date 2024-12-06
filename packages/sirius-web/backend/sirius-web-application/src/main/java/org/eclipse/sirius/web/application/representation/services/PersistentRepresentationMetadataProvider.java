@@ -18,6 +18,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
 import org.eclipse.sirius.web.application.UUIDParser;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationIconURL;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +44,9 @@ public class PersistentRepresentationMetadataProvider implements IRepresentation
                         .kind(representation.getKind())
                         .label(representation.getLabel())
                         .descriptionId(representation.getDescriptionId())
+                        .iconURLs(representation.getIconURLs().stream()
+                                .map(RepresentationIconURL::url)
+                                .toList())
                         .build());
     }
 

@@ -53,6 +53,9 @@ public class CellStringValueProvider implements BiFunction<VariableManager, Obje
                 }
             }
         }
+        if (value == null) {
+            value = "";
+        }
         return value;
     }
 }

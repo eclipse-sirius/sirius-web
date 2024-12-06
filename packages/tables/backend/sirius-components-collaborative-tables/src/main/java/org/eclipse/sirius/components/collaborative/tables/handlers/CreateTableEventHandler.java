@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.tables.handlers;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -108,10 +109,11 @@ public class CreateTableEventHandler implements IEditingContextEventHandler {
                 variableManager.put(VariableManager.SELF, object);
                 variableManager.put(TableDescription.LABEL, createRepresentationInput.representationName());
                 String label = tableDescription.getLabelProvider().apply(variableManager);
+                List<String> iconURLs = tableDescription.getIconURLsProvider().apply(variableManager);
 
                 Table table = this.tableCreationService.create(createRepresentationInput.representationName(), object, tableDescription, editingContext);
 
-                var representationMetadata = new RepresentationMetadata(table.getId(), table.getKind(), label, table.getDescriptionId());
+                var representationMetadata = new RepresentationMetadata(table.getId(), table.getKind(), label, table.getDescriptionId(), iconURLs);
                 this.representationMetadataPersistenceService.save(createRepresentationInput, editingContext, representationMetadata, table.getTargetObjectId());
                 this.representationPersistenceService.save(createRepresentationInput, editingContext, table);
 

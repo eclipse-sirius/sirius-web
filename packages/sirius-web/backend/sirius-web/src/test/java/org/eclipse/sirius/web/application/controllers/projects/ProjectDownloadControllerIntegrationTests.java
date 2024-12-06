@@ -73,8 +73,8 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
 
     @Test
     @DisplayName("Given a studio, when the download of the project is requested, then the manifest is exported")
-    @Sql(scripts = { "/scripts/studio.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenStudioWhenTheDownloadOfProjectIsRequestedThenTheManifestIsExported() {
         this.givenCommittedTransaction.commit();
 
@@ -104,6 +104,7 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
                         "http://www.eclipse.org/sirius-web/domain",
                         "http://www.eclipse.org/sirius-web/form",
                         "http://www.eclipse.org/sirius-web/gantt",
+                        "http://www.eclipse.org/sirius-web/table",
                         "http://www.eclipse.org/sirius-web/tree",
                         "http://www.eclipse.org/sirius-web/view",
                         "https://www.eclipse.org/sirius/widgets/reference"
@@ -122,8 +123,8 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
 
     @Test
     @DisplayName("Given a studio, when the download of the project is requested, then the semantic data are retrieved")
-    @Sql(scripts = { "/scripts/studio.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenStudioWhenTheDownloadOfProjectIsRequestedThenTheSemanticDataAreRetrieved() {
         this.givenCommittedTransaction.commit();
 
@@ -151,8 +152,8 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
 
     @Test
     @DisplayName("Given a project, when the download of the project is requested, then the representation data are retrieved")
-    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenTheDownloadOfProjectIsRequestedThenTheRepresentationDataAreRetrieved() {
         this.givenCommittedTransaction.commit();
 

@@ -15,8 +15,8 @@ package org.eclipse.sirius.components.tables.descriptions;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -34,26 +34,44 @@ public final class ColumnDescription {
 
     public static final String COLUMN_TARGET_OBJECT_ID = "columTargetObjectId";
 
-    private UUID id;
+    private String id;
 
     private Function<VariableManager, String> targetObjectIdProvider;
 
     private Function<VariableManager, String> targetObjectKindProvider;
 
-    private Function<VariableManager, String> labelProvider;
+    private Function<VariableManager, String> headerLabelProvider;
+
+    private Function<VariableManager, List<String>> headerIconURLsProvider;
+
+    private Function<VariableManager, String> headerIndexLabelProvider;
 
     private Function<VariableManager, List<Object>> semanticElementsProvider;
+
+    private Predicate<VariableManager> shouldRenderPredicate;
+
+    private Function<VariableManager, Integer> initialWidthProvider;
+
+    private Predicate<VariableManager> isResizablePredicate;
 
     private ColumnDescription() {
         // Prevent instantiation
     }
 
-    public UUID getId() {
+    public String getId() {
         return this.id;
     }
 
-    public Function<VariableManager, String> getLabelProvider() {
-        return this.labelProvider;
+    public Function<VariableManager, String> getHeaderLabelProvider() {
+        return this.headerLabelProvider;
+    }
+
+    public Function<VariableManager, List<String>> getHeaderIconURLsProvider() {
+        return this.headerIconURLsProvider;
+    }
+
+    public Function<VariableManager, String> getHeaderIndexLabelProvider() {
+        return this.headerIndexLabelProvider;
     }
 
     public Function<VariableManager, String> getTargetObjectIdProvider() {
@@ -68,7 +86,19 @@ public final class ColumnDescription {
         return this.semanticElementsProvider;
     }
 
-    public static Builder newColumnDescription(UUID id) {
+    public Predicate<VariableManager> getShouldRenderPredicate() {
+        return this.shouldRenderPredicate;
+    }
+
+    public Function<VariableManager, Integer> getInitialWidthProvider() {
+        return this.initialWidthProvider;
+    }
+
+    public Predicate<VariableManager> getIsResizablePredicate() {
+        return this.isResizablePredicate;
+    }
+
+    public static Builder newColumnDescription(String id) {
         return new Builder(id);
     }
 
@@ -86,22 +116,42 @@ public final class ColumnDescription {
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
-        private final UUID id;
+        private final String id;
 
         private Function<VariableManager, String> targetObjectIdProvider;
 
         private Function<VariableManager, String> targetObjectKindProvider;
 
-        private Function<VariableManager, String> labelProvider;
+        private Function<VariableManager, String> headerLabelProvider;
+
+        private Function<VariableManager, List<String>> headerIconURLsProvider;
+
+        private Function<VariableManager, String> headerIndexLabelProvider;
 
         private Function<VariableManager, List<Object>> semanticElementsProvider;
 
-        public Builder(UUID id) {
+        private Predicate<VariableManager> shouldRenderPredicate = variableManager -> true;
+
+        private Function<VariableManager, Integer> initialWidthProvider;
+
+        private Predicate<VariableManager> isResizablePredicate;
+
+        public Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
 
-        public Builder labelProvider(Function<VariableManager, String> labelProvider) {
-            this.labelProvider = Objects.requireNonNull(labelProvider);
+        public Builder headerLabelProvider(Function<VariableManager, String> headerLabelProvider) {
+            this.headerLabelProvider = Objects.requireNonNull(headerLabelProvider);
+            return this;
+        }
+
+        public Builder headerIconURLsProvider(Function<VariableManager, List<String>> headerIconURLsProvider) {
+            this.headerIconURLsProvider = Objects.requireNonNull(headerIconURLsProvider);
+            return this;
+        }
+
+        public Builder headerIndexLabelProvider(Function<VariableManager, String> headerIndexLabelProvider) {
+            this.headerIndexLabelProvider = Objects.requireNonNull(headerIndexLabelProvider);
             return this;
         }
 
@@ -115,9 +165,23 @@ public final class ColumnDescription {
             return this;
         }
 
-
         public Builder semanticElementsProvider(Function<VariableManager, List<Object>> semanticElementsProvider) {
             this.semanticElementsProvider = Objects.requireNonNull(semanticElementsProvider);
+            return this;
+        }
+
+        public Builder shouldRenderPredicate(Predicate<VariableManager> shouldRenderPredicate) {
+            this.shouldRenderPredicate = Objects.requireNonNull(shouldRenderPredicate);
+            return this;
+        }
+
+        public Builder initialWidthProvider(Function<VariableManager, Integer> initialWidthProvider) {
+            this.initialWidthProvider = Objects.requireNonNull(initialWidthProvider);
+            return this;
+        }
+
+        public Builder isResizablePredicate(Predicate<VariableManager> isResizablePredicate) {
+            this.isResizablePredicate = Objects.requireNonNull(isResizablePredicate);
             return this;
         }
 
@@ -125,10 +189,14 @@ public final class ColumnDescription {
             ColumnDescription columnDescription = new ColumnDescription();
             columnDescription.id = Objects.requireNonNull(this.id);
             columnDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
-            columnDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
+            columnDescription.headerLabelProvider = Objects.requireNonNull(this.headerLabelProvider);
+            columnDescription.headerIconURLsProvider = Objects.requireNonNull(this.headerIconURLsProvider);
+            columnDescription.headerIndexLabelProvider = Objects.requireNonNull(this.headerIndexLabelProvider);
             columnDescription.targetObjectKindProvider = Objects.requireNonNull(this.targetObjectKindProvider);
             columnDescription.semanticElementsProvider = Objects.requireNonNull(this.semanticElementsProvider);
-
+            columnDescription.shouldRenderPredicate = Objects.requireNonNull(this.shouldRenderPredicate);
+            columnDescription.initialWidthProvider = Objects.requireNonNull(this.initialWidthProvider);
+            columnDescription.isResizablePredicate = Objects.requireNonNull(this.isResizablePredicate);
             return columnDescription;
         }
     }

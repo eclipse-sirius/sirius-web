@@ -13,6 +13,7 @@
 import { MRT_ColumnDef } from 'material-react-table';
 import { useMemo } from 'react';
 import { Cell } from '../cells/Cell';
+import { ColumnHeader } from '../columns/ColumnHeader';
 import { GQLCell, GQLLine, GQLTable } from './TableContent.types';
 import { UseTableColumnsValue } from './useTableColumns.types';
 
@@ -26,8 +27,12 @@ export const useTableColumns = (
     const columnDefs: MRT_ColumnDef<GQLLine, string>[] = table.columns.map((column) => {
       return {
         id: column.id,
-        header: column.label,
-        size: 150,
+        header: column.headerLabel,
+        Header: ({}) => {
+          return <ColumnHeader column={column} />;
+        },
+        size: column.width > 0 ? column.width : undefined,
+        enableResizing: column.isResizable,
         Cell: ({ row }) => {
           const cell: GQLCell | null = row.original.cells.find((cell) => column.id === cell.columnId) ?? null;
           return (

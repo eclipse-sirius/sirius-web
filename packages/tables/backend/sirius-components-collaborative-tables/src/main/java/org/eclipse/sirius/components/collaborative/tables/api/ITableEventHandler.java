@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.collaborative.tables.api;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.tables.Table;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 
 import reactor.core.publisher.Sinks.Many;
@@ -30,6 +29,7 @@ public interface ITableEventHandler {
 
     boolean canHandle(ITableInput tableInput);
 
-    void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, Table table, TableDescription tableDescription, ITableInput tableInput);
+    void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, ITableContext tableContext, TableDescription tableDescription,
+            ITableInput tableInput);
 
 }

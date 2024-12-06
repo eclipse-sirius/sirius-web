@@ -58,6 +58,7 @@ public class CreateFormEventHandlerTests {
                 .idProvider(variableManager -> "id")
                 .labelProvider(variableManager -> "label")
                 .targetObjectIdProvider(variableManager -> "targetObjectId")
+                .iconURLsProvider(variableManager -> List.of())
                 .build();
 
         IRepresentationDescriptionSearchService representationDescriptionSearchService = new IRepresentationDescriptionSearchService.NoOp() {

@@ -162,6 +162,7 @@ INSERT INTO representation_metadata (
   target_object_id,
   description_id,
   label,
+  documentation,
   kind,
   created_on,
   last_modified_on
@@ -171,9 +172,19 @@ INSERT INTO representation_metadata (
   '3237b215-ae23-48d7-861e-f542a4b9a4b8',
   '69030a1b-0b5f-3c1d-8399-8ca260e4a672',
   'Portal',
+  'documentation',
   'siriusComponents://representation?type=Portal',
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
+);
+INSERT INTO representation_metadata_icon_url (
+  representation_metadata_id,
+  url,
+  index
+) VALUES (
+  'e81eec5c-42d6-491c-8bcc-9beb951356f8',
+  '/portal-images/portal.svg',
+  0
 );
 INSERT INTO representation_content (
   id,
@@ -216,6 +227,7 @@ INSERT INTO representation_metadata (
   target_object_id,
   description_id,
   label,
+  documentation,
   kind,
   created_on,
   last_modified_on
@@ -225,6 +237,7 @@ INSERT INTO representation_metadata (
   '3237b215-ae23-48d7-861e-f542a4b9a4b8',
   '69030a1b-0b5f-3c1d-8399-8ca260e4a672',
   'Portal',
+  '',
   'siriusComponents://representation?type=Portal',
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'

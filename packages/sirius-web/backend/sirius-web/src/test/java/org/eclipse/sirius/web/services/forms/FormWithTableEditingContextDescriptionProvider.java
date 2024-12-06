@@ -57,6 +57,7 @@ import org.eclipse.sirius.components.tables.descriptions.CheckboxCellDescription
 import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
 import org.eclipse.sirius.components.tables.descriptions.ICellDescription;
 import org.eclipse.sirius.components.tables.descriptions.LineDescription;
+import org.eclipse.sirius.components.tables.descriptions.PaginatedData;
 import org.eclipse.sirius.components.tables.descriptions.MultiSelectCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.SelectCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
@@ -90,7 +91,6 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
 
     @Override
     public List<IRepresentationDescription> getRepresentationDescriptions(IEditingContext editingContext) {
-
         TableWidgetDescription tableWidgetDescription = this.getTableWidgetDescription();
 
         GroupDescription taskGroup = GroupDescription.newGroupDescription("iterationGroupId")
@@ -115,39 +115,44 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
                 .targetObjectIdProvider(this::getTargetObjectId)
                 .canCreatePredicate(this::canCreate)
                 .pageDescriptions(List.of(pageDescription))
+                .iconURLsProvider(variableManager -> List.of())
                 .build();
         return List.of(formDescription);
     }
 
     private TableWidgetDescription getTableWidgetDescription() {
-        Function<VariableManager, List<Object>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Iteration.class)
+        Function<VariableManager, PaginatedData> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Iteration.class)
                 .map(eObject -> {
                     List<Object> objects = new ArrayList<>();
                     objects.addAll(eObject.getTasks());
-                    return objects;
+                    return new PaginatedData(objects, false, false, objects.size());
                 })
-                .orElse(List.of());
+                .orElse(new PaginatedData(List.of(), false, false, 0));
 
         Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
                 .map(this.objectService::getLabel)
                 .orElse(null);
 
         List<LineDescription> lineDescriptions = new ArrayList<>();
-        LineDescription lineDescription = LineDescription.newLineDescription(UUID.nameUUIDFromBytes("Table - Line".getBytes()))
+        LineDescription lineDescription = LineDescription.newLineDescription(UUID.nameUUIDFromBytes("Table - Line".getBytes()).toString())
                 .targetObjectIdProvider(this::getTargetObjectId)
                 .targetObjectKindProvider(this::getTargetObjectKind)
                 .semanticElementsProvider(semanticElementsProvider)
+                .headerLabelProvider(variableManager -> "")
+                .headerIconURLsProvider(variableManager -> List.of())
+                .headerIndexLabelProvider(variableManager -> "")
                 .build();
-        lineDescriptions.add(lineDescription);
 
         TableDescription tableDescription = TableDescription.newTableDescription(FORM_WITH_TABLE_ID)
                 .label("tasksTableLabel")
                 .targetObjectIdProvider(this::getTargetObjectId)
                 .targetObjectKindProvider(this::getTargetObjectKind)
                 .labelProvider(labelProvider)
-                .lineDescriptions(lineDescriptions)
+                .lineDescription(lineDescription)
                 .columnDescriptions(this.getColumnDescriptions())
                 .cellDescriptions(this.getCellDescriptions())
+                .iconURLsProvider(variableManager -> List.of())
+                .isStripeRowPredicate(variableManager -> false)
                 .build();
 
         return TableWidgetDescription.newTableWidgetDescription("tasksTableWidgetId")
@@ -217,11 +222,19 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
     private List<ColumnDescription> getColumnDescriptions() {
         Map<EStructuralFeature, String> featureToDisplayName = this.getColumnsStructuralFeaturesDisplayName(PapayaFactory.eINSTANCE.createTask(), PapayaPackage.eINSTANCE.getTask());
 
-        ColumnDescription columnDescription = ColumnDescription.newColumnDescription(UUID.nameUUIDFromBytes("features".getBytes()))
+        Function<VariableManager, String> headerLabelProvider = variableManager -> variableManager.get(VariableManager.SELF, EStructuralFeature.class)
+                .map(featureToDisplayName::get)
+                .orElse("");
+
+        ColumnDescription columnDescription = ColumnDescription.newColumnDescription(UUID.nameUUIDFromBytes("features".getBytes()).toString())
                 .semanticElementsProvider(variableManager -> featureToDisplayName.keySet().stream().map(Object.class::cast).toList())
-                .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, EStructuralFeature.class).map(featureToDisplayName::get).orElse(""))
                 .targetObjectIdProvider(new ColumnTargetObjectIdProvider())
                 .targetObjectKindProvider(variableManager -> "")
+                .headerLabelProvider(headerLabelProvider)
+                .headerIconURLsProvider(variableManager -> List.of())
+                .headerIndexLabelProvider(variableManager -> "")
+                .initialWidthProvider(variableManager -> -1)
+                .isResizablePredicate(variableManager -> false)
                 .build();
         return List.of(columnDescription);
     }
@@ -254,7 +267,9 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
                 Object objectValue = eObject.eGet(eStructuralFeature);
                 if (eStructuralFeature instanceof EReference eReference) {
                     if (eReference.isMany() && !eReference.isContainment() && objectValue instanceof EList<?>) {
-                        value = ((EList<?>) objectValue).stream().map(this.objectService::getId).collect(Collectors.toList());
+                        value = ((EList<?>) objectValue).stream()
+                                .map(this.objectService::getId)
+                                .toList();
                     }
                 }
             }

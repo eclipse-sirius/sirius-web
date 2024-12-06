@@ -13,6 +13,9 @@
 package org.eclipse.sirius.web.domain.boundedcontexts.representationdata;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -27,6 +30,7 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
@@ -57,6 +61,11 @@ public class RepresentationMetadata extends AbstractValidatingAggregateRoot<Repr
     private Instant createdOn;
 
     private Instant lastModifiedOn;
+
+    @MappedCollection(idColumn = "representation_metadata_id", keyColumn = "index")
+    private List<RepresentationIconURL> iconURLs = new ArrayList<>();
+
+    private String documentation;
 
     @Override
     public UUID getId() {
@@ -102,6 +111,25 @@ public class RepresentationMetadata extends AbstractValidatingAggregateRoot<Repr
         return this.lastModifiedOn;
     }
 
+    public List<RepresentationIconURL> getIconURLs() {
+        return Collections.unmodifiableList(this.iconURLs);
+    }
+
+    public String getDocumentation() {
+        return this.documentation;
+    }
+
+    public void updateDocumentation(ICause cause, String newDocumentation) {
+        if (this.documentation.isEmpty() || !this.documentation.equals(newDocumentation)) {
+            this.documentation = newDocumentation;
+
+            var now = Instant.now();
+            this.lastModifiedOn = now;
+
+            this.registerEvent(new RepresentationMetadataUpdatedEvent(UUID.randomUUID(), now, cause, this));
+        }
+    }
+
     public void dispose(ICause cause) {
         this.registerEvent(new RepresentationMetadataDeletedEvent(UUID.randomUUID(), Instant.now(), cause, this));
     }
@@ -135,6 +163,10 @@ public class RepresentationMetadata extends AbstractValidatingAggregateRoot<Repr
 
         private String kind;
 
+        private List<RepresentationIconURL> iconURLs;
+
+        private String documentation;
+
         public Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -164,6 +196,16 @@ public class RepresentationMetadata extends AbstractValidatingAggregateRoot<Repr
             return this;
         }
 
+        public Builder iconURLs(List<RepresentationIconURL> iconURLs) {
+            this.iconURLs = Objects.requireNonNull(iconURLs);
+            return this;
+        }
+
+        public Builder documentation(String documentation) {
+            this.documentation = Objects.requireNonNull(documentation);
+            return this;
+        }
+
         public RepresentationMetadata build(ICause cause) {
             var representationMetadata = new RepresentationMetadata();
             representationMetadata.isNew = true;
@@ -173,6 +215,8 @@ public class RepresentationMetadata extends AbstractValidatingAggregateRoot<Repr
             representationMetadata.descriptionId = Objects.requireNonNull(this.descriptionId);
             representationMetadata.label = Objects.requireNonNull(this.label);
             representationMetadata.kind = Objects.requireNonNull(this.kind);
+            representationMetadata.iconURLs = Objects.requireNonNull(this.iconURLs);
+            representationMetadata.documentation = Objects.requireNonNull(this.documentation);
 
             var now = Instant.now();
             representationMetadata.createdOn = now;

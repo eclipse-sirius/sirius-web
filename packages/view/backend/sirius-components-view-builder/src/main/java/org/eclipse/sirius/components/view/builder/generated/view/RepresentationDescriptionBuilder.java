@@ -63,5 +63,15 @@ public abstract class RepresentationDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for IconExpression.
+     *
+     * @generated
+     */
+    public RepresentationDescriptionBuilder iconExpression(java.lang.String value) {
+        this.getRepresentationDescription().setIconExpression(value);
+        return this;
+    }
+
 }
 

@@ -25,8 +25,7 @@ import org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEnt
 import org.eclipse.sirius.components.view.tree.TreePackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Single Click Tree Item Context Menu
- * Entry</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Single Click Tree Item Context Menu Entry</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
@@ -40,8 +39,7 @@ import org.eclipse.sirius.components.view.tree.TreePackage;
 public class SingleClickTreeItemContextMenuEntryImpl extends TreeItemContextMenuEntryImpl implements SingleClickTreeItemContextMenuEntry {
 
     /**
-     * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered

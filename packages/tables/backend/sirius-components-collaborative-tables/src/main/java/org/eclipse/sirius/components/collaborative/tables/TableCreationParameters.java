@@ -34,6 +34,8 @@ public final class TableCreationParameters {
 
     private Object targetObject;
 
+    private CursorBasedPaginationData cursorBasedPaginationData;
+
     private TableCreationParameters() {
         // Prevent instantiation
     }
@@ -52,6 +54,10 @@ public final class TableCreationParameters {
 
     public Object getTargetObject() {
         return this.targetObject;
+    }
+
+    public CursorBasedPaginationData getCursorBasedPaginationData() {
+        return this.cursorBasedPaginationData;
     }
 
     public static Builder newTableCreationParameters(String id) {
@@ -74,6 +80,8 @@ public final class TableCreationParameters {
 
         private Object targetObject;
 
+        private CursorBasedPaginationData cursorBasedPaginationData;
+
         private Builder(String id) {
             this.id = id;
         }
@@ -93,11 +101,17 @@ public final class TableCreationParameters {
             return this;
         }
 
+        public Builder cursorBasedPaginationData(CursorBasedPaginationData cursorBasedPaginationData) {
+            this.cursorBasedPaginationData = Objects.requireNonNull(cursorBasedPaginationData);
+            return this;
+        }
+
         public TableCreationParameters build() {
             TableCreationParameters tableCreationParameters = new TableCreationParameters();
             tableCreationParameters.id = Objects.requireNonNull(this.id);
             tableCreationParameters.tableDescription = Objects.requireNonNull(this.tableDescription);
             tableCreationParameters.editingContext = Objects.requireNonNull(this.editingContext);
+            tableCreationParameters.cursorBasedPaginationData = Objects.requireNonNull(this.cursorBasedPaginationData);
             tableCreationParameters.targetObject = Objects.requireNonNull(this.targetObject);
             return tableCreationParameters;
         }

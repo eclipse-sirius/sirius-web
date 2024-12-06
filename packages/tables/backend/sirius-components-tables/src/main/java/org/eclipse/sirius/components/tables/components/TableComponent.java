@@ -22,7 +22,9 @@ import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.tables.PaginationData;
 import org.eclipse.sirius.components.tables.Table;
+import org.eclipse.sirius.components.tables.descriptions.PaginatedData;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 import org.eclipse.sirius.components.tables.elements.TableElementProps;
 import org.eclipse.sirius.components.tables.renderer.TableRenderingCache;
@@ -42,42 +44,44 @@ public class TableComponent implements IComponent {
 
     @Override
     public Element render() {
-        VariableManager variableManager = this.props.getVariableManager();
-        TableDescription tableDescription = this.props.getTableDescription();
-        Optional<Table> optionalPreviousTable = this.props.getPreviousTable();
+        VariableManager variableManager = this.props.variableManager();
+        TableDescription tableDescription = this.props.tableDescription();
+        Optional<Table> optionalPreviousTable = this.props.previousTable();
 
         String id = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class).orElseGet(() -> UUID.randomUUID().toString());
         String targetObjectId = tableDescription.getTargetObjectIdProvider().apply(variableManager);
         String targetObjectKind = tableDescription.getTargetObjectKindProvider().apply(variableManager);
+        boolean stripeRow = tableDescription.getIsStripeRowPredicate().test(variableManager);
 
         TableRenderingCache cache = new TableRenderingCache();
         ITableElementRequestor tableElementRequestor = new TableElementRequestor();
 
         var childrenColumns = tableDescription.getColumnDescriptions().stream()
                 .map(columnDescription -> {
-                    var previousColumn = optionalPreviousTable.flatMap(previousTable -> tableElementRequestor.getColumn(previousTable, columnDescription));
-                    var columnComponentProps = new ColumnComponentProps(variableManager, columnDescription, previousColumn, cache);
+                    var previousColumns = optionalPreviousTable.map(previousTable -> tableElementRequestor.getColumns(previousTable, columnDescription)).orElse(List.of());
+                    var columnComponentProps = new ColumnComponentProps(variableManager, columnDescription, previousColumns, cache, this.props.tableEvents());
                     return new Element(ColumnComponent.class, columnComponentProps);
-                }).toList();
-
-        var childrenLines = tableDescription.getLineDescriptions().stream()
-                .map(lineDescription -> {
-                    var previousLines = optionalPreviousTable.map(previousTable -> tableElementRequestor.getRootLines(previousTable, lineDescription)).orElse(List.of());
-                    ILinesRequestor linesRequestor = new LinesRequestor(previousLines);
-                    var lineComponentProps = new LineComponentProps(variableManager, lineDescription, tableDescription.getCellDescriptions(), linesRequestor, cache, id);
-                    return new Element(LineComponent.class, lineComponentProps);
-                }).toList();
+                })
+                .toList();
 
 
-        List<Element> children = new ArrayList<>();
-        children.addAll(childrenColumns);
-        children.addAll(childrenLines);
+        PaginatedData paginatedData = tableDescription.getLineDescription().getSemanticElementsProvider().apply(variableManager);
+
+        var previousLines = optionalPreviousTable.map(previousTable -> tableElementRequestor.getRootLines(previousTable, tableDescription.getLineDescription())).orElse(List.of());
+        ILinesRequestor linesRequestor = new LinesRequestor(previousLines);
+        var lineComponentProps = new LineComponentProps(variableManager, tableDescription.getLineDescription(), tableDescription.getCellDescriptions(), linesRequestor, cache, id, paginatedData.rows());
+        var childrenLine = new Element(LineComponent.class, lineComponentProps);
+
+        List<Element> children = new ArrayList<>(childrenColumns);
+        children.add(childrenLine);
 
         TableElementProps tableElementProps = TableElementProps.newTableElementProps(id)
                 .targetObjectId(targetObjectId)
                 .targetObjectKind(targetObjectKind)
                 .descriptionId(tableDescription.getId())
+                .stripeRow(stripeRow)
                 .children(children)
+                .paginationData(new PaginationData(paginatedData.hasPreviousPage(), paginatedData.hasNextPage(), paginatedData.totalRowCount()))
                 .build();
 
         return new Element(TableElementProps.TYPE, tableElementProps);

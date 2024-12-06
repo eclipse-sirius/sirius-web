@@ -13,6 +13,13 @@
 
 === Deprecation warning
 
+- [form] The project `sirius-components-collecborative-forms` has always decided that any change performed by a widget must be a `ChangeKind.SEMANTIC_CHANGE`.
+This decision has created some limit on what can really be edited by a form.
+We will soon change this default behavior to use the change kind and parameters returned by the specifier in the `Success` result from the event handler.
+As a result, if we consider a textfield widget, in order to keep the existing behavior, specifier will have to create a result with the proper change kind like `new Success(ChangeKind.SEMANTIC_CHANGE, Map.of())` instead of `new Success()`.
+If the status returned by the event handler is still something like `new Success()` then, Sirius Components will ignore the change performed by the event handler.
+While it can be useful to indicate that nothing has changed in some cases, if it's not done on purpose some representations will not be updated, semantic data may not be saved, etc.
+This change will also be propagated over time to other kind of representations.
 
 
 === Breaking changes
@@ -32,6 +39,9 @@ The following records parameters have been modified:
 ** to RestProject(UUID id, String type, OffsetDateTime created, Identified defaultBranch, String description, String name)
 - https://github.com/eclipse-sirius/sirius-web/issues/4190[#4190] [core] The graphQL type `RepresentationMetadata` has now a property to hold icons for the representation.
 This can be retrieve using either `EditingContext#representations` or `EditingContext#representation`
+- https://github.com/eclipse-sirius/sirius-web/issues/4192[#4192] [core] `IRepresentationDescription` has a new provide `getIconURLsProvider`.
+This provider is in charge of getting the icon list of the representation.
+- https://github.com/eclipse-sirius/sirius-web/issues/4192[#4192] [tree] The expression `TreeDescription#iconURLExpression` has now been replaced by `TreeDescription#itemIconExpression`, in a similar fashion the provider `TreeDescription#iconURLProvider` has been replaced by `TreeDescription#treeItemIconURLsProvider` not to be confused with the newly introduced `TreeDescription#iconURLsProvider`.
 
 === Dependency update
 
@@ -46,6 +56,7 @@ This can be retrieve using either `EditingContext#representations` or `EditingCo
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4190[#4190] [core] Display the icon of the representation in the workbench tab
 - https://github.com/eclipse-sirius/sirius-web/issues/4110[#4110] [form] Add layout capabilities for form widgets
+- https://github.com/eclipse-sirius/sirius-web/issues/4192[#4192] [core] Compute the icon of a representation
 - https://github.com/eclipse-sirius/sirius-web/issues/4177[#4177] [table] Add table representation support
 - https://github.com/eclipse-sirius/sirius-web/issues/3990[#3990] [diagram] The palette can now be dragged
 - https://github.com/eclipse-sirius/sirius-web/issues/3981[#3981] [diagram] The palette sections are showed as list
@@ -62,6 +73,17 @@ A new `IProjectDataVersioningRestServiceDelegate` interface is available, allowi
 Specifiers can implement this new interface with a spring `Service`.
 A new `IRestDataVersionPayloadSerializerService` interface is available, allowing to customize the default implementation of the JSON serialization of the payload object of `RestDataVersion`.
 Specifiers are also encouraged to implement their own `IRestDataVersionPayloadSerializerService` for their domains, as the default one may not return expected results.
+- https://github.com/eclipse-sirius/sirius-web/issues/4250[#4250] [table] Add icons to table column headers
+- https://github.com/eclipse-sirius/sirius-web/issues/4242[#4242] [table] Add support for the customization of the header of each row
+- https://github.com/eclipse-sirius/sirius-web/issues/4235[#4235] [table] Add support for the customization of the header of each column
+- https://github.com/eclipse-sirius/sirius-web/issues/4244[#4244] [table] Add support to stripe rows in table
+- https://github.com/eclipse-sirius/sirius-web/issues/4252[#4252] [table] Add IconLabel cell to tables
+- https://github.com/eclipse-sirius/sirius-web/issues/4178[#4178] [table] Add `settingButtonMenuEntryExtensionPoint` to contribute menu item to table's setting button
+- https://github.com/eclipse-sirius/sirius-web/issues/4231[#4231] [table] Make table's column resizable
+- https://github.com/eclipse-sirius/sirius-web/issues/4238[#4238] [table] Make table's column hideable
+- https://github.com/eclipse-sirius/sirius-web/issues/4221[#4221] [table] Add server-side pagination in table representation
+- https://github.com/eclipse-sirius/sirius-web/issues/4200[#4200] [table] Add table representation in the view DSL
+- https://github.com/eclipse-sirius/sirius-web/issues/4203[#4203] [core] Add support for representations in the Details View
 
 === Improvements
 

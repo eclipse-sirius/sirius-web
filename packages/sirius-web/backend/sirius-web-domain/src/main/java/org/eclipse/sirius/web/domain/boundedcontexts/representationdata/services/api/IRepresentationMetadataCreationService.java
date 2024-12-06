@@ -12,9 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api;
 
-import java.util.UUID;
-
-import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.services.IResult;
 
@@ -24,5 +21,5 @@ import org.eclipse.sirius.web.domain.services.IResult;
  * @author sbegaudeau
  */
 public interface IRepresentationMetadataCreationService {
-    IResult<RepresentationMetadata> create(ICause cause, UUID representationId, UUID projectId, String label, String kind, String descriptionId, String targetObjectId);
+    IResult<RepresentationMetadata> create(RepresentationMetadata representationMetadata);
 }

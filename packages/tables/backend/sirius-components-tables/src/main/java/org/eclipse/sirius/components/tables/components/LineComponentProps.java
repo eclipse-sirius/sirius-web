@@ -26,50 +26,16 @@ import org.eclipse.sirius.components.tables.renderer.TableRenderingCache;
  *
  * @author arichard
  */
-public class LineComponentProps implements IProps {
+public record LineComponentProps(VariableManager variableManager, LineDescription lineDescription, List<ICellDescription> cellDescriptions, ILinesRequestor linesRequestor, TableRenderingCache cache,
+                                 String parentElementId, List<Object> semanticRowElements) implements IProps {
 
-    private final VariableManager variableManager;
-
-    private final LineDescription lineDescription;
-
-    private final List<ICellDescription> cellDescriptions;
-
-    private final ILinesRequestor linesRequestor;
-
-    private final TableRenderingCache cache;
-
-    private final String parentElementId;
-
-    public LineComponentProps(VariableManager variableManager, LineDescription lineDescription, List<ICellDescription> cellDescriptions, ILinesRequestor linesRequestor, TableRenderingCache cache, String parentElementId) {
+    public LineComponentProps(VariableManager variableManager, LineDescription lineDescription, List<ICellDescription> cellDescriptions, ILinesRequestor linesRequestor, TableRenderingCache cache, String parentElementId, List<Object> semanticRowElements) {
         this.variableManager = Objects.requireNonNull(variableManager);
         this.lineDescription = Objects.requireNonNull(lineDescription);
         this.cellDescriptions = Objects.requireNonNull(cellDescriptions);
         this.linesRequestor = Objects.requireNonNull(linesRequestor);
         this.cache = Objects.requireNonNull(cache);
         this.parentElementId = Objects.requireNonNull(parentElementId);
-    }
-
-    public VariableManager getVariableManager() {
-        return this.variableManager;
-    }
-
-    public LineDescription getLineDescription() {
-        return this.lineDescription;
-    }
-
-    public List<ICellDescription> getCellDescriptions() {
-        return this.cellDescriptions;
-    }
-
-    public ILinesRequestor getLinesRequestor() {
-        return this.linesRequestor;
-    }
-
-    public TableRenderingCache getCache() {
-        return this.cache;
-    }
-
-    public String getParentElementId() {
-        return this.parentElementId;
+        this.semanticRowElements = Objects.requireNonNull(semanticRowElements);
     }
 }

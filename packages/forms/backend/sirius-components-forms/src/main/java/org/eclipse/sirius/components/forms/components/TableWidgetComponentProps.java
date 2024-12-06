@@ -41,4 +41,5 @@ public class TableWidgetComponentProps implements IProps {
     public TableWidgetDescription getTableDescription() {
         return this.tableWidgetDescription;
     }
+
 }

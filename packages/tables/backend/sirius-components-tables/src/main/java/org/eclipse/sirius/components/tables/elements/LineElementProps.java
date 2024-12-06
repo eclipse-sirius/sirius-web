@@ -24,7 +24,15 @@ import org.eclipse.sirius.components.representations.IProps;
  *
  * @author lfasani
  */
-public record LineElementProps(UUID id, UUID descriptionId, String targetObjectId, String targetObjectKind, List<Element> children) implements IProps {
+public record LineElementProps(
+        UUID id,
+        String descriptionId,
+        String targetObjectId,
+        String targetObjectKind,
+        List<Element> children,
+        String headerLabel,
+        List<String> headerIconURLs,
+        String headerIndexLabel) implements IProps {
 
     public static final String TYPE = "Line";
 
@@ -34,6 +42,9 @@ public record LineElementProps(UUID id, UUID descriptionId, String targetObjectI
         Objects.requireNonNull(targetObjectId);
         Objects.requireNonNull(targetObjectKind);
         Objects.requireNonNull(children);
+        Objects.requireNonNull(headerLabel);
+        Objects.requireNonNull(headerIconURLs);
+        Objects.requireNonNull(headerIndexLabel);
     }
 
     @Override
@@ -59,9 +70,15 @@ public record LineElementProps(UUID id, UUID descriptionId, String targetObjectI
 
         private String targetObjectKind;
 
-        private UUID descriptionId;
+        private String descriptionId;
 
         private List<Element> children;
+
+        private String headerLabel;
+
+        private List<String> headerIconURLs;
+
+        private String headerIndexLabel;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -77,7 +94,7 @@ public record LineElementProps(UUID id, UUID descriptionId, String targetObjectI
             return this;
         }
 
-        public Builder descriptionId(UUID descriptionId) {
+        public Builder descriptionId(String descriptionId) {
             this.descriptionId = Objects.requireNonNull(descriptionId);
             return this;
         }
@@ -87,8 +104,23 @@ public record LineElementProps(UUID id, UUID descriptionId, String targetObjectI
             return this;
         }
 
+        public Builder headerLabel(String headerLabel) {
+            this.headerLabel = Objects.requireNonNull(headerLabel);
+            return this;
+        }
+
+        public Builder headerIconURLs(List<String> headerIconURLs) {
+            this.headerIconURLs = Objects.requireNonNull(headerIconURLs);
+            return this;
+        }
+
+        public Builder headerIndexLabel(String headerIndexLabel) {
+            this.headerIndexLabel = Objects.requireNonNull(headerIndexLabel);
+            return this;
+        }
+
         public LineElementProps build() {
-            return new LineElementProps(this.id, this.descriptionId, this.targetObjectId, this.targetObjectKind, this.children);
+            return new LineElementProps(this.id, this.descriptionId, this.targetObjectId, this.targetObjectKind, this.children, this.headerLabel, this.headerIconURLs, this.headerIndexLabel);
         }
     }
 }

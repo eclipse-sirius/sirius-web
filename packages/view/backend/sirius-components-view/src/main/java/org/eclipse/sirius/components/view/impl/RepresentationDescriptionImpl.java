@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,8 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * <li>{@link org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl#getPreconditionExpression
  * <em>Precondition Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl#getTitleExpression <em>Title
+ * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl#getIconExpression <em>Icon
  * Expression</em>}</li>
  * </ul>
  *
@@ -117,6 +119,26 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
      * @ordered
      */
     protected String titleExpression = TITLE_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getIconExpression() <em>Icon Expression</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @see #getIconExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String ICON_EXPRESSION_EDEFAULT = "";
+
+    /**
+     * The cached value of the '{@link #getIconExpression() <em>Icon Expression</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @see #getIconExpression()
+     * @generated
+     * @ordered
+     */
+    protected String iconExpression = ICON_EXPRESSION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -235,6 +257,29 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
      * @generated
      */
     @Override
+    public String getIconExpression() {
+        return this.iconExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setIconExpression(String newIconExpression) {
+        String oldIconExpression = this.iconExpression;
+        this.iconExpression = newIconExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.REPRESENTATION_DESCRIPTION__ICON_EXPRESSION, oldIconExpression, this.iconExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case ViewPackage.REPRESENTATION_DESCRIPTION__NAME:
@@ -245,6 +290,8 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
                 return this.getPreconditionExpression();
             case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:
                 return this.getTitleExpression();
+            case ViewPackage.REPRESENTATION_DESCRIPTION__ICON_EXPRESSION:
+                return this.getIconExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -268,6 +315,9 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
                 return;
             case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:
                 this.setTitleExpression((String) newValue);
+                return;
+            case ViewPackage.REPRESENTATION_DESCRIPTION__ICON_EXPRESSION:
+                this.setIconExpression((String) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -293,6 +343,9 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
             case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:
                 this.setTitleExpression(TITLE_EXPRESSION_EDEFAULT);
                 return;
+            case ViewPackage.REPRESENTATION_DESCRIPTION__ICON_EXPRESSION:
+                this.setIconExpression(ICON_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -313,6 +366,8 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
                 return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
             case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:
                 return TITLE_EXPRESSION_EDEFAULT == null ? this.titleExpression != null : !TITLE_EXPRESSION_EDEFAULT.equals(this.titleExpression);
+            case ViewPackage.REPRESENTATION_DESCRIPTION__ICON_EXPRESSION:
+                return ICON_EXPRESSION_EDEFAULT == null ? this.iconExpression != null : !ICON_EXPRESSION_EDEFAULT.equals(this.iconExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -327,17 +382,18 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
         if (this.eIsProxy())
             return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (name: ");
-        result.append(this.name);
-        result.append(", domainType: ");
-        result.append(this.domainType);
-        result.append(", preconditionExpression: ");
-        result.append(this.preconditionExpression);
-        result.append(", titleExpression: ");
-        result.append(this.titleExpression);
-        result.append(')');
-        return result.toString();
+        String result = super.toString() + " (name: " +
+                this.name +
+                ", domainType: " +
+                this.domainType +
+                ", preconditionExpression: " +
+                this.preconditionExpression +
+                ", titleExpression: " +
+                this.titleExpression +
+                ", iconExpression: " +
+                this.iconExpression +
+                ')';
+        return result;
     }
 
 } // RepresentationDescriptionImpl

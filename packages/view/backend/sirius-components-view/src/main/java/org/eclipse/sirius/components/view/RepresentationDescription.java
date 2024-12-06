@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,8 @@ import org.eclipse.emf.ecore.EObject;
  * <li>{@link org.eclipse.sirius.components.view.RepresentationDescription#getPreconditionExpression <em>Precondition
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.RepresentationDescription#getTitleExpression <em>Title
+ * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.RepresentationDescription#getIconExpression <em>Icon
  * Expression</em>}</li>
  * </ul>
  *
@@ -127,5 +129,28 @@ public interface RepresentationDescription extends EObject {
      * @generated
      */
     void setTitleExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Icon Expression</b></em>' attribute. The default value is <code>""</code>. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Icon Expression</em>' attribute.
+     * @see #setIconExpression(String)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getRepresentationDescription_IconExpression()
+     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     */
+    String getIconExpression();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.RepresentationDescription#getIconExpression
+     * <em>Icon Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Icon Expression</em>' attribute.
+     * @see #getIconExpression()
+     * @generated
+     */
+    void setIconExpression(String value);
 
 } // RepresentationDescription

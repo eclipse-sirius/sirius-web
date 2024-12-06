@@ -33,9 +33,15 @@ public final class Line {
 
     private String targetObjectKind;
 
-    private UUID descriptionId;
+    private String descriptionId;
 
     private List<ICell> cells;
+
+    private String headerLabel;
+
+    private List<String> headerIconURLs;
+
+    private String headerIndexLabel;
 
     private Line() {
         // Prevent instantiation
@@ -53,12 +59,24 @@ public final class Line {
         return this.targetObjectKind;
     }
 
-    public UUID getDescriptionId() {
+    public String getDescriptionId() {
         return this.descriptionId;
     }
 
     public List<ICell> getCells() {
         return this.cells;
+    }
+
+    public String getHeaderLabel() {
+        return this.headerLabel;
+    }
+
+    public List<String> getHeaderIconURLs() {
+        return this.headerIconURLs;
+    }
+
+    public String getHeaderIndexLabel() {
+        return this.headerIndexLabel;
     }
 
     public static Builder newLine(UUID id) {
@@ -85,19 +103,18 @@ public final class Line {
 
         private String targetObjectKind;
 
-        private UUID descriptionId;
+        private String descriptionId;
 
         private List<ICell> cells;
 
+        private String headerLabel;
+
+        private List<String> headerIconURLs;
+
+        private String headerIndexLabel;
+
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
-        }
-
-        private Builder(Line line) {
-            this.id = line.getId();
-            this.targetObjectId = line.getTargetObjectId();
-            this.descriptionId = line.getDescriptionId();
-            this.cells = line.getCells();
         }
 
         public Builder targetObjectId(String targetObjectId) {
@@ -110,13 +127,28 @@ public final class Line {
             return this;
         }
 
-        public Builder descriptionId(UUID descriptionId) {
+        public Builder descriptionId(String descriptionId) {
             this.descriptionId = Objects.requireNonNull(descriptionId);
             return this;
         }
 
         public Builder cells(List<ICell> cells) {
             this.cells = Objects.requireNonNull(cells);
+            return this;
+        }
+
+        public Builder headerLabel(String headerLabel) {
+            this.headerLabel = Objects.requireNonNull(headerLabel);
+            return this;
+        }
+
+        public Builder headerIconURLs(List<String> headerIconURLs) {
+            this.headerIconURLs = Objects.requireNonNull(headerIconURLs);
+            return this;
+        }
+
+        public Builder headerIndexLabel(String headerIndexLabel) {
+            this.headerIndexLabel = Objects.requireNonNull(headerIndexLabel);
             return this;
         }
 
@@ -127,6 +159,9 @@ public final class Line {
             line.targetObjectKind = Objects.requireNonNull(this.targetObjectKind);
             line.descriptionId = Objects.requireNonNull(this.descriptionId);
             line.cells = Objects.requireNonNull(this.cells);
+            line.headerLabel = Objects.requireNonNull(this.headerLabel);
+            line.headerIconURLs = Objects.requireNonNull(this.headerIconURLs);
+            line.headerIndexLabel = Objects.requireNonNull(this.headerIndexLabel);
             return line;
         }
     }

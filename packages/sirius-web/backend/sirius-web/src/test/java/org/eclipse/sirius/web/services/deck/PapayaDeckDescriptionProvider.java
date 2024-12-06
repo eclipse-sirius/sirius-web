@@ -153,6 +153,7 @@ public class PapayaDeckDescriptionProvider implements IEditingContextProcessor {
                 .titleExpression("aql:'Deck'")
                 .domainType("papaya:Project")
                 .laneDescriptions(toDoLaneDescription, doneLaneDescription)
+                .iconExpression("aql:'/deck-images/deck.svg'")
                 .build();
 
         return this.deckDescription;

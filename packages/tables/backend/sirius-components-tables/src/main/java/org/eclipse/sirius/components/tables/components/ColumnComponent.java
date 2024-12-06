@@ -15,14 +15,18 @@ package org.eclipse.sirius.components.tables.components;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.IntStream;
 
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Fragment;
 import org.eclipse.sirius.components.representations.FragmentProps;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.tables.Column;
 import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
 import org.eclipse.sirius.components.tables.elements.ColumnElementProps;
+import org.eclipse.sirius.components.tables.events.ChangeTableColumnVisibilityEvent;
+import org.eclipse.sirius.components.tables.events.ResizeTableColumnEvent;
 
 /**
  * The component used to render lines.
@@ -39,40 +43,83 @@ public class ColumnComponent implements IComponent {
 
     @Override
     public Element render() {
-        VariableManager variableManager = this.props.getVariableManager();
-        ColumnDescription columnDescription = this.props.getColumnDescription();
+        VariableManager variableManager = this.props.variableManager();
+        ColumnDescription columnDescription = this.props.columnDescription();
 
-        List<Element> children = columnDescription.getSemanticElementsProvider().apply(variableManager).stream()
-                .map(object -> this.doRender(variableManager, object))
+        List<Object> elements = columnDescription.getSemanticElementsProvider().apply(variableManager).stream()
+                .filter(object -> {
+                    var instanceVariableManager = variableManager.createChild();
+                    instanceVariableManager.put(VariableManager.SELF, object);
+                    return columnDescription.getShouldRenderPredicate().test(instanceVariableManager);
+                }).toList();
+
+        List<Element> children = IntStream.range(0, elements.size())
+                .mapToObj(index -> this.doRender(variableManager, elements.get(index), index))
                 .toList();
+
         FragmentProps fragmentProps = new FragmentProps(children);
         return new Fragment(fragmentProps);
     }
 
-    private Element doRender(VariableManager variableManager, Object object) {
-        ColumnDescription columnDescription = this.props.getColumnDescription();
+    private Element doRender(VariableManager variableManager, Object object, int index) {
+        ColumnDescription columnDescription = this.props.columnDescription();
 
         VariableManager columnVariableManager = variableManager.createChild();
         columnVariableManager.put(VariableManager.SELF, object);
+        columnVariableManager.put("columnIndex", index);
         String targetObjectId = columnDescription.getTargetObjectIdProvider().apply(columnVariableManager);
         String targetObjectKind = columnDescription.getTargetObjectKindProvider().apply(columnVariableManager);
-        String label = columnDescription.getLabelProvider().apply(columnVariableManager);
-        UUID columnId = this.computeColumnId(targetObjectId);
-        this.props.getCache().putColumnObject(columnId, object);
 
-        ColumnElementProps columnElementProps = ColumnElementProps.newColumnElementProps(columnId)
+        String headerLabel = columnDescription.getHeaderLabelProvider().apply(columnVariableManager);
+
+        List<String> headerIconURLs = columnDescription.getHeaderIconURLsProvider().apply(columnVariableManager);
+        String headerIndexLabel = columnDescription.getHeaderIndexLabelProvider().apply(columnVariableManager);
+        Integer initialWidth = columnDescription.getInitialWidthProvider().apply(columnVariableManager);
+        boolean resizable = columnDescription.getIsResizablePredicate().test(columnVariableManager);
+        UUID columnId = this.computeColumnId(targetObjectId);
+        this.props.cache().putColumnObject(columnId, object);
+
+        var width = this.props.tableEvents().stream()
+                .filter(ResizeTableColumnEvent.class::isInstance)
+                .map(ResizeTableColumnEvent.class::cast)
+                .filter(resizeTableColumnEvent -> resizeTableColumnEvent.columnId().equals(columnId.toString()))
+                .findFirst()
+                .map(ResizeTableColumnEvent::width)
+                .orElseGet(() -> this.props.previousColumns().stream()
+                        .filter(column -> column.getId().equals(columnId))
+                        .map(Column::getWidth)
+                        .findFirst().orElse(initialWidth));
+
+        boolean hidden = this.props.tableEvents().stream()
+                .filter(ChangeTableColumnVisibilityEvent.class::isInstance)
+                .map(ChangeTableColumnVisibilityEvent.class::cast)
+                .filter(changeTableColumnsVisibilityEvent -> changeTableColumnsVisibilityEvent.columnId().equals(columnId.toString()))
+                .findFirst()
+                .map(changeTableColumnsVisibilityEvent -> !changeTableColumnsVisibilityEvent.visible())
+                .orElseGet(() -> this.props.previousColumns().stream()
+                        .filter(column -> column.getId().equals(columnId))
+                        .map(Column::isHidden)
+                        .findFirst()
+                        .orElse(false));
+
+        ColumnElementProps.Builder columnElementProps = ColumnElementProps.newColumnElementProps(columnId)
                 .descriptionId(columnDescription.getId())
-                .label(label)
+                .headerLabel(headerLabel)
+                .headerIconURLs(headerIconURLs)
+                .headerIndexLabel(headerIndexLabel)
                 .targetObjectId(targetObjectId)
                 .targetObjectKind(targetObjectKind)
-                .build();
-        return new Element(ColumnElementProps.TYPE, columnElementProps);
+                .resizable(resizable)
+                .width(width)
+                .hidden(hidden);
+
+        return new Element(ColumnElementProps.TYPE, columnElementProps.build());
     }
 
     private UUID computeColumnId(String targetObjectId) {
-        ColumnDescription columnDescription = this.props.getColumnDescription();
+        ColumnDescription columnDescription = this.props.columnDescription();
 
-        String rawIdentifier = columnDescription.getId().toString() + targetObjectId;
+        String rawIdentifier = columnDescription.getId() + targetObjectId;
         return UUID.nameUUIDFromBytes(rawIdentifier.getBytes());
     }
 }

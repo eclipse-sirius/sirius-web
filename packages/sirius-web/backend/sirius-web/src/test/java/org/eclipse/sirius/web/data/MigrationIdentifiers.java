@@ -63,6 +63,10 @@ public final class MigrationIdentifiers {
 
     public static final String MIGRATION_WIDGET_DESCRIPTION_STYLE_LAYOUT_PROPERTIES_MIGRATION_PARTICIPANT_STUDIO_FORM = "Form View for WidgetDescriptionStyleLayoutPropertiesMigrationParticipant";
 
+    public static final String MIGRATION_TREE_DESCRIPTION_ICON_URL_STUDIO = "718868e6-de6d-4b00-b84f-56802aa6d5d0";
+
+    public static final String MIGRATION_TREE_DESCRIPTION_ICON_URL_STUDIO_DOCUMENT_NAME = "TreeDescription#iconUrlDescription migration";
+
     private MigrationIdentifiers() {
         // Prevent instantiation
     }

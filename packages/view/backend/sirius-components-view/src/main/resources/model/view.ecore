@@ -34,6 +34,8 @@
         eType="#//InterpretedExpression" defaultValueLiteral=""/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="titleExpression" eType="#//InterpretedExpression"
         defaultValueLiteral="aql:'New Representation'"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="iconExpression" eType="#//InterpretedExpression"
+        defaultValueLiteral=""/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="LabelStyle" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="fontSize" lowerBound="1"

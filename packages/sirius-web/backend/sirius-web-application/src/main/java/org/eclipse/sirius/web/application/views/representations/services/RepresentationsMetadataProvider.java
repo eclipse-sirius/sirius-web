@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.views.representations.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.RepresentationMetadata;
@@ -32,6 +33,7 @@ public class RepresentationsMetadataProvider implements IRepresentationMetadataP
                     .kind(Form.KIND)
                     .label(RepresentationsFormDescriptionProvider.TITLE)
                     .descriptionId(RepresentationsFormDescriptionProvider.FORM_DESCRIPTION_ID)
+                    .iconURLs(List.of("representations/representations.svg"))
                     .build();
 
             return Optional.of(representationMetadata);

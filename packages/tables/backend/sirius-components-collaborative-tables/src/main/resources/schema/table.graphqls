@@ -20,15 +20,22 @@ type Table implements Representation {
   metadata: RepresentationMetadata!
   targetObjectId: ID!
   targetObjectKind: String!
+  stripeRow: Boolean!
   columns: [Column!]!
   lines: [Line!]!
+  paginationData: PaginationData
 }
 
 type Column {
   id: ID!
   targetObjectId: ID!
   targetObjectKind: String!
-  label: String!
+  headerLabel: String!
+  headerIconURLs: [String!]!
+  headerIndexLabel: String!
+  width: Int!
+  isResizable: Boolean!
+  hidden: Boolean!
 }
 
 type Line {
@@ -36,6 +43,15 @@ type Line {
   targetObjectId: ID!
   targetObjectKind: String!
   cells: [Cell!]!
+  headerLabel: String!
+  headerIconURLs: [String!]!
+  headerIndexLabel: String!
+}
+
+type PaginationData {
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+  totalRowCount: Int
 }
 
 interface Cell {
@@ -84,6 +100,15 @@ type CheckboxCell implements Cell {
   value: Boolean!
 }
 
+type IconLabelCell implements Cell {
+  id: ID!
+  columnId: ID!
+  targetObjectId: ID!
+  targetObjectKind: String!
+  value: String!
+  iconURLs: [String!]!
+}
+
 type TableDescription implements RepresentationDescription {
   id: ID!
   label: String!
@@ -94,6 +119,8 @@ extend type Mutation {
   editSelectCell(input: EditSelectCellInput!): EditSelectCellPayload!
   editMultiSelectCell(input: EditMultiSelectCellInput!): EditMultiSelectCellPayload!
   editTextfieldCell(input: EditTextfieldCellInput!): EditTextfieldCellPayload!
+  resizeTableColumn(input: ResizeTableColumnInput!): ResizeTableColumnPayload!
+  changeTableColumnVisibility(input: ChangeTableColumnVisibilityInput!): ChangeTableColumnVisibilityPayload!
 }
 
 input EditCheckboxCellInput {
@@ -139,3 +166,29 @@ input EditTextfieldCellInput {
 }
 
 union EditTextfieldCellPayload = ErrorPayload | SuccessPayload
+
+input ResizeTableColumnInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  tableId: ID!
+  columnId: ID!
+  width: Int
+}
+
+union ResizeTableColumnPayload = ErrorPayload | SuccessPayload
+
+input ChangeTableColumnVisibilityInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  tableId: ID!
+  columnsVisibility: [ColumnVisibility!]!
+}
+
+input ColumnVisibility {
+  columnId: ID!
+  visible: Boolean!
+}
+
+union ChangeTableColumnVisibilityPayload = ErrorPayload | SuccessPayload

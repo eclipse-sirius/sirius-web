@@ -19,7 +19,7 @@
     </genEnums>
     <genClasses ecoreClass="tree.ecore#//TreeDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeDescription/kindExpression"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeDescription/iconURLExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeDescription/treeItemIconExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeDescription/treeItemIdExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeDescription/treeItemObjectExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeDescription/elementsExpression"/>

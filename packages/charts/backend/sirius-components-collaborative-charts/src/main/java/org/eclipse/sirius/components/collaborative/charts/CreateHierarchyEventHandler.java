@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.charts;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -111,12 +112,14 @@ public class CreateHierarchyEventHandler implements IEditingContextEventHandler 
                 variableManager.put(VariableManager.SELF, object);
                 variableManager.put(HierarchyDescription.LABEL, createRepresentationInput.representationName());
                 String label = representationDescription.getLabelProvider().apply(variableManager);
+                List<String> iconURLs = representationDescription.getIconURLsProvider().apply(variableManager);
 
                 Hierarchy hierarchy = this.hierarchyCreationService.create(object, representationDescription, editingContext);
                 var representationMetadata = RepresentationMetadata.newRepresentationMetadata(hierarchy.getId())
                         .kind(hierarchy.getKind())
                         .label(label)
                         .descriptionId(hierarchy.getDescriptionId())
+                        .iconURLs(iconURLs)
                         .build();
 
                 this.representationMetadataPersistenceService.save(createRepresentationInput, editingContext, representationMetadata, hierarchy.getTargetObjectId());

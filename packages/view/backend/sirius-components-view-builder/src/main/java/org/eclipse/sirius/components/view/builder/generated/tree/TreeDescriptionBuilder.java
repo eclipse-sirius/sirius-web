@@ -79,6 +79,16 @@ public class TreeDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for IconExpression.
+     *
+     * @generated
+     */
+    public TreeDescriptionBuilder iconExpression(java.lang.String value) {
+        this.getTreeDescription().setIconExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for KindExpression.
      *
      * @generated
@@ -88,14 +98,15 @@ public class TreeDescriptionBuilder {
         return this;
     }
     /**
-     * Setter for IconURLExpression.
+     * Setter for TreeItemIconExpression.
      *
      * @generated
      */
-    public TreeDescriptionBuilder iconURLExpression(java.lang.String value) {
-        this.getTreeDescription().setIconURLExpression(value);
+    public TreeDescriptionBuilder treeItemIconExpression(java.lang.String value) {
+        this.getTreeDescription().setTreeItemIconExpression(value);
         return this;
     }
+
     /**
      * Setter for TreeItemIdExpression.
      *

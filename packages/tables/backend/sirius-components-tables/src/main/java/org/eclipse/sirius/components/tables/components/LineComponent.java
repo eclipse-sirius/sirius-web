@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.tables.Line;
 import org.eclipse.sirius.components.tables.descriptions.CheckboxCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
 import org.eclipse.sirius.components.tables.descriptions.ICellDescription;
+import org.eclipse.sirius.components.tables.descriptions.IconLabelCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.LineDescription;
 import org.eclipse.sirius.components.tables.descriptions.MultiSelectCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.SelectCellDescription;
@@ -50,42 +51,53 @@ public class LineComponent implements IComponent {
 
     @Override
     public Element render() {
-        VariableManager variableManager = this.props.getVariableManager();
-        LineDescription lineDescription = this.props.getLineDescription();
-        ILinesRequestor linesRequestor = this.props.getLinesRequestor();
+        VariableManager variableManager = this.props.variableManager();
+        LineDescription lineDescription = this.props.lineDescription();
+        ILinesRequestor linesRequestor = this.props.linesRequestor();
 
         List<Element> children = new ArrayList<>();
-        List<Object> semanticElements = lineDescription.getSemanticElementsProvider().apply(variableManager);
-
-        for (Object semanticElement : semanticElements) {
+        var index = 0;
+        for (Object semanticElement : this.props.semanticRowElements()) {
             VariableManager lineVariableManager = variableManager.createChild();
             lineVariableManager.put(VariableManager.SELF, semanticElement);
+            lineVariableManager.put("rowIndex", index++);
 
             String targetObjectId = lineDescription.getTargetObjectIdProvider().apply(lineVariableManager);
             var optionalPreviousLine = linesRequestor.getByTargetObjectId(targetObjectId);
 
-            Element lineElement = this.doRender(lineVariableManager, targetObjectId, optionalPreviousLine);
-            children.add(lineElement);
+            if (lineDescription.getShouldRenderPredicate().test(lineVariableManager)) {
+                Element lineElement = this.doRender(lineVariableManager, targetObjectId, optionalPreviousLine);
+                children.add(lineElement);
+            }
+
         }
+
         FragmentProps fragmentProps = new FragmentProps(children);
         return new Fragment(fragmentProps);
     }
 
     private Element doRender(VariableManager lineVariableManager, String targetObjectId, Optional<Line> optionalPreviousLine) {
-        LineDescription lineDescription = this.props.getLineDescription();
+        LineDescription lineDescription = this.props.lineDescription();
         UUID lineId = optionalPreviousLine.map(Line::getId).orElseGet(() -> this.computeLineId(targetObjectId));
 
         String targetObjectKind = lineDescription.getTargetObjectKindProvider().apply(lineVariableManager);
+
+        String headerLabel = lineDescription.getHeaderLabelProvider().apply(lineVariableManager);
+        List<String> headerIconURLs = lineDescription.getHeaderIconURLsProvider().apply(lineVariableManager);
+        String headerIndexLabel = lineDescription.getHeaderIndexLabelProvider().apply(lineVariableManager);
 
         var cells = this.getCells(lineVariableManager, lineId);
 
         List<Element> children = new ArrayList<>();
         children.addAll(cells);
 
-        LineElementProps lineElementProps = LineElementProps.newLineElementProps(lineId)
+        var lineElementProps = LineElementProps.newLineElementProps(lineId)
                 .descriptionId(lineDescription.getId())
                 .targetObjectId(targetObjectId)
                 .targetObjectKind(targetObjectKind)
+                .headerLabel(headerLabel)
+                .headerIconURLs(headerIconURLs)
+                .headerIndexLabel(headerIndexLabel)
                 .children(children)
                 .build();
 
@@ -94,7 +106,7 @@ public class LineComponent implements IComponent {
 
     private List<Element> getCells(VariableManager lineVariableManager, UUID parentLineId) {
         List<Element> elements = new ArrayList<>();
-        Map<UUID, Object> columnIdToObject = this.props.getCache().getColumnIdToObject();
+        Map<UUID, Object> columnIdToObject = this.props.cache().getColumnIdToObject();
 
         columnIdToObject.forEach((columnId, columTargetObject) -> {
             VariableManager variableManager = lineVariableManager.createChild();
@@ -103,7 +115,10 @@ public class LineComponent implements IComponent {
             String rawIdentifier = parentLineId.toString() + columnId;
             UUID cellId = UUID.nameUUIDFromBytes(rawIdentifier.getBytes());
 
-            ICellDescription cellDescription = this.props.getCellDescriptions().stream().filter(cell -> cell.getCanCreatePredicate().test(variableManager)).findFirst().orElse(null);
+            ICellDescription cellDescription = this.props.cellDescriptions().stream()
+                    .filter(cell -> cell.getCanCreatePredicate().test(variableManager))
+                    .findFirst()
+                    .orElse(null);
 
             Element cellElement = null;
             if (cellDescription instanceof SelectCellDescription selectCellDescription) {
@@ -118,6 +133,9 @@ public class LineComponent implements IComponent {
             } else if (cellDescription instanceof TextfieldCellDescription textfieldCellDescription) {
                 var cellComponentProps = new TextfieldCellComponentProps(variableManager, textfieldCellDescription, cellId, columnId, columTargetObject);
                 cellElement = new Element(TextfieldCellComponent.class, cellComponentProps);
+            } else if (cellDescription instanceof IconLabelCellDescription iconLabelCellDescription) {
+                var cellComponentProps = new IconLabelCellComponentProps(variableManager, iconLabelCellDescription, cellId, columnId, columTargetObject);
+                cellElement = new Element(IconLabelCellComponent.class, cellComponentProps);
             }
             if (cellElement != null) {
                 elements.add(cellElement);
@@ -129,10 +147,10 @@ public class LineComponent implements IComponent {
     }
 
     private UUID computeLineId(String targetObjectId) {
-        String parentElementId = this.props.getParentElementId();
-        LineDescription lineDescription = this.props.getLineDescription();
+        String parentElementId = this.props.parentElementId();
+        LineDescription lineDescription = this.props.lineDescription();
 
-        String rawIdentifier = parentElementId + lineDescription.getId().toString() + targetObjectId;
+        String rawIdentifier = parentElementId + lineDescription.getId() + targetObjectId;
         return UUID.nameUUIDFromBytes(rawIdentifier.getBytes());
     }
 }

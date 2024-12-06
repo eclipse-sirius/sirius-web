@@ -12,8 +12,10 @@
  *******************************************************************************/
 import { RepresentationComponentProps } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
+import { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { TableContent } from '../table/TableContent';
+import { TableRepresentationState } from './TableRepresentation.types';
 import { useTableSubscription } from './useTableSubscription';
 
 const useTableRepresentationStyles = makeStyles()((theme) => ({
@@ -27,7 +29,23 @@ const useTableRepresentationStyles = makeStyles()((theme) => ({
 
 export const TableRepresentation = ({ editingContextId, representationId, readOnly }: RepresentationComponentProps) => {
   const { classes } = useTableRepresentationStyles();
-  const { complete, table } = useTableSubscription(editingContextId, representationId);
+  const [state, setState] = useState<TableRepresentationState>({
+    cursor: null,
+    direction: 'NEXT',
+    size: 10,
+  });
+  const { complete, table } = useTableSubscription(
+    editingContextId,
+    representationId,
+    state.cursor,
+    state.direction,
+    state.size
+  );
+
+  const onPaginationChange = (cursor: string | null, direction: 'PREV' | 'NEXT', size: number) => {
+    setState((prevState) => ({ ...prevState, cursor, direction, size }));
+  };
+
   let completeMessage: JSX.Element | null = null;
   if (complete) {
     completeMessage = (
@@ -38,14 +56,16 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
       </div>
     );
   }
+
   return (
     <div data-testid={'table-representation'}>
       {table !== null && !complete ? (
         <TableContent
           editingContextId={editingContextId}
-          representationId={representationId}
+          representationId={table.id}
           table={table}
           readOnly={readOnly}
+          onPaginationChange={onPaginationChange}
         />
       ) : null}
       {completeMessage}

@@ -46,7 +46,6 @@ public class FormDescriptionEditorDescriptionProvider implements IEditingContext
         UUID id = UUID.nameUUIDFromBytes("FormDescriptionEditor".getBytes());
         String label = "FormDescriptionEditor";
 
-        //@// @formatter:off
         Predicate<VariableManager> canCreatePredicate = variableManager -> variableManager.get(IRepresentationDescription.CLASS, Object.class)
                 .filter(FormPackage.eINSTANCE.getFormDescription()::equals)
                 .isPresent();
@@ -58,6 +57,7 @@ public class FormDescriptionEditorDescriptionProvider implements IEditingContext
                 .label(label)
                 .targetObjectIdProvider(targetObjectIdProvider)
                 .canCreatePredicate(canCreatePredicate)
+                .iconURLsProvider(variableManager -> List.of())
                 .build();
 
         return List.of(formDescriptionEditorDescription);

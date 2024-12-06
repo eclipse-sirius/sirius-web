@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.domain.boundedcontexts.representationdata.service
 import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.services.IResult;
 
 /**
@@ -25,4 +26,6 @@ import org.eclipse.sirius.web.domain.services.IResult;
 public interface IRepresentationMetadataUpdateService {
 
     IResult<Void> updateLabel(ICause cause, UUID representationMetadataId, String label);
+
+    IResult<RepresentationMetadata> updateDocumentation(ICause cause, UUID representationMetadataId, String documentation);
 }

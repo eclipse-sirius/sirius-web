@@ -47,6 +47,7 @@ import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerChildrenProvider;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerElementsProvider;
 import org.eclipse.sirius.web.application.views.explorer.services.configuration.ExplorerDescriptionProviderConfiguration;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationIconURL;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.springframework.stereotype.Service;
@@ -85,7 +86,6 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
 
     private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
-
     public ExplorerDescriptionProvider(ExplorerDescriptionProviderConfiguration explorerDescriptionProviderConfiguration, List<IRepresentationImageProvider> representationImageProviders, IExplorerElementsProvider explorerElementsProvider, IExplorerChildrenProvider explorerChildrenProvider, List<IRenameTreeItemHandler> renameTreeItemHandlers, List<IDeleteTreeItemHandler> deleteTreeItemHandlers) {
         this.objectService = explorerDescriptionProviderConfiguration.getObjectService();
         this.urlParser = explorerDescriptionProviderConfiguration.getUrlParser();
@@ -107,7 +107,7 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
                 .labelProvider(this::getLabel)
                 .targetObjectIdProvider(variableManager -> variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).orElse(null))
                 .parentObjectProvider(this::getParentObject)
-                .iconURLProvider(this::getImageURL)
+                .treeItemIconURLsProvider(this::getImageURL)
                 .editableProvider(this::isEditable)
                 .deletableProvider(this::isDeletable)
                 .selectableProvider(this::isSelectable)
@@ -121,6 +121,7 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
                 .renameHandler(this::getRenameHandler)
                 .treeItemObjectProvider(this::getTreeItemObject)
                 .treeItemLabelProvider(this::getLabel)
+                .iconURLsProvider(variableManager -> List.of("/explorer/explorer.svg"))
                 .build();
         return List.of(explorerTreeDescription);
     }
@@ -233,10 +234,19 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
         if (self instanceof EObject) {
             imageURL = this.objectService.getImagePath(self);
         } else if (self instanceof RepresentationMetadata representationMetadata) {
-            imageURL = this.representationImageProviders.stream()
-                    .map(representationImageProvider -> representationImageProvider.getImageURL(representationMetadata.getKind()))
-                    .flatMap(Optional::stream)
-                    .toList();
+            if (representationMetadata.getIconURLs().isEmpty()) {
+                imageURL = this.representationImageProviders.stream()
+                        .map(representationImageProvider -> representationImageProvider.getImageURL(representationMetadata.getKind()))
+                        .filter(Optional::isPresent)
+                        .flatMap(Optional::stream)
+                        .findFirst()
+                        .map(List::of)
+                        .orElse(List.of());
+            } else {
+                imageURL = representationMetadata.getIconURLs().stream()
+                        .map(RepresentationIconURL::url)
+                        .toList();
+            }
         } else if (self instanceof Resource) {
             imageURL = List.of("/explorer/Resource.svg");
         }

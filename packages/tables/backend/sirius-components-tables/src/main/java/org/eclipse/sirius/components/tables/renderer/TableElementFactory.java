@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.tables.CheckboxCell;
 import org.eclipse.sirius.components.tables.Column;
 import org.eclipse.sirius.components.tables.ICell;
+import org.eclipse.sirius.components.tables.IconLabelCell;
 import org.eclipse.sirius.components.tables.Line;
 import org.eclipse.sirius.components.tables.MultiSelectCell;
 import org.eclipse.sirius.components.tables.SelectCell;
@@ -27,6 +28,7 @@ import org.eclipse.sirius.components.tables.Table;
 import org.eclipse.sirius.components.tables.TextfieldCell;
 import org.eclipse.sirius.components.tables.elements.CheckboxCellElementProps;
 import org.eclipse.sirius.components.tables.elements.ColumnElementProps;
+import org.eclipse.sirius.components.tables.elements.IconLabelCellElementProps;
 import org.eclipse.sirius.components.tables.elements.LineElementProps;
 import org.eclipse.sirius.components.tables.elements.MultiSelectCellElementProps;
 import org.eclipse.sirius.components.tables.elements.SelectCellElementProps;
@@ -47,7 +49,8 @@ public class TableElementFactory implements IElementFactory {
             case TableElementProps.TYPE -> this.instantiateTable(props, children);
             case LineElementProps.TYPE -> this.instantiateLine(props, children);
             case ColumnElementProps.TYPE -> this.instantiateColumn(props);
-            case TextfieldCellElementProps.TYPE, CheckboxCellElementProps.TYPE, SelectCellElementProps.TYPE, MultiSelectCellElementProps.TYPE -> this.instantiateCell(props);
+            case TextfieldCellElementProps.TYPE, CheckboxCellElementProps.TYPE, SelectCellElementProps.TYPE, MultiSelectCellElementProps.TYPE, IconLabelCellElementProps.TYPE ->
+                    this.instantiateCell(props);
             default -> null;
         };
     }
@@ -68,8 +71,10 @@ public class TableElementFactory implements IElementFactory {
                     .targetObjectId(tableElementProps.targetObjectId())
                     .targetObjectKind(tableElementProps.targetObjectKind())
                     .descriptionId(tableElementProps.descriptionId())
+                    .stripeRow(tableElementProps.stripeRow())
                     .lines(lines)
                     .columns(columns)
+                    .paginationData(tableElementProps.paginationData())
                     .build();
         }
         return null;
@@ -97,10 +102,18 @@ public class TableElementFactory implements IElementFactory {
                     .map(MultiSelectCell.class::cast)
                     .toList());
 
+            cells.addAll(children.stream()
+                    .filter(IconLabelCell.class::isInstance)
+                    .map(IconLabelCell.class::cast)
+                    .toList());
+
             return Line.newLine(lineElementProps.id())
                     .targetObjectId(lineElementProps.targetObjectId())
                     .targetObjectKind(lineElementProps.targetObjectKind())
                     .descriptionId(lineElementProps.descriptionId())
+                    .headerLabel(lineElementProps.headerLabel())
+                    .headerIconURLs(lineElementProps.headerIconURLs())
+                    .headerIndexLabel(lineElementProps.headerIndexLabel())
                     .cells(cells)
                     .build();
         }
@@ -112,10 +125,16 @@ public class TableElementFactory implements IElementFactory {
 
             return Column.newColumn(columnElementProps.id())
                     .descriptionId(columnElementProps.descriptionId())
-                    .label(columnElementProps.label())
+                    .headerLabel(columnElementProps.headerLabel())
+                    .headerIconURLs(columnElementProps.headerIconURLs())
+                    .headerIndexLabel(columnElementProps.headerIndexLabel())
                     .targetObjectId(columnElementProps.targetObjectId())
                     .targetObjectKind(columnElementProps.targetObjectKind())
+                    .width(columnElementProps.width())
+                    .resizable(columnElementProps.resizable())
+                    .hidden(columnElementProps.hidden())
                     .build();
+
         }
         return null;
     }
@@ -151,6 +170,14 @@ public class TableElementFactory implements IElementFactory {
                     .targetObjectKind(multiSelectCellElementProps.targetObjectKind())
                     .options(multiSelectCellElementProps.options())
                     .values(multiSelectCellElementProps.values())
+                    .build();
+        } else if (props instanceof IconLabelCellElementProps iconLabelCellElementProps) {
+            cell = IconLabelCell.newIconLabelCell(iconLabelCellElementProps.id())
+                    .columnId(iconLabelCellElementProps.columnId())
+                    .targetObjectId(iconLabelCellElementProps.targetObjectId())
+                    .targetObjectKind(iconLabelCellElementProps.targetObjectKind())
+                    .value(iconLabelCellElementProps.value())
+                    .iconURLs(iconLabelCellElementProps.iconURLs())
                     .build();
         }
         return cell;

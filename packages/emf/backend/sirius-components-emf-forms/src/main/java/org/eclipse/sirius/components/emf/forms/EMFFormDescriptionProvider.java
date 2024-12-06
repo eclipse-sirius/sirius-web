@@ -105,6 +105,7 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
                 .targetObjectIdProvider(targetObjectIdProvider)
                 .canCreatePredicate(variableManager -> false)
                 .pageDescriptions(pageDescriptions)
+                .iconURLsProvider(variableManager -> List.of())
                 .build();
     }
 

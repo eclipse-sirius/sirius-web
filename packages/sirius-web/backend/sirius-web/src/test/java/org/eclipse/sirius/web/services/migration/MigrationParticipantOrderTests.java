@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.services.migration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.charts.hierarchy.Hierarchy;
@@ -110,6 +111,7 @@ public class MigrationParticipantOrderTests extends AbstractIntegrationTests {
                 .kind(newHierarchy.getKind())
                 .label("new Hierarchy")
                 .descriptionId(newHierarchy.getDescriptionId())
+                .iconURLs(List.of())
                 .build();
 
         this.representationMetadataPersistenceService.save(null, optionalEditingContext.get(), representationMetadata, newHierarchy.getTargetObjectId());

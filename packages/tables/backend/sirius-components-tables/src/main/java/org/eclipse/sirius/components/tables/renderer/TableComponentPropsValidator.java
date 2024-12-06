@@ -12,10 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.tables.renderer;
 
+import org.eclipse.sirius.components.representations.IComponentPropsValidator;
+import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.tables.components.CheckboxCellComponent;
 import org.eclipse.sirius.components.tables.components.CheckboxCellComponentProps;
 import org.eclipse.sirius.components.tables.components.ColumnComponent;
 import org.eclipse.sirius.components.tables.components.ColumnComponentProps;
+import org.eclipse.sirius.components.tables.components.IconLabelCellComponent;
+import org.eclipse.sirius.components.tables.components.IconLabelCellComponentProps;
 import org.eclipse.sirius.components.tables.components.LineComponent;
 import org.eclipse.sirius.components.tables.components.LineComponentProps;
 import org.eclipse.sirius.components.tables.components.MultiSelectCellComponent;
@@ -26,9 +30,6 @@ import org.eclipse.sirius.components.tables.components.TableComponent;
 import org.eclipse.sirius.components.tables.components.TableComponentProps;
 import org.eclipse.sirius.components.tables.components.TextfieldCellComponent;
 import org.eclipse.sirius.components.tables.components.TextfieldCellComponentProps;
-
-import org.eclipse.sirius.components.representations.IComponentPropsValidator;
-import org.eclipse.sirius.components.representations.IProps;
 
 /**
  * Used to validate the properties of a component type.
@@ -55,6 +56,8 @@ public class TableComponentPropsValidator implements IComponentPropsValidator {
             checkValidProps = props instanceof SelectCellComponentProps;
         } else if (MultiSelectCellComponent.class.equals(componentType)) {
             checkValidProps = props instanceof MultiSelectCellComponentProps;
+        } else if (IconLabelCellComponent.class.equals(componentType)) {
+            checkValidProps = props instanceof IconLabelCellComponentProps;
         }
 
         return checkValidProps;

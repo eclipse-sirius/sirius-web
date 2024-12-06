@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.portals.description;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -39,6 +40,8 @@ public final class PortalDescription implements IRepresentationDescription {
     private Function<VariableManager, String> targetObjectIdProvider;
 
     private Predicate<VariableManager> canCreatePredicate;
+
+    private Function<VariableManager, List<String>> iconURLsProvider;
 
     private PortalDescription() {
         // Prevent instantiation
@@ -75,6 +78,10 @@ public final class PortalDescription implements IRepresentationDescription {
         return this.targetObjectIdProvider;
     }
 
+    public Function<VariableManager, List<String>> getIconURLsProvider() {
+        return this.iconURLsProvider;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}'}'";
@@ -100,6 +107,8 @@ public final class PortalDescription implements IRepresentationDescription {
         private Function<VariableManager, String> labelProvider;
 
         private Function<VariableManager, String> targetObjectIdProvider;
+
+        private Function<VariableManager, List<String>> iconURLsProvider;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -130,15 +139,21 @@ public final class PortalDescription implements IRepresentationDescription {
             return this;
         }
 
+        public Builder iconURLsProvider(Function<VariableManager, List<String>> iconURLsProvider) {
+            this.iconURLsProvider =  Objects.requireNonNull(iconURLsProvider);
+            return this;
+        }
+
         public PortalDescription build() {
-            PortalDescription portalDescripion = new PortalDescription();
-            portalDescripion.id = Objects.requireNonNull(this.id);
-            portalDescripion.label = Objects.requireNonNull(this.label);
-            portalDescripion.idProvider = Objects.requireNonNull(this.idProvider);
-            portalDescripion.canCreatePredicate = Objects.requireNonNull(this.canCreatePredicate);
-            portalDescripion.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
-            portalDescripion.labelProvider = Objects.requireNonNull(this.labelProvider);
-            return portalDescripion;
+            PortalDescription portalDescription = new PortalDescription();
+            portalDescription.id = Objects.requireNonNull(this.id);
+            portalDescription.label = Objects.requireNonNull(this.label);
+            portalDescription.idProvider = Objects.requireNonNull(this.idProvider);
+            portalDescription.canCreatePredicate = Objects.requireNonNull(this.canCreatePredicate);
+            portalDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
+            portalDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
+            portalDescription.iconURLsProvider = Objects.requireNonNull(this.iconURLsProvider);
+            return portalDescription;
         }
     }
 }

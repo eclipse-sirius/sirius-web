@@ -53,7 +53,6 @@ public class TreeRendererTests {
 
     @Test
     public void basicRenderingOneRoot() {
-
         TreeNode root = new TreeNode(ROOT_LABEL);
         TreeDescription description = this.createDescription(root);
         VariableManager variableManager = new VariableManager();
@@ -67,7 +66,6 @@ public class TreeRendererTests {
 
     @Test
     public void basicRenderingSmallTree() {
-
         TreeNode root = new TreeNode(ROOT_LABEL);
 
         TreeNode child1 = root.createContainementChildren(CHILD1_ID);
@@ -145,24 +143,25 @@ public class TreeRendererTests {
 
     private TreeDescription createDescription(TreeNode root) {
         return TreeDescription.newTreeDescription(FAKE_ID)
-                .canCreatePredicate(v -> true)
-                .childrenProvider(v -> this.getSelfNode(v).getChildren())
-                .deletableProvider(v -> false)
-                .deleteHandler(v -> new Success())
-                .editableProvider(v -> true).elementsProvider(v -> List.of(root))
-                .hasChildrenProvider(v -> !this.getSelfNode(v).getChildren().isEmpty())
-                .iconURLProvider(v -> List.of())
-                .idProvider(v -> FAKE_ID)
-                .kindProvider(v -> NODE_KIND)
+                .canCreatePredicate(variableManager -> true)
+                .childrenProvider(variableManager -> this.getSelfNode(variableManager).getChildren())
+                .deletableProvider(variableManager -> false)
+                .deleteHandler(variableManager -> new Success())
+                .editableProvider(variableManager -> true).elementsProvider(variableManager -> List.of(root))
+                .hasChildrenProvider(variableManager -> !this.getSelfNode(variableManager).getChildren().isEmpty())
+                .treeItemIconURLsProvider(variableManager -> List.of())
+                .idProvider(variableManager -> FAKE_ID)
+                .kindProvider(variableManager -> NODE_KIND)
                 .label("Fake tree")
-                .labelProvider(v -> StyledString.of(v.get(VariableManager.SELF, TreeNode.class).map(TreeNode::getId).orElse(FAKE_ID)))
-                .parentObjectProvider(v -> this.getSelfNode(v).getParent())
+                .labelProvider(variableManager -> StyledString.of(variableManager.get(VariableManager.SELF, TreeNode.class).map(TreeNode::getId).orElse(FAKE_ID)))
+                .parentObjectProvider(variableManager -> this.getSelfNode(variableManager).getParent())
                 .renameHandler((v, name) -> new Success())
-                .selectableProvider(v -> true)
-                .targetObjectIdProvider(v -> v.get(VariableManager.SELF, TreeNode.class).map(TreeNode::getId).orElse(FAKE_ID))
-                .treeItemIdProvider(v -> this.getSelfNode(v).getId())
-                .treeItemObjectProvider(v -> root.search(v.get("treeItemId", String.class).get(), new HashSet<>()))
-                .treeItemLabelProvider(v -> StyledString.of(v.get(VariableManager.SELF, TreeNode.class).map(TreeNode::getId).orElse(FAKE_ID)))
+                .selectableProvider(variableManager -> true)
+                .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, TreeNode.class).map(TreeNode::getId).orElse(FAKE_ID))
+                .treeItemIdProvider(variableManager -> this.getSelfNode(variableManager).getId())
+                .treeItemObjectProvider(variableManager -> root.search(variableManager.get("treeItemId", String.class).get(), new HashSet<>()))
+                .treeItemLabelProvider(variableManager -> StyledString.of(variableManager.get(VariableManager.SELF, TreeNode.class).map(TreeNode::getId).orElse(FAKE_ID)))
+                .iconURLsProvider(variableManager -> List.of())
                 .build();
 
     }

@@ -31,7 +31,8 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 @PublicApi
 public record DeckDescription(String id, String label, Function<VariableManager, String> idProvider, Function<VariableManager, String> labelProvider,
-        Function<VariableManager, String> targetObjectIdProvider, Predicate<VariableManager> canCreatePredicate, List<LaneDescription> laneDescriptions, Consumer<VariableManager> dropLaneProvider, Function<VariableManager, DeckStyle> deckStyleProvider)
+        Function<VariableManager, String> targetObjectIdProvider, Predicate<VariableManager> canCreatePredicate, List<LaneDescription> laneDescriptions, Consumer<VariableManager> dropLaneProvider, Function<VariableManager, DeckStyle> deckStyleProvider,
+        Function<VariableManager, List<String>> iconURLsProvider)
         implements IRepresentationDescription {
 
     public static final String LABEL = "label";
@@ -58,6 +59,7 @@ public record DeckDescription(String id, String label, Function<VariableManager,
         Objects.requireNonNull(laneDescriptions);
         Objects.requireNonNull(dropLaneProvider);
         Objects.requireNonNull(deckStyleProvider);
+        Objects.requireNonNull(iconURLsProvider);
     }
 
     @Override
@@ -73,6 +75,10 @@ public record DeckDescription(String id, String label, Function<VariableManager,
     @Override
     public Predicate<VariableManager> getCanCreatePredicate() {
         return this.canCreatePredicate;
+    }
+
+    public Function<VariableManager, List<String>> getIconURLsProvider() {
+        return this.iconURLsProvider;
     }
 
     @Override

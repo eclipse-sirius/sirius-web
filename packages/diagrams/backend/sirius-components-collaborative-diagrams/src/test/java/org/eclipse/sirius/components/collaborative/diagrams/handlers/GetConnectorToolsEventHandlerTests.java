@@ -166,6 +166,7 @@ public class GetConnectorToolsEventHandlerTests {
                 .edgeDescriptions(new ArrayList<>())
                 .palettes(List.of(palette))
                 .dropHandler(variableManager -> new Failure(""))
+                .iconURLsProvider(variableManager -> List.of())
                 .build();
 
         Node sourceNode = this.getNode(SOURCE_NODE_ID, SOURCE_NODE_TARGET_ID);

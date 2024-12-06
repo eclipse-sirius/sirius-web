@@ -90,6 +90,7 @@ public class DetailsViewFormDescriptionAggregatorTests {
                 .idProvider(variableManager -> UUID.randomUUID().toString())
                 .labelProvider(variableManager -> LABEL)
                 .label(LABEL)
+                .iconURLsProvider(variableManager -> List.of())
                 .build();
         // @formatter:on
     }

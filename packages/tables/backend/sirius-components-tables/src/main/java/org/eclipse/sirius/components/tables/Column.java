@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.tables;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -33,9 +34,19 @@ public final class Column {
 
     private String targetObjectKind;
 
-    private UUID descriptionId;
+    private String descriptionId;
 
-    private String label;
+    private String headerLabel;
+
+    private List<String> headerIconURLs;
+
+    private String headerIndexLabel;
+
+    private int width;
+
+    private boolean resizable;
+
+    private boolean hidden;
 
     private Column() {
         // Prevent instantiation
@@ -53,26 +64,42 @@ public final class Column {
         return this.targetObjectKind;
     }
 
-    public UUID getDescriptionId() {
+    public String getDescriptionId() {
         return this.descriptionId;
     }
 
-    public String getLabel() {
-        return this.label;
+    public String getHeaderLabel() {
+        return this.headerLabel;
+    }
+
+    public List<String> getHeaderIconURLs() {
+        return this.headerIconURLs;
+    }
+
+    public String getHeaderIndexLabel() {
+        return this.headerIndexLabel;
+    }
+
+    public int getWidth() {
+        return this.width;
+    }
+
+    public boolean isResizable() {
+        return this.resizable;
+    }
+
+    public boolean isHidden() {
+        return this.hidden;
     }
 
     public static Builder newColumn(UUID id) {
         return new Builder(id);
     }
 
-    public static Builder newColumn(Column column) {
-        return new Builder(column);
-    }
-
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, descriptionId: {2}, label: {3}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.descriptionId, this.label);
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.descriptionId, this.headerLabel);
     }
 
     /**
@@ -85,25 +112,29 @@ public final class Column {
 
         private final UUID id;
 
-        private UUID descriptionId;
+        private String descriptionId;
 
         private String targetObjectId;
 
         private String targetObjectKind;
 
-        private String label;
+        private String headerLabel;
+
+        private List<String> headerIconURLs;
+
+        private String headerIndexLabel;
+
+        private int width;
+
+        private boolean resizable;
+
+        private boolean hidden;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
         }
 
-        private Builder(Column column) {
-            this.id = column.getId();
-            this.descriptionId = column.getDescriptionId();
-            this.label = column.getLabel();
-        }
-
-        public Builder descriptionId(UUID descriptionId) {
+        public Builder descriptionId(String descriptionId) {
             this.descriptionId = Objects.requireNonNull(descriptionId);
             return this;
         }
@@ -118,8 +149,33 @@ public final class Column {
             return this;
         }
 
-        public Builder label(String label) {
-            this.label = Objects.requireNonNull(label);
+        public Builder headerLabel(String headerLabel) {
+            this.headerLabel = Objects.requireNonNull(headerLabel);
+            return this;
+        }
+
+        public Builder headerIconURLs(List<String> headerIconURLs) {
+            this.headerIconURLs = Objects.requireNonNull(headerIconURLs);
+            return this;
+        }
+
+        public Builder headerIndexLabel(String headerIndexLabel) {
+            this.headerIndexLabel = Objects.requireNonNull(headerIndexLabel);
+            return this;
+        }
+
+        public Builder width(int width) {
+            this.width = width;
+            return this;
+        }
+
+        public Builder resizable(boolean resizable) {
+            this.resizable = resizable;
+            return this;
+        }
+
+        public Builder hidden(boolean visible) {
+            this.hidden = visible;
             return this;
         }
 
@@ -129,7 +185,12 @@ public final class Column {
             column.descriptionId = Objects.requireNonNull(this.descriptionId);
             column.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             column.targetObjectKind = Objects.requireNonNull(this.targetObjectKind);
-            column.label = Objects.requireNonNull(this.label);
+            column.headerLabel = Objects.requireNonNull(this.headerLabel);
+            column.headerIconURLs = Objects.requireNonNull(this.headerIconURLs);
+            column.headerIndexLabel = Objects.requireNonNull(this.headerIndexLabel);
+            column.width = this.width;
+            column.resizable = this.resizable;
+            column.hidden = this.hidden;
             return column;
         }
     }

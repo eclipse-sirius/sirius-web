@@ -118,6 +118,7 @@ public class MasterDetailsFormDescriptionProvider implements IEditingContextRepr
                     variableManager.put(CUSTOM_VARIABLE, "first");
                     return variableManager;
                 })
+                .iconURLsProvider(variableManager -> List.of())
                 .build();
         return List.of(formDescription);
     }

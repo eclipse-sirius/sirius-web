@@ -12,16 +12,16 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.tables.renderer;
 
+import org.eclipse.sirius.components.representations.IInstancePropsValidator;
+import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.tables.elements.CheckboxCellElementProps;
 import org.eclipse.sirius.components.tables.elements.ColumnElementProps;
+import org.eclipse.sirius.components.tables.elements.IconLabelCellElementProps;
 import org.eclipse.sirius.components.tables.elements.LineElementProps;
 import org.eclipse.sirius.components.tables.elements.MultiSelectCellElementProps;
 import org.eclipse.sirius.components.tables.elements.SelectCellElementProps;
 import org.eclipse.sirius.components.tables.elements.TableElementProps;
 import org.eclipse.sirius.components.tables.elements.TextfieldCellElementProps;
-
-import org.eclipse.sirius.components.representations.IInstancePropsValidator;
-import org.eclipse.sirius.components.representations.IProps;
 
 /**
  * Used to validate the properties of the instance type.
@@ -48,6 +48,8 @@ public class TableInstancePropsValidator implements IInstancePropsValidator {
             checkValidProps = props instanceof SelectCellElementProps;
         } else if (MultiSelectCellElementProps.TYPE.equals(type)) {
             checkValidProps = props instanceof MultiSelectCellElementProps;
+        } else if (IconLabelCellElementProps.TYPE.equals(type)) {
+            checkValidProps = props instanceof IconLabelCellElementProps;
         }
 
         return checkValidProps;

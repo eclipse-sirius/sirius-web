@@ -66,6 +66,8 @@ public final class DiagramDescription implements IRepresentationDescription {
 
     private Function<VariableManager, IStatus> dropNodeHandler;
 
+    private Function<VariableManager, List<String>> iconURLsProvider;
+
     private DiagramDescription() {
         // Prevent instantiation
     }
@@ -129,6 +131,10 @@ public final class DiagramDescription implements IRepresentationDescription {
         return this.dropNodeHandler;
     }
 
+    public Function<VariableManager, List<String>> getIconURLsProvider() {
+        return this.iconURLsProvider;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}, nodeDescriptionCount: {3}, edgeDescriptionCount: {4}'}'";
@@ -167,6 +173,8 @@ public final class DiagramDescription implements IRepresentationDescription {
 
         private Function<VariableManager, IStatus> dropNodeHandler;
 
+        private Function<VariableManager, List<String>> iconURLsProvider;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -184,6 +192,7 @@ public final class DiagramDescription implements IRepresentationDescription {
             this.edgeDescriptions = diagramDescription.getEdgeDescriptions();
             this.dropHandler = diagramDescription.getDropHandler();
             this.dropNodeHandler = diagramDescription.getDropNodeHandler();
+            this.iconURLsProvider = diagramDescription.getIconURLsProvider();
         }
 
         public Builder label(String label) {
@@ -241,6 +250,11 @@ public final class DiagramDescription implements IRepresentationDescription {
             return this;
         }
 
+        public Builder iconURLsProvider(Function<VariableManager, List<String>> iconURLsProvider) {
+            this.iconURLsProvider =  Objects.requireNonNull(iconURLsProvider);
+            return this;
+        }
+
         public DiagramDescription build() {
             DiagramDescription diagramDescription = new DiagramDescription();
             diagramDescription.id = Objects.requireNonNull(this.id);
@@ -255,6 +269,7 @@ public final class DiagramDescription implements IRepresentationDescription {
             diagramDescription.edgeDescriptions = Objects.requireNonNull(this.edgeDescriptions);
             diagramDescription.dropHandler = Objects.requireNonNull(this.dropHandler);
             diagramDescription.dropNodeHandler = this.dropNodeHandler; // Optional on purpose.
+            diagramDescription.iconURLsProvider =  Objects.requireNonNull(this.iconURLsProvider);
             return diagramDescription;
         }
     }

@@ -36,9 +36,11 @@ import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
 import org.eclipse.sirius.components.tables.descriptions.ICellDescription;
 import org.eclipse.sirius.components.tables.descriptions.LineDescription;
 import org.eclipse.sirius.components.tables.descriptions.MultiSelectCellDescription;
+import org.eclipse.sirius.components.tables.descriptions.PaginatedData;
 import org.eclipse.sirius.components.tables.descriptions.SelectCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 import org.eclipse.sirius.components.tables.descriptions.TextfieldCellDescription;
+import org.eclipse.sirius.components.tables.renderer.TableRenderer;
 import org.springframework.stereotype.Service;
 
 /**
@@ -65,22 +67,26 @@ public class ProjectTableRepresentationDescriptionProvider implements IEditingCo
 
     @Override
     public List<IRepresentationDescription> getRepresentationDescriptions(IEditingContext editingContext) {
-
-        var lineDescription = LineDescription.newLineDescription(UUID.nameUUIDFromBytes("Table - Line".getBytes()))
+        var lineDescription = LineDescription.newLineDescription(UUID.nameUUIDFromBytes("Table - Line".getBytes()).toString())
                 .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
                 .semanticElementsProvider(this::getSemanticElements)
+                .headerLabelProvider(variableManager -> "")
+                .headerIconURLsProvider(variableManager -> List.of())
+                .headerIndexLabelProvider(variableManager -> "")
                 .build();
 
         var tableDescription = TableDescription.newTableDescription(TABLE_DESCRIPTION_ID)
                 .label("Papaya project table")
                 .labelProvider(new TableLabelProvider(this.labelService))
                 .canCreatePredicate(this::canCreate)
-                .lineDescriptions(List.of(lineDescription))
+                .lineDescription(lineDescription)
                 .columnDescriptions(this.getColumnDescriptions())
                 .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
                 .cellDescriptions(this.getCellDescriptions())
+                .iconURLsProvider(variableManager -> List.of("/papaya-representations/project-table.svg"))
+                .isStripeRowPredicate(variableManager -> false)
                 .build();
 
         return List.of(tableDescription);
@@ -92,29 +98,31 @@ public class ProjectTableRepresentationDescriptionProvider implements IEditingCo
                 .isPresent();
     }
 
-    private List<Object> getAllContents(EObject object) {
-        var result = new ArrayList<>();
-        var iterator = object.eAllContents();
-        while (iterator.hasNext()) {
-            result.add(iterator.next());
-        }
-        return result;
-    }
+    private PaginatedData getSemanticElements(VariableManager variableManager) {
+        var self = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
+        var cursor = variableManager.get(TableRenderer.PAGINATION_CURSOR, EObject.class).orElse(null);
+        var direction = variableManager.get(TableRenderer.PAGINATION_DIRECTION, String.class).orElse(null);
+        var size = variableManager.get(TableRenderer.PAGINATION_SIZE, Integer.class).orElse(0);
 
-    private List<Object> getSemanticElements(VariableManager variableManager) {
-        return variableManager.get(VariableManager.SELF, ProjectSpec.class)
-                .map(this::getAllContents)
-                .orElse(List.of());
+        return new CursorBasedNavigationServices().collect(self, cursor, direction, size);
     }
 
     private List<ColumnDescription> getColumnDescriptions() {
         Map<EStructuralFeature, String> featureToDisplayName = this.getColumnsStructuralFeaturesDisplayName();
 
-        ColumnDescription columnDescription = ColumnDescription.newColumnDescription(UUID.nameUUIDFromBytes("features".getBytes()))
+        Function<VariableManager, String> headerLabelProvider = variableManager -> variableManager.get(VariableManager.SELF, EStructuralFeature.class)
+                .map(featureToDisplayName::get)
+                .orElse("");
+
+        ColumnDescription columnDescription = ColumnDescription.newColumnDescription(UUID.nameUUIDFromBytes("features".getBytes()).toString())
                 .semanticElementsProvider(this.getSemanticColumnElementsProvider(featureToDisplayName))
-                .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, EStructuralFeature.class).map(featureToDisplayName::get).orElse(""))
                 .targetObjectIdProvider(new ColumnTargetObjectIdProvider())
                 .targetObjectKindProvider(variableManager -> "")
+                .headerLabelProvider(headerLabelProvider)
+                .headerIconURLsProvider(variableManager -> List.of())
+                .headerIndexLabelProvider(variableManager -> "")
+                .isResizablePredicate(variableManager -> false)
+                .initialWidthProvider(variableManager -> -1)
                 .build();
         return List.of(columnDescription);
     }

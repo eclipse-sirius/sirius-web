@@ -52,7 +52,7 @@ public final class SelectCellDescription implements ICellDescription {
 
     @Override
     public String getId() {
-        return "";
+        return this.id;
     }
 
     @Override

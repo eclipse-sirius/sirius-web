@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.selection.description;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -47,6 +48,8 @@ public final class SelectionDescription implements IRepresentationDescription {
     private boolean multiple;
 
     private TreeDescription treeDescription;
+
+    private Function<VariableManager, List<String>> iconURLsProvider;
 
     private SelectionDescription() {
         // Prevent instantiation
@@ -96,6 +99,10 @@ public final class SelectionDescription implements IRepresentationDescription {
         return this.multiple;
     }
 
+    public Function<VariableManager, List<String>> getIconURLsProvider() {
+        return this.iconURLsProvider;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}'}'";
@@ -127,6 +134,8 @@ public final class SelectionDescription implements IRepresentationDescription {
         private TreeDescription treeDescription;
 
         private boolean multiple;
+
+        private Function<VariableManager, List<String>> iconURLsProvider;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -172,6 +181,11 @@ public final class SelectionDescription implements IRepresentationDescription {
             return this;
         }
 
+        public Builder iconURLsProvider(Function<VariableManager, List<String>> iconURLsProvider) {
+            this.iconURLsProvider =  Objects.requireNonNull(iconURLsProvider);
+            return this;
+        }
+
         public SelectionDescription build() {
             SelectionDescription selectionDescription = new SelectionDescription();
             selectionDescription.id = Objects.requireNonNull(this.id);
@@ -183,6 +197,7 @@ public final class SelectionDescription implements IRepresentationDescription {
             selectionDescription.canCreatePredicate = Objects.requireNonNull(this.canCreatePredicate);
             selectionDescription.treeDescription = Objects.requireNonNull(this.treeDescription);
             selectionDescription.multiple = this.multiple;
+            selectionDescription.iconURLsProvider =  Objects.requireNonNull(this.iconURLsProvider);
             return selectionDescription;
         }
 

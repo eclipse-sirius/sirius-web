@@ -135,10 +135,10 @@ import org.springframework.context.support.StaticApplicationContext;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class DynamicFormsTests {
 
-    private EClass[] eClasses = new EClass[3];
+    private final EClass[] eClasses = new EClass[3];
 
     @Test
-    void testRenderEcoreForm() {
+    public void testRenderEcoreForm() {
         this.buildFixture();
         FormDescription eClassFormDescription = this.createClassFormDescription(false, false);
         Form result = this.render(eClassFormDescription, this.eClasses[0]);
@@ -185,7 +185,7 @@ public class DynamicFormsTests {
     }
 
     @Test
-    void testRenderEcoreFormWithStyle() {
+    public void testRenderEcoreFormWithStyle() {
         this.buildFixture();
         FormDescription eClassFormDescription = this.createClassFormDescription(true, false);
         Form result = this.render(eClassFormDescription, this.eClasses[0]);
@@ -229,7 +229,7 @@ public class DynamicFormsTests {
     }
 
     @Test
-    void testRenderEcoreFormWithConditionalStyle() {
+    public void testRenderEcoreFormWithConditionalStyle() {
         this.buildFixture();
         FormDescription eClassFormDescription = this.createClassFormDescription(true, true);
         Form result = this.render(eClassFormDescription, this.eClasses[0]);
@@ -273,7 +273,7 @@ public class DynamicFormsTests {
     }
 
     @Test
-    void testEditingEcoreForm() {
+    public void testEditingEcoreForm() {
         this.buildFixture();
         FormDescription eClassFormDescription = this.createClassFormDescription(false, false);
         Form form = this.render(eClassFormDescription, this.eClasses[0]);
@@ -283,7 +283,7 @@ public class DynamicFormsTests {
     }
 
     @Test
-    void testSetNullOnSelectEcoreForm() {
+    public void testSetNullOnSelectEcoreForm() {
         this.buildFixture();
         FormDescription eClassFormDescription = this.createClassFormDescription(false, false);
         Form form = this.render(eClassFormDescription, this.eClasses[0]);

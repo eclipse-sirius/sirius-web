@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.handlers;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -111,12 +112,14 @@ public class CreateDiagramEventHandler implements IEditingContextEventHandler {
                 variableManager.put(VariableManager.SELF, object);
                 variableManager.put(DiagramDescription.LABEL, createRepresentationInput.representationName());
                 String label = diagramDescription.getLabelProvider().apply(variableManager);
+                List<String> iconURLs = diagramDescription.getIconURLsProvider().apply(variableManager);
 
                 Diagram diagram = this.diagramCreationService.create(object, diagramDescription, editingContext);
                 var representationMetadata = RepresentationMetadata.newRepresentationMetadata(diagram.getId())
                         .kind(diagram.getKind())
                         .label(label)
                         .descriptionId(diagram.getDescriptionId())
+                        .iconURLs(iconURLs)
                         .build();
 
                 this.representationMetadataPersistenceService.save(createRepresentationInput, editingContext, representationMetadata, diagram.getTargetObjectId());

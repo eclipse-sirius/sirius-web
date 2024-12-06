@@ -60,6 +60,7 @@ public class PortalDescriptionProvider implements IEditingContextRepresentationD
                 .labelProvider(labelProvider)
                 .targetObjectIdProvider(targetObjectIdProvider)
                 .canCreatePredicate(variableManager -> true)
+                .iconURLsProvider(variableManager -> List.of())
                 .build();
 
         return List.of(portalDescription);

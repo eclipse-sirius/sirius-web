@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.gantt.handlers;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -110,12 +111,14 @@ public class CreateGanttEventHandler implements IEditingContextEventHandler {
                 variableManager.put(VariableManager.SELF, object);
                 variableManager.put(GanttDescription.LABEL, createRepresentationInput.representationName());
                 String label = ganttDescription.labelProvider().apply(variableManager);
+                List<String> iconURLs = ganttDescription.getIconURLsProvider().apply(variableManager);
 
                 Gantt gantt = this.ganttCreationService.create(object, ganttDescription, editingContext);
                 var representationMetadata = RepresentationMetadata.newRepresentationMetadata(gantt.getId())
                         .kind(gantt.getKind())
                         .label(label)
                         .descriptionId(gantt.descriptionId())
+                        .iconURLs(iconURLs)
                         .build();
 
                 this.representationMetadataPersistenceService.save(createRepresentationInput, editingContext, representationMetadata, gantt.targetObjectId());

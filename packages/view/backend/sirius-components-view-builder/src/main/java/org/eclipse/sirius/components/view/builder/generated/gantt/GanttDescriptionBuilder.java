@@ -79,6 +79,16 @@ public class GanttDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for IconExpression.
+     *
+     * @generated
+     */
+    public GanttDescriptionBuilder iconExpression(java.lang.String value) {
+        this.getGanttDescription().setIconExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for TaskElementDescriptions.
      *
      * @generated

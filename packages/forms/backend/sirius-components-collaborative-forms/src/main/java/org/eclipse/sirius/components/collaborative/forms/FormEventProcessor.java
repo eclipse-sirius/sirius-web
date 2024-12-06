@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.forms.variables.FormVariableProvider;
+import org.eclipse.sirius.components.collaborative.tables.TableContext;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -172,7 +173,7 @@ public class FormEventProcessor implements IFormEventProcessor {
                 if (tableOptional.isPresent()) {
                     Optional<TableDescription> tableDescriptionOptional = this.getTableDescription(this.currentForm.get().getDescriptionId(), tableOptional.get().getDescriptionId());
                     if (tableDescriptionOptional.isPresent()) {
-                        tableEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, tableOptional.get(), tableDescriptionOptional.get(), tableInput);
+                        tableEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, new TableContext(tableOptional.get()), tableDescriptionOptional.get(), tableInput);
                     } else {
                         this.logger.warn("No table description found for event: {}", tableInput);
                     }

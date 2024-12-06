@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.widget.reference.browser;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.RepresentationMetadata;
@@ -35,12 +36,14 @@ public class ModelBrowserMetadataProvider implements IRepresentationMetadataProv
                     .kind(Tree.KIND)
                     .label(ModelBrowsersDescriptionProvider.REPRESENTATION_NAME)
                     .descriptionId(ModelBrowsersDescriptionProvider.CONTAINER_DESCRIPTION_ID)
+                    .iconURLs(List.of())
                     .build();
         } else if (representationId.startsWith(ModelBrowsersDescriptionProvider.MODEL_BROWSER_REFERENCE_PREFIX)) {
             representationMetadata = RepresentationMetadata.newRepresentationMetadata(representationId)
                     .kind(Tree.KIND)
                     .label(ModelBrowsersDescriptionProvider.REPRESENTATION_NAME)
                     .descriptionId(ModelBrowsersDescriptionProvider.REFERENCE_DESCRIPTION_ID)
+                    .iconURLs(List.of())
                     .build();
         }
         return Optional.ofNullable(representationMetadata);

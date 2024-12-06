@@ -16,17 +16,13 @@ export interface TableProps {
   representationId: string;
   table: GQLTable;
   readOnly: boolean;
+  onPaginationChange?: (cursor: string | null, direction: 'PREV' | 'NEXT', size: number) => void;
 }
 
-export type SortOrder = 'asc' | 'desc';
-
-export interface TableState {
-  order: SortOrder;
-  orderBy: string;
-  page: number;
-  rowsPerPage: number;
-  selectedRow: string | null;
-  globalFilter: string;
+export interface TablePaginationState {
+  cursor: string | null;
+  direction: 'PREV' | 'NEXT';
+  size: number;
 }
 
 export interface GQLTableEventSubscription {
@@ -45,19 +41,35 @@ export interface GQLTableRefreshedEventPayload extends GQLTableEventPayload {
 export interface GQLTable {
   id: string;
   targetObjectId: string;
+  stripeRow: boolean;
   columns: GQLColumn[];
   lines: GQLLine[];
+  paginationData: GQLPaginationData;
 }
 
 export interface GQLColumn {
   id: string;
-  label: string;
+  headerLabel: string;
+  headerIconURLs: string[];
+  headerIndexLabel: string;
+  width: number;
+  isResizable: boolean;
+  hidden: boolean;
 }
 
 export interface GQLLine {
   id: string;
   targetObjectId: string;
   cells: GQLCell[];
+  headerLabel: string;
+  headerIconURLs: string[];
+  headerIndexLabel: string;
+}
+
+export interface GQLPaginationData {
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+  totalRowCount: number;
 }
 
 export interface GQLCell {
@@ -65,8 +77,14 @@ export interface GQLCell {
   id: string;
   columnId: string;
 }
+
 export interface GQLTextfieldCell extends GQLCell {
   stringValue: string;
+}
+
+export interface GQLIconLabelCell extends GQLCell {
+  label: string;
+  iconURLs: string[];
 }
 
 export interface GQLCheckboxCell extends GQLCell {
@@ -82,6 +100,7 @@ export interface GQLMultiSelectCell extends GQLCell {
   values: string[];
   options: GQLSelectCellOption[];
 }
+
 export interface GQLSelectCellOption {
   id: string;
   label: string;

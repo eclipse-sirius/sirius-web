@@ -20,6 +20,7 @@ import fr.obeo.dsl.designer.sample.flow.FlowFactory;
 import fr.obeo.dsl.designer.sample.flow.Processor;
 import fr.obeo.dsl.designer.sample.flow.System;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -100,12 +101,14 @@ public class FlowProjectTemplatesInitializer implements IProjectTemplateInitiali
                 variableManager.put(VariableManager.SELF, semanticTarget);
                 variableManager.put(DiagramDescription.LABEL, topographyDiagram.getLabel());
                 String label = topographyDiagram.getLabelProvider().apply(variableManager);
+                List<String> iconURLs = topographyDiagram.getIconURLsProvider().apply(variableManager);
 
                 Diagram diagram = this.diagramCreationService.create(semanticTarget, topographyDiagram, editingContext);
                 var representationMetadata = RepresentationMetadata.newRepresentationMetadata(diagram.getId())
                         .kind(diagram.getKind())
                         .label(label)
                         .descriptionId(diagram.getDescriptionId())
+                        .iconURLs(iconURLs)
                         .build();
 
                 this.representationMetadataPersistenceService.save(cause, editingContext, representationMetadata, diagram.getTargetObjectId());

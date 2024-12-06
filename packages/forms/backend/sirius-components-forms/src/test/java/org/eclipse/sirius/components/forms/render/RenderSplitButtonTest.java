@@ -12,11 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.forms.render;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.List;
 import java.util.function.Function;
-import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import org.eclipse.sirius.components.forms.Button;
 import org.eclipse.sirius.components.forms.ButtonStyle;
@@ -34,6 +33,8 @@ import org.eclipse.sirius.components.forms.renderer.FormRenderer;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests the rendering of a SplitButton component.
@@ -181,6 +182,7 @@ public class RenderSplitButtonTest {
                 .canCreatePredicate(variableManager -> true)
                 .pageDescriptions(List.of(pageDescription))
                 .targetObjectIdProvider(this.constantProvider("selfId"))
+                .iconURLsProvider(variableManager -> List.of())
                 .build();
     }
 

@@ -28,17 +28,14 @@ import org.eclipse.sirius.components.view.tree.TreeFactory;
 import org.eclipse.sirius.components.view.tree.TreePackage;
 
 /**
- * This is the item provider adapter for a
- * {@link org.eclipse.sirius.components.view.tree.TreeDescription} object. <!--
- * begin-user-doc --> <!-- end-user-doc -->
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.tree.TreeDescription} object. <!-- begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
  */
 public class TreeDescriptionItemProvider extends RepresentationDescriptionItemProvider {
 
     /**
-     * This constructs an instance from a factory and a notifier. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -47,8 +44,7 @@ public class TreeDescriptionItemProvider extends RepresentationDescriptionItemPr
     }
 
     /**
-     * This returns the property descriptors for the adapted class. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -58,7 +54,7 @@ public class TreeDescriptionItemProvider extends RepresentationDescriptionItemPr
             super.getPropertyDescriptors(object);
 
             this.addKindExpressionPropertyDescriptor(object);
-            this.addIconURLExpressionPropertyDescriptor(object);
+            this.addTreeItemIconExpressionPropertyDescriptor(object);
             this.addTreeItemIdExpressionPropertyDescriptor(object);
             this.addTreeItemObjectExpressionPropertyDescriptor(object);
             this.addElementsExpressionPropertyDescriptor(object);
@@ -74,8 +70,7 @@ public class TreeDescriptionItemProvider extends RepresentationDescriptionItemPr
     }
 
     /**
-     * This adds a property descriptor for the Kind Expression feature. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Kind Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -90,24 +85,22 @@ public class TreeDescriptionItemProvider extends RepresentationDescriptionItemPr
     }
 
     /**
-     * This adds a property descriptor for the Icon URL Expression feature. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Tree Item Icon Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    protected void addIconURLExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors
-                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                        this.getResourceLocator(), this.getString("_UI_TreeDescription_iconURLExpression_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_TreeDescription_iconURLExpression_feature",
-                                "_UI_TreeDescription_type"),
-                        TreePackage.Literals.TREE_DESCRIPTION__ICON_URL_EXPRESSION, true, false, false,
-                        ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    protected void addTreeItemIconExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
+                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_TreeDescription_treeItemIconExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_TreeDescription_treeItemIconExpression_feature",
+                        "_UI_TreeDescription_type"),
+                TreePackage.Literals.TREE_DESCRIPTION__TREE_ITEM_ICON_EXPRESSION, true, false, false,
+                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This adds a property descriptor for the Tree Item Id Expression feature. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Tree Item Id Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -122,8 +115,7 @@ public class TreeDescriptionItemProvider extends RepresentationDescriptionItemPr
     }
 
     /**
-     * This adds a property descriptor for the Tree Item Object Expression feature.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Tree Item Object Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -138,8 +130,7 @@ public class TreeDescriptionItemProvider extends RepresentationDescriptionItemPr
     }
 
     /**
-     * This adds a property descriptor for the Elements Expression feature. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Elements Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -154,8 +145,7 @@ public class TreeDescriptionItemProvider extends RepresentationDescriptionItemPr
     }
 
     /**
-     * This adds a property descriptor for the Has Children Expression feature. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Has Children Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -170,8 +160,7 @@ public class TreeDescriptionItemProvider extends RepresentationDescriptionItemPr
     }
 
     /**
-     * This adds a property descriptor for the Children Expression feature. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Children Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -186,8 +175,7 @@ public class TreeDescriptionItemProvider extends RepresentationDescriptionItemPr
     }
 
     /**
-     * This adds a property descriptor for the Parent Expression feature. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Parent Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -202,8 +190,7 @@ public class TreeDescriptionItemProvider extends RepresentationDescriptionItemPr
     }
 
     /**
-     * This adds a property descriptor for the Editable Expression feature. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Editable Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -218,8 +205,7 @@ public class TreeDescriptionItemProvider extends RepresentationDescriptionItemPr
     }
 
     /**
-     * This adds a property descriptor for the Selectable Expression feature. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Selectable Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -234,8 +220,7 @@ public class TreeDescriptionItemProvider extends RepresentationDescriptionItemPr
     }
 
     /**
-     * This adds a property descriptor for the Deletable Expression feature. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Deletable Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -250,8 +235,7 @@ public class TreeDescriptionItemProvider extends RepresentationDescriptionItemPr
     }
 
     /**
-     * This adds a property descriptor for the Tree Item Label Descriptions feature.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Tree Item Label Descriptions feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -266,11 +250,8 @@ public class TreeDescriptionItemProvider extends RepresentationDescriptionItemPr
     }
 
     /**
-     * This specifies how to implement {@link #getChildren} and is used to deduce an
-     * appropriate feature for an {@link org.eclipse.emf.edit.command.AddCommand},
-     * {@link org.eclipse.emf.edit.command.RemoveCommand} or
-     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an {@link org.eclipse.emf.edit.command.AddCommand},
+     * {@link org.eclipse.emf.edit.command.RemoveCommand} or {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -299,8 +280,7 @@ public class TreeDescriptionItemProvider extends RepresentationDescriptionItemPr
     }
 
     /**
-     * This returns TreeDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * This returns TreeDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
      */
@@ -320,8 +300,7 @@ public class TreeDescriptionItemProvider extends RepresentationDescriptionItemPr
     }
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -333,9 +312,8 @@ public class TreeDescriptionItemProvider extends RepresentationDescriptionItemPr
     }
 
     /**
-     * This handles model notifications by calling {@link #updateChildren} to update
-     * any cached children and by creating a viewer notification, which it passes to
-     * {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -345,7 +323,7 @@ public class TreeDescriptionItemProvider extends RepresentationDescriptionItemPr
 
         switch (notification.getFeatureID(TreeDescription.class)) {
             case TreePackage.TREE_DESCRIPTION__KIND_EXPRESSION:
-            case TreePackage.TREE_DESCRIPTION__ICON_URL_EXPRESSION:
+            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ICON_EXPRESSION:
             case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ID_EXPRESSION:
             case TreePackage.TREE_DESCRIPTION__TREE_ITEM_OBJECT_EXPRESSION:
             case TreePackage.TREE_DESCRIPTION__ELEMENTS_EXPRESSION:
@@ -366,9 +344,7 @@ public class TreeDescriptionItemProvider extends RepresentationDescriptionItemPr
     }
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing
-     * the children that can be created under this object. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */

@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.formdescriptioneditors.handlers;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -34,6 +35,7 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorDescription;
+import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -109,6 +111,9 @@ public class CreateFormDescriptionEditorEventHandler implements IEditingContextE
                 Object object = optionalObject.get();
 
                 String label = createRepresentationInput.representationName();
+                var variableManager = new VariableManager();
+                variableManager.put(VariableManager.SELF, object);
+                List<String> iconURLs = representationDescription.getIconURLsProvider().apply(variableManager);
 
                 FormDescriptionEditor formDescriptionEditor = this.formDescriptionEditorCreationService.create(createRepresentationInput, object, representationDescription,
                         editingContext);
@@ -116,6 +121,7 @@ public class CreateFormDescriptionEditorEventHandler implements IEditingContextE
                         .kind(formDescriptionEditor.getKind())
                         .label(label)
                         .descriptionId(formDescriptionEditor.getDescriptionId())
+                        .iconURLs(iconURLs)
                         .build();
 
                 this.representationMetadataPersistenceService.save(createRepresentationInput, editingContext, representationMetadata, formDescriptionEditor.getTargetObjectId());

@@ -15,13 +15,13 @@ import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 
 import { useEffect, useState } from 'react';
 import {
-  UseTableSubscriptionValue,
-  UseTableSubscriptionState,
-  GQLTableEventPayload,
-  GQLTableRefreshedEventPayload,
-  GQLTableEventInput,
-  GQLTableEventVariables,
   GQLTableEventData,
+  GQLTableEventInput,
+  GQLTableEventPayload,
+  GQLTableEventVariables,
+  GQLTableRefreshedEventPayload,
+  UseTableSubscriptionState,
+  UseTableSubscriptionValue,
 } from './useTableSubscription.types';
 
 export const getTableEventSubscription = `
@@ -31,16 +31,30 @@ export const getTableEventSubscription = `
       ... on TableRefreshedEventPayload {
         table {
           id
+          paginationData {
+            hasPreviousPage
+            hasNextPage
+            totalRowCount
+          }
+          stripeRow
           columns {
             id
-            label
+            headerLabel
+            headerIconURLs
+            headerIndexLabel
             targetObjectId
-            targetObjectKind 
+            targetObjectKind
+            width
+            isResizable 
+            hidden
           }
           lines {
             id
             targetObjectId
             targetObjectKind
+            headerLabel
+            headerIconURLs
+            headerIndexLabel
             cells {
               __typename
               id
@@ -67,6 +81,10 @@ export const getTableEventSubscription = `
               ... on TextfieldCell {
                 stringValue: value
               }
+              ... on IconLabelCell {
+                label: value
+                iconURLs
+              }
             }
           }
         }
@@ -78,7 +96,13 @@ export const getTableEventSubscription = `
 const isTableRefreshedEventPayload = (payload: GQLTableEventPayload): payload is GQLTableRefreshedEventPayload =>
   payload.__typename === 'TableRefreshedEventPayload';
 
-export const useTableSubscription = (editingContextId: string, tableId: string): UseTableSubscriptionValue => {
+export const useTableSubscription = (
+  editingContextId: string,
+  tableId: string,
+  cursor: string | null,
+  direction: 'PREV' | 'NEXT' | null,
+  size: number
+): UseTableSubscriptionValue => {
   const [state, setState] = useState<UseTableSubscriptionState>({
     id: crypto.randomUUID(),
     table: null,
@@ -88,7 +112,7 @@ export const useTableSubscription = (editingContextId: string, tableId: string):
   const input: GQLTableEventInput = {
     id: state.id,
     editingContextId,
-    representationId: `${tableId}`,
+    representationId: `${tableId}?cursor=${cursor}&direction=${direction}&size=${size}`,
   };
 
   const variables: GQLTableEventVariables = { input };

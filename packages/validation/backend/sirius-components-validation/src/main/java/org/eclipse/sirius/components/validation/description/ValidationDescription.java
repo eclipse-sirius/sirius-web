@@ -45,6 +45,8 @@ public final class ValidationDescription implements IRepresentationDescription {
 
     private Function<Object, String> messageProvider;
 
+    private Function<VariableManager, List<String>> iconURLsProvider;
+
     private ValidationDescription() {
         // Prevent instantiation
     }
@@ -80,6 +82,10 @@ public final class ValidationDescription implements IRepresentationDescription {
         return this.messageProvider;
     }
 
+    public Function<VariableManager, List<String>> getIconURLsProvider() {
+        return this.iconURLsProvider;
+    }
+
     public static Builder newValidationDescription(String id) {
         return new Builder(id);
     }
@@ -97,7 +103,7 @@ public final class ValidationDescription implements IRepresentationDescription {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+        private final String id;
 
         private String label;
 
@@ -110,6 +116,8 @@ public final class ValidationDescription implements IRepresentationDescription {
         private Function<Object, String> kindProvider;
 
         private Function<Object, String> messageProvider;
+
+        private Function<VariableManager, List<String>> iconURLsProvider;
 
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -145,6 +153,11 @@ public final class ValidationDescription implements IRepresentationDescription {
             return this;
         }
 
+        public Builder iconURLsProvider(Function<VariableManager, List<String>> iconURLsProvider) {
+            this.iconURLsProvider =  Objects.requireNonNull(iconURLsProvider);
+            return this;
+        }
+
         public ValidationDescription build() {
             ValidationDescription validationDescription = new ValidationDescription();
             validationDescription.id = Objects.requireNonNull(this.id);
@@ -154,6 +167,7 @@ public final class ValidationDescription implements IRepresentationDescription {
             validationDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);
             validationDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
             validationDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
+            validationDescription.iconURLsProvider = Objects.requireNonNull(this.iconURLsProvider);
             return validationDescription;
         }
     }

@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvi
 import org.eclipse.sirius.components.core.api.ILabelServiceDelegate;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.emf.services.DefaultLabelService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationIconURL;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.springframework.stereotype.Service;
 
@@ -78,9 +79,15 @@ public class RepresentationMetadataLabelServiceDelegate implements ILabelService
     public List<String> getImagePath(Object object) {
         List<String> result = List.of(DefaultLabelService.DEFAULT_ICON_PATH);
         if (object instanceof RepresentationMetadata representationMetadata) {
-            result = this.representationImageProviders.stream()
-                    .flatMap(provider -> provider.getImageURL("").stream())
-                    .toList();
+            if (!representationMetadata.getIconURLs().isEmpty()) {
+                result = representationMetadata.getIconURLs().stream()
+                        .map(RepresentationIconURL::url)
+                        .toList();
+            } else {
+                result = this.representationImageProviders.stream()
+                        .flatMap(provider -> provider.getImageURL(representationMetadata.getKind()).stream())
+                        .toList();
+            }
         }
 
         return result;
