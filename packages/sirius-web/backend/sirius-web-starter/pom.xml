@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-web-starter</artifactId>
-	<version>v2024.11.2</version>
+	<version>2024.11.3</version>
 	<name>sirius-web-starter</name>
 	<description>Sirius Web Starter</description>
 
@@ -47,194 +47,194 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-infrastructure</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-charts-graphql</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-deck-graphql</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-diagrams-graphql</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-forms-graphql</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-widget-reference-graphql</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-formdescriptioneditors-widget-reference</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-formdescriptioneditors-graphql</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-gantt-graphql</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-portals-graphql</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-selection-graphql</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tables-graphql</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-trees-graphql</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-validation-graphql</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-core-graphql</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-graphql</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-web</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-emf</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-emf-widget-reference</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-edit</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-builder</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-deck</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-deck-edit</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-diagram</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-diagram-edit</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-form</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-form-edit</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-gantt</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-gantt-edit</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-table</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-table-edit</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-tree</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-tree-edit</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-widget-reference-view</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-widget-reference-view-edit</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-spring-tests</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

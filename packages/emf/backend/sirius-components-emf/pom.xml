@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-emf</artifactId>
-	<version>v2024.11.2</version>
+	<version>2024.11.3</version>
 	<name>sirius-components-emf</name>
 	<description>Sirius Components EMF</description>
 
@@ -58,12 +58,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-interpreter</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.emf</groupId>
@@ -112,19 +112,19 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-diagrams-tests</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-spring-tests</artifactId>
-			<version>v2024.11.2</version>
+			<version>2024.11.3</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
