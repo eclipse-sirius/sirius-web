@@ -21,8 +21,8 @@ import { ResizeRowHandler } from '../rows/ResizeRowHandler';
 import { RowHeader } from '../rows/RowHeader';
 import { CursorBasedPagination } from './CursorBasedPagination';
 import { GQLLine, TablePaginationState, TableProps } from './TableContent.types';
-import { useTableColumns } from './useTableColumns';
 import { useGlobalFilter } from './useGlobalFilter';
+import { useTableColumns } from './useTableColumns';
 
 export const TableContent = memo(
   ({ editingContextId, representationId, table, readOnly, onPaginationChange, onGlobalFilterChange }: TableProps) => {
@@ -81,9 +81,7 @@ export const TableContent = memo(
     );
 
     useEffect(() => {
-      if (onPaginationChange) {
-        onPaginationChange(pagination.cursor, pagination.direction, pagination.size);
-      }
+      onPaginationChange(pagination.cursor, pagination.direction, pagination.size);
     }, [pagination.cursor, pagination.size, pagination.direction]);
 
     const serverSidePagination: boolean = onPaginationChange !== undefined;

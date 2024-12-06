@@ -334,6 +334,7 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
                       },
                       "ns":{
                         "form":"http://www.eclipse.org/sirius-web/form",
+                        "table":"http://www.eclipse.org/sirius-web/table",
                         "view":"http://www.eclipse.org/sirius-web/view"
                       },
                       "content":[
@@ -369,11 +370,65 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
                             }
                           ]
                         }
-                      }
+                      },
+                      $TABLEDESCRIPTION$
                     ]
                   }
                 }
-                """.replace("$GROUP$", this.getGroups());
+                """.replace("$GROUP$", this.getGroups())
+                    .replace("$TABLEDESCRIPTION$", this.getTableDescription());
+    }
+
+    private String getTableDescription() {
+        return """
+                {
+                 "id": "d28d9ecb-102a-4eee-9d26-55543c5acb7f",
+                 "eClass": "table:TableDescription",
+                 "data":
+                     {
+                   "name": "New Table Description",
+                   "domainType": "buck::Root",
+                   "titleExpression": "aql:New Table",
+                   "columnDescriptions": [
+                     {
+                       "id": "3db9745f-6da7-445a-b768-9d5480105eca",
+                       "eClass": "table:ColumnDescription",
+                       "data": {
+                         "name": "Column",
+                         "domainType": "buck::Root",
+                         "semanticCandidatesExpression": "aql:self",
+                         "headerLabelExpression": "aql:self.name"
+                       }
+                     }
+                   ],
+                   "rowDescription": {
+                     "id": "6c4c05cb-0e95-4556-adf5-54269fbf0843",
+                     "eClass": "table:RowDescription",
+                     "data": {
+                       "name": "Row",
+                       "domainType": "buck::Human",
+                       "semanticCandidatesExpression": "aql:self.humans"
+                     }
+                   },
+                    "cellDescriptions": [
+                     {
+                       "id": "5cf0f787-43dc-4b8d-b513-51296053a96e",
+                       "eClass": "table:CellDescription",
+                       "data": {
+                         "name": "Cell",
+                         "domainType": "vaughan::Human",
+                         "semanticCandidatesExpression": "aql:self",
+                         "valueExpression": "aql:self.name",
+                         "cellWidgetDescription": {
+                           "id": "9b3400c9-d5f0-46db-9d60-60ec4016d383",
+                           "eClass": "table:CellLabelWidgetDescription"
+                         }
+                       }
+                     }
+                   ]
+                  }
+                }
+                """;
     }
 
     private String getGroups() {

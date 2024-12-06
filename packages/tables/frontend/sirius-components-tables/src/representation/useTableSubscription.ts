@@ -19,10 +19,10 @@ import {
   GQLTableEventInput,
   GQLTableEventPayload,
   GQLTableEventVariables,
+  GQLTableGlobalFilterValuePayload,
   GQLTableRefreshedEventPayload,
   UseTableSubscriptionState,
   UseTableSubscriptionValue,
-  GQLTableGlobalFilterValuePayload,
 } from './useTableSubscription.types';
 
 export const getTableEventSubscription = `
@@ -106,26 +106,16 @@ const isTableRefreshedEventPayload = (payload: GQLTableEventPayload): payload is
 const isTableGlobalFilterValuePayload = (payload: GQLTableEventPayload): payload is GQLTableGlobalFilterValuePayload =>
   payload.__typename === 'TableGlobalFilterValuePayload';
 
-export const useTableSubscription = (
-  editingContextId: string,
-  tableId: string,
-  cursor: string | null,
-  direction: 'PREV' | 'NEXT' | null,
-  size: number,
-  globalFilter: string | null
-): UseTableSubscriptionValue => {
+export const useTableSubscription = (editingContextId: string, representationId: string): UseTableSubscriptionValue => {
   const [state, setState] = useState<UseTableSubscriptionState>({
     id: crypto.randomUUID(),
     table: null,
     complete: false,
   });
-
-  const globalFilterParam: string = globalFilter !== null ? `&globalFilter=${encodeURIComponent(globalFilter)}` : '';
-
   const input: GQLTableEventInput = {
     id: state.id,
     editingContextId,
-    representationId: `${tableId}?cursor=${cursor}&direction=${direction}&size=${size}${globalFilterParam}`,
+    representationId,
   };
 
   const variables: GQLTableEventVariables = { input };

@@ -13,13 +13,13 @@
 import { gql, useMutation } from '@apollo/client';
 import { useReporting } from '@eclipse-sirius/sirius-components-core';
 import { useEffect, useState } from 'react';
+import { GQLTable } from './TableContent.types';
 import {
   GQLChangeGlobalFilterValueData,
-  GQLChangeGlobalFilterValueVariables,
   GQLChangeGlobalFilterValueInput,
+  GQLChangeGlobalFilterValueVariables,
   UseGlobalFilterValue,
 } from './useGlobalFilter.types';
-import { GQLTable } from './TableContent.types';
 
 export const changeGlobalFilterValueMutation = gql`
   mutation changeGlobalFilterValue($input: ChangeGlobalFilterValueInput!) {
@@ -44,15 +44,13 @@ export const useGlobalFilter = (
   editingContextId: string,
   representationId: string,
   table: GQLTable,
-  onGlobalFilterChange?: (globalFilter: string) => void
+  onGlobalFilterChange: (globalFilter: string) => void
 ): UseGlobalFilterValue => {
   const [globalFilter, setGlobalFilter] = useState<string>(table.globalFilter ?? '');
 
   useEffect(() => {
-    if (onGlobalFilterChange) {
-      changeGlobalFilterValue(globalFilter ?? '');
-      onGlobalFilterChange(globalFilter ?? '');
-    }
+    changeGlobalFilterValue(globalFilter ?? '');
+    onGlobalFilterChange(globalFilter ?? '');
   }, [globalFilter]);
 
   useEffect(() => {

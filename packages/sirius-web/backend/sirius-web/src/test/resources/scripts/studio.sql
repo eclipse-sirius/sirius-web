@@ -81,6 +81,13 @@ INSERT INTO semantic_data_domain (
   'e344d967-a639-4f6c-9c00-a466d51063c6',
   'http://www.eclipse.org/sirius-web/form'
 );
+INSERT INTO semantic_data_domain (
+  semantic_data_id,
+  uri
+) VALUES (
+  'e344d967-a639-4f6c-9c00-a466d51063c6',
+  'http://www.eclipse.org/sirius-web/table'
+);
 INSERT INTO document (
   id,
   semantic_data_id,
@@ -221,6 +228,7 @@ INSERT INTO document (
      },
      "ns":{
        "form":"http://www.eclipse.org/sirius-web/form",
+       "table":"http://www.eclipse.org/sirius-web/table",
        "view":"http://www.eclipse.org/sirius-web/view"
      },
      "content":[
@@ -354,12 +362,58 @@ INSERT INTO document (
                    }
                  ]
                }
+             },
+             {
+               "id": "d28d9ecb-102a-4eee-9d26-55543c5acb7f",
+               "eClass": "table:TableDescription",
+               "data":{
+                 "name": "New Table Description",
+                 "domainType": "buck::Root",
+                 "titleExpression": "aql:New Table",
+                 "columnDescriptions": [
+                   {
+                     "id": "3db9745f-6da7-445a-b768-9d5480105eca",
+                     "eClass": "table:ColumnDescription",
+                     "data": {
+                       "name": "Column",
+                       "domainType": "buck::Root",
+                       "semanticCandidatesExpression": "aql:self",
+                       "headerLabelExpression": "aql:self.name"
+                     }
+                   }
+                 ],
+                 "rowDescription": {
+                   "id": "6c4c05cb-0e95-4556-adf5-54269fbf0843",
+                   "eClass": "table:RowDescription",
+                   "data": {
+                     "name": "Row",
+                     "domainType": "buck::Human",
+                     "semanticCandidatesExpression": "aql:self.humans"
+                   }
+                 },
+                 "cellDescriptions": [
+                   {
+                     "id": "5cf0f787-43dc-4b8d-b513-51296053a96e",
+                     "eClass": "table:CellDescription",
+                     "data": {
+                       "name": "Cell",
+                       "domainType": "vaughan::Human",
+                       "semanticCandidatesExpression": "aql:self",
+                       "valueExpression": "aql:self.name",
+                       "cellWidgetDescription": {
+                       "id": "9b3400c9-d5f0-46db-9d60-60ec4016d383",
+                       "eClass": "table:CellLabelWidgetDescription"
+                     }
+                   }
+                 }
+               ]
              }
-           ]
-         }
+           }
+         ]
        }
-     ]
-   }',
+     }
+   ]
+  }',
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );

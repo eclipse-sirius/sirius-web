@@ -16,8 +16,8 @@ export interface TableProps {
   representationId: string;
   table: GQLTable;
   readOnly: boolean;
-  onPaginationChange?: (cursor: string | null, direction: 'PREV' | 'NEXT', size: number) => void;
-  onGlobalFilterChange?: (globalFilter: string) => void;
+  onPaginationChange: (cursor: string | null, direction: 'PREV' | 'NEXT', size: number) => void;
+  onGlobalFilterChange: (globalFilter: string) => void;
 }
 
 export interface TablePaginationState {

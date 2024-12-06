@@ -38,6 +38,8 @@ export const TableWidgetPropertySection: PropertySectionComponent<GQLTableWidget
         representationId={formId}
         table={widget.table}
         readOnly={readOnly || widget.readOnly}
+        onPaginationChange={() => {}}
+        onGlobalFilterChange={() => {}}
       />
     </div>
   );
