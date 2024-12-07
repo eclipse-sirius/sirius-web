@@ -1,0 +1,40 @@
+{
+  "siriusComponentsWidgetReference": {
+    "filter": {
+      "typeToFilter": "Type to filter"
+    },
+    "view": {
+      "clear": "Clear",
+      "close": "Close",
+      "createObject": "Create an object",
+      "edit": "Edit",
+      "open": "Open",
+      "value": "Value",
+      "values": "Values"
+    },
+    "select": {
+      "title": "Select an object",
+      "choices": "Choices",
+      "submit": "Select"
+    },
+    "create": {
+      "title": "Create an object",
+      "container": {
+        "label": "Select the container"
+      },
+      "domain": {
+        "label": "Select the domain"
+      },
+      "type": {
+        "label": "Select the object type"
+      },
+      "submit": "Create"
+    },
+    "edit": {
+      "title": "Edit reference",
+      "choices": "Choices",
+      "selected": "Selected",
+      "close": "Close"
+    }
+  }
+}

@@ -26,6 +26,7 @@ import {
   useClickHandler,
 } from '@eclipse-sirius/sirius-components-forms';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import {
   GQLAddReferenceValuesMutationData,
@@ -195,6 +196,7 @@ const RawReferencePropertySection: PropertySectionComponent<GQLReferenceWidget> 
   readOnly,
 }: PropertySectionComponentProps<GQLReferenceWidget>) => {
   const { classes } = useStyles();
+  const { t: coreT } = useTranslation('siriusComponentsCore');
   const { setSelection } = useSelection();
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
 
@@ -239,7 +241,7 @@ const RawReferencePropertySection: PropertySectionComponent<GQLReferenceWidget> 
   useEffect(() => {
     if (!clearLoading) {
       if (clearError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (clearData) {
         const { clearReference } = clearData;
@@ -248,11 +250,11 @@ const RawReferencePropertySection: PropertySectionComponent<GQLReferenceWidget> 
         }
       }
     }
-  }, [clearLoading, clearError, clearData]);
+  }, [clearLoading, clearError, clearData, coreT]);
   useEffect(() => {
     if (!removeLoading) {
       if (removeError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (removeData) {
         const { removeReferenceValue } = removeData;
@@ -261,11 +263,11 @@ const RawReferencePropertySection: PropertySectionComponent<GQLReferenceWidget> 
         }
       }
     }
-  }, [removeLoading, removeError, removeData]);
+  }, [coreT, removeLoading, removeError, removeData]);
   useEffect(() => {
     if (!setLoading) {
       if (setError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (setData) {
         const { setReferenceValue } = setData;
@@ -274,11 +276,11 @@ const RawReferencePropertySection: PropertySectionComponent<GQLReferenceWidget> 
         }
       }
     }
-  }, [setLoading, setError, setData]);
+  }, [coreT, setLoading, setError, setData]);
   useEffect(() => {
     if (!addLoading) {
       if (addError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (addData) {
         const { addReferenceValues } = addData;
@@ -287,11 +289,11 @@ const RawReferencePropertySection: PropertySectionComponent<GQLReferenceWidget> 
         }
       }
     }
-  }, [addLoading, addError, addData]);
+  }, [addLoading, addError, addData, coreT]);
   useEffect(() => {
     if (!moveLoading) {
       if (moveError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (moveData) {
         const { moveReferenceValue } = moveData;
@@ -300,7 +302,7 @@ const RawReferencePropertySection: PropertySectionComponent<GQLReferenceWidget> 
         }
       }
     }
-  }, [moveLoading, moveError, moveData]);
+  }, [coreT, moveLoading, moveError, moveData]);
 
   const callClearReference = () => {
     const variables = {
