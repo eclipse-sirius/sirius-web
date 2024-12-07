@@ -1,0 +1,25 @@
+= Views
+
+== Overview
+
+#TODO: Add architecture diagram / grammar tree of this section.#
+
+== View
+
+A `View` defines a set of `RepresentationDescription` used to visualize and edit data.
+
+=== Descriptions
+
+* Technical name: `descriptions`
+* Type: `xref:maker-manual:studio-definitions/view-models/representation-descriptions.adoc#_representation_description[RepresentationDescription]`
+* Multiplicity: many
+* Necessity: optional
+* Semantics: The list of `RepresentationDescription` that constitute this `View`.
+
+=== Color Palettes
+
+* Technical name: `colorPalettes`
+* Type: `{view-colorpalette-x}`
+* Multiplicity: many
+* Necessity: optional
+* Semantics: The list of `{view-colorpalette}` provided by this `View`.

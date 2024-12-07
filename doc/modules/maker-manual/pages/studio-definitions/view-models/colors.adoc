@@ -1,0 +1,56 @@
+= Colors
+
+== Overview
+
+#TODO: Add architecture diagram / grammar schema of this part#.
+
+== Color Palette
+
+A `ColorPalette` is a set of colors grouped under a name.
+
+It belongs to a `xref:maker-manual:studio-definitions/view-models/views.adoc[View]`.
+
+=== Name
+
+* Technical name: `name`
+* Type: `String`
+* Multiplicity: single
+* Necessity: mandatory
+* Semantics: The name of the `ColorPalette`. This is only used internally by _{stdmkrs}_.
+
+=== Colors
+
+* Technical name: `colors`
+* Type: `xref:maker-manual:studio-definitions/view-models/colors.adoc#_user_color[UserColor]`
+* Multiplicity: many
+* Necessity: optional
+* Semantics: The set of `UserColor` that constitutes this `ColorPalette`.
+
+
+== User Color
+
+`UserColor` is the supertype of `xref:maker-manual:studio-definitions/view-models/colors.adoc#_fixed_color[FixedColor]`.
+
+It belongs to a `xref:maker-manual:studio-definitions/view-models/colors#_color_palette.adoc[ColorPalette]`.
+
+=== Name
+
+* Technical name: `name`
+* Type: `String`
+* Multiplicity: single
+* Necessity: mandatory
+* Semantics: The name of the `UserColor`. This is only used internally by _{stdmkrs}_.
+
+== Fixed Color
+
+`FixedColor` is a `xref:maker-manual:studio-definitions/view-models/colors.adoc#_user_color[UserColor]` where the color is static (i.e. always the same).
+
+It belongs to a `xref:maker-manual:studio-definitions/view-models/colors#_color_palette.adoc[ColorPalette]`.
+
+=== Value
+
+* Technical name: `value`
+* Type: `String`
+* Multiplicity: single
+* Necessity: mandatory
+* Semantics: The _Hexadecimal Color Code_ that represents the color, e.g. `#FF0000` for red.
