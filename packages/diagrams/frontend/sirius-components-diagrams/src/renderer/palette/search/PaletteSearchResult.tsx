@@ -156,7 +156,7 @@ export const PaletteSearchResult = ({ palette, onToolClick, searchToolValue }: P
 
   const convertToListItem = (tool: GQLSingleClickOnDiagramElementTool, index: number): JSX.Element | null => {
     return (
-      <Tooltip title={tool.label} key={tool.id}>
+      <Tooltip title={tool.label} key={tool.id} placement="right">
         <ListItemButton
           className={classes.listItemButton}
           onClick={() => onToolClick(tool)}
