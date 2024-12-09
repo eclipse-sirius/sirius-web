@@ -26,6 +26,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   GQLDeleteTreeItemData,
   GQLDeleteTreeItemInput,
@@ -111,6 +112,8 @@ export const TreeItemContextMenu = ({
   });
 
   const { addErrorMessage } = useMultiToast();
+
+  const { t } = useTranslation('siriusComponentsTrees');
 
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
 
@@ -275,7 +278,7 @@ export const TreeItemContextMenu = ({
             <ListItemIcon>
               <UnfoldMore fontSize="small" />
             </ListItemIcon>
-            <ListItemText primary="Expand all" />
+            <ListItemText primary={t('expandAll')} />
           </MenuItem>
         ) : null}
         {item.editable ? (
@@ -288,7 +291,7 @@ export const TreeItemContextMenu = ({
             <ListItemIcon>
               <EditIcon fontSize="small" />
             </ListItemIcon>
-            <ListItemText primary="Rename" />
+            <ListItemText primary={t('rename')} />
           </MenuItem>
         ) : null}
         {item.deletable ? (
@@ -296,7 +299,7 @@ export const TreeItemContextMenu = ({
             <ListItemIcon>
               <DeleteIcon fontSize="small" />
             </ListItemIcon>
-            <ListItemText primary="Delete" />
+            <ListItemText primary={t('delete')} />
           </MenuItem>
         ) : null}
         {state.menuEntries.map((entry) => (
