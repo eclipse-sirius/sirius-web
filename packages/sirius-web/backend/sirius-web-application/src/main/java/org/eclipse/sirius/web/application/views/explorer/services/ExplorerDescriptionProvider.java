@@ -16,25 +16,18 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
 import org.eclipse.sirius.components.collaborative.trees.api.IDeleteTreeItemHandler;
 import org.eclipse.sirius.components.collaborative.trees.api.IRenameTreeItemHandler;
-import org.eclipse.sirius.components.core.CoreImageConstants;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
-import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
-import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
-import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -43,13 +36,11 @@ import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
-import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerChildrenProvider;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerElementsProvider;
+import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
 import org.eclipse.sirius.web.application.views.explorer.services.configuration.ExplorerDescriptionProviderConfiguration;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationIconURL;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -74,8 +65,6 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
 
     private final IURLParser urlParser;
 
-    private final List<IRepresentationImageProvider> representationImageProviders;
-
     private final IExplorerElementsProvider explorerElementsProvider;
 
     private final IExplorerChildrenProvider explorerChildrenProvider;
@@ -84,17 +73,18 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
 
     private final List<IDeleteTreeItemHandler> deleteTreeItemHandlers;
 
-    private final IRepresentationMetadataSearchService representationMetadataSearchService;
+    private final IExplorerServices explorerServices;
 
-    public ExplorerDescriptionProvider(ExplorerDescriptionProviderConfiguration explorerDescriptionProviderConfiguration, List<IRepresentationImageProvider> representationImageProviders, IExplorerElementsProvider explorerElementsProvider, IExplorerChildrenProvider explorerChildrenProvider, List<IRenameTreeItemHandler> renameTreeItemHandlers, List<IDeleteTreeItemHandler> deleteTreeItemHandlers) {
+    public ExplorerDescriptionProvider(ExplorerDescriptionProviderConfiguration explorerDescriptionProviderConfiguration, List<IRepresentationImageProvider> representationImageProviders,
+            IExplorerElementsProvider explorerElementsProvider, IExplorerChildrenProvider explorerChildrenProvider, List<IRenameTreeItemHandler> renameTreeItemHandlers,
+            List<IDeleteTreeItemHandler> deleteTreeItemHandlers, IExplorerServices explorerServices) {
         this.objectService = explorerDescriptionProviderConfiguration.getObjectService();
         this.urlParser = explorerDescriptionProviderConfiguration.getUrlParser();
-        this.representationMetadataSearchService = explorerDescriptionProviderConfiguration.getRepresentationMetadataSearchService();
-        this.representationImageProviders = Objects.requireNonNull(representationImageProviders);
         this.explorerElementsProvider = Objects.requireNonNull(explorerElementsProvider);
         this.explorerChildrenProvider = Objects.requireNonNull(explorerChildrenProvider);
         this.renameTreeItemHandlers = Objects.requireNonNull(renameTreeItemHandlers);
         this.deleteTreeItemHandlers = Objects.requireNonNull(deleteTreeItemHandlers);
+        this.explorerServices = Objects.requireNonNull(explorerServices);
     }
 
     @Override
@@ -150,39 +140,19 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
 
     private String getTreeItemId(VariableManager variableManager) {
         Object self = variableManager.getVariables().get(VariableManager.SELF);
-
-        String id = null;
-        if (self instanceof RepresentationMetadata representationMetadata) {
-            id = representationMetadata.getId().toString();
-        } else if (self instanceof Resource resource) {
-            id = resource.getURI().path().substring(1);
-        } else if (self instanceof EObject) {
-            id = this.objectService.getId(self);
-        }
-        return id;
+        return this.explorerServices.getTreeItemId(self);
     }
 
     private String getKind(VariableManager variableManager) {
-        String kind = "";
         Object self = variableManager.getVariables().get(VariableManager.SELF);
-        if (self instanceof RepresentationMetadata representationMetadata) {
-            kind = representationMetadata.getKind();
-        } else if (self instanceof Resource) {
-            kind = DOCUMENT_KIND;
-        } else {
-            kind = this.objectService.getKind(self);
-        }
-        return kind;
+        return this.explorerServices.getKind(self);
     }
 
     private StyledString getLabel(VariableManager variableManager) {
         Object self = variableManager.getVariables().get(VariableManager.SELF);
-
         String label = "";
-        if (self instanceof RepresentationMetadata representationMetadata) {
-            label = representationMetadata.getLabel();
-        } else if (self instanceof Resource resource) {
-            label = this.getResourceLabel(resource);
+        if (self instanceof RepresentationMetadata || self instanceof Resource) {
+            label = this.explorerServices.getLabel(self);
         } else if (self instanceof EObject) {
             StyledString styledString = this.objectService.getStyledLabel(self);
             if (!styledString.toString().isBlank()) {
@@ -195,62 +165,24 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
         return StyledString.of(label);
     }
 
-    private String getResourceLabel(Resource resource) {
-        return resource.eAdapters().stream()
-                .filter(ResourceMetadataAdapter.class::isInstance)
-                .map(ResourceMetadataAdapter.class::cast)
-                .findFirst()
-                .map(ResourceMetadataAdapter::getName)
-                .orElse(resource.getURI().lastSegment());
-    }
-
     private boolean isEditable(VariableManager variableManager) {
         Object self = variableManager.getVariables().get(VariableManager.SELF);
-
-        boolean editable = false;
-        if (self instanceof RepresentationMetadata) {
-            editable = true;
-        } else if (self instanceof Resource) {
-            editable = true;
-        } else if (self instanceof EObject) {
-            editable = this.objectService.isLabelEditable(self);
-        }
-        return editable;
-
+        return this.explorerServices.isEditable(self);
     }
 
     private boolean isDeletable(VariableManager variableManager) {
-        return true;
+        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        return this.explorerServices.isDeletable(self);
     }
 
     private boolean isSelectable(VariableManager variableManager) {
-        return true;
+        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        return this.explorerServices.isSelectable(self);
     }
 
     private List<String> getImageURL(VariableManager variableManager) {
         Object self = variableManager.getVariables().get(VariableManager.SELF);
-
-        List<String> imageURL = List.of(CoreImageConstants.DEFAULT_SVG);
-        if (self instanceof EObject) {
-            imageURL = this.objectService.getImagePath(self);
-        } else if (self instanceof RepresentationMetadata representationMetadata) {
-            if (representationMetadata.getIconURLs().isEmpty()) {
-                imageURL = this.representationImageProviders.stream()
-                        .map(representationImageProvider -> representationImageProvider.getImageURL(representationMetadata.getKind()))
-                        .filter(Optional::isPresent)
-                        .flatMap(Optional::stream)
-                        .findFirst()
-                        .map(List::of)
-                        .orElse(List.of());
-            } else {
-                imageURL = representationMetadata.getIconURLs().stream()
-                        .map(RepresentationIconURL::url)
-                        .toList();
-            }
-        } else if (self instanceof Resource) {
-            imageURL = List.of("/explorer/Resource.svg");
-        }
-        return imageURL;
+        return this.explorerServices.getImageURL(self);
     }
 
     private IStatus getDeleteHandler(VariableManager variableManager) {
@@ -296,55 +228,16 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
     }
 
     private Object getTreeItemObject(VariableManager variableManager) {
-        Object result = null;
         var optionalTreeItemId = variableManager.get(TreeDescription.ID, String.class);
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
-
-        if (optionalEditingContext.isPresent() && optionalTreeItemId.isPresent()) {
-            var treeItemId = optionalTreeItemId.get();
-            var editingContext = optionalEditingContext.get();
-            var optionalObject = this.objectService.getObject(editingContext, treeItemId);
-            if (optionalObject.isPresent()) {
-                result = optionalObject.get();
-            } else {
-                var optionalEditingDomain = Optional.of(editingContext)
-                        .filter(IEMFEditingContext.class::isInstance)
-                        .map(IEMFEditingContext.class::cast)
-                        .map(IEMFEditingContext::getDomain);
-
-                if (optionalEditingDomain.isPresent()) {
-                    var editingDomain = optionalEditingDomain.get();
-                    ResourceSet resourceSet = editingDomain.getResourceSet();
-                    URI uri = new JSONResourceFactory().createResourceURI(treeItemId);
-
-                    result = resourceSet.getResources().stream()
-                            .filter(resource -> resource.getURI().equals(uri))
-                            .findFirst()
-                            .orElse(null);
-                }
-            }
-        }
-        return result;
+        return this.explorerServices.getTreeItemObject(optionalTreeItemId.orElse(null), optionalEditingContext.orElse(null));
     }
 
     private Object getParentObject(VariableManager variableManager) {
         Object self = variableManager.getVariables().get(VariableManager.SELF);
         var optionalTreeItemId = variableManager.get(TreeDescription.ID, String.class);
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
-        Object result = null;
-
-        if (self instanceof RepresentationMetadata && optionalTreeItemId.isPresent() && optionalEditingContext.isPresent()) {
-            var optionalRepresentationMetadata = new UUIDParser().parse(optionalTreeItemId.get()).flatMap(this.representationMetadataSearchService::findMetadataById);
-            var targetObjectId = optionalRepresentationMetadata.map(RepresentationMetadata::getTargetObjectId).orElse(null);
-            result = this.objectService.getObject(optionalEditingContext.get(), targetObjectId).orElse(null);
-        } else if (self instanceof EObject eObject) {
-            Object semanticContainer = eObject.eContainer();
-            if (semanticContainer == null) {
-                semanticContainer = eObject.eResource();
-            }
-            result = semanticContainer;
-        }
-        return result;
+        return this.explorerServices.getParent(self, optionalTreeItemId.orElse(null), optionalEditingContext.orElse(null));
     }
 
 }

@@ -94,6 +94,7 @@ Specifiers are also encouraged to implement their own `IRestDataVersionPayloadSe
 - https://github.com/eclipse-sirius/sirius-web/issues/3823[#3823] [table] Remove cell type to use `ICellDescription`
 - https://github.com/eclipse-sirius/sirius-web/issues/4231[#4231] [table] Make table's column resizable
 - https://github.com/eclipse-sirius/sirius-web/issues/4234[#4234] [table] Make table's row resizable
+- https://github.com/eclipse-sirius/sirius-web/issues/4254[#4254] [sirius-web] Make explorer services reusable
 
 == v2024.11.0
 
