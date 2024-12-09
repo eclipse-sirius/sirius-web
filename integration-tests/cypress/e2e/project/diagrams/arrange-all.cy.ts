@@ -26,8 +26,8 @@ describe('Diagram - arrange all', () => {
         project.visit(projectId);
         project.disableDeletionConfirmationDialog();
         const explorer = new Explorer();
-        explorer.expand('Flow');
-        explorer.expand('NewSystem');
+        explorer.expandWithDoubleClick('Flow');
+        explorer.expandWithDoubleClick('NewSystem');
         explorer.selectRepresentation('Topography');
       });
     });
@@ -37,7 +37,7 @@ describe('Diagram - arrange all', () => {
     it('Check arrange all do not marked node as resizedByUser', () => {
       const diagram = new Diagram();
       const explorer = new Explorer();
-      explorer.expand('CompositeProcessor1');
+      explorer.expandWithDoubleClick('CompositeProcessor1');
       explorer.rename('Processor1', 'CPU');
       diagram.getNodes('Topography', 'CPU').should('exist');
       diagram.arrangeAll();
