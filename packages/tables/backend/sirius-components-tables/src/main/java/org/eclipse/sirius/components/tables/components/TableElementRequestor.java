@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.tables.components;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -45,6 +46,11 @@ public class TableElementRequestor implements ITableElementRequestor {
         return this.findColumns(table::getColumns, columnDescription);
     }
 
+    @Override
+    public Optional<Column> getColumn(Table table, String columnId) {
+        return this.findColumn(table::getColumns, columnId);
+    }
+
     private List<Line> findLines(Supplier<List<Line>> lineSupplier, LineDescription lineDescription) {
         return lineSupplier.get().stream()
                 .filter(line -> Objects.equals(line.getDescriptionId(), lineDescription.getId()))
@@ -55,5 +61,11 @@ public class TableElementRequestor implements ITableElementRequestor {
         return columnSupplier.get().stream()
                 .filter(column -> Objects.equals(column.getDescriptionId(), columnDescription.getId()))
                 .toList();
+    }
+
+    private Optional<Column> findColumn(Supplier<List<Column>> columnSupplier, String columnId) {
+        return columnSupplier.get().stream()
+                .filter(column -> Objects.equals(column.getId().toString(), columnId))
+                .findFirst();
     }
 }

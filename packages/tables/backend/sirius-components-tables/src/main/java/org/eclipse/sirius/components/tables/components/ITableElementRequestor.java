@@ -12,13 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.tables.components;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.eclipse.sirius.components.tables.Column;
 import org.eclipse.sirius.components.tables.Line;
 import org.eclipse.sirius.components.tables.Table;
 import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
 import org.eclipse.sirius.components.tables.descriptions.LineDescription;
-
-import java.util.List;
 
 /**
  * Used to find some elements in the previous table.
@@ -26,10 +27,13 @@ import java.util.List;
  * @author arichard
  */
 public interface ITableElementRequestor {
+
     List<Line> getRootLines(Table table, LineDescription lineDescription);
 
     List<Column> getColumns(Table table);
 
     List<Column> getColumns(Table table, ColumnDescription columnDescription);
+
+    Optional<Column> getColumn(Table table, String columnId);
 
 }
