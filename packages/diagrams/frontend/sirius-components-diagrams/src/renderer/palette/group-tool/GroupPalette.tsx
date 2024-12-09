@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PhotoSizeSelectSmallIcon from '@mui/icons-material/PhotoSizeSelectSmall';
 import TonalityIcon from '@mui/icons-material/Tonality';
 import VerticalAlignCenterIcon from '@mui/icons-material/VerticalAlignCenter';
@@ -19,12 +18,8 @@ import ViewColumnIcon from '@mui/icons-material/ViewColumn';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import ViewStreamIcon from '@mui/icons-material/ViewStream';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Paper from '@mui/material/Paper';
-import Popper from '@mui/material/Popper';
 import { Edge, Node, OnSelectionChangeFunc, useOnSelectionChange, useReactFlow } from '@xyflow/react';
-import { Fragment, memo, useCallback, useRef, useState } from 'react';
-import { makeStyles } from 'tss-react/mui';
+import { memo, useCallback, useState } from 'react';
 import { AlignHorizontalCenterIcon } from '../../../icons/AlignHorizontalCenterIcon';
 import { AlignHorizontalLeftIcon } from '../../../icons/AlignHorizontalLeftIcon';
 import { AlignHorizontalRightIcon } from '../../../icons/AlignHorizontalRightIcon';
@@ -40,59 +35,25 @@ import { useHideDiagramElements } from '../../hide/useHideDiagramElements';
 import { useDistributeElements } from '../../layout/useDistributeElements';
 import { ListNodeData } from '../../node/ListNode.types';
 import { usePinDiagramElements } from '../../pin/usePinDiagramElements';
+import { DraggablePalette } from '../draggable-palette/DraggablePalette';
+import { Tool, ToolSection } from '../draggable-palette/DraggablePalette.types';
 import { PalettePortal } from '../PalettePortal';
 import { GroupPaletteProps, GroupPaletteSectionTool, GroupPaletteState } from './GroupPalette.types';
 import { PaletteTool } from './PaletteTool';
 
-const usePaletteStyle = makeStyles()((theme) => ({
-  palette: {
-    border: `1px solid ${theme.palette.divider}`,
-    borderRadius: '2px',
-    zIndex: 5,
-    position: 'fixed',
-    display: 'flex',
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    maxWidth: theme.spacing(45.25),
-  },
-  toolSection: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: theme.spacing(4.5),
-  },
-  toolList: {
-    padding: theme.spacing(0.5),
-    border: `1px solid ${theme.palette.divider}`,
-    borderRadius: '2px',
-    width: 'max-content',
-  },
-  distributeElementList: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  distributeElementSeparator: {
-    borderTop: `1px solid ${theme.palette.divider}`,
-  },
-  distributeElementTool: {
-    flexDirection: 'row',
-    cursor: 'pointer',
-  },
-  arrow: {
-    cursor: 'pointer',
-    height: '14px',
-    width: '14px',
-    marginLeft: -theme.spacing(0.5),
-    marginTop: theme.spacing(1.5),
-  },
-}));
-
 const isListData = (node: Node): node is Node<ListNodeData> => node.type === 'listNode';
 
 const canSelectedNodesBeDistributed = (selectedNodes: Node[]) => selectedNodes.length > 1;
+
+const convertToPaletteEntryTool = (tool: GroupPaletteSectionTool): Tool => {
+  return {
+    id: tool.id,
+    label: tool.title,
+    iconElement: tool.icon,
+    iconURL: [],
+    __typename: 'SingleClickOnDiagramElementTool',
+  };
+};
 
 export const GroupPalette = memo(({ x, y, isOpened, refElementId, hidePalette }: GroupPaletteProps) => {
   const { hideDiagramElements } = useHideDiagramElements();
@@ -148,9 +109,6 @@ export const GroupPalette = memo(({ x, y, isOpened, refElementId, hidePalette }:
   useOnSelectionChange({
     onChange,
   });
-
-  const { classes } = usePaletteStyle();
-  const anchorRef = useRef<SVGSVGElement | null>(null);
 
   const distributeElementTools: GroupPaletteSectionTool[][] = state.isMinimalPalette
     ? []
@@ -253,6 +211,27 @@ export const GroupPalette = memo(({ x, y, isOpened, refElementId, hidePalette }:
         ],
       ];
 
+  const appearancePaletteSectionTools: GroupPaletteSectionTool[] = [
+    {
+      id: 'hide_elements_tool',
+      title: 'Hide elements',
+      icon: <VisibilityOffIcon fontSize="small" />,
+      action: () => hideDiagramElements(state.selectedElementIds, true),
+    },
+    {
+      id: 'fade_elements_tool',
+      title: 'Fade elements',
+      icon: <TonalityIcon fontSize="small" />,
+      action: () => fadeDiagramElements(state.selectedElementIds, true),
+    },
+    {
+      id: 'pin_elements_tool',
+      title: 'Pin elements',
+      icon: <PinIcon fontSize="small" />,
+      action: () => pinDiagramElements(state.selectedElementIds, true),
+    },
+  ];
+
   const shouldRender = state.selectedElementIds.length > 1 && isOpened && x && y;
   if (!shouldRender) {
     if (state.isDistributeElementToolSectionExpand) {
@@ -261,27 +240,35 @@ export const GroupPalette = memo(({ x, y, isOpened, refElementId, hidePalette }:
     return null;
   }
 
-  let caretContent: JSX.Element | undefined;
-  caretContent = (
-    <ExpandMoreIcon
-      className={classes.arrow}
-      style={{ fontSize: 20 }}
-      onClick={(event) => {
-        event.stopPropagation();
-        setState((prevState) => ({ ...prevState, isDistributeElementToolSectionExpand: true }));
-      }}
-      data-testid="expand"
-      ref={anchorRef}
-    />
-  );
-  const handleDistributeElementToolClick = (tool: GroupPaletteSectionTool) => {
-    tool.action();
-    hidePalette();
-    setState((prevState) => ({
-      ...prevState,
-      lastDistributeElementToolId: tool.id,
-      isDistributeElementToolSectionExpand: false,
-    }));
+  const handleDistributeTool = (tool: Tool): void => {
+    const distributeTool: GroupPaletteSectionTool | undefined = distributeElementTools
+      .flatMap((toolSection) => toolSection)
+      .find((toolEntry) => toolEntry.id === tool.id);
+    if (distributeTool) {
+      distributeTool.action();
+      hidePalette();
+      setState((prevState) => ({
+        ...prevState,
+        lastDistributeElementToolId: tool.id,
+        isDistributeElementToolSectionExpand: false,
+      }));
+    }
+  };
+
+  const handleToolClick = (tool: Tool): void => {
+    switch (tool.id) {
+      case 'hide_elements_tool':
+        hideDiagramElements(state.selectedElementIds, true);
+        break;
+      case 'fade_elements_tool':
+        fadeDiagramElements(state.selectedElementIds, true);
+        break;
+      case 'pin_elements_tool':
+        pinDiagramElements(state.selectedElementIds, true);
+        break;
+      default:
+        handleDistributeTool(tool);
+    }
   };
 
   const defaultDistributeTool: GroupPaletteSectionTool | undefined =
@@ -289,67 +276,63 @@ export const GroupPalette = memo(({ x, y, isOpened, refElementId, hidePalette }:
       .flatMap((toolSection) => toolSection)
       .find((tool) => tool.id === state.lastDistributeElementToolId) ?? distributeElementTools[0]?.[0];
 
+  let lastToolInvoked: Tool | null = null;
+
+  if (defaultDistributeTool) {
+    lastToolInvoked = {
+      id: defaultDistributeTool.id,
+      iconURL: [],
+      label: defaultDistributeTool.title,
+      iconElement: defaultDistributeTool.icon,
+      __typename: 'SingleClickOnDiagramElementTool',
+    };
+  }
+
+  const quickAccessToolComponents: JSX.Element[] = [];
+
+  if (!state.isMinimalPalette) {
+    appearancePaletteSectionTools
+      .map((appearanceTool) => (
+        <PaletteTool toolName={appearanceTool.title} onClick={appearanceTool.action}>
+          {appearanceTool.icon}
+        </PaletteTool>
+      ))
+      .forEach((element) => {
+        quickAccessToolComponents.push(element);
+      });
+  }
+
+  const distributeTools: Tool[] = distributeElementTools
+    .flatMap((toolSection) => toolSection)
+    .map(convertToPaletteEntryTool);
+
+  const appearanceTools: Tool[] = appearancePaletteSectionTools.map(convertToPaletteEntryTool);
+  const distributeSection: ToolSection = {
+    __typename: 'ToolSection',
+    iconURL: [],
+    label: 'Distribute elements',
+    id: 'distribute_elements_section',
+    tools: distributeTools,
+  };
+  const appearanceSection: ToolSection = {
+    __typename: 'ToolSection',
+    iconURL: [],
+    label: 'Appearance',
+    id: 'appearance_section',
+    tools: appearanceTools,
+  };
+
   return (
     <PalettePortal>
-      <Paper className={classes.palette} style={{ position: 'absolute', left: x, top: y }} data-testid="GroupPalette">
-        {defaultDistributeTool && (
-          <div className={classes.toolSection}>
-            <PaletteTool
-              toolName={defaultDistributeTool.title}
-              onClick={() => handleDistributeElementToolClick(defaultDistributeTool)}
-              key={defaultDistributeTool.id}>
-              {defaultDistributeTool.icon}
-            </PaletteTool>
-            {caretContent}
-          </div>
-        )}
-        <Popper
-          open={state.isDistributeElementToolSectionExpand}
-          anchorEl={anchorRef.current}
-          placement="bottom-start"
-          disablePortal
-          style={{ zIndex: 9999 }}>
-          <Paper className={classes.toolList} elevation={2}>
-            <ClickAwayListener
-              onClickAway={() => {
-                setState((prevState) => ({ ...prevState, isDistributeElementToolSectionExpand: false }));
-              }}>
-              <div className={classes.distributeElementList}>
-                {distributeElementTools.map((toolSection, index) => (
-                  <Fragment key={index}>
-                    {toolSection.map((tool) => (
-                      <div
-                        className={classes.distributeElementTool}
-                        onClick={() => handleDistributeElementToolClick(tool)}
-                        key={tool.id}>
-                        <PaletteTool
-                          toolName={tool.title}
-                          onClick={() => handleDistributeElementToolClick(tool)}
-                          key={tool.id}>
-                          {tool.icon}
-                        </PaletteTool>
-                        {tool.title}
-                      </div>
-                    ))}
-                    {index < distributeElementTools.length - 1 && <hr className={classes.distributeElementSeparator} />}
-                  </Fragment>
-                ))}
-              </div>
-            </ClickAwayListener>
-          </Paper>
-        </Popper>
-        <PaletteTool toolName={'Hide elements'} onClick={() => hideDiagramElements(state.selectedElementIds, true)}>
-          <VisibilityOffIcon fontSize="small" />
-        </PaletteTool>
-        <PaletteTool toolName={'Fade elements'} onClick={() => fadeDiagramElements(state.selectedElementIds, true)}>
-          <TonalityIcon fontSize="small" />
-        </PaletteTool>
-        {!state.isMinimalPalette && (
-          <PaletteTool toolName={'Pin elements'} onClick={() => pinDiagramElements(state.selectedElementIds, true)}>
-            <PinIcon fontSize="small" />
-          </PaletteTool>
-        )}
-      </Paper>
+      <DraggablePalette
+        x={x}
+        y={y}
+        onToolClick={handleToolClick}
+        paletteEntries={[distributeSection, appearanceSection]}
+        quickAccessToolComponents={quickAccessToolComponents}
+        lastToolInvoked={lastToolInvoked}
+        onEscape={hidePalette}
+      />
     </PalettePortal>
   );
 });

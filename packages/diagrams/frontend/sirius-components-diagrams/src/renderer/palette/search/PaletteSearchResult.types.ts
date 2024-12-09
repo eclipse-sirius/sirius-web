@@ -11,11 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLPalette, GQLTool } from '../Palette.types';
+import { PaletteEntry, Tool } from './../draggable-palette/DraggablePalette.types';
 export interface PaletteSearchResultProps {
-  onToolClick: (tool: GQLTool) => void;
-  palette: GQLPalette;
+  onToolClick: (tool: Tool) => void;
   searchToolValue: string;
+  paletteEntries: PaletteEntry[];
 }
 
 export interface HighlightedLabelProps {
