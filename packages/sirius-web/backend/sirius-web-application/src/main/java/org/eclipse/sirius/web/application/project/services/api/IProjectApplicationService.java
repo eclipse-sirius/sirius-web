@@ -20,8 +20,8 @@ import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
 import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
 import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectInput;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.KeysetScrollPosition;
+import org.springframework.data.domain.Window;
 
 /**
  * Application services used to manipulate projects.
@@ -31,7 +31,7 @@ import org.springframework.data.domain.Pageable;
 public interface IProjectApplicationService {
     Optional<ProjectDTO> findById(UUID id);
 
-    Page<ProjectDTO> findAll(Pageable pageable);
+    Window<ProjectDTO> findAll(KeysetScrollPosition position, int limit);
 
     IPayload createProject(CreateProjectInput input);
 
