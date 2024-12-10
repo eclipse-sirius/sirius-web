@@ -19,6 +19,7 @@ export interface UseValidationViewSubscriptionValue {
 export interface UseValidationViewSubscriptionState {
   id: string;
   complete: boolean;
+  payload: GQLValidationEventPayload | null;
 }
 
 export interface GQLValidationEventVariables {

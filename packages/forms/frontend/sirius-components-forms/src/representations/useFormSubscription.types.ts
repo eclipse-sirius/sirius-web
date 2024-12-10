@@ -22,6 +22,7 @@ export interface UseFormSubscriptionValue {
 export interface UseFormSubscriptionState {
   id: string;
   complete: boolean;
+  payload: GQLFormEventPayload | null;
 }
 
 export interface GQLFormEventInput {

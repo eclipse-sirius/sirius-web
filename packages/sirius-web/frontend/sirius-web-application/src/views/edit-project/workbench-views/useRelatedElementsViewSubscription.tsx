@@ -11,10 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { gql, OnDataOptions, useSubscription } from '@apollo/client';
+import { ApolloError, gql, OnDataOptions, useSubscription } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { formRefreshedEventPayloadFragment } from '@eclipse-sirius/sirius-components-forms';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { flushSync } from 'react-dom';
 import {
   GQLRelatedElementsEventInput,
   GQLRelatedElementsEventSubscription,
@@ -43,6 +44,7 @@ export const useRelatedElementsViewSubscription = (
   const [state, setState] = useState<UseRelatedElementsViewSubscriptionState>({
     id: crypto.randomUUID(),
     complete: false,
+    payload: null,
   });
 
   const input: GQLRelatedElementsEventInput = {
@@ -55,30 +57,31 @@ export const useRelatedElementsViewSubscription = (
 
   const onComplete = () => setState((prevState) => ({ ...prevState, complete: true }));
 
-  const onData = ({}: OnDataOptions<GQLRelatedElementsEventSubscription>) =>
-    setState((prevState) => ({ ...prevState, complete: false }));
-
-  const { data, error, loading } = useSubscription<
-    GQLRelatedElementsEventSubscription,
-    GQLRelatedElementsEventVariables
-  >(gql(getRelatedElementsViewEventSubscription), {
-    variables,
-    fetchPolicy: 'no-cache',
-    skip,
-    onData,
-    onComplete,
-  });
+  const onData = ({ data }: OnDataOptions<GQLRelatedElementsEventSubscription>) =>
+    flushSync(() => {
+      setState((prevState) => ({ ...prevState, payload: data.data.relatedElementsEvent, complete: false }));
+    });
 
   const { addErrorMessage } = useMultiToast();
-  useEffect(() => {
-    if (error) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
+  const onError = ({ message }: ApolloError) => {
+    addErrorMessage(message);
+  };
+
+  const { loading } = useSubscription<GQLRelatedElementsEventSubscription, GQLRelatedElementsEventVariables>(
+    gql(getRelatedElementsViewEventSubscription),
+    {
+      variables,
+      fetchPolicy: 'no-cache',
+      skip,
+      onData,
+      onComplete,
+      onError,
     }
-  }, [error]);
+  );
 
   return {
     loading,
-    payload: data?.relatedElementsEvent ?? null,
+    payload: state.payload,
     complete: state.complete,
   };
 };

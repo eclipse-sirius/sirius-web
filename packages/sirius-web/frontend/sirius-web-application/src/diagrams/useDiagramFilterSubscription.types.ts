@@ -22,6 +22,7 @@ export interface UseDiagramFilterSubscriptionValue {
 export interface UseDiagramFilterSubscriptionState {
   id: string;
   complete: boolean;
+  payload: GQLDiagramFilterEventPayload | null;
 }
 
 export interface GQLDiagramFilterEventInput {
