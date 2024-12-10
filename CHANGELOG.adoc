@@ -50,6 +50,7 @@ This provider is in charge of getting the icon list of the representation.
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4195[#4195] [sirius-web] Prevent objects disappearing when dropped on themselves (or a descendant) in the _Explorer_.
+- https://github.com/eclipse-sirius/sirius-web/issues/4204[#4204] [core] Prevent the changeDescriptionSink from crashing because of the related representation refresh
 
 
 === New Features

@@ -147,6 +147,6 @@ public class Result {
 
     @Override
     public String toString() {
-        return MessageFormat.format("Result { status: {0}, rawValue: {1}}", this.status, this.rawValue);
+        return MessageFormat.format("Result '{' status: {0}, rawValue: {1} '}'", this.status, this.rawValue);
     }
 }
