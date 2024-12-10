@@ -9,7 +9,7 @@
 === Architectural decision records
 
 - [ADR-172] Add support for Project Data Versioning REST APIs
-
+- [ADR-173] Add support for Pagination in REST APIs
 
 === Deprecation warning
 
