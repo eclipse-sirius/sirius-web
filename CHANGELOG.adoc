@@ -3,7 +3,7 @@
 == v2025.1.0 (work in progress)
 
 === Shapes
-
+- Add support of non synchronized tables
 
 
 === Architectural decision records
