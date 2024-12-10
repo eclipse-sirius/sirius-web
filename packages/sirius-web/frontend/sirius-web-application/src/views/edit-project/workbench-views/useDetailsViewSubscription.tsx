@@ -11,10 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { gql, OnDataOptions, useSubscription } from '@apollo/client';
+import { ApolloError, gql, OnDataOptions, useSubscription } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { formRefreshedEventPayloadFragment } from '@eclipse-sirius/sirius-components-forms';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { flushSync } from 'react-dom';
 import {
   GQLDetailsEventInput,
   GQLDetailsEventSubscription,
@@ -54,12 +55,20 @@ export const useDetailsViewSubscription = (
 
   const variables: GQLDetailsEventVariables = { input };
 
+  const onData = ({ data }: OnDataOptions<GQLDetailsEventSubscription>) => {
+    flushSync(() => {
+      setState((prevState) => ({ ...prevState, payload: data.data.detailsEvent, complete: false }));
+    });
+  };
+
+  const { addErrorMessage } = useMultiToast();
+  const onError = ({ message }: ApolloError) => {
+    addErrorMessage(message);
+  };
+
   const onComplete = () => setState((prevState) => ({ ...prevState, complete: true }));
 
-  const onData = ({}: OnDataOptions<GQLDetailsEventSubscription>) =>
-    setState((prevState) => ({ ...prevState, complete: false }));
-
-  const { data, error, loading } = useSubscription<GQLDetailsEventSubscription, GQLDetailsEventVariables>(
+  const { loading } = useSubscription<GQLDetailsEventSubscription, GQLDetailsEventVariables>(
     gql(getDetailsViewEventSubscription),
     {
       variables,
@@ -67,19 +76,13 @@ export const useDetailsViewSubscription = (
       skip,
       onData,
       onComplete,
+      onError,
     }
   );
 
-  const { addErrorMessage } = useMultiToast();
-  useEffect(() => {
-    if (error) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
-    }
-  }, [error]);
-
   return {
     loading,
-    payload: data?.detailsEvent ?? null,
+    payload: state.payload,
     complete: state.complete,
   };
 };

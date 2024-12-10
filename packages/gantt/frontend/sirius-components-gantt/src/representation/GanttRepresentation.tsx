@@ -11,10 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Task, TaskOrEmpty } from '@ObeoNetwork/gantt-task-react';
-import { useSubscription } from '@apollo/client';
+import { ApolloError, OnDataOptions, useSubscription } from '@apollo/client';
 import { RepresentationComponentProps, useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { flushSync } from 'react-dom';
 import { makeStyles } from 'tss-react/mui';
 import { useGanttMutations } from '../graphql/mutation/useGanttMutations';
 import {
@@ -64,9 +65,7 @@ const isErrorPayload = (payload: GQLGanttEventPayload): payload is GQLErrorPaylo
  */
 export const GanttRepresentation = ({ editingContextId, representationId }: RepresentationComponentProps) => {
   const { classes } = useGanttRepresentationStyles();
-
   const { addErrorMessage, addMessages } = useMultiToast();
-
   const { setSelection } = useSelection();
 
   const [{ id, gantt, complete }, setState] = useState<GanttRepresentationState>({
@@ -75,18 +74,14 @@ export const GanttRepresentation = ({ editingContextId, representationId }: Repr
     complete: false,
   });
 
-  const { error } = useSubscription<GQLGanttEventSubscription>(ganttEventSubscription, {
-    variables: {
-      input: {
-        id,
-        editingContextId,
-        ganttId: representationId,
-      },
-    },
-    fetchPolicy: 'no-cache',
-    onData: ({ data: subscriptionData }) => {
-      if (subscriptionData?.data) {
-        const { ganttEvent } = subscriptionData.data;
+  const onError = ({ message }: ApolloError) => {
+    addErrorMessage(message);
+  };
+
+  const onData = ({ data }: OnDataOptions<GQLGanttEventSubscription>) => {
+    flushSync(() => {
+      if (data.data) {
+        const { ganttEvent } = data.data;
         if (isGanttRefreshedEventPayload(ganttEvent)) {
           setState((previousState) => {
             return { ...previousState, gantt: ganttEvent.gantt };
@@ -95,19 +90,26 @@ export const GanttRepresentation = ({ editingContextId, representationId }: Repr
           addMessages(ganttEvent.messages);
         }
       }
+    });
+  };
+
+  useSubscription<GQLGanttEventSubscription>(ganttEventSubscription, {
+    variables: {
+      input: {
+        id,
+        editingContextId,
+        ganttId: representationId,
+      },
     },
+    fetchPolicy: 'no-cache',
+    onData,
+    onError,
     onComplete: () => {
       setState((previousState) => {
         return { ...previousState, complete: true, gantt: null };
       });
     },
   });
-
-  useEffect(() => {
-    if (error) {
-      addErrorMessage(error.message);
-    }
-  }, [error]);
 
   //---------------------------------
   // Mutations

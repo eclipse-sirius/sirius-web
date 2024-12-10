@@ -2160,6 +2160,7 @@ The `label` value is displayed before the widget to be consistent with other pro
 - https://github.com/eclipse-sirius/sirius-components/issues/1341[#1341] [diagram] Expose source and target node variables during EdgeTool execution
 - [core] The input and payloads manipulated by the `EditingContextEventProcessor` can now be logged using `
 logging.level.org.eclipse.sirius.components.collaborative.editingcontext.EditingContextEventProcessor=trace`
+- https://github.com/eclipse-sirius/sirius-web/issues/4278[#4278] Always use onData callback with useSubscription
 
 === New features
 

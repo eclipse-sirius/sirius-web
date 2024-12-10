@@ -11,11 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { gql, OnDataOptions, useSubscription } from '@apollo/client';
+import { ApolloError, gql, OnDataOptions, useSubscription } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
+import { flushSync } from 'react-dom';
 import { getTreeEventSubscription } from '../views/getTreeEventSubscription';
 import {
   GQLTreeEventData,
@@ -51,34 +52,34 @@ export const useTreeSubscription = (
   const variables: GQLTreeEventVariables = { input };
 
   const onData = ({ data }: OnDataOptions<GQLTreeEventData>) => {
-    const { data: gqlTreeData } = data;
-    if (gqlTreeData) {
-      const { treeEvent: payload } = gqlTreeData;
-      if (isTreeRefreshedEventPayload(payload)) {
-        const { tree } = payload;
-        setState((prevState) => ({ ...prevState, tree }));
+    flushSync(() => {
+      if (data.data) {
+        const { treeEvent: payload } = data.data;
+        if (isTreeRefreshedEventPayload(payload)) {
+          const { tree } = payload;
+          setState((prevState) => ({ ...prevState, tree }));
+        }
       }
-    }
+    });
   };
 
   const onComplete = () => setState((prevState) => ({ ...prevState, complete: true }));
 
-  const { error, loading } = useSubscription<GQLTreeEventData, GQLTreeEventVariables>(
+  const { addErrorMessage } = useMultiToast();
+  const onError = ({ message }: ApolloError) => {
+    addErrorMessage(message);
+  };
+
+  const { loading } = useSubscription<GQLTreeEventData, GQLTreeEventVariables>(
     gql(getTreeEventSubscription(maxDepth, 'treeEvent', 'TreeEventInput')),
     {
       variables,
       fetchPolicy: 'no-cache',
       onData,
       onComplete,
+      onError,
     }
   );
-
-  const { addErrorMessage } = useMultiToast();
-  useEffect(() => {
-    if (error) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
-    }
-  }, [error]);
 
   return {
     loading,

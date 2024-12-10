@@ -10,8 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { gql, useSubscription } from '@apollo/client';
-import { useEffect, useState } from 'react';
+import { ApolloError, gql, OnDataOptions, useSubscription } from '@apollo/client';
+import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { useState } from 'react';
+import { flushSync } from 'react-dom';
 import {
   GQLPortalEventPayload,
   GQLPortalEventSubscription,
@@ -70,27 +72,31 @@ export const usePortal = (editingContextId: string, representationId: string): U
     },
   };
 
-  const { error } = useSubscription<GQLPortalEventSubscription, GQLPortalEventVariables>(portalEventSubscription, {
-    variables,
-    fetchPolicy: 'no-cache',
-    onData: ({ data }) => {
+  const { addErrorMessage } = useMultiToast();
+  const onError = ({ message }: ApolloError) => {
+    addErrorMessage(message);
+  };
+
+  const onData = ({ data }: OnDataOptions<GQLPortalEventSubscription>) => {
+    flushSync(() => {
       if (data.data) {
         const { portalEvent } = data.data;
         if (isPortalRefreshedEventPayload(portalEvent)) {
           setState((prevState) => ({ ...prevState, portal: portalEvent.portal }));
         }
       }
-    },
-    onComplete: () => {
-      setState((prevState) => ({ ...prevState, portal: null, complete: true }));
-    },
-  });
+    });
+  };
 
-  useEffect(() => {
-    if (error) {
-      setState((prevState) => ({ ...prevState, message: error.message }));
-    }
-  }, [error]);
+  const onComplete = () => setState((prevState) => ({ ...prevState, portal: null, complete: true }));
+
+  useSubscription<GQLPortalEventSubscription, GQLPortalEventVariables>(portalEventSubscription, {
+    variables,
+    fetchPolicy: 'no-cache',
+    onData,
+    onComplete,
+    onError,
+  });
 
   return { portal: state.portal, complete: state.complete, message: state.message };
 };

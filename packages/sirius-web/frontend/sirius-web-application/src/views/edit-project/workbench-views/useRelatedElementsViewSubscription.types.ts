@@ -22,6 +22,7 @@ export interface UseRelatedElementsViewSubscriptionValue {
 export interface UseRelatedElementsViewSubscriptionState {
   id: string;
   complete: boolean;
+  payload: GQLRelatedElementsEventPayload | null;
 }
 
 export interface GQLRelatedElementsEventInput {
