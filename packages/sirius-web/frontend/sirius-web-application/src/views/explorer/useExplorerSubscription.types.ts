@@ -21,6 +21,7 @@ export interface UseExplorerSubscriptionValue {
 export interface UseExplorerSubscriptionState {
   id: string;
   complete: boolean;
+  payload: GQLTreeEventPayload | null;
 }
 
 export interface GQLExplorerEventInput {

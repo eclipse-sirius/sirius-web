@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { useSubscription } from '@apollo/client';
+import { ApolloError, OnDataOptions, useSubscription } from '@apollo/client';
 import {
   RepresentationComponentProps,
   UseSelectionValue,
@@ -20,8 +20,8 @@ import {
 } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
 import { Theme, useTheme } from '@mui/material/styles';
-import { makeStyles } from 'tss-react/mui';
 import { useEffect, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { Deck } from '../Deck';
 import { Card, CardMetadata, Lane } from '../Deck.types';
 import {
@@ -42,6 +42,7 @@ import {
   GQLLane,
 } from './deckSubscription.types';
 
+import { flushSync } from 'react-dom';
 import { useDeckMutations } from './useDeckMutations';
 
 const useDeckRepresentationStyles = makeStyles()(() => ({
@@ -68,18 +69,9 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
     complete: false,
   });
 
-  const { error } = useSubscription<GQLDeckEventSubscription>(deckEventSubscription, {
-    variables: {
-      input: {
-        id,
-        editingContextId,
-        deckId: representationId,
-      },
-    },
-    fetchPolicy: 'no-cache',
-
-    onData: ({ data }) => {
-      if (data?.data) {
+  const onData = ({ data }: OnDataOptions<GQLDeckEventSubscription>) => {
+    flushSync(() => {
+      if (data.data) {
         const { deckEvent } = data.data;
         if (isDeckRefreshedEventPayload(deckEvent)) {
           setState((prevState) => {
@@ -89,22 +81,31 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
           addMessages(deckEvent.messages);
         }
       }
+    });
+  };
+
+  const onError = ({ message }: ApolloError) => {
+    addErrorMessage(message);
+  };
+
+  const onComplete = () => setState((prevState) => ({ ...prevState, complete: true, deck: undefined }));
+
+  useSubscription<GQLDeckEventSubscription>(deckEventSubscription, {
+    variables: {
+      input: {
+        id,
+        editingContextId,
+        deckId: representationId,
+      },
     },
-    onComplete: () => {
-      setState((prevState) => {
-        return { ...prevState, complete: true, deck: undefined };
-      });
-    },
+    fetchPolicy: 'no-cache',
+    onData,
+    onComplete,
+    onError,
   });
 
   const { deleteCard, editDeckCard, createCard, dropDeckCard, editDeckLane, dropDeckLane, changeLaneCollapsedState } =
     useDeckMutations(editingContextId, representationId);
-
-  useEffect(() => {
-    if (error) {
-      addErrorMessage(error.message);
-    }
-  }, [error]);
 
   useEffect(() => {
     if (deck && selection.entries) {

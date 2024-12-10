@@ -11,10 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { gql, OnDataOptions, useSubscription } from '@apollo/client';
+import { ApolloError, gql, OnDataOptions, useSubscription } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { getTreeEventSubscription } from '@eclipse-sirius/sirius-components-trees';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { flushSync } from 'react-dom';
 import {
   GQLModelBrowserEventData,
   GQLModelBrowserEventInput,
@@ -48,35 +49,35 @@ export const useModelBrowserSubscription = (
 
   const variables: GQLModelBrowserEventVariables = { input };
 
+  const { addErrorMessage } = useMultiToast();
+  const onError = ({ message }: ApolloError) => {
+    addErrorMessage(message);
+  };
+
   const onData = ({ data }: OnDataOptions<GQLModelBrowserEventData>) => {
-    const { data: gqlTreeData } = data;
-    if (gqlTreeData) {
-      const { modelBrowserEvent: payload } = gqlTreeData;
-      if (isTreeRefreshedEventPayload(payload)) {
-        const { tree } = payload;
-        setState((prevState) => ({ ...prevState, tree }));
+    flushSync(() => {
+      if (data.data) {
+        const { modelBrowserEvent } = data.data;
+        if (isTreeRefreshedEventPayload(modelBrowserEvent)) {
+          const { tree } = modelBrowserEvent;
+          setState((prevState) => ({ ...prevState, tree }));
+        }
       }
-    }
+    });
   };
 
   const onComplete = () => setState((prevState) => ({ ...prevState, complete: true }));
 
-  const { error, loading } = useSubscription<GQLModelBrowserEventData, GQLModelBrowserEventVariables>(
+  const { loading } = useSubscription<GQLModelBrowserEventData, GQLModelBrowserEventVariables>(
     gql(getTreeEventSubscription(maxDepth, 'modelBrowserEvent', 'ModelBrowserEventInput')),
     {
       variables,
       fetchPolicy: 'no-cache',
       onData,
       onComplete,
+      onError,
     }
   );
-
-  const { addErrorMessage } = useMultiToast();
-  useEffect(() => {
-    if (error) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
-    }
-  }, [error]);
 
   return {
     loading,
