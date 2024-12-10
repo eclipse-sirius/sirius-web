@@ -1,0 +1,35 @@
+= ADR-XXX - Add support for additional variables during representation rendering
+
+== Context
+
+When rendering a representation, Sirius Components will invoke many different user-supplied functions.
+The execution context of these functions is controlled by the corresponding `IComponent` through the `VariableManager` passed to the function.
+The only variables available to the user-supplied functions are the ones defined by Sirius itself.
+
+As a consequence, every invocation of such a function starts "from scratch" and needs to compute everything it needs from only the Sirius-supplied variables each time.
+During a given rendering of a representation, the state of the underlying semantic model, the previous state of the representation (if there is one) and the representation description itself can be assumed to be fixed.
+
+=> opportunity to pre-compute some global information once (per render) to speed up the repeated invocations of the functions.
+
+== Decision
+
+We will add:
+
+```java
+interface IRepresentationDescription
+  default Function<VariableManager, VariableManager> getRenderVariablesProvider() {
+    return (variableManager) -> new VariableManager();
+  }
+}
+```
+
+The renderVariablesProvider will be guaranteed to be invoked exactly once per representation rendering, before any other user-supplied function.
+The variables it returns will be added to the evaluation context of all successive user-supplied function invocation (during the same refresh).
+If such a variable uses a name which conflicts with a system-provided variable, it will be ignored and a error will be logged so that the developer can change the name of his variable.
+
+== Status
+
+Draft.
+
+== Consequences
+
