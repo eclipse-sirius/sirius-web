@@ -11,9 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { gql, OnDataOptions, useSubscription } from '@apollo/client';
+import { ApolloError, gql, OnDataOptions, useSubscription } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { flushSync } from 'react-dom';
 import {
   GQLValidationEventInput,
   GQLValidationEventSubscription,
@@ -48,6 +49,7 @@ export const useValidationViewSubscription = (
   const [state, setState] = useState<UseValidationViewSubscriptionState>({
     id: crypto.randomUUID(),
     complete: false,
+    payload: null,
   });
 
   const input: GQLValidationEventInput = {
@@ -60,10 +62,22 @@ export const useValidationViewSubscription = (
 
   const onComplete = () => setState((prevState) => ({ ...prevState, complete: true }));
 
-  const onData = ({}: OnDataOptions<GQLValidationEventSubscription>) =>
-    setState((prevState) => ({ ...prevState, complete: false }));
+  const onData = ({ data }: OnDataOptions<GQLValidationEventSubscription>) =>
+    flushSync(() => {
+      if (data.data) {
+        const { validationEvent } = data.data;
+        if (validationEvent) {
+          setState((prevState) => ({ ...prevState, payload: validationEvent, complete: false }));
+        }
+      }
+    });
 
-  const { data, error, loading } = useSubscription<GQLValidationEventSubscription, GQLValidationEventVariables>(
+  const { addErrorMessage } = useMultiToast();
+  const onError = ({ message }: ApolloError) => {
+    addErrorMessage(message);
+  };
+
+  const { loading } = useSubscription<GQLValidationEventSubscription, GQLValidationEventVariables>(
     gql(getValidationViewEventSubscription),
     {
       variables,
@@ -71,19 +85,13 @@ export const useValidationViewSubscription = (
       skip,
       onData,
       onComplete,
+      onError,
     }
   );
 
-  const { addErrorMessage } = useMultiToast();
-  useEffect(() => {
-    if (error) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
-    }
-  }, [error]);
-
   return {
     loading,
-    payload: data?.validationEvent ?? null,
+    payload: state.payload,
     complete: state.complete,
   };
 };

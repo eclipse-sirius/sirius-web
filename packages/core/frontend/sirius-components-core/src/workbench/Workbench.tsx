@@ -10,9 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { gql, useSubscription } from '@apollo/client';
+import { ApolloError, gql, OnDataOptions, useSubscription } from '@apollo/client';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
+import { flushSync } from 'react-dom';
 import { makeStyles } from 'tss-react/mui';
 import { StateMachine } from 'xstate';
 import { useComponent } from '../extension/useComponent';
@@ -97,7 +98,27 @@ export const Workbench = ({
 
   const { data: representationFactories } = useData(representationFactoryExtensionPoint);
 
-  const { error } = useSubscription<GQLEditingContextEventSubscription>(editingContextEventSubscription, {
+  const onData = ({ data }: OnDataOptions<GQLEditingContextEventSubscription>) => {
+    flushSync(() => {
+      const handleDataEvent: HandleSubscriptionResultEvent = {
+        type: 'HANDLE_SUBSCRIPTION_RESULT',
+        result: data,
+      };
+      dispatch(handleDataEvent);
+    });
+  };
+
+  const onError = ({ message }: ApolloError) => {
+    const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
+    dispatch(showToastEvent);
+  };
+
+  const onComplete = () => {
+    const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
+    dispatch(completeEvent);
+  };
+
+  useSubscription<GQLEditingContextEventSubscription>(editingContextEventSubscription, {
     variables: {
       input: {
         id,
@@ -105,26 +126,10 @@ export const Workbench = ({
       },
     },
     fetchPolicy: 'no-cache',
-    onData: ({ data }) => {
-      const handleDataEvent: HandleSubscriptionResultEvent = {
-        type: 'HANDLE_SUBSCRIPTION_RESULT',
-        result: data,
-      };
-      dispatch(handleDataEvent);
-    },
-    onComplete: () => {
-      const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
-      dispatch(completeEvent);
-    },
+    onData,
+    onComplete,
+    onError,
   });
-
-  useEffect(() => {
-    if (error) {
-      const { message } = error;
-      const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-      dispatch(showToastEvent);
-    }
-  }, [error, dispatch]);
 
   useEffect(() => {
     const updateSelectedRepresentation: UpdateSelectedRepresentationEvent = {

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { gql, useSubscription } from '@apollo/client';
+import { ApolloError, gql, OnDataOptions, useSubscription } from '@apollo/client';
 import { ComponentExtension, Toast, useComponent, useComponents } from '@eclipse-sirius/sirius-components-core';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -24,7 +24,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { emphasize } from '@mui/material/styles';
 import { useMachine } from '@xstate/react';
-import React, { useEffect } from 'react';
+import React from 'react';
+import { flushSync } from 'react-dom';
 import { Navigate, Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { StateMachine } from 'xstate';
@@ -41,6 +42,7 @@ import { editProjectNavbarSubtitleExtensionPoint } from './EditProjectNavbarExte
 import {
   EditProjectNavbarContext,
   EditProjectNavbarEvent,
+  editProjectNavbarMachine,
   EditProjectNavbarStateSchema,
   HandleCloseContextMenuEvent,
   HandleCloseModalEvent,
@@ -52,7 +54,6 @@ import {
   HideToastEvent,
   SchemaValue,
   ShowToastEvent,
-  editProjectNavbarMachine,
 } from './EditProjectNavbarMachine';
 import {
   editProjectNavbarMenuContainerExtensionPoint,
@@ -110,7 +111,22 @@ export const EditProjectNavbar = ({ readOnly }: EditProjectNavbarProps) => {
   const { toast, navbar } = value as SchemaValue;
   const { id, to, modalDisplayed, projectMenuAnchor, projectName, message } = context;
 
-  const { error } = useSubscription<GQLProjectEventSubscription>(projectEventSubscription, {
+  const onError = ({ message }: ApolloError) => {
+    const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
+    dispatch(showToastEvent);
+  };
+
+  const onData = ({ data }: OnDataOptions<GQLProjectEventSubscription>) => {
+    flushSync(() => {
+      const handleDataEvent: HandleSubscriptionResultEvent = {
+        type: 'HANDLE_SUBSCRIPTION_RESULT',
+        result: data,
+      };
+      dispatch(handleDataEvent);
+    });
+  };
+
+  useSubscription<GQLProjectEventSubscription>(projectEventSubscription, {
     variables: {
       input: {
         id,
@@ -119,26 +135,13 @@ export const EditProjectNavbar = ({ readOnly }: EditProjectNavbarProps) => {
     },
     fetchPolicy: 'no-cache',
     skip: navbar === 'complete',
-    onData: ({ data }) => {
-      const handleDataEvent: HandleSubscriptionResultEvent = {
-        type: 'HANDLE_SUBSCRIPTION_RESULT',
-        result: data,
-      };
-      dispatch(handleDataEvent);
-    },
+    onData,
     onComplete: () => {
       const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
       dispatch(completeEvent);
     },
+    onError,
   });
-
-  useEffect(() => {
-    if (error) {
-      const { message } = error;
-      const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-      dispatch(showToastEvent);
-    }
-  }, [error]);
 
   const onMoreClick = (event: React.MouseEvent<HTMLElement>) => {
     if (navbar === 'empty') {

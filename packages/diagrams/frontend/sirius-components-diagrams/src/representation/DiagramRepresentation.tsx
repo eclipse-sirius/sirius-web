@@ -15,6 +15,7 @@ import { gql, OnDataOptions, useQuery, useSubscription } from '@apollo/client';
 import { RepresentationComponentProps, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { ReactFlowProvider } from '@xyflow/react';
 import { memo, useEffect, useState } from 'react';
+import { flushSync } from 'react-dom';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramDescriptionContext } from '../contexts/DiagramDescriptionContext';
 import { DialogContextProvider } from '../dialog/DialogContext';
@@ -97,16 +98,6 @@ export const DiagramRepresentation = memo(
       },
     };
 
-    const onData = ({ data }: OnDataOptions<GQLDiagramEventData>) => {
-      if (data.data) {
-        const { diagramEvent } = data.data;
-        if (isDiagramRefreshedEventPayload(diagramEvent)) {
-          setState((prevState) => ({ ...prevState, diagramRefreshedEventPayload: diagramEvent }));
-        }
-        setState((prevState) => ({ ...prevState, payload: diagramEvent }));
-      }
-    };
-
     const {
       loading: diagramDescriptionLoading,
       data: diagramDescriptionData,
@@ -131,6 +122,18 @@ export const DiagramRepresentation = memo(
         addErrorMessage(message);
       }
     }, [diagramDescriptionLoading, diagramDescriptionData, diagramDescriptionError]);
+
+    const onData = ({ data }: OnDataOptions<GQLDiagramEventData>) => {
+      flushSync(() => {
+        if (data.data) {
+          const { diagramEvent } = data.data;
+          if (isDiagramRefreshedEventPayload(diagramEvent)) {
+            setState((prevState) => ({ ...prevState, diagramRefreshedEventPayload: diagramEvent }));
+          }
+          setState((prevState) => ({ ...prevState, payload: diagramEvent }));
+        }
+      });
+    };
 
     const onComplete = () => {
       setState((prevState) => ({ ...prevState, diagramRefreshedEventPayload: null, complete: true }));
