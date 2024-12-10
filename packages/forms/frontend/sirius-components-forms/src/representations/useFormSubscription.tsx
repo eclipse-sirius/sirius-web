@@ -11,9 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { gql, OnDataOptions, useSubscription } from '@apollo/client';
+import { ApolloError, gql, OnDataOptions, useSubscription } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { flushSync } from 'react-dom';
 import { formRefreshedEventPayloadFragment } from '../form/FormEventFragments';
 import {
   GQLFormEventInput,
@@ -44,6 +45,7 @@ export const useFormSubscription = (editingContextId: string, formId: string): U
   const [state, setState] = useState<UseFormSubscriptionState>({
     id: crypto.randomUUID(),
     complete: false,
+    payload: null,
   });
 
   const input: GQLFormEventInput = {
@@ -56,37 +58,34 @@ export const useFormSubscription = (editingContextId: string, formId: string): U
 
   const onComplete = () => setState((prevState) => ({ ...prevState, complete: true }));
 
-  const onData = ({ data }: OnDataOptions<GQLFormEventSubscription>) => {
-    const { data: gqlDetailsEventSubscription } = data;
-    if (gqlDetailsEventSubscription) {
-      const { formEvent: payload } = gqlDetailsEventSubscription;
-      setState((prevState) => ({ ...prevState, payload, complete: false }));
-      if (isFormRefreshedEventPayload(payload)) {
-        setState((prevState) => ({ ...prevState, complete: false }));
-      }
-    }
+  const { addErrorMessage } = useMultiToast();
+  const onError = ({ message }: ApolloError) => {
+    addErrorMessage(message);
   };
 
-  const { data, error, loading } = useSubscription<GQLFormEventSubscription, GQLFormEventVariables>(
-    gql(formEventSubscription),
-    {
-      variables,
-      fetchPolicy: 'no-cache',
-      onData,
-      onComplete,
-    }
-  );
+  const onData = ({ data }: OnDataOptions<GQLFormEventSubscription>) => {
+    flushSync(() => {
+      if (data.data) {
+        const { formEvent } = data.data;
+        setState((prevState) => ({ ...prevState, payload: data.data.formEvent, complete: false }));
+        if (isFormRefreshedEventPayload(formEvent)) {
+          setState((prevState) => ({ ...prevState, complete: false }));
+        }
+      }
+    });
+  };
 
-  const { addErrorMessage } = useMultiToast();
-  useEffect(() => {
-    if (error) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
-    }
-  }, [error]);
+  const { loading } = useSubscription<GQLFormEventSubscription, GQLFormEventVariables>(gql(formEventSubscription), {
+    variables,
+    fetchPolicy: 'no-cache',
+    onData,
+    onComplete,
+    onError,
+  });
 
   return {
     loading,
-    payload: !!data?.formEvent ? data.formEvent : null,
+    payload: state.payload,
     complete: state.complete,
   };
 };

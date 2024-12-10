@@ -11,10 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { gql, OnDataOptions, useSubscription } from '@apollo/client';
+import { ApolloError, gql, OnDataOptions, useSubscription } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { formRefreshedEventPayloadFragment } from '@eclipse-sirius/sirius-components-forms';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { flushSync } from 'react-dom';
 import {
   GQLDiagramFilterEventInput,
   GQLDiagramFilterEventSubscription,
@@ -43,6 +44,7 @@ export const useDiagramFilterSubscription = (
   const [state, setState] = useState<UseDiagramFilterSubscriptionState>({
     id: crypto.randomUUID(),
     complete: false,
+    payload: null,
   });
 
   const input: GQLDiagramFilterEventInput = {
@@ -55,10 +57,18 @@ export const useDiagramFilterSubscription = (
 
   const onComplete = () => setState((prevState) => ({ ...prevState, complete: true }));
 
-  const onData = ({}: OnDataOptions<GQLDiagramFilterEventSubscription>) =>
-    setState((prevState) => ({ ...prevState, complete: false }));
+  const onData = ({ data }: OnDataOptions<GQLDiagramFilterEventSubscription>) => {
+    flushSync(() => {
+      setState((prevState) => ({ ...prevState, payload: data.data.diagramFilterEvent, complete: false }));
+    });
+  };
 
-  const { data, error, loading } = useSubscription<GQLDiagramFilterEventSubscription, GQLDiagramFilterEventVariables>(
+  const { addErrorMessage } = useMultiToast();
+  const onError = ({ message }: ApolloError) => {
+    addErrorMessage(message);
+  };
+
+  const { loading } = useSubscription<GQLDiagramFilterEventSubscription, GQLDiagramFilterEventVariables>(
     gql(getDiagramFilterEventSubscription),
     {
       variables,
@@ -66,19 +76,13 @@ export const useDiagramFilterSubscription = (
       skip,
       onData,
       onComplete,
+      onError,
     }
   );
 
-  const { addErrorMessage } = useMultiToast();
-  useEffect(() => {
-    if (error) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
-    }
-  }, [error]);
-
   return {
     loading,
-    payload: data?.diagramFilterEvent ?? null,
+    payload: state.payload,
     complete: state.complete,
   };
 };

@@ -10,10 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { gql, OnDataOptions, useSubscription } from '@apollo/client';
+import { ApolloError, gql, OnDataOptions, useSubscription } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { flushSync } from 'react-dom';
 import {
   GQLTableEventData,
   GQLTableEventInput,
@@ -121,46 +122,43 @@ export const useTableSubscription = (editingContextId: string, representationId:
   const variables: GQLTableEventVariables = { input };
 
   const onData = ({ data }: OnDataOptions<GQLTableEventData>) => {
-    const { data: gqlTableData } = data;
-    if (gqlTableData) {
-      const { tableEvent: payload } = gqlTableData;
-      if (isTableRefreshedEventPayload(payload)) {
-        const { table } = payload;
-        setState((prevState) => ({ ...prevState, table }));
-      } else if (isTableGlobalFilterValuePayload(payload)) {
-        const { globalFilterValue } = payload;
-        setState((prevState) => {
-          if (prevState.table) {
-            return {
-              ...prevState,
-              table: { ...prevState.table, globalFilter: globalFilterValue },
-            };
-          } else {
-            return prevState;
-          }
-        });
+    flushSync(() => {
+      if (data.data) {
+        const { tableEvent: payload } = data.data;
+        if (isTableRefreshedEventPayload(payload)) {
+          const { table } = payload;
+          setState((prevState) => ({ ...prevState, table }));
+        } else if (isTableGlobalFilterValuePayload(payload)) {
+          const { globalFilterValue } = payload;
+          setState((prevState) => {
+            if (prevState.table) {
+              return {
+                ...prevState,
+                table: { ...prevState.table, globalFilter: globalFilterValue },
+              };
+            } else {
+              return prevState;
+            }
+          });
+        }
       }
-    }
+    });
   };
 
   const onComplete = () => setState((prevState) => ({ ...prevState, complete: true }));
 
-  const { error, loading } = useSubscription<GQLTableEventData, GQLTableEventVariables>(
-    gql(getTableEventSubscription),
-    {
-      variables,
-      fetchPolicy: 'no-cache',
-      onData,
-      onComplete,
-    }
-  );
-
   const { addErrorMessage } = useMultiToast();
-  useEffect(() => {
-    if (error) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
-    }
-  }, [error]);
+  const onError = ({ message }: ApolloError) => {
+    addErrorMessage(message);
+  };
+
+  const { loading } = useSubscription<GQLTableEventData, GQLTableEventVariables>(gql(getTableEventSubscription), {
+    variables,
+    fetchPolicy: 'no-cache',
+    onData,
+    onComplete,
+    onError,
+  });
 
   return {
     loading,

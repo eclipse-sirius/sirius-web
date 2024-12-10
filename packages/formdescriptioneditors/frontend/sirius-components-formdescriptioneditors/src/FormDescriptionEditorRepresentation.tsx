@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { gql, useSubscription } from '@apollo/client';
+import { gql, OnDataOptions, useSubscription } from '@apollo/client';
 import { RepresentationComponentProps, Toast, useData } from '@eclipse-sirius/sirius-components-core';
 import { widgetContributionExtensionPoint } from '@eclipse-sirius/sirius-components-forms';
 import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
@@ -18,6 +18,7 @@ import WebIcon from '@mui/icons-material/Web';
 import Typography from '@mui/material/Typography';
 import { useMachine } from '@xstate/react';
 import React, { useEffect } from 'react';
+import { flushSync } from 'react-dom';
 import { makeStyles } from 'tss-react/mui';
 import { StateMachine } from 'xstate';
 import { formDescriptionEditorEventSubscription } from './FormDescriptionEditorEventFragment';
@@ -30,13 +31,13 @@ import { WidgetDescriptor } from './FormDescriptionEditorRepresentation.types';
 import {
   FormDescriptionEditorRepresentationContext,
   FormDescriptionEditorRepresentationEvent,
+  formDescriptionEditorRepresentationMachine,
   FormDescriptionEditorRepresentationStateSchema,
   HandleSubscriptionResultEvent,
   HideToastEvent,
   InitializeRepresentationEvent,
   SchemaValue,
   ShowToastEvent,
-  formDescriptionEditorRepresentationMachine,
 } from './FormDescriptionEditorRepresentationMachine';
 import { PageList } from './PageList';
 import { coreWidgets } from './coreWidgets';
@@ -168,22 +169,29 @@ export const FormDescriptionEditorRepresentation = ({
     formDescriptionEditorId: representationId,
   };
   const variables: GQLFormDescriptionEditorEventVariables = { input };
+
+  const onData = ({ data }: OnDataOptions<GQLFormDescriptionEditorEventSubscription>) => {
+    flushSync(() => {
+      const handleDataEvent: HandleSubscriptionResultEvent = {
+        type: 'HANDLE_SUBSCRIPTION_RESULT',
+        result: data,
+      };
+      dispatch(handleDataEvent);
+    });
+  };
+
+  const onComplete = () => {
+    dispatch({ type: 'HANDLE_COMPLETE' });
+  };
+
   const { error } = useSubscription<GQLFormDescriptionEditorEventSubscription, GQLFormDescriptionEditorEventVariables>(
     gql(formDescriptionEditorEventSubscription),
     {
       variables,
       fetchPolicy: 'no-cache',
       skip: formDescriptionEditorRepresentation !== 'ready',
-      onData: ({ data }) => {
-        const handleDataEvent: HandleSubscriptionResultEvent = {
-          type: 'HANDLE_SUBSCRIPTION_RESULT',
-          result: data,
-        };
-        dispatch(handleDataEvent);
-      },
-      onComplete: () => {
-        dispatch({ type: 'HANDLE_COMPLETE' });
-      },
+      onData,
+      onComplete,
     }
   );
 

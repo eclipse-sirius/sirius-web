@@ -11,10 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { gql, useSubscription } from '@apollo/client';
+import { ApolloError, gql, OnDataOptions, useSubscription } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { getTreeEventSubscription } from '@eclipse-sirius/sirius-components-trees';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { flushSync } from 'react-dom';
 import {
   GQLExplorerEventData,
   GQLExplorerEventInput,
@@ -33,6 +34,7 @@ export const useExplorerSubscription = (
   const [state, setState] = useState<UseExplorerSubscriptionState>({
     id: crypto.randomUUID(),
     complete: false,
+    payload: null,
   });
 
   const input: GQLExplorerEventInput = {
@@ -45,28 +47,34 @@ export const useExplorerSubscription = (
 
   const variables: GQLExplorerEventVariables = { input };
 
+  const onData = ({ data }: OnDataOptions<GQLExplorerEventData>) => {
+    flushSync(() => {
+      setState((prevState) => ({ ...prevState, payload: data.data.explorerEvent, complete: false }));
+    });
+  };
+
   const onComplete = () => setState((prevState) => ({ ...prevState, complete: true }));
 
-  const { data, error, loading } = useSubscription<GQLExplorerEventData, GQLExplorerEventVariables>(
+  const { addErrorMessage } = useMultiToast();
+  const onError = ({ message }: ApolloError) => {
+    addErrorMessage(message);
+  };
+
+  const { loading } = useSubscription<GQLExplorerEventData, GQLExplorerEventVariables>(
     gql(getTreeEventSubscription(maxDepth, 'explorerEvent', 'ExplorerEventInput')),
     {
       variables,
       fetchPolicy: 'no-cache',
+      onData,
       onComplete,
+      onError,
       skip: treeDescriptionId === null,
     }
   );
 
-  const { addErrorMessage } = useMultiToast();
-  useEffect(() => {
-    if (error) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
-    }
-  }, [error]);
-
   return {
     loading,
-    payload: !!data?.explorerEvent ? data.explorerEvent : null,
+    payload: state.payload,
     complete: state.complete,
   };
 };
