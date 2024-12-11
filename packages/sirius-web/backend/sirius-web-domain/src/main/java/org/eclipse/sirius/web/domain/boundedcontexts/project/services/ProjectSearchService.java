@@ -49,7 +49,7 @@ public class ProjectSearchService implements IProjectSearchService {
 
     @Override
     public Window<Project> findAll(KeysetScrollPosition position, int limit) {
-        Window<Project> window = new Window<>(List.of(), (i) -> position, false, false);
+        Window<Project> window = new Window<>(List.of(), index -> position, false, false);
         if (limit > 0) {
             var cursorProjectKey = position.getKeys().get("id");
             if (cursorProjectKey instanceof String cursorProjectId) {
@@ -59,19 +59,19 @@ public class ProjectSearchService implements IProjectSearchService {
                         var projects = this.projectRepository.findAllAfter(cursorProjectUUID.get(), limit + 1);
                         boolean hasNext = projects.size() > limit;
                         boolean hasPrevious = !this.projectRepository.findAllBefore(cursorProjectUUID.get(), 1).isEmpty();
-                        window = new Window<>(projects.subList(0, Math.min(projects.size(), limit)), (i) -> position, hasNext, hasPrevious);
+                        window = new Window<>(projects.subList(0, Math.min(projects.size(), limit)), index -> position, hasNext, hasPrevious);
                     } else if (position.scrollsBackward()) {
                         var projects = this.projectRepository.findAllBefore(cursorProjectUUID.get(), limit + 1);
                         boolean hasPrevious = projects.size() > limit;
                         boolean hasNext = !this.projectRepository.findAllAfter(cursorProjectUUID.get(), 1).isEmpty();
-                        window = new Window<>(projects.subList(0, Math.min(projects.size(), limit)), (i) -> position, hasNext, hasPrevious);
+                        window = new Window<>(projects.subList(0, Math.min(projects.size(), limit)), index -> position, hasNext, hasPrevious);
                     }
                 }
             } else {
                 var projects = this.projectRepository.findAllAfter(null, limit + 1);
                 boolean hasNext = projects.size() > limit;
                 boolean hasPrevious = false;
-                window = new Window<>(projects.subList(0, Math.min(projects.size(), limit)), (i) -> position, hasNext, hasPrevious);
+                window = new Window<>(projects.subList(0, Math.min(projects.size(), limit)), index -> position, hasNext, hasPrevious);
             }
         }
         return window;

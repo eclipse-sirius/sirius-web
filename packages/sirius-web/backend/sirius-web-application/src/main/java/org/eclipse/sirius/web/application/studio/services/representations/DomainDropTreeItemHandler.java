@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.views.explorer.services;
+package org.eclipse.sirius.web.application.studio.services.representations;
 
 import java.util.Objects;
 
@@ -19,27 +19,40 @@ import org.eclipse.sirius.components.collaborative.trees.dto.DropTreeItemInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.trees.Tree;
+import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionIdProvider;
+import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
+import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerDropTreeItemExecutor;
 import org.springframework.stereotype.Service;
 
 /**
- * This class is used to provide the drop tree item of the explorer.
+ * Provides the drop tree item tool for the Domain explorer by DSL explorer.
  *
- * @author frouene
+ * @author gdaniel
  */
 @Service
-public class ExplorerDropTreeItemHandler implements IDropTreeItemHandler {
+public class DomainDropTreeItemHandler implements IDropTreeItemHandler {
 
     private final IExplorerDropTreeItemExecutor explorerDropTreeItemExecutor;
 
-    public ExplorerDropTreeItemHandler(IExplorerDropTreeItemExecutor explorerDropTreeItemExecutor) {
+    private final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
+
+    public DomainDropTreeItemHandler(IExplorerDropTreeItemExecutor explorerDropTreeItemExecutor, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService) {
         this.explorerDropTreeItemExecutor = Objects.requireNonNull(explorerDropTreeItemExecutor);
+        this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
     }
 
     @Override
     public boolean canHandle(IEditingContext editingContext, Tree tree) {
-        return tree.getId().startsWith(ExplorerDescriptionProvider.PREFIX)
-                && Objects.equals(tree.getDescriptionId(), ExplorerDescriptionProvider.DESCRIPTION_ID);
+        boolean result = false;
+        if (tree.getId().startsWith(ExplorerDescriptionProvider.PREFIX)
+                && tree.getDescriptionId().startsWith(IRepresentationDescriptionIdProvider.PREFIX)) {
+            var optionalViewTreeDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, tree.getDescriptionId());
+            if (optionalViewTreeDescription.isPresent()) {
+                result = optionalViewTreeDescription.get().getName().equals(DomainViewTreeDescriptionProvider.DOMAIN_EXPLORER_DESCRIPTION_NAME);
+            }
+        }
+        return result;
     }
 
     @Override

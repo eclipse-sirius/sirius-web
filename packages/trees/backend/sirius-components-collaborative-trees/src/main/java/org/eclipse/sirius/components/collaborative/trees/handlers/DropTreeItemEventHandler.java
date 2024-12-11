@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -74,7 +74,7 @@ public class DropTreeItemEventHandler implements ITreeEventHandler {
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, treeInput.representationId(), treeInput);
 
         if (treeInput instanceof DropTreeItemInput input) {
-            var optionalDropHandler = this.dropTreeItemHandlers.stream().filter(provider -> provider.canHandle(tree)).findFirst();
+            var optionalDropHandler = this.dropTreeItemHandlers.stream().filter(provider -> provider.canHandle(editingContext, tree)).findFirst();
 
             var status = optionalDropHandler
                     .map(provider -> provider.handle(editingContext, tree, input))

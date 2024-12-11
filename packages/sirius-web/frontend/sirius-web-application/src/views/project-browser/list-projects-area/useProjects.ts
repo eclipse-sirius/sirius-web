@@ -24,7 +24,7 @@ const getProjectsQuery = gql`
   }
 `;
 
-export const useProjects = (after: string, before: string, pageSize: number): UseProjectsValue => {
+export const useProjects = (after: string | null, before: string | null, pageSize: number): UseProjectsValue => {
   const variables: GQLGetProjectsQueryVariables = {
     after,
     before,
