@@ -4,6 +4,7 @@
 
 === Shapes
 
+- Add support for model publication
 
 
 === Architectural decision records
