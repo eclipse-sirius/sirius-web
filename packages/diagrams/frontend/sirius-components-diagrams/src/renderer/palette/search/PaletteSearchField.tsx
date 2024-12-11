@@ -18,8 +18,9 @@ import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import { PaletteSearchFieldProps, PaletteSearchFieldState } from './PaletteSearchField.types';
-export const PaletteSearchField = ({ onValueChanged, onEscape }: PaletteSearchFieldProps) => {
+export const PaletteSearchField = ({ onValueChanged, onEscape, onDirectEditClick }: PaletteSearchFieldProps) => {
   const [state, setState] = useState<PaletteSearchFieldState>({ value: '' });
+
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     setState((prevState) => ({ ...prevState, value }));
@@ -32,8 +33,11 @@ export const PaletteSearchField = ({ onValueChanged, onEscape }: PaletteSearchFi
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>): void => {
-    if ('Escape' === event.key && onEscape) {
+    const { key } = event;
+    if (key === 'Escape' && onEscape) {
       onEscape();
+    } else if (key === 'F2') {
+      onDirectEditClick();
     }
   };
 
