@@ -1,0 +1,72 @@
+= [ADR-179] Add support for artifact publication from a project
+
+== Context
+
+We need to be able to find all the available workflows and execute one.
+
+
+== Decision
+
+Sirius Web should provide record and interfaces similar to the examples below:
+
+```java
+public record ProjectWorkflow(
+  @NotNull String id,
+  @NotNull String label
+) {}
+
+public interface IProjectWorkflowProvider {
+  List<ProjectWorkflow> getProjectWorkflows(UUID projectId);
+}
+
+public interface IProjectWorkflowHandler {
+    /*
+     * Can use the nature of the project to figure out if the workflow is relevant
+     */
+    boolean canHandle(String projectWorkflowId);
+
+     /*
+      * I'm not providing the editing context here on purpose to let the specifier load the snapshot of the
+      * data from the database in order NOT to block the editing context event processor.
+      */
+    void handle(ICause cause, String projectWorkflowId, UUID projectId);
+}
+```
+
+It will allow Sirius Web to provide the following GraphQL API to retrieve and execute workflows:
+
+```
+type Project {
+  workflows: ProjectsWorkflowsConnection!
+}
+
+type ProjectsWorkflowsConnection {
+  edges: [ProjectWorkflowEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProjectWorkflowEdge {
+  node: ProjectWorkflow!
+}
+
+type ProjectWorkflow {
+  id: ID!
+  label: String!
+}
+
+type Mutation {
+  executeProjectWorkflow(input: ExecuteProjectWorkflowInput!): ExcecuteProjectWorkflowPayload!
+}
+
+union ExecuteProjectWorkflowPayload = ErrorPayload | SuccessPayload
+
+input ExecuteProjectWorkflowInput {
+  id: ID!
+  projectId: ID!
+  projectWorkflowId: ID!
+}
+```
+
+== Status
+
+Work in progress
