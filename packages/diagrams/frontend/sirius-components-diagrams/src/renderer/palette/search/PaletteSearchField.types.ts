@@ -14,6 +14,7 @@
 export interface PaletteSearchFieldProps {
   onValueChanged: (newValue: string) => void;
   onEscape?: () => void;
+  onDirectEditClick: () => void;
 }
 
 export interface PaletteSearchFieldState {
