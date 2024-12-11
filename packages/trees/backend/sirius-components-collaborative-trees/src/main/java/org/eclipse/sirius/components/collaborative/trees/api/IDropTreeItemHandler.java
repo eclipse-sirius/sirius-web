@@ -24,7 +24,7 @@ import org.eclipse.sirius.components.trees.Tree;
  */
 public interface IDropTreeItemHandler {
 
-    boolean canHandle(Tree tree);
+    boolean canHandle(IEditingContext editingContext, Tree tree);
 
     IStatus handle(IEditingContext editingContext, Tree tree, DropTreeItemInput input);
 
