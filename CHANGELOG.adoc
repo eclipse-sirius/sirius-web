@@ -4,7 +4,7 @@
 
 === Shapes
 
-
+- Add support for artifact publication from a project
 
 === Architectural decision records
 
