@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.domain.boundedcontexts.project.services;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 
@@ -29,6 +30,7 @@ import org.springframework.data.domain.ScrollPosition;
 public class Window<T> implements org.springframework.data.domain.Window<T> {
 
     private final org.springframework.data.domain.Window<T> delegate;
+    
     private final boolean hasPrevious;
 
     public Window(List<T> items, IntFunction<? extends ScrollPosition> positionFunction, boolean hasNext, boolean hasPrevious) {
@@ -37,7 +39,7 @@ public class Window<T> implements org.springframework.data.domain.Window<T> {
     }
 
     public Window(org.springframework.data.domain.Window<T> delegate, boolean hasPrevious) {
-        this.delegate = delegate;
+        this.delegate = Objects.requireNonNull(delegate);
         this.hasPrevious = hasPrevious;
     }
 

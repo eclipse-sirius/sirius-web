@@ -69,12 +69,30 @@ public class ViewerProjectsDataFetcher implements IDataFetcherWithFieldCoordinat
         Optional<String> after = Optional.<String> ofNullable(environment.getArgument(AFTER_ARGUMENT));
         Optional<String> before = Optional.<String> ofNullable(environment.getArgument(BEFORE_ARGUMENT));
 
-        final KeysetScrollPosition position;
-        final int limit;
+        KeysetScrollPosition position = this.getPosition(after, before);
+        int limit = this.getLimit(first, last, after, before);
+
+        var projectPage = this.projectApplicationService.findAll(position, limit);
+        return this.toConnection(projectPage, position);
+    }
+
+    private KeysetScrollPosition getPosition(Optional<String> after, Optional<String> before) {
+        KeysetScrollPosition position = ScrollPosition.keyset();
         if (after.isPresent() && before.isEmpty()) {
             var projectId = after.get();
             var cursorProjectId = new Relay().fromGlobalId(projectId).getId();
             position = ScrollPosition.forward(Map.of("id", cursorProjectId));
+        } else if (before.isPresent() && after.isEmpty()) {
+            var projectId = before.get();
+            var cursorProjectId = new Relay().fromGlobalId(projectId).getId();
+            position = ScrollPosition.backward(Map.of("id", cursorProjectId));
+        }
+        return position;
+    }
+
+    private int getLimit(Optional<Integer> first, Optional<Integer> last, Optional<String> after, Optional<String> before) {
+        int limit = 0;
+        if (after.isPresent() && before.isEmpty()) {
             if (last.isPresent()) {
                 limit = 0;
             } else if (first.isPresent()) {
@@ -83,9 +101,6 @@ public class ViewerProjectsDataFetcher implements IDataFetcherWithFieldCoordinat
                 limit = DEFAULT_PAGE_SIZE;
             }
         } else if (before.isPresent() && after.isEmpty()) {
-            var projectId = before.get();
-            var cursorProjectId = new Relay().fromGlobalId(projectId).getId();
-            position = ScrollPosition.backward(Map.of("id", cursorProjectId));
             if (first.isPresent()) {
                 limit = 0;
             } else if (last.isPresent()) {
@@ -93,11 +108,7 @@ public class ViewerProjectsDataFetcher implements IDataFetcherWithFieldCoordinat
             } else {
                 limit = DEFAULT_PAGE_SIZE;
             }
-        } else if (before.isPresent() && after.isPresent()) {
-            position = ScrollPosition.keyset();
-            limit = 0;
-        } else {
-            position = ScrollPosition.keyset();
+        } else if (before.isEmpty() && after.isEmpty()) {
             if (first.isPresent() && last.isPresent()) {
                 limit = 0;
             } else if (first.isPresent()) {
@@ -108,9 +119,7 @@ public class ViewerProjectsDataFetcher implements IDataFetcherWithFieldCoordinat
                 limit = DEFAULT_PAGE_SIZE;
             }
         }
-
-        var projectPage = this.projectApplicationService.findAll(position, limit);
-        return this.toConnection(projectPage, position);
+        return limit;
     }
 
     private Connection<ProjectDTO> toConnection(Window<ProjectDTO> projectPage, KeysetScrollPosition position) {
@@ -132,17 +141,7 @@ public class ViewerProjectsDataFetcher implements IDataFetcherWithFieldCoordinat
             endCursor = edges.get(edges.size() - 1).getCursor();
         }
 
-        boolean hasNextPage = false;
-        boolean hasPreviousPage = false;
-        if (position.scrollsForward()) {
-            hasNextPage = projectPage.hasNext();
-            hasPreviousPage = projectPage.hasPrevious();
-        }
-        if (position.scrollsBackward()) {
-            hasNextPage = projectPage.hasNext();
-            hasPreviousPage = projectPage.hasPrevious();
-        }
-        var pageInfo = new PageInfoWithCount(startCursor, endCursor, hasPreviousPage, hasNextPage, projectPage.size());
+        var pageInfo = new PageInfoWithCount(startCursor, endCursor, projectPage.hasPrevious(), projectPage.hasNext(), projectPage.size());
         return new DefaultConnection<>(edges, pageInfo);
     }
 }

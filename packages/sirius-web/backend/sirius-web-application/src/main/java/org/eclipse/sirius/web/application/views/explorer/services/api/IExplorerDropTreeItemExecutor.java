@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,22 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.trees.api;
+package org.eclipse.sirius.web.application.views.explorer.services.api;
 
-import org.eclipse.sirius.components.collaborative.trees.dto.DropTreeItemInput;
+import java.util.List;
+
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.trees.Tree;
 
 /**
- * Interface for the drop tree item provider.
+ * Used to perform the drop of the tree item within the explorer.
  *
- * @author frouene
+ * @author sbegaudeau
  */
-public interface IDropTreeItemHandler {
-
-    boolean canHandle(IEditingContext editingContext, Tree tree);
-
-    IStatus handle(IEditingContext editingContext, Tree tree, DropTreeItemInput input);
-
+public interface IExplorerDropTreeItemExecutor {
+    IStatus drop(IEditingContext editingContext, Tree tree, List<String> droppedElementIds, String targetElementId, int index);
 }

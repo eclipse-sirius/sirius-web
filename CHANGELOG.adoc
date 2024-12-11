@@ -121,6 +121,8 @@ This can be retrieve using either `EditingContext#representations` or `EditingCo
 - https://github.com/eclipse-sirius/sirius-web/issues/4192[#4192] [core] `IRepresentationDescription` has a new provide `getIconURLsProvider`.
 This provider is in charge of getting the icon list of the representation.
 - https://github.com/eclipse-sirius/sirius-web/issues/4192[#4192] [tree] The expression `TreeDescription#iconURLExpression` has now been replaced by `TreeDescription#itemIconExpression`, in a similar fashion the provider `TreeDescription#iconURLProvider` has been replaced by `TreeDescription#treeItemIconURLsProvider` not to be confused with the newly introduced `TreeDescription#iconURLsProvider`.
+- https://github.com/eclipse-sirius/sirius-web/issues/4286[#4286] [sirius-web] Make default explorer drag and drop work only for the default explorer
+The method `IDropTreeHandler.canHandle(Tree)` is replaced by `IDropTreeHandler.canHandle(IEditingContext, Tree)`.
 
 === Dependency update
 
@@ -198,6 +200,8 @@ This is now fixed
 These components could be reused by downstream applications in custom creation tool.
 - https://github.com/eclipse-sirius/sirius-web/issues/4330[#4330] [diagram] Improve responsiveness when executing a tool from the palette
 - https://github.com/eclipse-sirius/sirius-web/issues/4333[#4333] [diagram] Improve the style of the palette by switching the positions of the search field and the quick access tools and by adding a small touch of grey in the header bar and search field
+- https://github.com/eclipse-sirius/sirius-web/issues/4286[#4286] [sirius-web] Make default explorer drag and drop work only for the default explorer.
+Downstream applications with a custom explorer that relies on `ExplorerDropTreeItemHandler` now need to provide their own `IDropTreeItemHandler` to support drag and drop in their explorer. 
 
 
 == v2024.11.0

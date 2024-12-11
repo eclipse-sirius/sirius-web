@@ -42,45 +42,33 @@ public class ProjectSearchRepositoryDelegate implements IProjectSearchRepository
     private static final String LIMIT = "limit";
 
     private static final String FIND_ALL_BEFORE = """
-            select
-                p.*
-            from
-                project p
-            where
-                (cast(:cursorProjectId as uuid) is null
-                    or (p.id <> :cursorProjectId
-                        and p.created_on <= (
-                        select
-                            created_on
-                        from
-                            project
-                        where
-                            project.id = :cursorProjectId))
+            SELECT p.*
+            FROM project p
+            WHERE
+                (cast(:cursorProjectId as uuid) IS NULL
+                    OR (p.id <> :cursorProjectId
+                        AND p.created_on <= (
+                        SELECT created_on
+                        FROM project
+                        WHERE project.id = :cursorProjectId))
             )
-            order by
-                p.created_on desc, p.name
-            limit :limit;
+            ORDER BY p.created_on desc, p.name
+            LIMIT :limit;
             """;
 
     private static final String FIND_ALL_AFTER = """
-            select
-                p.*
-            from
-                project p
-            where
-                (cast(:cursorProjectId as uuid) is null
-                    or (p.id <> :cursorProjectId
-                        and p.created_on >= (
-                        select
-                            created_on
-                        from
-                            project
-                        where
-                            project.id = :cursorProjectId))
+            SELECT p.*
+            FROM project p
+            WHERE
+                (cast(:cursorProjectId as uuid) IS NULL
+                    OR (p.id <> :cursorProjectId
+                        AND p.created_on >= (
+                        SELECT created_on
+                        FROM project
+                        WHERE project.id = :cursorProjectId))
             )
-            order by
-                p.created_on asc, p.name
-            limit :limit;
+            ORDER BY p.created_on asc, p.name
+            LIMIT :limit;
             """;
 
     private final JdbcAggregateOperations jdbcAggregateOperations;
