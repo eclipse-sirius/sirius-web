@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-web-table</artifactId>
-	<version>2024.11.6</version>
+	<version>2024.11.7</version>
 	<name>sirius-web-table</name>
 	<description>Sirius Web Table</description>
 
@@ -48,42 +48,42 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-emf</artifactId>
-			<version>2024.11.6</version>
+			<version>2024.11.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view</artifactId>
-			<version>2024.11.6</version>
+			<version>2024.11.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-table</artifactId>
-			<version>2024.11.6</version>
+			<version>2024.11.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-domain</artifactId>
-			<version>2024.11.6</version>
+			<version>2024.11.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-tables</artifactId>
-			<version>2024.11.6</version>
+			<version>2024.11.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-emf</artifactId>
-			<version>2024.11.6</version>
+			<version>2024.11.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-graphql-api</artifactId>
-			<version>2024.11.6</version>
+			<version>2024.11.7</version>
 		</dependency>
         <dependency>
             <groupId>org.eclipse.sirius</groupId>
             <artifactId>sirius-web-application</artifactId>
-            <version>2024.11.6</version>
+            <version>2024.11.7</version>
         </dependency>
 
     </dependencies>
