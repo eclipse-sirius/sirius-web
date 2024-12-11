@@ -10,11 +10,14 @@
 - Add support to dynamically update representation description
 - Add loading indicators for long actions
 - Add impact analysis before tool execution
+- Add support for artifact publication from a project
 
 
 === Architectural decision records
 
 - [ADR-178] Add support of actions in table row menu
+- [ADR-179] Add support for artifact publication from a project
+
 
 === Deprecation warning
 

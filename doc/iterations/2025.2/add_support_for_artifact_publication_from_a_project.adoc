@@ -1,0 +1,83 @@
+= Add support for artifact publication from a project
+
+== Problem
+
+Sirius Web doesn't provide an **in-application** way to publish artifacts from a project.
+The current import/export mechanisms rely on generating an interchange format file (Json, XMI, SysML), and uploading such file in a project to import it.
+
+When exported models are used as shared reusable components, it is the responsibility of the stakeholders to:
+
+- Store the shared models in an external location
+- Ensure that every user is working on the same version of the shared model
+- Coordinate to export a new version when needed, and import it in all the dependent projects
+
+These processes are error-prone, and could be more controlled if they all happened inside the application.
+
+== Key Result
+
+Sirius Web should provide a way for downstream application to 
+
+- Define their publication _workflow_
+- Store published artifacts in a provided data structure
+
+Note that the actual implementation of the publication workflow (i.e. what to publish from a given project) should be delegated to downstream applications. 
+We already have downstream projects that implement or want to implement different publication mechanisms:
+
+- Publish fragments of a model
+- Publish entire editing contexts
+- Publish multiple artifacts from a single project
+
+This shape doesn't address the question of importing published artifacts in a project. 
+A solution to this issue will be proposed in a complementary shape.
+
+=== Acceptance criteria
+
+- The support for studio should provide a workflow publishing all the domains and representations descriptions from a studio project.
+Each domain and each representation description should be published as a dedicated artifact.
+After the execution of the workflow of a studio, all the domains and representation descriptions should be visible in the artifact page.
+- Backend tests should be used to validate that this publication mecanism is working as expected
+
+
+== Solution
+
+Sirius Web should provide a menu to view the various workflows and run one.
+A new button will be availble in the navigation bar to open a dialog containing all the workflows of the project.
+The user will be able to click on one workflow to run it.
+For that a GraphQL query will be available to retrieve all the workflows of the project.
+
+Sirius Web should also provide a GraphQL mutation to trigger the execution of a project workflow. 
+This mutation should ensure that the execution of the workflow does not block the editing context event processor (some workflows may take a long time to complete).
+
+Note that this workflow support is not restricted to artifact publication.
+They could be leveraged by downstream applications to perform any kind of behavior on a project.
+
+Downstream applications should be able to trigger the execution of a workflow from their own user interface (from the contextual menu in the explorer, from a custom tool in the diagram palette, etc).
+
+
+Sirius Web should provide some database table(s) to store published artifacts. 
+Those tables should at least contain the following pieces of information for each published artifact:
+
+- identifier
+- serialized content
+- dependencies
+- version
+- description
+- date of creation
+- date of last modification
+
+We should keep in mind that one artifact may be composed of multiple documents and that multiple artifacts could be published from one document.
+Some artifacts will also have a dependency to other artifacts, we should be able to capture this information provided by the specifier from day one.
+Documents cannot be considered as the compulsory granularity used by an artifact.
+
+Finally, Sirius Web should provide a new page to let user see the artifacts that have been published by a project. 
+This page will be accessible at `projects/projectId/artifacts`, and it will contain a table with the information contained in the database, filtered for the selected project.
+
+=== Cutting backs
+
+- (Nice to have) downstream application can add custom properties on the published artifacts.
+
+== Rabbit holes
+
+Nothing identified.
+
+== No-gos
