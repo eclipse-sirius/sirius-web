@@ -1,7 +1,6 @@
 FROM eclipse-temurin:17-jre
-COPY target/sirius-web-*.jar ./
-RUN find ./ -name '*.jar' ! -name '*-sources.jar' -execdir mv {} sirius-web.jar \;
+RUN useradd sirius-web
+COPY target/sirius-web-*[^sources].jar ./sirius-web.jar
 EXPOSE 8080
-RUN useradd myuser
-USER myuser
+USER sirius-web
 ENTRYPOINT ["java", "-jar", "/sirius-web.jar"]
