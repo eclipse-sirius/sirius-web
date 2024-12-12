@@ -14,11 +14,11 @@
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@mui/material/styles';
 import { BaseEdge, Edge, EdgeLabelRenderer, Position, XYPosition } from '@xyflow/react';
-import { memo, useMemo, useState, useEffect } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 import { DraggableData } from 'react-draggable';
+import { useStore } from '../../representation/useStore';
 import { Label } from '../Label';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
-import { useStore } from '../../representation/useStore';
 import { BendPoint, TemporaryBendPoint } from './BendPoint';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
 import { MultiLabelEditableEdgeProps, MultiLabelEditableEdgeState } from './MultiLabelEditableEdge.types';
@@ -172,7 +172,7 @@ export const MultiLabelEditableEdge = memo(
       }
     };
 
-    useEffect(() => {
+    const computeMiddlePoints = () => {
       const middlePoints: XYPosition[] = [];
       if (state.localBendingPoints.length > 0) {
         for (let i = 0; i < state.localBendingPoints.length; i++) {
@@ -191,29 +191,25 @@ export const MultiLabelEditableEdge = memo(
       } else {
         middlePoints.push(getMiddlePoint({ x: sourceX, y: sourceY }, { x: targetX, y: targetY }));
       }
-      setState((prevState) => ({ ...prevState, middleBendingPoints: middlePoints }));
+      return middlePoints;
+    };
+
+    useEffect(() => {
+      setState((prevState) => ({ ...prevState, middleBendingPoints: computeMiddlePoints() }));
     }, [state.localBendingPoints, sourceX, sourceY, targetX, targetY]);
 
-    const edgeCenterX: number = useMemo(() => {
+    const edgeCenter: XYPosition = useMemo(() => {
+      let pointsSource = state.localBendingPoints;
       if (isMultipleOfTwo(state.localBendingPoints.length)) {
-        return state.middleBendingPoints[Math.floor(state.middleBendingPoints.length / 2)]?.x ?? 0;
-      } else {
-        return state.localBendingPoints[Math.floor(state.localBendingPoints.length / 2)]?.x ?? 0;
+        pointsSource = state.middleBendingPoints;
       }
-    }, [
-      state.middleBendingPoints.map((point) => point.x + point.y).join(),
-      state.localBendingPoints.map((point) => point.x + point.y).join(),
-    ]);
-
-    const edgeCenterY: number = useMemo(() => {
-      if (isMultipleOfTwo(state.localBendingPoints.length)) {
-        return state.middleBendingPoints[Math.floor(state.middleBendingPoints.length / 2)]?.y ?? 0;
-      } else {
-        return state.localBendingPoints[Math.floor(state.localBendingPoints.length / 2)]?.y ?? 0;
+      if (pointsSource.length === 0) {
+        pointsSource = computeMiddlePoints();
       }
+      return pointsSource[Math.floor(pointsSource.length / 2)] ?? { x: 0, y: 0 };
     }, [
-      state.middleBendingPoints.map((point) => point.x + point.y).join(),
-      state.localBendingPoints.map((point) => point.x + point.y).join(),
+      state.middleBendingPoints.map((point) => `${point.x}:${point.y}`).join(),
+      state.localBendingPoints.map((point) => `${point.x}:${point.y}`).join(),
     ]);
 
     const edgePath: string = useMemo(() => {
@@ -287,7 +283,7 @@ export const MultiLabelEditableEdge = memo(
             </div>
           )}
           {label && (
-            <div style={labelContainerStyle(`translate(${edgeCenterX}px,${edgeCenterY}px)`)}>
+            <div style={labelContainerStyle(`translate(${edgeCenter.x}px,${edgeCenter.y}px)`)}>
               <Label diagramElementId={id} label={label} faded={!!faded} />
             </div>
           )}
