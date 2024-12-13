@@ -15,13 +15,22 @@ import { ApolloClient, ApolloProvider, DefaultOptions, HttpLink, InMemoryCache, 
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { ExtensionProvider, ServerContext } from '@eclipse-sirius/sirius-components-core';
-import { referenceWidgetDocumentTransform } from '@eclipse-sirius/sirius-web-application';
+import {
+  DiagramDialogContribution,
+  diagramDialogContributionExtensionPoint,
+} from '@eclipse-sirius/sirius-components-diagrams';
+import { SelectionDialog } from '@eclipse-sirius/sirius-components-selection';
+import {
+  ellipseNodeStyleDocumentTransform,
+  referenceWidgetDocumentTransform,
+} from '@eclipse-sirius/sirius-web-application';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { App } from './App';
-import './index.css';
 import { defaultExtensionRegistry } from './registry/DefaultExtensionRegistry';
 import { ToastProvider } from './toast/ToastProvider';
+
+import './index.css';
 
 declare global {
   interface Window {
@@ -81,10 +90,27 @@ const ApolloGraphQLClient = new ApolloClient({
   link: splitLink,
   cache: new InMemoryCache({ addTypename: true }),
   defaultOptions,
-  documentTransform: referenceWidgetDocumentTransform,
+  documentTransform: referenceWidgetDocumentTransform.concat(ellipseNodeStyleDocumentTransform),
 });
 
-ReactDOM.render(
+const diagramDialogContributions: DiagramDialogContribution[] = [
+  {
+    canHandle: (dialogDescriptionId: string) => {
+      return dialogDescriptionId.startsWith('siriusComponents://selectionDialogDescription');
+    },
+    component: SelectionDialog,
+  },
+];
+
+defaultExtensionRegistry.putData<DiagramDialogContribution[]>(diagramDialogContributionExtensionPoint, {
+  identifier: `siriusweb_${diagramDialogContributionExtensionPoint.identifier}`,
+  data: diagramDialogContributions,
+});
+
+const container = document.getElementById('root');
+const root = createRoot(container!);
+
+root.render(
   <ExtensionProvider registry={defaultExtensionRegistry}>
     <ServerContext.Provider value={value}>
       <ApolloProvider client={ApolloGraphQLClient}>
@@ -101,6 +127,5 @@ ReactDOM.render(
         </ToastProvider>
       </ApolloProvider>
     </ServerContext.Provider>
-  </ExtensionProvider>,
-  document.getElementById('root')
+  </ExtensionProvider>
 );

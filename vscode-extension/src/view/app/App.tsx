@@ -16,14 +16,23 @@ import {
   Selection,
   SelectionContextProvider,
 } from '@eclipse-sirius/sirius-components-core';
-import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams';
+import {
+  DiagramRepresentation,
+  NodeTypeContext,
+  NodeTypeContextValue,
+  NodeTypeContribution,
+} from '@eclipse-sirius/sirius-components-diagrams';
 import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
 import { FormRepresentation } from '@eclipse-sirius/sirius-components-forms';
 import { DetailsView } from '@eclipse-sirius/sirius-web-application';
 import { Theme, ThemeProvider } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import './reset.css';
+import { EllipseNode } from './nodes/EllipseNode';
+import { EllipseNodeConverter } from './nodes/EllipseNodeConverter';
+import { EllipseNodeLayoutHandler } from './nodes/EllipseNodeLayoutHandler';
 import { siriusWebTheme as defaultTheme } from './theme/siriusWebTheme';
+
+import './reset.css';
 import './variables.css';
 
 interface AppState {
@@ -146,14 +155,23 @@ export const App = ({
     };
     component = <DetailsView editingContextId={state.editingContextId} readOnly={false} />;
   }
+
+  const nodeTypeRegistryValue: NodeTypeContextValue = {
+    nodeLayoutHandlers: [new EllipseNodeLayoutHandler()],
+    nodeConverters: [new EllipseNodeConverter()],
+    nodeTypeContributions: [<NodeTypeContribution component={EllipseNode as any} type={'ellipseNode'} />],
+  };
+
   return (
     <ThemeProvider theme={siriusWebTheme}>
       <SelectionContextProvider initialSelection={selection}>
         <ConfirmationDialogContextProvider>
-          <div style={appStyle}>
-            <div style={headerStyle}></div>
-            {state.editingContextId && state.authenticate ? <div style={componentStyle}>{component}</div> : null}
-          </div>
+          <NodeTypeContext.Provider value={nodeTypeRegistryValue}>
+            <div style={appStyle}>
+              <div style={headerStyle}></div>
+              {state.editingContextId && state.authenticate ? <div style={componentStyle}>{component}</div> : null}
+            </div>
+          </NodeTypeContext.Provider>
         </ConfirmationDialogContextProvider>
       </SelectionContextProvider>
     </ThemeProvider>
