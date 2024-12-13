@@ -78,7 +78,7 @@ import { ProjectDownloadMenuItemExtension } from '../views/project-browser/list-
 import { ProjectSettingTabContribution } from '../views/project-settings/ProjectSettingsView.types';
 import { projectSettingsTabExtensionPoint } from '../views/project-settings/ProjectSettingsViewExtensionPoints';
 import { ProjectImagesSettings } from '../views/project-settings/images/ProjectImagesSettings';
-import { ellipseNodeStyleDocumentTransform } from './ElipseNodeDocumentTransform';
+import { ellipseNodeStyleDocumentTransform } from './EllipseNodeDocumentTransform';
 import { referenceWidgetDocumentTransform } from './ReferenceWidgetDocumentTransform';
 
 const getType = (representation: RepresentationMetadata): string | null => {

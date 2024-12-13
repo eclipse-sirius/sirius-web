@@ -60,6 +60,10 @@ This was first fixed in 2022.3.0 but broken in 2024.3.0; it is now fixed again.
 - https://github.com/eclipse-sirius/sirius-web/issues/4280[#4280] [diagram] Fix direct edit with F2 when the palette is opened
 - https://github.com/eclipse-sirius/sirius-web/issues/4302[#4302] [diagram] Fix edges label flashing
 - https://github.com/eclipse-sirius/sirius-web/issues/4312[#4312] [sirius-web] The _Details_ view dit not react to its input is deselected, showing potentially stale information
+- https://github.com/eclipse-sirius/sirius-web/issues/4301[#4301] [vs-code] Fix VSCode extension regressions.
++ Fix Explorer
++ Contribute the Ellipse node
++ Contribute the Selection Dialog
 
 === New Features
 

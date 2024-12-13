@@ -42,7 +42,7 @@ export class ProjectData {
   }
 
   fetchModels(serverAddress: string, cookie: string, expandedItems: string[]): ModelData[] {
-    const graphQLSubscription = getTreeEventSubscription(8);
+    const graphQLSubscription = getTreeEventSubscription(8, 'explorerEvent', 'ExplorerEventInput');
     const headers = {
       Cookie: cookie,
     };
@@ -68,10 +68,10 @@ export class ProjectData {
         variables: {
           input: {
             id: uuid(),
-            treeId: 'explorer://',
+            representationId: `explorer://?treeDescriptionId=explorer_tree_description&expandedIds=[${expandedItems
+              .map(encodeURIComponent)
+              .join(',')}]&activeFilterIds=[]`,
             editingContextId: this.id,
-            expanded: expandedItems,
-            activeFilterIds: [],
           },
         },
       };
@@ -82,7 +82,7 @@ export class ProjectData {
     client.onmessage = (message) => {
       if (message?.data) {
         const response = JSON.parse(message.data as string);
-        const documents = response.payload?.data?.treeEvent?.tree?.children;
+        const documents = response.payload?.data?.explorerEvent?.tree?.children;
         if (response.id === this.subscriptionTreeEventId && documents) {
           this.modelsData = this.buildModelData(documents);
           commands.executeCommand('siriusweb.displayProjectContents', this.serverId, this.id);
