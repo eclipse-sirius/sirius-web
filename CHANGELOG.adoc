@@ -58,6 +58,7 @@ This provider is in charge of getting the icon list of the representation.
 - https://github.com/eclipse-sirius/sirius-web/issues/1062[#1062] [explorer] It is now possible to expand or collapse items in the explorer without selecting them by clicking directly on the expand/collapse arrow icon.
 This was first fixed in 2022.3.0 but broken in 2024.3.0; it is now fixed again.
 - https://github.com/eclipse-sirius/sirius-web/issues/4280[#4280] Fix direct edit with F2 when the palette is opened
+- https://github.com/eclipse-sirius/sirius-web/issues/4305[#4305] [table] Restore table support as a form widget
 
 
 === New Features

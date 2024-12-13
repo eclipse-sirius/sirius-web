@@ -22,11 +22,11 @@ import { ResizeRowHandler } from '../rows/ResizeRowHandler';
 import { RowHeader } from '../rows/RowHeader';
 import { useResetRowsMutation } from '../rows/useResetRows';
 import { CursorBasedPagination } from './CursorBasedPagination';
-import { GQLLine, TablePaginationState, TableProps } from './TableContent.types';
+import { GQLLine, TablePaginationState, ServerSideTableProps } from './TableContent.types';
 import { useGlobalFilter } from './useGlobalFilter';
 import { useTableColumns } from './useTableColumns';
 
-export const TableContent = memo(
+export const ServerSideTableContent = memo(
   ({
     editingContextId,
     representationId,
@@ -35,7 +35,7 @@ export const TableContent = memo(
     onPaginationChange,
     onGlobalFilterChange,
     onColumnFiltersChange,
-  }: TableProps) => {
+  }: ServerSideTableProps) => {
     const { selection, setSelection } = useSelection();
 
     const { columns } = useTableColumns(editingContextId, representationId, table, readOnly);
@@ -104,8 +104,6 @@ export const TableContent = memo(
       onPaginationChange(pagination.cursor, pagination.direction, pagination.size);
     }, [pagination.cursor, pagination.size, pagination.direction]);
 
-    const serverSidePagination: boolean = onPaginationChange !== undefined;
-
     const handleRowHeightChange = (rowId, height) => {
       setLinesState((prev) => prev.map((line) => (line.id === rowId ? { ...line, height } : line)));
     };
@@ -127,8 +125,8 @@ export const TableContent = memo(
       enableEditing: !readOnly,
       onColumnFiltersChange: setColumnFilters,
       enableStickyHeader: true,
-      enablePagination: !serverSidePagination,
-      manualPagination: serverSidePagination,
+      enablePagination: false,
+      manualPagination: true,
       rowCount: table.paginationData.totalRowCount,
       enableRowActions: true,
       enableSorting: false,

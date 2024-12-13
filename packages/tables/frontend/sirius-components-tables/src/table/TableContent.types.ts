@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { GQLColumnFilter } from '../columns/useTableColumnFiltering.types';
 
-export interface TableProps {
+export interface ServerSideTableProps {
   editingContextId: string;
   representationId: string;
   table: GQLTable;
@@ -20,6 +20,13 @@ export interface TableProps {
   onPaginationChange: (cursor: string | null, direction: 'PREV' | 'NEXT', size: number) => void;
   onGlobalFilterChange: (globalFilter: string) => void;
   onColumnFiltersChange: (columFilters: ColumnFilter[]) => void;
+}
+
+export interface ClientSideTableProps {
+  editingContextId: string;
+  representationId: string;
+  table: GQLTable;
+  readOnly: boolean;
 }
 
 export interface TablePaginationState {

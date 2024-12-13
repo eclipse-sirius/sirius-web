@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { TableContent } from '@eclipse-sirius/sirius-components-tables';
+import { ClientSideTableContent } from '@eclipse-sirius/sirius-components-tables';
 import { makeStyles } from 'tss-react/mui';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLTableWidget } from '../form/FormEventFragments.types';
@@ -33,14 +33,11 @@ export const TableWidgetPropertySection: PropertySectionComponent<GQLTableWidget
   return (
     <div className={classes.main}>
       <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
-      <TableContent
+      <ClientSideTableContent
         editingContextId={editingContextId}
         representationId={formId}
         table={widget.table}
         readOnly={readOnly || widget.readOnly}
-        onPaginationChange={() => {}}
-        onGlobalFilterChange={() => {}}
-        onColumnFiltersChange={() => {}}
       />
     </div>
   );

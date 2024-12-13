@@ -14,7 +14,7 @@ import { RepresentationComponentProps } from '@eclipse-sirius/sirius-components-
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { TableContent } from '../table/TableContent';
+import { ServerSideTableContent } from '../table/ServerSideTableContent';
 import { ColumnFilter } from '../table/TableContent.types';
 import { tableIdProvider } from './tableIdProvider';
 import { TableRepresentationState } from './TableRepresentation.types';
@@ -75,7 +75,7 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
   return (
     <div data-testid={'table-representation'}>
       {table !== null && !complete ? (
-        <TableContent
+        <ServerSideTableContent
           editingContextId={editingContextId}
           representationId={tableId}
           table={table}

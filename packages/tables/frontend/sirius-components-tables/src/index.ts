@@ -13,5 +13,6 @@
 export * from './actions/SettingsButtonExtensionPoints';
 export type { SettingsButtonMenuEntryProps } from './actions/SettingsButtonExtensionPoints.types';
 export { TableRepresentation } from './representation/TableRepresentation';
-export { TableContent } from './table/TableContent';
+export { ClientSideTableContent } from './table/ClientSideTableContent';
+export { ServerSideTableContent } from './table/ServerSideTableContent';
 export * from './table/TableContent.types';
