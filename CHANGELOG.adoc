@@ -16,6 +16,9 @@
 
 === Dependency update
 
+- [releng] Upgrade `turbo` to version 2.3.3 (from 1.13.3 before).
+The `start` task used in our turbo configuration is now marked as `persistent` and as a result we have separated the `start` script from `sirius-web` used to run the frontend in dev from from the `start` script from other packages used to build them in development mode by remaning the later to `build-dev`.
+
 
 === Bug fixes
 
@@ -76,7 +79,6 @@ This provider is in charge of getting the icon list of the representation.
 - https://github.com/eclipse-sirius/sirius-web/issues/4192[#4192] [tree] The expression `TreeDescription#iconURLExpression` has now been replaced by `TreeDescription#itemIconExpression`, in a similar fashion the provider `TreeDescription#iconURLProvider` has been replaced by `TreeDescription#treeItemIconURLsProvider` not to be confused with the newly introduced `TreeDescription#iconURLsProvider`.
 
 === Dependency update
-
 
 
 === Bug fixes
