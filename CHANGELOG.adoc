@@ -59,6 +59,8 @@ This provider is in charge of getting the icon list of the representation.
 This was first fixed in 2022.3.0 but broken in 2024.3.0; it is now fixed again.
 - https://github.com/eclipse-sirius/sirius-web/issues/4280[#4280] [diagram] Fix direct edit with F2 when the palette is opened
 - https://github.com/eclipse-sirius/sirius-web/issues/4302[#4302] [diagram] Fix edges label flashing
+- https://github.com/eclipse-sirius/sirius-web/issues/4059[#4059] [explorer] When a part of the explorer is collapsed, all items inside the collapsed sub-tree are deselected.
+This prevents the automatic re-opening of the collapsed sections to reveal the selected items.
 
 === New Features
 
