@@ -68,7 +68,7 @@ export const DetailsView = ({ editingContextId, readOnly }: WorkbenchViewCompone
 
   const { classes } = useDetailsViewStyles();
 
-  if (!state.form || complete) {
+  if (!state.form || complete || skip) {
     return (
       <div className={classes.idle}>
         <Typography variant="subtitle2">No object selected</Typography>
