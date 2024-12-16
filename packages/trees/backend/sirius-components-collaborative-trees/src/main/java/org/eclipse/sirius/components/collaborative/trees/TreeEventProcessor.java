@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -144,11 +144,9 @@ public class TreeEventProcessor implements ITreeEventProcessor {
     }
 
     private boolean shouldRefresh(ChangeDescription changeDescription) {
-        // @formatter:off
         return this.representationRefreshPolicyRegistry.getRepresentationRefreshPolicy(this.treeCreationParameters.getTreeDescription())
                 .orElseGet(this::getDefaultRefreshPolicy)
                 .shouldRefresh(changeDescription);
-        // @formatter:on
     }
 
     private IRepresentationRefreshPolicy getDefaultRefreshPolicy() {

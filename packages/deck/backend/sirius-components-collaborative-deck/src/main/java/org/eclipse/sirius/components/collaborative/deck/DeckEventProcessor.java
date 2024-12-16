@@ -117,7 +117,7 @@ public class DeckEventProcessor implements IDeckEventProcessor {
     public void refresh(ChangeDescription changeDescription) {
         if (this.shouldRefresh(changeDescription)) {
             Deck refreshedDeckRepresentation = this.deckCreationService.refresh(this.editingContext, this.deckContext).orElse(null);
-            this.deckContext.reset();
+
             this.deckContext.update(refreshedDeckRepresentation);
             if (refreshedDeckRepresentation != null) {
                 this.representationPersistenceService.save(changeDescription.getInput(), this.editingContext, refreshedDeckRepresentation);
@@ -130,6 +130,13 @@ public class DeckEventProcessor implements IDeckEventProcessor {
                 this.deckContext.update(reloadedDeck.get());
                 this.deckEventFlux.deckRefreshed(changeDescription.getInput(), this.deckContext.getDeck());
             }
+        }
+    }
+
+    @Override
+    public void postRefresh(ChangeDescription changeDescription) {
+        if (this.shouldRefresh(changeDescription)) {
+            this.deckContext.reset();
         }
     }
 

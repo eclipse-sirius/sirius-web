@@ -14,7 +14,7 @@
 - [ADR-175] Add support for Pagination in REST APIs
 - [ADR-176] Add support for undo redo on Portal representation
 - [ADR-177] Add support for undo redo on Diagram representation
-
+- [ADR-178] Split editing context event processor responsibility
 
 === Deprecation warning
 
@@ -47,6 +47,10 @@ This can be retrieve using either `EditingContext#representations` or `EditingCo
 - https://github.com/eclipse-sirius/sirius-web/issues/4192[#4192] [core] `IRepresentationDescription` has a new provide `getIconURLsProvider`.
 This provider is in charge of getting the icon list of the representation.
 - https://github.com/eclipse-sirius/sirius-web/issues/4192[#4192] [tree] The expression `TreeDescription#iconURLExpression` has now been replaced by `TreeDescription#itemIconExpression`, in a similar fashion the provider `TreeDescription#iconURLProvider` has been replaced by `TreeDescription#treeItemIconURLsProvider` not to be confused with the newly introduced `TreeDescription#iconURLsProvider`.
+https://github.com/eclipse-sirius/sirius-web/issues/4145[#4145] [core] Remove `ChangeKind#REPRESENTATION_TO_RENAME`.
++ The rename of a representation needs to be done anywhere an object that can be rename represents a representation.
++ An example can be found in `RenameRepresentationTreeItemHandler`.
++ You will have nothing to do if you are based on sirius web application.
 
 === Dependency update
 
@@ -100,6 +104,7 @@ Specifiers are also encouraged to implement their own `IRestDataVersionPayloadSe
 The backend part (the ability to define an _Elements to Select Expression_ on diagram tools) was added in Sirius Web 2024.11.0 but the frontend did not apply the requested selection.
 This is now fixed
 - https://github.com/eclipse-sirius/sirius-web/issues/4297[#4297] Improve the size of the Docker image by optimizing the use of caching
+- https://github.com/eclipse-sirius/sirius-web/issues/4143[#4143] [core] Add postRefresh method in IRepresentationEventProcessor
 
 === Improvements
 
@@ -112,7 +117,12 @@ This is now fixed
 - https://github.com/eclipse-sirius/sirius-web/issues/4261[#4261] [core] Enable image cache
 - https://github.com/eclipse-sirius/sirius-web/issues/4225[#4225] [emf] Add support for localized enumeration literals in EMF property forms
 - https://github.com/eclipse-sirius/sirius-web/issues/4227[#4227] [emf] Add support for custom numeric and boolean types in property forms
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4145[#4145] [core] Add IChangeDescriptionListener to allow subscribing to change made in an editing context.
+- https://github.com/eclipse-sirius/sirius-web/issues/4145[#4145] [core] Split the _editing context event processor_.
+** The `RepresentationEventProcessorRegistry` which handles the lifecyle of representations in the editing context.
+** The `EditingContextExecutor` encapsulate editing context event handlers with _input pre-processors_ and _input post-processors_, all in their own thread.
+** The `ComposedEditingContextEventHandler` which dispatches editing context events to the right handler.
+** The `EditingContextManager` which is used to react to change made and thus, persist them is need.
 
 
 == v2024.11.0
