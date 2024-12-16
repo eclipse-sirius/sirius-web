@@ -106,3 +106,9 @@ export {
   type ProjectSettingTabProps,
 } from './views/project-settings/ProjectSettingsView.types';
 export * from './views/project-settings/ProjectSettingsViewExtensionPoints';
+export { NewObjectModal } from './modals/new-object/NewObjectModal';
+export { type NewObjectModalProps } from './modals/new-object/NewObjectModal.types';
+export { NewRepresentationModal } from './modals/new-representation/NewRepresentationModal';
+export { type NewRepresentationModalProps } from './modals/new-representation/NewRepresentationModal.types';
+export { NewRootObjectModal } from './modals/new-root-object/NewRootObjectModal';
+export { type NewRootObjectModalProps } from './modals/new-root-object/NewRootObjectModal.types';
