@@ -16,10 +16,11 @@ import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Paper from '@mui/material/Paper';
 import { Edge, Node, useStoreApi, useViewport, XYPosition } from '@xyflow/react';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Draggable, { DraggableData } from 'react-draggable';
 import { makeStyles } from 'tss-react/mui';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { useGroupPalette } from './group-tool/useGroupPalette';
 import {
   GQLPalette,
   GQLPaletteDivider,
@@ -34,6 +35,8 @@ import { PaletteQuickAccessToolBar } from './quick-access-tool/PaletteQuickAcces
 import { PaletteSearchField } from './search/PaletteSearchField';
 import { PaletteSearchResult } from './search/PaletteSearchResult';
 import { PaletteToolList } from './tool-list/PaletteToolList';
+import { useDiagramElementPalette } from './useDiagramElementPalette';
+import { useDiagramPalette } from './useDiagramPalette';
 import { usePalette } from './usePalette';
 
 const usePaletteStyle = makeStyles<PaletteStyleProps>()((theme, props) => ({
@@ -104,7 +107,6 @@ export const Palette = ({
   diagramElementId,
   targetObjectId,
   onDirectEditClick,
-  onEscape,
 }: PaletteProps) => {
   const { domNode, nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
   const { x: viewportWidth, y: viewportHeight } = computeDraggableBounds(domNode?.getBoundingClientRect());
@@ -133,6 +135,41 @@ export const Palette = ({
   const { classes } = usePaletteStyle({ paletteWidth: `${paletteWidth}px`, paletteHeight: `${paletteHeight}px` });
 
   const shouldRender = palette && (getPaletteToolCount(palette) > 0 || !!diagramElement);
+
+  const { hideDiagramPalette } = useDiagramPalette();
+  const { hideDiagramElementPalette } = useDiagramElementPalette();
+  const { hideGroupPalette } = useGroupPalette();
+
+  const closeAllPalettes = useCallback(() => {
+    hideDiagramPalette();
+    hideDiagramElementPalette();
+    hideGroupPalette();
+  }, [hideDiagramPalette, hideDiagramElementPalette, hideGroupPalette]);
+
+  const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+
+  const onKeyDown = useCallback((event: React.KeyboardEvent<Element>) => {
+    const { key } = event;
+    if (key === 'Escape') {
+      // Stop propagating the event in order to keep the node/edge selected
+      event.stopPropagation();
+
+      closeAllPalettes();
+
+      //Set the focus from the palette to the node/edge
+      const selectedNode = store.getState().nodes.filter((node) => node.selected);
+      const selectedEdges = store.getState().edges.filter((edge) => edge.selected);
+      if (selectedNode.length + selectedEdges.length === 1) {
+        const selectedElement = selectedNode[0] || selectedEdges[0];
+        if (selectedElement) {
+          let domElement = document.querySelector(`[data-id='${selectedElement.id}']`);
+          if (domElement) {
+            (domElement as HTMLElement).focus();
+          }
+        }
+      }
+    }
+  }, []);
 
   if (!shouldRender) {
     return null;
@@ -166,16 +203,13 @@ export const Palette = ({
         className={classes.palette}
         data-testid="Palette"
         elevation={3}
+        onKeyDown={onKeyDown}
         onClick={(event) => event.stopPropagation()}>
         <Box id="tool-palette-header" className={classes.paletteHeader}>
           <DragIndicatorIcon />
         </Box>
         <Divider />
-        <PaletteSearchField
-          onValueChanged={onSearchFieldValueChanged}
-          onEscape={onEscape}
-          onDirectEditClick={onDirectEditClick}
-        />
+        <PaletteSearchField onValueChanged={onSearchFieldValueChanged} />
         <PaletteQuickAccessToolBar
           diagramElementId={diagramElementId}
           onToolClick={handleToolClick}

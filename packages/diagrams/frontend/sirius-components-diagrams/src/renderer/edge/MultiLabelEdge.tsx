@@ -94,14 +94,14 @@ export const MultiLabelEdge = memo(
           markerEnd={selected ? `${markerEnd?.slice(0, markerEnd.length - 2)}--selected')` : markerEnd}
           markerStart={selected ? `${markerStart?.slice(0, markerStart.length - 2)}--selected')` : markerStart}
         />
-        {selected ? (
-          <DiagramElementPalette
-            diagramElementId={id}
-            targetObjectId={data?.targetObjectId ?? ''}
-            labelId={label ? label.id : null}
-          />
-        ) : null}
         <EdgeLabelRenderer>
+          {selected ? (
+            <DiagramElementPalette
+              diagramElementId={id}
+              targetObjectId={data?.targetObjectId ?? ''}
+              labelId={label ? label.id : null}
+            />
+          ) : null}
           {beginLabel && (
             <div style={labelContainerStyle(`${sourceLabelTranslation} translate(${sourceX}px,${sourceY}px)`)}>
               <Label diagramElementId={id} label={beginLabel} faded={!!faded} />
