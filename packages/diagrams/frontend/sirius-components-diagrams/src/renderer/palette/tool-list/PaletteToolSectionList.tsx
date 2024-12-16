@@ -64,7 +64,8 @@ export const PaletteToolSectionList = ({ toolSection, onToolClick, onBackToMainL
         <ListItemButton
           className={classes.toolListItemButton}
           onClick={handleBackToMainListClick}
-          data-testid={`back-${toolSection.label}`}>
+          data-testid={`back-${toolSection.label}`}
+          autoFocus={true}>
           <NavigateBeforeIcon />
           <ListItemText className={classes.sectionTitleListItemText} primary={toolSection.label} />
         </ListItemButton>

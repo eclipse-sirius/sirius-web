@@ -450,6 +450,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     zoomOnDoubleClick: false,
     connectionLineType: ConnectionLineType.SmoothStep,
     nodesDraggable: nodesDraggable,
+    tabIndex: -1,
     children: (
       <>
         {snapToGrid ? (

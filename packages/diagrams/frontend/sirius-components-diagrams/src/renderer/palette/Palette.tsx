@@ -157,6 +157,12 @@ export const Palette = ({
     setState((prevState) => ({ ...prevState, searchToolValue: newValue }));
   };
 
+  const handleBackToMainList = () => {
+    if (nodeRef.current) {
+      nodeRef.current.focus();
+    }
+  };
+
   return (
     <Draggable
       nodeRef={nodeRef}
@@ -169,7 +175,8 @@ export const Palette = ({
         className={classes.palette}
         data-testid="Palette"
         elevation={3}
-        onClick={(event) => event.stopPropagation()}>
+        onClick={(event) => event.stopPropagation()}
+        tabIndex={0}>
         <Box id="tool-palette-header" className={classes.paletteHeader}>
           <DragIndicatorIcon />
           <Tooltip title="Close">
@@ -186,11 +193,7 @@ export const Palette = ({
           x={x}
           y={y}
         />
-        <PaletteSearchField
-          onValueChanged={onSearchFieldValueChanged}
-          onEscape={onClose}
-          onDirectEditClick={onDirectEditClick}
-        />
+        <PaletteSearchField onValueChanged={onSearchFieldValueChanged} />
         {state.searchToolValue.length > 0 ? (
           <PaletteSearchResult
             searchToolValue={state.searchToolValue}
@@ -198,7 +201,7 @@ export const Palette = ({
             onToolClick={handleToolClick}
           />
         ) : (
-          <PaletteToolList palette={palette} onToolClick={handleToolClick} />
+          <PaletteToolList palette={palette} onToolClick={handleToolClick} onBackToMainList={handleBackToMainList} />
         )}
       </Paper>
     </Draggable>

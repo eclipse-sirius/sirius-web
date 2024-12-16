@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -178,7 +178,7 @@ export const usePalette = ({
   targetObjectId,
   onDirectEditClick,
 }: UsePaletteProps): UsePaletteValue => {
-  const { nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
+  const { nodeLookup, edgeLookup, domNode } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
 
   const { addErrorMessage, addMessages } = useMultiToast();
@@ -203,6 +203,7 @@ export const usePalette = ({
   const closeAllPalettes = useCallback(() => {
     hideDiagramPalette();
     hideDiagramElementPalette();
+    domNode?.focus();
   }, [hideDiagramPalette, hideDiagramElementPalette]);
 
   const description: GQLRepresentationDescription | undefined =

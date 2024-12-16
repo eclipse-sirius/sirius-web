@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { PaletteSearchFieldProps, PaletteSearchFieldState } from './PaletteSearchField.types';
 
@@ -33,8 +33,9 @@ const usePaletteSearchFieldStyle = makeStyles()((theme) => ({
   },
 }));
 
-export const PaletteSearchField = ({ onValueChanged, onEscape, onDirectEditClick }: PaletteSearchFieldProps) => {
+export const PaletteSearchField = ({ onValueChanged }: PaletteSearchFieldProps) => {
   const [state, setState] = useState<PaletteSearchFieldState>({ value: '' });
+  const ref = useRef<HTMLDivElement | null>(null);
 
   const { classes } = usePaletteSearchFieldStyle();
 
@@ -47,14 +48,8 @@ export const PaletteSearchField = ({ onValueChanged, onEscape, onDirectEditClick
   const onTextClear = (): void => {
     setState((prevState) => ({ ...prevState, value: '' }));
     onValueChanged('');
-  };
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>): void => {
-    const { key } = event;
-    if (key === 'Escape' && onEscape) {
-      onEscape();
-    } else if (key === 'F2') {
-      onDirectEditClick();
+    if (ref.current) {
+      ref.current.focus();
     }
   };
 
@@ -63,10 +58,10 @@ export const PaletteSearchField = ({ onValueChanged, onEscape, onDirectEditClick
       autoFocus
       value={state.value}
       size="small"
-      onKeyDown={handleKeyDown}
       onClick={(event) => event.stopPropagation()}
       placeholder="Search Tool"
       className={classes.paletteSearchField}
+      ref={ref}
       InputProps={{
         disableUnderline: true,
         startAdornment: (
