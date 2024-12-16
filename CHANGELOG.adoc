@@ -19,6 +19,7 @@
 
 === Bug fixes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/4285[#4285] [diagram] Fix direct edit after closing the palette
 
 === New Features
 

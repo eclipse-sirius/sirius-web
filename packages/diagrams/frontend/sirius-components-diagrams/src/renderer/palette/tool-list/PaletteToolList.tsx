@@ -82,6 +82,7 @@ export const PaletteToolList = ({ palette, onToolClick }: PaletteToolListProps) 
 
   const onBackToMainList = () => {
     setState((prevState) => ({ ...prevState, toolSection: null }));
+    document.getElementById('palette')?.focus();
   };
 
   const listItemsRendered = palette.paletteEntries.flatMap((paletteEntry: GQLPaletteEntry) => {
