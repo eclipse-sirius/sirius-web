@@ -112,7 +112,7 @@ This is now fixed
 - https://github.com/eclipse-sirius/sirius-web/issues/4261[#4261] [core] Enable image cache
 - https://github.com/eclipse-sirius/sirius-web/issues/4225[#4225] [emf] Add support for localized enumeration literals in EMF property forms
 - https://github.com/eclipse-sirius/sirius-web/issues/4227[#4227] [emf] Add support for custom numeric and boolean types in property forms
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4319[#4319] [view] Rename "Hide/Show Tool Section" tool section to "Show/Hide".
 
 
 == v2024.11.0

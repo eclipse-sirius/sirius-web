@@ -150,7 +150,7 @@ public class DefaultToolsFactory {
 
     public NodeToolSection createDefaultHideRevealNodeToolSection() {
         NodeToolSection nodeToolSection = DiagramFactory.eINSTANCE.createNodeToolSection();
-        nodeToolSection.setName("Hide/Show Tool Section");
+        nodeToolSection.setName("Show/Hide");
         nodeToolSection.getNodeTools().add(this.createDefaultHideNodeTool());
         nodeToolSection.getNodeTools().add(this.createDefaultHideAllChildrenNodeTool());
         nodeToolSection.getNodeTools().add(this.createDefaultRevealAllChildrenNodeTool());
@@ -215,7 +215,7 @@ public class DefaultToolsFactory {
 
     public EdgeToolSection createDefaultHideRevealEdgeToolSection() {
         EdgeToolSection edgeToolSection = DiagramFactory.eINSTANCE.createEdgeToolSection();
-        edgeToolSection.setName("Hide/Show Tool Section");
+        edgeToolSection.setName("Show/Hide");
         edgeToolSection.getNodeTools().add(this.createDefaultHideEdgeTool());
         return edgeToolSection;
     }
