@@ -14,6 +14,7 @@
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   GQLCreateDocumentMutationData,
   GQLCreateDocumentMutationVariables,
@@ -46,10 +47,12 @@ export const useCreateDocument = (): UseCreateDocumentValue => {
     GQLCreateDocumentMutationVariables
   >(createDocumentMutation);
 
+  const { t: coreT } = useTranslation('siriusComponentsCore');
+
   const { addErrorMessage, addMessages } = useMultiToast();
   useEffect(() => {
     if (error) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
+      addErrorMessage(coreT('errors.unexpected'));
     }
     if (data) {
       const { createDocument } = data;
@@ -57,7 +60,7 @@ export const useCreateDocument = (): UseCreateDocumentValue => {
         addMessages(createDocument.messages);
       }
     }
-  }, [data, error]);
+  }, [coreT, data, error]);
 
   const createDocument = (editingContextId: string, stereotypeId: string, name: string) => {
     const variables: GQLCreateDocumentMutationVariables = {

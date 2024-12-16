@@ -17,6 +17,7 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import { Theme } from '@mui/material/styles';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { ModelBrowserFilterBarProps } from './ModelBrowserFilterBar.types';
 
@@ -36,6 +37,7 @@ const useFilterBarStyles = makeStyles()((theme: Theme) => ({
 }));
 export const ModelBrowserFilterBar = ({ onTextChange, onTextClear, text }: ModelBrowserFilterBarProps) => {
   const { classes } = useFilterBarStyles();
+  const { t } = useTranslation('siriusComponentsWidgetReference', { keyPrefix: 'filter' });
 
   return (
     <div className={classes.filterbar}>
@@ -44,7 +46,7 @@ export const ModelBrowserFilterBar = ({ onTextChange, onTextClear, text }: Model
         id="filterbar-textfield"
         data-testid="filterbar-textfield"
         name="filterbar-textfield"
-        placeholder="Type to filter"
+        placeholder={t('typeToFilter')}
         spellCheck={false}
         size="small"
         margin="none"
