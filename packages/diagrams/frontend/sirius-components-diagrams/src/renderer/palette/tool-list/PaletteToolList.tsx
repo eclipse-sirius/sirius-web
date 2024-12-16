@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -67,7 +67,7 @@ const defaultStateValue: PaletteToolListStateValue = {
   toolSection: null,
 };
 
-export const PaletteToolList = ({ palette, onToolClick }: PaletteToolListProps) => {
+export const PaletteToolList = ({ palette, onToolClick, onBackToMainList }: PaletteToolListProps) => {
   const [state, setState] = useState<PaletteToolListStateValue>(defaultStateValue);
 
   const { getLastToolInvoked } = useDiagramPalette();
@@ -80,13 +80,21 @@ export const PaletteToolList = ({ palette, onToolClick }: PaletteToolListProps) 
     setState((prevState) => ({ ...prevState, toolSection }));
   };
 
-  const onBackToMainList = () => {
+  const handleBackToMainList = () => {
     setState((prevState) => ({ ...prevState, toolSection: null }));
+    onBackToMainList();
   };
 
   const listItemsRendered = palette.paletteEntries.flatMap((paletteEntry: GQLPaletteEntry) => {
     if (isSingleClickOnDiagramElementTool(paletteEntry)) {
-      return <ToolListItem onToolClick={onToolClick} tool={paletteEntry} key={'toolItem_' + paletteEntry.id} />;
+      return (
+        <ToolListItem
+          onToolClick={onToolClick}
+          tool={paletteEntry}
+          key={'toolItem_' + paletteEntry.id}
+          data-testid={`paletteEntry-${paletteEntry.label}`}
+        />
+      );
     } else if (isToolSection(paletteEntry)) {
       return (
         <Tooltip key={'tooltip_' + paletteEntry.id} title={paletteEntry.label} placement="right">
@@ -129,7 +137,7 @@ export const PaletteToolList = ({ palette, onToolClick }: PaletteToolListProps) 
               <PaletteToolSectionList
                 toolSection={entry}
                 onToolClick={onToolClick}
-                onBackToMainList={onBackToMainList}
+                onBackToMainList={handleBackToMainList}
               />
             </div>
           </Slide>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,116 +12,175 @@
  *******************************************************************************/
 
 import { Project } from '../../../pages/Project';
-import { isCreateProjectFromTemplateSuccessPayload } from '../../../support/server/createProjectFromTemplateCommand';
-import { Studio } from '../../../usecases/Studio';
-import { Details } from '../../../workbench/Details';
+import { Flow } from '../../../usecases/Flow';
 import { Diagram } from '../../../workbench/Diagram';
 import { Explorer } from '../../../workbench/Explorer';
 
-describe('Diagram - Direct edit label', () => {
-  context.skip('Given a view with only one node with a direct edit tool and one edge with direct edit tool', () => {
-    let studioProjectId: string = '';
-    let domainName: string = '';
-
-    before(() => {
-      cy.createProjectFromTemplate('studio-template').then((res) => {
-        const payload = res.body.data.createProjectFromTemplate;
-        if (isCreateProjectFromTemplateSuccessPayload(payload)) {
-          const projectId = payload.project.id;
-          studioProjectId = projectId;
-
-          const project = new Project();
-          project.visit(projectId);
-          project.disableDeletionConfirmationDialog();
-
-          const explorer = new Explorer();
-          explorer.getTreeItemByLabel('DomainNewModel').dblclick();
-          cy.get('[title="domain::Domain"]').then(($div) => {
-            domainName = $div.data().testid;
-            explorer.expandWithDoubleClick('ViewNewModel');
-            explorer.expandWithDoubleClick('View');
-            explorer.expandWithDoubleClick(`${domainName} Diagram Description`);
-            explorer.expandWithDoubleClick('Entity1 Node');
-            explorer.expandWithDoubleClick('NodePalette');
-            explorer.delete('Edit Label');
-            explorer.select('LinkedTo Edge');
-            new Details().getTextField('Center Label Expression').type('Edge center{enter}');
-          });
-        }
+describe('Diagram - edit node label', () => {
+  context('Given a flow project', () => {
+    let projectId: string = '';
+    beforeEach(() => {
+      new Flow().createFlowProject().then((createdProjectData) => {
+        projectId = createdProjectData.projectId;
+        const project = new Project();
+        project.visit(projectId);
+        project.disableDeletionConfirmationDialog();
+        const explorer = new Explorer();
+        explorer.expandWithDoubleClick('Flow');
+        explorer.expandWithDoubleClick('NewSystem');
+        explorer.selectRepresentation('Topography');
       });
     });
 
-    after(() => cy.deleteProject(studioProjectId));
+    it('Then we can use direct edit on a node', () => {
+      const diagram = new Diagram();
+      //Wait for the fit to screen
+      cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
+      //Select a node
+      diagram.getDiagram('Topography').should('exist');
+      diagram.getNodes('Topography', 'DataSource1').should('exist');
+      diagram.getNodes('Topography', 'DataSource1').click();
+      //Trigger direct edit with f2
+      cy.focused().trigger('keydown', { altKey: true, keyCode: 113, which: 113 }); // key code for F2
+      cy.getByTestId('name-edit').should('exist');
+      diagram.getPalette().should('not.exist');
+      //Edit
+      cy.wait(100);
+      cy.getByTestId('name-edit').type('Edited{enter}', { delay: 10 });
+      cy.getByTestId('name-edit').should('not.exist');
+      diagram.getNodes('Topography', 'Edited').should('exist');
+    });
 
-    context('When we create a new instance project', () => {
-      let instanceProjectId: string = '';
+    it('Then we can use direct edit on a node by typing', () => {
+      const diagram = new Diagram();
+      //Wait for the fit to screen
+      cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
+      //Select a node
+      diagram.getDiagram('Topography').should('exist');
+      diagram.getNodes('Topography', 'DataSource1').should('exist');
+      diagram.getNodes('Topography', 'DataSource1').click();
+      //Edit
+      cy.wait(100);
+      cy.focused().click().type('Edited{enter}');
+      cy.getByTestId('name-edit').should('not.exist');
+      diagram.getNodes('Topography', 'Edited').should('exist');
+    });
 
-      beforeEach(() => {
-        const studio = new Studio();
-        studio.createProjectFromDomain('Cypress - Studio Instance', domainName, 'Root').then((res) => {
-          instanceProjectId = res.projectId;
+    it('Then during edit triggering escape cancel the current edition', () => {
+      const diagram = new Diagram();
+      //Wait for the fit to screen
+      cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
+      //Select a node
+      diagram.getDiagram('Topography').should('exist');
+      diagram.getNodes('Topography', 'DataSource1').should('exist');
+      diagram.getNodes('Topography', 'DataSource1').click();
+      //Trigger direct edit with f2
+      cy.focused().trigger('keydown', { altKey: true, keyCode: 113, which: 113 }); // key code for F2
+      cy.getByTestId('name-edit').should('exist');
+      diagram.getPalette().should('not.exist');
+      //Cancel direct edit with escp
+      cy.wait(100);
+      cy.getByTestId('name-edit').type('test{esc}');
+      cy.getByTestId('name-edit').should('not.exist');
+      diagram.getNodes('Topography', 'DataSource1').should('exist');
+    });
 
-          new Explorer().createRepresentation('Root', `${domainName} Diagram Description`, 'diagram');
-        });
-      });
+    it('Then we can use direct edit on a node even if the palette is opened', () => {
+      const diagram = new Diagram();
+      //Wait for the fit to screen
+      cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
+      //Select a node
+      diagram.getDiagram('Topography').should('exist');
+      diagram.getNodes('Topography', 'DataSource1').should('exist');
+      diagram.getNodes('Topography', 'DataSource1').click();
+      //Open the palette
+      diagram.getNodes('Topography', 'DataSource1').rightclick();
+      diagram.getPalette().should('exist');
+      //Trigger direct edit with f2
+      cy.focused().trigger('keydown', { altKey: true, keyCode: 113, which: 113 }); // key code for F2
+      cy.getByTestId('name-edit').should('exist');
+      diagram.getPalette().should('not.exist');
+      //Edit
+      cy.wait(100);
+      cy.getByTestId('name-edit').type('Edited{enter}');
+      cy.getByTestId('name-edit').should('not.exist');
+      diagram.getNodes('Topography', 'Edited').should('exist');
+    });
 
-      afterEach(() => cy.deleteProject(instanceProjectId));
+    it('Then we can use direct edit on a node even after closing the palette', () => {
+      const diagram = new Diagram();
+      //Wait for the fit to screen
+      cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
+      //Select a node
+      diagram.getDiagram('Topography').should('exist');
+      diagram.getNodes('Topography', 'DataSource1').should('exist');
+      diagram.getNodes('Topography', 'DataSource1').click();
+      //Open the palette
+      diagram.getNodes('Topography', 'DataSource1').rightclick();
+      diagram.getPalette().should('exist');
+      //Close the palette
+      diagram.getPalette().type('test{esc}');
+      diagram.getPalette().should('not.exist');
+      //Trigger direct edit with f2
+      cy.focused().trigger('keydown', { altKey: true, keyCode: 113, which: 113 }); // key code for F2
+      cy.getByTestId('name-edit').should('exist');
+      diagram.getPalette().should('not.exist');
+      //Edit
+      cy.wait(100);
+      cy.getByTestId('name-edit').type('Edited{enter}');
+      cy.getByTestId('name-edit').should('not.exist');
+      diagram.getNodes('Topography', 'Edited').should('exist');
+    });
 
-      it.skip('Then we cannot perform the direct edition of the node without the direct edit tool', () => {
-        const explorer = new Explorer();
-        explorer.createObject('Root', 'entity1s-Entity1');
-        explorer.getTreeItemByLabel('Entity1').click();
+    it('Then we can use direct after creating a new node', () => {
+      const diagram = new Diagram();
+      // wait for the fit to screen
+      cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
+      //Open the palette
+      cy.getByTestId('rf__wrapper').should('exist').rightclick(100, 800).rightclick(100, 800);
+      diagram.getPalette().should('exist');
+      //Create a new node
+      diagram.getPalette().getByTestId('toolSection-Creation Tools').should('exist');
+      diagram.getPalette().getByTestId('toolSection-Creation Tools').click();
+      diagram.getPalette().getByTestId('tool-Composite Processor').should('exist');
+      diagram.getPalette().getByTestId('tool-Composite Processor').click();
+      diagram.getNodes('Topography', 'CompositeProcessor2').should('exist');
+      cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
+      //Trigger direct edit with f2
+      cy.wait(100);
+      cy.focused().trigger('keydown', { altKey: true, keyCode: 113, which: 113 }); // key code for F2
+      cy.getByTestId('name-edit').should('exist');
+      diagram.getPalette().should('not.exist');
+      //Edit
+      cy.wait(100);
+      cy.getByTestId('name-edit').type('Edited2{enter}');
+      cy.getByTestId('name-edit').should('not.exist');
+      diagram.getNodes('Topography', 'Edited2').should('exist');
+    });
 
-        const details = new Details();
-        details.getTextField('Name').type('Entity1{Enter}');
+    it('Then we can use direct by typing after creating a new node', () => {
+      const diagram = new Diagram();
+      // wait for the fit to screen
+      cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
+      //Open the palette
+      cy.getByTestId('rf__wrapper').should('exist').rightclick(100, 800).rightclick(100, 800);
+      diagram.getPalette().should('exist');
+      //Create a new node
+      diagram.getPalette().getByTestId('toolSection-Creation Tools').should('exist');
+      diagram.getPalette().getByTestId('toolSection-Creation Tools').click();
+      diagram.getPalette().getByTestId('tool-Composite Processor').should('exist');
+      diagram.getPalette().getByTestId('tool-Composite Processor').click();
+      diagram.getNodes('Topography', 'CompositeProcessor2').should('exist');
+      cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
+      //Edit
+      cy.wait(100);
+      cy.focused().type('Edited2{enter}');
+      cy.getByTestId('name-edit').should('not.exist');
+      diagram.getNodes('Topography', 'Edited2').should('exist');
+    });
 
-        const diagram = new Diagram();
-        diagram.fitToScreen();
-        diagram.getNodes('diagram', 'Entity1').click();
-        diagram.getPalette().should('exist');
-        cy.getByTestId('Edit - Tool').should('not.exist');
-
-        diagram.getNodes('diagram', 'Entity1').trigger('keydown', { altKey: true, keyCode: 113, which: 113 }); // key code for F2
-        cy.getByTestId('name-edit').should('not.exist');
-      });
-
-      it('Then during edit triggering escape cancelled the current edition', () => {
-        const explorer = new Explorer();
-        explorer.createObject('Root', 'entity2s-Entity2');
-        explorer.getTreeItemByLabel('Entity2').click();
-
-        const details = new Details();
-        details.getTextField('Name').type('Entity2{Enter}');
-
-        const diagram = new Diagram();
-        diagram.fitToScreen();
-        diagram.getNodes('diagram', 'Entity2').click();
-        diagram.getPalette().should('exist');
-
-        cy.getByTestId('Edit - Tool').click();
-        cy.getByTestId('name-edit').should('exist').type('test{esc}');
-        diagram.getNodes('diagram', 'Entity2').should('exist');
-        diagram.getNodes('diagram', 'test').should('not.exist');
-      });
-
-      it('Then during the direct edition, the palette is hidden', () => {
-        const explorer = new Explorer();
-        explorer.createObject('Root', 'entity2s-Entity2');
-        explorer.getTreeItemByLabel('Entity2').click();
-
-        const details = new Details();
-        details.getTextField('Name').type('Entity2{Enter}');
-
-        const diagram = new Diagram();
-        diagram.fitToScreen();
-        diagram.getNodes('diagram', 'Entity2').click();
-        diagram.getPalette().should('exist');
-        cy.getByTestId('Edit - Tool').should('exist').click();
-        cy.getByTestId('name-edit').should('exist');
-        diagram.getPalette().should('not.exist');
-        cy.getByTestId('name-edit').type('Entity Entity2{enter}');
-        cy.getByTestId('name-edit').should('not.exist');
-      });
+    afterEach(() => {
+      cy.deleteProject(projectId);
     });
   });
 });

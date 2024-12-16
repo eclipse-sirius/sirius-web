@@ -11,8 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { useKeyPress } from '@xyflow/react';
-import { memo, useContext, useEffect } from 'react';
+import { memo, useCallback, useContext } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { DiagramPaletteProps } from './DiagramPalette.types';
@@ -24,32 +23,33 @@ export const DiagramPalette = memo(({ diagramElementId, targetObjectId }: Diagra
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { isOpened, x, y, hideDiagramPalette } = useDiagramPalette();
 
-  const escapePressed = useKeyPress('Escape');
-  useEffect(() => {
-    if (escapePressed) {
-      hideDiagramPalette();
-    }
-  }, [escapePressed, hideDiagramPalette]);
-
   if (readOnly) {
     return null;
   }
 
-  //If the Palette search field has the focus on, the useKeyPress from reactflow ignore the key pressed event.
-  const onClose = () => {
-    hideDiagramPalette();
-  };
+  const onKeyDown = useCallback(
+    (event: React.KeyboardEvent<Element>) => {
+      const { key } = event;
+      if (isOpened && key === 'Escape') {
+        event.stopPropagation();
+        hideDiagramPalette();
+      }
+    },
+    [hideDiagramPalette, isOpened]
+  );
 
   return isOpened && x && y ? (
     <PalettePortal>
-      <Palette
-        x={x}
-        y={y}
-        diagramElementId={diagramElementId}
-        targetObjectId={targetObjectId}
-        onDirectEditClick={() => {}}
-        onClose={onClose}
-      />
+      <div onKeyDown={onKeyDown}>
+        <Palette
+          x={x}
+          y={y}
+          diagramElementId={diagramElementId}
+          targetObjectId={targetObjectId}
+          onDirectEditClick={() => {}}
+          onClose={hideDiagramPalette}
+        />
+      </div>
     </PalettePortal>
   ) : null;
 });
