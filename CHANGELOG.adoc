@@ -79,6 +79,7 @@ Now they are executed for some data if the data was coming from a studio too.
 - https://github.com/eclipse-sirius/sirius-web/issues/4310[#4310] [diagram] Fix the list node border visibility using _dash_ style
 - https://github.com/eclipse-sirius/sirius-web/issues/4390[#4390] [form] Fix an issue displaying irrelevant help text and diagnostics
 - [diagram] Replace `requestIdleCallback` with `setTimeout` for browser compatibility given the fact that `requestIdleCallback` is still a working draft
+- https://github.com/eclipse-sirius/sirius-web/issues/4285[#4285] [diagram] Fix direct edit after closing the palette
 
 
 === New Features

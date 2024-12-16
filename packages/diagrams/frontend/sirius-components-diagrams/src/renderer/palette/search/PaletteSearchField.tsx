@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,7 +33,7 @@ const usePaletteSearchFieldStyle = makeStyles()((theme) => ({
   },
 }));
 
-export const PaletteSearchField = ({ onValueChanged, onEscape, onDirectEditClick }: PaletteSearchFieldProps) => {
+export const PaletteSearchField = ({ onValueChanged }: PaletteSearchFieldProps) => {
   const [state, setState] = useState<PaletteSearchFieldState>({ value: '' });
 
   const { classes } = usePaletteSearchFieldStyle();
@@ -47,15 +47,7 @@ export const PaletteSearchField = ({ onValueChanged, onEscape, onDirectEditClick
   const onTextClear = (): void => {
     setState((prevState) => ({ ...prevState, value: '' }));
     onValueChanged('');
-  };
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>): void => {
-    const { key } = event;
-    if (key === 'Escape' && onEscape) {
-      onEscape();
-    } else if (key === 'F2') {
-      onDirectEditClick();
-    }
+    document.getElementById('palette-search-field')?.focus();
   };
 
   return (
@@ -63,10 +55,10 @@ export const PaletteSearchField = ({ onValueChanged, onEscape, onDirectEditClick
       autoFocus
       value={state.value}
       size="small"
-      onKeyDown={handleKeyDown}
       onClick={(event) => event.stopPropagation()}
       placeholder="Search Tool"
       className={classes.paletteSearchField}
+      id="palette-search-field"
       InputProps={{
         disableUnderline: true,
         startAdornment: (

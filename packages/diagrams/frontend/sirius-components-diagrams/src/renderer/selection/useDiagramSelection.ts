@@ -57,7 +57,7 @@ export const useDiagramSelection = (onShiftSelection: boolean): void => {
       const newNodes = getNodes().map((node) => {
         const selected = displayedSemanticElementsToSelect.includes(node.data.targetObjectId);
         const newNode = { ...node, selected };
-        if (selected) {
+        if (selected === node.selected) {
           nodesToReveal.add(newNode.id);
         }
         return newNode;
@@ -76,6 +76,19 @@ export const useDiagramSelection = (onShiftSelection: boolean): void => {
 
       setEdges(newEdges);
       setNodes(newNodes);
+
+      //Set the focus in order to use direct edit
+      const selectedNode = newNodes.filter((node) => node.selected);
+      const selectedEdges = newEdges.filter((edge) => edge.selected);
+      if (selectedNode.length + selectedEdges.length === 1) {
+        const selectedElement = selectedNode[0] || selectedEdges[0];
+        if (selectedElement) {
+          let domElement = document.querySelector(`[data-id='${selectedElement.id}']`);
+          if (domElement) {
+            (domElement as HTMLElement).focus();
+          }
+        }
+      }
 
       fitView({ nodes: getNodes().filter((node) => nodesToReveal.has(node.id)), maxZoom: 1.5, duration: 1000 });
     }

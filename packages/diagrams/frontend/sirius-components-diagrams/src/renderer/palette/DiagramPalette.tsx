@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,8 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { useKeyPress } from '@xyflow/react';
-import { memo, useContext, useEffect } from 'react';
+import { memo, useContext } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { DiagramPaletteProps } from './DiagramPalette.types';
@@ -22,23 +21,11 @@ import { useDiagramPalette } from './useDiagramPalette';
 
 export const DiagramPalette = memo(({ diagramElementId, targetObjectId }: DiagramPaletteProps) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
-  const { isOpened, x, y, hideDiagramPalette } = useDiagramPalette();
-
-  const escapePressed = useKeyPress('Escape');
-  useEffect(() => {
-    if (escapePressed) {
-      hideDiagramPalette();
-    }
-  }, [escapePressed, hideDiagramPalette]);
+  const { isOpened, x, y } = useDiagramPalette();
 
   if (readOnly) {
     return null;
   }
-
-  //If the Palette search field has the focus on, the useKeyPress from reactflow ignore the key pressed event.
-  const onEscape = () => {
-    hideDiagramPalette();
-  };
 
   return isOpened && x && y ? (
     <PalettePortal>
@@ -48,7 +35,6 @@ export const DiagramPalette = memo(({ diagramElementId, targetObjectId }: Diagra
         diagramElementId={diagramElementId}
         targetObjectId={targetObjectId}
         onDirectEditClick={() => {}}
-        onEscape={onEscape}
       />
     </PalettePortal>
   ) : null;
