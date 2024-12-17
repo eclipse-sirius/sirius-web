@@ -28,7 +28,7 @@ import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Tooltip from '@mui/material/Tooltip';
 import { Edge, Node, Panel, useNodesInitialized, useReactFlow } from '@xyflow/react';
-import { memo, useContext, useEffect, useState } from 'react';
+import { memo, useCallback, useContext, useEffect, useState } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { HelperLinesIcon } from '../../icons/HelperLinesIcon';
@@ -41,6 +41,9 @@ import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
 import { useFullscreen } from '../fullscreen/useFullscreen';
 import { useHideDiagramElements } from '../hide/useHideDiagramElements';
 import { useArrangeAll } from '../layout/useArrangeAll';
+import { useGroupPalette } from '../palette/group-tool/useGroupPalette';
+import { useDiagramElementPalette } from '../palette/useDiagramElementPalette';
+import { useDiagramPalette } from '../palette/useDiagramPalette';
 import { usePinDiagramElements } from '../pin/usePinDiagramElements';
 import { DiagramPanelActionProps, DiagramPanelProps, DiagramPanelState } from './DiagramPanel.types';
 import { diagramPanelActionExtensionPoint } from './DiagramPanelExtensionPoints';
@@ -68,6 +71,15 @@ export const DiagramPanel = memo(
     );
 
     const { getNodes, getEdges, zoomIn, zoomOut, fitView } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+    const { hideDiagramPalette } = useDiagramPalette();
+    const { hideDiagramElementPalette } = useDiagramElementPalette();
+    const { hideGroupPalette } = useGroupPalette();
+
+    const closeAllPalettes = useCallback(() => {
+      hideDiagramPalette();
+      hideDiagramElementPalette();
+      hideGroupPalette();
+    }, [hideDiagramPalette, hideDiagramElementPalette, hideGroupPalette]);
 
     const getAllElementsIds = () => [...getNodes().map((elem) => elem.id), ...getEdges().map((elem) => elem.id)];
     const getSelectedNodes = () => getNodes().filter((node) => node.selected);
@@ -266,7 +278,9 @@ export const DiagramPanel = memo(
               </span>
             </Tooltip>
             {diagramPanelActionComponents.map(({ Component: DiagramPanelActionComponent }, index) => (
-              <DiagramPanelActionComponent editingContextId={editingContextId} diagramId={diagramId} key={index} />
+              <div onClick={closeAllPalettes}>
+                <DiagramPanelActionComponent editingContextId={editingContextId} diagramId={diagramId} key={index} />
+              </div>
             ))}
           </Paper>
         </Panel>

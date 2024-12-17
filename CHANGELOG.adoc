@@ -158,6 +158,7 @@ Note that you may need to encode special characters like `[`(by `%5B`) and `]` (
 - https://github.com/eclipse-sirius/sirius-web/issues/4474[#4474] [query] Add EMF Services (eSet, eUnset) for the Query View.
 - https://github.com/eclipse-sirius/sirius-web/issues/4354[#4354] [table] Add support for cursor based pagination in table view DSL
 - https://github.com/eclipse-sirius/sirius-web/issues/4478[#4478] [sirius-web] Provide an API to search custom resource on download document action
+- https://github.com/eclipse-sirius/sirius-web/issues/4323[#4323] [diagram] The palette can now be smaller and have an arrow to close it
 
 
 == v2025.1.0
