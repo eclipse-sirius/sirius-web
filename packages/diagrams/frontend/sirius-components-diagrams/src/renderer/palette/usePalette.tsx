@@ -21,6 +21,8 @@ import { useDialog } from '../../dialog/useDialog';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { GQLPalette, GQLSingleClickOnDiagramElementTool, GQLTool } from './Palette.types';
 
+import { useGroupPalette } from './group-tool/useGroupPalette';
+import { useDiagramElementPalette } from './useDiagramElementPalette';
 import { useDiagramPalette } from './useDiagramPalette';
 import {
   GQLCollapsingState,
@@ -196,6 +198,16 @@ export const usePalette = ({
     }
   );
 
+  const { hideDiagramPalette } = useDiagramPalette();
+  const { hideDiagramElementPalette } = useDiagramElementPalette();
+  const { hideGroupPalette } = useGroupPalette();
+
+  const closeAllPalettes = useCallback(() => {
+    hideDiagramPalette();
+    hideDiagramElementPalette();
+    hideGroupPalette();
+  }, [hideDiagramPalette, hideDiagramElementPalette, hideGroupPalette]);
+
   const description: GQLRepresentationDescription | undefined =
     paletteData?.viewer.editingContext.representation.description;
   const palette: GQLPalette | null = description && isDiagramDescription(description) ? description.palette : null;
@@ -315,6 +327,7 @@ export const usePalette = ({
   const { setLastToolInvoked } = useDiagramPalette();
 
   const handleToolClick = (tool: GQLTool) => {
+    closeAllPalettes();
     switch (tool.id) {
       case 'edit':
         onDirectEditClick();
