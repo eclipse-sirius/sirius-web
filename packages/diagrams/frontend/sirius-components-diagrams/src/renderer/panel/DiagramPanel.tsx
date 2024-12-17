@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,23 +29,26 @@ import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Tooltip from '@mui/material/Tooltip';
 import { Edge, Node, Panel, useNodesInitialized, useReactFlow } from '@xyflow/react';
-import { memo, useContext, useEffect, useState } from 'react';
+import { memo, useCallback, useContext, useEffect, useState } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { HelperLinesIcon } from '../../icons/HelperLinesIcon';
 import { HelperLinesIconOff } from '../../icons/HelperLinesIconOff';
+import { SmartEdgeIcon } from '../../icons/SmartEdgeIcon';
+import { SmoothStepEdgeIcon } from '../../icons/SmoothStepEdgeIcon';
 import { UnpinIcon } from '../../icons/UnpinIcon';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
 import { useFullscreen } from '../fullscreen/useFullscreen';
 import { useHideDiagramElements } from '../hide/useHideDiagramElements';
 import { useArrangeAll } from '../layout/useArrangeAll';
+import { useGroupPalette } from '../palette/group-tool/useGroupPalette';
+import { useDiagramElementPalette } from '../palette/useDiagramElementPalette';
+import { useDiagramPalette } from '../palette/useDiagramPalette';
 import { usePinDiagramElements } from '../pin/usePinDiagramElements';
 import { DiagramPanelActionProps, DiagramPanelProps, DiagramPanelState } from './DiagramPanel.types';
 import { diagramPanelActionExtensionPoint } from './DiagramPanelExtensionPoints';
 import { useExportToImage } from './useExportToImage';
-import { SmartEdgeIcon } from '../../icons/SmartEdgeIcon';
-import { SmoothStepEdgeIcon } from '../../icons/SmoothStepEdgeIcon';
 
 export const DiagramPanel = memo(
   ({
@@ -102,6 +105,16 @@ export const DiagramPanel = memo(
     const onUnfadeAll = () => fadeDiagramElements([...getAllElementsIds()], false);
     const onUnhideAll = () => hideDiagramElements([...getAllElementsIds()], false);
     const onUnpinAll = () => pinDiagramElements([...getAllElementsIds()], false);
+
+    const { hideDiagramPalette } = useDiagramPalette();
+    const { hideDiagramElementPalette } = useDiagramElementPalette();
+    const { hideGroupPalette } = useGroupPalette();
+
+    const closeAllPalettes = useCallback(() => {
+      hideDiagramPalette();
+      hideDiagramElementPalette();
+      hideGroupPalette();
+    }, [hideDiagramPalette, hideDiagramElementPalette, hideGroupPalette]);
 
     const { exportToImage } = useExportToImage();
     const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
@@ -276,7 +289,9 @@ export const DiagramPanel = memo(
               </span>
             </Tooltip>
             {diagramPanelActionComponents.map(({ Component: DiagramPanelActionComponent }, index) => (
-              <DiagramPanelActionComponent editingContextId={editingContextId} diagramId={diagramId} key={index} />
+              <div onClick={closeAllPalettes}>
+                <DiagramPanelActionComponent editingContextId={editingContextId} diagramId={diagramId} key={index} />
+              </div>
             ))}
           </Paper>
         </Panel>

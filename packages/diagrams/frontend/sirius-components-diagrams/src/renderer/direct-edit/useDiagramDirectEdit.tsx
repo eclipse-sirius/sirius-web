@@ -41,7 +41,7 @@ export const useDiagramDirectEdit = (): UseDiagramDirectEditValue => {
       if (key !== 'F2' && isTextField) {
         return;
       }
-
+      event.preventDefault();
       const validFirstInputChar =
         !event.metaKey && !event.ctrlKey && key.length === 1 && directEditActivationValidCharacters.test(key);
 
