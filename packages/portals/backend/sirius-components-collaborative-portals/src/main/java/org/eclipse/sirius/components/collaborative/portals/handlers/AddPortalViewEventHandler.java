@@ -80,7 +80,6 @@ public class AddPortalViewEventHandler implements IPortalEventHandler {
                 } else {
                     var optionalNewPortal = portalServices.addView(context.getCurrentPortal(), addPortalViewInput.viewRepresentationId(), addPortalViewInput.x(), addPortalViewInput.y(), addPortalViewInput.width(), addPortalViewInput.height());
                     if (optionalNewPortal.isPresent()) {
-                        context.setNextPortal(optionalNewPortal.get());
                         payload = new SuccessPayload(addPortalViewInput.id(), List.of());
 
                         changeDescription = new ChangeDescription(PortalChangeKind.PORTAL_VIEW_ADDITION.name(), optionalNewPortal.get().getId(), context.getInput());

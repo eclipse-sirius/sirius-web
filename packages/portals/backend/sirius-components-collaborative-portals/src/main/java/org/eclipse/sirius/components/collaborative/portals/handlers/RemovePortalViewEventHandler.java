@@ -68,7 +68,6 @@ public class RemovePortalViewEventHandler implements IPortalEventHandler {
         try {
             if (context.getInput() instanceof RemovePortalViewInput removePortalViewInput) {
                 var newPortal = context.getServices().removeView(context.getCurrentPortal(), removePortalViewInput.portalViewId());
-                context.setNextPortal(newPortal);
                 payload = new SuccessPayload(removePortalViewInput.id(), List.of());
                 changeDescription = new ChangeDescription(PortalChangeKind.PORTAL_VIEW_REMOVAL.name(), newPortal.getId(), context.getInput());
                 changeDescription.getParameters().put(IPortalEventHandler.NEXT_PORTAL_PARAMETER, newPortal);
