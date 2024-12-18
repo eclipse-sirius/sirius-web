@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.collaborative.diagrams.dto;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.components.core.api.IUndoableInput;
 import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeKind;
 
 /**
@@ -28,5 +29,5 @@ public record ReconnectEdgeInput(
         String representationId,
         String edgeId,
         String newEdgeEndId,
-        ReconnectEdgeKind reconnectEdgeKind) implements IDiagramInput {
+        ReconnectEdgeKind reconnectEdgeKind) implements IDiagramInput, IUndoableInput {
 }

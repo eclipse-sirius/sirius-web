@@ -19,6 +19,7 @@ import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { RawDiagram } from './layout.types';
 import {
   GQLDiagramLayoutData,
+  GQLEdgeLayoutData,
   GQLErrorPayload,
   GQLLayoutDiagramData,
   GQLLayoutDiagramInput,
@@ -27,7 +28,6 @@ import {
   GQLNodeLayoutData,
   GQLSuccessPayload,
   UseSynchronizeLayoutDataValue,
-  GQLEdgeLayoutData,
 } from './useSynchronizeLayoutData.types';
 
 const layoutDiagramMutation = gql`

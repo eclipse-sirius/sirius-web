@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,9 +17,9 @@ import java.util.UUID;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 
 /**
- * Input used to layout diagrams.
+ * Redo input for diagram.
  *
- * @author sbegaudeau
+ * @author gcoutable
  */
-public record LayoutDiagramInput(UUID id, String editingContextId, String representationId, DiagramLayoutDataInput diagramLayoutData) implements IDiagramInput {
+public record DiagramRedoInput(UUID id, String editingContextId, String mutationId, String representationId) implements IDiagramInput {
 }

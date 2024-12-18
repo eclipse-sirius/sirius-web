@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.components.core.api.IUndoableInput;
 
 /**
  * The class of the inputs for the "Delete from diagram" mutation.
@@ -23,5 +24,5 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
  * @author pcdavid
  * @author hmarchadour
  */
-public record DeleteFromDiagramInput(UUID id, String editingContextId, String representationId, List<String> nodeIds, List<String> edgeIds, DeletionPolicy deletionPolicy) implements IDiagramInput {
+public record DeleteFromDiagramInput(UUID id, String editingContextId, String representationId, List<String> nodeIds, List<String> edgeIds, DeletionPolicy deletionPolicy) implements IDiagramInput, IUndoableInput {
 }

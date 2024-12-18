@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,16 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.diagrams.dto;
+package org.eclipse.sirius.components.collaborative.diagrams.changes;
 
-import java.util.UUID;
-
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
+import java.util.Map;
 
 /**
- * Input used to layout diagrams.
+ * The previous and new node layout data and edge layout data.
  *
- * @author sbegaudeau
+ * @author gcoutable
  */
-public record LayoutDiagramInput(UUID id, String editingContextId, String representationId, DiagramLayoutDataInput diagramLayoutData) implements IDiagramInput {
+public record DiagramLayoutDataChanges(Map<String, NodeLayoutDataChange> nodeLayoutDataChanges,
+        Map<String, EdgeLayoutDataChange> edgeLayoutDataChanges) {
 }

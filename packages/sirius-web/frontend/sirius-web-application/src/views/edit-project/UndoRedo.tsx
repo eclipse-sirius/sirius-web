@@ -72,7 +72,7 @@ export const UndoRedo = ({ children }: { children: React.ReactNode }) => {
       const arr: string[] = JSON.parse(storedArray);
       if (arr[0]) {
         const input: GQLUndoInput = {
-          id: crypto.randomUUID(),
+          id: arr[0],
           editingContextId: projectId,
           mutationId: arr[0],
         };
@@ -87,7 +87,7 @@ export const UndoRedo = ({ children }: { children: React.ReactNode }) => {
       const arr: string[] = JSON.parse(storedArray);
       if (arr[0]) {
         const input: GQLRedoInput = {
-          id: crypto.randomUUID(),
+          id: arr[0],
           editingContextId: projectId,
           mutationId: arr[0],
         };
@@ -110,7 +110,9 @@ export const UndoRedo = ({ children }: { children: React.ReactNode }) => {
 
         // Put the element in the 1st position of the redo stack
         const redoStack: string[] = JSON.parse(storedRedoStack);
-        sessionStorage.setItem('redoStack', JSON.stringify([lastElement, ...redoStack]));
+        if (!redoStack.find((id) => id === lastElement)) {
+          sessionStorage.setItem('redoStack', JSON.stringify([lastElement, ...redoStack]));
+        }
       } else {
         // Clear stack if there is an error
         sessionStorage.setItem('undoStack', JSON.stringify([]));
@@ -133,7 +135,9 @@ export const UndoRedo = ({ children }: { children: React.ReactNode }) => {
 
         // Put the element in the 1st position of the undo stack
         const undoStack: string[] = JSON.parse(storedUndoStack);
-        sessionStorage.setItem('undoStack', JSON.stringify([lastElement, ...undoStack]));
+        if (!undoStack.find((id) => id === lastElement)) {
+          sessionStorage.setItem('undoStack', JSON.stringify([lastElement, ...undoStack]));
+        }
       }
     }
   }, [redoData]);

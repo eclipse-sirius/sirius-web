@@ -117,6 +117,7 @@ export const useLayoutOnBoundsChange = (refreshEventPayloadId: string): UseLayou
           };
 
           synchronizeLayoutData(refreshEventPayloadId, finalDiagram);
+          addUndoForLayout(refreshEventPayloadId);
         });
       }
     },
@@ -124,4 +125,21 @@ export const useLayoutOnBoundsChange = (refreshEventPayloadId: string): UseLayou
   );
 
   return { layoutOnBoundsChange };
+};
+
+const addUndoForLayout = (mutationId: string) => {
+  const storedUndoStack = sessionStorage.getItem('undoStack');
+  const storedRedoStack = sessionStorage.getItem('redoStack');
+
+  if (storedUndoStack && storedRedoStack) {
+    const undoStack: String[] = JSON.parse(storedUndoStack);
+    if (!undoStack.find((id) => id === mutationId)) {
+      sessionStorage.setItem('undoStack', JSON.stringify([mutationId, ...undoStack]));
+    }
+    // The following is done because of a bug that force undo to rewind to the last refresh with cause "refresh"
+    const redoStack: String[] = JSON.parse(storedRedoStack);
+    if (redoStack.find((id) => id === mutationId)) {
+      sessionStorage.setItem('redoStack', JSON.stringify([]));
+    }
+  }
 };

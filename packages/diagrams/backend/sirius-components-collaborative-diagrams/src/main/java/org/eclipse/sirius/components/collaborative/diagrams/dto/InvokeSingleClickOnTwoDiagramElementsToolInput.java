@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.components.core.api.IUndoableInput;
 
 /**
  * The input for the "Invoke single click on two diagram elements tool" mutation.
@@ -34,5 +35,5 @@ public record InvokeSingleClickOnTwoDiagramElementsToolInput(
         double targetPositionX,
         double targetPositionY,
         String toolId,
-        List<ToolVariable> variables) implements IDiagramInput {
+        List<ToolVariable> variables) implements IDiagramInput, IUndoableInput {
 }
