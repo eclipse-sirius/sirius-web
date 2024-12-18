@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,6 +30,7 @@ import graphql.execution.AsyncExecutionStrategy;
 import graphql.execution.AsyncSerialExecutionStrategy;
 import graphql.execution.DataFetcherExceptionHandler;
 import graphql.execution.ExecutionStrategy;
+import graphql.execution.SubscriptionExecutionStrategy;
 import graphql.schema.GraphQLCodeRegistry;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
@@ -65,12 +66,13 @@ public class GraphQLConfiguration {
         // @see https://www.graphql-java.com/documentation/v11/execution/ The graphql specification says that mutations
         // MUST be executed serially and in the order in which the query fields occur.
         ExecutionStrategy mutationExecutionStrategy = new AsyncSerialExecutionStrategy(exceptionHandler);
-        // @formatter:off
+        ExecutionStrategy subscriptionExecutionStrategy = new SubscriptionExecutionStrategy(exceptionHandler);
+
         return GraphQL.newGraphQL(graphQLSchema)
                 .queryExecutionStrategy(queryExecutionStrategy)
                 .mutationExecutionStrategy(mutationExecutionStrategy)
+                .subscriptionExecutionStrategy(subscriptionExecutionStrategy)
                 .build();
-        // @formatter:on
     }
 
     @Bean
