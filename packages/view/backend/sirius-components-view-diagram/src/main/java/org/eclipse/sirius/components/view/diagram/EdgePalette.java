@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,6 +30,8 @@ import org.eclipse.emf.ecore.EObject;
  * <li>{@link org.eclipse.sirius.components.view.diagram.EdgePalette#getEndLabelEditTool <em>End Label Edit
  * Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.EdgePalette#getNodeTools <em>Node Tools</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.EdgePalette#getQuickAccessTools <em>Quick Access
+ * Tools</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.EdgePalette#getEdgeReconnectionTools <em>Edge Reconnection
  * Tools</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.EdgePalette#getToolSections <em>Tool Sections</em>}</li>
@@ -142,6 +144,18 @@ public interface EdgePalette extends EObject {
      * @generated
      */
     EList<NodeTool> getNodeTools();
+
+    /**
+     * Returns the value of the '<em><b>Quick Access Tools</b></em>' containment reference list. The list contents are
+     * of type {@link org.eclipse.sirius.components.view.diagram.NodeTool}. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the value of the '<em>Quick Access Tools</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgePalette_QuickAccessTools()
+     * @model containment="true" keys="name"
+     * @generated
+     */
+    EList<NodeTool> getQuickAccessTools();
 
     /**
      * Returns the value of the '<em><b>Edge Reconnection Tools</b></em>' containment reference list. The list contents

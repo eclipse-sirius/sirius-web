@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -80,6 +80,7 @@ public class NodePaletteItemProvider extends ItemProviderAdapter
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_PALETTE__LABEL_EDIT_TOOL);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_PALETTE__DROP_NODE_TOOL);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_PALETTE__NODE_TOOLS);
+            this.childrenFeatures.add(DiagramPackage.Literals.NODE_PALETTE__QUICK_ACCESS_TOOLS);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_PALETTE__EDGE_TOOLS);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_PALETTE__TOOL_SECTIONS);
         }
@@ -145,6 +146,7 @@ public class NodePaletteItemProvider extends ItemProviderAdapter
             case DiagramPackage.NODE_PALETTE__LABEL_EDIT_TOOL:
             case DiagramPackage.NODE_PALETTE__DROP_NODE_TOOL:
             case DiagramPackage.NODE_PALETTE__NODE_TOOLS:
+            case DiagramPackage.NODE_PALETTE__QUICK_ACCESS_TOOLS:
             case DiagramPackage.NODE_PALETTE__EDGE_TOOLS:
             case DiagramPackage.NODE_PALETTE__TOOL_SECTIONS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
@@ -168,9 +170,21 @@ public class NodePaletteItemProvider extends ItemProviderAdapter
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__LABEL_EDIT_TOOL, defaultToolsFactory.createDefaultLabelEditTool()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__DROP_NODE_TOOL, DiagramFactory.eINSTANCE.createDropNodeTool()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__NODE_TOOLS, defaultToolsFactory.createDefaultNodeCreationTool()));
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__QUICK_ACCESS_TOOLS, defaultToolsFactory.createDefaultNodeCreationTool()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__EDGE_TOOLS, defaultToolsFactory.createDefaultEdgeTool()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__TOOL_SECTIONS, DiagramFactory.eINSTANCE.createNodeToolSection()));
 
+    }
+
+    /**
+     * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
+        return this.getFeatureText(feature);
     }
 
     /**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -96,13 +96,19 @@ public class ToolConverter {
 
         // Palette for the diagram itself
         String diagramPaletteId = "siriusComponents://diagramPalette?diagramId=" + this.objectService.getId(viewDiagramDescription);
+        var diagramNodeTools = new ArrayList<ITool>();
+        toolFinder.findNodeTools(viewDiagramDescription).stream()
+                .map(nodeTool -> this.createNodeTool(nodeTool, converterContext, true))
+                .forEach(diagramNodeTools::add);
+        toolFinder.findQuickAccessDiagramTools(viewDiagramDescription).stream()
+                .map(nodeTool -> this.createNodeTool(nodeTool, converterContext, true))
+                .forEach(diagramNodeTools::add);
+
         var diagramPalette = Palette.newPalette(diagramPaletteId)
                 .toolSections(toolFinder.findToolSections(viewDiagramDescription).stream()
                         .map(toolSection -> this.createToolSection(toolSection, converterContext))
                         .toList())
-                .tools(toolFinder.findNodeTools(viewDiagramDescription).stream()
-                        .map(nodeTool -> this.createNodeTool(nodeTool, converterContext, true))
-                        .toList())
+                .tools(diagramNodeTools)
                 .build();
 
         allPalettes.add(diagramPalette);
@@ -111,9 +117,15 @@ public class ToolConverter {
         for (var nodeDescription : converterContext.getConvertedNodes().keySet()) {
             String nodePaletteId = "siriusComponents://nodePalette?nodeId=" + this.objectService.getId(nodeDescription);
             var tools = new ArrayList<ITool>();
-            tools.addAll(toolFinder.findNodeTools(nodeDescription).stream()
+            var nodeTools = new ArrayList<ITool>();
+            toolFinder.findNodeTools(nodeDescription).stream()
                     .map(nodeTool -> this.createNodeTool(nodeTool, converterContext, false))
-                    .toList());
+                    .forEach(nodeTools::add);
+            toolFinder.findQuickAccessNodeTools(nodeDescription).stream()
+                    .map(nodeTool -> this.createNodeTool(nodeTool, converterContext, false))
+                    .forEach(nodeTools::add);
+
+            tools.addAll(nodeTools);
             tools.addAll(toolFinder.findEdgeTools(nodeDescription).stream()
                     .map(edgeTool -> this.createEdgeTool(edgeTool, nodeDescription, converterContext))
                     .toList());
@@ -131,10 +143,16 @@ public class ToolConverter {
         // One palette for each EdgeDescription
         for (var edgeDescription : converterContext.getConvertedEdges().keySet()) {
             String edgePaletteId = "siriusComponents://edgePalette?edgeId=" + this.objectService.getId(edgeDescription);
+            var edgeNodeTools = new ArrayList<ITool>();
+            toolFinder.findNodeTools(edgeDescription).stream()
+                    .map(nodeTool -> this.createNodeTool(nodeTool, converterContext, false))
+                    .forEach(edgeNodeTools::add);
+            toolFinder.findQuickAccessEdgeTools(edgeDescription).stream()
+                    .map(nodeTool -> this.createNodeTool(nodeTool, converterContext, false))
+                    .forEach(edgeNodeTools::add);
+
             var edgePalette = Palette.newPalette(edgePaletteId)
-                    .tools(toolFinder.findNodeTools(edgeDescription).stream()
-                            .map(nodeTool -> this.createNodeTool(nodeTool, converterContext, false))
-                            .toList())
+                    .tools(edgeNodeTools)
                     .toolSections(toolFinder.findToolSections(edgeDescription).stream()
                             .map(edgeToolSection -> this.createToolSection(edgeToolSection, converterContext))
                             .toList())

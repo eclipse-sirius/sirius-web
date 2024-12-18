@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -100,6 +100,14 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_DESCRIPTION__TITLE_EXPRESSION = ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Icon Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_DESCRIPTION__ICON_EXPRESSION = ViewPackage.REPRESENTATION_DESCRIPTION__ICON_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Auto Layout</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2319,13 +2327,22 @@ public interface DiagramPackage extends EPackage {
     int DIAGRAM_PALETTE__NODE_TOOLS = 2;
 
     /**
+     * The feature id for the '<em><b>Quick Access Tools</b></em>' containment reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_PALETTE__QUICK_ACCESS_TOOLS = 3;
+
+    /**
      * The feature id for the '<em><b>Tool Sections</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int DIAGRAM_PALETTE__TOOL_SECTIONS = 3;
+    int DIAGRAM_PALETTE__TOOL_SECTIONS = 4;
 
     /**
      * The number of structural features of the '<em>Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2333,7 +2350,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DIAGRAM_PALETTE_FEATURE_COUNT = 4;
+    int DIAGRAM_PALETTE_FEATURE_COUNT = 5;
 
     /**
      * The number of operations of the '<em>Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2390,13 +2407,22 @@ public interface DiagramPackage extends EPackage {
     int NODE_PALETTE__NODE_TOOLS = 3;
 
     /**
+     * The feature id for the '<em><b>Quick Access Tools</b></em>' containment reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_PALETTE__QUICK_ACCESS_TOOLS = 4;
+
+    /**
      * The feature id for the '<em><b>Edge Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int NODE_PALETTE__EDGE_TOOLS = 4;
+    int NODE_PALETTE__EDGE_TOOLS = 5;
 
     /**
      * The feature id for the '<em><b>Tool Sections</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2405,7 +2431,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_PALETTE__TOOL_SECTIONS = 5;
+    int NODE_PALETTE__TOOL_SECTIONS = 6;
 
     /**
      * The number of structural features of the '<em>Node Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -2414,7 +2440,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_PALETTE_FEATURE_COUNT = 6;
+    int NODE_PALETTE_FEATURE_COUNT = 7;
 
     /**
      * The number of operations of the '<em>Node Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2480,13 +2506,22 @@ public interface DiagramPackage extends EPackage {
     int EDGE_PALETTE__NODE_TOOLS = 4;
 
     /**
+     * The feature id for the '<em><b>Quick Access Tools</b></em>' containment reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_PALETTE__QUICK_ACCESS_TOOLS = 5;
+
+    /**
      * The feature id for the '<em><b>Edge Reconnection Tools</b></em>' containment reference list. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int EDGE_PALETTE__EDGE_RECONNECTION_TOOLS = 5;
+    int EDGE_PALETTE__EDGE_RECONNECTION_TOOLS = 6;
 
     /**
      * The feature id for the '<em><b>Tool Sections</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2495,7 +2530,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_PALETTE__TOOL_SECTIONS = 6;
+    int EDGE_PALETTE__TOOL_SECTIONS = 7;
 
     /**
      * The number of structural features of the '<em>Edge Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -2504,7 +2539,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_PALETTE_FEATURE_COUNT = 7;
+    int EDGE_PALETTE_FEATURE_COUNT = 8;
 
     /**
      * The number of operations of the '<em>Edge Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4925,6 +4960,18 @@ public interface DiagramPackage extends EPackage {
 
     /**
      * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.DiagramPalette#getQuickAccessTools <em>Quick Access
+     * Tools</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Quick Access Tools</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPalette#getQuickAccessTools()
+     * @see #getDiagramPalette()
+     * @generated
+     */
+    EReference getDiagramPalette_QuickAccessTools();
+
+    /**
+     * Returns the meta object for the containment reference list
      * '{@link org.eclipse.sirius.components.view.diagram.DiagramPalette#getToolSections <em>Tool Sections</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -4992,6 +5039,18 @@ public interface DiagramPackage extends EPackage {
      * @see #getNodePalette()
      */
     EReference getNodePalette_NodeTools();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.NodePalette#getQuickAccessTools <em>Quick Access Tools</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Quick Access Tools</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.NodePalette#getQuickAccessTools()
+     * @see #getNodePalette()
+     * @generated
+     */
+    EReference getNodePalette_QuickAccessTools();
 
     /**
      * Returns the meta object for the containment reference list
@@ -5086,6 +5145,18 @@ public interface DiagramPackage extends EPackage {
      * @see #getEdgePalette()
      */
     EReference getEdgePalette_NodeTools();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.EdgePalette#getQuickAccessTools <em>Quick Access Tools</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Quick Access Tools</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.EdgePalette#getQuickAccessTools()
+     * @see #getEdgePalette()
+     * @generated
+     */
+    EReference getEdgePalette_QuickAccessTools();
 
     /**
      * Returns the meta object for the containment reference list
@@ -6713,6 +6784,14 @@ public interface DiagramPackage extends EPackage {
         EReference DIAGRAM_PALETTE__NODE_TOOLS = eINSTANCE.getDiagramPalette_NodeTools();
 
         /**
+         * The meta object literal for the '<em><b>Quick Access Tools</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DIAGRAM_PALETTE__QUICK_ACCESS_TOOLS = eINSTANCE.getDiagramPalette_QuickAccessTools();
+
+        /**
          * The meta object literal for the '<em><b>Tool Sections</b></em>' containment reference list feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
@@ -6761,6 +6840,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EReference NODE_PALETTE__NODE_TOOLS = eINSTANCE.getNodePalette_NodeTools();
+
+        /**
+         * The meta object literal for the '<em><b>Quick Access Tools</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference NODE_PALETTE__QUICK_ACCESS_TOOLS = eINSTANCE.getNodePalette_QuickAccessTools();
 
         /**
          * The meta object literal for the '<em><b>Edge Tools</b></em>' containment reference list feature. <!--
@@ -6827,6 +6914,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EReference EDGE_PALETTE__NODE_TOOLS = eINSTANCE.getEdgePalette_NodeTools();
+
+        /**
+         * The meta object literal for the '<em><b>Quick Access Tools</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference EDGE_PALETTE__QUICK_ACCESS_TOOLS = eINSTANCE.getEdgePalette_QuickAccessTools();
 
         /**
          * The meta object literal for the '<em><b>Edge Reconnection Tools</b></em>' containment reference list feature.
