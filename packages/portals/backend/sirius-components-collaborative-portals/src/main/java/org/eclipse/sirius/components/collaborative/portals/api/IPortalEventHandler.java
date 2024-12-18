@@ -26,6 +26,10 @@ import reactor.core.publisher.Sinks.One;
 public interface IPortalEventHandler {
     String NEXT_PORTAL_PARAMETER = "nextPortal";
 
+    String ADDED_PORTAL_VIEW_ID = "addedPortalViewId";
+
+    String REMOVED_PORTAL_VIEW_ID = "removedPortalViewId";
+
     boolean canHandle(IPortalInput portalInput);
 
     void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, PortalContext context);

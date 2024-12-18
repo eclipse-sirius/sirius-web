@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,17 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.portals.dto;
+package org.eclipse.sirius.components.core.api;
 
 import java.util.UUID;
 
-import org.eclipse.sirius.components.collaborative.portals.api.IPortalInput;
-import org.eclipse.sirius.components.core.api.IUndoableInput;
-
 /**
- * The input for the Portal mutation to add a new view to a Portal.
+ * The input for redo mutation.
  *
- * @author pcdavid
+ * @author mcharfadi
  */
-public record AddPortalViewInput(UUID id, String editingContextId, String representationId, String viewRepresentationId, int x, int y, int width, int height) implements IPortalInput, IUndoableInput {
+public record RedoInput(UUID id, String  editingContextId, String mutationId) implements IInput {
 }

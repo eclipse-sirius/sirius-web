@@ -67,9 +67,9 @@ export const UndoRedo = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const undoLastAction = () => {
-    var storedArray = sessionStorage.getItem('undoStack');
+    const storedArray = sessionStorage.getItem('undoStack');
     if (storedArray) {
-      var arr = JSON.parse(storedArray);
+      const arr: string[] = JSON.parse(storedArray);
       if (arr[0]) {
         const input: GQLUndoInput = {
           id: crypto.randomUUID(),
@@ -82,9 +82,9 @@ export const UndoRedo = ({ children }: { children: React.ReactNode }) => {
   };
 
   const redoLastAction = () => {
-    var storedArray = sessionStorage.getItem('redoStack');
+    const storedArray = sessionStorage.getItem('redoStack');
     if (storedArray) {
-      var arr = JSON.parse(storedArray);
+      const arr: string[] = JSON.parse(storedArray);
       if (arr[0]) {
         const input: GQLRedoInput = {
           id: crypto.randomUUID(),
@@ -100,17 +100,21 @@ export const UndoRedo = ({ children }: { children: React.ReactNode }) => {
     if (undoData) {
       const { undo } = undoData;
       if (isSuccessPayload(undo)) {
-        var storedUndoStack = sessionStorage.getItem('undoStack');
-        var storedRedoStack = sessionStorage.getItem('redoStack');
+        const storedUndoStack = sessionStorage.getItem('undoStack');
+        const storedRedoStack = sessionStorage.getItem('redoStack');
 
-        //Remove first element of undo stack
-        var undoStack = JSON.parse(storedUndoStack);
-        var lastElement = undoStack.shift();
+        // Remove first element of undo stack
+        const undoStack: string[] = JSON.parse(storedUndoStack);
+        const lastElement = undoStack.shift();
         sessionStorage.setItem('undoStack', JSON.stringify(undoStack));
 
-        //Put the element in the 1st position of the redo stack
-        var redoStack = JSON.parse(storedRedoStack);
+        // Put the element in the 1st position of the redo stack
+        const redoStack: string[] = JSON.parse(storedRedoStack);
         sessionStorage.setItem('redoStack', JSON.stringify([lastElement, ...redoStack]));
+      } else {
+        // Clear stack if there is an error
+        sessionStorage.setItem('undoStack', JSON.stringify([]));
+        sessionStorage.setItem('redoStack', JSON.stringify([]));
       }
     }
   }, [undoData]);
@@ -119,28 +123,28 @@ export const UndoRedo = ({ children }: { children: React.ReactNode }) => {
     if (redoData) {
       const { redo } = redoData;
       if (isSuccessPayload(redo)) {
-        var storedUndoStack = sessionStorage.getItem('undoStack');
-        var storedRedoStack = sessionStorage.getItem('redoStack');
+        const storedUndoStack = sessionStorage.getItem('undoStack');
+        const storedRedoStack = sessionStorage.getItem('redoStack');
 
-        //Remove first element of redo stack
-        var redoStack = JSON.parse(storedRedoStack);
-        var lastElement = redoStack.shift();
+        // Remove first element of redo stack
+        const redoStack: string[] = JSON.parse(storedRedoStack);
+        const lastElement = redoStack.shift();
         sessionStorage.setItem('redoStack', JSON.stringify(redoStack));
 
-        //Put the element in the 1st position of the undo stack
-        var undoStack = JSON.parse(storedUndoStack);
+        // Put the element in the 1st position of the undo stack
+        const undoStack: string[] = JSON.parse(storedUndoStack);
         sessionStorage.setItem('undoStack', JSON.stringify([lastElement, ...undoStack]));
       }
     }
   }, [redoData]);
 
-  const undoKeyPressHandler = (e) => {
+  const undoKeyPressHandler = (e: KeyboardEvent) => {
     if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
       undoLastAction();
     }
   };
 
-  const redoKeyPressHandler = (e) => {
+  const redoKeyPressHandler = (e: KeyboardEvent) => {
     if ((e.ctrlKey || e.metaKey) && e.key === 'y') {
       redoLastAction();
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,11 +15,12 @@ package org.eclipse.sirius.components.collaborative.dto;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.core.api.IUndoableInput;
 
 /**
  * The input object of the create child mutation.
  *
  * @author sbegaudeau
  */
-public record CreateChildInput(UUID id, String editingContextId, String objectId, String childCreationDescriptionId) implements IInput {
+public record CreateChildInput(UUID id, String editingContextId, String objectId, String childCreationDescriptionId) implements IInput, IUndoableInput {
 }
