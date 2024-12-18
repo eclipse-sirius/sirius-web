@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.emf.common.util.BasicEList;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.sirius.components.diagrams.description.EdgeLabelKind;
 import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeKind;
 import org.eclipse.sirius.components.view.diagram.DeleteTool;
@@ -93,17 +92,49 @@ public class ToolFinder {
     }
 
     public List<NodeTool> findNodeTools(DiagramElementDescription diagramElementDescription) {
-        EList<NodeTool> result = new BasicEList<>();
+        List<NodeTool> result = new BasicEList<>();
         if (diagramElementDescription instanceof NodeDescription nodeDescription) {
-            result = Optional.of(nodeDescription).map(NodeDescription::getPalette).map(NodePalette::getNodeTools).orElse(new BasicEList<>());
+            result = Optional.of(nodeDescription).map(NodeDescription::getPalette)
+                    .map(NodePalette::getNodeTools)
+                    .orElse(new BasicEList<>());
         } else if (diagramElementDescription instanceof EdgeDescription edgeDescription) {
-            result = Optional.of(edgeDescription).map(EdgeDescription::getPalette).map(EdgePalette::getNodeTools).orElse(new BasicEList<>());
+            result = Optional.of(edgeDescription).map(EdgeDescription::getPalette)
+                    .map(EdgePalette::getNodeTools)
+                    .orElse(new BasicEList<>());
         }
         return result;
     }
 
+    public List<NodeTool> findQuickAccessNodeTools(DiagramElementDescription diagramElementDescription) {
+        List<NodeTool> result = new BasicEList<>();
+        if (diagramElementDescription instanceof NodeDescription nodeDescription) {
+            result = Optional.of(nodeDescription).map(NodeDescription::getPalette)
+                    .map(NodePalette::getQuickAccessTools)
+                    .orElse(new BasicEList<>());
+        } else if (diagramElementDescription instanceof EdgeDescription edgeDescription) {
+            result = Optional.of(edgeDescription).map(EdgeDescription::getPalette)
+                    .map(EdgePalette::getQuickAccessTools)
+                    .orElse(new BasicEList<>());
+        }
+        return result;
+    }
+
+    public List<NodeTool> findQuickAccessDiagramTools(DiagramDescription diagramDescription) {
+        return Optional.ofNullable(diagramDescription)
+                .map(DiagramDescription::getPalette)
+                .map(DiagramPalette::getQuickAccessTools)
+                .orElse(new BasicEList<>());
+    }
+
     public List<EdgeTool> findEdgeTools(NodeDescription nodeDescription) {
         return Optional.ofNullable(nodeDescription).map(NodeDescription::getPalette).map(NodePalette::getEdgeTools).orElse(new BasicEList<>());
+    }
+
+    public List<NodeTool> findQuickAccessEdgeTools(EdgeDescription edgeDescription) {
+        return Optional.ofNullable(edgeDescription)
+                .map(EdgeDescription::getPalette)
+                .map(EdgePalette::getQuickAccessTools)
+                .orElse(new BasicEList<>());
     }
 
     public List<DiagramToolSection> findToolSections(DiagramDescription diagramDescription) {

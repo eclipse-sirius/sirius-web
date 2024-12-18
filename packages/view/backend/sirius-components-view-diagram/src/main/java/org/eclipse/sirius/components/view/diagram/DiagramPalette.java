@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,8 @@ import org.eclipse.emf.ecore.EObject;
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramPalette#getDropTool <em>Drop Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramPalette#getDropNodeTool <em>Drop Node Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramPalette#getNodeTools <em>Node Tools</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramPalette#getQuickAccessTools <em>Quick Access
+ * Tools</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramPalette#getToolSections <em>Tool Sections</em>}</li>
  * </ul>
  *
@@ -89,6 +91,18 @@ public interface DiagramPalette extends EObject {
      * @generated
      */
     EList<NodeTool> getNodeTools();
+
+    /**
+     * Returns the value of the '<em><b>Quick Access Tools</b></em>' containment reference list. The list contents are
+     * of type {@link org.eclipse.sirius.components.view.diagram.NodeTool}. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the value of the '<em>Quick Access Tools</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramPalette_QuickAccessTools()
+     * @model containment="true" keys="name"
+     * @generated
+     */
+    EList<NodeTool> getQuickAccessTools();
 
     /**
      * Returns the value of the '<em><b>Tool Sections</b></em>' containment reference list. The list contents are of

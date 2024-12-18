@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -78,6 +78,7 @@ public class DiagramPaletteItemProvider extends ItemProviderAdapter
             this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_PALETTE__DROP_TOOL);
             this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_PALETTE__DROP_NODE_TOOL);
             this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_PALETTE__NODE_TOOLS);
+            this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_PALETTE__QUICK_ACCESS_TOOLS);
             this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_PALETTE__TOOL_SECTIONS);
         }
         return this.childrenFeatures;
@@ -141,6 +142,7 @@ public class DiagramPaletteItemProvider extends ItemProviderAdapter
             case DiagramPackage.DIAGRAM_PALETTE__DROP_TOOL:
             case DiagramPackage.DIAGRAM_PALETTE__DROP_NODE_TOOL:
             case DiagramPackage.DIAGRAM_PALETTE__NODE_TOOLS:
+            case DiagramPackage.DIAGRAM_PALETTE__QUICK_ACCESS_TOOLS:
             case DiagramPackage.DIAGRAM_PALETTE__TOOL_SECTIONS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
@@ -164,7 +166,20 @@ public class DiagramPaletteItemProvider extends ItemProviderAdapter
 
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_PALETTE__NODE_TOOLS, DiagramFactory.eINSTANCE.createNodeTool()));
 
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_PALETTE__QUICK_ACCESS_TOOLS, DiagramFactory.eINSTANCE.createNodeTool()));
+
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_PALETTE__TOOL_SECTIONS, DiagramFactory.eINSTANCE.createDiagramToolSection()));
+    }
+
+    /**
+     * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
+        return this.getFeatureText(feature);
     }
 
     /**

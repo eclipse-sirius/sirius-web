@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -81,6 +81,7 @@ public class EdgePaletteItemProvider extends ItemProviderAdapter
             this.childrenFeatures.add(DiagramPackage.Literals.EDGE_PALETTE__BEGIN_LABEL_EDIT_TOOL);
             this.childrenFeatures.add(DiagramPackage.Literals.EDGE_PALETTE__END_LABEL_EDIT_TOOL);
             this.childrenFeatures.add(DiagramPackage.Literals.EDGE_PALETTE__NODE_TOOLS);
+            this.childrenFeatures.add(DiagramPackage.Literals.EDGE_PALETTE__QUICK_ACCESS_TOOLS);
             this.childrenFeatures.add(DiagramPackage.Literals.EDGE_PALETTE__EDGE_RECONNECTION_TOOLS);
             this.childrenFeatures.add(DiagramPackage.Literals.EDGE_PALETTE__TOOL_SECTIONS);
         }
@@ -147,6 +148,7 @@ public class EdgePaletteItemProvider extends ItemProviderAdapter
             case DiagramPackage.EDGE_PALETTE__BEGIN_LABEL_EDIT_TOOL:
             case DiagramPackage.EDGE_PALETTE__END_LABEL_EDIT_TOOL:
             case DiagramPackage.EDGE_PALETTE__NODE_TOOLS:
+            case DiagramPackage.EDGE_PALETTE__QUICK_ACCESS_TOOLS:
             case DiagramPackage.EDGE_PALETTE__EDGE_RECONNECTION_TOOLS:
             case DiagramPackage.EDGE_PALETTE__TOOL_SECTIONS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
@@ -175,6 +177,8 @@ public class EdgePaletteItemProvider extends ItemProviderAdapter
 
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_PALETTE__NODE_TOOLS, DiagramFactory.eINSTANCE.createNodeTool()));
 
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_PALETTE__QUICK_ACCESS_TOOLS, DiagramFactory.eINSTANCE.createNodeTool()));
+
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_PALETTE__EDGE_RECONNECTION_TOOLS, DiagramFactory.eINSTANCE.createSourceEdgeEndReconnectionTool()));
 
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_PALETTE__EDGE_RECONNECTION_TOOLS, DiagramFactory.eINSTANCE.createTargetEdgeEndReconnectionTool()));
@@ -186,20 +190,11 @@ public class EdgePaletteItemProvider extends ItemProviderAdapter
      * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
-        Object childFeature = feature;
-        Object childObject = child;
-
-        boolean qualify = childFeature == DiagramPackage.Literals.EDGE_PALETTE__CENTER_LABEL_EDIT_TOOL || childFeature == DiagramPackage.Literals.EDGE_PALETTE__BEGIN_LABEL_EDIT_TOOL
-                || childFeature == DiagramPackage.Literals.EDGE_PALETTE__END_LABEL_EDIT_TOOL;
-
-        if (qualify) {
-            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
-        }
-        return super.getCreateChildText(owner, feature, child, selection);
+        return this.getFeatureText(feature);
     }
 
     /**

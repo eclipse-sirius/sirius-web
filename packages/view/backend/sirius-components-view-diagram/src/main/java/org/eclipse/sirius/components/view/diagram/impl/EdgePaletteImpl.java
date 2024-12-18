@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,6 +45,8 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgePaletteImpl#getEndLabelEditTool <em>End Label Edit
  * Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgePaletteImpl#getNodeTools <em>Node Tools</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgePaletteImpl#getQuickAccessTools <em>Quick Access
+ * Tools</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgePaletteImpl#getEdgeReconnectionTools <em>Edge
  * Reconnection Tools</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgePaletteImpl#getToolSections <em>Tool
@@ -103,6 +105,16 @@ public class EdgePaletteImpl extends MinimalEObjectImpl.Container implements Edg
      * @ordered
      */
     protected EList<NodeTool> nodeTools;
+
+    /**
+     * The cached value of the '{@link #getQuickAccessTools() <em>Quick Access Tools</em>}' containment reference list.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getQuickAccessTools()
+     * @generated
+     * @ordered
+     */
+    protected EList<NodeTool> quickAccessTools;
 
     /**
      * The cached value of the '{@link #getEdgeReconnectionTools() <em>Edge Reconnection Tools</em>}' containment
@@ -354,6 +366,19 @@ public class EdgePaletteImpl extends MinimalEObjectImpl.Container implements Edg
      * @generated
      */
     @Override
+    public EList<NodeTool> getQuickAccessTools() {
+        if (this.quickAccessTools == null) {
+            this.quickAccessTools = new EObjectContainmentEList<>(NodeTool.class, this, DiagramPackage.EDGE_PALETTE__QUICK_ACCESS_TOOLS);
+        }
+        return this.quickAccessTools;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EList<EdgeReconnectionTool> getEdgeReconnectionTools() {
         if (this.edgeReconnectionTools == null) {
             this.edgeReconnectionTools = new EObjectContainmentEList<>(EdgeReconnectionTool.class, this, DiagramPackage.EDGE_PALETTE__EDGE_RECONNECTION_TOOLS);
@@ -392,6 +417,8 @@ public class EdgePaletteImpl extends MinimalEObjectImpl.Container implements Edg
                 return this.basicSetEndLabelEditTool(null, msgs);
             case DiagramPackage.EDGE_PALETTE__NODE_TOOLS:
                 return ((InternalEList<?>) this.getNodeTools()).basicRemove(otherEnd, msgs);
+            case DiagramPackage.EDGE_PALETTE__QUICK_ACCESS_TOOLS:
+                return ((InternalEList<?>) this.getQuickAccessTools()).basicRemove(otherEnd, msgs);
             case DiagramPackage.EDGE_PALETTE__EDGE_RECONNECTION_TOOLS:
                 return ((InternalEList<?>) this.getEdgeReconnectionTools()).basicRemove(otherEnd, msgs);
             case DiagramPackage.EDGE_PALETTE__TOOL_SECTIONS:
@@ -418,6 +445,8 @@ public class EdgePaletteImpl extends MinimalEObjectImpl.Container implements Edg
                 return this.getEndLabelEditTool();
             case DiagramPackage.EDGE_PALETTE__NODE_TOOLS:
                 return this.getNodeTools();
+            case DiagramPackage.EDGE_PALETTE__QUICK_ACCESS_TOOLS:
+                return this.getQuickAccessTools();
             case DiagramPackage.EDGE_PALETTE__EDGE_RECONNECTION_TOOLS:
                 return this.getEdgeReconnectionTools();
             case DiagramPackage.EDGE_PALETTE__TOOL_SECTIONS:
@@ -450,6 +479,10 @@ public class EdgePaletteImpl extends MinimalEObjectImpl.Container implements Edg
             case DiagramPackage.EDGE_PALETTE__NODE_TOOLS:
                 this.getNodeTools().clear();
                 this.getNodeTools().addAll((Collection<? extends NodeTool>) newValue);
+                return;
+            case DiagramPackage.EDGE_PALETTE__QUICK_ACCESS_TOOLS:
+                this.getQuickAccessTools().clear();
+                this.getQuickAccessTools().addAll((Collection<? extends NodeTool>) newValue);
                 return;
             case DiagramPackage.EDGE_PALETTE__EDGE_RECONNECTION_TOOLS:
                 this.getEdgeReconnectionTools().clear();
@@ -486,6 +519,9 @@ public class EdgePaletteImpl extends MinimalEObjectImpl.Container implements Edg
             case DiagramPackage.EDGE_PALETTE__NODE_TOOLS:
                 this.getNodeTools().clear();
                 return;
+            case DiagramPackage.EDGE_PALETTE__QUICK_ACCESS_TOOLS:
+                this.getQuickAccessTools().clear();
+                return;
             case DiagramPackage.EDGE_PALETTE__EDGE_RECONNECTION_TOOLS:
                 this.getEdgeReconnectionTools().clear();
                 return;
@@ -514,6 +550,8 @@ public class EdgePaletteImpl extends MinimalEObjectImpl.Container implements Edg
                 return this.endLabelEditTool != null;
             case DiagramPackage.EDGE_PALETTE__NODE_TOOLS:
                 return this.nodeTools != null && !this.nodeTools.isEmpty();
+            case DiagramPackage.EDGE_PALETTE__QUICK_ACCESS_TOOLS:
+                return this.quickAccessTools != null && !this.quickAccessTools.isEmpty();
             case DiagramPackage.EDGE_PALETTE__EDGE_RECONNECTION_TOOLS:
                 return this.edgeReconnectionTools != null && !this.edgeReconnectionTools.isEmpty();
             case DiagramPackage.EDGE_PALETTE__TOOL_SECTIONS:
