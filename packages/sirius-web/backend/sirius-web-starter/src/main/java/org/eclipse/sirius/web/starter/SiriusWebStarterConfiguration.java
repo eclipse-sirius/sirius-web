@@ -65,6 +65,7 @@ import reactor.core.publisher.Flux;
     "org.eclipse.sirius.components.tables",
     "org.eclipse.sirius.components.trees",
     "org.eclipse.sirius.components.validation",
+    "org.eclipse.sirius.components.domain.emf",
     "org.eclipse.sirius.components.view.emf",
     "org.eclipse.sirius.web.domain",
     "org.eclipse.sirius.web.application",
