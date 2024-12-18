@@ -71,7 +71,6 @@ public class LayoutPortalEventHandler implements IPortalEventHandler {
             if (context.getInput() instanceof LayoutPortalInput layoutPortalInput) {
                 List<PortalViewLayoutData> layoutData = layoutPortalInput.layoutData().stream().map(this::convert).toList();
                 var newPortal = context.getServices().layout(context.getCurrentPortal(), layoutData);
-                context.setNextPortal(newPortal);
                 payload = new SuccessPayload(layoutPortalInput.id(), List.of());
                 changeDescription = new ChangeDescription(PortalChangeKind.PORTAL_LAYOUT_CHANGE.name(), newPortal.getId(), context.getInput());
                 changeDescription.getParameters().put(IPortalEventHandler.NEXT_PORTAL_PARAMETER, newPortal);

@@ -21,23 +21,4 @@ public interface ICollaborativePortalMessageService {
     String invalidInput(String receivedInputTypeName, String expectedInputTypeName);
 
     String forbiddenLoop();
-
-    /**
-     * Implementation which does nothing, used for mocks in unit tests.
-     *
-     * @author pcdavid
-     */
-    class NoOp implements ICollaborativePortalMessageService {
-
-        @Override
-        public String invalidInput(String receivedInputTypeName, String expectedInputTypeName) {
-            return "";
-        }
-
-        @Override
-        public String forbiddenLoop() {
-            return "";
-        }
-
-    }
 }

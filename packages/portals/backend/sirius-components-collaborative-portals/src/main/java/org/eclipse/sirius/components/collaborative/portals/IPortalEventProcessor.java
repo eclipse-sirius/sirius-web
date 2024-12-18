@@ -20,13 +20,4 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProce
  * @author pcdavid
  */
 public interface IPortalEventProcessor extends IRepresentationEventProcessor {
-
-    /**
-     * Implementation which does nothing, used for mocks in unit tests.
-     *
-     * @author sbegaudeau
-     */
-    class NoOp extends IRepresentationEventProcessor.NoOp implements IPortalEventProcessor {
-
-    }
 }
