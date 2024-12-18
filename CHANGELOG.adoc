@@ -22,6 +22,8 @@
 
 === New Features
 
+- https://github.com/eclipse-sirius/sirius-web/issues/4326[#4326] [diagram] Add quickAccessTools to diagram's palette in view dsl
+
 
 === Improvements
 
