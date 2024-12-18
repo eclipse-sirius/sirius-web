@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -85,6 +85,10 @@ public final class GroupDescription {
         return new Builder(id);
     }
 
+    public static Builder newGroupDescription(GroupDescription groupDescription) {
+        return new Builder(groupDescription);
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}'}'";
@@ -116,6 +120,17 @@ public final class GroupDescription {
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
+        }
+
+        private Builder(GroupDescription groupDescription) {
+            this.id = Objects.requireNonNull(groupDescription.getId());
+            this.idProvider = Objects.requireNonNull(groupDescription.getIdProvider());
+            this.labelProvider = Objects.requireNonNull(groupDescription.getLabelProvider());
+            this.displayModeProvider = Objects.requireNonNull(groupDescription.getDisplayModeProvider());
+            this.semanticElementsProvider = Objects.requireNonNull(groupDescription.getSemanticElementsProvider());
+            this.toolbarActionDescriptions = Objects.requireNonNull(groupDescription.getToolbarActionDescriptions());
+            this.controlDescriptions = Objects.requireNonNull(groupDescription.getControlDescriptions());
+            this.borderStyleProvider = Objects.requireNonNull(groupDescription.getBorderStyleProvider());
         }
 
         public Builder idProvider(Function<VariableManager, String> idProvider) {

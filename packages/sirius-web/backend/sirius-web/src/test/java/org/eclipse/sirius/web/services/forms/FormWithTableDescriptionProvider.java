@@ -72,7 +72,7 @@ import org.springframework.stereotype.Service;
  * @author lfasani
  */
 @Service
-public class FormWithTableEditingContextDescriptionProvider implements IEditingContextRepresentationDescriptionProvider {
+public class FormWithTableDescriptionProvider implements IEditingContextRepresentationDescriptionProvider {
 
     public static final String TASK_FORM_ID = "taskFormDescription";
     public static final String FORM_WITH_TABLE_ID = "tasksTableId";
@@ -83,7 +83,7 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
 
     private final IObjectService objectService;
 
-    public FormWithTableEditingContextDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IIdentityService identityService, IObjectService objectService) {
+    public FormWithTableDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IIdentityService identityService, IObjectService objectService) {
         this.identityService = Objects.requireNonNull(identityService);
         this.objectService = Objects.requireNonNull(objectService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
@@ -133,7 +133,6 @@ public class FormWithTableEditingContextDescriptionProvider implements IEditingC
                 .map(this.objectService::getLabel)
                 .orElse(null);
 
-        List<LineDescription> lineDescriptions = new ArrayList<>();
         LineDescription lineDescription = LineDescription.newLineDescription(UUID.nameUUIDFromBytes("Table - Line".getBytes()).toString())
                 .targetObjectIdProvider(this::getTargetObjectId)
                 .targetObjectKindProvider(this::getTargetObjectKind)

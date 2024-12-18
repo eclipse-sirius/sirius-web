@@ -31,9 +31,9 @@ public class PapayaJavaServiceProvider implements IJavaServiceProvider {
 
     @Override
     public List<Class<?>> getServiceClasses(View view) {
-        var isComponentDiagram = view.getDescriptions().stream()
+        var isPapayaRepresentation = view.getDescriptions().stream()
                 .anyMatch(representationDescription -> representationDescription.getDomainType().startsWith(PapayaPackage.eNS_PREFIX + ":"));
-        if (isComponentDiagram) {
+        if (isPapayaRepresentation) {
             return List.of(PapayaRepresentationServices.class, ComponentDiagramServices.class, ClassDiagramServices.class);
         }
         return List.of();

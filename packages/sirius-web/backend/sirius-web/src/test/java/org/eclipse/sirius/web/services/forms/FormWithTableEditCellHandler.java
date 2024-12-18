@@ -41,7 +41,7 @@ public class FormWithTableEditCellHandler implements IEditCellHandler {
 
     @Override
     public boolean canHandle(TableDescription tableDescription) {
-        return tableDescription.getId().equals(FormWithTableEditingContextDescriptionProvider.FORM_WITH_TABLE_ID);
+        return tableDescription.getId().equals(FormWithTableDescriptionProvider.FORM_WITH_TABLE_ID);
     }
 
     @Override
