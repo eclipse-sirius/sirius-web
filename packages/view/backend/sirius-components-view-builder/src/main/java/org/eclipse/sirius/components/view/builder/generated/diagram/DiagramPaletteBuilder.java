@@ -73,6 +73,18 @@ public class DiagramPaletteBuilder {
     }
 
     /**
+     * Setter for QuickAccessTools.
+     *
+     * @generated
+     */
+    public DiagramPaletteBuilder quickAccessTools(org.eclipse.sirius.components.view.diagram.NodeTool ... values) {
+        for (org.eclipse.sirius.components.view.diagram.NodeTool value : values) {
+            this.getDiagramPalette().getQuickAccessTools().add(value);
+        }
+        return this;
+    }
+
+    /**
      * Setter for ToolSections.
      *
      * @generated

@@ -91,6 +91,18 @@ public class EdgePaletteBuilder {
     }
 
     /**
+     * Setter for QuickAccessTools.
+     *
+     * @generated
+     */
+    public EdgePaletteBuilder quickAccessTools(org.eclipse.sirius.components.view.diagram.NodeTool ... values) {
+        for (org.eclipse.sirius.components.view.diagram.NodeTool value : values) {
+            this.getEdgePalette().getQuickAccessTools().add(value);
+        }
+        return this;
+    }
+
+    /**
      * Setter for EdgeReconnectionTools.
      *
      * @generated
