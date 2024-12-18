@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -79,6 +79,10 @@ public final class PageDescription {
         return new Builder(id);
     }
 
+    public static Builder newPageDescription(PageDescription pageDescription) {
+        return new Builder(pageDescription);
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}'}'";
@@ -111,6 +115,16 @@ public final class PageDescription {
             this.id = Objects.requireNonNull(id);
         }
 
+        private Builder(PageDescription pageDescription) {
+            this.id = Objects.requireNonNull(pageDescription.getId());
+            this.idProvider = Objects.requireNonNull(pageDescription.getIdProvider());
+            this.labelProvider = Objects.requireNonNull(pageDescription.getLabelProvider());
+            this.semanticElementsProvider = Objects.requireNonNull(pageDescription.getSemanticElementsProvider());
+            this.groupDescriptions = Objects.requireNonNull(pageDescription.getGroupDescriptions());
+            this.toolbarActionDescriptions = Objects.requireNonNull(pageDescription.getToolbarActionDescriptions());
+            this.canCreatePredicate = Objects.requireNonNull(pageDescription.getCanCreatePredicate());
+        }
+
         public Builder idProvider(Function<VariableManager, String> idProvider) {
             this.idProvider = Objects.requireNonNull(idProvider);
             return this;
@@ -136,8 +150,8 @@ public final class PageDescription {
             return this;
         }
 
-        public Builder canCreatePredicate(Predicate<VariableManager> predicate) {
-            this.canCreatePredicate = Objects.requireNonNull(predicate);
+        public Builder canCreatePredicate(Predicate<VariableManager> canCreatePredicate) {
+            this.canCreatePredicate = Objects.requireNonNull(canCreatePredicate);
             return this;
         }
 

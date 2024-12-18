@@ -44,7 +44,7 @@ import org.eclipse.sirius.components.tables.tests.navigation.LineNavigator;
 import org.eclipse.sirius.components.tables.tests.navigation.TableNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
-import org.eclipse.sirius.web.services.forms.FormWithTableEditingContextDescriptionProvider;
+import org.eclipse.sirius.web.services.forms.FormWithTableDescriptionProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedFormSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
@@ -93,7 +93,7 @@ public class TableControllerTests extends AbstractIntegrationTests {
     }
 
     private Flux<Object> givenSubscriptionToFormWithTableWidget() {
-        var input = new CreateRepresentationInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), FormWithTableEditingContextDescriptionProvider.TASK_FORM_ID,
+        var input = new CreateRepresentationInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), FormWithTableDescriptionProvider.TASK_FORM_ID,
                 PapayaIdentifiers.FIRST_ITERATION_OBJECT.toString(), "FormWithTable");
         return this.givenCreatedFormSubscription.createAndSubscribe(input);
     }
