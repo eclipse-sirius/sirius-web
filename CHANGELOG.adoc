@@ -104,6 +104,7 @@ The backend part (the ability to define an _Elements to Select Expression_ on di
 This is now fixed
 - https://github.com/eclipse-sirius/sirius-web/issues/4297[#4297] Improve the size of the Docker image by optimizing the use of caching
 - https://github.com/eclipse-sirius/sirius-web/issues/4143[#4143] [core] Add postRefresh method in IRepresentationEventProcessor
+- https://github.com/eclipse-sirius/sirius-web/issues/4106[#4106] [portal] Add undo/redo for portal representation
 
 === Improvements
 

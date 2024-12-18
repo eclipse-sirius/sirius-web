@@ -28,18 +28,24 @@ import org.springframework.stereotype.Service;
 public class RemovePortalViewMutationRunner implements IMutationRunner<RemovePortalViewInput> {
 
     private static final String REMOVE_PORTAL_VIEW = """
-            mutation removePortalView($input: RemovePortalViewInput!) {
-              removePortalView(input: $input) {
-                __typename
-                ... on SuccessPayload {
-                  id
+        mutation removePortalView($input: RemovePortalViewInput!) {
+            removePortalView(input: $input) {
+              __typename
+              ... on SuccessPayload {
+                messages {
+                  body
+                  level
                 }
-                ... on ErrorPayload {
-                  message
+              }
+              ... on ErrorPayload {
+                messages {
+                  body
+                  level
                 }
               }
             }
-            """;
+          }
+        """;
 
     private final IGraphQLRequestor graphQLRequestor;
 

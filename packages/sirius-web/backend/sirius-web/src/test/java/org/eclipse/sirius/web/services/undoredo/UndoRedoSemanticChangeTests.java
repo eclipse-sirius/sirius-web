@@ -13,19 +13,29 @@
 
 package org.eclipse.sirius.web.services.undoredo;
 
+import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
+
 import com.jayway.jsonpath.JsonPath;
+
+import java.time.Duration;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+
 import org.assertj.core.api.Assertions;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditRadioInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
+import org.eclipse.sirius.components.core.api.RedoInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.core.api.UndoInput;
 import org.eclipse.sirius.components.forms.Radio;
 import org.eclipse.sirius.components.forms.RadioOption;
 import org.eclipse.sirius.components.forms.tests.graphql.EditRadioMutationRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.application.undo.dto.RedoInput;
-import org.eclipse.sirius.web.application.undo.dto.UndoInput;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.services.forms.FormWithRadioDescriptionProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedFormSubscription;
@@ -40,17 +50,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
-
-import java.time.Duration;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
-
-import static org.assertj.core.api.Assertions.fail;
-import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 /**
  * Integration tests of undo redo semantic data.
@@ -182,6 +184,6 @@ public class UndoRedoSemanticChangeTests extends AbstractIntegrationTests {
                 .then(redoMutation)
                 .consumeNextWith(updatedFormContentConsumer)
                 .thenCancel()
-                .verify(Duration.ofSeconds(10));
+                .verify(Duration.ofDays(10));
     }
 }

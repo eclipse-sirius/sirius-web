@@ -10,9 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.undo.dto;
-
-import org.eclipse.sirius.components.core.api.IInput;
+package org.eclipse.sirius.components.core.api;
 
 import java.util.UUID;
 
@@ -21,5 +19,5 @@ import java.util.UUID;
  *
  * @author mcharfadi
  */
-public record UndoInput(UUID id, String  editingContextId, String mutationId) implements IInput {
+public record UndoInput(UUID id, String editingContextId, String mutationId) implements IInput {
 }

@@ -12,6 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.core.api;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.eclipse.sirius.components.core.api.representations.IRepresentationChangeEvent;
+
 /**
  * Used to contain the semantic data.
  *
@@ -28,6 +34,10 @@ public interface IEditingContext {
 
     default void dispose() {
         // Do nothing
+    }
+
+    default Map<String, List<IRepresentationChangeEvent>> getRepresentationChangesDescription() {
+        return new HashMap<>();
     }
 
     /**

@@ -459,7 +459,7 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
         TestTransaction.end();
         TestTransaction.start();
 
-        var subPortalViewId = "9e277e97-7f71-4bdd-99af-9eeb8bd7f2df";
+        var subPortalViewId = "bbf6c9b9-ee36-32c5-aee0-f4d64efcccb7";
         AtomicReference<RepresentationContent> initialPortalState = new AtomicReference<>(null);
 
         Consumer<Object> initialPortalContentConsumer = this.portalRefreshedConsumer(portal -> {

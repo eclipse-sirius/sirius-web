@@ -80,10 +80,13 @@ public class AddPortalViewEventHandler implements IPortalEventHandler {
                 } else {
                     var optionalNewPortal = portalServices.addView(context.getCurrentPortal(), addPortalViewInput.viewRepresentationId(), addPortalViewInput.x(), addPortalViewInput.y(), addPortalViewInput.width(), addPortalViewInput.height());
                     if (optionalNewPortal.isPresent()) {
+                        var newPortal = optionalNewPortal.get();
                         payload = new SuccessPayload(addPortalViewInput.id(), List.of());
 
                         changeDescription = new ChangeDescription(PortalChangeKind.PORTAL_VIEW_ADDITION.name(), optionalNewPortal.get().getId(), context.getInput());
-                        changeDescription.getParameters().put(IPortalEventHandler.NEXT_PORTAL_PARAMETER, optionalNewPortal.get());
+                        var parameters = changeDescription.getParameters();
+                        parameters.put(IPortalEventHandler.NEXT_PORTAL_PARAMETER, newPortal);
+                        parameters.put(IPortalEventHandler.ADDED_PORTAL_VIEW_ID, portalServices.getPortalViewId(newPortal, addPortalViewInput.viewRepresentationId()));
                     } else {
                         payload = new ErrorPayload(addPortalViewInput.id(), this.messageService.forbiddenLoop());
                     }
