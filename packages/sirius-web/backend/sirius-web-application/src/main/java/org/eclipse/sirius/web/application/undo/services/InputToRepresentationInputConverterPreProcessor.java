@@ -16,6 +16,8 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.IInputPreProcessor;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRedoInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramUndoInput;
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalRedoInput;
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalUndoInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -23,6 +25,7 @@ import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IRepresentationInput;
 import org.eclipse.sirius.components.core.api.RedoInput;
 import org.eclipse.sirius.components.core.api.UndoInput;
+import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.portals.Portal;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
@@ -84,6 +87,7 @@ public class InputToRepresentationInputConverterPreProcessor implements IInputPr
 
     private IRepresentationInput convertUndoInput(RepresentationMetadata metadata, UndoInput undoInput) {
         return switch (metadata.getKind()) {
+            case Diagram.KIND -> new DiagramUndoInput(undoInput.id(), undoInput.editingContextId(), undoInput.mutationId(), metadata.getId().toString());
             case Portal.KIND -> new PortalUndoInput(undoInput.id(), undoInput.editingContextId(), undoInput.mutationId(), metadata.getId().toString());
             default -> null;
         };
@@ -91,6 +95,7 @@ public class InputToRepresentationInputConverterPreProcessor implements IInputPr
 
     private IRepresentationInput convertRedoInput(RepresentationMetadata metadata, RedoInput redoInput) {
         return switch (metadata.getKind()) {
+            case Diagram.KIND -> new DiagramRedoInput(redoInput.id(), redoInput.editingContextId(), redoInput.mutationId(), metadata.getId().toString());
             case Portal.KIND -> new PortalRedoInput(redoInput.id(), redoInput.editingContextId(), redoInput.mutationId(), metadata.getId().toString());
             default -> null;
         };

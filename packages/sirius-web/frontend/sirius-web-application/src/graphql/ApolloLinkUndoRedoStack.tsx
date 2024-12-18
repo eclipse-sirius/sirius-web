@@ -13,6 +13,10 @@
 import { ApolloLink, NextLink, Operation } from '@apollo/client';
 import { Kind, OperationTypeNode } from 'graphql/language';
 
+// TODO: This class can be removed because looking at the ApolloLink API,
+// TODO: it is possible to give the behavior of the request method in the contribuctor of ApolloLink
+// TODO: As you can see, it is the only method we are overriding.
+// TODO: The purpose of that removal, is to extract all sessionStorage use for undo and redo into a single hook (with maybe a context)
 export class ApolloLinkUndoRedoStack extends ApolloLink {
   constructor() {
     super();

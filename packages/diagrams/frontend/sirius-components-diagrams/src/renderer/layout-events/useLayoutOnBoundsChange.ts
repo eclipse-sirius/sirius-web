@@ -117,6 +117,7 @@ export const useLayoutOnBoundsChange = (refreshEventPayloadId: string): UseLayou
           };
 
           synchronizeLayoutData(refreshEventPayloadId, finalDiagram);
+          addUndoForLayout(refreshEventPayloadId);
         });
       }
     },
@@ -124,4 +125,21 @@ export const useLayoutOnBoundsChange = (refreshEventPayloadId: string): UseLayou
   );
 
   return { layoutOnBoundsChange };
+};
+
+// TODO: Extract into a hook, all event that use the session storage for undoRedo
+// TODO: All reference to sessionStorage for undo and redo should be centrelized into that hook.
+// TODO: See if this hook should be defined in sirius-components-core
+// TODO: The hook should used the `useSessionStorage` hook
+// TODO: See ApolloLinkUndoRedoStack TODO for other thing to had in the issue.
+const addUndoForLayout = (mutationId: string) => {
+  const storedUndoStack = sessionStorage.getItem('undoStack');
+  const storedRedoStack = sessionStorage.getItem('redoStack');
+
+  if (storedUndoStack && storedRedoStack) {
+    const undoStack: String[] = JSON.parse(storedUndoStack);
+    if (!undoStack.find((id) => id === mutationId)) {
+      sessionStorage.setItem('undoStack', JSON.stringify([mutationId, ...undoStack]));
+    }
+  }
 };
