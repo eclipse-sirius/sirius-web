@@ -123,6 +123,7 @@ This is now fixed
 - https://github.com/eclipse-sirius/sirius-web/issues/4319[#4319] [view] Rename "Hide/Show Tool Section" tool section to "Show/Hide".
 - https://github.com/eclipse-sirius/sirius-web/issues/4317[#4317] [sirius-web] Export `NewObjectModal`, `NewRootObjectModal`, and `NewRepresentationModal` frontend components
 These components could be reused by downstream applications in custom creation tool.
+- https://github.com/eclipse-sirius/sirius-web/issues/4330[#4330] [diagram] Improve responsiveness when executing a tool from the palette
 
 
 == v2024.11.0
