@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,16 +17,16 @@ import { formRefreshedEventPayloadFragment } from '@eclipse-sirius/sirius-compon
 import { useState } from 'react';
 import { flushSync } from 'react-dom';
 import {
-  GQLDetailsEventInput,
-  GQLDetailsEventSubscription,
-  GQLDetailsEventVariables,
-  UseDetailsViewSubscriptionState,
-  UseDetailsViewSubscriptionValue,
-} from './useDetailsViewSubscription.types';
+  GQLRepresentationsEventInput,
+  GQLRepresentationsEventSubscription,
+  GQLRepresentationsEventVariables,
+  UseRepresentationsViewSubscriptionState,
+  UseRepresentationsViewSubscriptionValue,
+} from './useRepresentationsViewSubscription.types';
 
-export const getDetailsViewEventSubscription = `
-  subscription detailsEvent($input: DetailsEventInput!) {
-    detailsEvent(input: $input) {
+export const getRepresentationsViewEventSubscription = `
+  subscription representationsEvent($input: RepresentationsEventInput!) {
+    representationsEvent(input: $input) {
       __typename
       ... on FormRefreshedEventPayload {
         ...formRefreshedEventPayloadFragment
@@ -36,40 +36,39 @@ export const getDetailsViewEventSubscription = `
   ${formRefreshedEventPayloadFragment}
   `;
 
-export const useDetailsViewSubscription = (
+export const useRepresentationsViewSubscription = (
   editingContextId: string,
   objectIds: string[],
   skip?: boolean
-): UseDetailsViewSubscriptionValue => {
-  const [state, setState] = useState<UseDetailsViewSubscriptionState>({
+): UseRepresentationsViewSubscriptionValue => {
+  const [state, setState] = useState<UseRepresentationsViewSubscriptionState>({
     id: crypto.randomUUID(),
-    complete: false,
     payload: null,
+    complete: false,
   });
 
-  const input: GQLDetailsEventInput = {
+  const input: GQLRepresentationsEventInput = {
     id: state.id,
     editingContextId,
-    representationId: `details://?objectIds=[${objectIds.map(encodeURIComponent).join(',')}]`,
+    representationId: `representations://?objectIds=[${objectIds.map(encodeURIComponent).join(',')}]`,
   };
 
-  const variables: GQLDetailsEventVariables = { input };
+  const variables: GQLRepresentationsEventVariables = { input };
 
-  const onData = ({ data }: OnDataOptions<GQLDetailsEventSubscription>) => {
+  const onComplete = () => setState((prevState) => ({ ...prevState, complete: true }));
+
+  const onData = ({ data }: OnDataOptions<GQLRepresentationsEventSubscription>) =>
     flushSync(() => {
-      setState((prevState) => ({ ...prevState, payload: data.data.detailsEvent, complete: false }));
+      setState((prevState) => ({ ...prevState, payload: data.data.representationsEvent, complete: false }));
     });
-  };
 
   const { addErrorMessage } = useMultiToast();
   const onError = ({ message }: ApolloError) => {
     addErrorMessage(message);
   };
 
-  const onComplete = () => setState((prevState) => ({ ...prevState, complete: true }));
-
-  const { loading } = useSubscription<GQLDetailsEventSubscription, GQLDetailsEventVariables>(
-    gql(getDetailsViewEventSubscription),
+  const { loading } = useSubscription<GQLRepresentationsEventSubscription, GQLRepresentationsEventVariables>(
+    gql(getRepresentationsViewEventSubscription),
     {
       variables,
       fetchPolicy: 'no-cache',

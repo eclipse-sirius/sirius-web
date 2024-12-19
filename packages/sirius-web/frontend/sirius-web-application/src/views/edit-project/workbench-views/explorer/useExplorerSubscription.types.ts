@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,40 +10,39 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLTree } from '@eclipse-sirius/sirius-components-trees';
 
-import { GQLForm } from '@eclipse-sirius/sirius-components-forms';
-
-export interface UseDetailsViewSubscriptionValue {
+export interface UseExplorerSubscriptionValue {
   loading: boolean;
-  payload: GQLDetailsEventPayload | null;
+  payload: GQLTreeEventPayload | null;
   complete: boolean;
 }
 
-export interface UseDetailsViewSubscriptionState {
+export interface UseExplorerSubscriptionState {
   id: string;
   complete: boolean;
-  payload: GQLDetailsEventPayload | null;
+  payload: GQLTreeEventPayload | null;
 }
 
-export interface GQLDetailsEventInput {
+export interface GQLExplorerEventInput {
   id: string;
   editingContextId: string;
   representationId: string;
 }
 
-export interface GQLDetailsEventVariables {
-  input: GQLDetailsEventInput;
+export interface GQLExplorerEventVariables {
+  input: GQLExplorerEventInput;
 }
 
-export interface GQLDetailsEventSubscription {
-  detailsEvent: GQLDetailsEventPayload;
+export interface GQLExplorerEventData {
+  explorerEvent: GQLTreeEventPayload;
 }
 
-export interface GQLDetailsEventPayload {
+export interface GQLTreeEventPayload {
   __typename: string;
 }
 
-export interface GQLFormRefreshedEventPayload extends GQLDetailsEventPayload {
-  __typename: 'FormRefreshedEventPayload';
-  form: GQLForm;
+export interface GQLTreeRefreshedEventPayload extends GQLTreeEventPayload {
+  id: string;
+  tree: GQLTree;
 }

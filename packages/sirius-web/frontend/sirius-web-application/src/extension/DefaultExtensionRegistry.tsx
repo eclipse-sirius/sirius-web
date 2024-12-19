@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -65,19 +65,19 @@ import { DocumentTreeItemContextMenuContribution } from '../views/edit-project/D
 import { DownloadProjectMenuEntryContribution } from '../views/edit-project/EditProjectNavbar/DownloadProjectMenuEntryContribution';
 import { editProjectNavbarMenuEntryExtensionPoint } from '../views/edit-project/EditProjectNavbar/EditProjectNavbarMenuExtensionPoints';
 import { ObjectTreeItemContextMenuContribution } from '../views/edit-project/ObjectTreeItemContextMenuContribution';
-import { DetailsView } from '../views/edit-project/workbench-views/DetailsView';
-import { RelatedElementsView } from '../views/edit-project/workbench-views/RelatedElementsView';
-import { RepresentationsView } from '../views/edit-project/workbench-views/RepresentationsView';
-import { ExplorerView } from '../views/explorer/ExplorerView';
+import { DetailsView } from '../views/edit-project/workbench-views/details/DetailsView';
+import { ExplorerView } from '../views/edit-project/workbench-views/explorer/ExplorerView';
+import { RelatedElementsView } from '../views/edit-project/workbench-views/related-elements/RelatedElementsView';
+import { RepresentationsView } from '../views/edit-project/workbench-views/representations/RepresentationsView';
 import { createProjectAreaCardExtensionPoint } from '../views/project-browser/create-projects-area/CreateProjectAreaExtensionPoints';
 import { NewProjectCard } from '../views/project-browser/create-projects-area/NewProjectCard';
 import { ShowAllProjectTemplatesCard } from '../views/project-browser/create-projects-area/ShowAllProjectTemplatesCard';
 import { UploadProjectCard } from '../views/project-browser/create-projects-area/UploadProjectCard';
 import { projectContextMenuEntryExtensionPoint } from '../views/project-browser/list-projects-area/ProjectContextMenuExtensionPoints';
 import { ProjectDownloadMenuItemExtension } from '../views/project-browser/list-projects-area/ProjectDownloadMenuItemExtension';
+import { ProjectImagesSettings } from '../views/project-settings/images/ProjectImagesSettings';
 import { ProjectSettingTabContribution } from '../views/project-settings/ProjectSettingsView.types';
 import { projectSettingsTabExtensionPoint } from '../views/project-settings/ProjectSettingsViewExtensionPoints';
-import { ProjectImagesSettings } from '../views/project-settings/images/ProjectImagesSettings';
 import { ellipseNodeStyleDocumentTransform } from './EllipseNodeDocumentTransform';
 import { referenceWidgetDocumentTransform } from './ReferenceWidgetDocumentTransform';
 

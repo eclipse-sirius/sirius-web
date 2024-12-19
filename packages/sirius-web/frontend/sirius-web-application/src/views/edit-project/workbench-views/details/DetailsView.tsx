@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,35 +11,25 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useSelection, WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
-import {
-  FormBasedView,
-  FormContext,
-  GQLForm,
-  GQLFormRefreshedEventPayload,
-  Group,
-} from '@eclipse-sirius/sirius-components-forms';
+import { FormBasedView, FormContext } from '@eclipse-sirius/sirius-components-forms';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { RelatedElementsViewState } from './RelatedElementsView.types';
-import { useRelatedElementsViewSubscription } from './useRelatedElementsViewSubscription';
-import { GQLRelatedElementsEventPayload } from './useRelatedElementsViewSubscription.types';
+import { DetailsViewState } from './DetailsView.types';
+import { useDetailsViewSubscription } from './useDetailsViewSubscription';
+import { GQLDetailsEventPayload, GQLFormRefreshedEventPayload } from './useDetailsViewSubscription.types';
 
-const useRelatedElementsViewStyles = makeStyles()((theme) => ({
+const useDetailsViewStyles = makeStyles()((theme) => ({
   idle: {
-    padding: theme.spacing(1),
-  },
-  content: {
     padding: theme.spacing(1),
   },
 }));
 
-const isFormRefreshedEventPayload = (
-  payload: GQLRelatedElementsEventPayload
-): payload is GQLFormRefreshedEventPayload => payload && payload.__typename === 'FormRefreshedEventPayload';
+const isFormRefreshedEventPayload = (payload: GQLDetailsEventPayload): payload is GQLFormRefreshedEventPayload =>
+  payload && payload.__typename === 'FormRefreshedEventPayload';
 
-export const RelatedElementsView = ({ editingContextId, readOnly }: WorkbenchViewComponentProps) => {
-  const [state, setState] = useState<RelatedElementsViewState>({
+export const DetailsView = ({ editingContextId, readOnly }: WorkbenchViewComponentProps) => {
+  const [state, setState] = useState<DetailsViewState>({
     currentSelection: { entries: [] },
     form: null,
   });
@@ -57,6 +47,7 @@ export const RelatedElementsView = ({ editingContextId, readOnly }: WorkbenchVie
     .map((entry) => entry.id)
     .sort()
     .join(':');
+
   useEffect(() => {
     if (selection.entries.length > 0 && currentSelectionKey !== newSelectionKey) {
       setState((prevState) => ({ ...prevState, currentSelection: selection }));
@@ -67,30 +58,17 @@ export const RelatedElementsView = ({ editingContextId, readOnly }: WorkbenchVie
 
   const objectIds: string[] = state.currentSelection.entries.map((entry) => entry.id);
   const skip = objectIds.length === 0;
+  const { payload, complete } = useDetailsViewSubscription(editingContextId, objectIds, skip);
 
-  const { payload, complete } = useRelatedElementsViewSubscription(editingContextId, objectIds, skip);
   useEffect(() => {
     if (isFormRefreshedEventPayload(payload)) {
       setState((prevState) => ({ ...prevState, form: payload.form }));
     }
   }, [payload]);
 
-  const { classes } = useRelatedElementsViewStyles();
+  const { classes } = useDetailsViewStyles();
 
-  const extractFirstGroup = (props: WorkbenchViewComponentProps, form: GQLForm): JSX.Element => {
-    const group = form.pages[0]?.groups[0];
-    if (group) {
-      return (
-        <div className={classes.content}>
-          <Group editingContextId={props.editingContextId} formId={form.id} readOnly={props.readOnly} group={group} />
-        </div>
-      );
-    } else {
-      return <div className={classes.content} />;
-    }
-  };
-
-  if (!state.form || complete) {
+  if (!state.form || complete || skip) {
     return (
       <div className={classes.idle}>
         <Typography variant="subtitle2">No object selected</Typography>
@@ -98,17 +76,12 @@ export const RelatedElementsView = ({ editingContextId, readOnly }: WorkbenchVie
     );
   }
   return (
-    <div data-representation-kind="form-related-elements">
+    <div data-representation-kind="form-details">
       <FormContext.Provider
         value={{
           payload: payload,
         }}>
-        <FormBasedView
-          editingContextId={editingContextId}
-          form={state.form}
-          readOnly={readOnly}
-          postProcessor={extractFirstGroup}
-        />
+        <FormBasedView editingContextId={editingContextId} form={state.form} readOnly={readOnly} />
       </FormContext.Provider>
     </div>
   );
