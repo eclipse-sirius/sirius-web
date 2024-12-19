@@ -41,6 +41,12 @@ export const TableWidgetPropertySection: PropertySectionComponent<GQLTableWidget
         onPaginationChange={() => {}}
         onGlobalFilterChange={() => {}}
         onColumnFiltersChange={() => {}}
+        enableColumnVisibility={false}
+        enableColumnResizing={false}
+        enableColumnFilters={false}
+        enableRowSizing={false}
+        enableGlobalFilter={false}
+        enablePagination={false}
       />
     </div>
   );

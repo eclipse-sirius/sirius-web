@@ -64,6 +64,7 @@ This was first fixed in 2022.3.0 but broken in 2024.3.0; it is now fixed again.
 + Fix Explorer
 + Contribute the Ellipse node
 + Contribute the Selection Dialog
+- https://github.com/eclipse-sirius/sirius-web/issues/4305[#4305] [table] Allow the deactivation of table features that are not used in some contexts
 
 === New Features
 

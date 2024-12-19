@@ -16,10 +16,10 @@ import { MRT_ColumnSizingState } from 'material-react-table';
 import { useEffect, useState } from 'react';
 import { GQLTable } from '../table/TableContent.types';
 import {
-  UseTableColumnSizingValue,
   GQLResizeColumnData,
-  GQLResizeColumnVariables,
   GQLResizeColumnInput,
+  GQLResizeColumnVariables,
+  UseTableColumnSizingValue,
 } from './useTableColumnSizing.types';
 
 const resizeColumnMutation = gql`
@@ -45,13 +45,16 @@ const resizeColumnMutation = gql`
 export const useTableColumnSizing = (
   editingContextId: string,
   representationId: string,
-  table: GQLTable
+  table: GQLTable,
+  enableColumnSizing: boolean
 ): UseTableColumnSizingValue => {
   const [columnSizing, setColumnSizing] = useState<MRT_ColumnSizingState>({});
 
   useEffect(() => {
-    for (const [columnName, columnSize] of Object.entries(columnSizing)) {
-      resizeColumn(columnName, columnSize);
+    if (enableColumnSizing) {
+      for (const [columnName, columnSize] of Object.entries(columnSizing)) {
+        resizeColumn(columnName, columnSize);
+      }
     }
   }, [columnSizing]);
 
@@ -78,6 +81,13 @@ export const useTableColumnSizing = (
 
     mutationResizeColumn({ variables: { input } });
   };
+
+  if (!enableColumnSizing) {
+    return {
+      columnSizing: {},
+      setColumnSizing: undefined,
+    };
+  }
 
   return {
     columnSizing,

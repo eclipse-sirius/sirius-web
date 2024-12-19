@@ -35,26 +35,47 @@ export const TableContent = memo(
     onPaginationChange,
     onGlobalFilterChange,
     onColumnFiltersChange,
+    enableColumnVisibility,
+    enableColumnResizing,
+    enableColumnFilters,
+    enableRowSizing,
+    enableGlobalFilter,
+    enablePagination,
   }: TableProps) => {
     const { selection, setSelection } = useSelection();
 
-    const { columns } = useTableColumns(editingContextId, representationId, table, readOnly);
-    const { columnSizing, setColumnSizing } = useTableColumnSizing(editingContextId, representationId, table);
+    const { columns } = useTableColumns(
+      editingContextId,
+      representationId,
+      table,
+      readOnly,
+      enableColumnVisibility,
+      enableColumnResizing,
+      enableColumnFilters
+    );
+    const { columnSizing, setColumnSizing } = useTableColumnSizing(
+      editingContextId,
+      representationId,
+      table,
+      enableColumnResizing
+    );
     const { columnVisibility, setColumnVisibility } = useTableColumnVisibility(
       editingContextId,
       representationId,
-      table
+      table,
+      enableColumnVisibility
     );
     const { columnFilters, setColumnFilters } = useTableColumnFiltering(
       editingContextId,
       representationId,
       table,
-      onColumnFiltersChange
+      onColumnFiltersChange,
+      enableColumnFilters
     );
     const [density, setDensity] = useState<MRT_DensityState>('comfortable');
     const [linesState, setLinesState] = useState<GQLLine[]>(table.lines);
 
-    const { resetRowsHeight } = useResetRowsMutation(editingContextId, representationId, table.id);
+    const { resetRowsHeight } = useResetRowsMutation(editingContextId, representationId, table.id, enableRowSizing);
 
     const [pagination, setPagination] = useState<TablePaginationState>({
       size: 10,
@@ -97,14 +118,13 @@ export const TableContent = memo(
       editingContextId,
       representationId,
       table,
-      onGlobalFilterChange
+      onGlobalFilterChange,
+      enableGlobalFilter
     );
 
     useEffect(() => {
       onPaginationChange(pagination.cursor, pagination.direction, pagination.size);
     }, [pagination.cursor, pagination.size, pagination.direction]);
-
-    const serverSidePagination: boolean = onPaginationChange !== undefined;
 
     const handleRowHeightChange = (rowId, height) => {
       setLinesState((prev) => prev.map((line) => (line.id === rowId ? { ...line, height } : line)));
@@ -127,14 +147,18 @@ export const TableContent = memo(
       enableEditing: !readOnly,
       onColumnFiltersChange: setColumnFilters,
       enableStickyHeader: true,
-      enablePagination: !serverSidePagination,
-      manualPagination: serverSidePagination,
+      enablePagination,
+      manualPagination: enablePagination,
       rowCount: table.paginationData.totalRowCount,
       enableRowActions: true,
+      enableColumnFilters,
+      enableHiding: enableColumnVisibility,
       enableSorting: false,
+      enableColumnResizing,
+      enableGlobalFilter,
       manualFiltering: true,
       onGlobalFilterChange: setGlobalFilter,
-      initialState: { showGlobalFilter: true },
+      initialState: { showGlobalFilter: enableGlobalFilter },
       onColumnSizingChange: setColumnSizing,
       onColumnVisibilityChange: setColumnVisibility,
       onDensityChange: setDensity,
@@ -158,6 +182,7 @@ export const TableContent = memo(
           <SettingsButton editingContextId={editingContextId} representationId={representationId} table={table} />
         </Box>
       ),
+      enableBottomToolbar: enablePagination,
       renderBottomToolbarCustomActions: () => (
         <CursorBasedPagination
           hasPrev={table.paginationData.hasPreviousPage}
@@ -177,14 +202,16 @@ export const TableContent = memo(
       renderRowActions: ({ row }) => (
         <>
           <RowHeader row={row.original} />
-          <ResizeRowHandler
-            editingContextId={editingContextId}
-            representationId={representationId}
-            table={table}
-            readOnly={readOnly}
-            row={row.original}
-            onRowHeightChanged={handleRowHeightChange}
-          />
+          {enableRowSizing ? (
+            <ResizeRowHandler
+              editingContextId={editingContextId}
+              representationId={representationId}
+              table={table}
+              readOnly={readOnly}
+              row={row.original}
+              onRowHeightChanged={handleRowHeightChange}
+            />
+          ) : null}
         </>
       ),
     };
@@ -199,8 +226,7 @@ export const TableContent = memo(
       };
     }
 
-    const enableColumnResizing: boolean = table.columns.filter((column) => column.isResizable).length > 0;
-    if (enableColumnResizing) {
+    if (enableColumnResizing && table.columns.filter((column) => column.isResizable).length > 0) {
       tableOptions.enableColumnResizing = enableColumnResizing;
       tableOptions.columnResizeMode = 'onEnd';
     }
