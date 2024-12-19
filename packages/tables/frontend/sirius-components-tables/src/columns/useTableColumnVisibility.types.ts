@@ -13,11 +13,13 @@
 import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
 import { MRT_VisibilityState } from 'material-react-table';
 
+export type ColumnVisibilitySetter = (
+  columnVisibility: MRT_VisibilityState | ((prevState: MRT_VisibilityState) => MRT_VisibilityState)
+) => void;
+
 export interface UseTableColumnVisibilityValue {
-  columnVisibility: MRT_VisibilityState;
-  setColumnVisibility: (
-    columnVisibility: MRT_VisibilityState | ((prevState: MRT_VisibilityState) => MRT_VisibilityState)
-  ) => void;
+  columnVisibility: MRT_VisibilityState | undefined;
+  setColumnVisibility: ColumnVisibilitySetter | undefined;
 }
 
 export interface GQLChangeColumnVisibilityInput {

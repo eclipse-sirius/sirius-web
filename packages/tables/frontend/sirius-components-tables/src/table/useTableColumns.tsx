@@ -21,7 +21,10 @@ export const useTableColumns = (
   editingContextId: string,
   representationId: string,
   table: GQLTable,
-  readOnly
+  readOnly: boolean,
+  enableColumnVisibility: boolean,
+  enableColumnSizing: boolean,
+  enableColumnFilters: boolean
 ): UseTableColumnsValue => {
   const columns = useMemo<MRT_ColumnDef<GQLLine, string>[]>(() => {
     const columnDefs: MRT_ColumnDef<GQLLine, string>[] = table.columns.map((column) => {
@@ -32,9 +35,10 @@ export const useTableColumns = (
         Header: ({}) => {
           return <ColumnHeader column={column} />;
         },
-        filterVariant: column.filterVariant,
-        size: column.width > 0 ? column.width : undefined,
-        enableResizing: column.isResizable,
+        filterVariant: enableColumnFilters ? column.filterVariant : undefined,
+        size: enableColumnSizing && column.width > 0 ? column.width : undefined,
+        enableResizing: enableColumnSizing && column.isResizable,
+        visibleInShowHideMenu: enableColumnVisibility,
         Cell: ({ row }) => {
           const cell: GQLCell | null = row.original.cells.find((cell) => column.id === cell.columnId) ?? null;
           return (

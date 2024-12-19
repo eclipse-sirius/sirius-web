@@ -83,6 +83,12 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
           onPaginationChange={onPaginationChange}
           onGlobalFilterChange={onGlobalFilterChange}
           onColumnFiltersChange={onColumnFiltersChange}
+          enableColumnVisibility
+          enableColumnResizing
+          enableColumnFilters
+          enableRowSizing
+          enableGlobalFilter
+          enablePagination
         />
       ) : null}
       {completeMessage}

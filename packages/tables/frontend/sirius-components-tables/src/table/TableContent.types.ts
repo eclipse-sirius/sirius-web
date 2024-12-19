@@ -20,6 +20,12 @@ export interface TableProps {
   onPaginationChange: (cursor: string | null, direction: 'PREV' | 'NEXT', size: number) => void;
   onGlobalFilterChange: (globalFilter: string) => void;
   onColumnFiltersChange: (columFilters: ColumnFilter[]) => void;
+  enableColumnVisibility: boolean;
+  enableColumnResizing: boolean;
+  enableColumnFilters: boolean;
+  enableRowSizing: boolean;
+  enableGlobalFilter: boolean;
+  enablePagination: boolean;
 }
 
 export interface TablePaginationState {

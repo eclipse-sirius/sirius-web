@@ -17,9 +17,9 @@ import { useEffect, useState } from 'react';
 import { GQLTable } from '../table/TableContent.types';
 import {
   GQLChangeColumnVisibilityData,
+  GQLChangeColumnVisibilityInput,
   GQLChangeColumnVisibilityVariables,
   GQLColumnVisibility,
-  GQLChangeColumnVisibilityInput,
   UseTableColumnVisibilityValue,
 } from './useTableColumnVisibility.types';
 
@@ -46,7 +46,8 @@ export const changeColumnVisibilityMutation = gql`
 export const useTableColumnVisibility = (
   editingContextId: string,
   representationId: string,
-  table: GQLTable
+  table: GQLTable,
+  enableColumnVisibility: boolean
 ): UseTableColumnVisibilityValue => {
   const [columnVisibility, setColumnVisibility] = useState<MRT_VisibilityState>(
     table.columns.reduce((acc, obj) => {
@@ -56,12 +57,14 @@ export const useTableColumnVisibility = (
   );
 
   useEffect(() => {
-    changeColumnVisibility(
-      Object.entries(columnVisibility).map(([columnId, visible]) => ({
-        columnId,
-        visible,
-      }))
-    );
+    if (enableColumnVisibility) {
+      changeColumnVisibility(
+        Object.entries(columnVisibility).map(([columnId, visible]) => ({
+          columnId,
+          visible,
+        }))
+      );
+    }
   }, [columnVisibility]);
 
   useEffect(() => {
@@ -93,6 +96,13 @@ export const useTableColumnVisibility = (
 
     mutationChangeColumnVisibility({ variables: { input } });
   };
+
+  if (!enableColumnVisibility) {
+    return {
+      columnVisibility: undefined,
+      setColumnVisibility: undefined,
+    };
+  }
 
   return {
     columnVisibility,
