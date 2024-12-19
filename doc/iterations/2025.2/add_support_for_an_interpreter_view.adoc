@@ -1,0 +1,42 @@
+= (M) Shape
+
+== Problem
+
+Sirius Web users need an interpreter to perform some queries, view and export the results.
+
+== Key Result
+
+It shall be possible to run a query against the editing context and view the result along with its type (for example to distinguish one element from a list containing only one element).
+End users shall be able to export the result in CSV for example to import it in another tool.
+The current selection shall be usable as an entry point of the query.
+An extension point on the backend shall be available to add custom Java services too.
+
+This new view shall be contributed using an extension point in order to be removal by downstream projects which may not need it.
+
+The result of the expression will only be computed when the user will ask for it.
+This view will not be a synchronized representation.
+
+=== Scenario
+
+==== An user wants to query some model
+
+- The user open the interpreter view
+- The user click on an element in the explorer or another representation like a diagram
+- They start typing an expression in the interpreter view and click on a button to perform the query
+- The result appears in the result viewer underneath
+
+
+=== Breadboarding
+
+- A view on the right of the workbench with a textarea to enter an expression and a viewer underneath to display the result.
+
+
+=== Cutting backs
+
+- Content assist in the interpreter.
+
+
+== Rabbit holes
+
+
+== No-gos
