@@ -50,7 +50,7 @@ This provider is in charge of getting the icon list of the representation.
 
 === Dependency update
 
-
+- [releng] Upgrade `turbo` to version 2.3.3 (from 1.13.3 before).
 
 === Bug fixes
 
