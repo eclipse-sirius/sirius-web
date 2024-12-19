@@ -57,7 +57,7 @@ export const useDiagramDelete = (): UseDiagramDeleteValue => {
   const { addErrorMessage, addMessages } = useMultiToast();
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
   const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
-  const { getNodes } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const { getNodes, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
   const [deleteElementsMutation, { data: deleteElementsData, error: deleteElementsError }] = useMutation<
     GQLDeleteFromDiagramData,
@@ -77,24 +77,39 @@ export const useDiagramDelete = (): UseDiagramDeleteValue => {
   }, [deleteElementsData, deleteElementsError]);
 
   const onDelete = useCallback((event: React.KeyboardEvent<Element>) => {
-    const { key } = event;
-    /*If a modifier key is hit alone, do nothing*/
+    const { key, target } = event;
     const isTextField = event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement;
-    if ((event.altKey && key === 'Alt') || (event.shiftKey && key === 'Shift') || isTextField) {
+
+    /*If a modifier key is hit alone, do nothing*/
+    if ((event.altKey && key === 'Alt') || (event.shiftKey && key === 'Shift') || isTextField || readOnly) {
       return;
     }
-    event.preventDefault();
+    /*If the palette is opened, do nothing*/
+    if (
+      key === 'Delete' &&
+      !(
+        (target as HTMLElement).classList.contains('react-flow__node') ||
+        (target as HTMLElement).classList.contains('react-flow__edge')
+      )
+    ) {
+      return;
+    }
 
     if (key === 'Delete' && editingContextId && diagramId && !readOnly) {
       const nodeToDeleteIds: string[] = getNodes()
         .filter((node) => node.selected)
         .map((node) => node.id);
+
+      const edgesToDeleteIds: string[] = getEdges()
+        .filter((edge) => edge.selected)
+        .map((edge) => edge.id);
+
       const input: GQLDeleteFromDiagramInput = {
         id: crypto.randomUUID(),
         editingContextId,
         representationId: diagramId,
         nodeIds: nodeToDeleteIds,
-        edgeIds: [],
+        edgeIds: edgesToDeleteIds,
         deletionPolicy: GQLDeletionPolicy.SEMANTIC,
       };
       showDeletionConfirmation(() => {
