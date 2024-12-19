@@ -4,6 +4,8 @@
 
 === Shapes
 
+- Add support for a query view
+
 
 === Architectural decision records
 
@@ -32,6 +34,8 @@ This may have some consequences for downstream applications which are embedding 
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4356[#4356] [diagram] Add a minimap to diagram.
 + Added by default to all sirius-web diagrams
+- https://github.com/eclipse-sirius/sirius-web/issues/4346[#4346] [query] Add support for a query view.
+Specifiers can contribute dedicated AQL services for this feature using implementations of `IInterpreterJavaServiceProvider`.
 
 
 === Improvements
