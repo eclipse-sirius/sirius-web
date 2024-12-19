@@ -51,6 +51,7 @@ import Filter from '@mui/icons-material/Filter';
 import ImageIcon from '@mui/icons-material/Image';
 import LinkIcon from '@mui/icons-material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import WarningIcon from '@mui/icons-material/Warning';
 import { useMatch } from 'react-router-dom';
 import { DiagramFilter } from '../diagrams/DiagramFilter';
@@ -67,6 +68,7 @@ import { editProjectNavbarMenuEntryExtensionPoint } from '../views/edit-project/
 import { ObjectTreeItemContextMenuContribution } from '../views/edit-project/ObjectTreeItemContextMenuContribution';
 import { DetailsView } from '../views/edit-project/workbench-views/details/DetailsView';
 import { ExplorerView } from '../views/edit-project/workbench-views/explorer/ExplorerView';
+import { QueryView } from '../views/edit-project/workbench-views/query/QueryView';
 import { RelatedElementsView } from '../views/edit-project/workbench-views/related-elements/RelatedElementsView';
 import { RepresentationsView } from '../views/edit-project/workbench-views/representations/RepresentationsView';
 import { createProjectAreaCardExtensionPoint } from '../views/project-browser/create-projects-area/CreateProjectAreaExtensionPoints';
@@ -127,6 +129,12 @@ const workbenchViewContributions: WorkbenchViewContribution[] = [
     title: 'Details',
     icon: <MenuIcon />,
     component: DetailsView,
+  },
+  {
+    side: 'right',
+    title: 'Query',
+    icon: <PlayArrowIcon />,
+    component: QueryView,
   },
   {
     side: 'right',

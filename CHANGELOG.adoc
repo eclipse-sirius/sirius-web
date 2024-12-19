@@ -4,6 +4,8 @@
 
 === Shapes
 
+- Add support for a query view
+
 
 === Architectural decision records
 
@@ -21,6 +23,9 @@
 
 
 === New Features
+
+- https://github.com/eclipse-sirius/sirius-web/issues/4346[#4346] [query] Add support for a query view.
+Specifiers can contribute dedicated AQL services for this feature using implementations of `IInterpreterJavaServiceProvider`.
 
 
 === Improvements
