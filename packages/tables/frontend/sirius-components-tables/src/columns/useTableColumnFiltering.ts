@@ -14,13 +14,13 @@ import { gql, useMutation } from '@apollo/client';
 import { useReporting } from '@eclipse-sirius/sirius-components-core';
 import { MRT_ColumnFiltersState } from 'material-react-table';
 import { useEffect, useState } from 'react';
+import { ColumnFilter, GQLTable } from '../table/TableContent.types';
 import {
   GQLChangeColumnFilterData,
-  GQLChangeColumnFilterVariables,
   GQLChangeColumnFilterInput,
+  GQLChangeColumnFilterVariables,
   UseTableColumnFilteringValue,
 } from './useTableColumnFiltering.types';
-import { ColumnFilter, GQLTable } from '../table/TableContent.types';
 
 const changeColumnFilterMutation = gql`
   mutation changeColumnFilter($input: ChangeColumnFilterInput!) {
@@ -46,12 +46,13 @@ export const useTableColumnFiltering = (
   editingContextId: string,
   representationId: string,
   table: GQLTable,
-  onColumnFiltersChange?: (columFilters: ColumnFilter[]) => void
+  onColumnFiltersChange: (columFilters: ColumnFilter[]) => void,
+  enableColumnFilters: boolean
 ): UseTableColumnFilteringValue => {
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(table.columnFilters);
 
   useEffect(() => {
-    if (onColumnFiltersChange) {
+    if (enableColumnFilters) {
       changeColumnFilter(columnFilters);
       onColumnFiltersChange(columnFilters);
     }
@@ -77,6 +78,13 @@ export const useTableColumnFiltering = (
     };
     mutationChangeColumnFilter({ variables: { input } });
   };
+
+  if (!enableColumnFilters) {
+    return {
+      columnFilters: undefined,
+      setColumnFilters: undefined,
+    };
+  }
 
   return {
     columnFilters,

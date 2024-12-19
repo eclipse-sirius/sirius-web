@@ -12,9 +12,11 @@
  *******************************************************************************/
 import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
 
+export type GlobalFilterSetter = (columnVisibility: string | ((prevState: string) => string)) => void;
+
 export interface UseGlobalFilterValue {
-  globalFilter: string;
-  setGlobalFilter: (columnVisibility: string | ((prevState: string) => string)) => void;
+  globalFilter: string | undefined;
+  setGlobalFilter: GlobalFilterSetter | undefined;
 }
 
 export interface GQLChangeGlobalFilterValueInput {

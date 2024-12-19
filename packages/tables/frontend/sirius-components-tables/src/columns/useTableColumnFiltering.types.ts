@@ -13,11 +13,12 @@
 import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
 import { MRT_ColumnFiltersState } from 'material-react-table';
 
+export type ColumnFilterSetter = (
+  columnFilters: MRT_ColumnFiltersState | ((prevState: MRT_ColumnFiltersState) => MRT_ColumnFiltersState)
+) => void;
 export interface UseTableColumnFilteringValue {
-  columnFilters: MRT_ColumnFiltersState;
-  setColumnFilters: (
-    columnFilters: MRT_ColumnFiltersState | ((prevState: MRT_ColumnFiltersState) => MRT_ColumnFiltersState)
-  ) => void;
+  columnFilters: MRT_ColumnFiltersState | undefined;
+  setColumnFilters: ColumnFilterSetter | undefined;
 }
 
 export interface GQLChangeColumnFilterInput {

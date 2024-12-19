@@ -13,11 +13,13 @@
 import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
 import { MRT_ColumnSizingState } from 'material-react-table';
 
+export type ColumnSizingSetter = (
+  columnSizing: MRT_ColumnSizingState | ((prevState: MRT_ColumnSizingState) => MRT_ColumnSizingState)
+) => void;
+
 export interface UseTableColumnSizingValue {
   columnSizing: MRT_ColumnSizingState;
-  setColumnSizing: (
-    columnSizing: MRT_ColumnSizingState | ((prevState: MRT_ColumnSizingState) => MRT_ColumnSizingState)
-  ) => void;
+  setColumnSizing: ColumnSizingSetter | undefined;
 }
 
 export interface GQLResizeColumnInput {

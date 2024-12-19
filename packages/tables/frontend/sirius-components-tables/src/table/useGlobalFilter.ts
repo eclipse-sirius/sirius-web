@@ -44,13 +44,16 @@ export const useGlobalFilter = (
   editingContextId: string,
   representationId: string,
   table: GQLTable,
-  onGlobalFilterChange: (globalFilter: string) => void
+  onGlobalFilterChange: (globalFilter: string) => void,
+  enableGlobalFilter: boolean
 ): UseGlobalFilterValue => {
   const [globalFilter, setGlobalFilter] = useState<string>(table.globalFilter ?? '');
 
   useEffect(() => {
-    changeGlobalFilterValue(globalFilter ?? '');
-    onGlobalFilterChange(globalFilter ?? '');
+    if (enableGlobalFilter) {
+      changeGlobalFilterValue(globalFilter ?? '');
+      onGlobalFilterChange(globalFilter ?? '');
+    }
   }, [globalFilter]);
 
   useEffect(() => {
@@ -77,6 +80,13 @@ export const useGlobalFilter = (
 
     mutationChangeGlobalFilterValue({ variables: { input } });
   };
+
+  if (!enableGlobalFilter) {
+    return {
+      globalFilter: undefined,
+      setGlobalFilter: undefined,
+    };
+  }
 
   return {
     globalFilter,

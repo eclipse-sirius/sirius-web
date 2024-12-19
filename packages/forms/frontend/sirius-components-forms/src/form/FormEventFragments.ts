@@ -326,16 +326,38 @@ export const widgetFields = `
     iconURL
     table {
       id
+      paginationData {
+        hasPreviousPage
+        hasNextPage
+        totalRowCount
+      }
+      stripeRow
+      globalFilter
+      columnFilters {
+        id
+        value
+      }
       columns {
         id
         headerLabel
+        headerIconURLs
+        headerIndexLabel
         targetObjectId
-        targetObjectKind 
+        targetObjectKind
+        width
+        isResizable 
+        hidden
+        filterVariant
       }
       lines {
         id
         targetObjectId
         targetObjectKind
+        headerLabel
+        headerIconURLs
+        headerIndexLabel
+        height
+        isResizable
         cells {
           __typename
           id
@@ -361,6 +383,10 @@ export const widgetFields = `
           }
           ... on TextfieldCell {
             stringValue: value
+          }
+          ... on IconLabelCell {
+            label: value
+            iconURLs
           }
         }
       }
