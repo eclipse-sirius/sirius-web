@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,13 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface TreeDescriptionsMenuProps {
-  treeDescriptions: TreeDescriptionMetadata[];
-  activeTreeDescriptionId: string;
-  onTreeDescriptionChange: (treeDescription: TreeDescriptionMetadata) => void;
-}
+import { Selection } from '@eclipse-sirius/sirius-components-core';
+import { GQLForm } from '@eclipse-sirius/sirius-components-forms';
 
-export interface TreeDescriptionMetadata {
-  id: string;
-  label: string;
+export interface RepresentationsViewState {
+  currentSelection: Selection;
+  form: GQLForm | null;
 }

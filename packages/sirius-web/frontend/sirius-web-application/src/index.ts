@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,12 @@ export {
   httpOptionsConfigurersExtensionPoint,
   webSocketOptionsConfigurersExtensionPoint,
 } from './graphql/useCreateApolloClientExtensionPoints';
+export { NewObjectModal } from './modals/new-object/NewObjectModal';
+export { type NewObjectModalProps } from './modals/new-object/NewObjectModal.types';
+export { NewRepresentationModal } from './modals/new-representation/NewRepresentationModal';
+export { type NewRepresentationModalProps } from './modals/new-representation/NewRepresentationModal.types';
+export { NewRootObjectModal } from './modals/new-root-object/NewRootObjectModal';
+export { type NewRootObjectModalProps } from './modals/new-root-object/NewRootObjectModal.types';
 export { NavigationBar } from './navigationBar/NavigationBar';
 export {
   type NavigationBarIconProps,
@@ -71,23 +77,23 @@ export { editProjectViewReadOnlyPredicateExtensionPoint } from './views/edit-pro
 export { useCurrentProject } from './views/edit-project/useCurrentProject';
 export type { UseCurrentProjectValue } from './views/edit-project/useCurrentProject.types';
 export type { GQLProject } from './views/edit-project/useProjectAndRepresentationMetadata.types';
-export { DetailsView } from './views/edit-project/workbench-views/DetailsView';
-export type { GQLDetailsEventPayload } from './views/edit-project/workbench-views/useDetailsViewSubscription.types';
-export { useRelatedElementsViewSubscription } from './views/edit-project/workbench-views/useRelatedElementsViewSubscription';
-export {
-  type GQLFormRefreshedEventPayload,
-  type GQLRelatedElementsEventPayload,
-  type UseRelatedElementsViewSubscriptionValue,
-} from './views/edit-project/workbench-views/useRelatedElementsViewSubscription.types';
-export { ErrorView } from './views/error/ErrorView';
-export { type ErrorMessageProvider } from './views/error/ErrorView.types';
-export { errorMessageProvidersExtensionPoint } from './views/error/ErrorViewExtensionPoints';
-export { useExplorerSubscription } from './views/explorer/useExplorerSubscription';
+export { DetailsView } from './views/edit-project/workbench-views/details/DetailsView';
+export type { GQLDetailsEventPayload } from './views/edit-project/workbench-views/details/useDetailsViewSubscription.types';
+export { useExplorerSubscription } from './views/edit-project/workbench-views/explorer/useExplorerSubscription';
 export {
   type GQLTreeEventPayload,
   type GQLTreeRefreshedEventPayload,
   type UseExplorerSubscriptionValue,
-} from './views/explorer/useExplorerSubscription.types';
+} from './views/edit-project/workbench-views/explorer/useExplorerSubscription.types';
+export { useRelatedElementsViewSubscription } from './views/edit-project/workbench-views/related-elements/useRelatedElementsViewSubscription';
+export {
+  type GQLFormRefreshedEventPayload,
+  type GQLRelatedElementsEventPayload,
+  type UseRelatedElementsViewSubscriptionValue,
+} from './views/edit-project/workbench-views/related-elements/useRelatedElementsViewSubscription.types';
+export { ErrorView } from './views/error/ErrorView';
+export { type ErrorMessageProvider } from './views/error/ErrorView.types';
+export { errorMessageProvidersExtensionPoint } from './views/error/ErrorViewExtensionPoints';
 export { type CreateProjectAreaCardProps } from './views/project-browser/create-projects-area/CreateProjectArea.types';
 export { createProjectAreaCardExtensionPoint } from './views/project-browser/create-projects-area/CreateProjectAreaExtensionPoints';
 export { ProjectActionButton } from './views/project-browser/list-projects-area/ProjectActionButton';
@@ -107,9 +113,3 @@ export {
   type ProjectSettingTabProps,
 } from './views/project-settings/ProjectSettingsView.types';
 export * from './views/project-settings/ProjectSettingsViewExtensionPoints';
-export { NewObjectModal } from './modals/new-object/NewObjectModal';
-export { type NewObjectModalProps } from './modals/new-object/NewObjectModal.types';
-export { NewRepresentationModal } from './modals/new-representation/NewRepresentationModal';
-export { type NewRepresentationModalProps } from './modals/new-representation/NewRepresentationModal.types';
-export { NewRootObjectModal } from './modals/new-root-object/NewRootObjectModal';
-export { type NewRootObjectModalProps } from './modals/new-root-object/NewRootObjectModal.types';
