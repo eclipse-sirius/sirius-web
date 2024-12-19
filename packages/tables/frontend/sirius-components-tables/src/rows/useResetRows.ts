@@ -42,7 +42,8 @@ export const resetRowsHeightMutation = gql`
 export const useResetRowsMutation = (
   editingContextId: string,
   representationId: string,
-  tableId: string
+  tableId: string,
+  enableRowSizing: boolean
 ): UseResetRowsMutationValue => {
   const [mutationResetRowsHeight, mutationResetRowsHeightResult] = useMutation<
     GQLResetRowsHeightData,
@@ -51,14 +52,16 @@ export const useResetRowsMutation = (
   useReporting(mutationResetRowsHeightResult, (data: GQLResetRowsHeightData) => data.resetTableRowsHeight);
 
   const resetRowsHeight = () => {
-    const input: GQLResetRowsHeightInput = {
-      id: crypto.randomUUID(),
-      editingContextId,
-      representationId,
-      tableId,
-    };
+    if (enableRowSizing) {
+      const input: GQLResetRowsHeightInput = {
+        id: crypto.randomUUID(),
+        editingContextId,
+        representationId,
+        tableId,
+      };
 
-    mutationResetRowsHeight({ variables: { input } });
+      mutationResetRowsHeight({ variables: { input } });
+    }
   };
 
   return {
