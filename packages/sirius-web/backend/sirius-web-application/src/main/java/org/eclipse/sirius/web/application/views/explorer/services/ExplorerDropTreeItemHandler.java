@@ -54,8 +54,9 @@ public class ExplorerDropTreeItemHandler implements IDropTreeItemHandler {
     }
 
     @Override
-    public boolean canHandle(Tree tree) {
-        return tree.getId().startsWith(ExplorerDescriptionProvider.PREFIX);
+    public boolean canHandle(IEditingContext editingContext, Tree tree) {
+        return tree.getId().startsWith(ExplorerDescriptionProvider.PREFIX)
+                && Objects.equals(tree.getDescriptionId(), ExplorerDescriptionProvider.DESCRIPTION_ID);
     }
 
     @Override
