@@ -1,0 +1,140 @@
+= Instructions
+
+Your development environment may depend on which {sw} APIs you intend to use.
+
+The instructions below detail the steps to enhance your development environment to support *all* {sw} APIs. Feel free to follow only the subset of instructions you will need for the APIs you intend to use.
+
+
+== GitHub Personal Access Token
+
+If you are not building {sw} from its sources, you will need to use the Maven and npm packages published on https://github.com/orgs/eclipse-sirius/packages?repo_name=sirius-web[GitHub Packages].
+
+To access these packages, you will need a GitHub Personal Access Token with scope `read:package`. Follow the https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens[GitHub documentation] to do so if you do not already have one.
+
+
+== Backend
+
+#Note: I'm not sure how tied to the database sirius-web is. What happens if I want to use sirius-web in my backend as a library/framework? Do I still use a dedicated PostGre instance or can I rely on an instance I already have for my application?#
+
+* Launch the PostgreSQL instance using Docker (the first run may take a while as Docker will first pull the PostgreSQL image):
++
+--
+[source, bash]
+----
+docker run -p 5433:5432 --rm --name sirius-web-postgres \
+                                 -e POSTGRES_USER=dbuser \
+                                 -e POSTGRES_PASSWORD=dbpwd \
+                                 -e POSTGRES_DB=sirius-web-db \
+                                 -d postgres:12
+----
+--
++
+
+TIP: #TODO: Add procedure on how to clear the database#
+
+* Launch your favorite Java IDE which supports Maven and the Spring framework.
++
+--
+TIP: If you do not already have a fitting IDE installed on your system, we recommend getting started with https://spring.io/tools[Spring Tools].
+--
++
+
+* Create or edit file $HOME/.m2/settings.xml to tell Maven to use your GitHub Personal Access Token when retrieving {sw} Maven packages from GitHub Packages:
++
+--
+[source, xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <servers>
+        <server>
+            <id>github-sirius-web</id> <1>
+            <username>$GITHUB_USERNAME</username> <2>
+            <password>$GITHUB_ACCESS_TOKEN</password> <3>
+        </server>
+    </servers>
+</settings>
+----
+<1> The `id` of the `server` node must be exactly the `id` of the `repository` in the POM of your application.
+<2> Replace `$GITHUB_USERNAME` with your GitHub user id.
+<3> Replace `$GITHUB_ACCESS_TOKEN` with the value of your GitHub Personal Access Token.
+--
++
+
+* If you are embedding {sw} in an application that does not already depend on {sw}, you need to edit your POM to access {sw} packages.
+** First add the {sw} Maven Packages Repository to your list of repositories:
++
+--
+[source, xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    (...)
+    <repositories>
+		<repository>
+			<id>github-sirius-web</id>
+			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-web</url>
+		</repository>
+    </repositories>
+    (...)
+</project>
+----
+--
++
+
+** Then add the dependencies you will use:
++
+--
+[source, xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    (...)
+	<properties>
+		<sirius-web.version>2024.5.3</sirius-web.version>
+	</properties>
+    (...)
+	<dependencies>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-view</artifactId>
+			<version>${sirius-web.version}</version>
+		</dependency>
+    </dependencies>
+    (...)
+</project>
+----
+TIP: The list of all Maven packages published by {sw} is available https://github.com/orgs/eclipse-sirius/packages?repo_name=sirius-web&ecosystem=maven[here].
+--
++
+
+
+== Frontend
+
+NOTE: For most use-cases of {sw}, the default frontend is used directly. In that case, simply run the {sw} frontend: #TODO: add instructions to simply launch the frontend module retrieved from GitHub Packages.#
+
+* Launch your favorite Javascript IDE.
++
+--
+TIP: If you do not already have a fitting IDE installed on your system, we recommend getting started with https://code.visualstudio.com/[Visual Studio Code].
+--
++
+
+
+* Create or edit file $HOME/.npmrc to tell Node.js to use your GitHub Personal Access Token when retrieving {sw} npm packages from GitHub Packages:
++
+--
+[source,]
+----
+//npm.pkg.github.com/:_authToken=$GITHUB_ACCESS_TOKEN <1>
+----
+<1> Replace `$GITHUB_ACCESS_TOKEN` with the value of your GitHub Personal Access Token.
+--
++
+
+
+* #TODO: Add instructions on how to add npm dependencies to the Sirius Web packages published at https://github.com/orgs/eclipse-sirius/packages?repo_name=sirius-web&ecosystem=npm#
