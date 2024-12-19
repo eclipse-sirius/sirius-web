@@ -1,0 +1,42 @@
+extend type Mutation {
+  evaluateExpression(input: EvaluateExpressionInput!): EvaluateExpressionPayload!
+}
+
+input EvaluateExpressionInput {
+  id: ID!
+  editingContextId: ID!
+  expression: String!
+}
+
+union EvaluateExpressionPayload = ErrorPayload | EvaluateExpressionSuccessPayload
+
+type EvaluateExpressionSuccessPayload {
+  id: ID!
+  result: EvaluateExpressionResult!
+}
+
+union EvaluateExpressionResult = ObjectExpressionResult | ObjectsExpressionResult | BooleanExpressionResult | IntExpressionResult | StringExpressionResult | VoidExpressionResult
+
+type ObjectExpressionResult {
+  value: Object!
+}
+
+type ObjectsExpressionResult {
+  value: [Object!]!
+}
+
+type BooleanExpressionResult {
+  value: Boolean!
+}
+
+type IntExpressionResult {
+  value: Int!
+}
+
+type StringExpressionResult {
+  value: String!
+}
+
+type VoidExpressionResult {
+  value: String!
+}
