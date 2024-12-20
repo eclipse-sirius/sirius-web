@@ -145,6 +145,7 @@ extend type Mutation {
   resetTableRowsHeight(input: ResetTableRowsHeightInput!): ResetTableRowsHeightPayload!
   changeGlobalFilterValue(input: ChangeGlobalFilterValueInput!): ChangeGlobalFilterValuePayload!
   changeColumnFilter(input: ChangeColumnFilterInput!): ChangeColumnFilterPayload!
+  reorderTableColumns(input: ReorderTableColumnsInput!): ReorderTableColumnsPayload!
 }
 
 input EditCheckboxCellInput {
@@ -261,3 +262,13 @@ input ResetTableRowsHeightInput {
 }
 
 union ResetTableRowsHeightPayload = ErrorPayload | SuccessPayload
+
+input ReorderTableColumnsInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  tableId: ID!
+  reorderedColumnIds: [ID!]!
+}
+
+union ReorderTableColumnsPayload = ErrorPayload | SuccessPayload

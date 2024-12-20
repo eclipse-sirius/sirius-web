@@ -18,6 +18,8 @@ import static org.assertj.core.api.Assertions.fail;
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -28,10 +30,12 @@ import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput
 import org.eclipse.sirius.components.collaborative.tables.TableRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.tables.dto.ChangeTableColumnVisibilityInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.ColumnVisibility;
+import org.eclipse.sirius.components.collaborative.tables.dto.ReorderTableColumnsInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.ResizeTableColumnInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.tables.Column;
 import org.eclipse.sirius.components.tables.tests.graphql.ChangeTableColumnVisibilityMutationRunner;
+import org.eclipse.sirius.components.tables.tests.graphql.ReorderTableColumnsMutationRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.ResizeTableColumnMutationRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
@@ -68,6 +72,9 @@ public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegra
 
     @Autowired
     private ResizeTableColumnMutationRunner resizeTableColumnMutationRunner;
+
+    @Autowired
+    private ReorderTableColumnsMutationRunner reorderTableColumnsMutationRunner;
 
     @Autowired
     private ChangeTableColumnVisibilityMutationRunner changeTableColumnVisibilityMutationRunner;
@@ -201,6 +208,67 @@ public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegra
         StepVerifier.create(flux)
                 .consumeNextWith(initialTableContentConsumer)
                 .then(changeColumnVisibility)
+                .consumeNextWith(updatedTableContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a table, when columns reorder change mutation is triggered, then the representation is refreshed with the new order of columns")
+    public void givenTableWhenColumnsReorderChangeMutationTriggeredThenTheRepresentationIsRefreshedWithNewOrderOfColumns() {
+        var flux = this.givenSubscriptionToTable();
+
+        var columnIdsRef = new AtomicReference<List<String>>();
+        var tableId = new AtomicReference<String>();
+
+        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
+                .filter(TableRefreshedEventPayload.class::isInstance)
+                .map(TableRefreshedEventPayload.class::cast)
+                .map(TableRefreshedEventPayload::table)
+                .ifPresentOrElse(table -> {
+                    assertThat(table).isNotNull();
+                    assertThat(table.getColumns()).hasSize(5);
+                    table.getColumns().forEach(col -> assertThat(col.getIndex()).isEqualTo(0));
+                    assertThat(table.getColumns().get(0).getHeaderLabel()).isEqualTo("Icon");
+                    assertThat(table.getColumns().get(1).getHeaderLabel()).isEqualTo("Name");
+                    columnIdsRef.set(table.getColumns().stream().map(Column::getId).map(UUID::toString).toList());
+                    tableId.set(table.getId());
+                }, () -> fail(MISSING_TABLE));
+
+        Runnable changeColumnsOrder = () -> {
+            List<String> ids = new ArrayList<>(columnIdsRef.get());
+            Collections.swap(ids, 0, 1); // swap first two columns, so Name is before Icon
+            var changeTableColumnsOrderInput = new ReorderTableColumnsInput(
+                    UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    tableId.get(),
+                    tableId.get(),
+                    ids
+                    );
+            var result = this.reorderTableColumnsMutationRunner.run(changeTableColumnsOrderInput);
+
+            String typename = JsonPath.read(result, "$.data.reorderTableColumns.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> updatedTableContentConsumer = payload -> Optional.of(payload)
+                .filter(TableRefreshedEventPayload.class::isInstance)
+                .map(TableRefreshedEventPayload.class::cast)
+                .map(TableRefreshedEventPayload::table)
+                .ifPresentOrElse(table -> {
+                    assertThat(table).isNotNull();
+                    assertThat(table.getColumns()).hasSize(5);
+                    for (int i = 0; i < 5; i++) {
+                        assertThat(table.getColumns().get(i).getIndex()).isEqualTo(i);
+                    }
+                    assertThat(table.getColumns().get(0).getHeaderLabel()).isEqualTo("Name");
+                    assertThat(table.getColumns().get(1).getHeaderLabel()).isEqualTo("Icon");
+                }, () -> fail(MISSING_TABLE));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialTableContentConsumer)
+                .then(changeColumnsOrder)
                 .consumeNextWith(updatedTableContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));

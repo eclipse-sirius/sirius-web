@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.tables.renderer;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,6 +66,7 @@ public class TableElementFactory implements IElementFactory {
             List<Column> columns = children.stream()
                     .filter(Column.class::isInstance)
                     .map(Column.class::cast)
+                    .sorted(Comparator.comparing(Column::getIndex))
                     .collect(Collectors.toList());
 
             return Table.newTable(tableElementProps.id())
@@ -138,8 +140,8 @@ public class TableElementFactory implements IElementFactory {
                     .resizable(columnElementProps.resizable())
                     .hidden(columnElementProps.hidden())
                     .filterVariant(columnElementProps.filterVariant())
+                    .index(columnElementProps.index())
                     .build();
-
         }
         return null;
     }

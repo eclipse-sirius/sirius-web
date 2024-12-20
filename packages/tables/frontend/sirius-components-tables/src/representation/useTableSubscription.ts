@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -61,7 +61,7 @@ export const getTableEventSubscription = `
             targetObjectId
             targetObjectKind
             width
-            isResizable 
+            isResizable
             hidden
             filterVariant
           }
