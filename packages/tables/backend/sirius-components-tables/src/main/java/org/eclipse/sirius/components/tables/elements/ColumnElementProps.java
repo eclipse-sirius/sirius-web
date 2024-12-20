@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,7 +34,8 @@ public record ColumnElementProps(
         int width,
         boolean resizable,
         boolean hidden,
-        String filterVariant) implements IProps {
+        String filterVariant,
+        int index) implements IProps {
 
     public static final String TYPE = "Column";
 
@@ -82,6 +83,8 @@ public record ColumnElementProps(
         private boolean hidden;
 
         private String filterVariant;
+
+        private int index;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -137,9 +140,14 @@ public record ColumnElementProps(
             return this;
         }
 
+        public Builder index(int index) {
+            this.index = index;
+            return this;
+        }
+
         public ColumnElementProps build() {
             return new ColumnElementProps(this.id, this.descriptionId, this.headerLabel, this.headerIconURLs, this.headerIndexLabel, this.targetObjectId, this.targetObjectKind, this.width,
-                    this.resizable, this.hidden, this.filterVariant);
+                    this.resizable, this.hidden, this.filterVariant, this.index);
         }
     }
 }
