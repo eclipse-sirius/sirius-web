@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -71,10 +71,10 @@ public class CompletionProposalsControllerTests extends AbstractIntegrationTests
     }
 
     @Test
-    @DisplayName("Given a textfield for an expression, when we ask for its completion proposals, then the proposals are returned")
+    @DisplayName("Given a textfield for a domain type, when we ask for its completion proposals, then the proposals are returned")
     @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenTextfieldForAnExpressionWhenWeAskForItsCompletionProposalsThenTheProposalsAreReturned() {
+    public void givenTextfieldForDomainTypeWhenWeAskForItsCompletionProposalsThenTheProposalsAreReturned() {
         var detailRepresentationId =  "details://?objectIds=[" + String.join(",", StudioIdentifiers.DIAGRAM_DESCRIPTION_OBJECT.toString()) + "]";
         var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), detailRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input);
@@ -106,8 +106,68 @@ public class CompletionProposalsControllerTests extends AbstractIntegrationTests
                     "cursorPosition", 0
             );
             var result = this.completionProposalsQueryRunner.run(variables);
-            List<String> resultDescriptions = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.completionProposals[*].description");
-            assertThat(resultDescriptions).isNotEmpty();
+            List<String> resultTextToInsert = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.completionProposals[*].textToInsert");
+            assertThat(resultTextToInsert)
+                    .isNotEmpty()
+                    .containsAll(List.of(
+                            "buck::Human",
+                            "buck::NamedElement",
+                            "buck::Root"
+                    ));
+        };
+
+        StepVerifier.create(flux)
+                .consumeNextWith(formContentMatcher)
+                .then(getCompletionProposals)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("Given a textfield for an expression, when we ask for its completion proposals, then the proposals are returned")
+    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenTextfieldForAnExpressionWhenWeAskForItsCompletionProposalsThenTheProposalsAreReturned() {
+        var detailRepresentationId =  "details://?objectIds=[" + String.join(",", StudioIdentifiers.HUMAN_NODE_DESCRIPTION_OBJECT.toString()) + "]";
+        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), detailRepresentationId);
+        var flux = this.detailsEventSubscriptionRunner.run(input);
+
+        var formId = new AtomicReference<String>();
+        var textareaId = new AtomicReference<String>();
+
+        Consumer<Object> formContentMatcher = object -> Optional.of(object)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
+                .map(FormRefreshedEventPayload::form)
+                .ifPresentOrElse(form -> {
+                    formId.set(form.getId());
+
+                    var groupNavigator = new FormNavigator(form).page("Human Node").group("Core Properties");
+                    var textarea = groupNavigator.findWidget("Semantic Candidates Expression", Textarea.class);
+                    textareaId.set(textarea.getId());
+                }, () -> fail("Missing form"));
+
+        Runnable getCompletionProposals = () -> {
+            Map<String, Object> variables = Map.of(
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                    "formId", formId.get(),
+                    "widgetId", textareaId.get(),
+                    "currentText", "aql:self.humans",
+                    "cursorPosition", "aql:self.".length()
+            );
+            var result = this.completionProposalsQueryRunner.run(variables);
+            List<String> resultTextToInsert = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.completionProposals[*].textToInsert");
+            assertThat(resultTextToInsert)
+                    .isNotEmpty()
+                    .containsAll(List.of(
+                            "ancestors()",
+                            "eAllContents()",
+                            "eContents()",
+                            "siblings()"
+                    ));
         };
 
         StepVerifier.create(flux)

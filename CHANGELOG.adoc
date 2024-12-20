@@ -49,6 +49,13 @@ This may have some consequences for downstream applications which are embedding 
 Specifiers can contribute dedicated AQL services for this feature using implementations of `IInterpreterJavaServiceProvider`
 - https://github.com/eclipse-sirius/sirius-web/issues/4346[#4346] [core] The field `Object#iconURLs` has been added to the GraphQL schema in order to retrieve the icon of an object
 - https://github.com/eclipse-sirius/sirius-web/issues/4346[#4346] [query] Add some feedback for long running evaluations
+Specifiers can contribute dedicated AQL services for this feature using implementations of `IInterpreterJavaServiceProvider`.
+- https://github.com/eclipse-sirius/sirius-web/issues/4338[#4338] [core] A Spring log group dedicated to performance issues has been created.
+As a result, one can use `logging.level.sirius.web.performance=DEBUG` in order to display key performance metrics in a Sirius Web instance.
+Some log messages have been updated in order to provide more information and make them easier to read to idenfity key performance issues.
+The configuration property `sirius.web.graphql.tracing` has also been added to active the tracing mode of the GraphQL API.
+It can be activated using `sirius.web.graphql.tracing=true` since it is not enabled by default to not have any impact on the performance of the application.
+Some additional log has also been contributed on the frontend in order to view more easily the order and time of the GraphQL requests and responses.
 
 
 === Improvements
