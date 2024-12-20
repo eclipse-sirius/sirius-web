@@ -138,8 +138,8 @@ public class TableElementFactory implements IElementFactory {
                     .resizable(columnElementProps.resizable())
                     .hidden(columnElementProps.hidden())
                     .filterVariant(columnElementProps.filterVariant())
+                    .index(columnElementProps.index())
                     .build();
-
         }
         return null;
     }
