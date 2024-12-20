@@ -124,6 +124,7 @@ This is now fixed
 - https://github.com/eclipse-sirius/sirius-web/issues/4317[#4317] [sirius-web] Export `NewObjectModal`, `NewRootObjectModal`, and `NewRepresentationModal` frontend components
 These components could be reused by downstream applications in custom creation tool.
 - https://github.com/eclipse-sirius/sirius-web/issues/4330[#4330] [diagram] Improve responsiveness when executing a tool from the palette
+- https://github.com/eclipse-sirius/sirius-web/issues/4333[#4333] [diagram] Improve the style of the palette by switching the positions of the search field and the quick access tools and by adding a small touch of grey in the header bar and search field
 
 
 == v2024.11.0

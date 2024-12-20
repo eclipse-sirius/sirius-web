@@ -17,9 +17,26 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { PaletteSearchFieldProps, PaletteSearchFieldState } from './PaletteSearchField.types';
+
+const usePaletteSearchFieldStyle = makeStyles()((theme) => ({
+  paletteSearchField: {
+    '& .MuiInputBase-root': {
+      backgroundColor: `${theme.palette.secondary.main}08`,
+      borderWidth: '0px',
+    },
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    marginBottom: theme.spacing(0.5),
+    marginTop: theme.spacing(0.5),
+  },
+}));
+
 export const PaletteSearchField = ({ onValueChanged, onEscape, onDirectEditClick }: PaletteSearchFieldProps) => {
   const [state, setState] = useState<PaletteSearchFieldState>({ value: '' });
+
+  const { classes } = usePaletteSearchFieldStyle();
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
@@ -43,12 +60,13 @@ export const PaletteSearchField = ({ onValueChanged, onEscape, onDirectEditClick
 
   return (
     <TextField
-      autoFocus={true}
+      autoFocus
       value={state.value}
       size="small"
       onKeyDown={handleKeyDown}
       onClick={(event) => event.stopPropagation()}
       placeholder="Search Tool"
+      className={classes.paletteSearchField}
       InputProps={{
         disableUnderline: true,
         startAdornment: (
