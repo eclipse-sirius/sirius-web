@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -131,6 +131,8 @@ public class AQLInterpreter {
         }
 
         try {
+            long start = System.currentTimeMillis();
+
             AstResult build = this.parsedExpressions.get(expression);
             IQueryEvaluationEngine evaluationEngine = QueryEvaluation.newEngine(this.queryEnvironment);
             EvaluationResult evalResult = evaluationEngine.eval(build, variables);
@@ -144,6 +146,15 @@ public class AQLInterpreter {
             }
 
             this.log(expressionBody, diagnostic);
+
+            long end = System.currentTimeMillis();
+            if (end - start > 200) {
+                this.logger.atDebug()
+                        .setMessage("{}ms to execute the expression {}")
+                        .addArgument(end - start)
+                        .addArgument(expressionBody)
+                        .log();
+            }
 
             return new Result(Optional.ofNullable(evalResult.getResult()), Status.getStatus(diagnostic.getSeverity()));
         } catch (ExecutionException exception) {

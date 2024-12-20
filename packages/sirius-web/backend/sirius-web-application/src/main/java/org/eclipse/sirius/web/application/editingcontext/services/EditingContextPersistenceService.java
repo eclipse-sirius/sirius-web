@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,8 @@ import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceT
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataUpdateService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,6 +59,8 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
     private final List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates;
 
     private final Timer timer;
+
+    private final Logger logger = LoggerFactory.getLogger(EditingContextPersistenceService.class);
 
     public EditingContextPersistenceService(ISemanticDataUpdateService semanticDataUpdateService, IResourceToDocumentService resourceToDocumentService, List<IEditingContextPersistenceFilter> persistenceFilters, List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates, MeterRegistry meterRegistry) {
         this.semanticDataUpdateService = Objects.requireNonNull(semanticDataUpdateService);
@@ -97,5 +101,11 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
 
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);
+
+        this.logger.atDebug()
+                .setMessage("EditingContext {}: {}ms to persist the semantic data")
+                .addArgument(editingContext.getId())
+                .addArgument(() -> String.format("%1$6s", end - start))
+                .log();
     }
 }
