@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@
 import {
   ApolloClient,
   ApolloClientOptions,
+  ApolloLink,
   DefaultOptions,
   HttpLink,
   HttpOptions,
@@ -33,6 +34,7 @@ import {
   ProjectFragment,
   ViewerProjectsFragment,
 } from '../views/project-browser/list-projects-area/useProjects.fragments';
+import { ApolloLoggerLink } from './ApolloLoggerLink';
 import {
   apolloClientOptionsConfigurersExtensionPoint,
   cacheOptionsConfigurersExtensionPoint,
@@ -104,8 +106,10 @@ export const useCreateApolloClient = (httpOrigin: string, wsOrigin: string): Apo
     },
   };
 
+  var apolloLink = ApolloLink.from([new ApolloLoggerLink(), link]);
+
   let apolloClientOptions: ApolloClientOptions<NormalizedCacheObject> = {
-    link,
+    link: apolloLink,
     cache,
     connectToDevTools: true,
     defaultOptions,
