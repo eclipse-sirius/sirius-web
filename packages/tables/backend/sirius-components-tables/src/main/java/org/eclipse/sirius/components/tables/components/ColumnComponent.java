@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.tables.Column;
 import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
 import org.eclipse.sirius.components.tables.elements.ColumnElementProps;
 import org.eclipse.sirius.components.tables.events.ChangeTableColumnVisibilityEvent;
+import org.eclipse.sirius.components.tables.events.ReorderTableColumnsEvent;
 import org.eclipse.sirius.components.tables.events.ResizeTableColumnEvent;
 
 /**
@@ -61,12 +62,12 @@ public class ColumnComponent implements IComponent {
         return new Fragment(fragmentProps);
     }
 
-    private Element doRender(VariableManager variableManager, Object object, int index) {
+    private Element doRender(VariableManager variableManager, Object object, int columnIndex) {
         ColumnDescription columnDescription = this.props.columnDescription();
 
         VariableManager columnVariableManager = variableManager.createChild();
         columnVariableManager.put(VariableManager.SELF, object);
-        columnVariableManager.put("columnIndex", index);
+        columnVariableManager.put("columnIndex", columnIndex);
         String targetObjectId = columnDescription.getTargetObjectIdProvider().apply(columnVariableManager);
         String targetObjectKind = columnDescription.getTargetObjectKindProvider().apply(columnVariableManager);
 
@@ -91,6 +92,18 @@ public class ColumnComponent implements IComponent {
                         .map(Column::getWidth)
                         .findFirst().orElse(initialWidth));
 
+        var index = this.props.tableEvents().stream()
+                .filter(ReorderTableColumnsEvent.class::isInstance)
+                .map(ReorderTableColumnsEvent.class::cast)
+                .filter(event -> event.reorderedColumnIds().contains(columnId.toString()))
+                .findFirst()
+                .map(event -> event.reorderedColumnIds().indexOf(columnId.toString()))
+                .orElseGet(() -> this.props.previousColumns().stream()
+                        .filter(column -> column.getId().equals(columnId))
+                        .map(Column::getIndex)
+                        .findFirst()
+                        .orElse(0));
+
         boolean hidden = this.props.tableEvents().stream()
                 .filter(ChangeTableColumnVisibilityEvent.class::isInstance)
                 .map(ChangeTableColumnVisibilityEvent.class::cast)
@@ -112,6 +125,7 @@ public class ColumnComponent implements IComponent {
                 .targetObjectKind(targetObjectKind)
                 .resizable(resizable)
                 .width(width)
+                .index(index)
                 .hidden(hidden)
                 .filterVariant(filterVariant);
 

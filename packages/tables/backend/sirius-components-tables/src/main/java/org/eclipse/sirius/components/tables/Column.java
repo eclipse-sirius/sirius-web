@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -50,6 +50,8 @@ public final class Column {
 
     private String filterVariant;
 
+    private int index;
+
     private Column() {
         // Prevent instantiation
     }
@@ -98,6 +100,10 @@ public final class Column {
         return this.filterVariant;
     }
 
+    public int getIndex() {
+        return this.index;
+    }
+
     public static Builder newColumn(UUID id) {
         return new Builder(id);
     }
@@ -137,6 +143,8 @@ public final class Column {
         private boolean hidden;
 
         private String filterVariant;
+
+        private int index;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -192,6 +200,11 @@ public final class Column {
             return this;
         }
 
+        public Builder index(int index) {
+            this.index = index;
+            return this;
+        }
+
         public Column build() {
             Column column = new Column();
             column.id = Objects.requireNonNull(this.id);
@@ -205,6 +218,7 @@ public final class Column {
             column.resizable = this.resizable;
             column.hidden = this.hidden;
             column.filterVariant = Objects.requireNonNull(this.filterVariant);
+            column.index = this.index;
             return column;
         }
     }

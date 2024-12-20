@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,8 @@ export const useTableColumns = (
   readOnly: boolean,
   enableColumnVisibility: boolean,
   enableColumnSizing: boolean,
-  enableColumnFilters: boolean
+  enableColumnFilters: boolean,
+  enableColumnOrdering: boolean
 ): UseTableColumnsValue => {
   const columns = useMemo<MRT_ColumnDef<GQLLine, string>[]>(() => {
     const columnDefs: MRT_ColumnDef<GQLLine, string>[] = table.columns.map((column) => {
@@ -39,6 +40,8 @@ export const useTableColumns = (
         size: enableColumnSizing && column.width > 0 ? column.width : undefined,
         enableResizing: enableColumnSizing && column.isResizable,
         visibleInShowHideMenu: enableColumnVisibility,
+        enableColumnDragging: enableColumnOrdering,
+        enableColumnOrdering,
         Cell: ({ row }) => {
           const cell: GQLCell | null = row.original.cells.find((cell) => column.id === cell.columnId) ?? null;
           return (

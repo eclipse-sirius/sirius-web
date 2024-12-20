@@ -16,6 +16,7 @@ import { MaterialReactTable, MRT_DensityState, MRT_TableOptions, useMaterialReac
 import { memo, useEffect, useState } from 'react';
 import { SettingsButton } from '../actions/SettingsButton';
 import { useTableColumnFiltering } from '../columns/useTableColumnFiltering';
+import { useTableColumnOrdering } from '../columns/useTableColumnOrdering';
 import { useTableColumnSizing } from '../columns/useTableColumnSizing';
 import { useTableColumnVisibility } from '../columns/useTableColumnVisibility';
 import { ResizeRowHandler } from '../rows/ResizeRowHandler';
@@ -41,6 +42,7 @@ export const TableContent = memo(
     enableRowSizing,
     enableGlobalFilter,
     enablePagination,
+    enableColumnOrdering,
   }: TableProps) => {
     const { selection, setSelection } = useSelection();
 
@@ -51,7 +53,8 @@ export const TableContent = memo(
       readOnly,
       enableColumnVisibility,
       enableColumnResizing,
-      enableColumnFilters
+      enableColumnFilters,
+      enableColumnOrdering
     );
     const { columnSizing, setColumnSizing } = useTableColumnSizing(
       editingContextId,
@@ -59,6 +62,7 @@ export const TableContent = memo(
       table,
       enableColumnResizing
     );
+    const { columnOrder, setColumnOrder } = useTableColumnOrdering(editingContextId, representationId, table);
     const { columnVisibility, setColumnVisibility } = useTableColumnVisibility(
       editingContextId,
       representationId,
@@ -162,7 +166,10 @@ export const TableContent = memo(
       onColumnSizingChange: setColumnSizing,
       onColumnVisibilityChange: setColumnVisibility,
       onDensityChange: setDensity,
-      state: { columnSizing, columnVisibility, globalFilter, density, columnFilters },
+      enableColumnOrdering,
+      enableColumnDragging: enableColumnOrdering,
+      onColumnOrderChange: setColumnOrder,
+      state: { columnSizing, columnVisibility, globalFilter, density, columnFilters, columnOrder },
       muiTableBodyRowProps: ({ row }) => {
         return {
           onClick: () => {
