@@ -54,7 +54,7 @@ const usePaletteStyle = makeStyles<PaletteStyleProps>()((theme, props) => ({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    color: theme.palette.grey[400],
+    backgroundColor: `${theme.palette.secondary.main}08`,
   },
 }));
 
@@ -171,17 +171,17 @@ export const Palette = ({
           <DragIndicatorIcon />
         </Box>
         <Divider />
-        <PaletteSearchField
-          onValueChanged={onSearchFieldValueChanged}
-          onEscape={onEscape}
-          onDirectEditClick={onDirectEditClick}
-        />
         <PaletteQuickAccessToolBar
           diagramElementId={diagramElementId}
           onToolClick={handleToolClick}
           quickAccessTools={palette.quickAccessTools}
           x={x}
           y={y}
+        />
+        <PaletteSearchField
+          onValueChanged={onSearchFieldValueChanged}
+          onEscape={onEscape}
+          onDirectEditClick={onDirectEditClick}
         />
         {state.searchToolValue.length > 0 ? (
           <PaletteSearchResult
