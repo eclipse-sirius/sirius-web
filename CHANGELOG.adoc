@@ -22,6 +22,12 @@
 
 === New Features
 
+- https://github.com/eclipse-sirius/sirius-web/issues/4338[#4338] [core] A Spring log group dedicated to performance issues has been created.
+As a result, one can use `logging.level.sirius.web.performance=DEBUG` in order to display key performance metrics in a Sirius Web instance.
+Some log messages have been updated in order to provide more information and make them easier to read to idenfity key performance issues.
+The configuration property `sirius.web.graphql.tracing` has also been added to active the tracing mode of the GraphQL API.
+It can be activated using `sirius.web.graphql.tracing=true` since it is not enabled by default to not have any impact on the performance of the application.
+
 
 === Improvements
 
