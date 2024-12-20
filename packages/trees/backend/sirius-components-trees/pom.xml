@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-trees</artifactId>
-	<version>2024.11.10</version>
+	<version>2025.1.0</version>
 	<name>sirius-components-trees</name>
 	<description>Sirius Components Trees</description>
 
@@ -43,12 +43,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-core</artifactId>
-			<version>2024.11.10</version>
+			<version>2025.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2024.11.10</version>
+			<version>2025.1.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

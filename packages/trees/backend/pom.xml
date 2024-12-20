@@ -17,7 +17,7 @@
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-trees-parent</artifactId>
-	<version>2024.11.10</version>
+	<version>2025.1.0</version>
 
 	<name>sirius-components-trees-parent</name>
 	<description>Sirius Components Trees Parent</description>
