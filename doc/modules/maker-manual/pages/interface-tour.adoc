@@ -1,0 +1,10 @@
+= Tour the interface
+
+== Starting from {studio-projects}
+
+From the {usr-ui-homepage}, create a new _{studio-project}_ or open an existing one.
+
+.The `Blank Studio` {usr-project-template}
+image::Blank_Studio.png["Snapshot of the `Blank Studio` project template"]
+
+Use the {usr-ui-workbench} to create and edit your _{mkr-studio-definition}_.
