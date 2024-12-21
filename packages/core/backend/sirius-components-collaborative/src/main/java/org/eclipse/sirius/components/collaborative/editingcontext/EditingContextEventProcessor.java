@@ -161,7 +161,19 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             if (representationEventProcessorEntry != null) {
                 try {
                     IRepresentationEventProcessor representationEventProcessor = representationEventProcessorEntry.getRepresentationEventProcessor();
+
+                    long start = System.currentTimeMillis();
                     representationEventProcessor.refresh(changeDescription);
+                    long end = System.currentTimeMillis();
+
+                    this.logger.atDebug()
+                            .setMessage("EditingContext {}: {}ms to refresh the {} with id {}")
+                            .addArgument(this.editingContext.getId())
+                            .addArgument(() -> String.format("%1$6s", end - start))
+                            .addArgument(representationEventProcessor.getClass().getSimpleName())
+                            .addArgument(representationEventProcessor.getRepresentation().getId())
+                            .log();
+
                     IRepresentation representation = representationEventProcessor.getRepresentation();
                     this.applicationEventPublisher.publishEvent(new RepresentationRefreshedEvent(this.editingContext.getId(), representation));
                 } catch (Exception exception) {
@@ -267,6 +279,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
      */
     private void doHandle(One<IPayload> payloadSink, IInput input) {
         this.logger.trace("Input received: {}", input);
+        long start = System.currentTimeMillis();
 
         AtomicReference<IInput> inputAfterPreProcessing = new AtomicReference<>(input);
         this.inputPreProcessors.forEach(preProcessor -> inputAfterPreProcessing.set(preProcessor.preProcess(this.editingContext, inputAfterPreProcessing.get(), this.changeDescriptionSink)));
@@ -279,6 +292,14 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
         this.inputPostProcessors.forEach(postProcessor -> postProcessor.postProcess(this.editingContext, inputAfterPreProcessing.get(), this.changeDescriptionSink));
 
+        long end = System.currentTimeMillis();
+        this.logger.atDebug()
+                .setMessage("EditingContext {}: {}ms to handle the {} with id {}")
+                .addArgument(this.editingContext.getId())
+                .addArgument(() -> String.format("%1$6s", end - start))
+                .addArgument(input.getClass().getSimpleName())
+                .addArgument(input.id())
+                .log();
     }
 
     /**
@@ -293,7 +314,18 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             .map(Entry::getValue)
             .map(RepresentationEventProcessorEntry::getRepresentationEventProcessor)
             .forEach(representationEventProcessor -> {
+                long start = System.currentTimeMillis();
                 representationEventProcessor.refresh(changeDescription);
+                long end = System.currentTimeMillis();
+
+                this.logger.atDebug()
+                        .setMessage("EditingContext {}: {}ms to refresh the {} with id {}")
+                        .addArgument(this.editingContext.getId())
+                        .addArgument(() -> String.format("%1$6s", end - start))
+                        .addArgument(representationEventProcessor.getClass().getSimpleName())
+                        .addArgument(representationEventProcessor.getRepresentation().getId())
+                        .log();
+
                 IRepresentation representation = representationEventProcessor.getRepresentation();
                 this.applicationEventPublisher.publishEvent(new RepresentationRefreshedEvent(this.editingContext.getId(), representation));
             });
