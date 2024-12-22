@@ -84,8 +84,6 @@ public class EditingContextSearchService implements IEditingContextSearchService
     private IEditingContext toEditingContext(Project project) {
         long start = System.currentTimeMillis();
 
-        this.logger.debug("Loading the editing context {}", project.getId());
-
         AdapterFactoryEditingDomain editingDomain = this.editingDomainFactory.createEditingDomain(project);
         EditingContext editingContext = new EditingContext(project.getId().toString(), editingDomain, new HashMap<>(), new ArrayList<>());
         this.editingContextLoader.load(editingContext, project.getId());
@@ -94,13 +92,14 @@ public class EditingContextSearchService implements IEditingContextSearchService
         this.timer.record(end - start, TimeUnit.MILLISECONDS);
 
         this.logger.atDebug()
-                .setMessage("{} objects have been loaded in {} ms")
+                .setMessage("EditingContext {}: {}ms to load {} objects")
+                .addArgument(project.getId())
+                .addArgument(() -> String.format("%1$6s", end - start))
                 .addArgument(() -> {
                     var iterator = editingDomain.getResourceSet().getAllContents();
                     var stream = StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED), false);
                     return stream.count();
                 })
-                .addArgument(end - start)
                 .log();
 
         return editingContext;
