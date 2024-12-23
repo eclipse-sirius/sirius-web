@@ -42,6 +42,8 @@ This may have some consequences for downstream applications which are embedding 
 - https://github.com/eclipse-sirius/sirius-web/issues/4398[#4398] [sirius-web] Fix an issue where the swagger page listing all REST APIs (YOUR_SERVER/swagger-ui/index.html) and the OpenAPI file (YOUR_SERVER/v3/api-docs/rest-apis) were not accessible anymore.
 - https://github.com/eclipse-sirius/sirius-web/issues/4400[#4400] [sirius-web] Fix an issue where the swagger page listing all REST APIs (YOUR_SERVER/swagger-ui/index.html) was not listing all response codes for each endpoint.
 - https://github.com/eclipse-sirius/sirius-web/issues/4366[#4366] [form] Fix a warning in the reference widget
+- https://github.com/eclipse-sirius/sirius-web/issues/4343[#4343] [table] Fix an issue where filters were reset on table opening
+- https://github.com/eclipse-sirius/sirius-web/issues/4311[#4311] [table] Fix typos in table variables
 
 === New Features
 

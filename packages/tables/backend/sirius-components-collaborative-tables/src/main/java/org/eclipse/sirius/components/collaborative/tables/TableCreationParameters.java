@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -141,8 +141,8 @@ public final class TableCreationParameters {
             tableCreationParameters.editingContext = Objects.requireNonNull(this.editingContext);
             tableCreationParameters.cursorBasedPaginationData = Objects.requireNonNull(this.cursorBasedPaginationData);
             tableCreationParameters.targetObject = Objects.requireNonNull(this.targetObject);
-            tableCreationParameters.globalFilter = this.globalFilter;
-            tableCreationParameters.columnFilters = this.columnFilters; // Optional on purpose
+            tableCreationParameters.globalFilter = Objects.requireNonNull(this.globalFilter);
+            tableCreationParameters.columnFilters = Objects.requireNonNull(this.columnFilters);
             return tableCreationParameters;
         }
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -49,7 +49,7 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
     private static final String SIZE = "size";
     private static final String GLOBAL_FILTER = "globalFilter";
     private static final String COLUMN_FILTERS = "columnFilters";
-    
+
     private final IRepresentationSearchService representationSearchService;
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
@@ -96,22 +96,17 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
                 TableDescription tableDescription = optionalTableDescription.get();
                 Object object = optionalObject.get();
 
-                var tableCreationParametersBuilder = TableCreationParameters.newTableCreationParameters(this.getTableIdFromRepresentationId(representationId))
+                var tableCreationParameters = TableCreationParameters.newTableCreationParameters(this.getTableIdFromRepresentationId(representationId))
                         .tableDescription(tableDescription)
                         .editingContext(editingContext)
                         .targetObject(object)
                         .cursorBasedPaginationData(this.getCursorBasedPaginationData(editingContext, representationId))
-                        .targetObject(object);
-                var globalFilter = this.getGlobalFilter(representationId);
-                if (globalFilter != null) {
-                    tableCreationParametersBuilder.globalFilter(globalFilter);
-                }
-                var columnFilters = this.getColumnFilters(representationId);
-                if (columnFilters != null) {
-                    tableCreationParametersBuilder.columnFilters(columnFilters);
-                }
+                        .targetObject(object)
+                        .globalFilter(this.getGlobalFilter(representationId, table))
+                        .columnFilters(this.getColumnFilters(representationId, table))
+                        .build();
 
-                IRepresentationEventProcessor tableEventProcessor = new TableEventProcessor(tableCreationParametersBuilder.build(), this.tableEventHandlers, new TableContext(table),
+                IRepresentationEventProcessor tableEventProcessor = new TableEventProcessor(tableCreationParameters, this.tableEventHandlers, new TableContext(table),
                         this.subscriptionManagerFactory.create(), new SimpleMeterRegistry(), this.representationRefreshPolicyRegistry, this.representationPersistenceService);
                 return Optional.of(tableEventProcessor);
             }
@@ -149,8 +144,8 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
         return new CursorBasedPaginationData(cursor, direction, size);
     }
 
-    private String getGlobalFilter(String representationId) {
-        String globalFilter = "";
+    private String getGlobalFilter(String representationId, Table table) {
+        String globalFilter = table.getGlobalFilter();
         if (representationId.indexOf(GLOBAL_FILTER) > 0) {
             var param = this.urlParser.getParameterValues(representationId);
             if (param.containsKey(GLOBAL_FILTER)) {
@@ -162,7 +157,7 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
         return globalFilter;
     }
 
-    private List<ColumnFilter> getColumnFilters(String representationId) {
+    private List<ColumnFilter> getColumnFilters(String representationId, Table table) {
         if (representationId.indexOf(COLUMN_FILTERS) > 0) {
             var param = this.urlParser.getParameterValues(representationId);
             if (param.containsKey(COLUMN_FILTERS)) {
@@ -172,7 +167,7 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
                 }).toList();
             }
         }
-        return List.of();
+        return table.getColumnFilters();
     }
 
 

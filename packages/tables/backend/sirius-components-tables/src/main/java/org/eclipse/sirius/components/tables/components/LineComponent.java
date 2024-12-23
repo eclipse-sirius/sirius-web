@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -129,9 +129,9 @@ public class LineComponent implements IComponent {
         List<Element> elements = new ArrayList<>();
         Map<UUID, Object> columnIdToObject = this.props.cache().getColumnIdToObject();
 
-        columnIdToObject.forEach((columnId, columTargetObject) -> {
+        columnIdToObject.forEach((columnId, columnTargetObject) -> {
             VariableManager variableManager = lineVariableManager.createChild();
-            variableManager.put(ColumnDescription.COLUMN_TARGET_OBJECT, columTargetObject);
+            variableManager.put(ColumnDescription.COLUMN_TARGET_OBJECT, columnTargetObject);
 
             String rawIdentifier = parentLineId.toString() + columnId;
             UUID cellId = UUID.nameUUIDFromBytes(rawIdentifier.getBytes());
@@ -143,19 +143,19 @@ public class LineComponent implements IComponent {
 
             Element cellElement = null;
             if (cellDescription instanceof SelectCellDescription selectCellDescription) {
-                var cellComponentProps = new SelectCellComponentProps(variableManager, selectCellDescription, cellId, columnId, columTargetObject);
+                var cellComponentProps = new SelectCellComponentProps(variableManager, selectCellDescription, cellId, columnId, columnTargetObject);
                 cellElement = new Element(SelectCellComponent.class, cellComponentProps);
             } else if (cellDescription instanceof MultiSelectCellDescription multiSelectCellDescription) {
-                var cellComponentProps = new MultiSelectCellComponentProps(variableManager, multiSelectCellDescription, cellId, columnId, columTargetObject);
+                var cellComponentProps = new MultiSelectCellComponentProps(variableManager, multiSelectCellDescription, cellId, columnId, columnTargetObject);
                 cellElement = new Element(MultiSelectCellComponent.class, cellComponentProps);
             } else if (cellDescription instanceof CheckboxCellDescription checkboxCellDescription) {
-                var cellComponentProps = new CheckboxCellComponentProps(variableManager, checkboxCellDescription, cellId, columnId, columTargetObject);
+                var cellComponentProps = new CheckboxCellComponentProps(variableManager, checkboxCellDescription, cellId, columnId, columnTargetObject);
                 cellElement = new Element(CheckboxCellComponent.class, cellComponentProps);
             } else if (cellDescription instanceof TextfieldCellDescription textfieldCellDescription) {
-                var cellComponentProps = new TextfieldCellComponentProps(variableManager, textfieldCellDescription, cellId, columnId, columTargetObject);
+                var cellComponentProps = new TextfieldCellComponentProps(variableManager, textfieldCellDescription, cellId, columnId, columnTargetObject);
                 cellElement = new Element(TextfieldCellComponent.class, cellComponentProps);
             } else if (cellDescription instanceof IconLabelCellDescription iconLabelCellDescription) {
-                var cellComponentProps = new IconLabelCellComponentProps(variableManager, iconLabelCellDescription, cellId, columnId, columTargetObject);
+                var cellComponentProps = new IconLabelCellComponentProps(variableManager, iconLabelCellDescription, cellId, columnId, columnTargetObject);
                 cellElement = new Element(IconLabelCellComponent.class, cellComponentProps);
             }
             if (cellElement != null) {

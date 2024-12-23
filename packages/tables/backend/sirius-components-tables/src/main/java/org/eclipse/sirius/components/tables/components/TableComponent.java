@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -58,18 +58,7 @@ public class TableComponent implements IComponent {
         TableRenderingCache cache = new TableRenderingCache();
         ITableElementRequestor tableElementRequestor = new TableElementRequestor();
 
-        var globalFilter = this.props.globalFilter();
-        if (this.props.globalFilter() == null) {
-            globalFilter = optionalPreviousTable.map(Table::getGlobalFilter).orElse("");
-            variableManager.put(TableRenderer.GLOBAL_FILTER_DATA, globalFilter);
-        }
-
-        List<ColumnFilter> columnsFilters;
-        if (this.props.columnFilters() == null) {
-            columnsFilters = optionalPreviousTable.map(Table::getColumnFilters).orElse(List.of());
-        } else {
-            columnsFilters = this.props.columnFilters();
-        }
+        List<ColumnFilter> columnsFilters = this.props.columnFilters();
 
         var childrenColumns = tableDescription.getColumnDescriptions().stream()
                 .map(columnDescription -> {
@@ -110,7 +99,7 @@ public class TableComponent implements IComponent {
                 .stripeRow(stripeRow)
                 .children(children)
                 .paginationData(new PaginationData(paginatedData.hasPreviousPage(), paginatedData.hasNextPage(), paginatedData.totalRowCount()))
-                .globalFilter(globalFilter)
+                .globalFilter(this.props.globalFilter())
                 .columnFilters(columnsFilters)
                 .build();
 
