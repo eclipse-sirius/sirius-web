@@ -14,6 +14,7 @@ import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import Slider from '@mui/material/Slider';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLSlider } from '../form/FormEventFragments.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
@@ -57,6 +58,8 @@ export const SliderPropertySection: PropertySectionComponent<GQLSlider> = ({
   widget,
   readOnly,
 }: PropertySectionComponentProps<GQLSlider>) => {
+  const { t: coreT } = useTranslation('siriusComponentsCore');
+
   const [editSlider, { loading, data, error }] = useMutation<GQLEditSliderMutationData, GQLEditSliderMutationVariables>(
     editSliderMutation
   );
@@ -66,7 +69,7 @@ export const SliderPropertySection: PropertySectionComponent<GQLSlider> = ({
   useEffect(() => {
     if (!loading) {
       if (error) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (data) {
         const { editSlider } = data;
@@ -75,7 +78,7 @@ export const SliderPropertySection: PropertySectionComponent<GQLSlider> = ({
         }
       }
     }
-  }, [loading, error, data]);
+  }, [loading, error, data, coreT]);
 
   const onValueChanged = (_, value) => {
     const input: GQLEditSliderInput = {
