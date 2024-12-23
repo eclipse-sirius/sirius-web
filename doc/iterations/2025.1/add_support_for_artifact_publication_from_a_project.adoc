@@ -1,0 +1,82 @@
+= Add support for artifact publication from a project
+
+== Problem
+
+Sirius Web doesn't provide an **in-application** way to publish artifacts from a project.
+The current import/export mechanisms rely on generating an interchange format file (Json, XMI, SysML), and uploading such file in a project to import it.
+
+When exported models are used as shared reusable components, it is the responsibility of the stakeholders to:
+
+- Store the shared models in an external location
+- Ensure that every user is working on the same version of the shared model
+- Coordinate to export a new version when needed, and import it in all the dependent projects
+
+These processes are error-prone, and could be more controlled if they all happened inside the application.
+
+== Key Result
+
+Sirius Web should provide a way for downstream application to 
+
+- Define their publication _workflow_
+- Store published artifacts in a provided data structure
+
+Note that the actual implementation of the publication workflow (i.e. what to publish from a given project) should be delegated to downstream applications. 
+We already have downstream projects that implement or want to implement different publication mechanisms:
+
+- Publish fragments of a model
+- Publish entire editing contexts
+- Publish multiple artifacts from a single project
+
+This shape doesn't address the question of importing published artifacts in a project. 
+A solution to this issue will be proposed in a complementary shape.
+
+== Solution
+
+Sirius Web should provide a project workflow interface similar to the example below
+```java
+public interface IProjectWorkflow {
+    /*
+     * Can use the nature of the project to figure out if the workflow is relevant
+     */
+    boolean canHandle(UUID projectId);
+
+     /*
+      * I'm not providing the editing context here on purpose to let the specifier load the snapshot of the
+      * data from the database in order NOT to block the editing context event processor.
+      */
+    void handle(UUID projectId, ...);
+}
+```
+
+Sirius Web should also provide a GraphQL mutation to trigger a project workflow. 
+This mutation should ensure that the execution of the workflow does not block the editing context event processor (some workflows may take a long time to complete).
+
+Note that this interface (and the GraphQL mutation) are not restricted to artifact publication. 
+They could be leveraged by downstream applications to define any kind of workflow on a project.
+
+Downstream applications contributing implementations of this interface could then trigger the workflow from their own tools (from the contextual menu in the explorer, from a tool in the diagram palette, etc).
+
+Sirius Web should provide a database table to store published artifacts. 
+This table should contain the following information for each published artifact:
+
+- identifier
+- serialized content
+- version
+- description
+- date of creation
+- date of last modification
+
+Finally, Sirius Web should provide a new page to let user see the artifacts that have been published by a project. 
+This page could be accessible at `projects/projectId/artifacts`, and would contain a table with the information contained in the database, filtered for the selected project.
+
+=== Cutting backs
+
+- (Nice to have) downstream application can add custom properties on the published artifacts.
+
+== Rabbit holes
+
+Nothing identified.
+
+== No-gos
+
+The publication of Sirius Web artifacts (e.g. studios) is out of the scope of this shape. The proposed mechanism could be leveraged in the future to implement these new features. 
