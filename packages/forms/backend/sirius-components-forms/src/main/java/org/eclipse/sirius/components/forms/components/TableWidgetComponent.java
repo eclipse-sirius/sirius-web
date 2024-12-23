@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,7 +55,7 @@ public class TableWidgetComponent implements IComponent {
         Boolean readOnly = tableWidgetDescription.getIsReadOnlyProvider().apply(variableManager);
 
         Element tableElement = new Element(TableComponent.class,
-                new TableComponentProps(variableManager, tableWidgetDescription.getTableDescription(), Optional.empty(), List.of(), null, List.of()));
+                new TableComponentProps(variableManager, tableWidgetDescription.getTableDescription(), Optional.empty(), List.of(), "", List.of()));
 
         List<Element> children = new ArrayList<>();
         children.add(tableElement);
