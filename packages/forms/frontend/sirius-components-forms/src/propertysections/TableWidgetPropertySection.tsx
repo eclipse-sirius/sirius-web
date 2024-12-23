@@ -47,6 +47,7 @@ export const TableWidgetPropertySection: PropertySectionComponent<GQLTableWidget
         enableRowSizing={false}
         enableGlobalFilter={false}
         enablePagination={false}
+        enableColumnOrdering={false}
       />
     </div>
   );
