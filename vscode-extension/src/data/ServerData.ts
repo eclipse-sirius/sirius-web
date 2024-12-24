@@ -51,9 +51,9 @@ export class ServerData {
 
   private fetchProjects(): Promise<ProjectData[]> {
     const graphQLQuery = `
-      query getProjects($page: Int!, $limit: Int!) {
+      query getProjects($after: String, $before: String, $first: Int, $last: Int) {
         viewer {
-          projects(page: $page, limit: $limit) {
+          projects(after: $after, before: $before, first: $first, last: $last) {
             edges {
               node {
                 id
@@ -71,7 +71,7 @@ export class ServerData {
         queryURL,
         {
           query: graphQLQuery,
-          variables: { page: 0, limit: 50 },
+          variables: { first: 50 },
         },
         headers
       )

@@ -16,9 +16,9 @@ const url = Cypress.env('baseAPIUrl') + '/api/graphql';
 
 Cypress.Commands.add('deleteAllProjects', () => {
   const getProjectsQuery = `
-  query getProjects($page: Int!, $limit: Int!) {
+  query getProjects($after: String, $before: String, $first: Int, $last: Int) {
     viewer {
-      projects(page: $page, limit: $limit) {
+      projects(after: $after, before: $before, first: $first, last: $last) {
         edges {
           node {
             id

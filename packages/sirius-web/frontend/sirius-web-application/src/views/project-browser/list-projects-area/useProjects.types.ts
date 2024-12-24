@@ -18,8 +18,10 @@ export interface UseProjectsValue {
 }
 
 export interface GQLGetProjectsQueryVariables {
-  page: number;
-  limit: number;
+  after: string | null;
+  before: string | null;
+  first: number | null;
+  last: number | null;
 }
 
 export interface GQLGetProjectsQueryData {
@@ -37,6 +39,7 @@ export interface GQLViewerProjectConnection {
 
 export interface GQLViewerProjectEdge {
   node: GQLProject;
+  cursor: string;
 }
 
 export interface GQLProject {
@@ -47,5 +50,7 @@ export interface GQLProject {
 export interface GQLPageInfo {
   hasPreviousPage: boolean;
   hasNextPage: boolean;
+  startCursor: string | null;
+  endCursor: string | null;
   count: number;
 }
