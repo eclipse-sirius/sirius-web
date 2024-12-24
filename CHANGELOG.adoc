@@ -482,7 +482,7 @@ A migration participant has been added to automatically keep compatible all diag
 - https://github.com/eclipse-sirius/sirius-web/issues/3932[#3932] [forms] Do not display the 'Delete' button (even disabled) for non-deletable lists
 - https://github.com/eclipse-sirius/sirius-web/issues/3951[#3951] [sirius-web] Provide an error page to redirect users in case of error
 - https://github.com/eclipse-sirius/sirius-web/issues/3974[#3974] [diagram] Add support for `<` and `>` to trigger direct edit
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3827[#3827] [core] Improved loading time of projects with multiple documents by loading the documents in multiple threads in parallel.
 
 == v2024.7.0
 
