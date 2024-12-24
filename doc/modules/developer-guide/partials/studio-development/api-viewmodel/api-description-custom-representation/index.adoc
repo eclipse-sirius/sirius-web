@@ -1,0 +1,6 @@
+= Custom Representation Description APIs
+
+#TODO: Not sure how much {sw} is/will be customizable to add additional Representation Descriptions.
+If so, this section might get a bit long. This subject should also probably be mentioned in xref:developer-guide:studio-runtime.adoc[] and be the subject of a xref:developer-guide:tutorials.adoc[Studio Developer Tutorial].#
+
+#TODO: migrate {sw-github}/blob/master/doc/how-to/contribute-custom-node.adoc#
