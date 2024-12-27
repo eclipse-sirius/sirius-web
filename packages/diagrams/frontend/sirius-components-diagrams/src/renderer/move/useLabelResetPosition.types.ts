@@ -12,6 +12,5 @@
  *******************************************************************************/
 
 export interface UseLabelResetPositionValue {
-  removeEdgeLabelLayoutData: (edgeId: string) => void;
-  removeNodeLabelLayoutData: (nodeId: string) => void;
+  removeOutsideLabelLayoutData: (diagramElementId: string) => void;
 }

@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.diagram.api;
 
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
 
@@ -24,7 +25,7 @@ import java.util.List;
  */
 public interface IPaletteToolsProvider {
 
-    List<ToolSection> createExtraToolSections(Object diagramElementDescription, Object diagramElement);
+    List<ToolSection> createExtraToolSections(DiagramContext diagramContext, Object diagramElementDescription, Object diagramElement);
 
-    List<ITool> createQuickAccessTools(Object diagramElementDescription, Object diagramElement);
+    List<ITool> createQuickAccessTools(DiagramContext diagramContext, Object diagramElementDescription, Object diagramElement);
 }
