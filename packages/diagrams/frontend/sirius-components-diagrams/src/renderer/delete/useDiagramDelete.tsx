@@ -10,71 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { gql, useMutation } from '@apollo/client';
-import { useDeletionConfirmationDialog, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { useDeletionConfirmationDialog } from '@eclipse-sirius/sirius-components-core';
 import { Edge, Node, useReactFlow } from '@xyflow/react';
-import { useCallback, useContext, useEffect } from 'react';
+import { useCallback, useContext } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import {
-  GQLDeleteFromDiagramData,
-  GQLDeleteFromDiagramInput,
-  GQLDeleteFromDiagramPayload,
-  GQLDeleteFromDiagramSuccessPayload,
-  GQLDeleteFromDiagramVariables,
-  GQLDeletionPolicy,
-  GQLErrorPayload,
-} from '../palette/usePalette.types';
 import { UseDiagramDeleteValue } from './useDiagramDelete.types';
-
-export const deleteFromDiagramMutation = gql`
-  mutation deleteFromDiagram($input: DeleteFromDiagramInput!) {
-    deleteFromDiagram(input: $input) {
-      __typename
-      ... on ErrorPayload {
-        messages {
-          body
-          level
-        }
-      }
-      ... on DeleteFromDiagramSuccessPayload {
-        messages {
-          body
-          level
-        }
-      }
-    }
-  }
-`;
-
-const isErrorPayload = (payload: GQLDeleteFromDiagramPayload): payload is GQLErrorPayload =>
-  payload.__typename === 'ErrorPayload';
-const isSuccessPayload = (payload: GQLDeleteFromDiagramPayload): payload is GQLDeleteFromDiagramSuccessPayload =>
-  payload.__typename === 'DeleteFromDiagramSuccessPayload';
+import { useDiagramDeleteMutation } from './useDiagramDeleteMutation';
+import { GQLDeletionPolicy } from './useDiagramDeleteMutation.types';
 
 export const useDiagramDelete = (): UseDiagramDeleteValue => {
-  const { addErrorMessage, addMessages } = useMultiToast();
-  const { showDeletionConfirmation } = useDeletionConfirmationDialog();
-  const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { getNodes } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
-
-  const [deleteElementsMutation, { data: deleteElementsData, error: deleteElementsError }] = useMutation<
-    GQLDeleteFromDiagramData,
-    GQLDeleteFromDiagramVariables
-  >(deleteFromDiagramMutation);
-
-  useEffect(() => {
-    if (deleteElementsError) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
-    }
-    if (deleteElementsData) {
-      const { deleteFromDiagram } = deleteElementsData;
-      if (isErrorPayload(deleteFromDiagram) || isSuccessPayload(deleteFromDiagram)) {
-        addMessages(deleteFromDiagram.messages);
-      }
-    }
-  }, [deleteElementsData, deleteElementsError]);
+  const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
+  const { deleteElements } = useDiagramDeleteMutation();
+  const { showDeletionConfirmation } = useDeletionConfirmationDialog();
 
   const onDelete = useCallback((event: React.KeyboardEvent<Element>) => {
     const { key } = event;
@@ -89,16 +39,9 @@ export const useDiagramDelete = (): UseDiagramDeleteValue => {
       const nodeToDeleteIds: string[] = getNodes()
         .filter((node) => node.selected)
         .map((node) => node.id);
-      const input: GQLDeleteFromDiagramInput = {
-        id: crypto.randomUUID(),
-        editingContextId,
-        representationId: diagramId,
-        nodeIds: nodeToDeleteIds,
-        edgeIds: [],
-        deletionPolicy: GQLDeletionPolicy.SEMANTIC,
-      };
+
       showDeletionConfirmation(() => {
-        deleteElementsMutation({ variables: { input } });
+        deleteElements(nodeToDeleteIds, [], GQLDeletionPolicy.SEMANTIC);
       });
     }
   }, []);
