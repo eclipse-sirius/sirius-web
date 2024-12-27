@@ -20,17 +20,20 @@ import java.util.UUID;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IPaletteProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.IPaletteEntry;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.Palette;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnDiagramElementTool;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.interpreter.Status;
@@ -42,6 +45,7 @@ import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionPred
 import org.eclipse.sirius.components.view.emf.api.IViewAQLInterpreterFactory;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.components.view.emf.diagram.ViewToolImageProvider;
+import org.eclipse.sirius.components.view.emf.diagram.api.IGroupPaletteToolsProvider;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.eclipse.sirius.components.view.emf.form.converters.MultiValueProvider;
 import org.springframework.stereotype.Service;
@@ -62,15 +66,21 @@ public class ViewGroupPaletteProvider implements IPaletteProvider {
 
     private final IDiagramIdProvider diagramIdProvider;
 
+    private final IDiagramDescriptionService diagramDescriptionService;
+
     private final IViewAQLInterpreterFactory aqlInterpreterFactory;
 
+    private final List<IGroupPaletteToolsProvider> paletteToolsProviders;
+
     public ViewGroupPaletteProvider(IObjectSearchService objectSearchService, IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService,
-                                    IDiagramIdProvider diagramIdProvider, IViewAQLInterpreterFactory aqlInterpreterFactory) {
+                                    IDiagramIdProvider diagramIdProvider, IDiagramDescriptionService diagramDescriptionService, IViewAQLInterpreterFactory aqlInterpreterFactory, List<IGroupPaletteToolsProvider> paletteToolsProviders) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(viewRepresentationDescriptionPredicate);
         this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
+        this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
         this.aqlInterpreterFactory = Objects.requireNonNull(aqlInterpreterFactory);
+        this.paletteToolsProviders = Objects.requireNonNull(paletteToolsProviders);
     }
 
     @Override
@@ -100,7 +110,37 @@ public class ViewGroupPaletteProvider implements IPaletteProvider {
                 palette = this.getGroupDiagramPalette(viewDiagramDescription, variableManager, interpreter);
             }
         }
+
+        var diagramElementDescriptions = diagramElements.stream()
+                .map(diagramElement -> this.findDiagramElementDescription(diagramDescription, diagramElement))
+                .flatMap(Optional::stream).toList();
+
+        List<ToolSection> extraToolSections = this.paletteToolsProviders.stream()
+                .map(paletteToolsProvider -> paletteToolsProvider.createExtraToolSections(diagramContext, diagramElementDescriptions, diagramElements))
+                .flatMap(List::stream)
+                .toList();
+
+        List<ITool> quickAccessTools = this.paletteToolsProviders.stream()
+                .map(paletteToolsProvider -> paletteToolsProvider.createQuickAccessTools(diagramContext, diagramElementDescriptions, diagramElements))
+                .flatMap(List::stream)
+                .toList();
+
+        if (palette != null) {
+            palette.paletteEntries().addAll(extraToolSections);
+            palette.quickAccessTools().addAll(quickAccessTools);
+        }
+
         return palette;
+    }
+
+    private Optional<IDiagramElementDescription> findDiagramElementDescription(DiagramDescription diagramDescription, Object diagramElement) {
+        Optional<IDiagramElementDescription> optionalElementDescription = Optional.empty();
+        if (diagramElement instanceof Node node) {
+            optionalElementDescription = this.diagramDescriptionService.findDiagramElementDescriptionById(diagramDescription, node.getDescriptionId());
+        } else if (diagramElement instanceof Edge edge) {
+            optionalElementDescription =  this.diagramDescriptionService.findDiagramElementDescriptionById(diagramDescription, edge.getDescriptionId());
+        }
+        return optionalElementDescription;
     }
 
     private Optional<Object> findTargetElement(IEditingContext editingContext, Object diagramElement) {

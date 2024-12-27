@@ -22,7 +22,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
 import org.eclipse.sirius.components.collaborative.diagrams.handlers.InvokeSingleClickOnDiagramElementToolEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.services.ISingleClickOnOneDiagramElementHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -77,7 +76,8 @@ public class SingleClickOnOneDiagramElementHandler implements ISingleClickOnOneD
     }
 
     @Override
-    public boolean canHandle(IEditingContext editingContext, Diagram diagram, String toolId, String diagramElementId) {
+    public boolean canHandle(IEditingContext editingContext, DiagramContext diagramContext, String toolId, String diagramElementId) {
+        var diagram = diagramContext.diagram();
         Optional<String> optionalDiagramElementDescriptionId = Optional.of(diagramElementId)
                 .filter(elementId -> diagramElementId.equals(diagram.getId()))
                 .map(elementId -> diagram.getDescriptionId())
@@ -90,8 +90,8 @@ public class SingleClickOnOneDiagramElementHandler implements ISingleClickOnOneD
     }
 
     @Override
-    public IStatus execute(IEditingContext editingContext, Diagram diagram, String toolId, String diagramElementId, List<ToolVariable> variables) {
-        DiagramContext diagramContext = new DiagramContext(diagram);
+    public IStatus execute(IEditingContext editingContext, DiagramContext diagramContext, String toolId, String diagramElementId, List<ToolVariable> variables) {
+        var diagram = diagramContext.diagram();
         Optional<String> optionalDiagramElementDescriptionId = Optional.of(diagramElementId)
                 .filter(elementId -> diagramElementId.equals(diagram.getId()))
                 .map(elementId -> diagram.getDescriptionId())

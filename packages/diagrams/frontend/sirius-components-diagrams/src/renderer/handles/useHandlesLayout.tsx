@@ -62,19 +62,23 @@ export const useHandlesLayout = (): UseHandlesLayoutValue => {
   };
 
   const removeNodeHandleLayoutData = useCallback(
-    (nodeIds: string[], edgeId: string): void => {
-      const nodes = store.getState().nodes.map((previousNode) => {
-        return getNodeWithoutHandles(previousNode, nodeIds, edgeId);
-      });
-
-      setNodes((previousNodes) =>
-        previousNodes.map((previousNode) => {
+    (edgeId: string): void => {
+      const edge = store.getState().edgeLookup.get(edgeId);
+      if (edge) {
+        const nodeIds = [edge.source, edge.target];
+        const nodes = store.getState().nodes.map((previousNode) => {
           return getNodeWithoutHandles(previousNode, nodeIds, edgeId);
-        })
-      );
+        });
 
-      updateNodeInternals(nodeIds);
-      synchronizeNodeLayoutData(nodes);
+        setNodes((previousNodes) =>
+          previousNodes.map((previousNode) => {
+            return getNodeWithoutHandles(previousNode, nodeIds, edgeId);
+          })
+        );
+
+        updateNodeInternals(nodeIds);
+        synchronizeNodeLayoutData(nodes);
+      }
     },
     [synchronizeNodeLayoutData]
   );

@@ -54,6 +54,7 @@ This API will probably slightly evolve in the futur but it provides today the ab
 On the frontend, the `ProjectTemplateCard` component has been removed; the `NewProjectCard` component handles all cases now, with a new `template` prop.
 - Remove the useless property `WorkbenchEntry#kind` from the GraphQL API and the DTO.
 The `WorkbenchEntry` object has also been transformed into a record
+- https://github.com/eclipse-sirius/sirius-web/issues/4348[#4348] [diagram] The interfaces `ISingleClickOnMultipleDiagramElementHandler` `ISingleClickOnOneDiagramElementHandler` `IPaletteToolsProvider` have been modified to take the `DiagramContext` instead of the `Diagram` as parameter.
 
 
 === Dependency update
@@ -95,6 +96,9 @@ This can be used for example to capture semantic elements created (or simply ret
 If multiple _Let_ operations are executed inside the body of a tool with the same variable name, only the last executed one is available.
 - https://github.com/eclipse-sirius/sirius-web/issues/5873[#5873] [diagram] Add the ability to hide the mini map.
 This preference is saved in the browser local storage.
+https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [diagram] Add the ability to execute tools on a selection of multiple elements
+https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [view] Add the concept of GroupPalette in the diagram view dsl to provide tools to execute while multiple elements are selected
+- https://github.com/eclipse-sirius/sirius-web/issues/4348[#4348] [diagram] Add `IGroupPaletteToolsProvider` in order to provide extra tools to a group palette
 
 
 === Improvements
@@ -119,6 +123,8 @@ The `canEdit` capabilities delegates to `ProjectCapabilities#canEdit` by default
 Downstream projects can provide their own `IFormCapabilitiesService` primary service to override the default behavior.
 - https://github.com/eclipse-sirius/sirius-web/issues/5883[#5883] Make `IProxyRemovalService` extensible
 Downstream applications can now implement `IProxyRemovalServiceDelegate` to customize how proxies are removed.
+- https://github.com/eclipse-sirius/sirius-web/issues/4348[#4348] [diagram] Move default quick tools declaration on the backend
+
 
 
 == 2025.12.0

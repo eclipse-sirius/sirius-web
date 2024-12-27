@@ -21,11 +21,12 @@ import {
 } from '../graphql/subscription/diagramEventSubscription.types';
 import { DiagramRenderer } from '../renderer/DiagramRenderer';
 import { HelperLinesContextProvider } from '../renderer/helper-lines/HelperLinesContext';
+import { MiniMapContextProvider } from '../renderer/mini-map/MiniMapContext';
 import { SnapToGridContextProvider } from '../renderer/snap-to-grid/SnapToGridContext';
+import { DiagramToolExecutorContextProvider } from '../renderer/tools/DiagramToolExecutorContext';
 import { DiagramSubscriptionProviderProps, DiagramSubscriptionState } from './DiagramSubscriptionProvider.types';
 import { StoreContextProvider } from './StoreContext';
 import { useDiagramSubscription } from './useDiagramSubscription';
-import { MiniMapContextProvider } from '../renderer/mini-map/MiniMapContext';
 
 const isDiagramRefreshedEventPayload = (
   payload: GQLDiagramEventPayload | null
@@ -68,10 +69,12 @@ export const DiagramSubscriptionProvider = memo(({ diagramId, editingContextId }
               style={{ display: 'inline-block', position: 'relative' }}
               data-representation-kind="diagram"
               data-representation-label={state.diagramRefreshedEventPayload.diagram.metadata.label}>
-              <DiagramRenderer
-                key={state.diagramRefreshedEventPayload.diagram.id}
-                diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
-              />
+              <DiagramToolExecutorContextProvider>
+                <DiagramRenderer
+                  key={state.diagramRefreshedEventPayload.diagram.id}
+                  diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
+                />
+              </DiagramToolExecutorContextProvider>
             </div>
           </MiniMapContextProvider>
         </HelperLinesContextProvider>

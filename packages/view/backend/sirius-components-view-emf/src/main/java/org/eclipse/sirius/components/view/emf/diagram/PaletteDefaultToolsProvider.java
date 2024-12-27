@@ -14,18 +14,32 @@ package org.eclipse.sirius.components.view.emf.diagram;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramImageConstants;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
+import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeLabelKind;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.view.emf.diagram.api.IPaletteToolsProvider;
+import org.eclipse.sirius.components.view.emf.diagram.tools.CollapseElementToolHandler;
+import org.eclipse.sirius.components.view.emf.diagram.tools.ExpandElementToolHandler;
+import org.eclipse.sirius.components.view.emf.diagram.tools.FadeElementToolHandler;
+import org.eclipse.sirius.components.view.emf.diagram.tools.HideElementToolHandler;
+import org.eclipse.sirius.components.view.emf.diagram.tools.PinElementToolHandler;
+import org.eclipse.sirius.components.view.emf.diagram.tools.UnFadeElementToolHandler;
+import org.eclipse.sirius.components.view.emf.diagram.tools.UnPinElementToolHandler;
+import org.eclipse.sirius.components.view.emf.messages.IViewEMFMessageService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,30 +50,31 @@ import org.springframework.stereotype.Service;
 @Service
 public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
 
+    private final IViewEMFMessageService messageService;
+
+    public PaletteDefaultToolsProvider(IViewEMFMessageService messageService) {
+        this.messageService = Objects.requireNonNull(messageService);
+    }
+
     @Override
-    public List<ToolSection> createExtraToolSections(Object diagramElementDescription, Object diagramElement) {
+    public List<ToolSection> createExtraToolSections(DiagramContext diagramContext, Object diagramElementDescription, Object diagramElement) {
         List<ToolSection> extraToolSections = new ArrayList<>();
 
         if (diagramElementDescription instanceof NodeDescription || diagramElementDescription instanceof EdgeDescription) {
-
-            List<ITool> extraTools = this.createExtraTools(diagramElementDescription, diagramElement);
+            List<ITool> extraTools = this.createExtraTools(diagramContext, diagramElement);
             var editToolSection = ToolSection.newToolSection("edit-section")
                     .label("Edit")
                     .iconURL(List.of())
                     .tools(extraTools)
                     .build();
             extraToolSections.add(editToolSection);
-
         }
         return extraToolSections;
     }
 
     @Override
-    public List<ITool> createQuickAccessTools(Object diagramElementDescription, Object diagramElement) {
-        return this.createExtraTools(diagramElementDescription, diagramElement);
-    }
-
-    private List<ITool> createExtraTools(Object diagramElementDescription, Object diagramElement) {
+    public List<ITool> createQuickAccessTools(DiagramContext diagramContext, Object diagramElementDescription, Object diagramElement) {
+        List<ITool> extraTools = new ArrayList<>();
         List<IDiagramElementDescription> targetDescriptions = new ArrayList<>();
         if (diagramElementDescription instanceof NodeDescription nodeDescription) {
             targetDescriptions.add(nodeDescription);
@@ -67,58 +82,171 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
             targetDescriptions.addAll(edgeDescription.getSourceDescriptions());
         }
 
-        List<ITool> extraTools = new ArrayList<>();
         if (this.hasLabelEditTool(diagramElementDescription)) {
             // Edit Tool (the handler is never called)
             var editTool = this.createExtraEditLabelEditTool(targetDescriptions);
             extraTools.add(editTool);
         }
+
+        if (diagramElement instanceof Node node) {
+            var pinTool = this.createPinTool(targetDescriptions, node);
+            extraTools.add(pinTool);
+        }
+
+        if (diagramElement instanceof IDiagramElement element && isOutSideLabelManuallyPositioned(diagramContext, element)) {
+            extraTools.add(this.getResetOutSideLabelPositionedTool(targetDescriptions));
+        }
+
+        if (diagramElement instanceof Edge edge && isEdgeBendingPointsManuallyPositioned(diagramContext, edge)) {
+            extraTools.add(this.getResetBendingPointsPositionedTool(targetDescriptions));
+        }
+
+        if (diagramElement instanceof Edge edge && isEdgeHandlesManuallyPositioned(diagramContext, edge)) {
+            extraTools.add(this.getResetHandlesPositionTool(targetDescriptions));
+        }
+
+        if (diagramElement instanceof Node) {
+            extraTools.add(this.getAdjustSizeTool(targetDescriptions));
+        }
+
+        extraTools.add(this.createFadeTool(targetDescriptions, diagramElement));
+        extraTools.add(this.createHideTool(targetDescriptions));
+
         if (this.hasDeleteTool(diagramElementDescription)) {
             // Semantic Delete Tool (the handler is never called)
             var semanticDeleteTool = this.createExtraSemanticDeleteTool(targetDescriptions);
             extraTools.add(semanticDeleteTool);
         }
+        return extraTools;
+    }
+
+    private List<ITool> createExtraTools(Object diagramElementDescription, Object diagramElement) {
+        List<ITool> extraTools = new ArrayList<>();
+        List<IDiagramElementDescription> targetDescriptions = new ArrayList<>();
+        if (diagramElementDescription instanceof NodeDescription nodeDescription) {
+            targetDescriptions.add(nodeDescription);
+        } else if (diagramElementDescription instanceof EdgeDescription edgeDescription) {
+            targetDescriptions.addAll(edgeDescription.getSourceDescriptions());
+        }
+
+        if (this.hasLabelEditTool(diagramElementDescription)) {
+            // Edit Tool (the handler is never called)
+            var editTool = this.createExtraEditLabelEditTool(targetDescriptions);
+            extraTools.add(editTool);
+        }
+
         if (this.isCollapsible(diagramElementDescription, diagramElement)) {
-            // Collapse or expand Tool (the handler is never called)
             var expandCollapseTool = this.createExtraExpandCollapseTool(targetDescriptions, diagramElement);
             expandCollapseTool.ifPresent(extraTools::add);
+        }
+
+        if (this.hasDeleteTool(diagramElementDescription)) {
+            // Semantic Delete Tool (the handler is never called)
+            var semanticDeleteTool = this.createExtraSemanticDeleteTool(targetDescriptions);
+            extraTools.add(semanticDeleteTool);
         }
         return extraTools;
     }
 
-    private Optional<ITool> createExtraExpandCollapseTool(List<IDiagramElementDescription> targetDescriptions, Object diagramElement) {
+    private SingleClickOnDiagramElementTool getAdjustSizeTool(List<IDiagramElementDescription> targetDescriptions) {
+        return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("adjust-size")
+                .label(this.messageService.defaultQuickToolAdjustSize())
+                .iconURL(List.of(DiagramImageConstants.ADJUST_SIZE))
+                .targetDescriptions(targetDescriptions)
+                .appliesToDiagramRoot(false)
+                .build();
+    }
 
+    private boolean isOutSideLabelManuallyPositioned(DiagramContext diagramContext, IDiagramElement diagramElement) {
+        boolean isManualyPositionned = false;
         if (diagramElement instanceof Node node) {
-            ITool collapsingTool = null;
-            SingleClickOnDiagramElementTool collapseTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("collapse")
-                    .label("Collapse")
-                    .iconURL(List.of(DiagramImageConstants.COLLAPSE_SVG))
-                    .targetDescriptions(targetDescriptions)
-                    .appliesToDiagramRoot(false)
-                    .withImpactAnalysis(false)
-                    .build();
+            var outSideLabels = node.getOutsideLabels();
+            var labelLayoutData = diagramContext.diagram().getLayoutData().labelLayoutData();
+            isManualyPositionned = outSideLabels.stream()
+                    .anyMatch(label -> labelLayoutData.containsKey(label.id()) &&
+                            labelLayoutData.get(label.id()).position().x() != 0 &&
+                            labelLayoutData.get(label.id()).position().y() != 0);
+        } else if (diagramElement instanceof Edge edge) {
+            var edgeLabels = Stream.of(edge.getBeginLabel(), edge.getCenterLabel(), edge.getEndLabel())
+                    .filter(Objects::nonNull)
+                    .toList();
+            var labelLayoutData = diagramContext.diagram().getLayoutData().labelLayoutData();
+            isManualyPositionned = edgeLabels.stream()
+                    .anyMatch(label -> labelLayoutData.containsKey(label.id()) &&
+                            labelLayoutData.get(label.id()).position().x() != 0 &&
+                            labelLayoutData.get(label.id()).position().y() != 0);
+        }
+        return isManualyPositionned;
+    }
 
-            SingleClickOnDiagramElementTool expandTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("expand")
-                    .label("Expand")
-                    .iconURL(List.of(DiagramImageConstants.EXPAND_SVG))
-                    .targetDescriptions(targetDescriptions)
-                    .appliesToDiagramRoot(false)
-                    .withImpactAnalysis(false)
-                    .build();
+    private SingleClickOnDiagramElementTool getResetOutSideLabelPositionedTool(List<IDiagramElementDescription> targetDescriptions) {
+        return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("reset-outside-label-position")
+                .label(this.messageService.defaultQuickToolResetOutsideLabelPosition())
+                .iconURL(List.of(DiagramImageConstants.RESET_LABEL_POSITION))
+                .targetDescriptions(targetDescriptions)
+                .appliesToDiagramRoot(false)
+                .build();
+    }
 
-            collapsingTool = switch (node.getCollapsingState()) {
-                case EXPANDED -> collapseTool;
-                case COLLAPSED -> expandTool;
-                default -> null;
+    private boolean isEdgeBendingPointsManuallyPositioned(DiagramContext diagramContext, Edge edge) {
+        var edgeLayoutData = diagramContext.diagram().getLayoutData().edgeLayoutData().get(edge.getId());
+        return edgeLayoutData != null && !edgeLayoutData.bendingPoints().isEmpty();
+    }
+
+    private SingleClickOnDiagramElementTool getResetBendingPointsPositionedTool(List<IDiagramElementDescription> targetDescriptions) {
+        return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("reset-bending-points")
+                .label(this.messageService.defaultQuickToolResetBendingPoints())
+                .iconURL(List.of(DiagramImageConstants.RESET_BENDING_POINTS))
+                .targetDescriptions(targetDescriptions)
+                .appliesToDiagramRoot(false)
+                .build();
+    }
+
+    private boolean isEdgeHandlesManuallyPositioned(DiagramContext diagramContext, Edge edge) {
+        var nodeLayoutDatas = Stream.of(diagramContext.diagram().getLayoutData().nodeLayoutData().get(edge.getSourceId()),
+                diagramContext.diagram().getLayoutData().nodeLayoutData().get(edge.getTargetId()))
+                .filter(Objects::nonNull)
+                .toList();
+        return nodeLayoutDatas.stream()
+                .flatMap(nodeLayoutData -> nodeLayoutData.handleLayoutData().stream())
+                .anyMatch(handleLayoutData -> handleLayoutData.position() != null && (handleLayoutData.position().x() != 0 || handleLayoutData.position().y() != 0));
+    }
+
+    private SingleClickOnDiagramElementTool getResetHandlesPositionTool(List<IDiagramElementDescription> targetDescriptions) {
+        return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("reset-handles-position")
+                .label(this.messageService.defaultQuickToolResetHandlesPosition())
+                .iconURL(List.of(DiagramImageConstants.RESET_HANDLES))
+                .targetDescriptions(targetDescriptions)
+                .appliesToDiagramRoot(false)
+                .build();
+    }
+
+    private Optional<ITool> createExtraExpandCollapseTool(List<IDiagramElementDescription> targetDescriptions, Object diagramElement) {
+        if (diagramElement instanceof Node node) {
+            var collapsingTool = switch (node.getCollapsingState()) {
+                case EXPANDED -> SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(CollapseElementToolHandler.COLLASPSE_ELEMENT_TOOL_ID)
+                        .label(this.messageService.defaultQuickToolCollapse())
+                        .iconURL(List.of(DiagramImageConstants.COLLAPSE_SVG))
+                        .targetDescriptions(targetDescriptions)
+                        .appliesToDiagramRoot(false)
+                        .withImpactAnalysis(false)
+                        .build();
+                case COLLAPSED -> SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(ExpandElementToolHandler.EXPAND_ELEMENT_TOOL_ID)
+                        .label(this.messageService.defaultQuickToolExpand())
+                        .iconURL(List.of(DiagramImageConstants.EXPAND_SVG))
+                        .targetDescriptions(targetDescriptions)
+                        .appliesToDiagramRoot(false)
+                        .withImpactAnalysis(false)
+                        .build();
             };
-            return Optional.ofNullable(collapsingTool);
+            return Optional.of(collapsingTool);
         }
         return Optional.empty();
     }
 
     private ITool createExtraSemanticDeleteTool(List<IDiagramElementDescription> targetDescriptions) {
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("semantic-delete")
-                .label("Delete from model")
+                .label(this.messageService.defaultQuickToolDeleteFromModel())
                 .iconURL(List.of(DiagramImageConstants.SEMANTIC_DELETE_SVG))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(false)
@@ -131,6 +259,51 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
             return nodeDescription.isCollapsible();
         }
         return false;
+    }
+
+    private ITool createFadeTool(List<IDiagramElementDescription> targetDescriptions, Object diagramElement) {
+        String label = this.messageService.defaultQuickToolFade();
+        String id = FadeElementToolHandler.FADE_ELEMENT_TOOL_ID;
+        if (diagramElement instanceof Node node && node.getModifiers().contains(ViewModifier.Faded)
+                || diagramElement instanceof Edge edge && edge.getModifiers().contains(ViewModifier.Faded)) {
+            label = this.messageService.defaultQuickToolUnFade();
+            id = UnFadeElementToolHandler.UNFADE_ELEMENT_TOOL_ID;
+        }
+        return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(id)
+                .label(label)
+                .iconURL(List.of(DiagramImageConstants.FADE_SVG))
+                .targetDescriptions(targetDescriptions)
+                .appliesToDiagramRoot(false)
+                .build();
+    }
+
+    private ITool createHideTool(List<IDiagramElementDescription> targetDescriptions) {
+        String id = HideElementToolHandler.HIDE_ELEMENT_TOOL_ID;
+
+        return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(id)
+                .label(this.messageService.defaultQuickToolHide())
+                .iconURL(List.of(DiagramImageConstants.HIDE_SVG))
+                .targetDescriptions(targetDescriptions)
+                .appliesToDiagramRoot(false)
+                .build();
+    }
+
+    private ITool createPinTool(List<IDiagramElementDescription> targetDescriptions, Node node) {
+        if (node.isPinned()) {
+            return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(UnPinElementToolHandler.UNPIN_ELEMENT_TOOL_ID)
+                    .label(this.messageService.defaultQuickToolUnPin())
+                    .iconURL(List.of(DiagramImageConstants.UNPIN_SVG))
+                    .targetDescriptions(targetDescriptions)
+                    .appliesToDiagramRoot(false)
+                    .build();
+        } else {
+            return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(PinElementToolHandler.PIN_ELEMENT_TOOL_ID)
+                    .label(this.messageService.defaultQuickToolPin())
+                    .iconURL(List.of(DiagramImageConstants.PIN_SVG))
+                    .targetDescriptions(targetDescriptions)
+                    .appliesToDiagramRoot(false)
+                    .build();
+        }
     }
 
     private boolean hasLabelEditTool(Object diagramElementDescription) {
@@ -150,7 +323,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
 
     private ITool createExtraEditLabelEditTool(List<IDiagramElementDescription> targetDescriptions) {
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("edit")
-                .label("Edit")
+                .label(this.messageService.defaultQuickToolEdit())
                 .iconURL(List.of(DiagramImageConstants.EDIT_SVG))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(false)

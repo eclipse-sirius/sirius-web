@@ -52,4 +52,68 @@ public class ViewEMFMessageService implements IViewEMFMessageService {
     public String coreProperties() {
         return this.messageSourceAccessor.getMessage("CORE_PROPERTIES");
     }
+    
+    public String defaultQuickToolAdjustSize() {
+        return this.messageSourceAccessor.getMessage("ADJUST_SIZE");
+    }
+
+    @Override
+    public String defaultQuickToolResetOutsideLabelPosition() {
+        return this.messageSourceAccessor.getMessage("RESET_OUTSIDE_LABEL_POSITION");
+    }
+
+    @Override
+    public String defaultQuickToolResetHandlesPosition() {
+        return this.messageSourceAccessor.getMessage("RESET_HANDLES_POSITION");
+    }
+
+    @Override
+    public String defaultQuickToolResetBendingPoints() {
+        return this.messageSourceAccessor.getMessage("RESET_BENDING_POINTS");
+    }
+
+    @Override
+    public String defaultQuickToolCollapse() {
+        return this.messageSourceAccessor.getMessage("COLLAPSE");
+    }
+
+    @Override
+    public String defaultQuickToolExpand() {
+        return this.messageSourceAccessor.getMessage("EXPAND");
+    }
+
+    @Override
+    public String defaultQuickToolDeleteFromModel() {
+        return this.messageSourceAccessor.getMessage("DELETE_FROM_MODEl");
+    }
+
+    @Override
+    public String defaultQuickToolFade() {
+        return this.messageSourceAccessor.getMessage("FADE");
+    }
+
+    @Override
+    public String defaultQuickToolUnFade() {
+        return this.messageSourceAccessor.getMessage("UNFADE");
+    }
+
+    @Override
+    public String defaultQuickToolHide() {
+        return this.messageSourceAccessor.getMessage("HIDE");
+    }
+
+    @Override
+    public String defaultQuickToolPin() {
+        return this.messageSourceAccessor.getMessage("PIN");
+    }
+
+    @Override
+    public String defaultQuickToolUnPin() {
+        return this.messageSourceAccessor.getMessage("UNPIN");
+    }
+
+    @Override
+    public String defaultQuickToolEdit() {
+        return this.messageSourceAccessor.getMessage("EDIT");
+    }
 }

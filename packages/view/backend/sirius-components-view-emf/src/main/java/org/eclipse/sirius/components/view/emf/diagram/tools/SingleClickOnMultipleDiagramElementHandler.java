@@ -21,7 +21,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
 import org.eclipse.sirius.components.collaborative.diagrams.handlers.InvokeSingleClickOnDiagramElementToolEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.services.ISingleClickOnMultipleDiagramElementHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -71,21 +70,19 @@ public class SingleClickOnMultipleDiagramElementHandler implements ISingleClickO
     }
 
     @Override
-    public boolean canHandle(IEditingContext editingContext, Diagram diagram, String toolId, List<String> diagramElementIds) {
-        return this.viewToolFinder.findGroupNodeTool(editingContext, diagram.getDescriptionId(), toolId).isPresent();
+    public boolean canHandle(IEditingContext editingContext, DiagramContext diagramContext, String toolId, List<String> diagramElementIds) {
+        return this.viewToolFinder.findGroupNodeTool(editingContext, diagramContext.diagram().getDescriptionId(), toolId).isPresent();
     }
 
     @Override
-    public IStatus execute(IEditingContext editingContext, Diagram diagram, String toolId, List<String> diagramElementIds, List<ToolVariable> variables) {
-        DiagramContext diagramContext = new DiagramContext(diagram);
-
-        var optionalNodeTool = this.viewToolFinder.findGroupNodeTool(editingContext, diagram.getDescriptionId(), toolId);
+    public IStatus execute(IEditingContext editingContext, DiagramContext diagramContext, String toolId, List<String> diagramElementIds, List<ToolVariable> variables) {
+        var optionalNodeTool = this.viewToolFinder.findGroupNodeTool(editingContext, diagramContext.diagram().getDescriptionId(), toolId);
         if (optionalNodeTool.isPresent()) {
             var nodeTool = optionalNodeTool.get();
-            return this.executeTool(editingContext, diagramContext, diagram.getDescriptionId(), diagramElementIds, nodeTool, variables, toolId);
+            return this.executeTool(editingContext, diagramContext, diagramContext.diagram().getDescriptionId(), diagramElementIds, nodeTool, variables, toolId);
         }
 
-        return new Failure(String.format("The tool %s cannot be found on the current diagram %s and editing context %s", toolId, diagram.getId(), editingContext.getId()));
+        return new Failure(String.format("The tool %s cannot be found on the current diagram %s and editing context %s", toolId, diagramContext.diagram().getId(), editingContext.getId()));
     }
 
     private IStatus executeTool(IEditingContext editingContext, DiagramContext diagramContext, String diagramDescriptionId, List<String> diagramElementIds, NodeTool nodeTool, List<ToolVariable> variables, String toolId) {

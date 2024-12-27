@@ -95,7 +95,7 @@ public class InvokeDiagramImpactAnalysisToolEventHandler implements IDiagramEven
 
                 changeRecorder.beginRecording(siriusEditingContext.getDomain().getResourceSet().getResources());
 
-                IStatus toolExecutionResult = this.singleClickOnOneDiagramElementHandler.execute(editingContext, diagramContext.diagram(), invokeImpactAnalysisToolInput.toolId(),
+                IStatus toolExecutionResult = this.singleClickOnOneDiagramElementHandler.execute(editingContext, diagramContext, invokeImpactAnalysisToolInput.toolId(),
                         invokeImpactAnalysisToolInput.diagramElementId(), invokeImpactAnalysisToolInput.variables());
 
                 var diff = siriusEditingContext.getChangeRecorder().summarize();

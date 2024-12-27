@@ -82,6 +82,11 @@ public class NodeAssert extends DiagramElementAssert<NodeAssert, Node> {
         return this;
     }
 
+    public NodeAssert doesNotContainAnyModifiersOf(Set<ViewModifier> modifiers) {
+        assertThat(this.actual.getModifiers()).doesNotContainAnyElementsOf(modifiers);
+        return this;
+    }
+
     public NodeAssert hasState(ViewModifier state) {
         assertThat(this.actual.getState()).isEqualTo(state);
         return this;
