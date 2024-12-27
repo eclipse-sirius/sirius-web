@@ -19,6 +19,7 @@ import {
   GQLDiagramRefreshedEventPayload,
 } from '../graphql/subscription/diagramEventSubscription.types';
 import { DiagramRenderer } from '../renderer/DiagramRenderer';
+import { DiagramToolExecutorContextProvider } from '../renderer/tools/DiagramToolExecutorContext';
 import { DiagramSubscriptionProviderProps, DiagramSubscriptionState } from './DiagramSubscriptionProvider.types';
 import { StoreContextProvider } from './StoreContext';
 import { useDiagramSubscription } from './useDiagramSubscription';
@@ -61,10 +62,12 @@ export const DiagramSubscriptionProvider = memo(({ diagramId, editingContextId }
         style={{ display: 'inline-block', position: 'relative' }}
         data-representation-kind="diagram"
         data-representation-label={state.diagramRefreshedEventPayload.diagram.metadata.label}>
-        <DiagramRenderer
-          key={state.diagramRefreshedEventPayload.diagram.id}
-          diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
-        />
+        <DiagramToolExecutorContextProvider>
+          <DiagramRenderer
+            key={state.diagramRefreshedEventPayload.diagram.id}
+            diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
+          />
+        </DiagramToolExecutorContextProvider>
       </div>
     </StoreContextProvider>
   );

@@ -85,9 +85,9 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
 
         if (diagramInput instanceof InvokeSingleClickOnDiagramElementToolInput input) {
             IStatus status = this.singleClickOnOneDiagramElementHandlers.stream()
-                    .filter(handler -> handler.canHandle(editingContext, diagramContext.diagram(), input.toolId(), input.diagramElementId()))
+                    .filter(handler -> handler.canHandle(editingContext, diagramContext, input.toolId(), input.diagramElementId()))
                     .findFirst()
-                    .map(handler -> handler.execute(editingContext, diagramContext.diagram(), input.toolId(), input.diagramElementId(), input.variables()))
+                    .map(handler -> handler.execute(editingContext, diagramContext, input.toolId(), input.diagramElementId(), input.variables()))
                     .orElse(new Failure(this.messageService.handlerNotFound()));
 
             if (status instanceof Success success) {

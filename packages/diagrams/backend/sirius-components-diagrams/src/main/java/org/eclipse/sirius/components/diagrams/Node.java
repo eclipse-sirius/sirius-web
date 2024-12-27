@@ -190,6 +190,10 @@ public final class Node implements IDiagramElement {
         return this.pinned;
     }
 
+    public boolean isFadded() {
+        return this.modifiers.contains(ViewModifier.Faded);
+    }
+
     public Set<String> getCustomizedStyleProperties() {
         return this.customizedStyleProperties;
     }

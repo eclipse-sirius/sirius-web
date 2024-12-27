@@ -68,12 +68,12 @@ export const usePinDiagramElements = (): UsePinDiagramElements => {
   }, [pinDiagramElementData, pinDiagramElementError]);
 
   const pinDiagramElements = useCallback(
-    (nodeId: string[], pinned: boolean) => {
+    (elementIds: string[], pinned: boolean) => {
       const input: GQLPinDiagramElementInput = {
         id: crypto.randomUUID(),
         editingContextId,
         representationId: diagramId,
-        elementIds: nodeId,
+        elementIds,
         pinned,
       };
       if (!readOnly) {

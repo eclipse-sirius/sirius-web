@@ -12,7 +12,6 @@
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
 import { PlaywrightDetails } from '../helpers/PlaywrightDetails';
-import { PlaywrightEdge } from '../helpers/PlaywrightEdge';
 import { PlaywrightExplorer } from '../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../helpers/PlaywrightProject';
@@ -51,7 +50,7 @@ test.describe('diagram - palette', () => {
       playwrightNode2XYPosition.y + playwrightNode2Size.height
     );
   });
-
+  /* Disabled until we can retrieve the tool from the backend coming in https://github.com/eclipse-sirius/sirius-web/issues/5782 
   test('when a node then an edge is selected, we can open the group palette and fade both elements', async ({
     page,
   }) => {
@@ -62,12 +61,12 @@ test.describe('diagram - palette', () => {
     await playwrightEdge.controlClick();
     await playwrightEdge.openPalette();
     await expect(page.getByTestId('Palette')).toBeAttached();
-    await page.getByTestId('Palette').getByTestId('Fade-element').click();
+    await page.getByTestId('Palette').getByTestId('Fade - Tool').click();
     const edgeStyle = await playwrightEdge.getEdgeStyle();
     await expect(edgeStyle).toHaveCSS('opacity', '0.4');
     await expect(playwrightNode.nodeStyleLocator).toHaveCSS('opacity', '0.4');
-  });
-
+  });*/
+  /* Disabled until we can retrieve the tool from the backend coming in https://github.com/eclipse-sirius/sirius-web/issues/5782 
   test('when several elements are selected with the rectangular selection, we can open the group palette and hide both elements', async ({
     page,
   }) => {
@@ -82,7 +81,7 @@ test.describe('diagram - palette', () => {
     await expect(playwrightNode.nodeLocator).not.toBeAttached();
     await expect(playwrightNode2.nodeLocator).not.toBeAttached();
     await expect(playwrightEdge.edgeLocator).not.toBeAttached();
-  });
+  });*/
 });
 
 test.describe('diagram - palette tool section', () => {

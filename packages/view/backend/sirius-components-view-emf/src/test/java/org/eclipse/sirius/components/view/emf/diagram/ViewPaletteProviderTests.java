@@ -52,6 +52,7 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.emf.ViewAQLInterpreterFactory;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
+import org.eclipse.sirius.components.view.emf.messages.IViewEMFMessageService;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.support.StaticApplicationContext;
 
@@ -249,7 +250,7 @@ public class ViewPaletteProviderTests {
         };
 
         return new ViewPaletteProvider(urlParser, representationDescription -> true, viewDiagramDescriptionSearchService, new IDiagramDescriptionService.NoOp(), new IDiagramIdProvider.NoOp(),
-                new ViewAQLInterpreterFactory(List.of(), new StaticApplicationContext()), List.of(new PaletteDefaultToolsProvider()));
+                new ViewAQLInterpreterFactory(List.of(), new StaticApplicationContext()), List.of(new PaletteDefaultToolsProvider(new IViewEMFMessageService.NoOp())));
     }
 
     private DiagramDescription createDiagramDescription() {
