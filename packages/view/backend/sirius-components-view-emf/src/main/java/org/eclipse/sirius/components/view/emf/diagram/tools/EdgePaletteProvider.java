@@ -19,6 +19,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.IPaletteEntry;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.Palette;
@@ -70,7 +71,7 @@ public class EdgePaletteProvider implements IEdgePaletteProvider {
     }
 
     @Override
-    public Palette getEdgePalette(IEditingContext editingContext, AQLInterpreter interpreter, DiagramDescription diagramDescription, EdgeDescription edgeDescription, Object diagramElement, VariableManager variableManager) {
+    public Palette getEdgePalette(IEditingContext editingContext, AQLInterpreter interpreter, DiagramDescription diagramDescription, DiagramContext diagramContext, EdgeDescription edgeDescription, Object diagramElement, VariableManager variableManager) {
         Palette edgePalette = null;
         var toolFinder = new ToolFinder();
         Optional<String> optionalSourceElementId = this.getSourceElementId(edgeDescription.getId());
@@ -80,11 +81,11 @@ public class EdgePaletteProvider implements IEdgePaletteProvider {
             var optionalEdgeDescription = this.viewDiagramDescriptionSearchService.findViewEdgeDescriptionById(editingContext, edgeDescription.getId());
             if (optionalEdgeDescription.isPresent()) {
                 List<ToolSection> extraToolSections = new ArrayList<>();
-                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createExtraToolSections(edgeDescription, diagramElement)).flatMap(List::stream)
+                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createExtraToolSections(diagramContext, edgeDescription, diagramElement)).flatMap(List::stream)
                         .forEach(extraToolSections::add);
 
                 List<ITool> quickAccessTools = new ArrayList<>();
-                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createQuickAccessTools(edgeDescription, diagramElement)).flatMap(List::stream)
+                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createQuickAccessTools(diagramContext, edgeDescription, diagramElement)).flatMap(List::stream)
                         .forEach(quickAccessTools::add);
                 org.eclipse.sirius.components.view.diagram.EdgeDescription viewEdgeDescription = optionalEdgeDescription.get();
 

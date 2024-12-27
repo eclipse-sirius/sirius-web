@@ -12,9 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.services;
 
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.representations.IStatus;
 
 import java.util.List;
@@ -26,7 +26,7 @@ import java.util.List;
  */
 public interface ISingleClickOnMultipleDiagramElementHandler {
 
-    boolean canHandle(IEditingContext editingContext, Diagram diagram, String toolId, List<String> diagramElementIds);
+    boolean canHandle(IEditingContext editingContext, DiagramContext diagramContext, String toolId, List<String> diagramElementIds);
 
-    IStatus execute(IEditingContext editingContext, Diagram diagram, String toolId, List<String> diagramElementIds, List<ToolVariable> variables);
+    IStatus execute(IEditingContext editingContext, DiagramContext diagramContext, String toolId, List<String> diagramElementIds, List<ToolVariable> variables);
 }

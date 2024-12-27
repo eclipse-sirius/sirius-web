@@ -71,8 +71,8 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
         this.singleClickOnOneDiagramElementHandlers = Objects.requireNonNull(singleClickOnOneDiagramElementHandlers);
         this.singleClickOnMultipleDiagramElementHandlers = Objects.requireNonNull(singleClickOnMultipleDiagramElementHandlers);
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
-            .tag(Monitoring.NAME, this.getClass().getSimpleName())
-            .register(meterRegistry);
+                .tag(Monitoring.NAME, this.getClass().getSimpleName())
+                .register(meterRegistry);
     }
 
     @Override
@@ -92,15 +92,15 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
             IStatus status;
             if (input.diagramElementIds().size() == 1) {
                 status = this.singleClickOnOneDiagramElementHandlers.stream()
-                        .filter(handler -> handler.canHandle(editingContext, diagramContext.diagram(), input.toolId(), input.diagramElementIds().get(0)))
+                        .filter(handler -> handler.canHandle(editingContext, diagramContext, input.toolId(), input.diagramElementIds().get(0)))
                         .findFirst()
-                        .map(handler -> handler.execute(editingContext, diagramContext.diagram(), input.toolId(), input.diagramElementIds().get(0), input.variables()))
+                        .map(handler -> handler.execute(editingContext, diagramContext, input.toolId(), input.diagramElementIds().get(0), input.variables()))
                         .orElse(new Failure("No handler found"));
             } else {
                 status = this.singleClickOnMultipleDiagramElementHandlers.stream()
-                        .filter(handler -> handler.canHandle(editingContext, diagramContext.diagram(), input.toolId(), input.diagramElementIds()))
+                        .filter(handler -> handler.canHandle(editingContext, diagramContext, input.toolId(), input.diagramElementIds()))
                         .findFirst()
-                        .map(handler -> handler.execute(editingContext, diagramContext.diagram(), input.toolId(), input.diagramElementIds(), input.variables()))
+                        .map(handler -> handler.execute(editingContext, diagramContext, input.toolId(), input.diagramElementIds(), input.variables()))
                         .orElse(new Failure("No handler found"));
             }
 

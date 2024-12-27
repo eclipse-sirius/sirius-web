@@ -93,7 +93,7 @@ public class ViewPaletteProvider implements IPaletteProvider {
             if (optionalDiagramDescription.isPresent()) {
                 org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription = optionalDiagramDescription.get();
                 var interpreter = this.aqlInterpreterFactory.createInterpreter(editingContext, (View) viewDiagramDescription.eContainer());
-                palette = this.diagramElementPaletteProvider.getPalette(editingContext, interpreter, diagramDescription, viewDiagramDescription, diagramElementDescription, diagramElement, variableManager);
+                palette = this.diagramElementPaletteProvider.getPalette(editingContext, interpreter, diagramDescription, diagramContext, diagramElementDescription, diagramElement, variableManager);
             }
         }
         return palette;

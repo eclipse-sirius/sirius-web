@@ -27,6 +27,32 @@ public interface IViewEMFMessageService {
     String invokeActionError(String actionName);
 
     String coreProperties();
+    
+    String defaultQuickToolAdjustSize();
+
+    String defaultQuickToolResetOutsideLabelPosition();
+
+    String defaultQuickToolResetHandlesPosition();
+
+    String defaultQuickToolResetBendingPoints();
+
+    String defaultQuickToolCollapse();
+
+    String defaultQuickToolExpand();
+
+    String defaultQuickToolDeleteFromModel();
+
+    String defaultQuickToolFade();
+
+    String defaultQuickToolUnFade();
+
+    String defaultQuickToolHide();
+
+    String defaultQuickToolPin();
+
+    String defaultQuickToolUnPin();
+
+    String defaultQuickToolEdit();
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -52,6 +78,70 @@ public interface IViewEMFMessageService {
 
         @Override
         public String coreProperties() {
+            return "";
+        }
+
+        public String defaultQuickToolAdjustSize() {
+            return "";
+        }
+
+        @Override
+        public String defaultQuickToolResetOutsideLabelPosition() {
+            return "";
+        }
+
+        @Override
+        public String defaultQuickToolResetHandlesPosition() {
+            return "";
+        }
+
+        @Override
+        public String defaultQuickToolResetBendingPoints() {
+            return "";
+        }
+
+        @Override
+        public String defaultQuickToolCollapse() {
+            return "";
+        }
+
+        @Override
+        public String defaultQuickToolExpand() {
+            return "";
+        }
+
+        @Override
+        public String defaultQuickToolDeleteFromModel() {
+            return "";
+        }
+
+        @Override
+        public String defaultQuickToolFade() {
+            return "";
+        }
+
+        @Override
+        public String defaultQuickToolUnFade() {
+            return "";
+        }
+
+        @Override
+        public String defaultQuickToolHide() {
+            return "";
+        }
+
+        @Override
+        public String defaultQuickToolPin() {
+            return "";
+        }
+
+        @Override
+        public String defaultQuickToolUnPin() {
+            return "";
+        }
+
+        @Override
+        public String defaultQuickToolEdit() {
             return "";
         }
     }

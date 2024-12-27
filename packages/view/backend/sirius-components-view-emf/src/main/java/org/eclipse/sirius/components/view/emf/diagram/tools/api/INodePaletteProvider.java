@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.diagram.tools.api;
 
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.Palette;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
@@ -25,5 +26,5 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * @author sbegaudeau
  */
 public interface INodePaletteProvider {
-    Palette getNodePalette(IEditingContext editingContext, AQLInterpreter interpreter, DiagramDescription diagramDescription, NodeDescription nodeDescription, Object diagramElement, VariableManager variableManager);
+    Palette getNodePalette(IEditingContext editingContext, AQLInterpreter interpreter, DiagramDescription diagramDescription, DiagramContext diagramContext, NodeDescription nodeDescription, Object diagramElement, VariableManager variableManager);
 }

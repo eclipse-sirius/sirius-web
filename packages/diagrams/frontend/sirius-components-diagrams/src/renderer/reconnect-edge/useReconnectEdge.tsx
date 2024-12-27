@@ -339,7 +339,7 @@ export const useReconnectEdge = (): UseReconnectEdge => {
         );
 
         if (currentHandle && currentHandle.XYPosition && (currentHandle.XYPosition.x || currentHandle.XYPosition.y)) {
-          removeNodeHandleLayoutData([targetInternalNode.id], edge.id);
+          removeNodeHandleLayoutData(edge.id);
         }
       }
     }

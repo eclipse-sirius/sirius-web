@@ -35,7 +35,17 @@ public final class DiagramImageConstants {
 
     public static final String FADE_SVG = IMAGES_ROOT_FOLDER + "/fade.svg";
 
+    public static final String HIDE_SVG = IMAGES_ROOT_FOLDER + "/hide.svg";
+
     public static final String REVEAL_FADED_ELEMENTS_SVG = IMAGES_ROOT_FOLDER + "/reveal-faded-elements.svg";
+
+    public static final String ADJUST_SIZE = IMAGES_ROOT_FOLDER + "/adjust_size.svg";
+
+    public static final String RESET_LABEL_POSITION = IMAGES_ROOT_FOLDER + "/reset_label_position.svg";
+
+    public static final String RESET_BENDING_POINTS = IMAGES_ROOT_FOLDER + "/reset_bending_points.svg";
+
+    public static final String RESET_HANDLES = IMAGES_ROOT_FOLDER + "/reset_handles.svg";
 
     private DiagramImageConstants() {
         // Prevent instantiation

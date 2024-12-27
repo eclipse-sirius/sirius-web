@@ -65,7 +65,7 @@ test.describe('diagram - palette', () => {
     await playwrightEdge.controlClick();
     await playwrightEdge.openPalette();
     await expect(page.getByTestId('Palette')).toBeAttached();
-    await page.getByTestId('Palette').getByTestId('Fade-element').click();
+    await page.getByTestId('Palette').getByTestId('Fade - Tool').click();
     const edgeStyle = await playwrightEdge.getEdgeStyle();
     await expect(edgeStyle).toHaveCSS('opacity', '0.4');
     await expect(playwrightNode.nodeStyleLocator).toHaveCSS('opacity', '0.4');
@@ -81,7 +81,7 @@ test.describe('diagram - palette', () => {
     await playwrightNode2.controlClick();
     await playwrightNode2.openPalette();
     await expect(page.getByTestId('Palette')).toBeAttached();
-    await page.getByTestId('Palette').getByTestId('Hide-element').click();
+    await page.getByTestId('Palette').getByTestId('Hide - Tool').click();
     await expect(playwrightNode.nodeLocator).not.toBeAttached();
     await expect(playwrightNode2.nodeLocator).not.toBeAttached();
     await expect(playwrightEdge.edgeLocator).not.toBeAttached();

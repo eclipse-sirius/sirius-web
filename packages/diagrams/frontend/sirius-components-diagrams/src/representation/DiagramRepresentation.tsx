@@ -32,7 +32,6 @@ import { FullscreenContextProvider } from '../renderer/fullscreen/FullscreenCont
 import { NodeContextProvider } from '../renderer/node/NodeContext';
 import { DiagramPaletteContextProvider } from '../renderer/palette/contexts/DiagramPaletteContext';
 import { useApplySelection } from '../renderer/selection/useApplySelection';
-import { DiagramToolExecutorContextProvider } from '../renderer/tools/DiagramToolExecutorContext';
 import {
   DiagramRepresentationState,
   GQLDiagramDescription,
@@ -190,13 +189,11 @@ export const DiagramRepresentation = memo(
                           <ApplySelectionWrapper representationId={representationId} ref={ref}>
                             <ManageVisibilityContextProvider>
                               <DialogContextProvider>
-                                <DiagramToolExecutorContextProvider>
-                                  <DiagramSubscriptionProvider
-                                    diagramId={representationId}
-                                    editingContextId={editingContextId}
-                                    readOnly={readOnly}
-                                  />
-                                </DiagramToolExecutorContextProvider>
+                                <DiagramSubscriptionProvider
+                                  diagramId={representationId}
+                                  editingContextId={editingContextId}
+                                  readOnly={readOnly}
+                                />
                               </DialogContextProvider>
                             </ManageVisibilityContextProvider>
                           </ApplySelectionWrapper>

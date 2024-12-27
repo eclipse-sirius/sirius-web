@@ -19,6 +19,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.IPaletteEntry;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.Palette;
@@ -70,7 +71,7 @@ public class NodePaletteProvider implements INodePaletteProvider {
     }
 
     @Override
-    public Palette getNodePalette(IEditingContext editingContext, AQLInterpreter interpreter, DiagramDescription diagramDescription, NodeDescription nodeDescription, Object diagramElement, VariableManager variableManager) {
+    public Palette getNodePalette(IEditingContext editingContext, AQLInterpreter interpreter, DiagramDescription diagramDescription, DiagramContext diagramContext, NodeDescription nodeDescription, Object diagramElement, VariableManager variableManager) {
         Optional<String> sourceElementId = this.getSourceElementId(nodeDescription.getId());
         Palette nodePalette = null;
         var toolFinder = new ToolFinder();
@@ -79,11 +80,11 @@ public class NodePaletteProvider implements INodePaletteProvider {
 
             if (optionalNodeDescription.isPresent()) {
                 List<ToolSection> extraToolSections = new ArrayList<>();
-                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createExtraToolSections(nodeDescription, diagramElement)).flatMap(List::stream)
+                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createExtraToolSections(diagramContext, nodeDescription, diagramElement)).flatMap(List::stream)
                         .forEach(extraToolSections::add);
 
                 List<ITool> quickAccessTools = new ArrayList<>();
-                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createQuickAccessTools(nodeDescription, diagramElement)).flatMap(List::stream)
+                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createQuickAccessTools(diagramContext, nodeDescription, diagramElement)).flatMap(List::stream)
                         .forEach(quickAccessTools::add);
 
                 org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription = optionalNodeDescription.get();
