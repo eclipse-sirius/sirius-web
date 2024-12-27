@@ -12,5 +12,5 @@
  *******************************************************************************/
 
 export interface UseHandlesLayoutValue {
-  removeNodeHandleLayoutData: (nodeIds: string[], edgeId: string) => void;
+  removeNodeHandleLayoutData: (edgeId: string) => void;
 }
