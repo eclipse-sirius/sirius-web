@@ -20,7 +20,9 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramImageCons
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
+import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeLabelKind;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
@@ -81,15 +83,25 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
             var graphicalDeleteTool = this.createExtraGraphicalDeleteTool(targetDescriptions);
             extraTools.add(graphicalDeleteTool);
         }
+        if (this.isCollapsible(diagramElementDescription, diagramElement)) {
+            // Collapse or expand Tool (the handler is never called)
+            var expandCollapseTool = this.createExtraExpandCollapseTool(targetDescriptions, diagramElement);
+            expandCollapseTool.ifPresent(extraTools::add);
+        }
         if (this.hasDeleteTool(diagramElementDescription)) {
             // Semantic Delete Tool (the handler is never called)
             var semanticDeleteTool = this.createExtraSemanticDeleteTool(targetDescriptions);
             extraTools.add(semanticDeleteTool);
         }
-        if (this.isCollapsible(diagramElementDescription, diagramElement)) {
-            // Collapse or expand Tool (the handler is never called)
-            var expandCollapseTool = this.createExtraExpandCollapseTool(targetDescriptions, diagramElement);
-            expandCollapseTool.ifPresent(extraTools::add);
+        var fadeTool = this.createFadeTool(targetDescriptions, diagramElement);
+        extraTools.add(fadeTool);
+
+        var hideTool = this.createHideTool(targetDescriptions);
+        extraTools.add(hideTool);
+
+        if (diagramElement instanceof Node node) {
+            var pinTool = this.createPinTool(targetDescriptions, node);
+            extraTools.add(pinTool);
         }
         return extraTools;
     }
@@ -145,6 +157,49 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
             return nodeDescription.isCollapsible();
         }
         return false;
+    }
+
+    private ITool createFadeTool(List<IDiagramElementDescription> targetDescriptions, Object diagramElement) {
+        String label = "Fade element";
+        String id = "fade";
+        if (diagramElement instanceof Node node && node.getModifiers().contains(ViewModifier.Faded)
+                || diagramElement instanceof Edge edge && edge.getModifiers().contains(ViewModifier.Faded)) {
+            label = "Unfade element";
+            id = "unfade";
+        }
+        return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(id)
+                .label(label)
+                .iconURL(List.of(DiagramImageConstants.FADE_SVG))
+                .targetDescriptions(targetDescriptions)
+                .appliesToDiagramRoot(false)
+                .build();
+    }
+
+    private ITool createHideTool(List<IDiagramElementDescription> targetDescriptions) {
+        return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("hide")
+                .label("Hide element")
+                .iconURL(List.of(DiagramImageConstants.HIDE_SVG))
+                .targetDescriptions(targetDescriptions)
+                .appliesToDiagramRoot(false)
+                .build();
+    }
+
+    private ITool createPinTool(List<IDiagramElementDescription> targetDescriptions, Node node) {
+        if (node.isPinned()) {
+            return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("unpin")
+                    .label("Unpin")
+                    .iconURL(List.of(DiagramImageConstants.UNPIN_SVG))
+                    .targetDescriptions(targetDescriptions)
+                    .appliesToDiagramRoot(false)
+                    .build();
+        } else {
+            return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("pin")
+                    .label("Pin")
+                    .iconURL(List.of(DiagramImageConstants.PIN_SVG))
+                    .targetDescriptions(targetDescriptions)
+                    .appliesToDiagramRoot(false)
+                    .build();
+        }
     }
 
     private boolean hasLabelEditTool(Object diagramElementDescription) {

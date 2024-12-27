@@ -25,6 +25,7 @@
 
 === Improvements
 
+- https://github.com/eclipse-sirius/sirius-web/issues/4348[#4348] [sirius-web] Move quick tools declaration on the backend
 
 
 == v2025.1.0

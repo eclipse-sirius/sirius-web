@@ -19,6 +19,8 @@ package org.eclipse.sirius.components.collaborative.diagrams.api;
  */
 public final class DiagramImageConstants {
 
+    public static final String HIDE_SVG = "/icons/full/obj16/HideTool.svg";
+
     private static final String IMAGES_ROOT_FOLDER = "/diagram-images";
 
     public static final String EDIT_SVG = IMAGES_ROOT_FOLDER + "/edit.svg";
