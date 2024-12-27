@@ -17,6 +17,7 @@ import { ReactFlowProvider } from '@xyflow/react';
 import { memo, useEffect, useState } from 'react';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramDescriptionContext } from '../contexts/DiagramDescriptionContext';
+import { DialogContextProvider } from '../dialog/DialogContext';
 import { ManageVisibilityContextProvider } from '../renderer/actions/visibility/ManageVisibilityContextProvider';
 import { ConnectorContextProvider } from '../renderer/connector/ConnectorContext';
 import { DiagramDirectEditContextProvider } from '../renderer/direct-edit/DiagramDirectEditContext';
@@ -26,7 +27,6 @@ import { FullscreenContextProvider } from '../renderer/fullscreen/FullscreenCont
 import { NodeContextProvider } from '../renderer/node/NodeContext';
 import { DiagramElementPaletteContextProvider } from '../renderer/palette/contexts/DiagramElementPaletteContext';
 import { DiagramPaletteContextProvider } from '../renderer/palette/contexts/DiagramPaletteContext';
-import { DiagramToolExecutorContextProvider } from '../renderer/tools/DiagramToolExecutorContext';
 import {
   DiagramRepresentationState,
   GQLDiagramDescription,
@@ -34,7 +34,6 @@ import {
   GQLDiagramDescriptionVariables,
 } from './DiagramRepresentation.types';
 import { DiagramSubscriptionProvider } from './DiagramSubscriptionProvider';
-import { DialogContextProvider } from '../dialog/DialogContext';
 
 export const getDiagramDescription = gql`
   query getDiagramDescription($editingContextId: ID!, $representationId: ID!) {
@@ -129,13 +128,11 @@ export const DiagramRepresentation = memo(
                           }}>
                           <ManageVisibilityContextProvider>
                             <DialogContextProvider>
-                              <DiagramToolExecutorContextProvider>
-                                <DiagramSubscriptionProvider
-                                  diagramId={representationId}
-                                  editingContextId={editingContextId}
-                                  readOnly={readOnly}
-                                />
-                              </DiagramToolExecutorContextProvider>
+                              <DiagramSubscriptionProvider
+                                diagramId={representationId}
+                                editingContextId={editingContextId}
+                                readOnly={readOnly}
+                              />
                             </DialogContextProvider>
                           </ManageVisibilityContextProvider>
                         </DiagramContext.Provider>

@@ -80,6 +80,7 @@ import { useResizeChange } from './resize/useResizeChange';
 import { useDiagramSelection } from './selection/useDiagramSelection';
 import { useShiftSelection } from './selection/useShiftSelection';
 import { useSnapToGrid } from './snap-to-grid/useSnapToGrid';
+import { DiagramToolExecutorContextProvider } from './tools/DiagramToolExecutorContext';
 
 const GRID_STEP: number = 10;
 
@@ -521,5 +522,9 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     reactFlowProps = customizer(reactFlowProps);
   });
 
-  return <ReactFlow {...reactFlowProps} ref={ref} />;
+  return (
+    <DiagramToolExecutorContextProvider>
+      <ReactFlow {...reactFlowProps} ref={ref} />
+    </DiagramToolExecutorContextProvider>
+  );
 });

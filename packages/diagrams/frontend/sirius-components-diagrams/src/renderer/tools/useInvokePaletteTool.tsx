@@ -16,8 +16,14 @@ import { Edge, Node, useStoreApi } from '@xyflow/react';
 import { useContext } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { useAdjustSize } from '../adjust-size/useAdjustSize';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { useEditableEdgePath } from '../edge/useEditableEdgePath';
+import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
+import { useHandlesLayout } from '../handles/useHandlesLayout';
+import { useLabelResetPosition } from '../move/useLabelResetPosition';
 import { GQLTool } from '../palette/Palette.types';
+import { usePinDiagramElements } from '../pin/usePinDiagramElements';
 import { useCollapseExpand } from './useCollapseExpand';
 import { GQLCollapsingState } from './useCollapseExpand.types';
 import { useDelete } from './useDelete';
@@ -27,9 +33,15 @@ import { useSingleClickTool } from './useSingleClickTool';
 export const useInvokePaletteTool = (): UseInvokePaletteToolValue => {
   const { nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
+  const { removeOutsideLabelLayoutData } = useLabelResetPosition();
+  const { removeNodeHandleLayoutData } = useHandlesLayout();
+  const { removeEdgeLayoutData } = useEditableEdgePath();
   const { invokeSingleClickTool } = useSingleClickTool();
   const { collapseExpandElement } = useCollapseExpand();
+  const { fadeDiagramElements } = useFadeDiagramElements();
+  const { pinDiagramElements } = usePinDiagramElements();
   const { deleteDiagramElements } = useDelete();
+  const { adjustSize } = useAdjustSize();
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
 
   const invokeDelete = (diagramElementId: string) => {
@@ -62,6 +74,30 @@ export const useInvokePaletteTool = (): UseInvokePaletteToolValue => {
         break;
       case 'collapse':
         collapseExpandElement(editingContextId, diagramId, diagramElementId, GQLCollapsingState.COLLAPSED);
+        break;
+      case 'fade':
+        fadeDiagramElements([diagramElementId], true);
+        break;
+      case 'unfade':
+        fadeDiagramElements([diagramElementId], false);
+        break;
+      case 'pin':
+        pinDiagramElements([diagramElementId], true);
+        break;
+      case 'unpin':
+        pinDiagramElements([diagramElementId], false);
+        break;
+      case 'reset-outside-label-position':
+        removeOutsideLabelLayoutData(diagramElementId);
+        break;
+      case 'reset-bending-points':
+        removeEdgeLayoutData(diagramElementId);
+        break;
+      case 'reset-handles-position':
+        removeNodeHandleLayoutData(diagramElementId);
+        break;
+      case 'adjust-size':
+        adjustSize(diagramElementId);
         break;
       default:
         invokeSingleClickTool(editingContextId, diagramId, tool, diagramElementId, targetObjectId, x, y);

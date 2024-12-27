@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Edge, Node } from '@xyflow/react';
+import { Edge, Node, useStoreApi } from '@xyflow/react';
 import { useCallback } from 'react';
 import { useStore } from '../../representation/useStore';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
@@ -22,6 +22,7 @@ import { UseLabelResetPositionValue } from './useLabelResetPosition.types';
 
 export const useLabelResetPosition = (): UseLabelResetPositionValue => {
   const { getEdges, getNodes, setEdges, setNodes } = useStore();
+  const { nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
 
   const synchronizeDiagramLayoutData = useCallback(
@@ -75,8 +76,19 @@ export const useLabelResetPosition = (): UseLabelResetPositionValue => {
     [getEdges, getNodes]
   );
 
+  const removeOutsideLabelLayoutData = (diagramElementId: string) => {
+    const node = nodeLookup.get(diagramElementId);
+    if (node) {
+      removeNodeLabelLayoutData(diagramElementId);
+    } else {
+      const edge = edgeLookup.get(diagramElementId);
+      if (edge) {
+        removeEdgeLabelLayoutData(diagramElementId);
+      }
+    }
+  };
+
   return {
-    removeEdgeLabelLayoutData,
-    removeNodeLabelLayoutData,
+    removeOutsideLabelLayoutData,
   };
 };

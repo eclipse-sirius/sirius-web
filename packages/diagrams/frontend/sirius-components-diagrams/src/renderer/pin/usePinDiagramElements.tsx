@@ -11,15 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { useCallback, useContext, useEffect } from 'react';
+import { useReporting } from '@eclipse-sirius/sirius-components-core';
+import { useContext } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import {
-  GQLErrorPayload,
   GQLPinDiagramElementData,
   GQLPinDiagramElementInput,
-  GQLPinDiagramElementPayload,
   GQLPinDiagramElementVariables,
   UsePinDiagramElements,
 } from './usePinDiagramElements.types';
@@ -41,45 +39,31 @@ const pinDiagramElementMutation = gql`
   }
 `;
 
-const isErrorPayload = (payload: GQLPinDiagramElementPayload): payload is GQLErrorPayload =>
-  payload.__typename === 'ErrorPayload';
-
 export const usePinDiagramElements = (): UsePinDiagramElements => {
-  const { addErrorMessage } = useMultiToast();
-  const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
-
-  const [pinElementMutation, { data: pinDiagramElementData, error: pinDiagramElementError }] = useMutation<
+  const [pinElementMutation, pinElementMutationResult] = useMutation<
     GQLPinDiagramElementData,
     GQLPinDiagramElementVariables
   >(pinDiagramElementMutation);
+  const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
 
-  useEffect(() => {
-    if (pinDiagramElementError) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
-    }
-    if (pinDiagramElementData) {
-      const { pinDiagramElement } = pinDiagramElementData;
-      if (isErrorPayload(pinDiagramElement)) {
-        addErrorMessage(pinDiagramElement.message);
-      }
-    }
-  }, [pinDiagramElementData, pinDiagramElementError]);
-
-  const pinDiagramElements = useCallback(
-    (nodeId: string[], pinned: boolean) => {
+  const pinDiagramElements = (nodeIds: string[], pinned: boolean) => {
+    if (!readOnly) {
       const input: GQLPinDiagramElementInput = {
         id: crypto.randomUUID(),
         editingContextId,
         representationId: diagramId,
-        elementIds: nodeId,
+        elementIds: nodeIds,
         pinned,
       };
-      if (!readOnly) {
-        pinElementMutation({ variables: { input } });
-      }
-    },
-    [editingContextId, diagramId, readOnly, pinElementMutation]
-  );
+      pinElementMutation({ variables: { input } });
+    }
+  };
 
-  return { pinDiagramElements };
+  useReporting(pinElementMutationResult, (data: GQLPinDiagramElementData) => data.pinDiagramElement);
+
+  return {
+    pinDiagramElements,
+    loading: pinElementMutationResult.loading,
+    data: pinElementMutationResult.data || null,
+  };
 };

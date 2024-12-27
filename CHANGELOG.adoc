@@ -181,6 +181,7 @@ This includes any resource that is not persisted, not only the libraries.
 - https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886] [core] Update the API used by workbench views to contribute additional information
 - https://github.com/eclipse-sirius/sirius-web/issues/5487[#5487] [diagram] Use the mouse position instead of the dragged node one to compute the drop position.
 - https://github.com/eclipse-sirius/sirius-web/issues/5504[#5504] [diagram] Reduce the size of the creation handles when creating an edge from another edge
+- https://github.com/eclipse-sirius/sirius-web/issues/4348[#4348] [diagram] Move default quick tools declaration on the backend
 
 == v2025.8.0
 
