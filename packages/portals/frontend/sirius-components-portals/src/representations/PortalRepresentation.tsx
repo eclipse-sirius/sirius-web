@@ -86,6 +86,7 @@ export const PortalRepresentation = ({
   );
 
   const [mode, setMode] = useState<PortalRepresentationMode | null>(null);
+  const [isUndoable, setIsUndoable] = useState<boolean>(false);
   const portalHasViews: boolean | null = portal && portal.views.length > 0;
   useEffect(() => {
     if (readOnly) {
@@ -108,6 +109,7 @@ export const PortalRepresentation = ({
     if (mode === 'read-only') {
       return;
     }
+    setIsUndoable(false);
     const droppedRepresentationId: string | null = getFirstDroppedElementId(event);
     if (droppedRepresentationId === null) {
       addErrorMessage('Invalid drop.');
@@ -119,6 +121,7 @@ export const PortalRepresentation = ({
   };
 
   const handleDeleteView = (view: GQLPortalView) => {
+    setIsUndoable(false);
     removePortalView(view.id);
   };
 
@@ -131,7 +134,16 @@ export const PortalRepresentation = ({
         width: layoutItem.w,
         height: layoutItem.h,
       }));
-      layoutPortal(newLayoutData);
+      const id = crypto.randomUUID();
+      layoutPortal(id, newLayoutData);
+      if (isUndoable) {
+        var storedUndoStack = sessionStorage.getItem('undoStack');
+        if (storedUndoStack) {
+          var undoStack = JSON.parse(storedUndoStack);
+          sessionStorage.setItem('undoStack', JSON.stringify([id, ...undoStack]));
+          sessionStorage.setItem('redoStack', JSON.stringify([]));
+        }
+      }
     }
   };
 
@@ -215,6 +227,14 @@ export const PortalRepresentation = ({
     return <div></div>;
   }
 
+  const handleLayoutStop = () => {
+    setIsUndoable(false);
+  };
+
+  const handleLayoutStart = () => {
+    setIsUndoable(true);
+  };
+
   const cellSize: number = parseInt(theme.spacing(3));
   return (
     <div className={classes.portalRepresentationArea} ref={domNode} data-representation-kind="portal">
@@ -244,7 +264,11 @@ export const PortalRepresentation = ({
               handleDrop(event, item);
             }
           }}
-          onLayoutChange={handleLayoutChange}>
+          onLayoutChange={handleLayoutChange}
+          onResizeStart={handleLayoutStart}
+          onDragStart={handleLayoutStart}
+          onResizeStop={handleLayoutStop}
+          onDragStop={handleLayoutStop}>
           {items}
         </ResponsiveGridLayout>
       </SelectionContext.Provider>

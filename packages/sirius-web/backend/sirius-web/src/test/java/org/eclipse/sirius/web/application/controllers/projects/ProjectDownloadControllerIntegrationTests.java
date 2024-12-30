@@ -565,13 +565,13 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
                         "targetObjectId":"3237b215-ae23-48d7-861e-f542a4b9a4b8",
                         "views":[
                           {
-                            "id":"9e277e97-7f71-4bdd-99af-9eeb8bd7f2df",
+                            "id":"bbf6c9b9-ee36-32c5-aee0-f4d64efcccb7",
                             "representationId":"05e44ccc-9363-443f-a816-25fc73e3e7f7"
                           }
                         ],
                         "layoutData":[
                           {
-                            "portalViewId":"9e277e97-7f71-4bdd-99af-9eeb8bd7f2df",
+                            "portalViewId":"bbf6c9b9-ee36-32c5-aee0-f4d64efcccb7",
                             "x":0,
                             "y":0,
                             "width":500,

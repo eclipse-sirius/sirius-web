@@ -21,8 +21,8 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.core.api.UndoInput;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
-import org.eclipse.sirius.web.application.undo.dto.UndoInput;
 import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Sinks.Many;

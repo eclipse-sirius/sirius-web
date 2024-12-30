@@ -13,18 +13,18 @@
 package org.eclipse.sirius.web.application.undo.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import graphql.schema.DataFetchingEnvironment;
-import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
-import org.eclipse.sirius.components.core.api.IPayload;
-
-import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
-import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
-import org.eclipse.sirius.web.application.undo.dto.UndoInput;
-
 
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+
+import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
+import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.UndoInput;
+import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
+import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
+
+import graphql.schema.DataFetchingEnvironment;
 
 /**
  * Data fetcher for the field Mutation#undo.

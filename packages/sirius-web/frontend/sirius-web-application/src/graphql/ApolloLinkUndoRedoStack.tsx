@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ApolloLink, Operation } from '@apollo/client';
+import { ApolloLink, NextLink, Operation } from '@apollo/client';
 import { Kind, OperationTypeNode } from 'graphql/language';
 
 export class ApolloLinkUndoRedoStack extends ApolloLink {
@@ -19,7 +19,7 @@ export class ApolloLinkUndoRedoStack extends ApolloLink {
     sessionStorage.setItem('undoStack', JSON.stringify([]));
     sessionStorage.setItem('redoStack', JSON.stringify([]));
   }
-  override request(operation: Operation, forward) {
+  override request(operation: Operation, forward: NextLink) {
     if (
       operation.query.definitions[0].kind === Kind.OPERATION_DEFINITION &&
       operation.query.definitions[0].operation === OperationTypeNode.MUTATION &&
@@ -27,7 +27,8 @@ export class ApolloLinkUndoRedoStack extends ApolloLink {
       !(
         operation.operationName === 'undo' ||
         operation.operationName === 'redo' ||
-        operation.operationName === 'layoutDiagram'
+        operation.operationName === 'layoutDiagram' ||
+        operation.operationName === 'layoutPortal'
       )
     ) {
       var storedUndoStack = sessionStorage.getItem('undoStack');

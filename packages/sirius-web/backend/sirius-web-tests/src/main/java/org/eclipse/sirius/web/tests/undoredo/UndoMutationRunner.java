@@ -13,12 +13,12 @@
 
 package org.eclipse.sirius.web.tests.undoredo;
 
+import java.util.Objects;
+
+import org.eclipse.sirius.components.core.api.UndoInput;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
-import org.eclipse.sirius.web.application.undo.dto.UndoInput;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 /**
  * Used to undo a mutation.
