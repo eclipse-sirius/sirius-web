@@ -82,6 +82,18 @@ public class NodePaletteBuilder {
     }
 
     /**
+     * Setter for QuickAccessTools.
+     *
+     * @generated
+     */
+    public NodePaletteBuilder quickAccessTools(org.eclipse.sirius.components.view.diagram.NodeTool ... values) {
+        for (org.eclipse.sirius.components.view.diagram.NodeTool value : values) {
+            this.getNodePalette().getQuickAccessTools().add(value);
+        }
+        return this;
+    }
+
+    /**
      * Setter for EdgeTools.
      *
      * @generated
