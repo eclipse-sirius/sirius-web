@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
 import Box from '@mui/material/Box';
+import { Theme, useTheme } from '@mui/material/styles';
 import { MaterialReactTable, MRT_DensityState, MRT_TableOptions, useMaterialReactTable } from 'material-react-table';
 import { memo, useEffect, useState } from 'react';
 import { SettingsButton } from '../actions/SettingsButton';
@@ -45,6 +46,7 @@ export const TableContent = memo(
     enableColumnOrdering,
   }: TableProps) => {
     const { selection, setSelection } = useSelection();
+    const theme: Theme = useTheme();
 
     const { columns } = useTableColumns(
       editingContextId,
@@ -172,15 +174,24 @@ export const TableContent = memo(
       state: { columnSizing, columnVisibility, globalFilter, density, columnFilters, columnOrder },
       muiTableBodyRowProps: ({ row }) => {
         return {
-          onClick: () => {
-            const newSelection: Selection = { entries: [{ id: row.original.targetObjectId, kind: 'Object' }] };
-            setSelection(newSelection);
-          },
           selected: selection.entries.map((entry) => entry.id).includes(row.original.targetObjectId),
           sx: {
             backgroundColor: 'transparent', // required to remove the default mui backgroundColor that is defined as !important
             cursor: 'pointer',
             height: row.original.height,
+          },
+        };
+      },
+      muiTableBodyCellProps: ({ cell, row }) => {
+        const rowSelected = selection.entries.map((entry) => entry.id).includes(row.original.targetObjectId);
+        const cellTargetObjectId = row.original.cells.find(
+          (originalCell) => originalCell.columnId === cell.column.id
+        )?.targetObjectId;
+        const cellSelected =
+          cellTargetObjectId && selection.entries.map((entry) => entry.id).includes(cellTargetObjectId);
+        return {
+          sx: {
+            border: !rowSelected && cellSelected ? `2px dashed ${theme.palette.action.selected}` : undefined,
           },
         };
       },
@@ -207,7 +218,18 @@ export const TableContent = memo(
         },
       },
       renderRowActions: ({ row }) => (
-        <>
+        <div
+          onClick={() => {
+            const newSelection: Selection = {
+              entries: [
+                {
+                  id: row.original.targetObjectId,
+                  kind: row.original.targetObjectKind,
+                },
+              ],
+            };
+            setSelection(newSelection);
+          }}>
           <RowHeader row={row.original} />
           {enableRowSizing ? (
             <ResizeRowHandler
@@ -219,7 +241,7 @@ export const TableContent = memo(
               onRowHeightChanged={handleRowHeightChange}
             />
           ) : null}
-        </>
+        </div>
       ),
     };
 

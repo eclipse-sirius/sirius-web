@@ -130,6 +130,7 @@ Note that you may need to encode special characters like `[`(by `%5B`) and `]` (
 - https://github.com/eclipse-sirius/sirius-web/issues/4346[#4346] [query] Improve the performance of the Query view with large sets of data.
 - https://github.com/eclipse-sirius/sirius-web/issues/4426[#4426] [deck] Remove last usages of mui `styled` pattern.
 - https://github.com/eclipse-sirius/sirius-web/issues/4346[#4346] [query] Leverage the session storage to keep expressions entered in the query view even if the view is unmounted.
+- https://github.com/eclipse-sirius/sirius-web/issues/4345[#4345] [table] Make table cells independently selectable
 
 
 == v2025.1.0
