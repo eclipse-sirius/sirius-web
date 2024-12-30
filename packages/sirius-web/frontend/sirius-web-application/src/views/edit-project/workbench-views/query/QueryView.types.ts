@@ -23,6 +23,7 @@ export interface ExpressionAreaState {
 }
 
 export interface ResultAreaProps {
+  loading: boolean;
   payload: GQLEvaluateExpressionSuccessPayload | null;
 }
 
