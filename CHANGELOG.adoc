@@ -31,7 +31,7 @@ The `start` task used in our turbo configuration is now marked as `persistent` a
 
 === Improvements
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4345[#4345] [table] Make table cells independently selectable
 
 == v2025.1.0
 
