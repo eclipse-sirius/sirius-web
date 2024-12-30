@@ -87,6 +87,7 @@ export interface GQLColumn {
 export interface GQLLine {
   id: string;
   targetObjectId: string;
+  targetObjectKind: string;
   cells: GQLCell[];
   headerLabel: string;
   headerIconURLs: string[];
@@ -105,6 +106,8 @@ export interface GQLCell {
   __typename: string;
   id: string;
   columnId: string;
+  targetObjectId: string;
+  targetObjectKind: string;
 }
 
 export interface GQLTextfieldCell extends GQLCell {
