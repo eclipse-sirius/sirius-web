@@ -172,6 +172,7 @@ type Object {
   id: ID!
   kind: String!
   label: String!
+  iconURLs: [String!]!
   queryBasedString(query: String!): String
   queryBasedInt(query: String!): Int
   queryBasedBoolean(query: String!): Boolean

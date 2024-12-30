@@ -43,6 +43,7 @@ export interface GQLObject {
   id: string;
   kind: string;
   label: string;
+  iconURLs: string[];
 }
 
 export interface GQLObjectsExpressionResult extends GQLExpressionResult {

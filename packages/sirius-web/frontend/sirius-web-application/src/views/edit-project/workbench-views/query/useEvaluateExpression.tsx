@@ -35,6 +35,7 @@ const evaluateExpressionMutation = gql`
               id
               kind
               label
+              iconURLs
             }
           }
           ... on ObjectsExpressionResult {
@@ -42,6 +43,7 @@ const evaluateExpressionMutation = gql`
               id
               kind
               label
+              iconURLs
             }
           }
           ... on BooleanExpressionResult {
