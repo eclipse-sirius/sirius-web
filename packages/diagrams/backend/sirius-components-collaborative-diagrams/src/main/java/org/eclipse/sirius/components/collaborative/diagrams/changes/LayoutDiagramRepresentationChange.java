@@ -10,19 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
-import java.util.Set;
-import java.util.UUID;
+package org.eclipse.sirius.components.collaborative.diagrams.changes;
 
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
-import org.eclipse.sirius.components.core.api.IUndoableInput;
+import org.eclipse.sirius.components.core.api.representations.IRepresentationChangeEvent;
+import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
 
 /**
- * The class of the inputs for the "pin element" mutation.
+ * Layout diagram event.
  *
- * @author frouene
+ * @author mcharfadi
  */
-public record PinDiagramElementInput(UUID id, String editingContextId, String representationId, Set<String> elementIds, boolean pinned) implements IDiagramInput, IUndoableInput {
-
+public record LayoutDiagramRepresentationChange(String representationId, DiagramLayoutData previousLayout, DiagramLayoutData newLayout, DiagramLayoutDataChanges changes) implements IRepresentationChangeEvent {
 }

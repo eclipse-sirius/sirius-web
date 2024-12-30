@@ -184,6 +184,6 @@ public class UndoRedoSemanticChangeTests extends AbstractIntegrationTests {
                 .then(redoMutation)
                 .consumeNextWith(updatedFormContentConsumer)
                 .thenCancel()
-                .verify(Duration.ofDays(10));
+                .verify(Duration.ofSeconds(10));
     }
 }

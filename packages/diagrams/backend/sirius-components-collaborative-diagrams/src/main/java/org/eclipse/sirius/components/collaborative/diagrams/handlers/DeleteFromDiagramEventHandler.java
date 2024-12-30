@@ -154,8 +154,10 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
             }
         }
 
-        RemoveEdgeEvent removeEdgeEvent = new RemoveEdgeEvent(deletedEdgeIds);
-        diagramContext.getDiagramEvents().add(removeEdgeEvent);
+        if (!deletedEdgeIds.isEmpty()) {
+            RemoveEdgeEvent removeEdgeEvent = new RemoveEdgeEvent(deletedEdgeIds);
+            diagramContext.getDiagramEvents().add(removeEdgeEvent);
+        }
         this.sendResponse(payloadSink, changeDescriptionSink, errors, atLeastOneOk, diagramContext, diagramInput);
     }
 

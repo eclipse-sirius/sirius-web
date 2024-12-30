@@ -70,7 +70,7 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
                 .exchange();
 
         response.expectStatus().isOk();
-        response.expectBodyList(RestProject.class).hasSize(3);
+        response.expectBodyList(RestProject.class).hasSize(4);
     }
 
     @Test
