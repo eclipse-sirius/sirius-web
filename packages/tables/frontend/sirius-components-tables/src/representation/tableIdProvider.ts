@@ -26,7 +26,7 @@ export const tableIdProvider = (
     columnFilters !== null
       ? `&columnFilters=[${columnFilters
           .map((filter) => {
-            return filter.id + ':' + filter.value;
+            return filter.id + ':' + JSON.stringify(filter.value);
           })
           .map(encodeURIComponent)
           .join(',')}]`
