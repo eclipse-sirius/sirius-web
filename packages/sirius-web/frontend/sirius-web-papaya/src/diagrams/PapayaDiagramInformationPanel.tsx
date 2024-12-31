@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,7 +43,7 @@ export const PapayaDiagramInformationPanel = memo(() => {
     return null;
   }
   return (
-    <Panel position="bottom-right">
+    <Panel position="bottom-center">
       <Paper className={classes.papayaDiagramInformationPanel}>
         <Typography variant="subtitle2">Learn more</Typography>
         <Typography variant="body2">

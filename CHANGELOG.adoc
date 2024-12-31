@@ -25,6 +25,9 @@ The `start` task used in our turbo configuration is now marked as `persistent` a
 
 === New Features
 
+- https://github.com/eclipse-sirius/sirius-web/issues/4356[#4356] [diagram] Add a minimap to diagram.
++ Added by default to all sirius-web diagrams
+
 
 === Improvements
 
