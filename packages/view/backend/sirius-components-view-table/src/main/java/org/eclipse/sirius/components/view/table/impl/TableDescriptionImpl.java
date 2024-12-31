@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.view.table.impl;
 
 import java.util.Collection;
-import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -296,7 +295,7 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
                 this.getColumnDescriptions().clear();
                 return;
             case TablePackage.TABLE_DESCRIPTION__ROW_DESCRIPTION:
-                this.setRowDescription(null);
+                this.setRowDescription((RowDescription) null);
                 return;
             case TablePackage.TABLE_DESCRIPTION__CELL_DESCRIPTIONS:
                 this.getCellDescriptions().clear();
@@ -314,7 +313,7 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case TablePackage.TABLE_DESCRIPTION__USE_STRIPED_ROWS_EXPRESSION:
-                return !Objects.equals(USE_STRIPED_ROWS_EXPRESSION_EDEFAULT, this.useStripedRowsExpression);
+                return USE_STRIPED_ROWS_EXPRESSION_EDEFAULT == null ? this.useStripedRowsExpression != null : !USE_STRIPED_ROWS_EXPRESSION_EDEFAULT.equals(this.useStripedRowsExpression);
             case TablePackage.TABLE_DESCRIPTION__COLUMN_DESCRIPTIONS:
                 return this.columnDescriptions != null && !this.columnDescriptions.isEmpty();
             case TablePackage.TABLE_DESCRIPTION__ROW_DESCRIPTION:
@@ -335,10 +334,11 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
         if (this.eIsProxy())
             return super.toString();
 
-        String result = super.toString() + " (useStripedRowsExpression: " +
-                this.useStripedRowsExpression +
-                ')';
-        return result;
+        StringBuilder result = new StringBuilder(super.toString());
+        result.append(" (useStripedRowsExpression: ");
+        result.append(this.useStripedRowsExpression);
+        result.append(')');
+        return result.toString();
     }
 
 } // TableDescriptionImpl

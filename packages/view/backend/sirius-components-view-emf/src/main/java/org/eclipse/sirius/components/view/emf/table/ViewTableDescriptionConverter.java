@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.DomainClassPredicate;
+import org.eclipse.sirius.components.emf.tables.CursorBasedNavigationServices;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
@@ -33,6 +34,7 @@ import org.eclipse.sirius.components.tables.descriptions.LineDescription;
 import org.eclipse.sirius.components.tables.descriptions.PaginatedData;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 import org.eclipse.sirius.components.tables.descriptions.TextfieldCellDescription;
+import org.eclipse.sirius.components.tables.renderer.TableRenderer;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.ViewIconURLsProvider;
@@ -49,6 +51,8 @@ import org.springframework.stereotype.Service;
 public class ViewTableDescriptionConverter implements IRepresentationDescriptionConverter {
 
     private static final String DEFAULT_TABLE_LABEL = "Table";
+
+    private static final String CANDIDATE_VARIABLE = "candidate";
 
     private final ITableIdProvider tableIdProvider;
 
@@ -199,7 +203,7 @@ public class ViewTableDescriptionConverter implements IRepresentationDescription
         return result;
     }
 
-    private Function<VariableManager, List<Object>> getColumnSemanticElementsProvider(org.eclipse.sirius.components.view.table.TableElementDescription elementDescription, AQLInterpreter interpreter) {
+    private Function<VariableManager, List<Object>> getColumnSemanticElementsProvider(org.eclipse.sirius.components.view.table.ColumnDescription elementDescription, AQLInterpreter interpreter) {
         return variableManager -> {
             Result result = interpreter.evaluateExpression(variableManager.getVariables(), elementDescription.getSemanticCandidatesExpression());
             List<Object> candidates = result.asObjects().orElse(List.of());
@@ -215,20 +219,24 @@ public class ViewTableDescriptionConverter implements IRepresentationDescription
         };
     }
 
-    private Function<VariableManager, PaginatedData> getRowSemanticElementsProvider(org.eclipse.sirius.components.view.table.TableElementDescription elementDescription, AQLInterpreter interpreter) {
+    private Function<VariableManager, PaginatedData> getRowSemanticElementsProvider(org.eclipse.sirius.components.view.table.RowDescription elementDescription, AQLInterpreter interpreter) {
         return variableManager -> {
-            Result result = interpreter.evaluateExpression(variableManager.getVariables(), elementDescription.getSemanticCandidatesExpression());
-            List<Object> candidates = result.asObjects().orElse(List.of());
-            if (elementDescription.getDomainType() == null || elementDescription.getDomainType().isBlank()) {
-                return new PaginatedData(candidates, false, false, candidates.size());
+            PaginatedData paginatedResult;
+            var self = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
+            var cursor = variableManager.get(TableRenderer.PAGINATION_CURSOR, EObject.class).orElse(null);
+            var direction = variableManager.get(TableRenderer.PAGINATION_DIRECTION, String.class).orElse(null);
+            int size = variableManager.get(TableRenderer.PAGINATION_SIZE, Integer.class).orElse(0);
+            if (elementDescription.getPaginationPredicateExpression() != null || !elementDescription.getPaginationPredicateExpression().isBlank()) {
+                Predicate<EObject> predicate = eObject -> {
+                    VariableManager variableManagerChild = variableManager.createChild();
+                    variableManagerChild.put(CANDIDATE_VARIABLE, eObject);
+                    return interpreter.evaluateExpression(variableManagerChild.getVariables(), elementDescription.getPaginationPredicateExpression()).asBoolean().orElse(false);
+                };
+                paginatedResult = new CursorBasedNavigationServices().collect(self, cursor, direction, size, predicate);
+            } else {
+                paginatedResult = new CursorBasedNavigationServices().collect(self, cursor, direction, size);
             }
-            var list = candidates.stream()
-                    .filter(EObject.class::isInstance)
-                    .map(EObject.class::cast)
-                    .filter(candidate -> new DomainClassPredicate(Optional.ofNullable(elementDescription.getDomainType()).orElse("")).test(candidate.eClass()))
-                    .map(Object.class::cast)
-                    .toList();
-            return new PaginatedData(list, false, false, list.size());
+            return paginatedResult;
         };
     }
 

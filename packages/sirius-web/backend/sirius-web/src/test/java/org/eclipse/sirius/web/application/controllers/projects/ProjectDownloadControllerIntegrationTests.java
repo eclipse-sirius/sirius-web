@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -376,7 +376,7 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
                   }
                 }
                 """.replace("$GROUP$", this.getGroups())
-                    .replace("$TABLEDESCRIPTION$", this.getTableDescription());
+                .replace("$TABLEDESCRIPTION$", this.getTableDescription());
     }
 
     private String getTableDescription() {
@@ -406,8 +406,7 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
                      "eClass": "table:RowDescription",
                      "data": {
                        "name": "Row",
-                       "domainType": "buck::Human",
-                       "semanticCandidatesExpression": "aql:self.humans"
+                       "paginationPredicateExpression": "aql:candidate.oclIsKindOf(buck::Human)"
                      }
                    },
                     "cellDescriptions": [
@@ -416,8 +415,7 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
                        "eClass": "table:CellDescription",
                        "data": {
                          "name": "Cell",
-                         "domainType": "vaughan::Human",
-                         "semanticCandidatesExpression": "aql:self",
+                         "preconditionExpression": "aql:true",
                          "valueExpression": "aql:self.name",
                          "cellWidgetDescription": {
                            "id": "9b3400c9-d5f0-46db-9d60-60ec4016d383",
