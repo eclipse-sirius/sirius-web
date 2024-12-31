@@ -124,6 +124,7 @@ public class TableIconURLControllerTests extends AbstractIntegrationTests {
 
                     List<List<String>> columnIconURLs = JsonPath.read(body, "$.data.tableEvent.table.columns[*].headerIconURLs");
                     assertThat(columnIconURLs)
+                            .filteredOn(iconURLs -> !iconURLs.isEmpty())
                             .isNotEmpty()
                             .allSatisfy(iconURLs -> {
                                 assertThat(iconURLs)
@@ -175,14 +176,12 @@ public class TableIconURLControllerTests extends AbstractIntegrationTests {
                     assertThat(typename).isEqualTo(TableRefreshedEventPayload.class.getSimpleName());
 
                     List<List<String>> iconLabelCellIconURLs = JsonPath.read(body, "$.data.tableEvent.table.lines[*].cells[*].iconURLs");
-                    assertThat(iconLabelCellIconURLs)
+                    assertThat(iconLabelCellIconURLs.stream().filter(iconURL -> !iconURL.isEmpty()).toList())
                             .isNotEmpty()
-                            .allSatisfy(iconURLs -> {
-                                assertThat(iconURLs)
-                                        .isNotEmpty()
-                                        .hasSize(2)
-                                        .allSatisfy(iconURL -> assertThat(iconURL).startsWith(URLConstants.IMAGE_BASE_PATH));
-                            });
+                            .allSatisfy(iconURLs -> assertThat(iconURLs)
+                                    .isNotEmpty()
+                                    .hasSize(2)
+                                    .allSatisfy(iconURL -> assertThat(iconURL).startsWith(URLConstants.IMAGE_BASE_PATH)));
                 }, () -> fail("Missing table"));
 
         StepVerifier.create(flux)

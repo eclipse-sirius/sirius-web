@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.papaya.representations.table;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +31,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
+import org.eclipse.sirius.components.papaya.AnnotableElement;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.components.papaya.Type;
@@ -65,10 +68,13 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
 
     private final ComposedAdapterFactory composedAdapterFactory;
 
-    public PackageTableRepresentationDescriptionProvider(IIdentityService identityService, ILabelService labelService, ComposedAdapterFactory composedAdapterFactory) {
+    private final ObjectMapper objectMapper;
+
+    public PackageTableRepresentationDescriptionProvider(IIdentityService identityService, ILabelService labelService, ComposedAdapterFactory composedAdapterFactory, ObjectMapper objectMapper) {
         this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
+        this.objectMapper = Objects.requireNonNull(objectMapper);
     }
 
     @Override
@@ -137,13 +143,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                     isValidCandidate = isValidCandidate || type.getVisibility() != null && type.getVisibility().getLiteral().contains(globalFilter);
                     isValidCandidate = isValidCandidate || type.getAnnotations().stream().anyMatch(annotation -> annotation.getName().contains(globalFilter));
                 }
-                isValidCandidate = isValidCandidate && columnFilters.stream().allMatch(columnFilter -> {
-                    if (columnFilter.id().equals("papaya.NamedElement#name")) {
-                        return type.getName() != null && type.getName().contains(columnFilter.value());
-                    }
-                    return true;
-
-                });
+                isValidCandidate = isValidCandidate && columnFilters.stream().allMatch(new PapayaColumnFilterPredicate(this.objectMapper, type));
             }
             return isValidCandidate;
         };
@@ -158,13 +158,25 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
         ColumnDescription iconColumnDescription = ColumnDescription.newColumnDescription(UUID.nameUUIDFromBytes("icon".getBytes()).toString())
                 .semanticElementsProvider(variableManager -> List.of("IconColumn"))
                 .headerLabelProvider(variableManager -> "Icon")
-                .headerIconURLsProvider(variableManager -> List.of("/icons/svg/Default.svg"))
-                .headerIndexLabelProvider(variableManager -> "")
+                .headerIconURLsProvider(variableManager -> List.of())
+                .headerIndexLabelProvider(variableManager -> "A")
                 .targetObjectIdProvider(new ColumnTargetObjectIdProvider())
                 .targetObjectKindProvider(variableManager -> "")
                 .initialWidthProvider(variableManager -> 130)
                 .isResizablePredicate(variableManager -> false)
                 .filterVariantProvider(variableManager -> "text")
+                .build();
+
+        ColumnDescription nbAnnotationsColumn = ColumnDescription.newColumnDescription(UUID.nameUUIDFromBytes("nbAnnotation".getBytes()).toString())
+                .semanticElementsProvider(variableManager -> List.of("NbAnnotationColumn"))
+                .headerLabelProvider(variableManager -> "Annotation number")
+                .headerIconURLsProvider(variableManager -> List.of())
+                .headerIndexLabelProvider(variableManager -> "F")
+                .targetObjectIdProvider(variableManager -> "papaya.Type#nbAnnotation")
+                .targetObjectKindProvider(variableManager -> "")
+                .initialWidthProvider(variableManager -> 250)
+                .isResizablePredicate(variableManager -> false)
+                .filterVariantProvider(variableManager -> "range")
                 .build();
 
         Function<VariableManager, String> headerLabelProvider = variableManager -> variableManager.get(VariableManager.SELF, EStructuralFeature.class)
@@ -176,7 +188,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .orElse(List.of());
 
         Function<VariableManager, String> headerIndexLabelProvider = variableManager -> variableManager.get("columnIndex", Integer.class)
-                .map(index -> String.valueOf((char) (index + 'A')))
+                .map(index -> String.valueOf((char) (index + 1 + 'A')))
                 .orElse("");
 
         ColumnDescription columnDescription = ColumnDescription.newColumnDescription(UUID.nameUUIDFromBytes("features".getBytes()).toString())
@@ -190,7 +202,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .isResizablePredicate(variableManager -> true)
                 .filterVariantProvider(variableManager -> "text")
                 .build();
-        return List.of(iconColumnDescription, columnDescription);
+        return List.of(iconColumnDescription, columnDescription, nbAnnotationsColumn);
     }
 
     private List<ICellDescription> getCellDescriptions() {
@@ -247,6 +259,25 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
                 .cellValueProvider((variableManager, columnTargetObject) -> "")
                 .cellIconURLsProvider(iconLabelCellIconURLsProvider)
+                .build());
+
+        Predicate<VariableManager> nbAnnotationCellPredicate = variableManager -> variableManager.get(ColumnDescription.COLUMN_TARGET_OBJECT, Object.class)
+                .filter(String.class::isInstance)
+                .map(String.class::cast)
+                .filter(value -> value.equals("NbAnnotationColumn"))
+                .isPresent();
+
+        cellDescriptions.add(IconLabelCellDescription.newIconLabelCellDescription("nbAnnotationCells")
+                .canCreatePredicate(nbAnnotationCellPredicate)
+                .targetObjectIdProvider(variableManager -> "")
+                .targetObjectKindProvider(variableManager -> "")
+                .cellValueProvider((variableManager, columnTargetObject) -> variableManager.get(VariableManager.SELF, Object.class)
+                        .filter(AnnotableElement.class::isInstance)
+                        .map(AnnotableElement.class::cast)
+                        .map(annotableElement -> annotableElement.getAnnotations().size())
+                        .map(String::valueOf)
+                        .orElse("NA"))
+                .cellIconURLsProvider((variableManager, object) -> List.of())
                 .build());
         return cellDescriptions;
     }

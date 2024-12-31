@@ -111,7 +111,7 @@ public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegra
                 .map(TableRefreshedEventPayload::table)
                 .ifPresentOrElse(table -> {
                     assertThat(table).isNotNull();
-                    assertThat(table.getColumns()).hasSize(5);
+                    assertThat(table.getColumns()).hasSize(6);
                     columnRef.set(table.getColumns().get(1));
                     assertThat(table.getColumns().get(1).getWidth()).isEqualTo(180);
                     tableId.set(table.getId());
@@ -136,7 +136,7 @@ public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegra
                 .map(TableRefreshedEventPayload::table)
                 .ifPresentOrElse(table -> {
                     assertThat(table).isNotNull();
-                    assertThat(table.getColumns()).hasSize(5);
+                    assertThat(table.getColumns()).hasSize(6);
                     assertThat(table.getColumns().get(1).getWidth()).isEqualTo(50);
                 }, () -> fail(MISSING_TABLE));
 
@@ -165,7 +165,7 @@ public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegra
                 .map(TableRefreshedEventPayload::table)
                 .ifPresentOrElse(table -> {
                     assertThat(table).isNotNull();
-                    assertThat(table.getColumns()).hasSize(5);
+                    assertThat(table.getColumns()).hasSize(6);
                     columnNameRef.set(table.getColumns().get(0));
                     columnDescRef.set(table.getColumns().get(1));
                     columnAnnotationRef.set(table.getColumns().get(2));
@@ -198,7 +198,7 @@ public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegra
                 .map(TableRefreshedEventPayload::table)
                 .ifPresentOrElse(table -> {
                     assertThat(table).isNotNull();
-                    assertThat(table.getColumns()).hasSize(5);
+                    assertThat(table.getColumns()).hasSize(6);
                     assertThat(table.getColumns().get(0).isHidden()).isTrue();
                     assertThat(table.getColumns().get(1).isHidden()).isFalse();
                     assertThat(table.getColumns().get(2).isHidden()).isTrue();
@@ -228,7 +228,7 @@ public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegra
                 .map(TableRefreshedEventPayload::table)
                 .ifPresentOrElse(table -> {
                     assertThat(table).isNotNull();
-                    assertThat(table.getColumns()).hasSize(5);
+                    assertThat(table.getColumns()).hasSize(6);
                     table.getColumns().forEach(col -> assertThat(col.getIndex()).isEqualTo(0));
                     assertThat(table.getColumns().get(0).getHeaderLabel()).isEqualTo("Icon");
                     assertThat(table.getColumns().get(1).getHeaderLabel()).isEqualTo("Name");
@@ -258,7 +258,7 @@ public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegra
                 .map(TableRefreshedEventPayload::table)
                 .ifPresentOrElse(table -> {
                     assertThat(table).isNotNull();
-                    assertThat(table.getColumns()).hasSize(5);
+                    assertThat(table.getColumns()).hasSize(6);
                     for (int i = 0; i < 5; i++) {
                         assertThat(table.getColumns().get(i).getIndex()).isEqualTo(i);
                     }

@@ -59,7 +59,12 @@ export const useTableColumnFiltering = (
   }, [columnFilters]);
 
   useEffect(() => {
-    setColumnFilters(table.columnFilters);
+    setColumnFilters(
+      table.columnFilters.map((filter) => ({
+        id: filter.id,
+        value: JSON.parse(filter.value as string),
+      }))
+    );
   }, [table.columnFilters.map((columnFilter) => columnFilter.id + columnFilter.value).join('')]);
 
   const [mutationChangeColumnFilter, mutationChangeColumnFilterResult] = useMutation<
@@ -74,7 +79,10 @@ export const useTableColumnFiltering = (
       editingContextId,
       representationId,
       tableId: table.id,
-      columnFilters: columnFilters.map((columnFilter) => ({ id: columnFilter.id, value: columnFilter.value })),
+      columnFilters: columnFilters.map((columnFilter) => ({
+        id: columnFilter.id,
+        value: JSON.stringify(columnFilter.value),
+      })),
     };
     mutationChangeColumnFilter({ variables: { input } });
   };

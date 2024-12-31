@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,6 @@ import java.net.URI;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,10 +55,30 @@ public class URLParser implements IURLParser {
     @Override
     public List<String> getParameterEntries(String value) {
         if (value.startsWith("[") && value.endsWith("]") && value.length() >= 3) {
-            var rawValue = value.substring(1);
-            rawValue = rawValue.substring(0, rawValue.indexOf("]"));
-            return Arrays.stream(rawValue.split(",")).toList();
+            var rawValue = value.substring(1, value.length() - 1);
+            return this.parseEntries(rawValue);
         }
         return List.of();
+    }
+
+    private List<String> parseEntries(String rawValue) {
+        List<String> entries = new ArrayList<>();
+        int start = 0;
+        int level = 0;
+
+        for (int i = 0; i < rawValue.length(); i++) {
+            char c = rawValue.charAt(i);
+            if (c == '[') {
+                level++;
+            } else if (c == ']') {
+                level--;
+            } else if (c == ',' && level == 0) {
+                entries.add(rawValue.substring(start, i).trim());
+                start = i + 1;
+            }
+        }
+        entries.add(rawValue.substring(start).trim());
+
+        return entries;
     }
 }
