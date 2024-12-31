@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.table;
 
+import org.eclipse.emf.ecore.EObject;
+
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Row Description</b></em>'. <!-- end-user-doc -->
  *
@@ -19,6 +21,11 @@ package org.eclipse.sirius.components.view.table;
  * The following features are supported:
  * </p>
  * <ul>
+ * <li>{@link org.eclipse.sirius.components.view.table.RowDescription#getName <em>Name</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.table.RowDescription#getPaginationPredicateExpression <em>Pagination
+ * Predicate Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.table.RowDescription#getPreconditionExpression <em>Precondition
+ * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.table.RowDescription#getHeaderLabelExpression <em>Header Label
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.table.RowDescription#getHeaderIconExpression <em>Header Icon
@@ -35,7 +42,76 @@ package org.eclipse.sirius.components.view.table;
  * @generated
  * @see org.eclipse.sirius.components.view.table.TablePackage#getRowDescription()
  */
-public interface RowDescription extends TableElementDescription {
+public interface RowDescription extends EObject {
+
+    /**
+     * Returns the value of the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Name</em>' attribute.
+     * @model dataType="org.eclipse.sirius.components.view.Identifier"
+     * @generated
+     * @see #setName(String)
+     * @see org.eclipse.sirius.components.view.table.TablePackage#getRowDescription_Name()
+     */
+    String getName();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.table.RowDescription#getName <em>Name</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>Name</em>' attribute.
+     * @generated
+     * @see #getName()
+     */
+    void setName(String value);
+
+    /**
+     * Returns the value of the '<em><b>Pagination Predicate Expression</b></em>' attribute. The default value is
+     * <code>""</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Pagination Predicate Expression</em>' attribute.
+     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     * @see #setPaginationPredicateExpression(String)
+     * @see org.eclipse.sirius.components.view.table.TablePackage#getRowDescription_PaginationPredicateExpression()
+     */
+    String getPaginationPredicateExpression();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.table.RowDescription#getPaginationPredicateExpression <em>Pagination
+     * Predicate Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>Pagination Predicate Expression</em>' attribute.
+     * @generated
+     * @see #getPaginationPredicateExpression()
+     */
+    void setPaginationPredicateExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Precondition Expression</b></em>' attribute. The default value is
+     * <code>""</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Precondition Expression</em>' attribute.
+     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     * @see #setPreconditionExpression(String)
+     * @see org.eclipse.sirius.components.view.table.TablePackage#getRowDescription_PreconditionExpression()
+     */
+    String getPreconditionExpression();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.table.RowDescription#getPreconditionExpression
+     * <em>Precondition Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>Precondition Expression</em>' attribute.
+     * @generated
+     * @see #getPreconditionExpression()
+     */
+    void setPreconditionExpression(String value);
 
     /**
      * Returns the value of the '<em><b>Header Label Expression</b></em>' attribute. The default value is

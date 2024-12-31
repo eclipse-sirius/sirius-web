@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.sirius.components.view.table;
+
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Cell Description</b></em>'. <!-- end-user-doc
@@ -32,7 +34,52 @@ package org.eclipse.sirius.components.view.table;
  * @generated
  * @see org.eclipse.sirius.components.view.table.TablePackage#getCellDescription()
  */
-public interface CellDescription extends TableElementDescription {
+public interface CellDescription extends EObject {
+
+    /**
+     * Returns the value of the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Name</em>' attribute.
+     * @model dataType="org.eclipse.sirius.components.view.Identifier"
+     * @generated
+     * @see #setName(String)
+     * @see org.eclipse.sirius.components.view.table.TablePackage#getCellDescription_Name()
+     */
+    String getName();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.table.CellDescription#getName <em>Name</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>Name</em>' attribute.
+     * @generated
+     * @see #getName()
+     */
+    void setName(String value);
+
+    /**
+     * Returns the value of the '<em><b>Precondition Expression</b></em>' attribute. The default value is
+     * <code>""</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Precondition Expression</em>' attribute.
+     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     * @see #setPreconditionExpression(String)
+     * @see org.eclipse.sirius.components.view.table.TablePackage#getCellDescription_PreconditionExpression()
+     */
+    String getPreconditionExpression();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.table.CellDescription#getPreconditionExpression
+     * <em>Precondition Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>Precondition Expression</em>' attribute.
+     * @generated
+     * @see #getPreconditionExpression()
+     */
+    void setPreconditionExpression(String value);
 
     /**
      * Returns the value of the '<em><b>Value Expression</b></em>' attribute. The default value is <code>""</code>. <!--
@@ -51,9 +98,9 @@ public interface CellDescription extends TableElementDescription {
      * <em>Value Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Value Expression</em>' attribute.
-     * @see #getValueExpression()
+     *         the new value of the '<em>Value Expression</em>' attribute.
      * @generated
+     * @see #getValueExpression()
      */
     void setValueExpression(String value);
 
@@ -62,10 +109,10 @@ public interface CellDescription extends TableElementDescription {
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Tooltip Expression</em>' attribute.
-     * @see #setTooltipExpression(String)
-     * @see org.eclipse.sirius.components.view.table.TablePackage#getCellDescription_TooltipExpression()
      * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
+     * @see #setTooltipExpression(String)
+     * @see org.eclipse.sirius.components.view.table.TablePackage#getCellDescription_TooltipExpression()
      */
     String getTooltipExpression();
 
@@ -74,9 +121,9 @@ public interface CellDescription extends TableElementDescription {
      * <em>Tooltip Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Tooltip Expression</em>' attribute.
-     * @see #getTooltipExpression()
+     *         the new value of the '<em>Tooltip Expression</em>' attribute.
      * @generated
+     * @see #getTooltipExpression()
      */
     void setTooltipExpression(String value);
 
@@ -85,10 +132,10 @@ public interface CellDescription extends TableElementDescription {
      * <!-- end-user-doc -->
      *
      * @return the value of the '<em>Cell Widget Description</em>' containment reference.
-     * @see #setCellWidgetDescription(CellWidgetDescription)
-     * @see org.eclipse.sirius.components.view.table.TablePackage#getCellDescription_CellWidgetDescription()
      * @model containment="true"
      * @generated
+     * @see #setCellWidgetDescription(CellWidgetDescription)
+     * @see org.eclipse.sirius.components.view.table.TablePackage#getCellDescription_CellWidgetDescription()
      */
     CellWidgetDescription getCellWidgetDescription();
 
@@ -97,9 +144,9 @@ public interface CellDescription extends TableElementDescription {
      * <em>Cell Widget Description</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Cell Widget Description</em>' containment reference.
-     * @see #getCellWidgetDescription()
+     *         the new value of the '<em>Cell Widget Description</em>' containment reference.
      * @generated
+     * @see #getCellWidgetDescription()
      */
     void setCellWidgetDescription(CellWidgetDescription value);
 
