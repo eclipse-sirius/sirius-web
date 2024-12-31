@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.DomainClassPredicate;
+import org.eclipse.sirius.components.emf.tables.CursorBasedNavigationServices;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
@@ -33,6 +34,7 @@ import org.eclipse.sirius.components.tables.descriptions.LineDescription;
 import org.eclipse.sirius.components.tables.descriptions.PaginatedData;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 import org.eclipse.sirius.components.tables.descriptions.TextfieldCellDescription;
+import org.eclipse.sirius.components.tables.renderer.TableRenderer;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.ViewIconURLsProvider;
@@ -49,6 +51,8 @@ import org.springframework.stereotype.Service;
 public class ViewTableDescriptionConverter implements IRepresentationDescriptionConverter {
 
     private static final String DEFAULT_TABLE_LABEL = "Table";
+
+    private static final String CANDIDATE_VARIABLE = "candidate";
 
     private final ITableIdProvider tableIdProvider;
 
@@ -217,18 +221,37 @@ public class ViewTableDescriptionConverter implements IRepresentationDescription
 
     private Function<VariableManager, PaginatedData> getRowSemanticElementsProvider(org.eclipse.sirius.components.view.table.TableElementDescription elementDescription, AQLInterpreter interpreter) {
         return variableManager -> {
-            Result result = interpreter.evaluateExpression(variableManager.getVariables(), elementDescription.getSemanticCandidatesExpression());
-            List<Object> candidates = result.asObjects().orElse(List.of());
-            if (elementDescription.getDomainType() == null || elementDescription.getDomainType().isBlank()) {
-                return new PaginatedData(candidates, false, false, candidates.size());
+            PaginatedData paginatedResult;
+            if (elementDescription.getSemanticCandidatesExpression() != null && !elementDescription.getSemanticCandidatesExpression().isBlank()) {
+                Result result = interpreter.evaluateExpression(variableManager.getVariables(), elementDescription.getSemanticCandidatesExpression());
+                List<Object> candidates = result.asObjects().orElse(List.of());
+                if (elementDescription.getDomainType() == null || elementDescription.getDomainType().isBlank()) {
+                    paginatedResult = new PaginatedData(candidates, false, false, candidates.size());
+                }
+                var list = candidates.stream()
+                        .filter(EObject.class::isInstance)
+                        .map(EObject.class::cast)
+                        .filter(candidate -> new DomainClassPredicate(Optional.ofNullable(elementDescription.getDomainType()).orElse("")).test(candidate.eClass()))
+                        .map(Object.class::cast)
+                        .toList();
+                paginatedResult = new PaginatedData(list, false, false, list.size());
+            } else {
+                var self = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
+                var cursor = variableManager.get(TableRenderer.PAGINATION_CURSOR, EObject.class).orElse(null);
+                var direction = variableManager.get(TableRenderer.PAGINATION_DIRECTION, String.class).orElse(null);
+                int size = variableManager.get(TableRenderer.PAGINATION_SIZE, Integer.class).orElse(0);
+                if (elementDescription.getPreconditionExpression() != null || !elementDescription.getPreconditionExpression().isBlank()) {
+                    Predicate<EObject> predicate = eObject -> {
+                        VariableManager variableManagerChild = variableManager.createChild();
+                        variableManagerChild.put(CANDIDATE_VARIABLE, eObject);
+                        return interpreter.evaluateExpression(variableManagerChild.getVariables(), elementDescription.getPreconditionExpression()).asBoolean().orElse(false);
+                    };
+                    paginatedResult = new CursorBasedNavigationServices().collect(self, cursor, direction, size, predicate);
+                } else {
+                    paginatedResult = new CursorBasedNavigationServices().collect(self, cursor, direction, size);
+                }
             }
-            var list = candidates.stream()
-                    .filter(EObject.class::isInstance)
-                    .map(EObject.class::cast)
-                    .filter(candidate -> new DomainClassPredicate(Optional.ofNullable(elementDescription.getDomainType()).orElse("")).test(candidate.eClass()))
-                    .map(Object.class::cast)
-                    .toList();
-            return new PaginatedData(list, false, false, list.size());
+            return paginatedResult;
         };
     }
 
