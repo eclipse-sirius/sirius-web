@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import {
   ConnectionMode,
   Edge,
   EdgeChange,
+  MiniMap,
   Node,
   NodeChange,
   OnEdgesChange,
@@ -444,6 +445,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         {diagramDescription.debug ? <DebugPanel reactFlowWrapper={ref} /> : null}
         <ConnectorContextualMenu />
         {helperLinesEnabled ? <HelperLines horizontal={horizontalHelperLine} vertical={verticalHelperLine} /> : null}
+        <MiniMap pannable zoomable zoomStep={2} />
       </>
     ),
   };
