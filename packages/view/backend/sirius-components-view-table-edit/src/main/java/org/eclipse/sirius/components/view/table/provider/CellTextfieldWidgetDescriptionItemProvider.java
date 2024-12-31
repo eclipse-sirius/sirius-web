@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,6 @@ import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.table.CellTextfieldWidgetDescription;
 import org.eclipse.sirius.components.view.table.TablePackage;
 
@@ -164,28 +163,28 @@ public class CellTextfieldWidgetDescriptionItemProvider extends ItemProviderAdap
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
         newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY,
-                ViewFactory.eINSTANCE.createChangeContext()));
+                org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createChangeContext()));
 
         newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY,
-                ViewFactory.eINSTANCE.createCreateInstance()));
+                org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createCreateInstance()));
 
         newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY,
-                ViewFactory.eINSTANCE.createSetValue()));
+                org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createSetValue()));
 
         newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY,
-                ViewFactory.eINSTANCE.createUnsetValue()));
+                org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createUnsetValue()));
 
         newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY,
-                ViewFactory.eINSTANCE.createDeleteElement()));
+                org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createDeleteElement()));
 
         newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY,
-                ViewFactory.eINSTANCE.createLet()));
+                org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createLet()));
 
         newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY,
-                ViewFactory.eINSTANCE.createIf()));
+                org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createIf()));
 
         newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY,
-                ViewFactory.eINSTANCE.createFor()));
+                org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createFor()));
     }
 
     /**

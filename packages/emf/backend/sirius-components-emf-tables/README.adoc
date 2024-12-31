@@ -1,0 +1,10 @@
+= sirius-components-emf-tables
+
+== Goal
+
+This project provides support for the default integration of EMF in tables.
+
+== Dependencies
+
+- sirius-components-emf
+- sirius-components-tables

@@ -21,6 +21,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.table.RowContextMenuEntry;
@@ -42,8 +43,26 @@ import org.eclipse.sirius.components.view.table.TablePackage;
  *
  * @generated
  */
-public class RowDescriptionImpl extends TableElementDescriptionImpl implements RowDescription {
+public class RowDescriptionImpl extends MinimalEObjectImpl.Container implements RowDescription {
 
+    /**
+     * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     * @see #getName()
+     */
+    protected static final String NAME_EDEFAULT = null;
+    /**
+     * The default value of the '{@link #getSemanticCandidatesExpression() <em>Semantic Candidates Expression</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getSemanticCandidatesExpression()
+     */
+    protected static final String SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT = "";
     /**
      * The default value of the '{@link #getHeaderLabelExpression() <em>Header Label Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -89,6 +108,24 @@ public class RowDescriptionImpl extends TableElementDescriptionImpl implements R
      * @see #getIsResizableExpression()
      */
     protected static final String IS_RESIZABLE_EXPRESSION_EDEFAULT = "";
+    /**
+     * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     * @see #getName()
+     */
+    protected String name = NAME_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getSemanticCandidatesExpression() <em>Semantic Candidates Expression</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getSemanticCandidatesExpression()
+     */
+    protected String semanticCandidatesExpression = SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT;
     /**
      * The cached value of the '{@link #getHeaderLabelExpression() <em>Header Label Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -162,6 +199,53 @@ public class RowDescriptionImpl extends TableElementDescriptionImpl implements R
     @Override
     protected EClass eStaticClass() {
         return TablePackage.Literals.ROW_DESCRIPTION;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setName(String newName) {
+        String oldName = this.name;
+        this.name = newName;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.ROW_DESCRIPTION__NAME, oldName, this.name));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getSemanticCandidatesExpression() {
+        return this.semanticCandidatesExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setSemanticCandidatesExpression(String newSemanticCandidatesExpression) {
+        String oldSemanticCandidatesExpression = this.semanticCandidatesExpression;
+        this.semanticCandidatesExpression = newSemanticCandidatesExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(
+                    new ENotificationImpl(this, Notification.SET, TablePackage.ROW_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION, oldSemanticCandidatesExpression, this.semanticCandidatesExpression));
     }
 
     /**
@@ -314,6 +398,10 @@ public class RowDescriptionImpl extends TableElementDescriptionImpl implements R
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
+            case TablePackage.ROW_DESCRIPTION__NAME:
+                return this.getName();
+            case TablePackage.ROW_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
+                return this.getSemanticCandidatesExpression();
             case TablePackage.ROW_DESCRIPTION__HEADER_LABEL_EXPRESSION:
                 return this.getHeaderLabelExpression();
             case TablePackage.ROW_DESCRIPTION__HEADER_ICON_EXPRESSION:
@@ -339,6 +427,12 @@ public class RowDescriptionImpl extends TableElementDescriptionImpl implements R
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
+            case TablePackage.ROW_DESCRIPTION__NAME:
+                this.setName((String) newValue);
+                return;
+            case TablePackage.ROW_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
+                this.setSemanticCandidatesExpression((String) newValue);
+                return;
             case TablePackage.ROW_DESCRIPTION__HEADER_LABEL_EXPRESSION:
                 this.setHeaderLabelExpression((String) newValue);
                 return;
@@ -370,6 +464,12 @@ public class RowDescriptionImpl extends TableElementDescriptionImpl implements R
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
+            case TablePackage.ROW_DESCRIPTION__NAME:
+                this.setName(NAME_EDEFAULT);
+                return;
+            case TablePackage.ROW_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
+                this.setSemanticCandidatesExpression(SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT);
+                return;
             case TablePackage.ROW_DESCRIPTION__HEADER_LABEL_EXPRESSION:
                 this.setHeaderLabelExpression(HEADER_LABEL_EXPRESSION_EDEFAULT);
                 return;
@@ -400,6 +500,10 @@ public class RowDescriptionImpl extends TableElementDescriptionImpl implements R
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
+            case TablePackage.ROW_DESCRIPTION__NAME:
+                return !Objects.equals(NAME_EDEFAULT, this.name);
+            case TablePackage.ROW_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
+                return SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT == null ? this.semanticCandidatesExpression != null : !SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT.equals(this.semanticCandidatesExpression);
             case TablePackage.ROW_DESCRIPTION__HEADER_LABEL_EXPRESSION:
                 return HEADER_LABEL_EXPRESSION_EDEFAULT == null ? this.headerLabelExpression != null : !HEADER_LABEL_EXPRESSION_EDEFAULT.equals(this.headerLabelExpression);
             case TablePackage.ROW_DESCRIPTION__HEADER_ICON_EXPRESSION:
@@ -426,7 +530,11 @@ public class RowDescriptionImpl extends TableElementDescriptionImpl implements R
         if (this.eIsProxy())
             return super.toString();
 
-        String result = super.toString() + " (headerLabelExpression: " +
+        String result = super.toString() + " (name: " +
+                this.name +
+                ", semanticCandidatesExpression: " +
+                this.semanticCandidatesExpression +
+                ", headerLabelExpression: " +
                 this.headerLabelExpression +
                 ", headerIconExpression: " +
                 this.headerIconExpression +

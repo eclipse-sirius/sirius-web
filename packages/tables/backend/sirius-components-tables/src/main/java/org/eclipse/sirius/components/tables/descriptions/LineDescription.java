@@ -42,8 +42,6 @@ public final class LineDescription {
 
     private Function<VariableManager, PaginatedData> semanticElementsProvider;
 
-    private Predicate<VariableManager> shouldRenderPredicate;
-
     private Function<VariableManager, String> headerLabelProvider;
 
     private Function<VariableManager, List<String>> headerIconURLsProvider;
@@ -76,10 +74,6 @@ public final class LineDescription {
 
     public Function<VariableManager, PaginatedData> getSemanticElementsProvider() {
         return this.semanticElementsProvider;
-    }
-
-    public Predicate<VariableManager> getShouldRenderPredicate() {
-        return this.shouldRenderPredicate;
     }
 
     public Function<VariableManager, String> getHeaderLabelProvider() {
@@ -124,8 +118,6 @@ public final class LineDescription {
 
         private Function<VariableManager, PaginatedData> semanticElementsProvider;
 
-        private Predicate<VariableManager> shouldRenderPredicate = variableManager -> true;
-
         private Function<VariableManager, String> headerLabelProvider;
 
         private Function<VariableManager, List<String>> headerIconURLsProvider;
@@ -152,11 +144,6 @@ public final class LineDescription {
 
         public Builder semanticElementsProvider(Function<VariableManager, PaginatedData> semanticElementsProvider) {
             this.semanticElementsProvider = Objects.requireNonNull(semanticElementsProvider);
-            return this;
-        }
-
-        public Builder shouldRenderPredicate(Predicate<VariableManager> shouldRenderPredicate) {
-            this.shouldRenderPredicate = Objects.requireNonNull(shouldRenderPredicate);
             return this;
         }
 
@@ -191,7 +178,6 @@ public final class LineDescription {
             lineDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             lineDescription.targetObjectKindProvider = Objects.requireNonNull(this.targetObjectKindProvider);
             lineDescription.semanticElementsProvider = Objects.requireNonNull(this.semanticElementsProvider);
-            lineDescription.shouldRenderPredicate = Objects.requireNonNull(this.shouldRenderPredicate);
             lineDescription.headerLabelProvider = Objects.requireNonNull(this.headerLabelProvider);
             lineDescription.headerIconURLsProvider = Objects.requireNonNull(this.headerIconURLsProvider);
             lineDescription.headerIndexLabelProvider = Objects.requireNonNull(this.headerIndexLabelProvider);

@@ -102,7 +102,7 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
                 .build();
 
         var rowDescription = new TableBuilders().newRowDescription()
-                .semanticCandidatesExpression("aql:self.types")
+                .semanticCandidatesExpression("aql:self.eAllContents()->filter(papaya::Type)->toPaginatedData(cursor,direction,size)")
                 .headerIndexLabelExpression("aql:rowIndex")
                 .headerLabelExpression("aql:self.name")
                 .contextMenuEntries(contextMenuEntry)

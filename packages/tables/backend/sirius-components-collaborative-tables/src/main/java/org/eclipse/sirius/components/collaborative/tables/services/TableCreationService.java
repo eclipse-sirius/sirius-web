@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,7 +55,9 @@ public class TableCreationService {
         variableManager.put(TableDescription.LABEL, label);
         variableManager.put(VariableManager.SELF, targetObject);
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
-
+        variableManager.put(TableRenderer.PAGINATION_CURSOR, null);
+        variableManager.put(TableRenderer.PAGINATION_SIZE, 0);
+        variableManager.put(TableRenderer.PAGINATION_DIRECTION, "NEXT");
 
         TableComponentProps tableComponentProps = new TableComponentProps(variableManager, tableDescription, Optional.empty(), List.of(), "", List.of());
 

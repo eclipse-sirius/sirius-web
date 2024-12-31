@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,12 +22,14 @@ public class CellDescriptionBuilder {
 
     /**
      * Create instance org.eclipse.sirius.components.view.table.CellDescription.
+     *
      * @generated
      */
     private org.eclipse.sirius.components.view.table.CellDescription cellDescription = org.eclipse.sirius.components.view.table.TableFactory.eINSTANCE.createCellDescription();
 
     /**
      * Return instance org.eclipse.sirius.components.view.table.CellDescription.
+     *
      * @generated
      */
     protected org.eclipse.sirius.components.view.table.CellDescription getCellDescription() {
@@ -36,6 +38,7 @@ public class CellDescriptionBuilder {
 
     /**
      * Return instance org.eclipse.sirius.components.view.table.CellDescription.
+     *
      * @generated
      */
     public org.eclipse.sirius.components.view.table.CellDescription build() {
@@ -51,24 +54,7 @@ public class CellDescriptionBuilder {
         this.getCellDescription().setName(value);
         return this;
     }
-    /**
-     * Setter for DomainType.
-     *
-     * @generated
-     */
-    public CellDescriptionBuilder domainType(java.lang.String value) {
-        this.getCellDescription().setDomainType(value);
-        return this;
-    }
-    /**
-     * Setter for SemanticCandidatesExpression.
-     *
-     * @generated
-     */
-    public CellDescriptionBuilder semanticCandidatesExpression(java.lang.String value) {
-        this.getCellDescription().setSemanticCandidatesExpression(value);
-        return this;
-    }
+
     /**
      * Setter for PreconditionExpression.
      *
@@ -78,6 +64,7 @@ public class CellDescriptionBuilder {
         this.getCellDescription().setPreconditionExpression(value);
         return this;
     }
+
     /**
      * Setter for ValueExpression.
      *
@@ -87,6 +74,7 @@ public class CellDescriptionBuilder {
         this.getCellDescription().setValueExpression(value);
         return this;
     }
+
     /**
      * Setter for TooltipExpression.
      *
@@ -96,6 +84,7 @@ public class CellDescriptionBuilder {
         this.getCellDescription().setTooltipExpression(value);
         return this;
     }
+
     /**
      * Setter for CellWidgetDescription.
      *

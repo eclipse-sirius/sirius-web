@@ -68,10 +68,8 @@ public class LineComponent implements IComponent {
             String targetObjectId = lineDescription.getTargetObjectIdProvider().apply(lineVariableManager);
             var optionalPreviousLine = linesRequestor.getByTargetObjectId(targetObjectId);
 
-            if (lineDescription.getShouldRenderPredicate().test(lineVariableManager)) {
-                Element lineElement = this.doRender(lineVariableManager, targetObjectId, optionalPreviousLine);
-                children.add(lineElement);
-            }
+            Element lineElement = this.doRender(lineVariableManager, targetObjectId, optionalPreviousLine);
+            children.add(lineElement);
 
         }
 

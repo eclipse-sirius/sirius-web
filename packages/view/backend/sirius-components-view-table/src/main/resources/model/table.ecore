@@ -5,13 +5,13 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="useStripedRowsExpression"
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="columnDescriptions" upperBound="-1"
-        eType="#//ColumnDescription" containment="true" eKeys="#//TableElementDescription/name"/>
+        eType="#//ColumnDescription" containment="true" eKeys="#//ColumnDescription/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="rowDescription" eType="#//RowDescription"
-        containment="true" eKeys="#//TableElementDescription/name"/>
+        containment="true" eKeys="#//RowDescription/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="cellDescriptions" upperBound="-1"
-        eType="#//CellDescription" containment="true" eKeys="#//TableElementDescription/name"/>
+        eType="#//CellDescription" containment="true" eKeys="#//CellDescription/name"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TableElementDescription" abstract="true">
+  <eClassifiers xsi:type="ecore:EClass" name="ColumnDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="domainType" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//DomainType"
         defaultValueLiteral=""/>
@@ -20,8 +20,6 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="preconditionExpression"
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
         defaultValueLiteral=""/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ColumnDescription" eSuperTypes="#//TableElementDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="headerIndexLabelExpression"
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
         defaultValueLiteral=""/>
@@ -40,7 +38,11 @@
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
         defaultValueLiteral=""/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="RowDescription" eSuperTypes="#//TableElementDescription">
+  <eClassifiers xsi:type="ecore:EClass" name="RowDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="semanticCandidatesExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
+        defaultValueLiteral=""/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="headerLabelExpression"
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
         defaultValueLiteral=""/>
@@ -57,7 +59,11 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="contextMenuEntries" upperBound="-1"
         eType="#//RowContextMenuEntry" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="CellDescription" eSuperTypes="#//TableElementDescription">
+  <eClassifiers xsi:type="ecore:EClass" name="CellDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="preconditionExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
+        defaultValueLiteral=""/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
         defaultValueLiteral=""/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="tooltipExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
