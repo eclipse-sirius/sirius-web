@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.sirius.components.view.table.CellDescription;
 import org.eclipse.sirius.components.view.table.CellWidgetDescription;
 import org.eclipse.sirius.components.view.table.TablePackage;
@@ -38,28 +39,35 @@ import org.eclipse.sirius.components.view.table.TablePackage;
  *
  * @generated
  */
-public class CellDescriptionImpl extends TableElementDescriptionImpl implements CellDescription {
+public class CellDescriptionImpl extends MinimalEObjectImpl.Container implements CellDescription {
 
+    /**
+     * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     * @see #getName()
+     */
+    protected static final String NAME_EDEFAULT = null;
+    /**
+     * The default value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getPreconditionExpression()
+     */
+    protected static final String PRECONDITION_EXPRESSION_EDEFAULT = "";
     /**
      * The default value of the '{@link #getValueExpression() <em>Value Expression</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @see #getValueExpression()
      * @generated
      * @ordered
+     * @see #getValueExpression()
      */
     protected static final String VALUE_EXPRESSION_EDEFAULT = "";
-
-    /**
-     * The cached value of the '{@link #getValueExpression() <em>Value Expression</em>}' attribute. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @see #getValueExpression()
-     * @generated
-     * @ordered
-     */
-    protected String valueExpression = VALUE_EXPRESSION_EDEFAULT;
-
     /**
      * The default value of the '{@link #getTooltipExpression() <em>Tooltip Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -69,7 +77,33 @@ public class CellDescriptionImpl extends TableElementDescriptionImpl implements 
      * @see #getTooltipExpression()
      */
     protected static final String TOOLTIP_EXPRESSION_EDEFAULT = "";
-
+    /**
+     * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     * @see #getName()
+     */
+    protected String name = NAME_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getPreconditionExpression()
+     */
+    protected String preconditionExpression = PRECONDITION_EXPRESSION_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getValueExpression() <em>Value Expression</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getValueExpression()
+     */
+    protected String valueExpression = VALUE_EXPRESSION_EDEFAULT;
     /**
      * The cached value of the '{@link #getTooltipExpression() <em>Tooltip Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -84,9 +118,9 @@ public class CellDescriptionImpl extends TableElementDescriptionImpl implements 
      * The cached value of the '{@link #getCellWidgetDescription() <em>Cell Widget Description</em>}' containment
      * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getCellWidgetDescription()
      * @generated
      * @ordered
+     * @see #getCellWidgetDescription()
      */
     protected CellWidgetDescription cellWidgetDescription;
 
@@ -107,6 +141,52 @@ public class CellDescriptionImpl extends TableElementDescriptionImpl implements 
     @Override
     protected EClass eStaticClass() {
         return TablePackage.Literals.CELL_DESCRIPTION;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setName(String newName) {
+        String oldName = this.name;
+        this.name = newName;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.CELL_DESCRIPTION__NAME, oldName, this.name));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getPreconditionExpression() {
+        return this.preconditionExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setPreconditionExpression(String newPreconditionExpression) {
+        String oldPreconditionExpression = this.preconditionExpression;
+        this.preconditionExpression = newPreconditionExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.CELL_DESCRIPTION__PRECONDITION_EXPRESSION, oldPreconditionExpression, this.preconditionExpression));
     }
 
     /**
@@ -225,6 +305,10 @@ public class CellDescriptionImpl extends TableElementDescriptionImpl implements 
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
+            case TablePackage.CELL_DESCRIPTION__NAME:
+                return this.getName();
+            case TablePackage.CELL_DESCRIPTION__PRECONDITION_EXPRESSION:
+                return this.getPreconditionExpression();
             case TablePackage.CELL_DESCRIPTION__VALUE_EXPRESSION:
                 return this.getValueExpression();
             case TablePackage.CELL_DESCRIPTION__TOOLTIP_EXPRESSION:
@@ -243,6 +327,12 @@ public class CellDescriptionImpl extends TableElementDescriptionImpl implements 
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
+            case TablePackage.CELL_DESCRIPTION__NAME:
+                this.setName((String) newValue);
+                return;
+            case TablePackage.CELL_DESCRIPTION__PRECONDITION_EXPRESSION:
+                this.setPreconditionExpression((String) newValue);
+                return;
             case TablePackage.CELL_DESCRIPTION__VALUE_EXPRESSION:
                 this.setValueExpression((String) newValue);
                 return;
@@ -264,6 +354,12 @@ public class CellDescriptionImpl extends TableElementDescriptionImpl implements 
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
+            case TablePackage.CELL_DESCRIPTION__NAME:
+                this.setName(NAME_EDEFAULT);
+                return;
+            case TablePackage.CELL_DESCRIPTION__PRECONDITION_EXPRESSION:
+                this.setPreconditionExpression(PRECONDITION_EXPRESSION_EDEFAULT);
+                return;
             case TablePackage.CELL_DESCRIPTION__VALUE_EXPRESSION:
                 this.setValueExpression(VALUE_EXPRESSION_EDEFAULT);
                 return;
@@ -285,6 +381,10 @@ public class CellDescriptionImpl extends TableElementDescriptionImpl implements 
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
+            case TablePackage.CELL_DESCRIPTION__NAME:
+                return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
+            case TablePackage.CELL_DESCRIPTION__PRECONDITION_EXPRESSION:
+                return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
             case TablePackage.CELL_DESCRIPTION__VALUE_EXPRESSION:
                 return VALUE_EXPRESSION_EDEFAULT == null ? this.valueExpression != null : !VALUE_EXPRESSION_EDEFAULT.equals(this.valueExpression);
             case TablePackage.CELL_DESCRIPTION__TOOLTIP_EXPRESSION:
@@ -306,7 +406,11 @@ public class CellDescriptionImpl extends TableElementDescriptionImpl implements 
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (valueExpression: ");
+        result.append(" (name: ");
+        result.append(this.name);
+        result.append(", preconditionExpression: ");
+        result.append(this.preconditionExpression);
+        result.append(", valueExpression: ");
         result.append(this.valueExpression);
         result.append(", tooltipExpression: ");
         result.append(this.tooltipExpression);

@@ -131,7 +131,6 @@ public class ViewTableDescriptionConverter implements IRepresentationDescription
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .targetObjectKindProvider(this.semanticTargetKindProvider)
                 .semanticElementsProvider(this.getRowSemanticElementsProvider(rowDescription, interpreter))
-                .shouldRenderPredicate(this.getShouldRenderPredicate(rowDescription.getPreconditionExpression(), interpreter))
                 .headerLabelProvider(variableManager -> this.evaluateString(interpreter, variableManager, rowDescription.getHeaderLabelExpression()))
                 .headerIconURLsProvider(new ViewIconURLsProvider(interpreter, rowDescription.getHeaderIconExpression()))
                 .headerIndexLabelProvider(variableManager -> this.evaluateString(interpreter, variableManager, rowDescription.getHeaderIndexLabelExpression()))
@@ -217,7 +216,7 @@ public class ViewTableDescriptionConverter implements IRepresentationDescription
         return result;
     }
 
-    private Function<VariableManager, List<Object>> getColumnSemanticElementsProvider(org.eclipse.sirius.components.view.table.TableElementDescription elementDescription, AQLInterpreter interpreter) {
+    private Function<VariableManager, List<Object>> getColumnSemanticElementsProvider(org.eclipse.sirius.components.view.table.ColumnDescription elementDescription, AQLInterpreter interpreter) {
         return variableManager -> {
             Result result = interpreter.evaluateExpression(variableManager.getVariables(), elementDescription.getSemanticCandidatesExpression());
             List<Object> candidates = result.asObjects().orElse(List.of());
@@ -233,21 +232,12 @@ public class ViewTableDescriptionConverter implements IRepresentationDescription
         };
     }
 
-    private Function<VariableManager, PaginatedData> getRowSemanticElementsProvider(org.eclipse.sirius.components.view.table.TableElementDescription elementDescription, AQLInterpreter interpreter) {
-        return variableManager -> {
-            Result result = interpreter.evaluateExpression(variableManager.getVariables(), elementDescription.getSemanticCandidatesExpression());
-            List<Object> candidates = result.asObjects().orElse(List.of());
-            if (elementDescription.getDomainType() == null || elementDescription.getDomainType().isBlank()) {
-                return new PaginatedData(candidates, false, false, candidates.size());
-            }
-            var list = candidates.stream()
-                    .filter(EObject.class::isInstance)
-                    .map(EObject.class::cast)
-                    .filter(candidate -> new DomainClassPredicate(Optional.ofNullable(elementDescription.getDomainType()).orElse("")).test(candidate.eClass()))
-                    .map(Object.class::cast)
-                    .toList();
-            return new PaginatedData(list, false, false, list.size());
-        };
+    private Function<VariableManager, PaginatedData> getRowSemanticElementsProvider(org.eclipse.sirius.components.view.table.RowDescription elementDescription, AQLInterpreter interpreter) {
+        return variableManager -> interpreter.evaluateExpression(variableManager.getVariables(), elementDescription.getSemanticCandidatesExpression())
+                .asObject()
+                .filter(PaginatedData.class::isInstance)
+                .map(PaginatedData.class::cast)
+                .orElseGet(() -> new PaginatedData(List.of(), false, false, 0));
     }
 
     private Predicate<VariableManager> getShouldRenderPredicate(String preconditionExpression, AQLInterpreter interpreter) {

@@ -387,8 +387,7 @@ INSERT INTO document (
                    "eClass": "table:RowDescription",
                    "data": {
                      "name": "Row",
-                     "domainType": "buck::Human",
-                     "semanticCandidatesExpression": "aql:self.humans"
+                     "semanticCandidatesExpression": "aql:self.eContents()->filter(buck::Human)->toPaginatedData(cursor,direction,size)"
                    }
                  },
                  "cellDescriptions": [
@@ -397,8 +396,7 @@ INSERT INTO document (
                      "eClass": "table:CellDescription",
                      "data": {
                        "name": "Cell",
-                       "domainType": "vaughan::Human",
-                       "semanticCandidatesExpression": "aql:self",
+                       "preconditionExpression": "aql:true",
                        "valueExpression": "aql:self.name",
                        "cellWidgetDescription": {
                        "id": "9b3400c9-d5f0-46db-9d60-60ec4016d383",

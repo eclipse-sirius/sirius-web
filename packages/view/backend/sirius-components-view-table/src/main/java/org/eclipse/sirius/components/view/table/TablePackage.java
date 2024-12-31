@@ -162,68 +162,6 @@ public interface TablePackage extends EPackage {
     int TABLE_DESCRIPTION_OPERATION_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_OPERATION_COUNT;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.table.impl.TableElementDescriptionImpl
-     * <em>Element Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @see org.eclipse.sirius.components.view.table.impl.TableElementDescriptionImpl
-     * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getTableElementDescription()
-     */
-    int TABLE_ELEMENT_DESCRIPTION = 1;
-
-    /**
-     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int TABLE_ELEMENT_DESCRIPTION__NAME = 0;
-
-    /**
-     * The feature id for the '<em><b>Domain Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int TABLE_ELEMENT_DESCRIPTION__DOMAIN_TYPE = 1;
-
-    /**
-     * The feature id for the '<em><b>Semantic Candidates Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int TABLE_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = 2;
-
-    /**
-     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int TABLE_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION = 3;
-
-    /**
-     * The number of structural features of the '<em>Element Description</em>' class. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int TABLE_ELEMENT_DESCRIPTION_FEATURE_COUNT = 4;
-
-    /**
-     * The number of operations of the '<em>Element Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @generated
-     * @ordered
-     */
-    int TABLE_ELEMENT_DESCRIPTION_OPERATION_COUNT = 0;
-
-    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.table.impl.ColumnDescriptionImpl <em>Column
      * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -231,7 +169,7 @@ public interface TablePackage extends EPackage {
      * @see org.eclipse.sirius.components.view.table.impl.ColumnDescriptionImpl
      * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getColumnDescription()
      */
-    int COLUMN_DESCRIPTION = 2;
+    int COLUMN_DESCRIPTION = 1;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -239,7 +177,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int COLUMN_DESCRIPTION__NAME = TABLE_ELEMENT_DESCRIPTION__NAME;
+    int COLUMN_DESCRIPTION__NAME = 0;
 
     /**
      * The feature id for the '<em><b>Domain Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -247,7 +185,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int COLUMN_DESCRIPTION__DOMAIN_TYPE = TABLE_ELEMENT_DESCRIPTION__DOMAIN_TYPE;
+    int COLUMN_DESCRIPTION__DOMAIN_TYPE = 1;
 
     /**
      * The feature id for the '<em><b>Semantic Candidates Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -256,7 +194,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int COLUMN_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = TABLE_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION;
+    int COLUMN_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = 2;
 
     /**
      * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -265,7 +203,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int COLUMN_DESCRIPTION__PRECONDITION_EXPRESSION = TABLE_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION;
+    int COLUMN_DESCRIPTION__PRECONDITION_EXPRESSION = 3;
 
     /**
      * The feature id for the '<em><b>Header Index Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -274,7 +212,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int COLUMN_DESCRIPTION__HEADER_INDEX_LABEL_EXPRESSION = TABLE_ELEMENT_DESCRIPTION_FEATURE_COUNT;
+    int COLUMN_DESCRIPTION__HEADER_INDEX_LABEL_EXPRESSION = 4;
 
     /**
      * The feature id for the '<em><b>Header Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -283,7 +221,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int COLUMN_DESCRIPTION__HEADER_LABEL_EXPRESSION = TABLE_ELEMENT_DESCRIPTION_FEATURE_COUNT + 1;
+    int COLUMN_DESCRIPTION__HEADER_LABEL_EXPRESSION = 5;
 
     /**
      * The feature id for the '<em><b>Header Icon Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -292,7 +230,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int COLUMN_DESCRIPTION__HEADER_ICON_EXPRESSION = TABLE_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
+    int COLUMN_DESCRIPTION__HEADER_ICON_EXPRESSION = 6;
 
     /**
      * The feature id for the '<em><b>Initial Width Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -301,7 +239,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int COLUMN_DESCRIPTION__INITIAL_WIDTH_EXPRESSION = TABLE_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
+    int COLUMN_DESCRIPTION__INITIAL_WIDTH_EXPRESSION = 7;
 
     /**
      * The feature id for the '<em><b>Is Resizable Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -310,7 +248,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int COLUMN_DESCRIPTION__IS_RESIZABLE_EXPRESSION = TABLE_ELEMENT_DESCRIPTION_FEATURE_COUNT + 4;
+    int COLUMN_DESCRIPTION__IS_RESIZABLE_EXPRESSION = 8;
 
     /**
      * The feature id for the '<em><b>Filter Widget Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -319,7 +257,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int COLUMN_DESCRIPTION__FILTER_WIDGET_EXPRESSION = TABLE_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
+    int COLUMN_DESCRIPTION__FILTER_WIDGET_EXPRESSION = 9;
 
     /**
      * The number of structural features of the '<em>Column Description</em>' class. <!-- begin-user-doc --> <!--
@@ -328,7 +266,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int COLUMN_DESCRIPTION_FEATURE_COUNT = TABLE_ELEMENT_DESCRIPTION_FEATURE_COUNT + 6;
+    int COLUMN_DESCRIPTION_FEATURE_COUNT = 10;
 
     /**
      * The number of operations of the '<em>Column Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -337,7 +275,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int COLUMN_DESCRIPTION_OPERATION_COUNT = TABLE_ELEMENT_DESCRIPTION_OPERATION_COUNT;
+    int COLUMN_DESCRIPTION_OPERATION_COUNT = 0;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.table.impl.RowDescriptionImpl <em>Row
@@ -347,7 +285,7 @@ public interface TablePackage extends EPackage {
      * @see org.eclipse.sirius.components.view.table.impl.RowDescriptionImpl
      * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getRowDescription()
      */
-    int ROW_DESCRIPTION = 3;
+    int ROW_DESCRIPTION = 2;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -355,15 +293,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ROW_DESCRIPTION__NAME = TABLE_ELEMENT_DESCRIPTION__NAME;
-
-    /**
-     * The feature id for the '<em><b>Domain Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int ROW_DESCRIPTION__DOMAIN_TYPE = TABLE_ELEMENT_DESCRIPTION__DOMAIN_TYPE;
+    int ROW_DESCRIPTION__NAME = 0;
 
     /**
      * The feature id for the '<em><b>Semantic Candidates Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -372,16 +302,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ROW_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = TABLE_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION;
-
-    /**
-     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int ROW_DESCRIPTION__PRECONDITION_EXPRESSION = TABLE_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION;
+    int ROW_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = 1;
 
     /**
      * The feature id for the '<em><b>Header Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -390,7 +311,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ROW_DESCRIPTION__HEADER_LABEL_EXPRESSION = TABLE_ELEMENT_DESCRIPTION_FEATURE_COUNT;
+    int ROW_DESCRIPTION__HEADER_LABEL_EXPRESSION = 2;
 
     /**
      * The feature id for the '<em><b>Header Icon Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -399,7 +320,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ROW_DESCRIPTION__HEADER_ICON_EXPRESSION = TABLE_ELEMENT_DESCRIPTION_FEATURE_COUNT + 1;
+    int ROW_DESCRIPTION__HEADER_ICON_EXPRESSION = 3;
 
     /**
      * The feature id for the '<em><b>Header Index Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -408,7 +329,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ROW_DESCRIPTION__HEADER_INDEX_LABEL_EXPRESSION = TABLE_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
+    int ROW_DESCRIPTION__HEADER_INDEX_LABEL_EXPRESSION = 4;
 
     /**
      * The feature id for the '<em><b>Initial Height Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -417,7 +338,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ROW_DESCRIPTION__INITIAL_HEIGHT_EXPRESSION = TABLE_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
+    int ROW_DESCRIPTION__INITIAL_HEIGHT_EXPRESSION = 5;
 
     /**
      * The feature id for the '<em><b>Is Resizable Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -426,7 +347,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ROW_DESCRIPTION__IS_RESIZABLE_EXPRESSION = TABLE_ELEMENT_DESCRIPTION_FEATURE_COUNT + 4;
+    int ROW_DESCRIPTION__IS_RESIZABLE_EXPRESSION = 6;
 
     /**
      * The feature id for the '<em><b>Context Menu Entries</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -435,7 +356,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES = TABLE_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
+    int ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES = 7;
 
     /**
      * The number of structural features of the '<em>Row Description</em>' class. <!-- begin-user-doc --> <!--
@@ -444,7 +365,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ROW_DESCRIPTION_FEATURE_COUNT = TABLE_ELEMENT_DESCRIPTION_FEATURE_COUNT + 6;
+    int ROW_DESCRIPTION_FEATURE_COUNT = 8;
 
     /**
      * The number of operations of the '<em>Row Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -452,7 +373,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ROW_DESCRIPTION_OPERATION_COUNT = TABLE_ELEMENT_DESCRIPTION_OPERATION_COUNT;
+    int ROW_DESCRIPTION_OPERATION_COUNT = 0;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.table.impl.CellDescriptionImpl <em>Cell
@@ -462,7 +383,7 @@ public interface TablePackage extends EPackage {
      * @see org.eclipse.sirius.components.view.table.impl.CellDescriptionImpl
      * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getCellDescription()
      */
-    int CELL_DESCRIPTION = 4;
+    int CELL_DESCRIPTION = 3;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -470,24 +391,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CELL_DESCRIPTION__NAME = TABLE_ELEMENT_DESCRIPTION__NAME;
-
-    /**
-     * The feature id for the '<em><b>Domain Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int CELL_DESCRIPTION__DOMAIN_TYPE = TABLE_ELEMENT_DESCRIPTION__DOMAIN_TYPE;
-
-    /**
-     * The feature id for the '<em><b>Semantic Candidates Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int CELL_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = TABLE_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION;
+    int CELL_DESCRIPTION__NAME = 0;
 
     /**
      * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -496,7 +400,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CELL_DESCRIPTION__PRECONDITION_EXPRESSION = TABLE_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION;
+    int CELL_DESCRIPTION__PRECONDITION_EXPRESSION = 1;
 
     /**
      * The feature id for the '<em><b>Value Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -505,7 +409,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CELL_DESCRIPTION__VALUE_EXPRESSION = TABLE_ELEMENT_DESCRIPTION_FEATURE_COUNT;
+    int CELL_DESCRIPTION__VALUE_EXPRESSION = 2;
 
     /**
      * The feature id for the '<em><b>Tooltip Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -514,7 +418,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CELL_DESCRIPTION__TOOLTIP_EXPRESSION = TABLE_ELEMENT_DESCRIPTION_FEATURE_COUNT + 1;
+    int CELL_DESCRIPTION__TOOLTIP_EXPRESSION = 3;
 
     /**
      * The feature id for the '<em><b>Cell Widget Description</b></em>' containment reference. <!-- begin-user-doc -->
@@ -523,7 +427,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CELL_DESCRIPTION__CELL_WIDGET_DESCRIPTION = TABLE_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
+    int CELL_DESCRIPTION__CELL_WIDGET_DESCRIPTION = 4;
 
     /**
      * The number of structural features of the '<em>Cell Description</em>' class. <!-- begin-user-doc --> <!--
@@ -532,7 +436,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CELL_DESCRIPTION_FEATURE_COUNT = TABLE_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
+    int CELL_DESCRIPTION_FEATURE_COUNT = 5;
 
     /**
      * The number of operations of the '<em>Cell Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -540,7 +444,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CELL_DESCRIPTION_OPERATION_COUNT = TABLE_ELEMENT_DESCRIPTION_OPERATION_COUNT;
+    int CELL_DESCRIPTION_OPERATION_COUNT = 0;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.table.CellWidgetDescription <em>Cell Widget
@@ -550,7 +454,7 @@ public interface TablePackage extends EPackage {
      * @see org.eclipse.sirius.components.view.table.CellWidgetDescription
      * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getCellWidgetDescription()
      */
-    int CELL_WIDGET_DESCRIPTION = 5;
+    int CELL_WIDGET_DESCRIPTION = 4;
 
     /**
      * The number of structural features of the '<em>Cell Widget Description</em>' class. <!-- begin-user-doc --> <!--
@@ -579,7 +483,7 @@ public interface TablePackage extends EPackage {
      * @see org.eclipse.sirius.components.view.table.impl.CellTextfieldWidgetDescriptionImpl
      * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getCellTextfieldWidgetDescription()
      */
-    int CELL_TEXTFIELD_WIDGET_DESCRIPTION = 6;
+    int CELL_TEXTFIELD_WIDGET_DESCRIPTION = 5;
 
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -616,7 +520,7 @@ public interface TablePackage extends EPackage {
      * @see org.eclipse.sirius.components.view.table.impl.CellLabelWidgetDescriptionImpl
      * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getCellLabelWidgetDescription()
      */
-    int CELL_LABEL_WIDGET_DESCRIPTION = 7;
+    int CELL_LABEL_WIDGET_DESCRIPTION = 6;
 
     /**
      * The feature id for the '<em><b>Icon Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -625,6 +529,7 @@ public interface TablePackage extends EPackage {
      * @ordered
      */
     int CELL_LABEL_WIDGET_DESCRIPTION__ICON_EXPRESSION = CELL_WIDGET_DESCRIPTION_FEATURE_COUNT;
+
     /**
      * The number of structural features of the '<em>Cell Label Widget Description</em>' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -633,6 +538,7 @@ public interface TablePackage extends EPackage {
      * @ordered
      */
     int CELL_LABEL_WIDGET_DESCRIPTION_FEATURE_COUNT = CELL_WIDGET_DESCRIPTION_FEATURE_COUNT + 1;
+
     /**
      * The number of operations of the '<em>Cell Label Widget Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -641,6 +547,7 @@ public interface TablePackage extends EPackage {
      * @ordered
      */
     int CELL_LABEL_WIDGET_DESCRIPTION_OPERATION_COUNT = CELL_WIDGET_DESCRIPTION_OPERATION_COUNT;
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.table.impl.RowContextMenuEntryImpl <em>Row
      * Context Menu Entry</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -649,7 +556,8 @@ public interface TablePackage extends EPackage {
      * @see org.eclipse.sirius.components.view.table.impl.RowContextMenuEntryImpl
      * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getRowContextMenuEntry()
      */
-    int ROW_CONTEXT_MENU_ENTRY = 8;
+    int ROW_CONTEXT_MENU_ENTRY = 7;
+
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -657,6 +565,7 @@ public interface TablePackage extends EPackage {
      * @ordered
      */
     int ROW_CONTEXT_MENU_ENTRY__NAME = 0;
+
     /**
      * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -665,6 +574,7 @@ public interface TablePackage extends EPackage {
      * @ordered
      */
     int ROW_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION = 1;
+
     /**
      * The feature id for the '<em><b>Icon URL Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -673,6 +583,7 @@ public interface TablePackage extends EPackage {
      * @ordered
      */
     int ROW_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION = 2;
+
     /**
      * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -681,6 +592,7 @@ public interface TablePackage extends EPackage {
      * @ordered
      */
     int ROW_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION = 3;
+
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -689,12 +601,7 @@ public interface TablePackage extends EPackage {
      * @ordered
      */
     int ROW_CONTEXT_MENU_ENTRY__BODY = 4;
-    /**
-     * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    TablePackage eINSTANCE = org.eclipse.sirius.components.view.table.impl.TablePackageImpl.init();
+
     /**
      * The number of structural features of the '<em>Row Context Menu Entry</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -722,7 +629,7 @@ public interface TablePackage extends EPackage {
      * @see org.eclipse.sirius.components.view.table.impl.CellTextareaWidgetDescriptionImpl
      * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getCellTextareaWidgetDescription()
      */
-    int CELL_TEXTAREA_WIDGET_DESCRIPTION = 9;
+    int CELL_TEXTAREA_WIDGET_DESCRIPTION = 8;
 
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -732,6 +639,13 @@ public interface TablePackage extends EPackage {
      * @ordered
      */
     int CELL_TEXTAREA_WIDGET_DESCRIPTION__BODY = CELL_WIDGET_DESCRIPTION_FEATURE_COUNT;
+
+    /**
+     * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    TablePackage eINSTANCE = org.eclipse.sirius.components.view.table.impl.TablePackageImpl.init();
 
     /**
      * The number of structural features of the '<em>Cell Textarea Widget Description</em>' class. <!-- begin-user-doc
@@ -810,64 +724,6 @@ public interface TablePackage extends EPackage {
     EReference getTableDescription_CellDescriptions();
 
     /**
-     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.table.TableElementDescription
-     * <em>Element Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for class '<em>Element Description</em>'.
-     * @generated
-     * @see org.eclipse.sirius.components.view.table.TableElementDescription
-     */
-    EClass getTableElementDescription();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.table.TableElementDescription#getName <em>Name</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Name</em>'.
-     * @generated
-     * @see org.eclipse.sirius.components.view.table.TableElementDescription#getName()
-     * @see #getTableElementDescription()
-     */
-    EAttribute getTableElementDescription_Name();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.table.TableElementDescription#getDomainType <em>Domain Type</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Domain Type</em>'.
-     * @generated
-     * @see org.eclipse.sirius.components.view.table.TableElementDescription#getDomainType()
-     * @see #getTableElementDescription()
-     */
-    EAttribute getTableElementDescription_DomainType();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.table.TableElementDescription#getSemanticCandidatesExpression
-     * <em>Semantic Candidates Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Semantic Candidates Expression</em>'.
-     * @generated
-     * @see org.eclipse.sirius.components.view.table.TableElementDescription#getSemanticCandidatesExpression()
-     * @see #getTableElementDescription()
-     */
-    EAttribute getTableElementDescription_SemanticCandidatesExpression();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.table.TableElementDescription#getPreconditionExpression
-     * <em>Precondition Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Precondition Expression</em>'.
-     * @generated
-     * @see org.eclipse.sirius.components.view.table.TableElementDescription#getPreconditionExpression()
-     * @see #getTableElementDescription()
-     */
-    EAttribute getTableElementDescription_PreconditionExpression();
-
-    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.table.ColumnDescription <em>Column
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -876,6 +732,54 @@ public interface TablePackage extends EPackage {
      * @see org.eclipse.sirius.components.view.table.ColumnDescription
      */
     EClass getColumnDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.table.ColumnDescription#getName <em>Name</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Name</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.ColumnDescription#getName()
+     * @see #getColumnDescription()
+     */
+    EAttribute getColumnDescription_Name();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.table.ColumnDescription#getDomainType <em>Domain Type</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Domain Type</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.ColumnDescription#getDomainType()
+     * @see #getColumnDescription()
+     */
+    EAttribute getColumnDescription_DomainType();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.table.ColumnDescription#getSemanticCandidatesExpression <em>Semantic
+     * Candidates Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Semantic Candidates Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.ColumnDescription#getSemanticCandidatesExpression()
+     * @see #getColumnDescription()
+     */
+    EAttribute getColumnDescription_SemanticCandidatesExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.table.ColumnDescription#getPreconditionExpression <em>Precondition
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Precondition Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.ColumnDescription#getPreconditionExpression()
+     * @see #getColumnDescription()
+     */
+    EAttribute getColumnDescription_PreconditionExpression();
 
     /**
      * Returns the meta object for the attribute
@@ -960,6 +864,29 @@ public interface TablePackage extends EPackage {
     EClass getRowDescription();
 
     /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.table.RowDescription#getName
+     * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Name</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.RowDescription#getName()
+     * @see #getRowDescription()
+     */
+    EAttribute getRowDescription_Name();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.table.RowDescription#getSemanticCandidatesExpression <em>Semantic
+     * Candidates Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Semantic Candidates Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.RowDescription#getSemanticCandidatesExpression()
+     * @see #getRowDescription()
+     */
+    EAttribute getRowDescription_SemanticCandidatesExpression();
+
+    /**
      * Returns the meta object for the attribute
      * '{@link org.eclipse.sirius.components.view.table.RowDescription#getHeaderLabelExpression <em>Header Label
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1040,6 +967,30 @@ public interface TablePackage extends EPackage {
      * @see org.eclipse.sirius.components.view.table.CellDescription
      */
     EClass getCellDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.table.CellDescription#getName <em>Name</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Name</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.CellDescription#getName()
+     * @see #getCellDescription()
+     */
+    EAttribute getCellDescription_Name();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.table.CellDescription#getPreconditionExpression <em>Precondition
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Precondition Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.CellDescription#getPreconditionExpression()
+     * @see #getCellDescription()
+     */
+    EAttribute getCellDescription_PreconditionExpression();
 
     /**
      * Returns the meta object for the attribute
@@ -1289,49 +1240,6 @@ public interface TablePackage extends EPackage {
         EReference TABLE_DESCRIPTION__CELL_DESCRIPTIONS = eINSTANCE.getTableDescription_CellDescriptions();
 
         /**
-         * The meta object literal for the
-         * '{@link org.eclipse.sirius.components.view.table.impl.TableElementDescriptionImpl <em>Element
-         * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         * @see org.eclipse.sirius.components.view.table.impl.TableElementDescriptionImpl
-         * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getTableElementDescription()
-         */
-        EClass TABLE_ELEMENT_DESCRIPTION = eINSTANCE.getTableElementDescription();
-
-        /**
-         * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
-         * end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute TABLE_ELEMENT_DESCRIPTION__NAME = eINSTANCE.getTableElementDescription_Name();
-
-        /**
-         * The meta object literal for the '<em><b>Domain Type</b></em>' attribute feature. <!-- begin-user-doc --> <!--
-         * end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute TABLE_ELEMENT_DESCRIPTION__DOMAIN_TYPE = eINSTANCE.getTableElementDescription_DomainType();
-
-        /**
-         * The meta object literal for the '<em><b>Semantic Candidates Expression</b></em>' attribute feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute TABLE_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = eINSTANCE.getTableElementDescription_SemanticCandidatesExpression();
-
-        /**
-         * The meta object literal for the '<em><b>Precondition Expression</b></em>' attribute feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute TABLE_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION = eINSTANCE.getTableElementDescription_PreconditionExpression();
-
-        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.table.impl.ColumnDescriptionImpl
          * <em>Column Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -1340,6 +1248,38 @@ public interface TablePackage extends EPackage {
          * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getColumnDescription()
          */
         EClass COLUMN_DESCRIPTION = eINSTANCE.getColumnDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute COLUMN_DESCRIPTION__NAME = eINSTANCE.getColumnDescription_Name();
+
+        /**
+         * The meta object literal for the '<em><b>Domain Type</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute COLUMN_DESCRIPTION__DOMAIN_TYPE = eINSTANCE.getColumnDescription_DomainType();
+
+        /**
+         * The meta object literal for the '<em><b>Semantic Candidates Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute COLUMN_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = eINSTANCE.getColumnDescription_SemanticCandidatesExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Precondition Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute COLUMN_DESCRIPTION__PRECONDITION_EXPRESSION = eINSTANCE.getColumnDescription_PreconditionExpression();
 
         /**
          * The meta object literal for the '<em><b>Header Index Label Expression</b></em>' attribute feature. <!--
@@ -1400,6 +1340,22 @@ public interface TablePackage extends EPackage {
         EClass ROW_DESCRIPTION = eINSTANCE.getRowDescription();
 
         /**
+         * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute ROW_DESCRIPTION__NAME = eINSTANCE.getRowDescription_Name();
+
+        /**
+         * The meta object literal for the '<em><b>Semantic Candidates Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute ROW_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = eINSTANCE.getRowDescription_SemanticCandidatesExpression();
+
+        /**
          * The meta object literal for the '<em><b>Header Label Expression</b></em>' attribute feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
@@ -1456,6 +1412,22 @@ public interface TablePackage extends EPackage {
          * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getCellDescription()
          */
         EClass CELL_DESCRIPTION = eINSTANCE.getCellDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute CELL_DESCRIPTION__NAME = eINSTANCE.getCellDescription_Name();
+
+        /**
+         * The meta object literal for the '<em><b>Precondition Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute CELL_DESCRIPTION__PRECONDITION_EXPRESSION = eINSTANCE.getCellDescription_PreconditionExpression();
 
         /**
          * The meta object literal for the '<em><b>Value Expression</b></em>' attribute feature. <!-- begin-user-doc -->

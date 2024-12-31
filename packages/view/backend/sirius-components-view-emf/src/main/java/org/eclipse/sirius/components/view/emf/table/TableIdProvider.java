@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,6 @@ import org.eclipse.sirius.components.view.table.CellDescription;
 import org.eclipse.sirius.components.view.table.ColumnDescription;
 import org.eclipse.sirius.components.view.table.RowDescription;
 import org.eclipse.sirius.components.view.table.TableDescription;
-import org.eclipse.sirius.components.view.table.TableElementDescription;
 import org.springframework.stereotype.Service;
 
 /**
@@ -46,20 +45,24 @@ public class TableIdProvider implements ITableIdProvider {
     }
 
     @Override
-    public String getId(TableElementDescription tableElementDescription) {
-        String sourceId = this.getSourceIdFromElementDescription(tableElementDescription);
-        String sourceElementId = this.objectService.getId(tableElementDescription);
-        var id = "";
-        if (tableElementDescription instanceof CellDescription) {
-            id = CELL_DESCRIPTION_KIND + "?" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "=" + sourceElementId;
-        }
-        if (tableElementDescription instanceof ColumnDescription) {
-            id = COLUMN_DESCRIPTION_KIND + "?" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "=" + sourceElementId;
-        }
-        if (tableElementDescription instanceof RowDescription) {
-            id = ROW_DESCRIPTION_KIND + "?" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "=" + sourceElementId;
-        }
-        return id;
+    public String getId(RowDescription rowDescription) {
+        String sourceId = this.getSourceIdFromElementDescription(rowDescription);
+        String sourceElementId = this.objectService.getId(rowDescription);
+        return ROW_DESCRIPTION_KIND + "?" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "=" + sourceElementId;
+    }
+
+    @Override
+    public String getId(ColumnDescription columnDescription) {
+        String sourceId = this.getSourceIdFromElementDescription(columnDescription);
+        String sourceElementId = this.objectService.getId(columnDescription);
+        return COLUMN_DESCRIPTION_KIND + "?" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "=" + sourceElementId;
+    }
+
+    @Override
+    public String getId(CellDescription cellDescription) {
+        String sourceId = this.getSourceIdFromElementDescription(cellDescription);
+        String sourceElementId = this.objectService.getId(cellDescription);
+        return CELL_DESCRIPTION_KIND + "?" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "=" + sourceElementId;
     }
 
     private String getSourceIdFromElementDescription(EObject elementDescription) {

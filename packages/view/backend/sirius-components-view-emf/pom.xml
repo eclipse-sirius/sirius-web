@@ -132,6 +132,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-emf-tables</artifactId>
+			<version>2025.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-diagrams</artifactId>
 			<version>2025.1.2</version>
 		</dependency>

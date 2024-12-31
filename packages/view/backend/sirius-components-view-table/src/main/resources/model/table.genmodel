@@ -19,13 +19,11 @@
       <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference table.ecore#//TableDescription/rowDescription"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference table.ecore#//TableDescription/cellDescriptions"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="table.ecore#//TableElementDescription">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//TableElementDescription/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//TableElementDescription/domainType"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//TableElementDescription/semanticCandidatesExpression"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//TableElementDescription/preconditionExpression"/>
-    </genClasses>
     <genClasses ecoreClass="table.ecore#//ColumnDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//ColumnDescription/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//ColumnDescription/domainType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//ColumnDescription/semanticCandidatesExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//ColumnDescription/preconditionExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//ColumnDescription/headerIndexLabelExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//ColumnDescription/headerLabelExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//ColumnDescription/headerIconExpression"/>
@@ -34,6 +32,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//ColumnDescription/filterWidgetExpression"/>
     </genClasses>
     <genClasses ecoreClass="table.ecore#//RowDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//RowDescription/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//RowDescription/semanticCandidatesExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//RowDescription/headerLabelExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//RowDescription/headerIconExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//RowDescription/headerIndexLabelExpression"/>
@@ -42,6 +42,8 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference table.ecore#//RowDescription/contextMenuEntries"/>
     </genClasses>
     <genClasses ecoreClass="table.ecore#//CellDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//CellDescription/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//CellDescription/preconditionExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//CellDescription/valueExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//CellDescription/tooltipExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference table.ecore#//CellDescription/cellWidgetDescription"/>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.papaya.representations.table;
+package org.eclipse.sirius.components.emf.tables;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,5 +67,35 @@ public class CursorBasedNavigationServices {
             hasNextPage = count == size && iterator.hasNext();
         }
         return new PaginatedData(result, hasPreviousPage, hasNextPage, -1);
+    }
+
+    public PaginatedData toPaginatedData(List<Object> objects, Object cursor, String direction, int size) {
+        List<Object> subList = new ArrayList<>();
+        boolean hasPrevious = false;
+        boolean hasNext = false;
+
+        if (cursor != null) {
+            int cursorIndex = objects.indexOf(cursor);
+            if (cursorIndex >= 0) {
+                if ("NEXT".equals(direction)) {
+                    int startIndex = cursorIndex + 1;
+                    int endIndex = Math.min(startIndex + size, objects.size());
+                    subList = objects.subList(startIndex, endIndex);
+                    hasPrevious = cursorIndex > 0;
+                    hasNext = endIndex < objects.size();
+                } else if ("PREV".equalsIgnoreCase(direction)) {
+                    int startIndex = Math.max(cursorIndex - size, 0);
+                    subList = objects.subList(startIndex, cursorIndex);
+                    hasPrevious = startIndex > 0;
+                    hasNext = cursorIndex < objects.size() - 1;
+                }
+            }
+        } else {
+            int endIndex = Math.min(size, objects.size());
+            subList = objects.subList(0, endIndex);
+            hasNext = endIndex < objects.size();
+        }
+
+        return new PaginatedData(subList, hasPrevious, hasNext, objects.size());
     }
 }

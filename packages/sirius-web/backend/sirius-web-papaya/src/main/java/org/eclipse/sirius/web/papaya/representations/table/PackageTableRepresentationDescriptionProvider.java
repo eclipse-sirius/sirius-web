@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
+import org.eclipse.sirius.components.emf.tables.CursorBasedNavigationServices;
 import org.eclipse.sirius.components.papaya.AnnotableElement;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.PapayaPackage;

@@ -143,7 +143,7 @@ Note that you may need to encode special characters like `[`(by `%5B`) and `]` (
 - https://github.com/eclipse-sirius/sirius-web/issues/4345[#4345] [table] Make table cells independently selectable
 - https://github.com/eclipse-sirius/sirius-web/issues/4352[#4352] [table] Add support to range column filters in table
 - https://github.com/eclipse-sirius/sirius-web/issues/4474[#4474] [query] Add EMF Services (eSet, eUnset) for the Query View.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4354[#4354] [table] Add support for cursor based pagination in table view DSL
 
 == v2025.1.0
 
@@ -253,7 +253,7 @@ This is now fixed
 - https://github.com/eclipse-sirius/sirius-web/issues/4291[#4291] [core] Implement REST API documentation with openAPI v3 and swagger
 * Documentation is availlable in the url : /v3/api-docs
 * Swagger UI is availlable in the url : /swagger-ui/index.html#/
-- https://github.com/eclipse-sirius/sirius-web/issues/4335[#4335] [table] Add support of column reordering in table representation 
+- https://github.com/eclipse-sirius/sirius-web/issues/4335[#4335] [table] Add support of column reordering in table representation
 
 === Improvements
 

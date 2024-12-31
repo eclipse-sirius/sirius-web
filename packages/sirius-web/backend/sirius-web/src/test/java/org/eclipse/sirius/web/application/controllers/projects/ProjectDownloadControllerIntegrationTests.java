@@ -170,7 +170,7 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
     }
 
     private ResponseEntity<Resource> download(String projectId) {
-        var uri = "http://localhost:" + this.port + "/api/projects/" + projectId.toString();
+        var uri = "http://localhost:" + this.port + "/api/projects/" + projectId;
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.parseMediaType("application/zip")));
@@ -371,7 +371,7 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
                   }
                 }
                 """.replace("$GROUP$", this.getGroups())
-                    .replace("$TABLEDESCRIPTION$", this.getTableDescription());
+                .replace("$TABLEDESCRIPTION$", this.getTableDescription());
     }
 
     private String getTableDescription() {
@@ -401,8 +401,7 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
                      "eClass": "table:RowDescription",
                      "data": {
                        "name": "Row",
-                       "domainType": "buck::Human",
-                       "semanticCandidatesExpression": "aql:self.humans"
+                       "semanticCandidatesExpression": "aql:self.eContents()->filter(buck::Human)->toPaginatedData(cursor,direction,size)"
                      }
                    },
                     "cellDescriptions": [
@@ -411,8 +410,7 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
                        "eClass": "table:CellDescription",
                        "data": {
                          "name": "Cell",
-                         "domainType": "vaughan::Human",
-                         "semanticCandidatesExpression": "aql:self",
+                         "preconditionExpression": "aql:true",
                          "valueExpression": "aql:self.name",
                          "cellWidgetDescription": {
                            "id": "9b3400c9-d5f0-46db-9d60-60ec4016d383",

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- Copyright (c) 2024 Obeo.
+ Copyright (c) 2024, 2025 Obeo.
  This program and the accompanying materials
  are made available under the terms of the Eclipse Public License v2.0
  which accompanies this distribution, and is available at
@@ -92,6 +92,11 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-emf-forms</artifactId>
+			<version>2025.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-emf-tables</artifactId>
 			<version>2025.1.2</version>
 		</dependency>
 		<dependency>

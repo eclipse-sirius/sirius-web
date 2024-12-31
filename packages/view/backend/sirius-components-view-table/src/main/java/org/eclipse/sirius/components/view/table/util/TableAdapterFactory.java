@@ -26,15 +26,14 @@ import org.eclipse.sirius.components.view.table.ColumnDescription;
 import org.eclipse.sirius.components.view.table.RowContextMenuEntry;
 import org.eclipse.sirius.components.view.table.RowDescription;
 import org.eclipse.sirius.components.view.table.TableDescription;
-import org.eclipse.sirius.components.view.table.TableElementDescription;
 import org.eclipse.sirius.components.view.table.TablePackage;
 
 /**
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides an adapter <code>createXXX</code>
  * method for each class of the model. <!-- end-user-doc -->
  *
- * @see org.eclipse.sirius.components.view.table.TablePackage
  * @generated
+ * @see org.eclipse.sirius.components.view.table.TablePackage
  */
 public class TableAdapterFactory extends AdapterFactoryImpl {
 
@@ -54,11 +53,6 @@ public class TableAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseTableDescription(TableDescription object) {
             return TableAdapterFactory.this.createTableDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseTableElementDescription(TableElementDescription object) {
-            return TableAdapterFactory.this.createTableElementDescriptionAdapter();
         }
 
         @Override
@@ -146,7 +140,7 @@ public class TableAdapterFactory extends AdapterFactoryImpl {
      * Creates an adapter for the <code>target</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param target
-     *            the object to adapt.
+     *         the object to adapt.
      * @return the adapter for the <code>target</code>.
      * @generated
      */
@@ -170,28 +164,14 @@ public class TableAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class
-     * '{@link org.eclipse.sirius.components.view.table.TableElementDescription <em>Element Description</em>}'. <!--
-     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
-     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @generated
-     * @see org.eclipse.sirius.components.view.table.TableElementDescription
-     */
-    public Adapter createTableElementDescriptionAdapter() {
-        return null;
-    }
-
-    /**
      * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.table.ColumnDescription
      * <em>Column Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.table.ColumnDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.table.ColumnDescription
      */
     public Adapter createColumnDescriptionAdapter() {
         return null;
@@ -204,8 +184,8 @@ public class TableAdapterFactory extends AdapterFactoryImpl {
      * end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.table.RowDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.table.RowDescription
      */
     public Adapter createRowDescriptionAdapter() {
         return null;
@@ -218,8 +198,8 @@ public class TableAdapterFactory extends AdapterFactoryImpl {
      * end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.table.CellDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.table.CellDescription
      */
     public Adapter createCellDescriptionAdapter() {
         return null;
@@ -246,8 +226,8 @@ public class TableAdapterFactory extends AdapterFactoryImpl {
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.table.CellTextfieldWidgetDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.table.CellTextfieldWidgetDescription
      */
     public Adapter createCellTextfieldWidgetDescriptionAdapter() {
         return null;
@@ -260,8 +240,8 @@ public class TableAdapterFactory extends AdapterFactoryImpl {
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.table.CellLabelWidgetDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.table.CellLabelWidgetDescription
      */
     public Adapter createCellLabelWidgetDescriptionAdapter() {
         return null;
@@ -302,8 +282,8 @@ public class TableAdapterFactory extends AdapterFactoryImpl {
      * end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.RepresentationDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.RepresentationDescription
      */
     public Adapter createRepresentationDescriptionAdapter() {
         return null;

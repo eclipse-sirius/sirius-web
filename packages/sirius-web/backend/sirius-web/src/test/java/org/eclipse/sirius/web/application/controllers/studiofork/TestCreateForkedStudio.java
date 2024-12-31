@@ -58,7 +58,7 @@ import reactor.test.StepVerifier;
  */
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"sirius.web.test.enabled=studio"})
 public class TestCreateForkedStudio extends AbstractIntegrationTests {
 
     @Autowired
@@ -93,7 +93,7 @@ public class TestCreateForkedStudio extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToTable() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.INSTANCE_PROJECT.toString(),
+                StudioIdentifiers.INSTANCE_PROJECT,
                 StudioIdentifiers.TABLE_DESCRIPTION_ID,
                 StudioIdentifiers.ROOT_OBJECT.toString(),
                 "Table"
@@ -133,7 +133,7 @@ public class TestCreateForkedStudio extends AbstractIntegrationTests {
         var forkStudioProjectId = new AtomicReference<String>();
 
         Runnable forkStudio = () -> {
-            var input = new CreateForkedStudioInput(UUID.randomUUID(), StudioIdentifiers.INSTANCE_PROJECT.toString(), representationId.get(), "");
+            var input = new CreateForkedStudioInput(UUID.randomUUID(), StudioIdentifiers.INSTANCE_PROJECT, representationId.get(), "");
             var result = this.createForkedStudioMutationRuner.run(input);
 
             String typename = JsonPath.read(result, "$.data.createForkedStudio.__typename");
@@ -144,17 +144,17 @@ public class TestCreateForkedStudio extends AbstractIntegrationTests {
 
         Runnable doesProjectContainsOldDocument = () -> {
             //Check if the new project exist with an updated new name
-            var project = projectSearchService.findById(forkStudioProjectId.get());
+            var project = this.projectSearchService.findById(forkStudioProjectId.get());
             assertThat(project).isPresent();
             assertThat(project.get().getName()).isEqualTo("Forked Table");
 
             //Check if the representation have been updated to use the new view
-            var representationMetadata = representationMetadataSearchService.findMetadataById(UUID.fromString(representationId.get()));
+            var representationMetadata = this.representationMetadataSearchService.findMetadataById(UUID.fromString(representationId.get()));
             assertThat(representationMetadata).isPresent();
             var newRepresentationId = representationMetadata.get().getDescriptionId();
             assertThat(newRepresentationId).isNotEqualTo(StudioIdentifiers.TABLE_DESCRIPTION_ID);
-            var sourceId = getSourceId(newRepresentationId);
-            var sourceElementId =  getSourceElementId(newRepresentationId);
+            var sourceId = this.getSourceId(newRepresentationId);
+            var sourceElementId = this.getSourceElementId(newRepresentationId);
             assertThat(sourceId).isPresent();
             assertThat(sourceElementId).isPresent();
 

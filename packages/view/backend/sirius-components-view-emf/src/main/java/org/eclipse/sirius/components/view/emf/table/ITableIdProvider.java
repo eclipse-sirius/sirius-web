@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,8 +13,10 @@
 package org.eclipse.sirius.components.view.emf.table;
 
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionIdProvider;
+import org.eclipse.sirius.components.view.table.CellDescription;
+import org.eclipse.sirius.components.view.table.ColumnDescription;
+import org.eclipse.sirius.components.view.table.RowDescription;
 import org.eclipse.sirius.components.view.table.TableDescription;
-import org.eclipse.sirius.components.view.table.TableElementDescription;
 
 /**
  * Interface to provide id for TableDescription.
@@ -33,7 +35,11 @@ public interface ITableIdProvider extends IRepresentationDescriptionIdProvider<T
     @Override
     String getId(TableDescription tableDescription);
 
-    String getId(TableElementDescription tableElementDescription);
+    String getId(RowDescription rowDescription);
+
+    String getId(ColumnDescription columnDescription);
+
+    String getId(CellDescription cellDescription);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -48,8 +54,19 @@ public interface ITableIdProvider extends IRepresentationDescriptionIdProvider<T
         }
 
         @Override
-        public String getId(TableElementDescription tableElementDescription) {
+        public String getId(RowDescription rowDescription) {
             return "";
         }
+
+        @Override
+        public String getId(ColumnDescription columnDescription) {
+            return "";
+        }
+
+        @Override
+        public String getId(CellDescription cellDescription) {
+            return "";
+        }
+
     }
 }

@@ -25,7 +25,6 @@ import org.eclipse.sirius.components.view.table.ColumnDescription;
 import org.eclipse.sirius.components.view.table.RowContextMenuEntry;
 import org.eclipse.sirius.components.view.table.RowDescription;
 import org.eclipse.sirius.components.view.table.TableDescription;
-import org.eclipse.sirius.components.view.table.TableElementDescription;
 import org.eclipse.sirius.components.view.table.TablePackage;
 
 /**
@@ -34,8 +33,8 @@ import org.eclipse.sirius.components.view.table.TablePackage;
  * starting with the actual class of the object and proceeding up the inheritance hierarchy until a non-null result is
  * returned, which is the result of the switch. <!-- end-user-doc -->
  *
- * @see org.eclipse.sirius.components.view.table.TablePackage
  * @generated
+ * @see org.eclipse.sirius.components.view.table.TablePackage
  */
 public class TableSwitch<T> extends Switch<T> {
 
@@ -61,7 +60,7 @@ public class TableSwitch<T> extends Switch<T> {
      * Checks whether this is a switch for the given package. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param ePackage
-     *            the package in question.
+     *         the package in question.
      * @return whether this is a switch for the given package.
      * @generated
      */
@@ -89,18 +88,9 @@ public class TableSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
-            case TablePackage.TABLE_ELEMENT_DESCRIPTION: {
-                TableElementDescription tableElementDescription = (TableElementDescription) theEObject;
-                T result = this.caseTableElementDescription(tableElementDescription);
-                if (result == null)
-                    result = this.defaultCase(theEObject);
-                return result;
-            }
             case TablePackage.COLUMN_DESCRIPTION: {
                 ColumnDescription columnDescription = (ColumnDescription) theEObject;
                 T result = this.caseColumnDescription(columnDescription);
-                if (result == null)
-                    result = this.caseTableElementDescription(columnDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -109,16 +99,12 @@ public class TableSwitch<T> extends Switch<T> {
                 RowDescription rowDescription = (RowDescription) theEObject;
                 T result = this.caseRowDescription(rowDescription);
                 if (result == null)
-                    result = this.caseTableElementDescription(rowDescription);
-                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
             case TablePackage.CELL_DESCRIPTION: {
                 CellDescription cellDescription = (CellDescription) theEObject;
                 T result = this.caseCellDescription(cellDescription);
-                if (result == null)
-                    result = this.caseTableElementDescription(cellDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -174,27 +160,12 @@ public class TableSwitch<T> extends Switch<T> {
      * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Description</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseTableDescription(TableDescription object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Element Description</em>'. <!--
-     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
-     * end-user-doc -->
-     *
-     * @param object
-     *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Element Description</em>'.
-     * @generated
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     */
-    public T caseTableElementDescription(TableElementDescription object) {
         return null;
     }
 
@@ -204,7 +175,7 @@ public class TableSwitch<T> extends Switch<T> {
      * end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Column Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -219,7 +190,7 @@ public class TableSwitch<T> extends Switch<T> {
      * -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Row Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -234,7 +205,7 @@ public class TableSwitch<T> extends Switch<T> {
      * -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Cell Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -249,7 +220,7 @@ public class TableSwitch<T> extends Switch<T> {
      * end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Cell Widget Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -264,10 +235,10 @@ public class TableSwitch<T> extends Switch<T> {
      * <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Cell Textfield Widget Description</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseCellTextfieldWidgetDescription(CellTextfieldWidgetDescription object) {
         return null;
@@ -279,7 +250,7 @@ public class TableSwitch<T> extends Switch<T> {
      * end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Cell Label Widget Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -324,7 +295,7 @@ public class TableSwitch<T> extends Switch<T> {
      * end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Representation Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -339,10 +310,10 @@ public class TableSwitch<T> extends Switch<T> {
      * anyway. <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject)
      */
     @Override
     public T defaultCase(EObject object) {

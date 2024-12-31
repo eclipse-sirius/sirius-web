@@ -17,10 +17,18 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
+import org.eclipse.emf.edit.provider.IChildCreationExtender;
+import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
+import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.IItemPropertySource;
+import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
+import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.view.table.CellDescription;
 import org.eclipse.sirius.components.view.table.TableFactory;
@@ -33,7 +41,8 @@ import org.eclipse.sirius.components.view.table.TablePackage;
  *
  * @generated
  */
-public class CellDescriptionItemProvider extends TableElementDescriptionItemProvider {
+public class CellDescriptionItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider,
+        IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
 
     /**
      * This constructs an instance from a factory and a notifier. <!--
@@ -56,10 +65,44 @@ public class CellDescriptionItemProvider extends TableElementDescriptionItemProv
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
+            this.addNamePropertyDescriptor(object);
+            this.addPreconditionExpressionPropertyDescriptor(object);
             this.addValueExpressionPropertyDescriptor(object);
             this.addTooltipExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
+    }
+
+    /**
+     * This adds a property descriptor for the Name feature. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addNamePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors
+                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                        this.getResourceLocator(), this.getString("_UI_CellDescription_name_feature"),
+                        this.getString("_UI_PropertyDescriptor_description", "_UI_CellDescription_name_feature",
+                                "_UI_CellDescription_type"),
+                        TablePackage.Literals.CELL_DESCRIPTION__NAME, true, false, false,
+                        ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Precondition Expression feature. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addPreconditionExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
+                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_CellDescription_preconditionExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_CellDescription_preconditionExpression_feature",
+                        "_UI_CellDescription_type"),
+                TablePackage.Literals.CELL_DESCRIPTION__PRECONDITION_EXPRESSION, true, false, false,
+                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -172,6 +215,8 @@ public class CellDescriptionItemProvider extends TableElementDescriptionItemProv
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(CellDescription.class)) {
+            case TablePackage.CELL_DESCRIPTION__NAME:
+            case TablePackage.CELL_DESCRIPTION__PRECONDITION_EXPRESSION:
             case TablePackage.CELL_DESCRIPTION__VALUE_EXPRESSION:
             case TablePackage.CELL_DESCRIPTION__TOOLTIP_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
@@ -199,9 +244,20 @@ public class CellDescriptionItemProvider extends TableElementDescriptionItemProv
 
         newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.CELL_DESCRIPTION__CELL_WIDGET_DESCRIPTION,
                 TableFactory.eINSTANCE.createCellLabelWidgetDescription()));
-        
-        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.CELL_DESCRIPTION__CELL_WIDGET_DESCRIPTION, 
+
+        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.CELL_DESCRIPTION__CELL_WIDGET_DESCRIPTION,
                 TableFactory.eINSTANCE.createCellTextareaWidgetDescription()));
+    }
+
+    /**
+     * Return the resource locator for this item provider's resources. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ResourceLocator getResourceLocator() {
+        return ((IChildCreationExtender) this.adapterFactory).getResourceLocator();
     }
 
 }
