@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { IconOverlay } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay, Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
 
@@ -19,8 +19,14 @@ import { IconLabelCellProps } from './IconLabelCell.types';
 export const IconLabelCell = ({ cell }: IconLabelCellProps) => {
   const theme = useTheme();
 
+  const { setSelection } = useSelection();
+  const handleClick = () => {
+    const newSelection: Selection = { entries: [{ id: cell.targetObjectId, kind: cell.targetObjectKind }] };
+    setSelection(newSelection);
+  };
+
   return (
-    <Box display="flex" alignItems="center" gap={theme.spacing(1)}>
+    <Box display="flex" alignItems="center" gap={theme.spacing(1)} onClick={handleClick}>
       <IconOverlay iconURL={cell.iconURLs} alt={cell.label} />
       {cell.label}
     </Box>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
@@ -24,8 +25,20 @@ export const SelectCell = ({ editingContextId, representationId, tableId, cell, 
     editSelectCell(event.target.value);
   };
 
+  const { setSelection } = useSelection();
+  const handleClick = () => {
+    const newSelection: Selection = { entries: [{ id: cell.targetObjectId, kind: cell.targetObjectKind }] };
+    setSelection(newSelection);
+  };
+
   return (
-    <Select value={cell.value} onChange={handleChange} disabled={disabled || loading} size="small" fullWidth>
+    <Select
+      value={cell.value}
+      onChange={handleChange}
+      onClick={handleClick}
+      disabled={disabled || loading}
+      size="small"
+      fullWidth>
       {cell.options.map((option) => {
         return (
           <MenuItem key={option.id} value={option.id}>
