@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.sirius.web.papaya.representations.table;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +33,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
+import org.eclipse.sirius.components.papaya.AnnotableElement;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.components.papaya.Type;
@@ -125,7 +130,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
         var size = variableManager.get(TableRenderer.PAGINATION_SIZE, Integer.class).orElse(0);
         var globalFilter = variableManager.get(TableRenderer.GLOBAL_FILTER_DATA, String.class).orElse(null);
         List<ColumnFilter> columnFilters = variableManager.get(TableRenderer.COLUMN_FILTERS, List.class).orElse(List.of());
-
+        ObjectMapper objectMapper = new ObjectMapper();
         Predicate<EObject> predicate = eObject -> {
             boolean isValidCandidate = eObject instanceof Type && EcoreUtil.isAncestor(self, eObject);
             if (isValidCandidate) {
@@ -137,10 +142,40 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                     isValidCandidate = isValidCandidate || type.getAnnotations().stream().anyMatch(annotation -> annotation.getName().contains(globalFilter));
                 }
                 isValidCandidate = isValidCandidate && columnFilters.stream().allMatch(columnFilter -> {
+                    boolean isValidColumFilterCandidat = true;
                     if (columnFilter.id().equals("papaya.NamedElement#name")) {
-                        return type.getName() != null && type.getName().contains(columnFilter.value());
+                        try {
+                            String filterValue = objectMapper.readValue(columnFilter.value(), new TypeReference<>() {
+                            });
+                            isValidColumFilterCandidat = type.getName() != null && type.getName().contains(filterValue);
+                        } catch (JsonProcessingException ignored) {
+                        }
+                    } else if (columnFilter.id().equals("papaya.Type#nbAnnotation")) {
+                        try {
+                            List<String> filterValues = objectMapper.readValue(columnFilter.value(), new TypeReference<>() {
+                            });
+                            int nbAnnotation = type.getAnnotations().size();
+                            if (filterValues.size() == 2) {
+                                if (filterValues.get(0) != null && !filterValues.get(0).isBlank()) {
+                                    try {
+                                        int minValue = Integer.parseInt(filterValues.get(0));
+                                        isValidColumFilterCandidat = minValue <= nbAnnotation;
+                                    } catch (NumberFormatException ignored) {
+                                    }
+                                }
+                                if (filterValues.get(1) != null && !filterValues.get(1).isBlank()) {
+                                    try {
+                                        int maxValue = Integer.parseInt(filterValues.get(1));
+                                        isValidColumFilterCandidat = isValidColumFilterCandidat && maxValue >= nbAnnotation;
+                                    } catch (NumberFormatException ignored) {
+                                        isValidColumFilterCandidat = true;
+                                    }
+                                }
+                            }
+                        } catch (JsonProcessingException ignored) {
+                        }
                     }
-                    return true;
+                    return isValidColumFilterCandidat;
 
                 });
             }
@@ -158,12 +193,24 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .semanticElementsProvider(variableManager -> List.of("IconColumn"))
                 .headerLabelProvider(variableManager -> "Icon")
                 .headerIconURLsProvider(variableManager -> List.of("/icons/svg/Default.svg"))
-                .headerIndexLabelProvider(variableManager -> "")
+                .headerIndexLabelProvider(variableManager -> "A")
                 .targetObjectIdProvider(new ColumnTargetObjectIdProvider())
                 .targetObjectKindProvider(variableManager -> "")
                 .initialWidthProvider(variableManager -> 130)
                 .isResizablePredicate(variableManager -> false)
                 .filterVariantProvider(variableManager -> "text")
+                .build();
+
+        ColumnDescription nbAnnotationsColumn = ColumnDescription.newColumnDescription(UUID.nameUUIDFromBytes("nbAnnotation".getBytes()).toString())
+                .semanticElementsProvider(variableManager -> List.of("NbAnnotationColumn"))
+                .headerLabelProvider(variableManager -> "Annotation number")
+                .headerIconURLsProvider(variableManager -> List.of("/icons/svg/Default.svg"))
+                .headerIndexLabelProvider(variableManager -> "F")
+                .targetObjectIdProvider(variableManager -> "papaya.Type#nbAnnotation")
+                .targetObjectKindProvider(variableManager -> "")
+                .initialWidthProvider(variableManager -> 250)
+                .isResizablePredicate(variableManager -> false)
+                .filterVariantProvider(variableManager -> "range")
                 .build();
 
         Function<VariableManager, String> headerLabelProvider = variableManager -> variableManager.get(VariableManager.SELF, EStructuralFeature.class)
@@ -175,7 +222,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .orElse(List.of());
 
         Function<VariableManager, String> headerIndexLabelProvider = variableManager -> variableManager.get("columnIndex", Integer.class)
-                .map(index -> String.valueOf((char) (index + 'A')))
+                .map(index -> String.valueOf((char) (index + 1 + 'A')))
                 .orElse("");
 
         ColumnDescription columnDescription = ColumnDescription.newColumnDescription(UUID.nameUUIDFromBytes("features".getBytes()).toString())
@@ -189,7 +236,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .isResizablePredicate(variableManager -> true)
                 .filterVariantProvider(variableManager -> "text")
                 .build();
-        return List.of(iconColumnDescription, columnDescription);
+        return List.of(iconColumnDescription, columnDescription, nbAnnotationsColumn);
     }
 
     private List<ICellDescription> getCellDescriptions() {
@@ -239,6 +286,25 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
                 .cellValueProvider((variableManager, columnTargetObject) -> "")
                 .cellIconURLsProvider(iconLabelCellIconURLsProvider)
+                .build());
+
+        Predicate<VariableManager> nbAnnotationCellPredicate = variableManager -> variableManager.get(ColumnDescription.COLUMN_TARGET_OBJECT, Object.class)
+                .filter(String.class::isInstance)
+                .map(String.class::cast)
+                .filter(value -> value.equals("NbAnnotationColumn"))
+                .isPresent();
+
+        cellDescriptions.add(IconLabelCellDescription.newIconLabelCellDescription("nbAnnotationCells")
+                .canCreatePredicate(nbAnnotationCellPredicate)
+                .targetObjectIdProvider(variableManager -> "")
+                .targetObjectKindProvider(variableManager -> "")
+                .cellValueProvider((variableManager, columnTargetObject) -> variableManager.get(VariableManager.SELF, Object.class)
+                        .filter(AnnotableElement.class::isInstance)
+                        .map(AnnotableElement.class::cast)
+                        .map(annotableElement -> annotableElement.getAnnotations().size())
+                        .map(String::valueOf)
+                        .orElse("NA"))
+                .cellIconURLsProvider((variableManager, o) -> List.of())
                 .build());
         return cellDescriptions;
     }

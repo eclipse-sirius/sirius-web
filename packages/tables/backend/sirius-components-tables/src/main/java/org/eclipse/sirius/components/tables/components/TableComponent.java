@@ -67,7 +67,6 @@ public class TableComponent implements IComponent {
                     return new Element(ColumnComponent.class, columnComponentProps);
                 })
                 .toList();
-
         var columnFiltersMapped = optionalPreviousTable
                 .map(previousTable -> columnsFilters.stream()
                         .map(columnFilter ->
