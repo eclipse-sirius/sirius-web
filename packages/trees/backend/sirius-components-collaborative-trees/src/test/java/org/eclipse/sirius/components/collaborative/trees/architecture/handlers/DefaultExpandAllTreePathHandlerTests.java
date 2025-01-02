@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.collaborative.trees.handlers.DefaultExpandA
 import org.eclipse.sirius.components.collaborative.trees.services.api.ITreeNavigationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -40,6 +41,8 @@ import org.junit.jupiter.api.Test;
  */
 public class DefaultExpandAllTreePathHandlerTests {
 
+    private static final String DESCRIPTION_ID = "descriptionId";
+
     @Test
     public void testMaximumDepthReached() {
         AtomicBoolean  isIndexVariableAvailableForGetChildren = new AtomicBoolean(true);
@@ -50,7 +53,7 @@ public class DefaultExpandAllTreePathHandlerTests {
         IRepresentationDescriptionSearchService representationDescriptionSearchService = new IRepresentationDescriptionSearchService.NoOp() {
             @Override
             public Optional<IRepresentationDescription> findById(IEditingContext editingContext, String id) {
-                TreeDescription diagramDescription = TreeDescription.newTreeDescription("descriptionId")
+                TreeDescription diagramDescription = TreeDescription.newTreeDescription(DESCRIPTION_ID)
                         .canCreatePredicate(variableManager -> true)
                         .childrenProvider(this::getChildren)
                         .deletableProvider(variableManager -> false)
@@ -88,12 +91,8 @@ public class DefaultExpandAllTreePathHandlerTests {
             }
         };
 
-        var handler = new DefaultExpandAllTreePathHandler(new ITreeNavigationService.NoOp(), representationDescriptionSearchService);
-        Tree tree = Tree.newTree("treeId")
-                .targetObjectId("targetObjectId")
-                .descriptionId("descriptionId")
-                .children(List.of())
-                .build();
+        var handler = new DefaultExpandAllTreePathHandler(new ITreeNavigationService.NoOp(), representationDescriptionSearchService, new IURLParser.NoOp());
+        Tree tree = this.createTree();
 
         var input = new ExpandAllTreePathInput(UUID.randomUUID(), "editingContextId", "representationId", "treeItemId");
 
@@ -106,5 +105,62 @@ public class DefaultExpandAllTreePathHandlerTests {
         assertThat(result).isInstanceOf(ExpandAllTreePathSuccessPayload.class);
         assertThat(((ExpandAllTreePathSuccessPayload) result).treePath().getMaxDepth()).isEqualTo(100);
 
+    }
+
+    @Test
+    public void activeFilterIdsIsSet() {
+        AtomicBoolean hasActiveFilderIds = new AtomicBoolean(false);
+
+        IRepresentationDescriptionSearchService representationDescriptionSearchService = new IRepresentationDescriptionSearchService.NoOp() {
+            @Override
+            public Optional<IRepresentationDescription> findById(IEditingContext editingContext, String id) {
+                TreeDescription diagramDescription = TreeDescription.newTreeDescription(DESCRIPTION_ID)
+                        .canCreatePredicate(variableManager -> true)
+                        .childrenProvider(variableManager -> List.of())
+                        .deletableProvider(variableManager -> false)
+                        .deleteHandler(variableManager -> new Success())
+                        .editableProvider(variableManager -> true)
+                        .elementsProvider(variableManager -> List.of())
+                        .hasChildrenProvider(variableManager -> {
+                            // Keep the test simple by checking the variable in hasChildren instead of getChildren, so we don't have to mock children.
+                            hasActiveFilderIds.set(variableManager.hasVariable(TreeRenderer.ACTIVE_FILTER_IDS));
+                            return false;
+                        })
+                        .treeItemIconURLsProvider(variableManager -> List.of())
+                        .idProvider(variableManager -> "id")
+                        .kindProvider(variableManager -> "kind")
+                        .label("Fake tree")
+                        .labelProvider(variableManager -> null)
+                        .parentObjectProvider(variableManager -> null)
+                        .renameHandler((v, name) -> new Success())
+                        .selectableProvider(variableManager -> true)
+                        .targetObjectIdProvider(variableManager -> null)
+                        .treeItemIdProvider(variableManager -> "itemId")
+                        .treeItemObjectProvider(variableManager -> new Object())
+                        .treeItemLabelProvider(variableManager -> null)
+                        .iconURLsProvider(variableManager -> List.of())
+                        .build();
+
+                return Optional.of(diagramDescription);
+            }
+        };
+
+        var handler = new DefaultExpandAllTreePathHandler(new ITreeNavigationService.NoOp(), representationDescriptionSearchService, new IURLParser.NoOp());
+        Tree tree = this.createTree();
+
+        var input = new ExpandAllTreePathInput(UUID.randomUUID(), "editingContextId", "representationId", "treeItemId");
+
+        handler.handle(new IEditingContext.NoOp(), tree, input);
+
+        assertThat(hasActiveFilderIds).isTrue();
+    }
+
+    private Tree createTree() {
+        Tree tree = Tree.newTree("treeId")
+                .targetObjectId("targetObjectId")
+                .descriptionId(DESCRIPTION_ID)
+                .children(List.of())
+                .build();
+        return tree;
     }
 }
