@@ -195,7 +195,7 @@ jobs:
         with:
           build: docker compose -f ../packages/sirius-web/backend/sirius-web/docker-compose.yml up -d
           start: docker compose -f ../packages/sirius-web/backend/sirius-web/docker-compose.yml ps
-          wait-on: "http://localhost:8080/login"
+          wait-on: "http://localhost:8080"
           wait-on-timeout: 180
           working-directory: integration-tests
           record: false

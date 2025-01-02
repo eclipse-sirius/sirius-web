@@ -18,6 +18,11 @@
 
 - [releng] Upgrade `turbo` to version 2.3.3 (from 1.13.3 before).
 The `start` task used in our turbo configuration is now marked as `persistent` and as a result we have separated the `start` script from `sirius-web` used to run the frontend in dev from from the `start` script from other packages used to build them in development mode by remaning the later to `build-dev`.
+- [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.1[Spring Boot 3.4.1].
+As part of this switch, the way we redirect the HTTP requests of frontend views to the `index.html` file on the backend has been updated.
+The previous strategy relied on an odd configuration of the `WebMvcConfigurer#addResourceHandlers` in order to redirect those requests to the `index.html` file.
+Now that the behavior of this method https://github.com/spring-projects/spring-framework/issues/33712[has been changed in Spring Framework] to only support folders as valid locations, we must update to https://docs.spring.io/spring-framework/reference/web/webmvc-functional.html#webmvc-fn-resource[the recommended way] to perform the routing of single page applications.
+This may have some consequences for downstream applications which are embedding static resources.
 
 
 === Bug fixes

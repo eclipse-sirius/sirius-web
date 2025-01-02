@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,9 +18,6 @@ package org.eclipse.sirius.web.infrastructure.configuration.mvc;
  * @author sbegaudeau
  */
 public final class SpringWebMvcConfigurerConstants {
-
-    /** Base path of the API. */
-    public static final String API_BASE_PATH = "/api";
 
     /** Pattern used to match CSS resources from the front-end. */
     public static final String CSS_PATTERN = "/**/*.css";
@@ -61,20 +58,11 @@ public final class SpringWebMvcConfigurerConstants {
     /** Pattern used to match SVG images. */
     public static final String SVG_PATTERN = "/**/*.svg";
 
-    /** Pattern used to match the raw hostname with any specific path. */
-    public static final String EMPTY_PATTERN = "";
-
-    /** Pattern used to match the path of the homepage. */
-    public static final String HOMEPAGE_PATTERN = "/";
-
     /** Pattern used to match any path. */
     public static final String ANY_PATTERN = "/**";
 
     /** Path of the folder containing the static resources. */
     public static final String STATIC_ASSETS_PATH = "classpath:/static/";
-
-    /** Path of the index.html file. */
-    public static final String INDEX_HTML_PATH = "classpath:/static/index.html";
 
     private SpringWebMvcConfigurerConstants() {
         // Prevent instantiation
