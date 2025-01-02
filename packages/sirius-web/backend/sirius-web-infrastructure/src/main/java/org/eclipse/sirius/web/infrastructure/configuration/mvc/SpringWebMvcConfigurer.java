@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -66,12 +66,6 @@ public class SpringWebMvcConfigurer implements WebMvcConfigurer {
                 SpringWebMvcConfigurerConstants.PNG_PATTERN,
                 SpringWebMvcConfigurerConstants.SVG_PATTERN
         ).addResourceLocations(SpringWebMvcConfigurerConstants.STATIC_ASSETS_PATH);
-
-        // Make sure that all other requests are redirected to index.html, the React router will handle it
-        registry.addResourceHandler(SpringWebMvcConfigurerConstants.EMPTY_PATTERN, SpringWebMvcConfigurerConstants.HOMEPAGE_PATTERN, SpringWebMvcConfigurerConstants.ANY_PATTERN)
-                .addResourceLocations(SpringWebMvcConfigurerConstants.INDEX_HTML_PATH)
-                .resourceChain(true)
-                .addResolver(new SpringPathResourceResolver(SpringWebMvcConfigurerConstants.API_BASE_PATH));
     }
 
     @Override
