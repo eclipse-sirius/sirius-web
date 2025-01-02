@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.collaborative.trees.handlers;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -26,6 +27,7 @@ import org.eclipse.sirius.components.collaborative.trees.services.api.ITreeNavig
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
@@ -47,27 +49,37 @@ public class DefaultExpandAllTreePathHandler {
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
-    public DefaultExpandAllTreePathHandler(ITreeNavigationService treeNavigationService, IRepresentationDescriptionSearchService representationDescriptionSearchService) {
+    private final IURLParser urlParser;
+
+    public DefaultExpandAllTreePathHandler(ITreeNavigationService treeNavigationService, IRepresentationDescriptionSearchService representationDescriptionSearchService, IURLParser urlParser) {
         this.treeNavigationService = Objects.requireNonNull(treeNavigationService);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+        this.urlParser = Objects.requireNonNull(urlParser);
     }
 
     public IPayload handle(IEditingContext editingContext, Tree tree, ExpandAllTreePathInput input) {
         int maxDepth = 0;
         String treeItemId = input.treeItemId();
+        Map<String, List<String>> parameters = this.urlParser.getParameterValues(tree.getId());
 
         Set<String> treeItemIdsToExpand = new LinkedHashSet<>();
+
         // We need to get the current depth of the tree item
         var itemAncestors = this.treeNavigationService.getAncestors(editingContext, tree, treeItemId);
         maxDepth = itemAncestors.size();
         var optionalTreeDescription = this.getTreeDescription(editingContext, tree.getDescriptionId());
         if (optionalTreeDescription.isPresent()) {
+            List<String> activeFilterIds = Optional.ofNullable(parameters.get(TreeRenderer.ACTIVE_FILTER_IDS))
+                    .map(activeFilterIdsParams -> activeFilterIdsParams.get(0))
+                    .map(this.urlParser::getParameterEntries)
+                    .orElse(List.of());
             int index = this.computeIndexOf(treeItemId, tree.getChildren());
             var variableManager = new VariableManager();
             variableManager.put(TreeRenderer.INDEX, index);
             variableManager.put(TreeRenderer.ANCESTOR_IDS, itemAncestors);
             variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
             variableManager.put(TreeDescription.ID, treeItemId);
+            variableManager.put(TreeRenderer.ACTIVE_FILTER_IDS, activeFilterIds);
             maxDepth = this.addAllContents(optionalTreeDescription.get(), treeItemId, maxDepth, treeItemIdsToExpand, maxDepth, variableManager);
         }
         return new ExpandAllTreePathSuccessPayload(input.id(), new TreePath(treeItemIdsToExpand.stream().toList(), maxDepth));
