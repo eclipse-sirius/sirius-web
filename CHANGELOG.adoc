@@ -92,7 +92,7 @@ Note that you can retrieve the URL of a page in the response header of `GET /api
 Note that you may need to encode special characters like `[`(by `%5B`) and `]` (by `%5D`) in your requests.
 - https://github.com/eclipse-sirius/sirius-web/issues/4381[#4381] [trees] Set activeFilterIds variable in DefaultExpandAllTreePathHandler.
 - https://github.com/eclipse-sirius/sirius-web/issues/3533[#3553] [diagram] Add a dedicated component to handle diagram subscription
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4346[#4346] [query] Improve the performance of the Query view with large sets of data.
 
 == v2025.1.0
 

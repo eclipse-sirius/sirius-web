@@ -23,6 +23,7 @@ import { SxProps, Theme, useTheme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { ComponentType, useState } from 'react';
+import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import {
   ExpressionAreaProps,
   ExpressionAreaState,
@@ -37,9 +38,10 @@ import {
   GQLObjectsExpressionResult,
   GQLStringExpressionResult,
 } from './useEvaluateExpression.types';
+import { useResultAreaSize } from './useResultAreaSize';
 
 export const QueryView = ({ editingContextId, readOnly }: WorkbenchViewComponentProps) => {
-  const interpreterStyle: SxProps<Theme> = (theme) => ({
+  const queryViewStyle: SxProps<Theme> = (theme) => ({
     display: 'flex',
     flexDirection: 'column',
     gap: theme.spacing(2),
@@ -47,13 +49,14 @@ export const QueryView = ({ editingContextId, readOnly }: WorkbenchViewComponent
   });
 
   const { evaluateExpression, loading, result } = useEvaluateExpression();
-
   const handleEvaluateExpression = (expression: string) => evaluateExpression(editingContextId, expression);
 
+  const { ref, width, height } = useResultAreaSize();
+
   return (
-    <Box data-representation-kind="interpreter" sx={interpreterStyle}>
+    <Box data-representation-kind="query" sx={queryViewStyle} ref={ref}>
       <ExpressionArea onEvaluateExpression={handleEvaluateExpression} disabled={loading || readOnly} />
-      <ResultArea loading={loading} payload={result} />
+      <ResultArea loading={loading} payload={result} width={width} height={height} />
     </Box>
   );
 };
@@ -84,7 +87,7 @@ const ExpressionArea = ({ onEvaluateExpression, disabled }: ExpressionAreaProps)
   };
 
   return (
-    <div>
+    <div data-role="expression">
       <Box sx={expressionAreaToolbarStyle}>
         <Typography variant="subtitle2">Expression</Typography>
 
@@ -143,35 +146,51 @@ const ObjectExpressionResultViewer = ({ result }: ExpressionResultViewerProps) =
   );
 };
 
-const ObjectsExpressionResultViewer = ({ result }: ExpressionResultViewerProps) => {
-  if (result.__typename !== 'ObjectsExpressionResult') {
-    return null;
-  }
-
-  const { objectsValue } = result as GQLObjectsExpressionResult;
-
+const ObjectRow = ({ data, index, style }: ListChildComponentProps) => {
   const listItemStyle: SxProps<Theme> = (theme) => ({
     gap: theme.spacing(2),
   });
   const listItemIconStyle: SxProps<Theme> = () => ({
     minWidth: '0px',
   });
+
+  const object = data[index];
+
+  return (
+    <ListItem key={index} style={style} sx={listItemStyle}>
+      <ListItemIcon sx={listItemIconStyle}>
+        <IconOverlay iconURL={object.iconURLs} alt="Icon of the object" />
+      </ListItemIcon>
+      <ListItemText primary={object.label} />
+    </ListItem>
+  );
+};
+
+const ObjectsExpressionResultViewer = ({ result, width, height }: ExpressionResultViewerProps) => {
+  if (result.__typename !== 'ObjectsExpressionResult') {
+    return null;
+  }
+
+  const { objectsValue } = result as GQLObjectsExpressionResult;
+
+  const listStyle: SxProps<Theme> = (theme) => ({
+    border: `1px solid ${theme.palette.divider}`,
+  });
+
   return (
     <Box>
       <Typography variant="body2" gutterBottom>
         A collection of {objectsValue.length} object{objectsValue.length > 1 ? 's' : ''} has been returned
       </Typography>
-      <List dense>
-        {objectsValue.map((object) => {
-          return (
-            <ListItem key={object.id} sx={listItemStyle}>
-              <ListItemIcon sx={listItemIconStyle}>
-                <IconOverlay iconURL={object.iconURLs} alt="Icon of the object" />
-              </ListItemIcon>
-              <ListItemText primary={object.label} />
-            </ListItem>
-          );
-        })}
+      <List dense disablePadding sx={listStyle}>
+        <FixedSizeList
+          height={height}
+          width={width}
+          itemData={objectsValue}
+          itemCount={objectsValue.length}
+          itemSize={34}>
+          {ObjectRow}
+        </FixedSizeList>
       </List>
     </Box>
   );
@@ -276,7 +295,7 @@ const LoadingViewer = () => {
   );
 };
 
-const ResultArea = ({ loading, payload }: ResultAreaProps) => {
+const ResultArea = ({ loading, payload, width, height }: ResultAreaProps) => {
   const resultAreaToolbarStyle: SxProps<Theme> = {
     display: 'flex',
     flexDirection: 'row',
@@ -295,12 +314,12 @@ const ResultArea = ({ loading, payload }: ResultAreaProps) => {
   } else if (payload) {
     const Viewer = resultType2viewer[payload.result.__typename];
     if (Viewer) {
-      content = <Viewer result={payload.result} />;
+      content = <Viewer result={payload.result} width={width} height={height} />;
     }
   }
 
   return (
-    <div>
+    <div data-role="result">
       <Box sx={resultAreaToolbarStyle}>
         <Box sx={titleAreaStyle}>
           <Typography variant="subtitle2">Evaluation result</Typography>
