@@ -11,26 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLEvaluateExpressionSuccessPayload, GQLExpressionResult } from './useEvaluateExpression.types';
+import { MutableRefObject } from 'react';
 
-export interface ExpressionAreaProps {
-  onEvaluateExpression: (expression: string) => void;
-  disabled: boolean;
-}
-
-export interface ExpressionAreaState {
-  expression: string;
-}
-
-export interface ResultAreaProps {
-  loading: boolean;
-  payload: GQLEvaluateExpressionSuccessPayload | null;
+export interface UseResultAreaSizeValue {
+  ref: MutableRefObject<HTMLDivElement | null>;
   height: number | null;
   width: number | null;
 }
 
-export interface ExpressionResultViewerProps {
-  result: GQLExpressionResult;
+export interface UseResultAreaSizeState {
   height: number | null;
   width: number | null;
 }

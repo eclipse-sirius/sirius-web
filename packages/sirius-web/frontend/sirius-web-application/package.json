@@ -67,6 +67,7 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-router-dom": "6.26.0",
+    "react-window": "1.8.11",
     "@xyflow/react": "12.2.1",
     "tss-react": "4.9.7",
     "xstate": "4.32.1"
@@ -116,6 +117,7 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-router-dom": "6.26.0",
+    "react-window": "1.8.11",
     "rollup-plugin-peer-deps-external": "2.2.4",
     "xstate": "4.32.1",
     "typescript": "5.4.5",
