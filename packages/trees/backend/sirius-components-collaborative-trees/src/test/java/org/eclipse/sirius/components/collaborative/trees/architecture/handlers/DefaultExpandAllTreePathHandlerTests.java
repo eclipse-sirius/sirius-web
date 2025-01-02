@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.collaborative.trees.handlers.DefaultExpandA
 import org.eclipse.sirius.components.collaborative.trees.services.api.ITreeNavigationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -38,6 +39,7 @@ import org.junit.jupiter.api.Test;
  *
  * @author frouene
  */
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class DefaultExpandAllTreePathHandlerTests {
 
     @Test
@@ -88,12 +90,8 @@ public class DefaultExpandAllTreePathHandlerTests {
             }
         };
 
-        var handler = new DefaultExpandAllTreePathHandler(new ITreeNavigationService.NoOp(), representationDescriptionSearchService);
-        Tree tree = Tree.newTree("treeId")
-                .targetObjectId("targetObjectId")
-                .descriptionId("descriptionId")
-                .children(List.of())
-                .build();
+        var handler = new DefaultExpandAllTreePathHandler(new ITreeNavigationService.NoOp(), representationDescriptionSearchService, new IURLParser.NoOp());
+        Tree tree = this.createTree();
 
         var input = new ExpandAllTreePathInput(UUID.randomUUID(), "editingContextId", "representationId", "treeItemId");
 
@@ -102,9 +100,64 @@ public class DefaultExpandAllTreePathHandlerTests {
         assertThat(isAncestorVariableAvaibleForGetChildren.get()).as("Missing ancestor variable in children provider").isTrue();
         assertThat(isIndexVariableAvailableForHasChildren.get()).as("Missing index in has children provider").isTrue();
         assertThat(isAncestorVariableAvaibleForHasChildren.get()).as("Missing ancestor variable in has children provider").isTrue();
-        assertThat(result).isNotNull();
-        assertThat(result).isInstanceOf(ExpandAllTreePathSuccessPayload.class);
+        assertThat(result).isNotNull().isInstanceOf(ExpandAllTreePathSuccessPayload.class);
         assertThat(((ExpandAllTreePathSuccessPayload) result).treePath().getMaxDepth()).isEqualTo(100);
 
+    }
+
+    @Test
+    public void activeFilterIdsIsSet() {
+        AtomicBoolean hasActiveFilterIds = new AtomicBoolean(false);
+
+        IRepresentationDescriptionSearchService representationDescriptionSearchService = new IRepresentationDescriptionSearchService.NoOp() {
+            @Override
+            public Optional<IRepresentationDescription> findById(IEditingContext editingContext, String id) {
+                TreeDescription diagramDescription = TreeDescription.newTreeDescription("descriptionId")
+                        .canCreatePredicate(variableManager -> true)
+                        .childrenProvider(variableManager -> List.of())
+                        .deletableProvider(variableManager -> false)
+                        .deleteHandler(variableManager -> new Success())
+                        .editableProvider(variableManager -> true)
+                        .elementsProvider(variableManager -> List.of())
+                        .hasChildrenProvider(variableManager -> {
+                            // Keep the test simple by checking the variable in hasChildren instead of getChildren, so we don't have to mock children.
+                            hasActiveFilterIds.set(variableManager.hasVariable(TreeRenderer.ACTIVE_FILTER_IDS));
+                            return false;
+                        })
+                        .treeItemIconURLsProvider(variableManager -> List.of())
+                        .idProvider(variableManager -> "id")
+                        .kindProvider(variableManager -> "kind")
+                        .label("Fake tree")
+                        .labelProvider(variableManager -> null)
+                        .parentObjectProvider(variableManager -> null)
+                        .renameHandler((v, name) -> new Success())
+                        .selectableProvider(variableManager -> true)
+                        .targetObjectIdProvider(variableManager -> null)
+                        .treeItemIdProvider(variableManager -> "itemId")
+                        .treeItemObjectProvider(variableManager -> new Object())
+                        .treeItemLabelProvider(variableManager -> null)
+                        .iconURLsProvider(variableManager -> List.of())
+                        .build();
+
+                return Optional.of(diagramDescription);
+            }
+        };
+
+        var handler = new DefaultExpandAllTreePathHandler(new ITreeNavigationService.NoOp(), representationDescriptionSearchService, new IURLParser.NoOp());
+        Tree tree = this.createTree();
+
+        var input = new ExpandAllTreePathInput(UUID.randomUUID(), "editingContextId", "representationId", "treeItemId");
+
+        handler.handle(new IEditingContext.NoOp(), tree, input);
+
+        assertThat(hasActiveFilterIds).isTrue();
+    }
+
+    private Tree createTree() {
+        return Tree.newTree("treeId")
+                .targetObjectId("targetObjectId")
+                .descriptionId("descriptionId")
+                .children(List.of())
+                .build();
     }
 }
