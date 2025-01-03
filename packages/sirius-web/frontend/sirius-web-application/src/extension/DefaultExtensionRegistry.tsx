@@ -38,7 +38,11 @@ import { OmniboxButton } from '@eclipse-sirius/sirius-components-omnibox';
 import { PortalRepresentation } from '@eclipse-sirius/sirius-components-portals';
 import { SelectionDialog } from '@eclipse-sirius/sirius-components-selection';
 import { TableRepresentation } from '@eclipse-sirius/sirius-components-tables';
-import { TreeRepresentation, treeItemContextMenuEntryExtensionPoint } from '@eclipse-sirius/sirius-components-trees';
+import {
+  TreeRepresentation,
+  treeItemContextMenuEntryExtensionPoint,
+  treeItemBackendContextMenuEntryExtensionPoint,
+} from '@eclipse-sirius/sirius-components-trees';
 import { ValidationView } from '@eclipse-sirius/sirius-components-validation';
 import {
   GQLReferenceWidget,
@@ -62,6 +66,7 @@ import { NavigationBarRightContributionProps } from '../navigationBar/Navigation
 import { navigationBarRightContributionExtensionPoint } from '../navigationBar/NavigationBarExtensionPoints';
 import { OnboardArea } from '../onboarding/OnboardArea';
 import { DiagramTreeItemContextMenuContribution } from '../views/edit-project/DiagramTreeItemContextMenuContribution';
+import { ExpandAllTreeItemContextMenuContribution } from '../views/edit-project/ExpandAllTreeItemContextMenuContribution';
 import { DocumentTreeItemContextMenuContribution } from '../views/edit-project/DocumentTreeItemContextMenuContribution';
 import { DownloadProjectMenuEntryContribution } from '../views/edit-project/EditProjectNavbar/DownloadProjectMenuEntryContribution';
 import { editProjectNavbarMenuEntryExtensionPoint } from '../views/edit-project/EditProjectNavbar/EditProjectNavbarMenuExtensionPoints';
@@ -273,6 +278,18 @@ defaultExtensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
 defaultExtensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
   identifier: `siriusweb_${treeItemContextMenuEntryExtensionPoint.identifier}_diagram`,
   Component: DiagramTreeItemContextMenuContribution,
+});
+
+/*******************************************************************************
+ *
+ * Tree item backend context menu
+ *
+ * Used to register new components in the tree item context menu that will be displayed by the backend
+ *
+ *******************************************************************************/
+defaultExtensionRegistry.addComponent(treeItemBackendContextMenuEntryExtensionPoint, {
+  identifier: `siriusweb_${treeItemBackendContextMenuEntryExtensionPoint.identifier}_expandAll`,
+  Component: ExpandAllTreeItemContextMenuContribution,
 });
 
 /*******************************************************************************

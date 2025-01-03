@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,11 +26,6 @@ export interface TreeViewProps {
   markedItemIds?: string[];
   treeItemActionRender?: (props: TreeItemActionProps) => React.ReactNode;
   onExpandedElementChange: (expanded: string[], maxDepth: number) => void;
-  expanded: string[];
-  maxDepth: number;
-}
-
-export interface TreeViewState {
   expanded: string[];
   maxDepth: number;
 }

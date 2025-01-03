@@ -15,6 +15,9 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/4373[#4373] [trees] `onExpand` and `onExpandAll` is removed from `Tree` and all the tree components.
+It is now possible to expand a tree item by using `onExpandedElementChange`.
+The expand all entry (and its implementation) has been moved to Sirius Web as a contribution.
 
 === Dependency update
 
@@ -43,6 +46,10 @@ Specifiers can contribute dedicated AQL services for this feature using implemen
 - https://github.com/eclipse-sirius/sirius-web/issues/4368[#4368] [sirius-web] Add GraphQL subscription exception handler
 - [charts] Make the npm package `sirius-components-charts` use the strict version of our TypeScript configuration
 - [trees] Make the npm package `sirius-components-trees` use the strict version of our TypeScript configuration
+- https://github.com/eclipse-sirius/sirius-web/issues/4373[#4373] [trees] Allow backend definition of ExpandAll tool in the explorer
+Specifiers can now create `CustomTreeItemContextMenuEntry` instances in the view DSL to indicate to use a frontend component with a given identifier as contextual menu entry.
+This information is passed to the frontend via a dedicated identifier in `SingleClickTreeItemContextMenuEntry#id`.
+The _ExpandAll_ tool is now a Sirius Web contribution that can be enabled via this mechanism.  
 
 
 == v2025.1.0

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,10 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { DiagramDialogVariable } from '@eclipse-sirius/sirius-components-diagrams';
-import { TreeItemActionProps, TreeView } from '@eclipse-sirius/sirius-components-trees';
+import {
+  GQLGetExpandAllTreePathVariables,
+  GQLTreeItem,
+  TreeItemActionProps,
+  TreeView,
+  useExpandAll,
+} from '@eclipse-sirius/sirius-components-trees';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import IconButton from '@mui/material/IconButton';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { SelectionDialogTreeViewProps, SelectionDialogTreeViewState } from './SelectionDialogTreeView.types';
 import { useSelectionDialogTreeSubscription } from './useSelectionDialogTreeSubscription';
@@ -73,8 +79,40 @@ export const SelectionDialogTreeView = ({
   );
 };
 
-const SelectionDialogTreeItemAction = ({ onExpandAll, item, isHovered }: TreeItemActionProps) => {
-  if (!onExpandAll || !item || !item.hasChildren || !isHovered) {
+const SelectionDialogTreeItemAction = ({
+  editingContextId,
+  treeId,
+  item,
+  isHovered,
+  expanded,
+  maxDepth,
+  onExpandedElementChange,
+}: TreeItemActionProps) => {
+  const {
+    getExpandAllTreePath,
+    expanded: newExpanded,
+    maxDepth: newMaxDepth,
+    loading,
+  } = useExpandAll(expanded, maxDepth);
+
+  useEffect(() => {
+    if (!loading) {
+      if (newExpanded && newMaxDepth >= 0) {
+        onExpandedElementChange(newExpanded, newMaxDepth);
+      }
+    }
+  }, [newExpanded, newMaxDepth, loading]);
+
+  const onExpandAll = (treeItem: GQLTreeItem) => {
+    const variables: GQLGetExpandAllTreePathVariables = {
+      editingContextId,
+      treeId,
+      treeItemId: treeItem.id,
+    };
+    getExpandAllTreePath({ variables });
+  };
+
+  if (!item || !isHovered) {
     return null;
   }
   return (

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.view.emf.ViewRepresentationDescriptionPredicate;
 import org.eclipse.sirius.components.view.emf.api.IViewAQLInterpreterFactory;
+import org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry;
@@ -83,7 +84,7 @@ public class ViewTreeItemContextMenuEntryProvider implements ITreeItemContextMen
             variableManager.put(TreeDescription.ID, treeItem.getId());
             var semanticTreeItemObject = treeDescription.getTreeItemObjectProvider().apply(variableManager);
             variableManager.put(VariableManager.SELF, semanticTreeItemObject);
-            
+
             return viewTreeDescription.getContextMenuEntries().stream()
                     .filter(viewAction -> this.isValidActionPrecondition(viewAction, variableManager, interpreter))
                     .map(treeItemContextMenuEntry -> this.convertContextAction(treeItemContextMenuEntry, variableManager, interpreter))
@@ -95,12 +96,17 @@ public class ViewTreeItemContextMenuEntryProvider implements ITreeItemContextMen
     private ITreeItemContextMenuEntry convertContextAction(TreeItemContextMenuEntry viewTreeItemContextAction, VariableManager variableManager, AQLInterpreter interpreter) {
         ITreeItemContextMenuEntry result = null;
         var id = this.idProvider.apply(viewTreeItemContextAction).toString();
-        var label = this.evaluateString(variableManager, interpreter, viewTreeItemContextAction.getLabelExpression());
-        var iconURL = this.evaluateStringList(variableManager, interpreter, viewTreeItemContextAction.getIconURLExpression());
-        if (viewTreeItemContextAction instanceof SingleClickTreeItemContextMenuEntry) {
+        if (viewTreeItemContextAction instanceof SingleClickTreeItemContextMenuEntry singleClickTreeItemContextMenuEntry) {
+            var label = this.evaluateString(variableManager, interpreter, singleClickTreeItemContextMenuEntry.getLabelExpression());
+            var iconURL = this.evaluateStringList(variableManager, interpreter, singleClickTreeItemContextMenuEntry.getIconURLExpression());
             result = new org.eclipse.sirius.components.collaborative.trees.dto.SingleClickTreeItemContextMenuEntry(id, label, iconURL);
-        } else if (viewTreeItemContextAction instanceof FetchTreeItemContextMenuEntry) {
+        } else if (viewTreeItemContextAction instanceof FetchTreeItemContextMenuEntry fetchTreeItemContextMenuEntry) {
+            var label = this.evaluateString(variableManager, interpreter, fetchTreeItemContextMenuEntry.getLabelExpression());
+            var iconURL = this.evaluateStringList(variableManager, interpreter, fetchTreeItemContextMenuEntry.getIconURLExpression());
             result = new org.eclipse.sirius.components.collaborative.trees.dto.FetchTreeItemContextMenuEntry(id, label, iconURL);
+        } else if (viewTreeItemContextAction instanceof CustomTreeItemContextMenuEntry customTreeItemContextMenuEntry) {
+            // Use a SingleClickTreeItemContextMenuEntry instance with a dedicated ID to pass the information to the frontend.
+            result = new org.eclipse.sirius.components.collaborative.trees.dto.SingleClickTreeItemContextMenuEntry(customTreeItemContextMenuEntry.getContributionId(), "", List.of());
         }
         return result;
     }

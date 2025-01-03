@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,24 +21,23 @@ import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.eclipse.sirius.components.view.tree.TreeItemLabelFragmentDescription;
+import org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.TreePackage;
 
 /**
  * This is the item provider adapter for a
- * {@link org.eclipse.sirius.components.view.tree.TreeItemLabelFragmentDescription} object. <!-- begin-user-doc --> <!--
+ * {@link org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry} object. <!-- begin-user-doc --> <!--
  * end-user-doc -->
  *
  * @generated
  */
-public class TreeItemLabelFragmentDescriptionItemProvider extends TreeItemLabelElementDescriptionItemProvider {
-
+public class CustomTreeItemContextMenuEntryItemProvider extends TreeItemContextMenuEntryItemProvider {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    public TreeItemLabelFragmentDescriptionItemProvider(AdapterFactory adapterFactory) {
+    public CustomTreeItemContextMenuEntryItemProvider(AdapterFactory adapterFactory) {
         super(adapterFactory);
     }
 
@@ -52,44 +51,31 @@ public class TreeItemLabelFragmentDescriptionItemProvider extends TreeItemLabelE
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            this.addLabelExpressionPropertyDescriptor(object);
-            this.addStylePropertyDescriptor(object);
+            this.addContributionIdPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
 
     /**
-     * This adds a property descriptor for the Label Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Contribution Id feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    protected void addLabelExpressionPropertyDescriptor(Object object) {
+    protected void addContributionIdPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_TreeItemLabelFragmentDescription_labelExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_TreeItemLabelFragmentDescription_labelExpression_feature", "_UI_TreeItemLabelFragmentDescription_type"),
-                TreePackage.Literals.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_CustomTreeItemContextMenuEntry_contributionId_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_CustomTreeItemContextMenuEntry_contributionId_feature", "_UI_CustomTreeItemContextMenuEntry_type"),
+                TreePackage.Literals.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__CONTRIBUTION_ID, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This adds a property descriptor for the Style feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This returns CustomTreeItemContextMenuEntry.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
-     */
-    protected void addStylePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_TreeItemLabelFragmentDescription_style_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_TreeItemLabelFragmentDescription_style_feature", "_UI_TreeItemLabelFragmentDescription_type"),
-                TreePackage.Literals.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__STYLE, true, false, true, null, null, null));
-    }
-
-    /**
-     * This returns TreeItemLabelFragmentDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/TreeItemLabelFragmentDescription.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/CustomTreeItemContextMenuEntry.svg"));
     }
 
     /**
@@ -109,8 +95,8 @@ public class TreeItemLabelFragmentDescriptionItemProvider extends TreeItemLabelE
      */
     @Override
     public String getText(Object object) {
-        String label = ((TreeItemLabelFragmentDescription) object).getLabelExpression();
-        return label == null || label.length() == 0 ? this.getString("_UI_TreeItemLabelFragmentDescription_type") : this.getString("_UI_TreeItemLabelFragmentDescription_type") + " " + label;
+        String label = ((CustomTreeItemContextMenuEntry) object).getName();
+        return label == null || label.length() == 0 ? this.getString("_UI_CustomTreeItemContextMenuEntry_type") : this.getString("_UI_CustomTreeItemContextMenuEntry_type") + " " + label;
     }
 
     /**
@@ -124,8 +110,8 @@ public class TreeItemLabelFragmentDescriptionItemProvider extends TreeItemLabelE
     public void notifyChanged(Notification notification) {
         this.updateChildren(notification);
 
-        switch (notification.getFeatureID(TreeItemLabelFragmentDescription.class)) {
-            case TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__LABEL_EXPRESSION:
+        switch (notification.getFeatureID(CustomTreeItemContextMenuEntry.class)) {
+            case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__CONTRIBUTION_ID:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }
