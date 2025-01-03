@@ -30,19 +30,25 @@ export const useDiagramDirectEdit = (): UseDiagramDirectEditValue => {
   const onDirectEdit = useCallback(
     (event: React.KeyboardEvent<Element>) => {
       const { key } = event;
-      /*If a modifier key is hit alone, do nothing*/
+
       const isTextField = event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement;
-      if ((event.altKey && key === 'Alt') || (event.shiftKey && key === 'Shift') || isTextField || readOnly) {
+
+      /*If a modifier key is hit alone, do nothing*/
+      if ((event.altKey && key === 'Alt') || (event.shiftKey && key === 'Shift') || readOnly) {
         return;
       }
 
-      event.preventDefault();
+      if (key !== 'F2' && isTextField) {
+        return;
+      }
+
       const validFirstInputChar =
         !event.metaKey && !event.ctrlKey && key.length === 1 && directEditActivationValidCharacters.test(key);
 
       let currentlyEditedLabelId: string | undefined | null;
       let isLabelEditable: boolean = false;
       const nodeData: NodeData | undefined = getNodes().find((node) => node.selected)?.data;
+
       if (nodeData) {
         if (nodeData.insideLabel) {
           currentlyEditedLabelId = nodeData.insideLabel.id;
@@ -51,6 +57,7 @@ export const useDiagramDirectEdit = (): UseDiagramDirectEditValue => {
         }
         isLabelEditable = nodeData.labelEditable;
       }
+
       if (!currentlyEditedLabelId) {
         currentlyEditedLabelId = getEdges().find((edge) => edge.selected)?.data?.label?.id;
         isLabelEditable = getEdges().find((edge) => edge.selected)?.data?.centerLabelEditable || false;

@@ -38,7 +38,6 @@ export interface PaletteProps {
   diagramElementId: string;
   targetObjectId: string;
   onDirectEditClick: () => void;
-  onEscape?: () => void;
 }
 
 export interface PaletteState {
