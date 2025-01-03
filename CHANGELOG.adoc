@@ -46,6 +46,8 @@ This may have some consequences for downstream applications which are embedding 
 - https://github.com/eclipse-sirius/sirius-web/issues/4311[#4311] [table] Fix typos in table variables
 - https://github.com/eclipse-sirius/sirius-web/issues/3578[#3578] [diagram] Fix tooltip and menu visibility in a full screen mode.
 See https://github.com/mui/material-ui/issues/15618[this link] for additional details.
+- https://github.com/eclipse-sirius/sirius-web/issues/4360[#4360] [table] Prevent application crash when opening tables from a form
+
 
 === New Features
 
