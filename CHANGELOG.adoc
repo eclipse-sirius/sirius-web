@@ -47,6 +47,7 @@ This may have some consequences for downstream applications which are embedding 
 - https://github.com/eclipse-sirius/sirius-web/issues/3578[#3578] [diagram] Fix tooltip and menu visibility in a full screen mode.
 See https://github.com/mui/material-ui/issues/15618[this link] for additional details.
 - https://github.com/eclipse-sirius/sirius-web/issues/4360[#4360] [table] Prevent application crash when opening tables from a form
+- https://github.com/eclipse-sirius/sirius-web/issues/4359[#4359] [table] Fix an issue where two pagination forms where display in tables
 
 
 === New Features
@@ -57,7 +58,6 @@ See https://github.com/mui/material-ui/issues/15618[this link] for additional de
 Specifiers can contribute dedicated AQL services for this feature using implementations of `IInterpreterJavaServiceProvider`
 - https://github.com/eclipse-sirius/sirius-web/issues/4346[#4346] [core] The field `Object#iconURLs` has been added to the GraphQL schema in order to retrieve the icon of an object
 - https://github.com/eclipse-sirius/sirius-web/issues/4346[#4346] [query] Add some feedback for long running evaluations
-Specifiers can contribute dedicated AQL services for this feature using implementations of `IInterpreterJavaServiceProvider`.
 - https://github.com/eclipse-sirius/sirius-web/issues/4338[#4338] [core] A Spring log group dedicated to performance issues has been created.
 As a result, one can use `logging.level.sirius.web.performance=DEBUG` in order to display key performance metrics in a Sirius Web instance.
 Some log messages have been updated in order to provide more information and make them easier to read to idenfity key performance issues.
