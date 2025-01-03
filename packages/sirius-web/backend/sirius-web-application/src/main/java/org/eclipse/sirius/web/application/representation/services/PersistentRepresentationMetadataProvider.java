@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,13 @@ public class PersistentRepresentationMetadataProvider implements IRepresentation
 
     @Override
     public Optional<RepresentationMetadata> getMetadata(String representationId) {
-        return new UUIDParser().parse(representationId)
+        String representationIdSegment = representationId;
+        // Remove the parameters from the representationId to extract the actual representation ID.
+        String[] representationSegments = representationId.split("\\?");
+        if (representationSegments.length > 0) {
+            representationIdSegment = representationSegments[0];
+        }
+        return new UUIDParser().parse(representationIdSegment)
                 .flatMap(this.representationMetadataSearchService::findMetadataById)
                 .map(representation -> RepresentationMetadata.newRepresentationMetadata(representation.getId().toString())
                         .kind(representation.getKind())

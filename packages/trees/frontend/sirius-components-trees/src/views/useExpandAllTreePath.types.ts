@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,17 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLTreeItem } from '../views/TreeView.types';
+import { LazyQueryExecFunction } from '@apollo/client';
+import { GQLGetExpandAllTreePathData, GQLGetExpandAllTreePathVariables } from './TreeView.types';
 
-export interface TreeItemContextMenuComponentProps {
-  editingContextId: string;
-  treeId: string;
-  item: GQLTreeItem;
-  readOnly: boolean;
-  expandItem: () => void;
-  onExpandedElementChange: (expanded: string[], maxDepth: number) => void;
-  onClose: () => void;
-  key: string;
-  expanded: string[];
+export interface UseExpandAllTreePathValue {
+  getExpandAllTreePath: LazyQueryExecFunction<GQLGetExpandAllTreePathData, GQLGetExpandAllTreePathVariables>;
+  expanded: string[] | null;
   maxDepth: number;
+  loading: boolean;
 }

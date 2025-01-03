@@ -53,16 +53,21 @@
     <genClasses image="false" ecoreClass="tree.ecore#//TreeItemLabelElementDescription"/>
     <genClasses image="false" ecoreClass="tree.ecore#//TreeItemContextMenuEntry">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeItemContextMenuEntry/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeItemContextMenuEntry/labelExpression"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeItemContextMenuEntry/iconURLExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeItemContextMenuEntry/preconditionExpression"/>
     </genClasses>
     <genClasses ecoreClass="tree.ecore#//SingleClickTreeItemContextMenuEntry">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference tree.ecore#//SingleClickTreeItemContextMenuEntry/body"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//SingleClickTreeItemContextMenuEntry/labelExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//SingleClickTreeItemContextMenuEntry/iconURLExpression"/>
     </genClasses>
     <genClasses ecoreClass="tree.ecore#//FetchTreeItemContextMenuEntry">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//FetchTreeItemContextMenuEntry/urlExression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//FetchTreeItemContextMenuEntry/kind"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//FetchTreeItemContextMenuEntry/labelExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//FetchTreeItemContextMenuEntry/iconURLExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="tree.ecore#//CustomTreeItemContextMenuEntry">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//CustomTreeItemContextMenuEntry/contributionId"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
