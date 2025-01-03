@@ -14,7 +14,8 @@ import { Selection } from '@eclipse-sirius/sirius-components-core';
 
 export interface DuplicateObjectModalProps {
   editingContextId: string;
-  item: any;
+  objectToDuplicateId: string;
+  objectToDuplicateKind: string;
   onObjectDuplicated: (object: Selection) => void;
   onClose: () => void;
 }
