@@ -37,7 +37,7 @@ The `start` task used in our turbo configuration is now marked as `persistent` a
 
 === Shapes
 
-
+- Add support for artifact publication from a project
 
 === Architectural decision records
 
