@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -59,6 +59,8 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
     private static final String AQL_TRUE = "aql:true";
 
     private static final String AQL_SELF_IS_AN_ENTITY = "aql:self.oclIsKindOf(domain::Entity)";
+
+    private static final String AQL_SELF_GET_TREE_ITEM_LABEL = "aql:self.getTreeItemLabel()";
 
     private final IStudioCapableEditingContextPredicate studioCapableEditingContextPredicate;
 
@@ -135,7 +137,6 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
         return this.viewDescription;
     }
 
-
     private TextStylePalette createTextStylePalette() {
         return new ViewBuilders()
                 .newTextStylePalette()
@@ -154,32 +155,41 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
     }
 
     private TreeItemLabelDescription entityStyle(TextStylePalette textStylePalette) {
-        return new TreeBuilders()
-                .newTreeItemLabelDescription()
+        return new TreeBuilders().newTreeItemLabelDescription()
                 .name("entity style")
                 .preconditionExpression(AQL_SELF_IS_AN_ENTITY)
-                .children(this.getEntityKeyFragment(textStylePalette), this.getEntityValueFragment(textStylePalette))
+                .children(
+                        this.getEntityKeyFragment(textStylePalette),
+                        this.getEntityValueFragment(textStylePalette),
+                        this.getAbstractEntityValueFragment(textStylePalette))
                 .build();
     }
 
     private TreeItemLabelDescription defaultStyle() {
-        return new TreeBuilders()
-                .newTreeItemLabelDescription()
+        return new TreeBuilders().newTreeItemLabelDescription()
                 .name("default style")
                 .preconditionExpression("aql:true")
-                .children(new TreeBuilders()
-                        .newTreeItemLabelFragmentDescription()
-                        .labelExpression("aql:self.getTreeItemLabel()")
+                .children(new TreeBuilders().newTreeItemLabelFragmentDescription()
+                        .labelExpression(AQL_SELF_GET_TREE_ITEM_LABEL)
                         // no style specified => default one will be chosen
-                        .build()
-                        )
+                        .build())
                 .build();
     }
 
     private TreeItemLabelElementDescription getEntityValueFragment(TextStylePalette textStylePalette) {
         return new TreeBuilders().newTreeItemLabelFragmentDescription()
-                .labelExpression("aql:self.getTreeItemLabel()")
+                .labelExpression(AQL_SELF_GET_TREE_ITEM_LABEL)
                 .style(this.getTextStyleByName(textStylePalette, NORMAL_TEXT_STYLE_NAME))
+                .build();
+    }
+
+    private TreeItemLabelElementDescription getAbstractEntityValueFragment(TextStylePalette textStylePalette) {
+        return new TreeBuilders().newIfTreeItemLabelElementDescription()
+                .predicateExpression("aql:self.isAbstractEntity()")
+                .children(new TreeBuilders().newTreeItemLabelFragmentDescription()
+                        .labelExpression(" [abstract]")
+                        .style(this.getTextStyleByName(textStylePalette, BLUE_ITALIC_TEXT_STYLE_NAME))
+                        .build())
                 .build();
     }
 

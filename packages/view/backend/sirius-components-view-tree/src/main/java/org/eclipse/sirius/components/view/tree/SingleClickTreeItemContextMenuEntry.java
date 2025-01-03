@@ -16,7 +16,8 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.sirius.components.view.Operation;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object '<em><b>Single Click Tree Item Context Menu Entry</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc --> A representation of the model object '<em><b>Single Click Tree Item Context Menu
+ * Entry</b></em>'. <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
@@ -25,20 +26,20 @@ import org.eclipse.sirius.components.view.Operation;
  * <li>{@link org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry#getBody <em>Body</em>}</li>
  * </ul>
  *
+ * @see org.eclipse.sirius.components.view.tree.TreePackage#getSingleClickTreeItemContextMenuEntry()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.view.tree.TreePackage#getSingleClickTreeItemContextMenuEntry()
  */
 public interface SingleClickTreeItemContextMenuEntry extends TreeItemContextMenuEntry {
 
     /**
-     * Returns the value of the '<em><b>Body</b></em>' containment reference list. The list contents are of type {@link org.eclipse.sirius.components.view.Operation}. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * Returns the value of the '<em><b>Body</b></em>' containment reference list. The list contents are of type
+     * {@link org.eclipse.sirius.components.view.Operation}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Body</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.tree.TreePackage#getSingleClickTreeItemContextMenuEntry_Body()
      * @model containment="true"
      * @generated
-     * @see org.eclipse.sirius.components.view.tree.TreePackage#getSingleClickTreeItemContextMenuEntry_Body()
      */
     EList<Operation> getBody();
 

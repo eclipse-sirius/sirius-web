@@ -36,7 +36,7 @@ This may have some consequences for downstream applications which are embedding 
 
 === Improvements
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4095[#4095] Add conditional tree item label element description
 
 == v2025.1.0
 
