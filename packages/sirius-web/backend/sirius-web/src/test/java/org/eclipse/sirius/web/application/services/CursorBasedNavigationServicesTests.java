@@ -20,8 +20,8 @@ import java.util.function.Predicate;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
+import org.eclipse.sirius.components.emf.tables.CursorBasedNavigationServices;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
-import org.eclipse.sirius.web.papaya.representations.table.CursorBasedNavigationServices;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
