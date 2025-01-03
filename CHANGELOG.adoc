@@ -27,6 +27,7 @@ This may have some consequences for downstream applications which are embedding 
 
 === Bug fixes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/4359[#4359] [table] Fix an issue where two pagination forms where display in tables
 
 === New Features
 
