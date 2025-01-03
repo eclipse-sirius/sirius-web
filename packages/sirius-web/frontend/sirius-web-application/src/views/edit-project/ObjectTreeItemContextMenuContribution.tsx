@@ -65,7 +65,8 @@ export const ObjectTreeItemContextMenuContribution = forwardRef(
       modalElement = (
         <DuplicateObjectModal
           editingContextId={editingContextId}
-          item={item}
+          objectToDuplicateId={item.id}
+          objectToDuplicateKind={item.kind}
           onObjectDuplicated={onObjectCreated}
           onClose={onClose}
         />

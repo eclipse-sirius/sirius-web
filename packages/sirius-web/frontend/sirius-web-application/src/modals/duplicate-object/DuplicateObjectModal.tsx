@@ -53,7 +53,8 @@ const useDuplicateObjectModalStyles = makeStyles()((theme) => ({
 
 export const DuplicateObjectModal = ({
   editingContextId,
-  item,
+  objectToDuplicateId,
+  objectToDuplicateKind,
   onObjectDuplicated,
   onClose,
 }: DuplicateObjectModalProps) => {
@@ -79,11 +80,11 @@ export const DuplicateObjectModal = ({
         variables: {
           editingContextId,
           containerId: state.containerSelection.entries[0].id,
-          containedObjectId: item.id,
+          containedObjectId: objectToDuplicateId,
         },
       });
     }
-  }, [state.containerSelection, item]);
+  }, [state.containerSelection, objectToDuplicateId]);
 
   useEffect(() => {
     if (containmentFeatureNames) {
@@ -99,7 +100,7 @@ export const DuplicateObjectModal = ({
   const onDuplicate = () => {
     duplicateObject(
       editingContextId,
-      item.id,
+      objectToDuplicateId,
       state.containerSelection.entries[0]?.id,
       state.containmentFeatureName,
       state.duplicateContent,
@@ -141,8 +142,8 @@ export const DuplicateObjectModal = ({
   };
 
   const treeId: string = `modelBrowser://container?ownerKind=${encodeURIComponent(
-    item.kind
-  )}&targetType=${encodeURIComponent(item.kind)}&isContainment=true`;
+    objectToDuplicateKind
+  )}&targetType=${encodeURIComponent(objectToDuplicateKind)}&isContainment=true`;
   const { tree } = useDuplicateDialogTreeSubscription(editingContextId, treeId, state.expanded, state.maxDepth);
 
   return (
