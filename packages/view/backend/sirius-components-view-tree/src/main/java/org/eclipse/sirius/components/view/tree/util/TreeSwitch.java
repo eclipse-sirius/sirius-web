@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.view.RepresentationDescription;
+import org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.ForTreeItemLabelElementDescription;
 import org.eclipse.sirius.components.view.tree.IfTreeItemLabelElementDescription;
@@ -150,6 +151,15 @@ public class TreeSwitch<T> extends Switch<T> {
                 T result = this.caseFetchTreeItemContextMenuEntry(fetchTreeItemContextMenuEntry);
                 if (result == null)
                     result = this.caseTreeItemContextMenuEntry(fetchTreeItemContextMenuEntry);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY: {
+                CustomTreeItemContextMenuEntry customTreeItemContextMenuEntry = (CustomTreeItemContextMenuEntry) theEObject;
+                T result = this.caseCustomTreeItemContextMenuEntry(customTreeItemContextMenuEntry);
+                if (result == null)
+                    result = this.caseTreeItemContextMenuEntry(customTreeItemContextMenuEntry);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -293,6 +303,21 @@ public class TreeSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseFetchTreeItemContextMenuEntry(FetchTreeItemContextMenuEntry object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Custom Tree Item Context Menu Entry</em>'.
+     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Custom Tree Item Context Menu Entry</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseCustomTreeItemContextMenuEntry(CustomTreeItemContextMenuEntry object) {
         return null;
     }
 

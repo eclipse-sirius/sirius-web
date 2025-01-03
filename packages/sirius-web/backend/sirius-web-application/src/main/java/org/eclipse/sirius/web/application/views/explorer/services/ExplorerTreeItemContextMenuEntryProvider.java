@@ -66,6 +66,9 @@ public class ExplorerTreeItemContextMenuEntryProvider implements ITreeItemContex
     public List<ITreeItemContextMenuEntry> getTreeItemContextMenuEntries(IEditingContext editingContext, TreeDescription treeDescription, Tree tree, TreeItem treeItem) {
         List<ITreeItemContextMenuEntry> result = new ArrayList<>();
         this.getUpdateLibraryEntry(editingContext, treeItem).ifPresent(result::add);
+        if (treeItem.isHasChildren()) {
+            result.add(new SingleClickTreeItemContextMenuEntry("expandAll", "", List.of()));
+        }
         return result;
     }
 
@@ -113,7 +116,6 @@ public class ExplorerTreeItemContextMenuEntryProvider implements ITreeItemContex
                 .map(AggregateReference::getId)
                 .map(editingContextDependencies::contains)
                 .orElse(false);
-
     }
 
 }

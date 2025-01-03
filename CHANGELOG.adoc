@@ -53,6 +53,10 @@ Note that a migration participant adds this tool for existing diagram descriptio
 - https://github.com/eclipse-sirius/sirius-web/issues/4874[#4874] [diagram] `childrenLayoutStrategy` feature has been moved from `NodeDescription` to `NodeStyleDescription`.
 All custom node style descriptions must be regenerated to add the new `childrenLayoutStrategy` feature from `NodeStyleDescription`.
 - All the `ParametricSVG` related code has been removed.
+- https://github.com/eclipse-sirius/sirius-web/issues/4373[#4373] [trees] `onExpand` and `onExpandAll` is removed from `Tree` and all the tree components props.
+It is now possible to expand a tree item by using `onExpandedElementChange`.
+The "expand all" contextual menu entry (and its implementation) has been moved to Sirius Web as a contribution.
+
 
 === Dependency update
 
@@ -190,6 +194,10 @@ This modification will enable a conditional style with a different layout strate
 - https://github.com/eclipse-sirius/sirius-web/issues/667[#667] [sirius-web] Restore layout and unsynchronized nodes when importing a project with a diagram
 - https://github.com/eclipse-sirius/sirius-web/issues/4094[#4094] [sirius-web] Improve the reacivity of the explorer rendering when hovering on a tree with many items are expanded/visible
 Handle the recursive part of the tree rendring in `Tree` instead of `TreeItem`, so that re-rendering a particular `TreeItem` has a fixed cost, independant of how many of its descendants are expanded/visible.
+- https://github.com/eclipse-sirius/sirius-web/issues/4373[#4373] [trees] Allow backend definition of ExpandAll tool in the explorer
+Specifiers can now create `CustomTreeItemContextMenuEntry` instances in the view DSL to indicate to use a frontend component as contextual menu entry.
+The _ExpandAll_ tool is now a Sirius Web contribution that can be enabled via this mechanism.  
+
 
 
 == v2025.4.0

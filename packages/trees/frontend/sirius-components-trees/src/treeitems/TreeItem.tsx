@@ -128,8 +128,9 @@ export const TreeItem = ({
   item,
   itemIndex,
   depth,
-  onExpand,
-  onExpandAll,
+  expanded,
+  maxDepth,
+  onExpandedElementChange,
   readOnly,
   textToHighlight,
   textToFilter,
@@ -279,35 +280,15 @@ export const TreeItem = ({
     />
   );
 
-  const itemAction = (
-    <div onClick={onTreeItemAction}>
-      {treeItemActionRender ? (
-        treeItemActionRender({
-          editingContextId: editingContextId,
-          treeId: treeId,
-          item: item,
-          depth: depth,
-          onExpand: onExpand,
-          onExpandAll: onExpandAll,
-          readOnly: readOnly,
-          onEnterEditingMode: enterEditingMode,
-          isHovered: state.partHovered === 'item',
-        })
-      ) : (
-        <TreeItemAction
-          editingContextId={editingContextId}
-          treeId={treeId}
-          item={item}
-          depth={depth}
-          onExpand={onExpand}
-          onExpandAll={onExpandAll}
-          readOnly={readOnly}
-          onEnterEditingMode={enterEditingMode}
-          isHovered={state.partHovered === 'item'}
-        />
-      )}
-    </div>
-  );
+  const onExpand = (id: string, depth: number) => {
+    if (expanded.includes(id)) {
+      const newExpanded = [...expanded];
+      newExpanded.splice(newExpanded.indexOf(id), 1);
+      onExpandedElementChange(newExpanded, Math.max(maxDepth, depth));
+    } else {
+      onExpandedElementChange([...expanded, id], Math.max(maxDepth, depth));
+    }
+  };
 
   let currentTreeItem: JSX.Element | null;
   if (textToFilter && isFilterCandidate(item, textToFilter)) {
@@ -359,7 +340,35 @@ export const TreeItem = ({
                 <TreeItemIcon item={item} />
                 {text}
               </div>
-              {itemAction}
+              <div onClick={onTreeItemAction}>
+                {treeItemActionRender ? (
+                  treeItemActionRender({
+                    editingContextId: editingContextId,
+                    treeId: treeId,
+                    item: item,
+                    depth: depth,
+                    expanded: expanded,
+                    maxDepth: maxDepth,
+                    onExpandedElementChange: onExpandedElementChange,
+                    readOnly: readOnly,
+                    onEnterEditingMode: enterEditingMode,
+                    isHovered: state.partHovered === 'item',
+                  })
+                ) : (
+                  <TreeItemAction
+                    editingContextId={editingContextId}
+                    treeId={treeId}
+                    item={item}
+                    depth={depth}
+                    expanded={expanded}
+                    maxDepth={maxDepth}
+                    onExpandedElementChange={onExpandedElementChange}
+                    readOnly={readOnly}
+                    onEnterEditingMode={enterEditingMode}
+                    isHovered={state.partHovered === 'item'}
+                  />
+                )}
+              </div>
             </div>
           </div>
         </div>

@@ -27,10 +27,6 @@ import org.eclipse.sirius.components.view.tree.TreePackage;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeItemContextMenuEntryImpl#getName <em>Name</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeItemContextMenuEntryImpl#getLabelExpression <em>Label
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeItemContextMenuEntryImpl#getIconURLExpression <em>Icon
- * URL Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeItemContextMenuEntryImpl#getPreconditionExpression
  * <em>Precondition Expression</em>}</li>
  * </ul>
@@ -58,46 +54,6 @@ public abstract class TreeItemContextMenuEntryImpl extends MinimalEObjectImpl.Co
      * @ordered
      */
     protected String name = NAME_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @see #getLabelExpression()
-     * @generated
-     * @ordered
-     */
-    protected static final String LABEL_EXPRESSION_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @see #getLabelExpression()
-     * @generated
-     * @ordered
-     */
-    protected String labelExpression = LABEL_EXPRESSION_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #getIconURLExpression() <em>Icon URL Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getIconURLExpression()
-     * @generated
-     * @ordered
-     */
-    protected static final String ICON_URL_EXPRESSION_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getIconURLExpression() <em>Icon URL Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getIconURLExpression()
-     * @generated
-     * @ordered
-     */
-    protected String iconURLExpression = ICON_URL_EXPRESSION_EDEFAULT;
 
     /**
      * The default value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
@@ -167,52 +123,6 @@ public abstract class TreeItemContextMenuEntryImpl extends MinimalEObjectImpl.Co
      * @generated
      */
     @Override
-    public String getLabelExpression() {
-        return this.labelExpression;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setLabelExpression(String newLabelExpression) {
-        String oldLabelExpression = this.labelExpression;
-        this.labelExpression = newLabelExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION, oldLabelExpression, this.labelExpression));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public String getIconURLExpression() {
-        return this.iconURLExpression;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setIconURLExpression(String newIconURLExpression) {
-        String oldIconURLExpression = this.iconURLExpression;
-        this.iconURLExpression = newIconURLExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION, oldIconURLExpression, this.iconURLExpression));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public String getPreconditionExpression() {
         return this.preconditionExpression;
     }
@@ -240,10 +150,6 @@ public abstract class TreeItemContextMenuEntryImpl extends MinimalEObjectImpl.Co
         switch (featureID) {
             case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__NAME:
                 return this.getName();
-            case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION:
-                return this.getLabelExpression();
-            case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION:
-                return this.getIconURLExpression();
             case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION:
                 return this.getPreconditionExpression();
         }
@@ -260,12 +166,6 @@ public abstract class TreeItemContextMenuEntryImpl extends MinimalEObjectImpl.Co
         switch (featureID) {
             case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__NAME:
                 this.setName((String) newValue);
-                return;
-            case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION:
-                this.setLabelExpression((String) newValue);
-                return;
-            case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION:
-                this.setIconURLExpression((String) newValue);
                 return;
             case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION:
                 this.setPreconditionExpression((String) newValue);
@@ -285,12 +185,6 @@ public abstract class TreeItemContextMenuEntryImpl extends MinimalEObjectImpl.Co
             case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__NAME:
                 this.setName(NAME_EDEFAULT);
                 return;
-            case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION:
-                this.setLabelExpression(LABEL_EXPRESSION_EDEFAULT);
-                return;
-            case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION:
-                this.setIconURLExpression(ICON_URL_EXPRESSION_EDEFAULT);
-                return;
             case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION:
                 this.setPreconditionExpression(PRECONDITION_EXPRESSION_EDEFAULT);
                 return;
@@ -308,10 +202,6 @@ public abstract class TreeItemContextMenuEntryImpl extends MinimalEObjectImpl.Co
         switch (featureID) {
             case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__NAME:
                 return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
-            case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION:
-                return LABEL_EXPRESSION_EDEFAULT == null ? this.labelExpression != null : !LABEL_EXPRESSION_EDEFAULT.equals(this.labelExpression);
-            case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION:
-                return ICON_URL_EXPRESSION_EDEFAULT == null ? this.iconURLExpression != null : !ICON_URL_EXPRESSION_EDEFAULT.equals(this.iconURLExpression);
             case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION:
                 return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
         }
@@ -331,10 +221,6 @@ public abstract class TreeItemContextMenuEntryImpl extends MinimalEObjectImpl.Co
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (name: ");
         result.append(this.name);
-        result.append(", labelExpression: ");
-        result.append(this.labelExpression);
-        result.append(", iconURLExpression: ");
-        result.append(this.iconURLExpression);
         result.append(", preconditionExpression: ");
         result.append(this.preconditionExpression);
         result.append(')');

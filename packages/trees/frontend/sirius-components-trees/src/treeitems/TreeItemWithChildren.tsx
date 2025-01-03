@@ -25,8 +25,9 @@ export const TreeItemWithChildren = ({
   treeId,
   item,
   depth,
-  onExpand,
-  onExpandAll,
+  expanded,
+  maxDepth,
+  onExpandedElementChange,
   readOnly,
   textToHighlight,
   textToFilter,
@@ -48,8 +49,9 @@ export const TreeItemWithChildren = ({
                 item={childItem}
                 itemIndex={index}
                 depth={depth}
-                onExpand={onExpand}
-                onExpandAll={onExpandAll}
+                expanded={expanded}
+                maxDepth={maxDepth}
+                onExpandedElementChange={onExpandedElementChange}
                 readOnly={readOnly}
                 textToHighlight={textToHighlight}
                 textToFilter={textToFilter}
@@ -64,8 +66,9 @@ export const TreeItemWithChildren = ({
                 item={childItem}
                 itemIndex={index}
                 depth={depth + 1}
-                onExpand={onExpand}
-                onExpandAll={onExpandAll}
+                expanded={expanded}
+                maxDepth={maxDepth}
+                onExpandedElementChange={onExpandedElementChange}
                 readOnly={readOnly}
                 textToHighlight={textToHighlight}
                 textToFilter={textToFilter}

@@ -89,4 +89,14 @@ public class TreeBuilders {
         return new FetchTreeItemContextMenuEntryBuilder();
     }
 
+    /**
+     * Instantiate a CustomTreeItemContextMenuEntryBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public CustomTreeItemContextMenuEntryBuilder newCustomTreeItemContextMenuEntry() {
+        return new CustomTreeItemContextMenuEntryBuilder();
+    }
+
 }
