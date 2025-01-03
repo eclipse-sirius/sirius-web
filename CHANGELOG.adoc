@@ -22,6 +22,7 @@ The `start` task used in our turbo configuration is now marked as `persistent` a
 
 === Bug fixes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/4359[#4359] [table] Fix an issue where two pagination forms where display in tables
 
 === New Features
 
