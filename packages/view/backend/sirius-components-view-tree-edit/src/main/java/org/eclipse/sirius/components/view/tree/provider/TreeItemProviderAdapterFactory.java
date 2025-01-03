@@ -267,6 +267,30 @@ public class TreeItemProviderAdapterFactory extends TreeAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry} instances. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected CustomTreeItemContextMenuEntryItemProvider customTreeItemContextMenuEntryItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createCustomTreeItemContextMenuEntryAdapter() {
+        if (this.customTreeItemContextMenuEntryItemProvider == null) {
+            this.customTreeItemContextMenuEntryItemProvider = new CustomTreeItemContextMenuEntryItemProvider(this);
+        }
+
+        return this.customTreeItemContextMenuEntryItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -409,6 +433,8 @@ public class TreeItemProviderAdapterFactory extends TreeAdapterFactory implement
             this.singleClickTreeItemContextMenuEntryItemProvider.dispose();
         if (this.fetchTreeItemContextMenuEntryItemProvider != null)
             this.fetchTreeItemContextMenuEntryItemProvider.dispose();
+        if (this.customTreeItemContextMenuEntryItemProvider != null)
+            this.customTreeItemContextMenuEntryItemProvider.dispose();
     }
 
     /**

@@ -334,6 +334,8 @@ public class TreeDescriptionItemProvider extends RepresentationDescriptionItemPr
         newChildDescriptors.add(this.createChildParameter(TreePackage.Literals.TREE_DESCRIPTION__CONTEXT_MENU_ENTRIES, TreeFactory.eINSTANCE.createSingleClickTreeItemContextMenuEntry()));
 
         newChildDescriptors.add(this.createChildParameter(TreePackage.Literals.TREE_DESCRIPTION__CONTEXT_MENU_ENTRIES, TreeFactory.eINSTANCE.createFetchTreeItemContextMenuEntry()));
+
+        newChildDescriptors.add(this.createChildParameter(TreePackage.Literals.TREE_DESCRIPTION__CONTEXT_MENU_ENTRIES, TreeFactory.eINSTANCE.createCustomTreeItemContextMenuEntry()));
     }
 
 }

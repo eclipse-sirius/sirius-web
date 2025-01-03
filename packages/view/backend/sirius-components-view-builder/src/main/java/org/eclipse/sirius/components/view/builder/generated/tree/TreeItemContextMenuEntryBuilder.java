@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,24 +33,6 @@ public abstract class TreeItemContextMenuEntryBuilder {
      */
     public TreeItemContextMenuEntryBuilder name(java.lang.String value) {
         this.getTreeItemContextMenuEntry().setName(value);
-        return this;
-    }
-    /**
-     * Setter for LabelExpression.
-     *
-     * @generated
-     */
-    public TreeItemContextMenuEntryBuilder labelExpression(java.lang.String value) {
-        this.getTreeItemContextMenuEntry().setLabelExpression(value);
-        return this;
-    }
-    /**
-     * Setter for IconURLExpression.
-     *
-     * @generated
-     */
-    public TreeItemContextMenuEntryBuilder iconURLExpression(java.lang.String value) {
-        this.getTreeItemContextMenuEntry().setIconURLExpression(value);
         return this;
     }
     /**

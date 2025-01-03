@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.view.TextStyleDescription;
 import org.eclipse.sirius.components.view.TextStylePalette;
 import org.eclipse.sirius.components.view.View;
@@ -290,6 +291,11 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
                 .body(callService.build())
                 .build();
 
-        return List.of(helpMenuEntry, toggleAbstractMenuEntry);
+        var expandAllMenuEntry = new TreeBuilders().newCustomTreeItemContextMenuEntry()
+                .contributionId("expandAll")
+                .preconditionExpression("aql:" + TreeItem.SELECTED_TREE_ITEM + ".isHasChildren()")
+                .build();
+
+        return List.of(expandAllMenuEntry, helpMenuEntry, toggleAbstractMenuEntry);
     }
 }

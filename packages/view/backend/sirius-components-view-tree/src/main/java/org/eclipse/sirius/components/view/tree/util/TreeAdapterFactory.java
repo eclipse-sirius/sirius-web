@@ -17,6 +17,7 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.view.RepresentationDescription;
+import org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.ForTreeItemLabelElementDescription;
 import org.eclipse.sirius.components.view.tree.IfTreeItemLabelElementDescription;
@@ -93,6 +94,11 @@ public class TreeAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseFetchTreeItemContextMenuEntry(FetchTreeItemContextMenuEntry object) {
             return TreeAdapterFactory.this.createFetchTreeItemContextMenuEntryAdapter();
+        }
+
+        @Override
+        public Adapter caseCustomTreeItemContextMenuEntry(CustomTreeItemContextMenuEntry object) {
+            return TreeAdapterFactory.this.createCustomTreeItemContextMenuEntryAdapter();
         }
 
         @Override
@@ -274,6 +280,20 @@ public class TreeAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createFetchTreeItemContextMenuEntryAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry <em>Custom Tree Item Context Menu
+     * Entry</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry
+     * @generated
+     */
+    public Adapter createCustomTreeItemContextMenuEntryAdapter() {
         return null;
     }
 

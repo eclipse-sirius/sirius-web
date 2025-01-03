@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,10 @@ import org.eclipse.sirius.components.view.tree.TreePackage;
  * <li>{@link org.eclipse.sirius.components.view.tree.impl.FetchTreeItemContextMenuEntryImpl#getUrlExression <em>Url
  * Exression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.tree.impl.FetchTreeItemContextMenuEntryImpl#getKind <em>Kind</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.tree.impl.FetchTreeItemContextMenuEntryImpl#getLabelExpression
+ * <em>Label Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.tree.impl.FetchTreeItemContextMenuEntryImpl#getIconURLExpression
+ * <em>Icon URL Expression</em>}</li>
  * </ul>
  *
  * @generated
@@ -73,6 +77,46 @@ public class FetchTreeItemContextMenuEntryImpl extends TreeItemContextMenuEntryI
      * @ordered
      */
     protected FetchTreeItemContextMenuEntryKind kind = KIND_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @see #getLabelExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String LABEL_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @see #getLabelExpression()
+     * @generated
+     * @ordered
+     */
+    protected String labelExpression = LABEL_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getIconURLExpression() <em>Icon URL Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getIconURLExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String ICON_URL_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getIconURLExpression() <em>Icon URL Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getIconURLExpression()
+     * @generated
+     * @ordered
+     */
+    protected String iconURLExpression = ICON_URL_EXPRESSION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -145,12 +189,62 @@ public class FetchTreeItemContextMenuEntryImpl extends TreeItemContextMenuEntryI
      * @generated
      */
     @Override
+    public String getLabelExpression() {
+        return this.labelExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setLabelExpression(String newLabelExpression) {
+        String oldLabelExpression = this.labelExpression;
+        this.labelExpression = newLabelExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION, oldLabelExpression, this.labelExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getIconURLExpression() {
+        return this.iconURLExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setIconURLExpression(String newIconURLExpression) {
+        String oldIconURLExpression = this.iconURLExpression;
+        this.iconURLExpression = newIconURLExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION, oldIconURLExpression, this.iconURLExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case TreePackage.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__URL_EXRESSION:
                 return this.getUrlExression();
             case TreePackage.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__KIND:
                 return this.getKind();
+            case TreePackage.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION:
+                return this.getLabelExpression();
+            case TreePackage.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION:
+                return this.getIconURLExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -168,6 +262,12 @@ public class FetchTreeItemContextMenuEntryImpl extends TreeItemContextMenuEntryI
                 return;
             case TreePackage.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__KIND:
                 this.setKind((FetchTreeItemContextMenuEntryKind) newValue);
+                return;
+            case TreePackage.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION:
+                this.setLabelExpression((String) newValue);
+                return;
+            case TreePackage.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION:
+                this.setIconURLExpression((String) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -187,6 +287,12 @@ public class FetchTreeItemContextMenuEntryImpl extends TreeItemContextMenuEntryI
             case TreePackage.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__KIND:
                 this.setKind(KIND_EDEFAULT);
                 return;
+            case TreePackage.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION:
+                this.setLabelExpression(LABEL_EXPRESSION_EDEFAULT);
+                return;
+            case TreePackage.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION:
+                this.setIconURLExpression(ICON_URL_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -203,6 +309,10 @@ public class FetchTreeItemContextMenuEntryImpl extends TreeItemContextMenuEntryI
                 return URL_EXRESSION_EDEFAULT == null ? this.urlExression != null : !URL_EXRESSION_EDEFAULT.equals(this.urlExression);
             case TreePackage.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__KIND:
                 return this.kind != KIND_EDEFAULT;
+            case TreePackage.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION:
+                return LABEL_EXPRESSION_EDEFAULT == null ? this.labelExpression != null : !LABEL_EXPRESSION_EDEFAULT.equals(this.labelExpression);
+            case TreePackage.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION:
+                return ICON_URL_EXPRESSION_EDEFAULT == null ? this.iconURLExpression != null : !ICON_URL_EXPRESSION_EDEFAULT.equals(this.iconURLExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -222,6 +332,10 @@ public class FetchTreeItemContextMenuEntryImpl extends TreeItemContextMenuEntryI
         result.append(this.urlExression);
         result.append(", kind: ");
         result.append(this.kind);
+        result.append(", labelExpression: ");
+        result.append(this.labelExpression);
+        result.append(", iconURLExpression: ");
+        result.append(this.iconURLExpression);
         result.append(')');
         return result.toString();
     }

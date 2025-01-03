@@ -492,31 +492,13 @@ public interface TreePackage extends EPackage {
     int TREE_ITEM_CONTEXT_MENU_ENTRY__NAME = 0;
 
     /**
-     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @generated
-     * @ordered
-     */
-    int TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION = 1;
-
-    /**
-     * The feature id for the '<em><b>Icon URL Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @generated
-     * @ordered
-     */
-    int TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION = 2;
-
-    /**
      * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION = 3;
+    int TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION = 1;
 
     /**
      * The number of structural features of the '<em>Item Context Menu Entry</em>' class. <!-- begin-user-doc --> <!--
@@ -525,7 +507,7 @@ public interface TreePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT = 4;
+    int TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT = 2;
 
     /**
      * The number of operations of the '<em>Item Context Menu Entry</em>' class. <!-- begin-user-doc --> <!--
@@ -556,24 +538,6 @@ public interface TreePackage extends EPackage {
     int SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__NAME = TREE_ITEM_CONTEXT_MENU_ENTRY__NAME;
 
     /**
-     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @generated
-     * @ordered
-     */
-    int SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION = TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION;
-
-    /**
-     * The feature id for the '<em><b>Icon URL Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @generated
-     * @ordered
-     */
-    int SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION = TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION;
-
-    /**
      * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -592,13 +556,31 @@ public interface TreePackage extends EPackage {
     int SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__BODY = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Icon URL Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT + 2;
+
+    /**
      * The number of structural features of the '<em>Single Click Tree Item Context Menu Entry</em>' class. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT + 1;
+    int SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT + 3;
 
     /**
      * The number of operations of the '<em>Single Click Tree Item Context Menu Entry</em>' class. <!-- begin-user-doc
@@ -628,24 +610,6 @@ public interface TreePackage extends EPackage {
     int FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__NAME = TREE_ITEM_CONTEXT_MENU_ENTRY__NAME;
 
     /**
-     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @generated
-     * @ordered
-     */
-    int FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION = TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION;
-
-    /**
-     * The feature id for the '<em><b>Icon URL Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @generated
-     * @ordered
-     */
-    int FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION = TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION;
-
-    /**
      * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -671,13 +635,31 @@ public interface TreePackage extends EPackage {
     int FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__KIND = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT + 1;
 
     /**
+     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Icon URL Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT + 3;
+
+    /**
      * The number of structural features of the '<em>Fetch Tree Item Context Menu Entry</em>' class. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT + 2;
+    int FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT + 4;
 
     /**
      * The number of operations of the '<em>Fetch Tree Item Context Menu Entry</em>' class. <!-- begin-user-doc --> <!--
@@ -689,6 +671,60 @@ public interface TreePackage extends EPackage {
     int FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY_OPERATION_COUNT = TREE_ITEM_CONTEXT_MENU_ENTRY_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the
+     * '{@link org.eclipse.sirius.components.view.tree.impl.CustomTreeItemContextMenuEntryImpl <em>Custom Tree Item
+     * Context Menu Entry</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.tree.impl.CustomTreeItemContextMenuEntryImpl
+     * @see org.eclipse.sirius.components.view.tree.impl.TreePackageImpl#getCustomTreeItemContextMenuEntry()
+     * @generated
+     */
+    int CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY = 9;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__NAME = TREE_ITEM_CONTEXT_MENU_ENTRY__NAME;
+
+    /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION = TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Contribution Id</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__CONTRIBUTION_ID = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Custom Tree Item Context Menu Entry</em>' class. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Custom Tree Item Context Menu Entry</em>' class. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY_OPERATION_COUNT = TREE_ITEM_CONTEXT_MENU_ENTRY_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntryKind
      * <em>Fetch Tree Item Context Menu Entry Kind</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -696,7 +732,7 @@ public interface TreePackage extends EPackage {
      * @see org.eclipse.sirius.components.view.tree.impl.TreePackageImpl#getFetchTreeItemContextMenuEntryKind()
      * @generated
      */
-    int FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY_KIND = 9;
+    int FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY_KIND = 10;
 
     /**
      * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1068,30 +1104,6 @@ public interface TreePackage extends EPackage {
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry#getLabelExpression <em>Label
-     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Label Expression</em>'.
-     * @see org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry#getLabelExpression()
-     * @see #getTreeItemContextMenuEntry()
-     * @generated
-     */
-    EAttribute getTreeItemContextMenuEntry_LabelExpression();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry#getIconURLExpression <em>Icon URL
-     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Icon URL Expression</em>'.
-     * @see org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry#getIconURLExpression()
-     * @see #getTreeItemContextMenuEntry()
-     * @generated
-     */
-    EAttribute getTreeItemContextMenuEntry_IconURLExpression();
-
-    /**
-     * Returns the meta object for the attribute
      * '{@link org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry#getPreconditionExpression
      * <em>Precondition Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1126,6 +1138,30 @@ public interface TreePackage extends EPackage {
     EReference getSingleClickTreeItemContextMenuEntry_Body();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry#getLabelExpression <em>Label
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Label Expression</em>'.
+     * @see org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry#getLabelExpression()
+     * @see #getSingleClickTreeItemContextMenuEntry()
+     * @generated
+     */
+    EAttribute getSingleClickTreeItemContextMenuEntry_LabelExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry#getIconURLExpression <em>Icon
+     * URL Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Icon URL Expression</em>'.
+     * @see org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry#getIconURLExpression()
+     * @see #getSingleClickTreeItemContextMenuEntry()
+     * @generated
+     */
+    EAttribute getSingleClickTreeItemContextMenuEntry_IconURLExpression();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry
      * <em>Fetch Tree Item Context Menu Entry</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1158,6 +1194,52 @@ public interface TreePackage extends EPackage {
      * @generated
      */
     EAttribute getFetchTreeItemContextMenuEntry_Kind();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry#getLabelExpression <em>Label
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Label Expression</em>'.
+     * @see org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry#getLabelExpression()
+     * @see #getFetchTreeItemContextMenuEntry()
+     * @generated
+     */
+    EAttribute getFetchTreeItemContextMenuEntry_LabelExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry#getIconURLExpression <em>Icon URL
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Icon URL Expression</em>'.
+     * @see org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry#getIconURLExpression()
+     * @see #getFetchTreeItemContextMenuEntry()
+     * @generated
+     */
+    EAttribute getFetchTreeItemContextMenuEntry_IconURLExpression();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry
+     * <em>Custom Tree Item Context Menu Entry</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Custom Tree Item Context Menu Entry</em>'.
+     * @see org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry
+     * @generated
+     */
+    EClass getCustomTreeItemContextMenuEntry();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry#getContributionId <em>Contribution
+     * Id</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Contribution Id</em>'.
+     * @see org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry#getContributionId()
+     * @see #getCustomTreeItemContextMenuEntry()
+     * @generated
+     */
+    EAttribute getCustomTreeItemContextMenuEntry_ContributionId();
 
     /**
      * Returns the meta object for enum
@@ -1462,22 +1544,6 @@ public interface TreePackage extends EPackage {
         EAttribute TREE_ITEM_CONTEXT_MENU_ENTRY__NAME = eINSTANCE.getTreeItemContextMenuEntry_Name();
 
         /**
-         * The meta object literal for the '<em><b>Label Expression</b></em>' attribute feature. <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION = eINSTANCE.getTreeItemContextMenuEntry_LabelExpression();
-
-        /**
-         * The meta object literal for the '<em><b>Icon URL Expression</b></em>' attribute feature. <!-- begin-user-doc
-         * --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION = eINSTANCE.getTreeItemContextMenuEntry_IconURLExpression();
-
-        /**
          * The meta object literal for the '<em><b>Precondition Expression</b></em>' attribute feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
@@ -1505,6 +1571,22 @@ public interface TreePackage extends EPackage {
         EReference SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__BODY = eINSTANCE.getSingleClickTreeItemContextMenuEntry_Body();
 
         /**
+         * The meta object literal for the '<em><b>Label Expression</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION = eINSTANCE.getSingleClickTreeItemContextMenuEntry_LabelExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Icon URL Expression</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION = eINSTANCE.getSingleClickTreeItemContextMenuEntry_IconURLExpression();
+
+        /**
          * The meta object literal for the
          * '{@link org.eclipse.sirius.components.view.tree.impl.FetchTreeItemContextMenuEntryImpl <em>Fetch Tree Item
          * Context Menu Entry</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1530,6 +1612,41 @@ public interface TreePackage extends EPackage {
          * @generated
          */
         EAttribute FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__KIND = eINSTANCE.getFetchTreeItemContextMenuEntry_Kind();
+
+        /**
+         * The meta object literal for the '<em><b>Label Expression</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION = eINSTANCE.getFetchTreeItemContextMenuEntry_LabelExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Icon URL Expression</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION = eINSTANCE.getFetchTreeItemContextMenuEntry_IconURLExpression();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.tree.impl.CustomTreeItemContextMenuEntryImpl <em>Custom Tree Item
+         * Context Menu Entry</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.tree.impl.CustomTreeItemContextMenuEntryImpl
+         * @see org.eclipse.sirius.components.view.tree.impl.TreePackageImpl#getCustomTreeItemContextMenuEntry()
+         * @generated
+         */
+        EClass CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY = eINSTANCE.getCustomTreeItemContextMenuEntry();
+
+        /**
+         * The meta object literal for the '<em><b>Contribution Id</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__CONTRIBUTION_ID = eINSTANCE.getCustomTreeItemContextMenuEntry_ContributionId();
 
         /**
          * The meta object literal for the

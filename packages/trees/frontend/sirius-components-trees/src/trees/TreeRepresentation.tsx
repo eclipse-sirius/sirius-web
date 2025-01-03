@@ -18,11 +18,9 @@ import {
   SelectionEntry,
   useSelection,
 } from '@eclipse-sirius/sirius-components-core';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { TreeView } from '../views/TreeView';
 import { GQLTreeItem } from '../views/TreeView.types';
-import { useExpandAllTreePath } from '../views/useExpandAllTreePath';
-import { GQLGetExpandAllTreePathVariables } from '../views/useExpandAllTreePath.types';
 import { TreeRepresentationState } from './TreeRepresentation.types';
 import { useTreeSubscription } from './useTreeSubscription';
 
@@ -35,56 +33,12 @@ export const TreeRepresentation = ({ editingContextId, representationId, readOnl
 
   const { selection, setSelection } = useSelection();
 
-  const onExpand = (id: string, depth: number) => {
-    const { expanded, maxDepth } = state;
-
-    if (expanded.includes(id)) {
-      const newExpanded = [...expanded];
-      newExpanded.splice(newExpanded.indexOf(id), 1);
-
-      setState((prevState) => ({
-        ...prevState,
-        expanded: newExpanded,
-        maxDepth: Math.max(maxDepth, depth),
-      }));
-    } else {
-      setState((prevState) => ({ ...prevState, expanded: [...expanded, id], maxDepth: Math.max(maxDepth, depth) }));
-    }
-  };
-
-  const { getExpandAllTreePath, data: expandAllTreePathData } = useExpandAllTreePath();
-
-  useEffect(() => {
-    if (expandAllTreePathData && expandAllTreePathData.viewer?.editingContext?.expandAllTreePath) {
-      setState((prevState) => {
-        const { expanded, maxDepth } = prevState;
-        const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } =
-          expandAllTreePathData.viewer.editingContext.expandAllTreePath;
-        const newExpanded: string[] = [...expanded];
-
-        treeItemIdsToExpand?.forEach((itemToExpand) => {
-          if (!expanded.includes(itemToExpand)) {
-            newExpanded.push(itemToExpand);
-          }
-        });
-        return {
-          ...prevState,
-          expanded: newExpanded,
-          maxDepth: Math.max(expandedMaxDepth, maxDepth),
-        };
-      });
-    }
-  }, [expandAllTreePathData]);
-
-  const onExpandAll = (treeItem: GQLTreeItem) => {
-    if (tree?.id) {
-      const variables: GQLGetExpandAllTreePathVariables = {
-        editingContextId,
-        treeId: tree.id,
-        treeItemId: treeItem.id,
-      };
-      getExpandAllTreePath({ variables });
-    }
+  const onExpandedElementChange = (newExpandedIds: string[], newMaxDepth: number) => {
+    setState((prevState) => ({
+      ...prevState,
+      expanded: newExpandedIds,
+      maxDepth: Math.max(newMaxDepth, prevState.maxDepth),
+    }));
   };
 
   const onTreeItemClick = (event, item: GQLTreeItem) => {
@@ -117,10 +71,11 @@ export const TreeRepresentation = ({ editingContextId, representationId, readOnl
           tree={tree}
           textToFilter={''}
           textToHighlight={''}
-          onExpand={onExpand}
-          onExpandAll={onExpandAll}
+          onExpandedElementChange={onExpandedElementChange}
           onTreeItemClick={onTreeItemClick}
           selectedTreeItemIds={selection.entries.map((entry) => entry.id)}
+          expanded={state.expanded}
+          maxDepth={state.maxDepth}
         />
       </div>
     );

@@ -14,7 +14,6 @@ import { ComponentExtension, useComponents, useData } from '@eclipse-sirius/siri
 import Menu from '@mui/material/Menu';
 import { DefaultMenuItem } from './DefaultMenuItem';
 import { DeleteMenuItem } from './DeleteMenuItem';
-import { ExpandAllMenuItem } from './ExpandAllMenuItem';
 import { RenameMenuItem } from './RenameMenuItem';
 import { TreeItemContextMenuProps } from './TreeItemContextMenu.types';
 import { TreeItemContextMenuComponentProps } from './TreeItemContextMenuEntry.types';
@@ -32,8 +31,9 @@ export const TreeItemContextMenu = ({
   item,
   readOnly,
   depth,
-  onExpand,
-  onExpandAll,
+  expanded,
+  maxDepth,
+  onExpandedElementChange,
   enterEditingMode,
   onClose,
 }: TreeItemContextMenuProps) => {
@@ -47,7 +47,7 @@ export const TreeItemContextMenu = ({
 
   const expandItem = () => {
     if (!item.expanded && item.hasChildren) {
-      onExpand(item.id, depth);
+      onExpandedElementChange([...expanded, item.id], Math.max(depth, maxDepth));
     }
   };
 
@@ -75,9 +75,12 @@ export const TreeItemContextMenu = ({
           item={item}
           readOnly={readOnly}
           onClose={onClose}
+          onExpandedElementChange={onExpandedElementChange}
           expandItem={expandItem}
           key={index.toString()}
           treeId={treeId}
+          expanded={expanded}
+          maxDepth={maxDepth}
         />
       ))}
       {contextMenuEntries.map((entry) => {
@@ -91,9 +94,12 @@ export const TreeItemContextMenu = ({
               item={item}
               readOnly={readOnly}
               onClose={onClose}
+              onExpandedElementChange={onExpandedElementChange}
               expandItem={expandItem}
               key={index.toString()}
               treeId={treeId}
+              expanded={expanded}
+              maxDepth={maxDepth}
             />
           ));
         } else {
@@ -111,7 +117,6 @@ export const TreeItemContextMenu = ({
         }
       })}
 
-      <ExpandAllMenuItem item={item} onExpandAll={onExpandAll} onClick={onClose} />
       <RenameMenuItem item={item} readOnly={readOnly} onClick={enterEditingMode} />
       <DeleteMenuItem
         editingContextId={editingContextId}
