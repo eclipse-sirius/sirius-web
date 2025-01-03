@@ -12,10 +12,16 @@
  *******************************************************************************/
 
 import { FilterBar } from '@eclipse-sirius/sirius-components-core';
-import { TreeItemActionProps, TreeView } from '@eclipse-sirius/sirius-components-trees';
+import {
+  GQLGetExpandAllTreePathVariables,
+  GQLTreeItem,
+  TreeItemActionProps,
+  TreeView,
+  useExpandAllTreePath,
+} from '@eclipse-sirius/sirius-components-trees';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import IconButton from '@mui/material/IconButton';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { ModelBrowserTreeViewProps, ModelBrowserTreeViewState } from './ModelBrowserTreeView.types';
 import { useModelBrowserSubscription } from './useModelBrowserSubscription';
@@ -95,10 +101,43 @@ export const ModelBrowserTreeView = ({
   );
 };
 
-const ExpandAllTreeItemAction = ({ onExpandAll, item, isHovered }: TreeItemActionProps) => {
-  if (!onExpandAll || !item || !item.hasChildren || !isHovered) {
+const ExpandAllTreeItemAction = ({
+  editingContextId,
+  treeId,
+  item,
+  isHovered,
+  expanded,
+  maxDepth,
+  onExpandedElementChange,
+}: TreeItemActionProps) => {
+  if (!onExpandedElementChange || !item || !item.hasChildren || !isHovered) {
     return null;
   }
+
+  const {
+    getExpandAllTreePath,
+    expanded: newExpanded,
+    maxDepth: newMaxDepth,
+    loading,
+  } = useExpandAllTreePath(expanded, maxDepth);
+
+  useEffect(() => {
+    if (!loading) {
+      if (newExpanded && newMaxDepth >= 0) {
+        onExpandedElementChange(newExpanded, newMaxDepth);
+      }
+    }
+  }, [newExpanded, newMaxDepth, loading]);
+
+  const onExpandAll = (treeItem: GQLTreeItem) => {
+    const variables: GQLGetExpandAllTreePathVariables = {
+      editingContextId,
+      treeId,
+      treeItemId: treeItem.id,
+    };
+    getExpandAllTreePath({ variables });
+  };
+
   return (
     <IconButton
       size="small"

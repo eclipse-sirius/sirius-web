@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLTree, GQLTreeItem } from '../views/TreeView.types';
+import { GQLTree } from '../views/TreeView.types';
 import { TreeItemActionProps } from '../treeitems/TreeItemAction.types';
 
 export interface TreeProps {
   editingContextId: string;
   tree: GQLTree;
-  onExpand: (id: string, depth: number) => void;
-  onExpandAll: (treeItem: GQLTreeItem) => void;
+  expanded: string[];
+  maxDepth: number;
+  onExpandedElementChange: (expanded: string[], maxDepth: number) => void;
   readOnly: boolean;
   enableMultiSelection: boolean;
   textToHighlight: string | null;

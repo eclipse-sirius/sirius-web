@@ -26,8 +26,9 @@ const useTreeStyle = makeStyles()((_) => ({
 export const Tree = ({
   editingContextId,
   tree,
-  onExpand,
-  onExpandAll,
+  expanded,
+  maxDepth,
+  onExpandedElementChange,
   readOnly,
   enableMultiSelection = true,
   textToHighlight,
@@ -62,7 +63,9 @@ export const Tree = ({
           switch (event.key) {
             case 'ArrowLeft':
               if (hasChildren && isExpanded) {
-                onExpand(id, depth);
+                const newExpanded = [...expanded];
+                newExpanded.splice(newExpanded.indexOf(id), 1);
+                onExpandedElementChange(newExpanded, Math.max(depth, maxDepth));
               } else if (index > 0) {
                 const parentDepth = (depth - 1).toString();
 
@@ -75,7 +78,7 @@ export const Tree = ({
               break;
             case 'ArrowRight':
               if (hasChildren && !isExpanded) {
-                onExpand(id, depth);
+                onExpandedElementChange([...expanded, id], Math.max(depth, maxDepth));
               } else if (index < treeItemDomElements.length - 1) {
                 treeItemDomElements[index + 1]?.click();
               }
@@ -105,7 +108,7 @@ export const Tree = ({
       };
     }
     return () => {};
-  }, [treeElement, onExpand]);
+  }, [treeElement, onExpandedElementChange]);
 
   return (
     <>
@@ -119,8 +122,9 @@ export const Tree = ({
                 item={item}
                 itemIndex={index}
                 depth={1}
-                onExpand={onExpand}
-                onExpandAll={onExpandAll}
+                expanded={expanded}
+                maxDepth={maxDepth}
+                onExpandedElementChange={onExpandedElementChange}
                 enableMultiSelection={enableMultiSelection}
                 readOnly={readOnly}
                 textToHighlight={textToHighlight}
