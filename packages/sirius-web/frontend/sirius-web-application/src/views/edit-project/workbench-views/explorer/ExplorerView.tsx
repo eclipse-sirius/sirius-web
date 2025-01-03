@@ -19,7 +19,6 @@ import {
 } from '@eclipse-sirius/sirius-components-core';
 import {
   FilterBar,
-  GQLGetExpandAllTreePathVariables,
   GQLGetTreePathVariables,
   GQLTreeItem,
   TreeFilter,
@@ -27,7 +26,6 @@ import {
   TreeToolBarContext,
   TreeToolBarContextValue,
   TreeView,
-  useExpandAllTreePath,
   useTreeFilters,
   useTreePath,
 } from '@eclipse-sirius/sirius-components-trees';
@@ -195,37 +193,22 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
     }
   }, [treePathData]);
 
-  const { getExpandAllTreePath, data: expandAllTreePathData } = useExpandAllTreePath();
-  useEffect(() => {
-    if (expandAllTreePathData && expandAllTreePathData.viewer?.editingContext?.expandAllTreePath) {
-      setState((prevState) => {
-        const { expanded, maxDepth } = prevState;
-        const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } =
-          expandAllTreePathData.viewer.editingContext.expandAllTreePath;
-        const newExpanded: string[] = [...expanded[prevState.activeTreeDescriptionId]];
-
-        treeItemIdsToExpand?.forEach((itemToExpand) => {
-          if (!expanded[prevState.activeTreeDescriptionId].includes(itemToExpand)) {
-            newExpanded.push(itemToExpand);
-          }
-        });
-        return {
-          ...prevState,
-          expanded: {
-            ...prevState.expanded,
-            [prevState.activeTreeDescriptionId]: newExpanded,
-          },
-          maxDepth: {
-            ...prevState.maxDepth,
-            [prevState.activeTreeDescriptionId]: Math.max(
-              expandedMaxDepth,
-              maxDepth[prevState.activeTreeDescriptionId]
-            ),
-          },
-        };
-      });
-    }
-  }, [expandAllTreePathData]);
+  const onExpandedElementChange = (newExpandedIds: string[], newMaxDepth: number) => {
+    setState((prevState) => ({
+      ...prevState,
+      expanded: {
+        ...prevState.expanded,
+        [prevState.activeTreeDescriptionId]: newExpandedIds,
+      },
+      maxDepth: {
+        ...prevState.maxDepth,
+        [prevState.activeTreeDescriptionId]: Math.max(
+          newMaxDepth,
+          prevState.maxDepth[prevState.activeTreeDescriptionId]
+        ),
+      },
+    }));
+  };
 
   let filterBar: JSX.Element;
   if (state.filterBar) {
@@ -253,36 +236,6 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
       />
     );
   }
-  const onExpand = (id: string, depth: number) => {
-    const { expanded, maxDepth } = state;
-    if (expanded[state.activeTreeDescriptionId].includes(id)) {
-      const newExpanded = [...expanded[state.activeTreeDescriptionId]];
-      newExpanded.splice(newExpanded.indexOf(id), 1);
-      setState((prevState) => ({
-        ...prevState,
-        expanded: {
-          ...prevState.expanded,
-          [prevState.activeTreeDescriptionId]: newExpanded,
-        },
-        maxDepth: {
-          ...prevState.maxDepth,
-          [prevState.activeTreeDescriptionId]: Math.max(depth, maxDepth[prevState.activeTreeDescriptionId]),
-        },
-      }));
-    } else {
-      setState((prevState) => ({
-        ...prevState,
-        expanded: {
-          ...prevState.expanded,
-          [prevState.activeTreeDescriptionId]: [...prevState.expanded[prevState.activeTreeDescriptionId], id],
-        },
-        maxDepth: {
-          ...prevState.maxDepth,
-          [prevState.activeTreeDescriptionId]: Math.max(depth, maxDepth[prevState.activeTreeDescriptionId]),
-        },
-      }));
-    }
-  };
 
   const onTreeItemClick = (event, item: GQLTreeItem) => {
     if (event.ctrlKey || event.metaKey) {
@@ -305,16 +258,6 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
     }
   };
 
-  const onExpandAll = (treeItem: GQLTreeItem) => {
-    if (state.tree?.id) {
-      const variables: GQLGetExpandAllTreePathVariables = {
-        editingContextId,
-        treeId: state.tree.id,
-        treeItemId: treeItem.id,
-      };
-      getExpandAllTreePath({ variables });
-    }
-  };
   const treeDescriptionSelector: JSX.Element = explorerDescriptions.length > 1 && (
     <TreeDescriptionsMenu
       treeDescriptions={explorerDescriptions}
@@ -371,8 +314,9 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
               tree={state.tree}
               textToHighlight={state.filterBarText}
               textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
-              onExpand={onExpand}
-              onExpandAll={onExpandAll}
+              onExpandedElementChange={onExpandedElementChange}
+              expanded={state.expanded[state.activeTreeDescriptionId]}
+              maxDepth={state.maxDepth[state.activeTreeDescriptionId]}
               onTreeItemClick={onTreeItemClick}
               selectedTreeItemIds={selection.entries.map((entry) => entry.id)}
             />

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
+import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.api.IViewAQLInterpreterFactory;
 import org.slf4j.Logger;
@@ -52,7 +53,8 @@ public class ViewAQLInterpreterFactory implements IViewAQLInterpreterFactory {
         this.javaServiceProviders = new ArrayList<>();
         this.javaServiceProviders.addAll(Objects.requireNonNull(javaServiceProviders));
         IServiceProvider nodeServiceProvider = (IReadOnlyQueryEnvironment queryEnvironment, boolean forWorkspace) -> ServiceUtils.getReceiverServices(null, Node.class).stream().toList();
-        this.javaServiceProviders.add((View view) -> List.of(CanonicalServices.class, DiagramServices.class, nodeServiceProvider.getClass()));
+        IServiceProvider treeItemServiceProvider = (IReadOnlyQueryEnvironment queryEnvironment, boolean forWorkspace) -> ServiceUtils.getReceiverServices(null, TreeItem.class).stream().toList();
+        this.javaServiceProviders.add((View view) -> List.of(CanonicalServices.class, DiagramServices.class, nodeServiceProvider.getClass(), treeItemServiceProvider.getClass()));
         this.applicationContext = Objects.requireNonNull(applicationContext);
     }
 

@@ -104,6 +104,7 @@ import { editProjectNavbarMenuEntryExtensionPoint } from '../views/edit-project/
 import { EditProjectView } from '../views/edit-project/EditProjectView';
 import { DetailsView } from '../views/edit-project/workbench-views/details/DetailsView';
 import { DiagramTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/DiagramTreeItemContextMenuContribution';
+import { ExpandAllTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/ExpandAllTreeItemContextMenuContribution';
 import { DocumentTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/DocumentTreeItemContextMenuContribution';
 import { ObjectTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/ObjectTreeItemContextMenuContribution';
 import { RepresentationTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/RepresentationTreeItemContextMenuContribution';
@@ -381,6 +382,12 @@ const treeItemContextMenuOverrideContributions: TreeItemContextMenuOverrideContr
       return entry.id.includes('updateLibrary');
     },
     component: UpdateLibraryTreeItemContextMenuContribution,
+  },
+  {
+    canHandle: (entry: GQLTreeItemContextMenuEntry) => {
+      return entry.id.includes('expandAll');
+    },
+    component: ExpandAllTreeItemContextMenuContribution,
   },
 ];
 
