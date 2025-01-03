@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.portals;
-
-import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
+package org.eclipse.sirius.components.collaborative.api;
 
 /**
- * Interface implemented by the portal event processor.
+ * The factory that create the representation event processor registry.
  *
- * @author pcdavid
+ * @author gcoutable
  */
-public interface IPortalEventProcessor extends IRepresentationEventProcessor {
+public interface IRepresentationEventProcessorRegistryFactory {
+
+    IRepresentationEventProcessorRegistry createRepresentationEventProcessorRegistry();
+
 }
