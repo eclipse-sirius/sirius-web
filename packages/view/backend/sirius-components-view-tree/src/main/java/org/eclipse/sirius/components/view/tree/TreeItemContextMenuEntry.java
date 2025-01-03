@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,10 +23,6 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry#getName <em>Name</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry#getLabelExpression <em>Label
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry#getIconURLExpression <em>Icon URL
- * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry#getPreconditionExpression
  * <em>Precondition Expression</em>}</li>
  * </ul>
@@ -57,53 +53,6 @@ public interface TreeItemContextMenuEntry extends EObject {
      * @generated
      */
     void setName(String value);
-
-    /**
-     * Returns the value of the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @return the value of the '<em>Label Expression</em>' attribute.
-     * @see #setLabelExpression(String)
-     * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeItemContextMenuEntry_LabelExpression()
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     */
-    String getLabelExpression();
-
-    /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry#getLabelExpression
-     * <em>Label Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Label Expression</em>' attribute.
-     * @see #getLabelExpression()
-     * @generated
-     */
-    void setLabelExpression(String value);
-
-    /**
-     * Returns the value of the '<em><b>Icon URL Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @return the value of the '<em>Icon URL Expression</em>' attribute.
-     * @see #setIconURLExpression(String)
-     * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeItemContextMenuEntry_IconURLExpression()
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     */
-    String getIconURLExpression();
-
-    /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry#getIconURLExpression <em>Icon URL
-     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Icon URL Expression</em>' attribute.
-     * @see #getIconURLExpression()
-     * @generated
-     */
-    void setIconURLExpression(String value);
 
     /**
      * Returns the value of the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--

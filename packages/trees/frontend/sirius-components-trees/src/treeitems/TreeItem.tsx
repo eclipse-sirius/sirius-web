@@ -106,8 +106,9 @@ export const TreeItem = ({
   item,
   itemIndex,
   depth,
-  onExpand,
-  onExpandAll,
+  expanded,
+  maxDepth,
+  onExpandedElementChange,
   readOnly,
   textToHighlight,
   textToFilter,
@@ -162,8 +163,9 @@ export const TreeItem = ({
                 item={childItem}
                 itemIndex={index}
                 depth={depth + 1}
-                onExpand={onExpand}
-                onExpandAll={onExpandAll}
+                expanded={expanded}
+                maxDepth={maxDepth}
+                onExpandedElementChange={onExpandedElementChange}
                 readOnly={readOnly}
                 textToHighlight={textToHighlight}
                 textToFilter={textToFilter}
@@ -297,6 +299,16 @@ export const TreeItem = ({
     event.preventDefault();
   };
 
+  const onExpand = (id: string, depth: number) => {
+    if (expanded.includes(id)) {
+      const newExpanded = [...expanded];
+      newExpanded.splice(newExpanded.indexOf(id), 1);
+      onExpandedElementChange(newExpanded, Math.max(maxDepth, depth));
+    } else {
+      onExpandedElementChange([...expanded, id], Math.max(maxDepth, depth));
+    }
+  };
+
   let tooltipText = '';
   if (item.kind.startsWith('siriusComponents://semantic')) {
     const query = item.kind.substring(item.kind.indexOf('?') + 1, item.kind.length);
@@ -368,8 +380,9 @@ export const TreeItem = ({
                     treeId: treeId,
                     item: item,
                     depth: depth,
-                    onExpand: onExpand,
-                    onExpandAll: onExpandAll,
+                    expanded: expanded,
+                    maxDepth: maxDepth,
+                    onExpandedElementChange: onExpandedElementChange,
                     readOnly: readOnly,
                     onEnterEditingMode: enterEditingMode,
                     isHovered: state.partHovered === 'item',
@@ -380,8 +393,9 @@ export const TreeItem = ({
                     treeId={treeId}
                     item={item}
                     depth={depth}
-                    onExpand={onExpand}
-                    onExpandAll={onExpandAll}
+                    expanded={expanded}
+                    maxDepth={maxDepth}
+                    onExpandedElementChange={onExpandedElementChange}
                     readOnly={readOnly}
                     onEnterEditingMode={enterEditingMode}
                     isHovered={state.partHovered === 'item'}

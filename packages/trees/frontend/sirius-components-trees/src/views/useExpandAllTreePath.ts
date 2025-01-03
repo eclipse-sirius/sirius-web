@@ -14,9 +14,9 @@ import { gql, useLazyQuery } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useEffect } from 'react';
 import {
-  UseExpandAllTreePathValue,
   GQLGetExpandAllTreePathData,
   GQLGetExpandAllTreePathVariables,
+  UseExpandAllTreePathValue,
 } from './useExpandAllTreePath.types';
 
 const getExpandAllTreePathQuery = gql`
