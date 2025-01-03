@@ -12,6 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.tables.components;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -23,6 +27,7 @@ import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.ColumnFilter;
+import org.eclipse.sirius.components.tables.ColumnFilterMapped;
 import org.eclipse.sirius.components.tables.PaginationData;
 import org.eclipse.sirius.components.tables.Table;
 import org.eclipse.sirius.components.tables.descriptions.PaginatedData;
@@ -78,12 +83,28 @@ public class TableComponent implements IComponent {
                     return new Element(ColumnComponent.class, columnComponentProps);
                 })
                 .toList();
-
+        ObjectMapper objectMapper = new ObjectMapper();
         var columnFiltersMapped = optionalPreviousTable
                 .map(previousTable -> columnsFilters.stream()
                         .map(columnFilter ->
                                 tableElementRequestor.getColumn(previousTable, columnFilter.id())
-                                        .map(column -> new ColumnFilter(column.getTargetObjectId(), columnFilter.value()))
+                                        .map(column -> {
+                                            List<String> columnFilterValues = new ArrayList<>();
+                                            if (List.of("range", "range-slider").contains(column.getFilterVariant())) {
+                                                try {
+                                                    columnFilterValues.addAll(objectMapper.readValue(columnFilter.value(), new TypeReference<>() {
+                                                    }));
+                                                } catch (JsonProcessingException ignored) {
+                                                }
+                                            } else {
+                                                try {
+                                                    columnFilterValues.add(objectMapper.readValue(columnFilter.value(), new TypeReference<>() {
+                                                    }));
+                                                } catch (JsonProcessingException ignored) {
+                                                }
+                                            }
+                                            return new ColumnFilterMapped(column.getTargetObjectId(), columnFilterValues);
+                                        })
                         )
                         .filter(Optional::isPresent)
                         .map(Optional::get)
