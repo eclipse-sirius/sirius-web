@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,12 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { MRT_ColumnDef } from 'material-react-table';
 import { useMemo } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { Cell } from '../cells/Cell';
 import { ColumnHeader } from '../columns/ColumnHeader';
 import { GQLCell, GQLLine, GQLTable } from './TableContent.types';
 import { UseTableColumnsValue } from './useTableColumns.types';
+
+const useStyles = makeStyles()(() => ({
+  cell: {
+    width: '100%',
+  },
+}));
 
 export const useTableColumns = (
   editingContextId: string,
@@ -26,6 +34,8 @@ export const useTableColumns = (
   enableColumnSizing: boolean,
   enableColumnFilters: boolean
 ): UseTableColumnsValue => {
+  const { classes } = useStyles();
+  const { setSelection } = useSelection();
   const columns = useMemo<MRT_ColumnDef<GQLLine, string>[]>(() => {
     const columnDefs: MRT_ColumnDef<GQLLine, string>[] = table.columns.map((column) => {
       return {
@@ -41,14 +51,22 @@ export const useTableColumns = (
         visibleInShowHideMenu: enableColumnVisibility,
         Cell: ({ row }) => {
           const cell: GQLCell | null = row.original.cells.find((cell) => column.id === cell.columnId) ?? null;
+          const onClick = () => {
+            if (cell) {
+              const newSelection: Selection = { entries: [{ id: cell.targetObjectId, kind: cell.targetObjectKind }] };
+              setSelection(newSelection);
+            }
+          };
           return (
-            <Cell
-              editingContextId={editingContextId}
-              representationId={representationId}
-              tableId={table.id}
-              cell={cell}
-              disabled={readOnly}
-            />
+            <div className={classes.cell} onClick={onClick}>
+              <Cell
+                editingContextId={editingContextId}
+                representationId={representationId}
+                tableId={table.id}
+                cell={cell}
+                disabled={readOnly}
+              />
+            </div>
           );
         },
       };
