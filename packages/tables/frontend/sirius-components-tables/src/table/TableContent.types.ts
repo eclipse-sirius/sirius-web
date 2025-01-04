@@ -19,13 +19,14 @@ export interface TableProps {
   readOnly: boolean;
   onPaginationChange: (cursor: string | null, direction: 'PREV' | 'NEXT', size: number) => void;
   onGlobalFilterChange: (globalFilter: string) => void;
-  onColumnFiltersChange: (columFilters: ColumnFilter[]) => void;
+  onColumnFiltersChange: (columnFilters: ColumnFilter[]) => void;
   enableColumnVisibility: boolean;
   enableColumnResizing: boolean;
   enableColumnFilters: boolean;
   enableRowSizing: boolean;
   enableGlobalFilter: boolean;
   enablePagination: boolean;
+  enableColumnOrdering: boolean;
 }
 
 export interface TablePaginationState {
@@ -81,6 +82,7 @@ export interface GQLColumn {
     | 'time'
     | 'time-range'
     | undefined;
+  index: number;
 }
 
 export interface GQLLine {

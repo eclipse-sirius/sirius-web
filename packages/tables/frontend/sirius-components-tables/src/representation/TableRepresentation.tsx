@@ -89,6 +89,7 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
           enableRowSizing
           enableGlobalFilter
           enablePagination
+          enableColumnOrdering
         />
       ) : null}
       {completeMessage}

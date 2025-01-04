@@ -61,9 +61,10 @@ export const getTableEventSubscription = `
             targetObjectId
             targetObjectKind
             width
-            isResizable 
+            isResizable
             hidden
             filterVariant
+            index
           }
           lines {
             id
