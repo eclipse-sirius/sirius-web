@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -100,7 +100,7 @@ public class GeneralPurposeTests {
 
     private static final String INVALID_MATERIALUI_IMPORT = "from '@mui/material';";
 
-    private static final List<Pattern> COPYRIGHT_HEADER = List.of(
+    private static final List<Pattern> COPYRIGHT_HEADER_START = List.of(
             Pattern.compile(Pattern.quote("/*******************************************************************************")),
             Pattern.compile(" \\* Copyright \\(c\\) [0-9]{4}(, [0-9]{4})* (.*)\\.$"),
             Pattern.compile(Pattern.quote(" * This program and the accompanying materials")),
@@ -111,8 +111,11 @@ public class GeneralPurposeTests {
             Pattern.compile(Pattern.quote(" * SPDX-License-Identifier: EPL-2.0")),
             Pattern.compile(Pattern.quote(" *")),
             Pattern.compile(Pattern.quote(" * Contributors:")),
-            Pattern.compile(Pattern.quote(" *     Obeo - initial API and implementation")),
-            Pattern.compile(Pattern.quote(" *******************************************************************************/")));
+            Pattern.compile(Pattern.quote(" *     Obeo - initial API and implementation")));
+
+    private static final Pattern COPYRIGHT_HEADER_END = Pattern.compile(Pattern.quote(" *******************************************************************************/"));
+
+    private static final List<String> COPYRIGHT_END_WATCHDOGS = List.of("package", "import", "public");
 
     private static final List<String> GENERATED_MODULE_PATHS = List.of(
             "/sirius-components-domain",
@@ -145,9 +148,9 @@ public class GeneralPurposeTests {
      * Finds all the files located under the given source folder path with the given extension.
      *
      * @param sourceFolderPath
-     *            The path of the source folder
+     *         The path of the source folder
      * @param includesGeneratedCodePaths
-     *            Used to indicate if we want to consider generated code
+     *         Used to indicate if we want to consider generated code
      * @return The path of the files
      */
     private List<Path> findFilePaths(Path sourceFolderPath, String extension, boolean includesGeneratedCodePaths) {
@@ -211,10 +214,16 @@ public class GeneralPurposeTests {
 
     private void testCopyrightHeader(Path filePath, List<String> lines) {
         if (!this.isWhiteListed(filePath)) {
-            for (int i = 0; i < COPYRIGHT_HEADER.size(); i++) {
-                assertThat("Invalid copyright header in " + filePath, lines.get(i), matchesPattern(COPYRIGHT_HEADER.get(i)));
+            assertTrue(lines.size() >= COPYRIGHT_HEADER_START.size());
+            for (int i = 0; i < COPYRIGHT_HEADER_START.size(); i++) {
+                assertThat("Invalid copyright header in " + filePath, lines.get(i), matchesPattern(COPYRIGHT_HEADER_START.get(i)));
             }
-            assertTrue(lines.size() >= COPYRIGHT_HEADER.size());
+            int lineNumber = COPYRIGHT_HEADER_START.size();
+            var endCopyrightPattern = matchesPattern(COPYRIGHT_HEADER_END);
+            while (!endCopyrightPattern.matches(lines.get(lineNumber)) && COPYRIGHT_END_WATCHDOGS.stream().noneMatch(lines.get(lineNumber)::startsWith)) {
+                lineNumber++;
+            }
+            assertThat("Invalid copyright header in " + filePath, lines.get(lineNumber), endCopyrightPattern);
         }
     }
 
