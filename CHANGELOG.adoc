@@ -103,6 +103,7 @@ The publication of a studio that references elements from imported libraries now
 - https://github.com/eclipse-sirius/sirius-web/issues/3740[#3740] [sirius-web] Add support for object duplication from explorer
 +
 image:doc/screenshots/duplicationDialog.png[DuplicationDialog, 70%]
+- https://github.com/eclipse-sirius/sirius-web/issues/4383[#4383] [sirius-web] Add support for representation duplication from explorer
 
 
 === Improvements

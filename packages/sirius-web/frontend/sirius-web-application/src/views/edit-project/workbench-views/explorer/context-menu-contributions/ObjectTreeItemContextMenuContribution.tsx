@@ -13,14 +13,14 @@
 import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { TreeItemContextMenuComponentProps } from '@eclipse-sirius/sirius-components-trees';
 import AddIcon from '@mui/icons-material/Add';
+import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
-import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
 import { Fragment, forwardRef, useState } from 'react';
-import { DuplicateObjectModal } from '../../modals/duplicate-object/DuplicateObjectModal';
-import { NewObjectModal } from '../../modals/new-object/NewObjectModal';
-import { NewRepresentationModal } from '../../modals/new-representation/NewRepresentationModal';
+import { DuplicateObjectModal } from '../../../../../modals/duplicate-object/DuplicateObjectModal';
+import { NewObjectModal } from '../../../../../modals/new-object/NewObjectModal';
+import { NewRepresentationModal } from '../../../../../modals/new-representation/NewRepresentationModal';
 
 type Modal = 'CreateNewObject' | 'CreateNewRepresentation' | 'DuplicateObject';
 
@@ -107,7 +107,7 @@ export const ObjectTreeItemContextMenuContribution = forwardRef(
           <ListItemIcon>
             <AddToPhotosIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary="Duplicate Object" />
+          <ListItemText primary="Duplicate object" />
         </MenuItem>
         {modalElement}
       </Fragment>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import { Fragment, forwardRef, useContext, useState } from 'react';
-import { NewRootObjectModal } from '../../modals/new-root-object/NewRootObjectModal';
+import { NewRootObjectModal } from '../../../../../modals/new-root-object/NewRootObjectModal';
 
 type Modal = 'CreateNewRootObject';
 

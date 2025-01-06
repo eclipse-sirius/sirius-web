@@ -1,0 +1,17 @@
+extend type Mutation {
+  duplicateRepresentation(input: DuplicateRepresentationInput!): DuplicateRepresentationPayload!
+}
+
+input DuplicateRepresentationInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+}
+
+type DuplicateRepresentationSuccessPayload {
+  id: ID!
+  representationMetadata: RepresentationMetadata
+  messages: [Message]!
+}
+
+union DuplicateRepresentationPayload = ErrorPayload | DuplicateRepresentationSuccessPayload

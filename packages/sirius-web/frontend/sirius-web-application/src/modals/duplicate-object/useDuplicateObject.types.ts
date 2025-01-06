@@ -23,7 +23,7 @@ export interface UseDuplicateObjectValue {
     copyOutgoingReferences: boolean,
     updateIncomingReferences: boolean
   ) => void;
-  duplicatedObject: GQLObject;
+  duplicatedObject: GQLObject | null;
   loading: boolean;
 }
 
