@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,10 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import IconButton from '@mui/material/IconButton';
-import { makeStyles } from 'tss-react/mui';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import IconButton from '@mui/material/IconButton';
 import { useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { getString } from './TreeItem';
 import { TreeItemActionProps, TreeItemActionState } from './TreeItemAction.types';
 import { TreeItemContextMenu } from './TreeItemContextMenu';
@@ -56,8 +56,8 @@ export const TreeItemAction = ({
     }
   };
 
-  let contextMenu = null;
-  if (state.showContextMenu) {
+  let contextMenu: JSX.Element | null = null;
+  if (state.showContextMenu && state.menuAnchor) {
     const closeContextMenu = () => {
       setState((prevState) => ({
         ...prevState,

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,7 +36,7 @@ export const Tree = ({
   treeItemActionRender,
 }: TreeProps) => {
   const { classes } = useTreeStyle();
-  const treeElement = useRef(null);
+  const treeElement = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const downHandler = (event) => {
@@ -50,42 +50,44 @@ export const Tree = ({
         event.preventDefault();
 
         const previousItem = document.activeElement as HTMLElement;
-        const dataset = (previousItem as any).dataset;
+        const dataset = previousItem.dataset;
         if (dataset.treeitemid) {
           const treeItemDomElements = document.querySelectorAll<HTMLElement>('[data-treeitemid]');
           const index = Array.from(treeItemDomElements).indexOf(previousItem);
           const id = dataset.treeitemid;
           const hasChildren = dataset.haschildren === 'true';
           const isExpanded = dataset.expanded === 'true';
+          const depth: number = parseInt(dataset.depth ?? '0');
 
           switch (event.key) {
             case 'ArrowLeft':
               if (hasChildren && isExpanded) {
-                onExpand(id, dataset.depth);
+                onExpand(id, depth);
               } else if (index > 0) {
-                const parentDepth = (dataset.depth - 1).toString();
-                let positionFromParent = 0;
-                while (!(treeItemDomElements[index - positionFromParent].dataset.depth === parentDepth)) {
+                const parentDepth = (depth - 1).toString();
+
+                let positionFromParent: number = 0;
+                while (!(treeItemDomElements[index - positionFromParent]?.dataset.depth === parentDepth)) {
                   positionFromParent++;
                 }
-                treeItemDomElements[index - positionFromParent].click();
+                treeItemDomElements[index - positionFromParent]?.click();
               }
               break;
             case 'ArrowRight':
               if (hasChildren && !isExpanded) {
-                onExpand(id, dataset.depth);
+                onExpand(id, depth);
               } else if (index < treeItemDomElements.length - 1) {
-                treeItemDomElements[index + 1].click();
+                treeItemDomElements[index + 1]?.click();
               }
               break;
             case 'ArrowUp':
               if (index > 0) {
-                treeItemDomElements[index - 1].click();
+                treeItemDomElements[index - 1]?.click();
               }
               break;
             case 'ArrowDown':
               if (index < treeItemDomElements.length - 1) {
-                treeItemDomElements[index + 1].click();
+                treeItemDomElements[index + 1]?.click();
               }
               break;
             default:
@@ -94,7 +96,7 @@ export const Tree = ({
       }
     };
 
-    const element = treeElement?.current;
+    const element = treeElement.current;
     if (element) {
       element.addEventListener('keydown', downHandler);
 
@@ -102,7 +104,7 @@ export const Tree = ({
         element.removeEventListener('keydown', downHandler);
       };
     }
-    return null;
+    return () => {};
   }, [treeElement, onExpand]);
 
   return (

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -85,24 +85,26 @@ export const TreeItemDirectEditInput = ({
   });
 
   useEffect(() => {
-    let cleanup = undefined;
     if (initialLabelTreeItemItemError) {
       addErrorMessage('An unexpected error has occurred, please refresh the page');
     }
-    if (initialLabelTreeItemItemData?.viewer.editingContext.representation.description.initialDirectEditTreeItemLabel) {
-      const initialLabel =
-        initialLabelTreeItemItemData?.viewer.editingContext.representation.description.initialDirectEditTreeItemLabel;
+    const initialLabel =
+      initialLabelTreeItemItemData?.viewer.editingContext.representation.description.initialDirectEditTreeItemLabel;
+    if (initialLabel) {
       if (!editingKey) {
         setState((prevState) => {
           return { ...prevState, newLabel: initialLabel };
         });
         const timeOutId = setTimeout(() => {
-          textInput.current.select();
+          if (textInput.current) {
+            textInput.current.select();
+          }
         }, 0);
-        cleanup = () => clearTimeout(timeOutId);
+
+        return () => clearTimeout(timeOutId);
       }
     }
-    return cleanup;
+    return () => {};
   }, [initialLabelTreeItemItemError, initialLabelTreeItemItemData]);
 
   const [renameTreeItem, { data: renameTreeItemData, error: renameTreeItemError }] =
