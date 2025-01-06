@@ -1,0 +1,54 @@
+= Lower the coupling between project and editing context 
+
+== Problem
+
+Sirius Web uses the UUID project id as the id of the editing context but it would be more relevant to use the semantic_data_id instead.
+
+The project ID being a simple UUID, it can't be used to get more precise information about the project.
+
+
+== Key Result
+
+=== Enhance project_id
+
+The `project id` should be declared as *String* instead of *UUID* in several tables :
+
+- project (PK)
+- semantic_data (FK)
+- representation_meta_data (FK)
+- project_image (FK)
+- nature (FK)
+
+The methods using project_id should be updated as needed.
+
+=== Use semantic_data_id for the editing context id
+
+- `ProjectCurrentEditingContextDataFetcher` which is currently used to find the editingContextId for the frontend, will have to return the id of the semantic data instead of the project id.
+- `EditingContextSearchService#findById` which currently uses `IProjectSearchService`, will use `ISemanticDataSearchService`.
+- `ISemanticDataSearchService#findByProject` will stop using the id of the project to use instead its own id.
+
+=== Acceptance Criteria
+
+- Everything should work as before the implementation
+- The editing context id should be the identifier of the semantic data instead of the identifier of the project
+
+=== Scenario
+
+
+=== Breadboarding
+
+
+=== Cutting backs
+
+Since we will also work on the publication of artifacts during this iteration, we could try to experiment on viewing the content of an artifact published.
+It could be done by computing a relevant editing context id derived from the identity of both a project and an artifact published.
+We will not have the time to create something robust for that but it could be a nice quick and dirty experiment to validate this use case.
+
+It would force us to see how to load semantic data from another place than the semantic data table.
+We will probably have to allow the contribution of alternate editing context loaders.
+
+
+== Rabbit holes
+
+
+== No-gos
