@@ -21,16 +21,9 @@ import { diagramPaletteToolExtensionPoint } from '../extensions/DiagramPaletteTo
 import { Tool } from './../../Tool';
 import { DiagramPaletteToolContributionProps } from './../extensions/DiagramPaletteToolContribution.types';
 import { AdjustSizeTool } from './AdjustSizeTool';
-import { FadeElementTool } from './FadeElementTool';
 import { PaletteQuickAccessToolBarProps } from './PaletteQuickAccessToolBar.types';
-import { PinUnPinTool } from './PinUnPinTool';
 import { ResetEditedEdgePathTool } from './ResetEditedEdgePathTool';
-const isPinnable = (diagramElement: Node<NodeData> | Edge<EdgeData>): diagramElement is Node<NodeData> => {
-  return !!diagramElement.data && 'pinned' in diagramElement.data;
-};
-const isFadable = (diagramElement: Node<NodeData> | Edge<EdgeData>): diagramElement is Node<NodeData> => {
-  return !!diagramElement.data && 'faded' in diagramElement.data;
-};
+
 const isBendable = (diagramElement: Node<NodeData> | Edge<EdgeData>): diagramElement is Edge<EdgeData> => {
   return !!diagramElement.data && 'bendingPoints' in diagramElement.data && !!diagramElement.data.bendingPoints;
 };
@@ -64,22 +57,6 @@ export const PaletteQuickAccessToolBar = ({
   );
 
   if (diagramElement) {
-    if (isPinnable(diagramElement)) {
-      quickAccessToolComponents.push(
-        <PinUnPinTool
-          diagramElementId={diagramElementId}
-          isPined={diagramElement.data.pinned}
-          key={'tool_pinUnPinTool'}></PinUnPinTool>
-      );
-    }
-    if (isFadable(diagramElement)) {
-      quickAccessToolComponents.push(
-        <FadeElementTool
-          diagramElementId={diagramElementId}
-          isFaded={diagramElement.data.faded}
-          key={'tool_fadeElementTool'}></FadeElementTool>
-      );
-    }
     if (isBendable(diagramElement)) {
       quickAccessToolComponents.push(
         <ResetEditedEdgePathTool
