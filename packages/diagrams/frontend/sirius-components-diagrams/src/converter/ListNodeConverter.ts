@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -9,6 +9,7 @@
  *
  * Contributors:
  *     Obeo - initial API and implementation
+ *     Aurelien Didier - Correct bug 4310
  *******************************************************************************/
 import { Node, XYPosition } from '@xyflow/react';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
@@ -26,7 +27,7 @@ import { defaultHeight, defaultWidth } from '../renderer/layout/layoutParams';
 import { ListNodeData } from '../renderer/node/ListNode.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
-import { isListLayoutStrategy } from './convertDiagram';
+import { convertLineStyle, isListLayoutStrategy } from './convertDiagram';
 import { convertHandles } from './convertHandles';
 import { convertInsideLabel, convertOutsideLabels } from './convertLabel';
 
@@ -74,7 +75,7 @@ const toListNode = (
       borderRightColor: style.borderColor,
       borderRadius: style.borderRadius,
       borderWidth: style.borderSize,
-      borderStyle: style.borderStyle,
+      borderStyle: convertLineStyle(style.borderStyle),
     },
     insideLabel: null,
     outsideLabels: convertOutsideLabels(outsideLabels),
