@@ -29,6 +29,8 @@ This may have some consequences for downstream applications which are embedding 
 
 === Bug fixes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/4343[#4343] [table] Fix an issue where filters were reset on table opening
+- https://github.com/eclipse-sirius/sirius-web/issues/4311[#4311] [table] Fix typos in table variables
 
 === New Features
 

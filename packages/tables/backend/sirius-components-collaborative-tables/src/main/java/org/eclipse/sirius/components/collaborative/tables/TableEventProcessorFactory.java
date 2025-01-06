@@ -49,7 +49,7 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
     private static final String SIZE = "size";
     private static final String GLOBAL_FILTER = "globalFilter";
     private static final String COLUMN_FILTERS = "columnFilters";
-    
+
     private final IRepresentationSearchService representationSearchService;
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
@@ -150,7 +150,7 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
     }
 
     private String getGlobalFilter(String representationId) {
-        String globalFilter = "";
+        String globalFilter = null;
         if (representationId.indexOf(GLOBAL_FILTER) > 0) {
             var param = this.urlParser.getParameterValues(representationId);
             if (param.containsKey(GLOBAL_FILTER)) {
@@ -172,7 +172,7 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
                 }).toList();
             }
         }
-        return List.of();
+        return null;
     }
 
 
