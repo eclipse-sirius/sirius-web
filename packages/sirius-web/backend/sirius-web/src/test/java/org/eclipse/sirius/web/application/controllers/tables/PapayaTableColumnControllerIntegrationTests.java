@@ -106,7 +106,7 @@ public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegra
                 .map(TableRefreshedEventPayload::table)
                 .ifPresentOrElse(table -> {
                     assertThat(table).isNotNull();
-                    assertThat(table.getColumns()).hasSize(5);
+                    assertThat(table.getColumns()).hasSize(6);
                     columnRef.set(table.getColumns().get(1));
                     assertThat(table.getColumns().get(1).getWidth()).isEqualTo(180);
                     tableId.set(table.getId());
@@ -131,7 +131,7 @@ public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegra
                 .map(TableRefreshedEventPayload::table)
                 .ifPresentOrElse(table -> {
                     assertThat(table).isNotNull();
-                    assertThat(table.getColumns()).hasSize(5);
+                    assertThat(table.getColumns()).hasSize(6);
                     assertThat(table.getColumns().get(1).getWidth()).isEqualTo(50);
                 }, () -> fail(MISSING_TABLE));
 
@@ -162,7 +162,7 @@ public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegra
                 .map(TableRefreshedEventPayload::table)
                 .ifPresentOrElse(table -> {
                     assertThat(table).isNotNull();
-                    assertThat(table.getColumns()).hasSize(5);
+                    assertThat(table.getColumns()).hasSize(6);
                     columnNameRef.set(table.getColumns().get(0));
                     columnDescRef.set(table.getColumns().get(1));
                     columnAnnotationRef.set(table.getColumns().get(2));
@@ -195,7 +195,7 @@ public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegra
                 .map(TableRefreshedEventPayload::table)
                 .ifPresentOrElse(table -> {
                     assertThat(table).isNotNull();
-                    assertThat(table.getColumns()).hasSize(5);
+                    assertThat(table.getColumns()).hasSize(6);
                     assertThat(table.getColumns().get(0).isHidden()).isTrue();
                     assertThat(table.getColumns().get(1).isHidden()).isFalse();
                     assertThat(table.getColumns().get(2).isHidden()).isTrue();

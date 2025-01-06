@@ -40,7 +40,7 @@ Specifiers can contribute dedicated AQL services for this feature using implemen
 
 === Improvements
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4352[#4352] [table] Add support to range column filters in table
 
 == v2025.1.0
 
