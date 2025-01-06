@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -235,7 +235,7 @@ export const ValuedReferenceAutocomplete = ({
       isOptionEqualToValue={(option, value) => option.id === value.id}
       onChange={handleAutocompleteChange}
       renderOption={(props: HTMLAttributes<HTMLLIElement>, option: GQLReferenceValue) => (
-        <li {...props}>
+        <li {...props} key={option.id}>
           <IconOverlay iconURL={option.iconURL} alt={option.kind} />
           <span className={classes.optionLabel} data-testid={`option-${option.label}`}>
             {option.label}
@@ -244,21 +244,25 @@ export const ValuedReferenceAutocomplete = ({
       )}
       disableClearable
       renderTags={(value, getTagProps) =>
-        value.map((option, index) => (
-          <Chip
-            classes={{ label: classes.referenceValueStyle }}
-            label={option.label}
-            data-testid={`reference-value-${option.label}`}
-            icon={
-              <div>
-                <IconOverlay iconURL={option.iconURL} alt={option.kind} />
-              </div>
-            }
-            clickable={!readOnly && !widget.readOnly}
-            onClick={() => optionClickHandler(option)}
-            {...getTagProps({ index })}
-          />
-        ))
+        value.map((option, index) => {
+          const { key, ...tagProps } = getTagProps({ index });
+          return (
+            <Chip
+              key={key}
+              classes={{ label: classes.referenceValueStyle }}
+              label={option.label}
+              data-testid={`reference-value-${option.label}`}
+              icon={
+                <div>
+                  <IconOverlay iconURL={option.iconURL} alt={option.kind} />
+                </div>
+              }
+              clickable={!readOnly && !widget.readOnly}
+              onClick={() => optionClickHandler(option)}
+              {...tagProps}
+            />
+          );
+        })
       }
       renderInput={(params) => (
         <TextField
