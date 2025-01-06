@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -123,19 +123,15 @@ export const TreeItem = ({
   markedItemIds,
   treeItemActionRender,
 }: TreeItemProps) => {
-  const { classes } = useTreeItemStyle({ depth });
-
-  const initialState: TreeItemState = {
+  const [state, setState] = useState<TreeItemState>({
     editingMode: false,
     editingKey: null,
     partHovered: null,
-  };
-
-  const [state, setState] = useState<TreeItemState>(initialState);
-  const { editingMode } = state;
+  });
 
   const refDom = useRef() as any;
 
+  const { classes } = useTreeItemStyle({ depth });
   const { selection, setSelection } = useSelection();
   const { onDropTreeItem } = useDropTreeItem(editingContextId, treeId);
 
@@ -161,7 +157,7 @@ export const TreeItem = ({
     }));
   };
 
-  let content = null;
+  let content: JSX.Element | null = null;
   if (item.expanded && item.children) {
     content = (
       <ul className={classes.ul}>
@@ -191,7 +187,7 @@ export const TreeItem = ({
   }
 
   let className = classes.treeItem;
-  let dataTestid = undefined;
+  let dataTestid: string | undefined = undefined;
 
   const selected = selection.entries.find((entry) => entry.id === item.id);
   if (selected) {
@@ -225,7 +221,7 @@ export const TreeItem = ({
   };
 
   const marked: boolean = markedItemIds.some((id) => id === item.id);
-  if (editingMode) {
+  if (state.editingMode) {
     text = (
       <TreeItemDirectEditInput
         editingContextId={editingContextId}
@@ -238,7 +234,7 @@ export const TreeItem = ({
     const styledLabelProps = {
       styledString: item.label,
       selected: false,
-      textToHighlight: textToHighlight,
+      textToHighlight: textToHighlight ?? '',
       marked: marked,
     };
     text = <StyledLabel {...styledLabelProps}></StyledLabel>;
@@ -277,7 +273,7 @@ export const TreeItem = ({
   };
 
   const onBeginEditing = (event) => {
-    if (!item.editable || editingMode || readOnly || !event.currentTarget.contains(event.target as HTMLElement)) {
+    if (!item.editable || state.editingMode || readOnly || !event.currentTarget.contains(event.target as HTMLElement)) {
       return;
     }
     const { key } = event;
@@ -335,7 +331,7 @@ export const TreeItem = ({
     const query = item.kind.substring(item.kind.indexOf('?') + 1, item.kind.length);
     const params = new URLSearchParams(query);
     if (params.has('type')) {
-      tooltipText = params.get('type');
+      tooltipText = params.get('type') ?? 'representation';
     }
   }
 
