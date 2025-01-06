@@ -107,7 +107,7 @@ export const ObjectTreeItemContextMenuContribution = forwardRef(
           <ListItemIcon>
             <AddToPhotosIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary="Duplicate Object" />
+          <ListItemText primary="Duplicate object" />
         </MenuItem>
         {modalElement}
       </Fragment>

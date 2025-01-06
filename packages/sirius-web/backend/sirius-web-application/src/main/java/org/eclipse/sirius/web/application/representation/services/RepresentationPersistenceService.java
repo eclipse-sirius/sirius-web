@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -83,6 +83,15 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
                 this.representationContentCreationService.create(cause, representationId, content, migrationData.lastMigrationPerformed(), migrationData.migrationVersion());
             }
         }
+    }
+
+    @Override
+    @Transactional
+    public void save(ICause cause, IEditingContext editingContext, String representationId, String representationContent, String representationKind) {
+        new UUIDParser().parse(representationId).ifPresent(representationUUID -> {
+            var migrationData = this.getInitialMigrationData(representationKind);
+            this.representationContentCreationService.create(cause, representationUUID, representationContent, migrationData.lastMigrationPerformed(), migrationData.migrationVersion());
+        });
     }
 
     private String toString(IRepresentation representation) {

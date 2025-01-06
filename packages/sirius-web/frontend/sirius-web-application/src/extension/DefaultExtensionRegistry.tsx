@@ -66,6 +66,7 @@ import { DocumentTreeItemContextMenuContribution } from '../views/edit-project/D
 import { DownloadProjectMenuEntryContribution } from '../views/edit-project/EditProjectNavbar/DownloadProjectMenuEntryContribution';
 import { editProjectNavbarMenuEntryExtensionPoint } from '../views/edit-project/EditProjectNavbar/EditProjectNavbarMenuExtensionPoints';
 import { ObjectTreeItemContextMenuContribution } from '../views/edit-project/ObjectTreeItemContextMenuContribution';
+import { RepresentationTreeItemContextMenuContribution } from '../views/edit-project/RepresentationTreeItemContextMenuContribution';
 import { DetailsView } from '../views/edit-project/workbench-views/details/DetailsView';
 import { ExplorerView } from '../views/edit-project/workbench-views/explorer/ExplorerView';
 import { QueryView } from '../views/edit-project/workbench-views/query/QueryView';
@@ -273,6 +274,10 @@ defaultExtensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
 defaultExtensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
   identifier: `siriusweb_${treeItemContextMenuEntryExtensionPoint.identifier}_diagram`,
   Component: DiagramTreeItemContextMenuContribution,
+});
+defaultExtensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
+  identifier: `siriusweb_${treeItemContextMenuEntryExtensionPoint.identifier}_representation`,
+  Component: RepresentationTreeItemContextMenuContribution,
 });
 
 /*******************************************************************************

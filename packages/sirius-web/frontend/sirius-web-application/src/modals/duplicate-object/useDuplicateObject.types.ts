@@ -23,12 +23,13 @@ export interface UseDuplicateObjectValue {
     copyOutgoingReferences: boolean,
     updateIncomingReferences: boolean
   ) => void;
-  duplicatedObject: GQLObject;
+  duplicatedObject: GQLObject | null;
 }
 
 export interface GQLDuplicateObjectVariables {
   input: GQLDuplicateObjectInput;
 }
+
 export interface GQLDuplicateObjectInput {
   id: string;
   editingContextId: string;
@@ -39,6 +40,7 @@ export interface GQLDuplicateObjectInput {
   copyOutgoingReferences: boolean;
   updateIncomingReferences: boolean;
 }
+
 export interface GQLDuplicateObjectData {
   duplicateObject: GQLDuplicateObjectPayload;
 }
