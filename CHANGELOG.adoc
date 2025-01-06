@@ -30,6 +30,7 @@ This may have some consequences for downstream applications which are embedding 
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4282[#4282] [diagram] Fixed a warning on the frontend about non-unique GraphQL fragment name
+- https://github.com/eclipse-sirius/sirius-web/issues/4366[#4366] [form] Fix a warning for an autocomplete widget
 
 === New Features
 
