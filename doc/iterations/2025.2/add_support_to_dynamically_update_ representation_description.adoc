@@ -1,0 +1,44 @@
+= Add support to dynamically update representation descriptions
+
+== Problem
+
+A specifier or an end user can't update at runtime the description of any representation that was declared using the view DSL.
+This feature is currently only supported for tables.
+
+
+== Key Result
+
+We want to be able to generate a new studio from any representation whose description comes from a view model.
+This new studio will be a copy of the current description used by the representation.
+The description will thus become modifiable in this studio.
+
+=== Acceptance Criteria
+
+- Some backend test will be necessary to ensure that the studio is properly created with the expected description for any representation.
+This can be tested using the Papaya diagrams which are described using the view DSL
+- Some Cypress test will also be relevant to validate the entire user experience.
+It will especially be useful to ensure that the studio is properly connected with the existing representation and that new changes to the studio are visible in the representation
+- We should also validate that this behavior exists only for representations created using the view DSL
+
+=== Scenario
+
+A specifier wants to change a representation description :
+
+1 - He clicks on the tree item menu associated with the representation in the explorer
+2 - He clicks on the new option 'Create a copy of the current description'
+3 - He is redirected to a new studio where he can make changes to the representation (a modal was shown to validate the user choice before the redirection)
+
+
+=== Breadboarding
+
+Since we want to add this option generically for all representations, we will move away from a custom contribution in the table actions to use instead a tree item context menu available on all representations created using a view DSL.
+
+=== Cutting backs
+
+
+== Rabbit holes
+
+
+== No-gos
+
+We will not consider representation descriptions created programmatically
