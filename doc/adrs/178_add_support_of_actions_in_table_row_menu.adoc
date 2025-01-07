@@ -1,0 +1,100 @@
+= ADR-178 Add support of actions in table row menu
+
+== Context
+
+Currently, there are no actions at the row level in table representations.
+
+== Decision
+
+We need to introduce a general way to handle actions at the table row level.
+MUI React Table provides a convenient way to add menu items on each row inside a dedicated column which could be naturally used in the front end part.
+As a developer or specifier, we want to be able to specify a list of actions that could be applied on an row description.
+
+=== View DSL
+
+The specifier could add `RowContextMenuEntry` elements under a `RowDescription` element.
+`RowContextMenuEntry` has the following properties:
+
+* Label Expression
+* Icon URL Expression
+* Precondition Expression
+* Body Operation
+
+=== Table API
+
+At the API level, we need to introduce a new provider interface `IRowContextMenuEntryProvider` that could be implemented to provide a list of actions at a row level (`RowContextMenuEntry`).
+
+```java
+public interface IRowContextMenuEntryProvider {
+
+    boolean canHandle(IEditingContext editingContext, TableDescription tableDescription, Table table, Line row);
+
+    List<RowContextMenuEntry> getRowContextMenuEntries(IEditingContext editingContext, TableDescription tableDescription, Table table, Line row);
+}
+```
+
+The `RowContextMenuEntry` class is as simple as:
+
+```java
+public record RowContextMenuEntry(String id, String label, List<String> iconURL) { }
+```
+
+=== GraphQL
+
+In order to display the content of the context menu in the front end, we need to introduce a GraphQL field to retrieve all context menu entries associated to a given row.
+It will behaves the same way as `DiagramDescription#palette`.
+
+```graphQL
+type TableDescription implements RepresentationDescription {
+  ...
+  contextMenu(rowId: ID!): [RowContextMenuEntry!]!
+  ...
+}
+
+type RowContextMenuEntry {
+  id: ID!
+  label: String!
+  iconURL: [String!]!
+}
+```
+
+In order to execute a specific action entry, we need to introduce a GraphQL mutation to perform the action itself by the backend. 
+
+```graphQL
+extend type Mutation {
+  ...
+    invokeRowContextMenuEntry(input: InvokeRowContextMenuEntryInput!): InvokeRowContextMenuEntryPayload!
+  ...
+}
+
+input InvokeRowContextMenuEntryInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  tableId: ID!
+  rowId: ID!
+  menuEntryId: ID!
+}
+```
+
+=== Back end
+
+As far as the context menu entries retrieval is concerned, the handler has an injected list of implementations of `IRowContextMenuEntryProvider`.
+A developer could create directly an implementation of `IRowContextMenuEntryProvider` to use in a row of his/her table.
+To manage the view DSL menu entries descriptions, we need to provide an implementation to expose the entries described at the View model level to the DTO element.
+
+For context menu entry execution, we need to introduce a new interface to allow gathering the execution handler `IRowContextMenuEntryExecutor`.
+The mutation handler has to select the right executor among the injected list using its `canExecute` method.
+Therefore, the `execute` method can be called.
+As for the context menu entries collect, we need to provide an implementation of this interface to manage the view DSL cases.
+
+=== Front end
+
+The front end code relies on the GraphQL query `contextMenu` to populate the menu of each table row.
+We cannot afford to request all context menu entries for all rows when the component renders, instead, we need to request only the content of the context menu when it is open.
+
+Once an action is triggered, the mutation `invokeRowContextMenuEntry` should be called.
+
+== Status
+
+Work in progress
