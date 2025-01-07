@@ -14,6 +14,7 @@
 
 === Architectural decision records
 
+- [ADR-178] Add support of actions in table row menu
 
 === Deprecation warning
 
