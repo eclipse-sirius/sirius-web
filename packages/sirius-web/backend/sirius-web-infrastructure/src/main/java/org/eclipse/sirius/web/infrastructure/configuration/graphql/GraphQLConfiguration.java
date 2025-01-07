@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.graphql.api.InstantScalarType;
 import org.eclipse.sirius.components.graphql.api.UploadScalarType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
@@ -31,6 +32,7 @@ import graphql.execution.AsyncSerialExecutionStrategy;
 import graphql.execution.DataFetcherExceptionHandler;
 import graphql.execution.ExecutionStrategy;
 import graphql.execution.SubscriptionExecutionStrategy;
+import graphql.execution.instrumentation.tracing.TracingInstrumentation;
 import graphql.schema.GraphQLCodeRegistry;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
@@ -55,7 +57,7 @@ public class GraphQLConfiguration {
     private final Logger logger = LoggerFactory.getLogger(GraphQLConfiguration.class);
 
     @Bean
-    public GraphQL graphQL(GraphQLSchema graphQLSchema) {
+    public GraphQL graphQL(GraphQLSchema graphQLSchema, @Value("${sirius.web.graphql.tracing:false}") boolean activateTracing) {
         var options = SchemaPrinter.Options.defaultOptions();
         String schema = new SchemaPrinter(options).print(graphQLSchema);
 
@@ -68,11 +70,17 @@ public class GraphQLConfiguration {
         ExecutionStrategy mutationExecutionStrategy = new AsyncSerialExecutionStrategy(exceptionHandler);
         ExecutionStrategy subscriptionExecutionStrategy = new SubscriptionExecutionStrategy(exceptionHandler);
 
-        return GraphQL.newGraphQL(graphQLSchema)
+        var graphQLJavaBuilder = GraphQL.newGraphQL(graphQLSchema)
                 .queryExecutionStrategy(queryExecutionStrategy)
                 .mutationExecutionStrategy(mutationExecutionStrategy)
-                .subscriptionExecutionStrategy(subscriptionExecutionStrategy)
-                .build();
+                .subscriptionExecutionStrategy(subscriptionExecutionStrategy);
+
+        if (activateTracing) {
+            var tracingOptions = TracingInstrumentation.Options.newOptions().includeTrivialDataFetchers(false);
+            graphQLJavaBuilder.instrumentation(new TracingInstrumentation(tracingOptions));
+        }
+
+        return graphQLJavaBuilder.build();
     }
 
     @Bean
