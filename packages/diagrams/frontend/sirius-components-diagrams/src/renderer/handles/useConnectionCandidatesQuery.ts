@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo and others.
+ * Copyright (c) 2023, 2025 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,10 +35,10 @@ const getToolSectionsQuery = gql`
             ... on DiagramDescription {
               palette(diagramElementId: $diagramElementId) {
                 paletteEntries {
-                  ...ToolFields
+                  ...ConnectionToolFields
                   ... on ToolSection {
                     tools {
-                      ...ToolFields
+                      ...ConnectionToolFields
                     }
                   }
                 }
@@ -50,7 +50,7 @@ const getToolSectionsQuery = gql`
     }
   }
 
-  fragment ToolFields on Tool {
+  fragment ConnectionToolFields on Tool {
     __typename
     ... on SingleClickOnTwoDiagramElementsTool {
       candidates {

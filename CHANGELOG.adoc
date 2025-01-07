@@ -29,6 +29,7 @@ This may have some consequences for downstream applications which are embedding 
 
 === Bug fixes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/4282[#4282] [diagram] Fixed a warning on the frontend about non-unique GraphQL fragment name
 
 === New Features
 
