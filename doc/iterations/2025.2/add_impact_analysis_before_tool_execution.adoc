@@ -1,0 +1,51 @@
+= Add Impact Analysis Before Tool Execution
+
+== Problem
+
+Some tool executions could have a significant impact on the model, and the specifier may want to warn the end user of this impact before validating the execution.
+
+== Key Result
+
+The specifier can declare that an impact analysis will be triggered before the execution of a tool.
+When a user triggers this tool, they receive initial feedback on the changes that will occur after the tool execution.
+The user can then decide whether to apply the tool or not.
+
+=== Acceptance criteria
+
+- In Papaya, some impact analysis should be available before the execution of the tool to add implementations of an interface to a Papaya class diagram for example.
+It should be leveraged at least in a Cypress test to validate the complete user experience.
+- Backend integration tests should also be available to ensure that the core part of the behavior are working as expected.
+Those tests should probably leverage the same Papaya representations
+
+
+== Scenario
+
+=== Tool execution on a representation
+
+On a representation, a user executes a tool with an active impact analysis.
+A modal window opens, displaying the differences in the model before and after the tool execution.
+At this point, the tool execution is not persisted (and thus other users on the same representation are not notified that a tool has been triggered).
+The user can now choose to apply the tool or not.
+
+* If the user cancels the tool execution, no changes are applied.
+* If the user approves the tool execution, the tool will now be executed.
+It may perform changes that are not exactly the same as the ones displayed when the user triggered the display of the impact analysis.
+All the users will now see the impact of the change in their representations
+
+== Breadboarding
+
+A modal window with a report listing the differences brought by the tool.
+
+== Cutting Backs
+
+For a first version, only tool on diagram will be supported but this integration will try to be as generic as possible to be applied to other representations later.
+
+== Rabbit Holes
+
+The differences displayed in the modal are:
+
+*  the number of elements created
+*  the number of elements deleted
+*  the number of elements modified
+
+== No-Gos
