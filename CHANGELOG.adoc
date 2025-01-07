@@ -8,6 +8,7 @@
 - Lower the coupling between project and editing context
 - Add support of non synchronized tables
 - Add support to dynamically update representation description
+- Add loading indicators for long actions
 
 
 === Architectural decision records

@@ -1,0 +1,53 @@
+= Add loading indicators for long actions
+
+== Problem
+
+Some long actions do not have a loading indicator.
+The lack of feedback for the user is an ui/ux issue.
+
+
+== Key Result
+
+All long actions should provide some kind of loading indicator.
+With MUI we can provide 3 types of indicator depending on the situation :
+
+1 - A circular progress bar used to replace a button after a click
+2 - A linear progress bar used to replace a component which contains several other component
+3 - A skeleton progress that represent a placeholder shape during loading
+
+
+=== Acceptance criteria
+
+- Some Cypress tests should be added to ensure that the loading state is communicated in the user interface
+
+
+=== Scenario
+
+==== A user want to open a representation
+
+- Since representations can have many different shapes, we'll show a linear progress bar by default.
+- On diagrams, table, form and tree representations we could use a skeleton shape.
+
+
+==== A user want to execute a long action on a representation
+
+- We will display a small loading indicator to let the end user know that the action that they have triggered is still being processed
+- We may make the representation read only while waiting for the new refresh event payload matching the action executed
+
+
+=== Breadboarding
+
+- Progress & Skeleton components of MUI will be used.
+- We will also need to disable the relevant user interface components to prevent some unwanted double submissions.
+It should be done at least in all regular forms (new project, settings pages, etc)
+
+=== Cutting backs
+
+
+== Rabbit holes
+
+
+== No-gos
+
+- Using React suspense API: https://react.dev/reference/react/Suspense
+- Having a determinate progress bar.
