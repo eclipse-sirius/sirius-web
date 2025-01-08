@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,6 @@ import {
 } from '@eclipse-sirius/sirius-components-core';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import UnfoldMore from '@mui/icons-material/UnfoldMore';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
@@ -42,7 +41,10 @@ import {
   TreeItemContextMenuState,
 } from './TreeItemContextMenu.types';
 import { TreeItemContextMenuComponentProps } from './TreeItemContextMenuEntry.types';
-import { treeItemContextMenuEntryExtensionPoint } from './TreeItemContextMenuEntryExtensionPoints';
+import {
+  treeItemContextMenuEntryExtensionPoint,
+  treeItemBackendContextMenuEntryExtensionPoint,
+} from './TreeItemContextMenuEntryExtensionPoints';
 import { useContextMenuEntries } from './useContextMenuEntries';
 
 const deleteTreeItemMutation = gql`
@@ -101,8 +103,9 @@ export const TreeItemContextMenu = ({
   item,
   readOnly,
   depth,
-  onExpand,
-  onExpandAll,
+  expanded,
+  maxDepth,
+  onExpandedElementChange,
   enterEditingMode,
   onClose,
 }: TreeItemContextMenuProps) => {
@@ -118,9 +121,13 @@ export const TreeItemContextMenu = ({
     treeItemContextMenuEntryExtensionPoint
   );
 
+  const treeItemBackendMenuContextComponents: ComponentExtension<TreeItemContextMenuComponentProps>[] = useComponents(
+    treeItemBackendContextMenuEntryExtensionPoint
+  );
+
   const expandItem = () => {
     if (!item.expanded && item.hasChildren) {
-      onExpand(item.id, depth);
+      onExpandedElementChange([...expanded, item.id], Math.max(depth, maxDepth));
     }
   };
 
@@ -235,6 +242,7 @@ export const TreeItemContextMenu = ({
       invokeSingleClick(menuEntry.id);
       onClose();
     }
+    // Do not handle ContributedTreeItemContextMenuEntry, it is done in the contributed component.
   };
 
   return (
@@ -257,27 +265,14 @@ export const TreeItemContextMenu = ({
             item={item}
             readOnly={readOnly}
             onClose={onClose}
+            onExpandedElementChange={onExpandedElementChange}
             expandItem={expandItem}
             key={index.toString()}
             treeId={treeId}
+            expanded={expanded}
+            maxDepth={maxDepth}
           />
         ))}
-        {item.hasChildren ? (
-          <MenuItem
-            key="expand-all"
-            data-testid="expand-all"
-            onClick={() => {
-              onExpandAll(item);
-              onClose();
-            }}
-            disabled={readOnly}
-            aria-disabled>
-            <ListItemIcon>
-              <UnfoldMore fontSize="small" />
-            </ListItemIcon>
-            <ListItemText primary="Expand all" />
-          </MenuItem>
-        ) : null}
         {item.editable ? (
           <MenuItem
             key="rename"
@@ -299,23 +294,47 @@ export const TreeItemContextMenu = ({
             <ListItemText primary="Delete" />
           </MenuItem>
         ) : null}
-        {state.menuEntries.map((entry) => (
-          <MenuItem
-            key={entry.id}
-            onClick={(_) => invokeContextMenuEntry(entry)}
-            data-testid={`context-menu-entry-${entry.label}`}
-            disabled={readOnly}
-            aria-disabled>
-            <ListItemIcon>
-              {entry.iconURL.length > 0 ? (
-                <IconOverlay iconURL={entry.iconURL} alt={entry.label} title={entry.label} />
-              ) : (
-                <div style={{ marginRight: '16px' }} />
-              )}
-            </ListItemIcon>
-            <ListItemText primary={entry.label} />
-          </MenuItem>
-        ))}
+        {state.menuEntries.map((entry) => {
+          const contributedTreeItemMenuContextComponents = treeItemBackendMenuContextComponents.filter(
+            (c) => c.identifier === entry.id
+          );
+          if (contributedTreeItemMenuContextComponents.length > 0) {
+            return contributedTreeItemMenuContextComponents.map(
+              ({ Component: TreeItemMenuContextComponent }, index) => (
+                <TreeItemMenuContextComponent
+                  editingContextId={editingContextId}
+                  item={item}
+                  readOnly={readOnly}
+                  onClose={onClose}
+                  onExpandedElementChange={onExpandedElementChange}
+                  expandItem={expandItem}
+                  key={index.toString()}
+                  treeId={treeId}
+                  expanded={expanded}
+                  maxDepth={maxDepth}
+                />
+              )
+            );
+          } else {
+            return (
+              <MenuItem
+                key={entry.id}
+                onClick={(_) => invokeContextMenuEntry(entry)}
+                data-testid={`context-menu-entry-${entry.label}`}
+                disabled={readOnly}
+                aria-disabled>
+                <ListItemIcon>
+                  {entry.iconURL.length > 0 ? (
+                    <IconOverlay iconURL={entry.iconURL} alt={entry.label} title={entry.label} />
+                  ) : (
+                    <div style={{ marginRight: '16px' }} />
+                  )}
+                </ListItemIcon>
+                <ListItemText primary={entry.label} />
+              </MenuItem>
+            );
+          }
+        })}
       </Menu>
     </>
   );

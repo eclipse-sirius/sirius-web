@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -250,6 +250,11 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
                 .body(callService.build())
                 .build();
 
-        return List.of(helpMenuEntry, toggleAbstractMenuEntry);
+        var expandAllMenuEntry = new TreeBuilders().newCustomTreeItemContextMenuEntry()
+                .contributionId("siriusweb_treeItem#backendContextMenuEntry_expandAll")
+                .preconditionExpression(AQL_TRUE)
+                .build();
+
+        return List.of(expandAllMenuEntry, helpMenuEntry, toggleAbstractMenuEntry);
     }
 }

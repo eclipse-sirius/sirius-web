@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+import org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntryKind;
 import org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry;
@@ -77,6 +78,8 @@ public class TreeFactoryImpl extends EFactoryImpl implements TreeFactory {
                 return this.createSingleClickTreeItemContextMenuEntry();
             case TreePackage.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY:
                 return this.createFetchTreeItemContextMenuEntry();
+            case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY:
+                return this.createCustomTreeItemContextMenuEntry();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -165,6 +168,17 @@ public class TreeFactoryImpl extends EFactoryImpl implements TreeFactory {
     public FetchTreeItemContextMenuEntry createFetchTreeItemContextMenuEntry() {
         FetchTreeItemContextMenuEntryImpl fetchTreeItemContextMenuEntry = new FetchTreeItemContextMenuEntryImpl();
         return fetchTreeItemContextMenuEntry;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public CustomTreeItemContextMenuEntry createCustomTreeItemContextMenuEntry() {
+        CustomTreeItemContextMenuEntryImpl customTreeItemContextMenuEntry = new CustomTreeItemContextMenuEntryImpl();
+        return customTreeItemContextMenuEntry;
     }
 
     /**
