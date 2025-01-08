@@ -10,6 +10,7 @@
 - Add support to dynamically update representation description
 - Add loading indicators for long actions
 - Add impact analysis before tool execution
+- Improve image export
 
 
 === Architectural decision records
