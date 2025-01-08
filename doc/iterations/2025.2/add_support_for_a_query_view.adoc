@@ -17,6 +17,11 @@ This new view shall be contributed using an extension point in order to be remov
 The result of the expression will only be computed when the user will ask for it.
 This view will not be a synchronized representation.
 
+=== Acceptance Criteria
+
+- Some Cypress tests should be added to validate that the new view interacts properly with the workbench and the selection
+- Backend integration tests should be added to ensure that the core parts of the execution work as expected
+
 === Scenario
 
 ==== A user wants to query some models
