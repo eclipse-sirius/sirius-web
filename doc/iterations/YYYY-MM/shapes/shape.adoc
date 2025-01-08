@@ -9,6 +9,10 @@ Short description of the problem.
 How we will determine whether the problem has being solved.
 Qualitative and quantitative measures.
 
+=== Acceptance Criteria
+
+List the kind of tests expected to validate the implementation
+
 == Solution
 
 Describe the solution.

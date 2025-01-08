@@ -20,6 +20,11 @@ As a end-user, I want to perform some operations to add those elements.
 One example could leverage the support for a drag and drop tool to drop semantic elements from the explorer in a table.
 For that, the specifier should be able to define a drop tool for the table.
 
+=== Acceptance Criteria
+
+- Some backend integration tests should be added to ensure that the row / column creation requests and deletion requests are working as expected
+- Some Cypress tests will also be relevant to validate the entire behavior especially when a drag and drop tool will be added
+
 == Solution
 
 Sirius Web should provide a `SynchronizationPolicy` in the `ColumnDescription` and `RowDescription` view DSL that specifier could use.
