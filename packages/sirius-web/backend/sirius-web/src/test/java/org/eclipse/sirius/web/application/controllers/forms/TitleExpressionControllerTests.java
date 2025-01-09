@@ -71,7 +71,7 @@ public class TitleExpressionControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToTitleExpressionForm() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                 this.formWithTitleExpressionDescriptionProvider.getRepresentationDescriptionId(),
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "FormWithTitleExpression"
@@ -90,7 +90,7 @@ public class TitleExpressionControllerTests extends AbstractIntegrationTests {
                 .map(FormRefreshedEventPayload.class::cast)
                 .map(FormRefreshedEventPayload::form)
                 .ifPresentOrElse(form -> {
-                    var result = this.representationMetadataQueryRunner.run(Map.of("editingContextId", PapayaIdentifiers.PAPAYA_PROJECT, "representationId", form.getId()));
+                    var result = this.representationMetadataQueryRunner.run(Map.of("editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID, "representationId", form.getId()));
                     String label = JsonPath.read(result, "$.data.viewer.editingContext.representation.label");
                     assertThat(label).isEqualTo("FormWithTitleExpression");
                 }, () -> fail("Missing form"));

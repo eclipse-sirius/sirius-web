@@ -44,7 +44,7 @@ public class DomainSearchServiceTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given some semantic data, when the editing context is loaded, then domains can be retrieved")
     public void givenSemanticDataWhenEditingContextIsLoadedThenDomainsCanBeRetrieved() {
-        var optionalEditingContext = this.editingContextSearchService.findById(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString());
+        var optionalEditingContext = this.editingContextSearchService.findById(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString());
         assertThat(optionalEditingContext).isPresent();
 
         var editingContext = optionalEditingContext.get();
@@ -59,7 +59,7 @@ public class DomainSearchServiceTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given some semantic data, when the editing context is loaded, then root domains can be retrieved")
     public void givenSemanticDataWhenEditingContextIsLoadedThenRootDomainsCanBeRetrieved() {
-        var optionalEditingContext = this.editingContextSearchService.findById(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString());
+        var optionalEditingContext = this.editingContextSearchService.findById(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString());
         assertThat(optionalEditingContext).isPresent();
 
         var editingContext = optionalEditingContext.get();

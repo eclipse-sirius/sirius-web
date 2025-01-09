@@ -83,7 +83,7 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
     private Flux<Object> givenSubscriptionToViewTableRepresentation() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                 this.viewTableDescriptionProvider.getRepresentationDescriptionId(),
                 PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString(),
                 "ViewTableDescription"
@@ -140,7 +140,7 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
         var actionId = new AtomicReference<String>();
         Runnable getContextMenuEntriesTask = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     "representationId", tableId.get(),
                     "tableId", tableId.get(),
                     "rowId", rowId.get().toString());
@@ -157,7 +157,7 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
         Runnable invokeChangeNameAction = () -> {
             var invokeRowContextMenuEntryInput = new InvokeRowContextMenuEntryInput(
                     UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     tableId.get(),
                     tableId.get(),
                     rowId.get(),

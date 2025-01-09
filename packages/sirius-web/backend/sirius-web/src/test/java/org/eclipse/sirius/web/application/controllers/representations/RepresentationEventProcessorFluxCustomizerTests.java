@@ -63,7 +63,7 @@ public class RepresentationEventProcessorFluxCustomizerTests extends AbstractInt
     @DisplayName("Given a form representation, when we customize its output events, then additional payloads are received")
     public void givenFormRepresentationWhenWeCustomizeItsOuputEventsThenAdditionalPayloadsAreReceived() {
         var detailsRepresentationId = representationIdBuilder.buildDetailsRepresentationId(List.of(TestIdentifiers.EPACKAGE_OBJECT.toString()));
-        var input = new DetailsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), detailsRepresentationId);
+        var input = new DetailsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), detailsRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input);
 
         Predicate<Object> formContentMatcher = object -> Optional.of(object)

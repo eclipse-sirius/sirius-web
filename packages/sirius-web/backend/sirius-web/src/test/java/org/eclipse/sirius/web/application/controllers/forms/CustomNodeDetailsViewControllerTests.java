@@ -83,7 +83,7 @@ public class CustomNodeDetailsViewControllerTests extends AbstractIntegrationTes
     @DisplayName("Given an EllipseNodeStyleDescription, when we subscribe to its properties events, then the form is sent")
     public void givenEllipseNodeStyleDescriptionWhenWeSubscribeToItsPropertiesEventsThenTheFormIsSent() {
         var detailRepresentationId = representationIdBuilder.buildDetailsRepresentationId(List.of(StudioIdentifiers.ELLIPSE_NODE_STYLE_DESCRIPTION_OBJECT.toString()));
-        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), detailRepresentationId);
+        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), detailRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input);
 
         Predicate<Form> formPredicate = form -> {
@@ -117,7 +117,7 @@ public class CustomNodeDetailsViewControllerTests extends AbstractIntegrationTes
     @DisplayName("Given an EllipseNodeStyleDescription, when border size is edited, then its value is updated")
     public void givenEllipseNodeStyleDescriptionWhenBorderSizeIsEditedThenItsValueIsUpdated() {
         var detailRepresentationId = representationIdBuilder.buildDetailsRepresentationId(List.of(StudioIdentifiers.ELLIPSE_NODE_STYLE_DESCRIPTION_OBJECT.toString()));
-        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), detailRepresentationId);
+        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), detailRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input)
                 .filter(DataFetcherResult.class::isInstance)
                 .map(DataFetcherResult.class::cast)
@@ -140,7 +140,7 @@ public class CustomNodeDetailsViewControllerTests extends AbstractIntegrationTes
                 }, () -> fail("Missing form"));
 
         Runnable editTextfield = () -> {
-            var editTextfieldInput = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), formId.get(), textfieldId.get(), "3");
+            var editTextfieldInput = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), formId.get(), textfieldId.get(), "3");
             var result = this.editTextfieldMutationRunner.run(editTextfieldInput);
 
             String typename = JsonPath.read(result, "$.data.editTextfield.__typename");

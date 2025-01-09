@@ -98,7 +98,7 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
     public void givenMasterDetailsBasedFormRepresentationWhenWeEditTheMasterPartThenTheDetailsPartIsUpdated() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(),
+                TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(),
                 MasterDetailsFormDescriptionProvider.DESCRIPTION_ID,
                 TestIdentifiers.EPACKAGE_OBJECT.toString(),
                 "Master Details Form"
@@ -126,7 +126,7 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
 
         Runnable changeMasterValue = () -> {
             // ... updating the value with the select ...
-            var editSelectInput = new EditSelectInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), formId.get(), selectId.get(), "second");
+            var editSelectInput = new EditSelectInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), formId.get(), selectId.get(), "second");
 
             var editSelectResult = this.editSelectMutationRunner.run(editSelectInput);
             String editSelectResultTypename = JsonPath.read(editSelectResult, "$.data.editSelect.__typename");
@@ -162,7 +162,7 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
     public void givenViewBasedFormDescriptionWhenFormVariablesAreInitializedThenWidgetsCanReadTheirValue() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                 this.formVariableViewPreEditingContextProcessor.getRepresentationDescriptionId(),
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "Shared Variables Form"
@@ -194,7 +194,7 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
     public void givenViewBasedFormWhenReloadTriggeredThenFormIsRefreshed() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                 this.formVariableViewPreEditingContextProcessor.getRepresentationDescriptionId(),
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "Shared Variables Form"
@@ -238,7 +238,7 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
                         }, () -> fail("Missing representation event processor"));
             };
             this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
-                    .filter(editingContextEventProcessor -> editingContextEventProcessor.getEditingContextId().equals(StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString()))
+                    .filter(editingContextEventProcessor -> editingContextEventProcessor.getEditingContextId().equals(StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString()))
                     .findFirst()
                     .ifPresentOrElse(editingContextEventProcessorConsumer, () -> fail("Missing editing context event processor"));
         };

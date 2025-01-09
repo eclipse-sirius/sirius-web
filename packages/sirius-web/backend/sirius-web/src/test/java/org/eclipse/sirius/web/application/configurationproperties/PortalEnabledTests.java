@@ -41,7 +41,7 @@ public class PortalEnabledTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given all Sirius Web features enabled, when representation descriptions are requested, then portal support is available")
     public void givenAllSiriusWebFeaturesEnabledWhenRepresentationDescriptionsAreRequestedThenPortalSupportIsAvailable() {
-        var optionalEditingContext = this.editingContextSearchService.findById(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString());
+        var optionalEditingContext = this.editingContextSearchService.findById(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString());
         assertThat(optionalEditingContext).isPresent();
 
         var editingContext = optionalEditingContext.get();

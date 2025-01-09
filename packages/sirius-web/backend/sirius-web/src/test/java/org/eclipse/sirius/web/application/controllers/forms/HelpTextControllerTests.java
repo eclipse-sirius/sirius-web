@@ -110,7 +110,7 @@ public class HelpTextControllerTests extends AbstractIntegrationTests {
     public void givenTextfieldWidgetWhenItsHelpTextIsRequestedThenItIsProperlyReceived() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT,
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 this.formWithTextfieldDescriptionProvider.getRepresentationDescriptionId(),
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "FormWithTextfield"
@@ -135,7 +135,7 @@ public class HelpTextControllerTests extends AbstractIntegrationTests {
 
         Runnable requestHelpText = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                     "representationId", formId.get(),
                     "widgetId", textfieldId.get()
             );
@@ -158,14 +158,14 @@ public class HelpTextControllerTests extends AbstractIntegrationTests {
     public void givenTextfieldWidgetWhenWeAskIfItSupportHelpTextThenItsSupportIsReceived() {
         var createRepresentationInput = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT,
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 this.formWithTextfieldDescriptionProvider.getRepresentationDescriptionId(),
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "FormWithTextfield"
         );
         String representationId = this.givenCreatedRepresentation.createRepresentation(createRepresentationInput);
 
-        var formEventInput = new FormEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT, representationId);
+        var formEventInput = new FormEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, representationId);
         var flux = this.graphQLRequestor.subscribeToSpecification(HELP_TEXT_FORM_EVENT_SUBSCRIPTION, formEventInput);
 
         Consumer<String> initialFormContentConsumer = payload -> {

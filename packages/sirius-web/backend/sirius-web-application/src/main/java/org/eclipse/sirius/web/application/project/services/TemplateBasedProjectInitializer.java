@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.application.project.services;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
@@ -25,10 +26,11 @@ import org.eclipse.sirius.web.application.project.services.api.IProjectMapper;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateInitializer;
 import org.eclipse.sirius.web.application.project.services.api.ITemplateBasedProjectInitializer;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
-import org.springframework.context.ApplicationEventPublisher;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionTemplate;
 
 /**
  * Used to create project from templates.
@@ -48,28 +50,32 @@ public class TemplateBasedProjectInitializer implements ITemplateBasedProjectIni
 
     private final List<IProjectTemplateInitializer> projectTemplateInitializers;
 
-    private final TransactionTemplate transactionTemplate;
+    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
 
-    private final ApplicationEventPublisher applicationEventPublisher;
-
-    public TemplateBasedProjectInitializer(IProjectSearchService projectSearchService, IProjectMapper projectMapper, IEditingContextSearchService editingContextSearchService, IEditingContextPersistenceService editingContextPersistenceService, List<IProjectTemplateInitializer> projectTemplateInitializers, TransactionTemplate transactionTemplate, ApplicationEventPublisher applicationEventPublisher) {
+    public TemplateBasedProjectInitializer(IProjectSearchService projectSearchService, IProjectMapper projectMapper, IEditingContextSearchService editingContextSearchService, IEditingContextPersistenceService editingContextPersistenceService, List<IProjectTemplateInitializer> projectTemplateInitializers, IProjectSemanticDataSearchService projectSemanticDataSearchService) {
         this.projectSearchService = Objects.requireNonNull(projectSearchService);
         this.projectMapper = Objects.requireNonNull(projectMapper);
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
         this.projectTemplateInitializers = Objects.requireNonNull(projectTemplateInitializers);
-        this.transactionTemplate = Objects.requireNonNull(transactionTemplate);
-        this.applicationEventPublisher = Objects.requireNonNull(applicationEventPublisher);
+        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
     }
 
     @Override
     @Transactional
     public IPayload initializeProjectFromTemplate(CreateProjectFromTemplateInput input, String projectId, String templateId) {
         var optionalProject = this.projectSearchService.findById(projectId);
-        var optionalEditingContext = this.editingContextSearchService.findById(projectId);
+
+        var optionalEditingContext = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(projectId))
+                .map(ProjectSemanticData::getSemanticData)
+                .map(AggregateReference::getId)
+                .map(UUID::toString)
+                .flatMap(this.editingContextSearchService::findById);
+
         var optionalProjectTemplateInitializer = this.projectTemplateInitializers.stream()
                 .filter(initializer -> initializer.canHandle(input.templateId()))
                 .findFirst();
+
         if (optionalProject.isPresent() && optionalEditingContext.isPresent() && optionalProjectTemplateInitializer.isPresent()) {
             var project = optionalProject.get();
             var editingContext = optionalEditingContext.get();

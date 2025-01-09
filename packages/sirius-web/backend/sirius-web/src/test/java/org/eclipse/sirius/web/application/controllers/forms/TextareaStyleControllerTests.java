@@ -68,7 +68,7 @@ public class TextareaStyleControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToTextareaForm(String objectId) {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                 this.formWithStyledTextareaDescriptionProvider.getRepresentationDescriptionId(),
                 objectId,
                 "FormWithStyledTextarea"

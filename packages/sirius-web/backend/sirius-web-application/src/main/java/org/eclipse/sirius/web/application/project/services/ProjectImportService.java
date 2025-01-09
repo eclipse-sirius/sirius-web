@@ -42,8 +42,11 @@ import org.eclipse.sirius.web.application.project.dto.CreateProjectSuccessPayloa
 import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
 import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
 import org.eclipse.sirius.web.application.project.services.api.IProjectImportService;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -70,10 +73,13 @@ public class ProjectImportService implements IProjectImportService {
 
     private final IProjectApplicationService projectApplicationService;
 
-    public ProjectImportService(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, ObjectMapper objectMapper, IProjectApplicationService projectApplicationService) {
+    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
+
+    public ProjectImportService(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, ObjectMapper objectMapper, IProjectApplicationService projectApplicationService, IProjectSemanticDataSearchService projectSemanticDataSearchService) {
         this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.projectApplicationService = Objects.requireNonNull(projectApplicationService);
+        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
     }
 
     /**
@@ -151,16 +157,22 @@ public class ProjectImportService implements IProjectImportService {
         IPayload payload = new ErrorPayload(inputId, "");
         if (createProjectPayload instanceof CreateProjectSuccessPayload createProjectSuccessPayload) {
             var project = createProjectSuccessPayload.project();
-            Optional<IEditingContextEventProcessor> optionalEditingContextEventProcessor = this.editingContextEventProcessorRegistry
-                    .getOrCreateEditingContextEventProcessor(project.id());
-            if (optionalEditingContextEventProcessor.isPresent()) {
+            var optionalEditingContextId = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(project.id()))
+                    .map(ProjectSemanticData::getSemanticData)
+                    .map(AggregateReference::getId)
+                    .map(UUID::toString);
+
+            Optional<IEditingContextEventProcessor> optionalEditingContextEventProcessor = optionalEditingContextId.flatMap(editingContextEventProcessorRegistry::getOrCreateEditingContextEventProcessor);
+
+            if (optionalEditingContextEventProcessor.isPresent() && optionalEditingContextId.isPresent()) {
                 IEditingContextEventProcessor editingContextEventProcessor = optionalEditingContextEventProcessor.get();
+                var editingContextId = optionalEditingContextId.get();
 
                 ProjectImporter projectImporter = new ProjectImporter(project.id(), editingContextEventProcessor, documents, representationImportDatas, projectManifest);
                 boolean hasBeenImported = projectImporter.importProject(inputId);
 
                 if (!hasBeenImported) {
-                    this.editingContextEventProcessorRegistry.disposeEditingContextEventProcessor(project.id());
+                    this.editingContextEventProcessorRegistry.disposeEditingContextEventProcessor(editingContextId);
                     this.projectApplicationService.deleteProject(new DeleteProjectInput(inputId, project.id()));
                 } else {
                     payload = new UploadProjectSuccessPayload(inputId, project);

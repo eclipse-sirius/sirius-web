@@ -70,7 +70,7 @@ public class DocumentDownloadControllerIntegrationTests extends AbstractIntegrat
 
         var testRestTemplate = new TestRestTemplate();
 
-        var uri = "http://localhost:" + this.port + "/api/editingcontexts/" + StudioIdentifiers.SAMPLE_STUDIO_PROJECT + "/documents/" + StudioIdentifiers.DOMAIN_DOCUMENT;
+        var uri = "http://localhost:" + this.port + "/api/editingcontexts/" + StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID + "/documents/" + StudioIdentifiers.DOMAIN_DOCUMENT;
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.APPLICATION_XML));
@@ -88,7 +88,7 @@ public class DocumentDownloadControllerIntegrationTests extends AbstractIntegrat
 
         var testRestTemplate = new TestRestTemplate();
 
-        var uri = "http://localhost:" + this.port + "/api/editingcontexts/" + PapayaIdentifiers.PAPAYA_PROJECT + "/documents/" + PapayaIdentifiers.PROJECT_OBJECT;
+        var uri = "http://localhost:" + this.port + "/api/editingcontexts/" + PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID + "/documents/" + PapayaIdentifiers.PROJECT_OBJECT;
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.APPLICATION_XML));

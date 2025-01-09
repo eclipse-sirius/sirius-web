@@ -85,7 +85,7 @@ public class TreeItemLabelDescriptionControllerTests extends AbstractIntegration
         var explorerDescriptionId = new AtomicReference<String>();
 
         Map<String, Object> explorerVariables = Map.of(
-                "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString()
+                "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString()
         );
         var explorerResult = TreeItemLabelDescriptionControllerTests.this.explorerDescriptionsQueryRunner.run(explorerVariables);
         List<String> explorerIds = JsonPath.read(explorerResult, "$.data.viewer.editingContext.explorerDescriptions[*].id");
@@ -102,7 +102,7 @@ public class TreeItemLabelDescriptionControllerTests extends AbstractIntegration
         //      - check that the ROOT entity has not the abstract style applied.
         //      - check that the NamedElement entity has the abstract style (if style)
         //      - check that the Human entity has 3 attributes (for style)
-        var inputStyle = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), explorerRepresentationId);
+        var inputStyle = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
         var fluxStyle = this.explorerEventSubscriptionRunner.run(inputStyle);
 
         Consumer<Object> styleTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {

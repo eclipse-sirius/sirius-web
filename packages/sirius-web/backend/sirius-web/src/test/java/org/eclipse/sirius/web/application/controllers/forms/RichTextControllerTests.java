@@ -76,7 +76,7 @@ public class RichTextControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToRichTextForm() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                 this.formWithRichTextDescriptionProvider.getRepresentationDescriptionId(),
                 PapayaIdentifiers.FIRST_TASK_OBJECT.toString(),
                 "FormWithRichText"
@@ -134,7 +134,7 @@ public class RichTextControllerTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing form"));
 
         Runnable editRichText = () -> {
-            var input = new EditRichTextInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), richTextId.get(), "None");
+            var input = new EditRichTextInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), richTextId.get(), "None");
             var result = this.editRichTextMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editRichText.__typename");

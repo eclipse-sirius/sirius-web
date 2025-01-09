@@ -98,7 +98,7 @@ public class TestCreateForkedStudio extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToTable() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.INSTANCE_PROJECT,
+                StudioIdentifiers.INSTANCE_EDITING_CONTEXT_ID,
                 StudioIdentifiers.TABLE_DESCRIPTION_ID,
                 StudioIdentifiers.ROOT_OBJECT.toString(),
                 "Table"
@@ -138,7 +138,7 @@ public class TestCreateForkedStudio extends AbstractIntegrationTests {
         var forkStudioProjectId = new AtomicReference<String>();
 
         Runnable forkStudio = () -> {
-            var input = new CreateForkedStudioInput(UUID.randomUUID(), StudioIdentifiers.INSTANCE_PROJECT, representationId.get(), "");
+            var input = new CreateForkedStudioInput(UUID.randomUUID(), StudioIdentifiers.INSTANCE_EDITING_CONTEXT_ID, representationId.get(), "");
             var result = this.createForkedStudioMutationRuner.run(input);
 
             String typename = JsonPath.read(result, "$.data.createForkedStudio.__typename");

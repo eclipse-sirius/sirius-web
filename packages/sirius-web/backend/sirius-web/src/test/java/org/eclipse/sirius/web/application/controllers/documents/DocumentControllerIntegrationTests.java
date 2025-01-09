@@ -42,6 +42,7 @@ import org.eclipse.sirius.web.application.document.dto.UploadDocumentInput;
 import org.eclipse.sirius.web.application.document.dto.UploadDocumentSuccessPayload;
 import org.eclipse.sirius.web.application.studio.services.StudioStereotypeProvider;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.CreateDocumentMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.StereotypesQueryRunner;
@@ -85,6 +86,9 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
     @Autowired
     private ExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
 
+    @Autowired
+    private IProjectSemanticDataSearchService projectSemanticDataSearchService;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -96,7 +100,7 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
     public void givenStudioWhenStereotypesAreRequestedThenTheStudioStereotypesAreAvailable() {
         this.givenCommittedTransaction.commit();
 
-        Map<String, Object> variables = Map.of("editingContextId", StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString());
+        Map<String, Object> variables = Map.of("editingContextId", StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString());
         var result = this.stereotypesQueryRunner.run(variables);
 
         List<String> stereotypeIds = JsonPath.read(result, "$.data.viewer.editingContext.stereotypes.edges[*].node.id");
@@ -110,14 +114,14 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
     @GivenSiriusWebServer
     @DisplayName("Given a studio, when the creation of a new view document is requested, then the view is created")
     public void givenStudioWhenTheCreationOfViewDocumentIsRequestedThenTheViewIsCreated() {
-        this.createDocument(StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), StudioStereotypeProvider.DOMAIN_STEREOTYPE, "Domain");
+        this.createDocument(StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), StudioStereotypeProvider.DOMAIN_STEREOTYPE, "Domain");
     }
 
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given a studio, when the creation of a new domain document is requested, then the domain is created")
     public void givenStudioWhenTheCreationOfDomainDocumentIsRequestedThenTheDomainIsCreated() {
-        this.createDocument(StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), StudioStereotypeProvider.VIEW_STEREOTYPE, "View");
+        this.createDocument(StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), StudioStereotypeProvider.VIEW_STEREOTYPE, "View");
     }
 
     @Test
@@ -147,7 +151,7 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
                   ]
                 }
                 """;
-        this.uploadDocument(StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), "test", content);
+        this.uploadDocument(StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), "test", content);
     }
 
     @Test
@@ -160,7 +164,7 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
                   <types name="NewEntity"/>
                 </domain:Domain>
                 """;
-        this.uploadDocument(StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), "test", content);
+        this.uploadDocument(StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), "test", content);
     }
 
     private void createDocument(String editingContextId, String stereotypeId, String name) {
@@ -188,6 +192,7 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
                     .orElse(false);
             return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), resourceFound);
         };
+
         var mono = this.executeEditingContextFunctionRunner.execute(new ExecuteEditingContextFunctionInput(UUID.randomUUID(), editingContextId, function));
 
         Predicate<IPayload> predicate = payload -> Optional.of(payload)
@@ -208,14 +213,14 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
     @GivenSiriusWebServer
     @DisplayName("Given a studio, when the upload of a new domain XMI document is performed without a name, then an error is returned")
     public void givenStudioWhenTheUploadOfDomainXMIDocumentIsPerformedWithoutNameThenAnErrorIsReturned() {
-        this.createInvalidDocument(StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), StudioStereotypeProvider.DOMAIN_STEREOTYPE, "");
+        this.createInvalidDocument(StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), StudioStereotypeProvider.DOMAIN_STEREOTYPE, "");
     }
 
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given a studio, when the upload of a new domain XMI document is performed with an invalid stereotype, then an error is returned")
     public void givenStudioWhenTheUploadOfDomainXMIDocumentIsPerformedWithInvalidStereotypeThenAnErrorIsReturned() {
-        this.createInvalidDocument(StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), "INVALID", "Domain");
+        this.createInvalidDocument(StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), "INVALID", "Domain");
     }
 
     private void createInvalidDocument(String editingContextId, String stereotypeId, String name) {

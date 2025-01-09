@@ -16,7 +16,7 @@ The relation in the database is now:
 Project <--[project_id]-- ProjectSemanticData --[semantic_data_id]--> SemanticData
 ```
 
-This new situation has created a bug, if a user delete a project, it will both delete the `Project` and its `ProjectSemanticData` thanks to an `ON DELETED CASCADE` option on the `ProjectSemanticData#project` foreign key but it will not delete the `SemanticData` object referenced.
+This new situation has created a bug, if a user delete a project, it will both delete the `Project` and its `ProjectSemanticData` thanks to an `ON DELETE CASCADE` option on the `ProjectSemanticData#project` foreign key but it will not delete the `SemanticData` object referenced.
 
 One should keep in mind two facts.
 The three concepts belong to three different bounded contexts and only `ProjectSemanticData` knows about the other two.

@@ -46,7 +46,7 @@ public class StudioLifecycleIntegrationTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a regular project, when it is loaded, then the domains from all studios are available")
     public void givenRegularProjectWhenItIsLoadedThenTheDomainsFromAllStudiosAreAvailable() {
-        var optionalEditingContext = this.editingContextSearchService.findById(StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString());
+        var optionalEditingContext = this.editingContextSearchService.findById(StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString());
         assertThat(optionalEditingContext).isPresent();
 
         var editingContext = optionalEditingContext.get();
@@ -63,7 +63,7 @@ public class StudioLifecycleIntegrationTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a regular project, when it is loaded, then the views from all studios are available")
     public void givenRegularProjectWhenItIsLoadedThenTheViewsFromAllStudiosAreAvailable() {
-        var optionalEditingContext = this.editingContextSearchService.findById(StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString());
+        var optionalEditingContext = this.editingContextSearchService.findById(StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString());
         assertThat(optionalEditingContext).isPresent();
 
         var editingContext = optionalEditingContext.get();
@@ -85,7 +85,7 @@ public class StudioLifecycleIntegrationTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a studio, when it is loaded, then the color palette is available")
     public void givenStudioWhenItIsLoadedThenThenPaletteIsAvailable() {
-        var optionalEditingContext = this.editingContextSearchService.findById(StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString());
+        var optionalEditingContext = this.editingContextSearchService.findById(StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString());
         assertThat(optionalEditingContext).isPresent();
 
         var editingContext = optionalEditingContext.get();
@@ -104,7 +104,7 @@ public class StudioLifecycleIntegrationTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a studio, when it is loaded, then its content can be manipulated")
     public void givenStudioWhenItIsLoadedThenItsContentCanBeManipulated() {
-        var optionalEditingContext = this.editingContextSearchService.findById(StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString());
+        var optionalEditingContext = this.editingContextSearchService.findById(StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString());
         assertThat(optionalEditingContext).isPresent();
 
         var editingContext = optionalEditingContext.get();

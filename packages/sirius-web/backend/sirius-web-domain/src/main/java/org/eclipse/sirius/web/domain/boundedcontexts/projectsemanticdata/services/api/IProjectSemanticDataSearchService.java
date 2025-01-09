@@ -18,6 +18,7 @@ import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 /**
@@ -33,5 +34,5 @@ public interface IProjectSemanticDataSearchService {
 
     Optional<ProjectSemanticData> findByProjectIdAndName(AggregateReference<Project, String> project, String name);
 
-    Optional<ProjectSemanticData> findBySemanticDataId(AggregateReference<Project, UUID> semanticData);
+    Optional<ProjectSemanticData> findBySemanticDataId(AggregateReference<SemanticData, UUID> semanticData);
 }

@@ -33,4 +33,5 @@ public record Identified(@JsonProperty("@id") String id) {
     public Identified(UUID id) {
         this(id.toString());
     }
+
 }

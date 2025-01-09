@@ -140,7 +140,7 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a portal containing a view, when we delete the portal representation, then it is removed")
     public void givenAPortalContainingAViewWhenWeDeleteThePortalRepresentationThenItIsRemoved() {
-        var input = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
+        var input = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
         var flux = this.portalEventSubscriptionRunner.run(input);
 
         var portalViewId = new AtomicReference<String>();
@@ -162,7 +162,7 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing portal"));
 
         Runnable removePortalView = () -> {
-            var removePortalViewInput = new RemovePortalViewInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString(),
+            var removePortalViewInput = new RemovePortalViewInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString(),
                     portalViewId.get());
             var result = this.removePortalViewMutationRunner.run(removePortalViewInput);
             String typename = JsonPath.read(result, "$.data.removePortalView.__typename");
@@ -195,7 +195,7 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a portal containing a view, when we ask the portal view metadata, then metadata are sent")
     public void givenAPortalContainingAViewWhenWeAskThePortalViewMetadataThenMetadataAreSent() {
-        var input = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
+        var input = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
         var flux = this.graphQLRequestor.subscribeToSpecification(PORTAL_VIEWS_REPRESENTATION_METADATA_PORTAL_EVENT_SUBSCRIPTION, input);
 
         Consumer<String> portalRefreshedEventPayloadConsumer = payload -> Optional.of(payload)
@@ -218,7 +218,7 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a portal, when we add a representation to the portal, then the new state is sent with the new representation")
     public void givenAPortalWhenWeAddARepresentationToThePortalThenTheNewStateIsSentWithTheNewRepresentation() {
-        var createRepresentationInput = new CreateRepresentationInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT, PortalDescriptionProvider.DESCRIPTION_ID,
+        var createRepresentationInput = new CreateRepresentationInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, PortalDescriptionProvider.DESCRIPTION_ID,
                 TestIdentifiers.EPACKAGE_OBJECT.toString(), SAMPLE_PORTAL);
         var flux = this.givenCreatedPortalSubscription.createAndSubscribe(createRepresentationInput);
 
@@ -235,7 +235,7 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing portal"));
 
         Runnable addEmptyPortal = () -> {
-            var addPortalViewInput = new AddPortalViewInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT, portalId.get(),
+            var addPortalViewInput = new AddPortalViewInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, portalId.get(),
                     TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString(), 0, 0, 200, 300);
             var result = this.addPortalViewMutationRunner.run(addPortalViewInput);
 
@@ -273,11 +273,11 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
     public void givenAPortalWhenWeAddAnExistingRepresentationToThePortalThenAnErrorShouldBeReturned() {
         this.givenCommittedTransaction.commit();
 
-        var portalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
+        var portalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
         var flux = this.portalEventSubscriptionRunner.run(portalEventInput);
 
         Runnable addExistingRepresentation = () -> {
-            var addPortalViewInput = new AddPortalViewInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString(),
+            var addPortalViewInput = new AddPortalViewInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString(),
                     TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString(), 0, 0, 200, 300);
             var result = this.addPortalViewMutationRunner.run(addPortalViewInput);
 
@@ -298,10 +298,10 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
     public void givenPortalWithRepresentationWhenWeDeleteTheRepresentationThenThePortalShouldBeRefreshed() {
         this.givenCommittedTransaction.commit();
 
-        var portalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
+        var portalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
         var portalEventFlux = this.portalEventSubscriptionRunner.run(portalEventInput);
 
-        var emptyPortalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT, TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString());
+        var emptyPortalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString());
         var emptyPortalEventFlux = this.portalEventSubscriptionRunner.run(emptyPortalEventInput);
 
         Consumer<Object> initialPortalContentConsumer = payload -> Optional.of(payload)
@@ -367,7 +367,7 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given an arbitrary semantic element, when creating portal on it, then an empty portal is created")
     public void givenAnArbitrarySemanticElementWhenCreatingPortalOnItThenEmptyPortalIsCreated() {
-        var input = new CreateRepresentationInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT, PortalDescriptionProvider.DESCRIPTION_ID,
+        var input = new CreateRepresentationInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, PortalDescriptionProvider.DESCRIPTION_ID,
                 TestIdentifiers.EPACKAGE_OBJECT.toString(), SAMPLE_PORTAL);
         var flux = this.givenCreatedPortalSubscription.createAndSubscribe(input);
 
@@ -394,7 +394,7 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
 
         Runnable addViewRunner = () -> this.addView(representationId.get(), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
 
-        var input = new CreateRepresentationInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT, PortalDescriptionProvider.DESCRIPTION_ID,
+        var input = new CreateRepresentationInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, PortalDescriptionProvider.DESCRIPTION_ID,
                 TestIdentifiers.EPACKAGE_OBJECT.toString(), SAMPLE_PORTAL);
 
 
@@ -428,7 +428,7 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
     }
 
     private void addView(String representationId, String viewRepresentationId) {
-        var addPortalViewMutationInput = new AddPortalViewInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT,
+        var addPortalViewMutationInput = new AddPortalViewInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID,
                 representationId, viewRepresentationId, 0, 0, 100, 100);
 
         String result = this.addPortalViewMutationRunner.run(addPortalViewMutationInput);
@@ -443,7 +443,7 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
     public void givenAPortalWhenReloadingPreviousSateAfterLayoutChangeThenPortalLayoutReverted() {
         this.givenCommittedTransaction.commit();
 
-        var portalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
+        var portalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
         var flux = this.portalEventSubscriptionRunner.run(portalEventInput);
 
         TestTransaction.flagForCommit();
@@ -468,7 +468,7 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
 
         Runnable layoutSubPortal = () -> {
             var layoutData = List.of(new PortalViewLayoutDataInput(subPortalViewId, 50, 50, 300, 300));
-            var layoutInput = new LayoutPortalInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString(), layoutData);
+            var layoutInput = new LayoutPortalInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString(), layoutData);
             this.layoutPortalMutationRunner.run(layoutInput);
         };
 
@@ -499,7 +499,7 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
                         }, () -> fail("Missing representation event processor"));
             };
             this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
-                    .filter(editingContextEventProcessor -> editingContextEventProcessor.getEditingContextId().equals(TestIdentifiers.ECORE_SAMPLE_PROJECT))
+                    .filter(editingContextEventProcessor -> editingContextEventProcessor.getEditingContextId().equals(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID))
                     .findFirst()
                     .ifPresentOrElse(editingContextEventProcessorConsumer, () -> fail("Missing editing context event processor"));
         };

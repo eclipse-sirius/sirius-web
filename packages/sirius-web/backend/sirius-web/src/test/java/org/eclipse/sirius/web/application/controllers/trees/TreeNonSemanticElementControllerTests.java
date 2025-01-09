@@ -86,7 +86,7 @@ public class TreeNonSemanticElementControllerTests extends AbstractIntegrationTe
     private Flux<Object> givenSubscriptionToTree() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                 DomainTreeRepresentationDescriptionProvider.DESCRIPTION_ID,
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "Tree"
@@ -111,7 +111,7 @@ public class TreeNonSemanticElementControllerTests extends AbstractIntegrationTe
 
         Runnable getTreePathFromSetting = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                     "treeId", treeId.get(),
                     "treeItemId", ROOT_SETTING_ID
             );
@@ -123,7 +123,7 @@ public class TreeNonSemanticElementControllerTests extends AbstractIntegrationTe
 
         Runnable getTreePath = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                     "treeId", treeId.get(),
                     "treeItemId", StudioIdentifiers.DOMAIN_OBJECT.toString()
                     );
@@ -142,7 +142,7 @@ public class TreeNonSemanticElementControllerTests extends AbstractIntegrationTe
 
         String representationId = this.representationIdBuilder.buildTreeRepresentationId(treeId.get().substring(0, treeId.get().indexOf("?expandedIds=")), List.of(StudioIdentifiers.DOMAIN_OBJECT.toString(), ROOT_ENTITY_ID));
 
-        var expandedTreeInput = new TreeEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), representationId);
+        var expandedTreeInput = new TreeEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), representationId);
         Flux<Object> expandedTreeFlux = this.treeEventSubscriptionRunner.run(expandedTreeInput);
 
         Consumer<Object> initialExpandedTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {

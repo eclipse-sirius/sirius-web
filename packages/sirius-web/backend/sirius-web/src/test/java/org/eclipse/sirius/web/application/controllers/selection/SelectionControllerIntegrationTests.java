@@ -147,7 +147,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
         );
 
         Map<String, Object> variables = Map.of(
-                "editingContextId", PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                 "representationId", representationId,
                 "variables", variablesParameter);
         var result = this.graphQLRequestor.execute(GET_SELECTION_DESCRIPTION, variables);
@@ -164,7 +164,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
     @DisplayName("Given a semantic object, when we subscribe to its selection dialog tree, then the tree is sent")
     public void givenSemanticObjectWhenWeSubscribeToItsSelectionEventsThenTheSelectionIsSent() {
         var representationId = this.representationIdBuilder.buildSelectionRepresentationId(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId(), PapayaIdentifiers.PROJECT_OBJECT.toString(), List.of());
-        var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), representationId);
+        var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId);
         var flux = this.selectionDialogTreeEventSubscriptionRunner.run(input);
 
         var hasResourceRootContent = this.getTreeRefreshedEventPayloadMatcher();
@@ -179,7 +179,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
     @DisplayName("Given the selection dialog tree, when we expand the first item, then the children are sent")
     public void givenSelectionDialogTreeWhenWeExpandTheFirstItemThenChildrenAreSent() {
         var representationId = this.representationIdBuilder.buildSelectionRepresentationId(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId(), PapayaIdentifiers.PROJECT_OBJECT.toString(), List.of());
-        var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), representationId);
+        var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId);
         var flux = this.selectionDialogTreeEventSubscriptionRunner.run(input);
 
         var treeItemId = new AtomicReference<String>();
@@ -198,7 +198,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
             .verify();
 
         var representationIdExpanded = this.representationIdBuilder.buildSelectionRepresentationId(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId(), PapayaIdentifiers.PROJECT_OBJECT.toString(), List.of(treeItemId.get()));
-        var expandedTreeInput = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), representationIdExpanded);
+        var expandedTreeInput = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationIdExpanded);
         var expandedTreeFlux = this.selectionDialogTreeEventSubscriptionRunner.run(expandedTreeInput);
         var treeRefreshedEventPayloadExpandMatcher = this.getTreeRefreshedEventPayloadExpandMatcher();
         StepVerifier.create(expandedTreeFlux)
@@ -213,7 +213,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
     @DisplayName("Given the selection dialog tree, when we perform expand all on the first item, then the children are sent")
     public void givenSelectionDialogTreeWhenWePerformExpandAllOnTheFirstItemThenChildrenAreSent() {
         var representationId = this.representationIdBuilder.buildSelectionRepresentationId(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId(), PapayaIdentifiers.PROJECT_OBJECT.toString(), List.of());
-        var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), representationId);
+        var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId);
         var flux = this.selectionDialogTreeEventSubscriptionRunner.run(input);
 
         var treeItemId = new AtomicReference<String>();
@@ -231,7 +231,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
 
         Runnable getTreePath = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     "treeId", treeInstanceId.get(),
                     "treeItemId", treeItemId.get()
             );
@@ -256,7 +256,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
         });
 
         var representationIdExpanded = this.representationIdBuilder.buildSelectionRepresentationId(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId(), PapayaIdentifiers.PROJECT_OBJECT.toString(), treeItemIds.get());
-        var expandedTreeInput = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), representationIdExpanded);
+        var expandedTreeInput = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationIdExpanded);
         var expandedTreeFlux = this.selectionDialogTreeEventSubscriptionRunner.run(expandedTreeInput);
 
         StepVerifier.create(expandedTreeFlux)
@@ -270,7 +270,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
     @DisplayName("Given the selection dialog tree, when we perform expand all on the second item (the root project), then the children are sent")
     public void givenSelectionDialogTreeWhenWePerformExpandAllOnTheSecondItemThenChildrenAreSent() {
         var representationId = this.representationIdBuilder.buildSelectionRepresentationId(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId(), PapayaIdentifiers.PROJECT_OBJECT.toString(), List.of());
-        var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), representationId);
+        var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId);
         var flux = this.selectionDialogTreeEventSubscriptionRunner.run(input);
 
         var rootTreeItemId = new AtomicReference<String>();
@@ -291,7 +291,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
 
         //We expand the first tree item (representing the resource)
         var representationIdExpandedFirstTreeItem = this.representationIdBuilder.buildSelectionRepresentationId(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId(), PapayaIdentifiers.PROJECT_OBJECT.toString(), List.of(rootTreeItemId.get()));
-        var expandedFirstTreeItemInput = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), representationIdExpandedFirstTreeItem);
+        var expandedFirstTreeItemInput = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationIdExpandedFirstTreeItem);
         var expandedFirstTreeItemFlux = this.selectionDialogTreeEventSubscriptionRunner.run(expandedFirstTreeItemInput);
 
         //Used to retrieve the Papaya Root Project tree item
@@ -308,7 +308,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
 
         Runnable getTreePath = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     "treeId", treeInstanceId.get(),
                     "treeItemId", rootProjectTreeItemId.get()
                     );
@@ -335,7 +335,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
         });
 
         var representationIdExpanded = this.representationIdBuilder.buildSelectionRepresentationId(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId(), PapayaIdentifiers.PROJECT_OBJECT.toString(), treeItemIds.get());
-        var expandedTreeInput = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), representationIdExpanded);
+        var expandedTreeInput = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationIdExpanded);
         var expandedTreeFlux = this.selectionDialogTreeEventSubscriptionRunner.run(expandedTreeInput);
         // We now verify the expandAll result
         StepVerifier.create(expandedTreeFlux)
@@ -380,7 +380,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
     @DisplayName("Given a semantic object, when we subscribe to its selection dialog tree, then the URL of its treeItems is valid")
     public void givenSemanticObjectWhenWeSubscribeToItsSelectionEventsThenTheURLOfItsObjectsIsValid() {
         var representationId = this.representationIdBuilder.buildSelectionRepresentationId(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId(), PapayaIdentifiers.PROJECT_OBJECT.toString(), List.of());
-        var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), representationId);
+        var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId);
         var flux = this.graphQLRequestor.subscribeToSpecification(GET_TREE_EVENT_SUBSCRIPTION, input);
 
         Consumer<String> treeContentConsumer = payload -> Optional.of(payload)

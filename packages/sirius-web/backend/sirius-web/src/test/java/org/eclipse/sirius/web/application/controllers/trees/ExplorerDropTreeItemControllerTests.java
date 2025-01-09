@@ -85,7 +85,7 @@ public class ExplorerDropTreeItemControllerTests extends AbstractIntegrationTest
                 StudioIdentifiers.NAMED_ELEMENT_ENTITY_OBJECT.toString()
         );
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, expandedIds, List.of());
-        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), explorerRepresentationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
         var flux = this.treeEventSubscriptionRunner.run(input);
 
 
@@ -106,7 +106,7 @@ public class ExplorerDropTreeItemControllerTests extends AbstractIntegrationTest
 
         Runnable dropItemMutation = () -> {
             DropTreeItemInput dropTreeItemInput = new DropTreeItemInput(
-                    UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                    UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                     explorerRepresentationId,
                     List.of(StudioIdentifiers.NAME_ATTRIBUTE_OBJECT.toString()),
                     StudioIdentifiers.ROOT_ENTITY_OBJECT.toString(),
@@ -159,7 +159,7 @@ public class ExplorerDropTreeItemControllerTests extends AbstractIntegrationTest
                 StudioIdentifiers.NAMED_ELEMENT_ENTITY_OBJECT.toString()
         );
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, expandedIds, List.of());
-        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), explorerRepresentationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
         var flux = this.treeEventSubscriptionRunner.run(input);
 
 
@@ -180,7 +180,7 @@ public class ExplorerDropTreeItemControllerTests extends AbstractIntegrationTest
 
         Runnable dropItemMutation = () -> {
             DropTreeItemInput dropTreeItemInput = new DropTreeItemInput(
-                    UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                    UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                     explorerRepresentationId,
                     List.of(StudioIdentifiers.NAME_ATTRIBUTE_OBJECT.toString()),
                     StudioIdentifiers.DESCRIPTION_ATTRIBUTE_OBJECT.toString(),
@@ -233,7 +233,7 @@ public class ExplorerDropTreeItemControllerTests extends AbstractIntegrationTest
                 StudioIdentifiers.NAMED_ELEMENT_ENTITY_OBJECT.toString()
         );
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, expandedIds, List.of());
-        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), explorerRepresentationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
         var flux = this.treeEventSubscriptionRunner.run(input);
 
 
@@ -253,7 +253,7 @@ public class ExplorerDropTreeItemControllerTests extends AbstractIntegrationTest
 
         Runnable dropItemMutation = () -> {
             DropTreeItemInput dropTreeItemInput = new DropTreeItemInput(
-                    UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                    UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                     explorerRepresentationId,
                     List.of(StudioIdentifiers.NAME_ATTRIBUTE_OBJECT.toString()),
                     StudioIdentifiers.NAME_ATTRIBUTE_OBJECT.toString(),

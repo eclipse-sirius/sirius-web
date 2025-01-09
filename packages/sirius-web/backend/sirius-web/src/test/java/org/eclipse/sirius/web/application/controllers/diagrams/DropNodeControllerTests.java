@@ -75,7 +75,7 @@ public class DropNodeControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToLabelEditableDiagramDiagram() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                 this.dropNodeDiagramDescriptionProvider.getRepresentationDescriptionId(),
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "DropNodeDiagram"
@@ -114,7 +114,7 @@ public class DropNodeControllerTests extends AbstractIntegrationTests {
         Runnable dropNode = () -> {
             var input = new DropNodeInput(
                     UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
                     siriusWebApplicationNodeId.get(),
                     siriusWebInfrastructureNodeId.get(),

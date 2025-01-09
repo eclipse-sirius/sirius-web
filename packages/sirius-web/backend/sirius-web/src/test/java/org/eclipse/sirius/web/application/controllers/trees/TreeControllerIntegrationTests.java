@@ -158,7 +158,7 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
     @DisplayName("Given a project, when we subscribe to the tree events of its explorer, then the tree of the explorer is sent")
     public void givenProjectWhenWeSubscribeToTreeEventsOfItsExplorerThenTheTreeOfTheExplorerIsSent() {
         var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of());
-        var input = new ExplorerEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), treeRepresentationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), treeRepresentationId);
         var flux = this.treeEventSubscriptionRunner.run(input);
 
         Predicate<Object> projectContentMatcher = object -> Optional.of(object)
@@ -180,7 +180,7 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
     public void givenExplorerOfProjectWhenWeDeleteTreeItemsThenTheTreeIsRefreshed() {
         var expandedIds = this.getAllTreeItemIdsForEcoreSampleProject();
         var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, expandedIds, List.of());
-        var input = new ExplorerEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), treeRepresentationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), treeRepresentationId);
         var flux = this.treeEventSubscriptionRunner.run(input);
 
         var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcore, this.ePackageIsNamedSample, this.ePackageTreeItemIsStyled, this.representationIsAPortal));
@@ -199,11 +199,11 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
 
         StepVerifier.create(flux)
                 .expectNextMatches(hasProjectContent)
-                .then(this.deleteTreeItem(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), treeRepresentationId, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION))
+                .then(this.deleteTreeItem(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), treeRepresentationId, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION))
                 .expectNextMatches(hasNoMoreRepresentation)
-                .then(this.deleteTreeItem(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), treeRepresentationId, TestIdentifiers.EPACKAGE_OBJECT))
+                .then(this.deleteTreeItem(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), treeRepresentationId, TestIdentifiers.EPACKAGE_OBJECT))
                 .expectNextMatches(hasNoMoreObject)
-                .then(this.deleteTreeItem(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), treeRepresentationId, TestIdentifiers.ECORE_SAMPLE_DOCUMENT))
+                .then(this.deleteTreeItem(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), treeRepresentationId, TestIdentifiers.ECORE_SAMPLE_DOCUMENT))
                 .expectNextMatches(hasNoMoreDocument)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
@@ -216,14 +216,14 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
         var expandedIds = this.getAllTreeItemIdsForEcoreSampleProject();
         var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, expandedIds, List.of());
 
-        var treeEventInput = new ExplorerEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), treeRepresentationId);
+        var treeEventInput = new ExplorerEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), treeRepresentationId);
         var treeFlux = this.treeEventSubscriptionRunner.run(treeEventInput);
 
         var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcore, this.ePackageIsNamedSample, this.ePackageTreeItemIsStyled));
 
         StepVerifier.create(treeFlux)
                 .expectNextMatches(hasProjectContent)
-                .then(this.triggerDirectEditTreeItemLabel(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), treeRepresentationId, TestIdentifiers.EPACKAGE_OBJECT, "Sample"))
+                .then(this.triggerDirectEditTreeItemLabel(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), treeRepresentationId, TestIdentifiers.EPACKAGE_OBJECT, "Sample"))
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
@@ -232,7 +232,7 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given the explorer of a project, when we rename a tree item, then the tree is refreshed")
     public void givenExplorerOfProjectWhenWeRenameTreeItemThenTheTreeIsRefreshed() {
-        var portalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
+        var portalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
         var portalFlux = this.portalEventSubscriptionRunner.run(portalEventInput);
 
         Predicate<Object> portalRefreshedEventPayloadMatcher = object -> {
@@ -246,7 +246,7 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
         var expandedIds = this.getAllTreeItemIdsForEcoreSampleProject();
         var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, expandedIds, List.of());
 
-        var treeEventInput = new ExplorerEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), treeRepresentationId);
+        var treeEventInput = new ExplorerEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), treeRepresentationId);
         var treeFlux = this.treeEventSubscriptionRunner.run(treeEventInput);
 
         var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcore, this.ePackageIsNamedSample, this.ePackageTreeItemIsStyled, this.representationIsAPortal));
@@ -256,18 +256,18 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
         StepVerifier.create(Flux.merge(portalFlux, treeFlux))
                 .expectNextMatches(portalRefreshedEventPayloadMatcher)
                 .expectNextMatches(hasProjectContent)
-                .then(this.renameTreeItem(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), treeRepresentationId, TestIdentifiers.EPACKAGE_OBJECT, "SampleRenamed"))
+                .then(this.renameTreeItem(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), treeRepresentationId, TestIdentifiers.EPACKAGE_OBJECT, "SampleRenamed"))
                 .expectNextMatches(hasObjectNewLabel)
-                .then(this.renameTreeItem(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), treeRepresentationId, TestIdentifiers.ECORE_SAMPLE_DOCUMENT, "EcoreRenamed"))
+                .then(this.renameTreeItem(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), treeRepresentationId, TestIdentifiers.ECORE_SAMPLE_DOCUMENT, "EcoreRenamed"))
                 .expectNextMatches(hasDocumentNewLabel)
-                .then(this.renameTreeItem(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), treeRepresentationId, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION, "PortalRenamed"))
+                .then(this.renameTreeItem(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), treeRepresentationId, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION, "PortalRenamed"))
                 .expectNextMatches(portalRefreshedEventPayloadMatcher)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
 
     private List<String> getAllTreeItemIdsForEcoreSampleProject() {
-        var optionalEditingContext = this.editingContextSearchService.findById(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString())
+        var optionalEditingContext = this.editingContextSearchService.findById(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString())
                 .filter(IEMFEditingContext.class::isInstance)
                 .map(IEMFEditingContext.class::cast);
         assertThat(optionalEditingContext).isPresent();

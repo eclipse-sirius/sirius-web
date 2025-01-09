@@ -76,7 +76,7 @@ public class ModelBrowserExpandAllControllerTests extends AbstractIntegrationTes
     @DisplayName("Given a reference widget, when we ask for the tree path to expand all a document, then its path in the explorer is returned")
     public void givenReferenceWidgetWhenWeAskForTheTreePathToExpandAllThenItsPathInTheExplorerIsReturned() {
         var representationId = TREE_ID + "&expandedIds=[]";
-        var input = new ModelBrowserEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT, representationId);
+        var input = new ModelBrowserEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, representationId);
         var flux = this.treeEventSubscriptionRunner.run(input);
 
         var treeId = new AtomicReference<String>();
@@ -96,7 +96,7 @@ public class ModelBrowserExpandAllControllerTests extends AbstractIntegrationTes
 
         Runnable getTreePath = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_PROJECT,
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                     "treeId", treeId.get(),
                     "treeItemId", objectId.get()
             );
@@ -115,7 +115,7 @@ public class ModelBrowserExpandAllControllerTests extends AbstractIntegrationTes
                 .verify(Duration.ofSeconds(10));
 
         var expandedRepresentationId = TREE_ID + "&expandedIds=[" + String.join(",", treeItemIds.get()) + "]";
-        var expandedTreeInput = new ModelBrowserEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT, expandedRepresentationId);
+        var expandedTreeInput = new ModelBrowserEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, expandedRepresentationId);
         var expandedTreeFlux = this.treeEventSubscriptionRunner.run(expandedTreeInput);
 
         Consumer<Object> initialExpandedTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {

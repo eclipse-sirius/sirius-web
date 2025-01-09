@@ -70,7 +70,7 @@ public class RepresentationsViewControllerIntegrationTests extends AbstractInteg
     @DisplayName("Given a semantic object associated with representations, when we subscribe to its representations events, then the form sent contains the list widget listing the associated representations")
     public void givenSemanticObjectAssociatedWithRepresentationsWhenWeSubscribeToItsRepresentationsEventsThenTheFormSentContainsTheListWidgetListingTheAssociatedRepresentations() {
         var representationId = representationIdBuilder.buildRepresentationViewRepresentationId(List.of(TestIdentifiers.EPACKAGE_OBJECT.toString()));
-        var input = new RepresentationsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), representationId);
+        var input = new RepresentationsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), representationId);
         var flux = this.representationsEventSubscriptionRunner.run(input);
 
         Consumer<Object> initialformContentConsumer = object -> Optional.of(object)
@@ -99,7 +99,7 @@ public class RepresentationsViewControllerIntegrationTests extends AbstractInteg
     @DisplayName("Given a portal containing another portal, when we subscribe to its representations events, then the form sent contains the tree widget containing at least the portal and the other portal as a child")
     public void givenPortalContainingAnotherPortalWhenWeSubscribeToItsRepresentationsEventsThenTheFormSentContainsTheTreeWidgetContainingAtLeastThePortalAndTheOtherPortalAsAChild() {
         var representationId = representationIdBuilder.buildRepresentationViewRepresentationId(List.of(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
-        var input = new RepresentationsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), representationId);
+        var input = new RepresentationsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), representationId);
         var flux = this.representationsEventSubscriptionRunner.run(input);
 
         Consumer<Object> initialformContentConsumer = object -> Optional.of(object)

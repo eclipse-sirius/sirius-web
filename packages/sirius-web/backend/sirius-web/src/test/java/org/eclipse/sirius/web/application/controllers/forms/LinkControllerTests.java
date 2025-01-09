@@ -67,7 +67,7 @@ public class LinkControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToLinkForm() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                 this.formWithLinkDescriptionProvider.getRepresentationDescriptionId(),
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "FormWithLink"

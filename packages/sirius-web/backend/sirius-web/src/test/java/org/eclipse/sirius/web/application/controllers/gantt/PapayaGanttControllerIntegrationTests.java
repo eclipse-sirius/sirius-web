@@ -109,7 +109,7 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
     private Flux<Object> givenSubscriptionToGantt() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                 this.papayaGanttDescriptionProvider.getRepresentationDescriptionId(),
                 PapayaIdentifiers.SIRIUS_WEB_PLANNING_PROJECT_OBJECT.toString(),
                 "Gantt"
@@ -164,7 +164,7 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
         Runnable createGanttTask = () -> {
             var createGanttTaskInput = new CreateGanttTaskInput(
                     UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     ganttId.get(),
                     taskId.get()
             );
@@ -186,7 +186,7 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
         Runnable editGanttTask = () -> {
             EditGanttTaskDetailInput editGanttTaskDetailInput = new EditGanttTaskDetailInput(null, null, "2023-12-15T09:00:00Z", null, TemporalType.DATE_TIME, 0);
             var editGanttTaskInput = new EditGanttTaskInput(UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     ganttId.get(),
                     createdTaskId.get(),
                     editGanttTaskDetailInput);
@@ -242,7 +242,7 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
         Runnable deleteGanttTask = () -> {
             var deleteGanttTaskInput = new DeleteGanttTaskInput(
                     UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     ganttId.get(),
                     taskId.get()
             );
@@ -293,7 +293,7 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
         Runnable expandTask = () -> {
             var changeTaskCollapseStateInput = new ChangeTaskCollapseStateInput(
                     UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     ganttId.get(),
                     taskId.get(),
                     true
@@ -345,7 +345,7 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
                     .findFirst().get();
             var changeColumnInput = new ChangeGanttColumnInput(
                     UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     ganttRef.get().getId(), columnToChange.id(), false, 50);
             var result = this.changeColumnMutationRunner.run(changeColumnInput);
 
@@ -403,7 +403,7 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
         Runnable createDependencyRunnable = () -> {
             var createGanttTaskDependencyInput = new CreateGanttTaskDependencyInput(
                     UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     ganttRef.get().getId(), sourceTaskId.get(), targetTaskId.get());
             var result = this.createTaskDependencyMutationRunner.run(createGanttTaskDependencyInput);
 
@@ -423,7 +423,7 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
         Runnable deleteDependencyRunnable = () -> {
             var deleteGanttTaskDependencyInput = new DeleteGanttTaskDependencyInput(
                     UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     ganttRef.get().getId(), sourceTaskId.get(), targetTaskId.get());
             var result = this.deleteTaskDependencyMutationRunner.run(deleteGanttTaskDependencyInput);
 

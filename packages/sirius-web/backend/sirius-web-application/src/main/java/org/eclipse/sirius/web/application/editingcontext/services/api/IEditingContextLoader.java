@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.application.editingcontext.services.api;
 
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 
 /**
  * Used to load an editing context.
@@ -21,6 +22,6 @@ import org.eclipse.sirius.web.application.editingcontext.EditingContext;
  */
 public interface IEditingContextLoader {
 
-    void load(EditingContext editingContext, String projectId);
+    void load(EditingContext editingContext, SemanticData semanticData);
 
 }

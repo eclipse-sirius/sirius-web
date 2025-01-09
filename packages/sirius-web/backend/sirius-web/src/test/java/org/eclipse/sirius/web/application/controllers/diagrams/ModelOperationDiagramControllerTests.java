@@ -77,7 +77,7 @@ public class ModelOperationDiagramControllerTests extends AbstractIntegrationTes
     private Flux<Object> givenSubscriptionToModelOperationDiagram() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                 this.modelOperationDiagramDescriptionProvider.getRepresentationDescriptionId(),
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "ModelOperationDiagram"
@@ -106,7 +106,7 @@ public class ModelOperationDiagramControllerTests extends AbstractIntegrationTes
 
         Runnable createNode = () -> {
             var createNodeToolId = this.modelOperationDiagramDescriptionProvider.getCreateNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), diagramId.get(), createNodeToolId, 0, 0, List.of());
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), diagramId.get(), createNodeToolId, 0, 0, List.of());
             var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
@@ -157,7 +157,7 @@ public class ModelOperationDiagramControllerTests extends AbstractIntegrationTes
 
         Runnable createNode = () -> {
             var createNodeToolId = this.modelOperationDiagramDescriptionProvider.getCreateNodeToolWithComputedNewSelectionId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), diagramId.get(), createNodeToolId, 0, 0, List.of());
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), diagramId.get(), createNodeToolId, 0, 0, List.of());
             var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
@@ -210,7 +210,7 @@ public class ModelOperationDiagramControllerTests extends AbstractIntegrationTes
         Runnable createNode = () -> {
             var renameElementNodeToolId = this.modelOperationDiagramDescriptionProvider.getRenameElementToolId();
             var toolVariable = new ToolVariable("selectedObject", PapayaIdentifiers.SIRIUS_WEB_DOMAIN_OBJECT.toString(), ToolVariableType.OBJECT_ID);
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), diagramId.get(), renameElementNodeToolId, 0, 0, List.of(toolVariable));
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), diagramId.get(), renameElementNodeToolId, 0, 0, List.of(toolVariable));
             var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");

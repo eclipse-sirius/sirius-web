@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,17 +10,23 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.editingcontext.services.api;
 
-import java.util.Optional;
+export interface GetCurrentEditingContextIdVariables {
+  projectId: string;
+}
 
-/**
- * Used to interact with editing contexts.
- *
- * @author sbegaudeau
- */
-public interface IEditingContextApplicationService {
-    String getCurrentEditingContextId(String projectId);
+export interface GetCurrentEditingContextIdtData {
+  viewer: Viewer;
+}
 
-    Optional<String> getProjectId(String editingContextId);
+export interface Viewer {
+  project: Project;
+}
+
+export interface Project {
+  currentEditingContext: EditingContext;
+}
+
+export interface EditingContext {
+  id: string;
 }

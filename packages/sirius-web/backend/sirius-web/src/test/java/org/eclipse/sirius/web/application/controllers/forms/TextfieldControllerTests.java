@@ -82,7 +82,7 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToTextfieldForm() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                 this.formWithTextfieldDescriptionProvider.getRepresentationDescriptionId(),
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "FormWithTextfield"
@@ -143,7 +143,7 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing form"));
 
         Runnable editTextfield = () -> {
-            var input = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), formId.get(), textfieldId.get(), "A new and very long value");
+            var input = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), formId.get(), textfieldId.get(), "A new and very long value");
             var result = this.editTextfieldMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editTextfield.__typename");
@@ -166,7 +166,7 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing form"));
 
         Runnable tryEditReadOnlyTextField = () -> {
-            var input = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), formId.get(), textfieldId.get(), "buck");
+            var input = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), formId.get(), textfieldId.get(), "buck");
             var result = this.editTextfieldMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editTextfield.__typename");
@@ -185,7 +185,7 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToReadOnlyTextfieldForm() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                 this.formWithReadOnlyTextfieldDescriptionProvider.getRepresentationDescriptionId(),
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "FormWithReadOnlyTextfield"
@@ -218,7 +218,7 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing form"));
 
         Runnable editTextfield = () -> {
-            var input = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), formId.get(), textfieldId.get(), "buck");
+            var input = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), formId.get(), textfieldId.get(), "buck");
             var result = this.editTextfieldMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editTextfield.__typename");

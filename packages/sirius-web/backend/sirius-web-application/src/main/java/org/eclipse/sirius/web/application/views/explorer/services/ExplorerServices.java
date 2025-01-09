@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.application.views.explorer.services;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.common.util.URI;
@@ -33,6 +34,7 @@ import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationIconURL;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
@@ -55,12 +57,15 @@ public class ExplorerServices implements IExplorerServices {
 
     private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
+    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
+
     public ExplorerServices(IObjectService objectService, IURLParser urlParser, List<IRepresentationImageProvider> representationImageProviders,
-            IRepresentationMetadataSearchService representationMetadataSearchService) {
+                            IRepresentationMetadataSearchService representationMetadataSearchService, IProjectSemanticDataSearchService projectSemanticDataSearchService) {
         this.objectService = objectService;
         this.urlParser = urlParser;
         this.representationImageProviders = representationImageProviders;
         this.representationMetadataSearchService = representationMetadataSearchService;
+        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
     }
 
     @Override
@@ -209,9 +214,13 @@ public class ExplorerServices implements IExplorerServices {
         } else if (self instanceof EObject eObject) {
             hasChildren = !eObject.eContents().isEmpty();
 
-            if (!hasChildren) {
+            var optionalProjectId = new UUIDParser().parse(editingContext.getId())
+                    .flatMap(semanticDataId -> this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(semanticDataId)))
+                    .map(semanticData -> semanticData.getProject().getId());
+
+            if (!hasChildren && optionalProjectId.isPresent()) {
                 String id = this.objectService.getId(eObject);
-                hasChildren = this.representationMetadataSearchService.existAnyRepresentationForProjectAndTargetObjectId(AggregateReference.to(editingContext.getId()), id);
+                hasChildren = this.representationMetadataSearchService.existAnyRepresentationForProjectAndTargetObjectId(AggregateReference.to(optionalProjectId.get()), id);
             }
         }
         return hasChildren;
@@ -226,9 +235,16 @@ public class ExplorerServices implements IExplorerServices {
                 if (self instanceof Resource resource) {
                     result.addAll(resource.getContents());
                 } else if (self instanceof EObject) {
-                    var representationMetadata = new ArrayList<>(this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(editingContext.getId()), id));
-                    representationMetadata.sort(Comparator.comparing(RepresentationMetadata::getLabel));
-                    result.addAll(representationMetadata);
+                    var optionalProjectId = new UUIDParser().parse(editingContext.getId())
+                            .flatMap(semanticDataId -> this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(semanticDataId)))
+                            .map(semanticData -> semanticData.getProject().getId());
+
+                    if (optionalProjectId.isPresent()) {
+                        var representationMetadata = new ArrayList<>(this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(optionalProjectId.get()), id));
+                        representationMetadata.sort(Comparator.comparing(RepresentationMetadata::getLabel));
+                        result.addAll(representationMetadata);
+                    }
+
                     List<Object> contents = this.objectService.getContents(self);
                     result.addAll(contents);
                 }

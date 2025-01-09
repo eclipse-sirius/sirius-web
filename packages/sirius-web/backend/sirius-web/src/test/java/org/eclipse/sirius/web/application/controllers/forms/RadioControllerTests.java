@@ -78,7 +78,7 @@ public class RadioControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToRadioForm() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                 this.formWithRadioDescriptionProvider.getRepresentationDescriptionId(),
                 StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString(),
                 "FormWithCheckbox"
@@ -149,7 +149,7 @@ public class RadioControllerTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing form"));
 
         Runnable editCheckbox = () -> {
-            var input = new EditRadioInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), formId.get(), radioId.get(), optionId.get());
+            var input = new EditRadioInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), formId.get(), radioId.get(), optionId.get());
             var result = this.editRadioMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editRadio.__typename");

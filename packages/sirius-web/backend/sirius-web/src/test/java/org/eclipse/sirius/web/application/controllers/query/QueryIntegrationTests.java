@@ -65,7 +65,7 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
     @DisplayName("Given a project, when we execute an expression returning a collection of objects, then the result is returned")
     public void givenProjectWhenWeExecuteAnExpressionReturningCollectionOfObjectsThenTheResultIsReturned() {
         var expression = "aql:editingContext.allContents()->filter(papaya::Component)";
-        var result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), expression, List.of()));
+        var result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), expression, List.of()));
 
         String payloadTypename = JsonPath.read(result, "$.data.evaluateExpression.__typename");
         assertThat(payloadTypename).isEqualTo(EvaluateExpressionSuccessPayload.class.getSimpleName());
@@ -84,7 +84,7 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
     @DisplayName("Given a project, when we execute an expression returning a single object, then the result is returned")
     public void givenProjectWhenWeExecuteAnExpressionReturningSingleObjectThenTheResultIsReturned() {
         var expression = "aql:editingContext.allContents()->filter(papaya::Component)->first()";
-        var result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), expression, List.of()));
+        var result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), expression, List.of()));
 
         String payloadTypename = JsonPath.read(result, "$.data.evaluateExpression.__typename");
         assertThat(payloadTypename).isEqualTo(EvaluateExpressionSuccessPayload.class.getSimpleName());
@@ -101,7 +101,7 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
     @DisplayName("Given a project, when we execute an expression returning an integer, then the result is returned")
     public void givenProjectWhenWeExecuteAnExpressionReturningIntegerThenTheResultIsReturned() {
         var expression = "aql:editingContext.allContents()->filter(papaya::Component)->size()";
-        var result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), expression, List.of()));
+        var result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), expression, List.of()));
 
         String payloadTypename = JsonPath.read(result, "$.data.evaluateExpression.__typename");
         assertThat(payloadTypename).isEqualTo(EvaluateExpressionSuccessPayload.class.getSimpleName());
@@ -118,7 +118,7 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
     @DisplayName("Given a project, when we execute an expression returning a boolean, then the result is returned")
     public void givenProjectWhenWeExecuteAnExpressionReturningBooleanThenTheResultIsReturned() {
         var expression = "aql:editingContext.allContents()->filter(papaya::Component)->isEmpty()";
-        var result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), expression, List.of()));
+        var result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), expression, List.of()));
 
         String payloadTypename = JsonPath.read(result, "$.data.evaluateExpression.__typename");
         assertThat(payloadTypename).isEqualTo(EvaluateExpressionSuccessPayload.class.getSimpleName());
@@ -135,7 +135,7 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
     @DisplayName("Given a project, when we execute an expression returning a string, then the result is returned")
     public void givenProjectWhenWeExecuteAnExpressionReturningStringThenTheResultIsReturned() {
         var expression = "aql:editingContext.allContents()->filter(papaya::Component)->first().name";
-        var result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), expression, List.of()));
+        var result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), expression, List.of()));
 
         String payloadTypename = JsonPath.read(result, "$.data.evaluateExpression.__typename");
         assertThat(payloadTypename).isEqualTo(EvaluateExpressionSuccessPayload.class.getSimpleName());
@@ -152,7 +152,7 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
     @DisplayName("Given a project, when we execute an expression which does not return anything, then the result is returned")
     public void givenProjectWhenWeExecuteAnExpressionWhichDoesNotReturnAnythingThenTheResultIsReturned() {
         var expression = "aql:editingContext.allContents()->filter(papaya::Component)->first().newPackage('newpackage')";
-        var result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), expression, List.of()));
+        var result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), expression, List.of()));
 
         String payloadTypename = JsonPath.read(result, "$.data.evaluateExpression.__typename");
         assertThat(payloadTypename).isEqualTo(EvaluateExpressionSuccessPayload.class.getSimpleName());
@@ -161,7 +161,7 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
         assertThat(resultTypename).isEqualTo(VoidExpressionResult.class.getSimpleName());
 
         expression = "aql:editingContext.allContents()->filter(papaya::Component)->first().packages->last().name";
-        result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), expression, List.of()));
+        result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), expression, List.of()));
         String name = JsonPath.read(result, "$.data.evaluateExpression.result.stringValue");
         assertThat(name).isEqualTo("newpackage");
     }
@@ -172,7 +172,7 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
     public void givenProjectWhenWeExecuteAnExpressionUsingTheSelectionThenTheResultIsReturned() {
         var expression = "aql:self.eContainer(papaya::Project).eContents(papaya::Component)->first().name";
         var selectedObjectIds = List.of(PapayaIdentifiers.SIRIUS_WEB_DOMAIN_OBJECT.toString());
-        var result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), expression, selectedObjectIds));
+        var result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), expression, selectedObjectIds));
 
         String payloadTypename = JsonPath.read(result, "$.data.evaluateExpression.__typename");
         assertThat(payloadTypename).isEqualTo(EvaluateExpressionSuccessPayload.class.getSimpleName());
@@ -190,7 +190,7 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
     public void givenProjectWhenWeExecuteAnExpressionUsingTheeSetEMFServiceThenTheModificationIsExecuted() {
         var getNameExpression = "aql:self.eContainer(papaya::Project).eContents(papaya::Component)->first().name";
         var selectedObjectIds = List.of(PapayaIdentifiers.SIRIUS_WEB_DOMAIN_OBJECT.toString());
-        var result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), getNameExpression, selectedObjectIds));
+        var result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), getNameExpression, selectedObjectIds));
 
         String payloadTypename = JsonPath.read(result, "$.data.evaluateExpression.__typename");
         assertThat(payloadTypename).isEqualTo(EvaluateExpressionSuccessPayload.class.getSimpleName());
@@ -203,7 +203,7 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
 
         var componentNewName = "sirius-web-domain-renamed";
         var setNameExpression = "aql:self.eContainer(papaya::Project).eContents(papaya::Component)->first().eSet('name' , '" + componentNewName + "')";
-        result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), setNameExpression, selectedObjectIds));
+        result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), setNameExpression, selectedObjectIds));
 
         payloadTypename = JsonPath.read(result, "$.data.evaluateExpression.__typename");
         assertThat(payloadTypename).isEqualTo(EvaluateExpressionSuccessPayload.class.getSimpleName());
@@ -211,7 +211,7 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
         resultTypename = JsonPath.read(result, "$.data.evaluateExpression.result.__typename");
         assertThat(resultTypename).isEqualTo(VoidExpressionResult.class.getSimpleName());
 
-        result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), getNameExpression, selectedObjectIds));
+        result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), getNameExpression, selectedObjectIds));
 
         name = JsonPath.read(result, "$.data.evaluateExpression.result.stringValue");
         assertThat(name).isEqualTo(componentNewName);
@@ -223,7 +223,7 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
     public void givenProjectWhenWeExecuteAnExpressionUsingTheeUnsetEMFServiceThenTheModificationIsExecuted() {
         var getNameExpression = "aql:self.eContainer(papaya::Project).eContents(papaya::Component)->first().name";
         var selectedObjectIds = List.of(PapayaIdentifiers.SIRIUS_WEB_DOMAIN_OBJECT.toString());
-        var result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), getNameExpression, selectedObjectIds));
+        var result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), getNameExpression, selectedObjectIds));
 
         String payloadTypename = JsonPath.read(result, "$.data.evaluateExpression.__typename");
         assertThat(payloadTypename).isEqualTo(EvaluateExpressionSuccessPayload.class.getSimpleName());
@@ -235,7 +235,7 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
         assertThat(name).isEqualTo("sirius-web-domain");
 
         var unsetNameExpression = "aql:self.eContainer(papaya::Project).eContents(papaya::Component)->first().eUnset('name')";
-        result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), unsetNameExpression, selectedObjectIds));
+        result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), unsetNameExpression, selectedObjectIds));
 
         payloadTypename = JsonPath.read(result, "$.data.evaluateExpression.__typename");
         assertThat(payloadTypename).isEqualTo(EvaluateExpressionSuccessPayload.class.getSimpleName());
@@ -243,7 +243,7 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
         resultTypename = JsonPath.read(result, "$.data.evaluateExpression.result.__typename");
         assertThat(resultTypename).isEqualTo(VoidExpressionResult.class.getSimpleName());
 
-        result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), getNameExpression, selectedObjectIds));
+        result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), getNameExpression, selectedObjectIds));
 
         payloadTypename = JsonPath.read(result, "$.data.evaluateExpression.__typename");
         assertThat(payloadTypename).isEqualTo(EvaluateExpressionSuccessPayload.class.getSimpleName());

@@ -75,7 +75,7 @@ public class DanglingRepresentationControllerIntegrationTests extends AbstractIn
     @GivenSiriusWebServer
     @DisplayName("Given a project, when we delete an object with a child representation, then the representation is deleted")
     public void givenProjectWhenWeDeleteAnObjectWithChildRepresentationThenTheRepresentationIsDeleted() {
-        var portalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
+        var portalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
         var portalFlux = this.portalEventSubscriptionRunner.run(portalEventInput);
 
         Predicate<Object> portalContentMatcher = object -> Optional.of(object)
@@ -94,8 +94,8 @@ public class DanglingRepresentationControllerIntegrationTests extends AbstractIn
             };
 
             var inputId = UUID.randomUUID();
-            var changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), () -> inputId);
-            var input = new ExecuteEditingContextFunctionInput(inputId, TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), function, changeDescription);
+            var changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), () -> inputId);
+            var input = new ExecuteEditingContextFunctionInput(inputId, TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), function, changeDescription);
             var payload = this.executeEditingContextFunctionRunner.execute(input).block();
 
             assertThat(payload).isInstanceOf(SuccessPayload.class);

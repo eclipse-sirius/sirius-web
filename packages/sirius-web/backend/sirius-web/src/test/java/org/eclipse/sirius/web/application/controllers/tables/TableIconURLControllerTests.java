@@ -104,13 +104,13 @@ public class TableIconURLControllerTests extends AbstractIntegrationTests {
         this.givenCommittedTransaction.commit();
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                 "papaya_package_table_description",
                 PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString(),
                 "Table"
         );
         String representationId = this.givenCreatedRepresentation.createRepresentation(input);
-        var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), representationId);
+        var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId);
         var flux = this.graphQLRequestor.subscribeToSpecification(TABLE_EVENT_SUBSCRIPTION, tableEventInput);
 
         TestTransaction.flagForCommit();
@@ -157,13 +157,13 @@ public class TableIconURLControllerTests extends AbstractIntegrationTests {
         this.givenCommittedTransaction.commit();
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                 "papaya_package_table_description",
                 PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString(),
                 "Table"
         );
         String representationId = this.givenCreatedRepresentation.createRepresentation(input);
-        var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), representationId);
+        var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId);
         var flux = this.graphQLRequestor.subscribeToSpecification(TABLE_EVENT_SUBSCRIPTION, tableEventInput);
 
         TestTransaction.flagForCommit();

@@ -17,10 +17,14 @@ import java.util.Objects;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
+import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.papaya.services.api.IPapayaViewProvider;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -35,14 +39,21 @@ public class PapayaEditingContextInitializer implements IEditingContextProcessor
 
     private final IPapayaViewProvider papayaViewProvider;
 
-    public PapayaEditingContextInitializer(IProjectSearchService projectSearchService, IPapayaViewProvider papayaViewProvider) {
+    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
+
+    public PapayaEditingContextInitializer(IProjectSearchService projectSearchService, IPapayaViewProvider papayaViewProvider, IProjectSemanticDataSearchService projectSemanticDataSearchService) {
         this.projectSearchService = Objects.requireNonNull(projectSearchService);
         this.papayaViewProvider = Objects.requireNonNull(papayaViewProvider);
+        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
     }
 
     @Override
     public void preProcess(IEditingContext editingContext) {
-        var isPapayaProject = this.projectSearchService.findById(editingContext.getId())
+        var isPapayaProject = new UUIDParser().parse(editingContext.getId())
+                .flatMap(semanticDataId -> this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(semanticDataId)))
+                .map(ProjectSemanticData::getProject)
+                .map(AggregateReference::getId)
+                .flatMap(this.projectSearchService::findById)
                 .filter(project -> project.getNatures().stream()
                         .map(Nature::name)
                         .anyMatch(PapayaProjectTemplateProvider.PAPAYA_NATURE::equals))

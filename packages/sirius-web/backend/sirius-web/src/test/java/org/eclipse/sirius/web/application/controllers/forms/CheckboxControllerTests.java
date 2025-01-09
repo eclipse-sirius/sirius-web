@@ -77,7 +77,7 @@ public class CheckboxControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToCheckboxForm() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                 this.formWithCheckboxDescriptionProvider.getRepresentationDescriptionId(),
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "FormWithCheckbox"
@@ -135,7 +135,7 @@ public class CheckboxControllerTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing form"));
 
         Runnable editCheckbox = () -> {
-            var input = new EditCheckboxInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), formId.get(), checkboxId.get(), false);
+            var input = new EditCheckboxInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), formId.get(), checkboxId.get(), false);
             var result = this.editCheckboxMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editCheckbox.__typename");

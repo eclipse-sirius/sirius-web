@@ -66,7 +66,7 @@ public class TreeViewControllerIntegrationTests extends AbstractIntegrationTests
 
         var inputPalette = new CreateChildInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                 "c4591605-8ea8-4e92-bb17-05c4538248f8",
                 "descriptions-TreeDescription"
         );
@@ -89,7 +89,7 @@ public class TreeViewControllerIntegrationTests extends AbstractIntegrationTests
 
         var treeItemLabelDescription = new CreateChildInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                 treeDescriptionId.get(),
                 "treeItemLabelDescriptions-TreeItemLabelDescription"
         );
@@ -103,7 +103,7 @@ public class TreeViewControllerIntegrationTests extends AbstractIntegrationTests
 
         var singleClickTreeItemContextMenuEntry = new CreateChildInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                 treeDescriptionId.get(),
                 "contextMenuEntries-SingleClickTreeItemContextMenuEntry"
         );
@@ -116,7 +116,7 @@ public class TreeViewControllerIntegrationTests extends AbstractIntegrationTests
 
         var fetchTreeItemContextMenuEntry = new CreateChildInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                 treeDescriptionId.get(),
                 "contextMenuEntries-FetchTreeItemContextMenuEntry"
         );

@@ -94,7 +94,7 @@ public class ValidationControllerIntegrationTests extends AbstractIntegrationTes
     @GivenSiriusWebServer
     @DisplayName("Given an editing context, when we subscribe to its validation events, then the validation data are sent")
     public void givenAnEditingContextWhenWeSubscribeToItsValidationEventsThenTheValidationDataAreSent() {
-        var input = new ValidationEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), representationIdBuilder.buildValidationRepresentationId());
+        var input = new ValidationEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), representationIdBuilder.buildValidationRepresentationId());
         var flux = this.graphQLRequestor.subscribe(GET_VALIDATION_EVENT_SUBSCRIPTION, input)
                 .filter(DataFetcherResult.class::isInstance)
                 .map(DataFetcherResult.class::cast)
@@ -118,11 +118,11 @@ public class ValidationControllerIntegrationTests extends AbstractIntegrationTes
     @GivenSiriusWebServer
     @DisplayName("Given a validation representation, when we edit the details of an object, then its validation status is updated")
     public void givenValidationRepresentationWhenWeEditTheDetailsOfAnObjectThenItsValidationStatusIsUpdated() {
-        var validationEventInput = new ValidationEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), representationIdBuilder.buildValidationRepresentationId());
+        var validationEventInput = new ValidationEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), representationIdBuilder.buildValidationRepresentationId());
         var validationFlux = this.graphQLRequestor.subscribe(GET_VALIDATION_EVENT_SUBSCRIPTION, validationEventInput);
 
         var detailsRepresentationId = representationIdBuilder.buildDetailsRepresentationId(List.of(StudioIdentifiers.DIAGRAM_DESCRIPTION_OBJECT.toString()));
-        var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), detailsRepresentationId);
+        var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), detailsRepresentationId);
         var detailsFlux = this.detailsEventSubscriptionRunner.run(detailsEventInput);
 
         var formId = new AtomicReference<String>();
@@ -158,7 +158,7 @@ public class ValidationControllerIntegrationTests extends AbstractIntegrationTes
                 }, () -> fail("Missing validation"));
 
         Runnable editTextfield = () -> {
-            var input = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), formId.get(), textareaId.get(), "");
+            var input = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), formId.get(), textareaId.get(), "");
             var result = this.editTextfieldMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editTextfield.__typename");

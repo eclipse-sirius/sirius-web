@@ -88,7 +88,7 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
     public void givenReferenceWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT,
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 this.formWithReferenceWidgetDescriptionProvider.getRepresentationDescriptionId(),
                 StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString(),
                 "FormWithReferenceWidget"
@@ -120,7 +120,7 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
     public void givenReferenceWidgetWhenItsOptionsAreRequestedThenSomeValuesAreReturned() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT,
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 this.formWithReferenceWidgetDescriptionProvider.getRepresentationDescriptionId(),
                 StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString(),
                 "FormWithReferenceWidget"
@@ -145,7 +145,7 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
 
         Runnable requestReferenceValueOptions = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_PROJECT,
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                     "representationId", formId.get(),
                     "referenceWidgetId", referenceWidgetId.get()
             );
@@ -171,7 +171,7 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
     public void givenReferenceWidgetWhenClearMutationIsTriggerThenValuesAreRemoved() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT,
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 this.formWithReferenceWidgetDescriptionProvider.getRepresentationDescriptionId(),
                 StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString(),
                 "FormWithReferenceWidget"
@@ -196,7 +196,7 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
 
         Runnable clearValueMutation = () -> {
             var clearReferenceInput = new ClearReferenceInput(UUID.randomUUID(),
-                    StudioIdentifiers.SAMPLE_STUDIO_PROJECT, formId.get(), referenceWidgetId.get());
+                    StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), referenceWidgetId.get());
             var result = this.referenceClearMutationRunner.run(clearReferenceInput);
 
             String mutationResult = JsonPath.read(result, "$.data.clearReference.__typename");
@@ -230,7 +230,7 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
     public void givenReferenceWidgetWhenRemoveReferenceMutationIsTriggerThenValueIsRemoved() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT,
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 this.formWithReferenceWidgetDescriptionProvider.getRepresentationDescriptionId(),
                 StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString(),
                 "FormWithReferenceWidget"
@@ -257,7 +257,7 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
 
         Runnable removeReferenceValueMutation = () -> {
             var removeReferenceValueInput = new RemoveReferenceValueInput(UUID.randomUUID(),
-                    StudioIdentifiers.SAMPLE_STUDIO_PROJECT, formId.get(), referenceWidgetId.get(), referenceValueId.get());
+                    StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), referenceWidgetId.get(), referenceValueId.get());
             var result = this.referenceRemoveMutationRunner.run(removeReferenceValueInput);
 
             String mutationResult = JsonPath.read(result, "$.data.removeReferenceValue.__typename");

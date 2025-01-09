@@ -88,7 +88,7 @@ public class DateTimeControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToDateTimeForm() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                 this.formWithDateTimeDescriptionProvider.getRepresentationDescriptionId(),
                 PapayaIdentifiers.FIRST_ITERATION_OBJECT.toString(),
                 "FormWithDateTime"
@@ -146,7 +146,7 @@ public class DateTimeControllerTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing form"));
 
         Runnable editDateTime = () -> {
-            var input = new EditDateTimeInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), dateTimeId.get(), "2024-02-02T18:00:00.00Z");
+            var input = new EditDateTimeInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), dateTimeId.get(), "2024-02-02T18:00:00.00Z");
             var result = this.editDateTimeMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editDateTime.__typename");
@@ -175,7 +175,7 @@ public class DateTimeControllerTests extends AbstractIntegrationTests {
     @DisplayName("Given a dateTime widget from default Details, when it is displayed/edited, then its value is properly initialized/updated")
     public void givenDateTimeWidgetFromDefaultDetailsWhenItIsEditedThenTheValueIsUpdated() {
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(PapayaIdentifiers.FIRST_ITERATION_OBJECT.toString()));
-        var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), detailsRepresentationId);
+        var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), detailsRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(detailsEventInput)
                 .filter(DataFetcherResult.class::isInstance)
                 .map(DataFetcherResult.class::cast)
@@ -198,7 +198,7 @@ public class DateTimeControllerTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing form"));
 
         Runnable editDateTime = () -> {
-            var input = new EditDateTimeInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), startDate.get(), "2024-02-11T09:00:00Z");
+            var input = new EditDateTimeInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), startDate.get(), "2024-02-11T09:00:00Z");
             var result = this.editDateTimeMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editDateTime.__typename");
@@ -213,7 +213,7 @@ public class DateTimeControllerTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing form"));
 
         Runnable editDateTime2 = () -> {
-            var input = new EditDateTimeInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), startDate.get(), "");
+            var input = new EditDateTimeInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), startDate.get(), "");
             var result = this.editDateTimeMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editDateTime.__typename");

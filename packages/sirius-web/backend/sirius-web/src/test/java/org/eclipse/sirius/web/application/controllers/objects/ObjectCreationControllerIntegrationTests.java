@@ -87,7 +87,7 @@ public class ObjectCreationControllerIntegrationTests extends AbstractIntegratio
     @DisplayName("Given a studio, when the domains are requested, then domain and EPackage based domains are available")
     public void givenStudioWhenDomainsAreRequestedThenDomainAndEPackageBasedDomainsAreAvailable() {
         Map<String, Object> variables = Map.of(
-                "editingContextId", StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(),
+                "editingContextId", StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(),
                 "rootDomainsOnly", true
         );
         var result = this.domainsQueryRunner.run(variables);
@@ -103,7 +103,7 @@ public class ObjectCreationControllerIntegrationTests extends AbstractIntegratio
     @DisplayName("Given a domain, when the root object creation descriptions are requested, then valid objects are available")
     public void givenDomainWhenRootObjectCreationDescriptionsAreRequestedThenValidObjectsAreAvailable() {
         Map<String, Object> variables = Map.of(
-                "editingContextId", StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(),
+                "editingContextId", StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(),
                 "domainId", "domain://buck",
                 "suggested", true
         );
@@ -125,7 +125,7 @@ public class ObjectCreationControllerIntegrationTests extends AbstractIntegratio
     @DisplayName("Given an object, when the child object creation descriptions are requested, then valid objects are available")
     public void givenAnObjectWhenChildObjectCreationDescriptionsAreRequestedThenValidObjectsAreAvailable() {
         Map<String, Object> variables = Map.of(
-                "editingContextId", StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(),
+                "editingContextId", StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(),
                 "kind", "siriusComponents://semantic?domain=buck&entity=Root"
         );
         var result = this.childCreationDescriptionsQueryRunner.run(variables);
@@ -148,7 +148,7 @@ public class ObjectCreationControllerIntegrationTests extends AbstractIntegratio
 
         var input = new CreateRootObjectInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                 StudioIdentifiers.DOMAIN_DOCUMENT,
                 DomainPackage.eNS_URI,
                 "Entity"
@@ -176,7 +176,7 @@ public class ObjectCreationControllerIntegrationTests extends AbstractIntegratio
 
         var input = new CreateChildInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "types-Entity"
         );

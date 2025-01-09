@@ -45,7 +45,7 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
     @GivenSiriusWebServer
     @DisplayName("Given context entries and a query, when a query is performed, then omnibox commands are returned")
     public void givenContextEntriesWhenAQueryIsPerformedThenCommandsAreReturned() {
-        var omniboxContextEntries = List.of(Map.of("id", StudioIdentifiers.SAMPLE_STUDIO_PROJECT, "kind", "EditingContext"));
+        var omniboxContextEntries = List.of(Map.of("id", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, "kind", "EditingContext"));
 
         Map<String, Object> firstQueryVariables = Map.of("contextEntries", omniboxContextEntries, "query", "");
         var firstQueryResult = this.omniboxCommandsQueryRunner.run(firstQueryVariables);

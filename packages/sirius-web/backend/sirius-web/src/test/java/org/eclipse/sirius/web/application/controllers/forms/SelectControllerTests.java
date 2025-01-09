@@ -67,7 +67,7 @@ public class SelectControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToSelectForm() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                 this.formWithSelectDescriptionProvider.getRepresentationDescriptionId(),
                 StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString(),
                 "FormWithSelect"

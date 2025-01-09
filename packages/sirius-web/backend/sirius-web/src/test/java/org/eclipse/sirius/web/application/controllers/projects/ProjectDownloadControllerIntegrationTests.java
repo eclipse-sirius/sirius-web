@@ -112,7 +112,7 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
 
             String manifestContent = zipEntries.get("Studio/manifest.json").toString(StandardCharsets.UTF_8);
             var objectMapper = new ObjectMapper();
-            assertThat(objectMapper.readTree(manifestContentExpected)).isEqualTo(objectMapper.readTree(manifestContent));
+            assertThat(objectMapper.readTree(manifestContent)).isEqualTo(objectMapper.readTree(manifestContentExpected));
         } catch (IOException exception) {
             fail(exception.getMessage());
         }

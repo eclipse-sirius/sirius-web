@@ -85,11 +85,11 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
     @GivenSiriusWebServer
     @DisplayName("Given an editing context id, when a query is performed, then the editing context is returned")
     public void givenEditingContextIdWhenQueryIsPerformedThenTheEditingContextIsReturned() {
-        Map<String, Object> variables = Map.of("editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString());
+        Map<String, Object> variables = Map.of("editingContextId", TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString());
         var result = this.editingContextQueryRunner.run(variables);
 
         String editingContextId = JsonPath.read(result, "$.data.viewer.editingContext.id");
-        assertThat(editingContextId).isEqualTo(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString());
+        assertThat(editingContextId).isEqualTo(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString());
     }
 
     @Test
@@ -100,14 +100,14 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
         var result = this.currentEditingContextQueryRunner.run(variables);
 
         String editingContextId = JsonPath.read(result, "$.data.viewer.project.currentEditingContext.id");
-        assertThat(editingContextId).isEqualTo(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString());
+        assertThat(editingContextId).isEqualTo(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString());
     }
 
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given an editing context id, when a query is performed, then its actions are returned")
     public void givenEditingContextIdWhenQueryIsPerformedThenItsActionsAreReturned() {
-        Map<String, Object> variables = Map.of("editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString());
+        Map<String, Object> variables = Map.of("editingContextId", TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString());
         var result = this.editingContextActionsQueryRunner.run(variables);
 
         boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.editingContext.actions.pageInfo.hasPreviousPage");
@@ -130,7 +130,7 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
     @GivenSiriusWebServer
     @DisplayName("Given a project, when an editing context action is invoked, then the editing context is modified")
     public void givenProjectWhenAnEditingContextActionIsInvokedThenTheEditingContextIsModified() {
-        var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString());
+        var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString());
         var flux = this.editingContextEventSubscriptionRunner.run(editingContextEventInput);
 
         Consumer<InvokeEditingContextActionInput> invokeEditingContextActionTask = (input) -> {
@@ -144,9 +144,9 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        var createEmptyDomainInput = new InvokeEditingContextActionInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), StudioEditingContextActionProvider.EMPTY_DOMAIN_ID);
-        var createEmptyViewInput = new InvokeEditingContextActionInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), StudioEditingContextActionProvider.EMPTY_VIEW_ID);
-        var createEmptyDocumentInput = new InvokeEditingContextActionInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), DefaultEditingContextActionProvider.EMPTY_ACTION_ID);
+        var createEmptyDomainInput = new InvokeEditingContextActionInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), StudioEditingContextActionProvider.EMPTY_DOMAIN_ID);
+        var createEmptyViewInput = new InvokeEditingContextActionInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), StudioEditingContextActionProvider.EMPTY_VIEW_ID);
+        var createEmptyDocumentInput = new InvokeEditingContextActionInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), DefaultEditingContextActionProvider.EMPTY_ACTION_ID);
         StepVerifier.create(flux)
                 .then(() -> invokeEditingContextActionTask.accept(createEmptyDomainInput))
                 .then(() -> invokeEditingContextActionTask.accept(createEmptyViewInput))

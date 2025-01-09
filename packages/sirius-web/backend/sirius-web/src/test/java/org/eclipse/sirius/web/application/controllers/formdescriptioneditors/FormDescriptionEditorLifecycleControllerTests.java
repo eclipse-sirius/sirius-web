@@ -91,7 +91,7 @@ public class FormDescriptionEditorLifecycleControllerTests extends AbstractInteg
     public void givenFormDescriptionEditorRepresentationWhenWeReloadItThenTheNewVersionIsSent() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                 UUID.nameUUIDFromBytes("FormDescriptionEditor".getBytes()).toString(),
                 StudioIdentifiers.FORM_DESCRIPTION_OBJECT.toString(),
                 "FormDescriptionEditor"
@@ -119,7 +119,7 @@ public class FormDescriptionEditorLifecycleControllerTests extends AbstractInteg
         Runnable addWidget = () -> {
             var addWidgetInput = new AddWidgetInput(
                     UUID.randomUUID(),
-                    StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                    StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                     formDescriptionEditorId.get(),
                     StudioIdentifiers.GROUP_OBJECT.toString(),
                     "Textfield",
@@ -144,7 +144,7 @@ public class FormDescriptionEditorLifecycleControllerTests extends AbstractInteg
             // Restore the previous state of the FormDescription
             var deleteWidgetInput = new DeleteWidgetInput(
                     UUID.randomUUID(),
-                    StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                    StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                     formDescriptionEditorId.get(),
                     newWidgetId.get());
             var result = this.deleteWidgetMutationRunner.run(deleteWidgetInput);
@@ -171,7 +171,7 @@ public class FormDescriptionEditorLifecycleControllerTests extends AbstractInteg
                         }, () -> fail("Missing representation event processor"));
             };
             this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
-                    .filter(editingContextEventProcessor -> editingContextEventProcessor.getEditingContextId().equals(StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString()))
+                    .filter(editingContextEventProcessor -> editingContextEventProcessor.getEditingContextId().equals(StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString()))
                     .findFirst()
                     .ifPresentOrElse(editingContextEventProcessorConsumer, () -> fail("Missing editing context event processor"));
         };

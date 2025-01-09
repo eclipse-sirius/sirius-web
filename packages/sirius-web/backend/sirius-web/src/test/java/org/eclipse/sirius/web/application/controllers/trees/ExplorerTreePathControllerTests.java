@@ -103,7 +103,7 @@ public class ExplorerTreePathControllerTests extends AbstractIntegrationTests {
     @DisplayName("Given a studio, when we ask for the tree path of an object, then its path in the explorer is returned")
     public void givenStudioWhenWeAskForTheTreePathOfAnObjectThenItsPathInTheExplorerIsReturned() {
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of());
-        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), explorerRepresentationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
         var flux = this.treeEventSubscriptionRunner.run(input);
 
         var treeId = new AtomicReference<String>();
@@ -122,7 +122,7 @@ public class ExplorerTreePathControllerTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing tree"));
 
         Runnable createView = () -> {
-            var createViewInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), this.papayaViewInjector);
+            var createViewInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), this.papayaViewInjector);
             this.executeEditingContextFunctionRunner.execute(createViewInput).block();
 
             BiFunction<IEditingContext, IInput, IPayload> getObjectIdFunction = (editingContext, executeEditingContextFunctionInput) -> {
@@ -140,7 +140,7 @@ public class ExplorerTreePathControllerTests extends AbstractIntegrationTests {
                 return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), id);
             };
 
-            var getObjectIdInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), getObjectIdFunction, new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), createViewInput));
+            var getObjectIdInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), getObjectIdFunction, new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), createViewInput));
             var payload = this.executeEditingContextFunctionRunner.execute(getObjectIdInput).block();
 
             assertThat(payload).isInstanceOf(ExecuteEditingContextFunctionSuccessPayload.class);
@@ -161,7 +161,7 @@ public class ExplorerTreePathControllerTests extends AbstractIntegrationTests {
 
         Runnable getTreePath = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(),
+                    "editingContextId", StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(),
                     "treeId", treeId.get(),
                     "selectionEntryIds", List.of(objectId.get())
             );

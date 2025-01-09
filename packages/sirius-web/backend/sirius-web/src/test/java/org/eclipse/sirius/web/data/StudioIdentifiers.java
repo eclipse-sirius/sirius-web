@@ -21,7 +21,9 @@ import java.util.UUID;
  */
 public final class StudioIdentifiers {
 
-    public static final String EMPTY_STUDIO_PROJECT = "250cabc0-a211-438c-8015-2d2aa136eb81";
+    public static final UUID EMPTY_STUDIO_EDITING_CONTEXT_ID = UUID.fromString("bd3017e3-d95f-4535-8701-af6ba982619f");
+
+    public static final String SAMPLE_STUDIO_EDITING_CONTEXT_ID = "e344d967-a639-4f6c-9c00-a466d51063c6";
 
     public static final String SAMPLE_STUDIO_PROJECT = "01234836-0902-418a-900a-4c0afd20323e";
 
@@ -53,7 +55,7 @@ public final class StudioIdentifiers {
 
     public static final UUID PLACEHOLDER_IMAGE_OBJECT = UUID.fromString("7f8ce6ef-a23f-4c62-a6f8-381d5c237742");
 
-    public static final String INSTANCE_PROJECT = "bb66e0e9-4ab5-47ef-99f5-c6b26be995ea";
+    public static final String INSTANCE_EDITING_CONTEXT_ID = "63f4353f-0c71-4122-93be-2d359fc0fa16";
 
     public static final UUID ROOT_OBJECT = UUID.fromString("87fa4553-6889-4ce6-b017-d013987f9fae");
 

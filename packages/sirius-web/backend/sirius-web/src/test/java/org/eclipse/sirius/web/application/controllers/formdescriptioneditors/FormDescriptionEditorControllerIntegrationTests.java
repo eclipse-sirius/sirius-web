@@ -91,7 +91,7 @@ public class FormDescriptionEditorControllerIntegrationTests extends AbstractInt
     private Flux<Object> givenSubscriptionToFormDescriptionEditor() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                 UUID.nameUUIDFromBytes("FormDescriptionEditor".getBytes()).toString(),
                 StudioIdentifiers.FORM_DESCRIPTION_OBJECT.toString(),
                 "FormDescriptionEditor"
@@ -251,7 +251,7 @@ public class FormDescriptionEditorControllerIntegrationTests extends AbstractInt
         Runnable addWidget = () -> {
             var addWidgetInput = new AddWidgetInput(
                     UUID.randomUUID(),
-                    StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                    StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                     formDescriptionEditorId.get(),
                     StudioIdentifiers.GROUP_OBJECT.toString(),
                     widgetKind,
@@ -303,7 +303,7 @@ public class FormDescriptionEditorControllerIntegrationTests extends AbstractInt
         Runnable addPage = () -> {
             var addPageInput = new AddPageInput(
                     UUID.randomUUID(),
-                    StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                    StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                     formDescriptionEditorId.get(),
                     0
             );
