@@ -34,9 +34,13 @@ import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
+import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -49,13 +53,20 @@ public class FlowEditingContextInitializer implements IEditingContextProcessor {
 
     private final IProjectSearchService projectSearchService;
 
-    public FlowEditingContextInitializer(IProjectSearchService projectSearchService) {
+    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
+
+    public FlowEditingContextInitializer(IProjectSearchService projectSearchService, IProjectSemanticDataSearchService projectSemanticDataSearchService) {
         this.projectSearchService = Objects.requireNonNull(projectSearchService);
+        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
     }
 
     @Override
     public void preProcess(IEditingContext editingContext) {
-        var isFlowProject = this.projectSearchService.findById(editingContext.getId())
+        var isFlowProject = new UUIDParser().parse(editingContext.getId())
+                .flatMap(semanticDataId -> this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(semanticDataId)))
+                .map(ProjectSemanticData::getProject)
+                .map(AggregateReference::getId)
+                .flatMap(this.projectSearchService::findById)
                 .filter(project -> project.getNatures().stream()
                         .map(Nature::name)
                         .anyMatch(FlowProjectTemplatesProvider.FLOW_NATURE::equals))

@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.web.application.studio.services.api.IStudioCapableEditingContextPredicate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Used to provide the editing context actions for studios.
@@ -47,6 +48,7 @@ public class StudioEditingContextActionProvider implements IEditingContextAction
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<EditingContextAction> getEditingContextAction(IEditingContext editingContext) {
         var actions = new ArrayList<EditingContextAction>();
 

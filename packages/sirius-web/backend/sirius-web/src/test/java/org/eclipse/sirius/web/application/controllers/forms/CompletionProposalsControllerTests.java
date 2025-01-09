@@ -74,7 +74,7 @@ public class CompletionProposalsControllerTests extends AbstractIntegrationTests
     @DisplayName("Given a textfield for a domain type, when we ask for its completion proposals, then the proposals are returned")
     public void givenTextfieldForDomainTypeWhenWeAskForItsCompletionProposalsThenTheProposalsAreReturned() {
         var detailRepresentationId =  "details://?objectIds=[" + String.join(",", StudioIdentifiers.DIAGRAM_DESCRIPTION_OBJECT.toString()) + "]";
-        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), detailRepresentationId);
+        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), detailRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input);
 
         var formId = new AtomicReference<String>();
@@ -97,7 +97,7 @@ public class CompletionProposalsControllerTests extends AbstractIntegrationTests
 
         Runnable getCompletionProposals = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                     "formId", formId.get(),
                     "widgetId", textareaId.get(),
                     "currentText", "",
@@ -126,7 +126,7 @@ public class CompletionProposalsControllerTests extends AbstractIntegrationTests
     @DisplayName("Given a textfield for an expression, when we ask for its completion proposals, then the proposals are returned")
     public void givenTextfieldForAnExpressionWhenWeAskForItsCompletionProposalsThenTheProposalsAreReturned() {
         var detailRepresentationId =  "details://?objectIds=[" + String.join(",", StudioIdentifiers.HUMAN_NODE_DESCRIPTION_OBJECT.toString()) + "]";
-        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), detailRepresentationId);
+        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), detailRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input);
 
         var formId = new AtomicReference<String>();
@@ -149,7 +149,7 @@ public class CompletionProposalsControllerTests extends AbstractIntegrationTests
 
         Runnable getCompletionProposals = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                     "formId", formId.get(),
                     "widgetId", textareaId.get(),
                     "currentText", "aql:self.humans",

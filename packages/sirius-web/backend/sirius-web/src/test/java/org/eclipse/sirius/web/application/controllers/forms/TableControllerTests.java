@@ -92,7 +92,7 @@ public class TableControllerTests extends AbstractIntegrationTests {
     }
 
     private Flux<Object> givenSubscriptionToFormWithTableWidget() {
-        var input = new CreateRepresentationInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), FormWithTableDescriptionProvider.TASK_FORM_ID,
+        var input = new CreateRepresentationInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), FormWithTableDescriptionProvider.TASK_FORM_ID,
                 PapayaIdentifiers.FIRST_ITERATION_OBJECT.toString(), "FormWithTable");
         return this.givenCreatedFormSubscription.createAndSubscribe(input);
     }
@@ -153,7 +153,7 @@ public class TableControllerTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing form"));
 
         Runnable editNameTextfieldCell = () -> {
-            var input = new EditTextfieldCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), tableId.get(), textfieldCellId.get(), "newName");
+            var input = new EditTextfieldCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), tableId.get(), textfieldCellId.get(), "newName");
             var result = this.editTextfieldCellMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editTextfieldCell.__typename");
@@ -163,7 +163,7 @@ public class TableControllerTests extends AbstractIntegrationTests {
         Consumer<Object> editNameConsumer = this.getEditNameConsumer(tableId, selectCellId);
 
         Runnable editPrioritySelectCell = () -> {
-            var input = new EditSelectCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), tableId.get(), selectCellId.get(), "P2");
+            var input = new EditSelectCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), tableId.get(), selectCellId.get(), "P2");
             var result = this.editSelectCellMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editSelectCell.__typename");
@@ -173,7 +173,7 @@ public class TableControllerTests extends AbstractIntegrationTests {
         Consumer<Object> editPriorityConsumer = this.getEditPriorityConsumer(tableId, multiSelectCellId);
 
         Runnable editDependenciesMultiSelectCell = () -> {
-            var input = new EditMultiSelectCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), tableId.get(), multiSelectCellId.get(), List.of("e6e8f081-27f5-40e3-a8ab-1e6f0f13df12", "e1c5bd66-54c2-45f1-ae3a-99d3f039affd"));
+            var input = new EditMultiSelectCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), tableId.get(), multiSelectCellId.get(), List.of("e6e8f081-27f5-40e3-a8ab-1e6f0f13df12", "e1c5bd66-54c2-45f1-ae3a-99d3f039affd"));
             var result = this.editMultiSelectCellMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editMultiSelectCell.__typename");
@@ -183,7 +183,7 @@ public class TableControllerTests extends AbstractIntegrationTests {
         Consumer<Object> editDependenciesConsumer = this.getEditDependenciesConsumer(tableId, checkboxCellId);
 
         Runnable editIsDoneCheckboxCell = () -> {
-            var input = new EditCheckboxCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), tableId.get(), checkboxCellId.get(), true);
+            var input = new EditCheckboxCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), tableId.get(), checkboxCellId.get(), true);
             var result = this.editCheckboxCellMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editCheckboxCell.__typename");

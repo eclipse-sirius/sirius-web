@@ -91,7 +91,7 @@ public class DomainExplorerControllerTests extends AbstractIntegrationTests {
     @DisplayName("Given an explorer representation, when we subscribe to its event, then the representation data are received")
     public void givenAnExplorerRepresentationWhenWeSubscribeToItsEventThenTheRepresentationDataAreReceived() {
         var representationId = new RepresentationIdBuilder().buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of());
-        var defaultExplorerInput = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), representationId);
+        var defaultExplorerInput = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), representationId);
         var defaultFlux = this.explorerEventSubscriptionRunner.run(defaultExplorerInput);
         var defaultTreeId = new AtomicReference<String>();
 
@@ -110,7 +110,7 @@ public class DomainExplorerControllerTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
 
         representationId = new RepresentationIdBuilder().buildExplorerRepresentationId(this.domainViewTreeDescriptionProvider.getRepresentationDescriptionId(), List.of(), List.of());
-        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), representationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), representationId);
         var flux = this.explorerEventSubscriptionRunner.run(input);
 
         var treeId = new AtomicReference<String>();
@@ -128,7 +128,7 @@ public class DomainExplorerControllerTests extends AbstractIntegrationTests {
 
         Runnable getTreePath = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                     "treeId", treeId.get(),
                     "treeItemId", StudioIdentifiers.DOMAIN_DOCUMENT.toString()
             );
@@ -146,7 +146,7 @@ public class DomainExplorerControllerTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
 
         representationId = new RepresentationIdBuilder().buildExplorerRepresentationId(this.domainViewTreeDescriptionProvider.getRepresentationDescriptionId(), treeItemIds.get(), List.of());
-        var expandedTreeInput = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), representationId);
+        var expandedTreeInput = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), representationId);
         var expandedTreeFlux = this.explorerEventSubscriptionRunner.run(expandedTreeInput);
 
         var settingId = new AtomicReference<String>();
@@ -166,7 +166,7 @@ public class DomainExplorerControllerTests extends AbstractIntegrationTests {
 
         Runnable getTreePathFromSetting = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                     "treeId", treeId.get(),
                     "treeItemId", settingId.get()
             );
@@ -201,14 +201,14 @@ public class DomainExplorerControllerTests extends AbstractIntegrationTests {
         TestTransaction.end();
         TestTransaction.start();
 
-        var createRepresentationInput = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), this.domainDiagramDescriptionProvider.getDescriptionId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), "Domain");
+        var createRepresentationInput = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), this.domainDiagramDescriptionProvider.getDescriptionId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), "Domain");
         this.givenCreatedDiagramSubscription.createAndSubscribe(createRepresentationInput);
 
         List<String> treeItemIds = new ArrayList<>();
         treeItemIds.add(StudioIdentifiers.DOMAIN_DOCUMENT.toString());
         treeItemIds.add(StudioIdentifiers.DOMAIN_OBJECT.toString());
         var representationId = new RepresentationIdBuilder().buildExplorerRepresentationId(this.domainViewTreeDescriptionProvider.getRepresentationDescriptionId(), treeItemIds, List.of());
-        var expandedTreeInput = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), representationId);
+        var expandedTreeInput = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), representationId);
         var expandedTreeFlux = this.explorerEventSubscriptionRunner.run(expandedTreeInput);
 
         Consumer<Object> expandedExplorerContentConsumer = this.getTreeSubscriptionConsumer(tree -> {

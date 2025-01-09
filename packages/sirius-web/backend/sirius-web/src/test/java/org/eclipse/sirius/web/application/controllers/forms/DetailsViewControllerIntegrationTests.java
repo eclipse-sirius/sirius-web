@@ -65,7 +65,7 @@ public class DetailsViewControllerIntegrationTests extends AbstractIntegrationTe
     @DisplayName("Given a semantic object, when we subscribe to its properties events, then the form is sent")
     public void givenSemanticObjectWhenWeSubscribeToItsPropertiesEventsThenTheFormIsSent() {
         var detailsRepresentationId = representationIdBuilder.buildDetailsRepresentationId(List.of(PapayaIdentifiers.SIRIUS_WEB_DOMAIN_OBJECT.toString()));
-        var input = new DetailsEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), detailsRepresentationId);
+        var input = new DetailsEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), detailsRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input);
 
         Predicate<Object> formContentMatcher = object -> Optional.of(object)

@@ -38,11 +38,8 @@ import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingCo
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceLoader;
 import org.eclipse.sirius.web.application.studio.services.api.IDomainProvider;
 import org.eclipse.sirius.web.application.studio.services.api.IStudioColorPalettesLoader;
-import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
-import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,8 +53,6 @@ public class EditingContextInitializer implements IEditingContextProcessor {
 
     private final ISemanticDataSearchService semanticDataSearchService;
 
-    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
-
     private final IResourceLoader resourceLoader;
 
     private final IStudioColorPalettesLoader studioColorPalettesLoader;
@@ -66,9 +61,8 @@ public class EditingContextInitializer implements IEditingContextProcessor {
 
     private final List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates;
 
-    public EditingContextInitializer(ISemanticDataSearchService semanticDataSearchService, IProjectSemanticDataSearchService projectSemanticDataSearchService, IResourceLoader resourceLoader, List<IDomainProvider> domainProviders, IStudioColorPalettesLoader studioColorPalettesLoader, List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates) {
+    public EditingContextInitializer(ISemanticDataSearchService semanticDataSearchService, IResourceLoader resourceLoader, List<IDomainProvider> domainProviders, IStudioColorPalettesLoader studioColorPalettesLoader, List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates) {
         this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
-        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
         this.resourceLoader = Objects.requireNonNull(resourceLoader);
         this.domainProviders = Objects.requireNonNull(domainProviders);
         this.studioColorPalettesLoader = Objects.requireNonNull(studioColorPalettesLoader);
@@ -102,10 +96,7 @@ public class EditingContextInitializer implements IEditingContextProcessor {
                 resourceSet.getPackageRegistry().put(TablePackage.eNS_URI, TablePackage.eINSTANCE);
                 this.studioColorPalettesLoader.loadStudioColorPalettes(resourceSet);
 
-                var editingContextId = this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(semanticData.getId()))
-                        .map(ProjectSemanticData::getProject)
-                        .map(AggregateReference::getId).orElse("");
-                semanticData.getDocuments().forEach(document -> this.toResource(editingContextId, resourceSet, document));
+                semanticData.getDocuments().forEach(document -> this.toResource(semanticData.getId().toString(), resourceSet, document));
                 resourceSet.eAdapters().add(new EditingContextCrossReferenceAdapter());
 
                 var treeIterator = resourceSet.getAllContents();

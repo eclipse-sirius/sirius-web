@@ -45,4 +45,9 @@ public class SemanticDataSearchService implements ISemanticDataSearchService {
     public Optional<SemanticData> findById(UUID id) {
         return this.semanticDataRepository.findById(id);
     }
+
+    @Override
+    public boolean existsById(UUID id) {
+        return this.semanticDataRepository.existsById(id);
+    }
 }

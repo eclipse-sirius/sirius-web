@@ -29,4 +29,5 @@ public interface ISemanticDataSearchService {
 
     Optional<SemanticData> findById(UUID id);
 
+    boolean existsById(UUID id);
 }

@@ -74,7 +74,7 @@ public class PaletteControllerTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a domain diagram, when the palette is requested for the diagram, then the relevant tools are available")
     public void givenDomainDiagramOnStudioWhenItIsOpenedThenEntitiesAreVisible() {
-        var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), this.domainDiagramDescriptionProvider.getDescriptionId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), "Domain");
+        var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), this.domainDiagramDescriptionProvider.getDescriptionId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), "Domain");
         var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input);
 
         var diagramId = new AtomicReference<String>();
@@ -89,7 +89,7 @@ public class PaletteControllerTests extends AbstractIntegrationTests {
 
         Runnable requestDiagramPalette = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                     "representationId", diagramId.get(),
                     "diagramElementId", diagramId.get()
             );

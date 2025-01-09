@@ -61,7 +61,7 @@ public class CustomImageDiagramControllerTests extends AbstractIntegrationTests 
     @GivenSiriusWebServer
     @DisplayName("Given a view based diagram, when nodes are using custom images, then the style is computed properly")
     public void givenViewBasedDiagramWhenNodesAreUsingCustomImagesThenTheStyleIsComputedProperly() {
-        var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.INSTANCE_PROJECT.toString(), StudioIdentifiers.DIAGRAM_DESCRIPTION_ID, StudioIdentifiers.ROOT_OBJECT.toString(), "");
+        var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.INSTANCE_EDITING_CONTEXT_ID.toString(), StudioIdentifiers.DIAGRAM_DESCRIPTION_ID, StudioIdentifiers.ROOT_OBJECT.toString(), "");
         var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input);
 
         Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)

@@ -49,13 +49,13 @@ public class EditingContextLifecycleTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given semantic data using static metamodels, when the loading is performed, then the semantic data are available in the editing context")
     public void givenSemanticDataUsingStaticMetamodelsWhenLoadingIsPerformedThenSemanticDataAvailableInEditingContext() {
-        assertThat(this.editingContextSearchService.existsById(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString())).isTrue();
+        assertThat(this.editingContextSearchService.existsById(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString())).isTrue();
 
-        var optionalEditingContext = this.editingContextSearchService.findById(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString());
+        var optionalEditingContext = this.editingContextSearchService.findById(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString());
         assertThat(optionalEditingContext).isPresent();
 
         var editingContext = optionalEditingContext.get();
-        assertThat(editingContext.getId()).isEqualTo(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString());
+        assertThat(editingContext.getId()).isEqualTo(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString());
         if (editingContext instanceof EditingContext siriusWebEditingContext) {
             var resourceSet = siriusWebEditingContext.getDomain().getResourceSet();
             assertThat(resourceSet.getResources()).hasSize(1);
@@ -75,7 +75,7 @@ public class EditingContextLifecycleTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given an editing context properly loaded, when it is modified and persisted, then the changes can be reloaded")
     public void givenEditingContextProperlyLoadedWhenItIsModifiedAndPersistedThenTheChangesCanBeReloaded() {
-        var optionalEditingContext = this.editingContextSearchService.findById(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString());
+        var optionalEditingContext = this.editingContextSearchService.findById(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString());
         assertThat(optionalEditingContext).isPresent();
 
         TestTransaction.flagForCommit();
@@ -99,7 +99,7 @@ public class EditingContextLifecycleTests extends AbstractIntegrationTests {
         }
 
         TestTransaction.start();
-        optionalEditingContext = this.editingContextSearchService.findById(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString());
+        optionalEditingContext = this.editingContextSearchService.findById(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString());
         assertThat(optionalEditingContext).isPresent();
 
         TestTransaction.flagForCommit();

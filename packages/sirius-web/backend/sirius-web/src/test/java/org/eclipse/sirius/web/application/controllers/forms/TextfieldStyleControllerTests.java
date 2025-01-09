@@ -68,7 +68,7 @@ public class TextfieldStyleControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToTextfieldForm(String objectId) {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                 this.formWithStyledTextfieldDescriptionProvider.getRepresentationDescriptionId(),
                 objectId,
                 "FormWithStyledTextfield"

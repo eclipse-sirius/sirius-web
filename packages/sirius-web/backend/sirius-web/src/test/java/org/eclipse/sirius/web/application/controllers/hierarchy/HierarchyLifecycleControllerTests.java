@@ -65,7 +65,7 @@ public class HierarchyLifecycleControllerTests extends AbstractIntegrationTests 
     @GivenSiriusWebServer
     @DisplayName("Given an arbitrary semantic element, then we can create a hierarchy on it")
     public void givenAnArbitrarySemanticElementThenWeCanCreateHierarchyOnIt() {
-        var input = new CreateRepresentationInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), HierarchyDescriptionProvider.HIERARCHY_DESCRIPTION_ID, TestIdentifiers.EPACKAGE_OBJECT.toString(), "Sample Hierarchy");
+        var input = new CreateRepresentationInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), HierarchyDescriptionProvider.HIERARCHY_DESCRIPTION_ID, TestIdentifiers.EPACKAGE_OBJECT.toString(), "Sample Hierarchy");
         var flux = this.givenCreatedHierarchySubscription.createAndSubscribe(input);
 
         Consumer<Object> initialHierarchyContentConsumer = payload -> {

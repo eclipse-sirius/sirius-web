@@ -75,7 +75,7 @@ public class PapayaTableCellControllerIntegrationTests extends AbstractIntegrati
     private Flux<Object> givenSubscriptionToTable() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                 "papaya_package_table_description",
                 PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString(),
                 "Table"
@@ -106,7 +106,7 @@ public class PapayaTableCellControllerIntegrationTests extends AbstractIntegrati
         Runnable editTextarea = () -> {
             var editTextareaCellInput = new EditTextareaCellInput(
                     UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     tableId.get(),
                     tableId.get(),
                     cellRef.get().getId(),

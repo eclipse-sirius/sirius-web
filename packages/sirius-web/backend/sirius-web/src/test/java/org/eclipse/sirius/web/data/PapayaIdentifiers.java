@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,7 @@ import java.util.UUID;
  */
 public final class PapayaIdentifiers {
 
-    public static final UUID PAPAYA_PROJECT = UUID.fromString("c3d7df85-e0bd-472c-aec1-c05cc88276e4");
+    public static final UUID PAPAYA_EDITING_CONTEXT_ID = UUID.fromString("cc89c500-c27e-4968-9c67-15cf767c6ef0");
 
     public static final UUID PROJECT_OBJECT = UUID.fromString("aa0b7b22-ade2-4148-9ee2-c5972bd72ab7");
 

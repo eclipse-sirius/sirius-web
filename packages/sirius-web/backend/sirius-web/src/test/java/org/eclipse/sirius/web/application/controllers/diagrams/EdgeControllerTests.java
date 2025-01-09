@@ -88,7 +88,7 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToLabelEditableDiagramDiagram() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                 this.edgeDiagramDescriptionProvider.getRepresentationDescriptionId(),
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "EdgeDiagram"
@@ -126,7 +126,7 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
 
         Runnable requestValidConnectorTools = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     "representationId", diagramId.get(),
                     "sourceDiagramElementId", siriusWebInfrastructureNodeId.get(),
                     "targetDiagramElementId", siriusWebApplicationNodeId.get()
@@ -174,7 +174,7 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
         Runnable createDependency = () -> {
             var input = new InvokeSingleClickOnTwoDiagramElementsToolInput(
                     UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
                     siriusWebInfrastructureNodeId.get(),
                     siriusWebApplicationNodeId.get(),
@@ -240,7 +240,7 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
         Runnable reconnectSource = () -> {
             var input = new ReconnectEdgeInput(
                     UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
                     edgeId.get(),
                     siriusWebInfrastructureNodeId.get(),
@@ -301,7 +301,7 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
         Runnable reconnectSource = () -> {
             var input = new ReconnectEdgeInput(
                     UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
                     edgeId.get(),
                     siriusWebInfrastructureNodeId.get(),

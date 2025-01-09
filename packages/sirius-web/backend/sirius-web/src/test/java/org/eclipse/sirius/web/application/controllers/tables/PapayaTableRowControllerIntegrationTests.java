@@ -101,7 +101,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
     private Flux<Object> givenSubscriptionToTable() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                 "papaya_package_table_description",
                 PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString(),
                 "Table"
@@ -134,7 +134,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
             var lineToChange = rowRef.get();
             var resizeTableRowInput = new ResizeTableRowInput(
                     UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     tableId.get(), tableId.get(), lineToChange.getId().toString(), 100);
             var result = this.resizeTableRowMutationRunner.run(resizeTableRowInput);
 
@@ -166,7 +166,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
     public void givenTableWithAResizedRowWhenRowAResetRowsHeightMutationIsTriggeredThenTheRepresentationIsRefreshedWithNoRowHeight() {
         this.givenCommittedTransaction.commit();
 
-        var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString());
+        var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString());
         var flux = this.tableEventSubscriptionRunner.run(tableEventInput);
 
         TestTransaction.flagForCommit();
@@ -192,7 +192,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
         Runnable resetRows = () -> {
             var resetTableRowsHeightInput = new ResetTableRowsHeightInput(
                     UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     tableId.get(), tableId.get());
             var result = this.resetTableRowsHeightMutationRunner.run(resetTableRowsHeightInput);
 
@@ -227,7 +227,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
     public void giveATableWhenRowContextMenuEntriesAreQueriedThenTheCorrectEntriesAreReturned() {
         this.givenCommittedTransaction.commit();
 
-        var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString());
+        var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString());
         var flux = this.tableEventSubscriptionRunner.run(tableEventInput);
 
         TestTransaction.flagForCommit();
@@ -253,7 +253,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
 
         Runnable getContextMenuActions = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     "representationId", tableId.get(),
                     "tableId", tableId.get(),
                     "rowId", rowId.get().toString()
@@ -279,7 +279,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
     public void giveATableWhenARowContextMenuEntryIsTriggeredThenTheEntryIsCorrectlyInvoked() {
         this.givenCommittedTransaction.commit();
 
-        var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString());
+        var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString());
         var flux = this.tableEventSubscriptionRunner.run(tableEventInput);
 
         TestTransaction.flagForCommit();
@@ -306,7 +306,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
         Runnable invokeDeleteRowAction = () -> {
             var invokeRowContextMenuEntryInput = new InvokeRowContextMenuEntryInput(
                     UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     tableId.get(),
                     tableId.get(),
                     rowId.get(),

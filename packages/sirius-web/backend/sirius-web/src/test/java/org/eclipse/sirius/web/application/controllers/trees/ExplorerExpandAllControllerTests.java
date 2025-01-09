@@ -120,7 +120,7 @@ public class ExplorerExpandAllControllerTests extends AbstractIntegrationTests {
 
     public void givenStudioWhenWeAskForTheTreePathOfAnObjectThenItsPathInTheExplorerIsReturned(BiFunction<IEditingContext, IInput, IPayload> objectInjector) {
         var explorerReprsentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of());
-        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), explorerReprsentationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), explorerReprsentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input);
 
         var treeId = new AtomicReference<String>();
@@ -135,7 +135,7 @@ public class ExplorerExpandAllControllerTests extends AbstractIntegrationTests {
         });
 
         Runnable createView = () -> {
-            var createViewInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), objectInjector);
+            var createViewInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), objectInjector);
             this.executeEditingContextFunctionRunner.execute(createViewInput).block();
 
             BiFunction<IEditingContext, IInput, IPayload> getObjectIdFunction = (editingContext, executeEditingContextFunctionInput) -> {
@@ -157,7 +157,7 @@ public class ExplorerExpandAllControllerTests extends AbstractIntegrationTests {
                 return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), id);
             };
 
-            var getObjectIdInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), getObjectIdFunction, new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), createViewInput));
+            var getObjectIdInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), getObjectIdFunction, new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), createViewInput));
             var payload = this.executeEditingContextFunctionRunner.execute(getObjectIdInput).block();
 
             assertThat(payload).isInstanceOf(ExecuteEditingContextFunctionSuccessPayload.class);
@@ -175,7 +175,7 @@ public class ExplorerExpandAllControllerTests extends AbstractIntegrationTests {
 
         Runnable getTreePath = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(),
+                    "editingContextId", StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(),
                     "treeId", treeId.get(),
                     "treeItemId", objectId.get()
             );
@@ -195,7 +195,7 @@ public class ExplorerExpandAllControllerTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
 
         var explorerExpendedReprsentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, treeItemIds.get(), List.of());
-        var expandedTreeInput = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), explorerExpendedReprsentationId);
+        var expandedTreeInput = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), explorerExpendedReprsentationId);
         var expandedTreeFlux = this.explorerEventSubscriptionRunner.run(expandedTreeInput);
 
         Consumer<Object> initialExpandedTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {

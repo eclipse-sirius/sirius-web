@@ -86,7 +86,7 @@ public class UnsynchronizedDiagramControllerTests extends AbstractIntegrationTes
     private Flux<Object> givenSubscriptionToUnsynchronizedDiagram() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                 this.unsynchronizedDiagramDescriptionProvider.getRepresentationDescriptionId(),
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "UnsynchronizedDiagram"
@@ -133,7 +133,7 @@ public class UnsynchronizedDiagramControllerTests extends AbstractIntegrationTes
 
         Runnable createNode = () -> {
             var createNodeToolId = this.unsynchronizedDiagramDescriptionProvider.getCreateNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), diagramId.get(), createNodeToolId, 0, 0, List.of());
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), diagramId.get(), createNodeToolId, 0, 0, List.of());
             var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
@@ -178,7 +178,7 @@ public class UnsynchronizedDiagramControllerTests extends AbstractIntegrationTes
         Runnable dropOnDiagram = () -> {
             var input = new DropOnDiagramInput(
                     UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
                     diagramId.get(),
                     List.of(PapayaIdentifiers.SIRIUS_WEB_DOMAIN_OBJECT.toString()),

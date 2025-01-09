@@ -68,7 +68,7 @@ public class DateTimeStyleControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToDateTimeForm(String objectId) {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                 this.formWithStyledDateTimeDescriptionProvider.getRepresentationDescriptionId(),
                 objectId,
                 "FormWithStyledDateTime"

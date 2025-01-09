@@ -27,9 +27,13 @@ import org.eclipse.sirius.components.task.starter.services.view.ViewGanttDescrip
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
+import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -42,13 +46,20 @@ public class TaskEditingContextInitializer implements IEditingContextProcessor {
 
     private final IProjectSearchService projectSearchService;
 
-    public TaskEditingContextInitializer(IProjectSearchService projectSearchService) {
+    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
+
+    public TaskEditingContextInitializer(IProjectSearchService projectSearchService, IProjectSemanticDataSearchService projectSemanticDataSearchService) {
         this.projectSearchService = Objects.requireNonNull(projectSearchService);
+        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
     }
 
     @Override
     public void preProcess(IEditingContext editingContext) {
-        var isTaskProject = this.projectSearchService.findById(editingContext.getId())
+        var isTaskProject = new UUIDParser().parse(editingContext.getId())
+                .flatMap(semanticDataId -> this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(semanticDataId)))
+                .map(ProjectSemanticData::getProject)
+                .map(AggregateReference::getId)
+                .flatMap(this.projectSearchService::findById)
                 .filter(project -> project.getNatures().stream()
                         .map(Nature::name)
                         .anyMatch(TaskProjectTemplateProvider.TASK_NATURE::equals))

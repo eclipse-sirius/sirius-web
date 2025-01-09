@@ -99,7 +99,7 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
         var explorerDescriptionId = new AtomicReference<String>();
 
         Map<String, Object> explorerVariables = Map.of(
-                "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString()
+                "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString()
         );
         var explorerResult = TreeItemContextMenuControllerTests.this.explorerDescriptionsQueryRunner.run(explorerVariables);
         List<String> explorerIds = JsonPath.read(explorerResult, "$.data.viewer.editingContext.explorerDescriptions[*].id");
@@ -109,7 +109,7 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
         explorerDescriptionId.set(explorerIds.get(1));
 
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(explorerDescriptionId.get(), List.of(StudioIdentifiers.DOMAIN_DOCUMENT.toString(), StudioIdentifiers.DOMAIN_OBJECT.toString(), ROOT_ENTITY_ID), List.of());
-        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), explorerRepresentationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input);
 
         // 2- Retrieve the representation id (the id of DSL Domain explorer example tree)
@@ -125,7 +125,7 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
         // 3- retrieve all context menu actions defined for an Entity tree item
         Runnable getContextMenuActions = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                     "representationId", treeId.get(),
                     "treeItemId", ROOT_ENTITY_ID
             );
@@ -145,7 +145,7 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
         // 4- invoke fetch action data query to retrieve the fetch action data
         Runnable getFetchActionData = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                     "representationId", treeId.get(),
                     "treeItemId", ROOT_ENTITY_ID,
                     "menuEntryId", helpId.get()
@@ -164,7 +164,7 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
         Runnable invokeToggleAbstractAction = () -> {
             var toggleAbstractActionParameters = new InvokeSingleClickTreeItemContextMenuEntryInput(
                     UUID.randomUUID(),
-                    StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                    StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                     treeId.get(),
                     ROOT_ENTITY_ID,
                     toggleAbstractAction.get()

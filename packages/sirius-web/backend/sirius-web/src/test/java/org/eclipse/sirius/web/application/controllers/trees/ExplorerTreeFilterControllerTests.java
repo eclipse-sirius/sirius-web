@@ -78,7 +78,7 @@ public class ExplorerTreeFilterControllerTests extends AbstractIntegrationTests 
     @DisplayName("Given a tree id, when we request its tree filters, then the list is returned")
     public void givenTreeIdWhenWeRequestItsTreeFiltersThenTheListIsReturned() {
         Map<String, Object> variables = Map.of(
-                "editingContextId", StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(),
+                "editingContextId", StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(),
                 "representationId", ExplorerDescriptionProvider.PREFIX
         );
         var result = this.treeFiltersQueryRunner.run(variables);
@@ -94,7 +94,7 @@ public class ExplorerTreeFilterControllerTests extends AbstractIntegrationTests 
     @DisplayName("Given a studio, when the filter to hide the default color palette is active, then the default color palette is hidden")
     public void givenStudioWhenFilterToHideDefaultColorPaletteIsActiveThenTheDefaultColorPaletteIsHidden() {
         var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of(StudioExplorerTreeFilterProvider.HIDE_STUDIO_COLOR_PALETTES_TREE_FILTER_ID));
-        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), treeRepresentationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), treeRepresentationId);
         var flux = this.treeEventSubscriptionRunner.run(input);
 
         Consumer<Object> projectContentConsumer = object -> Optional.of(object)
@@ -119,7 +119,7 @@ public class ExplorerTreeFilterControllerTests extends AbstractIntegrationTests 
     @DisplayName("Given a studio, when the filter to show the default color palette is inactive, then the default color palette is visible")
     public void givenStudioWhenFilterToHideDefaultColorPaletteIsInactiveThenTheDefaultColorPaletteIsHidden() {
         var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of());
-        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), treeRepresentationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), treeRepresentationId);
         var flux = this.treeEventSubscriptionRunner.run(input);
 
         var defaultPaletteTreeItemId = ColorPaletteService.SIRIUS_STUDIO_COLOR_PALETTES_URI.substring((IEMFEditingContext.RESOURCE_SCHEME + ":///").length());

@@ -76,7 +76,7 @@ public class SliderControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToSliderForm() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                 this.formWithSliderDescriptionProvider.getRepresentationDescriptionId(),
                 PapayaIdentifiers.FIRST_TASK_OBJECT.toString(),
                 "FormWithSlider"
@@ -134,7 +134,7 @@ public class SliderControllerTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing form"));
 
         Runnable editSlider = () -> {
-            var input = new EditSliderInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), formId.get(), sliderId.get(), 5);
+            var input = new EditSliderInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), sliderId.get(), 5);
             var result = this.editSliderMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editSlider.__typename");

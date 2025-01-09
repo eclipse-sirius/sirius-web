@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,11 @@ export class Flow {
       if (isCreateProjectSuccessPayload(payload)) {
         const projectId = payload.project.id;
 
-        cy.createDocument(projectId, 'robot_flow', 'robot');
+        cy.getCurrentEditingContextId(projectId).then((res) => {
+          const editingContextId = res.body.data.viewer.project.currentEditingContext.id;
+          cy.createDocument(editingContextId, 'robot_flow', 'robot');
+        });
+
         const data: CreatedProjectData = { projectId };
         return cy.wrap(data);
       } else {

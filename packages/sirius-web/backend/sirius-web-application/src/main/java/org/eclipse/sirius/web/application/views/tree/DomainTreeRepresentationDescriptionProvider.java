@@ -40,6 +40,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.web.application.UUIDParser;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationIconURL;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
@@ -69,11 +70,14 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
 
     private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
-    public DomainTreeRepresentationDescriptionProvider(IObjectService objectService, IURLParser urlParser, List<IRepresentationImageProvider> representationImageProviders, IRepresentationMetadataSearchService representationMetadataSearchService) {
+    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
+
+    public DomainTreeRepresentationDescriptionProvider(IObjectService objectService, IURLParser urlParser, List<IRepresentationImageProvider> representationImageProviders, IRepresentationMetadataSearchService representationMetadataSearchService, IProjectSemanticDataSearchService projectSemanticDataSearchService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.urlParser = Objects.requireNonNull(urlParser);
         this.representationImageProviders = Objects.requireNonNull(representationImageProviders);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
+        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
     }
 
     @Override
@@ -192,7 +196,11 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
         boolean hasChildren = false;
         if (self instanceof EObject eObject) {
             hasChildren = !eObject.eContents().isEmpty();
-            var optionalProjectId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId);
+            var optionalProjectId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+                    .map(IEditingContext::getId)
+                    .flatMap(semanticDataId -> new UUIDParser().parse(semanticDataId))
+                    .flatMap(semanticDataId -> this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(semanticDataId)))
+                    .map(semanticData -> semanticData.getProject().getId());
 
             if (!hasChildren && optionalProjectId.isPresent()) {
                 String id = this.objectService.getId(eObject);
@@ -235,7 +243,11 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
         String id = this.getTreeItemId(variableManager);
         if (expandedIds.contains(id)) {
             if (self instanceof EObject) {
-                var optionalProjectId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId);
+                var optionalProjectId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+                        .map(IEditingContext::getId)
+                        .flatMap(semanticDataId -> new UUIDParser().parse(semanticDataId))
+                        .flatMap(semanticDataId -> this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(semanticDataId)))
+                        .map(semanticData -> semanticData.getProject().getId());
                 if (optionalProjectId.isPresent()) {
                     var projectId = optionalProjectId.get();
                     var representationMetadata = new ArrayList<>(this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(projectId), id));

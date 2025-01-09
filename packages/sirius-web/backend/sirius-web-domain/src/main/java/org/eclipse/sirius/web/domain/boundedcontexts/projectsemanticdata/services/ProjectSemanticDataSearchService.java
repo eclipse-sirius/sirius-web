@@ -21,6 +21,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.repositories.IProjectSemanticDataRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
@@ -54,7 +55,7 @@ public class ProjectSemanticDataSearchService implements IProjectSemanticDataSea
     }
 
     @Override
-    public Optional<ProjectSemanticData> findBySemanticDataId(AggregateReference<Project, UUID> semanticData) {
+    public Optional<ProjectSemanticData> findBySemanticDataId(AggregateReference<SemanticData, UUID> semanticData) {
         return this.projectSemanticDataRepository.findBySemanticDataId(semanticData.getId());
     }
 }

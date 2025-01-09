@@ -88,7 +88,7 @@ public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegra
     private Flux<Object> givenSubscriptionToTable() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                 "papaya_package_table_description",
                 PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString(),
                 "Table"
@@ -121,7 +121,7 @@ public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegra
             var columnToChange = columnRef.get();
             var resizeTableColumnInput = new ResizeTableColumnInput(
                     UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     tableId.get(), tableId.get(), columnToChange.getId().toString(), 50);
             var result = this.resizeTableColumnMutationRunner.run(resizeTableColumnInput);
 
@@ -179,7 +179,7 @@ public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegra
         Runnable changeColumnVisibility = () -> {
             var changeTableColumnVisibilityInput = new ChangeTableColumnVisibilityInput(
                     UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     tableId.get(), tableId.get(),
                     List.of(
                             new ColumnVisibility(columnNameRef.get().getId().toString(), false),
@@ -241,7 +241,7 @@ public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegra
             Collections.swap(ids, 0, 1); // swap first two columns, so Name is before Icon
             var changeTableColumnsOrderInput = new ReorderTableColumnsInput(
                     UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     tableId.get(),
                     tableId.get(),
                     ids

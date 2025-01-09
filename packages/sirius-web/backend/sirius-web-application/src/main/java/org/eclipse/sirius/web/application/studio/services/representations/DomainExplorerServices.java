@@ -22,12 +22,13 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.Entity;
+import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
@@ -50,11 +51,14 @@ public class DomainExplorerServices {
 
     private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
+    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
+
     private final IExplorerServices explorerServices;
 
-    public DomainExplorerServices(IObjectService objectService, IRepresentationMetadataSearchService representationMetadataSearchService, List<IRepresentationImageProvider> representationImageProviders, IExplorerServices explorerServices) {
+    public DomainExplorerServices(IObjectService objectService, IRepresentationMetadataSearchService representationMetadataSearchService, IProjectSemanticDataSearchService projectSemanticDataSearchService, IExplorerServices explorerServices) {
         this.objectService = Objects.requireNonNull(objectService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
+        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
         this.explorerServices = Objects.requireNonNull(explorerServices);
     }
 
@@ -101,9 +105,15 @@ public class DomainExplorerServices {
                 if (self instanceof Resource resource) {
                     result.addAll(resource.getContents());
                 } else if (self instanceof EObject) {
-                    var representationMetadata = new ArrayList<>(this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(editingContext.getId()), id));
-                    representationMetadata.sort(Comparator.comparing(org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata::getLabel));
-                    result.addAll(representationMetadata);
+                    var optionalProjectId = new UUIDParser().parse(editingContext.getId())
+                            .flatMap(semanticDataId -> this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(semanticDataId)))
+                            .map(projectSemanticData -> projectSemanticData.getProject().getId());
+
+                    if (optionalProjectId.isPresent()) {
+                        var representationMetadata = new ArrayList<>(this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(optionalProjectId.get()), id));
+                        representationMetadata.sort(Comparator.comparing(org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata::getLabel));
+                        result.addAll(representationMetadata);
+                    }
 
                     List<Object> contents = this.objectService.getContents(self);
                     if (self instanceof Entity entity) {

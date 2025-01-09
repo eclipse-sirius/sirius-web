@@ -18,6 +18,8 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationMetadataPe
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.application.UUIDParser;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationIconURL;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataCreationService;
@@ -35,20 +37,28 @@ public class RepresentationMetadataPersistenceService implements IRepresentation
 
     private final IRepresentationMetadataCreationService representationMetadataCreationService;
 
-    public RepresentationMetadataPersistenceService(IRepresentationMetadataCreationService representationMetadataCreationService) {
+    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
+
+
+    public RepresentationMetadataPersistenceService(IRepresentationMetadataCreationService representationMetadataCreationService, IProjectSemanticDataSearchService projectSemanticDataSearchService) {
         this.representationMetadataCreationService = Objects.requireNonNull(representationMetadataCreationService);
+        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
     }
 
     @Override
     @Transactional
     public void save(ICause cause, IEditingContext editingContext, org.eclipse.sirius.components.core.RepresentationMetadata representationMetadata, String targetObjectId) {
         var optionalRepresentationId = new UUIDParser().parse(representationMetadata.id());
+        var optionalProjectId = new UUIDParser().parse(editingContext.getId())
+                .flatMap(semanticDataId -> this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(semanticDataId)))
+                .map(ProjectSemanticData::getProject)
+                .map(AggregateReference::getId);
 
-        if (optionalRepresentationId.isPresent()) {
+        if (optionalRepresentationId.isPresent() && optionalProjectId.isPresent()) {
             var representationId = optionalRepresentationId.get();
 
             var boundedRepresentationMetadata = RepresentationMetadata.newRepresentationMetadata(representationId)
-                    .project(AggregateReference.to(editingContext.getId()))
+                    .project(AggregateReference.to(optionalProjectId.get()))
                     .label(representationMetadata.label())
                     .kind(representationMetadata.kind())
                     .descriptionId(representationMetadata.descriptionId())

@@ -89,7 +89,7 @@ public class GanttLifecycleControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToGantt() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                 this.papayaGanttDescriptionProvider.getRepresentationDescriptionId(),
                 PapayaIdentifiers.SIRIUS_WEB_PLANNING_PROJECT_OBJECT.toString(),
                 "Gantt"
@@ -129,7 +129,7 @@ public class GanttLifecycleControllerTests extends AbstractIntegrationTests {
         Runnable deleteGanttTask = () -> {
             var deleteGanttTaskInput = new DeleteGanttTaskInput(
                     UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     ganttId.get(),
                     taskId.get()
             );
@@ -163,7 +163,7 @@ public class GanttLifecycleControllerTests extends AbstractIntegrationTests {
                         }, () -> fail("Missing representation event processor"));
             };
             this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
-                    .filter(editingContextEventProcessor -> editingContextEventProcessor.getEditingContextId().equals(PapayaIdentifiers.PAPAYA_PROJECT.toString()))
+                    .filter(editingContextEventProcessor -> editingContextEventProcessor.getEditingContextId().equals(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString()))
                     .findFirst()
                     .ifPresentOrElse(editingContextEventProcessorConsumer, () -> fail("Missing editing context event processor"));
         };

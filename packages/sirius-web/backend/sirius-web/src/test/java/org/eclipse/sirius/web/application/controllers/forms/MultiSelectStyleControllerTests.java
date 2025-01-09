@@ -68,7 +68,7 @@ public class MultiSelectStyleControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToMultiSelectForm(String objectId) {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                 this.formWithStyledMultiSelectDescriptionProvider.getRepresentationDescriptionId(),
                 objectId,
                 "FormWithStyledMultiSelect"

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,6 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingDomainFactory;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.springframework.stereotype.Service;
 
 /**
@@ -45,7 +44,7 @@ public class EditingDomainFactory implements IEditingDomainFactory {
     }
 
     @Override
-    public AdapterFactoryEditingDomain createEditingDomain(Project project) {
+    public AdapterFactoryEditingDomain createEditingDomain() {
         AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(this.composedAdapterFactory, new BasicCommandStack());
         ResourceSet resourceSet = editingDomain.getResourceSet();
         resourceSet.getLoadOptions().put(JsonResource.OPTION_EXTENDED_META_DATA, new BasicExtendedMetaData(resourceSet.getPackageRegistry()));

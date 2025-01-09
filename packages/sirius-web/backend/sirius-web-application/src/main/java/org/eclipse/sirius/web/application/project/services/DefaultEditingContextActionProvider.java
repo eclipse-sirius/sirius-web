@@ -19,9 +19,14 @@ import java.util.Set;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextActionProvider;
 import org.eclipse.sirius.components.collaborative.dto.EditingContextAction;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Used to provide the default editing context actions.
@@ -35,16 +40,26 @@ public class DefaultEditingContextActionProvider implements IEditingContextActio
 
     private final IProjectSearchService projectSearchService;
 
-    public DefaultEditingContextActionProvider(IProjectSearchService projectSearchService) {
+    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
+
+
+    public DefaultEditingContextActionProvider(IProjectSearchService projectSearchService, IProjectSemanticDataSearchService projectSemanticDataSearchService) {
         this.projectSearchService = Objects.requireNonNull(projectSearchService);
+        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<EditingContextAction> getEditingContextAction(IEditingContext editingContext) {
-        var isWithoutNature = this.projectSearchService.findById(editingContext.getId())
+        var isWithoutNature = new UUIDParser().parse(editingContext.getId())
+                .flatMap(semanticDataId -> this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(semanticDataId)))
+                .map(ProjectSemanticData::getProject)
+                .map(AggregateReference::getId)
+                .flatMap(this.projectSearchService::findById)
                 .map(Project::getNatures)
                 .orElseGet(Set::of)
                 .isEmpty();
+
         if (isWithoutNature) {
             return List.of(new EditingContextAction(EMPTY_ACTION_ID, "Others..."));
         }

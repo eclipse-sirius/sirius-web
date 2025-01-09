@@ -85,7 +85,7 @@ public class DiagramViewControllerIntegrationTests extends AbstractIntegrationTe
 
         var inputPalette = new CreateChildInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                 "c4591605-8ea8-4e92-bb17-05c4538248f8",
                 "descriptions-DiagramDescription"
         );
@@ -108,7 +108,7 @@ public class DiagramViewControllerIntegrationTests extends AbstractIntegrationTe
 
         var nodeDescription = new CreateChildInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                 diagramDescriptionId.get(),
                 "nodeDescriptions-NodeDescription"
         );
@@ -122,7 +122,7 @@ public class DiagramViewControllerIntegrationTests extends AbstractIntegrationTe
 
         var conditionalStyle = new CreateChildInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                 objectId,
                 "conditionalStyles-ConditionalNodeStyle"
         );
@@ -135,7 +135,7 @@ public class DiagramViewControllerIntegrationTests extends AbstractIntegrationTe
         assertThat(objectKind).isEqualTo("siriusComponents://semantic?domain=diagram&entity=ConditionalNodeStyle");
 
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(objectId));
-        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), detailsRepresentationId);
+        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), detailsRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input);
 
         Predicate<Object> formContentMatcher = object -> Optional.of(object)

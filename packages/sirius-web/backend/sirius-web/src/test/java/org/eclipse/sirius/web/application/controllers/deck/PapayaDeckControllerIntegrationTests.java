@@ -79,7 +79,7 @@ public class PapayaDeckControllerIntegrationTests extends AbstractIntegrationTes
     private Flux<Object> givenSubscriptionToDeck() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                 this.papayaDeckDescriptionProvider.getRepresentationDescriptionId(),
                 PapayaIdentifiers.SIRIUS_WEB_PLANNING_PROJECT_OBJECT.toString(),
                 "Deck"
@@ -132,7 +132,7 @@ public class PapayaDeckControllerIntegrationTests extends AbstractIntegrationTes
         Runnable createNewCard = () -> {
             var createDeckCardInput = new CreateDeckCardInput(
                     UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     deckId.get(),
                     laneId.get(),
                     "title",
@@ -189,7 +189,7 @@ public class PapayaDeckControllerIntegrationTests extends AbstractIntegrationTes
         Runnable deleteCard = () -> {
             var deleteDeckCardInput = new DeleteDeckCardInput(
                     UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     deckId.get(),
                     cardId.get()
             );

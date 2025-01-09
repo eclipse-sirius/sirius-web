@@ -83,7 +83,7 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToVisibilityDiagram() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                 this.visibilityDiagramDescriptionProvider.getRepresentationDescriptionId(),
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "VisibilityDiagram"
@@ -149,7 +149,7 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
 
         Runnable revealNodes = () -> {
             String revealNodeToolId = this.visibilityDiagramDescriptionProvider.getRevealNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), hiddenNodeId.get(), revealNodeToolId, 0, 0, List.of());
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), hiddenNodeId.get(), revealNodeToolId, 0, 0, List.of());
             var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
@@ -198,7 +198,7 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
 
         Runnable hideNodes = () -> {
             String hideNodeToolId = this.visibilityDiagramDescriptionProvider.getHideNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), revealedNodeId.get(), hideNodeToolId, 0, 0, List.of());
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), revealedNodeId.get(), hideNodeToolId, 0, 0, List.of());
             var invokeSingleClickOnDiagramElementToolResult = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
 
             String invokeSingleClickOnDiagramElementToolResultTypename = JsonPath.read(invokeSingleClickOnDiagramElementToolResult, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
@@ -250,7 +250,7 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
 
         Runnable fadeNodes = () -> {
             String fadeNodeToolId = this.visibilityDiagramDescriptionProvider.getFadeNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), unfadedNodeId.get(), fadeNodeToolId, 0, 0, List.of());
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), unfadedNodeId.get(), fadeNodeToolId, 0, 0, List.of());
             var invokeSingleClickOnDiagramElementToolResult = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
 
             String invokeSingleClickOnDiagramElementToolResultTypename = JsonPath.read(invokeSingleClickOnDiagramElementToolResult, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
@@ -300,7 +300,7 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
 
         Runnable unfadeNodes = () -> {
             String unfadeNodeToolId = this.visibilityDiagramDescriptionProvider.getUnfadeNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), fadedNodeId.get(), unfadeNodeToolId, 0, 0, List.of());
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), fadedNodeId.get(), unfadeNodeToolId, 0, 0, List.of());
             var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
@@ -348,7 +348,7 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
 
         Runnable fadeNode = () -> {
             String fadeNodeToolId = this.visibilityDiagramDescriptionProvider.getFadeNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), nodeToFadeId.get(), fadeNodeToolId, 0, 0, List.of());
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), nodeToFadeId.get(), fadeNodeToolId, 0, 0, List.of());
             var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
@@ -357,7 +357,7 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
 
         Runnable hideNode = () -> {
             String hideNodeToolId = this.visibilityDiagramDescriptionProvider.getHideNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), nodeToHideId.get(), hideNodeToolId, 0, 0, List.of());
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), nodeToHideId.get(), hideNodeToolId, 0, 0, List.of());
             var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
@@ -366,7 +366,7 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
 
         Runnable resetFadedNodeVisibility = () -> {
             String resetNodeToolId = this.visibilityDiagramDescriptionProvider.getResetNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), nodeToFadeId.get(), resetNodeToolId, 0, 0, List.of());
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), nodeToFadeId.get(), resetNodeToolId, 0, 0, List.of());
             var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
@@ -376,7 +376,7 @@ public class VisibilityDiagramControllerTests extends AbstractIntegrationTests {
 
         Runnable resetHiddenNodeVisibility = () -> {
             String resetNodeToolId = this.visibilityDiagramDescriptionProvider.getResetNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), nodeToHideId.get(), resetNodeToolId, 0, 0, List.of());
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), nodeToHideId.get(), resetNodeToolId, 0, 0, List.of());
             var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");

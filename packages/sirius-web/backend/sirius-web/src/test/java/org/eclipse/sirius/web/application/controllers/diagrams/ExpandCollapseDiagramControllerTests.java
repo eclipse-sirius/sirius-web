@@ -80,7 +80,7 @@ public class ExpandCollapseDiagramControllerTests extends AbstractIntegrationTes
     private Flux<Object> givenSubscriptionToExpandedCollapseDiagram() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                 this.expandCollapseDiagramDescriptionProvider.getRepresentationDescriptionId(),
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "ExpandCollapseDiagram"
@@ -138,7 +138,7 @@ public class ExpandCollapseDiagramControllerTests extends AbstractIntegrationTes
 
         Runnable expandNodes = () -> {
             String expandToolId = this.expandCollapseDiagramDescriptionProvider.getExpandNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), collapsedNodeId.get(), expandToolId, 0, 0, List.of());
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), collapsedNodeId.get(), expandToolId, 0, 0, List.of());
             var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
@@ -187,7 +187,7 @@ public class ExpandCollapseDiagramControllerTests extends AbstractIntegrationTes
 
         Runnable collapseNodes = () -> {
             String collapseToolId = this.expandCollapseDiagramDescriptionProvider.getCollapseNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), expandedNodeId.get(), collapseToolId, 0, 0, List.of());
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), expandedNodeId.get(), collapseToolId, 0, 0, List.of());
             var invokeSingleClickOnDiagramElementToolResult = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
 
             String invokeSingleClickOnDiagramElementToolResultTypename = JsonPath.read(invokeSingleClickOnDiagramElementToolResult, "$.data.invokeSingleClickOnDiagramElementTool.__typename");

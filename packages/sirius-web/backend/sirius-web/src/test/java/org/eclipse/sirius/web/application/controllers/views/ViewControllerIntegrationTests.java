@@ -84,7 +84,7 @@ public class ViewControllerIntegrationTests extends AbstractIntegrationTests {
 
         var inputPalette = new CreateChildInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                 "c4591605-8ea8-4e92-bb17-05c4538248f8",
                 "textStylePalettes-TextStylePalette"
         );
@@ -107,7 +107,7 @@ public class ViewControllerIntegrationTests extends AbstractIntegrationTests {
 
         var inputStyleDescription = new CreateChildInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                 paletteId.get(),
                 "styles-TextStyleDescription"
         );
@@ -120,7 +120,7 @@ public class ViewControllerIntegrationTests extends AbstractIntegrationTests {
         assertThat(objectKind).isEqualTo("siriusComponents://semantic?domain=view&entity=TextStyleDescription");
 
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(objectId));
-        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), detailsRepresentationId);
+        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), detailsRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input);
 
         Predicate<Object> formContentMatcher = object -> Optional.of(object)
@@ -148,7 +148,7 @@ public class ViewControllerIntegrationTests extends AbstractIntegrationTests {
 
         var inputPalette = new CreateChildInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                 "c4591605-8ea8-4e92-bb17-05c4538248f8",
                 "colorPalettes-ColorPalette"
         );
@@ -171,7 +171,7 @@ public class ViewControllerIntegrationTests extends AbstractIntegrationTests {
 
         var inputFixedColor = new CreateChildInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
                 paletteId.get(),
                 "colors-FixedColor"
         );
@@ -184,7 +184,7 @@ public class ViewControllerIntegrationTests extends AbstractIntegrationTests {
         assertThat(objectKind).isEqualTo("siriusComponents://semantic?domain=view&entity=FixedColor");
 
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(objectId));
-        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), detailsRepresentationId);
+        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), detailsRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input);
 
         Predicate<Object> formContentMatcher = object -> Optional.of(object)

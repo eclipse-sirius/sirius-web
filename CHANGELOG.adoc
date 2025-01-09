@@ -46,6 +46,10 @@ It is not an API breaking change but a breaking change from the end-user point o
 - https://github.com/eclipse-sirius/sirius-web/issues/4500[#4500] [sirius-web] Remove the tight coupling between `SemanticData` and `Project` by removing `SemanticData#project` along with the column `project_id` from the `semantic_data` table
 - https://github.com/eclipse-sirius/sirius-web/issues/4501[#4501] [browser] `IReferenceWidgetRootCandidateSearchProvider` API has been renamed to `IModelBrowserRootCandidateSearchProvider` and moved to the `sirius-components-collaborative-browser` module.
 - https://github.com/eclipse-sirius/sirius-web/issues/4377[#4377] [sirius-web] The `sirius-web-table` project has been renamed to `sirius-web-view-fork`
+- https://github.com/eclipse-sirius/sirius-web/issues/4372[#4372] [sirius-web] The identifier used for `editingContextId` is now `SemanticData#id` instead of `Project#id`.
+In order to find the `editingContextId` from the `projectId` one should leverage `IProjectSemanticDataSearchService#findByProjectId` and use the `ìd` of the semantic data found.
+To find instead the `projectId` from the `editingContextId`, `IProjectSemanticDataSearchService#findBySemanticDataId` should be used along with the `id` of the project.
+The method `IEditingContextLoader#load` has also been updated to not use `projectId` as parameter anymore but instead the `SemanticData` directly.
 
 
 === Dependency update
@@ -167,6 +171,8 @@ Note that you may need to encode special characters like `[`(by `%5B`) and `]` (
 To achieve that a new concept, `ProjectSemanticData` has been added along with a dedicated table to keep the information previously contained in `SemanticData`
 - https://github.com/eclipse-sirius/sirius-web/issues/4501[#4501] [browser] Extract the model browser into reusable modules
 - https://github.com/eclipse-sirius/sirius-web/issues/4514[#4514] [sirius-web] Added support for Ctrl+Shift+Z (Linux/macOS) to trigger redo in addition to Ctrl+Y (Windows)
+- https://github.com/eclipse-sirius/sirius-web/issues/4372[#4372] [sirius-web] Lower the coupling between project and editing context
+
 
 == v2025.1.0
 

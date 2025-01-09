@@ -100,7 +100,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a domain diagram on a studio, when it is opened, then entities are visible")
     public void givenDomainDiagramOnStudioWhenItIsOpenedThenEntitiesAreVisible() {
-        var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), this.domainDiagramDescriptionProvider.getDescriptionId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), "Domain");
+        var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), this.domainDiagramDescriptionProvider.getDescriptionId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), "Domain");
         var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input);
 
         Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
@@ -128,7 +128,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a domain diagram on a studio, when moving a node and then reloading the previously saved state, then the node is back to its initial position")
     public void givenDomainDiagramOnStudioWhenMovingNodeAndThenReloadingPreviousStateThenNodeBackToInitialPosition() {
-        var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), this.domainDiagramDescriptionProvider.getDescriptionId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), "Domain");
+        var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), this.domainDiagramDescriptionProvider.getDescriptionId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), "Domain");
         var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input);
 
         var initialPosition = new Position(50.0, 50.0);
@@ -159,7 +159,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
         Runnable initialDiagramLayout = () -> {
             var humanNodeLayout = new NodeLayoutDataInput(humanNodeId.get(), initialPosition, initialSize, true);
             var layoutData = new DiagramLayoutDataInput(List.of(humanNodeLayout), List.of());
-            var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), diagramId.get(), layoutData);
+            var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), diagramId.get(), layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);
         };
 
@@ -186,7 +186,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
         Runnable modifyDiagramLayout = () -> {
             var humanNodeLayout = new NodeLayoutDataInput(humanNodeId.get(), modifiedPosition, modifiedSize, true);
             var layoutData = new DiagramLayoutDataInput(List.of(humanNodeLayout), List.of());
-            var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), diagramId.get(), layoutData);
+            var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), diagramId.get(), layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);
         };
 
@@ -236,7 +236,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
                     }, () -> fail("Missing representation event processor"));
         };
         this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
-                .filter(editingContextEventProcessor -> editingContextEventProcessor.getEditingContextId().equals(StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString()))
+                .filter(editingContextEventProcessor -> editingContextEventProcessor.getEditingContextId().equals(StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString()))
                 .findFirst()
                 .ifPresentOrElse(editingContextEventProcessorConsumer, () -> fail("Missing editing context event processor"));
     }

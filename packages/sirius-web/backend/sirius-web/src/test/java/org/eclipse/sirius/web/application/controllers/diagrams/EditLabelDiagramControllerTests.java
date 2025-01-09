@@ -80,7 +80,7 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToLabelEditableDiagram() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                 this.editableLabelDiagramDescriptionProvider.getRepresentationDescriptionId(),
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "EditableLabelDiagram"
@@ -110,7 +110,7 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
 
         Runnable requestInitialLabel = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     "diagramId", diagramId.get(),
                     "labelId", labelId.get()
             );
@@ -149,7 +149,7 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing diagram"));
 
         Runnable editLabel = () -> {
-            var input = new EditLabelInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), labelId.get(), "new label");
+            var input = new EditLabelInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), labelId.get(), "new label");
             var result = this.editLabelMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editLabel.__typename");
@@ -199,7 +199,7 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing diagram"));
 
         Runnable editLabel = () -> {
-            var input = new EditLabelInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), labelId.get(), "sirius-web-application-renamed");
+            var input = new EditLabelInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), labelId.get(), "sirius-web-application-renamed");
             var result = this.editLabelMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editLabel.__typename");

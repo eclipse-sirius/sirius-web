@@ -48,7 +48,7 @@ public class ExplorerDescriptionsControllerTests extends AbstractIntegrationTest
     @DisplayName("Given an empty studio, when the explorer descriptions are requested, then only the default explorer description id is received")
     public void givenAnEmpyStudioWhenTheExplorerDescriptionsAreRequestedThenOnlyTheDefaultExplorerDescriptionIdIsReceived() {
         Map<String, Object> variables = Map.of(
-                "editingContextId", StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString()
+                "editingContextId", StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString()
         );
         var result = this.explorerDescriptionsQueryRunner.run(variables);
 
@@ -62,7 +62,7 @@ public class ExplorerDescriptionsControllerTests extends AbstractIntegrationTest
     @DisplayName("Given a studio, when the explorer descriptions are requested, then a view tree description is received in addition of the default explorer one")
     public void givenAStudioWhenTheExplorerDescriptionsAreRequestedThenAViewTreeDescriptionIsReceivedInAdditionOfTheDefaultExplorerOne() {
         Map<String, Object> variables = Map.of(
-                "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString()
+                "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString()
         );
         var result = this.explorerDescriptionsQueryRunner.run(variables);
 

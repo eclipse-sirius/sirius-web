@@ -127,7 +127,7 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToExpandedCollapseDiagram() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                 this.expandCollapseDiagramDescriptionProvider.getRepresentationDescriptionId(),
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "ExpandCollapseDiagram"
@@ -141,7 +141,7 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
     public void givenDiagramAndDiagramFilterWhenToolCollapsingNodeIsInvokedOnDiagramThenDiagramFilterIsUpdated() {
         BiFunction<Diagram, String, Void> collapseNodes = (diagram, nodeId) -> {
             String collapseToolId = this.expandCollapseDiagramDescriptionProvider.getCollapseNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagram.getId(), nodeId, collapseToolId, 0, 0, List.of());
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagram.getId(), nodeId, collapseToolId, 0, 0, List.of());
             var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
@@ -158,7 +158,7 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
     @DisplayName("Given a diagram and a diagram filter, when a tool fading nodes is invoked on the diagram, then the diagram filter is updated")
     public void givenDiagramAndDiagramFilterWhenToolFadingNodeIsInvokedOnDiagramThenDiagramFilterIsUpdated() {
         BiFunction<Diagram, String, Void> fadeNodes = (diagram, nodeId) -> {
-            var input = new FadeDiagramElementInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagram.getId(), Set.of(nodeId), true);
+            var input = new FadeDiagramElementInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagram.getId(), Set.of(nodeId), true);
             var result = this.fadeDiagramElementMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.fadeDiagramElement.__typename");
@@ -175,7 +175,7 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
     @DisplayName("Given a diagram and a diagram filter, when a tool pinning nodes is invoked on the diagram, then the diagram filter is updated")
     public void givenDiagramAndDiagramFilterWhenToolPinningNodeIsInvokedOnDiagramThenDiagramFilterIsUpdated() {
         BiFunction<Diagram, String, Void> pinNodes = (diagram, nodeId) -> {
-            var input = new PinDiagramElementInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagram.getId(), Set.of(nodeId), true);
+            var input = new PinDiagramElementInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagram.getId(), Set.of(nodeId), true);
             var result = this.pinDiagramElementMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.pinDiagramElement.__typename");
@@ -192,7 +192,7 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
     @DisplayName("Given a diagram and a diagram filter, when a tool hiding nodes is invoked on the diagram, then the diagram filter is updated")
     public void givenDiagramAndDiagramFilterWhenToolHidingNodeIsInvokedOnDiagramThenDiagramFilterIsUpdated() {
         BiFunction<Diagram, String, Void> hideNodes = (diagram, nodeId) -> {
-            var input = new HideDiagramElementInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagram.getId(), Set.of(nodeId), true);
+            var input = new HideDiagramElementInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagram.getId(), Set.of(nodeId), true);
             var result = this.hideDiagramElementMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.hideDiagramElement.__typename");
@@ -229,7 +229,7 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
 
         var diagramFilterRepresentationId = representationIdBuilder.buildDiagramFilterRepresentationId(List.of(diagramReference.get().getId()));
-        var diagramFilterEventInput = new DiagramFilterEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramFilterRepresentationId);
+        var diagramFilterEventInput = new DiagramFilterEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramFilterRepresentationId);
         var diagramFilterFlux = this.diagramFilterEventSubscriptionRunner.run(diagramFilterEventInput);
 
         Predicate<Object> formContentMatcher = object -> this.refreshedForm(object)
@@ -353,7 +353,7 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
 
         var diagramFilterRepresentationId = representationIdBuilder.buildDiagramFilterRepresentationId(List.of(diagramReference.get().getId()));
-        var diagramFilterEventInput = new DiagramFilterEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagramFilterRepresentationId);
+        var diagramFilterEventInput = new DiagramFilterEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramFilterRepresentationId);
         var diagramFilterFlux = this.diagramFilterEventSubscriptionRunner.run(diagramFilterEventInput);
 
         AtomicReference<String> formId = new AtomicReference<>();
@@ -432,14 +432,14 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
     }
 
     private void checkTreeNode(String formId, String treeId, String treeNodeToCheckId) {
-        var input = new EditTreeCheckboxInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), formId, treeId, treeNodeToCheckId, true);
+        var input = new EditTreeCheckboxInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId, treeId, treeNodeToCheckId, true);
         var editTreeCheckboxMutationResult = this.editTreeCheckboxMutationRunner.run(input);
         String editTreeCheckboxMutationResultTypename = JsonPath.read(editTreeCheckboxMutationResult, "$.data.editTreeCheckbox.__typename");
         assertThat(editTreeCheckboxMutationResultTypename).isEqualTo(SuccessPayload.class.getSimpleName());
     }
 
     private void performAction(String formId, String actionId) {
-        var input = new PushButtonInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), formId, actionId);
+        var input = new PushButtonInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId, actionId);
         var pushButtonMutationResult = this.pushButtonMutationRunner.run(input);
         String pushButtonMutationResultTypename = JsonPath.read(pushButtonMutationResult, "$.data.pushButton.__typename");
         assertThat(pushButtonMutationResultTypename).isEqualTo(SuccessPayload.class.getSimpleName());

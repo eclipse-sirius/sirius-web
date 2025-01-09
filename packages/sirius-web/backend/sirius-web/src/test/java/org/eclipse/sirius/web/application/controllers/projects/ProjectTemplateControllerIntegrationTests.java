@@ -28,6 +28,8 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateInput;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateSuccessPayload;
 import org.eclipse.sirius.web.application.studio.services.StudioProjectTemplateProvider;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.papaya.services.PapayaProjectTemplateProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.CreateProjectFromTemplateMutationRunner;
@@ -37,6 +39,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,6 +60,9 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
 
     @Autowired
     private IEditingContextSearchService editingContextSearchService;
+
+    @Autowired
+    private IProjectSemanticDataSearchService projectSemanticDataSearchService;
 
     @Autowired
     private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
@@ -113,7 +119,12 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
         String representationId = JsonPath.read(result, "$.data.createProjectFromTemplate.representationToOpen.id");
         assertThat(representationId).isNotBlank();
 
-        var optionalEditingContext = this.editingContextSearchService.findById(projectId);
+        var optionalEditingContext = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(projectId))
+                .map(ProjectSemanticData::getSemanticData)
+                .map(AggregateReference::getId)
+                .map(UUID::toString)
+                .flatMap(editingContextSearchService::findById);
+
         assertThat(optionalEditingContext).isPresent();
 
         var editingContext = optionalEditingContext.get();
@@ -139,7 +150,12 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
         String projectId = JsonPath.read(result, "$.data.createProjectFromTemplate.project.id");
         assertThat(projectId).isNotBlank();
 
-        var optionalEditingContext = this.editingContextSearchService.findById(projectId);
+        var optionalEditingContext = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(projectId))
+                .map(ProjectSemanticData::getSemanticData)
+                .map(AggregateReference::getId)
+                .map(UUID::toString)
+                .flatMap(editingContextSearchService::findById);
+
         assertThat(optionalEditingContext).isPresent();
 
         var editingContext = optionalEditingContext.get();

@@ -101,7 +101,7 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
     private Flux<Object> givenSubscriptionToTable() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                 "papaya_package_table_description",
                 PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString(),
                 "Table"
@@ -165,7 +165,7 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
 
 
             this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
-                    .filter(editingContextEventProcessor -> editingContextEventProcessor.getEditingContextId().equals(PapayaIdentifiers.PAPAYA_PROJECT.toString()))
+                    .filter(editingContextEventProcessor -> editingContextEventProcessor.getEditingContextId().equals(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString()))
                     .findFirst()
                     .ifPresentOrElse(editingContextEventProcessorConsumer, () -> fail("Missing editing context event processor"));
 
@@ -231,7 +231,7 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
         Runnable changeGlobalFilter = () -> {
             var changeGlobalFilterValueInput = new ChangeGlobalFilterValueInput(
                     UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     tableId.get(), tableId.get(), "New global filter value");
             var result = this.changeGlobalFilterMutationRunner.run(changeGlobalFilterValueInput);
 
@@ -280,7 +280,7 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
         Runnable changeColumnFilter = () -> {
             var changeColumnFilterInput = new ChangeColumnFilterInput(
                     UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_PROJECT.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     tableId.get(), tableId.get(), List.of(new ColumnFilter(columnId.get(), "filter value")));
             var result = this.changeColumnFilterMutationRunner.run(changeColumnFilterInput);
 
@@ -314,7 +314,7 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
     public void givenTableWithFiltersWhenRepresentationIsOpenedThenPersistedFiltersArePreserved() {
         this.givenCommittedTransaction.commit();
 
-        var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString());
+        var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString());
         var flux = this.tableEventSubscriptionRunner.run(tableEventInput);
 
         TestTransaction.flagForCommit();

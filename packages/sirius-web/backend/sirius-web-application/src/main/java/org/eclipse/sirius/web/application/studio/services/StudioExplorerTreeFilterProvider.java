@@ -19,8 +19,12 @@ import java.util.Objects;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeFilterProvider;
 import org.eclipse.sirius.components.collaborative.trees.api.TreeFilter;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
+import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -35,13 +39,20 @@ public class StudioExplorerTreeFilterProvider implements ITreeFilterProvider {
 
     private final IProjectSearchService projectSearchService;
 
-    public StudioExplorerTreeFilterProvider(IProjectSearchService projectSearchService) {
+    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
+
+    public StudioExplorerTreeFilterProvider(IProjectSearchService projectSearchService, IProjectSemanticDataSearchService projectSemanticDataSearchService) {
         this.projectSearchService = Objects.requireNonNull(projectSearchService);
+        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
     }
 
     @Override
     public List<TreeFilter> get(String editingContextId, TreeDescription treeDescription, String representationId) {
-        var isStudio = this.projectSearchService.findById(editingContextId)
+        var isStudio = new UUIDParser().parse(editingContextId)
+                .flatMap(semanticDataId -> this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(semanticDataId)))
+                .map(ProjectSemanticData::getProject)
+                .map(AggregateReference::getId)
+                .flatMap(this.projectSearchService::findById)
                 .map(project -> project.getNatures().stream()
                         .map(Nature::name)
                         .anyMatch(StudioProjectTemplateProvider.STUDIO_NATURE::equals))

@@ -70,7 +70,7 @@ public class RelatedElementsViewControllerIntegrationTests extends AbstractInteg
     @DisplayName("Given an entity, when we subscribe to its related elements events, then the form is sent")
     public void givenAnEntityWhenWeSubscribeToItsRelatedElementsEventsThenTheFormIsSent() {
         var relatedElementRepresentationId = representationIdBuilder.buildRelatedElementsRepresentationId(List.of(StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString()));
-        var input = new RelatedElementsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), relatedElementRepresentationId);
+        var input = new RelatedElementsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), relatedElementRepresentationId);
         var flux = this.relatedElementsEventSubscriptionRunner.run(input);
 
         Predicate<Form> formPredicate = form -> {
@@ -115,7 +115,7 @@ public class RelatedElementsViewControllerIntegrationTests extends AbstractInteg
     @DisplayName("Given a node description, when we subscribe to its related elements events, then the form is sent")
     public void givenNodeDescriptionWhenWeSubscribeToItsRelatedElementsEventsThenTheFormIsSent() {
         var relatedElementRepresentationId = representationIdBuilder.buildRelatedElementsRepresentationId(List.of(StudioIdentifiers.HUMAN_NODE_DESCRIPTION_OBJECT.toString()));
-        var input = new RelatedElementsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), relatedElementRepresentationId);
+        var input = new RelatedElementsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), relatedElementRepresentationId);
         var flux = this.relatedElementsEventSubscriptionRunner.run(input);
 
         Predicate<Form> formPredicate = form -> {

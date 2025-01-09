@@ -70,7 +70,7 @@ public class ModelBrowserControllerTests extends AbstractIntegrationTests {
     @DisplayName("Given a reference widget, when we ask for the model browser for a reference, then its content is properly returned")
     public void givenReferenceWidgetWhenWeAskForTheModelBrowserForReferenceThenItsContentIsProperlyReturned() {
         var representationId = this.representationIdBuilder.buildModelBrowserRepresentationId("reference", "siriusComponents://semantic?domain=view&entity=Entity", "siriusComponents://semantic?domain=view&entity=Entity", StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString(), "domain.entity.superTypes", false, List.of(StudioIdentifiers.DOMAIN_DOCUMENT.toString(), StudioIdentifiers.DOMAIN_OBJECT.toString()));
-        var input = new ModelBrowserEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT, representationId);
+        var input = new ModelBrowserEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, representationId);
         var flux = this.treeEventSubscriptionRunner.run(input);
 
         Consumer<Object> initialTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {

@@ -108,7 +108,7 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
 
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(),
+                TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(),
                 new TestRepresentationDescription().getId(),
                 TestIdentifiers.EPACKAGE_OBJECT.toString(),
                 "Test representation"
@@ -138,10 +138,10 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
     public void givenRepresentationToRenameWhenMutationIsPerformedThenTheRepresentationHasBeenRenamed() {
         this.givenCommittedTransaction.commit();
 
-        var flux = this.portalEventSubscriptionRunner.run(new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
+        var flux = this.portalEventSubscriptionRunner.run(new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
 
         Runnable renameRepresentation = () -> {
-            var input = new RenameRepresentationInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString(), "new name");
+            var input = new RenameRepresentationInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString(), "new name");
             var result = this.renameRepresentationMutationRunner.run(input);
 
             TestTransaction.flagForCommit();
@@ -154,7 +154,7 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
             assertThat(this.domainEventCollector.getDomainEvents()).hasSize(1);
             assertThat(this.domainEventCollector.getDomainEvents()).anyMatch(RepresentationMetadataUpdatedEvent.class::isInstance);
 
-            result = this.representationMetadataQueryRunner.run(Map.of("editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), "representationId", TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
+            result = this.representationMetadataQueryRunner.run(Map.of("editingContextId", TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), "representationId", TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
             String label = JsonPath.read(result, "$.data.viewer.editingContext.representation.label");
             assertThat(label).isEqualTo("new name");
 
