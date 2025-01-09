@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -87,7 +87,7 @@ public class DomainEventsTest extends AbstractIntegrationTests {
         assertThat(this.domainEventCollector.getDomainEvents()).isEmpty();
 
         var newProjectName = "renamed project";
-        this.projectUpdateService.renameProject(null, TestIdentifiers.ECORE_SAMPLE_PROJECT, newProjectName);
+        this.projectUpdateService.renameProject(null, TestIdentifiers.ECORE_SAMPLE_PROJECT_ID, newProjectName);
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
@@ -103,8 +103,8 @@ public class DomainEventsTest extends AbstractIntegrationTests {
     public void givenProjectWhenNameNotModifiedNoDomainEventPublished() {
         assertThat(this.domainEventCollector.getDomainEvents()).isEmpty();
 
-        var sampleProject = this.projectSearchService.findById(TestIdentifiers.ECORE_SAMPLE_PROJECT).get();
-        this.projectUpdateService.renameProject(null, TestIdentifiers.ECORE_SAMPLE_PROJECT, sampleProject.getName());
+        var sampleProject = this.projectSearchService.findById(TestIdentifiers.ECORE_SAMPLE_PROJECT_ID).get();
+        this.projectUpdateService.renameProject(null, TestIdentifiers.ECORE_SAMPLE_PROJECT_ID, sampleProject.getName());
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
@@ -118,7 +118,7 @@ public class DomainEventsTest extends AbstractIntegrationTests {
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenDocumentWhenNameModifiedDomainEventPublished() {
         assertThat(this.domainEventCollector.getDomainEvents()).isEmpty();
-        AggregateReference<Project, UUID> projectId = AggregateReference.to(TestIdentifiers.ECORE_SAMPLE_PROJECT);
+        AggregateReference<Project, UUID> projectId = AggregateReference.to(TestIdentifiers.ECORE_SAMPLE_PROJECT_ID);
 
         var optionalSemanticData = this.semanticDataSearchService.findByProject(projectId);
         assertThat(optionalSemanticData).isPresent();
@@ -146,7 +146,7 @@ public class DomainEventsTest extends AbstractIntegrationTests {
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenDocumentWhenNameAndContentNotModifiedNoDomainEventPublished() {
         assertThat(this.domainEventCollector.getDomainEvents()).isEmpty();
-        AggregateReference<Project, UUID> projectId = AggregateReference.to(TestIdentifiers.ECORE_SAMPLE_PROJECT);
+        AggregateReference<Project, UUID> projectId = AggregateReference.to(TestIdentifiers.ECORE_SAMPLE_PROJECT_ID);
 
         var optionalSemanticData = this.semanticDataSearchService.findByProject(projectId);
         assertThat(optionalSemanticData).isPresent();
@@ -173,7 +173,7 @@ public class DomainEventsTest extends AbstractIntegrationTests {
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenDocumentWhenContentModifiedDomainEventPublished() {
         assertThat(this.domainEventCollector.getDomainEvents()).isEmpty();
-        AggregateReference<Project, UUID> projectId = AggregateReference.to(TestIdentifiers.ECORE_SAMPLE_PROJECT);
+        AggregateReference<Project, UUID> projectId = AggregateReference.to(TestIdentifiers.ECORE_SAMPLE_PROJECT_ID);
 
         var optionalSemanticData = this.semanticDataSearchService.findByProject(projectId);
         assertThat(optionalSemanticData).isPresent();

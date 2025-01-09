@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,9 +25,12 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProce
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateInput;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateSuccessPayload;
 import org.eclipse.sirius.web.application.studio.services.StudioProjectTemplateProvider;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.eclipse.sirius.web.papaya.services.PapayaProjectTemplateProvider;
 import org.eclipse.sirius.web.tests.graphql.CreateProjectFromTemplateMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.ProjectTemplatesQueryRunner;
@@ -58,6 +61,9 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
 
     @Autowired
     private IEditingContextSearchService editingContextSearchService;
+
+    @Autowired
+    private ISemanticDataSearchService semanticDataSearchService;
 
     @Autowired
     private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
@@ -116,7 +122,11 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
         String representationId = JsonPath.read(result, "$.data.createProjectFromTemplate.representationToOpen.id");
         assertThat(representationId).isNotBlank();
 
-        var optionalEditingContext = this.editingContextSearchService.findById(projectId);
+        var optionalEditingContext = new UUIDParser().parse(projectId)
+                .flatMap(this.semanticDataSearchService::findByProjectId)
+                .map(SemanticData::getId)
+                .map(UUID::toString)
+                .flatMap(editingContextSearchService::findById);
         assertThat(optionalEditingContext).isPresent();
 
         var editingContext = optionalEditingContext.get();
@@ -143,7 +153,12 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
         String projectId = JsonPath.read(result, "$.data.createProjectFromTemplate.project.id");
         assertThat(projectId).isNotBlank();
 
-        var optionalEditingContext = this.editingContextSearchService.findById(projectId);
+        var optionalEditingContext = new UUIDParser().parse(projectId)
+                .flatMap(this.semanticDataSearchService::findByProjectId)
+                .map(SemanticData::getId)
+                .map(UUID::toString)
+                .flatMap(editingContextSearchService::findById);
+
         assertThat(optionalEditingContext).isPresent();
 
         var editingContext = optionalEditingContext.get();

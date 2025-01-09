@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,7 @@ import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -43,13 +44,18 @@ public class TaskEditingContextInitializer implements IEditingContextProcessor {
 
     private final IProjectSearchService projectSearchService;
 
-    public TaskEditingContextInitializer(IProjectSearchService projectSearchService) {
+    private final ISemanticDataSearchService semanticDataSearchService;
+
+    public TaskEditingContextInitializer(IProjectSearchService projectSearchService, ISemanticDataSearchService semanticDataSearchService) {
         this.projectSearchService = Objects.requireNonNull(projectSearchService);
+        this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
     }
 
     @Override
     public void preProcess(IEditingContext editingContext) {
         var isTaskProject = new UUIDParser().parse(editingContext.getId())
+                .flatMap(this.semanticDataSearchService::findById)
+                .map(semanticData -> semanticData.getProject().getId())
                 .flatMap(this.projectSearchService::findById)
                 .filter(project -> project.getNatures().stream()
                         .map(Nature::name)

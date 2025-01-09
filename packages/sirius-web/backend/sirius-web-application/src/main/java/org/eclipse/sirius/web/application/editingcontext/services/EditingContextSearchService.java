@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,6 +30,7 @@ import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingCo
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingDomainFactory;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -50,6 +51,8 @@ public class EditingContextSearchService implements IEditingContextSearchService
 
     private final Logger logger = LoggerFactory.getLogger(EditingContextSearchService.class);
 
+    private final ISemanticDataSearchService semanticDataSearchService;
+
     private final IProjectSearchService projectSearchService;
 
     private final IEditingDomainFactory editingDomainFactory;
@@ -58,7 +61,8 @@ public class EditingContextSearchService implements IEditingContextSearchService
 
     private final Timer timer;
 
-    public EditingContextSearchService(IProjectSearchService projectSearchService, IEditingDomainFactory editingDomainFactory, IEditingContextLoader editingContextLoader, MeterRegistry meterRegistry) {
+    public EditingContextSearchService(ISemanticDataSearchService semanticDataSearchService, IProjectSearchService projectSearchService, IEditingDomainFactory editingDomainFactory, IEditingContextLoader editingContextLoader, MeterRegistry meterRegistry) {
+        this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
         this.projectSearchService = Objects.requireNonNull(projectSearchService);
         this.editingDomainFactory = Objects.requireNonNull(editingDomainFactory);
         this.editingContextLoader = Objects.requireNonNull(editingContextLoader);
@@ -69,25 +73,31 @@ public class EditingContextSearchService implements IEditingContextSearchService
     @Transactional(readOnly = true)
     public boolean existsById(String editingContextId) {
         return new UUIDParser().parse(editingContextId)
-                .map(this.projectSearchService::existsById)
+                .map(this.semanticDataSearchService::existsById)
                 .orElse(false);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<IEditingContext> findById(String editingContextId) {
-        return new UUIDParser().parse(editingContextId)
-                .flatMap(this.projectSearchService::findById)
-                .map(this::toEditingContext);
+        var optionalUUID = new UUIDParser().parse(editingContextId);
+        if (optionalUUID.isPresent()) {
+            var optionalSemanticData = this.semanticDataSearchService.findById(optionalUUID.get());
+            if (optionalSemanticData.isPresent() && optionalSemanticData.get().getId() != null) {
+                return this.projectSearchService.findById(optionalSemanticData.get().getProject().getId())
+                        .map(project -> this.toEditingContext(project, optionalSemanticData.get().getId().toString()));
+            }
+        }
+        return Optional.empty();
     }
 
-    private IEditingContext toEditingContext(Project project) {
+    private IEditingContext toEditingContext(Project project, String semanticDataId) {
         long start = System.currentTimeMillis();
 
         this.logger.debug("Loading the editing context {}", project.getId());
 
         AdapterFactoryEditingDomain editingDomain = this.editingDomainFactory.createEditingDomain(project);
-        EditingContext editingContext = new EditingContext(project.getId().toString(), editingDomain, new HashMap<>(), new ArrayList<>());
+        EditingContext editingContext = new EditingContext(semanticDataId, editingDomain, new HashMap<>(), new ArrayList<>());
         this.editingContextLoader.load(editingContext, project.getId());
 
         long end = System.currentTimeMillis();

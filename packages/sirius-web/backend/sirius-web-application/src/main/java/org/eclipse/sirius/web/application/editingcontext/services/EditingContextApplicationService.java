@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,13 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.editingcontext.services;
 
-import java.util.Objects;
-
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextApplicationService;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
 
 /**
  * Used to interact with editing contexts.
@@ -28,17 +28,17 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class EditingContextApplicationService implements IEditingContextApplicationService {
 
-    private final IProjectSearchService projectSearchService;
+    private final ISemanticDataSearchService semanticDataSearchService;
 
-    public EditingContextApplicationService(IProjectSearchService projectSearchService) {
-        this.projectSearchService = Objects.requireNonNull(projectSearchService);
+    public EditingContextApplicationService(ISemanticDataSearchService semanticDataSearchService) {
+        this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
     }
 
     @Override
     @Transactional(readOnly = true)
     public boolean existsById(String editingContextId) {
         return new UUIDParser().parse(editingContextId)
-                .map(this.projectSearchService::existsById)
+                .map(this.semanticDataSearchService::existsById)
                 .orElse(false);
     }
 }

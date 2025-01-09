@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
 
 import graphql.execution.DataFetcherResult;
 import graphql.schema.DataFetchingEnvironment;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 
 /**
  * Data fetcher for the field Project#currentEditingContext.
@@ -30,10 +31,17 @@ import graphql.schema.DataFetchingEnvironment;
  */
 @QueryDataFetcher(type = "Project", field = "currentEditingContext")
 public class ProjectCurrentEditingContextDataFetcher implements IDataFetcherWithFieldCoordinates<DataFetcherResult<String>> {
+
+    private final ISemanticDataSearchService semanticDataSearchService;
+
+    public ProjectCurrentEditingContextDataFetcher(ISemanticDataSearchService semanticDataSearchService) {
+        this.semanticDataSearchService = semanticDataSearchService;
+    }
+
     @Override
     public DataFetcherResult<String> get(DataFetchingEnvironment environment) throws Exception {
         ProjectDTO project = environment.getSource();
-        String editingContextId = project.id().toString();
+        String editingContextId = this.semanticDataSearchService.findByProjectId(project.id()).map(semanticData -> semanticData.getId().toString()).orElse("");
         Map<String, Object> localContext = new HashMap<>();
         localContext.put(LocalContextConstants.EDITING_CONTEXT_ID, editingContextId);
 

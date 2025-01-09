@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,13 +37,18 @@ public class StudioExplorerTreeFilterProvider implements ITreeFilterProvider {
 
     private final IProjectSearchService projectSearchService;
 
-    public StudioExplorerTreeFilterProvider(IProjectSearchService projectSearchService) {
+    private final ISemanticDataSearchService semanticDataSearchService;
+
+    public StudioExplorerTreeFilterProvider(IProjectSearchService projectSearchService, ISemanticDataSearchService semanticDataSearchService) {
         this.projectSearchService = Objects.requireNonNull(projectSearchService);
+        this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
     }
 
     @Override
     public List<TreeFilter> get(String editingContextId, TreeDescription treeDescription, String representationId) {
         var isStudio = new UUIDParser().parse(editingContextId)
+                .flatMap(this.semanticDataSearchService::findById)
+                .map(semanticData -> semanticData.getProject().getId())
                 .flatMap(this.projectSearchService::findById)
                 .map(project -> project.getNatures().stream()
                         .map(Nature::name)
