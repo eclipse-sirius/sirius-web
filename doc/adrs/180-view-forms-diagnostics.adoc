@@ -1,0 +1,72 @@
+= ADR-180 - Add support for widget diagnostics provider in View-based Forms
+
+* GitHub Issue: [#4390](https://github.com/eclipse-sirius/sirius-web/issues/4390)
+
+== Context
+
+Programmatically-defined widgets have support for `.diagnosticsProvider()`, which are used for example in the default details view to expose EMF Diagnostics for the corresponding feature.
+
+For example:
+
+* `EStringIfDescriptionProvider.getTextareaDescription()` configures the diagnostics of the `TextareaDescription` it produces using `PropertiesValidationProvider`
+* `PropertiesValidationProvider` in turn invokes `IValidationService` to produce EMF `org.eclipse.emf.common.util.Diagnostic`, and extracts their kind/severity and text message.
+* `IValidationService` is implemented by `EMFValidationService` which delegates to all the EMF `EValidator` applicable to the target object & feature, for example `DomainValidator` for domain definitions.
+
+However this capability is not exposed to View-based Forms.
+`form.ecore` does not provide any way to configure diagnostics for a widget.
+Given this lack of available input, `ViewFormDescriptionConverterSwitch` configures all the widgets it produces with no diagnostics provider:
+
+[source,java]
+----
+.diagnosticsProvider(variableManager -> List.of())
+.kindProvider(diagnostic -> "")
+.messageProvider(diagnostic -> "")
+----
+
+== Decision
+
+We will expose a way for View-based widget definitions to provide optional diagnostics using the underlying mechanism presented above.
+
+In `form.ecore`, the type `WidgetDescription` will get a new optional attribute `diagnosticsExpression : InterpretedExpression`.
+
+If present, the expression will be evaluated when rendering the widget using the same variables/context as the other widget's expression (e.g. `helpExpression`, `labelExpression`).
+
+The expression should return either:
+
+* a string;
+* an EMF `org.eclipse.emf.common.util.Diagnostic`;
+* a collection of strings and/or EMF Diagnostics (possibly mixed).
+
+If the expression is not provided, is empty, or evaluates to null/false/an empty collection or an empty string, no diagnostic will be provided as is the case for now.
+
+If the expression returns an EMF `Diagnostic` (either directly or as part of a collection of values), its kind and message will be evaluated in the same way as in `PropertiesValidationProvider` (the corresponding code may be extracted in a common helper).
+
+If the expression returns a string (either directly or as part of a collection of values):
+
+* If the string starts with any of `"INFO:"`, `"WARNING:"`, `"ERROR:"` (case-insensitive), this prefix will be interpreted as the diagnostic's kind/severity, and the rest of the string as the message.
+* In all other cases, the kind will default to `"Unknown"` and the whole string value will be interpreted as the message.
+
+Studio makers which want only to provide a simple, pure-AQL validation, can do so using expressions which return plain strings, for example:
+
+[source]
+----
+aql:if self.email.index('@') = -1 then 'ERROR: invalid email' endif
+----
+
+Studio makers who can/want to rely on custom Java services can perform more complex validations which can return multiple strings and/or actual EMF `Diagnostic` if they call existing EMF validation code.
+
+=== Breadboarding
+
+No UI change.
+
+=== Cutting backs
+
+None.
+
+=== Rabbit holes
+
+None.
+
+== Status
+
+Accepted
