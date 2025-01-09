@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,13 +19,14 @@ export interface TableProps {
   readOnly: boolean;
   onPaginationChange: (cursor: string | null, direction: 'PREV' | 'NEXT', size: number) => void;
   onGlobalFilterChange: (globalFilter: string) => void;
-  onColumnFiltersChange: (columFilters: ColumnFilter[]) => void;
+  onColumnFiltersChange: (columnFilters: ColumnFilter[]) => void;
   enableColumnVisibility: boolean;
   enableColumnResizing: boolean;
   enableColumnFilters: boolean;
   enableRowSizing: boolean;
   enableGlobalFilter: boolean;
   enablePagination: boolean;
+  enableColumnOrdering: boolean;
 }
 
 export interface TablePaginationState {
