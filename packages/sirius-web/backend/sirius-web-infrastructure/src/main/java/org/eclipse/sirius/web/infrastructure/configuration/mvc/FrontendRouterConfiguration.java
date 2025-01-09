@@ -36,6 +36,7 @@ public class FrontendRouterConfiguration {
         var extensionsToIgnore = List.of("css", "html", "js", "js.map", "chunk.js", "json", "ico", "ttf", "jpg", "jpeg", "png", "svg");
 
         var singlePageApplicationPredicate = path("/api/**")
+                .or(path("/v3/api-docs/**"))
                 .or(path("/subscriptions"))
                 .or(pathExtension(extensionsToIgnore::contains))
                 .negate();

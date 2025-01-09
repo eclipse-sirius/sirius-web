@@ -39,6 +39,7 @@ This may have some consequences for downstream applications which are embedding 
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4282[#4282] [diagram] Fixed a warning on the frontend about non-unique GraphQL fragment name
+- https://github.com/eclipse-sirius/sirius-web/issues/4398[#4398] [sirius-web] Fix an issue where the swagger page listing all REST APIs (YOUR_SERVER/swagger-ui/index.html) and the OpenAPI file (YOUR_SERVER/v3/api-docs/rest-apis) were not accessible anymore.
 
 === New Features
 
