@@ -17,7 +17,7 @@
 
 - [ADR-178] Add support of actions in table row menu
 - [ADR-179] Add support for artifact publication from a project
-
+- [ADR-180] Add support for widget diagnostics provider in View-based Forms
 
 === Deprecation warning
 
