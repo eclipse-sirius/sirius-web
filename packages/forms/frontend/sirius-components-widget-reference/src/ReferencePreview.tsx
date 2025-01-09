@@ -105,19 +105,23 @@ export const ReferencePreview = ({ widget }: PreviewWidgetProps) => {
         value={options}
         disableClearable
         renderTags={(value, getTagProps) =>
-          value.map(({ label, iconURL }, index) => (
-            <Chip
-              classes={{ label: classes.referenceValueStyle }}
-              label={label}
-              data-testid={`reference-value-${label}`}
-              icon={
-                <div>
-                  <IconOverlay iconURL={[iconURL]} alt={''} />
-                </div>
-              }
-              {...getTagProps({ index })}
-            />
-          ))
+          value.map(({ label, iconURL }, index) => {
+            const { key, ...tagProps } = getTagProps({ index });
+            return (
+              <Chip
+                key={key}
+                classes={{ label: classes.referenceValueStyle }}
+                label={label}
+                data-testid={`reference-value-${label}`}
+                icon={
+                  <div>
+                    <IconOverlay iconURL={[iconURL]} alt={''} />
+                  </div>
+                }
+                {...tagProps}
+              />
+            );
+          })
         }
         renderInput={(params) => (
           <TextField
