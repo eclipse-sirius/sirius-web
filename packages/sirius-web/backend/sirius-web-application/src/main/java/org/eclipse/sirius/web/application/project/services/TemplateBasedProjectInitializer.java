@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,10 +26,10 @@ import org.eclipse.sirius.web.application.project.services.api.IProjectMapper;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateInitializer;
 import org.eclipse.sirius.web.application.project.services.api.ITemplateBasedProjectInitializer;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
-import org.springframework.context.ApplicationEventPublisher;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionTemplate;
 
 /**
  * Used to create project from templates.
@@ -49,28 +49,29 @@ public class TemplateBasedProjectInitializer implements ITemplateBasedProjectIni
 
     private final List<IProjectTemplateInitializer> projectTemplateInitializers;
 
-    private final TransactionTemplate transactionTemplate;
-
-    private final ApplicationEventPublisher applicationEventPublisher;
-
-    public TemplateBasedProjectInitializer(IProjectSearchService projectSearchService, IProjectMapper projectMapper, IEditingContextSearchService editingContextSearchService, IEditingContextPersistenceService editingContextPersistenceService, List<IProjectTemplateInitializer> projectTemplateInitializers, TransactionTemplate transactionTemplate, ApplicationEventPublisher applicationEventPublisher) {
+    private final ISemanticDataSearchService semanticDataSearchService;
+    
+    public TemplateBasedProjectInitializer(IProjectSearchService projectSearchService, IProjectMapper projectMapper, IEditingContextSearchService editingContextSearchService, IEditingContextPersistenceService editingContextPersistenceService, List<IProjectTemplateInitializer> projectTemplateInitializers, ISemanticDataSearchService semanticDataSearchService) {
         this.projectSearchService = Objects.requireNonNull(projectSearchService);
         this.projectMapper = Objects.requireNonNull(projectMapper);
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
         this.projectTemplateInitializers = Objects.requireNonNull(projectTemplateInitializers);
-        this.transactionTemplate = Objects.requireNonNull(transactionTemplate);
-        this.applicationEventPublisher = Objects.requireNonNull(applicationEventPublisher);
+        this.semanticDataSearchService = semanticDataSearchService;
     }
 
     @Override
     @Transactional
     public IPayload initializeProjectFromTemplate(CreateProjectFromTemplateInput input, UUID projectId, String templateId) {
         var optionalProject = this.projectSearchService.findById(projectId);
-        var optionalEditingContext = this.editingContextSearchService.findById(projectId.toString());
+        var optionalEditingContext = this.semanticDataSearchService.findByProjectId(projectId)
+                .map(SemanticData::getId)
+                .map(UUID::toString)
+                .flatMap(editingContextSearchService::findById);
         var optionalProjectTemplateInitializer = this.projectTemplateInitializers.stream()
                 .filter(initializer -> initializer.canHandle(input.templateId()))
                 .findFirst();
+
         if (optionalProject.isPresent() && optionalEditingContext.isPresent() && optionalProjectTemplateInitializer.isPresent()) {
             var project = optionalProject.get();
             var editingContext = optionalEditingContext.get();

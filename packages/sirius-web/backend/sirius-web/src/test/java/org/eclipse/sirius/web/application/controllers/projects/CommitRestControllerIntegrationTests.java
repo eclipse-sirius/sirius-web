@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -192,7 +192,7 @@ public class CommitRestControllerIntegrationTests extends AbstractIntegrationTes
                 .baseUrl(this.getHTTPBaseUrl())
                 .build();
 
-        var uri = String.format("/api/rest/projects/%s/commits/%s/changes", TestIdentifiers.ECORE_SAMPLE_PROJECT, TestIdentifiers.ECORE_SAMPLE_PROJECT);
+        var uri = String.format("/api/rest/projects/%s/commits/%s/changes", TestIdentifiers.ECORE_SAMPLE_PROJECT_ID, TestIdentifiers.ECORE_SAMPLE_PROJECT_ID);
         webTestClient
                 .get()
                 .uri(uri)
@@ -241,8 +241,8 @@ public class CommitRestControllerIntegrationTests extends AbstractIntegrationTes
                 .baseUrl(this.getHTTPBaseUrl())
                 .build();
 
-        var changeId = UUID.nameUUIDFromBytes((TestIdentifiers.ECORE_SAMPLE_PROJECT.toString() + TestIdentifiers.EPACKAGE_OBJECT.toString()).getBytes());
-        var uri = String.format("/api/rest/projects/%s/commits/%s/changes/%s", TestIdentifiers.ECORE_SAMPLE_PROJECT, TestIdentifiers.ECORE_SAMPLE_PROJECT, changeId);
+        var changeId = UUID.nameUUIDFromBytes((TestIdentifiers.ECORE_SAMPLE_PROJECT_ID + TestIdentifiers.EPACKAGE_OBJECT.toString()).getBytes());
+        var uri = String.format("/api/rest/projects/%s/commits/%s/changes/%s", TestIdentifiers.ECORE_SAMPLE_PROJECT_ID, TestIdentifiers.ECORE_SAMPLE_PROJECT_ID, changeId);
         webTestClient
                 .get()
                 .uri(uri)

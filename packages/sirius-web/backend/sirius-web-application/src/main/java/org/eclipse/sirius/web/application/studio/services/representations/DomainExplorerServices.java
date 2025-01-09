@@ -25,11 +25,13 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.Entity;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
@@ -51,11 +53,14 @@ public class DomainExplorerServices {
 
     private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
+    private final ISemanticDataSearchService semanticDataSearchService;
+
     private final IExplorerServices explorerServices;
 
-    public DomainExplorerServices(IObjectService objectService, IRepresentationMetadataSearchService representationMetadataSearchService, List<IRepresentationImageProvider> representationImageProviders, IExplorerServices explorerServices) {
+    public DomainExplorerServices(IObjectService objectService, IRepresentationMetadataSearchService representationMetadataSearchService, IURLParser urlParser, List<IRepresentationImageProvider> representationImageProviders, ISemanticDataSearchService semanticDataSearchService, IExplorerServices explorerServices) {
         this.objectService = Objects.requireNonNull(objectService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
+        this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
         this.explorerServices = Objects.requireNonNull(explorerServices);
     }
 
@@ -102,7 +107,9 @@ public class DomainExplorerServices {
                 if (self instanceof Resource resource) {
                     result.addAll(resource.getContents());
                 } else if (self instanceof EObject) {
-                    var optionalEditingContextId = new UUIDParser().parse(editingContext.getId());
+                    var optionalEditingContextId = new UUIDParser().parse(editingContext.getId())
+                            .flatMap(this.semanticDataSearchService::findById)
+                            .map(semanticData -> semanticData.getProject().getId());
                     if (optionalEditingContextId.isPresent()) {
                         var projectId = optionalEditingContextId.get();
                         var representationMetadata = new ArrayList<>(this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(projectId), id));

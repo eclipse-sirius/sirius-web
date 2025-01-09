@@ -472,10 +472,10 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenTheProjectIsRenamedThenProjectEventIsEmitted() {
-        var projectEventInput = new ProjectEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT);
+        var projectEventInput = new ProjectEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT_ID);
         var flux = this.projectEventSubscriptionRunner.run(projectEventInput);
 
-        var input = new RenameProjectInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT, "New Name");
+        var input = new RenameProjectInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT_ID, "New Name");
         Runnable renameProjectTask = () -> {
             var result = this.renameProjectMutationRunner.run(input);
             String typename = JsonPath.read(result, "$.data.renameProject.__typename");
@@ -500,10 +500,10 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenTheProjectIsDeletedThenTheProjectEventIsCompleted() {
-        var projectEventInput = new ProjectEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT);
+        var projectEventInput = new ProjectEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT_ID);
         var flux = this.projectEventSubscriptionRunner.run(projectEventInput);
 
-        var input = new DeleteProjectInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT);
+        var input = new DeleteProjectInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT_ID);
         Runnable deleteProjectTask = () -> {
             var result = this.deleteProjectMutationRunner.run(input);
             String typename = JsonPath.read(result, "$.data.deleteProject.__typename");

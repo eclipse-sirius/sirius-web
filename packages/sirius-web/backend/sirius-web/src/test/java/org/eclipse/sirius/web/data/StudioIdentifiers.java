@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,9 +21,11 @@ import java.util.UUID;
  */
 public final class StudioIdentifiers {
 
-    public static final UUID EMPTY_STUDIO_PROJECT = UUID.fromString("250cabc0-a211-438c-8015-2d2aa136eb81");
+    public static final UUID EMPTY_STUDIO_PROJECT = UUID.fromString("bd3017e3-d95f-4535-8701-af6ba982619f");
 
-    public static final UUID SAMPLE_STUDIO_PROJECT = UUID.fromString("01234836-0902-418a-900a-4c0afd20323e");
+    public static final UUID SAMPLE_STUDIO_PROJECT = UUID.fromString("e344d967-a639-4f6c-9c00-a466d51063c6");
+
+    public static final UUID SAMPLE_STUDIO_PROJECT_ID = UUID.fromString("01234836-0902-418a-900a-4c0afd20323e");
 
     public static final UUID DOMAIN_DOCUMENT = UUID.fromString("f0e490c1-79f1-49a0-b1f2-3637f2958148");
 
@@ -53,7 +55,7 @@ public final class StudioIdentifiers {
 
     public static final UUID PLACEHOLDER_IMAGE_OBJECT = UUID.fromString("7f8ce6ef-a23f-4c62-a6f8-381d5c237742");
 
-    public static final UUID INSTANCE_PROJECT = UUID.fromString("bb66e0e9-4ab5-47ef-99f5-c6b26be995ea");
+    public static final UUID INSTANCE_PROJECT = UUID.fromString("63f4353f-0c71-4122-93be-2d359fc0fa16");
 
     public static final UUID ROOT_OBJECT = UUID.fromString("87fa4553-6889-4ce6-b017-d013987f9fae");
 
