@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,9 +17,17 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
+import org.eclipse.emf.edit.provider.IChildCreationExtender;
+import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
+import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.IItemPropertySource;
+import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
+import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.view.table.RowDescription;
 import org.eclipse.sirius.components.view.table.TablePackage;
@@ -31,7 +39,8 @@ import org.eclipse.sirius.components.view.table.TablePackage;
  *
  * @generated
  */
-public class RowDescriptionItemProvider extends TableElementDescriptionItemProvider {
+public class RowDescriptionItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider,
+        IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
 
     /**
      * This constructs an instance from a factory and a notifier. <!--
@@ -54,6 +63,9 @@ public class RowDescriptionItemProvider extends TableElementDescriptionItemProvi
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
+            this.addNamePropertyDescriptor(object);
+            this.addPaginationPredicateExpressionPropertyDescriptor(object);
+            this.addPreconditionExpressionPropertyDescriptor(object);
             this.addHeaderLabelExpressionPropertyDescriptor(object);
             this.addHeaderIconExpressionPropertyDescriptor(object);
             this.addHeaderIndexLabelExpressionPropertyDescriptor(object);
@@ -61,6 +73,54 @@ public class RowDescriptionItemProvider extends TableElementDescriptionItemProvi
             this.addIsResizableExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
+    }
+
+    /**
+     * This adds a property descriptor for the Name feature. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addNamePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors
+                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                        this.getResourceLocator(), this.getString("_UI_RowDescription_name_feature"),
+                        this.getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_name_feature",
+                                "_UI_RowDescription_type"),
+                        TablePackage.Literals.ROW_DESCRIPTION__NAME, true, false, false,
+                        ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Pagination Predicate Expression
+     * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addPaginationPredicateExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors
+                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                        this.getResourceLocator(), this.getString("_UI_RowDescription_paginationPredicateExpression_feature"),
+                        this.getString("_UI_PropertyDescriptor_description",
+                                "_UI_RowDescription_paginationPredicateExpression_feature", "_UI_RowDescription_type"),
+                        TablePackage.Literals.ROW_DESCRIPTION__PAGINATION_PREDICATE_EXPRESSION, true, false, false,
+                        ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Precondition Expression feature. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addPreconditionExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
+                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_RowDescription_preconditionExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_preconditionExpression_feature",
+                        "_UI_RowDescription_type"),
+                TablePackage.Literals.ROW_DESCRIPTION__PRECONDITION_EXPRESSION, true, false, false,
+                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -189,6 +249,9 @@ public class RowDescriptionItemProvider extends TableElementDescriptionItemProvi
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(RowDescription.class)) {
+            case TablePackage.ROW_DESCRIPTION__NAME:
+            case TablePackage.ROW_DESCRIPTION__PAGINATION_PREDICATE_EXPRESSION:
+            case TablePackage.ROW_DESCRIPTION__PRECONDITION_EXPRESSION:
             case TablePackage.ROW_DESCRIPTION__HEADER_LABEL_EXPRESSION:
             case TablePackage.ROW_DESCRIPTION__HEADER_ICON_EXPRESSION:
             case TablePackage.ROW_DESCRIPTION__HEADER_INDEX_LABEL_EXPRESSION:
@@ -210,6 +273,17 @@ public class RowDescriptionItemProvider extends TableElementDescriptionItemProvi
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
+    }
+
+    /**
+     * Return the resource locator for this item provider's resources. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ResourceLocator getResourceLocator() {
+        return ((IChildCreationExtender) this.adapterFactory).getResourceLocator();
     }
 
 }

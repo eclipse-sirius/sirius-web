@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.sirius.components.view.table;
+
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Column Description</b></em>'. <!-- end-user-doc
@@ -38,7 +40,100 @@ package org.eclipse.sirius.components.view.table;
  * @generated
  * @see org.eclipse.sirius.components.view.table.TablePackage#getColumnDescription()
  */
-public interface ColumnDescription extends TableElementDescription {
+public interface ColumnDescription extends EObject {
+
+    /**
+     * Returns the value of the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Name</em>' attribute.
+     * @model dataType="org.eclipse.sirius.components.view.Identifier"
+     * @generated
+     * @see #setName(String)
+     * @see org.eclipse.sirius.components.view.table.TablePackage#getColumnDescription_Name()
+     */
+    String getName();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.table.ColumnDescription#getName <em>Name</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>Name</em>' attribute.
+     * @generated
+     * @see #getName()
+     */
+    void setName(String value);
+
+    /**
+     * Returns the value of the '<em><b>Domain Type</b></em>' attribute. The default value is <code>""</code>. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Domain Type</em>' attribute.
+     * @model default="" dataType="org.eclipse.sirius.components.view.DomainType"
+     * @generated
+     * @see #setDomainType(String)
+     * @see org.eclipse.sirius.components.view.table.TablePackage#getColumnDescription_DomainType()
+     */
+    String getDomainType();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.table.ColumnDescription#getDomainType <em>Domain
+     * Type</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>Domain Type</em>' attribute.
+     * @generated
+     * @see #getDomainType()
+     */
+    void setDomainType(String value);
+
+    /**
+     * Returns the value of the '<em><b>Semantic Candidates Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Semantic Candidates Expression</em>' attribute.
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     * @see #setSemanticCandidatesExpression(String)
+     * @see org.eclipse.sirius.components.view.table.TablePackage#getColumnDescription_SemanticCandidatesExpression()
+     */
+    String getSemanticCandidatesExpression();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.table.ColumnDescription#getSemanticCandidatesExpression <em>Semantic
+     * Candidates Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>Semantic Candidates Expression</em>' attribute.
+     * @generated
+     * @see #getSemanticCandidatesExpression()
+     */
+    void setSemanticCandidatesExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Precondition Expression</b></em>' attribute. The default value is
+     * <code>""</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Precondition Expression</em>' attribute.
+     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     * @see #setPreconditionExpression(String)
+     * @see org.eclipse.sirius.components.view.table.TablePackage#getColumnDescription_PreconditionExpression()
+     */
+    String getPreconditionExpression();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.table.ColumnDescription#getPreconditionExpression <em>Precondition
+     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>Precondition Expression</em>' attribute.
+     * @generated
+     * @see #getPreconditionExpression()
+     */
+    void setPreconditionExpression(String value);
 
     /**
      * Returns the value of the '<em><b>Header Index Label Expression</b></em>' attribute. The default value is

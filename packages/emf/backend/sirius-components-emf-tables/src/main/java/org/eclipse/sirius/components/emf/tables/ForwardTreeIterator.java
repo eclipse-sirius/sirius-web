@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo and others.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.papaya.representations.table;
+package org.eclipse.sirius.components.emf.tables;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -60,7 +60,7 @@ public class ForwardTreeIterator implements Iterator<EObject> {
     }
 
     private boolean hasAnyElement() {
-        var iterator = this.getChildren(this.rootEObject);
+        var iterator = this.getNextChild(this.rootEObject);
         this.iterators = new ArrayList<>();
         var hasNext = iterator.hasNext();
         if (hasNext) {
@@ -69,11 +69,24 @@ public class ForwardTreeIterator implements Iterator<EObject> {
         return hasNext;
     }
 
-    private Iterator<EObject> getChildren(EObject eObject) {
-        return eObject.eContents().stream().filter(this.filterPredicate).iterator();
+    private Iterator<EObject> getNextChild(EObject eObject) {
+        Iterator<EObject> nextChildIterator = null;
+
+        for (EObject child : eObject.eContents()) {
+            var nextMatchingEObject = this.findNextMatchingEObjectRecursive(child);
+            if (nextMatchingEObject != null) {
+                nextChildIterator = List.of(nextMatchingEObject).iterator();
+                break;
+            }
+        }
+
+        if (nextChildIterator == null) {
+            nextChildIterator = Collections.emptyIterator();
+        }
+        return nextChildIterator;
     }
 
-    private Iterator<EObject> getNextRelatives(EObject eObject) {
+    private Iterator<EObject> getNextRelatives(EObject eObject, boolean onlyChildOfRootObject) {
         Iterator<EObject> nextRelativesIterator = null;
 
         var currentEObject = eObject;
@@ -82,13 +95,20 @@ public class ForwardTreeIterator implements Iterator<EObject> {
                 var siblings = currentEObject.eContainer().eContents();
                 var index = siblings.indexOf(currentEObject);
                 if (index + 1 < siblings.size()) {
-                    var nextSiblingMatching = this.findNextMatchingEObjectRecursive(siblings.get(index + 1));
-                    if (nextSiblingMatching != null) {
-                        nextRelativesIterator = List.of(nextSiblingMatching).iterator();
+                    for (int i = index + 1; i < siblings.size(); i++) {
+                        var nextSiblingMatching = this.findNextMatchingEObjectRecursive(siblings.get(i));
+                        if (nextSiblingMatching != null) {
+                            nextRelativesIterator = List.of(nextSiblingMatching).iterator();
+                            break;
+                        }
                     }
                 }
             }
-            currentEObject = currentEObject.eContainer();
+            if (onlyChildOfRootObject && this.rootEObject.equals(currentEObject.eContainer())) {
+                currentEObject = null;
+            } else {
+                currentEObject = currentEObject.eContainer();
+            }
         }
 
         if (nextRelativesIterator == null) {
@@ -124,14 +144,14 @@ public class ForwardTreeIterator implements Iterator<EObject> {
     }
 
     private boolean hasNextRelative() {
-        return this.getNextRelatives(this.rootEObject).hasNext();
+        return this.getNextRelatives(this.rootEObject, false).hasNext();
     }
 
     @Override
     public EObject next() {
         EObject result = null;
         if (this.iterators == null) {
-            this.nextPruneIterator = this.getChildren(this.rootEObject);
+            this.nextPruneIterator = this.getNextChild(this.rootEObject);
             this.iterators = new ArrayList<>();
             if (this.nextPruneIterator.hasNext()) {
                 this.iterators.add(this.nextPruneIterator);
@@ -140,7 +160,7 @@ public class ForwardTreeIterator implements Iterator<EObject> {
                 result = this.rootEObject;
             }
         } else if (this.iterators.isEmpty()) {
-            var currentIterator = this.getNextRelatives(this.rootEObject);
+            var currentIterator = this.getNextRelatives(this.rootEObject, false);
             result = currentIterator.next();
 
             this.rootEObject = result;
@@ -152,21 +172,29 @@ public class ForwardTreeIterator implements Iterator<EObject> {
             result = currentIterator.next();
             this.nextRemoveIterator = currentIterator;
 
-            var iterator = this.getChildren(result);
+            var iterator = this.getNextChild(result);
             if (iterator.hasNext()) {
                 this.nextPruneIterator = iterator;
                 this.iterators.add(iterator);
             } else {
                 this.nextPruneIterator = null;
 
-                while (!currentIterator.hasNext()) {
-                    this.iterators.remove(this.iterators.size() - 1);
-                    if (this.iterators.isEmpty()) {
-                        break;
+                var relativeIterator = this.getNextRelatives(result, true);
+
+                if (relativeIterator.hasNext()) {
+                    this.nextRemoveIterator = relativeIterator;
+                    this.iterators.add(relativeIterator);
+                } else {
+                    while (!currentIterator.hasNext()) {
+                        this.iterators.remove(this.iterators.size() - 1);
+                        if (this.iterators.isEmpty()) {
+                            break;
+                        }
+                        var nextIterator = this.iterators.get(this.iterators.size() - 1);
+                        currentIterator = nextIterator;
                     }
-                    var nextIterator = this.iterators.get(this.iterators.size() - 1);
-                    currentIterator = nextIterator;
                 }
+
             }
         }
 
