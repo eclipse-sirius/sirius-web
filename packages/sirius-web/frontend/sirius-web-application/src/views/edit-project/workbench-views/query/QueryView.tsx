@@ -10,14 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay, WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { SxProps, Theme } from '@mui/material/styles';
+import Skeleton from '@mui/material/Skeleton';
+import { SxProps, Theme, useTheme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { ComponentType, useState } from 'react';
@@ -51,7 +53,7 @@ export const QueryView = ({ editingContextId, readOnly }: WorkbenchViewComponent
   return (
     <Box data-representation-kind="interpreter" sx={interpreterStyle}>
       <ExpressionArea onEvaluateExpression={handleEvaluateExpression} disabled={loading || readOnly} />
-      <ResultArea payload={result} />
+      <ResultArea loading={loading} payload={result} />
     </Box>
   );
 };
@@ -117,13 +119,23 @@ const ObjectExpressionResultViewer = ({ result }: ExpressionResultViewerProps) =
   }
 
   const { objectValue } = result as GQLObjectExpressionResult;
+
+  const listItemStyle: SxProps<Theme> = (theme) => ({
+    gap: theme.spacing(2),
+  });
+  const listItemIconStyle: SxProps<Theme> = () => ({
+    minWidth: '0px',
+  });
   return (
     <Box>
       <Typography variant="body2" gutterBottom>
-        One object returned
+        One object has been returned
       </Typography>
       <List dense>
-        <ListItem>
+        <ListItem sx={listItemStyle}>
+          <ListItemIcon sx={listItemIconStyle}>
+            <IconOverlay iconURL={objectValue.iconURLs} alt="Icon of the object" />
+          </ListItemIcon>
           <ListItemText primary={objectValue.label} />
         </ListItem>
       </List>
@@ -137,15 +149,25 @@ const ObjectsExpressionResultViewer = ({ result }: ExpressionResultViewerProps) 
   }
 
   const { objectsValue } = result as GQLObjectsExpressionResult;
+
+  const listItemStyle: SxProps<Theme> = (theme) => ({
+    gap: theme.spacing(2),
+  });
+  const listItemIconStyle: SxProps<Theme> = () => ({
+    minWidth: '0px',
+  });
   return (
     <Box>
       <Typography variant="body2" gutterBottom>
-        {objectsValue.length} object(s) returned
+        A collection of {objectsValue.length} object{objectsValue.length > 1 ? 's' : ''} has been returned
       </Typography>
       <List dense>
         {objectsValue.map((object) => {
           return (
-            <ListItem key={object.id}>
+            <ListItem key={object.id} sx={listItemStyle}>
+              <ListItemIcon sx={listItemIconStyle}>
+                <IconOverlay iconURL={object.iconURLs} alt="Icon of the object" />
+              </ListItemIcon>
               <ListItemText primary={object.label} />
             </ListItem>
           );
@@ -164,7 +186,7 @@ const BooleanExpressionResultViewer = ({ result }: ExpressionResultViewerProps) 
   return (
     <Box>
       <Typography variant="body2" gutterBottom>
-        One boolean returned
+        One boolean has been returned
       </Typography>
       <List dense>
         <ListItem>
@@ -184,7 +206,7 @@ const StringExpressionResultViewer = ({ result }: ExpressionResultViewerProps) =
   return (
     <Box>
       <Typography variant="body2" gutterBottom>
-        One string returned
+        One string has been returned
       </Typography>
       <List dense>
         <ListItem>
@@ -204,7 +226,7 @@ const IntExpressionResultViewer = ({ result }: ExpressionResultViewerProps) => {
   return (
     <Box>
       <Typography variant="body2" gutterBottom>
-        One integer returned
+        One integer has been returned
       </Typography>
       <List dense>
         <ListItem>
@@ -223,7 +245,38 @@ const resultType2viewer: Record<string, ComponentType<ExpressionResultViewerProp
   IntExpressionResult: IntExpressionResultViewer,
 };
 
-const ResultArea = ({ payload }: ResultAreaProps) => {
+const LoadingViewer = () => {
+  const theme = useTheme();
+
+  const listItemStyle: SxProps<Theme> = (theme) => ({
+    gap: theme.spacing(2),
+  });
+  const skeletonTextStyle: SxProps<Theme> = (theme) => ({
+    fontSize: theme.typography.body1.fontSize,
+    width: '60%',
+  });
+  return (
+    <Box>
+      <Skeleton variant="text" sx={{ fontSize: theme.typography.body2.fontSize }} />
+      <List dense>
+        <ListItem sx={listItemStyle}>
+          <Skeleton variant="circular" width={16} height={16} />
+          <Skeleton variant="text" sx={skeletonTextStyle} />
+        </ListItem>
+        <ListItem sx={listItemStyle}>
+          <Skeleton variant="circular" width={16} height={16} />
+          <Skeleton variant="text" sx={skeletonTextStyle} />
+        </ListItem>
+        <ListItem sx={listItemStyle}>
+          <Skeleton variant="circular" width={16} height={16} />
+          <Skeleton variant="text" sx={skeletonTextStyle} />
+        </ListItem>
+      </List>
+    </Box>
+  );
+};
+
+const ResultArea = ({ loading, payload }: ResultAreaProps) => {
   const resultAreaToolbarStyle: SxProps<Theme> = {
     display: 'flex',
     flexDirection: 'row',
@@ -237,7 +290,9 @@ const ResultArea = ({ payload }: ResultAreaProps) => {
   };
 
   let content: JSX.Element | null = null;
-  if (payload) {
+  if (loading) {
+    content = <LoadingViewer />;
+  } else if (payload) {
     const Viewer = resultType2viewer[payload.result.__typename];
     if (Viewer) {
       content = <Viewer result={payload.result} />;
