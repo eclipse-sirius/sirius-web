@@ -27,6 +27,9 @@ const useTableRepresentationStyles = makeStyles()((theme) => ({
     justifyContent: 'center',
     paddingTop: theme.spacing(8),
   },
+  representation: {
+    overflowX: 'auto',
+  },
 }));
 
 export const TableRepresentation = ({ editingContextId, representationId, readOnly }: RepresentationComponentProps) => {
@@ -73,7 +76,7 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
   }
 
   return (
-    <div data-testid={'table-representation'}>
+    <div data-testid={'table-representation'} className={classes.representation}>
       {table !== null && !complete ? (
         <TableContent
           editingContextId={editingContextId}

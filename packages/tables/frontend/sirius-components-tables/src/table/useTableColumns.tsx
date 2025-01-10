@@ -10,10 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { MRT_ColumnDef } from 'material-react-table';
 import { useMemo } from 'react';
 import { Cell } from '../cells/Cell';
 import { ColumnHeader } from '../columns/ColumnHeader';
+import { ResizeRowHandler } from '../rows/ResizeRowHandler';
+import { RowHeader } from '../rows/RowHeader';
 import { GQLCell, GQLLine, GQLTable } from './TableContent.types';
 import { UseTableColumnsValue } from './useTableColumns.types';
 
@@ -25,8 +28,11 @@ export const useTableColumns = (
   enableColumnVisibility: boolean,
   enableColumnSizing: boolean,
   enableColumnFilters: boolean,
-  enableColumnOrdering: boolean
+  enableColumnOrdering: boolean,
+  enableRowSizing: boolean,
+  handleRowHeightChange: (rowId: string, height: number) => void
 ): UseTableColumnsValue => {
+  const { setSelection } = useSelection();
   const columns = useMemo<MRT_ColumnDef<GQLLine, string>[]>(() => {
     const columnDefs: MRT_ColumnDef<GQLLine, string>[] = table.columns.map((column) => {
       return {
@@ -57,7 +63,38 @@ export const useTableColumns = (
       };
     });
 
-    return columnDefs;
+    const rowHeaderColumn: MRT_ColumnDef<GQLLine, string> = {
+      id: 'mrt-row-header',
+      header: '',
+      columnDefType: 'display',
+      Cell: ({ row }) => (
+        <div
+          onClick={() => {
+            const newSelection: Selection = {
+              entries: [
+                {
+                  id: row.original.targetObjectId,
+                  kind: row.original.targetObjectKind,
+                },
+              ],
+            };
+            setSelection(newSelection);
+          }}>
+          <RowHeader row={row.original} />
+          {enableRowSizing ? (
+            <ResizeRowHandler
+              editingContextId={editingContextId}
+              representationId={representationId}
+              table={table}
+              readOnly={readOnly}
+              row={row.original}
+              onRowHeightChanged={handleRowHeightChange}
+            />
+          ) : null}
+        </div>
+      ),
+    };
+    return [rowHeaderColumn, ...columnDefs];
   }, [table]);
 
   return {
