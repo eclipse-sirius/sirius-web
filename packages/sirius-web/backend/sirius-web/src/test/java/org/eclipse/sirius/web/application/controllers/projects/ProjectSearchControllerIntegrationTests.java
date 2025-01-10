@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -59,7 +59,7 @@ public class ProjectSearchControllerIntegrationTests extends AbstractIntegration
     @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSetOfProjectsWhenQueryIsPerformedThenTheProjectsAreReturned() {
-        Map<String, Object> variables = Map.of("page", 0, "limit", 20);
+        Map<String, Object> variables = Map.of("first", 20);
         var result = this.projectsQueryRunner.run(variables);
 
         List<String> projectIds = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.id");

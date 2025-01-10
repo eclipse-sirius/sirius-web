@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,14 +28,14 @@ import org.eclipse.sirius.web.application.project.dto.RenameProjectSuccessPayloa
 import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
 import org.eclipse.sirius.web.application.project.services.api.IProjectMapper;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
+import org.eclipse.sirius.web.domain.boundedcontexts.project.services.Window;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectCreationService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectDeletionService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectUpdateService;
 import org.eclipse.sirius.web.domain.services.Failure;
 import org.eclipse.sirius.web.domain.services.Success;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.KeysetScrollPosition;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,8 +72,9 @@ public class ProjectApplicationService implements IProjectApplicationService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<ProjectDTO> findAll(Pageable pageable) {
-        return this.projectSearchService.findAll(pageable).map(this.projectMapper::toDTO);
+    public Window<ProjectDTO> findAll(KeysetScrollPosition position, int limit) {
+        var window = this.projectSearchService.findAll(position, limit);
+        return new Window<>(window.map(this.projectMapper::toDTO), window.hasPrevious());
     }
 
     @Override

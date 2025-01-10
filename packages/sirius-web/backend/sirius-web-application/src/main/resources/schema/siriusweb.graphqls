@@ -1,6 +1,6 @@
 extend type Viewer {
   project(projectId: ID!): Project
-  projects(page: Int!, limit: Int!): ViewerProjectsConnection!
+  projects(after: String, before: String, first: Int, last: Int): ViewerProjectsConnection!
   projectTemplates(page: Int!, limit: Int!): ViewerProjectTemplatesConnection!
 }
 
@@ -11,6 +11,7 @@ type ViewerProjectsConnection {
 
 type ViewerProjectsEdge {
   node: Project!
+  cursor: String!
 }
 
 type Project {

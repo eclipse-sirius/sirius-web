@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,11 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.project.repositories;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.sirius.components.annotations.RepositoryFragment;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 
 /**
  * Fragment interface used to search projects.
@@ -32,5 +33,7 @@ public interface ProjectSearchRepository<T, ID> {
 
     Optional<T> findById(ID id);
 
-    Page<T> findAll(Pageable pageable);
+    List<Project> findAllBefore(UUID cursorProjectId, int limit);
+
+    List<Project> findAllAfter(UUID cursorProjectId, int limit);
 }
