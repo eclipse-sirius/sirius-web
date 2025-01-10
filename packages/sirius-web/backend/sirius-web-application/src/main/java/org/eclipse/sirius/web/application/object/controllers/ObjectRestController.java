@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,6 +36,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 /**
  * REST Controller for the Object Endpoint.
@@ -55,6 +59,14 @@ public class ObjectRestController {
     }
 
     @Operation(description = "Get all the elements in a given project at the given commit.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "OK", content = {
+            @Content(mediaType = "application/json", examples = {
+                @ExampleObject(value = "[{\"@id\":\"9f2e43d4-2f7e-49f1-816a-a4e0d3d1f370\", \"attribute1\":\"hello\"}, {\"@id\":\"bab1f7be-82e0-4d14-bc60-b12a60c46f2f\", \"attribute1\":\"bye\"}]")
+            })
+        }),
+        @ApiResponse(responseCode = "404", description = "Not Found", content = { @Content() })
+    })
     @GetMapping(path = "/elements")
     public ResponseEntity<List<Object>> getElements(@PathVariable UUID projectId, @PathVariable UUID commitId) {
         var payload = this.editingContextDispatcher.dispatchQuery(projectId.toString(), new GetElementsRestInput(UUID.randomUUID()))
@@ -66,6 +78,14 @@ public class ObjectRestController {
     }
 
     @Operation(description = "Get element with the given id (elementId) in the given project at the given commit.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "OK", content = {
+            @Content(mediaType = "application/json", examples = {
+                @ExampleObject(value = "{\"@id\":\"9f2e43d4-2f7e-49f1-816a-a4e0d3d1f370\", \"attribute1\":\"hello\"}")
+            })
+        }),
+        @ApiResponse(responseCode = "404", description = "Not Found", content = { @Content() })
+    })
     @GetMapping(path = "/elements/{elementId}")
     public ResponseEntity<Object> getElementById(@PathVariable UUID projectId, @PathVariable UUID commitId, @PathVariable UUID elementId) {
         var payload = this.editingContextDispatcher.dispatchQuery(projectId.toString(), new GetElementByIdRestInput(UUID.randomUUID(), elementId.toString()))
@@ -77,6 +97,14 @@ public class ObjectRestController {
     }
 
     @Operation(description = "Get relationships that are incoming, outgoing, or both relative to the given related element.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "OK", content = {
+            @Content(mediaType = "application/json", examples = {
+                @ExampleObject(value = "[{\"@id\":\"9f2e43d4-2f7e-49f1-816a-a4e0d3d1f370\", \"attribute1\":\"hello\"}, {\"@id\":\"bab1f7be-82e0-4d14-bc60-b12a60c46f2f\", \"attribute1\":\"bye\"}]")
+            })
+        }),
+        @ApiResponse(responseCode = "404", description = "Not Found", content = { @Content() })
+    })
     @GetMapping(path = "/elements/{relatedElementId}/relationships")
     public ResponseEntity<List<Object>> getRelationshipsByRelatedElement(@PathVariable UUID projectId, @PathVariable UUID commitId, @PathVariable UUID relatedElementId, Optional<Direction> direction) {
         Direction directionParam = direction.orElse(Direction.BOTH);
@@ -90,6 +118,14 @@ public class ObjectRestController {
     }
 
     @Operation(description = "Get all the root elements in the given project at the given commit.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "OK", content = {
+            @Content(mediaType = "application/json", examples = {
+                @ExampleObject(value = "[{\"@id\":\"9f2e43d4-2f7e-49f1-816a-a4e0d3d1f370\", \"attribute1\":\"hello\"}, {\"@id\":\"bab1f7be-82e0-4d14-bc60-b12a60c46f2f\", \"attribute1\":\"bye\"}]")
+            })
+        }),
+        @ApiResponse(responseCode = "404", description = "Not Found", content = { @Content() })
+    })
     @GetMapping(path = "/roots")
     public ResponseEntity<List<Object>> getRootElements(@PathVariable UUID projectId, @PathVariable UUID commitId) {
         var payload = this.editingContextDispatcher.dispatchQuery(projectId.toString(), new GetRootElementsRestInput(UUID.randomUUID()))
