@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { GQLColumnFilter } from '../columns/useTableColumnFiltering.types';
 
-export interface TableProps {
+export interface TableContentProps {
   editingContextId: string;
   representationId: string;
   table: GQLTable;

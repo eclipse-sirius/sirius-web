@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { useSelection } from '@eclipse-sirius/sirius-components-core';
 import Box from '@mui/material/Box';
 import { Theme, useTheme } from '@mui/material/styles';
 import { MaterialReactTable, MRT_DensityState, MRT_TableOptions, useMaterialReactTable } from 'material-react-table';
@@ -20,11 +20,10 @@ import { useTableColumnFiltering } from '../columns/useTableColumnFiltering';
 import { useTableColumnOrdering } from '../columns/useTableColumnOrdering';
 import { useTableColumnSizing } from '../columns/useTableColumnSizing';
 import { useTableColumnVisibility } from '../columns/useTableColumnVisibility';
-import { ResizeRowHandler } from '../rows/ResizeRowHandler';
-import { RowHeader } from '../rows/RowHeader';
+import { RowAction } from '../rows/RowAction';
 import { useResetRowsMutation } from '../rows/useResetRows';
 import { CursorBasedPagination } from './CursorBasedPagination';
-import { GQLLine, TablePaginationState, TableProps } from './TableContent.types';
+import { GQLLine, TableContentProps, TablePaginationState } from './TableContent.types';
 import { useGlobalFilter } from './useGlobalFilter';
 import { useTableColumns } from './useTableColumns';
 
@@ -44,9 +43,13 @@ export const TableContent = memo(
     enableGlobalFilter,
     enablePagination,
     enableColumnOrdering,
-  }: TableProps) => {
-    const { selection, setSelection } = useSelection();
+  }: TableContentProps) => {
+    const { selection } = useSelection();
     const theme: Theme = useTheme();
+
+    const handleRowHeightChange = (rowId: string, height: number) => {
+      setLinesState((prev) => prev.map((line) => (line.id === rowId ? { ...line, height } : line)));
+    };
 
     const { columns } = useTableColumns(
       editingContextId,
@@ -56,7 +59,9 @@ export const TableContent = memo(
       enableColumnVisibility,
       enableColumnResizing,
       enableColumnFilters,
-      enableColumnOrdering
+      enableColumnOrdering,
+      enableRowSizing,
+      handleRowHeightChange
     );
     const { columnSizing, setColumnSizing } = useTableColumnSizing(
       editingContextId,
@@ -132,10 +137,6 @@ export const TableContent = memo(
       onPaginationChange(pagination.cursor, pagination.direction, pagination.size);
     }, [pagination.cursor, pagination.size, pagination.direction]);
 
-    const handleRowHeightChange = (rowId, height) => {
-      setLinesState((prev) => prev.map((line) => (line.id === rowId ? { ...line, height } : line)));
-    };
-
     useEffect(() => {
       setLinesState([...table.lines]);
     }, [table]);
@@ -164,7 +165,11 @@ export const TableContent = memo(
       enableGlobalFilter,
       manualFiltering: true,
       onGlobalFilterChange: setGlobalFilter,
-      initialState: { showGlobalFilter: enableGlobalFilter },
+      enableColumnPinning: false,
+      initialState: {
+        showGlobalFilter: enableGlobalFilter,
+        columnPinning: { left: ['mrt-row-header'], right: ['mrt-row-actions'] },
+      },
       onColumnSizingChange: setColumnSizing,
       onColumnVisibilityChange: setColumnVisibility,
       onDensityChange: setDensity,
@@ -211,37 +216,14 @@ export const TableContent = memo(
           onPageSizeChange={handlePageSize}
         />
       ),
-      displayColumnDefOptions: {
-        'mrt-row-actions': {
-          header: '',
-          size: 120,
-        },
-      },
       renderRowActions: ({ row }) => (
-        <div
-          onClick={() => {
-            const newSelection: Selection = {
-              entries: [
-                {
-                  id: row.original.targetObjectId,
-                  kind: row.original.targetObjectKind,
-                },
-              ],
-            };
-            setSelection(newSelection);
-          }}>
-          <RowHeader row={row.original} />
-          {enableRowSizing ? (
-            <ResizeRowHandler
-              editingContextId={editingContextId}
-              representationId={representationId}
-              table={table}
-              readOnly={readOnly}
-              row={row.original}
-              onRowHeightChanged={handleRowHeightChange}
-            />
-          ) : null}
-        </div>
+        <RowAction
+          editingContextId={editingContextId}
+          representationId={representationId}
+          tableId={table.id}
+          row={row}
+          readOnly={readOnly}
+        />
       ),
     };
 

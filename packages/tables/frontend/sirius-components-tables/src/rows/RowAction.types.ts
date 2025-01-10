@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,19 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLLine, GQLTable } from '../TableContent.types';
 
-export interface ResizeRowHandlerProps {
+import { MRT_Row } from 'material-react-table';
+import { GQLLine } from '../table/TableContent.types';
+
+export interface RowActionProps {
   editingContextId: string;
   representationId: string;
-  table: GQLTable;
+  tableId: string;
+  row: MRT_Row<GQLLine>;
   readOnly: boolean;
-  row: GQLLine;
-  onRowHeightChanged: (rowId: string, height: number) => void;
-}
-
-export interface DragState {
-  isDragging: boolean;
-  height: number;
-  trElement: HTMLElement | undefined;
 }
