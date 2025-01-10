@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,27 +10,30 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
 package org.eclipse.sirius.components.collaborative.tables.handlers;
 
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
-import org.eclipse.sirius.components.collaborative.tables.TableChangeKind;
+import org.eclipse.sirius.components.collaborative.tables.api.IRowContextMenuEntryProvider;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableContext;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableInput;
-import org.eclipse.sirius.components.collaborative.tables.dto.ResizeTableColumnInput;
+import org.eclipse.sirius.components.collaborative.tables.api.ITableQueryService;
+import org.eclipse.sirius.components.collaborative.tables.dto.RowContextMenuEntry;
+import org.eclipse.sirius.components.collaborative.tables.dto.RowContextMenuInput;
+import org.eclipse.sirius.components.collaborative.tables.dto.RowContextMenuSuccessPayload;
 import org.eclipse.sirius.components.collaborative.tables.messages.ICollaborativeTableMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.tables.Line;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
-import org.eclipse.sirius.components.tables.events.ResizeTableColumnEvent;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -38,19 +41,26 @@ import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Sinks;
 
 /**
- * Handle column resize event.
+ * Used to retrieve all context menu actions of a table row.
  *
- * @author frouene
+ * @author Jerome Gout
  */
 @Service
-public class ResizeTableColumnEventHandler implements ITableEventHandler {
+public class RowContextMenuEventHandler implements ITableEventHandler {
 
     private final ICollaborativeTableMessageService messageService;
 
+    private final ITableQueryService tableQueryService;
+
     private final Counter counter;
 
-    public ResizeTableColumnEventHandler(ICollaborativeTableMessageService messageService, MeterRegistry meterRegistry) {
+    private final List<IRowContextMenuEntryProvider> contextMenuEntryProviders;
+
+    public RowContextMenuEventHandler(ICollaborativeTableMessageService messageService, ITableQueryService tableQueryService, MeterRegistry meterRegistry, List<IRowContextMenuEntryProvider> contextMenuEntryProviders) {
         this.messageService = Objects.requireNonNull(messageService);
+        this.tableQueryService = Objects.requireNonNull(tableQueryService);
+        this.contextMenuEntryProviders = Objects.requireNonNull(contextMenuEntryProviders);
+
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
@@ -58,26 +68,34 @@ public class ResizeTableColumnEventHandler implements ITableEventHandler {
 
     @Override
     public boolean canHandle(ITableInput tableInput) {
-        return tableInput instanceof ResizeTableColumnInput;
+        return tableInput instanceof RowContextMenuInput;
     }
 
     @Override
     public void handle(Sinks.One<IPayload> payloadSink, Sinks.Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, ITableContext tableContext, TableDescription tableDescription, ITableInput tableInput) {
         this.counter.increment();
 
-        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, tableInput.representationId(), tableInput);
-        String message = this.messageService.invalidInput(tableInput.getClass().getSimpleName(), ResizeTableColumnInput.class.getSimpleName());
+        String message = this.messageService.invalidInput(tableInput.getClass().getSimpleName(), RowContextMenuInput.class.getSimpleName());
         IPayload payload = new ErrorPayload(tableInput.id(), message);
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, tableInput.representationId(), tableInput);
 
-        if (tableInput instanceof ResizeTableColumnInput resizeTableColumnInput) {
-            var resizeTableColumnEvent = new ResizeTableColumnEvent(resizeTableColumnInput.columnId(), resizeTableColumnInput.width());
-            tableContext.getTableEvents().add(resizeTableColumnEvent);
-            payload = new SuccessPayload(resizeTableColumnInput.id());
-            changeDescription = new ChangeDescription(TableChangeKind.TABLE_LAYOUT_CHANGE, tableInput.representationId(), tableInput,
-                    Map.of(TableChangeKind.TABLE_EVENTS_PARAM, List.of(resizeTableColumnEvent)));
+        if (tableInput instanceof RowContextMenuInput input) {
+            var optionalRow = this.tableQueryService.findLineById(tableContext.getTable(), input.rowId());
+            if (optionalRow.isPresent()) {
+                Line row = optionalRow.get();
+
+                var entries = this.contextMenuEntryProviders.stream()
+                        .filter(provider -> provider.canHandle(editingContext, tableDescription, tableContext.getTable(), row))
+                        .flatMap(provider -> provider.getRowContextMenuEntries(editingContext, tableDescription, tableContext.getTable(), row).stream())
+                        .filter(Objects::nonNull)
+                        .sorted(Comparator.comparing(RowContextMenuEntry::label))
+                        .toList();
+
+                payload = new RowContextMenuSuccessPayload(tableInput.id(), entries);
+            }
         }
 
-        payloadSink.tryEmitValue(payload);
         changeDescriptionSink.tryEmitNext(changeDescription);
+        payloadSink.tryEmitValue(payload);
     }
 }

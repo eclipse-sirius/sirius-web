@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA List.
+ * Copyright (c) 2024, 2025 CEA List.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,9 @@ const useTableRepresentationStyles = makeStyles()((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: theme.spacing(8),
+  },
+  representation: {
+    overflowX: 'auto',
   },
 }));
 
@@ -73,7 +76,7 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
   }
 
   return (
-    <div data-testid={'table-representation'}>
+    <div data-testid={'table-representation'} className={classes.representation}>
       {table !== null && !complete ? (
         <TableContent
           editingContextId={editingContextId}

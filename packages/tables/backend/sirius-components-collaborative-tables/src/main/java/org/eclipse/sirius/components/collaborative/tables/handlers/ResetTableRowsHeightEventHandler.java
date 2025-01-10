@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,6 @@ import org.eclipse.sirius.components.collaborative.tables.TableChangeKind;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableContext;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableInput;
-import org.eclipse.sirius.components.collaborative.tables.dto.EditTextfieldCellInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.ResetTableRowsHeightInput;
 import org.eclipse.sirius.components.collaborative.tables.messages.ICollaborativeTableMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
@@ -63,7 +62,7 @@ public class ResetTableRowsHeightEventHandler implements ITableEventHandler {
         this.counter.increment();
 
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, tableInput.representationId(), tableInput);
-        String message = this.messageService.invalidInput(tableInput.getClass().getSimpleName(), EditTextfieldCellInput.class.getSimpleName());
+        String message = this.messageService.invalidInput(tableInput.getClass().getSimpleName(), ResetTableRowsHeightInput.class.getSimpleName());
         IPayload payload = new ErrorPayload(tableInput.id(), message);
 
         if (tableInput instanceof ResetTableRowsHeightInput resetTableRowsHeightInput) {
