@@ -40,7 +40,6 @@ export type SchemaValue = {
 
 export interface RenameImageModalContext {
   name: string;
-  nameMessage: string;
   nameIsInvalid: boolean;
   initialName: string;
   message: string;
@@ -68,7 +67,6 @@ export const renameImageModalMachine = Machine<
     type: 'parallel',
     context: {
       name: null,
-      nameMessage: 'The name must contain at least 3 characters',
       nameIsInvalid: false,
       initialName: null,
       message: null,
