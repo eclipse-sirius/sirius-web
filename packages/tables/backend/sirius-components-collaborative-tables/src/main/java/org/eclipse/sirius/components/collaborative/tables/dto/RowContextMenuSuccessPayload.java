@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,19 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLLine, GQLTable } from '../TableContent.types';
 
-export interface ResizeRowHandlerProps {
-  editingContextId: string;
-  representationId: string;
-  table: GQLTable;
-  readOnly: boolean;
-  row: GQLLine;
-  onRowHeightChanged: (rowId: string, height: number) => void;
-}
+package org.eclipse.sirius.components.collaborative.tables.dto;
 
-export interface DragState {
-  isDragging: boolean;
-  height: number;
-  trElement: HTMLElement | undefined;
+import java.util.List;
+import java.util.UUID;
+
+import org.eclipse.sirius.components.core.api.IPayload;
+
+/**
+ * Payload used to tell the frontend the list of context menu action.
+ *
+ * @author Jerome Gout
+ */
+public record RowContextMenuSuccessPayload(UUID id, List<RowContextMenuEntry> entries) implements IPayload {
 }

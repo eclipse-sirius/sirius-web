@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,6 +40,13 @@ public class TableQueryService implements ITableQueryService {
     public Optional<Line> findLineByCellId(Table table, UUID cellId) {
         return table.getLines().stream()
                 .filter(line -> line.getCells().stream().anyMatch(cell -> cell.getId().equals(cellId)))
+                .findFirst();
+    }
+
+    @Override
+    public Optional<Line> findLineById(Table table, UUID rowId) {
+        return table.getLines().stream()
+                .filter(row -> Objects.equals(rowId, row.getId()))
                 .findFirst();
     }
 
