@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,6 +45,7 @@ import { NewDocumentModalContribution } from './TreeToolBarContributions/NewDocu
 import { UploadDocumentModalContribution } from './TreeToolBarContributions/UploadDocumentModalContribution';
 import { UndoRedo } from './UndoRedo';
 import { useProjectAndRepresentationMetadata } from './useProjectAndRepresentationMetadata';
+import { KeyboardShortcut } from './KeyboardShortcut';
 
 const useEditProjectViewStyles = makeStyles()((_) => ({
   editProjectView: {
@@ -129,15 +130,17 @@ export const EditProjectView = () => {
         <SelectionContextProvider initialSelection={initialSelection}>
           <OmniboxProvider initialContextEntries={initialContextEntries}>
             <UndoRedo>
-              <EditProjectNavbar readOnly={readOnly} />
-              <TreeToolBarProvider>
-                <Workbench
-                  editingContextId={context.project.currentEditingContext.id}
-                  initialRepresentationSelected={context.representation}
-                  onRepresentationSelected={onRepresentationSelected}
-                  readOnly={readOnly}
-                />
-              </TreeToolBarProvider>
+              <KeyboardShortcut editingContextId={context.project.currentEditingContext.id} readOnly={readOnly}>
+                <EditProjectNavbar readOnly={readOnly} />
+                <TreeToolBarProvider>
+                  <Workbench
+                    editingContextId={context.project.currentEditingContext.id}
+                    initialRepresentationSelected={context.representation}
+                    onRepresentationSelected={onRepresentationSelected}
+                    readOnly={readOnly}
+                  />
+                </TreeToolBarProvider>
+              </KeyboardShortcut>
             </UndoRedo>
           </OmniboxProvider>
         </SelectionContextProvider>
