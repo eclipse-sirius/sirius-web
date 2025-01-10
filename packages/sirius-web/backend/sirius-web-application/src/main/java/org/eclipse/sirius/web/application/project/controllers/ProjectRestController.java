@@ -50,6 +50,11 @@ import org.springframework.web.util.UriComponents;
 
 import graphql.relay.Relay;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 /**
  * REST Controller for the Project Endpoint.
@@ -71,6 +76,11 @@ public class ProjectRestController {
     }
 
     @Operation(description = "Get all projects.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "OK", content = {
+            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = RestProject.class)))
+        })
+    })
     @GetMapping
     public ResponseEntity<List<RestProject>> getProjects(@RequestParam(name = "page[size]") Optional<Integer> pageSize, @RequestParam(name = "page[after]") Optional<String> pageAfter, @RequestParam(name = "page[before]") Optional<String> pageBefore) {
         final KeysetScrollPosition position;
@@ -95,6 +105,12 @@ public class ProjectRestController {
     }
 
     @Operation(description = "Get project with the given id (projectId).")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "OK", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = RestProject.class))
+        }),
+        @ApiResponse(responseCode = "404", description = "Not Found", content = { @Content() })
+    })
     @GetMapping(path = "/{projectId}")
     public ResponseEntity<RestProject> getProjectById(@PathVariable UUID projectId) {
         var restProject = this.projectApplicationService.findById(projectId)
@@ -108,6 +124,11 @@ public class ProjectRestController {
     }
 
     @Operation(description = "Create a new project with the given name and description (optional).")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Created", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = RestProject.class))
+        })
+    })
     @PostMapping
     public ResponseEntity<RestProject> createProject(@RequestParam String name, @RequestParam Optional<String> description) {
         var createProjectInput = new CreateProjectInput(UUID.randomUUID(), name, List.of());
@@ -123,6 +144,12 @@ public class ProjectRestController {
     }
 
     @Operation(description = "Update the project with the given id (projectId).")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "OK", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = RestProject.class))
+        }),
+        @ApiResponse(responseCode = "404", description = "Not Found", content = { @Content() })
+    })
     @PutMapping(path = "/{projectId}")
     public ResponseEntity<RestProject> updateProject(@PathVariable UUID projectId, @RequestParam Optional<String> name, @RequestParam Optional<String> description, @RequestParam Optional<RestBranch> branch) {
         if (name.isPresent()) {
@@ -138,6 +165,12 @@ public class ProjectRestController {
     }
 
     @Operation(description = "Delete the project with the given id (projectId).")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "OK", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = RestProject.class))
+        }),
+        @ApiResponse(responseCode = "204", description = "No content", content = { @Content() })
+    })
     @DeleteMapping(path = "/{projectId}")
     public ResponseEntity<RestProject> deleteProject(@PathVariable UUID projectId) {
         var restProject = this.projectApplicationService.findById(projectId)
