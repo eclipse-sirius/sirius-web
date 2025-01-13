@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,6 +42,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 /**
  * REST Controller for the Project Data Versioning - Commits Endpoints.
@@ -61,6 +66,12 @@ public class CommitRestController {
     }
 
     @Operation(description = "Get all the commits in the given project.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "OK", content = {
+            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = RestCommit.class)))
+        }),
+        @ApiResponse(responseCode = "404", description = "Not Found", content = { @Content() })
+    })
     @GetMapping
     public ResponseEntity<List<RestCommit>> getCommits(@PathVariable UUID projectId) {
         var payload = this.editingContextDispatcher.dispatchQuery(projectId.toString(), new GetCommitsRestInput(UUID.randomUUID())).block(Duration.ofSeconds(TIMEOUT));
@@ -102,17 +113,28 @@ public class CommitRestController {
         properties must be computed or verified if the API
         provider claims Derived Property Conformance.
         """)
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Created", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = RestCommit.class))
+        })
+    })
     @PostMapping
     public ResponseEntity<RestCommit> createCommit(@PathVariable UUID projectId, @RequestParam Optional<UUID> branchId) {
         var payload = this.editingContextDispatcher.dispatchMutation(projectId.toString(), new CreateCommitRestInput(UUID.randomUUID(), branchId)).block(Duration.ofSeconds(TIMEOUT));
         if (payload instanceof CreateCommitRestSuccessPayload successPayload) {
-            return new ResponseEntity<>(successPayload.commit(), HttpStatus.OK);
+            return new ResponseEntity<>(successPayload.commit(), HttpStatus.CREATED);
         }
         // The specification does not handle other HttpStatus than HttpStatus.CREATED for this endpoint
         return null;
     }
 
     @Operation(description = "Get the commit with the given id (commitId) in the given project.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "OK", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = RestCommit.class))
+        }),
+        @ApiResponse(responseCode = "404", description = "Not Found", content = { @Content() })
+    })
     @GetMapping(path = "/{commitId}")
     public ResponseEntity<RestCommit> getCommitById(@PathVariable UUID projectId, @PathVariable UUID commitId) {
         var payload = this.editingContextDispatcher.dispatchQuery(projectId.toString(), new GetCommitByIdRestInput(UUID.randomUUID(), commitId)).block(Duration.ofSeconds(TIMEOUT));
@@ -123,6 +145,12 @@ public class CommitRestController {
     }
 
     @Operation(description = "Get the change in the given commit of the given project.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "OK", content = {
+            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = RestDataVersion.class)))
+        }),
+        @ApiResponse(responseCode = "404", description = "Not Found", content = { @Content() })
+    })
     @GetMapping(path = "/{commitId}/changes")
     public ResponseEntity<List<RestDataVersion>> getCommitChange(@PathVariable UUID projectId, @PathVariable UUID commitId, @RequestParam Optional<List<ChangeType>> changeTypes) {
         var payload = this.editingContextDispatcher.dispatchQuery(projectId.toString(), new GetCommitChangeRestInput(UUID.randomUUID(), commitId)).block(Duration.ofSeconds(TIMEOUT));
@@ -133,6 +161,12 @@ public class CommitRestController {
     }
 
     @Operation(description = "Get the change with the given id (changeId) in the given commit of the given project. The changeId is the id of the DataVersion that changed in the commit.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "OK", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = RestDataVersion.class))
+        }),
+        @ApiResponse(responseCode = "404", description = "Not Found", content = { @Content() })
+    })
     @GetMapping(path = "/{commitId}/changes/{changeId}")
     public ResponseEntity<RestDataVersion> getCommitChangeById(@PathVariable UUID projectId, @PathVariable UUID commitId, @PathVariable UUID changeId) {
         var payload = this.editingContextDispatcher.dispatchQuery(projectId.toString(), new GetCommitChangeByIdRestInput(UUID.randomUUID(), commitId, changeId)).block(Duration.ofSeconds(TIMEOUT));
