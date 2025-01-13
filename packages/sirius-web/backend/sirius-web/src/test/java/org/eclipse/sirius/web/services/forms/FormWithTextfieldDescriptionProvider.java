@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -116,6 +116,7 @@ public class FormWithTextfieldDescriptionProvider implements IEditingContextProc
                 .valueExpression("aql:self.name")
                 .style(defaultTextStyle)
                 .conditionalStyles(isReadOnlyConditionalTextStyle)
+                .diagnosticsExpression("aql:if self.name.size() > 0 and self.name.at(1) = self.name.at(1).toUpper() then null else 'WARNING: name should start with upper case' endif")
                 .body(editTextfield)
                 .build();
 

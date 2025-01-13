@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -51,6 +51,16 @@ public abstract class WidgetDescriptionBuilder {
      */
     public WidgetDescriptionBuilder helpExpression(java.lang.String value) {
         this.getWidgetDescription().setHelpExpression(value);
+        return this;
+    }
+
+    /**
+     * Setter for DiagnosticsExpression.
+     *
+     * @generated
+     */
+    public WidgetDescriptionBuilder diagnosticsExpression(java.lang.String value) {
+        this.getWidgetDescription().setDiagnosticsExpression(value);
         return this;
     }
 
