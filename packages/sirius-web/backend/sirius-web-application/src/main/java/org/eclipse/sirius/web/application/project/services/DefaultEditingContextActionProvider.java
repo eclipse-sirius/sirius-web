@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,13 +37,19 @@ public class DefaultEditingContextActionProvider implements IEditingContextActio
 
     private final IProjectSearchService projectSearchService;
 
-    public DefaultEditingContextActionProvider(IProjectSearchService projectSearchService) {
+    private final ISemanticDataSearchService semanticDataSearchService;
+
+
+    public DefaultEditingContextActionProvider(IProjectSearchService projectSearchService, ISemanticDataSearchService semanticDataSearchService) {
         this.projectSearchService = Objects.requireNonNull(projectSearchService);
+        this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
     }
 
     @Override
     public List<EditingContextAction> getEditingContextAction(IEditingContext editingContext) {
         var isWithoutNature = new UUIDParser().parse(editingContext.getId())
+                .flatMap(this.semanticDataSearchService::findById)
+                .map(semanticData -> semanticData.getProject().getId())
                 .flatMap(this.projectSearchService::findById)
                 .map(Project::getNatures)
                 .orElseGet(Set::of)

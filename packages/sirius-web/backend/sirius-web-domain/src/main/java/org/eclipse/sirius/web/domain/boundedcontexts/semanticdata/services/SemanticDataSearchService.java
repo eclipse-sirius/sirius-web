@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -44,7 +44,22 @@ public class SemanticDataSearchService implements ISemanticDataSearchService {
     }
 
     @Override
+    public Optional<SemanticData> findByProjectId(UUID projectId) {
+        return this.semanticDataRepository.findByProjectId(projectId);
+    }
+
+    @Override
+    public Optional<SemanticData> findById(UUID semanticDataId) {
+        return this.semanticDataRepository.findById(semanticDataId);
+    }
+
+    @Override
     public List<SemanticData> findAllByDomains(List<String> domainUris) {
         return this.semanticDataRepository.findAllByDomains(domainUris);
+    }
+
+    @Override
+    public boolean existsById(UUID semanticDataId) {
+        return this.semanticDataRepository.existsById(semanticDataId);
     }
 }

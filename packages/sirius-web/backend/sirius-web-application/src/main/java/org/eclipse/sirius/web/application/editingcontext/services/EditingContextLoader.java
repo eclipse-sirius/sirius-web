@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,7 +29,6 @@ import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -63,7 +62,7 @@ public class EditingContextLoader implements IEditingContextLoader {
     public void load(EditingContext editingContext, UUID projectId) {
         this.editingContextProcessors.forEach(processor -> processor.preProcess(editingContext));
 
-        this.semanticDataSearchService.findByProject(AggregateReference.to(projectId))
+        this.semanticDataSearchService.findById(UUID.fromString(editingContext.getId()))
                 .ifPresent(semanticData -> this.loadSemanticData(editingContext, semanticData));
 
         this.representationDescriptionProviders.forEach(representationDescriptionProvider -> {

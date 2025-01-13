@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.dto.Identified;
 import org.eclipse.sirius.web.application.object.services.api.IDefaultObjectRestService;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.ChangeType;
@@ -30,6 +31,9 @@ import org.eclipse.sirius.web.application.project.data.versioning.dto.RestCommit
 import org.eclipse.sirius.web.application.project.data.versioning.dto.RestDataIdentity;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.RestDataVersion;
 import org.eclipse.sirius.web.application.project.data.versioning.services.api.IDefaultProjectDataVersioningRestService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -48,9 +52,12 @@ public class DefaultProjectDataVersiongRestService implements IDefaultProjectDat
 
     private final IObjectService objectService;
 
-    public DefaultProjectDataVersiongRestService(IDefaultObjectRestService defaultObjectRestService, IObjectService objectService) {
+    private final ISemanticDataSearchService semanticDataSearchService;
+
+    public DefaultProjectDataVersiongRestService(IDefaultObjectRestService defaultObjectRestService, IObjectService objectService, ISemanticDataSearchService semanticDataSearchService) {
         this.defaultObjectRestService = Objects.requireNonNull(defaultObjectRestService);
         this.objectService = Objects.requireNonNull(objectService);
+        this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
     }
 
     /**
@@ -61,9 +68,13 @@ public class DefaultProjectDataVersiongRestService implements IDefaultProjectDat
      */
     @Override
     public List<RestCommit> getCommits(IEditingContext editingContext) {
-        var projectId = UUID.fromString(editingContext.getId());
-        var commit = new RestCommit(projectId, DEFAULT_CREATED, DEFAULT_DESCRIPTION, new Identified(projectId), List.of());
-        return List.of(commit);
+        return new UUIDParser().parse(editingContext.getId())
+                .flatMap(this.semanticDataSearchService::findById)
+                .map(SemanticData::getProject)
+                .map(AggregateReference::getId)
+                .map(projectId -> new RestCommit(projectId, DEFAULT_CREATED, DEFAULT_DESCRIPTION, new Identified(projectId), List.of()))
+                .map(List::of)
+                .orElse(List.of());
     }
 
     /**
@@ -77,9 +88,13 @@ public class DefaultProjectDataVersiongRestService implements IDefaultProjectDat
     @Override
     public RestCommit getCommitById(IEditingContext editingContext, UUID commitId) {
         RestCommit commit = null;
-        if (commitId != null && commitId.toString().equals(editingContext.getId())) {
-            var projectId = UUID.fromString(editingContext.getId());
-            commit = new RestCommit(commitId, DEFAULT_CREATED, DEFAULT_DESCRIPTION, new Identified(projectId), List.of());
+        var projectId = new UUIDParser().parse(editingContext.getId())
+                .flatMap(this.semanticDataSearchService::findById)
+                .map(SemanticData::getProject)
+                .map(AggregateReference::getId);
+
+        if (commitId != null && projectId.isPresent() && commitId.toString().equals(projectId.get().toString())) {
+            commit = new RestCommit(commitId, DEFAULT_CREATED, DEFAULT_DESCRIPTION, new Identified(projectId.get()), List.of());
         }
         return commit;
     }
@@ -95,11 +110,16 @@ public class DefaultProjectDataVersiongRestService implements IDefaultProjectDat
     public List<RestDataVersion> getCommitChange(IEditingContext editingContext, UUID commitId, List<ChangeType> changeTypes) {
         List<RestDataVersion> dataVersions = new ArrayList<>();
         var changeTypesAllowed = changeTypes == null || changeTypes.isEmpty();
-        if (commitId != null && commitId.toString().equals(editingContext.getId()) && changeTypesAllowed) {
+        var projectId = new UUIDParser().parse(editingContext.getId())
+                .flatMap(this.semanticDataSearchService::findById)
+                .map(SemanticData::getProject)
+                .map(AggregateReference::getId);
+
+        if (commitId != null && projectId.isPresent() && commitId.toString().equals(projectId.get().toString()) && changeTypesAllowed) {
             var elements = this.defaultObjectRestService.getElements(editingContext);
             for (var element : elements) {
                 var elementId = this.objectService.getId(element);
-                var changeId = UUID.nameUUIDFromBytes((commitId.toString() + elementId).getBytes());
+                var changeId = UUID.nameUUIDFromBytes((commitId + elementId).getBytes());
                 var dataVersion = new RestDataVersion(changeId, new RestDataIdentity(UUID.fromString(elementId)), element);
                 dataVersions.add(dataVersion);
             }
@@ -110,12 +130,17 @@ public class DefaultProjectDataVersiongRestService implements IDefaultProjectDat
     @Override
     public RestDataVersion getCommitChangeById(IEditingContext editingContext, UUID commitId, UUID changeId) {
         RestDataVersion dataVersion = null;
-        if (changeId != null && commitId != null && commitId.toString().equals(editingContext.getId())) {
+        var projectId = new UUIDParser().parse(editingContext.getId())
+                .flatMap(this.semanticDataSearchService::findById)
+                .map(SemanticData::getProject)
+                .map(AggregateReference::getId);
+
+        if (changeId != null && commitId != null && projectId.isPresent() && commitId.toString().equals(projectId.get().toString())) {
             var elements = this.defaultObjectRestService.getElements(editingContext);
             for (var element : elements) {
                 var elementId = this.objectService.getId(element);
                 if (elementId != null) {
-                    var computedChangeId = UUID.nameUUIDFromBytes((commitId.toString() + elementId).getBytes());
+                    var computedChangeId = UUID.nameUUIDFromBytes((commitId + elementId).getBytes());
                     if (changeId.toString().equals(computedChangeId.toString())) {
                         dataVersion = new RestDataVersion(changeId, new RestDataIdentity(UUID.fromString(elementId)), element);
                         break;

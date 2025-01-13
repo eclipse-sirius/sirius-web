@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -78,7 +78,7 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
     public void givenStudioWhenTheDownloadOfProjectIsRequestedThenTheManifestIsExported() {
         this.givenCommittedTransaction.commit();
 
-        var response = this.download(StudioIdentifiers.SAMPLE_STUDIO_PROJECT);
+        var response = this.download(StudioIdentifiers.SAMPLE_STUDIO_PROJECT_ID);
 
         try (ZipInputStream inputStream = new ZipInputStream(response.getBody().getInputStream())) {
             HashMap<String, ByteArrayOutputStream> zipEntries = this.toZipEntries(inputStream);
@@ -115,7 +115,7 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
 
             String manifestContent = zipEntries.get("Studio/manifest.json").toString(StandardCharsets.UTF_8);
             var objectMapper = new ObjectMapper();
-            assertThat(objectMapper.readTree(manifestContentExpected)).isEqualTo(objectMapper.readTree(manifestContent));
+            assertThat(objectMapper.readTree(manifestContent)).isEqualTo(objectMapper.readTree(manifestContentExpected));
         } catch (IOException exception) {
             fail(exception.getMessage());
         }
@@ -128,7 +128,7 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
     public void givenStudioWhenTheDownloadOfProjectIsRequestedThenTheSemanticDataAreRetrieved() {
         this.givenCommittedTransaction.commit();
 
-        var response = this.download(StudioIdentifiers.SAMPLE_STUDIO_PROJECT);
+        var response = this.download(StudioIdentifiers.SAMPLE_STUDIO_PROJECT_ID);
 
         try (var inputStream = new ZipInputStream(response.getBody().getInputStream())) {
             HashMap<String, ByteArrayOutputStream> zipEntries = this.toZipEntries(inputStream);
@@ -157,7 +157,7 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
     public void givenProjectWhenTheDownloadOfProjectIsRequestedThenTheRepresentationDataAreRetrieved() {
         this.givenCommittedTransaction.commit();
 
-        var response = this.download(TestIdentifiers.ECORE_SAMPLE_PROJECT);
+        var response = this.download(TestIdentifiers.ECORE_SAMPLE_PROJECT_ID);
 
         try (var inputStream = new ZipInputStream(response.getBody().getInputStream())) {
             var zipEntries = this.toZipEntries(inputStream);

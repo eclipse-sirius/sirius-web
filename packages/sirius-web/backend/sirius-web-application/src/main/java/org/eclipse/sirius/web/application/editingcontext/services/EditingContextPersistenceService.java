@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -28,8 +27,9 @@ import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextMigrationParticipantPredicate;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextPersistenceFilter;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceToDocumentService;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
+import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataUpdateService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
@@ -56,13 +56,20 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
 
     private final List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates;
 
+    private final ISemanticDataSearchService semanticDataSearchService;
+
+    private final IProjectSearchService projectSearchService;
+
+
     private final Timer timer;
 
-    public EditingContextPersistenceService(ISemanticDataUpdateService semanticDataUpdateService, IResourceToDocumentService resourceToDocumentService, List<IEditingContextPersistenceFilter> persistenceFilters, List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates, MeterRegistry meterRegistry) {
+    public EditingContextPersistenceService(ISemanticDataUpdateService semanticDataUpdateService, IResourceToDocumentService resourceToDocumentService, List<IEditingContextPersistenceFilter> persistenceFilters, List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates, ISemanticDataSearchService semanticDataSearchService, IProjectSearchService projectSearchService, MeterRegistry meterRegistry) {
         this.semanticDataUpdateService = Objects.requireNonNull(semanticDataUpdateService);
         this.resourceToDocumentService = Objects.requireNonNull(resourceToDocumentService);
         this.persistenceFilters = Objects.requireNonNull(persistenceFilters);
         this.migrationParticipantPredicates = Objects.requireNonNull(migrationParticipantPredicates);
+        this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
+        this.projectSearchService = Objects.requireNonNull(projectSearchService);
         this.timer = Timer.builder(TIMER_NAME).register(meterRegistry);
     }
 
@@ -74,7 +81,9 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
         if (editingContext instanceof IEMFEditingContext emfEditingContext) {
             var applyMigrationParticipants = this.migrationParticipantPredicates.stream().anyMatch(predicate -> predicate.test(emfEditingContext));
             new UUIDParser().parse(editingContext.getId())
-                    .map(AggregateReference::<Project, UUID>to)
+                    .flatMap(this.semanticDataSearchService::findById)
+                    .map(semanticData -> semanticData.getProject().getId())
+                    .flatMap(this.projectSearchService::findById)
                     .ifPresent(project -> {
                         var documentData = emfEditingContext.getDomain().getResourceSet().getResources().stream()
                                 .filter(resource -> IEMFEditingContext.RESOURCE_SCHEME.equals(resource.getURI().scheme()))
@@ -91,7 +100,7 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
                             domainUris.addAll(data.ePackageEntries().stream().map(EPackageEntry::nsURI).toList());
                         });
 
-                        this.semanticDataUpdateService.updateDocuments(cause, project, documents, domainUris);
+                        this.semanticDataUpdateService.updateDocuments(cause, AggregateReference.to(project.getId()), documents, domainUris);
                     });
         }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import org.eclipse.sirius.web.application.document.dto.Stereotype;
 import org.eclipse.sirius.web.application.document.services.api.IStereotypeProvider;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -37,13 +38,18 @@ public class FlowStereotypeProvider implements IStereotypeProvider {
 
     private final IProjectSearchService projectSearchService;
 
-    public FlowStereotypeProvider(IProjectSearchService projectSearchService) {
+    private final ISemanticDataSearchService semanticDataSearchService;
+
+    public FlowStereotypeProvider(IProjectSearchService projectSearchService, ISemanticDataSearchService semanticDataSearchService) {
         this.projectSearchService = Objects.requireNonNull(projectSearchService);
+        this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
     }
 
     @Override
     public List<Stereotype> getStereotypes(IEditingContext editingContext) {
         var isFlowProject = new UUIDParser().parse(editingContext.getId())
+                .flatMap(this.semanticDataSearchService::findById)
+                .map(semanticData -> semanticData.getProject().getId())
                 .flatMap(this.projectSearchService::findById)
                 .filter(project -> project.getNatures().stream()
                         .map(Nature::name)
