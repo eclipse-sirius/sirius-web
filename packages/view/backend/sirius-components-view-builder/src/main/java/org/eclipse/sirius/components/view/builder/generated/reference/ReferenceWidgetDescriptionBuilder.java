@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -69,6 +69,16 @@ public class ReferenceWidgetDescriptionBuilder {
         this.getReferenceWidgetDescription().setHelpExpression(value);
         return this;
     }
+    /**
+     * Setter for DiagnosticsExpression.
+     *
+     * @generated
+     */
+    public ReferenceWidgetDescriptionBuilder diagnosticsExpression(java.lang.String value) {
+        this.getReferenceWidgetDescription().setDiagnosticsExpression(value);
+        return this;
+    }
+
     /**
      * Setter for IsEnabledExpression.
      *

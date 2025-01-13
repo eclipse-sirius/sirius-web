@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.charts.barchart.components.BarChartStyle;
 import org.eclipse.sirius.components.charts.barchart.descriptions.BarChartDescription;
@@ -110,7 +111,53 @@ import org.slf4j.LoggerFactory;
  */
 public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<AbstractControlDescription>> {
 
-    private static final  String VARIABLE_MANAGER = "variableManager";
+    /**
+     * Represents the possible severities of a diagnostic and how it can be encoded in EMF Diagnostics and plain
+     * strings.
+     *
+     * @author pcdavid
+     */
+    private enum Severity {
+        UNKNOWN("Unkown"), INFO("Info"), WARNING("Warning"), ERROR("Error");
+
+        private String name;
+
+        Severity(String name) {
+            this.name = Objects.requireNonNull(name);
+        }
+
+        public static Severity ofDiagnostic(Diagnostic diagnostic) {
+            return switch (diagnostic.getSeverity()) {
+                case org.eclipse.emf.common.util.Diagnostic.ERROR -> ERROR;
+                case org.eclipse.emf.common.util.Diagnostic.WARNING -> WARNING;
+                case org.eclipse.emf.common.util.Diagnostic.INFO -> INFO;
+                default -> UNKNOWN;
+            };
+        }
+
+        public static Severity ofString(String stringDiagnostic) {
+            Severity result = UNKNOWN;
+            String upper = stringDiagnostic.toUpperCase();
+            if (upper.startsWith(ERROR.prefix())) {
+                result = ERROR;
+            } else if (upper.startsWith(WARNING.prefix())) {
+                result = WARNING;
+            } else if (upper.startsWith(INFO.prefix())) {
+                result = INFO;
+            }
+            return result;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public String prefix() {
+            return this.getName().toUpperCase() + ":";
+        }
+    }
+
+    private static final String VARIABLE_MANAGER = "variableManager";
 
     private final Logger logger = LoggerFactory.getLogger(ViewFormDescriptionConverterSwitch.class);
 
@@ -128,7 +175,8 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
 
     private final IFormIdProvider widgetIdProvider;
 
-    public ViewFormDescriptionConverterSwitch(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, Switch<Optional<AbstractWidgetDescription>> customWidgetConverters, IFeedbackMessageService feedbackMessageService, IFormIdProvider idProvider) {
+    public ViewFormDescriptionConverterSwitch(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, Switch<Optional<AbstractWidgetDescription>> customWidgetConverters,
+            IFeedbackMessageService feedbackMessageService, IFormIdProvider idProvider) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.editService = Objects.requireNonNull(editService);
         this.objectService = Objects.requireNonNull(objectService);
@@ -171,7 +219,14 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 .kindProvider(diagnostic -> "")
                 .messageProvider(diagnostic -> "")
                 .styleProvider(styleProvider);
-
+        if (viewTextfieldDescription.getDiagnosticsExpression() != null && !viewTextfieldDescription.getDiagnosticsExpression().isBlank()) {
+            builder.diagnosticsProvider(variableManager -> {
+                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), viewTextfieldDescription.getDiagnosticsExpression());
+                return result.asObjects().orElse(List.of());
+            })
+                   .kindProvider(this::getDiagnosticKind)
+                   .messageProvider(this::getDiagnosticMessage);
+        }
         if (viewTextfieldDescription.getHelpExpression() != null && !viewTextfieldDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(this.getStringValueProvider(viewTextfieldDescription.getHelpExpression()));
         }
@@ -212,6 +267,14 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 .kindProvider(diagnostic -> "")
                 .messageProvider(diagnostic -> "")
                 .styleProvider(styleProvider);
+        if (viewCheckboxDescription.getDiagnosticsExpression() != null && !viewCheckboxDescription.getDiagnosticsExpression().isBlank()) {
+            builder.diagnosticsProvider(variableManager -> {
+                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), viewCheckboxDescription.getDiagnosticsExpression());
+                return result.asObjects().orElse(List.of());
+            })
+                   .kindProvider(this::getDiagnosticKind)
+                   .messageProvider(this::getDiagnosticMessage);
+        }
         if (viewCheckboxDescription.getHelpExpression() != null && !viewCheckboxDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(this.getStringValueProvider(viewCheckboxDescription.getHelpExpression()));
         }
@@ -260,6 +323,14 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 .kindProvider(diagnostic -> "")
                 .messageProvider(diagnostic -> "")
                 .styleProvider(styleProvider);
+        if (viewSelectDescription.getDiagnosticsExpression() != null && !viewSelectDescription.getDiagnosticsExpression().isBlank()) {
+            builder.diagnosticsProvider(variableManager -> {
+                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), viewSelectDescription.getDiagnosticsExpression());
+                return result.asObjects().orElse(List.of());
+            })
+                   .kindProvider(this::getDiagnosticKind)
+                   .messageProvider(this::getDiagnosticMessage);
+        }
         if (viewSelectDescription.getHelpExpression() != null && !viewSelectDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(this.getStringValueProvider(viewSelectDescription.getHelpExpression()));
         }
@@ -299,10 +370,45 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 .kindProvider(diagnostic -> "")
                 .messageProvider(diagnostic -> "")
                 .styleProvider(styleProvider);
+        if (textAreaDescription.getDiagnosticsExpression() != null && !textAreaDescription.getDiagnosticsExpression().isBlank()) {
+            builder.diagnosticsProvider(variableManager -> {
+                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), textAreaDescription.getDiagnosticsExpression());
+                return result.asObjects().orElse(List.of());
+            })
+                   .kindProvider(this::getDiagnosticKind)
+                   .messageProvider(this::getDiagnosticMessage);
+        }
         if (textAreaDescription.getHelpExpression() != null && !textAreaDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(this.getStringValueProvider(textAreaDescription.getHelpExpression()));
         }
         return Optional.of(builder.build());
+    }
+
+    private String getDiagnosticKind(Object diagnosticObject) {
+        Severity severity = Severity.UNKNOWN;
+        if (diagnosticObject instanceof Diagnostic emfDiagnostic) {
+            severity = Severity.ofDiagnostic(emfDiagnostic);
+        } else if (diagnosticObject instanceof String stringDiagnostic) {
+            severity = Severity.ofString(stringDiagnostic);
+        }
+        return severity.getName();
+    }
+
+    private String getDiagnosticMessage(Object diagnosticObject) {
+        String result = "";
+        if (diagnosticObject instanceof Diagnostic emfDiagnostic) {
+            result = emfDiagnostic.getMessage();
+        } else if (diagnosticObject instanceof String stringDiagnostic) {
+            result = stringDiagnostic;
+            String upper = stringDiagnostic.toUpperCase();
+            for (Severity severity : Severity.values()) {
+                if (upper.startsWith(severity.prefix())) {
+                    result = stringDiagnostic.substring(severity.prefix().length()).trim();
+                    break;
+                }
+            }
+        }
+        return result;
     }
 
     @Override
@@ -324,6 +430,14 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(diagnostic -> "")
                 .messageProvider(diagnostic -> "");
+        if (richTextDescription.getDiagnosticsExpression() != null && !richTextDescription.getDiagnosticsExpression().isBlank()) {
+            builder.diagnosticsProvider(variableManager -> {
+                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), richTextDescription.getDiagnosticsExpression());
+                return result.asObjects().orElse(List.of());
+            })
+                   .kindProvider(this::getDiagnosticKind)
+                   .messageProvider(this::getDiagnosticMessage);
+        }
         if (richTextDescription.getHelpExpression() != null && !richTextDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(this.getStringValueProvider(richTextDescription.getHelpExpression()));
         }
@@ -372,6 +486,14 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 .kindProvider(diagnostic -> "")
                 .messageProvider(diagnostic -> "")
                 .styleProvider(styleProvider);
+        if (multiSelectDescription.getDiagnosticsExpression() != null && !multiSelectDescription.getDiagnosticsExpression().isBlank()) {
+            builder.diagnosticsProvider(variableManager -> {
+                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), multiSelectDescription.getDiagnosticsExpression());
+                return result.asObjects().orElse(List.of());
+            })
+                   .kindProvider(this::getDiagnosticKind)
+                   .messageProvider(this::getDiagnosticMessage);
+        }
         if (multiSelectDescription.getHelpExpression() != null && !multiSelectDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(this.getStringValueProvider(multiSelectDescription.getHelpExpression()));
         }
@@ -427,6 +549,14 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 .kindProvider(object -> "")
                 .messageProvider(object -> "")
                 .styleProvider(styleProvider);
+        if (radioDescription.getDiagnosticsExpression() != null && !radioDescription.getDiagnosticsExpression().isBlank()) {
+            builder.diagnosticsProvider(variableManager -> {
+                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), radioDescription.getDiagnosticsExpression());
+                return result.asObjects().orElse(List.of());
+            })
+                   .kindProvider(this::getDiagnosticKind)
+                   .messageProvider(this::getDiagnosticMessage);
+        }
         if (radioDescription.getHelpExpression() != null && !radioDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(this.getStringValueProvider(radioDescription.getHelpExpression()));
         }
@@ -514,6 +644,14 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 .kindProvider(object -> "")
                 .messageProvider(object -> "")
                 .borderStyleProvider(borderStyleProvider);
+        if (flexboxContainerDescription.getDiagnosticsExpression() != null && !flexboxContainerDescription.getDiagnosticsExpression().isBlank()) {
+            builder.diagnosticsProvider(variableManager -> {
+                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), flexboxContainerDescription.getDiagnosticsExpression());
+                return result.asObjects().orElse(List.of());
+            })
+                   .kindProvider(this::getDiagnosticKind)
+                   .messageProvider(this::getDiagnosticMessage);
+        }
         if (flexboxContainerDescription.getHelpExpression() != null && !flexboxContainerDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(this.getStringValueProvider(flexboxContainerDescription.getHelpExpression()));
         }
@@ -555,6 +693,14 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 .kindProvider(diagnostic -> "")
                 .messageProvider(diagnostic -> "")
                 .styleProvider(styleProvider);
+        if (viewButtonDescription.getDiagnosticsExpression() != null && !viewButtonDescription.getDiagnosticsExpression().isBlank()) {
+            builder.diagnosticsProvider(variableManager -> {
+                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), viewButtonDescription.getDiagnosticsExpression());
+                return result.asObjects().orElse(List.of());
+            })
+                   .kindProvider(this::getDiagnosticKind)
+                   .messageProvider(this::getDiagnosticMessage);
+        }
         if (viewButtonDescription.getHelpExpression() != null && !viewButtonDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(this.getStringValueProvider(viewButtonDescription.getHelpExpression()));
         }
@@ -589,7 +735,14 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 .actions(actions)
                 .kindProvider(diagnostic -> "")
                 .messageProvider(diagnostic -> "");
-
+        if (splitButtonDescription.getDiagnosticsExpression() != null && !splitButtonDescription.getDiagnosticsExpression().isBlank()) {
+            builder.diagnosticsProvider(variableManager -> {
+                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), splitButtonDescription.getDiagnosticsExpression());
+                return result.asObjects().orElse(List.of());
+            })
+                   .kindProvider(this::getDiagnosticKind)
+                   .messageProvider(this::getDiagnosticMessage);
+        }
         if (splitButtonDescription.getHelpExpression() != null && !splitButtonDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(this.getStringValueProvider(splitButtonDescription.getHelpExpression()));
         }
@@ -625,6 +778,14 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 .kindProvider(diagnostic -> "")
                 .messageProvider(diagnostic -> "")
                 .styleProvider(styleProvider);
+        if (viewLabelDescription.getDiagnosticsExpression() != null && !viewLabelDescription.getDiagnosticsExpression().isBlank()) {
+            builder.diagnosticsProvider(variableManager -> {
+                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), viewLabelDescription.getDiagnosticsExpression());
+                return result.asObjects().orElse(List.of());
+            })
+                   .kindProvider(this::getDiagnosticKind)
+                   .messageProvider(this::getDiagnosticMessage);
+        }
         if (viewLabelDescription.getHelpExpression() != null && !viewLabelDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(this.getStringValueProvider(viewLabelDescription.getHelpExpression()));
         }
@@ -660,6 +821,14 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(diagnostic -> "")
                 .messageProvider(diagnostic -> "");
+        if (viewLinkDescription.getDiagnosticsExpression() != null && !viewLinkDescription.getDiagnosticsExpression().isBlank()) {
+            builder.diagnosticsProvider(variableManager -> {
+                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), viewLinkDescription.getDiagnosticsExpression());
+                return result.asObjects().orElse(List.of());
+            })
+                   .kindProvider(this::getDiagnosticKind)
+                   .messageProvider(this::getDiagnosticMessage);
+        }
         if (viewLinkDescription.getHelpExpression() != null && !viewLinkDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(this.getStringValueProvider(viewLinkDescription.getHelpExpression()));
         }
@@ -712,6 +881,14 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(object -> "")
                 .messageProvider(object -> "");
+        if (viewListDescription.getDiagnosticsExpression() != null && !viewListDescription.getDiagnosticsExpression().isBlank()) {
+            builder.diagnosticsProvider(variableManager -> {
+                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), viewListDescription.getDiagnosticsExpression());
+                return result.asObjects().orElse(List.of());
+            })
+                   .kindProvider(this::getDiagnosticKind)
+                   .messageProvider(this::getDiagnosticMessage);
+        }
         if (viewListDescription.getHelpExpression() != null && !viewListDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(this.getStringValueProvider(viewListDescription.getHelpExpression()));
         }
@@ -734,6 +911,14 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(object -> "")
                 .messageProvider(object -> "");
+        if (imageDescription.getDiagnosticsExpression() != null && !imageDescription.getDiagnosticsExpression().isBlank()) {
+            builder.diagnosticsProvider(variableManager -> {
+                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), imageDescription.getDiagnosticsExpression());
+                return result.asObjects().orElse(List.of());
+            })
+                   .kindProvider(this::getDiagnosticKind)
+                   .messageProvider(this::getDiagnosticMessage);
+        }
         if (imageDescription.getHelpExpression() != null && !imageDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(this.getStringValueProvider(imageDescription.getHelpExpression()));
         }
@@ -814,6 +999,14 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 .kindProvider(object -> "")
                 .messageProvider(object -> "")
                 .isReadOnlyProvider(isReadOnlyProvider);
+        if (treeDescription.getDiagnosticsExpression() != null && !treeDescription.getDiagnosticsExpression().isBlank()) {
+            builder.diagnosticsProvider(variableManager -> {
+                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), treeDescription.getDiagnosticsExpression());
+                return result.asObjects().orElse(List.of());
+            })
+                   .kindProvider(this::getDiagnosticKind)
+                   .messageProvider(this::getDiagnosticMessage);
+        }
         if (treeDescription.getHelpExpression() != null && !treeDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(this.getStringValueProvider(treeDescription.getHelpExpression()));
         }
@@ -904,6 +1097,14 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 .kindProvider(object -> "")
                 .messageProvider(object -> "")
                 .styleProvider(styleProvider);
+        if (viewDateTimeDescription.getDiagnosticsExpression() != null && !viewDateTimeDescription.getDiagnosticsExpression().isBlank()) {
+            builder.diagnosticsProvider(variableManager -> {
+                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), viewDateTimeDescription.getDiagnosticsExpression());
+                return result.asObjects().orElse(List.of());
+            })
+                   .kindProvider(this::getDiagnosticKind)
+                   .messageProvider(this::getDiagnosticMessage);
+        }
         if (viewDateTimeDescription.getHelpExpression() != null && !viewDateTimeDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(this.getStringValueProvider(viewDateTimeDescription.getHelpExpression()));
         }
@@ -940,6 +1141,14 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 .diagnosticsProvider(vm -> List.of())
                 .kindProvider(object -> "")
                 .messageProvider(object -> "");
+        if (viewSliderDescription.getDiagnosticsExpression() != null && !viewSliderDescription.getDiagnosticsExpression().isBlank()) {
+            builder.diagnosticsProvider(variableManager -> {
+                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), viewSliderDescription.getDiagnosticsExpression());
+                return result.asObjects().orElse(List.of());
+            })
+                   .kindProvider(this::getDiagnosticKind)
+                   .messageProvider(this::getDiagnosticMessage);
+        }
         if (viewSliderDescription.getHelpExpression() != null && !viewSliderDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(this.getStringValueProvider(viewSliderDescription.getHelpExpression()));
         }
@@ -1022,6 +1231,14 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(object -> "")
                 .messageProvider(object -> "");
+        if (widgetDescription.getDiagnosticsExpression() != null && !widgetDescription.getDiagnosticsExpression().isBlank()) {
+            builder.diagnosticsProvider(variableManager -> {
+                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), widgetDescription.getDiagnosticsExpression());
+                return result.asObjects().orElse(List.of());
+            })
+                   .kindProvider(this::getDiagnosticKind)
+                   .messageProvider(this::getDiagnosticMessage);
+        }
         if (widgetDescription.getHelpExpression() != null && !widgetDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(this.getStringValueProvider(widgetDescription.getHelpExpression()));
         }
