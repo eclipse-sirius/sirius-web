@@ -7,7 +7,8 @@ Currently, it is not possible to duplicate an object from the Explorer.
 == Key Result
 
 The user can duplicate a semantic object with contextual menu on tree items in the explorer.
-The user can choose 
+The user can choose
+
 * the target container where the duplicated object will be added
 * the target containment feature 
 * options to define how is duplicated the content of the duplicated object 

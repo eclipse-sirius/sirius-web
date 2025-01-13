@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,8 @@ public final class StudioIdentifiers {
     public static final UUID ROOT_ENTITY_OBJECT = UUID.fromString("c341bf91-d315-4264-9787-c51b121a6375");
 
     public static final UUID NAMED_ELEMENT_ENTITY_OBJECT = UUID.fromString("c6fdba07-dea5-4a53-99c7-7eefc1bfdfcc");
+
+    public static final UUID LABEL_ATTRIBUTE_OBJECT = UUID.fromString("7ac92c9d-3cb6-4374-9774-11bb62962fe2");
 
     public static final UUID DESCRIPTION_ATTRIBUTE_OBJECT = UUID.fromString("d51d676c-0cb7-414b-8358-bacbc5d33942");
 
