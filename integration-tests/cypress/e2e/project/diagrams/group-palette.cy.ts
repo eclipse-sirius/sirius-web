@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,14 +40,14 @@ describe('Diagram - group palette', () => {
       explorer.select('Central_Unit', true);
       diagram.getSelectedNodes('diagram', 'Wifi');
       diagram.getSelectedNodes('diagram', 'Central_Unit');
-      diagram.getNodes('diagram', 'Wifi').click();
+      diagram.getNodes('diagram', 'Wifi').rightclick();
       diagram.getGroupPalette().should('exist');
       diagram.getGroupPalette().findByTestId('Align left').should('exist');
       diagram.getGroupPalette().findByTestId('expand').click();
       diagram.getGroupPalette().findByTestId('Arrange in column').click();
       diagram.fitToScreen();
       diagram.getGroupPalette().should('not.exist');
-      diagram.getNodes('diagram', 'Wifi').click();
+      diagram.getNodes('diagram', 'Wifi').rightclick();
       diagram.getGroupPalette().should('exist');
       diagram.getGroupPalette().findByTestId('Align left').should('not.exist');
       diagram.getGroupPalette().findByTestId('Arrange in column').should('exist');
