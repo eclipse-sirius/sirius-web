@@ -40,12 +40,14 @@ export { NewRootObjectModal } from './modals/new-root-object/NewRootObjectModal'
 export { type NewRootObjectModalProps } from './modals/new-root-object/NewRootObjectModal.types';
 export { NavigationBar } from './navigationBar/NavigationBar';
 export {
+  type NavigationBarHomeProps,
   type NavigationBarIconProps,
   type NavigationBarLeftContributionProps,
   type NavigationBarProps,
   type NavigationBarRightContributionProps,
 } from './navigationBar/NavigationBar.types';
 export {
+  navigationBarHomeExtensionPoint,
   navigationBarIconExtensionPoint,
   navigationBarLeftContributionExtensionPoint,
   navigationBarRightContributionExtensionPoint,

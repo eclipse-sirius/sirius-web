@@ -11,13 +11,14 @@
 - Add loading indicators for long actions
 - Add impact analysis before tool execution
 - Add support for artifact publication from a project
-
+- Support custom navigation bar
 
 === Architectural decision records
 
 - [ADR-178] Add support of actions in table row menu
 - [ADR-179] Add support for artifact publication from a project
 - [ADR-180] Add support for widget diagnostics provider in View-based Forms
+- [ADR-181] Make Navigation Bar extension point more flexible
 
 === Deprecation warning
 
@@ -64,6 +65,9 @@ Some log messages have been updated in order to provide more information and mak
 The configuration property `sirius.web.graphql.tracing` has also been added to active the tracing mode of the GraphQL API.
 It can be activated using `sirius.web.graphql.tracing=true` since it is not enabled by default to not have any impact on the performance of the application.
 Some additional log has also been contributed on the frontend in order to view more easily the order and time of the GraphQL requests and responses.
+- https://github.com/eclipse-sirius/sirius-web/issues/4404[#4404] [sirius-web] Add extension point `navigationBarHomeExtensionPoint`.
+It allows the customizing the top left corner part of the navigation bar using an arbitrary React component.
+See `SiriusWebNavigationBarHome` in module `NavigationBarHome` for the default implementation, which can be used as an example implementation.
 
 
 === Improvements
