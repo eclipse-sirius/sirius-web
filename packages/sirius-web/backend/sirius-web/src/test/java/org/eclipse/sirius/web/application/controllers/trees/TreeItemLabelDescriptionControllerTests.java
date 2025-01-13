@@ -26,7 +26,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
-import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -104,6 +103,7 @@ public class TreeItemLabelDescriptionControllerTests extends AbstractIntegration
         // 2- check that styles are properly applied
         //      - check that the ROOT entity has not the abstract style applied.
         //      - check that the NamedElement entity has the abstract style (if style)
+        //      - check that the Human entity has 3 attributes (for style)
         var inputStyle = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), explorerRepresentationId);
         var fluxStyle = this.explorerEventSubscriptionRunner.run(inputStyle);
 
@@ -114,11 +114,15 @@ public class TreeItemLabelDescriptionControllerTests extends AbstractIntegration
                     .getChildren()
                     .get(0)
                     .getChildren();
-            StyledString rootLabel = domainChildren.get(0).getLabel();
-            StyledString namedElementLabel = domainChildren.get(1).getLabel();
-            assertThat(rootLabel.styledStringFragments()).hasSize(2);
-            assertThat(namedElementLabel.styledStringFragments()).hasSize(3);
-            assertThat(namedElementLabel.toString()).isEqualTo("[Entity] NamedElement [abstract]");
+            var rootLabels = domainChildren.get(0).getLabel().styledStringFragments();
+            var namedElementLabels = domainChildren.get(1).getLabel().styledStringFragments();
+            var humanLabels = domainChildren.get(2).getLabel().styledStringFragments();
+            assertThat(rootLabels.get(rootLabels.size() - 1).text()).doesNotContain("[abstract]");
+            assertThat(namedElementLabels.get(namedElementLabels.size() - 1).text()).contains("[abstract]");
+            assertThat(humanLabels).hasSize(9);
+            assertThat(humanLabels.get(3).text()).isEqualTo("description");
+            assertThat(humanLabels.get(5).text()).isEqualTo("promoted");
+            assertThat(humanLabels.get(7).text()).isEqualTo("birthDate");
         });
 
         StepVerifier.create(fluxStyle)

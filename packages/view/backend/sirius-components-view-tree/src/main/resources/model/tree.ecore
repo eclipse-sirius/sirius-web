@@ -33,6 +33,13 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="children" lowerBound="1"
         upperBound="-1" eType="#//TreeItemLabelElementDescription" containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ForTreeItemLabelElementDescription"
+      eSuperTypes="#//TreeItemLabelElementDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="iterator" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="iterableExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="children" lowerBound="1"
+        upperBound="-1" eType="#//TreeItemLabelElementDescription" containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TreeItemLabelFragmentDescription" eSuperTypes="#//TreeItemLabelElementDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//TextStyleDescription"/>

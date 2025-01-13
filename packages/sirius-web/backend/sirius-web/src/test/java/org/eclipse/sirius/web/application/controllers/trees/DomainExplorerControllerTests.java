@@ -160,7 +160,7 @@ public class DomainExplorerControllerTests extends AbstractIntegrationTests {
             assertThat(tree.getChildren().get(0).getChildren()).hasSize(1);
             assertThat(tree.getChildren().get(0).getChildren().get(0).getLabel().toString()).isEqualTo("buck");
             assertThat(tree.getChildren().get(0).getChildren().get(0).getChildren()).hasSize(3);
-            assertThat(tree.getChildren().get(0).getChildren().get(0).getChildren().get(2).getLabel().toString()).isEqualTo("[Entity] Human");
+            assertThat(tree.getChildren().get(0).getChildren().get(0).getChildren().get(2).getLabel().toString()).contains("[Entity] Human");
             assertThat(tree.getChildren().get(0).getChildren().get(0).getChildren().get(2).getChildren()).hasSize(4);
             assertThat(tree.getChildren().get(0).getChildren().get(0).getChildren().get(2).getChildren().get(0).getLabel().toString()).isEqualTo("superTypes");
             settingId.set(tree.getChildren().get(0).getChildren().get(0).getChildren().get(2).getChildren().get(0).getId());
