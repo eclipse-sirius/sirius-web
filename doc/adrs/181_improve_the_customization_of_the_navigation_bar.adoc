@@ -1,0 +1,23 @@
+= ADR-181 - Improve the customization of the navigation bar
+
+* GitHub Issue: [#4404](https://github.com/eclipse-sirius/sirius-web/issues/4404)
+
+== Context
+
+Currently, the Sirius Web frontend has an extension point that allows downstream applications to customize the navigation bar icon button by changing its (round) icon.
+The default implementation provides the Sirius Web logo as the image to use.
+
+Downstream applications (e.g. SysON-based applications) may require a more flexible extension point to further customize that part of the navigation bar.
+
+== Decision
+
+We will update the API of the current extension point `navigationBarIconExtensionPoint` to let downstream applications provide an arbitrary React component to use as their navigation bar left-most component.
+Other parts of the navigation bar ('left' and 'right' contributions) will not be impacted.
+
+== Status
+
+Accepted.
+
+== Consequences
+
+Existing downstream applications will need to update their contributed extension to fit the API of the extension point.
