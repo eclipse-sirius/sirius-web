@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,8 +34,9 @@ export const useGroupPalette = (): UseGroupPaletteValue => {
     }
   }, [escapePressed]);
 
-  const onDiagramElementClick = useCallback(
+  const onDiagramElementContextMenu = useCallback(
     (event: React.MouseEvent<Element, MouseEvent>, refElement: Node<NodeData> | Edge<EdgeData> | null) => {
+      event.preventDefault();
       const { domNode } = store.getState();
       const element = domNode?.getBoundingClientRect();
       const palettePosition = computePalettePosition(event, element);
@@ -56,6 +57,6 @@ export const useGroupPalette = (): UseGroupPaletteValue => {
     isOpened: state.isOpened,
     refElementId: state.refElementId,
     hideGroupPalette,
-    onDiagramElementClick,
+    onDiagramElementContextMenu,
   };
 };

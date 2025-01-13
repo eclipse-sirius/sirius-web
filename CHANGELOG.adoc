@@ -12,7 +12,7 @@
 - Add impact analysis before tool execution
 - Add support for artifact publication from a project
 - Improve image export
-
+- Display diagram palette on right-click
 
 === Architectural decision records
 
@@ -29,12 +29,13 @@
 It will allow us to create more complex test data shared by all integration tests to detect additional problems.
 - https://github.com/eclipse-sirius/sirius-web/issues/4416[#4416] [sirius-web] The `IEditingContextMigrationParticipantPredicate` will now use the id of the editing context instead of the whole editing context in order to find out if the migration participant should be activated.
 - https://github.com/eclipse-sirius/sirius-web/issues/4418[#4418] [sirius-web] Change type of project_id from UUID to String
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4408[#4408] [diagram] Display diagram contextual menu (a.k.a the Palette) with right click instead of left click.
+It is not an API breaking change but a breaking change from the end-user point of view.
 
 === Dependency update
 
 - [releng] Upgrade `turbo` to version 2.3.3 (from 1.13.3 before).
-The `start` task used in our turbo configuration is now marked as `persistent` and as a result we have separated the `start` script from `sirius-web` used to run the frontend in dev from from the `start` script from other packages used to build them in development mode by remaning the later to `build-dev`.
+The `start` task used in our turbo configuration is now marked as `persistent` and as a result we have separated the `start` script from `sirius-web` used to run the frontend in dev from from the `start` script from other packages used to build them in development mode by renaming the later to `build-dev`.
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.1[Spring Boot 3.4.1].
 As part of this switch, the way we redirect the HTTP requests of frontend views to the `index.html` file on the backend has been updated.
 The previous strategy relied on an odd configuration of the `WebMvcConfigurer#addResourceHandlers` in order to redirect those requests to the `index.html` file.
@@ -85,7 +86,7 @@ Some additional log has also been contributed on the frontend in order to view m
 - https://github.com/eclipse-sirius/sirius-web/issues/4368[#4368] [sirius-web] Add GraphQL subscription exception handler
 - [charts] Make the npm package `sirius-components-charts` use the strict version of our TypeScript configuration
 - [trees] Make the npm package `sirius-components-trees` use the strict version of our TypeScript configuration
-- https://github.com/eclipse-sirius/sirius-web/issues/1047[#1047] [sirius-web] In the _Domain_ diagram, when using direct-edit on a relatin edge, the initial text now only includes the name of the relation (without the cardinality)
+- https://github.com/eclipse-sirius/sirius-web/issues/1047[#1047] [sirius-web] In the _Domain_ diagram, when using direct-edit on a relation edge, the initial text now only includes the name of the relation (without the cardinality)
 - https://github.com/eclipse-sirius/sirius-web/issues/4095[#4095] [tree] Add conditional tree item label element description
 - https://github.com/eclipse-sirius/sirius-web/issues/4101[#4101] [tree] Add loop tree item label element description
 - https://github.com/eclipse-sirius/sirius-web/issues/4233[#4233] [core] Add cursor-based pagination for Project related GET REST APIs.
