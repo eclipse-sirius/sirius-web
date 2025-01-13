@@ -13,6 +13,7 @@
 - Add support for artifact publication from a project
 - Improve image export
 - Add the current selection to the URL of the project workbench
+- Improve the customization of the navigation bar
 
 
 === Architectural decision records
@@ -20,6 +21,7 @@
 - [ADR-178] Add support of actions in table row menu
 - [ADR-179] Add support for artifact publication from a project
 - [ADR-180] Add support for widget diagnostics provider in View-based Forms
+- [ADR-181] Improve the customization of the navigation bar
 
 === Deprecation warning
 
@@ -30,6 +32,8 @@
 It will allow us to create more complex test data shared by all integration tests to detect additional problems.
 - https://github.com/eclipse-sirius/sirius-web/issues/4416[#4416] [sirius-web] The `IEditingContextMigrationParticipantPredicate` will now use the id of the editing context instead of the whole editing context in order to find out if the migration participant should be activated.
 - https://github.com/eclipse-sirius/sirius-web/issues/4418[#4418] [sirius-web] Change type of project_id from UUID to String
+- https://github.com/eclipse-sirius/sirius-web/issues/4404[#4404] [sirius-web] The extension point `navigationBarIconExtensionPoint` has been updated to accept an arbitrary React Component.
+Downstream applications which were using it to change the image of the home button will now be in charge of rendering the whole button.
 
 
 === Dependency update
@@ -82,6 +86,8 @@ Some additional log has also been contributed on the frontend in order to view m
 - https://github.com/eclipse-sirius/sirius-web/issues/4446[#4446] [sirius-web] Added a new interface `org.eclipse.sirius.web.infrastructure.configuration.mvc.IBackendPathPredicate` which can be used to declare additional paths that should be handled by the backend itself instead of left to the frontend router.
 This can be used to add support for new kinds of static resources (e.g. PDF files) or new Spring controllers.
 - https://github.com/eclipse-sirius/sirius-web/issues/4346[#4346] [query] Deactivate the spell checker on the query view
+- https://github.com/eclipse-sirius/sirius-web/issues/4404[#4404] [sirius-web] The extension point `navigationBarIconExtensionPoint` can now let specifiers customize fully the appearance and behavior of the top left icon
+
 
 === Improvements
 
