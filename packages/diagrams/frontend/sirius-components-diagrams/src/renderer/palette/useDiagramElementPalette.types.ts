@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,7 @@ export interface UseDiagramElementPaletteValue {
   isOpened: boolean;
   hideDiagramElementPalette: () => void;
   showDiagramElementPalette: (x: number, y: number) => void;
-  onDiagramElementClick: (
+  onDiagramElementContextMenu: (
     event: React.MouseEvent<Element, MouseEvent>,
     elementClicked: Node<NodeData> | Edge<EdgeData>
   ) => void;

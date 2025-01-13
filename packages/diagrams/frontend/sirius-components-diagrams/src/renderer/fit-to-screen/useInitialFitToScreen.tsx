@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,12 +26,13 @@ export const useInitialFitToScreen = () => {
   const [state, setState] = useState<UseInitialFitToScreenState>({
     initialFitToScreenPerformed: false,
   });
-
+  console.debug('fit-to-screen has been performed:' + state.initialFitToScreenPerformed);
   // We cannot perform the fit to screen directly but instead need to wait for the next render in order to retrieve the updated nodes and edges in the react flow instance
   useEffect(() => {
     if (nodesInitialized && !state.initialFitToScreenPerformed) {
-      reactFlowInstance.fitView({ duration: 200, nodes: reactFlowInstance.getNodes() });
-      setState({ initialFitToScreenPerformed: true });
+      reactFlowInstance.fitView({ duration: 200, nodes: reactFlowInstance.getNodes() }).then(() => {
+        setState({ initialFitToScreenPerformed: true });
+      });
     }
   }, [nodesInitialized, state.initialFitToScreenPerformed]);
 };

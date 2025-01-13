@@ -1,0 +1,95 @@
+= Display diagram palette on right click
+
+== Problem
+
+Sirius Web uses the left click to display the palette on diagrams.
+This leads to open the palette on each click, even if the user only wants to select an element.
+
+== Key Result
+
+The palette on diagrams is now enabled through the right click.
+
+=== Acceptance Criteria
+
+- The left click does not display the palette anymore
+- The right click display the palette
+- Escape close the palette as before
+- The left click now closes the palette, as it will create a new selection
+
+=== Scenario
+
+==== Nothing is selected
+
+- Left click on the diagram background: nothing happens.
+No semantic element is selected in the Explorer/Details or other views.
+- Right click on the diagram background: the diagram palette is opened.
+No semantic element is selected in the Explorer/Details or other views.
+- Left click on a graphical element: the graphical element is selected, the palette is hidden.
+The associated semantic element is selected in the Explorer/Details or other views.
+- Right click on a graphical element: the graphical element is selected, the palette is opened.
+The associated semantic element is selected in the Explorer/Details or other views.
+
+==== One graphical element is selected
+
+- Left click on the diagram background: the graphical element is not selected anymore.
+Any existing palette is closed.
+No semantic element is selected in the Explorer/Details or other views.
+- Right click on the diagram background: the graphical element is not selected anymore.
+The diagram palette is opened.
+No semantic element is selected in the Explorer/Details or other views.
+- Left click on the selected graphical element: nothing happens.
+The current element is still selected in the diagram and the different views.
+- Right click on the selected graphical element: the graphical element palette is opened.
+The current element is still selected in the diagram and the different views.
+If a creation tool is executed, it will try to create the new graphical element at the position of the click.
+- Left click on another graphical element (e.g. GE2): GE2 is selected.
+Any existing palette is closed.
+- Right click on another graphical element (e.g. GE2): GE2 is selected.
+The graphical element palette of GE2 is opened.
+If a creation tool is executed, it will try to create the new graphical element at the position of the click.
+
+==== Several graphical elements are selected
+
+- Left click on the diagram background: the graphical elements are not selected anymore.
+Any existing palette is closed.
+No semantic element is selected in the Explorer/Details or other views.
+- Right click on the diagram background: the graphical elements are not selected anymore.
+The diagram palette is opened.
+No semantic element is selected in the Explorer/Details or other views.
+- Left click inside the selection area: nothing happens, the selection remains the same.
+- Right click inside the selection area: the group palette is opened.
+- Left click on another graphical element outside the selection area: no elements from the first selection are selected anymore.
+The new selected element is the one by left-click, in the diagram and the different views.
+- Right click on another graphical element outside the selection area: no elements from the first selection are selected anymore.
+The new selected element is the one by right-click, in the diagram and the different views.
+The new selected element palette is opened.
+
+==== Multi-selection with shift and left click
+
+- The palette is not opened anymore at the selection end.
+All the left-clicked elements are selected.
+A right-click is needed to open the palette.
+
+==== Multi-selection with control and left click
+
+- It extends the selected elements.
+
+==== Shift and right-click
+
+- It opens the native contextual menu (with save, print, inspect code...).
+
+
+=== Breadboarding
+
+No visual change.
+
+=== Cutting backs
+
+No cutting back.
+
+== Rabbit holes
+
+No rabbit hole detected.
+
+== No-gos
+

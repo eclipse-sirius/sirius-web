@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,6 +47,12 @@ export class Diagram {
 
   public getSelectedEdges(diagramLabel: string): Cypress.Chainable<JQuery<HTMLElement>> {
     return this.getDiagram(diagramLabel).get('.react-flow__edge.selected');
+  }
+
+  public getSelectedEdge(diagramLabel: string, edgeLabel: string): Cypress.Chainable<JQuery<HTMLElement>> {
+    return this.getDiagram(diagramLabel)
+      .get('.react-flow__edge.selected')
+      .getByTestId('Label - ' + edgeLabel);
   }
 
   public getPalette(): Cypress.Chainable<JQuery<HTMLElement>> {

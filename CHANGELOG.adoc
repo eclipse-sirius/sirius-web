@@ -16,6 +16,7 @@
 - Add the current selection to the URL of the project workbench
 - Improve the customization of the navigation bar
 - Add support for border node initial positioning
+- Display diagram palette on right-click
 
 
 === Architectural decision records
@@ -39,6 +40,9 @@ Downstream applications which were using it to change the image of the home butt
 - https://github.com/eclipse-sirius/sirius-web/issues/4362[#4362] [sirius-web] The `editProjectNavbarSubtitleExtensionPoint` has been removed.
 Use the new frontend extension point `navigationBarCenterContributionExtensionPoint`, which is strictly more powerful, instead.
 See `PapayaExtensionRegistry.tsx` for an example of how rendering a project subtitle can be achieved with the new extension point.
+- https://github.com/eclipse-sirius/sirius-web/issues/4408[#4408] [diagram] Display diagram contextual menu (a.k.a the Palette) with right click instead of left click.
+It is not an API breaking change but a breaking change from the end-user point of view.
+
 
 === Dependency update
 
