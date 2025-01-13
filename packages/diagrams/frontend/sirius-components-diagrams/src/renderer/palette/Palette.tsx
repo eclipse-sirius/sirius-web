@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,12 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import CloseIcon from '@mui/icons-material/Close';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import { Edge, Node, useStoreApi, useViewport, XYPosition } from '@xyflow/react';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Draggable, { DraggableData } from 'react-draggable';
 import { makeStyles } from 'tss-react/mui';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
@@ -34,6 +36,8 @@ import { PaletteQuickAccessToolBar } from './quick-access-tool/PaletteQuickAcces
 import { PaletteSearchField } from './search/PaletteSearchField';
 import { PaletteSearchResult } from './search/PaletteSearchResult';
 import { PaletteToolList } from './tool-list/PaletteToolList';
+import { useDiagramElementPalette } from './useDiagramElementPalette';
+import { useDiagramPalette } from './useDiagramPalette';
 import { usePalette } from './usePalette';
 
 const usePaletteStyle = makeStyles<PaletteStyleProps>()((theme, props) => ({
@@ -45,14 +49,13 @@ const usePaletteStyle = makeStyles<PaletteStyleProps>()((theme, props) => ({
     zIndex: 5,
     position: 'fixed',
     width: props.paletteWidth,
-    height: props.paletteHeight,
   },
   paletteHeader: {
     cursor: 'move',
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: `${theme.palette.secondary.main}08`,
   },
@@ -74,7 +77,6 @@ const computeDraggableBounds = (bounds?: DOMRect): XYPosition => {
 };
 
 const paletteWidth = 200;
-const paletteHeight = 275;
 
 const getPaletteToolCount = (palette: GQLPalette): number => {
   return (
@@ -90,7 +92,8 @@ const computePaletteLocation = (
   paletteX: number,
   paletteY: number,
   viewportWidth: number,
-  viewportHeight: number
+  viewportHeight: number,
+  paletteHeight: number
 ): XYPosition => {
   return {
     x: paletteX + paletteWidth < viewportWidth ? paletteX : viewportWidth - paletteWidth,
@@ -104,7 +107,6 @@ export const Palette = ({
   diagramElementId,
   targetObjectId,
   onDirectEditClick,
-  onEscape,
 }: PaletteProps) => {
   const { domNode, nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
   const { x: viewportWidth, y: viewportHeight } = computeDraggableBounds(domNode?.getBoundingClientRect());
@@ -124,15 +126,53 @@ export const Palette = ({
     y = (paletteY - viewportY) / viewportZoom;
   }
   const { handleToolClick, palette } = usePalette({ x, y, diagramElementId, onDirectEditClick, targetObjectId });
+  const paletteHeight = palette ? palette.paletteEntries.length * 30 + 50 : 50;
 
   useEffect(() => {
-    const paletteLocation: XYPosition = computePaletteLocation(paletteX, paletteY, viewportWidth, viewportHeight);
+    const paletteLocation: XYPosition = computePaletteLocation(
+      paletteX,
+      paletteY,
+      viewportWidth,
+      viewportHeight,
+      paletteHeight
+    );
     setState((prevState) => ({ ...prevState, controlledPosition: paletteLocation }));
   }, [paletteX, paletteY, viewportWidth, viewportHeight]);
 
   const { classes } = usePaletteStyle({ paletteWidth: `${paletteWidth}px`, paletteHeight: `${paletteHeight}px` });
 
   const shouldRender = palette && (getPaletteToolCount(palette) > 0 || !!diagramElement);
+
+  const { hideDiagramPalette } = useDiagramPalette();
+  const { hideDiagramElementPalette } = useDiagramElementPalette();
+
+  const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+  const closeAllPalettes = useCallback(() => {
+    hideDiagramPalette();
+    hideDiagramElementPalette();
+
+    //Set the focus from the palette to the node/edge
+    const selectedNode = store.getState().nodes.filter((node) => node.selected);
+    const selectedEdges = store.getState().edges.filter((edge) => edge.selected);
+    if (selectedNode.length + selectedEdges.length === 1) {
+      const selectedElement = selectedNode[0] || selectedEdges[0];
+      if (selectedElement) {
+        let domElement = document.querySelector(`[data-id='${selectedElement.id}']`);
+        if (domElement) {
+          (domElement as HTMLElement).focus();
+        }
+      }
+    }
+  }, [hideDiagramPalette, hideDiagramElementPalette]);
+
+  const onKeyDown = useCallback((event: React.KeyboardEvent<Element>) => {
+    const { key } = event;
+    if (key === 'Escape') {
+      // Stop propagating the event in order to keep the node/edge selected
+      event.stopPropagation();
+      closeAllPalettes();
+    }
+  }, []);
 
   if (!shouldRender) {
     return null;
@@ -165,10 +205,16 @@ export const Palette = ({
         ref={nodeRef}
         className={classes.palette}
         data-testid="Palette"
+        id="palette"
         elevation={3}
-        onClick={(event) => event.stopPropagation()}>
+        onClick={(event) => event.stopPropagation()}
+        onKeyDown={onKeyDown}
+        tabIndex={0}>
         <Box id="tool-palette-header" className={classes.paletteHeader}>
           <DragIndicatorIcon />
+          <IconButton size="small" aria-label="close" color="inherit" onClick={closeAllPalettes}>
+            <CloseIcon fontSize="small" />
+          </IconButton>
         </Box>
         <Divider />
         <PaletteQuickAccessToolBar
@@ -178,11 +224,7 @@ export const Palette = ({
           x={x}
           y={y}
         />
-        <PaletteSearchField
-          onValueChanged={onSearchFieldValueChanged}
-          onEscape={onEscape}
-          onDirectEditClick={onDirectEditClick}
-        />
+        <PaletteSearchField onValueChanged={onSearchFieldValueChanged} />
         {state.searchToolValue.length > 0 ? (
           <PaletteSearchResult
             searchToolValue={state.searchToolValue}

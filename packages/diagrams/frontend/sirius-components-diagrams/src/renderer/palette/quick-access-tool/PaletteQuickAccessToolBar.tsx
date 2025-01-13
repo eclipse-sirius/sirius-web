@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@
 
 import { DataExtension, useData } from '@eclipse-sirius/sirius-components-core';
 import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
 import { Edge, Node, useStoreApi } from '@xyflow/react';
 import { makeStyles } from 'tss-react/mui';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
@@ -35,7 +34,7 @@ const isBendable = (diagramElement: Node<NodeData> | Edge<EdgeData>): diagramEle
   return !!diagramElement.data && 'bendingPoints' in diagramElement.data && !!diagramElement.data.bendingPoints;
 };
 
-const useStyle = makeStyles()(() => ({
+const useStyle = makeStyles()((theme) => ({
   quickAccessTools: {
     display: 'flex',
     flexWrap: 'nowrap',
@@ -43,6 +42,9 @@ const useStyle = makeStyles()(() => ({
     justifyContent: 'flex-start',
     alignItems: 'center',
     overflowX: 'auto',
+  },
+  quickAccessToolContainer: {
+    width: theme.spacing(3.5),
   },
 }));
 
@@ -54,14 +56,9 @@ export const PaletteQuickAccessToolBar = ({
   y,
 }: PaletteQuickAccessToolBarProps) => {
   const { classes } = useStyle();
-
+  const quickAccessToolComponents: JSX.Element[] = [];
   const { nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
   const diagramElement = nodeLookup.get(diagramElementId) || edgeLookup.get(diagramElementId);
-
-  const quickAccessToolComponents: JSX.Element[] = [];
-  quickAccessTools.forEach((tool) =>
-    quickAccessToolComponents.push(<Tool tool={tool} onClick={onToolClick} thumbnail key={'tool_' + tool.id} />)
-  );
 
   if (diagramElement) {
     if (isPinnable(diagramElement)) {
@@ -109,16 +106,18 @@ export const PaletteQuickAccessToolBar = ({
           />
         )
       );
-  }
 
-  if (quickAccessToolComponents.length > 0) {
-    return (
-      <>
-        <Box className={classes.quickAccessTools}>{quickAccessToolComponents}</Box>
-        <Divider />
-      </>
+    quickAccessTools.forEach((tool) =>
+      quickAccessToolComponents.push(<Tool tool={tool} onClick={onToolClick} thumbnail key={'tool_' + tool.id} />)
     );
-  } else {
-    return null;
   }
+  return (
+    <Box className={classes.quickAccessTools}>
+      {quickAccessToolComponents.map((quickAcessTool, index) => (
+        <div className={classes.quickAccessToolContainer} key={'quickAccessToolContainer' + index}>
+          {quickAcessTool}
+        </div>
+      ))}
+    </Box>
+  );
 };

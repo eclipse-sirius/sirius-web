@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,13 +23,8 @@ import { useDiagramElementPalette } from './useDiagramElementPalette';
 export const DiagramElementPalette = memo(
   ({ diagramElementId, targetObjectId, labelId }: DiagramElementPaletteProps) => {
     const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
-    const { isOpened, x, y, hideDiagramElementPalette } = useDiagramElementPalette();
+    const { isOpened, x, y } = useDiagramElementPalette();
     const { setCurrentlyEditedLabelId, currentlyEditedLabelId } = useDiagramDirectEdit();
-
-    //If the Palette search field has the focus on, the useKeyPress from reactflow ignore the key pressed event.
-    const onEscape = () => {
-      hideDiagramElementPalette();
-    };
 
     if (readOnly) {
       return null;
@@ -49,7 +44,6 @@ export const DiagramElementPalette = memo(
           diagramElementId={diagramElementId}
           targetObjectId={targetObjectId}
           onDirectEditClick={handleDirectEditClick}
-          onEscape={onEscape}
         />
       </PalettePortal>
     ) : null;
