@@ -1,0 +1,20 @@
+= (S) Support custom navigation bar
+
+== Problem
+
+Currently the Sirius Web navigation bar home button only supports customizing its image (used as a round button in the top left corner of the application).
+And the image is expected to be round.
+
+Downstream applications need a more flexible way of customizing that part of the navigation bar.
+
+== Key Result
+
+=== Acceptance Criteria
+
+* Downstream applications must be able to fully customize the top left corner of the navigation bar.
+* The default behavior remains as-is.
+
+== Solution
+
+* Extension point `navigationBarIconExtensionPoint` is removed.
+* A new extension point allows extenders to provide their own component in place of the current one in the navigation bar.
