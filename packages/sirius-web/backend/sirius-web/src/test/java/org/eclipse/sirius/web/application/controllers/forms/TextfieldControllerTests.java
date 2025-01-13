@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.forms;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
@@ -107,6 +108,7 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
                             .hasLabel("Name")
                             .hasValue("buck")
                             .hasHelp("The name of the object")
+                            .hasDiagnostic("Warning", "name should start with upper case")
                             .isNotReadOnly()
                             .isBold()
                             .isNotItalic();

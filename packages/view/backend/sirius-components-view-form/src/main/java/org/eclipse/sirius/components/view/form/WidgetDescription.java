@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -76,5 +76,28 @@ public interface WidgetDescription extends FormElementDescription {
      * @generated
      */
     void setHelpExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Diagnostics Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Diagnostics Expression</em>' attribute.
+     * @see #setDiagnosticsExpression(String)
+     * @see org.eclipse.sirius.components.view.form.FormPackage#getWidgetDescription_DiagnosticsExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     */
+    String getDiagnosticsExpression();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.WidgetDescription#getDiagnosticsExpression
+     * <em>Diagnostics Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Diagnostics Expression</em>' attribute.
+     * @see #getDiagnosticsExpression()
+     * @generated
+     */
+    void setDiagnosticsExpression(String value);
 
 } // WidgetDescription

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,8 @@
 package org.eclipse.sirius.components.forms.tests.assertions;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Objects;
 
 import org.assertj.core.api.AbstractAssert;
 import org.eclipse.sirius.components.forms.Textfield;
@@ -44,6 +46,14 @@ public class TextfieldAssert extends AbstractAssert<TextfieldAssert, Textfield> 
         assertThat(this.actual.getHelpTextProvider().get()).isEqualTo(help);
 
         return this;
+    }
+
+    public TextfieldAssert hasDiagnostic(String kind, String message) {
+        assertThat(this.actual.getDiagnostics())
+            .anyMatch(diagnostic -> Objects.equals(diagnostic.getKind(), kind) && Objects.equals(diagnostic.getMessage(), message));
+
+        return this;
+
     }
 
     public TextfieldAssert isReadOnly() {

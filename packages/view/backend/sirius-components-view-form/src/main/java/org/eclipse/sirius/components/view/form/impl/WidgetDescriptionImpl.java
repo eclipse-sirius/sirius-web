@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -76,6 +76,26 @@ public abstract class WidgetDescriptionImpl extends FormElementDescriptionImpl i
     protected String helpExpression = HELP_EXPRESSION_EDEFAULT;
 
     /**
+     * The default value of the '{@link #getDiagnosticsExpression() <em>Diagnostics Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getDiagnosticsExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String DIAGNOSTICS_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getDiagnosticsExpression() <em>Diagnostics Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getDiagnosticsExpression()
+     * @generated
+     * @ordered
+     */
+    protected String diagnosticsExpression = DIAGNOSTICS_EXPRESSION_EDEFAULT;
+
+    /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -146,12 +166,37 @@ public abstract class WidgetDescriptionImpl extends FormElementDescriptionImpl i
      * @generated
      */
     @Override
+    public String getDiagnosticsExpression() {
+        return this.diagnosticsExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDiagnosticsExpression(String newDiagnosticsExpression) {
+        String oldDiagnosticsExpression = this.diagnosticsExpression;
+        this.diagnosticsExpression = newDiagnosticsExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION, oldDiagnosticsExpression, this.diagnosticsExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case FormPackage.WIDGET_DESCRIPTION__LABEL_EXPRESSION:
                 return this.getLabelExpression();
             case FormPackage.WIDGET_DESCRIPTION__HELP_EXPRESSION:
                 return this.getHelpExpression();
+            case FormPackage.WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION:
+                return this.getDiagnosticsExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -169,6 +214,9 @@ public abstract class WidgetDescriptionImpl extends FormElementDescriptionImpl i
                 return;
             case FormPackage.WIDGET_DESCRIPTION__HELP_EXPRESSION:
                 this.setHelpExpression((String) newValue);
+                return;
+            case FormPackage.WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION:
+                this.setDiagnosticsExpression((String) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -188,6 +236,9 @@ public abstract class WidgetDescriptionImpl extends FormElementDescriptionImpl i
             case FormPackage.WIDGET_DESCRIPTION__HELP_EXPRESSION:
                 this.setHelpExpression(HELP_EXPRESSION_EDEFAULT);
                 return;
+            case FormPackage.WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION:
+                this.setDiagnosticsExpression(DIAGNOSTICS_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -204,6 +255,8 @@ public abstract class WidgetDescriptionImpl extends FormElementDescriptionImpl i
                 return LABEL_EXPRESSION_EDEFAULT == null ? this.labelExpression != null : !LABEL_EXPRESSION_EDEFAULT.equals(this.labelExpression);
             case FormPackage.WIDGET_DESCRIPTION__HELP_EXPRESSION:
                 return HELP_EXPRESSION_EDEFAULT == null ? this.helpExpression != null : !HELP_EXPRESSION_EDEFAULT.equals(this.helpExpression);
+            case FormPackage.WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION:
+                return DIAGNOSTICS_EXPRESSION_EDEFAULT == null ? this.diagnosticsExpression != null : !DIAGNOSTICS_EXPRESSION_EDEFAULT.equals(this.diagnosticsExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -223,6 +276,8 @@ public abstract class WidgetDescriptionImpl extends FormElementDescriptionImpl i
         result.append(this.labelExpression);
         result.append(", helpExpression: ");
         result.append(this.helpExpression);
+        result.append(", diagnosticsExpression: ");
+        result.append(this.diagnosticsExpression);
         result.append(')');
         return result.toString();
     }
