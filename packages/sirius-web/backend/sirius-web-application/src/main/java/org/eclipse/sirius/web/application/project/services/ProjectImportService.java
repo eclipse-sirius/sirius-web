@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,6 +42,8 @@ import org.eclipse.sirius.web.application.project.dto.CreateProjectSuccessPayloa
 import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
 import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
 import org.eclipse.sirius.web.application.project.services.api.IProjectImportService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -70,10 +72,13 @@ public class ProjectImportService implements IProjectImportService {
 
     private final IProjectApplicationService projectApplicationService;
 
-    public ProjectImportService(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, ObjectMapper objectMapper, IProjectApplicationService projectApplicationService) {
+    private final ISemanticDataSearchService semanticDataSearchService;
+
+    public ProjectImportService(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, ObjectMapper objectMapper, IProjectApplicationService projectApplicationService, ISemanticDataSearchService semanticDataSearchService) {
         this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.projectApplicationService = Objects.requireNonNull(projectApplicationService);
+        this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
     }
 
     /**
@@ -151,8 +156,10 @@ public class ProjectImportService implements IProjectImportService {
         IPayload payload = new ErrorPayload(inputId, "");
         if (createProjectPayload instanceof CreateProjectSuccessPayload createProjectSuccessPayload) {
             var project = createProjectSuccessPayload.project();
-            Optional<IEditingContextEventProcessor> optionalEditingContextEventProcessor = this.editingContextEventProcessorRegistry
-                    .getOrCreateEditingContextEventProcessor(project.id().toString());
+            Optional<IEditingContextEventProcessor> optionalEditingContextEventProcessor = this.semanticDataSearchService.findByProjectId(project.id())
+                    .map(SemanticData::getId)
+                    .map(UUID::toString)
+                    .flatMap(editingContextEventProcessorRegistry::getOrCreateEditingContextEventProcessor);
             if (optionalEditingContextEventProcessor.isPresent()) {
                 IEditingContextEventProcessor editingContextEventProcessor = optionalEditingContextEventProcessor.get();
 
@@ -160,7 +167,10 @@ public class ProjectImportService implements IProjectImportService {
                 boolean hasBeenImported = projectImporter.importProject(inputId);
 
                 if (!hasBeenImported) {
-                    this.editingContextEventProcessorRegistry.disposeEditingContextEventProcessor(project.id().toString());
+                    this.semanticDataSearchService.findByProjectId(project.id())
+                            .map(SemanticData::getId)
+                            .map(UUID::toString)
+                            .ifPresent(editingContextEventProcessorRegistry::disposeEditingContextEventProcessor);
                     this.projectApplicationService.deleteProject(new DeleteProjectInput(inputId, project.id()));
                 } else {
                     payload = new UploadProjectSuccessPayload(inputId, project);

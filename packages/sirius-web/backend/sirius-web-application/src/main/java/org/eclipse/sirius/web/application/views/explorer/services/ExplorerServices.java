@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.application.views.explorer.services;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.common.util.URI;
@@ -36,6 +37,7 @@ import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerS
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationIconURL;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
@@ -55,12 +57,15 @@ public class ExplorerServices implements IExplorerServices {
 
     private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
+    private final ISemanticDataSearchService semanticDataSearchService;
+
     public ExplorerServices(IObjectService objectService, IURLParser urlParser, List<IRepresentationImageProvider> representationImageProviders,
-            IRepresentationMetadataSearchService representationMetadataSearchService) {
+                            IRepresentationMetadataSearchService representationMetadataSearchService, ISemanticDataSearchService semanticDataSearchService) {
         this.objectService = objectService;
         this.urlParser = urlParser;
         this.representationImageProviders = representationImageProviders;
         this.representationMetadataSearchService = representationMetadataSearchService;
+        this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
     }
 
     @Override
@@ -208,7 +213,9 @@ public class ExplorerServices implements IExplorerServices {
             hasChildren = !resource.getContents().isEmpty();
         } else if (self instanceof EObject eObject) {
             hasChildren = !eObject.eContents().isEmpty();
-            var optionalProjectId = Optional.ofNullable(editingContext).map(IEditingContext::getId).flatMap(new UUIDParser()::parse);
+            var optionalProjectId = new UUIDParser().parse(editingContext.getId())
+                    .flatMap(this.semanticDataSearchService::findById)
+                    .map(semanticData -> semanticData.getProject().getId());
 
             if (!hasChildren && optionalProjectId.isPresent()) {
                 var projectId = optionalProjectId.get();
@@ -228,13 +235,18 @@ public class ExplorerServices implements IExplorerServices {
                 if (self instanceof Resource resource) {
                     result.addAll(resource.getContents());
                 } else if (self instanceof EObject) {
-                    new UUIDParser().parse(editingContext.getId()).ifPresent(projectId -> {
+                    var optionalProjectId = new UUIDParser().parse(editingContext.getId())
+                            .flatMap(this.semanticDataSearchService::findById)
+                            .map(semanticData -> semanticData.getProject().getId());
+
+                    if (optionalProjectId.isPresent()) {
+                        var projectId = optionalProjectId.get();
                         var representationMetadata = new ArrayList<>(this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(projectId), id));
                         representationMetadata.sort(Comparator.comparing(RepresentationMetadata::getLabel));
                         result.addAll(representationMetadata);
-                        List<Object> contents = this.objectService.getContents(self);
-                        result.addAll(contents);
-                    });
+                    }
+                    List<Object> contents = this.objectService.getContents(self);
+                    result.addAll(contents);
                 }
             }
         }
@@ -244,7 +256,6 @@ public class ExplorerServices implements IExplorerServices {
     @Override
     public List<Resource> getDefaultElements(IEditingContext editingContext) {
         var optionalResourceSet = Optional.ofNullable(editingContext)
-                .filter(IEditingContext.class::isInstance)
                 .filter(IEMFEditingContext.class::isInstance)
                 .map(IEMFEditingContext.class::cast)
                 .map(IEMFEditingContext::getDomain)

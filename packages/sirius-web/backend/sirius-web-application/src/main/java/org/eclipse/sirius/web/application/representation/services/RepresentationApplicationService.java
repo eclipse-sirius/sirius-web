@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,8 @@ import org.eclipse.sirius.web.application.representation.services.api.IRepresent
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -44,15 +46,20 @@ public class RepresentationApplicationService implements IRepresentationApplicat
 
     private final IRepresentationMetadataMapper representationMetadataMapper;
 
-    public RepresentationApplicationService(IRepresentationMetadataSearchService representationMetadataSearchService, IRepresentationMetadataMapper representationMetadataMapper) {
+    private final ISemanticDataSearchService semanticDataSearchService;
+
+    public RepresentationApplicationService(IRepresentationMetadataSearchService representationMetadataSearchService, IRepresentationMetadataMapper representationMetadataMapper, ISemanticDataSearchService semanticDataSearchService) {
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.representationMetadataMapper = Objects.requireNonNull(representationMetadataMapper);
+        this.semanticDataSearchService =  Objects.requireNonNull(semanticDataSearchService);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<RepresentationMetadataDTO> findAllByEditingContextId(String editingContextId, Pageable pageable) {
         var representationMetadata =  new UUIDParser().parse(editingContextId)
+                .flatMap(this.semanticDataSearchService::findById)
+                .map(semanticData -> semanticData.getProject().getId())
                 .map(AggregateReference::<Project, UUID>to)
                 .map(this.representationMetadataSearchService::findAllMetadataByProject)
                 .orElse(List.of())
@@ -74,6 +81,8 @@ public class RepresentationApplicationService implements IRepresentationApplicat
         return new UUIDParser().parse(representationId)
                 .flatMap(this.representationMetadataSearchService::findProjectByRepresentationId)
                 .map(AggregateReference::getId)
+                .flatMap(this.semanticDataSearchService::findByProjectId)
+                .map(SemanticData::getId)
                 .map(UUID::toString);
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationIconURL;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataCreationService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,14 +36,21 @@ public class RepresentationMetadataPersistenceService implements IRepresentation
 
     private final IRepresentationMetadataCreationService representationMetadataCreationService;
 
-    public RepresentationMetadataPersistenceService(IRepresentationMetadataCreationService representationMetadataCreationService) {
+    private final ISemanticDataSearchService semanticDataSearchService;
+
+
+    public RepresentationMetadataPersistenceService(IRepresentationMetadataCreationService representationMetadataCreationService, ISemanticDataSearchService semanticDataSearchService) {
         this.representationMetadataCreationService = Objects.requireNonNull(representationMetadataCreationService);
+        this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
     }
 
     @Override
     @Transactional
     public void save(ICause cause, IEditingContext editingContext, org.eclipse.sirius.components.core.RepresentationMetadata representationMetadata, String targetObjectId) {
-        var optionalProjectId = new UUIDParser().parse(editingContext.getId());
+        var optionalProjectId = new UUIDParser().parse(editingContext.getId())
+                .flatMap(this.semanticDataSearchService::findById)
+                .map(semanticData -> semanticData.getProject().getId());
+
         var optionalRepresentationId = new UUIDParser().parse(representationMetadata.id());
 
         if (optionalProjectId.isPresent() && optionalRepresentationId.isPresent()) {

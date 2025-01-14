@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,6 +43,7 @@ import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationIconURL;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
@@ -69,11 +70,14 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
 
     private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
-    public DomainTreeRepresentationDescriptionProvider(IObjectService objectService, IURLParser urlParser, List<IRepresentationImageProvider> representationImageProviders, IRepresentationMetadataSearchService representationMetadataSearchService) {
+    private final ISemanticDataSearchService semanticDataSearchService;
+
+    public DomainTreeRepresentationDescriptionProvider(IObjectService objectService, IURLParser urlParser, List<IRepresentationImageProvider> representationImageProviders, IRepresentationMetadataSearchService representationMetadataSearchService, ISemanticDataSearchService semanticDataSearchService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.urlParser = Objects.requireNonNull(urlParser);
         this.representationImageProviders = Objects.requireNonNull(representationImageProviders);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
+        this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
     }
 
     @Override
@@ -192,8 +196,11 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
         boolean hasChildren = false;
         if (self instanceof EObject eObject) {
             hasChildren = !eObject.eContents().isEmpty();
-            var optionalProjectId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).flatMap(new UUIDParser()::parse);
-
+            var optionalProjectId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+                    .map(IEditingContext::getId)
+                    .flatMap(new UUIDParser()::parse)
+                    .flatMap(this.semanticDataSearchService::findById)
+                    .map(semanticData -> semanticData.getProject().getId());
             if (!hasChildren && optionalProjectId.isPresent()) {
                 var projectId = optionalProjectId.get();
                 String id = this.objectService.getId(eObject);
@@ -235,8 +242,11 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
         String id = this.getTreeItemId(variableManager);
         if (expandedIds.contains(id)) {
             if (self instanceof EObject) {
-                var optionalProjectId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).flatMap(new UUIDParser()::parse);
-                if (optionalProjectId.isPresent()) {
+                var optionalProjectId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+                        .map(IEditingContext::getId)
+                        .flatMap(new UUIDParser()::parse)
+                        .flatMap(this.semanticDataSearchService::findById)
+                        .map(semanticData -> semanticData.getProject().getId());                if (optionalProjectId.isPresent()) {
                     var projectId = optionalProjectId.get();
                     var representationMetadata = new ArrayList<>(this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(projectId), id));
                     representationMetadata.sort(Comparator.comparing(RepresentationMetadata::getLabel));

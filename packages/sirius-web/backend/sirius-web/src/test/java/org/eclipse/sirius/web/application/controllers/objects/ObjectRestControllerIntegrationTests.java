@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -109,7 +109,7 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
                 .baseUrl(this.getHTTPBaseUrl())
                 .build();
 
-        var uri = String.format("/api/rest/projects/%s/commits/%s/elements", TestIdentifiers.ECORE_SAMPLE_PROJECT, TestIdentifiers.ECORE_SAMPLE_PROJECT);
+        var uri = String.format("/api/rest/projects/%s/commits/%s/elements", TestIdentifiers.ECORE_SAMPLE_PROJECT_ID, TestIdentifiers.ECORE_SAMPLE_PROJECT_ID);
         webTestClient.get()
                 .uri(uri)
                 .exchange()
@@ -155,7 +155,7 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
                 .baseUrl(this.getHTTPBaseUrl())
                 .build();
 
-        var uri = String.format("/api/rest/projects/%s/commits/%s/elements/%s", TestIdentifiers.ECORE_SAMPLE_PROJECT, TestIdentifiers.ECORE_SAMPLE_PROJECT, TestIdentifiers.EPACKAGE_OBJECT);
+        var uri = String.format("/api/rest/projects/%s/commits/%s/elements/%s", TestIdentifiers.ECORE_SAMPLE_PROJECT_ID, TestIdentifiers.ECORE_SAMPLE_PROJECT_ID, TestIdentifiers.EPACKAGE_OBJECT);
         webTestClient.get()
                 .uri(uri)
                 .exchange()
@@ -190,7 +190,7 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
                 .baseUrl(this.getHTTPBaseUrl())
                 .build();
 
-        var uri = String.format("/api/rest/projects/%s/commits/%s/elements/%s/relationships", TestIdentifiers.ECORE_SAMPLE_PROJECT, TestIdentifiers.ECORE_SAMPLE_PROJECT, TestIdentifiers.EPACKAGE_OBJECT);
+        var uri = String.format("/api/rest/projects/%s/commits/%s/elements/%s/relationships", TestIdentifiers.ECORE_SAMPLE_PROJECT_ID, TestIdentifiers.ECORE_SAMPLE_PROJECT_ID, TestIdentifiers.EPACKAGE_OBJECT);
         webTestClient.get()
                 .uri(uri.toString())
                 .exchange()
@@ -226,7 +226,7 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
                 .baseUrl(this.getHTTPBaseUrl())
                 .build();
 
-        var uri = String.format("/api/rest/projects/%s/commits/%s/roots", TestIdentifiers.ECORE_SAMPLE_PROJECT, TestIdentifiers.ECORE_SAMPLE_PROJECT);
+        var uri = String.format("/api/rest/projects/%s/commits/%s/roots", TestIdentifiers.ECORE_SAMPLE_PROJECT_ID, TestIdentifiers.ECORE_SAMPLE_PROJECT_ID);
         webTestClient.get()
                 .uri(uri.toString())
                 .exchange()

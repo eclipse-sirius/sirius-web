@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -33,6 +34,8 @@ import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingCo
 import org.eclipse.sirius.web.application.project.services.api.IProjectExportParticipant;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -52,21 +55,28 @@ public class ProjectSemanticDataExportParticipant implements IProjectExportParti
 
     private final List<IEditingContextPersistenceFilter> persistenceFilters;
 
+    private final ISemanticDataSearchService semanticDataSearchService;
+
     private final Logger logger = LoggerFactory.getLogger(ProjectSemanticDataExportParticipant.class);
 
-    public ProjectSemanticDataExportParticipant(IEditingContextSearchService editingContextSearchService, List<IDocumentExporter> documentExporters, List<IEditingContextPersistenceFilter> persistenceFilters) {
+    public ProjectSemanticDataExportParticipant(IEditingContextSearchService editingContextSearchService, List<IDocumentExporter> documentExporters, List<IEditingContextPersistenceFilter> persistenceFilters, ISemanticDataSearchService semanticDataSearchService) {
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.documentExporters = Objects.requireNonNull(documentExporters);
         this.persistenceFilters = Objects.requireNonNull(persistenceFilters);
+        this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
     }
 
     @Override
     public Map<String, Object> exportData(Project project, ZipOutputStream outputStream) {
         Map<String, Object> manifestEntries = new HashMap<>();
 
-        var optionalEditingContext = this.editingContextSearchService.findById(project.getId().toString())
+        var optionalEditingContext = this.semanticDataSearchService.findByProjectId(project.getId())
+                .map(SemanticData::getId)
+                .map(UUID::toString)
+                .flatMap(editingContextSearchService::findById)
                 .filter(IEMFEditingContext.class::isInstance)
                 .map(IEMFEditingContext.class::cast);
+
         if (optionalEditingContext.isPresent()) {
             var editingContext = optionalEditingContext.get();
 

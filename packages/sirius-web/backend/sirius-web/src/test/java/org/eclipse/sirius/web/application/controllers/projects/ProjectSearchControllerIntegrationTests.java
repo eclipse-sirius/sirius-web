@@ -65,7 +65,7 @@ public class ProjectSearchControllerIntegrationTests extends AbstractIntegration
         List<String> projectIds = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.id");
         assertThat(projectIds)
                 .hasSizeLessThan(20)
-                .contains(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString())
+                .contains(TestIdentifiers.ECORE_SAMPLE_PROJECT_ID.toString())
                 .doesNotContain(TestIdentifiers.SYSML_SAMPLE_PROJECT.toString(), TestIdentifiers.UML_SAMPLE_PROJECT.toString());
     }
 }
