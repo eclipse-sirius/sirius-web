@@ -76,4 +76,5 @@ export interface GQLEvaluateExpressionInput {
   id: string;
   editingContextId: string;
   expression: string;
+  selectedObjectIds: string[];
 }
