@@ -75,6 +75,7 @@ The configuration property `sirius.web.graphql.tracing` has also been added to a
 It can be activated using `sirius.web.graphql.tracing=true` since it is not enabled by default to not have any impact on the performance of the application.
 Some additional log has also been contributed on the frontend in order to view more easily the order and time of the GraphQL requests and responses.
 - https://github.com/eclipse-sirius/sirius-web/issues/4430[#4430] [diagram] Add the PNG export of a diagram.
+- https://github.com/eclipse-sirius/sirius-web/issues/4346[#4346] [query] The current selection is now available using both the variables `selection: Sequence{Object}` for the full selection and `self: Object` for the first selected object.
 
 
 === Improvements

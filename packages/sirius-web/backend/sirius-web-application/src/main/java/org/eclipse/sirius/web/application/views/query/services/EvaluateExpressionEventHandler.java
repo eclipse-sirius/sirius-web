@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.application.views.query.services;
 
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
@@ -23,6 +24,7 @@ import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.interpreter.Status;
@@ -53,12 +55,15 @@ public class EvaluateExpressionEventHandler implements IEditingContextEventHandl
 
     private final IAQLInterpreterProvider aqlInterpreterProvider;
 
+    private final IObjectSearchService objectSearchService;
+
     private final IMessageService messageService;
 
     private final Counter counter;
 
-    public EvaluateExpressionEventHandler(IAQLInterpreterProvider aqlInterpreterProvider, IMessageService messageService, MeterRegistry meterRegistry) {
+    public EvaluateExpressionEventHandler(IAQLInterpreterProvider aqlInterpreterProvider, IObjectSearchService objectSearchService, IMessageService messageService, MeterRegistry meterRegistry) {
         this.aqlInterpreterProvider = Objects.requireNonNull(aqlInterpreterProvider);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.messageService = Objects.requireNonNull(messageService);
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
@@ -81,8 +86,19 @@ public class EvaluateExpressionEventHandler implements IEditingContextEventHandl
         if (input instanceof EvaluateExpressionInput evaluateExpressionInput) {
             var interpreter = this.aqlInterpreterProvider.getInterpreter(editingContext);
 
+
+            var selection = evaluateExpressionInput.selectedObjectIds().stream()
+                    .map(objectId -> this.objectSearchService.getObject(editingContext, objectId))
+                    .flatMap(Optional::stream)
+                    .toList();
+            var self = selection.stream()
+                    .findFirst()
+                    .orElse(null);
+
             var variableManager = new VariableManager();
             variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+            variableManager.put(VariableManager.SELF, self);
+            variableManager.put("selection", selection);
             var evaluationResult = interpreter.evaluateExpression(variableManager.getVariables(), evaluateExpressionInput.expression());
 
             payload = this.toPayload(input.id(), evaluationResult);

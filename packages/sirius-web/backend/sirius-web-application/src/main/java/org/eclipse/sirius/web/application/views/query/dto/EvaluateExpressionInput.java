@@ -12,14 +12,21 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.views.query.dto;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IInput;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
  * Used to execute an expression.
  *
  * @author sbegaudeau
  */
-public record EvaluateExpressionInput(UUID id, String editingContextId, String expression) implements IInput {
+public record EvaluateExpressionInput(
+        @NotNull UUID id,
+        @NotNull String editingContextId,
+        @NotNull String expression,
+        @NotNull List<String> selectedObjectIds) implements IInput {
 }

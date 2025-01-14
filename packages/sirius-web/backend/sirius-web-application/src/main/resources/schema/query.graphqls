@@ -6,6 +6,7 @@ input EvaluateExpressionInput {
   id: ID!
   editingContextId: ID!
   expression: String!
+  selectedObjectIds: [ID!]!
 }
 
 union EvaluateExpressionPayload = ErrorPayload | EvaluateExpressionSuccessPayload
