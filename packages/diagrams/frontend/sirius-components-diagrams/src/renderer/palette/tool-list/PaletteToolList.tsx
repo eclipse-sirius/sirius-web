@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -82,6 +82,7 @@ export const PaletteToolList = ({ palette, onToolClick }: PaletteToolListProps) 
 
   const onBackToMainList = () => {
     setState((prevState) => ({ ...prevState, toolSection: null }));
+    document.getElementById('palette')?.focus();
   };
 
   const listItemsRendered = palette.paletteEntries.flatMap((paletteEntry: GQLPaletteEntry) => {
