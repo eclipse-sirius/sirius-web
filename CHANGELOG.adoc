@@ -57,6 +57,7 @@ See https://github.com/mui/material-ui/issues/15618[this link] for additional de
 - https://github.com/eclipse-sirius/sirius-web/issues/4416[#4416] [sirius-web] Fix the way migration participant were executed.
 Before this contribution, migration participants were executed if the project being opened was a studio.
 Now they are executed for some data if the data was coming from a studio too.
+- https://github.com/eclipse-sirius/sirius-web/issues/4422[#4422] [diagram] Prevent application crash when an edge path is malformed during node moves
 
 
 === New Features

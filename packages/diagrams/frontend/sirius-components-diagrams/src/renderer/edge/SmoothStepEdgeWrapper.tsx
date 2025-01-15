@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -114,9 +114,10 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
       targetPosition,
     });
 
-    const quadraticCurvePoints: { x: number; y: number }[] = parse(smoothEdgePath).filter(
-      (segment) => segment.code === 'Q'
-    );
+    const quadraticCurvePoints: {
+      x: number;
+      y: number;
+    }[] = smoothEdgePath.includes('NaN') ? [] : parse(smoothEdgePath).filter((segment) => segment.code === 'Q');
 
     if (quadraticCurvePoints.length > 0) {
       const firstPoint = quadraticCurvePoints[0];
