@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -67,6 +67,13 @@ public class RepresentationSearchService implements IRepresentationSearchService
                 .map(representationClass::cast);
     }
 
+    @Override
+    public Optional<IRepresentation> findById(IEditingContext editingContext, String representationId) {
+        return new UUIDParser().parse(representationId)
+                .flatMap(this.representationMetadataSearchService::findMetadataById)
+                .flatMap(this::getRepresentation);
+    }
+
     private Optional<IRepresentation> getRepresentation(RepresentationMetadata representationMetadata) {
         return this.representationContentSearchService.findContentById(representationMetadata.getId())
                 .map(representationContent -> this.migratedContent(representationMetadata, representationContent))
@@ -75,7 +82,7 @@ public class RepresentationSearchService implements IRepresentationSearchService
 
     @Override
     public boolean existByIdAndKind(String representationId, List<String> kinds) {
-        Optional<UUID> uuid =  new UUIDParser().parse(representationId);
+        Optional<UUID> uuid = new UUIDParser().parse(representationId);
         return uuid.filter(value -> this.representationMetadataSearchService.existsByIdAndKind(value, kinds)).isPresent();
     }
 

@@ -50,7 +50,7 @@ It is not an API breaking change but a breaking change from the end-user point o
 In order to find the `editingContextId` from the `projectId` one should leverage `IProjectSemanticDataSearchService#findByProjectId` and use the `ìd` of the semantic data found.
 To find instead the `projectId` from the `editingContextId`, `IProjectSemanticDataSearchService#findBySemanticDataId` should be used along with the `id` of the project.
 The method `IEditingContextLoader#load` has also been updated to not use `projectId` as parameter anymore but instead the `SemanticData` directly.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4375[#4375] [diagram] `ToolVariable` has been moved from `sirius-component-collaborative-diagram` to `sirius-component-collaborative`
 
 === Dependency update
 
@@ -147,6 +147,7 @@ See `PapayaExtensionRegistry.tsx` for how the same result as before can be achie
 - https://github.com/eclipse-sirius/sirius-web/issues/4462[#4462] [sirius-web] Add support for visualization of the libraries available on a server.
 For that, a new page `/libraries` showing all the libraries has been contributed.
 - https://github.com/eclipse-sirius/sirius-web/issues/4564[#4564] [sirius-web] Add an arrow to close the palette on its header
+- https://github.com/eclipse-sirius/sirius-web/issues/4375[#4375] [diagram] Add support for a first version of impact analysis before tool execution.
 
 
 === Improvements
