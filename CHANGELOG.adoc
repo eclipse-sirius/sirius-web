@@ -12,6 +12,7 @@
 - Add impact analysis before tool execution
 - Add support for artifact publication from a project
 - Improve image export
+- Add the current selection to the URL of the project workbench
 
 
 === Architectural decision records
