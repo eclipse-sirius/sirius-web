@@ -1,0 +1,89 @@
+= Add support for the publication of libraries
+
+== Problem
+
+Sirius Web doesn't provide an **in-application** way to publish libraries from a project.
+The current import/export mechanisms rely on generating an interchange format file (Json, XMI, SysML), and uploading such file in a project to import it.
+
+When exported models are used as shared reusable components, it is the responsibility of the stakeholders to:
+
+- Store the shared models in an external location
+- Ensure that every user is working on the same version of the shared model
+- Coordinate to export a new version when needed, and import it in all the dependent projects
+
+These processes are error-prone, and could be more controlled if they all happened inside the application.
+
+
+== Key Result
+
+Sirius Web should provide a way for downstream applications to 
+
+- Define their publication commands
+- Store published libraries in a provided data structure
+- View all libraries published on the server
+
+Note that the actual implementation of the publication process (i.e. what to publish from a given project) should be delegated to downstream applications. 
+We already have downstream projects that implement or want to implement different publication mechanisms:
+
+- Publish fragments of a model
+- Publish entire editing contexts
+- Publish multiple libraries from a single project
+
+This shape doesn't address the question of importing published libraries in a project. 
+A solution to this issue will be proposed in a complementary shape.
+
+
+=== Acceptance criteria
+
+- The support for studio should provide a command publishing all the domains and representations descriptions from a studio project.
+Each domain and each representation description should be published as a dedicated library.
+After the execution of the publication command of a studio, all the domains and representation descriptions should be visible in the libraries page.
+- Backend tests should be used to validate that this publication mecanism is working as expected
+
+
+== Solution
+
+Specifiers should be able to contribute new commands to the command palette.
+A command should also be able to indicate that it should open a specific dialog, pre-registered on the frontend command palette.
+
+A generic dialog to publish libraries should also be contributed in Sirius Web to let specifiers of downstream projects contribute publication workflow easily.
+This dialog should contain two textfields to let end users specify the version and the description to be used by the publication process.
+Sirius Web should also provide a GraphQL mutation for this dialog to trigger the execution of the publication process. 
+This mutation should ensure that the execution of the publication does not block the editing context event processor (some publication processes may take a long time to complete).
+
+Note that this new type of command is not restricted to artifact publication.
+They could be leveraged by downstream applications to perform any kind of behavior on a project.
+
+Downstream applications should be able to trigger the execution of a publication process from their own user interface (from the contextual menu in the explorer, from a custom tool in the diagram palette, etc).
+
+
+Sirius Web should provide some database table(s) to store published libraries. 
+Those tables should at least contain the following pieces of information for each published library:
+
+- identifier
+- project
+- serialized content
+- dependencies
+- version
+- description
+- date of creation
+- date of last modification
+
+We should keep in mind that one library published may be composed of multiple documents and that multiple libraries could be published from one document.
+Some libraries will also have a dependency to other libraries, we should be able to capture this information provided by the specifier from day one.
+Documents cannot be considered as the compulsory granularity used by an library.
+
+Finally, Sirius Web should provide a new page to let user see the libraries that have been published on the server. 
+This page will be accessible at `/libraries`, and it will contain a table with the information contained in the database.
+
+The business layer of Sirius Web should prevent the publication of two libraries with the same name and version on the server.
+
+=== Cutting backs
+
+- (Nice to have) downstream application can add custom properties on the published libraries.
+
+== Rabbit holes
+
+Nothing identified.
+
+== No-gos

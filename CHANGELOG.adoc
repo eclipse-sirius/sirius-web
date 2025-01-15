@@ -10,7 +10,8 @@
 - Add support to dynamically update representation description
 - Add loading indicators for long actions
 - Add impact analysis before tool execution
-- Add support for artifact publication from a project
+- Add support for the publication of libraries
+- Add support for the import of libraries
 - Improve image export
 - Add the current selection to the URL of the project workbench
 - Improve the customization of the navigation bar
@@ -19,7 +20,7 @@
 === Architectural decision records
 
 - [ADR-178] Add support of actions in table row menu
-- [ADR-179] Add support for artifact publication from a project
+- [ADR-179] Add support for regular commands in the command palette
 - [ADR-180] Add support for widget diagnostics provider in View-based Forms
 - [ADR-181] Improve the customization of the navigation bar
 
