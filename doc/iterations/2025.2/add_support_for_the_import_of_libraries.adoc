@@ -1,0 +1,40 @@
+= Add support for the import of libraries
+
+== Problem
+
+Sirius Web need to provide an **in-application** way to import libraries that have been published by specifiers.
+
+== Key Result
+
+Sirius Web should provide a way for downstream applications to
+
+- Define commands to import librairies
+- Define the behavior of the command (how is the libraries imported)
+
+Note that multiple libraries may be imported at once.
+
+
+=== Acceptance criteria
+
+- It should be possible to copy a library published by a studio in another studio.
+- Backend tests should be used to validate that the import mechanism is working as expected
+
+== Solution
+
+Specifiers should be able to provide commands to let end users trigger an import process.
+In a similar fashion as the command for the publication, the command for the import should be able to display a dialog.
+A generic dialog to let end users import libraries should be provided.
+
+This dialog should display all the libraries published on the server.
+The end user should be able to select some libraries published and then select an action compatible with the selection.
+Depending on the project and the selected libraries, various actions may be available.
+
+If no action can be used for the project and the selected libraries then a message should be visible to let end users know that the set of selected libraries cannot be imported in the project.
+
+=== Cutting backs
+
+== Rabbit holes
+
+Nothing identified.
+
+== No-gos
