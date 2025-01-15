@@ -16,7 +16,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.application.dto.Identified;
 
@@ -33,7 +32,7 @@ import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 public record RestProject(
         @Schema(requiredMode = RequiredMode.REQUIRED, description = "The UUID assigned to the record")
         @JsonProperty("@id")
-        UUID id,
+        String id,
 
         @Schema(requiredMode = RequiredMode.REQUIRED, description = "Project")
         @JsonProperty("@type")
@@ -63,7 +62,7 @@ public record RestProject(
     }
 
     public RestProject(
-            UUID id,
+            String id,
             OffsetDateTime created,
             Identified defaultBranch,
             String description,

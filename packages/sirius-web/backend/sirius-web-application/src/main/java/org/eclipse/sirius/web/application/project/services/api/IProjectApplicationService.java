@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.application.project.services.api;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
@@ -29,7 +28,7 @@ import org.springframework.data.domain.KeysetScrollPosition;
  * @author sbegaudeau
  */
 public interface IProjectApplicationService {
-    Optional<ProjectDTO> findById(UUID id);
+    Optional<ProjectDTO> findById(String id);
 
     Window<ProjectDTO> findAll(KeysetScrollPosition position, int limit);
 

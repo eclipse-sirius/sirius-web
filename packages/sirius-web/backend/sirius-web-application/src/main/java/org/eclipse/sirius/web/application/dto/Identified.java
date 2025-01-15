@@ -25,8 +25,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * @author arichard
  */
 @Schema(name = "Identified", description = "Identified represents an Object through its ID and type.")
-public record Identified(@JsonProperty("@id") UUID id) {
+public record Identified(@JsonProperty("@id") String id) {
     public Identified {
         Objects.requireNonNull(id);
+    }
+
+    public Identified(UUID id) {
+        this(id.toString());
     }
 }

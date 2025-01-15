@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.application.studio.services;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.studio.services.api.IStudioCapableEditingContextPredicate;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
@@ -37,8 +36,7 @@ public class StudioCapableEditingContextPredicate implements IStudioCapableEditi
 
     @Override
     public boolean test(String editingContextId) {
-        return new UUIDParser().parse(editingContextId)
-                .flatMap(this.projectSearchService::findById)
+        return this.projectSearchService.findById(editingContextId)
                 .filter(this::isStudio)
                 .isPresent();
     }

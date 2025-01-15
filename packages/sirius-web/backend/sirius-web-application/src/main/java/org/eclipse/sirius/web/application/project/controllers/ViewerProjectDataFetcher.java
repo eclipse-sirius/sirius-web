@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,6 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
 import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
 
@@ -41,6 +40,6 @@ public class ViewerProjectDataFetcher implements IDataFetcherWithFieldCoordinate
     @Override
     public ProjectDTO get(DataFetchingEnvironment environment) throws Exception {
         String projectId = environment.getArgument(PROJECT_ID_ARGUMENT);
-        return new UUIDParser().parse(projectId).flatMap(this.projectApplicationService::findById).orElse(null);
+        return this.projectApplicationService.findById(projectId).orElse(null);
     }
 }

@@ -68,8 +68,8 @@ public class ObjectRestController {
         @ApiResponse(responseCode = "404", description = "Not Found", content = { @Content() })
     })
     @GetMapping(path = "/elements")
-    public ResponseEntity<List<Object>> getElements(@PathVariable UUID projectId, @PathVariable UUID commitId) {
-        var payload = this.editingContextDispatcher.dispatchQuery(projectId.toString(), new GetElementsRestInput(UUID.randomUUID()))
+    public ResponseEntity<List<Object>> getElements(@PathVariable String projectId, @PathVariable UUID commitId) {
+        var payload = this.editingContextDispatcher.dispatchQuery(projectId, new GetElementsRestInput(UUID.randomUUID()))
                 .block(Duration.ofSeconds(TIMEOUT));
         if (payload instanceof GetElementsRestSuccessPayload successPayload) {
             return new ResponseEntity<>(successPayload.elements(), HttpStatus.OK);
@@ -87,8 +87,8 @@ public class ObjectRestController {
         @ApiResponse(responseCode = "404", description = "Not Found", content = { @Content() })
     })
     @GetMapping(path = "/elements/{elementId}")
-    public ResponseEntity<Object> getElementById(@PathVariable UUID projectId, @PathVariable UUID commitId, @PathVariable UUID elementId) {
-        var payload = this.editingContextDispatcher.dispatchQuery(projectId.toString(), new GetElementByIdRestInput(UUID.randomUUID(), elementId.toString()))
+    public ResponseEntity<Object> getElementById(@PathVariable String projectId, @PathVariable UUID commitId, @PathVariable UUID elementId) {
+        var payload = this.editingContextDispatcher.dispatchQuery(projectId, new GetElementByIdRestInput(UUID.randomUUID(), elementId.toString()))
                 .block(Duration.ofSeconds(TIMEOUT));
         if (payload instanceof GetElementByIdRestSuccessPayload successPayload) {
             return new ResponseEntity<>(successPayload.element(), HttpStatus.OK);
@@ -106,10 +106,10 @@ public class ObjectRestController {
         @ApiResponse(responseCode = "404", description = "Not Found", content = { @Content() })
     })
     @GetMapping(path = "/elements/{relatedElementId}/relationships")
-    public ResponseEntity<List<Object>> getRelationshipsByRelatedElement(@PathVariable UUID projectId, @PathVariable UUID commitId, @PathVariable UUID relatedElementId, Optional<Direction> direction) {
+    public ResponseEntity<List<Object>> getRelationshipsByRelatedElement(@PathVariable String projectId, @PathVariable UUID commitId, @PathVariable UUID relatedElementId, Optional<Direction> direction) {
         Direction directionParam = direction.orElse(Direction.BOTH);
 
-        var payload = this.editingContextDispatcher.dispatchQuery(projectId.toString(), new GetRelationshipsByRelatedElementRestInput(UUID.randomUUID(), relatedElementId.toString(), directionParam))
+        var payload = this.editingContextDispatcher.dispatchQuery(projectId, new GetRelationshipsByRelatedElementRestInput(UUID.randomUUID(), relatedElementId.toString(), directionParam))
                 .block(Duration.ofSeconds(TIMEOUT));
         if (payload instanceof GetRelationshipsByRelatedElementRestSuccessPayload successPayload) {
             return new ResponseEntity<>(successPayload.relationships(), HttpStatus.OK);
@@ -127,8 +127,8 @@ public class ObjectRestController {
         @ApiResponse(responseCode = "404", description = "Not Found", content = { @Content() })
     })
     @GetMapping(path = "/roots")
-    public ResponseEntity<List<Object>> getRootElements(@PathVariable UUID projectId, @PathVariable UUID commitId) {
-        var payload = this.editingContextDispatcher.dispatchQuery(projectId.toString(), new GetRootElementsRestInput(UUID.randomUUID()))
+    public ResponseEntity<List<Object>> getRootElements(@PathVariable String projectId, @PathVariable UUID commitId) {
+        var payload = this.editingContextDispatcher.dispatchQuery(projectId, new GetRootElementsRestInput(UUID.randomUUID()))
                 .block(Duration.ofSeconds(TIMEOUT));
         if (payload instanceof GetRootElementsRestSuccessPayload successPayload) {
             return new ResponseEntity<>(successPayload.rootElements(), HttpStatus.OK);

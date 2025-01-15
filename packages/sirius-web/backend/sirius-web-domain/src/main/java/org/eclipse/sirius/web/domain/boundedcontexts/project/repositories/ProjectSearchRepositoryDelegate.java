@@ -18,7 +18,6 @@ import static org.springframework.data.relational.core.query.Query.query;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.api.IProjectSearchRepositoryDelegate;
@@ -81,19 +80,19 @@ public class ProjectSearchRepositoryDelegate implements IProjectSearchRepository
     }
 
     @Override
-    public boolean existsById(UUID projectId) {
+    public boolean existsById(String projectId) {
         Query query = query(where(ID).is(projectId));
         return this.jdbcAggregateOperations.exists(query, Project.class);
     }
 
     @Override
-    public Optional<Project> findById(UUID projectId) {
+    public Optional<Project> findById(String projectId) {
         Query query = query(where(ID).is(projectId));
         return this.jdbcAggregateOperations.findOne(query, Project.class);
     }
 
     @Override
-    public List<Project> findAllBefore(UUID cursorProjectId, int limit) {
+    public List<Project> findAllBefore(String cursorProjectId, int limit) {
         List<Project> projectsBefore = null;
         if (limit > 0) {
             var projects = this.getAllProjectsQuery(FIND_ALL_BEFORE, cursorProjectId, limit + 1);
@@ -103,7 +102,7 @@ public class ProjectSearchRepositoryDelegate implements IProjectSearchRepository
     }
 
     @Override
-    public List<Project> findAllAfter(UUID cursorProjectId, int limit) {
+    public List<Project> findAllAfter(String cursorProjectId, int limit) {
         List<Project> projectsAfter = null;
         if (limit > 0) {
             var projects = this.getAllProjectsQuery(FIND_ALL_AFTER, cursorProjectId, limit + 1);
@@ -112,7 +111,7 @@ public class ProjectSearchRepositoryDelegate implements IProjectSearchRepository
         return projectsAfter;
     }
 
-    private List<Project> getAllProjectsQuery(String sqlQuery, UUID cursorProjectId, int limit) {
+    private List<Project> getAllProjectsQuery(String sqlQuery, String cursorProjectId, int limit) {
         return this.jdbcClient
                 .sql(sqlQuery)
                 .param(CURSOR_PROJECT_ID, cursorProjectId)

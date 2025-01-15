@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.domain.boundedcontexts.project.services;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.IProjectRepository;
@@ -38,12 +37,12 @@ public class ProjectSearchService implements IProjectSearchService {
     }
 
     @Override
-    public boolean existsById(UUID projectId) {
+    public boolean existsById(String projectId) {
         return this.projectRepository.existsById(projectId);
     }
 
     @Override
-    public Optional<Project> findById(UUID projectId) {
+    public Optional<Project> findById(String projectId) {
         return this.projectRepository.findById(projectId);
     }
 
@@ -53,17 +52,16 @@ public class ProjectSearchService implements IProjectSearchService {
         if (limit > 0) {
             var cursorProjectKey = position.getKeys().get("id");
             if (cursorProjectKey instanceof String cursorProjectId) {
-                var cursorProjectUUID = this.parse(cursorProjectId);
-                if (cursorProjectUUID.isPresent() && this.existsById(cursorProjectUUID.get())) {
+                if (this.existsById(cursorProjectId)) {
                     if (position.scrollsForward()) {
-                        var projects = this.projectRepository.findAllAfter(cursorProjectUUID.get(), limit + 1);
+                        var projects = this.projectRepository.findAllAfter(cursorProjectId, limit + 1);
                         boolean hasNext = projects.size() > limit;
-                        boolean hasPrevious = !this.projectRepository.findAllBefore(cursorProjectUUID.get(), 1).isEmpty();
+                        boolean hasPrevious = !this.projectRepository.findAllBefore(cursorProjectId, 1).isEmpty();
                         window = new Window<>(projects.subList(0, Math.min(projects.size(), limit)), index -> position, hasNext, hasPrevious);
                     } else if (position.scrollsBackward()) {
-                        var projects = this.projectRepository.findAllBefore(cursorProjectUUID.get(), limit + 1);
+                        var projects = this.projectRepository.findAllBefore(cursorProjectId, limit + 1);
                         boolean hasPrevious = projects.size() > limit;
-                        boolean hasNext = !this.projectRepository.findAllAfter(cursorProjectUUID.get(), 1).isEmpty();
+                        boolean hasNext = !this.projectRepository.findAllAfter(cursorProjectId, 1).isEmpty();
                         window = new Window<>(projects.subList(0, Math.min(projects.size(), limit)), index -> position, hasNext, hasPrevious);
                     }
                 }
@@ -77,13 +75,4 @@ public class ProjectSearchService implements IProjectSearchService {
         return window;
     }
 
-    private Optional<UUID> parse(String id) {
-        try {
-            UUID uuid = UUID.fromString(id);
-            return Optional.of(uuid);
-        } catch (IllegalArgumentException exception) {
-            // Ignore, the information that the id is invalid is returned as an empty Optional.
-        }
-        return Optional.empty();
-    }
 }

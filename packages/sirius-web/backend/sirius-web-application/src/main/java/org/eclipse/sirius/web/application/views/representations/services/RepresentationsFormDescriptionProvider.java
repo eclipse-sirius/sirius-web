@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -210,8 +210,7 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
     private List<?> getItems(VariableManager variableManager) {
         Object object = variableManager.getVariables().get(VariableManager.SELF);
         var optionalProjectId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
-                .map(IEditingContext::getId)
-                .flatMap(new UUIDParser()::parse);
+                .map(IEditingContext::getId);
         if (optionalProjectId.isPresent()) {
             var projectId = optionalProjectId.get();
             String id = this.identityService.getId(object);
@@ -291,11 +290,7 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
                         items = this.getPortalChildren(optionalPortal.get());
                     }
                 } else if (id != null) {
-                    var optionalProjectId = new UUIDParser().parse(editingContext.getId());
-                    if (optionalProjectId.isPresent()) {
-                        var projectId = optionalProjectId.get();
-                        items = this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(projectId), id).stream().toList();
-                    }
+                    items = this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(editingContext.getId()), id).stream().toList();
                 }
             }
         }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,15 +42,13 @@ public class RepresentationMetadataPersistenceService implements IRepresentation
     @Override
     @Transactional
     public void save(ICause cause, IEditingContext editingContext, org.eclipse.sirius.components.core.RepresentationMetadata representationMetadata, String targetObjectId) {
-        var optionalProjectId = new UUIDParser().parse(editingContext.getId());
         var optionalRepresentationId = new UUIDParser().parse(representationMetadata.id());
 
-        if (optionalProjectId.isPresent() && optionalRepresentationId.isPresent()) {
-            var projectId = optionalProjectId.get();
+        if (optionalRepresentationId.isPresent()) {
             var representationId = optionalRepresentationId.get();
 
             var boundedRepresentationMetadata = RepresentationMetadata.newRepresentationMetadata(representationId)
-                    .project(AggregateReference.to(projectId))
+                    .project(AggregateReference.to(editingContext.getId()))
                     .label(representationMetadata.label())
                     .kind(representationMetadata.kind())
                     .descriptionId(representationMetadata.descriptionId())

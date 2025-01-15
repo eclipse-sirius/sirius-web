@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services;
 
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
@@ -39,7 +38,7 @@ public class SemanticDataCreationService implements ISemanticDataCreationService
     }
 
     @Override
-    public void initialize(ICause cause, AggregateReference<Project, UUID> project) {
+    public void initialize(ICause cause, AggregateReference<Project, String> project) {
         var semanticData = SemanticData.newSemanticData()
                 .project(project)
                 .documents(Set.of())

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.services.api;
 
-import java.util.UUID;
-
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateInput;
 
@@ -23,5 +21,5 @@ import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateI
  * @author sbegaudeau
  */
 public interface ITemplateBasedProjectInitializer {
-    IPayload initializeProjectFromTemplate(CreateProjectFromTemplateInput input, UUID projectId, String templateId);
+    IPayload initializeProjectFromTemplate(CreateProjectFromTemplateInput input, String projectId, String templateId);
 }

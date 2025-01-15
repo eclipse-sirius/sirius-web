@@ -144,7 +144,7 @@ public class TestCreateForkedStudio extends AbstractIntegrationTests {
 
         Runnable doesProjectContainsOldDocument = () -> {
             //Check if the new project exist with an updated new name
-            var project = projectSearchService.findById(UUID.fromString(forkStudioProjectId.get()));
+            var project = projectSearchService.findById(forkStudioProjectId.get());
             assertThat(project).isPresent();
             assertThat(project.get().getName()).isEqualTo("Forked Table");
 
@@ -160,7 +160,7 @@ public class TestCreateForkedStudio extends AbstractIntegrationTests {
 
 
             //Check that the content of the project contains a copy of the view
-            var semanticData = this.semanticDataRepository.findByProjectId(UUID.fromString(forkStudioProjectId.get()));
+            var semanticData = this.semanticDataRepository.findByProjectId(forkStudioProjectId.get());
             assertThat(semanticData).isPresent();
             var documents = semanticData.get().getDocuments();
             var forkedDocument = documents.stream().filter(document -> document.getId().equals(UUID.fromString(sourceId.get()))).findFirst();

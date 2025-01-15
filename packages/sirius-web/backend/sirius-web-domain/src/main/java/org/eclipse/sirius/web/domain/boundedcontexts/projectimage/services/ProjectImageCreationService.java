@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.ProjectImage;
@@ -49,7 +48,7 @@ public class ProjectImageCreationService implements IProjectImageCreationService
     }
 
     @Override
-    public IResult<ProjectImage> createProjectImage(ICause cause, UUID projectId, String label, String fileName, InputStream inputStream) {
+    public IResult<ProjectImage> createProjectImage(ICause cause, String projectId, String label, String fileName, InputStream inputStream) {
         IResult<ProjectImage> result = null;
 
         var optionalContent = this.getContent(inputStream);

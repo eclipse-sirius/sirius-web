@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 import java.util.zip.ZipInputStream;
 
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -170,7 +169,7 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
         }
     }
 
-    private ResponseEntity<Resource> download(UUID projectId) {
+    private ResponseEntity<Resource> download(String projectId) {
         var uri = "http://localhost:" + this.port + "/api/projects/" + projectId.toString();
 
         HttpHeaders headers = new HttpHeaders();

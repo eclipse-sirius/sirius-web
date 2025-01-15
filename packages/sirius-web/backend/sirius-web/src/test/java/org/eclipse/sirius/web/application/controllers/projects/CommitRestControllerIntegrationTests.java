@@ -74,7 +74,7 @@ public class CommitRestControllerIntegrationTests extends AbstractIntegrationTes
                 .hasSize(1)
                 .consumeWith(result -> {
                     var restCommits = result.getResponseBody();
-                    assertEquals(TestIdentifiers.UML_SAMPLE_PROJECT, restCommits.get(0).id());
+                    assertEquals(TestIdentifiers.UML_SAMPLE_PROJECT, restCommits.get(0).id().toString());
                     assertEquals("Commit", restCommits.get(0).type());
                     assertEquals(TestIdentifiers.UML_SAMPLE_PROJECT, restCommits.get(0).owningProject().id());
                 });
@@ -153,7 +153,7 @@ public class CommitRestControllerIntegrationTests extends AbstractIntegrationTes
                 .expectBody(RestCommit.class)
                 .consumeWith(result -> {
                     var restCommit = result.getResponseBody();
-                    assertEquals(TestIdentifiers.UML_SAMPLE_PROJECT, restCommit.id());
+                    assertEquals(TestIdentifiers.UML_SAMPLE_PROJECT, restCommit.id().toString());
                     assertEquals("Commit", restCommit.type());
                     assertEquals(TestIdentifiers.UML_SAMPLE_PROJECT, restCommit.owningProject().id());
                 });
@@ -231,7 +231,7 @@ public class CommitRestControllerIntegrationTests extends AbstractIntegrationTes
                 .baseUrl(this.getHTTPBaseUrl())
                 .build();
 
-        var changeId = UUID.nameUUIDFromBytes((TestIdentifiers.ECORE_SAMPLE_PROJECT.toString() + TestIdentifiers.EPACKAGE_OBJECT.toString()).getBytes());
+        var changeId = UUID.nameUUIDFromBytes((TestIdentifiers.ECORE_SAMPLE_PROJECT + TestIdentifiers.EPACKAGE_OBJECT).getBytes());
         var uri = String.format("/api/rest/projects/%s/commits/%s/changes/%s", TestIdentifiers.ECORE_SAMPLE_PROJECT, TestIdentifiers.ECORE_SAMPLE_PROJECT, changeId);
         webTestClient
                 .get()

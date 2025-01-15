@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -54,22 +54,22 @@ public class RepresentationMetadataSearchService implements IRepresentationMetad
     }
 
     @Override
-    public List<RepresentationMetadata> findAllMetadataByProject(AggregateReference<Project, UUID> project) {
+    public List<RepresentationMetadata> findAllMetadataByProject(AggregateReference<Project, String> project) {
         return this.representationMetadataRepository.findAllMetadataByProjectId(project.getId());
     }
 
     @Override
-    public List<RepresentationMetadata> findAllMetadataByProjectAndTargetObjectId(AggregateReference<Project, UUID> project, String targetObjectId) {
+    public List<RepresentationMetadata> findAllMetadataByProjectAndTargetObjectId(AggregateReference<Project, String> project, String targetObjectId) {
         return this.representationMetadataRepository.findAllMetadataByProjectAndTargetObjectId(project.getId(), targetObjectId);
     }
 
     @Override
-    public boolean existAnyRepresentationForProjectAndTargetObjectId(AggregateReference<Project, UUID> project, String targetObjectId) {
+    public boolean existAnyRepresentationForProjectAndTargetObjectId(AggregateReference<Project, String> project, String targetObjectId) {
         return this.representationMetadataRepository.existAnyRepresentationForTargetObjectId(targetObjectId);
     }
 
     @Override
-    public Optional<AggregateReference<Project, UUID>> findProjectByRepresentationId(UUID representationId) {
+    public Optional<AggregateReference<Project, String>> findProjectByRepresentationId(UUID representationId) {
         return this.representationMetadataRepository.findProjectIdFromRepresentationId(representationId)
                 .map(AggregateReference::to);
     }

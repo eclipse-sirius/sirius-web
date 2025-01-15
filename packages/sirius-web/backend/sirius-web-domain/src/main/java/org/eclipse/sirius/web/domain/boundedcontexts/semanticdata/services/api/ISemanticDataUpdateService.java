@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api;
 
 import java.util.Set;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
@@ -26,5 +25,5 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
  * @author sbegaudeau
  */
 public interface ISemanticDataUpdateService {
-    void updateDocuments(ICause cause, AggregateReference<Project, UUID> project, Set<Document> documents, Set<String> domainUris);
+    void updateDocuments(ICause cause, AggregateReference<Project, String> project, Set<Document> documents, Set<String> domainUris);
 }

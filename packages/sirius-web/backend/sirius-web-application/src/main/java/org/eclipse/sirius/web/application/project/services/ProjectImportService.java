@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -152,15 +152,15 @@ public class ProjectImportService implements IProjectImportService {
         if (createProjectPayload instanceof CreateProjectSuccessPayload createProjectSuccessPayload) {
             var project = createProjectSuccessPayload.project();
             Optional<IEditingContextEventProcessor> optionalEditingContextEventProcessor = this.editingContextEventProcessorRegistry
-                    .getOrCreateEditingContextEventProcessor(project.id().toString());
+                    .getOrCreateEditingContextEventProcessor(project.id());
             if (optionalEditingContextEventProcessor.isPresent()) {
                 IEditingContextEventProcessor editingContextEventProcessor = optionalEditingContextEventProcessor.get();
 
-                ProjectImporter projectImporter = new ProjectImporter(project.id().toString(), editingContextEventProcessor, documents, representationImportDatas, projectManifest);
+                ProjectImporter projectImporter = new ProjectImporter(project.id(), editingContextEventProcessor, documents, representationImportDatas, projectManifest);
                 boolean hasBeenImported = projectImporter.importProject(inputId);
 
                 if (!hasBeenImported) {
-                    this.editingContextEventProcessorRegistry.disposeEditingContextEventProcessor(project.id().toString());
+                    this.editingContextEventProcessorRegistry.disposeEditingContextEventProcessor(project.id());
                     this.projectApplicationService.deleteProject(new DeleteProjectInput(inputId, project.id()));
                 } else {
                     payload = new UploadProjectSuccessPayload(inputId, project);

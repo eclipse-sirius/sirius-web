@@ -16,7 +16,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -24,7 +23,6 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.events.ICause;
-import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextMigrationParticipantPredicate;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextPersistenceFilter;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceToDocumentService;
@@ -77,26 +75,24 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
 
         if (editingContext instanceof IEMFEditingContext emfEditingContext) {
             var applyMigrationParticipants = this.migrationParticipantPredicates.stream().anyMatch(predicate -> predicate.test(emfEditingContext.getId()));
-            new UUIDParser().parse(editingContext.getId())
-                    .map(AggregateReference::<Project, UUID>to)
-                    .ifPresent(project -> {
-                        var documentData = emfEditingContext.getDomain().getResourceSet().getResources().stream()
-                                .filter(resource -> IEMFEditingContext.RESOURCE_SCHEME.equals(resource.getURI().scheme()))
-                                .filter(resource -> this.persistenceFilters.stream().allMatch(filter -> filter.shouldPersist(resource)))
-                                .map(resource -> this.resourceToDocumentService.toDocument(resource, applyMigrationParticipants))
-                                .flatMap(Optional::stream)
-                                .collect(Collectors.toSet());
+            AggregateReference<Project, String> projectId = AggregateReference.to(editingContext.getId());
 
-                        var documents = new LinkedHashSet<Document>();
-                        var domainUris = new LinkedHashSet<String>();
+            var documentData = emfEditingContext.getDomain().getResourceSet().getResources().stream()
+                    .filter(resource -> IEMFEditingContext.RESOURCE_SCHEME.equals(resource.getURI().scheme()))
+                    .filter(resource -> this.persistenceFilters.stream().allMatch(filter -> filter.shouldPersist(resource)))
+                    .map(resource -> this.resourceToDocumentService.toDocument(resource, applyMigrationParticipants))
+                    .flatMap(Optional::stream)
+                    .collect(Collectors.toSet());
 
-                        documentData.forEach(data -> {
-                            documents.add(data.document());
-                            domainUris.addAll(data.ePackageEntries().stream().map(EPackageEntry::nsURI).toList());
-                        });
+            var documents = new LinkedHashSet<Document>();
+            var domainUris = new LinkedHashSet<String>();
 
-                        this.semanticDataUpdateService.updateDocuments(cause, project, documents, domainUris);
-                    });
+            documentData.forEach(data -> {
+                documents.add(data.document());
+                domainUris.addAll(data.ePackageEntries().stream().map(EPackageEntry::nsURI).toList());
+            });
+
+            this.semanticDataUpdateService.updateDocuments(cause, projectId, documents, domainUris);
         }
 
         long end = System.currentTimeMillis();

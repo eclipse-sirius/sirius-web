@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,7 +45,7 @@ public class ProjectImageSearchService implements IProjectImageSearchService {
     }
 
     @Override
-    public Page<ProjectImage> findAll(UUID projectId, Pageable pageable) {
+    public Page<ProjectImage> findAll(String projectId, Pageable pageable) {
         var projectImages = this.projectImageRepository.findAllByProjectId(projectId, pageable);
         var count = this.projectImageRepository.countByProjectId(projectId);
 
@@ -53,7 +53,7 @@ public class ProjectImageSearchService implements IProjectImageSearchService {
     }
 
     @Override
-    public List<ProjectImage> findAll(UUID projectId) {
+    public List<ProjectImage> findAll(String projectId) {
         return this.projectImageRepository.findAllByProjectId(projectId);
     }
 }

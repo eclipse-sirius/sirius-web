@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,7 @@ import jakarta.validation.constraints.NotNull;
  */
 public record UploadImageInput(
         @NotNull UUID id,
-        @NotNull UUID projectId,
+        @NotNull String projectId,
         @NotNull String label,
         @NotNull UploadFile file) implements IInput {
 }

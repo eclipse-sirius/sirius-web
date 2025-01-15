@@ -28,6 +28,7 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/4416[#4416] [sirius-web] Tests written for Sirius Web should now leverage the brand new annotation `@GivenSiriusWebServer` which will set up all the test data of the server.
 It will allow us to create more complex test data shared by all integration tests to detect additional problems.
 - https://github.com/eclipse-sirius/sirius-web/issues/4416[#4416] [sirius-web] The `IEditingContextMigrationParticipantPredicate` will now use the id of the editing context instead of the whole editing context in order to find out if the migration participant should be activated.
+- https://github.com/eclipse-sirius/sirius-web/issues/4418[#4418] [sirius-web] Change type of project_id from UUID to String
 
 
 === Dependency update

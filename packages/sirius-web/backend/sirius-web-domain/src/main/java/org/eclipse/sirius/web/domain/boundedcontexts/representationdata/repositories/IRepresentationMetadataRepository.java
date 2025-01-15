@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,7 +42,7 @@ public interface IRepresentationMetadataRepository extends ListPagingAndSortingR
         FROM representation_metadata representationMetadata
         WHERE representationMetadata.project_id = :projectId
         """)
-    List<RepresentationMetadata> findAllMetadataByProjectId(UUID projectId);
+    List<RepresentationMetadata> findAllMetadataByProjectId(String projectId);
 
     @Query("""
         SELECT representationMetadata.*
@@ -50,14 +50,14 @@ public interface IRepresentationMetadataRepository extends ListPagingAndSortingR
         WHERE representationMetadata.target_object_id = :targetObjectId
         AND representationMetadata.project_id = :projectId
         """)
-    List<RepresentationMetadata> findAllMetadataByProjectAndTargetObjectId(UUID projectId, String targetObjectId);
+    List<RepresentationMetadata> findAllMetadataByProjectAndTargetObjectId(String projectId, String targetObjectId);
 
     @Query("""
         SELECT representationMetadata.project_id
         FROM representation_metadata representationMetadata
         WHERE representationMetadata.id = :representationId
         """)
-    Optional<UUID> findProjectIdFromRepresentationId(UUID representationId);
+    Optional<String> findProjectIdFromRepresentationId(UUID representationId);
 
     @Query("""
         SELECT CASE WHEN COUNT(*) > 0 THEN true ELSE false END

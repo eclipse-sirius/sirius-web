@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,6 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.representations.IRepresentation;
-import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataDeletionService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
@@ -58,11 +57,9 @@ public class DanglingRepresentationDeletionService implements IDanglingRepresent
     @Override
     @Transactional
     public void deleteDanglingRepresentations(ICause cause, IEditingContext editingContext) {
-        new UUIDParser().parse(editingContext.getId()).ifPresent(projectId -> {
-            this.representationMetadataSearchService.findAllMetadataByProject(AggregateReference.to(projectId)).stream()
-                    .filter(representationMetadata -> this.objectSearchService.getObject(editingContext, representationMetadata.getTargetObjectId()).isEmpty())
-                    .map(RepresentationMetadata::getId)
-                    .forEach(representationId -> this.representationMetadataDeletionService.delete(cause, representationId));
-        });
+        this.representationMetadataSearchService.findAllMetadataByProject(AggregateReference.to(editingContext.getId())).stream()
+                .filter(representationMetadata -> this.objectSearchService.getObject(editingContext, representationMetadata.getTargetObjectId()).isEmpty())
+                .map(RepresentationMetadata::getId)
+                .forEach(representationId -> this.representationMetadataDeletionService.delete(cause, representationId));
     }
 }

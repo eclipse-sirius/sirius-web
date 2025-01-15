@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.editingcontext.services.api;
 
-import java.util.UUID;
-
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 
 /**
@@ -23,6 +21,6 @@ import org.eclipse.sirius.web.application.editingcontext.EditingContext;
  */
 public interface IEditingContextLoader {
 
-    void load(EditingContext editingContext, UUID projectId);
+    void load(EditingContext editingContext, String projectId);
 
 }

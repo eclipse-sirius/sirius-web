@@ -292,7 +292,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
 
         String projectId = JsonPath.read(result, "$.data.createProject.project.id");
 
-        var optionalProject = this.projectSearchService.findById(UUID.fromString(projectId));
+        var optionalProject = this.projectSearchService.findById(projectId);
         assertThat(optionalProject).isPresent();
         optionalProject.ifPresent(project -> assertThat(project.getName()).isEqualTo(input.name()));
 
@@ -309,7 +309,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         var window = this.projectSearchService.findAll(keyset, 1);
         assertThat(window).isNotNull();
         assertThat(window.size()).isOne();
-        assertThat(window.getContent().get(0).getId()).isEqualByComparingTo(TestIdentifiers.ECORE_SAMPLE_PROJECT);
+        assertThat(window.getContent().get(0).getId()).isEqualTo(TestIdentifiers.ECORE_SAMPLE_PROJECT);
     }
 
     @Test
@@ -320,7 +320,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         var window = this.projectSearchService.findAll(keyset, 1);
         assertThat(window).isNotNull();
         assertThat(window.size()).isOne();
-        assertThat(window.getContent().get(0).getId()).isEqualByComparingTo(TestIdentifiers.ECORE_SAMPLE_PROJECT);
+        assertThat(window.getContent().get(0).getId()).isEqualTo(TestIdentifiers.ECORE_SAMPLE_PROJECT);
     }
 
     @Test
@@ -362,7 +362,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
 
         String projectId = JsonPath.read(result, "$.data.createProject.project.id");
 
-        var exists = this.projectSearchService.existsById(UUID.fromString(projectId));
+        var exists = this.projectSearchService.existsById(projectId);
         assertThat(exists).isTrue();
     }
 

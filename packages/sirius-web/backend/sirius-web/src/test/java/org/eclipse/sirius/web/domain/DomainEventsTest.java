@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -114,7 +113,7 @@ public class DomainEventsTest extends AbstractIntegrationTests {
     @DisplayName("Given a document, changing its name produces a domain event")
     public void givenDocumentWhenNameModifiedDomainEventPublished() {
         assertThat(this.domainEventCollector.getDomainEvents()).isEmpty();
-        AggregateReference<Project, UUID> projectId = AggregateReference.to(TestIdentifiers.ECORE_SAMPLE_PROJECT);
+        AggregateReference<Project, String> projectId = AggregateReference.to(TestIdentifiers.ECORE_SAMPLE_PROJECT);
 
         var optionalSemanticData = this.semanticDataSearchService.findByProject(projectId);
         assertThat(optionalSemanticData).isPresent();
@@ -141,7 +140,7 @@ public class DomainEventsTest extends AbstractIntegrationTests {
     @DisplayName("Given a document, updating its name and content with the same value does not produce a domain event")
     public void givenDocumentWhenNameAndContentNotModifiedNoDomainEventPublished() {
         assertThat(this.domainEventCollector.getDomainEvents()).isEmpty();
-        AggregateReference<Project, UUID> projectId = AggregateReference.to(TestIdentifiers.ECORE_SAMPLE_PROJECT);
+        AggregateReference<Project, String> projectId = AggregateReference.to(TestIdentifiers.ECORE_SAMPLE_PROJECT);
 
         var optionalSemanticData = this.semanticDataSearchService.findByProject(projectId);
         assertThat(optionalSemanticData).isPresent();
@@ -167,7 +166,7 @@ public class DomainEventsTest extends AbstractIntegrationTests {
     @DisplayName("Given a document, updating its content with a diffrent value produces a domain event")
     public void givenDocumentWhenContentModifiedDomainEventPublished() {
         assertThat(this.domainEventCollector.getDomainEvents()).isEmpty();
-        AggregateReference<Project, UUID> projectId = AggregateReference.to(TestIdentifiers.ECORE_SAMPLE_PROJECT);
+        AggregateReference<Project, String> projectId = AggregateReference.to(TestIdentifiers.ECORE_SAMPLE_PROJECT);
 
         var optionalSemanticData = this.semanticDataSearchService.findByProject(projectId);
         assertThat(optionalSemanticData).isPresent();
