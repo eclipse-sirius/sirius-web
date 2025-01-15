@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo and others.
+ * Copyright (c) 2022, 2025 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,6 +45,10 @@ export * from './modals/confirmation/ConfirmationDialogContext';
 export type * from './modals/confirmation/ConfirmationDialogContext.types';
 export * from './modals/confirmation/useConfirmationDialog';
 export type * from './modals/confirmation/useConfirmationDialog.types';
+export * from './modals/impact-analysis/ImpactAnalysisDialogContext';
+export type * from './modals/impact-analysis/ImpactAnalysisDialogContext.types';
+export * from './modals/impact-analysis/useImpactAnalysisDialog';
+export type * from './modals/impact-analysis/useImpactAnalysisDialog.types';
 export * from './modals/share-representation/ShareRepresentationModal';
 export type * from './modals/share-representation/ShareRepresentationModal.types';
 export * from './representationmetadata/useRepresentationMetadata';

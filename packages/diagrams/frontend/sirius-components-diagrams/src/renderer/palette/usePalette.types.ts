@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,8 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { GQLToolVariable } from '@eclipse-sirius/sirius-components-core';
 import { GQLMessage } from './../Tool.types';
 import { GQLPalette, GQLTool } from './Palette.types';
+
 export interface UsePaletteProps {
   x: number;
   y: number;
@@ -25,6 +27,7 @@ export interface UsePaletteValue {
   handleToolClick: (tool: GQLTool) => void;
   palette: GQLPalette | null;
 }
+
 export interface GQLGetToolSectionsVariables {
   editingContextId: string;
   diagramId: string;
@@ -132,14 +135,6 @@ export interface GQLInvokeSingleClickOnDiagramElementToolInput {
   startingPositionY: number;
   variables: GQLToolVariable[];
 }
-
-export interface GQLToolVariable {
-  name: string;
-  value: string;
-  type: GQLToolVariableType;
-}
-
-export type GQLToolVariableType = 'STRING' | 'OBJECT_ID' | 'OBJECT_ID_ARRAY';
 
 export interface GQLGetToolSectionsData {
   viewer: GQLViewer;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -140,13 +140,13 @@ public class ViewPaletteProvider implements IPaletteProvider {
 
             List<IPaletteEntry> paletteEntries = new ArrayList<>();
             toolFinder.findNodeTools(viewDiagramDescription).stream()
-            .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-            .map(tool -> this.createDiagramRootNodeTool(tool, variableManager, interpreter))
-            .forEach(paletteEntries::add);
+                    .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
+                    .map(tool -> this.createDiagramRootNodeTool(tool, variableManager, interpreter))
+                    .forEach(paletteEntries::add);
 
             toolFinder.findToolSections(viewDiagramDescription).stream()
-            .map(toolSection -> this.createToolSection(toolSection, variableManager, interpreter))
-            .forEach(paletteEntries::add);
+                    .map(toolSection -> this.createToolSection(toolSection, variableManager, interpreter))
+                    .forEach(paletteEntries::add);
 
             diagramPalette = Palette.newPalette(diagramPaletteId)
                     .quickAccessTools(List.of())
@@ -191,6 +191,7 @@ public class ViewPaletteProvider implements IPaletteProvider {
                 .dialogDescriptionId(dialogDescriptionId)
                 .targetDescriptions(List.of())
                 .appliesToDiagramRoot(appliesToDiagramRoot)
+                .withImpactAnalysis(viewNodeTool.isWithImpactAnalysis())
                 .build();
     }
 
@@ -204,10 +205,10 @@ public class ViewPaletteProvider implements IPaletteProvider {
 
             if (optionalNodeDescription.isPresent()) {
                 List<ToolSection> extraToolSections = new ArrayList<>();
-                paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createExtraToolSections(nodeDescription, diagramElement)).flatMap(List::stream)
+                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createExtraToolSections(nodeDescription, diagramElement)).flatMap(List::stream)
                         .forEach(extraToolSections::add);
                 List<ITool> quickAccessTools = new ArrayList<>();
-                paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createQuickAccessTools(nodeDescription, diagramElement)).flatMap(List::stream)
+                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createQuickAccessTools(nodeDescription, diagramElement)).flatMap(List::stream)
                         .forEach(quickAccessTools::add);
                 org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription = optionalNodeDescription.get();
 
@@ -301,9 +302,9 @@ public class ViewPaletteProvider implements IPaletteProvider {
                         .forEach(paletteEntries::add);
 
                 toolFinder.findNodeTools(viewEdgeDescription).stream()
-                .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                .map(tool -> this.createNodeTool(tool, variableManager, interpreter))
-                .forEach(paletteEntries::add);
+                        .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
+                        .map(tool -> this.createNodeTool(tool, variableManager, interpreter))
+                        .forEach(paletteEntries::add);
 
                 paletteEntries.addAll(extraToolSections);
 
