@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClic
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariableType;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
+import org.eclipse.sirius.components.collaborative.diagrams.services.ToolDiagramExecutor;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
@@ -133,7 +134,8 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
             }
         };
 
-        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectSearchService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
+        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(new ICollaborativeDiagramMessageService.NoOp(), new ToolDiagramExecutor(toolService, objectSearchService, diagramQueryService
+        ), new SimpleMeterRegistry());
 
         var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), EDITING_CONTEXT_ID, REPRESENTATION_ID, DIAGRAM_ID, TOOL_ID, 5.0, 8.0, VARIABLES);
 
@@ -184,7 +186,8 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
             }
         };
 
-        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectSearchService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
+        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(new ICollaborativeDiagramMessageService.NoOp(), new ToolDiagramExecutor(toolService, objectSearchService, diagramQueryService
+        ), new SimpleMeterRegistry());
 
         var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), EDITING_CONTEXT_ID, REPRESENTATION_ID, NODE_1_ID, TOOL_ID, 5.0, 8.0, VARIABLES);
 
@@ -250,7 +253,8 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
             }
         };
 
-        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectSearchService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
+        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(new ICollaborativeDiagramMessageService.NoOp(), new ToolDiagramExecutor(toolService, objectSearchService, diagramQueryService
+        ), new SimpleMeterRegistry());
 
         var variables = List.of(new ToolVariable(SELECTED_OBJECT, OBJECT_2_ID, ToolVariableType.OBJECT_ID), new ToolVariable(NAME_VARIABLE, NAME_VARIABLE_VALUE, ToolVariableType.STRING),
                 new ToolVariable(SELECTED_OBJECTS, OBJECT_1_ID + "," + OBJECT_2_ID + "," + OBJECT_3_ID, ToolVariableType.OBJECT_ID_ARRAY));
@@ -308,7 +312,8 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
             }
         };
 
-        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectSearchService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
+        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(new ICollaborativeDiagramMessageService.NoOp(), new ToolDiagramExecutor(toolService, objectSearchService, diagramQueryService
+        ), new SimpleMeterRegistry());
 
         var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), EDITING_CONTEXT_ID, REPRESENTATION_ID, "anotherNodeId", TOOL_ID, 5.0, 8.0, VARIABLES);
 
@@ -374,7 +379,8 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
             }
         };
 
-        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectSearchService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
+        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(new ICollaborativeDiagramMessageService.NoOp(), new ToolDiagramExecutor(toolService, objectSearchService, diagramQueryService
+        ), new SimpleMeterRegistry());
 
         var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), EDITING_CONTEXT_ID, REPRESENTATION_ID, EDGE_1_ID, TOOL_ID, 5.0, 8.0, VARIABLES);
 
@@ -432,7 +438,8 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
             }
         };
 
-        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectSearchService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
+        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(new ICollaborativeDiagramMessageService.NoOp(), new ToolDiagramExecutor(toolService, objectSearchService, diagramQueryService
+        ), new SimpleMeterRegistry());
 
         var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), EDITING_CONTEXT_ID, REPRESENTATION_ID, "anotherEdgeId", TOOL_ID, 5.0, 8.0, VARIABLES);
 

@@ -100,6 +100,7 @@ public class ImportExistingTypesToolProvider {
                 .name("Import existing types")
                 .iconURLsExpression("/icons/papaya/full/obj16/Class.svg")
                 .dialogDescription(dialogDescription)
+                .withImpactAnalysis(true)
                 .body(
                         new ViewBuilders().newChangeContext()
                                 .expression("aql:self")
