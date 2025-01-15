@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,6 +37,7 @@ import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.e2e.tests.services.SiriusWebE2EColorPaletteBuilderProvider;
 import org.eclipse.sirius.web.e2e.tests.services.SiriusWebE2EColorProvider;
 import org.eclipse.sirius.web.e2e.tests.services.api.IE2EViewProvider;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 /**
@@ -44,6 +45,7 @@ import org.springframework.stereotype.Service;
  *
  * @author frouene
  */
+@Profile("test")
 @Service
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class DiagramListViewProvider implements IE2EViewProvider {

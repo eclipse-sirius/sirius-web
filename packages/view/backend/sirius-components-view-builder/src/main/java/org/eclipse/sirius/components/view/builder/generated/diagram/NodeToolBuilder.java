@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -98,6 +98,16 @@ public class NodeToolBuilder {
      */
     public NodeToolBuilder elementsToSelectExpression(java.lang.String value) {
         this.getNodeTool().setElementsToSelectExpression(value);
+        return this;
+    }
+
+    /**
+     * Setter for WithImpactAnalysis.
+     *
+     * @generated
+     */
+    public NodeToolBuilder withImpactAnalysis(java.lang.Boolean value) {
+        this.getNodeTool().setWithImpactAnalysis(value);
         return this;
     }
 
