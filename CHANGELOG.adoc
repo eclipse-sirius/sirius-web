@@ -52,7 +52,7 @@ It is not an API breaking change but a breaking change from the end-user point o
 In order to find the `editingContextId` from the `projectId` one should leverage `IProjectSemanticDataSearchService#findByProjectId` and use the `ìd` of the semantic data found.
 To find instead the `projectId` from the `editingContextId`, `IProjectSemanticDataSearchService#findBySemanticDataId` should be used along with the `id` of the project.
 The method `IEditingContextLoader#load` has also been updated to not use `projectId` as parameter anymore but instead the `SemanticData` directly.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4375[#4375] [diagram] `ToolVariable` has been moved from `sirius-component-collaborative-diagram` to `sirius-component-collaborative`
 
 === Dependency update
 
@@ -157,6 +157,7 @@ A new search command as been contributed to the palette in Sirius Web, which can
 - https://github.com/eclipse-sirius/sirius-web/issues/4329[#4329] [form] Add support for tables as widget in the form view DSL
 - https://github.com/eclipse-sirius/sirius-web/issues/4586[#4586] [core] Allow to override the default behavior of commands in the command palette.
 The `omniboxCommandOverrideContributionExtensionPoint` extension point can be used to contribute components to use when a command is selected.
+- https://github.com/eclipse-sirius/sirius-web/issues/4375[#4375] [diagram] Add support for a first version of impact analysis before tool execution.
 
 
 === Improvements
