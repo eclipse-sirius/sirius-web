@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,18 +12,33 @@
  *******************************************************************************/
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Theme, useTheme } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
-import { useEffect, useRef } from 'react';
+import { CSSProperties, useEffect, useRef } from 'react';
 import { DeckInput } from '../common/DeckInput';
-import { LaneHeader } from '../styled/DeckLaneStyledComponents';
-import { DeckTitle, RightContent, titleFontStyle } from '../styled/DeckStyledComponents';
 import { DeckLaneHeaderProps } from './DeckLaneHeader.types';
 
 import IconButton from '@mui/material/IconButton';
 import { useLaneContextMenu } from './useLaneContextMenu';
 
-const useLaneHeaderStyle = makeStyles()((theme) => ({
+const useLaneHeaderStyle = makeStyles<boolean>()((theme, draggable) => ({
+  header: {
+    marginBottom: ' 10px',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    padding: '0px 5px',
+  },
+  title: {
+    width: '70%',
+    color: theme.palette.text.primary,
+    cursor: draggable ? 'grab' : `auto`,
+  },
+  rightContent: {
+    width: '38%',
+    textAlign: 'right',
+    paddingRight: '10px',
+    fontSize: '13px',
+  },
   more: {
     hover: {
       backgroundColor: theme.palette.action.hover,
@@ -33,6 +48,12 @@ const useLaneHeaderStyle = makeStyles()((theme) => ({
     },
   },
 }));
+
+const titleFontStyle: CSSProperties = {
+  fontWeight: 'bold',
+  fontSize: '14px',
+  lineHeight: '18px',
+};
 
 export const DeckLaneHeader = ({
   updateTitle,
@@ -45,7 +66,6 @@ export const DeckLaneHeader = ({
   id,
   titleStyle = titleFontStyle,
 }: DeckLaneHeaderProps) => {
-  const theme: Theme = useTheme();
   const titleInputRef = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
   const headerRef = useRef<HTMLElement | null>(null);
   const { openContextMenu, contextMenu } = useLaneContextMenu(cards, id);
@@ -66,11 +86,15 @@ export const DeckLaneHeader = ({
     }
   };
 
-  const { classes } = useLaneHeaderStyle();
+  const { classes } = useLaneHeaderStyle(laneDraggable);
   return (
     <>
-      <LaneHeader onKeyDown={handleKeyDown} tabIndex={0} ref={headerRef}>
-        <DeckTitle draggable={laneDraggable} style={titleStyle} theme={theme} data-testid={`lane-${title}-title`}>
+      <header onKeyDown={handleKeyDown} tabIndex={0} ref={headerRef} className={classes.header}>
+        <span
+          draggable={laneDraggable}
+          style={titleStyle}
+          data-testid={`lane-${title}-title`}
+          className={classes.title}>
           {editLaneTitle ? (
             <DeckInput
               ref={titleInputRef}
@@ -83,12 +107,12 @@ export const DeckLaneHeader = ({
           ) : (
             title
           )}
-        </DeckTitle>
-        {label && <RightContent>{label}</RightContent>}
+        </span>
+        {label && <span className={classes.rightContent}>{label}</span>}
         <IconButton className={classes.more} size="small" onClick={openContextMenu} data-testid={`lane-${title}-more`}>
           <MoreVertIcon style={{ fontSize: 14 }} />
         </IconButton>
-      </LaneHeader>
+      </header>
       {contextMenu}
     </>
   );

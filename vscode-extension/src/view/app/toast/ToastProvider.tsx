@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,26 +14,28 @@
 import { ToastContext } from '@eclipse-sirius/sirius-components-core';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
-import { styled } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 import { MaterialDesignContent, SnackbarProvider, useSnackbar } from 'notistack';
 import React from 'react';
 import { ToastCloseButtonProps, ToastContextInitializerProps, ToastProviderProps } from './ToastProvider.types';
 
-const StyledMaterialDesignContent = styled(MaterialDesignContent)(({ theme }) => ({
-  '&.notistack-MuiContent-default': {
-    backgroundColor: theme.palette.primary.main,
-  },
-  '&.notistack-MuiContent-success': {
-    backgroundColor: theme.palette.success.main,
-  },
-  '&.notistack-MuiContent-error': {
-    backgroundColor: theme.palette.error.main,
-  },
-  '&.notistack-MuiContent-warning': {
-    backgroundColor: theme.palette.warning.main,
-  },
-  '&.notistack-MuiContent-info': {
-    backgroundColor: theme.palette.info.main,
+const useStyles = makeStyles()((theme) => ({
+  materialDesignContent: {
+    '&.notistack-MuiContent-default': {
+      backgroundColor: theme.palette.primary.main,
+    },
+    '&.notistack-MuiContent-success': {
+      backgroundColor: theme.palette.success.main,
+    },
+    '&.notistack-MuiContent-error': {
+      backgroundColor: theme.palette.error.main,
+    },
+    '&.notistack-MuiContent-warning': {
+      backgroundColor: theme.palette.warning.main,
+    },
+    '&.notistack-MuiContent-info': {
+      backgroundColor: theme.palette.info.main,
+    },
   },
 }));
 
@@ -61,6 +63,8 @@ const ToastContextInitializer = ({ children }: ToastContextInitializerProps) => 
 };
 
 export const ToastProvider = ({ children }: ToastProviderProps) => {
+  const { classes } = useStyles();
+
   return (
     <SnackbarProvider
       maxSnack={5}
@@ -72,11 +76,11 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
       autoHideDuration={10000}
       data-testid="toast"
       Components={{
-        default: StyledMaterialDesignContent,
-        success: StyledMaterialDesignContent,
-        error: StyledMaterialDesignContent,
-        warning: StyledMaterialDesignContent,
-        info: StyledMaterialDesignContent,
+        default: (props) => <MaterialDesignContent {...props} className={classes.materialDesignContent} />,
+        success: (props) => <MaterialDesignContent {...props} className={classes.materialDesignContent} />,
+        error: (props) => <MaterialDesignContent {...props} className={classes.materialDesignContent} />,
+        warning: (props) => <MaterialDesignContent {...props} className={classes.materialDesignContent} />,
+        info: (props) => <MaterialDesignContent {...props} className={classes.materialDesignContent} />,
       }}>
       <ToastContextInitializer>{children}</ToastContextInitializer>
     </SnackbarProvider>

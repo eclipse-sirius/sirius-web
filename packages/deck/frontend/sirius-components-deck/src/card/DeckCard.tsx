@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,12 +15,11 @@ import { Theme, useTheme } from '@mui/material/styles';
 import { CSSProperties, useRef } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { DeckInput } from '../common/DeckInput';
-import { DeckTitle, titleFontStyle } from '../styled/DeckStyledComponents';
 import { DeckCardProps, UpdateCardProps } from './DeckCard.types';
 import { DeckDeleteButton } from './DeckDeleteButton';
 import { DeckTag } from './DeckTag';
 
-const useStyles = makeStyles()((theme: Theme) => ({
+const useStyles = makeStyles<boolean>()((theme: Theme, draggable: boolean) => ({
   detail: {
     color: theme.palette.text.primary,
     whiteSpace: 'pre-wrap',
@@ -37,6 +36,11 @@ const useStyles = makeStyles()((theme: Theme) => ({
   rightContent: {
     width: ' 38%',
     paddingRight: '10px',
+  },
+  title: {
+    width: '70%',
+    color: theme.palette.text.primary,
+    cursor: draggable ? 'grab' : `auto`,
   },
   header: {
     marginBottom: '10px',
@@ -70,6 +74,12 @@ const cardDetailFontStyle: CSSProperties = {
   minHeight: '20px',
 };
 
+const titleFontStyle: CSSProperties = {
+  fontWeight: 'bold',
+  fontSize: '14px',
+  lineHeight: '18px',
+};
+
 /**
  * A specific Card Component to handle selection and direct edit.
  * Copied and adapted from react-trello Card component.
@@ -101,7 +111,7 @@ export const DeckCard = ({
   };
 
   const theme: Theme = useTheme();
-  const { classes } = useStyles();
+  const { classes } = useStyles(cardDraggable);
 
   const cardStyle: React.CSSProperties = {
     border: editable ? `2px solid ${theme.palette.selected}` : undefined,
@@ -128,7 +138,11 @@ export const DeckCard = ({
       data-testid={`card-${title}`}
       onDragStart={(e) => e.preventDefault()}>
       <article className={classes.header}>
-        <DeckTitle draggable={cardDraggable} style={titleStyle} theme={theme} data-testid={`card-${title}-title`}>
+        <span
+          draggable={cardDraggable}
+          style={titleStyle}
+          data-testid={`card-${title}-title`}
+          className={classes.title}>
           {editable ? (
             <DeckInput
               ref={titleInputRef}
@@ -141,7 +155,7 @@ export const DeckCard = ({
           ) : (
             title
           )}
-        </DeckTitle>
+        </span>
         <span className={classes.rightContent} style={cardLabelFontStyle}>
           {editable ? (
             <DeckInput
