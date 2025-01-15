@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -91,6 +91,7 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory
      * @generated
      */
     protected Collection<Object> supportedTypes = new ArrayList<>();
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.table.TableDescription} instances.
@@ -99,6 +100,7 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory
      * @generated
      */
     protected TableDescriptionItemProvider tableDescriptionItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.table.ColumnDescription} instances.
@@ -107,6 +109,7 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory
      * @generated
      */
     protected ColumnDescriptionItemProvider columnDescriptionItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.table.RowDescription} instances.
@@ -115,6 +118,7 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory
      * @generated
      */
     protected RowDescriptionItemProvider rowDescriptionItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.table.CellDescription} instances.
@@ -123,6 +127,7 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory
      * @generated
      */
     protected CellDescriptionItemProvider cellDescriptionItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.table.CellTextfieldWidgetDescription}
@@ -131,6 +136,7 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory
      * @generated
      */
     protected CellTextfieldWidgetDescriptionItemProvider cellTextfieldWidgetDescriptionItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.table.CellLabelWidgetDescription}
@@ -139,6 +145,14 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory
      * @generated
      */
     protected CellLabelWidgetDescriptionItemProvider cellLabelWidgetDescriptionItemProvider;
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.table.RowContextMenuEntry}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected RowContextMenuEntryItemProvider rowContextMenuEntryItemProvider;
 
     /**
      * This constructs an instance. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -250,6 +264,22 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory
     }
 
     /**
+     * This creates an adapter for a
+     * {@link org.eclipse.sirius.components.view.table.RowContextMenuEntry}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createRowContextMenuEntryAdapter() {
+        if (this.rowContextMenuEntryItemProvider == null) {
+            this.rowContextMenuEntryItemProvider = new RowContextMenuEntryItemProvider(this);
+        }
+
+        return this.rowContextMenuEntryItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -323,6 +353,7 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory
      *
      * @generated
      */
+    @Override
     public Collection<?> getNewChildDescriptors(Object object, EditingDomain editingDomain) {
         return this.childCreationExtenderManager.getNewChildDescriptors(object, editingDomain);
     }
@@ -332,6 +363,7 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory
      *
      * @generated
      */
+    @Override
     public ResourceLocator getResourceLocator() {
         return this.childCreationExtenderManager;
     }
@@ -391,6 +423,8 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory
             this.cellTextfieldWidgetDescriptionItemProvider.dispose();
         if (this.cellLabelWidgetDescriptionItemProvider != null)
             this.cellLabelWidgetDescriptionItemProvider.dispose();
+        if (this.rowContextMenuEntryItemProvider != null)
+            this.rowContextMenuEntryItemProvider.dispose();
     }
 
     /**
@@ -406,6 +440,7 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory
          *
          * @generated
          */
+        @Override
         public Collection<Object> getNewChildDescriptors(Object object, EditingDomain editingDomain) {
             ArrayList<Object> result = new ArrayList<>();
             new CreationSwitch(result, editingDomain).doSwitch((EObject) object);
@@ -417,6 +452,7 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory
          *
          * @generated
          */
+        @Override
         public ResourceLocator getResourceLocator() {
             return TableEditPlugin.INSTANCE;
         }

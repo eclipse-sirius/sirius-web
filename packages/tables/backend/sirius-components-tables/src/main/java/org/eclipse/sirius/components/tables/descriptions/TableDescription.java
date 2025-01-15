@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,11 @@ import org.eclipse.sirius.components.representations.VariableManager;
 public final class TableDescription implements IRepresentationDescription {
 
     public static final String LABEL = "label";
+
+    /**
+     * The variable name used to store a reference to a table.
+     */
+    public static final String TABLE = "table";
 
     private String id;
 

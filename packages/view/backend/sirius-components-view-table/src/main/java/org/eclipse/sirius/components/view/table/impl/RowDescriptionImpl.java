@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,11 +12,18 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.table.impl;
 
+import java.util.Collection;
 import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.sirius.components.view.table.RowContextMenuEntry;
 import org.eclipse.sirius.components.view.table.RowDescription;
 import org.eclipse.sirius.components.view.table.TablePackage;
 
@@ -127,6 +134,16 @@ public class RowDescriptionImpl extends TableElementDescriptionImpl implements R
      * @see #getIsResizableExpression()
      */
     protected String isResizableExpression = IS_RESIZABLE_EXPRESSION_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getContextMenuEntries() <em>Context Menu Entries</em>}' containment reference
+     * list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getContextMenuEntries()
+     */
+    protected EList<RowContextMenuEntry> contextMenuEntries;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -268,6 +285,33 @@ public class RowDescriptionImpl extends TableElementDescriptionImpl implements R
      * @generated
      */
     @Override
+    public EList<RowContextMenuEntry> getContextMenuEntries() {
+        if (this.contextMenuEntries == null) {
+            this.contextMenuEntries = new EObjectContainmentEList<>(RowContextMenuEntry.class, this, TablePackage.ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES);
+        }
+        return this.contextMenuEntries;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+        switch (featureID) {
+            case TablePackage.ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES:
+                return ((InternalEList<?>) this.getContextMenuEntries()).basicRemove(otherEnd, msgs);
+        }
+        return super.eInverseRemove(otherEnd, featureID, msgs);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case TablePackage.ROW_DESCRIPTION__HEADER_LABEL_EXPRESSION:
@@ -280,6 +324,8 @@ public class RowDescriptionImpl extends TableElementDescriptionImpl implements R
                 return this.getInitialHeightExpression();
             case TablePackage.ROW_DESCRIPTION__IS_RESIZABLE_EXPRESSION:
                 return this.getIsResizableExpression();
+            case TablePackage.ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES:
+                return this.getContextMenuEntries();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -289,6 +335,7 @@ public class RowDescriptionImpl extends TableElementDescriptionImpl implements R
      *
      * @generated
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
@@ -306,6 +353,10 @@ public class RowDescriptionImpl extends TableElementDescriptionImpl implements R
                 return;
             case TablePackage.ROW_DESCRIPTION__IS_RESIZABLE_EXPRESSION:
                 this.setIsResizableExpression((String) newValue);
+                return;
+            case TablePackage.ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES:
+                this.getContextMenuEntries().clear();
+                this.getContextMenuEntries().addAll((Collection<? extends RowContextMenuEntry>) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -334,6 +385,9 @@ public class RowDescriptionImpl extends TableElementDescriptionImpl implements R
             case TablePackage.ROW_DESCRIPTION__IS_RESIZABLE_EXPRESSION:
                 this.setIsResizableExpression(IS_RESIZABLE_EXPRESSION_EDEFAULT);
                 return;
+            case TablePackage.ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES:
+                this.getContextMenuEntries().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -356,6 +410,8 @@ public class RowDescriptionImpl extends TableElementDescriptionImpl implements R
                 return INITIAL_HEIGHT_EXPRESSION_EDEFAULT == null ? this.initialHeightExpression != null : !INITIAL_HEIGHT_EXPRESSION_EDEFAULT.equals(this.initialHeightExpression);
             case TablePackage.ROW_DESCRIPTION__IS_RESIZABLE_EXPRESSION:
                 return IS_RESIZABLE_EXPRESSION_EDEFAULT == null ? this.isResizableExpression != null : !IS_RESIZABLE_EXPRESSION_EDEFAULT.equals(this.isResizableExpression);
+            case TablePackage.ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES:
+                return this.contextMenuEntries != null && !this.contextMenuEntries.isEmpty();
         }
         return super.eIsSet(featureID);
     }
