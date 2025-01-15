@@ -214,6 +214,7 @@ public class ToolConverter {
                 .targetDescriptions(List.of())
                 .dialogDescriptionId(this.diagramIdProvider.getId(nodeTool.getDialogDescription()))
                 .appliesToDiagramRoot(appliesToDiagramRoot)
+                .withImpactAnalysis(nodeTool.isWithImpactAnalysis())
                 .build();
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,9 @@ import org.eclipse.sirius.components.representations.IRepresentation;
  * @author sbegaudeau
  */
 public interface IRepresentationSearchService {
+
+    Optional<IRepresentation> findById(IEditingContext editingContext, String representationId);
+
     <T extends IRepresentation> Optional<T> findById(IEditingContext editingContext, String representationId, Class<T> representationClass);
 
     boolean existByIdAndKind(String representationId, List<String> kinds);
@@ -34,6 +37,11 @@ public interface IRepresentationSearchService {
      * @author pcdavid
      */
     class NoOp implements IRepresentationSearchService {
+
+        @Override
+        public Optional<IRepresentation> findById(IEditingContext editingContext, String representationId) {
+            return Optional.empty();
+        }
 
         @Override
         public <T extends IRepresentation> Optional<T> findById(IEditingContext editingContext, String representationId, Class<T> representationClass) {

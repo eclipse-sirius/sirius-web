@@ -1,0 +1,10 @@
+extend type RepresentationMetadata {
+  impactAnalysisReport(toolId: ID!, targetObjectId: ID!, variables: [ToolVariable!]!): ImpactAnalysisReport!
+}
+
+type ImpactAnalysisReport {
+  nbElementDeleted: Int!
+  nbElementModified: Int!
+  nbElementCreated: Int!
+  additionalReports: [String!]!
+}

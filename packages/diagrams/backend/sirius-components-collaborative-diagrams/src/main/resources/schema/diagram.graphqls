@@ -300,6 +300,7 @@ type SingleClickOnDiagramElementTool implements Tool {
   appliesToDiagramRoot: Boolean!
   dialogDescriptionId: String
   targetDescriptions: [DiagramElementDescription!]!
+  withImpactAnalysis: Boolean!
 }
 
 type SingleClickOnTwoDiagramElementsTool implements Tool {

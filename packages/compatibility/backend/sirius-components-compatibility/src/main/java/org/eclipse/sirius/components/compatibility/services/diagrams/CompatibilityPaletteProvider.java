@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -79,6 +79,7 @@ public class CompatibilityPaletteProvider implements IPaletteProvider {
         this.odesignRegistry = Objects.requireNonNull(odesignRegistry);
         this.interpreterFactory = Objects.requireNonNull(interpreterFactory);
     }
+
     @Override
     public boolean canHandle(DiagramDescription diagramDescription) {
         return this.identifierProvider.findVsmElementId(diagramDescription.getId()).isPresent();
@@ -136,7 +137,7 @@ public class CompatibilityPaletteProvider implements IPaletteProvider {
         if (tool instanceof org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool singleClickOnDiagramElementTool) {
             convertedTool = new SingleClickOnDiagramElementTool(singleClickOnDiagramElementTool.getId(), singleClickOnDiagramElementTool.getLabel(),
                     singleClickOnDiagramElementTool.getIconURL(), singleClickOnDiagramElementTool.getTargetDescriptions(),
-                    singleClickOnDiagramElementTool.getDialogDescriptionId(), singleClickOnDiagramElementTool.isAppliesToDiagramRoot());
+                    singleClickOnDiagramElementTool.getDialogDescriptionId(), singleClickOnDiagramElementTool.isAppliesToDiagramRoot(), singleClickOnDiagramElementTool.isWithImpactAnalysis());
         }
         if (tool instanceof org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool singleClickOnTwoDiagramElementsTool) {
             List<SingleClickOnTwoDiagramElementsCandidate> candidates = new ArrayList<>();
@@ -302,26 +303,26 @@ public class CompatibilityPaletteProvider implements IPaletteProvider {
             } else {
                 targetDescriptions.addAll(edgeDescription.getSourceNodeDescriptions());
             }
-            unsynchronizedMapping = SynchronizationPolicy.UNSYNCHRONIZED.equals(((EdgeDescription) diagramElementDescription).getSynchronizationPolicy());
+            unsynchronizedMapping = SynchronizationPolicy.UNSYNCHRONIZED.equals(edgeDescription.getSynchronizationPolicy());
         }
 
         // Graphical Delete Tool for unsynchronized mapping only (the handler is never called)
         if (diagramElementDescription instanceof NodeDescription || diagramElementDescription instanceof EdgeDescription) {
             // Edit Tool (the handler is never called)
-            SingleClickOnDiagramElementTool editTool = new SingleClickOnDiagramElementTool("edit", "Edit", List.of(DiagramImageConstants.EDIT_SVG), targetDescriptions, null, false);
+            SingleClickOnDiagramElementTool editTool = new SingleClickOnDiagramElementTool("edit", "Edit", List.of(DiagramImageConstants.EDIT_SVG), targetDescriptions, null, false, false);
             var editToolSection = new ToolSection("edit-section", "", List.of(), List.of(editTool));
             extraToolSections.add(editToolSection);
 
             if (unsynchronizedMapping) {
                 SingleClickOnDiagramElementTool graphicalDeleteTool = new SingleClickOnDiagramElementTool("graphical-delete", "Delete from diagram",
-                        List.of(DiagramImageConstants.GRAPHICAL_DELETE_SVG), targetDescriptions, null, false);
+                        List.of(DiagramImageConstants.GRAPHICAL_DELETE_SVG), targetDescriptions, null, false, false);
                 var graphicalDeleteToolSection = new ToolSection("graphical-delete-section", "", List.of(), List.of(graphicalDeleteTool));
                 extraToolSections.add(graphicalDeleteToolSection);
             }
 
             // Semantic Delete Tool (the handler is never called)
             SingleClickOnDiagramElementTool semanticDeleteTool = new SingleClickOnDiagramElementTool("semantic-delete", "Delete from model",
-                    List.of(DiagramImageConstants.SEMANTIC_DELETE_SVG), targetDescriptions, null, false);
+                    List.of(DiagramImageConstants.SEMANTIC_DELETE_SVG), targetDescriptions, null, false, false);
             var graphicalDeleteToolSection = new ToolSection("semantic-delete-section", "", List.of(), List.of(semanticDeleteTool));
             extraToolSections.add(graphicalDeleteToolSection);
         }
