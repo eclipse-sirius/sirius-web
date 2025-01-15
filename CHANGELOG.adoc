@@ -110,7 +110,7 @@ The publication of a studio that references elements from imported libraries now
 image:doc/screenshots/duplicationDialog.png[DuplicationDialog, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/4383[#4383] [sirius-web] Add support for representation duplication from explorer
 - https://github.com/eclipse-sirius/sirius-web/issues/4700[#4700] [view-diagram] It is now possible to set an edge as the source or target of an edge in the view dsl, following work will allow the actual rendering on the back-end and front-end.
-- https://github.com/eclipse-sirius/sirius-web/issues/4493[#4493] [sirius-web] Add an user indicator when a representation is loading 
+- https://github.com/eclipse-sirius/sirius-web/issues/4493[#4493] [sirius-web] Add an user indicator when a representation is loading
 - https://github.com/eclipse-sirius/sirius-web/issues/2807[#2807] [diagram] Add another experimental version of the SVG export.
 + Made in two steps, first it does the svg export of `html-to-image`, then use the result to create our own version.
 + We made this choice to rapidly solve the different css transform that `html-to-image` does for us.
@@ -122,6 +122,7 @@ The action is visible on libraries that are first-level dependencies of the proj
 Update operations producing dependencies to different versions of the same library are handled by the `EditingContextDependencyLoader`, which loads one of the versions and do not load the other ones.
 The existing update implementation assumes that the identifiers of documents contained in libraries are stable across versions of the library.
 The implementation of the library update mechanism is generic and works on any project containing EMF resources.
+- https://github.com/eclipse-sirius/sirius-web/issues/4375[#4375] [diagram] Add support for a first version of impact analysis before tool execution.
 
 
 === Improvements

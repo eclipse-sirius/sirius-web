@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,8 @@ public record SingleClickOnDiagramElementTool(
         List<String> iconURL,
         List<IDiagramElementDescription> targetDescriptions,
         String dialogDescriptionId,
-        boolean appliesToDiagramRoot) implements ITool {
+        boolean appliesToDiagramRoot,
+        boolean withImpactAnalysis) implements ITool {
 
     public SingleClickOnDiagramElementTool {
         Objects.requireNonNull(id);
@@ -62,6 +63,8 @@ public record SingleClickOnDiagramElementTool(
 
         private boolean appliesToDiagramRoot;
 
+        private boolean withImpactAnalysis;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -91,8 +94,13 @@ public record SingleClickOnDiagramElementTool(
             return this;
         }
 
+        public Builder withImpactAnalysis(boolean withImpactAnalysis) {
+            this.withImpactAnalysis = withImpactAnalysis;
+            return this;
+        }
+
         public SingleClickOnDiagramElementTool build() {
-            return new SingleClickOnDiagramElementTool(this.id, this.label, this.iconURL, this.targetDescriptions, this.dialogDescriptionId, this.appliesToDiagramRoot);
+            return new SingleClickOnDiagramElementTool(this.id, this.label, this.iconURL, this.targetDescriptions, this.dialogDescriptionId, this.appliesToDiagramRoot, this.withImpactAnalysis);
         }
     }
 

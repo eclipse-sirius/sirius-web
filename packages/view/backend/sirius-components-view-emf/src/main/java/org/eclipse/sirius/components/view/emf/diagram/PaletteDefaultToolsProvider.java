@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * An helper to build default tools in the palette.
+ *
  * @author fbarbin
  */
 @Service
@@ -67,7 +68,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
             unsynchronizedMapping = SynchronizationPolicy.UNSYNCHRONIZED.equals(nodeDescription.getSynchronizationPolicy());
         } else if (diagramElementDescription instanceof EdgeDescription edgeDescription) {
             targetDescriptions.addAll(edgeDescription.getSourceNodeDescriptions());
-            unsynchronizedMapping = SynchronizationPolicy.UNSYNCHRONIZED.equals(((EdgeDescription) diagramElementDescription).getSynchronizationPolicy());
+            unsynchronizedMapping = SynchronizationPolicy.UNSYNCHRONIZED.equals(edgeDescription.getSynchronizationPolicy());
         }
 
         List<ITool> extraTools = new ArrayList<>();
@@ -103,6 +104,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                     .iconURL(List.of(DiagramImageConstants.COLLAPSE_SVG))
                     .targetDescriptions(targetDescriptions)
                     .appliesToDiagramRoot(false)
+                    .withImpactAnalysis(false)
                     .build();
 
             SingleClickOnDiagramElementTool expandTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("expand")
@@ -110,6 +112,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                     .iconURL(List.of(DiagramImageConstants.EXPAND_SVG))
                     .targetDescriptions(targetDescriptions)
                     .appliesToDiagramRoot(false)
+                    .withImpactAnalysis(false)
                     .build();
 
             collapsingTool = switch (node.getCollapsingState()) {
@@ -128,6 +131,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                 .iconURL(List.of(DiagramImageConstants.SEMANTIC_DELETE_SVG))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(false)
+                .withImpactAnalysis(false)
                 .build();
     }
 
@@ -137,6 +141,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                 .iconURL(List.of(DiagramImageConstants.GRAPHICAL_DELETE_SVG))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(false)
+                .withImpactAnalysis(false)
                 .build();
     }
 
@@ -168,6 +173,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                 .iconURL(List.of(DiagramImageConstants.EDIT_SVG))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(false)
+                .withImpactAnalysis(false)
                 .build();
 
     }
