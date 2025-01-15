@@ -27,7 +27,6 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.Entity;
-import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -102,13 +101,10 @@ public class DomainExplorerServices {
                 if (self instanceof Resource resource) {
                     result.addAll(resource.getContents());
                 } else if (self instanceof EObject) {
-                    var optionalEditingContextId = new UUIDParser().parse(editingContext.getId());
-                    if (optionalEditingContextId.isPresent()) {
-                        var projectId = optionalEditingContextId.get();
-                        var representationMetadata = new ArrayList<>(this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(projectId), id));
-                        representationMetadata.sort(Comparator.comparing(org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata::getLabel));
-                        result.addAll(representationMetadata);
-                    }
+                    var representationMetadata = new ArrayList<>(this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(editingContext.getId()), id));
+                    representationMetadata.sort(Comparator.comparing(org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata::getLabel));
+                    result.addAll(representationMetadata);
+
                     List<Object> contents = this.objectService.getContents(self);
                     if (self instanceof Entity entity) {
                         result.add(new SettingWrapper(((InternalEObject) entity).eSetting(entity.eClass().getEStructuralFeature("superTypes"))));

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,6 @@ import org.eclipse.sirius.components.task.starter.services.view.ViewGanttDescrip
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
-import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
@@ -49,8 +48,7 @@ public class TaskEditingContextInitializer implements IEditingContextProcessor {
 
     @Override
     public void preProcess(IEditingContext editingContext) {
-        var isTaskProject = new UUIDParser().parse(editingContext.getId())
-                .flatMap(this.projectSearchService::findById)
+        var isTaskProject = this.projectSearchService.findById(editingContext.getId())
                 .filter(project -> project.getNatures().stream()
                         .map(Nature::name)
                         .anyMatch(TaskProjectTemplateProvider.TASK_NATURE::equals))

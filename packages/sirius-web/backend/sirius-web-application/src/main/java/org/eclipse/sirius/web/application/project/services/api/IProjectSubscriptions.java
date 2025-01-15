@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,8 +13,6 @@
 package org.eclipse.sirius.web.application.project.services.api;
 
 import java.util.Optional;
-import java.util.UUID;
-
 import org.eclipse.sirius.components.core.api.IPayload;
 
 import reactor.core.publisher.Flux;
@@ -25,9 +23,9 @@ import reactor.core.publisher.Flux;
  * @author sbegaudeau
  */
 public interface IProjectSubscriptions {
-    Optional<Flux<IPayload>> findProjectSubscriptionById(UUID projectId);
+    Optional<Flux<IPayload>> findProjectSubscriptionById(String projectId);
 
-    void emit(UUID projectId, IPayload payload);
+    void emit(String projectId, IPayload payload);
 
-    void dispose(UUID projectId);
+    void dispose(String projectId);
 }

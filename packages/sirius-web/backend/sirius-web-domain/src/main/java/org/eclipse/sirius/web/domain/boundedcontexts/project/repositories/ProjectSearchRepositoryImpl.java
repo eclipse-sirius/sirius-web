@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.domain.boundedcontexts.project.repositories;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.api.IProjectSearchRepositoryDelegate;
@@ -27,7 +26,7 @@ import org.springframework.stereotype.Repository;
  * @author sbegaudeau
  */
 @Repository
-public class ProjectSearchRepositoryImpl implements ProjectSearchRepository<Project, UUID> {
+public class ProjectSearchRepositoryImpl implements ProjectSearchRepository<Project, String> {
 
     private final IProjectSearchRepositoryDelegate projectSearchRepositoryDelegate;
 
@@ -36,22 +35,22 @@ public class ProjectSearchRepositoryImpl implements ProjectSearchRepository<Proj
     }
 
     @Override
-    public boolean existsById(UUID projectId) {
+    public boolean existsById(String projectId) {
         return this.projectSearchRepositoryDelegate.existsById(projectId);
     }
 
     @Override
-    public Optional<Project> findById(UUID projectId) {
+    public Optional<Project> findById(String projectId) {
         return this.projectSearchRepositoryDelegate.findById(projectId);
     }
 
     @Override
-    public List<Project> findAllAfter(UUID cursorProjectId, int limit) {
+    public List<Project> findAllAfter(String cursorProjectId, int limit) {
         return this.projectSearchRepositoryDelegate.findAllAfter(cursorProjectId, limit);
     }
 
     @Override
-    public List<Project> findAllBefore(UUID cursorProjectId, int limit) {
+    public List<Project> findAllBefore(String cursorProjectId, int limit) {
         return this.projectSearchRepositoryDelegate.findAllBefore(cursorProjectId, limit);
     }
 }

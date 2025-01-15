@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -208,12 +208,10 @@ public class ExplorerServices implements IExplorerServices {
             hasChildren = !resource.getContents().isEmpty();
         } else if (self instanceof EObject eObject) {
             hasChildren = !eObject.eContents().isEmpty();
-            var optionalProjectId = Optional.ofNullable(editingContext).map(IEditingContext::getId).flatMap(new UUIDParser()::parse);
 
-            if (!hasChildren && optionalProjectId.isPresent()) {
-                var projectId = optionalProjectId.get();
+            if (!hasChildren) {
                 String id = this.objectService.getId(eObject);
-                hasChildren = this.representationMetadataSearchService.existAnyRepresentationForProjectAndTargetObjectId(AggregateReference.to(projectId), id);
+                hasChildren = this.representationMetadataSearchService.existAnyRepresentationForProjectAndTargetObjectId(AggregateReference.to(editingContext.getId()), id);
             }
         }
         return hasChildren;
@@ -228,13 +226,11 @@ public class ExplorerServices implements IExplorerServices {
                 if (self instanceof Resource resource) {
                     result.addAll(resource.getContents());
                 } else if (self instanceof EObject) {
-                    new UUIDParser().parse(editingContext.getId()).ifPresent(projectId -> {
-                        var representationMetadata = new ArrayList<>(this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(projectId), id));
-                        representationMetadata.sort(Comparator.comparing(RepresentationMetadata::getLabel));
-                        result.addAll(representationMetadata);
-                        List<Object> contents = this.objectService.getContents(self);
-                        result.addAll(contents);
-                    });
+                    var representationMetadata = new ArrayList<>(this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(editingContext.getId()), id));
+                    representationMetadata.sort(Comparator.comparing(RepresentationMetadata::getLabel));
+                    result.addAll(representationMetadata);
+                    List<Object> contents = this.objectService.getContents(self);
+                    result.addAll(contents);
                 }
             }
         }
@@ -244,7 +240,6 @@ public class ExplorerServices implements IExplorerServices {
     @Override
     public List<Resource> getDefaultElements(IEditingContext editingContext) {
         var optionalResourceSet = Optional.ofNullable(editingContext)
-                .filter(IEditingContext.class::isInstance)
                 .filter(IEMFEditingContext.class::isInstance)
                 .map(IEMFEditingContext.class::cast)
                 .map(IEMFEditingContext::getDomain)

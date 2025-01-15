@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -44,7 +44,7 @@ public class ProjectImage extends AbstractValidatingAggregateRoot<ProjectImage> 
     private UUID id;
 
     @Column("project_id")
-    private AggregateReference<Project, UUID> project;
+    private AggregateReference<Project, String> project;
 
     private String label;
 
@@ -111,7 +111,7 @@ public class ProjectImage extends AbstractValidatingAggregateRoot<ProjectImage> 
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
-        private AggregateReference<Project, UUID> project;
+        private AggregateReference<Project, String> project;
 
         private String label;
 
@@ -119,7 +119,7 @@ public class ProjectImage extends AbstractValidatingAggregateRoot<ProjectImage> 
 
         private byte[] content;
 
-        public Builder project(AggregateReference<Project, UUID> project) {
+        public Builder project(AggregateReference<Project, String> project) {
             this.project = Objects.requireNonNull(project);
             return this;
         }

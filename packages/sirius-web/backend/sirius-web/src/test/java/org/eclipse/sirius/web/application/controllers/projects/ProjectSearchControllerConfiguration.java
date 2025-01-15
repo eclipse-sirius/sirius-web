@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.application.controllers.projects;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.api.IProjectSearchRepositoryDelegate;
@@ -34,17 +33,17 @@ public class ProjectSearchControllerConfiguration {
     public IProjectSearchRepositoryDelegate testProjectSearchRepositoryDelegate(JdbcClient jdbcClient) {
         return new IProjectSearchRepositoryDelegate() {
             @Override
-            public boolean existsById(UUID projectId) {
+            public boolean existsById(String projectId) {
                 return false;
             }
 
             @Override
-            public Optional<Project> findById(UUID projectId) {
+            public Optional<Project> findById(String projectId) {
                 return Optional.empty();
             }
 
             @Override
-            public List<Project> findAllBefore(UUID cursorProjectId, int limit) {
+            public List<Project> findAllBefore(String cursorProjectId, int limit) {
                 var query = """
                         SELECT project.* FROM project
                         JOIN nature ON project.id = nature.project_id
@@ -56,7 +55,7 @@ public class ProjectSearchControllerConfiguration {
             }
 
             @Override
-            public List<Project> findAllAfter(UUID cursorProjectId, int limit) {
+            public List<Project> findAllAfter(String cursorProjectId, int limit) {
                 var query = """
                         SELECT project.* FROM project
                         JOIN nature ON project.id = nature.project_id

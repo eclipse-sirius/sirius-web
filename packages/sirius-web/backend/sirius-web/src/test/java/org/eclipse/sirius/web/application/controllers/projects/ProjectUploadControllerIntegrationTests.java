@@ -148,9 +148,9 @@ public class ProjectUploadControllerIntegrationTests extends AbstractIntegration
 
     private void checkImportedProject(String response) {
         String newProjectId = JsonPath.read(response, "$.data.uploadProject.project.id");
-        assertTrue(this.projectSearchService.existsById(UUID.fromString(newProjectId)));
+        assertTrue(this.projectSearchService.existsById(newProjectId));
 
-        var optionalProject = this.projectSearchService.findById(UUID.fromString(newProjectId));
+        var optionalProject = this.projectSearchService.findById(newProjectId);
         assertThat(optionalProject).isPresent();
         optionalProject.ifPresent(project -> assertThat(project.getName()).isEqualTo(ECORE_SAMPLE));
     }

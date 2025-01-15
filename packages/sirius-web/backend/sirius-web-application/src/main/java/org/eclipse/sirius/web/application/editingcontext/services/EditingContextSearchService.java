@@ -24,7 +24,6 @@ import java.util.stream.StreamSupport;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
-import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextLoader;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingDomainFactory;
@@ -68,16 +67,13 @@ public class EditingContextSearchService implements IEditingContextSearchService
     @Override
     @Transactional(readOnly = true)
     public boolean existsById(String editingContextId) {
-        return new UUIDParser().parse(editingContextId)
-                .map(this.projectSearchService::existsById)
-                .orElse(false);
+        return this.projectSearchService.existsById(editingContextId);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<IEditingContext> findById(String editingContextId) {
-        return new UUIDParser().parse(editingContextId)
-                .flatMap(this.projectSearchService::findById)
+        return this.projectSearchService.findById(editingContextId)
                 .map(this::toEditingContext);
     }
 

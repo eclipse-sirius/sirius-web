@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.domain.boundedcontexts.project.services.api;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.Window;
@@ -26,9 +25,9 @@ import org.springframework.data.domain.KeysetScrollPosition;
  */
 public interface IProjectSearchService {
 
-    boolean existsById(UUID projectId);
+    boolean existsById(String projectId);
 
-    Optional<Project> findById(UUID projectId);
+    Optional<Project> findById(String projectId);
 
     Window<Project> findAll(KeysetScrollPosition position, int limit);
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -72,7 +72,7 @@ public class ProjectImageApplicationService implements IProjectImageApplicationS
 
     @Override
     @Transactional(readOnly = true)
-    public Page<ImageMetadata> findAll(UUID projectId, Pageable pageable) {
+    public Page<ImageMetadata> findAll(String projectId, Pageable pageable) {
         return this.projectImageSearchService.findAll(projectId, pageable).map(this.projectImageMapper::toDTO);
     }
 

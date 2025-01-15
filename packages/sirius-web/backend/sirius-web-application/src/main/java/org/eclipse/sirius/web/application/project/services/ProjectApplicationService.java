@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.application.project.services;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -66,7 +65,7 @@ public class ProjectApplicationService implements IProjectApplicationService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<ProjectDTO> findById(UUID projectId) {
+    public Optional<ProjectDTO> findById(String projectId) {
         return this.projectSearchService.findById(projectId).map(this.projectMapper::toDTO);
     }
 

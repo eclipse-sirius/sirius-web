@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,10 +13,8 @@
 package org.eclipse.sirius.web.application.representation.services;
 
 import java.util.Comparator;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.representation.dto.RepresentationMetadataDTO;
@@ -52,10 +50,8 @@ public class RepresentationApplicationService implements IRepresentationApplicat
     @Override
     @Transactional(readOnly = true)
     public Page<RepresentationMetadataDTO> findAllByEditingContextId(String editingContextId, Pageable pageable) {
-        var representationMetadata =  new UUIDParser().parse(editingContextId)
-                .map(AggregateReference::<Project, UUID>to)
-                .map(this.representationMetadataSearchService::findAllMetadataByProject)
-                .orElse(List.of())
+        AggregateReference<Project, String> projectId = AggregateReference.to(editingContextId);
+        var representationMetadata =  this.representationMetadataSearchService.findAllMetadataByProject(projectId)
                 .stream()
                 .sorted(Comparator.comparing(RepresentationMetadata::getLabel))
                 .toList();
@@ -73,8 +69,7 @@ public class RepresentationApplicationService implements IRepresentationApplicat
     public Optional<String> findEditingContextIdFromRepresentationId(String representationId) {
         return new UUIDParser().parse(representationId)
                 .flatMap(this.representationMetadataSearchService::findProjectByRepresentationId)
-                .map(AggregateReference::getId)
-                .map(UUID::toString);
+                .map(AggregateReference::getId);
     }
 
     @Override

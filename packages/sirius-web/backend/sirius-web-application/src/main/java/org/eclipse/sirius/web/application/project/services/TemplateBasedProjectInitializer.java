@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.application.project.services;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
@@ -65,9 +64,9 @@ public class TemplateBasedProjectInitializer implements ITemplateBasedProjectIni
 
     @Override
     @Transactional
-    public IPayload initializeProjectFromTemplate(CreateProjectFromTemplateInput input, UUID projectId, String templateId) {
+    public IPayload initializeProjectFromTemplate(CreateProjectFromTemplateInput input, String projectId, String templateId) {
         var optionalProject = this.projectSearchService.findById(projectId);
-        var optionalEditingContext = this.editingContextSearchService.findById(projectId.toString());
+        var optionalEditingContext = this.editingContextSearchService.findById(projectId);
         var optionalProjectTemplateInitializer = this.projectTemplateInitializers.stream()
                 .filter(initializer -> initializer.canHandle(input.templateId()))
                 .findFirst();

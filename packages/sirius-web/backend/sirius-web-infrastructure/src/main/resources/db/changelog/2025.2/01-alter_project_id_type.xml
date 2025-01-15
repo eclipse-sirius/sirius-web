@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2025 Obeo.
+  ~ This program and the accompanying materials
+  ~ are made available under the terms of the Eclipse Public License v2.0
+  ~ which accompanies this distribution, and is available at
+  ~ https://www.eclipse.org/legal/epl-2.0/
+  ~
+  ~ SPDX-License-Identifier: EPL-2.0
+  ~
+  ~ Contributors:
+  ~     Obeo - initial API and implementation
+  -->
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="01-alter_project_id_type" author="mcharfadi">
+        <sql>
+            ALTER TABLE nature
+            drop constraint fk_nature_project_id;
+
+            ALTER TABLE representation_metadata
+            drop constraint fk_representation_data_project_id;
+
+            ALTER TABLE semantic_data
+            drop constraint fk_semantic_data_project_id;
+
+            ALTER TABLE project_image
+            drop constraint fk_project_image_project_id;
+
+            ALTER TABLE project
+            ALTER COLUMN id TYPE text;
+
+            ALTER TABLE project_image
+            ALTER COLUMN project_id TYPE text;
+
+            ALTER TABLE nature
+            ALTER COLUMN project_id TYPE text;
+
+            ALTER TABLE semantic_data
+            ALTER COLUMN project_id TYPE text;
+
+            ALTER TABLE representation_metadata
+            ALTER COLUMN project_id TYPE text;
+
+            alter table nature
+            ADD constraint fk_nature_project_id
+            foreign key (project_id) references project (id)
+            ON DELETE CASCADE;
+
+            alter table representation_metadata
+            ADD constraint fk_representation_data_project_id
+            foreign key (project_id) references project (id)
+            ON DELETE CASCADE;
+
+            alter table semantic_data
+            ADD constraint fk_semantic_data_project_id
+            foreign key (project_id) references project (id)
+            ON DELETE CASCADE;
+
+            alter table project_image
+            ADD constraint fk_project_image_project_id
+            foreign key (project_id) references project (id)
+            ON DELETE CASCADE;
+        </sql>
+    </changeSet>
+
+
+</databaseChangeLog>

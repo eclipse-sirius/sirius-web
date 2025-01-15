@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.document.dto.Stereotype;
 import org.eclipse.sirius.web.application.document.services.api.IStereotypeProvider;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
@@ -43,8 +42,7 @@ public class FlowStereotypeProvider implements IStereotypeProvider {
 
     @Override
     public List<Stereotype> getStereotypes(IEditingContext editingContext) {
-        var isFlowProject = new UUIDParser().parse(editingContext.getId())
-                .flatMap(this.projectSearchService::findById)
+        var isFlowProject = this.projectSearchService.findById(editingContext.getId())
                 .filter(project -> project.getNatures().stream()
                         .map(Nature::name)
                         .anyMatch(FlowProjectTemplatesProvider.FLOW_NATURE::equals))

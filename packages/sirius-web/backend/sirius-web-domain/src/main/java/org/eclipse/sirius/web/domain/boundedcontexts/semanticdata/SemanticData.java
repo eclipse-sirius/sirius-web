@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -49,7 +49,7 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
     private UUID id;
 
     @Column("project_id")
-    private AggregateReference<Project, UUID> project;
+    private AggregateReference<Project, String> project;
 
     @MappedCollection(idColumn = "semantic_data_id")
     private Set<Document> documents = new LinkedHashSet<>();
@@ -66,7 +66,7 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
         return this.id;
     }
 
-    public AggregateReference<Project, UUID> getProject() {
+    public AggregateReference<Project, String> getProject() {
         return this.project;
     }
 
@@ -159,13 +159,13 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private AggregateReference<Project, UUID> project;
+        private AggregateReference<Project, String> project;
 
         private Set<Document> documents = new LinkedHashSet<>();
 
         private Set<SemanticDataDomain> domains = new LinkedHashSet<>();
 
-        public Builder project(AggregateReference<Project, UUID> project) {
+        public Builder project(AggregateReference<Project, String> project) {
             this.project = Objects.requireNonNull(project);
             return this;
         }

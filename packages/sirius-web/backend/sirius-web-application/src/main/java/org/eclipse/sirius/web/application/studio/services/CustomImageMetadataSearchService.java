@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,6 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.view.emf.api.CustomImageMetadata;
 import org.eclipse.sirius.components.view.emf.api.ICustomImageMetadataSearchService;
-import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.image.services.api.IImageSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services.api.IProjectImageSearchService;
 import org.springframework.stereotype.Service;
@@ -46,9 +45,8 @@ public class CustomImageMetadataSearchService implements ICustomImageMetadataSea
                 .map(image -> new CustomImageMetadata(image.getId(), image.getLabel(), image.getContentType()))
                 .toList();
 
-        var projectCustomImageMetadata = new UUIDParser().parse(editingContextId)
-                .map(this.projectImageSearchService::findAll)
-                .orElse(List.of())
+        var projectCustomImageMetadata =
+                this.projectImageSearchService.findAll(editingContextId)
                 .stream()
                 .map(image -> new CustomImageMetadata(image.getId(), image.getLabel(), image.getContentType()))
                 .toList();

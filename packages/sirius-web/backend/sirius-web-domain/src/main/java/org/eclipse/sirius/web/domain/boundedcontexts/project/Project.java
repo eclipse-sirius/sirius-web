@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,13 +40,13 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author sbegaudeau
  */
 @Table("project")
-public class Project extends AbstractValidatingAggregateRoot<Project> implements Persistable<UUID> {
+public class Project extends AbstractValidatingAggregateRoot<Project> implements Persistable<String> {
 
     @Transient
     private boolean isNew;
 
     @Id
-    private UUID id;
+    private String id;
 
     private String name;
 
@@ -58,7 +58,7 @@ public class Project extends AbstractValidatingAggregateRoot<Project> implements
     private Instant lastModifiedOn;
 
     @Override
-    public UUID getId() {
+    public String getId() {
         return this.id;
     }
 
@@ -152,7 +152,7 @@ public class Project extends AbstractValidatingAggregateRoot<Project> implements
         public Project build(ICause cause) {
             var project = new Project();
             project.isNew = true;
-            project.id = UUID.randomUUID();
+            project.id = UUID.randomUUID().toString();
             project.name = Objects.requireNonNull(this.name);
             project.natures = Objects.requireNonNull(this.natures);
 

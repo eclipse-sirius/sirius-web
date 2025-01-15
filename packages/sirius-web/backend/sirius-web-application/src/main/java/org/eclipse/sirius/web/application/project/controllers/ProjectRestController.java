@@ -98,8 +98,8 @@ public class ProjectRestController {
         int limit = pageSize.orElse(DEFAULT_PAGE_SIZE);
         var window = this.projectApplicationService.findAll(position, limit);
         var restProjects = window
-            .map(project -> new RestProject(project.id(), DEFAULT_CREATED, new Identified(project.id()), null, project.name()))
-            .toList();
+                .map(project -> new RestProject(project.id(), DEFAULT_CREATED, new Identified(project.id()), null, project.name()))
+                .toList();
         var headers = this.handleLinkResponseHeader(restProjects, position, window.hasNext(), limit);
         return new ResponseEntity<>(restProjects, headers, HttpStatus.OK);
     }
@@ -112,15 +112,13 @@ public class ProjectRestController {
         @ApiResponse(responseCode = "404", description = "Not Found", content = { @Content() })
     })
     @GetMapping(path = "/{projectId}")
-    public ResponseEntity<RestProject> getProjectById(@PathVariable UUID projectId) {
+    public ResponseEntity<RestProject> getProjectById(@PathVariable String projectId) {
         var restProject = this.projectApplicationService.findById(projectId)
-            .map(project -> new RestProject(project.id(), DEFAULT_CREATED, new Identified(project.id()), null, project.name()));
+                .map(project -> new RestProject(project.id(), DEFAULT_CREATED, new Identified(project.id()), null, project.name()));
 
-        if (restProject.isPresent()) {
-            return new ResponseEntity<>(restProject.get(), HttpStatus.OK);
-        }
+        return restProject.map(project -> new ResponseEntity<>(project, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
 
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
     @Operation(description = "Create a new project with the given name and description (optional).")
@@ -151,7 +149,7 @@ public class ProjectRestController {
         @ApiResponse(responseCode = "404", description = "Not Found", content = { @Content() })
     })
     @PutMapping(path = "/{projectId}")
-    public ResponseEntity<RestProject> updateProject(@PathVariable UUID projectId, @RequestParam Optional<String> name, @RequestParam Optional<String> description, @RequestParam Optional<RestBranch> branch) {
+    public ResponseEntity<RestProject> updateProject(@PathVariable String projectId, @RequestParam Optional<String> name, @RequestParam Optional<String> description, @RequestParam Optional<RestBranch> branch) {
         if (name.isPresent()) {
             var renameProjectInput = new RenameProjectInput(UUID.randomUUID(), projectId, name.get());
             var renamedProjectPayload = this.projectApplicationService.renameProject(renameProjectInput);
@@ -172,7 +170,7 @@ public class ProjectRestController {
         @ApiResponse(responseCode = "204", description = "No content", content = { @Content() })
     })
     @DeleteMapping(path = "/{projectId}")
-    public ResponseEntity<RestProject> deleteProject(@PathVariable UUID projectId) {
+    public ResponseEntity<RestProject> deleteProject(@PathVariable String projectId) {
         var restProject = this.projectApplicationService.findById(projectId)
                 .map(project -> new RestProject(project.id(), DEFAULT_CREATED, new Identified(project.id()), null, project.name()))
                 .orElse(null);
@@ -203,7 +201,7 @@ public class ProjectRestController {
     private String createHeaderLink(List<RestProject> projects, int limit, String beforeOrAfterPage, String relationType) {
         var header = new StringBuilder();
         var lastProject = projects.get(Math.min(projects.size() - 1, limit - 1));
-        var cursorId = new Relay().toGlobalId("Project", lastProject.id().toString());
+        var cursorId = new Relay().toGlobalId("Project", lastProject.id());
         UriComponents uriComponents = ServletUriComponentsBuilder.fromCurrentRequestUri()
                 .queryParam("page[" + beforeOrAfterPage + "]", cursorId)
                 .queryParam("page[size]", limit)

@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.domain.boundedcontexts.project.repositories;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.annotations.RepositoryFragment;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
@@ -33,7 +32,7 @@ public interface ProjectSearchRepository<T, ID> {
 
     Optional<T> findById(ID id);
 
-    List<Project> findAllBefore(UUID cursorProjectId, int limit);
+    List<Project> findAllBefore(String cursorProjectId, int limit);
 
-    List<Project> findAllAfter(UUID cursorProjectId, int limit);
+    List<Project> findAllAfter(String cursorProjectId, int limit);
 }

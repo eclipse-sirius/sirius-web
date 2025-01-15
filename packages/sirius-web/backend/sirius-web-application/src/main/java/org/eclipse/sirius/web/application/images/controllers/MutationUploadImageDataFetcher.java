@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -65,8 +65,7 @@ public class MutationUploadImageDataFetcher implements IDataFetcherWithFieldCoor
                 .flatMap(new UUIDParser()::parse);
 
         var optionalProjectId = Optional.ofNullable(inputArgument.get(PROJECT_ID))
-                .map(Object::toString)
-                .flatMap(new UUIDParser()::parse);
+                .map(Object::toString);
 
         var optionalLabel = Optional.ofNullable(inputArgument.get(LABEL))
                 .filter(String.class::isInstance)

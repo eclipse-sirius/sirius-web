@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,7 +34,6 @@ import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
-import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
@@ -56,8 +55,7 @@ public class FlowEditingContextInitializer implements IEditingContextProcessor {
 
     @Override
     public void preProcess(IEditingContext editingContext) {
-        var isFlowProject = new UUIDParser().parse(editingContext.getId())
-                .flatMap(this.projectSearchService::findById)
+        var isFlowProject = this.projectSearchService.findById(editingContext.getId())
                 .filter(project -> project.getNatures().stream()
                         .map(Nature::name)
                         .anyMatch(FlowProjectTemplatesProvider.FLOW_NATURE::equals))

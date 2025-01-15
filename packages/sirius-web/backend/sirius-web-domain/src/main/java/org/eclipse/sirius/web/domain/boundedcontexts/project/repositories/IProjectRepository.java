@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.project.repositories;
 
-import java.util.UUID;
-
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.stereotype.Repository;
@@ -25,5 +23,5 @@ import org.springframework.stereotype.Repository;
  * @author sbegaudeau
  */
 @Repository
-public interface IProjectRepository extends ListCrudRepository<Project, UUID>, ProjectSearchRepository<Project, UUID> {
+public interface IProjectRepository extends ListCrudRepository<Project, String>, ProjectSearchRepository<Project, String> {
 }

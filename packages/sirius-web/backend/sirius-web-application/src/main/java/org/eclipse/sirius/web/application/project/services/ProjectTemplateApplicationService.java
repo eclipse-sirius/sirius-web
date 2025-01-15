@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -94,7 +94,8 @@ public class ProjectTemplateApplicationService implements IProjectTemplateApplic
 
             var projectCreationPayload = this.projectApplicationService.createProject(new CreateProjectInput(input.id(), projectTemplate.label(), natures));
             if (projectCreationPayload instanceof CreateProjectSuccessPayload createProjectSuccessPayload) {
-                payload = this.templateBasedProjectInitializer.initializeProjectFromTemplate(input, createProjectSuccessPayload.project().id(), input.templateId());
+                var projectId = createProjectSuccessPayload.project().id();
+                payload = this.templateBasedProjectInitializer.initializeProjectFromTemplate(input, projectId, input.templateId());
             } else {
                 payload = projectCreationPayload;
             }

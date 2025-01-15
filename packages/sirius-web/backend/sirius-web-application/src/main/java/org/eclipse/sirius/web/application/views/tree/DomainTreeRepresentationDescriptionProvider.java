@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -192,11 +192,11 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
         boolean hasChildren = false;
         if (self instanceof EObject eObject) {
             hasChildren = !eObject.eContents().isEmpty();
-            var optionalProjectId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).flatMap(new UUIDParser()::parse);
+            var optionalProjectId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId);
 
             if (!hasChildren && optionalProjectId.isPresent()) {
-                var projectId = optionalProjectId.get();
                 String id = this.objectService.getId(eObject);
+                var projectId = optionalProjectId.get();
                 hasChildren = this.representationMetadataSearchService.existAnyRepresentationForProjectAndTargetObjectId(AggregateReference.to(projectId), id);
             }
 
@@ -235,7 +235,7 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
         String id = this.getTreeItemId(variableManager);
         if (expandedIds.contains(id)) {
             if (self instanceof EObject) {
-                var optionalProjectId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).flatMap(new UUIDParser()::parse);
+                var optionalProjectId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId);
                 if (optionalProjectId.isPresent()) {
                     var projectId = optionalProjectId.get();
                     var representationMetadata = new ArrayList<>(this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(projectId), id));

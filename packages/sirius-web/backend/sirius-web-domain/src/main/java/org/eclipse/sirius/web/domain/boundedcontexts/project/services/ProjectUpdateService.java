@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.domain.boundedcontexts.project.services;
 
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.IProjectRepository;
@@ -46,7 +45,7 @@ public class ProjectUpdateService implements IProjectUpdateService {
     }
 
     @Override
-    public IResult<Void> renameProject(ICause cause, UUID projectId, String newName) {
+    public IResult<Void> renameProject(ICause cause, String projectId, String newName) {
         IResult<Void> result = null;
 
         var optionalProject = this.projectRepository.findById(projectId);
@@ -67,7 +66,7 @@ public class ProjectUpdateService implements IProjectUpdateService {
     }
 
     @Override
-    public IResult<Void> addNature(ICause cause, UUID projectId, String natureName) {
+    public IResult<Void> addNature(ICause cause, String projectId, String natureName) {
         IResult<Void> result = null;
 
         var optionalProject = this.projectRepository.findById(projectId);
@@ -85,7 +84,7 @@ public class ProjectUpdateService implements IProjectUpdateService {
     }
 
     @Override
-    public IResult<Void> removeNature(ICause cause, UUID projectId, String natureName) {
+    public IResult<Void> removeNature(ICause cause, String projectId, String natureName) {
         IResult<Void> result = null;
 
         var optionalProject = this.projectRepository.findById(projectId);

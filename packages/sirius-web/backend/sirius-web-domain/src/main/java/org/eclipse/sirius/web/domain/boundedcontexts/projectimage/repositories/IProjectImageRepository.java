@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,19 +34,19 @@ public interface IProjectImageRepository extends ListPagingAndSortingRepository<
         FROM project_image projectImage
         WHERE projectImage.project_id = :projectId
         """)
-    List<ProjectImage> findAllByProjectId(UUID projectId);
+    List<ProjectImage> findAllByProjectId(String projectId);
 
     @Query("""
         SELECT *
         FROM project_image projectImage
         WHERE projectImage.project_id = :projectId
         """)
-    List<ProjectImage> findAllByProjectId(UUID projectId, Pageable pageable);
+    List<ProjectImage> findAllByProjectId(String projectId, Pageable pageable);
 
     @Query("""
         SELECT count(*)
         FROM project_image projectImage
         WHERE projectImage.project_id = :projectId
         """)
-    long countByProjectId(UUID projectId);
+    long countByProjectId(String projectId);
 }

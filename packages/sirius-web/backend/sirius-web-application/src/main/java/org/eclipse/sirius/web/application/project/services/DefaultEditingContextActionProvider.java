@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,6 @@ import java.util.Set;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextActionProvider;
 import org.eclipse.sirius.components.collaborative.dto.EditingContextAction;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
 import org.springframework.stereotype.Service;
@@ -42,8 +41,7 @@ public class DefaultEditingContextActionProvider implements IEditingContextActio
 
     @Override
     public List<EditingContextAction> getEditingContextAction(IEditingContext editingContext) {
-        var isWithoutNature = new UUIDParser().parse(editingContext.getId())
-                .flatMap(this.projectSearchService::findById)
+        var isWithoutNature = this.projectSearchService.findById(editingContext.getId())
                 .map(Project::getNatures)
                 .orElseGet(Set::of)
                 .isEmpty();

@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.application.editingcontext.services;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
@@ -60,7 +59,7 @@ public class EditingContextLoader implements IEditingContextLoader {
         this.migrationParticipantPredicates = Objects.requireNonNull(migrationParticipantPredicates);
     }
 
-    public void load(EditingContext editingContext, UUID projectId) {
+    public void load(EditingContext editingContext, String projectId) {
         this.editingContextProcessors.forEach(processor -> processor.preProcess(editingContext));
 
         this.semanticDataSearchService.findByProject(AggregateReference.to(projectId))

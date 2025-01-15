@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,11 +33,11 @@ public interface IRepresentationMetadataSearchService {
 
     boolean existsByIdAndKind(UUID id, List<String> kinds);
 
-    List<RepresentationMetadata> findAllMetadataByProject(AggregateReference<Project, UUID> project);
+    List<RepresentationMetadata> findAllMetadataByProject(AggregateReference<Project, String> project);
 
-    List<RepresentationMetadata> findAllMetadataByProjectAndTargetObjectId(AggregateReference<Project, UUID> project, String targetObjectId);
+    List<RepresentationMetadata> findAllMetadataByProjectAndTargetObjectId(AggregateReference<Project, String> project, String targetObjectId);
 
-    boolean existAnyRepresentationForProjectAndTargetObjectId(AggregateReference<Project, UUID> project, String targetObjectId);
+    boolean existAnyRepresentationForProjectAndTargetObjectId(AggregateReference<Project, String> project, String targetObjectId);
 
-    Optional<AggregateReference<Project, UUID>> findProjectByRepresentationId(UUID representationId);
+    Optional<AggregateReference<Project, String>> findProjectByRepresentationId(UUID representationId);
 }

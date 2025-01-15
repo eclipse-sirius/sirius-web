@@ -73,8 +73,8 @@ public class CommitRestController {
         @ApiResponse(responseCode = "404", description = "Not Found", content = { @Content() })
     })
     @GetMapping
-    public ResponseEntity<List<RestCommit>> getCommits(@PathVariable UUID projectId) {
-        var payload = this.editingContextDispatcher.dispatchQuery(projectId.toString(), new GetCommitsRestInput(UUID.randomUUID())).block(Duration.ofSeconds(TIMEOUT));
+    public ResponseEntity<List<RestCommit>> getCommits(@PathVariable String projectId) {
+        var payload = this.editingContextDispatcher.dispatchQuery(projectId, new GetCommitsRestInput(UUID.randomUUID())).block(Duration.ofSeconds(TIMEOUT));
         if (payload instanceof GetCommitsRestSuccessPayload successPayload) {
             return new ResponseEntity<>(successPayload.commits(), HttpStatus.OK);
         }
@@ -119,8 +119,8 @@ public class CommitRestController {
         })
     })
     @PostMapping
-    public ResponseEntity<RestCommit> createCommit(@PathVariable UUID projectId, @RequestParam Optional<UUID> branchId) {
-        var payload = this.editingContextDispatcher.dispatchMutation(projectId.toString(), new CreateCommitRestInput(UUID.randomUUID(), branchId)).block(Duration.ofSeconds(TIMEOUT));
+    public ResponseEntity<RestCommit> createCommit(@PathVariable String projectId, @RequestParam Optional<UUID> branchId) {
+        var payload = this.editingContextDispatcher.dispatchMutation(projectId, new CreateCommitRestInput(UUID.randomUUID(), branchId)).block(Duration.ofSeconds(TIMEOUT));
         if (payload instanceof CreateCommitRestSuccessPayload successPayload) {
             return new ResponseEntity<>(successPayload.commit(), HttpStatus.CREATED);
         }
@@ -136,8 +136,8 @@ public class CommitRestController {
         @ApiResponse(responseCode = "404", description = "Not Found", content = { @Content() })
     })
     @GetMapping(path = "/{commitId}")
-    public ResponseEntity<RestCommit> getCommitById(@PathVariable UUID projectId, @PathVariable UUID commitId) {
-        var payload = this.editingContextDispatcher.dispatchQuery(projectId.toString(), new GetCommitByIdRestInput(UUID.randomUUID(), commitId)).block(Duration.ofSeconds(TIMEOUT));
+    public ResponseEntity<RestCommit> getCommitById(@PathVariable String projectId, @PathVariable UUID commitId) {
+        var payload = this.editingContextDispatcher.dispatchQuery(projectId, new GetCommitByIdRestInput(UUID.randomUUID(), commitId)).block(Duration.ofSeconds(TIMEOUT));
         if (payload instanceof GetCommitByIdRestSuccessPayload successPayload) {
             return new ResponseEntity<>(successPayload.commit(), HttpStatus.OK);
         }
@@ -152,8 +152,8 @@ public class CommitRestController {
         @ApiResponse(responseCode = "404", description = "Not Found", content = { @Content() })
     })
     @GetMapping(path = "/{commitId}/changes")
-    public ResponseEntity<List<RestDataVersion>> getCommitChange(@PathVariable UUID projectId, @PathVariable UUID commitId, @RequestParam Optional<List<ChangeType>> changeTypes) {
-        var payload = this.editingContextDispatcher.dispatchQuery(projectId.toString(), new GetCommitChangeRestInput(UUID.randomUUID(), commitId)).block(Duration.ofSeconds(TIMEOUT));
+    public ResponseEntity<List<RestDataVersion>> getCommitChange(@PathVariable String projectId, @PathVariable UUID commitId, @RequestParam Optional<List<ChangeType>> changeTypes) {
+        var payload = this.editingContextDispatcher.dispatchQuery(projectId, new GetCommitChangeRestInput(UUID.randomUUID(), commitId)).block(Duration.ofSeconds(TIMEOUT));
         if (payload instanceof GetCommitChangeRestSuccessPayload successPayload) {
             return new ResponseEntity<>(successPayload.commitChanges(), HttpStatus.OK);
         }
@@ -168,8 +168,8 @@ public class CommitRestController {
         @ApiResponse(responseCode = "404", description = "Not Found", content = { @Content() })
     })
     @GetMapping(path = "/{commitId}/changes/{changeId}")
-    public ResponseEntity<RestDataVersion> getCommitChangeById(@PathVariable UUID projectId, @PathVariable UUID commitId, @PathVariable UUID changeId) {
-        var payload = this.editingContextDispatcher.dispatchQuery(projectId.toString(), new GetCommitChangeByIdRestInput(UUID.randomUUID(), commitId, changeId)).block(Duration.ofSeconds(TIMEOUT));
+    public ResponseEntity<RestDataVersion> getCommitChangeById(@PathVariable String projectId, @PathVariable UUID commitId, @PathVariable UUID changeId) {
+        var payload = this.editingContextDispatcher.dispatchQuery(projectId, new GetCommitChangeByIdRestInput(UUID.randomUUID(), commitId, changeId)).block(Duration.ofSeconds(TIMEOUT));
         if (payload instanceof GetCommitChangeByIdRestSuccessPayload successPayload) {
             return new ResponseEntity<>(successPayload.commitChange(), HttpStatus.OK);
         }
