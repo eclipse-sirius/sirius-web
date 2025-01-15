@@ -1,0 +1,88 @@
+= (M) Add the current selection to the URL of the project workbench
+
+== Problem
+
+Currently, Sirius Web has one URL for the project workbench using `/projects/:projectId/edit/:representationId?/*`.
+It can be used to access directly the workbench of a project with the identifier `projectId` and optionally specify a representation to display in the representation area.
+As such, the following URLs are supported to open the project workbench `https://example.org/projects/project-id/edit` and `https://example.org/projects/project-id/edit/representation-id`.
+The parameters of this URL (`projectId` and `representationId`) are always synchronized with the state of the project workbench.
+
+The current URL cannot capture the state of the selection of the workbench.
+As a result, it is not possible to share an URL with the full selection but only to one specific selected representation.
+
+
+== Key Result
+
+The URL should be synchronized with the full selection of the workbench and not with only its first selected representation.
+
+
+=== Acceptance Criteria
+
+- The URL is synchronized with the full selection
+- When resolving a URL that specifies a selection, the specified project elements automatically get selected in the workbench
+
+
+== Solution
+
+- The current URL will change based on the selection made in the workbench.
+- The identifiers of the selected project elements will be stored in the URL in parameter _selection_.
+- The order of the project element identifiers in the URL reflects the order of the project elements in the selection.
+- Upon resolving a URL with parameter _selection_, the workbench selection is set to the specified project elements.
+
+There are two main possible strategies to create such URL:
+
+- `https://example.org/projects/{projectId}/edit?selection=a&selection=b&selection=c`
+  - the default behavior in HTML to encode multiple values in the URL, you need to mention it
+- `https://example.org/projects/{projectId}/edit?selection=1%2C2%2C3%2C4`
+  - with `%2C` being the encoded version of `,` (the alternate way supported by Spring MVC for example)
+
+We will adopt the second strategy since it is more compact.
+
+
+=== Scenario 1 : Synchronizing the URL with the full workbench selection
+
+- The end user is in a project.
+- If no representation is opened, the URL looks like `https://example.org/projects/project-id/edit`.
+- If a representation is opened, the URL looks like `https://example.org/projects/project-id/edit/representation-id`.
+
+The following behavior is the same in both cases.
+
+- The end user selects project elements.
+- Upon selecting an element in the workbench, its corresponding project element identifier is retrieved, e.g. `id_1`.
+- The URL gets updated automatically in order to reflect the selection change, into either: 
+-- `https://example.org/projects/project-id/edit?selection=id_1`
+-- `https://example.org/projects/project-id/edit/representation-id?selection=id_1`
+- Upon selecting multiple elements in the workbench, the corresponding project element identifiers are retrieved and used as the _selection_ parameter, which means the URL is updated to either:
+-- `https://example.org/projects/project-id/edit?selection=id_1%2Cid_2`
+-- `https://example.org/projects/project-id/edit/representation-id?selection=id_1%2Cid_2`
+
+
+=== Scenario 2 : Resolution of a URL containing the selection parameter
+
+- The URL path is resolved as usual by React Router
+- If a representation id is provided, it is used as the id of the representation to open by default
+- The identifiers specified in the _selection_ parameter of the URL query are retrieved.
+Based on these identifiers, we are able to retrieve the project elements that are meant to be selected.
+- The workbench selection is set to those elements.
+- The selection is revealed in the workbench.
+
+
+=== Breadboarding
+
+N/A
+
+
+=== Cutting backs
+
+N/A
+
+
+== Rabbit holes
+
+- Project element identifiers are rather long so our URLs might end up being very long.
+We will need to make sure that we do not create invalid URLs this way.
+
+
+== No-gos
+
+N/A
