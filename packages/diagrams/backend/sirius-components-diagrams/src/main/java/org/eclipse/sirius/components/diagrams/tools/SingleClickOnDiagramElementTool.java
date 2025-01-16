@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,6 +47,8 @@ public final class SingleClickOnDiagramElementTool implements ITool {
 
     private String dialogDescriptionId;
 
+    private boolean withImpactAnalysis;
+
     private SingleClickOnDiagramElementTool() {
         // Prevent instantiation
     }
@@ -61,6 +63,10 @@ public final class SingleClickOnDiagramElementTool implements ITool {
 
     public boolean isAppliesToDiagramRoot() {
         return this.appliesToDiagramRoot;
+    }
+
+    public boolean isWithImpactAnalysis() {
+        return this.withImpactAnalysis;
     }
 
     @Override
@@ -115,6 +121,8 @@ public final class SingleClickOnDiagramElementTool implements ITool {
 
         private String dialogDescriptionId;
 
+        private boolean withImpactAnalysis;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -149,6 +157,11 @@ public final class SingleClickOnDiagramElementTool implements ITool {
             return this;
         }
 
+        public Builder withImpactAnalysis(boolean withImpactAnalysis) {
+            this.withImpactAnalysis = withImpactAnalysis;
+            return this;
+        }
+
         public SingleClickOnDiagramElementTool build() {
             SingleClickOnDiagramElementTool tool = new SingleClickOnDiagramElementTool();
             tool.id = Objects.requireNonNull(this.id);
@@ -158,6 +171,7 @@ public final class SingleClickOnDiagramElementTool implements ITool {
             tool.targetDescriptions = Objects.requireNonNull(this.targetDescriptions);
             tool.appliesToDiagramRoot = this.appliesToDiagramRoot;
             tool.dialogDescriptionId = this.dialogDescriptionId;
+            tool.withImpactAnalysis = this.withImpactAnalysis;
             return tool;
         }
     }

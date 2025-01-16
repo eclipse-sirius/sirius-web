@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,9 +27,9 @@ import java.util.function.Consumer;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolSuccessPayload;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariableType;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.collaborative.dto.ToolVariable;
+import org.eclipse.sirius.components.collaborative.dto.ToolVariableType;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolMutationRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
@@ -55,7 +55,7 @@ import reactor.test.StepVerifier;
  */
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"sirius.web.test.enabled=studio"})
 public class ModelOperationDiagramControllerTests extends AbstractIntegrationTests {
 
     @Autowired
@@ -207,8 +207,8 @@ public class ModelOperationDiagramControllerTests extends AbstractIntegrationTes
                 .ifPresentOrElse(diagram -> {
                     diagramId.set(diagram.getId());
                     assertThat(diagram.getNodes())
-                        .anyMatch(node -> node.getInsideLabel().getText().equals("sirius-web-domain"))
-                        .noneMatch(node -> node.getInsideLabel().getText().equals("componentRenamedAfterSelectedElement"));
+                            .anyMatch(node -> node.getInsideLabel().getText().equals("sirius-web-domain"))
+                            .noneMatch(node -> node.getInsideLabel().getText().equals("componentRenamedAfterSelectedElement"));
                 }, () -> fail("Missing diagram"));
 
         Runnable createNode = () -> {
@@ -227,8 +227,8 @@ public class ModelOperationDiagramControllerTests extends AbstractIntegrationTes
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     assertThat(diagram.getNodes())
-                        .noneMatch(node -> node.getInsideLabel().getText().equals("sirius-web-domain"))
-                        .anyMatch(node -> node.getInsideLabel().getText().equals("componentRenamedAfterSelectedElement"));
+                            .noneMatch(node -> node.getInsideLabel().getText().equals("sirius-web-domain"))
+                            .anyMatch(node -> node.getInsideLabel().getText().equals("componentRenamedAfterSelectedElement"));
                 }, () -> fail("Missing diagram"));
 
         StepVerifier.create(flux)
