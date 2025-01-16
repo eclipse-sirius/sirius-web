@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import java.util.UUID;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.RestCommit;
 import org.eclipse.sirius.web.data.TestIdentifiers;
+import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,8 +27,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,9 +56,8 @@ public class CommitRestControllerIntegrationTests extends AbstractIntegrationTes
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for all commits of a project, then it should return all commits of a project")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForAllCommitsOfAProjectThenItShouldReturnAllCommitsOfAProject() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -83,9 +81,8 @@ public class CommitRestControllerIntegrationTests extends AbstractIntegrationTes
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for all commits of an unknown project, then it should return an error")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForAllCommitsOfAnUnknownProjectThenItShouldReturnAnError() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -101,9 +98,8 @@ public class CommitRestControllerIntegrationTests extends AbstractIntegrationTes
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for the creation of a commit, then it should return an empty response")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForTheCreationOfACommitThenItShouldReturnAnEmptyResponse() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -121,9 +117,8 @@ public class CommitRestControllerIntegrationTests extends AbstractIntegrationTes
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for the creation of a commit on an ivalid project, then it should return an empty response")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForTheCreationOfACommitOnAnInvalidProjectThenItShouldReturnAnEmptyResponse() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -141,9 +136,8 @@ public class CommitRestControllerIntegrationTests extends AbstractIntegrationTes
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for a specific commit of a project, then it should return this commit")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForASpecificCommitOfAProjectThenItShouldReturnThisCommit() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -166,9 +160,8 @@ public class CommitRestControllerIntegrationTests extends AbstractIntegrationTes
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for an unknown commit of a project, then it should return an error")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForAnUnknownCommitOfAProjectThenItShouldReturnAnError() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -184,9 +177,8 @@ public class CommitRestControllerIntegrationTests extends AbstractIntegrationTes
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for commit changes of a project, then it should return these commit changes")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForCommitChangesOfAProjectThenItShouldReturnTheseCommitChanges() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -215,9 +207,8 @@ public class CommitRestControllerIntegrationTests extends AbstractIntegrationTes
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for commit changes of a project with no data, then it should return an error")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForCommitChangesOfAProjectWithNoDataThenItShouldReturnAnError() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -233,9 +224,8 @@ public class CommitRestControllerIntegrationTests extends AbstractIntegrationTes
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for a specific commit change, then it should return this commit change")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForASpecificCommitChangeThenItShouldReturnThisCommitChange() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -259,9 +249,8 @@ public class CommitRestControllerIntegrationTests extends AbstractIntegrationTes
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for an invalid commit change, then it should return an error")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForAnInvalidCommitChangeThenItShouldReturnAnError() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())

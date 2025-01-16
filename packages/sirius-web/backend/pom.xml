@@ -43,6 +43,7 @@
 		<module>sirius-web</module>
 
 		<module>sirius-web-tests</module>
+		<module>sirius-web-tests-data</module>
         <module>sirius-web-e2e-tests</module>
     </modules>
 </project>

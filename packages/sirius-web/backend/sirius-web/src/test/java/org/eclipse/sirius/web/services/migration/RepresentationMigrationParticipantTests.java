@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,14 +30,14 @@ import org.eclipse.sirius.web.data.MigrationIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationMetadataRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
+import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -69,9 +69,8 @@ public class RepresentationMigrationParticipantTests extends AbstractIntegration
     private IRepresentationPersistenceService representationPersistenceService;
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a project with an old hierarchy representation, when the representation is loaded, then its child nodes are migrated correctly")
-    @Sql(scripts = {"/scripts/migration.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWithAnOldHierarchyRepresentationWhenTheRepresentationIsLoadedThenItsChildNodesAreMigratedCorrectly() {
         var representationContentBeforeMigration = this.representationContentSearchService.findContentById(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM_HIERARCHY);
         assertThat(representationContentBeforeMigration).isPresent();
@@ -91,6 +90,9 @@ public class RepresentationMigrationParticipantTests extends AbstractIntegration
         assertThat(hierarchy.getChildNodes()).hasSize(1);
 
         this.representationPersistenceService.save(null, optionalEditingContext.get(), optionalRepresentation.get());
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
 
         var optionalUpdatedRepresentationContent = this.representationContentSearchService.findContentById(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM_HIERARCHY);
         assertThat(optionalUpdatedRepresentationContent).isPresent();
@@ -105,9 +107,8 @@ public class RepresentationMigrationParticipantTests extends AbstractIntegration
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a project with an old diagram representation, when the representation is loaded, then the position of diagram, nodes and edges have been removed, but not from layout data")
-    @Sql(scripts = {"/scripts/migration.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void testRemovePositionFromDiagramPresentOnDiagramAndNodesAndEdges() {
         var representationContentBeforeMigration = this.representationContentSearchService.findContentById(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM);
         assertThat(representationContentBeforeMigration).isPresent();
@@ -134,6 +135,9 @@ public class RepresentationMigrationParticipantTests extends AbstractIntegration
         assertThat(optionalRepresentation).isPresent();
 
         this.representationPersistenceService.save(null, optionalEditingContext.get(), optionalRepresentation.get());
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
 
         var optionalUpdatedRepresentationContent = this.representationContentSearchService.findContentById(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM);
         assertThat(optionalUpdatedRepresentationContent).isPresent();
@@ -155,9 +159,8 @@ public class RepresentationMigrationParticipantTests extends AbstractIntegration
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a project with an old diagram representation, when the representation is loaded, then the size and size of diagram, nodes and edges have been removed, but not from layout data")
-    @Sql(scripts = {"/scripts/migration.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void testRemoveSizeFromDiagramPresentOnDiagramAndNodesAndEdges() {
         var representationContentBeforeMigration = this.representationContentSearchService.findContentById(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM);
         assertThat(representationContentBeforeMigration).isPresent();
@@ -184,6 +187,9 @@ public class RepresentationMigrationParticipantTests extends AbstractIntegration
         assertThat(optionalRepresentation).isPresent();
 
         this.representationPersistenceService.save(null, optionalEditingContext.get(), optionalRepresentation.get());
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
 
         var optionalUpdatedRepresentationContent = this.representationContentSearchService.findContentById(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM);
         assertThat(optionalUpdatedRepresentationContent).isPresent();
@@ -205,10 +211,9 @@ public class RepresentationMigrationParticipantTests extends AbstractIntegration
     }
 
     @ParameterizedTest
+    @GivenSiriusWebServer
     @ValueSource(strings = {"alignment", "routingPoints", "sourceAnchorRelativePosition", "targetAnchorRelativePosition", "userResizable", "customizedProperties"})
     @DisplayName("Given a project with an old diagram representation, when the representation is loaded, then the position and size of diagram and nodes have been removed, but not from layout data")
-    @Sql(scripts = {"/scripts/migration.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void testRemoveAttributeFromDiagramContent(String attribute) {
         var representationContentBeforeMigration = this.representationContentSearchService.findContentById(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM);
         assertThat(representationContentBeforeMigration).isPresent();
@@ -226,6 +231,9 @@ public class RepresentationMigrationParticipantTests extends AbstractIntegration
         assertThat(optionalRepresentation).isPresent();
 
         this.representationPersistenceService.save(null, optionalEditingContext.get(), optionalRepresentation.get());
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
 
         var optionalUpdatedRepresentationContent = this.representationContentSearchService.findContentById(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM);
         assertThat(optionalUpdatedRepresentationContent).isPresent();

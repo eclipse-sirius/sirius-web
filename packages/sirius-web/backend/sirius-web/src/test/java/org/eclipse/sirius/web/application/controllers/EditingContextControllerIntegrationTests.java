@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,13 +36,12 @@ import org.eclipse.sirius.web.application.project.services.DefaultEditingContext
 import org.eclipse.sirius.web.application.studio.services.StudioEditingContextActionProvider;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.data.TestIdentifiers;
+import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -83,9 +82,8 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given an editing context id, when a query is performed, then the editing context is returned")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenEditingContextIdWhenQueryIsPerformedThenTheEditingContextIsReturned() {
         Map<String, Object> variables = Map.of("editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString());
         var result = this.editingContextQueryRunner.run(variables);
@@ -95,9 +93,8 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a project, when a query is performed, then the editing context id is returned")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenQueryIsPerformedThenTheEditingContextIdIsReturned() {
         Map<String, Object> variables = Map.of("projectId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString());
         var result = this.currentEditingContextQueryRunner.run(variables);
@@ -107,9 +104,8 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given an editing context id, when a query is performed, then its actions are returned")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenEditingContextIdWhenQueryIsPerformedThenItsActionsAreReturned() {
         Map<String, Object> variables = Map.of("editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString());
         var result = this.editingContextActionsQueryRunner.run(variables);
@@ -131,9 +127,8 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a project, when an editing context action is invoked, then the editing context is modified")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenAnEditingContextActionIsInvokedThenTheEditingContextIsModified() {
         var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString());
         var flux = this.editingContextEventSubscriptionRunner.run(editingContextEventInput);

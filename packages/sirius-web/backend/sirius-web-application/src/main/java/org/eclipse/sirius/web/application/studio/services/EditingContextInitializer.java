@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -96,7 +96,7 @@ public class EditingContextInitializer implements IEditingContextProcessor {
                 this.studioColorPalettesLoader.loadStudioColorPalettes(resourceSet);
 
                 semanticData.getDocuments().forEach(document -> this.resourceLoader.toResource(resourceSet, document.getId().toString(), document.getName(), document.getContent(),
-                        this.migrationParticipantPredicates.stream().anyMatch(predicate -> predicate.test(editingContext))));
+                        this.migrationParticipantPredicates.stream().anyMatch(predicate -> predicate.test(semanticData.getProject().getId().toString()))));
                 resourceSet.eAdapters().add(new EditingContextCrossReferenceAdapter());
 
                 var treeIterator = resourceSet.getAllContents();

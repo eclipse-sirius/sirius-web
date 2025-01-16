@@ -1275,7 +1275,7 @@ INSERT INTO project (
   created_on,
   last_modified_on
 ) VALUES (
-  '01234836-0902-418a-900a-4c0afd20323e',
+  'fc56cb7e-a2a4-477f-89a7-58bb34a2a4b3',
   'Studio',
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
@@ -1284,7 +1284,7 @@ INSERT INTO nature (
   project_id,
   name
 ) VALUES (
-  '01234836-0902-418a-900a-4c0afd20323e',
+  'fc56cb7e-a2a4-477f-89a7-58bb34a2a4b3',
   'siriusComponents://nature?kind=studio'
 );
 INSERT INTO semantic_data (
@@ -1293,8 +1293,8 @@ INSERT INTO semantic_data (
   created_on,
   last_modified_on
 ) VALUES (
-  'e344d967-a639-4f6c-9c00-a466d51063c6',
-  '01234836-0902-418a-900a-4c0afd20323e',
+  '21d28dd9-1675-4873-a39a-678b19b23ed6',
+  'fc56cb7e-a2a4-477f-89a7-58bb34a2a4b3',
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
@@ -1302,14 +1302,14 @@ INSERT INTO semantic_data_domain (
   semantic_data_id,
   uri
 ) VALUES (
-  'e344d967-a639-4f6c-9c00-a466d51063c6',
+  '21d28dd9-1675-4873-a39a-678b19b23ed6',
   'http://www.eclipse.org/sirius-web/view'
 );
 INSERT INTO semantic_data_domain (
   semantic_data_id,
   uri
 ) VALUES (
-  'e344d967-a639-4f6c-9c00-a466d51063c6',
+  '21d28dd9-1675-4873-a39a-678b19b23ed6',
   'http://www.eclipse.org/sirius-web/form'
 );
 INSERT INTO document (
@@ -1320,8 +1320,8 @@ INSERT INTO document (
   created_on,
   last_modified_on
 ) VALUES (
-  'ed2a5355-991d-458f-87f1-ea3a18b1f104',
-  'e344d967-a639-4f6c-9c00-a466d51063c6',
+  '4ee1ea69-c79b-4635-937c-2f8de13421ba',
+  '21d28dd9-1675-4873-a39a-678b19b23ed6',
   'Form View for WidgetDescriptionStyleLayoutPropertiesMigrationParticipant',
   '{
      "json":{
@@ -1334,19 +1334,19 @@ INSERT INTO document (
      },
      "content":[
        {
-         "id":"c4591605-8ea8-4e92-bb17-05c4538248f8",
+         "id":"c8c9a6e2-a697-4a98-b0ce-3b9c0d077ae9",
          "eClass":"view:View",
          "data":{
            "descriptions":[
              {
-               "id":"ed20cb85-a58a-47ad-bc0d-749ec8b2ea03",
+               "id":"deaa26de-6383-4c36-baba-2feb8a6e675e",
                "eClass":"form:FormDescription",
                "data":{
                  "name":"Form View for WidgetDescriptionStyleLayoutPropertiesMigrationParticipant",
                  "domainType":"buck::Human",
                  "pages":[
                    {
-                     "id":"b0c73654-6f1b-4be5-832d-b97f053b5196",
+                     "id":"7f2c5d12-16c5-4d99-becc-b64cfcf5f6d2",
                      "eClass":"form:PageDescription",
                      "data":{
                        "name":"Human",
@@ -1354,14 +1354,14 @@ INSERT INTO document (
                        "domainType":"buck::Human",
                        "groups":[
                          {
-                           "id":"28d8d6de-7d6f-4434-9293-0ac4ef2461ac",
+                           "id":"f4045d7d-bd11-4cca-80b6-7b27f1792bec",
                            "eClass":"form:GroupDescription",
                            "data":{
                              "name":"Properties",
                              "labelExpression":"Properties",
                              "children":[
                                {
-                                 "id":"b02b89b7-6c06-40f8-9366-83d5f885ada1",
+                                 "id":"8cdbf72d-5a4c-4a33-8a6f-95706dea27a6",
                                  "eClass":"form:TextfieldDescription",
                                  "data":{
                                    "name":"Name",
@@ -1370,12 +1370,12 @@ INSERT INTO document (
                                    "valueExpression":"aql:self.name",
                                    "body":[
                                      {
-                                       "id":"ecdc23ff-fd4b-47a4-939d-1bc03e656d3d",
+                                       "id":"a3b5b77d-45e6-49d1-b989-81ba9ba86ae2",
                                        "eClass":"view:ChangeContext",
                                        "data":{
                                          "children":[
                                            {
-                                             "id":"a8b95d5b-833a-4b19-b783-3025225613de",
+                                             "id":"6161cb1b-f549-45bc-ba56-ea1e677e4d19",
                                              "eClass":"view:SetValue",
                                              "data":{
                                                "featureName":"name",
@@ -1387,7 +1387,7 @@ INSERT INTO document (
                                      }
                                    ],
                                    "style":{
-                                   "id":"97894b63-e1ca-4c2f-b8ba-2735e4767599",
+                                   "id":"3e446591-0b53-4b90-96a4-496516e881b4",
                                      "eClass":"form:TextfieldDescriptionStyle",
                                      "data":{
                                      }
@@ -1395,7 +1395,7 @@ INSERT INTO document (
                                  }
                                },
                                {
-                                 "id":"98e756a2-305f-4767-b75c-4130996ae6da",
+                                 "id":"452706cd-9a89-42bf-98c6-039ba43d62e5",
                                  "eClass":"form:TextAreaDescription",
                                  "data":{
                                    "name":"Description",
@@ -1404,12 +1404,12 @@ INSERT INTO document (
                                    "valueExpression":"aql:self.description",
                                    "body":[
                                      {
-                                       "id":"59ea57d5-c365-4421-9648-f38a74644768",
+                                       "id":"6e52d5f2-eca7-44a9-9974-727253f56824",
                                        "eClass":"view:ChangeContext",
                                        "data":{
                                          "children":[
                                            {
-                                             "id":"811bb719-ab53-49ea-9281-6558f7022ecc",
+                                             "id":"ed60f118-7cdc-48c8-a7fc-d19e24d1e4e2",
                                              "eClass":"view:SetValue",
                                              "data":{
                                                "featureName":"description",
@@ -1423,7 +1423,7 @@ INSERT INTO document (
                                  }
                                },
                                {
-                                 "id":"ba20babb-0e75-4f66-a382-a2f02bce904a",
+                                 "id":"2976d3d8-f936-4f2e-b327-0982dcfd2ac9",
                                  "eClass":"form:CheckboxDescription",
                                  "data":{
                                    "name":"Promoted",
@@ -1432,12 +1432,12 @@ INSERT INTO document (
                                    "valueExpression":"aql:self.promoted",
                                    "body":[
                                      {
-                                       "id":"afac13bd-71ac-4287-baf6-3669f23ac806",
+                                       "id":"33ef0de5-4ded-44f3-a4d3-800d0b08cfcc",
                                        "eClass":"view:ChangeContext",
                                        "data":{
                                          "children":[
                                            {
-                                             "id":"0eaeca64-ee2b-4f2c-9454-c528181d0d64",
+                                             "id":"a089771a-2e0f-4411-8503-b72904e0ec5a",
                                              "eClass":"view:SetValue",
                                              "data":{
                                                "featureName":"promoted",
@@ -1449,7 +1449,7 @@ INSERT INTO document (
                                      }
                                    ],
                                    "style":{
-                                   "id":"97894b63-e1ca-4c2f-b8ba-2735e4767599",
+                                   "id":"bc355252-88c8-47e8-9762-4a3ed3373170",
                                      "eClass":"form:CheckboxDescriptionStyle",
                                      "data":{
                                        "labelPlacement":"end"
@@ -1458,7 +1458,7 @@ INSERT INTO document (
                                  }
                                },
                                {
-                                 "id":"91a4fcd9-a176-4df1-8f88-52a406fc3f73",
+                                 "id":"99310282-5cba-47e8-93a2-70decb7529f3",
                                  "eClass":"form:DateTimeDescription",
                                  "data":{
                                    "name":"BirthDate",
@@ -1467,7 +1467,7 @@ INSERT INTO document (
                                    "stringValueExpression":"aql:self.birthDate",
                                    "type":"DATE",
                                    "style":{
-                                     "id":"97894b63-e1ca-4c2f-b8ba-2735e4767599",
+                                     "id":"64994c02-30c8-434b-98c1-68e061abf86a",
                                      "eClass":"form:DateTimeDescriptionStyle",
                                      "data":{
                                      }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.application.studio.services;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.studio.services.api.IStudioCapableEditingContextPredicate;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
@@ -37,8 +36,8 @@ public class StudioCapableEditingContextPredicate implements IStudioCapableEditi
     }
 
     @Override
-    public boolean test(IEditingContext editingContext) {
-        return new UUIDParser().parse(editingContext.getId())
+    public boolean test(String editingContextId) {
+        return new UUIDParser().parse(editingContextId)
                 .flatMap(this.projectSearchService::findById)
                 .filter(this::isStudio)
                 .isPresent();

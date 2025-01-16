@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.application.controllers.objects;
 
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.TestIdentifiers;
+import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,8 +22,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -101,9 +100,8 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for all elements, then all elements should be returned")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForAllElementsThenAllElementsShouldBeReturned() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -130,9 +128,8 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for all elements in an unknown project, then it should return an error")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForAllElementsInUnknownProjectThenItShouldReturnAnError() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -147,9 +144,8 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for a specific element, then it should return the element")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForSpecificElementThenItShouldReturnTheElement() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -166,9 +162,8 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for a specific element in an unknown project, then it should return an error")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForSpecificElementInUnknownProjectThenItShouldReturnAnError() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -176,15 +171,14 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
 
         var uri = String.format("/api/rest/projects/%s/commits/%s/elements/%s", TestIdentifiers.INVALID_PROJECT, TestIdentifiers.INVALID_PROJECT, TestIdentifiers.EPACKAGE_OBJECT);
         webTestClient.get()
-                .uri(uri.toString())
+                .uri(uri)
                 .exchange()
                 .expectStatus().isNotFound();
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for the relationships of an element, then it should return the relationships")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForRelationshipsOfAnElementThenItShouldReturnTheRelationships() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -192,7 +186,7 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
 
         var uri = String.format("/api/rest/projects/%s/commits/%s/elements/%s/relationships", TestIdentifiers.ECORE_SAMPLE_PROJECT, TestIdentifiers.ECORE_SAMPLE_PROJECT, TestIdentifiers.EPACKAGE_OBJECT);
         webTestClient.get()
-                .uri(uri.toString())
+                .uri(uri)
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -201,9 +195,8 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for the relationships of an element in an unknown project, then it should return an error")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForRelationshipsOfAnElementInAnUnknownProjectThenItShouldReturnAnError() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -211,16 +204,15 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
 
         var uri = String.format("/api/rest/projects/%s/commits/%s/elements/%s/relationships", TestIdentifiers.INVALID_PROJECT, TestIdentifiers.INVALID_PROJECT, TestIdentifiers.EPACKAGE_OBJECT);
         webTestClient.get()
-                .uri(uri.toString())
+                .uri(uri)
                 .exchange()
                 .expectStatus()
                 .isNotFound();
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for the root elements, then it should return the root elements")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForTheRootElementsThenItShouldReturnTheRootElements() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -228,7 +220,7 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
 
         var uri = String.format("/api/rest/projects/%s/commits/%s/roots", TestIdentifiers.ECORE_SAMPLE_PROJECT, TestIdentifiers.ECORE_SAMPLE_PROJECT);
         webTestClient.get()
-                .uri(uri.toString())
+                .uri(uri)
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -237,9 +229,8 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for the root elements of an unknown project, then it should return an error")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForTheRootElementsOfUnknownProjectThenItShouldReturnAnError() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -247,7 +238,7 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
 
         var uri = String.format("/api/rest/projects/%s/commits/%s/roots", TestIdentifiers.INVALID_PROJECT, TestIdentifiers.INVALID_PROJECT);
         webTestClient.get()
-                .uri(uri.toString())
+                .uri(uri)
                 .exchange()
                 .expectStatus()
                 .isNotFound();

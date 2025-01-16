@@ -29,6 +29,7 @@ import org.eclipse.sirius.web.application.views.query.dto.ObjectsExpressionResul
 import org.eclipse.sirius.web.application.views.query.dto.StringExpressionResult;
 import org.eclipse.sirius.web.application.views.query.dto.VoidExpressionResult;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
+import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.EvaluateExpressionMutationRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,8 +37,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -62,9 +61,8 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a project, when we execute an expression returning a collection of objects, then the result is returned")
-    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenWeExecuteAnExpressionReturningCollectionOfObjectsThenTheResultIsReturned() {
         var expression = "aql:editingContext.allContents()->filter(papaya::Component)";
         var result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), expression));
@@ -82,9 +80,8 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a project, when we execute an expression returning a single object, then the result is returned")
-    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenWeExecuteAnExpressionReturningSingleObjectThenTheResultIsReturned() {
         var expression = "aql:editingContext.allContents()->filter(papaya::Component)->first()";
         var result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), expression));
@@ -100,9 +97,8 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a project, when we execute an expression returning an integer, then the result is returned")
-    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenWeExecuteAnExpressionReturningIntegerThenTheResultIsReturned() {
         var expression = "aql:editingContext.allContents()->filter(papaya::Component)->size()";
         var result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), expression));
@@ -118,9 +114,8 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a project, when we execute an expression returning a boolean, then the result is returned")
-    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenWeExecuteAnExpressionReturningBooleanThenTheResultIsReturned() {
         var expression = "aql:editingContext.allContents()->filter(papaya::Component)->isEmpty()";
         var result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), expression));
@@ -136,9 +131,8 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a project, when we execute an expression returning a string, then the result is returned")
-    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenWeExecuteAnExpressionReturningStringThenTheResultIsReturned() {
         var expression = "aql:editingContext.allContents()->filter(papaya::Component)->first().name";
         var result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), expression));
@@ -154,9 +148,8 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a project, when we execute an expression which does not return anything, then the result is returned")
-    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenWeExecuteAnExpressionWhichDoesNotReturnAnythingThenTheResultIsReturned() {
         var expression = "aql:editingContext.allContents()->filter(papaya::Component)->first().newPackage('newpackage')";
         var result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), expression));

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,7 @@ import org.eclipse.sirius.web.application.images.dto.UploadImageInput;
 import org.eclipse.sirius.web.application.images.dto.UploadImageSuccessPayload;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services.api.IProjectImageSearchService;
+import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.DeleteImageMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.ProjectImagesQueryRunner;
 import org.eclipse.sirius.web.tests.graphql.RenameImageMutationRunner;
@@ -50,8 +51,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -87,9 +86,8 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
     private IProjectImageSearchService projectImageSearchService;
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a project, when its images are requested, then the images are returned")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenItsImagesAreRequestedThenTheImagesAreReturned() {
         this.givenCommittedTransaction.commit();
 
@@ -104,9 +102,8 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the url of an image which exists, when its content is requested, then the image is returned")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenTheURLOfAnImageWhichExistsWhenItsContentIsRequestedThenTheImageIsReturned() {
         this.givenCommittedTransaction.commit();
 
@@ -118,9 +115,8 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the url of an image, when its content is requested, then the image is returned")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenTheURLOfImageWhenItsContentIsRequestedThenTheImageIsReturned() {
         this.givenCommittedTransaction.commit();
 
@@ -142,9 +138,8 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the url of an image which does not exist, when its content is requested, then a 404 NOT FOUND is returned")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenTheURLOfAnImageWhichDoesNotExistWhenItsContentIsRequestedThen404NotFoundIsReturned() {
         this.givenCommittedTransaction.commit();
 
@@ -156,9 +151,8 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given an image, when it is uploaded, then it is available")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenAnImageWhenItIsUploadedThenItIsAvailable() {
         this.givenCommittedTransaction.commit();
 
@@ -190,9 +184,8 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given an invalid image, when it is uploaded, then an error is returned")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenAnInvalidImageWhenItIsUploadedThenAnErrorIsReturned() {
         this.givenCommittedTransaction.commit();
 
@@ -209,9 +202,8 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given an image, when it is renamed, then its name is updated")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenAnImageWhenItIsRenamedThenItsNameIsUpdated() {
         this.givenCommittedTransaction.commit();
 
@@ -235,9 +227,8 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given an image, when its deletion is requested, then the image is not found anymore")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenAnImageWhenItsDeletionIsRequestedThenTheImageIsNotFoundAnymore() {
         this.givenCommittedTransaction.commit();
 

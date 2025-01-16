@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,13 +24,12 @@ import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.image.services.api.IImageCreationService;
 import org.eclipse.sirius.web.domain.boundedcontexts.image.services.api.IImageDeletionService;
 import org.eclipse.sirius.web.domain.boundedcontexts.image.services.api.IImageSearchService;
+import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,9 +71,8 @@ public class CustomImageMetadataSearchServiceTests extends AbstractIntegrationTe
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given project images and global images in the database, when custom image metadata are requested, both can be retrieved")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectImagesAndGlobalImagesInTheDatabaseWhenCustomImageMetadataAreRequestedThenBothCanBeRetrieved() {
         var images = this.customImageMetadataSearchService.getAvailableImages(StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString());
         assertThat(images)
@@ -84,9 +82,8 @@ public class CustomImageMetadataSearchServiceTests extends AbstractIntegrationTe
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given project images and global images in the database, when a global image is deleted, then it does not exist")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectImagesAndGlobalImagesInTheDatabaseWhenGlobalImageIsDeletedThenItDoesNotExist() {
         var images = this.customImageMetadataSearchService.getAvailableImages(StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString());
         assertThat(images)

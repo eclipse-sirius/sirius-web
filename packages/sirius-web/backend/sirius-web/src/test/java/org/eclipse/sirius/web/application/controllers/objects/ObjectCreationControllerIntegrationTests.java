@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
+import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.ChildCreationDescriptionsQueryRunner;
 import org.eclipse.sirius.web.tests.graphql.CreateChildMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.CreateRootObjectMutationRunner;
@@ -43,8 +44,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -84,9 +83,8 @@ public class ObjectCreationControllerIntegrationTests extends AbstractIntegratio
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a studio, when the domains are requested, then domain and EPackage based domains are available")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenStudioWhenDomainsAreRequestedThenDomainAndEPackageBasedDomainsAreAvailable() {
         Map<String, Object> variables = Map.of(
                 "editingContextId", StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(),
@@ -101,9 +99,8 @@ public class ObjectCreationControllerIntegrationTests extends AbstractIntegratio
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a domain, when the root object creation descriptions are requested, then valid objects are available")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenDomainWhenRootObjectCreationDescriptionsAreRequestedThenValidObjectsAreAvailable() {
         Map<String, Object> variables = Map.of(
                 "editingContextId", StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(),
@@ -124,9 +121,8 @@ public class ObjectCreationControllerIntegrationTests extends AbstractIntegratio
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given an object, when the child object creation descriptions are requested, then valid objects are available")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenAnObjectWhenChildObjectCreationDescriptionsAreRequestedThenValidObjectsAreAvailable() {
         Map<String, Object> variables = Map.of(
                 "editingContextId", StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(),
@@ -145,9 +141,8 @@ public class ObjectCreationControllerIntegrationTests extends AbstractIntegratio
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a document, when a root object is created, then it is created properly")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenDocumentWhenRootObjectIsCreatedThenItIsCreatedProperly() {
         this.givenCommittedTransaction.commit();
 
@@ -174,9 +169,8 @@ public class ObjectCreationControllerIntegrationTests extends AbstractIntegratio
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given an object, when a child object is created, then it is created properly")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenObjectWhenChildObjectIsCreatedThenItIsCreatedProperly() {
         this.givenCommittedTransaction.commit();
 

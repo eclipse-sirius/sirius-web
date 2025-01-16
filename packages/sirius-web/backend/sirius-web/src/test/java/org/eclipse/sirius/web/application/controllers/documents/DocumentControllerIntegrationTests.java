@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,6 +42,7 @@ import org.eclipse.sirius.web.application.document.dto.UploadDocumentInput;
 import org.eclipse.sirius.web.application.document.dto.UploadDocumentSuccessPayload;
 import org.eclipse.sirius.web.application.studio.services.StudioStereotypeProvider;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
+import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.CreateDocumentMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.StereotypesQueryRunner;
 import org.eclipse.sirius.web.tests.graphql.UploadDocumentMutationRunner;
@@ -52,8 +53,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -92,9 +91,8 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a studio, when the stereotypes are requested, then the studio stereotypes are available")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenStudioWhenStereotypesAreRequestedThenTheStudioStereotypesAreAvailable() {
         this.givenCommittedTransaction.commit();
 
@@ -109,25 +107,22 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a studio, when the creation of a new view document is requested, then the view is created")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenStudioWhenTheCreationOfViewDocumentIsRequestedThenTheViewIsCreated() {
         this.createDocument(StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), StudioStereotypeProvider.DOMAIN_STEREOTYPE, "Domain");
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a studio, when the creation of a new domain document is requested, then the domain is created")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenStudioWhenTheCreationOfDomainDocumentIsRequestedThenTheDomainIsCreated() {
         this.createDocument(StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), StudioStereotypeProvider.VIEW_STEREOTYPE, "View");
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a studio, when the upload of a new domain document is performed, then the domain is created")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenStudioWhenTheUploadOfDomainDocumentIsPerformedThenTheDomainIsCreated() {
         var content = """
                 {
@@ -156,9 +151,8 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a studio, when the upload of a new domain XMI document is performed, then the domain is created")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenStudioWhenTheUploadOfDomainXMIDocumentIsPerformedThenTheDomainIsCreated() {
         var content = """
                 <?xml version="1.0" encoding="utf-8"?>
@@ -211,17 +205,15 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a studio, when the upload of a new domain XMI document is performed without a name, then an error is returned")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenStudioWhenTheUploadOfDomainXMIDocumentIsPerformedWithoutNameThenAnErrorIsReturned() {
         this.createInvalidDocument(StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), StudioStereotypeProvider.DOMAIN_STEREOTYPE, "");
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a studio, when the upload of a new domain XMI document is performed with an invalid stereotype, then an error is returned")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenStudioWhenTheUploadOfDomainXMIDocumentIsPerformedWithInvalidStereotypeThenAnErrorIsReturned() {
         this.createInvalidDocument(StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString(), "INVALID", "Domain");
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,6 +46,7 @@ import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
+import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedFormDescriptionEditorSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.formdescriptioneditors.AddPageMutationRunner;
@@ -55,8 +56,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.core.publisher.Flux;
@@ -101,9 +100,8 @@ public class FormDescriptionEditorControllerIntegrationTests extends AbstractInt
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a form description editor, when we subscribe to its events, then the representation data are received")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenFormDescriptionEditorWhenWeSubscribeToItsEventsThenTheRepresentationDataAreReceived() {
         var flux = this.givenSubscriptionToFormDescriptionEditor();
 
@@ -122,129 +120,113 @@ public class FormDescriptionEditorControllerIntegrationTests extends AbstractInt
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a form description editor, when we add a textfield, then the representation is updated")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenFormDescriptionEditorWhenWeAddTextfieldThenTheRepresentationIsUpdated() {
         this.givenFormDescriptionEditorWhenWeAddSomethingThenTheRepresentationIsUpdated("Textfield", Textfield.class);
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a form description editor, when we add a checkbox, then the representation is updated")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenFormDescriptionEditorWhenWeAddCheckboxThenTheRepresentationIsUpdated() {
         this.givenFormDescriptionEditorWhenWeAddSomethingThenTheRepresentationIsUpdated("Checkbox", Checkbox.class);
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a form description editor, when we add a select, then the representation is updated")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenFormDescriptionEditorWhenWeAddSelectThenTheRepresentationIsUpdated() {
         this.givenFormDescriptionEditorWhenWeAddSomethingThenTheRepresentationIsUpdated("Select", Select.class);
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a form description editor, when we add a multi-select, then the representation is updated")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenFormDescriptionEditorWhenWeAddMultiSelectThenTheRepresentationIsUpdated() {
         this.givenFormDescriptionEditorWhenWeAddSomethingThenTheRepresentationIsUpdated("MultiSelect", MultiSelect.class);
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a form description editor, when we add a button, then the representation is updated")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenFormDescriptionEditorWhenWeAddButtonThenTheRepresentationIsUpdated() {
         this.givenFormDescriptionEditorWhenWeAddSomethingThenTheRepresentationIsUpdated("Button", Button.class);
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a form description editor, when we add a textarea, then the representation is updated")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenFormDescriptionEditorWhenWeAddTextareaThenTheRepresentationIsUpdated() {
         this.givenFormDescriptionEditorWhenWeAddSomethingThenTheRepresentationIsUpdated("TextArea", Textarea.class);
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a form description editor, when we add a label, then the representation is updated")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenFormDescriptionEditorWhenWeAddLabelThenTheRepresentationIsUpdated() {
         this.givenFormDescriptionEditorWhenWeAddSomethingThenTheRepresentationIsUpdated("Label", LabelWidget.class);
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a form description editor, when we add a link, then the representation is updated")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenFormDescriptionEditorWhenWeAddLinkThenTheRepresentationIsUpdated() {
         this.givenFormDescriptionEditorWhenWeAddSomethingThenTheRepresentationIsUpdated("Link", Link.class);
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a form description editor, when we add a radio, then the representation is updated")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenFormDescriptionEditorWhenWeAddRadioThenTheRepresentationIsUpdated() {
         this.givenFormDescriptionEditorWhenWeAddSomethingThenTheRepresentationIsUpdated("Radio", Radio.class);
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a form description editor, when we add a list, then the representation is updated")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenFormDescriptionEditorWhenWeAddListThenTheRepresentationIsUpdated() {
         this.givenFormDescriptionEditorWhenWeAddSomethingThenTheRepresentationIsUpdated("List", List.class);
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a form description editor, when we add a pie chart, then the representation is updated")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenFormDescriptionEditorWhenWeAddPieChartThenTheRepresentationIsUpdated() {
         this.givenFormDescriptionEditorWhenWeAddSomethingThenTheRepresentationIsUpdated("PieChart", ChartWidget.class);
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a form description editor, when we add a bar chart, then the representation is updated")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenFormDescriptionEditorWhenWeAddBarChartThenTheRepresentationIsUpdated() {
         this.givenFormDescriptionEditorWhenWeAddSomethingThenTheRepresentationIsUpdated("BarChart", ChartWidget.class);
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a form description editor, when we add a date time, then the representation is updated")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenFormDescriptionEditorWhenWeAddDateTimeThenTheRepresentationIsUpdated() {
         this.givenFormDescriptionEditorWhenWeAddSomethingThenTheRepresentationIsUpdated("DateTime", DateTime.class);
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a form description editor, when we add a flexbox container, then the representation is updated")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenFormDescriptionEditorWhenWeAddFlexboxContainerThenTheRepresentationIsUpdated() {
         this.givenFormDescriptionEditorWhenWeAddSomethingThenTheRepresentationIsUpdated("FlexboxContainer", FlexboxContainer.class);
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a form description editor, when we add a for, then the representation is updated")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenFormDescriptionEditorWhenWeAddForThenTheRepresentationIsUpdated() {
         this.givenFormDescriptionEditorWhenWeAddSomethingThenTheRepresentationIsUpdated("FormElementFor", FormDescriptionEditorFor.class);
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a form description editor, when we add an if, then the representation is updated")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenFormDescriptionEditorWhenWeAddAnIfThenTheRepresentationIsUpdated() {
         this.givenFormDescriptionEditorWhenWeAddSomethingThenTheRepresentationIsUpdated("FormElementIf", FormDescriptionEditorIf.class);
     }
@@ -299,9 +281,8 @@ public class FormDescriptionEditorControllerIntegrationTests extends AbstractInt
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a form description editor, when we add a page, then the representation is updated")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenFormDescriptionEditorWhenWeAddPageThenTheRepresentationIsUpdated() {
         var flux = this.givenSubscriptionToFormDescriptionEditor();
 

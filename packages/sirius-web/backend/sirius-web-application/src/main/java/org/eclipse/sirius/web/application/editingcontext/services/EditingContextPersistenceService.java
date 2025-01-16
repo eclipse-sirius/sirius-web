@@ -76,7 +76,7 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
         long start = System.currentTimeMillis();
 
         if (editingContext instanceof IEMFEditingContext emfEditingContext) {
-            var applyMigrationParticipants = this.migrationParticipantPredicates.stream().anyMatch(predicate -> predicate.test(emfEditingContext));
+            var applyMigrationParticipants = this.migrationParticipantPredicates.stream().anyMatch(predicate -> predicate.test(emfEditingContext.getId()));
             new UUIDParser().parse(editingContext.getId())
                     .map(AggregateReference::<Project, UUID>to)
                     .ifPresent(project -> {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,6 +40,7 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.services.api.IDomainEventCollector;
+import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.DetailsEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.graphql.RepresentationMetadataQueryRunner;
 import org.eclipse.sirius.web.tests.graphql.RepresentationsMetadataQueryRunner;
@@ -51,8 +52,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import graphql.execution.DataFetcherResult;
@@ -102,9 +101,8 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a persistent representation id, when a query is performed, then the representation metadata are returned")
-    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenPersistentRepresentationIdWhenQueryIsPerformedThenTheRepresentationMetadataAreReturned() {
         Map<String, Object> variables = Map.of(
                 "editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(),
@@ -128,9 +126,8 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a transient representation id, when a query is performed, then the representation metadata are returned")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenTransientRepresentationIdWhenQueryIsPerformedThenTheRepresentationMetadataAreReturned() {
         String initialExplorerId = "explorer://?expandedIds=[]&activeFilterIds=[]";
         Map<String, Object> variables = Map.of(
@@ -155,9 +152,8 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given an editing context id, when a query is performed, then all the representation metadata are returned")
-    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenEditingContextIdWhenQueryIsPerformedThenAllTheRepresentationMetadataAreReturned() {
         Map<String, Object> variables = Map.of(
                 "editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString()
@@ -193,9 +189,8 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given many representation ids, when we ask for their metadata, then representation metadata are returned")
-    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenManyRepresentationIdsWhenWeAskForTheirMetadataThenTheRepresentationMetadataAreReturned() {
         Map<String, Object> variables = Map.of(
                 "editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(),
@@ -217,9 +212,8 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given an object id, when a query is performed, then all the representation descriptions are returned")
-    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenObjectIdWhenQueryIsPerformedThenAllTheRepresentationDescriptionsAreReturned() {
         Map<String, Object> variables = Map.of(
                 "editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(),
@@ -247,9 +241,8 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a Portal representation, when we subscribe to its properties events, then the form is sent")
-    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenPortalRepresentationWhenWeSubscribeToItsPropertiesEventsThenTheFormIsSent() {
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
         var input = new DetailsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), detailsRepresentationId);
@@ -286,9 +279,8 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a Portal representation, when we edit its label in the Details view, then the label is changed.")
-    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenPortalRepresentationWhenWeEditItsLabelInTheDetailsViewThenTheLabelIsChanged() {
         this.givenCommittedTransaction.commit();
 
@@ -327,9 +319,8 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a Portal representation, when we edit its documentation in the Details view, then the documentation is changed.")
-    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenPortalRepresentationWhenWeEditItsDocumentationInTheDetailsViewThenTheDocumentationIsChanged() {
 
         this.givenCommittedTransaction.commit();

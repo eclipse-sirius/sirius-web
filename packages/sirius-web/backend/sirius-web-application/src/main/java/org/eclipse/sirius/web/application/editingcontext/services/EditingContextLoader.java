@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -79,7 +79,7 @@ public class EditingContextLoader implements IEditingContextLoader {
         resourceSet.getLoadOptions().put(JsonResource.OPTION_SCHEMA_LOCATION, true);
 
         semanticData.getDocuments().forEach(document -> this.resourceLoader.toResource(resourceSet, document.getId().toString(), document.getName(), document.getContent(),
-                this.migrationParticipantPredicates.stream().anyMatch(predicate -> predicate.test(editingContext))));
+                this.migrationParticipantPredicates.stream().anyMatch(predicate -> predicate.test(editingContext.getId()))));
 
         // The ECrossReferenceAdapter must be set after the resource loading because it needs to resolve proxies in case
         // of inter-resources references
