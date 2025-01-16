@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,6 @@ import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 import GridOffIcon from '@mui/icons-material/GridOff';
 import GridOnIcon from '@mui/icons-material/GridOn';
-import ImageIcon from '@mui/icons-material/Image';
 import ShareIcon from '@mui/icons-material/Share';
 import TonalityIcon from '@mui/icons-material/Tonality';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -34,6 +33,8 @@ import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { HelperLinesIcon } from '../../icons/HelperLinesIcon';
 import { HelperLinesIconOff } from '../../icons/HelperLinesIconOff';
+import { SmartEdgeIcon } from '../../icons/SmartEdgeIcon';
+import { SmoothStepEdgeIcon } from '../../icons/SmoothStepEdgeIcon';
 import { UnpinIcon } from '../../icons/UnpinIcon';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
@@ -43,9 +44,7 @@ import { useArrangeAll } from '../layout/useArrangeAll';
 import { usePinDiagramElements } from '../pin/usePinDiagramElements';
 import { DiagramPanelActionProps, DiagramPanelProps, DiagramPanelState } from './DiagramPanel.types';
 import { diagramPanelActionExtensionPoint } from './DiagramPanelExtensionPoints';
-import { useExportToImage } from './useExportToImage';
-import { SmartEdgeIcon } from '../../icons/SmartEdgeIcon';
-import { SmoothStepEdgeIcon } from '../../icons/SmoothStepEdgeIcon';
+import { ExportImageButton } from './ExportImageButton';
 
 export const DiagramPanel = memo(
   ({
@@ -103,7 +102,6 @@ export const DiagramPanel = memo(
     const onUnhideAll = () => hideDiagramElements([...getAllElementsIds()], false);
     const onUnpinAll = () => pinDiagramElements([...getAllElementsIds()], false);
 
-    const { exportToImage } = useExportToImage();
     const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
 
     return (
@@ -147,15 +145,7 @@ export const DiagramPanel = memo(
                 <ShareIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Export to SVG">
-              <IconButton
-                size="small"
-                aria-label="export to svg"
-                onClick={exportToImage}
-                data-testid="export-diagram-to-svg">
-                <ImageIcon />
-              </IconButton>
-            </Tooltip>
+            <ExportImageButton />
             {snapToGrid ? (
               <Tooltip title="Exit snap to grid mode">
                 <IconButton size="small" aria-label="exit snap to grid mode" onClick={() => onSnapToGrid(false)}>
