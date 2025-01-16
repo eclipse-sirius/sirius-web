@@ -11,14 +11,16 @@ Downstream applications (e.g. SysON-based applications) may require a more flexi
 
 == Decision
 
-We will remove current extension point `navigationBarIconExtensionPoint`.
-We will add a new extension point `navigationBarIconExtensionPoint` through which downstream applications may provide an arbitrary React component to use as their navigation bar left-most component.
+We will leave current extension point `navigationBarIconExtensionPoint` as is.
+
+We will add a new extension point `navigationBarHomeExtensionPoint` through which downstream applications may provide an arbitrary React component to use as their navigation bar left-most component.
+Its default implementation will include the usage of the icon provided through `navigationBarIconExtensionPoint`.
 
 Other parts of the navigation bar ('left' and 'right' contributions) will not be impacted.
 
 == Status
 
-Proposed.
+Accepted.
 
 == Consequences
 

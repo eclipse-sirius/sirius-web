@@ -16,5 +16,4 @@ Downstream applications need a more flexible way of customizing that part of the
 
 == Solution
 
-* Extension point `navigationBarIconExtensionPoint` is removed.
 * A new extension point allows extenders to provide their own component in place of the current one in the navigation bar.
