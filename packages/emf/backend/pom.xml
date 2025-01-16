@@ -35,5 +35,6 @@
 		<module>sirius-components-emf</module>
 		<module>sirius-components-emf-forms</module>
 		<module>sirius-components-interpreter</module>
+		<module>sirius-components-emf-tables</module>
 	</modules>
 </project>
