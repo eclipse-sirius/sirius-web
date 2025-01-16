@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.view.table.CellLabelWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellTextfieldWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellWidgetDescription;
 import org.eclipse.sirius.components.view.table.ColumnDescription;
+import org.eclipse.sirius.components.view.table.RowContextMenuEntry;
 import org.eclipse.sirius.components.view.table.RowDescription;
 import org.eclipse.sirius.components.view.table.TableDescription;
 import org.eclipse.sirius.components.view.table.TableElementDescription;
@@ -97,6 +98,13 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
      *
      * @generated
      */
+    private EClass rowContextMenuEntryEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     private static boolean isInited = false;
 
     /**
@@ -138,10 +146,10 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
      * invoke it directly. Instead, they should simply access that field to obtain the package. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @generated
      * @see #eNS_URI
      * @see #createPackageContents()
      * @see #initializePackageContents()
+     * @generated
      */
     public static TablePackage init() {
         if (isInited)
@@ -406,6 +414,16 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
      * @generated
      */
     @Override
+    public EReference getRowDescription_ContextMenuEntries() {
+        return (EReference) this.rowDescriptionEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getCellDescription() {
         return this.cellDescriptionEClass;
     }
@@ -496,6 +514,66 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
      * @generated
      */
     @Override
+    public EClass getRowContextMenuEntry() {
+        return this.rowContextMenuEntryEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getRowContextMenuEntry_Name() {
+        return (EAttribute) this.rowContextMenuEntryEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getRowContextMenuEntry_LabelExpression() {
+        return (EAttribute) this.rowContextMenuEntryEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getRowContextMenuEntry_IconURLExpression() {
+        return (EAttribute) this.rowContextMenuEntryEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getRowContextMenuEntry_PreconditionExpression() {
+        return (EAttribute) this.rowContextMenuEntryEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getRowContextMenuEntry_Body() {
+        return (EReference) this.rowContextMenuEntryEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public TableFactory getTableFactory() {
         return (TableFactory) this.getEFactoryInstance();
     }
@@ -538,6 +616,7 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
         this.createEAttribute(this.rowDescriptionEClass, ROW_DESCRIPTION__HEADER_INDEX_LABEL_EXPRESSION);
         this.createEAttribute(this.rowDescriptionEClass, ROW_DESCRIPTION__INITIAL_HEIGHT_EXPRESSION);
         this.createEAttribute(this.rowDescriptionEClass, ROW_DESCRIPTION__IS_RESIZABLE_EXPRESSION);
+        this.createEReference(this.rowDescriptionEClass, ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES);
 
         this.cellDescriptionEClass = this.createEClass(CELL_DESCRIPTION);
         this.createEAttribute(this.cellDescriptionEClass, CELL_DESCRIPTION__VALUE_EXPRESSION);
@@ -551,6 +630,13 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
 
         this.cellLabelWidgetDescriptionEClass = this.createEClass(CELL_LABEL_WIDGET_DESCRIPTION);
         this.createEAttribute(this.cellLabelWidgetDescriptionEClass, CELL_LABEL_WIDGET_DESCRIPTION__ICON_EXPRESSION);
+
+        this.rowContextMenuEntryEClass = this.createEClass(ROW_CONTEXT_MENU_ENTRY);
+        this.createEAttribute(this.rowContextMenuEntryEClass, ROW_CONTEXT_MENU_ENTRY__NAME);
+        this.createEAttribute(this.rowContextMenuEntryEClass, ROW_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION);
+        this.createEAttribute(this.rowContextMenuEntryEClass, ROW_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION);
+        this.createEAttribute(this.rowContextMenuEntryEClass, ROW_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION);
+        this.createEReference(this.rowContextMenuEntryEClass, ROW_CONTEXT_MENU_ENTRY__BODY);
     }
 
     /**
@@ -633,6 +719,8 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getRowDescription_IsResizableExpression(), theViewPackage.getInterpretedExpression(), "isResizableExpression", "", 0, 1, RowDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getRowDescription_ContextMenuEntries(), this.getRowContextMenuEntry(), null, "contextMenuEntries", null, 0, -1, RowDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.cellDescriptionEClass, CellDescription.class, "CellDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getCellDescription_ValueExpression(), theViewPackage.getInterpretedExpression(), "valueExpression", "", 0, 1, CellDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
@@ -651,6 +739,18 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
         this.initEClass(this.cellLabelWidgetDescriptionEClass, CellLabelWidgetDescription.class, "CellLabelWidgetDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getCellLabelWidgetDescription_IconExpression(), theViewPackage.getInterpretedExpression(), "iconExpression", "", 0, 1, CellLabelWidgetDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.rowContextMenuEntryEClass, RowContextMenuEntry.class, "RowContextMenuEntry", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getRowContextMenuEntry_Name(), theViewPackage.getIdentifier(), "name", null, 1, 1, RowContextMenuEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getRowContextMenuEntry_LabelExpression(), theViewPackage.getInterpretedExpression(), "labelExpression", null, 0, 1, RowContextMenuEntry.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getRowContextMenuEntry_IconURLExpression(), theViewPackage.getInterpretedExpression(), "iconURLExpression", null, 0, 1, RowContextMenuEntry.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getRowContextMenuEntry_PreconditionExpression(), theViewPackage.getInterpretedExpression(), "preconditionExpression", null, 0, 1, RowContextMenuEntry.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getRowContextMenuEntry_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, RowContextMenuEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Create resource
         this.createResource(eNS_URI);

@@ -18,8 +18,7 @@ import { SettingsButton } from '../actions/SettingsButton';
 import { useTableColumnFiltering } from '../columns/useTableColumnFiltering';
 import { useTableColumnSizing } from '../columns/useTableColumnSizing';
 import { useTableColumnVisibility } from '../columns/useTableColumnVisibility';
-import { ResizeRowHandler } from '../rows/ResizeRowHandler';
-import { RowHeader } from '../rows/RowHeader';
+import { RowContextMenu } from '../rows/RowContextMenu';
 import { useResetRowsMutation } from '../rows/useResetRows';
 import { CursorBasedPagination } from './CursorBasedPagination';
 import { GQLLine, TablePaginationState, TableProps } from './TableContent.types';
@@ -51,7 +50,9 @@ export const TableContent = memo(
       readOnly,
       enableColumnVisibility,
       enableColumnResizing,
-      enableColumnFilters
+      enableColumnFilters,
+      enableRowSizing,
+      handleRowHeightChange
     );
     const { columnSizing, setColumnSizing } = useTableColumnSizing(
       editingContextId,
@@ -126,9 +127,9 @@ export const TableContent = memo(
       onPaginationChange(pagination.cursor, pagination.direction, pagination.size);
     }, [pagination.cursor, pagination.size, pagination.direction]);
 
-    const handleRowHeightChange = (rowId, height) => {
+    function handleRowHeightChange(rowId, height) {
       setLinesState((prev) => prev.map((line) => (line.id === rowId ? { ...line, height } : line)));
-    };
+    }
 
     useEffect(() => {
       setLinesState([...table.lines]);
@@ -158,7 +159,11 @@ export const TableContent = memo(
       enableGlobalFilter,
       manualFiltering: true,
       onGlobalFilterChange: setGlobalFilter,
-      initialState: { showGlobalFilter: enableGlobalFilter },
+      enableColumnPinning: true,
+      initialState: {
+        showGlobalFilter: enableGlobalFilter,
+        columnPinning: { left: ['mrt-row-header'], right: ['mrt-row-actions'] },
+      },
       onColumnSizingChange: setColumnSizing,
       onColumnVisibilityChange: setColumnVisibility,
       onDensityChange: setDensity,
@@ -193,26 +198,15 @@ export const TableContent = memo(
           onPageSizeChange={handlePageSize}
         />
       ),
-      displayColumnDefOptions: {
-        'mrt-row-actions': {
-          header: '',
-          size: 120,
-        },
-      },
-      renderRowActions: ({ row }) => (
-        <>
-          <RowHeader row={row.original} />
-          {enableRowSizing ? (
-            <ResizeRowHandler
-              editingContextId={editingContextId}
-              representationId={representationId}
-              table={table}
-              readOnly={readOnly}
-              row={row.original}
-              onRowHeightChanged={handleRowHeightChange}
-            />
-          ) : null}
-        </>
+      renderRowActions: ({ row, table: MRT_table }) => (
+        <RowContextMenu
+          editingContextId={editingContextId}
+          representationId={representationId}
+          tableId={table.id}
+          row={row}
+          table={MRT_table}
+          readOnly={readOnly}
+        />
       ),
     };
 

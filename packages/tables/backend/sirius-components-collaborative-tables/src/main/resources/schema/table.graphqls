@@ -132,6 +132,13 @@ type IconLabelCell implements Cell {
 type TableDescription implements RepresentationDescription {
   id: ID!
   label: String!
+  contextMenuEntries(tableId: ID!, rowId: ID!): [RowContextMenuEntry!]!
+}
+
+type RowContextMenuEntry {
+  id: ID!
+  label: String!
+  iconURLs: [String!]!
 }
 
 extend type Mutation {
@@ -145,6 +152,7 @@ extend type Mutation {
   resetTableRowsHeight(input: ResetTableRowsHeightInput!): ResetTableRowsHeightPayload!
   changeGlobalFilterValue(input: ChangeGlobalFilterValueInput!): ChangeGlobalFilterValuePayload!
   changeColumnFilter(input: ChangeColumnFilterInput!): ChangeColumnFilterPayload!
+  invokeRowContextMenuEntry(input: InvokeRowContextMenuEntryInput!): InvokeRowContextMenuEntryPayload!
 }
 
 input EditCheckboxCellInput {
@@ -261,3 +269,14 @@ input ResetTableRowsHeightInput {
 }
 
 union ResetTableRowsHeightPayload = ErrorPayload | SuccessPayload
+
+input InvokeRowContextMenuEntryInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  tableId: ID!
+  rowId: ID!
+  menuEntryId: ID!
+}
+
+union InvokeRowContextMenuEntryPayload = ErrorPayload | SuccessPayload

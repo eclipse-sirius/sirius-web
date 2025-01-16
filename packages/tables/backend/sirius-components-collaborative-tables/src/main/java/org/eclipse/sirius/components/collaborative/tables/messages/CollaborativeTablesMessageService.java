@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,6 +35,11 @@ public class CollaborativeTablesMessageService implements ICollaborativeTableMes
     @Override
     public String invalidInput(String expectedInputTypeName, String receivedInputTypeName) {
         return this.messageSourceAccessor.getMessage(MessageConstants.INVALID_INPUT, new Object[] {expectedInputTypeName, receivedInputTypeName});
+    }
+
+    @Override
+    public String noRowContextMenuEntryExecutor() {
+        return this.messageSourceAccessor.getMessage(MessageConstants.NO_ROW_CONTEXT_MENU_ENTRY_FOUND);
     }
 
     @Override
