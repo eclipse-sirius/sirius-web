@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -106,6 +106,14 @@ public interface FormPackage extends EPackage {
      * @ordered
      */
     int FORM_DESCRIPTION__TITLE_EXPRESSION = ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Icon Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FORM_DESCRIPTION__ICON_EXPRESSION = ViewPackage.REPRESENTATION_DESCRIPTION__ICON_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Pages</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -442,13 +450,22 @@ public interface FormPackage extends EPackage {
     int WIDGET_DESCRIPTION__HELP_EXPRESSION = FORM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
+     * The feature id for the '<em><b>Diagnostics Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION = FORM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
+
+    /**
      * The number of structural features of the '<em>Widget Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int WIDGET_DESCRIPTION_FEATURE_COUNT = FORM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
+    int WIDGET_DESCRIPTION_FEATURE_COUNT = FORM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
      * The number of operations of the '<em>Widget Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -493,6 +510,15 @@ public interface FormPackage extends EPackage {
      * @ordered
      */
     int BAR_CHART_DESCRIPTION__HELP_EXPRESSION = WIDGET_DESCRIPTION__HELP_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Diagnostics Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BAR_CHART_DESCRIPTION__DIAGNOSTICS_EXPRESSION = WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Values Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -618,6 +644,15 @@ public interface FormPackage extends EPackage {
     int BUTTON_DESCRIPTION__HELP_EXPRESSION = WIDGET_DESCRIPTION__HELP_EXPRESSION;
 
     /**
+     * The feature id for the '<em><b>Diagnostics Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BUTTON_DESCRIPTION__DIAGNOSTICS_EXPRESSION = WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION;
+
+    /**
      * The feature id for the '<em><b>Button Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -723,6 +758,15 @@ public interface FormPackage extends EPackage {
      * @ordered
      */
     int CHECKBOX_DESCRIPTION__HELP_EXPRESSION = WIDGET_DESCRIPTION__HELP_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Diagnostics Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CHECKBOX_DESCRIPTION__DIAGNOSTICS_EXPRESSION = WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Value Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -953,6 +997,15 @@ public interface FormPackage extends EPackage {
     int DATE_TIME_DESCRIPTION__HELP_EXPRESSION = WIDGET_DESCRIPTION__HELP_EXPRESSION;
 
     /**
+     * The feature id for the '<em><b>Diagnostics Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DATE_TIME_DESCRIPTION__DIAGNOSTICS_EXPRESSION = WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION;
+
+    /**
      * The feature id for the '<em><b>String Value Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -1049,6 +1102,15 @@ public interface FormPackage extends EPackage {
     int FLEXBOX_CONTAINER_DESCRIPTION__HELP_EXPRESSION = WIDGET_DESCRIPTION__HELP_EXPRESSION;
 
     /**
+     * The feature id for the '<em><b>Diagnostics Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FLEXBOX_CONTAINER_DESCRIPTION__DIAGNOSTICS_EXPRESSION = WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION;
+
+    /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -1136,6 +1198,15 @@ public interface FormPackage extends EPackage {
     int IMAGE_DESCRIPTION__HELP_EXPRESSION = WIDGET_DESCRIPTION__HELP_EXPRESSION;
 
     /**
+     * The feature id for the '<em><b>Diagnostics Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int IMAGE_DESCRIPTION__DIAGNOSTICS_EXPRESSION = WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION;
+
+    /**
      * The feature id for the '<em><b>Url Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -1193,6 +1264,15 @@ public interface FormPackage extends EPackage {
      * @ordered
      */
     int LABEL_DESCRIPTION__HELP_EXPRESSION = WIDGET_DESCRIPTION__HELP_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Diagnostics Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LABEL_DESCRIPTION__DIAGNOSTICS_EXPRESSION = WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Value Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1264,6 +1344,15 @@ public interface FormPackage extends EPackage {
     int LINK_DESCRIPTION__HELP_EXPRESSION = WIDGET_DESCRIPTION__HELP_EXPRESSION;
 
     /**
+     * The feature id for the '<em><b>Diagnostics Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LINK_DESCRIPTION__DIAGNOSTICS_EXPRESSION = WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION;
+
+    /**
      * The feature id for the '<em><b>Value Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
@@ -1331,6 +1420,15 @@ public interface FormPackage extends EPackage {
      * @ordered
      */
     int LIST_DESCRIPTION__HELP_EXPRESSION = WIDGET_DESCRIPTION__HELP_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Diagnostics Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LIST_DESCRIPTION__DIAGNOSTICS_EXPRESSION = WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Value Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1436,6 +1534,15 @@ public interface FormPackage extends EPackage {
      * @ordered
      */
     int MULTI_SELECT_DESCRIPTION__HELP_EXPRESSION = WIDGET_DESCRIPTION__HELP_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Diagnostics Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MULTI_SELECT_DESCRIPTION__DIAGNOSTICS_EXPRESSION = WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Value Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1544,6 +1651,15 @@ public interface FormPackage extends EPackage {
     int PIE_CHART_DESCRIPTION__HELP_EXPRESSION = WIDGET_DESCRIPTION__HELP_EXPRESSION;
 
     /**
+     * The feature id for the '<em><b>Diagnostics Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PIE_CHART_DESCRIPTION__DIAGNOSTICS_EXPRESSION = WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION;
+
+    /**
      * The feature id for the '<em><b>Values Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
@@ -1620,6 +1736,15 @@ public interface FormPackage extends EPackage {
      * @ordered
      */
     int RADIO_DESCRIPTION__HELP_EXPRESSION = WIDGET_DESCRIPTION__HELP_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Diagnostics Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RADIO_DESCRIPTION__DIAGNOSTICS_EXPRESSION = WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Value Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1727,6 +1852,15 @@ public interface FormPackage extends EPackage {
     int RICH_TEXT_DESCRIPTION__HELP_EXPRESSION = WIDGET_DESCRIPTION__HELP_EXPRESSION;
 
     /**
+     * The feature id for the '<em><b>Diagnostics Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RICH_TEXT_DESCRIPTION__DIAGNOSTICS_EXPRESSION = WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION;
+
+    /**
      * The feature id for the '<em><b>Value Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
@@ -1795,6 +1929,15 @@ public interface FormPackage extends EPackage {
      * @ordered
      */
     int SELECT_DESCRIPTION__HELP_EXPRESSION = WIDGET_DESCRIPTION__HELP_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Diagnostics Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECT_DESCRIPTION__DIAGNOSTICS_EXPRESSION = WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Value Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1903,6 +2046,15 @@ public interface FormPackage extends EPackage {
     int SPLIT_BUTTON_DESCRIPTION__HELP_EXPRESSION = WIDGET_DESCRIPTION__HELP_EXPRESSION;
 
     /**
+     * The feature id for the '<em><b>Diagnostics Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SPLIT_BUTTON_DESCRIPTION__DIAGNOSTICS_EXPRESSION = WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION;
+
+    /**
      * The feature id for the '<em><b>Actions</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -1962,6 +2114,15 @@ public interface FormPackage extends EPackage {
      * @ordered
      */
     int TEXT_AREA_DESCRIPTION__HELP_EXPRESSION = WIDGET_DESCRIPTION__HELP_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Diagnostics Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXT_AREA_DESCRIPTION__DIAGNOSTICS_EXPRESSION = WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Value Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -2052,6 +2213,15 @@ public interface FormPackage extends EPackage {
     int TEXTFIELD_DESCRIPTION__HELP_EXPRESSION = WIDGET_DESCRIPTION__HELP_EXPRESSION;
 
     /**
+     * The feature id for the '<em><b>Diagnostics Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXTFIELD_DESCRIPTION__DIAGNOSTICS_EXPRESSION = WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION;
+
+    /**
      * The feature id for the '<em><b>Value Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
@@ -2138,6 +2308,15 @@ public interface FormPackage extends EPackage {
      * @ordered
      */
     int TREE_DESCRIPTION__HELP_EXPRESSION = WIDGET_DESCRIPTION__HELP_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Diagnostics Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TREE_DESCRIPTION__DIAGNOSTICS_EXPRESSION = WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Children Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -2271,6 +2450,15 @@ public interface FormPackage extends EPackage {
      * @ordered
      */
     int SLIDER_DESCRIPTION__HELP_EXPRESSION = WIDGET_DESCRIPTION__HELP_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Diagnostics Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SLIDER_DESCRIPTION__DIAGNOSTICS_EXPRESSION = WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Min Value Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -5928,6 +6116,18 @@ public interface FormPackage extends EPackage {
     EAttribute getWidgetDescription_HelpExpression();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.WidgetDescription#getDiagnosticsExpression <em>Diagnostics
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Diagnostics Expression</em>'.
+     * @see org.eclipse.sirius.components.view.form.WidgetDescription#getDiagnosticsExpression()
+     * @see #getWidgetDescription()
+     * @generated
+     */
+    EAttribute getWidgetDescription_DiagnosticsExpression();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.BarChartDescription <em>Bar
      * Chart Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -8413,6 +8613,14 @@ public interface FormPackage extends EPackage {
          * @generated
          */
         EAttribute WIDGET_DESCRIPTION__HELP_EXPRESSION = eINSTANCE.getWidgetDescription_HelpExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Diagnostics Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION = eINSTANCE.getWidgetDescription_DiagnosticsExpression();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.impl.BarChartDescriptionImpl

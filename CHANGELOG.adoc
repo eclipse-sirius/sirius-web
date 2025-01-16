@@ -64,7 +64,9 @@ Some log messages have been updated in order to provide more information and mak
 The configuration property `sirius.web.graphql.tracing` has also been added to active the tracing mode of the GraphQL API.
 It can be activated using `sirius.web.graphql.tracing=true` since it is not enabled by default to not have any impact on the performance of the application.
 Some additional log has also been contributed on the frontend in order to view more easily the order and time of the GraphQL requests and responses.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4390[#4390] [form] Add support for diagnostics on View-based widgets
+Add view-based widgets now support an optional _Diagnostics Expression_.
+The expression can return a string (with a prefix of the form `INFO:`, `WARNING:` or `ERROR:` to indicate the severity), an EMF `org.eclipse.emf.common.util.Diagnostic`, or a list of either of these.
 
 === Improvements
 

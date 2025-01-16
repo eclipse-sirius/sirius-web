@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -52,6 +52,7 @@ public class WidgetDescriptionItemProvider extends FormElementDescriptionItemPro
 
             this.addLabelExpressionPropertyDescriptor(object);
             this.addHelpExpressionPropertyDescriptor(object);
+            this.addDiagnosticsExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -78,6 +79,19 @@ public class WidgetDescriptionItemProvider extends FormElementDescriptionItemPro
                 this.getString("_UI_WidgetDescription_helpExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetDescription_helpExpression_feature", "_UI_WidgetDescription_type"),
                 FormPackage.Literals.WIDGET_DESCRIPTION__HELP_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Diagnostics Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addDiagnosticsExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_WidgetDescription_diagnosticsExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetDescription_diagnosticsExpression_feature", "_UI_WidgetDescription_type"),
+                FormPackage.Literals.WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -115,6 +129,7 @@ public class WidgetDescriptionItemProvider extends FormElementDescriptionItemPro
         switch (notification.getFeatureID(WidgetDescription.class)) {
             case FormPackage.WIDGET_DESCRIPTION__LABEL_EXPRESSION:
             case FormPackage.WIDGET_DESCRIPTION__HELP_EXPRESSION:
+            case FormPackage.WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }

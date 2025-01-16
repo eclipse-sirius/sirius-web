@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -858,6 +858,16 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
     @Override
     public EAttribute getWidgetDescription_HelpExpression() {
         return (EAttribute) this.widgetDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getWidgetDescription_DiagnosticsExpression() {
+        return (EAttribute) this.widgetDescriptionEClass.getEStructuralFeatures().get(2);
     }
 
     /**
@@ -2862,6 +2872,7 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.widgetDescriptionEClass = this.createEClass(WIDGET_DESCRIPTION);
         this.createEAttribute(this.widgetDescriptionEClass, WIDGET_DESCRIPTION__LABEL_EXPRESSION);
         this.createEAttribute(this.widgetDescriptionEClass, WIDGET_DESCRIPTION__HELP_EXPRESSION);
+        this.createEAttribute(this.widgetDescriptionEClass, WIDGET_DESCRIPTION__DIAGNOSTICS_EXPRESSION);
 
         this.barChartDescriptionEClass = this.createEClass(BAR_CHART_DESCRIPTION);
         this.createEAttribute(this.barChartDescriptionEClass, BAR_CHART_DESCRIPTION__VALUES_EXPRESSION);
@@ -3286,6 +3297,8 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getWidgetDescription_HelpExpression(), theViewPackage.getInterpretedExpression(), "helpExpression", null, 0, 1, WidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getWidgetDescription_DiagnosticsExpression(), theViewPackage.getInterpretedExpression(), "diagnosticsExpression", null, 0, 1, WidgetDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.barChartDescriptionEClass, BarChartDescription.class, "BarChartDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getBarChartDescription_ValuesExpression(), theViewPackage.getInterpretedExpression(), "valuesExpression", null, 0, 1, BarChartDescription.class, !IS_TRANSIENT,
