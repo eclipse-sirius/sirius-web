@@ -73,6 +73,7 @@ Some log messages have been updated in order to provide more information and mak
 The configuration property `sirius.web.graphql.tracing` has also been added to active the tracing mode of the GraphQL API.
 It can be activated using `sirius.web.graphql.tracing=true` since it is not enabled by default to not have any impact on the performance of the application.
 Some additional log has also been contributed on the frontend in order to view more easily the order and time of the GraphQL requests and responses.
+- https://github.com/eclipse-sirius/sirius-web/issues/4430[#4430] [diagram] Add the PNG export of a diagram.
 
 
 === Improvements
