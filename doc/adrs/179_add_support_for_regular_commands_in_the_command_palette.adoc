@@ -1,0 +1,28 @@
+= [ADR-179] Add support for regular commands in the command palette.
+
+Github issue: https://github.com/eclipse-sirius/sirius-web/issues/4428
+
+== Context
+
+We need to be able to provide backend commands to trigger some backend and frontend actions from the command palette.
+
+
+== Decision
+
+The current support for the search in the command palette should be accessible thanks to a dedicated command.
+This command will make the command palette switch its behavior to a search mode.
+In this search mode, the commands received by the backend will be used to update the selection of the frontend, just like today.
+
+On top of that, new commands will be available to execute some arbitrary behavior on the backend.
+Those commands may specify the identifier of a dialog to display when clicked by the end user.
+Those dialogs should be registered, probably thanks to an extension point, to be discovered by the command palette.
+
+The command that want to leverage those dialog may need to provide some additional parameters to the dialog.
+For example, two commands leveraging a publication dialog will need to indicate to said dialog which publication process to run.
+
+Those command may need to have support for an optional map of keys and values that will be given to the modal used after their execution.
+
+
+== Status
+
+Work in progress
