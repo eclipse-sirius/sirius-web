@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,7 +34,6 @@ import org.eclipse.sirius.components.collaborative.trees.dto.RenameTreeItemInput
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IIdentityService;
-import org.eclipse.sirius.components.core.api.SemanticKindConstants;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.portals.tests.graphql.PortalEventSubscriptionRunner;
@@ -47,6 +46,7 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.data.TestIdentifiers;
+import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
@@ -55,8 +55,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -108,7 +106,7 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
 
     private final TreeItemMatcher ePackageHasNoRepresentation = new TreeItemMatcher(
             tree -> tree.getChildren().get(0).getChildren().get(0),
-            treeItem -> treeItem.isHasChildren() && treeItem.getChildren().size() == 1 && treeItem.getChildren().get(0).getKind().startsWith(SemanticKindConstants.PREFIX)
+            treeItem -> treeItem.isHasChildren() && treeItem.getChildren().stream().noneMatch(childTreeItem -> childTreeItem.getId().equals(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()))
     );
 
     private final TreeItemMatcher documentHasNoObject = new TreeItemMatcher(
@@ -156,9 +154,8 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a project, when we subscribe to the tree events of its explorer, then the tree of the explorer is sent")
-    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenWeSubscribeToTreeEventsOfItsExplorerThenTheTreeOfTheExplorerIsSent() {
         var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of());
         var input = new ExplorerEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), treeRepresentationId);
@@ -178,9 +175,8 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the explorer of a project, when we delete tree items, then the tree is refreshed")
-    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenExplorerOfProjectWhenWeDeleteTreeItemsThenTheTreeIsRefreshed() {
         var expandedIds = this.getAllTreeItemIdsForEcoreSampleProject();
         var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, expandedIds, List.of());
@@ -214,9 +210,8 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the explorer of a project, when we trigger a tree item rename, then the initial direct edit label is executed")
-    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenExplorerOfProjectWhenWeTriggerATreeItemRenameThenTheInitialDirectEditTreeItemLabelIsExecuted() {
         var expandedIds = this.getAllTreeItemIdsForEcoreSampleProject();
         var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, expandedIds, List.of());
@@ -234,9 +229,8 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the explorer of a project, when we rename a tree item, then the tree is refreshed")
-    @Sql(scripts = { "/scripts/initialize.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenExplorerOfProjectWhenWeRenameTreeItemThenTheTreeIsRefreshed() {
         var portalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
         var portalFlux = this.portalEventSubscriptionRunner.run(portalEventInput);

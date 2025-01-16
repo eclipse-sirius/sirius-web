@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,13 +22,12 @@ import java.util.Map;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
+import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.ExplorerDescriptionsQueryRunner;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -45,9 +44,8 @@ public class ExplorerDescriptionsControllerTests extends AbstractIntegrationTest
     private ExplorerDescriptionsQueryRunner explorerDescriptionsQueryRunner;
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given an empty studio, when the explorer descriptions are requested, then only the default explorer description id is received")
-    @Sql(scripts = { "/scripts/studio.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenAnEmpyStudioWhenTheExplorerDescriptionsAreRequestedThenOnlyTheDefaultExplorerDescriptionIdIsReceived() {
         Map<String, Object> variables = Map.of(
                 "editingContextId", StudioIdentifiers.EMPTY_STUDIO_PROJECT.toString()
@@ -60,9 +58,8 @@ public class ExplorerDescriptionsControllerTests extends AbstractIntegrationTest
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a studio, when the explorer descriptions are requested, then a view tree description is received in addition of the default explorer one")
-    @Sql(scripts = { "/scripts/studio.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenAStudioWhenTheExplorerDescriptionsAreRequestedThenAViewTreeDescriptionIsReceivedInAdditionOfTheDefaultExplorerOne() {
         Map<String, Object> variables = Map.of(
                 "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString()

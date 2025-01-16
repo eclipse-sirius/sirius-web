@@ -12,11 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.projects;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.project.dto.RestProject;
 import org.eclipse.sirius.web.data.TestIdentifiers;
+import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,8 +26,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,9 +57,8 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for all projects, then it should return all projects")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForAllProjectsThenItShouldReturnAllProjects() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -73,13 +72,12 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
                 .expectStatus()
                 .isOk()
                 .expectBodyList(RestProject.class)
-                .hasSize(3);
+                .value(value -> assertThat(value).isNotEmpty());
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for all projects with a page size, then it should return a max number of projects corresponding to the size")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForAllProjectsWithAPageSizeThenItShouldReturnAMaxNumberOfProjectsCorrespondingToTheSize() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -97,9 +95,8 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for all projects with a page size > projects size, then it should return a max number of projects corresponding to the projects size")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForAllProjectsWithAPageSizeSupToProjectsSizeThenItShouldReturnAMaxNumberOfProjectsCorrespondingToTheProjectsSize() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -113,13 +110,12 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
                 .expectStatus()
                 .isOk()
                 .expectBodyList(RestProject.class)
-                .hasSize(3);
+                .value(value -> assertThat(value).isNotEmpty());
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for all projects with a page size = 0, then it should return an empty list")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForAllProjectsWithAPageSizeEq0ThenItShouldReturnAnEmptyList() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -137,9 +133,8 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for all projects after a specific one, then it should return all projects after the specific one")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForAllProjectsAfterASpecificOneThenItShouldReturnAllProjectsAfterTheSpecificOne() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -154,18 +149,18 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
                 .expectStatus()
                 .isOk()
                 .expectBodyList(RestProject.class)
-                .hasSize(2)
                 .consumeWith(result -> {
                     var restProjects = result.getResponseBody();
-                    assertEquals(TestIdentifiers.ECORE_SAMPLE_PROJECT, restProjects.get(0).id());
-                    assertEquals(TestIdentifiers.SYSML_SAMPLE_PROJECT, restProjects.get(1).id());
+                    assertThat(restProjects)
+                            .isNotEmpty()
+                            .anySatisfy(restProject -> assertThat(restProject.id()).isEqualTo(TestIdentifiers.ECORE_SAMPLE_PROJECT))
+                            .anySatisfy(restProject -> assertThat(restProject.id()).isEqualTo(TestIdentifiers.SYSML_SAMPLE_PROJECT));
                 });
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for N projects after a specific one, then it should return N projects after the specific one")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForNProjectsAfterASpecificOneThenItShouldReturnNProjectsAfterTheSpecificOne() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -188,9 +183,8 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for all projects before a specific one, then it should return all projects before the specific one")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForAllProjectsBeforeASpecificOneThenItShouldReturnAllProjectsBeforeTheSpecificOne() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -205,18 +199,18 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
                 .expectStatus()
                 .isOk()
                 .expectBodyList(RestProject.class)
-                .hasSize(2)
                 .consumeWith(result -> {
                     var restProjects = result.getResponseBody();
-                    assertEquals(TestIdentifiers.ECORE_SAMPLE_PROJECT, restProjects.get(0).id());
-                    assertEquals(TestIdentifiers.SYSML_SAMPLE_PROJECT, restProjects.get(1).id());
+                    assertThat(restProjects)
+                            .isNotEmpty()
+                            .anySatisfy(restProject -> assertThat(restProject.id()).isEqualTo(TestIdentifiers.ECORE_SAMPLE_PROJECT))
+                            .anySatisfy(restProject -> assertThat(restProject.id()).isEqualTo(TestIdentifiers.SYSML_SAMPLE_PROJECT));
                 });
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for N projects before a specific one, then it should return N projects after the specific one")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForNProjectsBeforeASpecificOneThenItShouldReturnNProjectsAfterTheSpecificOne() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -239,9 +233,8 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for all projects after an unkwnown, then it should return an empty list")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForAllProjectsAfterAnUnknownThenItShouldReturnAnEmptyList() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -260,9 +253,8 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for all projects before an unkwnown, then it should return an empty list")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForAllProjectsBeforeAnUnknownThenItShouldReturnAnEmptyList() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -281,9 +273,8 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for a project, then it should return the project")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForProjectThenItShouldReturnTheProject() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -306,9 +297,8 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we ask for an unknown project, then it should return an error")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeAskForUnknownProjectThenItShouldReturnAnError() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -324,9 +314,8 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we create a new project, then it should be created successfully")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeCreateNewProjectThenItShouldBeCreatedSuccessfully() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -349,9 +338,8 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we update the name of a project, then it should be updated")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeUpdateTheNameOfProjectTheItShouldBeUpdated() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -374,9 +362,8 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we update the name of an unknown project, then it should return an error")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeUpdateTheNameOfUnknownProjectTheItShouldReturnAnError() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -399,9 +386,8 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we delete a project, then it should be deleted")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeDeleteProjectThenItShouldBeDeleted() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
@@ -424,9 +410,8 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the Sirius Web REST API, when we delete an unknown project, then it should return an error")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSiriusWebRestAPIWhenWeDeleteAnUnknownProjectThenItShouldReturnAnError() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())

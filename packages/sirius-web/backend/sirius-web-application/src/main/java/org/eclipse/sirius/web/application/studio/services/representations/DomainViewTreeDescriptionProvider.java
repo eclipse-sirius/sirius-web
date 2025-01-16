@@ -80,7 +80,7 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
 
     @Override
     public void preProcess(IEditingContext editingContext) {
-        if (editingContext instanceof EditingContext siriusWebEditingContext && this.studioCapableEditingContextPredicate.test(editingContext)) {
+        if (editingContext instanceof EditingContext siriusWebEditingContext && this.studioCapableEditingContextPredicate.test(editingContext.getId())) {
             siriusWebEditingContext.getViews().add(this.view);
         }
     }

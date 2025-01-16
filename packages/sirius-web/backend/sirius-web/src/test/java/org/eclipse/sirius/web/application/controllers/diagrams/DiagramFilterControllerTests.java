@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,17 +60,16 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.diagram.dto.DiagramFilterEventInput;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.services.diagrams.ExpandCollapseDiagramDescriptionProvider;
-import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
+import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.DiagramFilterEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import graphql.execution.DataFetcherResult;
@@ -137,9 +136,8 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a diagram and a diagram filter, when a tool collapsing nodes is invoked on the diagram, then the diagram filter is updated")
-    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenDiagramAndDiagramFilterWhenToolCollapsingNodeIsInvokedOnDiagramThenDiagramFilterIsUpdated() {
         BiFunction<Diagram, String, Void> collapseNodes = (diagram, nodeId) -> {
             String collapseToolId = this.expandCollapseDiagramDescriptionProvider.getCollapseNodeToolId();
@@ -156,9 +154,8 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a diagram and a diagram filter, when a tool fading nodes is invoked on the diagram, then the diagram filter is updated")
-    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenDiagramAndDiagramFilterWhenToolFadingNodeIsInvokedOnDiagramThenDiagramFilterIsUpdated() {
         BiFunction<Diagram, String, Void> fadeNodes = (diagram, nodeId) -> {
             var input = new FadeDiagramElementInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagram.getId(), Set.of(nodeId), true);
@@ -174,9 +171,8 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a diagram and a diagram filter, when a tool pinning nodes is invoked on the diagram, then the diagram filter is updated")
-    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenDiagramAndDiagramFilterWhenToolPinningNodeIsInvokedOnDiagramThenDiagramFilterIsUpdated() {
         BiFunction<Diagram, String, Void> pinNodes = (diagram, nodeId) -> {
             var input = new PinDiagramElementInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagram.getId(), Set.of(nodeId), true);
@@ -192,9 +188,8 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a diagram and a diagram filter, when a tool hiding nodes is invoked on the diagram, then the diagram filter is updated")
-    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenDiagramAndDiagramFilterWhenToolHidingNodeIsInvokedOnDiagramThenDiagramFilterIsUpdated() {
         BiFunction<Diagram, String, Void> hideNodes = (diagram, nodeId) -> {
             var input = new HideDiagramElementInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), diagram.getId(), Set.of(nodeId), true);
@@ -268,9 +263,8 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a diagram and a diagram filter, when a tool collapsing nodes is invoked on the diagram filter, then the diagram is updated")
-    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenDiagramAndDiagramFilterWhenToolCollapsingNodeIsInvokedOnDiagramFilterThenDiagramIsUpdated() {
         Predicate<Node> nodeToSelectPredicate = node -> node.getCollapsingState().equals(CollapsingState.EXPANDED);
 
@@ -286,9 +280,8 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a diagram and a diagram filter, when a tool fading nodes is invoked on the diagram filter, then the diagram is updated")
-    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenDiagramAndDiagramFilterWhenToolFadingNodeIsInvokedOnDiagramFilterThenDiagramIsUpdated() {
         Predicate<Node> nodeToSelectPredicate = node -> !node.getModifiers().contains(ViewModifier.Faded);
 
@@ -304,9 +297,8 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a diagram and a diagram filter, when a tool hiding nodes is invoked on the diagram filter, then the diagram is updated")
-    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenDiagramAndDiagramFilterWhenToolHidingNodeIsInvokedOnDiagramFilterThenDiagramIsUpdated() {
         Predicate<Node> nodeToSelectPredicate = node -> !node.getModifiers().contains(ViewModifier.Hidden);
 
@@ -322,9 +314,8 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a diagram and a diagram filter, when a tool pinning nodes is invoked on the diagram filter, then the diagram is updated")
-    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenDiagramAndDiagramFilterWhenToolPinningNodeIsInvokedOnDiagramFilterThenDiagramIsUpdated() {
         Predicate<Node> nodeToSelectPredicate = node -> !node.isPinned();
 

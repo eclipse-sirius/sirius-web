@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,17 @@
 
 package org.eclipse.sirius.web.services.undoredo;
 
+import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
+
 import com.jayway.jsonpath.JsonPath;
+
+import java.time.Duration;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+
 import org.assertj.core.api.Assertions;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditRadioInput;
@@ -28,6 +38,7 @@ import org.eclipse.sirius.web.application.undo.dto.RedoInput;
 import org.eclipse.sirius.web.application.undo.dto.UndoInput;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.services.forms.FormWithRadioDescriptionProvider;
+import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedFormSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.undoredo.RedoMutationRunner;
@@ -37,20 +48,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
-
-import java.time.Duration;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
-
-import static org.assertj.core.api.Assertions.fail;
-import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 /**
  * Integration tests of undo redo semantic data.
@@ -97,9 +98,8 @@ public class UndoRedoSemanticChangeTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a radio widget, when it is edited, then we can undo and redo the change")
-    @Sql(scripts = {"/scripts/studio.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenRadioWidgetWhenItIsEditedThenItsWeCanUndoRedoTheChange() {
         var flux = this.givenSubscriptionToRadioForm();
 

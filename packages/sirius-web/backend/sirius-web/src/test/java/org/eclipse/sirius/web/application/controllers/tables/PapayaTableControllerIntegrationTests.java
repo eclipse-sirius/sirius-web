@@ -43,6 +43,7 @@ import org.eclipse.sirius.components.tables.tests.graphql.ChangeGlobalFilterMuta
 import org.eclipse.sirius.components.tables.tests.graphql.TableEventSubscriptionRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
+import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedTableSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -51,8 +52,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -111,9 +110,8 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a table representation, when we subscribe to its event, then the representation data are received")
-    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenTableRepresentationWhenWeSubscribeToItsEventThenTheRepresentationDataAreReceived() {
         var flux = this.givenSubscriptionToTable();
 
@@ -134,9 +132,8 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a table, when a refresh is triggered, then the table is refreshed")
-    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenTableWhenRefreshTriggeredThenTableIsRefreshed() {
         var flux = this.givenSubscriptionToTable();
 
@@ -187,9 +184,8 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a table representation with a column header, when we subscribe to its event, then data received contain the header")
-    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenTableRepresentationWithColumnHeaderWhenWeSubscribeToItsEventThenDataReceivedContainTheHeader() {
         var flux = this.givenSubscriptionToTable();
 
@@ -214,9 +210,8 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a table, when a global filter mutation is triggered, then a payload with the new global filter value is received")
-    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenTableWhenGlobalFilterMutationTriggeredThenPayloadWithNewGlobalFilterValueReceived() {
         var flux = this.givenSubscriptionToTable();
 
@@ -262,9 +257,8 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a table, when a column filter mutation is triggered, then a payload with the new column filter value is received")
-    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenTableWhenColumnFilterMutationTriggeredThenPayloadWithNewColumnFilterValueReceived() {
         var flux = this.givenSubscriptionToTable();
 
@@ -314,9 +308,8 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a table with filters, when the existing representation is opened, then persisted filters are preserved")
-    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenTableWithFiltersWhenRepresentationIsOpenedThenPersistedFiltersArePreserved() {
         this.givenCommittedTransaction.commit();
 

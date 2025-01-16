@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,7 @@ import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateI
 import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateSuccessPayload;
 import org.eclipse.sirius.web.application.studio.services.StudioProjectTemplateProvider;
 import org.eclipse.sirius.web.papaya.services.PapayaProjectTemplateProvider;
+import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.CreateProjectFromTemplateMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.ProjectTemplatesQueryRunner;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,8 +37,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,9 +69,8 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a set of project templates, when a query is performed, then the project templates are returned")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSetOfProjectTemplatesWhenQueryIsPerformedThenTheProjectTemplatesAreReturned() {
         Map<String, Object> variables = Map.of("page", 0, "limit", 10);
         var result = this.projectTemplatesQueryRunner.run(variables);
@@ -97,9 +95,8 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a project to create from a template, when the mutation is performed, then the project is created")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectToCreateFromTemplateWhenMutationIsPerformedThenTheProjectIsCreated() {
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -127,9 +124,8 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given the papaya project template, when the mutation is performed, then the project is created")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenPapayaProjectTemplateWhenMutationIsPerformedThenTheProjectIsCreated() {
         TestTransaction.flagForCommit();
         TestTransaction.end();

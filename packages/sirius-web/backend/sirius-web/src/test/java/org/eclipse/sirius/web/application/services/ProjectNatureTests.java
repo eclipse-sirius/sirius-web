@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,13 +20,13 @@ import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectUpdateService;
+import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -48,9 +48,8 @@ public class ProjectNatureTests extends AbstractIntegrationTests {
     private IProjectUpdateService projectUpdateService;
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a project, when a nature is added, then the new nature is visible")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenNatureIsAddedThenTheNewNatureIsVisible() {
         var optionalProject = this.projectSearchService.findById(TestIdentifiers.SYSML_SAMPLE_PROJECT);
         assertThat(optionalProject)
@@ -61,6 +60,10 @@ public class ProjectNatureTests extends AbstractIntegrationTests {
         var projectId = optionalProject.map(Project::getId).orElseThrow(IllegalStateException::new);
         this.projectUpdateService.addNature(null, projectId, "new nature");
 
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
+
         optionalProject = this.projectSearchService.findById(TestIdentifiers.SYSML_SAMPLE_PROJECT);
         assertThat(optionalProject)
                 .isPresent()
@@ -69,9 +72,8 @@ public class ProjectNatureTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a project, when a nature is removed, then the nature is not visible anymore")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenNatureIsRemovedThenTheNatureIsNotVisibleAnymore() {
         var optionalProject = this.projectSearchService.findById(TestIdentifiers.SYSML_SAMPLE_PROJECT);
         assertThat(optionalProject)
@@ -83,6 +85,10 @@ public class ProjectNatureTests extends AbstractIntegrationTests {
         var existingNature = optionalProject.flatMap(project -> project.getNatures().stream().map(Nature::name).findFirst())
                 .orElseThrow(IllegalStateException::new);
         this.projectUpdateService.removeNature(null, projectId, existingNature);
+
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
 
         optionalProject = this.projectSearchService.findById(TestIdentifiers.SYSML_SAMPLE_PROJECT);
         assertThat(optionalProject)

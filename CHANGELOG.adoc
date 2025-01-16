@@ -24,6 +24,10 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/4416[#4416] [sirius-web] Tests written for Sirius Web should now leverage the brand new annotation `@GivenSiriusWebServer` which will set up all the test data of the server.
+It will allow us to create more complex test data shared by all integration tests to detect additional problems.
+- https://github.com/eclipse-sirius/sirius-web/issues/4416[#4416] [sirius-web] The `IEditingContextMigrationParticipantPredicate` will now use the id of the editing context instead of the whole editing context in order to find out if the migration participant should be activated.
+
 
 === Dependency update
 
@@ -48,6 +52,9 @@ This may have some consequences for downstream applications which are embedding 
 See https://github.com/mui/material-ui/issues/15618[this link] for additional details.
 - https://github.com/eclipse-sirius/sirius-web/issues/4360[#4360] [table] Prevent application crash when opening tables from a form
 - https://github.com/eclipse-sirius/sirius-web/issues/4359[#4359] [table] Fix an issue where two pagination forms where display in tables
+- https://github.com/eclipse-sirius/sirius-web/issues/4416[#4416] [sirius-web] Fix the way migration participant were executed.
+Before this contribution, migration participants were executed if the project being opened was a studio.
+Now they are executed for some data if the data was coming from a studio too.
 
 
 === New Features

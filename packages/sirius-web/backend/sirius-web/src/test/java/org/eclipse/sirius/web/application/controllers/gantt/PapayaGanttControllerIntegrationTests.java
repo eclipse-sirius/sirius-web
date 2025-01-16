@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,6 +47,7 @@ import org.eclipse.sirius.components.gantt.tests.navigation.GanttNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.services.gantt.PapayaGanttDescriptionProvider;
+import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedGanttSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,8 +55,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.core.publisher.Flux;
@@ -119,9 +118,8 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a gantt representation, when we subscribe to its event, then the representation data are received")
-    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenGanttRepresentationWhenWeSubscribeToItsEventThenTheRepresentationDataAreReceived() {
         var flux = this.givenSubscriptionToGantt();
 
@@ -142,9 +140,8 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a gantt representation, when we create/edit a task, then the new task is created/edited")
-    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenGanttRepresentationWhenWeCreateEditTaskThenTheTaskIsAsExpected() {
         var flux = this.givenSubscriptionToGantt();
 
@@ -220,9 +217,8 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a gantt representation, when we delete a task, then the task is not visible anymore")
-    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenGanttRepresentationWhenWeDeleteTaskThenTheTaskIsNotVisibleAnymore() {
         var flux = this.givenSubscriptionToGantt();
 
@@ -273,9 +269,8 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a gantt representation, when the expand Task mutation is performed, then it succeeds")
-    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenGanttRepresentationWhenTheExpandTaskMutationIsPerformedThenItSucceeds() {
         var flux = this.givenSubscriptionToGantt();
 
@@ -326,9 +321,8 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
                 .verify(Duration.ofSeconds(10));
     }
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a gantt representation, when the change column mutation is performed, then it succeeds")
-    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenGanttRepresentationWhenChangeColumnMutationIsPerformedThenItSucceeds() {
 
         var flux = this.givenSubscriptionToGantt();
@@ -381,9 +375,8 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given a gantt representation, when the task dependency creation and deletion mutations are invoked, then it succeeds")
-    @Sql(scripts = {"/scripts/papaya.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenGanttWhenCreateAndDeleteTaskDependencyMutationArePerformedThenItSucceeds() {
 
         var flux = this.givenSubscriptionToGantt();

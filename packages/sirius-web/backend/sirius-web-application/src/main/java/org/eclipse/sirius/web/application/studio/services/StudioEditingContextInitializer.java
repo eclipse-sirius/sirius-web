@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -53,7 +53,7 @@ public class StudioEditingContextInitializer implements IEditingContextProcessor
 
     @Override
     public void preProcess(IEditingContext editingContext) {
-        var isStudio = this.studioCapableEditingContextPredicate.test(editingContext);
+        var isStudio = this.studioCapableEditingContextPredicate.test(editingContext.getId());
         if (isStudio && editingContext instanceof IEMFEditingContext emfEditingContext) {
             var packageRegistry = emfEditingContext.getDomain().getResourceSet().getPackageRegistry();
             packageRegistry.put(DomainPackage.eNS_URI, DomainPackage.eINSTANCE);
