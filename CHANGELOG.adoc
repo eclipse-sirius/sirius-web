@@ -38,7 +38,8 @@ As part of this switch, the way we redirect the HTTP requests of frontend views 
 The previous strategy relied on an odd configuration of the `WebMvcConfigurer#addResourceHandlers` in order to redirect those requests to the `index.html` file.
 Now that the behavior of this method https://github.com/spring-projects/spring-framework/issues/33712[has been changed in Spring Framework] to only support folders as valid locations, we must update to https://docs.spring.io/spring-framework/reference/web/webmvc-functional.html#webmvc-fn-resource[the recommended way] to perform the routing of single page applications.
 This may have some consequences for downstream applications which are embedding static resources.
-
+- [releng] Upgrade `springdoc-openapi-starter-webmvc-ui` from 2.5.0 to version 2.8.3.
+- [releng] Upgrade `swagger-annotations-jakarta` from 2.2.21 to 2.2.27
 
 === Bug fixes
 
