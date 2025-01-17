@@ -21,15 +21,11 @@ import ListItemText from '@mui/material/ListItemText';
 import Skeleton from '@mui/material/Skeleton';
 import { SxProps, Theme, useTheme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { ComponentType, useState } from 'react';
+import { ComponentType } from 'react';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
-import {
-  ExpressionAreaProps,
-  ExpressionAreaState,
-  ExpressionResultViewerProps,
-  ResultAreaProps,
-} from './QueryView.types';
+import { ExpressionAreaProps, ExpressionResultViewerProps, ResultAreaProps } from './QueryView.types';
 import { useEvaluateExpression } from './useEvaluateExpression';
 import {
   GQLBooleanExpressionResult,
@@ -38,6 +34,7 @@ import {
   GQLObjectsExpressionResult,
   GQLStringExpressionResult,
 } from './useEvaluateExpression.types';
+import { useExpression } from './useExpression';
 import { useResultAreaSize } from './useResultAreaSize';
 
 export const QueryView = ({ editingContextId, readOnly }: WorkbenchViewComponentProps) => {
@@ -55,29 +52,18 @@ export const QueryView = ({ editingContextId, readOnly }: WorkbenchViewComponent
 
   return (
     <Box data-representation-kind="query" sx={queryViewStyle} ref={ref}>
-      <ExpressionArea onEvaluateExpression={handleEvaluateExpression} disabled={loading || readOnly} />
+      <ExpressionArea
+        editingContextId={editingContextId}
+        onEvaluateExpression={handleEvaluateExpression}
+        disabled={loading || readOnly}
+      />
       <ResultArea loading={loading} payload={result} width={width} height={height} />
     </Box>
   );
 };
 
-const ExpressionArea = ({ onEvaluateExpression, disabled }: ExpressionAreaProps) => {
-  const [state, setState] = useState<ExpressionAreaState>({
-    expression: '',
-  });
-
-  const handleExpressionChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setState((prevState) => ({ ...prevState, expression: value }));
-  };
-
-  const handleKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
-    if ('Enter' === event.key && event.altKey) {
-      onEvaluateExpression(state.expression);
-    }
-  };
+const ExpressionArea = ({ editingContextId, onEvaluateExpression, disabled }: ExpressionAreaProps) => {
+  const { expression, onExpressionChange } = useExpression(editingContextId);
 
   const expressionAreaToolbarStyle: SxProps<Theme> = {
     display: 'flex',
@@ -86,28 +72,43 @@ const ExpressionArea = ({ onEvaluateExpression, disabled }: ExpressionAreaProps)
     justifyContent: 'space-between',
   };
 
+  const handleKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
+    if ('Enter' === event.key && (event.ctrlKey || event.metaKey) && !disabled) {
+      onEvaluateExpression(expression);
+    }
+  };
+
+  var isApple = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
+
   return (
     <div data-role="expression">
       <Box sx={expressionAreaToolbarStyle}>
         <Typography variant="subtitle2">Expression</Typography>
 
-        <IconButton
-          onClick={() => onEvaluateExpression(state.expression)}
-          color={state.expression.trim().length > 0 ? 'primary' : undefined}
-          disabled={disabled || state.expression.trim().length === 0}>
-          <PlayCircleOutlineIcon />
-        </IconButton>
+        <Tooltip
+          title={`Press this button or ${
+            isApple ? '⌘ ' : 'Ctrl '
+          } + Enter when the textfield below is focused to execute the expression`}>
+          <IconButton
+            onClick={() => onEvaluateExpression(expression)}
+            color={expression.trim().length > 0 ? 'primary' : undefined}
+            disabled={disabled || expression.trim().length === 0}>
+            <PlayCircleOutlineIcon />
+          </IconButton>
+        </Tooltip>
       </Box>
       <div>
         <TextField
-          value={state.expression}
-          onChange={handleExpressionChange}
+          placeholder="Enter an expression to get started"
+          value={expression}
+          onChange={onExpressionChange}
           onKeyDown={handleKeyDown}
           disabled={disabled}
           spellCheck={false}
           multiline
           minRows={5}
           fullWidth
+          autoFocus
           sx={{
             backgroundColor: '#fff8e5',
           }}
