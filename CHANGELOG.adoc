@@ -81,6 +81,7 @@ Some additional log has also been contributed on the frontend in order to view m
 - https://github.com/eclipse-sirius/sirius-web/issues/4346[#4346] [query] The current selection is now available using both the variables `selection: Sequence{Object}` for the full selection and `self: Object` for the first selected object.
 - https://github.com/eclipse-sirius/sirius-web/issues/4446[#4446] [sirius-web] Added a new interface `org.eclipse.sirius.web.infrastructure.configuration.mvc.IBackendPathPredicate` which can be used to declare additional paths that should be handled by the backend itself instead of left to the frontend router.
 This can be used to add support for new kinds of static resources (e.g. PDF files) or new Spring controllers.
+- https://github.com/eclipse-sirius/sirius-web/issues/4346[#4346] [query] Deactivate the spell checker on the query view
 
 === Improvements
 
