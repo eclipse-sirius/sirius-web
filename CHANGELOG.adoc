@@ -59,6 +59,7 @@ See https://github.com/mui/material-ui/issues/15618[this link] for additional de
 Before this contribution, migration participants were executed if the project being opened was a studio.
 Now they are executed for some data if the data was coming from a studio too.
 - https://github.com/eclipse-sirius/sirius-web/issues/4422[#4422] [diagram] Prevent application crash when an edge path is malformed during node moves
+- https://github.com/eclipse-sirius/sirius-web/issues/4437[#4437] [diagram] Fix selection dialog not opening
 
 
 === New Features
