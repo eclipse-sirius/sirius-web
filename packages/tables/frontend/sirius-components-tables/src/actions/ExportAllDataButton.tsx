@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,17 +15,25 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import { download, generateCsv, mkConfig } from 'export-to-csv';
-import { GQLCell, GQLMultiSelectCell, GQLSelectCell, GQLTable, GQLTextfieldCell } from '../table/TableContent.types';
+import {
+  GQLCell,
+  GQLMultiSelectCell,
+  GQLSelectCell,
+  GQLTable,
+  GQLTextareaCell,
+  GQLTextfieldCell,
+} from '../table/TableContent.types';
 import { CsvData, ExportAllDataButtonProps } from './ExportAllDataButton.types';
 
 const isSelectCell = (cell: GQLCell): cell is GQLSelectCell => cell.__typename === 'SelectCell';
 const isMultiSelectCell = (cell: GQLCell): cell is GQLMultiSelectCell => cell.__typename === 'MultiSelectCell';
 const isTextfieldCell = (cell: GQLCell): cell is GQLTextfieldCell => cell.__typename === 'TextfieldCell';
+const isTextareaCell = (cell: GQLCell): cell is GQLTextareaCell => cell.__typename === 'TextareaCell';
 
 const getCellLabel = (cell: GQLCell | undefined): string => {
   let value = '';
   if (cell) {
-    if (isTextfieldCell(cell)) {
+    if (isTextfieldCell(cell) || isTextareaCell(cell)) {
       value = cell.stringValue;
     } else if (isMultiSelectCell(cell)) {
       value = cell.options

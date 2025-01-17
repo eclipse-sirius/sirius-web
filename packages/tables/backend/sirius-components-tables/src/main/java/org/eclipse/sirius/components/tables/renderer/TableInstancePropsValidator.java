@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.tables.elements.LineElementProps;
 import org.eclipse.sirius.components.tables.elements.MultiSelectCellElementProps;
 import org.eclipse.sirius.components.tables.elements.SelectCellElementProps;
 import org.eclipse.sirius.components.tables.elements.TableElementProps;
+import org.eclipse.sirius.components.tables.elements.TextareaCellElementProps;
 import org.eclipse.sirius.components.tables.elements.TextfieldCellElementProps;
 
 /**
@@ -42,6 +43,8 @@ public class TableInstancePropsValidator implements IInstancePropsValidator {
             checkValidProps = props instanceof ColumnElementProps;
         } else if (TextfieldCellElementProps.TYPE.equals(type)) {
             checkValidProps = props instanceof TextfieldCellElementProps;
+        } else if (TextareaCellElementProps.TYPE.equals(type)) {
+            checkValidProps = props instanceof TextareaCellElementProps;
         } else if (CheckboxCellElementProps.TYPE.equals(type)) {
             checkValidProps = props instanceof CheckboxCellElementProps;
         } else if (SelectCellElementProps.TYPE.equals(type)) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.sirius.components.view.table.CellDescription;
 import org.eclipse.sirius.components.view.table.CellLabelWidgetDescription;
+import org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellTextfieldWidgetDescription;
 import org.eclipse.sirius.components.view.table.ColumnDescription;
 import org.eclipse.sirius.components.view.table.RowDescription;
@@ -79,6 +80,8 @@ public class TableFactoryImpl extends EFactoryImpl implements TableFactory {
                 return this.createCellTextfieldWidgetDescription();
             case TablePackage.CELL_LABEL_WIDGET_DESCRIPTION:
                 return this.createCellLabelWidgetDescription();
+            case TablePackage.CELL_TEXTAREA_WIDGET_DESCRIPTION:
+                return this.createCellTextareaWidgetDescription();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -156,6 +159,17 @@ public class TableFactoryImpl extends EFactoryImpl implements TableFactory {
      * @generated
      */
     @Override
+    public CellTextareaWidgetDescription createCellTextareaWidgetDescription() {
+        CellTextareaWidgetDescriptionImpl cellTextareaWidgetDescription = new CellTextareaWidgetDescriptionImpl();
+        return cellTextareaWidgetDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public TablePackage getTablePackage() {
         return (TablePackage) this.getEPackage();
     }
@@ -170,5 +184,5 @@ public class TableFactoryImpl extends EFactoryImpl implements TableFactory {
     public static TablePackage getPackage() {
         return TablePackage.eINSTANCE;
     }
-
+    
 } // TableFactoryImpl
