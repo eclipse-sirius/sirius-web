@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -51,7 +51,9 @@ public class FlowTopographyViewDiagramDescriptionProvider implements IRepresenta
                 .autoLayout(false)
                 .domainType("flow::System")
                 .name("Topography")
-                .titleExpression("Topography").build();
+                .titleExpression("Topography")
+                .style(this.diagramBuilderHelper.newDiagramStyleDescription().build())
+                .build();
 
 
         var cache = new ViewDiagramElementFinder();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.diagrams.DiagramStyle;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -27,6 +28,7 @@ import org.eclipse.sirius.components.representations.IProps;
  */
 @Immutable
 public final class DiagramElementProps implements IProps {
+
     public static final String TYPE = "Diagram";
 
     private String id;
@@ -34,6 +36,8 @@ public final class DiagramElementProps implements IProps {
     private String targetObjectId;
 
     private String descriptionId;
+
+    private DiagramStyle style;
 
     private List<Element> children;
 
@@ -51,6 +55,10 @@ public final class DiagramElementProps implements IProps {
 
     public String getDescriptionId() {
         return this.descriptionId;
+    }
+
+    public DiagramStyle getStyle() {
+        return this.style;
     }
 
     @Override
@@ -75,11 +83,14 @@ public final class DiagramElementProps implements IProps {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private String targetObjectId;
 
         private String descriptionId;
+
+        private DiagramStyle style;
 
         private List<Element> children;
 
@@ -97,6 +108,11 @@ public final class DiagramElementProps implements IProps {
             return this;
         }
 
+        public Builder style(DiagramStyle style) {
+            this.style = Objects.requireNonNull(style);
+            return this;
+        }
+
         public Builder children(List<Element> children) {
             this.children = Objects.requireNonNull(children);
             return this;
@@ -108,6 +124,7 @@ public final class DiagramElementProps implements IProps {
             diagramElementProps.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             diagramElementProps.descriptionId = Objects.requireNonNull(this.descriptionId);
             diagramElementProps.children = Objects.requireNonNull(this.children);
+            diagramElementProps.style = Objects.requireNonNull(this.style);
             return diagramElementProps;
         }
     }

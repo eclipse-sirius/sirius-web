@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.DiagramStyle;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
@@ -167,6 +168,7 @@ public class GetConnectorToolsEventHandlerTests {
                 .palettes(List.of(palette))
                 .dropHandler(variableManager -> new Failure(""))
                 .iconURLsProvider(variableManager -> List.of())
+                .styleProvider(variableManager -> DiagramStyle.newDiagramStyle().build())
                 .build();
 
         Node sourceNode = this.getNode(SOURCE_NODE_ID, SOURCE_NODE_TARGET_ID);
@@ -230,6 +232,7 @@ public class GetConnectorToolsEventHandlerTests {
                 .targetObjectId("diagramTargetObjectId")
                 .nodes(nodes)
                 .edges(List.of())
+                .style(DiagramStyle.newDiagramStyle().build())
                 .build();
     }
 }

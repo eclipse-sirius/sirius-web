@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,8 +23,8 @@ import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateI
 import org.eclipse.sirius.web.papaya.factories.ApacheProjectFactory;
 import org.eclipse.sirius.web.papaya.factories.EMFProjectFactory;
 import org.eclipse.sirius.web.papaya.factories.FasterXMLProjectFactory;
-import org.eclipse.sirius.web.papaya.factories.GraphQLJavaProjectFactory;
 import org.eclipse.sirius.web.papaya.factories.GoogleProjectFactory;
+import org.eclipse.sirius.web.papaya.factories.GraphQLJavaProjectFactory;
 import org.eclipse.sirius.web.papaya.factories.JavaProjectFactory;
 import org.eclipse.sirius.web.papaya.factories.ReactiveStreamsProjectFactory;
 import org.eclipse.sirius.web.papaya.factories.ReactorProjectFactory;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -51,6 +51,7 @@ public class DiagramComponent implements IComponent {
 
         String diagramId = optionalPreviousDiagram.map(Diagram::getId).orElseGet(() -> UUID.randomUUID().toString());
         String targetObjectId = diagramDescription.getTargetObjectIdProvider().apply(variableManager);
+        var style = diagramDescription.getStyleProvider().apply(variableManager);
 
         DiagramRenderingCache cache = new DiagramRenderingCache();
 
@@ -98,6 +99,7 @@ public class DiagramComponent implements IComponent {
                 .targetObjectId(targetObjectId)
                 .descriptionId(diagramDescription.getId())
                 .children(children)
+                .style(style)
                 .build();
         return new Element(DiagramElementProps.TYPE, diagramElementProps);
     }

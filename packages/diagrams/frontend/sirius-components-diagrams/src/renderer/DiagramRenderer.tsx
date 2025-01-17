@@ -118,7 +118,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { reconnectEdge } = useReconnectEdge();
   const { onDrop, onDragOver } = useDrop();
   const { onNodeDragStart, onNodeDrag, onNodeDragStop } = useDropNode();
-  const { backgroundColor, largeGridColor, smallGridColor } = useDropDiagramStyle();
+  const { background, setBackground, largeGridColor, smallGridColor } = useDropDiagramStyle();
   const { nodeTypes } = useNodeType();
 
   const { nodeConverters } = useContext<NodeTypeContextValue>(NodeTypeContext);
@@ -230,6 +230,9 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
         synchronizeLayoutData(diagramRefreshedEventPayload.id, laidOutDiagram);
       });
+    }
+    if (convertedDiagram.style.background) {
+      setBackground(String(convertedDiagram.style.background));
     }
   }, [diagramRefreshedEventPayload, diagramDescription, edgeType]);
 
@@ -406,7 +409,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
           <>
             <Background
               id="small-grid"
-              style={{ backgroundColor }}
+              style={{ background }}
               variant={BackgroundVariant.Lines}
               gap={GRID_STEP}
               color={smallGridColor}
@@ -420,7 +423,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
             />
           </>
         ) : (
-          <Background style={{ backgroundColor }} color={backgroundColor} />
+          <Background style={{ background }} color="transparent" />
         )}
         <DiagramPanel
           snapToGrid={snapToGrid}

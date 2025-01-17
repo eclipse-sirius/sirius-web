@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,12 +22,14 @@ public class DiagramDescriptionBuilder {
 
     /**
      * Create instance org.eclipse.sirius.components.view.diagram.DiagramDescription.
+     *
      * @generated
      */
     private org.eclipse.sirius.components.view.diagram.DiagramDescription diagramDescription = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createDiagramDescription();
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.DiagramDescription.
+     *
      * @generated
      */
     protected org.eclipse.sirius.components.view.diagram.DiagramDescription getDiagramDescription() {
@@ -36,6 +38,7 @@ public class DiagramDescriptionBuilder {
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.DiagramDescription.
+     *
      * @generated
      */
     public org.eclipse.sirius.components.view.diagram.DiagramDescription build() {
@@ -51,6 +54,7 @@ public class DiagramDescriptionBuilder {
         this.getDiagramDescription().setName(value);
         return this;
     }
+
     /**
      * Setter for DomainType.
      *
@@ -60,6 +64,7 @@ public class DiagramDescriptionBuilder {
         this.getDiagramDescription().setDomainType(value);
         return this;
     }
+
     /**
      * Setter for PreconditionExpression.
      *
@@ -69,6 +74,7 @@ public class DiagramDescriptionBuilder {
         this.getDiagramDescription().setPreconditionExpression(value);
         return this;
     }
+
     /**
      * Setter for TitleExpression.
      *
@@ -78,6 +84,7 @@ public class DiagramDescriptionBuilder {
         this.getDiagramDescription().setTitleExpression(value);
         return this;
     }
+
     /**
      * Setter for IconExpression.
      *
@@ -97,6 +104,7 @@ public class DiagramDescriptionBuilder {
         this.getDiagramDescription().setAutoLayout(value);
         return this;
     }
+
     /**
      * Setter for Palette.
      *
@@ -106,6 +114,7 @@ public class DiagramDescriptionBuilder {
         this.getDiagramDescription().setPalette(value);
         return this;
     }
+
     /**
      * Setter for NodeDescriptions.
      *
@@ -139,6 +148,29 @@ public class DiagramDescriptionBuilder {
         this.getDiagramDescription().setArrangeLayoutDirection(value);
         return this;
     }
+
+    /**
+     * Setter for Style.
+     *
+     * @generated
+     */
+    public DiagramDescriptionBuilder style(org.eclipse.sirius.components.view.diagram.DiagramStyleDescription value) {
+        this.getDiagramDescription().setStyle(value);
+        return this;
+    }
+
+    /**
+     * Setter for ConditionalStyles.
+     *
+     * @generated
+     */
+    public DiagramDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle ... values) {
+        for (org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle value : values) {
+            this.getDiagramDescription().getConditionalStyles().add(value);
+        }
+        return this;
+    }
+
 
 }
 

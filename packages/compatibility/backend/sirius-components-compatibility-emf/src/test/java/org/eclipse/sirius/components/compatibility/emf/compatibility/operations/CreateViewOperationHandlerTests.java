@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.compatibility.emf.modeloperations.ChildMode
 import org.eclipse.sirius.components.compatibility.emf.modeloperations.CreateViewOperationHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.DiagramStyle;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
@@ -88,6 +89,7 @@ public class CreateViewOperationHandlerTests {
                 .edgeDescriptions(List.of())
                 .dropHandler(variableManager -> new Failure(""))
                 .iconURLsProvider(variableManager -> List.of())
+                .styleProvider(variableManager -> DiagramStyle.newDiagramStyle().build())
                 .build();
 
         Diagram diagram = Diagram.newDiagram(UUID.randomUUID().toString())
@@ -95,6 +97,7 @@ public class CreateViewOperationHandlerTests {
                 .targetObjectId(UUID.randomUUID().toString())
                 .nodes(new ArrayList<>())
                 .edges(List.of())
+                .style(DiagramStyle.newDiagramStyle().build())
                 .build();
 
         IDiagramContext diagramContext = new IDiagramContext.NoOp() {

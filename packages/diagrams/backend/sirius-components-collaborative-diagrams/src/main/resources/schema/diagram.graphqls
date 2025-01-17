@@ -33,7 +33,12 @@ type Diagram implements Representation {
   targetObjectId: ID!
   nodes: [Node!]!
   edges: [Edge!]!
+  style: DiagramStyle!
   layoutData: DiagramLayoutData!
+}
+
+type DiagramStyle {
+  background: String!
 }
 
 type DiagramLayoutData {
@@ -271,7 +276,7 @@ type Palette {
 }
 
 union PaletteEntry =
-    ToolSection
+  ToolSection
   | SingleClickOnDiagramElementTool
   | SingleClickOnTwoDiagramElementsTool
   | PaletteDivider
