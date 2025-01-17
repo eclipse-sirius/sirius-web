@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -83,8 +83,8 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
     private TableDescription createTableDescription() {
 
         var columnDescription = new TableBuilders().newColumnDescription()
-                .semanticCandidatesExpression("aql:'Name'")
-                .headerLabelExpression("Name")
+                .semanticCandidatesExpression("aql:Sequence{'Name', 'Description'}")
+                .headerLabelExpression("aql:self")
                 .headerIndexLabelExpression("aql:columnIndex")
                 .build();
 
@@ -93,10 +93,16 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
                 .headerIndexLabelExpression("aql:rowIndex")
                 .build();
 
-        var cellDescription = new TableBuilders().newCellDescription()
-                .preconditionExpression("aql:true")
+        var nameCellDescription = new TableBuilders().newCellDescription()
+                .preconditionExpression("aql:columnTargetObject.equals('Name')")
                 .valueExpression("aql:self.name")
                 .cellWidgetDescription(new TableBuilders().newCellTextfieldWidgetDescription().build())
+                .build();
+
+        var descriptionCellDescription = new TableBuilders().newCellDescription()
+                .preconditionExpression("aql:columnTargetObject.equals('Description')")
+                .valueExpression("aql:self.description")
+                .cellWidgetDescription(new TableBuilders().newCellTextareaWidgetDescription().build())
                 .build();
 
         this.tableDescription = new TableBuilders().newTableDescription()
@@ -104,7 +110,7 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
                 .titleExpression("View Package Table")
                 .columnDescriptions(columnDescription)
                 .rowDescription(rowDescription)
-                .cellDescriptions(cellDescription)
+                .cellDescriptions(nameCellDescription, descriptionCellDescription)
                 .useStripedRowsExpression("aql:false")
                 .build();
 

@@ -22,6 +22,7 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.tables.TableRefreshedEventPayload;
+import org.eclipse.sirius.components.tables.TextareaCell;
 import org.eclipse.sirius.components.tables.TextfieldCell;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
@@ -46,7 +47,7 @@ import reactor.test.StepVerifier;
  */
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"sirius.web.test.enabled=studio"})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
 public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrationTests {
 
     @Autowired
@@ -87,12 +88,15 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
                 .map(TableRefreshedEventPayload::table)
                 .ifPresentOrElse(table -> {
                     assertThat(table).isNotNull();
-                    assertThat(table.getColumns()).hasSize(1);
+                    assertThat(table.getColumns()).hasSize(2);
                     assertThat(table.getColumns().get(0).getHeaderLabel()).isEqualTo("Name");
                     assertThat(table.getColumns().get(0).getHeaderIndexLabel()).isEqualTo("0");
+                    assertThat(table.getColumns().get(1).getHeaderLabel()).isEqualTo("Description");
+                    assertThat(table.getColumns().get(1).getHeaderIndexLabel()).isEqualTo("1");
                     assertThat(table.getLines()).hasSize(2);
                     assertThat(table.getLines().get(0).getHeaderIndexLabel()).isEqualTo("0");
                     assertThat(table.getLines().get(0).getCells().get(0)).isInstanceOf(TextfieldCell.class);
+                    assertThat(table.getLines().get(0).getCells().get(1)).isInstanceOf(TextareaCell.class);
                     assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(0)).getValue()).isEqualTo("Success");
                     assertThat(table.getLines().get(1).getHeaderIndexLabel()).isEqualTo("1");
                     assertThat(table.getLines().get(1).getCells().get(0)).isInstanceOf(TextfieldCell.class);

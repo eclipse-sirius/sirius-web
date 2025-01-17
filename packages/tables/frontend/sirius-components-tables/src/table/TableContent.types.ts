@@ -111,6 +111,10 @@ export interface GQLTextfieldCell extends GQLCell {
   stringValue: string;
 }
 
+export interface GQLTextareaCell extends GQLCell {
+  stringValue: string;
+}
+
 export interface GQLIconLabelCell extends GQLCell {
   label: string;
   iconURLs: string[];

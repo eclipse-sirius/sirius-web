@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -61,6 +61,7 @@ import org.eclipse.sirius.components.tables.descriptions.MultiSelectCellDescript
 import org.eclipse.sirius.components.tables.descriptions.PaginatedData;
 import org.eclipse.sirius.components.tables.descriptions.SelectCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
+import org.eclipse.sirius.components.tables.descriptions.TextareaCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.TextfieldCellDescription;
 import org.eclipse.sirius.web.papaya.representations.table.CellTypePredicate;
 import org.eclipse.sirius.web.papaya.representations.table.ColumnTargetObjectIdProvider;
@@ -171,6 +172,12 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
         List<ICellDescription> cellDescriptions = new ArrayList<>();
         cellDescriptions.add(TextfieldCellDescription.newTextfieldCellDescription("textfieldCells")
                 .canCreatePredicate(new CellTypePredicate().isTextfieldCell())
+                .targetObjectIdProvider(variableManager -> "")
+                .targetObjectKindProvider(variableManager -> "")
+                .cellValueProvider(this.getCellStringValueProvider())
+                .build());
+        cellDescriptions.add(TextareaCellDescription.newTextareaCellDescription("textareaCells")
+                .canCreatePredicate(new CellTypePredicate().isTextareaCell())
                 .targetObjectIdProvider(variableManager -> "")
                 .targetObjectKindProvider(variableManager -> "")
                 .cellValueProvider(this.getCellStringValueProvider())
