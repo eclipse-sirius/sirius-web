@@ -15,6 +15,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import { memo, useEffect, useState } from 'react';
 import { DiagramContext } from '../contexts/DiagramContext';
+import { DialogContextProvider } from '../dialog/DialogContext';
 import {
   GQLDiagramEventPayload,
   GQLDiagramRefreshedEventPayload,
@@ -67,15 +68,17 @@ export const DiagramSubscriptionProvider = memo(
             payload: payload,
             readOnly,
           }}>
-          <div
-            style={{ display: 'inline-block', position: 'relative' }}
-            data-representation-kind="diagram"
-            data-representation-label={state.diagramRefreshedEventPayload.diagram.metadata.label}>
-            <DiagramRenderer
-              key={state.diagramRefreshedEventPayload.diagram.id}
-              diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
-            />
-          </div>
+          <DialogContextProvider>
+            <div
+              style={{ display: 'inline-block', position: 'relative' }}
+              data-representation-kind="diagram"
+              data-representation-label={state.diagramRefreshedEventPayload.diagram.metadata.label}>
+              <DiagramRenderer
+                key={state.diagramRefreshedEventPayload.diagram.id}
+                diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
+              />
+            </div>
+          </DialogContextProvider>
         </DiagramContext.Provider>
       </StoreContextProvider>
     );
