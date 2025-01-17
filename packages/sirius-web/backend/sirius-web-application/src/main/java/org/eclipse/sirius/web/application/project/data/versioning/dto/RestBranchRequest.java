@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,17 +12,31 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.data.versioning.dto;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import org.eclipse.sirius.components.core.api.IInput;
+import java.util.Objects;
+
+import org.eclipse.sirius.web.application.dto.Identified;
 
 /**
- * The input object of the CreateCommitRestEventHandler.
+ * REST BranchRequest DTO.
  *
  * @author arichard
  */
-public record CreateCommitRestInput(UUID id, Optional<UUID> branchId, List<RestDataVersion> change, String description) implements IInput {
+public record RestBranchRequest(
+        @JsonProperty("@type") String type,
+        Identified head,
+        String name) {
 
+    public RestBranchRequest {
+        Objects.requireNonNull(type);
+        // head can be null
+        Objects.requireNonNull(name);
+    }
+
+    public RestBranchRequest(
+            Identified head,
+            String name) {
+        this("Branch", head, name);
+    }
 }
