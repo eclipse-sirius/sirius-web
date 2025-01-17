@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.collaborative.tables.api.ITableQueryService
 import org.eclipse.sirius.components.collaborative.tables.dto.EditCheckboxCellInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.EditMultiSelectCellInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.EditSelectCellInput;
+import org.eclipse.sirius.components.collaborative.tables.dto.EditTextareaCellInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.EditTextfieldCellInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.IEditCellInput;
 import org.eclipse.sirius.components.collaborative.tables.messages.ICollaborativeTableMessageService;
@@ -70,7 +71,8 @@ public class EditCellEventHandler implements ITableEventHandler {
 
     private final Logger logger = LoggerFactory.getLogger(EditCellEventHandler.class);
 
-    public EditCellEventHandler(ITableQueryService tableQueryService, IFeedbackMessageService feedbackMessageService, ICollaborativeTableMessageService messageService, List<IEditCellHandler> editCellHandlers, MeterRegistry meterRegistry) {
+    public EditCellEventHandler(ITableQueryService tableQueryService, IFeedbackMessageService feedbackMessageService, ICollaborativeTableMessageService messageService,
+            List<IEditCellHandler> editCellHandlers, MeterRegistry meterRegistry) {
         this.tableQueryService = Objects.requireNonNull(tableQueryService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.messageService = Objects.requireNonNull(messageService);
@@ -124,6 +126,9 @@ public class EditCellEventHandler implements ITableEventHandler {
         Object newValue = null;
         if (editCellInput instanceof EditTextfieldCellInput editTextfieldCellInput) {
             newValue = editTextfieldCellInput.newValue();
+        }
+        if (editCellInput instanceof EditTextareaCellInput editTextareaCellInput) {
+            newValue = editTextareaCellInput.newValue();
         }
         if (editCellInput instanceof EditCheckboxCellInput editCheckboxCellInput) {
             newValue = editCheckboxCellInput.newValue();

@@ -89,6 +89,14 @@ type TextfieldCell implements Cell {
   value: String!
 }
 
+type TextareaCell implements Cell {
+  id: ID!
+  columnId: ID!
+  targetObjectId: ID!
+  targetObjectKind: String!
+  value: String!
+}
+
 type SelectCell implements Cell {
   id: ID!
   columnId: ID!
@@ -139,6 +147,7 @@ extend type Mutation {
   editSelectCell(input: EditSelectCellInput!): EditSelectCellPayload!
   editMultiSelectCell(input: EditMultiSelectCellInput!): EditMultiSelectCellPayload!
   editTextfieldCell(input: EditTextfieldCellInput!): EditTextfieldCellPayload!
+  editTextareaCell(input: EditTextareaCellInput!): EditTextareaCellPayload!
   resizeTableColumn(input: ResizeTableColumnInput!): ResizeTableColumnPayload!
   changeTableColumnVisibility(input: ChangeTableColumnVisibilityInput!): ChangeTableColumnVisibilityPayload!
   resizeTableRow(input: ResizeTableRowInput!): ResizeTableRowPayload!
@@ -191,6 +200,17 @@ input EditTextfieldCellInput {
 }
 
 union EditTextfieldCellPayload = ErrorPayload | SuccessPayload
+
+input EditTextareaCellInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  tableId: ID!
+  cellId: ID!
+  newValue: String!
+}
+
+union EditTextareaCellPayload = ErrorPayload | SuccessPayload
 
 input ResizeTableColumnInput {
   id: ID!

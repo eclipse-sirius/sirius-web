@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,8 @@ import org.eclipse.sirius.components.tables.components.SelectCellComponent;
 import org.eclipse.sirius.components.tables.components.SelectCellComponentProps;
 import org.eclipse.sirius.components.tables.components.TableComponent;
 import org.eclipse.sirius.components.tables.components.TableComponentProps;
+import org.eclipse.sirius.components.tables.components.TextareaCellComponent;
+import org.eclipse.sirius.components.tables.components.TextareaCellComponentProps;
 import org.eclipse.sirius.components.tables.components.TextfieldCellComponent;
 import org.eclipse.sirius.components.tables.components.TextfieldCellComponentProps;
 
@@ -50,6 +52,8 @@ public class TableComponentPropsValidator implements IComponentPropsValidator {
             checkValidProps = props instanceof ColumnComponentProps;
         } else if (TextfieldCellComponent.class.equals(componentType)) {
             checkValidProps = props instanceof TextfieldCellComponentProps;
+        } else if (TextareaCellComponent.class.equals(componentType)) {
+            checkValidProps = props instanceof TextareaCellComponentProps;
         } else if (CheckboxCellComponent.class.equals(componentType)) {
             checkValidProps = props instanceof CheckboxCellComponentProps;
         } else if (SelectCellComponent.class.equals(componentType)) {

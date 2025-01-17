@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -44,6 +44,7 @@ import org.eclipse.sirius.components.tables.descriptions.MultiSelectCellDescript
 import org.eclipse.sirius.components.tables.descriptions.PaginatedData;
 import org.eclipse.sirius.components.tables.descriptions.SelectCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
+import org.eclipse.sirius.components.tables.descriptions.TextareaCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.TextfieldCellDescription;
 import org.eclipse.sirius.components.tables.renderer.TableRenderer;
 import org.springframework.stereotype.Service;
@@ -197,6 +198,13 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
 
         cellDescriptions.add(TextfieldCellDescription.newTextfieldCellDescription("textfieldCells")
                 .canCreatePredicate(new CellTypePredicate().isTextfieldCell())
+                .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
+                .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
+                .cellValueProvider(new CellStringValueProvider(this.identityService))
+                .build());
+
+        cellDescriptions.add(TextareaCellDescription.newTextareaCellDescription("textareaCells")
+                .canCreatePredicate(new CellTypePredicate().isTextareaCell())
                 .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
                 .cellValueProvider(new CellStringValueProvider(this.identityService))

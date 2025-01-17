@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.table.CellDescription;
 import org.eclipse.sirius.components.view.table.CellLabelWidgetDescription;
+import org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellTextfieldWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellWidgetDescription;
 import org.eclipse.sirius.components.view.table.ColumnDescription;
@@ -97,8 +98,15 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
      *
      * @generated
      */
-    private static boolean isInited = false;
+    private EClass cellTextareaWidgetDescriptionEClass = null;
 
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private static boolean isInited = false;
+    
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -496,6 +504,26 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
      * @generated
      */
     @Override
+    public EClass getCellTextareaWidgetDescription() {
+        return this.cellTextareaWidgetDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getCellTextareaWidgetDescription_Body() {
+        return (EReference) this.cellTextareaWidgetDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public TableFactory getTableFactory() {
         return (TableFactory) this.getEFactoryInstance();
     }
@@ -551,6 +579,9 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
 
         this.cellLabelWidgetDescriptionEClass = this.createEClass(CELL_LABEL_WIDGET_DESCRIPTION);
         this.createEAttribute(this.cellLabelWidgetDescriptionEClass, CELL_LABEL_WIDGET_DESCRIPTION__ICON_EXPRESSION);
+
+        this.cellTextareaWidgetDescriptionEClass = this.createEClass(CELL_TEXTAREA_WIDGET_DESCRIPTION);
+        this.createEReference(this.cellTextareaWidgetDescriptionEClass, CELL_TEXTAREA_WIDGET_DESCRIPTION__BODY);
     }
 
     /**
@@ -583,6 +614,7 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
         this.cellDescriptionEClass.getESuperTypes().add(this.getTableElementDescription());
         this.cellTextfieldWidgetDescriptionEClass.getESuperTypes().add(this.getCellWidgetDescription());
         this.cellLabelWidgetDescriptionEClass.getESuperTypes().add(this.getCellWidgetDescription());
+        this.cellTextareaWidgetDescriptionEClass.getESuperTypes().add(this.getCellWidgetDescription());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.tableDescriptionEClass, TableDescription.class, "TableDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -651,6 +683,10 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
         this.initEClass(this.cellLabelWidgetDescriptionEClass, CellLabelWidgetDescription.class, "CellLabelWidgetDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getCellLabelWidgetDescription_IconExpression(), theViewPackage.getInterpretedExpression(), "iconExpression", "", 0, 1, CellLabelWidgetDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.cellTextareaWidgetDescriptionEClass, CellTextareaWidgetDescription.class, "CellTextareaWidgetDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getCellTextareaWidgetDescription_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, CellTextareaWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Create resource
         this.createResource(eNS_URI);

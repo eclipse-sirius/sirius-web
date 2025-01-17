@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.tables.descriptions.IconLabelCellDescriptio
 import org.eclipse.sirius.components.tables.descriptions.LineDescription;
 import org.eclipse.sirius.components.tables.descriptions.MultiSelectCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.SelectCellDescription;
+import org.eclipse.sirius.components.tables.descriptions.TextareaCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.TextfieldCellDescription;
 import org.eclipse.sirius.components.tables.elements.LineElementProps;
 import org.eclipse.sirius.components.tables.events.ResetTableRowsHeightEvent;
@@ -154,6 +155,9 @@ public class LineComponent implements IComponent {
             } else if (cellDescription instanceof TextfieldCellDescription textfieldCellDescription) {
                 var cellComponentProps = new TextfieldCellComponentProps(variableManager, textfieldCellDescription, cellId, columnId, columnTargetObject);
                 cellElement = new Element(TextfieldCellComponent.class, cellComponentProps);
+            } else if (cellDescription instanceof TextareaCellDescription textareaCellDescription) {
+                var cellComponentProps = new TextareaCellComponentProps(variableManager, textareaCellDescription, cellId, columnId, columnTargetObject);
+                cellElement = new Element(TextareaCellComponent.class, cellComponentProps);
             } else if (cellDescription instanceof IconLabelCellDescription iconLabelCellDescription) {
                 var cellComponentProps = new IconLabelCellComponentProps(variableManager, iconLabelCellDescription, cellId, columnId, columnTargetObject);
                 cellElement = new Element(IconLabelCellComponent.class, cellComponentProps);

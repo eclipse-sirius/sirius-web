@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.tables.elements.CheckboxCellElementProps;
 import org.eclipse.sirius.components.tables.elements.IconLabelCellElementProps;
 import org.eclipse.sirius.components.tables.elements.MultiSelectCellElementProps;
 import org.eclipse.sirius.components.tables.elements.SelectCellElementProps;
+import org.eclipse.sirius.components.tables.elements.TextareaCellElementProps;
 import org.eclipse.sirius.components.tables.elements.TextfieldCellElementProps;
 
 /**
@@ -59,6 +60,10 @@ public class CellTypePredicate {
                     type = SelectCellElementProps.TYPE;
                 }
             }
+            // description column should be multiline
+            if ("description".equals(eStructuralFeature.getName())) {
+                type = TextareaCellElementProps.TYPE;
+            }
             if (type.isEmpty()) {
                 type = TextfieldCellElementProps.TYPE;
             }
@@ -68,6 +73,10 @@ public class CellTypePredicate {
 
     public Predicate<VariableManager> isTextfieldCell() {
         return (variableManager) -> this.getCellType(variableManager).equals(TextfieldCellElementProps.TYPE);
+    }
+
+    public Predicate<VariableManager> isTextareaCell() {
+        return (variableManager) -> this.getCellType(variableManager).equals(TextareaCellElementProps.TYPE);
     }
 
     public Predicate<VariableManager> isCheckboxCell() {

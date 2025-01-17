@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.table.CellDescription;
 import org.eclipse.sirius.components.view.table.CellLabelWidgetDescription;
+import org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellTextfieldWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellWidgetDescription;
 import org.eclipse.sirius.components.view.table.ColumnDescription;
@@ -87,6 +88,11 @@ public class TableAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseCellLabelWidgetDescription(CellLabelWidgetDescription object) {
             return TableAdapterFactory.this.createCellLabelWidgetDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseCellTextareaWidgetDescription(CellTextareaWidgetDescription object) {
+            return TableAdapterFactory.this.createCellTextareaWidgetDescriptionAdapter();
         }
 
         @Override
@@ -252,6 +258,20 @@ public class TableAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createCellLabelWidgetDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription <em>Cell Textarea Widget
+     * Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription
+     */
+    public Adapter createCellTextareaWidgetDescriptionAdapter() {
         return null;
     }
 
