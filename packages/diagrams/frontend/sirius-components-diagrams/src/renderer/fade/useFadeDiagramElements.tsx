@@ -13,6 +13,7 @@
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useCallback, useContext, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import {
@@ -52,6 +53,7 @@ const isSuccessPayload = (payload: GQLFadeDiagramElementPayload): payload is GQL
   payload.__typename === 'SuccessPayload';
 
 export const useFadeDiagramElements = (): UseFadeDiagramElements => {
+  const { t: coreT } = useTranslation('siriusComponentsCore');
   const { addErrorMessage, addMessages } = useMultiToast();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
 
@@ -62,9 +64,9 @@ export const useFadeDiagramElements = (): UseFadeDiagramElements => {
 
   useEffect(() => {
     if (fadeDiagramElementError) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
+      addErrorMessage(coreT('errors.unexpected'));
     }
-  }, [fadeDiagramElementError]);
+  }, [coreT, fadeDiagramElementError]);
 
   const fadeDiagramElements = useCallback(
     async (nodeId: string[], fade: boolean) => {

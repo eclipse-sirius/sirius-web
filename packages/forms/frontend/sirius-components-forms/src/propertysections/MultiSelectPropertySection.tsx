@@ -20,6 +20,7 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLMultiSelect } from '../form/FormEventFragments.types';
@@ -125,6 +126,7 @@ export const MultiSelectPropertySection: PropertySectionComponent<GQLMultiSelect
     gridLayout: widget.style?.widgetGridLayout ?? null,
   };
   const { classes } = useStyle(props);
+  const { t: coreT } = useTranslation('siriusComponentsCore');
 
   const [editMultiSelect, { loading, error, data }] =
     useMutation<GQLEditMultiSelectMutationData>(editMultiSelectMutation);
@@ -147,7 +149,7 @@ export const MultiSelectPropertySection: PropertySectionComponent<GQLMultiSelect
   useEffect(() => {
     if (!loading) {
       if (error) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (data) {
         const { editMultiSelect } = data;
@@ -156,7 +158,7 @@ export const MultiSelectPropertySection: PropertySectionComponent<GQLMultiSelect
         }
       }
     }
-  }, [loading, error, data]);
+  }, [loading, error, data, coreT]);
 
   return (
     <FormControl error={widget.diagnostics.length > 0} className={classes.propertySection}>
