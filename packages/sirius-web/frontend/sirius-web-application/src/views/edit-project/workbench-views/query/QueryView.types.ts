@@ -14,12 +14,9 @@
 import { GQLEvaluateExpressionSuccessPayload, GQLExpressionResult } from './useEvaluateExpression.types';
 
 export interface ExpressionAreaProps {
+  editingContextId: string;
   onEvaluateExpression: (expression: string) => void;
   disabled: boolean;
-}
-
-export interface ExpressionAreaState {
-  expression: string;
 }
 
 export interface ResultAreaProps {
