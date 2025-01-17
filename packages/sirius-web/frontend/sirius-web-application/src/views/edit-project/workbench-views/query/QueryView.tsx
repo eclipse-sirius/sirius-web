@@ -104,6 +104,7 @@ const ExpressionArea = ({ onEvaluateExpression, disabled }: ExpressionAreaProps)
           onChange={handleExpressionChange}
           onKeyDown={handleKeyDown}
           disabled={disabled}
+          spellCheck={false}
           multiline
           minRows={5}
           fullWidth
