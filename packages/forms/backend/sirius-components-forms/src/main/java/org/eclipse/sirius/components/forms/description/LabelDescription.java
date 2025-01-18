@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -147,19 +147,19 @@ public final class LabelDescription extends AbstractWidgetDescription {
         }
 
         public LabelDescription build() {
-            LabelDescription textfieldDescription = new LabelDescription();
-            textfieldDescription.id = Objects.requireNonNull(this.id);
-            textfieldDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
-            textfieldDescription.idProvider = Objects.requireNonNull(this.idProvider);
-            textfieldDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
-            textfieldDescription.isReadOnlyProvider = Objects.requireNonNull(this.isReadOnlyProvider);
-            textfieldDescription.valueProvider = Objects.requireNonNull(this.valueProvider);
-            textfieldDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);
-            textfieldDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
-            textfieldDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
-            textfieldDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
-            textfieldDescription.helpTextProvider = this.helpTextProvider; // Optional on purpose
-            return textfieldDescription;
+            LabelDescription labelDescription = new LabelDescription();
+            labelDescription.id = Objects.requireNonNull(this.id);
+            labelDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
+            labelDescription.idProvider = Objects.requireNonNull(this.idProvider);
+            labelDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
+            labelDescription.isReadOnlyProvider = Objects.requireNonNull(this.isReadOnlyProvider);
+            labelDescription.valueProvider = Objects.requireNonNull(this.valueProvider);
+            labelDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);
+            labelDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
+            labelDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
+            labelDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
+            labelDescription.helpTextProvider = this.helpTextProvider; // Optional on purpose
+            return labelDescription;
         }
 
     }
