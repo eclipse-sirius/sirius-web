@@ -93,6 +93,7 @@ The new endpoints are:
 ** createBranch (`POST /api/rest/projects/{projectId}/branches`): Create a branch in the given project. There is only one branch per project in Sirius Web for now, so the default implementation of this method does nothing.
 ** getBranchById (`GET /api/rest/projects/{projectId}/branches/{branchId}`): Get the branch represented by its Id for the given project. There is only one branch per project in Sirius Web for now, and its Id is the same as the project Id. It represents the current state of the project, without taking care of data created/updated/deleted since the creation of the project.
 ** deleteBranch (`DELETE /api/rest/projects/{projectId}/branches/{branchId}`): Delete the branch with the given Id in the given project. There is only one branch per project in Sirius Web for now, so the default implementation of this method does nothing.
+- https://github.com/eclipse-sirius/sirius-web/issues/4440[#4440] [sirius-web] Add the representation description name in details view
 
 
 === Improvements
