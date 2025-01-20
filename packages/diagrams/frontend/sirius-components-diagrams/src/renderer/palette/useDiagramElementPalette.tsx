@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,7 +33,7 @@ export const useDiagramElementPalette = (): UseDiagramElementPaletteValue => {
 
   const { selection } = useSelection();
 
-  const onDiagramElementClick = useCallback(
+  const onDiagramElementContextMenu = useCallback(
     (event: React.MouseEvent<Element, MouseEvent>, elementClicked: Node<NodeData> | Edge<EdgeData>) => {
       const { domNode } = store.getState();
       const element = domNode?.getBoundingClientRect();
@@ -46,6 +46,7 @@ export const useDiagramElementPalette = (): UseDiagramElementPaletteValue => {
           selection.entries.length > 1
         )
       ) {
+        event.preventDefault();
         showDiagramElementPalette(palettePosition.x, palettePosition.y);
       } else {
         hideDiagramElementPalette();
@@ -60,6 +61,6 @@ export const useDiagramElementPalette = (): UseDiagramElementPaletteValue => {
     isOpened,
     hideDiagramElementPalette,
     showDiagramElementPalette,
-    onDiagramElementClick,
+    onDiagramElementContextMenu,
   };
 };

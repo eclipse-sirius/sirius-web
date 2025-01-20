@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,7 +31,7 @@ export const useDiagramSelection = (onShiftSelection: boolean): void => {
   const { fitView } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { getNodes, setNodes, getEdges, setEdges } = useStore();
 
-  // Called when the worbench-level selection is changed.
+  // Called when the workbench-level selection is changed.
   // Apply it on our diagram by selecting exactly the diagram elements
   // present which correspond to the workbench-selected semantic elements.
   useEffect(() => {

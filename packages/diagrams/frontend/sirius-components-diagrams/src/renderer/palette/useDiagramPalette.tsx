@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,19 +29,20 @@ export const useDiagramPalette = (): UseDiagramPaletteValue => {
     useContext<DiagramPaletteContextValue>(DiagramPaletteContext);
   const store = useStoreApi();
 
-  const onDiagramBackgroundClick = useCallback(
-    (event: React.MouseEvent<Element, MouseEvent>) => {
+  const onDiagramBackgroundContextMenu = useCallback(
+    (event: MouseEvent | React.MouseEvent<Element, MouseEvent>) => {
       const { domNode } = store.getState();
       const element = domNode?.getBoundingClientRect();
       const palettePosition = computePalettePosition(event, element);
       if (!event.altKey) {
+        event.preventDefault();
         showDiagramPalette(palettePosition.x, palettePosition.y);
       }
     },
     [showDiagramPalette]
   );
 
-  const onDiagramElementClick = useCallback(() => hideDiagramPalette(), [hideDiagramPalette]);
+  const onDiagramElementContextMenu = useCallback(() => hideDiagramPalette(), [hideDiagramPalette]);
 
   return {
     x,
@@ -49,8 +50,8 @@ export const useDiagramPalette = (): UseDiagramPaletteValue => {
     isOpened,
     hideDiagramPalette,
     showDiagramPalette,
-    onDiagramBackgroundClick,
-    onDiagramElementClick,
+    onDiagramBackgroundContextMenu,
+    onDiagramElementContextMenu,
     getLastToolInvoked,
     setLastToolInvoked,
   };
