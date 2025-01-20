@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,11 +32,13 @@ import org.eclipse.sirius.components.tables.descriptions.IconLabelCellDescriptio
 import org.eclipse.sirius.components.tables.descriptions.LineDescription;
 import org.eclipse.sirius.components.tables.descriptions.PaginatedData;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
+import org.eclipse.sirius.components.tables.descriptions.TextareaCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.TextfieldCellDescription;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.ViewIconURLsProvider;
 import org.eclipse.sirius.components.view.table.CellLabelWidgetDescription;
+import org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellTextfieldWidgetDescription;
 import org.springframework.stereotype.Service;
 
@@ -62,7 +64,12 @@ public class ViewTableDescriptionConverter implements IRepresentationDescription
         this.tableIdProvider = Objects.requireNonNull(tableIdProvider);
         this.objectService = Objects.requireNonNull(objectService);
 
-        this.semanticTargetIdProvider = variableManager -> this.self(variableManager).map(this.objectService::getId).orElse("");
+        this.semanticTargetIdProvider = variableManager -> {
+            Optional<Object> optionalSelf = this.self(variableManager);
+            return optionalSelf
+                    .map(this.objectService::getId)
+                    .orElseGet(() -> optionalSelf.map(Object::toString).orElse(""));
+        };
         this.semanticTargetKindProvider = variableManager -> this.self(variableManager).map(this.objectService::getKind).orElse("");
     }
 
@@ -170,6 +177,17 @@ public class ViewTableDescriptionConverter implements IRepresentationDescription
                         var child = variableManager.createChild();
                         child.put("columnTargetObject", columnTargetObject);
                         return new ViewIconURLsProvider(interpreter, cellLabelWidgetDescription.getIconExpression()).apply(child);
+                    })
+                    .build());
+        } else if (viewCellDescription.getCellWidgetDescription() instanceof CellTextareaWidgetDescription) {
+            optionalICellDescription = Optional.of(TextareaCellDescription.newTextareaCellDescription(this.tableIdProvider.getId(viewCellDescription))
+                    .targetObjectIdProvider(this.semanticTargetIdProvider)
+                    .targetObjectKindProvider(this.semanticTargetKindProvider)
+                    .canCreatePredicate(variableManager -> interpreter.evaluateExpression(variableManager.getVariables(), viewCellDescription.getPreconditionExpression()).asBoolean().orElse(false))
+                    .cellValueProvider((variableManager, columnTargetObject) -> {
+                        var child = variableManager.createChild();
+                        child.put("columnTargetObject", columnTargetObject);
+                        return this.evaluateString(interpreter, child, viewCellDescription.getValueExpression());
                     })
                     .build());
         }

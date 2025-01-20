@@ -73,4 +73,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="iconExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
         defaultValueLiteral=""/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CellTextareaWidgetDescription" eSuperTypes="#//CellWidgetDescription">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Operation"
+        containment="true"/>
+  </eClassifiers>
 </ecore:EPackage>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -643,6 +643,44 @@ public interface TablePackage extends EPackage {
     int CELL_LABEL_WIDGET_DESCRIPTION_OPERATION_COUNT = CELL_WIDGET_DESCRIPTION_OPERATION_COUNT;
 
     /**
+     * The meta object id for the
+     * '{@link org.eclipse.sirius.components.view.table.impl.CellTextareaWidgetDescriptionImpl <em>Cell Textarea Widget
+     * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.impl.CellTextareaWidgetDescriptionImpl
+     * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getCellTextareaWidgetDescription()
+     */
+    int CELL_TEXTAREA_WIDGET_DESCRIPTION = 8;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CELL_TEXTAREA_WIDGET_DESCRIPTION__BODY = CELL_WIDGET_DESCRIPTION_FEATURE_COUNT;
+
+    /**
+     * The number of structural features of the '<em>Cell Textarea Widget Description</em>' class. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CELL_TEXTAREA_WIDGET_DESCRIPTION_FEATURE_COUNT = CELL_WIDGET_DESCRIPTION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Cell Textarea Widget Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CELL_TEXTAREA_WIDGET_DESCRIPTION_OPERATION_COUNT = CELL_WIDGET_DESCRIPTION_OPERATION_COUNT;
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.table.TableDescription
      * <em>Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1011,6 +1049,28 @@ public interface TablePackage extends EPackage {
     EAttribute getCellLabelWidgetDescription_IconExpression();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription
+     * <em>Cell Textarea Widget Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Cell Textarea Widget Description</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription
+     */
+    EClass getCellTextareaWidgetDescription();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription#getBody <em>Body</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Body</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription#getBody()
+     * @see #getCellTextareaWidgetDescription()
+     */
+    EReference getCellTextareaWidgetDescription_Body();
+
+    /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the factory that creates the instances of the model.
@@ -1307,6 +1367,25 @@ public interface TablePackage extends EPackage {
          * @generated
          */
         EAttribute CELL_LABEL_WIDGET_DESCRIPTION__ICON_EXPRESSION = eINSTANCE.getCellLabelWidgetDescription_IconExpression();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.table.impl.CellTextareaWidgetDescriptionImpl <em>Cell Textarea
+         * Widget Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         * @see org.eclipse.sirius.components.view.table.impl.CellTextareaWidgetDescriptionImpl
+         * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getCellTextareaWidgetDescription()
+         */
+        EClass CELL_TEXTAREA_WIDGET_DESCRIPTION = eINSTANCE.getCellTextareaWidgetDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference CELL_TEXTAREA_WIDGET_DESCRIPTION__BODY = eINSTANCE.getCellTextareaWidgetDescription_Body();
 
     }
 

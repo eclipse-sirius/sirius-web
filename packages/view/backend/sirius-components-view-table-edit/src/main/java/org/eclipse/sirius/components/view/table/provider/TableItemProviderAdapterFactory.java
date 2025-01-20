@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -141,6 +141,15 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory
     protected CellLabelWidgetDescriptionItemProvider cellLabelWidgetDescriptionItemProvider;
 
     /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription} instances. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected CellTextareaWidgetDescriptionItemProvider cellTextareaWidgetDescriptionItemProvider;
+
+    /**
      * This constructs an instance. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -247,6 +256,21 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory
         }
 
         return this.cellLabelWidgetDescriptionItemProvider;
+    }
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createCellTextareaWidgetDescriptionAdapter() {
+        if (this.cellTextareaWidgetDescriptionItemProvider == null) {
+            this.cellTextareaWidgetDescriptionItemProvider = new CellTextareaWidgetDescriptionItemProvider(this);
+        }
+
+        return this.cellTextareaWidgetDescriptionItemProvider;
     }
 
     /**
@@ -391,6 +415,8 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory
             this.cellTextfieldWidgetDescriptionItemProvider.dispose();
         if (this.cellLabelWidgetDescriptionItemProvider != null)
             this.cellLabelWidgetDescriptionItemProvider.dispose();
+        if (this.cellTextareaWidgetDescriptionItemProvider != null)
+            this.cellTextareaWidgetDescriptionItemProvider.dispose();
     }
 
     /**
