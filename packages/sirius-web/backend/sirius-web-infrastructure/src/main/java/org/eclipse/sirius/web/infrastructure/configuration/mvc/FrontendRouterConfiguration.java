@@ -32,13 +32,14 @@ import org.springframework.web.servlet.function.ServerResponse;
 @Configuration
 public class FrontendRouterConfiguration {
     @Bean
-    public RouterFunction<ServerResponse> redirectToIndex() {
+    public RouterFunction<ServerResponse> redirectToIndex(List<IBackendPathPredicate> backendResourcePredicates) {
         var extensionsToIgnore = List.of("css", "html", "js", "js.map", "chunk.js", "json", "ico", "ttf", "jpg", "jpeg", "png", "svg");
 
         var singlePageApplicationPredicate = path("/api/**")
                 .or(path("/v3/api-docs/**"))
                 .or(path("/subscriptions"))
-                .or(pathExtension(extensionsToIgnore::contains))
+                .or(pathExtension(extension -> extension != null && extensionsToIgnore.contains(extension)))
+                .or(request -> backendResourcePredicates.stream().anyMatch(backendResourcePredicate -> backendResourcePredicate.isBackendPath(request.path())))
                 .negate();
 
         var index = new ClassPathResource("static/index.html");
