@@ -161,8 +161,8 @@ public class TestCreateForkedStudio extends AbstractIntegrationTests {
 
             //Check that the content of the project contains a copy of the view
             var semanticData = this.semanticDataRepository.findByProjectId(forkStudioProjectId.get());
-            assertThat(semanticData).isPresent();
-            var documents = semanticData.get().getDocuments();
+            assertThat(semanticData).hasSizeGreaterThan(0);
+            var documents = semanticData.get(0).getDocuments();
             var forkedDocument = documents.stream().filter(document -> document.getId().equals(UUID.fromString(sourceId.get()))).findFirst();
             assertThat(forkedDocument).isPresent();
             assertThat(forkedDocument.get().getContent()).contains(sourceElementId.get());

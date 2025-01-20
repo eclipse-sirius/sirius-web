@@ -126,7 +126,7 @@ public class DomainEventsTest extends AbstractIntegrationTests {
 
         var newDocumentName = "renamed document";
         var updatedDocument = Document.newDocument(originalDocument.getId()).name(newDocumentName).content(originalDocument.getContent()).build();
-        this.semanticDataUpdateService.updateDocuments(null, projectId, Set.of(updatedDocument), semanticData.getDomains().stream().map(SemanticDataDomain::uri).collect(Collectors.toSet()));
+        this.semanticDataUpdateService.updateDocuments(null, semanticData.getId(), Set.of(updatedDocument), semanticData.getDomains().stream().map(SemanticDataDomain::uri).collect(Collectors.toSet()));
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
@@ -154,7 +154,7 @@ public class DomainEventsTest extends AbstractIntegrationTests {
         var newDocumentName = originalDocument.getName();
         // Identical to the original except for the timestamps
         var updatedDocument = Document.newDocument(originalDocument.getId()).name(newDocumentName).content(originalDocument.getContent()).build();
-        this.semanticDataUpdateService.updateDocuments(null, projectId, Set.of(updatedDocument), semanticData.getDomains().stream().map(SemanticDataDomain::uri).collect(Collectors.toSet()));
+        this.semanticDataUpdateService.updateDocuments(null, semanticData.getId(), Set.of(updatedDocument), semanticData.getDomains().stream().map(SemanticDataDomain::uri).collect(Collectors.toSet()));
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
@@ -180,7 +180,7 @@ public class DomainEventsTest extends AbstractIntegrationTests {
         var originalContent = originalDocument.getContent();
         var newContent = originalContent + "modified";
         var updatedDocument = Document.newDocument(originalDocument.getId()).name(originalDocument.getName()).content(newContent).build();
-        this.semanticDataUpdateService.updateDocuments(null, projectId, Set.of(updatedDocument), semanticData.getDomains().stream().map(SemanticDataDomain::uri).collect(Collectors.toSet()));
+        this.semanticDataUpdateService.updateDocuments(null, semanticData.getId(), Set.of(updatedDocument), semanticData.getDomains().stream().map(SemanticDataDomain::uri).collect(Collectors.toSet()));
         TestTransaction.flagForCommit();
         TestTransaction.end();
 

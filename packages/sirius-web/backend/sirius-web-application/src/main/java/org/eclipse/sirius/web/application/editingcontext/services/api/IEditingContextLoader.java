@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.editingcontext.services.api;
 
-import org.eclipse.sirius.web.application.editingcontext.EditingContext;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 
 /**
  * Used to load an editing context.
@@ -21,6 +21,7 @@ import org.eclipse.sirius.web.application.editingcontext.EditingContext;
  */
 public interface IEditingContextLoader {
 
-    void load(EditingContext editingContext, String projectId);
+    IEditingContext load(String editingContextId);
 
+    boolean canHandle(String projectId);
 }

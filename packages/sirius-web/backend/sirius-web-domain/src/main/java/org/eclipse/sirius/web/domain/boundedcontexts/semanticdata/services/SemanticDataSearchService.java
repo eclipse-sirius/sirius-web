@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
@@ -39,7 +40,12 @@ public class SemanticDataSearchService implements ISemanticDataSearchService {
 
     @Override
     public Optional<SemanticData> findByProject(AggregateReference<Project, String> project) {
-        return this.semanticDataRepository.findByProjectId(project.getId());
+        return this.semanticDataRepository.findByProjectId(project.getId()).stream().findFirst();
+    }
+
+    @Override
+    public Optional<SemanticData> findById(UUID semanticDataId) {
+        return this.semanticDataRepository.findById(semanticDataId);
     }
 
     @Override

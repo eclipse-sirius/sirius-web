@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
 import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
 
@@ -40,6 +41,11 @@ public class ViewerProjectDataFetcher implements IDataFetcherWithFieldCoordinate
     @Override
     public ProjectDTO get(DataFetchingEnvironment environment) throws Exception {
         String projectId = environment.getArgument(PROJECT_ID_ARGUMENT);
+        var normalizedId = projectId.split("\\+");
+        if (normalizedId.length == 2 && new UUIDParser().parse(normalizedId[0]).isPresent() && new UUIDParser().parse(normalizedId[1]).isPresent()) {
+            var baseProject = projectApplicationService.findById(normalizedId[0]).orElse(null);
+            return new ProjectDTO(projectId, baseProject.name(), baseProject.natures());
+        }
         return this.projectApplicationService.findById(projectId).orElse(null);
     }
 }
