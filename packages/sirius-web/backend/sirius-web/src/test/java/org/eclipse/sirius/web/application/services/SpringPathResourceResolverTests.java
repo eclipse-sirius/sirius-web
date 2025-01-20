@@ -70,4 +70,21 @@ public class SpringPathResourceResolverTests extends AbstractIntegrationTests {
                 .expectBody(String.class)
                 .consumeWith(body -> assertThat(body.getResponseBody()).contains("<!DOCTYPE html>"));
     }
+
+    @Test
+    @DisplayName("Given a running server, when a request is sent to a custom static resource, then the resource is returned")
+    public void givenRunningServerWhenRequestIsSentToCustomStaticResourceThenTheStaticResourceIsReturned() {
+        var webTestClient = WebTestClient.bindToServer()
+                .baseUrl(this.getHTTPBaseUrl())
+                .build();
+
+        webTestClient
+                .get()
+                .uri("/test-resource.txt")
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBody(String.class)
+                .consumeWith(body -> assertThat(body.getResponseBody()).contains("content of the test resource"));
+    }
 }
