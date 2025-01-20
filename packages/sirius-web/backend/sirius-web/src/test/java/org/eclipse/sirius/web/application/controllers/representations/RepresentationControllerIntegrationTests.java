@@ -105,7 +105,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
     @DisplayName("Given a persistent representation id, when a query is performed, then the representation metadata are returned")
     public void givenPersistentRepresentationIdWhenQueryIsPerformedThenTheRepresentationMetadataAreReturned() {
         Map<String, Object> variables = Map.of(
-                "editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(),
+                "editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT,
                 "representationId", TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()
         );
         var result = this.representationMetadataQueryRunner.run(variables);
@@ -131,7 +131,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
     public void givenTransientRepresentationIdWhenQueryIsPerformedThenTheRepresentationMetadataAreReturned() {
         String initialExplorerId = "explorer://?expandedIds=[]&activeFilterIds=[]";
         Map<String, Object> variables = Map.of(
-                "editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(),
+                "editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT,
                 "representationId", initialExplorerId
         );
         var result = this.representationMetadataQueryRunner.run(variables);
@@ -156,7 +156,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
     @DisplayName("Given an editing context id, when a query is performed, then all the representation metadata are returned")
     public void givenEditingContextIdWhenQueryIsPerformedThenAllTheRepresentationMetadataAreReturned() {
         Map<String, Object> variables = Map.of(
-                "editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString()
+                "editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT
         );
         var result = this.representationsMetadataQueryRunner.run(variables);
 
@@ -177,8 +177,8 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
 
         List<String> representationIds = JsonPath.read(result, "$.data.viewer.editingContext.representations.edges[*].node.id");
         assertThat(representationIds)
-            .contains(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString())
-            .contains(TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString());
+                .contains(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString())
+                .contains(TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString());
 
         List<List<String>> allIconURLs = JsonPath.read(result, "$.data.viewer.editingContext.representations.edges[*].node.iconURLs");
         assertThat(allIconURLs)
@@ -193,7 +193,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
     @DisplayName("Given many representation ids, when we ask for their metadata, then representation metadata are returned")
     public void givenManyRepresentationIdsWhenWeAskForTheirMetadataThenTheRepresentationMetadataAreReturned() {
         Map<String, Object> variables = Map.of(
-                "editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(),
+                "editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT,
                 "representationIds", List.of(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION, TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION)
         );
         var result = this.representationsMetadataQueryRunner.run(variables);
@@ -216,7 +216,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
     @DisplayName("Given an object id, when a query is performed, then all the representation descriptions are returned")
     public void givenObjectIdWhenQueryIsPerformedThenAllTheRepresentationDescriptionsAreReturned() {
         Map<String, Object> variables = Map.of(
-                "editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(),
+                "editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT,
                 "objectId", TestIdentifiers.EPACKAGE_OBJECT.toString()
         );
         var result = this.representationDescriptionsQueryRunner.run(variables);
@@ -245,7 +245,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
     @DisplayName("Given a Portal representation, when we subscribe to its properties events, then the form is sent")
     public void givenPortalRepresentationWhenWeSubscribeToItsPropertiesEventsThenTheFormIsSent() {
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
-        var input = new DetailsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), detailsRepresentationId);
+        var input = new DetailsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT, detailsRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input);
 
         Predicate<Form> formPredicate = form -> {
@@ -258,6 +258,10 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
             var documentationTextArea = groupNavigator.findWidget("Documentation", Textarea.class);
             FormAssertions.assertThat(documentationTextArea).isNotNull();
             FormAssertions.assertThat(documentationTextArea.getValue()).isEqualTo("documentation");
+
+            var nameLabel = groupNavigator.findWidget("Description Name", Textfield.class);
+            FormAssertions.assertThat(nameLabel).isNotNull();
+            FormAssertions.assertThat(nameLabel.getValue()).isEqualTo("Portal");
 
             return true;
         };
@@ -285,7 +289,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         this.givenCommittedTransaction.commit();
 
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
-        var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), detailsRepresentationId);
+        var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT, detailsRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(detailsEventInput);
 
         var formId = new AtomicReference<String>();
@@ -295,7 +299,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         });
 
         Runnable editLabel = () -> {
-            var editLabelInput = new EditTextfieldInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), formId.get(), "metadata.label", "NewPortal");
+            var editLabelInput = new EditTextfieldInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT, formId.get(), "metadata.label", "NewPortal");
             var result = this.editTextfieldMutationRunner.run(editLabelInput);
 
             String typename = JsonPath.read(result, "$.data.editTextfield.__typename");
@@ -326,7 +330,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         this.givenCommittedTransaction.commit();
 
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
-        var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), detailsRepresentationId);
+        var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT, detailsRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(detailsEventInput);
 
         var formId = new AtomicReference<String>();
@@ -336,7 +340,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         });
 
         Runnable editDocumentation = () -> {
-            var editDocumentationInput = new EditTextfieldInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), formId.get(), "metadata.documentation", "This is a documentation");
+            var editDocumentationInput = new EditTextfieldInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT, formId.get(), "metadata.documentation", "This is a documentation");
             var result = this.editTextfieldMutationRunner.run(editDocumentationInput);
 
             String typename = JsonPath.read(result, "$.data.editTextfield.__typename");

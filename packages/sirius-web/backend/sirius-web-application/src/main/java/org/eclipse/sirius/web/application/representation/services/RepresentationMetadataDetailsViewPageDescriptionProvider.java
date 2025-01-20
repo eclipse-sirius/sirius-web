@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,14 +28,17 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.editingcontext.EditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
+import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.forms.description.TextareaDescription;
 import org.eclipse.sirius.components.forms.description.TextfieldDescription;
 import org.eclipse.sirius.components.representations.Failure;
+import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -50,17 +53,21 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class RepresentationMetadataDetailsViewPageDescriptionProvider implements IPropertiesDescriptionRegistryConfigurer {
+
     private final IIdentityService identityService;
 
     private final ILabelService labelService;
 
     private final IRepresentationMetadataUpdateService representationMetadataUpdateService;
 
+    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
+
     public RepresentationMetadataDetailsViewPageDescriptionProvider(IIdentityService identityService, ILabelService labelService,
-            IRepresentationMetadataUpdateService representationMetadataUpdateService) {
+            IRepresentationMetadataUpdateService representationMetadataUpdateService, IRepresentationDescriptionSearchService representationDescriptionSearchService) {
         this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
         this.representationMetadataUpdateService = Objects.requireNonNull(representationMetadataUpdateService);
+        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
     }
 
     @Override
@@ -74,7 +81,7 @@ public class RepresentationMetadataDetailsViewPageDescriptionProvider implements
         List<AbstractControlDescription> controls = this.createControlDescriptions();
         GroupDescription groupDescription = this.createGroupDescription(controls);
 
-        Predicate<VariableManager> canCreatePagePredicate = variableManager ->  variableManager.get(VariableManager.SELF, Object.class)
+        Predicate<VariableManager> canCreatePagePredicate = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
                 .filter(RepresentationMetadata.class::isInstance)
                 .isPresent();
 
@@ -84,8 +91,8 @@ public class RepresentationMetadataDetailsViewPageDescriptionProvider implements
     private List<AbstractControlDescription> createControlDescriptions() {
         var labelControl = this.createLabelTextField();
         var documentationControl = this.createDocumentationTextArea();
-
-        return List.of(labelControl, documentationControl);
+        var representationDescriptionNameControl = this.createRepresentationDescriptionNameLabel();
+        return List.of(labelControl, documentationControl, representationDescriptionNameControl);
     }
 
     private GroupDescription createGroupDescription(List<AbstractControlDescription> controls) {
@@ -133,13 +140,9 @@ public class RepresentationMetadataDetailsViewPageDescriptionProvider implements
             return new Failure("");
         };
 
-        Function<VariableManager, String> semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.identityService::getId)
-                .orElse(null);
-
         return TextfieldDescription.newTextfieldDescription("metadata.label")
                 .idProvider(variableManager -> "metadata.label")
-                .targetObjectIdProvider(semanticTargetIdProvider)
+                .targetObjectIdProvider(this::semanticTargetIdProvider)
                 .labelProvider(variableManager -> "Label")
                 .valueProvider(valueProvider)
                 .newValueHandler(newValueHandler)
@@ -167,13 +170,9 @@ public class RepresentationMetadataDetailsViewPageDescriptionProvider implements
             return new Failure("");
         };
 
-        Function<VariableManager, String> semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.identityService::getId)
-                .orElse(null);
-
         return TextareaDescription.newTextareaDescription("metadata.documentation")
                 .idProvider(variableManager -> "metadata.documentation")
-                .targetObjectIdProvider(semanticTargetIdProvider)
+                .targetObjectIdProvider(this::semanticTargetIdProvider)
                 .labelProvider(variableManager -> "Documentation")
                 .valueProvider(valueProvider)
                 .newValueHandler(newValueHandler)
@@ -202,5 +201,41 @@ public class RepresentationMetadataDetailsViewPageDescriptionProvider implements
                 .map(Diagnostic.class::cast)
                 .map(Diagnostic::getMessage)
                 .orElse("");
+    }
+
+    private String semanticTargetIdProvider(VariableManager variableManager) {
+        return variableManager.get(VariableManager.SELF, Object.class)
+                .map(this.identityService::getId)
+                .orElse(null);
+    }
+
+    private TextfieldDescription createRepresentationDescriptionNameLabel() {
+        Function<VariableManager, String> valueProvider = variableManager -> variableManager.get(VariableManager.SELF, RepresentationMetadata.class)
+                .map(RepresentationMetadata::getDocumentation)
+                .orElse("");
+
+        return TextfieldDescription.newTextfieldDescription("metadata.representationDescriptionName")
+                .isReadOnlyProvider(variableManager -> true)
+                .newValueHandler((variableManager, s) -> new Success())
+                .targetObjectIdProvider(this::semanticTargetIdProvider)
+                .idProvider(variableManager -> "metadata.representationDescriptionName")
+                .labelProvider(variableManager -> "Description Name")
+                .valueProvider(this::representationDescriptionNameValueProvider)
+                .diagnosticsProvider(variableManager -> List.of())
+                .kindProvider(this::kindProvider)
+                .messageProvider(this::messageProvider)
+                .styleProvider(variableManager -> null)
+                .build();
+    }
+
+    private String representationDescriptionNameValueProvider(VariableManager variableManager) {
+        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        var optionalSelf = variableManager.get(VariableManager.SELF, RepresentationMetadata.class);
+        if (optionalEditingContext.isPresent() && optionalSelf.isPresent()) {
+            return this.representationDescriptionSearchService.findById(optionalEditingContext.get(), optionalSelf.get().getDescriptionId())
+                    .map(IRepresentationDescription::getLabel)
+                    .orElse("");
+        }
+        return "";
     }
 }
