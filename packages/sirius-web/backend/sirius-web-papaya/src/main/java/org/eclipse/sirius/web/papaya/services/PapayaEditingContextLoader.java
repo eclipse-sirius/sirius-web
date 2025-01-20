@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,12 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.editingcontext.services;
+package org.eclipse.sirius.web.papaya.services;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextLoader;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
@@ -26,7 +23,6 @@ import org.eclipse.sirius.components.emf.services.EditingContextCrossReferenceAd
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
-import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextLoader;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextMigrationParticipantPredicate;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingDomainFactory;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceLoader;
@@ -35,18 +31,24 @@ import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
+
 /**
- * Used to load an editing context.
+ * Used to load a Papaya editing context.
  *
- * @author frouene
+ * @author mcharfadi
  */
 @Service
-public class EditingContextLoader implements IEditingContextLoader {
+public class PapayaEditingContextLoader implements IEditingContextLoader {
 
-    private final Logger logger = LoggerFactory.getLogger(EditingContextLoader.class);
+    private static final String DELIMITATOR = "\\+";
+
+    private final Logger logger = LoggerFactory.getLogger(PapayaEditingContextLoader.class);
 
     private final ISemanticDataSearchService semanticDataSearchService;
 
@@ -62,7 +64,7 @@ public class EditingContextLoader implements IEditingContextLoader {
 
     private final IEditingDomainFactory editingDomainFactory;
 
-    public EditingContextLoader(ISemanticDataSearchService semanticDataSearchService, IResourceLoader resourceLoader, List<IEditingContextRepresentationDescriptionProvider> representationDescriptionProviders, List<IEditingContextProcessor> editingContextProcessors, IProjectSearchService projectSearchService, List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates, IEditingDomainFactory editingDomainFactory) {
+    public PapayaEditingContextLoader(ISemanticDataSearchService semanticDataSearchService, IResourceLoader resourceLoader, List<IEditingContextRepresentationDescriptionProvider> representationDescriptionProviders, List<IEditingContextProcessor> editingContextProcessors, IProjectSearchService projectSearchService, List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates, IEditingDomainFactory editingDomainFactory) {
         this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
         this.resourceLoader = Objects.requireNonNull(resourceLoader);
         this.representationDescriptionProviders = Objects.requireNonNull(representationDescriptionProviders);
@@ -73,21 +75,27 @@ public class EditingContextLoader implements IEditingContextLoader {
     }
 
     public IEditingContext load(String editingContextId) {
-        var project = this.projectSearchService.findById(editingContextId);
+        var normalizedId = editingContextId.split(DELIMITATOR);
+        var project = this.projectSearchService.findById(normalizedId[0]);
 
         AdapterFactoryEditingDomain editingDomain = this.editingDomainFactory.createEditingDomain(project.get());
-        EditingContext editingContext = new EditingContext(project.get().getId(), editingDomain, new HashMap<>(), new ArrayList<>());
+        EditingContext editingContext = new EditingContext(editingContextId, editingDomain, new HashMap<>(), new ArrayList<>());
 
-        this.toEditingContext(editingContext, project.get().getId());
+        this.toEditingContext(editingContext);
 
         return editingContext;
     }
 
-    public void toEditingContext(EditingContext editingContext, String projectId) {
+    public void toEditingContext(EditingContext editingContext) {
         this.editingContextProcessors.forEach(processor -> processor.preProcess(editingContext));
 
-        this.semanticDataSearchService.findByProject(AggregateReference.to(projectId))
-                .ifPresent(semanticData -> this.loadSemanticData(editingContext, semanticData));
+        var normalizedId = editingContext.getId().split(DELIMITATOR);
+        var optionalSemanticDataId = new UUIDParser().parse(normalizedId[1]);
+
+        if (optionalSemanticDataId.isPresent()) {
+            var optionalSemanticData = this.semanticDataSearchService.findById(optionalSemanticDataId.get());
+            optionalSemanticData.ifPresent(semanticData -> this.loadSemanticData(editingContext, semanticData));
+        }
 
         this.representationDescriptionProviders.forEach(representationDescriptionProvider -> {
             var representationDescriptions = representationDescriptionProvider.getRepresentationDescriptions(editingContext);
@@ -95,11 +103,6 @@ public class EditingContextLoader implements IEditingContextLoader {
         });
 
         this.editingContextProcessors.forEach(processor -> processor.postProcess(editingContext));
-    }
-
-    @Override
-    public boolean canHandle(String projectId) {
-        return new UUIDParser().parse(projectId).isPresent() && this.projectSearchService.existsById(projectId);
     }
 
     private void loadSemanticData(EditingContext editingContext, SemanticData semanticData) {
@@ -114,6 +117,15 @@ public class EditingContextLoader implements IEditingContextLoader {
         resourceSet.eAdapters().add(new EditingContextCrossReferenceAdapter());
 
         this.logger.debug("{} documents loaded for the editing context {}", resourceSet.getResources().size(), editingContext.getId());
+    }
+
+    @Override
+    public boolean canHandle(String projectId) {
+        var normalizedId = projectId.split(DELIMITATOR);
+        if (normalizedId.length == 2 && new UUIDParser().parse(normalizedId[0]).isPresent() && new UUIDParser().parse(normalizedId[1]).isPresent()) {
+            return this.projectSearchService.existsById(normalizedId[0]);
+        }
+        return false;
     }
 
 }

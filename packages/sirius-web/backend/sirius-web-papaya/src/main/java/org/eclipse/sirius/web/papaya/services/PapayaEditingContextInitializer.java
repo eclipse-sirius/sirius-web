@@ -48,6 +48,8 @@ public class PapayaEditingContextInitializer implements IEditingContextProcessor
                         .anyMatch(PapayaProjectTemplateProvider.PAPAYA_NATURE::equals))
                 .isPresent();
 
+        isPapayaProject = isPapayaProject || editingContext.getId().contains("+");
+
         if (isPapayaProject && editingContext instanceof EditingContext emfEditingContext) {
             var packageRegistry = emfEditingContext.getDomain().getResourceSet().getPackageRegistry();
             packageRegistry.put(PapayaPackage.eNS_URI, PapayaPackage.eINSTANCE);

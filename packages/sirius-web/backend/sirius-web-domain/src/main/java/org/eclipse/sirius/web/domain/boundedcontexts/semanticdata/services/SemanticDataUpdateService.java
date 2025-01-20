@@ -14,13 +14,12 @@ package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services;
 
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.repositories.ISemanticDataRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataUpdateService;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -38,8 +37,8 @@ public class SemanticDataUpdateService implements ISemanticDataUpdateService {
     }
 
     @Override
-    public void updateDocuments(ICause cause, AggregateReference<Project, String> project, Set<Document> documents, Set<String> domainUris) {
-        this.semanticDataRepository.findByProjectId(project.getId()).ifPresent(semanticData -> {
+    public void updateDocuments(ICause cause, UUID semanticDataId, Set<Document> documents, Set<String> domainUris) {
+        this.semanticDataRepository.findById(semanticDataId).ifPresent(semanticData -> {
             semanticData.updateDocuments(cause, documents, domainUris);
             this.semanticDataRepository.save(semanticData);
         });

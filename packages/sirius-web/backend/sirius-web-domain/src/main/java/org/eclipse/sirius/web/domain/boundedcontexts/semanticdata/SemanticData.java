@@ -165,6 +165,8 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
 
         private Set<SemanticDataDomain> domains = new LinkedHashSet<>();
 
+        private UUID id;
+
         public Builder project(AggregateReference<Project, String> project) {
             this.project = Objects.requireNonNull(project);
             return this;
@@ -182,11 +184,16 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
             return this;
         }
 
+        public Builder id(UUID id) {
+            this.id = id;
+            return this;
+        }
+
         public SemanticData build(ICause cause) {
             var semanticData = new SemanticData();
 
             semanticData.isNew = true;
-            semanticData.id = UUID.randomUUID();
+            semanticData.id = Objects.requireNonNullElseGet(this.id, UUID::randomUUID);
             semanticData.project = Objects.requireNonNull(this.project);
             semanticData.documents = Objects.requireNonNull(this.documents);
             semanticData.domains = Objects.requireNonNull(this.domains);
