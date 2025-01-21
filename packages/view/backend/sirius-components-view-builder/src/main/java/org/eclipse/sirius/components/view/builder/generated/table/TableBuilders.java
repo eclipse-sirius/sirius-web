@@ -89,5 +89,15 @@ public class TableBuilders {
         return new CellTextareaWidgetDescriptionBuilder();
     }
 
+    /**
+     * Instantiate a RowContextMenuEntryBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public RowContextMenuEntryBuilder newRowContextMenuEntry() {
+        return new RowContextMenuEntryBuilder();
+    }
+
 
 }

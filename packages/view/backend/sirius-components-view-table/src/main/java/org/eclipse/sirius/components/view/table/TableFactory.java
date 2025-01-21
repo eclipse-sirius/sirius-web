@@ -90,6 +90,14 @@ public interface TableFactory extends EFactory {
     CellTextareaWidgetDescription createCellTextareaWidgetDescription();
 
     /**
+     * Returns a new object of class '<em>Row Context Menu Entry</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Row Context Menu Entry</em>'.
+     * @generated
+     */
+    RowContextMenuEntry createRowContextMenuEntry();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.

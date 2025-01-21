@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellTextfieldWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellWidgetDescription;
 import org.eclipse.sirius.components.view.table.ColumnDescription;
+import org.eclipse.sirius.components.view.table.RowContextMenuEntry;
 import org.eclipse.sirius.components.view.table.RowDescription;
 import org.eclipse.sirius.components.view.table.TableDescription;
 import org.eclipse.sirius.components.view.table.TableElementDescription;
@@ -152,6 +153,13 @@ public class TableSwitch<T> extends Switch<T> {
                 T result = this.caseCellTextareaWidgetDescription(cellTextareaWidgetDescription);
                 if (result == null)
                     result = this.caseCellWidgetDescription(cellTextareaWidgetDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case TablePackage.ROW_CONTEXT_MENU_ENTRY: {
+                RowContextMenuEntry rowContextMenuEntry = (RowContextMenuEntry) theEObject;
+                T result = this.caseRowContextMenuEntry(rowContextMenuEntry);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -292,6 +300,21 @@ public class TableSwitch<T> extends Switch<T> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseCellTextareaWidgetDescription(CellTextareaWidgetDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Row Context Menu Entry</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Row Context Menu Entry</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseRowContextMenuEntry(RowContextMenuEntry object) {
         return null;
     }
 

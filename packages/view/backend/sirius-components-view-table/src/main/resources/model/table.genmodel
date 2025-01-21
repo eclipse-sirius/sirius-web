@@ -39,6 +39,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//RowDescription/headerIndexLabelExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//RowDescription/initialHeightExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//RowDescription/isResizableExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference table.ecore#//RowDescription/contextMenuEntries"/>
     </genClasses>
     <genClasses ecoreClass="table.ecore#//CellDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//CellDescription/valueExpression"/>
@@ -51,6 +52,13 @@
     </genClasses>
     <genClasses ecoreClass="table.ecore#//CellLabelWidgetDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//CellLabelWidgetDescription/iconExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="table.ecore#//RowContextMenuEntry">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//RowContextMenuEntry/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//RowContextMenuEntry/labelExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//RowContextMenuEntry/iconURLExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//RowContextMenuEntry/preconditionExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference table.ecore#//RowContextMenuEntry/body"/>
     </genClasses>
     <genClasses ecoreClass="table.ecore#//CellTextareaWidgetDescription">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference table.ecore#//CellTextareaWidgetDescription/body"/>

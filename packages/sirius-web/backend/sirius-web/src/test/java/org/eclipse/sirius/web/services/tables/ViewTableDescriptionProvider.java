@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.generated.table.TableBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
+import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.emf.table.TableIdProvider;
 import org.eclipse.sirius.components.view.table.TableDescription;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -88,9 +89,23 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
                 .headerIndexLabelExpression("aql:columnIndex")
                 .build();
 
+        var contextMenuEntry = new TableBuilders().newRowContextMenuEntry()
+                .name("change-name")
+                .labelExpression("Change name")
+                .preconditionExpression("aql:true")
+                .body(
+                        new ViewBuilders().newSetValue()
+                                .featureName("name")
+                                .valueExpression("aql:self.name + 'Updated'")
+                                .build()
+                )
+                .build();
+
         var rowDescription = new TableBuilders().newRowDescription()
                 .semanticCandidatesExpression("aql:self.types")
                 .headerIndexLabelExpression("aql:rowIndex")
+                .headerLabelExpression("aql:self.name")
+                .contextMenuEntries(contextMenuEntry)
                 .build();
 
         var nameCellDescription = new TableBuilders().newCellDescription()
