@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,8 +21,8 @@ import {
   diagramRendererReactFlowPropsCustomizerExtensionPoint,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import {
-  EditProjectNavbarSubtitleProps,
-  editProjectNavbarSubtitleExtensionPoint,
+  NavigationBarProps,
+  navigationBarCenterContributionExtensionPoint,
   useCurrentProject,
 } from '@eclipse-sirius/sirius-web-application';
 import Typography from '@mui/material/Typography';
@@ -33,24 +33,33 @@ import { PapayaComponentLabelDetailToolContribution } from './tools/PapayaCompon
 
 const papayaExtensionRegistry = new ExtensionRegistry();
 
-const PapayaProjectNavbarSubtitle = ({}: EditProjectNavbarSubtitleProps) => {
+const PapayaProjectNavbarSubtitle = ({ children }: NavigationBarProps) => {
   const { project } = useCurrentProject();
 
   if (project.natures.filter((nature) => nature.name === 'siriusComponents://nature?kind=papaya').length > 0) {
     return (
-      <Typography variant="caption" style={{ whiteSpace: 'nowrap' }}>
-        Sirius Web internal test project
-      </Typography>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        {children}
+        <Typography variant="caption" style={{ whiteSpace: 'nowrap' }}>
+          Sirius Web internal test project
+        </Typography>
+      </div>
     );
+  } else if (project) {
+    return <div>{children}</div>;
+  } else {
+    return null;
   }
-  return null;
 };
 
-const editProjectNavbarSubtitleExtension: ComponentExtension<EditProjectNavbarSubtitleProps> = {
-  identifier: `papaya_${editProjectNavbarSubtitleExtensionPoint.identifier}`,
+const navigationBarCenterContributionExtension: ComponentExtension<NavigationBarProps> = {
+  identifier: `papaya_${navigationBarCenterContributionExtensionPoint.identifier}`,
   Component: PapayaProjectNavbarSubtitle,
 };
-papayaExtensionRegistry.addComponent(editProjectNavbarSubtitleExtensionPoint, editProjectNavbarSubtitleExtension);
+papayaExtensionRegistry.addComponent(
+  navigationBarCenterContributionExtensionPoint,
+  navigationBarCenterContributionExtension
+);
 
 const reactFlowPropsCustomizer: ReactFlowPropsCustomizer = ({
   children,
