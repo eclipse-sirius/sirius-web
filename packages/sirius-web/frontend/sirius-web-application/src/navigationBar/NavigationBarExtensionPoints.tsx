@@ -15,6 +15,7 @@ import { ComponentExtensionPoint } from '@eclipse-sirius/sirius-components-core'
 import {
   NavigationBarIconProps,
   NavigationBarLeftContributionProps,
+  NavigationBarProps,
   NavigationBarRightContributionProps,
 } from './NavigationBar.types';
 import { NavigationBarIcon } from './NavigationBarIcon';
@@ -35,3 +36,10 @@ export const navigationBarRightContributionExtensionPoint: ComponentExtensionPoi
     identifier: 'navigationBar#rightContribution',
     FallbackComponent: () => null,
   };
+
+export const navigationBarCenterContributionExtensionPoint: ComponentExtensionPoint<NavigationBarProps> = {
+  identifier: 'navigationBar#centerContribution',
+  FallbackComponent: ({ children }: NavigationBarProps) => {
+    return <div>{children}</div>;
+  },
+};

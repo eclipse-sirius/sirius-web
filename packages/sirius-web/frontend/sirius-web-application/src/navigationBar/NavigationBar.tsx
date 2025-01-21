@@ -17,6 +17,7 @@ import { Theme } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 import { NavigationBarProps } from './NavigationBar.types';
 import {
+  navigationBarCenterContributionExtensionPoint,
   navigationBarIconExtensionPoint,
   navigationBarLeftContributionExtensionPoint,
   navigationBarRightContributionExtensionPoint,
@@ -41,6 +42,7 @@ export const useNavigationBarStyles = makeStyles()((theme: Theme) => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'flex-start',
     gap: theme.spacing(1),
   },
   right: {
@@ -48,6 +50,7 @@ export const useNavigationBarStyles = makeStyles()((theme: Theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
+    gridColumnStart: 3,
     gap: theme.spacing(1),
   },
 }));
@@ -58,6 +61,7 @@ export const NavigationBar = ({ children }: NavigationBarProps) => {
   const { Component: NavigationBarIcon } = useComponent(navigationBarIconExtensionPoint);
   const leftContributions = useComponents(navigationBarLeftContributionExtensionPoint);
   const rightContributions = useComponents(navigationBarRightContributionExtensionPoint);
+  const { Component: CenterContribution } = useComponent(navigationBarCenterContributionExtensionPoint);
 
   return (
     <div className={classes.navbar}>
@@ -70,7 +74,7 @@ export const NavigationBar = ({ children }: NavigationBarProps) => {
               <LeftContribution key={index} />
             ))}
           </div>
-          <div>{children}</div>
+          <CenterContribution children={children} />
           <div className={classes.right}>
             {rightContributions.map(({ Component: RightContribution }, index) => (
               <RightContribution key={index} />

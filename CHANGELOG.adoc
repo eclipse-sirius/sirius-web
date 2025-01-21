@@ -34,7 +34,9 @@ It will allow us to create more complex test data shared by all integration test
 - https://github.com/eclipse-sirius/sirius-web/issues/4418[#4418] [sirius-web] Change type of project_id from UUID to String
 - https://github.com/eclipse-sirius/sirius-web/issues/4404[#4404] [sirius-web] The extension point `navigationBarIconExtensionPoint` has been updated to accept an arbitrary React Component.
 Downstream applications which were using it to change the image of the home button will now be in charge of rendering the whole button.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4362[#4362] [sirius-web] The `editProjectNavbarSubtitleExtensionPoint` has been removed.
+Use the new frontend extension point `navigationBarCenterContributionExtensionPoint`, which is strictly more powerful, instead.
+See `PapayaExtensionRegistry.tsx` for an example of how rendering a project subtitle can be achieved with the new extension point.
 
 === Dependency update
 
@@ -100,7 +102,10 @@ The new endpoints are:
 Add view-based widgets now support an optional _Diagnostics Expression_.
 The expression can return a string (with a prefix of the form `INFO:`, `WARNING:` or `ERROR:` to indicate the severity), an EMF `org.eclipse.emf.common.util.Diagnostic`, or a list of either of these.
 - https://github.com/eclipse-sirius/sirius-web/issues/4465[#4465] [diagram] Allow end users to view the PNG of a diagram directly by adding the suffix `?mode=png-viewer` to the URL of a diagram
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4362[#4362] [sirius-web] Added a new frontend extension point `navigationBarCenterContributionExtensionPoint` to control the UI displayed at the center of the navigation bar (normally the project's name and context menu when in `EditProjectView`).
+It can be used to add new elements before/after the default UI or to completely replace the UI with another one if needed.
+Because this new extension point offers complete control of this part of the UI, the `editProjectNavbarSubtitleExtensionPoint` has been removed.
+See `PapayaExtensionRegistry.tsx` for how the same result as before can be achieved with the new extension point.
 
 === Improvements
 

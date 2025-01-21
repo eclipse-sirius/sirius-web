@@ -46,6 +46,7 @@ export {
   type NavigationBarRightContributionProps,
 } from './navigationBar/NavigationBar.types';
 export {
+  navigationBarCenterContributionExtensionPoint,
   navigationBarIconExtensionPoint,
   navigationBarLeftContributionExtensionPoint,
   navigationBarRightContributionExtensionPoint,
@@ -67,7 +68,6 @@ export type {
   EditProjectNavbarMenuEntryProps,
   EditProjectNavbarSubtitleProps,
 } from './views/edit-project/EditProjectNavbar/EditProjectNavbar.types';
-export { editProjectNavbarSubtitleExtensionPoint } from './views/edit-project/EditProjectNavbar/EditProjectNavbarExtensionPoints';
 export {
   editProjectNavbarMenuContainerExtensionPoint,
   editProjectNavbarMenuEntryExtensionPoint,

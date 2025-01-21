@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,6 @@ import {
   EditProjectNavbarProps,
   GQLProjectEventSubscription,
 } from './EditProjectNavbar.types';
-import { editProjectNavbarSubtitleExtensionPoint } from './EditProjectNavbarExtensionPoints';
 import {
   EditProjectNavbarContext,
   EditProjectNavbarEvent,
@@ -182,7 +181,6 @@ export const EditProjectNavbar = ({ readOnly }: EditProjectNavbarProps) => {
     }
   }
 
-  const { Component: ProjectSubtitle } = useComponent(editProjectNavbarSubtitleExtensionPoint);
   const { Component: ContextMenuContainer } = useComponent(editProjectNavbarMenuContainerExtensionPoint);
   const menuItemComponentExtensions: ComponentExtension<EditProjectNavbarMenuEntryProps>[] = useComponents(
     editProjectNavbarMenuEntryExtensionPoint
@@ -209,7 +207,6 @@ export const EditProjectNavbar = ({ readOnly }: EditProjectNavbarProps) => {
               <MoreVertIcon />
             </IconButton>
           </div>
-          <ProjectSubtitle />
         </div>
       </NavigationBar>
       <ContextMenuContainer>
