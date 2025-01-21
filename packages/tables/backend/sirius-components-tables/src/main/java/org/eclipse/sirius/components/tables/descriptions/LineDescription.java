@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,11 @@ import org.eclipse.sirius.components.representations.VariableManager;
 @Immutable
 public final class LineDescription {
 
+    /**
+     * The variable name used to store a reference to a row.
+     */
+    public static final String SELECTED_ROW = "selectedRow";
+
     private String id;
 
     private Function<VariableManager, String> targetObjectIdProvider;
@@ -51,6 +56,10 @@ public final class LineDescription {
 
     private LineDescription() {
         // Prevent instantiation
+    }
+
+    public static Builder newLineDescription(String id) {
+        return new Builder(id);
     }
 
     public String getId() {
@@ -91,10 +100,6 @@ public final class LineDescription {
 
     public Predicate<VariableManager> getIsResizablePredicate() {
         return this.isResizablePredicate;
-    }
-
-    public static Builder newLineDescription(String id) {
-        return new Builder(id);
     }
 
     @Override

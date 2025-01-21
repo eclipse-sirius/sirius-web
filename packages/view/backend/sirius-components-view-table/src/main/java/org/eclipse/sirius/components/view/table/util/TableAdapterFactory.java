@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellTextfieldWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellWidgetDescription;
 import org.eclipse.sirius.components.view.table.ColumnDescription;
+import org.eclipse.sirius.components.view.table.RowContextMenuEntry;
 import org.eclipse.sirius.components.view.table.RowDescription;
 import org.eclipse.sirius.components.view.table.TableDescription;
 import org.eclipse.sirius.components.view.table.TableElementDescription;
@@ -93,6 +94,11 @@ public class TableAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseCellTextareaWidgetDescription(CellTextareaWidgetDescription object) {
             return TableAdapterFactory.this.createCellTextareaWidgetDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseRowContextMenuEntry(RowContextMenuEntry object) {
+            return TableAdapterFactory.this.createRowContextMenuEntryAdapter();
         }
 
         @Override
@@ -272,6 +278,20 @@ public class TableAdapterFactory extends AdapterFactoryImpl {
      * @see org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription
      */
     public Adapter createCellTextareaWidgetDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.table.RowContextMenuEntry
+     * <em>Row Context Menu Entry</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
+     * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.table.RowContextMenuEntry
+     * @generated
+     */
+    public Adapter createRowContextMenuEntryAdapter() {
         return null;
     }
 

@@ -429,13 +429,22 @@ public interface TablePackage extends EPackage {
     int ROW_DESCRIPTION__IS_RESIZABLE_EXPRESSION = TABLE_ELEMENT_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
+     * The feature id for the '<em><b>Context Menu Entries</b></em>' containment reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES = TABLE_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
+
+    /**
      * The number of structural features of the '<em>Row Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int ROW_DESCRIPTION_FEATURE_COUNT = TABLE_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
+    int ROW_DESCRIPTION_FEATURE_COUNT = TABLE_ELEMENT_DESCRIPTION_FEATURE_COUNT + 6;
 
     /**
      * The number of operations of the '<em>Row Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -616,14 +625,6 @@ public interface TablePackage extends EPackage {
      * @ordered
      */
     int CELL_LABEL_WIDGET_DESCRIPTION__ICON_EXPRESSION = CELL_WIDGET_DESCRIPTION_FEATURE_COUNT;
-
-    /**
-     * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    TablePackage eINSTANCE = org.eclipse.sirius.components.view.table.impl.TablePackageImpl.init();
-
     /**
      * The number of structural features of the '<em>Cell Label Widget Description</em>' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -632,7 +633,6 @@ public interface TablePackage extends EPackage {
      * @ordered
      */
     int CELL_LABEL_WIDGET_DESCRIPTION_FEATURE_COUNT = CELL_WIDGET_DESCRIPTION_FEATURE_COUNT + 1;
-
     /**
      * The number of operations of the '<em>Cell Label Widget Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -641,6 +641,77 @@ public interface TablePackage extends EPackage {
      * @ordered
      */
     int CELL_LABEL_WIDGET_DESCRIPTION_OPERATION_COUNT = CELL_WIDGET_DESCRIPTION_OPERATION_COUNT;
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.table.impl.RowContextMenuEntryImpl <em>Row
+     * Context Menu Entry</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.impl.RowContextMenuEntryImpl
+     * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getRowContextMenuEntry()
+     */
+    int ROW_CONTEXT_MENU_ENTRY = 8;
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ROW_CONTEXT_MENU_ENTRY__NAME = 0;
+    /**
+     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ROW_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION = 1;
+    /**
+     * The feature id for the '<em><b>Icon URL Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ROW_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION = 2;
+    /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ROW_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION = 3;
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ROW_CONTEXT_MENU_ENTRY__BODY = 4;
+    /**
+     * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    TablePackage eINSTANCE = org.eclipse.sirius.components.view.table.impl.TablePackageImpl.init();
+    /**
+     * The number of structural features of the '<em>Row Context Menu Entry</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ROW_CONTEXT_MENU_ENTRY_FEATURE_COUNT = 5;
+
+    /**
+     * The number of operations of the '<em>Row Context Menu Entry</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ROW_CONTEXT_MENU_ENTRY_OPERATION_COUNT = 0;
 
     /**
      * The meta object id for the
@@ -651,7 +722,7 @@ public interface TablePackage extends EPackage {
      * @see org.eclipse.sirius.components.view.table.impl.CellTextareaWidgetDescriptionImpl
      * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getCellTextareaWidgetDescription()
      */
-    int CELL_TEXTAREA_WIDGET_DESCRIPTION = 8;
+    int CELL_TEXTAREA_WIDGET_DESCRIPTION = 9;
 
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -949,6 +1020,18 @@ public interface TablePackage extends EPackage {
     EAttribute getRowDescription_IsResizableExpression();
 
     /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.table.RowDescription#getContextMenuEntries <em>Context Menu
+     * Entries</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Context Menu Entries</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.RowDescription#getContextMenuEntries()
+     * @see #getRowDescription()
+     */
+    EReference getRowDescription_ContextMenuEntries();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.table.CellDescription <em>Cell
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1069,6 +1152,76 @@ public interface TablePackage extends EPackage {
      * @see #getCellTextareaWidgetDescription()
      */
     EReference getCellTextareaWidgetDescription_Body();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.table.RowContextMenuEntry <em>Row
+     * Context Menu Entry</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Row Context Menu Entry</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.RowContextMenuEntry
+     */
+    EClass getRowContextMenuEntry();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.table.RowContextMenuEntry#getName <em>Name</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Name</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.RowContextMenuEntry#getName()
+     * @see #getRowContextMenuEntry()
+     */
+    EAttribute getRowContextMenuEntry_Name();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.table.RowContextMenuEntry#getLabelExpression <em>Label
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Label Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.RowContextMenuEntry#getLabelExpression()
+     * @see #getRowContextMenuEntry()
+     */
+    EAttribute getRowContextMenuEntry_LabelExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.table.RowContextMenuEntry#getIconURLExpression <em>Icon URL
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Icon URL Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.RowContextMenuEntry#getIconURLExpression()
+     * @see #getRowContextMenuEntry()
+     */
+    EAttribute getRowContextMenuEntry_IconURLExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.table.RowContextMenuEntry#getPreconditionExpression <em>Precondition
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Precondition Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.RowContextMenuEntry#getPreconditionExpression()
+     * @see #getRowContextMenuEntry()
+     */
+    EAttribute getRowContextMenuEntry_PreconditionExpression();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.table.RowContextMenuEntry#getBody <em>Body</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Body</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.RowContextMenuEntry#getBody()
+     * @see #getRowContextMenuEntry()
+     */
+    EReference getRowContextMenuEntry_Body();
 
     /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1287,6 +1440,14 @@ public interface TablePackage extends EPackage {
         EAttribute ROW_DESCRIPTION__IS_RESIZABLE_EXPRESSION = eINSTANCE.getRowDescription_IsResizableExpression();
 
         /**
+         * The meta object literal for the '<em><b>Context Menu Entries</b></em>' containment reference list feature.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES = eINSTANCE.getRowDescription_ContextMenuEntries();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.table.impl.CellDescriptionImpl
          * <em>Cell Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -1386,6 +1547,56 @@ public interface TablePackage extends EPackage {
          * @generated
          */
         EReference CELL_TEXTAREA_WIDGET_DESCRIPTION__BODY = eINSTANCE.getCellTextareaWidgetDescription_Body();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.table.impl.RowContextMenuEntryImpl
+         * <em>Row Context Menu Entry</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         * @see org.eclipse.sirius.components.view.table.impl.RowContextMenuEntryImpl
+         * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getRowContextMenuEntry()
+         */
+        EClass ROW_CONTEXT_MENU_ENTRY = eINSTANCE.getRowContextMenuEntry();
+
+        /**
+         * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute ROW_CONTEXT_MENU_ENTRY__NAME = eINSTANCE.getRowContextMenuEntry_Name();
+
+        /**
+         * The meta object literal for the '<em><b>Label Expression</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute ROW_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION = eINSTANCE.getRowContextMenuEntry_LabelExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Icon URL Expression</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute ROW_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION = eINSTANCE.getRowContextMenuEntry_IconURLExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Precondition Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute ROW_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION = eINSTANCE.getRowContextMenuEntry_PreconditionExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference ROW_CONTEXT_MENU_ENTRY__BODY = eINSTANCE.getRowContextMenuEntry_Body();
 
     }
 

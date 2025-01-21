@@ -139,6 +139,14 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory
      * @generated
      */
     protected CellLabelWidgetDescriptionItemProvider cellLabelWidgetDescriptionItemProvider;
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.table.RowContextMenuEntry}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected RowContextMenuEntryItemProvider rowContextMenuEntryItemProvider;
 
     /**
      * This keeps track of the one adapter used for all
@@ -271,6 +279,22 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory
         }
 
         return this.cellTextareaWidgetDescriptionItemProvider;
+    }
+
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.sirius.components.view.table.RowContextMenuEntry}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createRowContextMenuEntryAdapter() {
+        if (this.rowContextMenuEntryItemProvider == null) {
+            this.rowContextMenuEntryItemProvider = new RowContextMenuEntryItemProvider(this);
+        }
+
+        return this.rowContextMenuEntryItemProvider;
     }
 
     /**
@@ -417,6 +441,8 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory
             this.cellLabelWidgetDescriptionItemProvider.dispose();
         if (this.cellTextareaWidgetDescriptionItemProvider != null)
             this.cellTextareaWidgetDescriptionItemProvider.dispose();
+        if (this.rowContextMenuEntryItemProvider != null)
+            this.rowContextMenuEntryItemProvider.dispose();
     }
 
     /**

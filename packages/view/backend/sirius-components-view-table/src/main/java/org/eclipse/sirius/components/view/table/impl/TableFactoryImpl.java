@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.view.table.CellLabelWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellTextfieldWidgetDescription;
 import org.eclipse.sirius.components.view.table.ColumnDescription;
+import org.eclipse.sirius.components.view.table.RowContextMenuEntry;
 import org.eclipse.sirius.components.view.table.RowDescription;
 import org.eclipse.sirius.components.view.table.TableDescription;
 import org.eclipse.sirius.components.view.table.TableFactory;
@@ -82,6 +83,8 @@ public class TableFactoryImpl extends EFactoryImpl implements TableFactory {
                 return this.createCellLabelWidgetDescription();
             case TablePackage.CELL_TEXTAREA_WIDGET_DESCRIPTION:
                 return this.createCellTextareaWidgetDescription();
+            case TablePackage.ROW_CONTEXT_MENU_ENTRY:
+                return this.createRowContextMenuEntry();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -170,6 +173,17 @@ public class TableFactoryImpl extends EFactoryImpl implements TableFactory {
      * @generated
      */
     @Override
+    public RowContextMenuEntry createRowContextMenuEntry() {
+        RowContextMenuEntryImpl rowContextMenuEntry = new RowContextMenuEntryImpl();
+        return rowContextMenuEntry;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public TablePackage getTablePackage() {
         return (TablePackage) this.getEPackage();
     }
@@ -184,5 +198,5 @@ public class TableFactoryImpl extends EFactoryImpl implements TableFactory {
     public static TablePackage getPackage() {
         return TablePackage.eINSTANCE;
     }
-    
+
 } // TableFactoryImpl
