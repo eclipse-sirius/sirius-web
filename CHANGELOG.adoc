@@ -75,6 +75,7 @@ Except for the specific case where `cause === 'refresh'` in `DiagramRenderer` (w
 - https://github.com/eclipse-sirius/sirius-web/issues/4635[#4635] [sirius-web] Derive the project semantic data from the project id
 - https://github.com/eclipse-sirius/sirius-web/issues/4469[#4469] [table] Remove useless mutations send at the table opening
 - https://github.com/eclipse-sirius/sirius-web/issues/4583[#4583] [sirius-web] Improve the performance to retrieve if a representation is view based
+- https://github.com/eclipse-sirius/sirius-web/issues/4451[#4451] [diagram] Keep using the same node after a refresh if possible in order to avoid rerendering all the nodes after converting the diagram
 
 
 
