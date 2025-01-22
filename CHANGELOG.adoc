@@ -263,7 +263,7 @@ These components could be reused by downstream applications in custom creation t
 - https://github.com/eclipse-sirius/sirius-web/issues/4333[#4333] [diagram] Improve the style of the palette by switching the positions of the search field and the quick access tools and by adding a small touch of grey in the header bar and search field
 - https://github.com/eclipse-sirius/sirius-web/issues/4286[#4286] [sirius-web] Make default explorer drag and drop work only for the default explorer.
 Downstream applications with a custom explorer that relies on `ExplorerDropTreeItemHandler` now need to provide their own `IDropTreeItemHandler` to support drag and drop in their explorer.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4455[#4455] [forms] Even when in read-only mode, the values displayed in a _Reference_ widgets are now clickable so that the user can navigate to the reference's values.
 
 == v2024.11.0
 
