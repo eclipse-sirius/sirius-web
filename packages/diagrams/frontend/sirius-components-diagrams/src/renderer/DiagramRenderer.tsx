@@ -27,6 +27,7 @@ import {
   ReactFlow,
   ReactFlowProps,
   applyNodeChanges,
+  useReactFlow,
   useStoreApi,
 } from '@xyflow/react';
 import React, { MouseEvent as ReactMouseEvent, memo, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
@@ -123,10 +124,30 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
   useInitialFitToScreen();
 
+  const { getNode } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+
   useEffect(() => {
     const { diagram, cause } = diagramRefreshedEventPayload;
     const convertedDiagram: Diagram = convertDiagram(diagram, nodeConverters, diagramDescription, edgeType);
+
+    convertedDiagram.nodes = convertedDiagram.nodes.map((convertedNode) => {
+      const currentNode = getNode(convertedNode.id);
+      if (
+        currentNode &&
+        (convertedNode.position.x !== currentNode.position.x ||
+          convertedNode.position.y !== currentNode.position.y ||
+          convertedNode.width !== currentNode.width ||
+          convertedNode.height !== currentNode.height ||
+          (currentNode && JSON.stringify(convertedNode.data) !== JSON.stringify(currentNode.data)))
+      ) {
+        return convertedNode;
+      } else if (currentNode) {
+        return currentNode;
+      } else {
+        return convertedNode;
+      }
+    });
 
     if (cause === 'layout') {
       const diagramElementIds: string[] = [
