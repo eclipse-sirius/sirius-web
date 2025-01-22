@@ -245,7 +245,7 @@ export const ValuedReferenceAutocomplete = ({
       disableClearable
       renderTags={(value, getTagProps) =>
         value.map((option, index) => {
-          const { key, ...tagProps } = getTagProps({ index });
+          const { key, onDelete, ...tagProps } = getTagProps({ index });
           return (
             <Chip
               key={key}
@@ -257,9 +257,11 @@ export const ValuedReferenceAutocomplete = ({
                   <IconOverlay iconURL={option.iconURL} alt={option.kind} />
                 </div>
               }
-              clickable={!readOnly && !widget.readOnly}
+              clickable
               onClick={() => optionClickHandler(option)}
               {...tagProps}
+              disabled={false}
+              onDelete={readOnly || widget.readOnly ? undefined : onDelete}
             />
           );
         })
