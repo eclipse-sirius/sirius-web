@@ -47,6 +47,7 @@ Now that the behavior of this method https://github.com/spring-projects/spring-f
 This may have some consequences for downstream applications which are embedding static resources.
 - [releng] Upgrade `springdoc-openapi-starter-webmvc-ui` from 2.5.0 to version 2.8.3.
 - [releng] Upgrade `swagger-annotations-jakarta` from 2.2.21 to 2.2.27
+- [releng] Upgrade Sirius Desktop dependency to version 7.4.6
 
 === Bug fixes
 
