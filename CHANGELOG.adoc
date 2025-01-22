@@ -69,7 +69,7 @@ Before this contribution, migration participants were executed if the project be
 Now they are executed for some data if the data was coming from a studio too.
 - https://github.com/eclipse-sirius/sirius-web/issues/4422[#4422] [diagram] Prevent application crash when an edge path is malformed during node moves
 - https://github.com/eclipse-sirius/sirius-web/issues/4437[#4437] [diagram] Fix selection dialog not opening
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4414[#4414] [sirius-web] Provide a default behavior to return valid JSON on `/api/rest/projects/{projectId}/commits/{commitId}/changes` REST APIs.
 
 === New Features
 
