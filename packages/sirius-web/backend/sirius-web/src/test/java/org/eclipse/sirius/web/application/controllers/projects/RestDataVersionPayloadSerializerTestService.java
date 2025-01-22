@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,8 @@ import java.io.IOException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.web.EObjectJsonSerializer;
 import org.eclipse.sirius.web.application.project.data.versioning.services.api.IRestDataVersionPayloadSerializerService;
+import org.eclipse.sirius.web.services.OnRestCommitPayloadTests;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,6 +31,7 @@ import org.springframework.stereotype.Service;
  * @author arichard
  */
 @Service
+@Conditional(OnRestCommitPayloadTests.class)
 public class RestDataVersionPayloadSerializerTestService implements IRestDataVersionPayloadSerializerService {
 
     private EObjectJsonSerializer eObjectJsonSerializer;
