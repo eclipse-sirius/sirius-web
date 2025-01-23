@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -83,6 +83,8 @@ export const EditProjectView = () => {
     dispatch(selectRepresentationEvent);
   };
 
+  const workbenchOnSelectionChanged = () => {};
+
   useEffect(() => {
     if (context.representation && context.representation.id !== representationId) {
       const pathname = generatePath('/projects/:projectId/edit/:representationId', {
@@ -135,6 +137,7 @@ export const EditProjectView = () => {
                   editingContextId={context.project.currentEditingContext.id}
                   initialRepresentationSelected={context.representation}
                   onRepresentationSelected={onRepresentationSelected}
+                  onSelectionChanged={workbenchOnSelectionChanged}
                   readOnly={readOnly}
                 />
               </TreeToolBarProvider>
