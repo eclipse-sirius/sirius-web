@@ -25,7 +25,15 @@ import {
 } from '@eclipse-sirius/sirius-components-trees';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
-import { generatePath, Navigate, useNavigate, useParams, useResolvedPath } from 'react-router-dom';
+import {
+  generatePath,
+  Navigate,
+  SetURLSearchParams,
+  useNavigate,
+  useParams,
+  useResolvedPath,
+  useSearchParams,
+} from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { StateMachine } from 'xstate';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
@@ -61,6 +69,7 @@ export const EditProjectView = () => {
   const routeMatch = useResolvedPath('.');
   const { projectId, representationId } = useParams<EditProjectViewParams>();
   const { classes } = useEditProjectViewStyles();
+  const [urlSearchParams]: [URLSearchParams, SetURLSearchParams] = useSearchParams();
 
   const [{ value, context }, dispatch] =
     useMachine<StateMachine<EditProjectViewContext, EditProjectViewStateSchema, EditProjectViewEvent>>(
@@ -86,17 +95,27 @@ export const EditProjectView = () => {
   const workbenchOnSelectionChanged = () => {};
 
   useEffect(() => {
+    let pathname: string = null;
     if (context.representation && context.representation.id !== representationId) {
-      const pathname = generatePath('/projects/:projectId/edit/:representationId', {
+      pathname = generatePath('/projects/:projectId/edit/:representationId', {
         projectId,
         representationId: context.representation.id,
       });
-      navigate(pathname);
     } else if (value === 'loaded' && context.representation === null && representationId) {
-      const pathname = generatePath('/projects/:projectId/edit/', { projectId });
-      navigate(pathname);
+      pathname = generatePath('/projects/:projectId/edit/', { projectId });
     }
-  }, [value, projectId, routeMatch, history, context.representation, representationId]);
+
+    if (pathname !== null) {
+      if (urlSearchParams !== null && urlSearchParams.size > 0) {
+        navigate({
+          pathname: pathname,
+          search: `?${urlSearchParams}`,
+        });
+      } else {
+        navigate(pathname);
+      }
+    }
+  }, [value, projectId, routeMatch, history, context.representation, representationId, urlSearchParams]);
 
   let content: React.ReactNode = null;
 
