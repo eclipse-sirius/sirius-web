@@ -98,6 +98,7 @@ The new endpoints are:
 - https://github.com/eclipse-sirius/sirius-web/issues/4390[#4390] [form] Add support for diagnostics on View-based widgets
 Add view-based widgets now support an optional _Diagnostics Expression_.
 The expression can return a string (with a prefix of the form `INFO:`, `WARNING:` or `ERROR:` to indicate the severity), an EMF `org.eclipse.emf.common.util.Diagnostic`, or a list of either of these.
+- https://github.com/eclipse-sirius/sirius-web/issues/4465[#4465] [diagram] Allow end users to view the PNG of a diagram directly by adding the suffix `?mode=png-viewer` to the URL of a diagram
 
 
 === Improvements

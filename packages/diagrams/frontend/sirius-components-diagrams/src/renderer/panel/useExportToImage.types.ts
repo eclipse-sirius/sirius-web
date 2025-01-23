@@ -12,6 +12,6 @@
  *******************************************************************************/
 
 export interface UseExportToImage {
-  exportToSVG: () => void;
-  exportToPNG: () => void;
+  exportToSVG: (callback: (dataUrl: string) => void) => void;
+  exportToPNG: (callback: (dataUrl: string) => void) => void;
 }

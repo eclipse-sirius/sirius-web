@@ -25,17 +25,10 @@ import { useCallback } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { UseExportToImage } from './useExportToImage.types';
 
-const downloadImage = (dataUrl: string, fileName: string) => {
-  const a: HTMLAnchorElement = document.createElement('a');
-  a.setAttribute('download', fileName);
-  a.setAttribute('href', dataUrl);
-  a.click();
-};
-
 export const useExportToImage = (): UseExportToImage => {
   const reactFlow = useReactFlow<ReactFlowNode<NodeData>, Edge<EdgeData>>();
 
-  const exportToSVG = useCallback(() => {
+  const exportToSVG = useCallback((callback: (dataUrl: string) => void) => {
     const nodesBounds: Rect = getNodesBounds(reactFlow.getNodes());
     const imageWidth: number = nodesBounds.width;
     const imageHeight: number = nodesBounds.height;
@@ -61,12 +54,12 @@ export const useExportToImage = (): UseExportToImage => {
           transform: `translate(${viewport.x}px, ${viewport.y}px) scale(${viewport.zoom})`,
         },
       })
-        .then((dataUrl) => downloadImage(dataUrl, 'diagram.svg'))
+        .then((dataUrl) => callback(dataUrl))
         .finally(() => edges.removeChild(clonedEdgeMarkersDefs));
     }
   }, []);
 
-  const exportToPNG = useCallback(() => {
+  const exportToPNG = useCallback((callback: (dataUrl: string) => void) => {
     const nodesBounds: Rect = getNodesBounds(reactFlow.getNodes());
     const imageWidth: number = nodesBounds.width;
     const imageHeight: number = nodesBounds.height;
@@ -93,7 +86,7 @@ export const useExportToImage = (): UseExportToImage => {
         },
         pixelRatio: 2,
       })
-        .then((dataUrl) => downloadImage(dataUrl, 'diagram.png'))
+        .then((dataUrl) => callback(dataUrl))
         .finally(() => edges.removeChild(clonedEdgeMarkersDefs));
     }
   }, []);
