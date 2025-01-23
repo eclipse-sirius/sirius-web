@@ -13,13 +13,22 @@
 
 import ImageIcon from '@mui/icons-material/Image';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useExportToImage } from './useExportToImage';
+
+const downloadImage = (dataUrl: string, fileName: string) => {
+  const a: HTMLAnchorElement = document.createElement('a');
+  a.setAttribute('download', fileName);
+  a.setAttribute('href', dataUrl);
+  a.click();
+};
 
 export const ExportImageButton = () => {
   const [exportImageMenuOpen, setExportImageMenuOpen] = useState<boolean>(false);
@@ -29,6 +38,29 @@ export const ExportImageButton = () => {
   const onCloseExportImageMenu = () => setExportImageMenuOpen(false);
 
   const { exportToSVG, exportToPNG } = useExportToImage();
+
+  const ref = useCallback((node: HTMLDivElement | null) => {
+    if (node) {
+      new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
+        exportToPNG((dataUrl) => {
+          var img = new Image();
+          img.src = dataUrl;
+          img.id = 'png-viewer-image';
+          node.appendChild(img);
+        });
+      });
+    }
+  }, []);
+
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('mode') && urlParams.get('mode') === 'png-viewer') {
+    return (
+      <Dialog open fullWidth maxWidth="xl">
+        <DialogTitle>PNG Viewer</DialogTitle>
+        <div ref={ref}></div>
+      </Dialog>
+    );
+  }
 
   return (
     <>
@@ -50,10 +82,14 @@ export const ExportImageButton = () => {
           data-testid="export-diagram-to-image-menu"
           onClick={onCloseExportImageMenu}
           onClose={onCloseExportImageMenu}>
-          <MenuItem onClick={exportToSVG} data-testid="export-diagram-to-svg">
+          <MenuItem
+            onClick={() => exportToSVG((dataUrl: string) => downloadImage(dataUrl, 'diagram.svg'))}
+            data-testid="export-diagram-to-svg">
             <ListItemText primary="SVG" />
           </MenuItem>
-          <MenuItem onClick={exportToPNG} data-testid="export-diagram-to-png">
+          <MenuItem
+            onClick={() => exportToPNG((dataUrl: string) => downloadImage(dataUrl, 'diagram.png'))}
+            data-testid="export-diagram-to-png">
             <ListItemText primary="PNG" />
           </MenuItem>
         </Menu>
