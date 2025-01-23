@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,33 +10,31 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.interpreter;
+package org.eclipse.sirius.components.view.emf.form.converters;
 
 import java.util.Objects;
 import java.util.function.Function;
 
+import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
- * Utility class used to provide a string value from value expression.
+ * Used to compute the targetObjectId.
  *
  * @author sbegaudeau
  */
-public class StringValueProvider implements Function<VariableManager, String> {
+public class TargetObjectIdProvider implements Function<VariableManager, String> {
 
-    private final AQLInterpreter interpreter;
+    private final IObjectService objectService;
 
-    private final String expression;
-
-    public StringValueProvider(AQLInterpreter interpreter, String expression) {
-        this.interpreter = Objects.requireNonNull(interpreter);
-        this.expression = expression;
+    public TargetObjectIdProvider(IObjectService objectService) {
+        this.objectService = Objects.requireNonNull(objectService);
     }
 
     @Override
     public String apply(VariableManager variableManager) {
-        Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), this.expression);
-        return result.asString()
-                .orElse("");
+        return variableManager.get(VariableManager.SELF, Object.class)
+                .map(this.objectService::getId)
+                .orElse(null);
     }
 }

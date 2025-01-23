@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -48,6 +48,7 @@ public class NamedElementWidgetsProvider {
                 .name("Name")
                 .labelExpression("Name")
                 .valueExpression("aql:self.name")
+                .diagnosticsExpression("aql:if self.name.size() > 0 then null else 'ERROR: The name is required' endif")
                 .style(nameStyleDescription)
                 .body(
                         new ViewBuilders().newChangeContext()

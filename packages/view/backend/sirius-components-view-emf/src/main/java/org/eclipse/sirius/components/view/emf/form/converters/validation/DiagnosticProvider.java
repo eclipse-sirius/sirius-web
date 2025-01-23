@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,33 +10,35 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.interpreter;
+package org.eclipse.sirius.components.view.emf.form.converters.validation;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
+import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
- * Utility class used to provide a string value from value expression.
+ * Used to compute the diagnostics of a widget.
  *
  * @author sbegaudeau
  */
-public class StringValueProvider implements Function<VariableManager, String> {
+public class DiagnosticProvider implements Function<VariableManager, List<?>> {
 
     private final AQLInterpreter interpreter;
 
-    private final String expression;
+    private final String diagnosticExpression;
 
-    public StringValueProvider(AQLInterpreter interpreter, String expression) {
+    public DiagnosticProvider(AQLInterpreter interpreter, String diagnosticExpression) {
         this.interpreter = Objects.requireNonNull(interpreter);
-        this.expression = expression;
+        this.diagnosticExpression = diagnosticExpression;
     }
 
     @Override
-    public String apply(VariableManager variableManager) {
-        Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), this.expression);
-        return result.asString()
-                .orElse("");
+    public List<?> apply(VariableManager variableManager) {
+        return this.interpreter.evaluateExpression(variableManager.getVariables(), this.diagnosticExpression)
+                .asObjects()
+                .orElse(List.of());
     }
 }

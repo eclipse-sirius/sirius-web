@@ -20,7 +20,6 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.charts.barchart.components.BarChartStyle;
 import org.eclipse.sirius.components.charts.barchart.descriptions.BarChartDescription;
@@ -29,11 +28,8 @@ import org.eclipse.sirius.components.charts.piechart.PieChartDescription;
 import org.eclipse.sirius.components.charts.piechart.components.PieChartStyle;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.core.api.IEditService;
-import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.forms.ButtonStyle;
-import org.eclipse.sirius.components.forms.CheckboxStyle;
 import org.eclipse.sirius.components.forms.ContainerBorderStyle;
 import org.eclipse.sirius.components.forms.DateTimeStyle;
 import org.eclipse.sirius.components.forms.DateTimeType;
@@ -41,20 +37,12 @@ import org.eclipse.sirius.components.forms.FlexDirection;
 import org.eclipse.sirius.components.forms.LabelWidgetStyle;
 import org.eclipse.sirius.components.forms.LinkStyle;
 import org.eclipse.sirius.components.forms.ListStyle;
-import org.eclipse.sirius.components.forms.MultiSelectStyle;
-import org.eclipse.sirius.components.forms.RadioStyle;
-import org.eclipse.sirius.components.forms.SelectStyle;
-import org.eclipse.sirius.components.forms.TextareaStyle;
-import org.eclipse.sirius.components.forms.TextfieldStyle;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.components.ListComponent;
-import org.eclipse.sirius.components.forms.components.RadioComponent;
-import org.eclipse.sirius.components.forms.components.SelectComponent;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.forms.description.ButtonDescription;
 import org.eclipse.sirius.components.forms.description.ChartWidgetDescription;
-import org.eclipse.sirius.components.forms.description.CheckboxDescription;
 import org.eclipse.sirius.components.forms.description.DateTimeDescription;
 import org.eclipse.sirius.components.forms.description.FlexboxContainerDescription;
 import org.eclipse.sirius.components.forms.description.ForDescription;
@@ -63,13 +51,8 @@ import org.eclipse.sirius.components.forms.description.ImageDescription;
 import org.eclipse.sirius.components.forms.description.LabelDescription;
 import org.eclipse.sirius.components.forms.description.LinkDescription;
 import org.eclipse.sirius.components.forms.description.ListDescription;
-import org.eclipse.sirius.components.forms.description.MultiSelectDescription;
-import org.eclipse.sirius.components.forms.description.RadioDescription;
-import org.eclipse.sirius.components.forms.description.SelectDescription;
 import org.eclipse.sirius.components.forms.description.SliderDescription;
 import org.eclipse.sirius.components.forms.description.SplitButtonDescription;
-import org.eclipse.sirius.components.forms.description.TextareaDescription;
-import org.eclipse.sirius.components.forms.description.TextfieldDescription;
 import org.eclipse.sirius.components.forms.description.TreeDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.BooleanValueProvider;
@@ -83,8 +66,17 @@ import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.emf.OperationInterpreter;
-import org.eclipse.sirius.components.view.form.ButtonDescriptionStyle;
-import org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle;
+import org.eclipse.sirius.components.view.emf.form.converters.ButtonDescriptionConverter;
+import org.eclipse.sirius.components.view.emf.form.converters.CheckboxDescriptionConverter;
+import org.eclipse.sirius.components.view.emf.form.converters.MultiSelectDescriptionConverter;
+import org.eclipse.sirius.components.view.emf.form.converters.RadioDescriptionConverter;
+import org.eclipse.sirius.components.view.emf.form.converters.RichTextDescriptionConverter;
+import org.eclipse.sirius.components.view.emf.form.converters.SelectDescriptionConverter;
+import org.eclipse.sirius.components.view.emf.form.converters.TextareaDescriptionConverter;
+import org.eclipse.sirius.components.view.emf.form.converters.TextfieldDescriptionConverter;
+import org.eclipse.sirius.components.view.emf.form.converters.validation.DiagnosticKindProvider;
+import org.eclipse.sirius.components.view.emf.form.converters.validation.DiagnosticMessageProvider;
+import org.eclipse.sirius.components.view.emf.form.converters.validation.DiagnosticProvider;
 import org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle;
 import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.components.view.form.FormElementFor;
@@ -92,13 +84,8 @@ import org.eclipse.sirius.components.view.form.FormElementIf;
 import org.eclipse.sirius.components.view.form.LabelDescriptionStyle;
 import org.eclipse.sirius.components.view.form.LinkDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ListDescriptionStyle;
-import org.eclipse.sirius.components.view.form.MultiSelectDescriptionStyle;
-import org.eclipse.sirius.components.view.form.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.form.RichTextDescription;
-import org.eclipse.sirius.components.view.form.SelectDescriptionStyle;
 import org.eclipse.sirius.components.view.form.TextAreaDescription;
-import org.eclipse.sirius.components.view.form.TextareaDescriptionStyle;
-import org.eclipse.sirius.components.view.form.TextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.eclipse.sirius.components.view.form.util.FormSwitch;
 import org.slf4j.Logger;
@@ -111,53 +98,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<AbstractControlDescription>> {
 
-    /**
-     * Represents the possible severities of a diagnostic and how it can be encoded in EMF Diagnostics and plain
-     * strings.
-     *
-     * @author pcdavid
-     */
-    private enum Severity {
-        UNKNOWN("Unkown"), INFO("Info"), WARNING("Warning"), ERROR("Error");
-
-        private String name;
-
-        Severity(String name) {
-            this.name = Objects.requireNonNull(name);
-        }
-
-        public static Severity ofDiagnostic(Diagnostic diagnostic) {
-            return switch (diagnostic.getSeverity()) {
-                case org.eclipse.emf.common.util.Diagnostic.ERROR -> ERROR;
-                case org.eclipse.emf.common.util.Diagnostic.WARNING -> WARNING;
-                case org.eclipse.emf.common.util.Diagnostic.INFO -> INFO;
-                default -> UNKNOWN;
-            };
-        }
-
-        public static Severity ofString(String stringDiagnostic) {
-            Severity result = UNKNOWN;
-            String upper = stringDiagnostic.toUpperCase();
-            if (upper.startsWith(ERROR.prefix())) {
-                result = ERROR;
-            } else if (upper.startsWith(WARNING.prefix())) {
-                result = WARNING;
-            } else if (upper.startsWith(INFO.prefix())) {
-                result = INFO;
-            }
-            return result;
-        }
-
-        public String getName() {
-            return this.name;
-        }
-
-        public String prefix() {
-            return this.getName().toUpperCase() + ":";
-        }
-    }
-
-    private static final String VARIABLE_MANAGER = "variableManager";
+    public static final String VARIABLE_MANAGER = "variableManager";
 
     private final Logger logger = LoggerFactory.getLogger(ViewFormDescriptionConverterSwitch.class);
 
@@ -188,379 +129,37 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
 
     @Override
     public Optional<AbstractControlDescription> caseTextfieldDescription(org.eclipse.sirius.components.view.form.TextfieldDescription viewTextfieldDescription) {
-        String descriptionId = this.getDescriptionId(viewTextfieldDescription);
-        WidgetIdProvider idProvider = new WidgetIdProvider();
-        StringValueProvider labelProvider = this.getStringValueProvider(viewTextfieldDescription.getLabelExpression());
-        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(viewTextfieldDescription.getIsEnabledExpression());
-        StringValueProvider valueProvider = this.getStringValueProvider(viewTextfieldDescription.getValueExpression());
-        BiFunction<VariableManager, String, IStatus> newValueHandler = this.getNewValueHandler(viewTextfieldDescription.getBody());
-        Function<VariableManager, TextfieldStyle> styleProvider = variableManager -> {
-            VariableManager childVariableManager = variableManager.createChild();
-            childVariableManager.put(VARIABLE_MANAGER, variableManager);
-            var effectiveStyle = viewTextfieldDescription.getConditionalStyles().stream()
-                    .filter(style -> this.matches(style.getCondition(), childVariableManager))
-                    .map(TextfieldDescriptionStyle.class::cast)
-                    .findFirst()
-                    .orElseGet(viewTextfieldDescription::getStyle);
-            if (effectiveStyle == null) {
-                return null;
-            }
-            return new TextfieldStyleProvider(effectiveStyle).apply(childVariableManager);
-        };
-
-        TextfieldDescription.Builder builder = TextfieldDescription.newTextfieldDescription(descriptionId)
-                .idProvider(idProvider)
-                .targetObjectIdProvider(this.semanticTargetIdProvider)
-                .labelProvider(labelProvider)
-                .isReadOnlyProvider(isReadOnlyProvider)
-                .valueProvider(valueProvider)
-                .newValueHandler(newValueHandler)
-                .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(diagnostic -> "")
-                .messageProvider(diagnostic -> "")
-                .styleProvider(styleProvider);
-        if (viewTextfieldDescription.getDiagnosticsExpression() != null && !viewTextfieldDescription.getDiagnosticsExpression().isBlank()) {
-            builder.diagnosticsProvider(variableManager -> {
-                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), viewTextfieldDescription.getDiagnosticsExpression());
-                return result.asObjects().orElse(List.of());
-            })
-                   .kindProvider(this::getDiagnosticKind)
-                   .messageProvider(this::getDiagnosticMessage);
-        }
-        if (viewTextfieldDescription.getHelpExpression() != null && !viewTextfieldDescription.getHelpExpression().isBlank()) {
-            builder.helpTextProvider(this.getStringValueProvider(viewTextfieldDescription.getHelpExpression()));
-        }
-        return Optional.of(builder.build());
+        return Optional.of(new TextfieldDescriptionConverter(this.interpreter, this.objectService, this.editService, this.feedbackMessageService, this.widgetIdProvider).convert(viewTextfieldDescription));
     }
 
     @Override
     public Optional<AbstractControlDescription> caseCheckboxDescription(org.eclipse.sirius.components.view.form.CheckboxDescription viewCheckboxDescription) {
-        String descriptionId = this.getDescriptionId(viewCheckboxDescription);
-        WidgetIdProvider idProvider = new WidgetIdProvider();
-        StringValueProvider labelProvider = this.getStringValueProvider(viewCheckboxDescription.getLabelExpression());
-        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(viewCheckboxDescription.getIsEnabledExpression());
-        String valueExpression = Optional.ofNullable(viewCheckboxDescription.getValueExpression()).orElse("");
-        BooleanValueProvider valueProvider = new BooleanValueProvider(this.interpreter, valueExpression);
-        BiFunction<VariableManager, Boolean, IStatus> newValueHandler = this.getNewValueHandler(viewCheckboxDescription.getBody());
-        Function<VariableManager, CheckboxStyle> styleProvider = variableManager -> {
-            VariableManager childVariableManager = variableManager.createChild();
-            childVariableManager.put(VARIABLE_MANAGER, variableManager);
-            var effectiveStyle = viewCheckboxDescription.getConditionalStyles().stream()
-                    .filter(style -> this.matches(style.getCondition(), childVariableManager))
-                    .map(CheckboxDescriptionStyle.class::cast)
-                    .findFirst()
-                    .orElseGet(viewCheckboxDescription::getStyle);
-            if (effectiveStyle == null) {
-                return null;
-            }
-            return new CheckboxStyleProvider(effectiveStyle).apply(childVariableManager);
-        };
-
-        CheckboxDescription.Builder builder = CheckboxDescription.newCheckboxDescription(descriptionId)
-                .idProvider(idProvider)
-                .targetObjectIdProvider(this.semanticTargetIdProvider)
-                .labelProvider(labelProvider)
-                .isReadOnlyProvider(isReadOnlyProvider)
-                .valueProvider(valueProvider)
-                .newValueHandler(newValueHandler)
-                .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(diagnostic -> "")
-                .messageProvider(diagnostic -> "")
-                .styleProvider(styleProvider);
-        if (viewCheckboxDescription.getDiagnosticsExpression() != null && !viewCheckboxDescription.getDiagnosticsExpression().isBlank()) {
-            builder.diagnosticsProvider(variableManager -> {
-                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), viewCheckboxDescription.getDiagnosticsExpression());
-                return result.asObjects().orElse(List.of());
-            })
-                   .kindProvider(this::getDiagnosticKind)
-                   .messageProvider(this::getDiagnosticMessage);
-        }
-        if (viewCheckboxDescription.getHelpExpression() != null && !viewCheckboxDescription.getHelpExpression().isBlank()) {
-            builder.helpTextProvider(this.getStringValueProvider(viewCheckboxDescription.getHelpExpression()));
-        }
-        return Optional.of(builder.build());
+        return Optional.of(new CheckboxDescriptionConverter(this.interpreter, this.objectService, this.editService, this.feedbackMessageService, this.widgetIdProvider).convert(viewCheckboxDescription));
     }
 
     @Override
     public Optional<AbstractControlDescription> caseSelectDescription(org.eclipse.sirius.components.view.form.SelectDescription viewSelectDescription) {
-        String descriptionId = this.getDescriptionId(viewSelectDescription);
-        WidgetIdProvider idProvider = new WidgetIdProvider();
-        StringValueProvider labelProvider = this.getStringValueProvider(viewSelectDescription.getLabelExpression());
-        Function<VariableManager, List<String>> optionIconURLProvider = this.getOptionIconURLProvider();
-        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(viewSelectDescription.getIsEnabledExpression());
-        Function<VariableManager, String> valueProvider = this.getSelectValueProvider(viewSelectDescription.getValueExpression());
-        Function<VariableManager, String> optionIdProvider = this.getOptionIdProvider();
-        StringValueProvider optionLabelProvider = this.getStringValueProvider(viewSelectDescription.getCandidateLabelExpression());
-        String candidateExpression = viewSelectDescription.getCandidatesExpression();
-        Function<VariableManager, List<?>> optionsProvider = this.getMultiValueProvider(candidateExpression);
-        BiFunction<VariableManager, String, IStatus> selectNewValueHandler = this.getSelectNewValueHandler(viewSelectDescription.getBody());
-        Function<VariableManager, SelectStyle> styleProvider = variableManager -> {
-            VariableManager childVariableManager = variableManager.createChild();
-            childVariableManager.put(VARIABLE_MANAGER, variableManager);
-            var effectiveStyle = viewSelectDescription.getConditionalStyles().stream()
-                    .filter(style -> this.matches(style.getCondition(), childVariableManager))
-                    .map(SelectDescriptionStyle.class::cast)
-                    .findFirst()
-                    .orElseGet(viewSelectDescription::getStyle);
-            if (effectiveStyle == null) {
-                return null;
-            }
-            return new SelectStyleProvider(effectiveStyle).apply(childVariableManager);
-        };
-
-        SelectDescription.Builder builder = SelectDescription.newSelectDescription(descriptionId)
-                .idProvider(idProvider)
-                .targetObjectIdProvider(this.semanticTargetIdProvider)
-                .labelProvider(labelProvider)
-                .isReadOnlyProvider(isReadOnlyProvider)
-                .valueProvider(valueProvider)
-                .optionIdProvider(optionIdProvider)
-                .optionLabelProvider(optionLabelProvider)
-                .optionsProvider(optionsProvider)
-                .optionIconURLProvider(optionIconURLProvider)
-                .newValueHandler(selectNewValueHandler)
-                .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(diagnostic -> "")
-                .messageProvider(diagnostic -> "")
-                .styleProvider(styleProvider);
-        if (viewSelectDescription.getDiagnosticsExpression() != null && !viewSelectDescription.getDiagnosticsExpression().isBlank()) {
-            builder.diagnosticsProvider(variableManager -> {
-                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), viewSelectDescription.getDiagnosticsExpression());
-                return result.asObjects().orElse(List.of());
-            })
-                   .kindProvider(this::getDiagnosticKind)
-                   .messageProvider(this::getDiagnosticMessage);
-        }
-        if (viewSelectDescription.getHelpExpression() != null && !viewSelectDescription.getHelpExpression().isBlank()) {
-            builder.helpTextProvider(this.getStringValueProvider(viewSelectDescription.getHelpExpression()));
-        }
-        return Optional.of(builder.build());
+        return Optional.of(new SelectDescriptionConverter(this.interpreter, this.objectService, this.editService, this.feedbackMessageService, this.widgetIdProvider).convert(viewSelectDescription));
     }
 
     @Override
-    public Optional<AbstractControlDescription> caseTextAreaDescription(TextAreaDescription textAreaDescription) {
-        String descriptionId = this.getDescriptionId(textAreaDescription);
-        WidgetIdProvider idProvider = new WidgetIdProvider();
-        StringValueProvider labelProvider = this.getStringValueProvider(textAreaDescription.getLabelExpression());
-        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(textAreaDescription.getIsEnabledExpression());
-        StringValueProvider valueProvider = this.getStringValueProvider(textAreaDescription.getValueExpression());
-        BiFunction<VariableManager, String, IStatus> newValueHandler = this.getNewValueHandler(textAreaDescription.getBody());
-        Function<VariableManager, TextareaStyle> styleProvider = variableManager -> {
-            VariableManager childVariableManager = variableManager.createChild();
-            childVariableManager.put(VARIABLE_MANAGER, variableManager);
-            var effectiveStyle = textAreaDescription.getConditionalStyles().stream()
-                    .filter(style -> this.matches(style.getCondition(), childVariableManager))
-                    .map(TextareaDescriptionStyle.class::cast)
-                    .findFirst()
-                    .orElseGet(textAreaDescription::getStyle);
-            if (effectiveStyle == null) {
-                return null;
-            }
-            return new TextareaStyleProvider(effectiveStyle).apply(childVariableManager);
-        };
-
-        TextareaDescription.Builder builder = TextareaDescription.newTextareaDescription(descriptionId)
-                .idProvider(idProvider)
-                .targetObjectIdProvider(this.semanticTargetIdProvider)
-                .labelProvider(labelProvider)
-                .isReadOnlyProvider(isReadOnlyProvider)
-                .valueProvider(valueProvider)
-                .newValueHandler(newValueHandler)
-                .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(diagnostic -> "")
-                .messageProvider(diagnostic -> "")
-                .styleProvider(styleProvider);
-        if (textAreaDescription.getDiagnosticsExpression() != null && !textAreaDescription.getDiagnosticsExpression().isBlank()) {
-            builder.diagnosticsProvider(variableManager -> {
-                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), textAreaDescription.getDiagnosticsExpression());
-                return result.asObjects().orElse(List.of());
-            })
-                   .kindProvider(this::getDiagnosticKind)
-                   .messageProvider(this::getDiagnosticMessage);
-        }
-        if (textAreaDescription.getHelpExpression() != null && !textAreaDescription.getHelpExpression().isBlank()) {
-            builder.helpTextProvider(this.getStringValueProvider(textAreaDescription.getHelpExpression()));
-        }
-        return Optional.of(builder.build());
-    }
-
-    private String getDiagnosticKind(Object diagnosticObject) {
-        Severity severity = Severity.UNKNOWN;
-        if (diagnosticObject instanceof Diagnostic emfDiagnostic) {
-            severity = Severity.ofDiagnostic(emfDiagnostic);
-        } else if (diagnosticObject instanceof String stringDiagnostic) {
-            severity = Severity.ofString(stringDiagnostic);
-        }
-        return severity.getName();
-    }
-
-    private String getDiagnosticMessage(Object diagnosticObject) {
-        String result = "";
-        if (diagnosticObject instanceof Diagnostic emfDiagnostic) {
-            result = emfDiagnostic.getMessage();
-        } else if (diagnosticObject instanceof String stringDiagnostic) {
-            result = stringDiagnostic;
-            String upper = stringDiagnostic.toUpperCase();
-            for (Severity severity : Severity.values()) {
-                if (upper.startsWith(severity.prefix())) {
-                    result = stringDiagnostic.substring(severity.prefix().length()).trim();
-                    break;
-                }
-            }
-        }
-        return result;
+    public Optional<AbstractControlDescription> caseTextAreaDescription(TextAreaDescription viewTextAreaDescription) {
+        return Optional.of(new TextareaDescriptionConverter(this.interpreter, this.objectService, this.editService, this.feedbackMessageService, this.widgetIdProvider).convert(viewTextAreaDescription));
     }
 
     @Override
-    public Optional<AbstractControlDescription> caseRichTextDescription(RichTextDescription richTextDescription) {
-        String descriptionId = this.getDescriptionId(richTextDescription);
-        WidgetIdProvider idProvider = new WidgetIdProvider();
-        StringValueProvider labelProvider = this.getStringValueProvider(richTextDescription.getLabelExpression());
-        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(richTextDescription.getIsEnabledExpression());
-        StringValueProvider valueProvider = this.getStringValueProvider(richTextDescription.getValueExpression());
-        BiFunction<VariableManager, String, IStatus> newValueHandler = this.getNewValueHandler(richTextDescription.getBody());
-
-        org.eclipse.sirius.components.forms.description.RichTextDescription.Builder builder = org.eclipse.sirius.components.forms.description.RichTextDescription.newRichTextDescription(descriptionId)
-                .idProvider(idProvider)
-                .targetObjectIdProvider(this.semanticTargetIdProvider)
-                .labelProvider(labelProvider)
-                .isReadOnlyProvider(isReadOnlyProvider)
-                .valueProvider(valueProvider)
-                .newValueHandler(newValueHandler)
-                .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(diagnostic -> "")
-                .messageProvider(diagnostic -> "");
-        if (richTextDescription.getDiagnosticsExpression() != null && !richTextDescription.getDiagnosticsExpression().isBlank()) {
-            builder.diagnosticsProvider(variableManager -> {
-                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), richTextDescription.getDiagnosticsExpression());
-                return result.asObjects().orElse(List.of());
-            })
-                   .kindProvider(this::getDiagnosticKind)
-                   .messageProvider(this::getDiagnosticMessage);
-        }
-        if (richTextDescription.getHelpExpression() != null && !richTextDescription.getHelpExpression().isBlank()) {
-            builder.helpTextProvider(this.getStringValueProvider(richTextDescription.getHelpExpression()));
-        }
-        return Optional.of(builder.build());
+    public Optional<AbstractControlDescription> caseRichTextDescription(RichTextDescription viewRichTextDescription) {
+        return Optional.of(new RichTextDescriptionConverter(this.interpreter, this.objectService, this.editService, this.feedbackMessageService, this.widgetIdProvider).convert(viewRichTextDescription));
     }
 
     @Override
-    public Optional<AbstractControlDescription> caseMultiSelectDescription(org.eclipse.sirius.components.view.form.MultiSelectDescription multiSelectDescription) {
-        String descriptionId = this.getDescriptionId(multiSelectDescription);
-        WidgetIdProvider idProvider = new WidgetIdProvider();
-        StringValueProvider labelProvider = this.getStringValueProvider(multiSelectDescription.getLabelExpression());
-        Function<VariableManager, List<String>> optionIconURLProvider = this.getOptionIconURLProvider();
-        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(multiSelectDescription.getIsEnabledExpression());
-        Function<VariableManager, List<String>> valuesProvider = this.getMultiSelectValuesProvider(multiSelectDescription.getValueExpression());
-        Function<VariableManager, String> optionIdProvider = this.getOptionIdProvider();
-        StringValueProvider optionLabelProvider = this.getStringValueProvider(multiSelectDescription.getCandidateLabelExpression());
-        String candidateExpression = multiSelectDescription.getCandidatesExpression();
-        Function<VariableManager, List<? extends Object>> optionsProvider = this.getMultiValueProvider(candidateExpression);
-        BiFunction<VariableManager, List<String>, IStatus> multiSelectNewValueHandler = this.getMultiSelectNewValuesHandler(multiSelectDescription.getBody());
-        Function<VariableManager, MultiSelectStyle> styleProvider = variableManager -> {
-            VariableManager childVariableManager = variableManager.createChild();
-            childVariableManager.put(VARIABLE_MANAGER, variableManager);
-            var effectiveStyle = multiSelectDescription.getConditionalStyles().stream()
-                    .filter(style -> this.matches(style.getCondition(), childVariableManager))
-                    .map(MultiSelectDescriptionStyle.class::cast)
-                    .findFirst()
-                    .orElseGet(multiSelectDescription::getStyle);
-            if (effectiveStyle == null) {
-                return null;
-            }
-            return new MultiSelectStyleProvider(effectiveStyle).apply(childVariableManager);
-        };
-
-        MultiSelectDescription.Builder builder = MultiSelectDescription.newMultiSelectDescription(descriptionId)
-                .idProvider(idProvider)
-                .targetObjectIdProvider(this.semanticTargetIdProvider)
-                .labelProvider(labelProvider)
-                .isReadOnlyProvider(isReadOnlyProvider)
-                .valuesProvider(valuesProvider)
-                .optionIdProvider(optionIdProvider)
-                .optionLabelProvider(optionLabelProvider)
-                .optionIconURLProvider(optionIconURLProvider)
-                .optionsProvider(optionsProvider)
-                .newValuesHandler(multiSelectNewValueHandler)
-                .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(diagnostic -> "")
-                .messageProvider(diagnostic -> "")
-                .styleProvider(styleProvider);
-        if (multiSelectDescription.getDiagnosticsExpression() != null && !multiSelectDescription.getDiagnosticsExpression().isBlank()) {
-            builder.diagnosticsProvider(variableManager -> {
-                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), multiSelectDescription.getDiagnosticsExpression());
-                return result.asObjects().orElse(List.of());
-            })
-                   .kindProvider(this::getDiagnosticKind)
-                   .messageProvider(this::getDiagnosticMessage);
-        }
-        if (multiSelectDescription.getHelpExpression() != null && !multiSelectDescription.getHelpExpression().isBlank()) {
-            builder.helpTextProvider(this.getStringValueProvider(multiSelectDescription.getHelpExpression()));
-        }
-        return Optional.of(builder.build());
+    public Optional<AbstractControlDescription> caseMultiSelectDescription(org.eclipse.sirius.components.view.form.MultiSelectDescription viewMultiSelectDescription) {
+        return Optional.of(new MultiSelectDescriptionConverter(this.interpreter, this.objectService, this.editService, this.feedbackMessageService, this.widgetIdProvider).convert(viewMultiSelectDescription));
     }
 
     @Override
-    public Optional<AbstractControlDescription> caseRadioDescription(org.eclipse.sirius.components.view.form.RadioDescription radioDescription) {
-        String descriptionId = this.getDescriptionId(radioDescription);
-        WidgetIdProvider idProvider = new WidgetIdProvider();
-        StringValueProvider labelProvider = this.getStringValueProvider(radioDescription.getLabelExpression());
-        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(radioDescription.getIsEnabledExpression());
-        Function<VariableManager, String> optionIdProvider = this.getOptionIdProvider();
-        StringValueProvider optionLabelProvider = this.getStringValueProvider(radioDescription.getCandidateLabelExpression());
-
-        Function<VariableManager, Boolean> optionSelectedProvider = variableManager -> {
-            VariableManager childVariableManager = variableManager.createChild();
-            childVariableManager.put(VARIABLE_MANAGER, variableManager);
-            Optional<Object> optionalResult = this.interpreter.evaluateExpression(childVariableManager.getVariables(), radioDescription.getValueExpression()).asObject();
-            Object candidate = variableManager.getVariables().get(RadioComponent.CANDIDATE_VARIABLE);
-            return optionalResult.map(candidate::equals).orElse(Boolean.FALSE);
-        };
-
-        String candidatesExpression = radioDescription.getCandidatesExpression();
-        Function<VariableManager, List<? extends Object>> optionsProvider = this.getMultiValueProvider(candidatesExpression);
-
-        BiFunction<VariableManager, String, IStatus> newValueHandler = this.getSelectNewValueHandler(radioDescription.getBody());
-        Function<VariableManager, RadioStyle> styleProvider = variableManager -> {
-            VariableManager childVariableManager = variableManager.createChild();
-            childVariableManager.put(VARIABLE_MANAGER, variableManager);
-            var effectiveStyle = radioDescription.getConditionalStyles().stream()
-                    .filter(style -> this.matches(style.getCondition(), childVariableManager))
-                    .map(RadioDescriptionStyle.class::cast)
-                    .findFirst()
-                    .orElseGet(radioDescription::getStyle);
-            if (effectiveStyle == null) {
-                return null;
-            }
-            return new RadioStyleProvider(effectiveStyle).apply(variableManager);
-        };
-
-        RadioDescription.Builder builder = RadioDescription.newRadioDescription(descriptionId)
-                .idProvider(idProvider)
-                .targetObjectIdProvider(this.semanticTargetIdProvider)
-                .labelProvider(labelProvider)
-                .isReadOnlyProvider(isReadOnlyProvider)
-                .optionIdProvider(optionIdProvider)
-                .optionLabelProvider(optionLabelProvider)
-                .optionSelectedProvider(optionSelectedProvider)
-                .optionsProvider(optionsProvider)
-                .newValueHandler(newValueHandler)
-                .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(object -> "")
-                .messageProvider(object -> "")
-                .styleProvider(styleProvider);
-        if (radioDescription.getDiagnosticsExpression() != null && !radioDescription.getDiagnosticsExpression().isBlank()) {
-            builder.diagnosticsProvider(variableManager -> {
-                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), radioDescription.getDiagnosticsExpression());
-                return result.asObjects().orElse(List.of());
-            })
-                   .kindProvider(this::getDiagnosticKind)
-                   .messageProvider(this::getDiagnosticMessage);
-        }
-        if (radioDescription.getHelpExpression() != null && !radioDescription.getHelpExpression().isBlank()) {
-            builder.helpTextProvider(this.getStringValueProvider(radioDescription.getHelpExpression()));
-        }
-        return Optional.of(builder.build());
+    public Optional<AbstractControlDescription> caseRadioDescription(org.eclipse.sirius.components.view.form.RadioDescription viewRadioDescription) {
+        return Optional.of(new RadioDescriptionConverter(this.interpreter, this.objectService, this.editService, this.feedbackMessageService, this.widgetIdProvider).convert(viewRadioDescription));
     }
 
     @Override
@@ -598,7 +197,6 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
         }
 
         Function<VariableManager, PieChartStyle> styleProvider = new PieChartStyleProvider(this.interpreter, viewPieChartDescription);
-        // @formatter:off
         IChartDescription chartDescription =  PieChartDescription.newPieChartDescription(this.getDescriptionId(viewPieChartDescription))
                 .label(viewPieChartDescription.getName())
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
@@ -606,115 +204,62 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 .valuesProvider(this.getMultiValueProvider(valuesExpression, Number.class))
                 .styleProvider(styleProvider)
                 .build();
-        // @formatter:on
+
         return Optional.of(this.createChartWidgetDescription(viewPieChartDescription, chartDescription));
     }
 
     @Override
-    public Optional<AbstractControlDescription> caseFlexboxContainerDescription(org.eclipse.sirius.components.view.form.FlexboxContainerDescription flexboxContainerDescription) {
-        String descriptionId = this.getDescriptionId(flexboxContainerDescription);
+    public Optional<AbstractControlDescription> caseFlexboxContainerDescription(org.eclipse.sirius.components.view.form.FlexboxContainerDescription viewFlexboxContainerDescription) {
+        String descriptionId = this.getDescriptionId(viewFlexboxContainerDescription);
         WidgetIdProvider idProvider = new WidgetIdProvider();
-        StringValueProvider labelProvider = this.getStringValueProvider(flexboxContainerDescription.getLabelExpression());
-        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(flexboxContainerDescription.getIsEnabledExpression());
-        FlexDirection flexDirection = FlexDirection.valueOf(flexboxContainerDescription.getFlexDirection().getName());
+        StringValueProvider labelProvider = this.getStringValueProvider(viewFlexboxContainerDescription.getLabelExpression());
+        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(viewFlexboxContainerDescription.getIsEnabledExpression());
+        FlexDirection flexDirection = FlexDirection.valueOf(viewFlexboxContainerDescription.getFlexDirection().getName());
         Function<VariableManager, ContainerBorderStyle> borderStyleProvider = variableManager -> {
             VariableManager childVariableManager = variableManager.createChild();
             childVariableManager.put(VARIABLE_MANAGER, variableManager);
-            var effectiveStyle = flexboxContainerDescription.getConditionalBorderStyles().stream()
+            var effectiveStyle = viewFlexboxContainerDescription.getConditionalBorderStyles().stream()
                     .filter(style -> this.matches(style.getCondition(), childVariableManager))
                     .map(org.eclipse.sirius.components.view.form.ContainerBorderStyle.class::cast)
                     .findFirst()
-                    .orElseGet(flexboxContainerDescription::getBorderStyle);
+                    .orElseGet(viewFlexboxContainerDescription::getBorderStyle);
             if (effectiveStyle == null) {
                 return null;
             }
             return new ContainerBorderStyleProvider(effectiveStyle).apply(childVariableManager);
         };
         List<Optional<AbstractControlDescription>> children = new ArrayList<>();
-        flexboxContainerDescription.getChildren().forEach(widget -> children.add(ViewFormDescriptionConverterSwitch.this.doSwitch(widget)));
+        viewFlexboxContainerDescription.getChildren().forEach(widget -> children.add(ViewFormDescriptionConverterSwitch.this.doSwitch(widget)));
 
-        FlexboxContainerDescription.Builder builder = FlexboxContainerDescription.newFlexboxContainerDescription(descriptionId)
+        var flexboxContainerDescription = FlexboxContainerDescription.newFlexboxContainerDescription(descriptionId)
                 .idProvider(idProvider)
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .labelProvider(labelProvider)
                 .isReadOnlyProvider(isReadOnlyProvider)
                 .flexDirection(flexDirection)
                 .children(children.stream().filter(Optional::isPresent).map(Optional::get).toList())
-                .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(object -> "")
-                .messageProvider(object -> "")
-                .borderStyleProvider(borderStyleProvider);
-        if (flexboxContainerDescription.getDiagnosticsExpression() != null && !flexboxContainerDescription.getDiagnosticsExpression().isBlank()) {
-            builder.diagnosticsProvider(variableManager -> {
-                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), flexboxContainerDescription.getDiagnosticsExpression());
-                return result.asObjects().orElse(List.of());
-            })
-                   .kindProvider(this::getDiagnosticKind)
-                   .messageProvider(this::getDiagnosticMessage);
-        }
-        if (flexboxContainerDescription.getHelpExpression() != null && !flexboxContainerDescription.getHelpExpression().isBlank()) {
-            builder.helpTextProvider(this.getStringValueProvider(flexboxContainerDescription.getHelpExpression()));
-        }
-        return Optional.of(builder.build());
+                .borderStyleProvider(borderStyleProvider)
+                .diagnosticsProvider(new DiagnosticProvider(this.interpreter, viewFlexboxContainerDescription.getDiagnosticsExpression()))
+                .kindProvider(new DiagnosticKindProvider())
+                .messageProvider(new DiagnosticMessageProvider())
+                .helpTextProvider(new StringValueProvider(this.interpreter, viewFlexboxContainerDescription.getHelpExpression()))
+                .build();
+        return Optional.of(flexboxContainerDescription);
     }
 
     @Override
     public Optional<AbstractControlDescription> caseButtonDescription(org.eclipse.sirius.components.view.form.ButtonDescription viewButtonDescription) {
-        String descriptionId = this.getDescriptionId(viewButtonDescription);
-        WidgetIdProvider idProvider = new WidgetIdProvider();
-        StringValueProvider labelProvider = this.getStringValueProvider(viewButtonDescription.getLabelExpression());
-        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(viewButtonDescription.getIsEnabledExpression());
-        StringValueProvider buttonLabelProvider = this.getStringValueProvider(viewButtonDescription.getButtonLabelExpression());
-        StringValueProvider imageURLProvider = this.getStringValueProvider(viewButtonDescription.getImageExpression());
-        Function<VariableManager, IStatus> pushButtonHandler = this.getOperationsHandler(viewButtonDescription.getBody());
-        Function<VariableManager, ButtonStyle> styleProvider = variableManager -> {
-            VariableManager childVariableManager = variableManager.createChild();
-            childVariableManager.put(VARIABLE_MANAGER, variableManager);
-            var effectiveStyle = viewButtonDescription.getConditionalStyles().stream()
-                    .filter(style -> this.matches(style.getCondition(), childVariableManager))
-                    .map(ButtonDescriptionStyle.class::cast)
-                    .findFirst()
-                    .orElseGet(viewButtonDescription::getStyle);
-            if (effectiveStyle == null) {
-                return null;
-            }
-            return new ButtonStyleProvider(effectiveStyle).apply(childVariableManager);
-        };
-
-        ButtonDescription.Builder builder = ButtonDescription.newButtonDescription(descriptionId)
-                .idProvider(idProvider)
-                .targetObjectIdProvider(this.semanticTargetIdProvider)
-                .labelProvider(labelProvider)
-                .isReadOnlyProvider(isReadOnlyProvider)
-                .buttonLabelProvider(buttonLabelProvider)
-                .imageURLProvider(imageURLProvider)
-                .pushButtonHandler(pushButtonHandler)
-                .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(diagnostic -> "")
-                .messageProvider(diagnostic -> "")
-                .styleProvider(styleProvider);
-        if (viewButtonDescription.getDiagnosticsExpression() != null && !viewButtonDescription.getDiagnosticsExpression().isBlank()) {
-            builder.diagnosticsProvider(variableManager -> {
-                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), viewButtonDescription.getDiagnosticsExpression());
-                return result.asObjects().orElse(List.of());
-            })
-                   .kindProvider(this::getDiagnosticKind)
-                   .messageProvider(this::getDiagnosticMessage);
-        }
-        if (viewButtonDescription.getHelpExpression() != null && !viewButtonDescription.getHelpExpression().isBlank()) {
-            builder.helpTextProvider(this.getStringValueProvider(viewButtonDescription.getHelpExpression()));
-        }
-        return Optional.of(builder.build());
+        return Optional.of(new ButtonDescriptionConverter(this.interpreter, this.objectService, this.editService, this.feedbackMessageService, this.widgetIdProvider).convert(viewButtonDescription));
     }
 
     @Override
-    public Optional<AbstractControlDescription> caseSplitButtonDescription(org.eclipse.sirius.components.view.form.SplitButtonDescription splitButtonDescription) {
-        String descriptionId = this.getDescriptionId(splitButtonDescription);
+    public Optional<AbstractControlDescription> caseSplitButtonDescription(org.eclipse.sirius.components.view.form.SplitButtonDescription viewSplitButtonDescription) {
+        String descriptionId = this.getDescriptionId(viewSplitButtonDescription);
         WidgetIdProvider idProvider = new WidgetIdProvider();
-        StringValueProvider labelProvider = this.getStringValueProvider(splitButtonDescription.getLabelExpression());
-        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(splitButtonDescription.getIsEnabledExpression());
+        StringValueProvider labelProvider = this.getStringValueProvider(viewSplitButtonDescription.getLabelExpression());
+        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(viewSplitButtonDescription.getIsEnabledExpression());
 
-        List<ButtonDescription> actions = splitButtonDescription.getActions().stream()
+        List<ButtonDescription> actions = viewSplitButtonDescription.getActions().stream()
                 .map(ViewFormDescriptionConverterSwitch.this::doSwitch)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
@@ -722,31 +267,22 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 .map(ButtonDescription.class::cast).toList();
 
         if (actions.isEmpty()) {
-            this.logger.warn("Invalid empty Reference Actions on widget {}", splitButtonDescription.getName());
+            this.logger.warn("Invalid empty Reference Actions on widget {}", viewSplitButtonDescription.getName());
             return Optional.empty();
         }
 
-        SplitButtonDescription.Builder builder = SplitButtonDescription.newSplitButtonDescription(descriptionId)
+        var splitButtonDescription = SplitButtonDescription.newSplitButtonDescription(descriptionId)
                 .idProvider(idProvider)
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .labelProvider(labelProvider)
                 .isReadOnlyProvider(isReadOnlyProvider)
-                .diagnosticsProvider(variableManager -> List.of())
                 .actions(actions)
-                .kindProvider(diagnostic -> "")
-                .messageProvider(diagnostic -> "");
-        if (splitButtonDescription.getDiagnosticsExpression() != null && !splitButtonDescription.getDiagnosticsExpression().isBlank()) {
-            builder.diagnosticsProvider(variableManager -> {
-                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), splitButtonDescription.getDiagnosticsExpression());
-                return result.asObjects().orElse(List.of());
-            })
-                   .kindProvider(this::getDiagnosticKind)
-                   .messageProvider(this::getDiagnosticMessage);
-        }
-        if (splitButtonDescription.getHelpExpression() != null && !splitButtonDescription.getHelpExpression().isBlank()) {
-            builder.helpTextProvider(this.getStringValueProvider(splitButtonDescription.getHelpExpression()));
-        }
-        return Optional.of(builder.build());
+                .diagnosticsProvider(new DiagnosticProvider(this.interpreter, viewSplitButtonDescription.getDiagnosticsExpression()))
+                .kindProvider(new DiagnosticKindProvider())
+                .messageProvider(new DiagnosticMessageProvider())
+                .helpTextProvider(new StringValueProvider(this.interpreter, viewSplitButtonDescription.getHelpExpression()))
+                .build();
+        return Optional.of(splitButtonDescription);
     }
 
     @Override
@@ -769,27 +305,18 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
             return new LabelStyleProvider(effectiveStyle).apply(childVariableManager);
         };
 
-        LabelDescription.Builder builder = LabelDescription.newLabelDescription(descriptionId)
+        var labelDescription = LabelDescription.newLabelDescription(descriptionId)
                 .idProvider(idProvider)
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .labelProvider(labelProvider)
                 .valueProvider(valueProvider)
-                .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(diagnostic -> "")
-                .messageProvider(diagnostic -> "")
-                .styleProvider(styleProvider);
-        if (viewLabelDescription.getDiagnosticsExpression() != null && !viewLabelDescription.getDiagnosticsExpression().isBlank()) {
-            builder.diagnosticsProvider(variableManager -> {
-                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), viewLabelDescription.getDiagnosticsExpression());
-                return result.asObjects().orElse(List.of());
-            })
-                   .kindProvider(this::getDiagnosticKind)
-                   .messageProvider(this::getDiagnosticMessage);
-        }
-        if (viewLabelDescription.getHelpExpression() != null && !viewLabelDescription.getHelpExpression().isBlank()) {
-            builder.helpTextProvider(this.getStringValueProvider(viewLabelDescription.getHelpExpression()));
-        }
-        return Optional.of(builder.build());
+                .styleProvider(styleProvider)
+                .diagnosticsProvider(new DiagnosticProvider(this.interpreter, viewLabelDescription.getDiagnosticsExpression()))
+                .kindProvider(new DiagnosticKindProvider())
+                .messageProvider(new DiagnosticMessageProvider())
+                .helpTextProvider(new StringValueProvider(this.interpreter, viewLabelDescription.getHelpExpression()))
+                .build();
+        return Optional.of(labelDescription);
     }
 
     @Override
@@ -812,27 +339,18 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
             return new LinkStyleProvider(effectiveStyle).apply(childVariableManager);
         };
 
-        LinkDescription.Builder builder = LinkDescription.newLinkDescription(descriptionId)
+        var linkDescription = LinkDescription.newLinkDescription(descriptionId)
                 .idProvider(idProvider)
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .labelProvider(labelProvider)
                 .urlProvider(valueProvider)
                 .styleProvider(styleProvider)
-                .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(diagnostic -> "")
-                .messageProvider(diagnostic -> "");
-        if (viewLinkDescription.getDiagnosticsExpression() != null && !viewLinkDescription.getDiagnosticsExpression().isBlank()) {
-            builder.diagnosticsProvider(variableManager -> {
-                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), viewLinkDescription.getDiagnosticsExpression());
-                return result.asObjects().orElse(List.of());
-            })
-                   .kindProvider(this::getDiagnosticKind)
-                   .messageProvider(this::getDiagnosticMessage);
-        }
-        if (viewLinkDescription.getHelpExpression() != null && !viewLinkDescription.getHelpExpression().isBlank()) {
-            builder.helpTextProvider(this.getStringValueProvider(viewLinkDescription.getHelpExpression()));
-        }
-        return Optional.of(builder.build());
+                .diagnosticsProvider(new DiagnosticProvider(this.interpreter, viewLinkDescription.getDiagnosticsExpression()))
+                .kindProvider(new DiagnosticKindProvider())
+                .messageProvider(new DiagnosticMessageProvider())
+                .helpTextProvider(new StringValueProvider(this.interpreter, viewLinkDescription.getHelpExpression()))
+                .build();
+        return Optional.of(linkDescription);
     }
 
     @Override
@@ -864,7 +382,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
             return new ListStyleProvider(effectiveStyle).apply(childVariableManager);
         };
 
-        ListDescription.Builder builder = ListDescription.newListDescription(descriptionId)
+        var listDescription = ListDescription.newListDescription(descriptionId)
                 .idProvider(idProvider)
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .labelProvider(labelProvider)
@@ -878,51 +396,34 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 .itemDeletableProvider(isDeletableProvider)
                 .itemClickHandlerProvider(itemClickHandlerProvider)
                 .styleProvider(styleProvider)
-                .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(object -> "")
-                .messageProvider(object -> "");
-        if (viewListDescription.getDiagnosticsExpression() != null && !viewListDescription.getDiagnosticsExpression().isBlank()) {
-            builder.diagnosticsProvider(variableManager -> {
-                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), viewListDescription.getDiagnosticsExpression());
-                return result.asObjects().orElse(List.of());
-            })
-                   .kindProvider(this::getDiagnosticKind)
-                   .messageProvider(this::getDiagnosticMessage);
-        }
-        if (viewListDescription.getHelpExpression() != null && !viewListDescription.getHelpExpression().isBlank()) {
-            builder.helpTextProvider(this.getStringValueProvider(viewListDescription.getHelpExpression()));
-        }
-        return Optional.of(builder.build());
+                .diagnosticsProvider(new DiagnosticProvider(this.interpreter, viewListDescription.getDiagnosticsExpression()))
+                .kindProvider(new DiagnosticKindProvider())
+                .messageProvider(new DiagnosticMessageProvider())
+                .helpTextProvider(new StringValueProvider(this.interpreter, viewListDescription.getHelpExpression()))
+                .build();
+        return Optional.of(listDescription);
     }
 
     @Override
-    public Optional<AbstractControlDescription> caseImageDescription(org.eclipse.sirius.components.view.form.ImageDescription imageDescription) {
-        String descriptionId = this.getDescriptionId(imageDescription);
+    public Optional<AbstractControlDescription> caseImageDescription(org.eclipse.sirius.components.view.form.ImageDescription viewImageDescription) {
+        String descriptionId = this.getDescriptionId(viewImageDescription);
         WidgetIdProvider idProvider = new WidgetIdProvider();
-        StringValueProvider labelProvider = this.getStringValueProvider(imageDescription.getLabelExpression());
-        StringValueProvider urlProvider = this.getStringValueProvider(imageDescription.getUrlExpression());
-        StringValueProvider maxWidthProvider = this.getStringValueProvider(imageDescription.getMaxWidthExpression());
-        ImageDescription.Builder builder = ImageDescription.newImageDescription(descriptionId)
+        StringValueProvider labelProvider = this.getStringValueProvider(viewImageDescription.getLabelExpression());
+        StringValueProvider urlProvider = this.getStringValueProvider(viewImageDescription.getUrlExpression());
+        StringValueProvider maxWidthProvider = this.getStringValueProvider(viewImageDescription.getMaxWidthExpression());
+
+        var imageDescription = ImageDescription.newImageDescription(descriptionId)
                 .idProvider(idProvider)
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .labelProvider(labelProvider)
                 .urlProvider(urlProvider)
                 .maxWidthProvider(maxWidthProvider)
-                .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(object -> "")
-                .messageProvider(object -> "");
-        if (imageDescription.getDiagnosticsExpression() != null && !imageDescription.getDiagnosticsExpression().isBlank()) {
-            builder.diagnosticsProvider(variableManager -> {
-                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), imageDescription.getDiagnosticsExpression());
-                return result.asObjects().orElse(List.of());
-            })
-                   .kindProvider(this::getDiagnosticKind)
-                   .messageProvider(this::getDiagnosticMessage);
-        }
-        if (imageDescription.getHelpExpression() != null && !imageDescription.getHelpExpression().isBlank()) {
-            builder.helpTextProvider(this.getStringValueProvider(imageDescription.getHelpExpression()));
-        }
-        return Optional.of(builder.build());
+                .diagnosticsProvider(new DiagnosticProvider(this.interpreter, viewImageDescription.getDiagnosticsExpression()))
+                .kindProvider(new DiagnosticKindProvider())
+                .messageProvider(new DiagnosticMessageProvider())
+                .helpTextProvider(new StringValueProvider(this.interpreter, viewImageDescription.getHelpExpression()))
+                .build();
+        return Optional.of(imageDescription);
     }
 
     @Override
@@ -962,28 +463,28 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
     }
 
     @Override
-    public Optional<AbstractControlDescription> caseTreeDescription(org.eclipse.sirius.components.view.form.TreeDescription treeDescription) {
-        String descriptionId = this.getDescriptionId(treeDescription);
+    public Optional<AbstractControlDescription> caseTreeDescription(org.eclipse.sirius.components.view.form.TreeDescription viewTreeDescription) {
+        String descriptionId = this.getDescriptionId(viewTreeDescription);
         WidgetIdProvider idProvider = new WidgetIdProvider();
-        StringValueProvider labelProvider = this.getStringValueProvider(treeDescription.getLabelExpression());
-        StringValueProvider itemLabelProvider = this.getStringValueProvider(treeDescription.getTreeItemLabelExpression());
+        StringValueProvider labelProvider = this.getStringValueProvider(viewTreeDescription.getLabelExpression());
+        StringValueProvider itemLabelProvider = this.getStringValueProvider(viewTreeDescription.getTreeItemLabelExpression());
         Function<VariableManager, String> nodeIdProvider = this::getTreeItemId;
         Function<VariableManager, String> itemKindProvider = this::getTreeItemKind;
-        Function<VariableManager, List<String>> nodeIconURLProvider = this.getTreeBeginIconValue(treeDescription.getTreeItemBeginIconExpression());
-        Function<VariableManager, List<List<String>>> nodeIconEndURLProvider = this.getTreeEndIconValue(treeDescription.getTreeItemEndIconsExpression());
-        Function<VariableManager, List<? extends Object>> childrenProvider = this.getMultiValueProvider(treeDescription.getChildrenExpression());
-        Function<VariableManager, Boolean> nodeSelectableProvider = this.getBooleanValueProvider(treeDescription.getIsTreeItemSelectableExpression());
-        Function<VariableManager, Boolean> nodeCheckbableProvider = this.getBooleanValueProvider(treeDescription.getIsCheckableExpression());
-        String valueExpression = Optional.ofNullable(treeDescription.getCheckedValueExpression()).orElse("");
+        Function<VariableManager, List<String>> nodeIconURLProvider = this.getTreeBeginIconValue(viewTreeDescription.getTreeItemBeginIconExpression());
+        Function<VariableManager, List<List<String>>> nodeIconEndURLProvider = this.getTreeEndIconValue(viewTreeDescription.getTreeItemEndIconsExpression());
+        Function<VariableManager, List<? extends Object>> childrenProvider = this.getMultiValueProvider(viewTreeDescription.getChildrenExpression());
+        Function<VariableManager, Boolean> nodeSelectableProvider = this.getBooleanValueProvider(viewTreeDescription.getIsTreeItemSelectableExpression());
+        Function<VariableManager, Boolean> nodeCheckbableProvider = this.getBooleanValueProvider(viewTreeDescription.getIsCheckableExpression());
+        String valueExpression = Optional.ofNullable(viewTreeDescription.getCheckedValueExpression()).orElse("");
         BooleanValueProvider valueProvider = new BooleanValueProvider(this.interpreter, valueExpression);
-        BiFunction<VariableManager, Boolean, IStatus> newValueHandler = this.getNewValueHandler(treeDescription.getBody());
-        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(treeDescription.getIsEnabledExpression());
+        BiFunction<VariableManager, Boolean, IStatus> newValueHandler = this.getNewValueHandler(viewTreeDescription.getBody());
+        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(viewTreeDescription.getIsEnabledExpression());
 
-        var builder = TreeDescription.newTreeDescription(descriptionId)
+        var treeDescription = TreeDescription.newTreeDescription(descriptionId)
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
-                .iconURLProvider(vm -> List.of())
+                .iconURLProvider(variableManager -> List.of())
                 .childrenProvider(childrenProvider)
                 .nodeIdProvider(nodeIdProvider)
                 .nodeLabelProvider(itemLabelProvider)
@@ -994,24 +495,15 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 .isCheckableProvider(nodeCheckbableProvider)
                 .checkedValueProvider(valueProvider)
                 .newCheckedValueHandler(newValueHandler)
-                .expandedNodeIdsProvider(vm -> List.of())
-                .diagnosticsProvider(vm -> List.of())
-                .kindProvider(object -> "")
-                .messageProvider(object -> "")
-                .isReadOnlyProvider(isReadOnlyProvider);
-        if (treeDescription.getDiagnosticsExpression() != null && !treeDescription.getDiagnosticsExpression().isBlank()) {
-            builder.diagnosticsProvider(variableManager -> {
-                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), treeDescription.getDiagnosticsExpression());
-                return result.asObjects().orElse(List.of());
-            })
-                   .kindProvider(this::getDiagnosticKind)
-                   .messageProvider(this::getDiagnosticMessage);
-        }
-        if (treeDescription.getHelpExpression() != null && !treeDescription.getHelpExpression().isBlank()) {
-            builder.helpTextProvider(this.getStringValueProvider(treeDescription.getHelpExpression()));
-        }
+                .expandedNodeIdsProvider(variableManager -> List.of())
+                .isReadOnlyProvider(isReadOnlyProvider)
+                .diagnosticsProvider(new DiagnosticProvider(this.interpreter, viewTreeDescription.getDiagnosticsExpression()))
+                .kindProvider(new DiagnosticKindProvider())
+                .messageProvider(new DiagnosticMessageProvider())
+                .helpTextProvider(new StringValueProvider(this.interpreter, viewTreeDescription.getHelpExpression()))
+                .build();
 
-        return Optional.of(builder.build());
+        return Optional.of(treeDescription);
     }
 
     private String getTreeItemId(VariableManager variableManager) {
@@ -1085,7 +577,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
             return new DateTimeStyleProvider(effectiveStyle).apply(childVariableManager);
         };
 
-        var builder = DateTimeDescription.newDateTimeDescription(descriptionId)
+        var dateTimeDescription = DateTimeDescription.newDateTimeDescription(descriptionId)
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
@@ -1093,22 +585,13 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 .type(this.getDateTimeType(viewDateTimeDescription))
                 .stringValueProvider(stringValueProvider)
                 .newValueHandler(newValueHandler)
-                .diagnosticsProvider(vm -> List.of())
-                .kindProvider(object -> "")
-                .messageProvider(object -> "")
-                .styleProvider(styleProvider);
-        if (viewDateTimeDescription.getDiagnosticsExpression() != null && !viewDateTimeDescription.getDiagnosticsExpression().isBlank()) {
-            builder.diagnosticsProvider(variableManager -> {
-                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), viewDateTimeDescription.getDiagnosticsExpression());
-                return result.asObjects().orElse(List.of());
-            })
-                   .kindProvider(this::getDiagnosticKind)
-                   .messageProvider(this::getDiagnosticMessage);
-        }
-        if (viewDateTimeDescription.getHelpExpression() != null && !viewDateTimeDescription.getHelpExpression().isBlank()) {
-            builder.helpTextProvider(this.getStringValueProvider(viewDateTimeDescription.getHelpExpression()));
-        }
-        return Optional.of(builder.build());
+                .styleProvider(styleProvider)
+                .diagnosticsProvider(new DiagnosticProvider(this.interpreter, viewDateTimeDescription.getDiagnosticsExpression()))
+                .kindProvider(new DiagnosticKindProvider())
+                .messageProvider(new DiagnosticMessageProvider())
+                .helpTextProvider(new StringValueProvider(this.interpreter, viewDateTimeDescription.getHelpExpression()))
+                .build();
+        return Optional.of(dateTimeDescription);
     }
 
 
@@ -1129,7 +612,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
         Function<VariableManager, Integer> currentValueProvider = this.getIntValueProvider(viewSliderDescription.getCurrentValueExpression());
         Function<VariableManager, IStatus> newValueHandler = this.getOperationsHandler(viewSliderDescription.getBody());
 
-        var builder = SliderDescription.newSliderDescription(descriptionId)
+        var sliderDescription = SliderDescription.newSliderDescription(descriptionId)
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
@@ -1138,21 +621,12 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 .maxValueProvider(maxValueProvider)
                 .currentValueProvider(currentValueProvider)
                 .newValueHandler(newValueHandler)
-                .diagnosticsProvider(vm -> List.of())
-                .kindProvider(object -> "")
-                .messageProvider(object -> "");
-        if (viewSliderDescription.getDiagnosticsExpression() != null && !viewSliderDescription.getDiagnosticsExpression().isBlank()) {
-            builder.diagnosticsProvider(variableManager -> {
-                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), viewSliderDescription.getDiagnosticsExpression());
-                return result.asObjects().orElse(List.of());
-            })
-                   .kindProvider(this::getDiagnosticKind)
-                   .messageProvider(this::getDiagnosticMessage);
-        }
-        if (viewSliderDescription.getHelpExpression() != null && !viewSliderDescription.getHelpExpression().isBlank()) {
-            builder.helpTextProvider(this.getStringValueProvider(viewSliderDescription.getHelpExpression()));
-        }
-        return Optional.of(builder.build());
+                .diagnosticsProvider(new DiagnosticProvider(this.interpreter, viewSliderDescription.getDiagnosticsExpression()))
+                .kindProvider(new DiagnosticKindProvider())
+                .messageProvider(new DiagnosticMessageProvider())
+                .helpTextProvider(new StringValueProvider(this.interpreter, viewSliderDescription.getHelpExpression()))
+                .build();
+        return Optional.of(sliderDescription);
     }
 
     private Function<VariableManager, Integer> getIntValueProvider(String intValueExpression) {
@@ -1223,76 +697,17 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
         String descriptionId = this.getDescriptionId(widgetDescription);
         WidgetIdProvider idProvider = new WidgetIdProvider();
         StringValueProvider labelProvider = this.getStringValueProvider(widgetDescription.getLabelExpression());
-        ChartWidgetDescription.Builder builder = ChartWidgetDescription.newChartWidgetDescription(descriptionId)
+
+        return ChartWidgetDescription.newChartWidgetDescription(descriptionId)
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .labelProvider(labelProvider)
                 .idProvider(idProvider)
                 .chartDescription(chartDescription)
-                .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(object -> "")
-                .messageProvider(object -> "");
-        if (widgetDescription.getDiagnosticsExpression() != null && !widgetDescription.getDiagnosticsExpression().isBlank()) {
-            builder.diagnosticsProvider(variableManager -> {
-                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), widgetDescription.getDiagnosticsExpression());
-                return result.asObjects().orElse(List.of());
-            })
-                   .kindProvider(this::getDiagnosticKind)
-                   .messageProvider(this::getDiagnosticMessage);
-        }
-        if (widgetDescription.getHelpExpression() != null && !widgetDescription.getHelpExpression().isBlank()) {
-            builder.helpTextProvider(this.getStringValueProvider(widgetDescription.getHelpExpression()));
-        }
-        return builder.build();
-    }
-
-    private Function<VariableManager, String> getOptionIdProvider() {
-        return variableManager -> {
-            Object candidate = variableManager.getVariables().get(SelectComponent.CANDIDATE_VARIABLE);
-            return Optional.ofNullable(this.objectService.getId(candidate)).orElseGet(() -> Optional.ofNullable(candidate).map(Objects::toString).orElse(""));
-        };
-    }
-
-    private BiFunction<VariableManager, List<String>, IStatus> getMultiSelectNewValuesHandler(List<Operation> operations) {
-        return (variableManager, newValue) -> {
-            IStatus status = this.buildFailureWithFeedbackMessages("An error occurred while handling the new selected values.");
-            Optional<IEditingContext> optionalEditingDomain = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
-            if (optionalEditingDomain.isPresent()) {
-                IEditingContext editingContext = optionalEditingDomain.get();
-
-                List<Object> newValuesObjects = newValue.stream()
-                        .map(currentValue -> this.objectService.getObject(editingContext, currentValue))
-                        .flatMap(Optional::stream)
-                        .toList();
-
-                VariableManager childVariableManager = variableManager.createChild();
-                childVariableManager.put(VARIABLE_MANAGER, variableManager);
-                childVariableManager.put(ViewFormDescriptionConverter.NEW_VALUE, newValuesObjects);
-                OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
-                Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, childVariableManager);
-                if (optionalVariableManager.isEmpty()) {
-                    status = this.buildFailureWithFeedbackMessages("Something went wrong while handling the MultiSelect widget new values.");
-                } else {
-                    status = this.buildSuccessWithFeedbackMessages();
-                }
-            }
-            return status;
-        };
-    }
-
-    private Function<VariableManager, List<String>> getMultiSelectValuesProvider(String valueExpression) {
-        String safeValueExpression = Optional.ofNullable(valueExpression).orElse("");
-        return variableManager -> {
-            List<String> values = new ArrayList<>();
-            if (!safeValueExpression.isBlank()) {
-                VariableManager childVariableManager = variableManager.createChild();
-                childVariableManager.put(VARIABLE_MANAGER, variableManager);
-                Optional<List<Object>> optionalResult = this.interpreter.evaluateExpression(childVariableManager.getVariables(), safeValueExpression).asObjects();
-                if (optionalResult.isPresent()) {
-                    values = optionalResult.get().stream().map(this.objectService::getId).toList();
-                }
-            }
-            return values;
-        };
+                .diagnosticsProvider(new DiagnosticProvider(this.interpreter, widgetDescription.getDiagnosticsExpression()))
+                .kindProvider(new DiagnosticKindProvider())
+                .messageProvider(new DiagnosticMessageProvider())
+                .helpTextProvider(new StringValueProvider(this.interpreter, widgetDescription.getHelpExpression()))
+                .build();
     }
 
     private StringValueProvider getStringValueProvider(String valueExpression) {
@@ -1304,20 +719,6 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
         String safeValueExpression = Optional.ofNullable(valueExpression).orElse("");
         return new BooleanValueProvider(this.interpreter, safeValueExpression);
 
-    }
-
-    private Function<VariableManager, String> getSelectValueProvider(String valueExpression) {
-        String safeValueExpression = Optional.ofNullable(valueExpression).orElse("");
-        return variableManager -> {
-            if (!safeValueExpression.isBlank()) {
-                VariableManager childVariableManager = variableManager.createChild();
-                childVariableManager.put(VARIABLE_MANAGER, variableManager);
-                Result result = this.interpreter.evaluateExpression(childVariableManager.getVariables(), safeValueExpression);
-                var rawValue = result.asObject();
-                return rawValue.map(this.objectService::getId).orElseGet(() -> rawValue.map(Objects::toString).orElse(""));
-            }
-            return "";
-        };
     }
 
     private Function<VariableManager, IStatus> getOperationsHandler(List<Operation> operations) {
@@ -1347,34 +748,6 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 return this.buildSuccessWithFeedbackMessages();
             }
         };
-    }
-
-    private BiFunction<VariableManager, String, IStatus> getSelectNewValueHandler(List<Operation> operations) {
-        return (variableManager, newValue) -> {
-            IStatus status;
-
-            Object newValueObject = null;
-            if (newValue != null && !newValue.isBlank()) {
-                newValueObject = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
-                        .flatMap(editingContext -> this.objectService.getObject(editingContext, newValue))
-                        .orElse(newValue);
-            }
-            VariableManager childVariableManager = variableManager.createChild();
-            childVariableManager.put(ViewFormDescriptionConverter.NEW_VALUE, newValueObject);
-            childVariableManager.put(VARIABLE_MANAGER, variableManager);
-            OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
-            Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, childVariableManager);
-            if (optionalVariableManager.isEmpty()) {
-                status = this.buildFailureWithFeedbackMessages("Something went wrong while handling the Select widget new value.");
-            } else {
-                status = this.buildSuccessWithFeedbackMessages();
-            }
-            return status;
-        };
-    }
-
-    private Function<VariableManager, List<String>> getOptionIconURLProvider() {
-        return variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, Object.class).map(this.objectService::getImagePath).orElse(List.of());
     }
 
     private Function<VariableManager, Boolean> getReadOnlyValueProvider(String expression) {
