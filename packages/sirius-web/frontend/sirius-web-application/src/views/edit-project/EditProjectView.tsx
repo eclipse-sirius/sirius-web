@@ -10,10 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
 import {
+  createSelectionFromUrlSearchParams,
   RepresentationMetadata,
   Selection,
   SelectionContextProvider,
+  updateSelectionBasedOnUrlSearchParamsIfNeeded,
+  updateUrlSearchParamsWithSelection,
   useData,
   Workbench,
 } from '@eclipse-sirius/sirius-components-core';
@@ -69,7 +73,7 @@ export const EditProjectView = () => {
   const routeMatch = useResolvedPath('.');
   const { projectId, representationId } = useParams<EditProjectViewParams>();
   const { classes } = useEditProjectViewStyles();
-  const [urlSearchParams]: [URLSearchParams, SetURLSearchParams] = useSearchParams();
+  const [urlSearchParams, setUrlSearchParams]: [URLSearchParams, SetURLSearchParams] = useSearchParams();
 
   const [{ value, context }, dispatch] =
     useMachine<StateMachine<EditProjectViewContext, EditProjectViewStateSchema, EditProjectViewEvent>>(
@@ -92,7 +96,9 @@ export const EditProjectView = () => {
     dispatch(selectRepresentationEvent);
   };
 
-  const workbenchOnSelectionChanged = () => {};
+  const workbenchOnSelectionChanged = (selection: Selection) => {
+    updateUrlSearchParamsWithSelection(selection, setUrlSearchParams);
+  };
 
   useEffect(() => {
     let pathname: string = null;
@@ -117,6 +123,8 @@ export const EditProjectView = () => {
     }
   }, [value, projectId, routeMatch, history, context.representation, representationId, urlSearchParams]);
 
+  updateSelectionBasedOnUrlSearchParamsIfNeeded(urlSearchParams);
+
   let content: React.ReactNode = null;
 
   if (value === 'loading') {
@@ -130,16 +138,7 @@ export const EditProjectView = () => {
   const { data: readOnlyPredicate } = useData(editProjectViewReadOnlyPredicateExtensionPoint);
 
   if (value === 'loaded' && context.project) {
-    const initialSelection: Selection = {
-      entries: context.representation
-        ? [
-            {
-              id: context.representation.id,
-              kind: context.representation.kind,
-            },
-          ]
-        : [],
-    };
+    const initialSelection: Selection = createSelectionFromUrlSearchParams(urlSearchParams);
 
     const readOnly = readOnlyPredicate(context.project);
     const initialContextEntries: OmniboxContextEntry[] = [
