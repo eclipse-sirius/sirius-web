@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
 import {
   RepresentationMetadata,
   Selection,
@@ -25,7 +26,7 @@ import {
 } from '@eclipse-sirius/sirius-components-trees';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
-import { generatePath, Navigate, useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { StateMachine } from 'xstate';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
@@ -45,6 +46,7 @@ import { NewDocumentModalContribution } from './TreeToolBarContributions/NewDocu
 import { UploadDocumentModalContribution } from './TreeToolBarContributions/UploadDocumentModalContribution';
 import { UndoRedo } from './UndoRedo';
 import { useProjectAndRepresentationMetadata } from './useProjectAndRepresentationMetadata';
+import { useSynchronizeSelectionAndURL } from './useSynchronizeSelectionAndURL';
 
 const PROJECT_ID_SEPARATOR = '@';
 
@@ -59,7 +61,6 @@ const useEditProjectViewStyles = makeStyles()((_) => ({
 }));
 
 export const EditProjectView = () => {
-  const navigate = useNavigate();
   const { projectId: rawProjectId, representationId } = useParams<EditProjectViewParams>();
   const { classes } = useEditProjectViewStyles();
 
@@ -89,22 +90,15 @@ export const EditProjectView = () => {
     dispatch(selectRepresentationEvent);
   };
 
-  useEffect(() => {
-    const projectIdToRedirect = name ? projectId + PROJECT_ID_SEPARATOR + name : projectId;
-    if (context.representation && context.representation.id !== representationId && context.project.id === projectId) {
-      const pathname = generatePath('/projects/:projectId/edit/:representationId', {
-        projectId: projectIdToRedirect,
-        representationId: context.representation.id,
-      });
-      navigate(pathname);
-    } else if (value === 'loaded' && context.representation === null && representationId) {
-      const pathname = generatePath('/projects/:projectId/edit/', { projectId: projectIdToRedirect });
-      navigate(pathname);
-    }
-  }, [value, projectId, context.representation, representationId]);
+  useSynchronizeSelectionAndURL(
+    projectId,
+    name,
+    representationId,
+    context.representation?.id ?? null,
+    value !== 'loaded'
+  );
 
   let content: React.ReactNode = null;
-
   if (value === 'loading') {
     content = <NavigationBar />;
   }
