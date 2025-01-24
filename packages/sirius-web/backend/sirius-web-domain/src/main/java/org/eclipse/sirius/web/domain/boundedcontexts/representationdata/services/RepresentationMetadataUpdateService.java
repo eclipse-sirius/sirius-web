@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -50,6 +50,22 @@ public class RepresentationMetadataUpdateService implements IRepresentationMetad
         if (optionalRepresentationMetadata.isPresent()) {
             var representationMetadata = optionalRepresentationMetadata.get();
             representationMetadata.updateLabel(cause, label);
+            this.representationMetadataRepository.save(representationMetadata);
+
+            result = new Success<>(null);
+        }
+
+        return result;
+    }
+
+    @Override
+    public IResult<Void> updateDescriptionId(ICause cause, UUID representationMetadataId, String descriptionId) {
+        IResult<Void> result = new Failure<>(this.messageService.notFound());
+
+        var optionalRepresentationMetadata = this.representationMetadataRepository.findMetadataById(representationMetadataId);
+        if (optionalRepresentationMetadata.isPresent()) {
+            var representationMetadata = optionalRepresentationMetadata.get();
+            representationMetadata.updateDescriptionId(cause, descriptionId);
             this.representationMetadataRepository.save(representationMetadata);
 
             result = new Success<>(null);

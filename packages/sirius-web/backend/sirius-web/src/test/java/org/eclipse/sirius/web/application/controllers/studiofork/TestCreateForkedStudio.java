@@ -38,7 +38,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.service
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.repositories.ISemanticDataRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
-import org.eclipse.sirius.web.table.dto.CreateForkedStudioInput;
+import org.eclipse.sirius.web.view.fork.dto.CreateForkedStudioInput;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedTableSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;

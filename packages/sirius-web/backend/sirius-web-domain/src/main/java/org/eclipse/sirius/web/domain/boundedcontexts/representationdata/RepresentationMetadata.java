@@ -130,6 +130,17 @@ public class RepresentationMetadata extends AbstractValidatingAggregateRoot<Repr
         }
     }
 
+    public void updateDescriptionId(ICause cause, String newDescriptionId) {
+        if (!newDescriptionId.isEmpty() || !this.descriptionId.equals(newDescriptionId)) {
+            this.descriptionId = newDescriptionId;
+
+            var now = Instant.now();
+            this.lastModifiedOn = now;
+
+            this.registerEvent(new RepresentationMetadataUpdatedEvent(UUID.randomUUID(), now, cause, this));
+        }
+    }
+
     public void dispose(ICause cause) {
         this.registerEvent(new RepresentationMetadataDeletedEvent(UUID.randomUUID(), Instant.now(), cause, this));
     }
