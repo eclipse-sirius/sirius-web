@@ -20,8 +20,8 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
-import { makeStyles } from 'tss-react/mui';
 import { useEffect, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { NewDocumentAreaState } from './NewDocumentArea.types';
 import {
   GQLCreateRepresentationData,
@@ -92,8 +92,8 @@ export const NewRepresentationArea = ({
       if (data) {
         const { createRepresentation } = data;
         if (createRepresentation.representation) {
-          const { id, kind } = createRepresentation.representation;
-          setSelection({ entries: [{ id, kind }] });
+          const { id } = createRepresentation.representation;
+          setSelection({ entries: [{ id }] });
         }
         if (isErrorPayload(createRepresentation)) {
           setState({ message: createRepresentation.message });

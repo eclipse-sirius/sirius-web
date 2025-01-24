@@ -66,8 +66,6 @@ export interface GQLCreateChildSuccessPayload extends GQLCreateChildPayload {
 
 export interface GQLObject {
   id: string;
-  label: string;
-  kind: string;
 }
 
 export interface GQLErrorPayload extends GQLCreateChildPayload {

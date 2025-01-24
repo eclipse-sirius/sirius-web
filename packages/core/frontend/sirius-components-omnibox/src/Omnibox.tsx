@@ -130,7 +130,7 @@ export const Omnibox = ({ open, initialContextEntries, onClose }: OmniboxProps) 
   };
 
   const handleOnActionClick = (action: OmniboxAction) => {
-    setSelection({ entries: [{ id: action.id, kind: action.kind }] });
+    setSelection({ entries: [{ id: action.id }] });
     onClose();
   };
 

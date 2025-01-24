@@ -55,7 +55,7 @@ export const RepresentationsArea = ({ representations }: RepresentationAreaProps
                   data-testid={`onboard-open-${representation.label}`}
                   onClick={() =>
                     setSelection({
-                      entries: [{ id: representation.id, kind: representation.kind }],
+                      entries: [{ id: representation.id }],
                     })
                   }>
                   <ListItemIcon>

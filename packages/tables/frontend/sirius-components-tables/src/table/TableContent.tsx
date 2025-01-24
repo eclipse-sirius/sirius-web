@@ -224,7 +224,6 @@ export const TableContent = memo(
               entries: [
                 {
                   id: row.original.targetObjectId,
-                  kind: row.original.targetObjectKind,
                 },
               ],
             };

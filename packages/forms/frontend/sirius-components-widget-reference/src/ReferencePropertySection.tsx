@@ -224,12 +224,12 @@ const RawReferencePropertySection: PropertySectionComponent<GQLReferenceWidget> 
   >(moveReferenceValueMutation);
 
   const onReferenceValueSimpleClick = (item: GQLReferenceValue) => {
-    const { id, kind } = item;
-    setSelection({ entries: [{ id, kind }] });
+    const { id } = item;
+    setSelection({ entries: [{ id }] });
   };
   const onReferenceValueDoubleClick = (item: GQLReferenceValue) => {
-    const { id, kind } = item;
-    setSelection({ entries: [{ id, kind }] });
+    const { id } = item;
+    setSelection({ entries: [{ id }] });
   };
 
   const clickHandler = useClickHandler<GQLReferenceValue>(onReferenceValueSimpleClick, onReferenceValueDoubleClick);
@@ -408,9 +408,7 @@ const RawReferencePropertySection: PropertySectionComponent<GQLReferenceWidget> 
         const sources = JSON.parse(dragSourcesStringified);
         if (Array.isArray(sources) && sources.length > 0) {
           const entries = sources as SelectionEntry[];
-          const semanticElementIds = entries
-            .filter((entry) => entry.kind.startsWith('siriusComponents://semantic?'))
-            .map((entry) => entry.id);
+          const semanticElementIds = entries.map((entry) => entry.id);
           if (widget.reference.manyValued) {
             callAddReferenceValues([...semanticElementIds]);
           } else {

@@ -294,16 +294,12 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const handlePaneClick = useCallback(
     (event: React.MouseEvent<Element, MouseEvent>) => {
       const {
-        diagram: {
-          id,
-          metadata: { kind },
-        },
+        diagram: { id },
       } = diagramRefreshedEventPayload;
       const selection: Selection = {
         entries: [
           {
             id,
-            kind,
           },
         ],
       };

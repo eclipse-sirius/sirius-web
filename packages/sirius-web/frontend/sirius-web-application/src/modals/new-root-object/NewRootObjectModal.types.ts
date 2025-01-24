@@ -84,8 +84,6 @@ export interface GQLCreateRootObjectSuccessPayload extends GQLCreateRootObjectPa
 
 export interface GQLObject {
   id: string;
-  label: string;
-  kind: string;
 }
 
 export interface GQLErrorPayload extends GQLCreateRootObjectPayload {

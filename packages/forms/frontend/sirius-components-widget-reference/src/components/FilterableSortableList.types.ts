@@ -27,8 +27,8 @@ export interface FilterableSortableListProps {
 
 export interface FilterableSortableListItem {
   id: string;
-  label: string;
   kind: string;
+  label: string;
 }
 
 export interface FilterableSortableListState {

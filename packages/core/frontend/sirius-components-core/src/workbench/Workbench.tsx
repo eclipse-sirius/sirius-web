@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -140,7 +140,7 @@ export const Workbench = ({
   }, [data, selection, dispatch]);
 
   const onRepresentationClick = (representation: RepresentationMetadata) => {
-    setSelection({ entries: [{ id: representation.id, kind: representation.kind }] });
+    setSelection({ entries: [{ id: representation.id }] });
   };
 
   const onClose = (representation: RepresentationMetadata) => {

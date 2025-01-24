@@ -102,7 +102,6 @@ const invokeSingleClickOnDiagramElementToolMutation = gql`
         newSelection {
           entries {
             id
-            kind
           }
         }
         messages {

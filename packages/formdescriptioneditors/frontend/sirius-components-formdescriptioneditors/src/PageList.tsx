@@ -16,8 +16,8 @@ import { GQLFlexboxContainer, GQLPage, GQLWidget } from '@eclipse-sirius/sirius-
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
-import { makeStyles } from 'tss-react/mui';
 import React, { useEffect, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { addPageMutation, deletePageMutation, movePageMutation } from './FormDescriptionEditorEventFragment';
 import {
   GQLAddPageInput,
@@ -242,7 +242,6 @@ export const PageList = () => {
         entries: [
           {
             id: currentPage.id,
-            kind: `siriusComponents://semantic?domain=view&entity=PageDescription`,
           },
         ],
       };

@@ -143,7 +143,7 @@ export const PortalRepresentation = ({
   const nonPropagatingSetSelection = useCallback(
     (selection: Selection) => {
       const filteredEntries = selection.entries.filter(
-        (entry) => !entry.kind.startsWith('siriusComponents://representation')
+        (entry) => !(portal?.views ?? []).map((portalView) => portalView.representationMetadata?.id).includes(entry.id)
       );
       if (filteredEntries.length > 0) {
         setSelection({ entries: filteredEntries });

@@ -25,5 +25,4 @@ export interface SelectionDialogState {
 
 export interface SelectionDialogSelectedObject {
   id: string;
-  kind: string;
 }

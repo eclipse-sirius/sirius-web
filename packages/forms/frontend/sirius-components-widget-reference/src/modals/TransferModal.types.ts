@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { SelectionEntry } from '@eclipse-sirius/sirius-components-core';
 import { GQLReferenceValue, GQLReferenceWidget } from '../ReferenceWidgetFragment.types';
 import { FilterableSortableListItem } from '../components/FilterableSortableList.types';
 
@@ -25,7 +26,7 @@ export interface TransferModalProps {
 }
 
 export interface TransferModalState {
-  leftSelection: FilterableSortableListItem[];
+  leftSelection: SelectionEntry[];
   right: FilterableSortableListItem[];
   rightSelection: FilterableSortableListItem[];
   draggingRightItemId: string | undefined;

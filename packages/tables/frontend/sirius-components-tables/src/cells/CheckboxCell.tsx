@@ -25,7 +25,7 @@ export const CheckboxCell = ({ editingContextId, representationId, tableId, cell
 
   const { setSelection } = useSelection();
   const onClick = () => {
-    const newSelection: Selection = { entries: [{ id: cell.targetObjectId, kind: cell.targetObjectKind }] };
+    const newSelection: Selection = { entries: [{ id: cell.targetObjectId }] };
     setSelection(newSelection);
   };
 

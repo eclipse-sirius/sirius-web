@@ -170,7 +170,6 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
           entries: [
             {
               id: lane.targetObjectId,
-              kind: 'lane',
             },
           ],
         });

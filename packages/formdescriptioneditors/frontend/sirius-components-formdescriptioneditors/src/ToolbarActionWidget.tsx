@@ -318,7 +318,6 @@ export const ToolbarActionWidget = ({ toolbarActions, containerId, toolbarAction
       entries: [
         {
           id: toolbarAction.id,
-          kind: `siriusComponents://semantic?domain=view&entity=${toolbarAction.__typename}Description`,
         },
       ],
     };

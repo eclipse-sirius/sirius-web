@@ -13,6 +13,7 @@
 import { gql, useQuery } from '@apollo/client';
 import {
   DRAG_SOURCES_TYPE,
+  Selection,
   SelectionContext,
   SelectionEntry,
   useMultiToast,
@@ -26,8 +27,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
-import { makeStyles } from 'tss-react/mui';
 import React, { useEffect, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { FilterableSortableList } from '../components/FilterableSortableList';
 import { FilterableSortableListItem } from '../components/FilterableSortableList.types';
 import { ModelBrowserTreeView } from '../components/ModelBrowserTreeView';
@@ -147,7 +148,7 @@ export const TransferModal = ({
     });
   }, [widget.referenceValues]);
 
-  const handleLeftSelection = (selection) => {
+  const handleLeftSelection = (selection: Selection) => {
     setState((prevState) => {
       return {
         ...prevState,

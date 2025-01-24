@@ -17,8 +17,8 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { makeStyles } from 'tss-react/mui';
 import { useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { ModelBrowserTreeView } from '../components/ModelBrowserTreeView';
 import { BrowseModalProps } from './BrowseModal.types';
 
@@ -30,7 +30,9 @@ const useBrowserModalStyles = makeStyles()((_) => ({
 
 export const BrowseModal = ({ editingContextId, widget, onClose }: BrowseModalProps) => {
   const { classes: styles } = useBrowserModalStyles();
-  const [browserSelection, setBrowserSelection] = useState<Selection>({ entries: widget.referenceValues });
+  const [browserSelection, setBrowserSelection] = useState<Selection>({
+    entries: widget.referenceValues.map((value) => ({ id: value.id })),
+  });
 
   return (
     <SelectionContext.Provider

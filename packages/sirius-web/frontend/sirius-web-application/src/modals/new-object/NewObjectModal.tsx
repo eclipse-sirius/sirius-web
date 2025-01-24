@@ -54,8 +54,6 @@ const createChildMutation = gql`
       ... on CreateChildSuccessPayload {
         object {
           id
-          label
-          kind
         }
         messages {
           body

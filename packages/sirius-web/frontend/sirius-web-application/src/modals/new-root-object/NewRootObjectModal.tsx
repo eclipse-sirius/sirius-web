@@ -60,8 +60,6 @@ const createRootObjectMutation = gql`
       ... on CreateRootObjectSuccessPayload {
         object {
           id
-          label
-          kind
         }
       }
       ... on ErrorPayload {

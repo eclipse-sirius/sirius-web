@@ -260,14 +260,14 @@ export const TreeItem = ({
           const newSelection: Selection = { entries: selection.entries.filter((entry) => entry.id !== item.id) };
           setSelection(newSelection);
         } else {
-          const { id, label, kind } = item;
-          const newEntry = { id, label: getString(label), kind };
+          const { id } = item;
+          const newEntry: SelectionEntry = { id };
           const newSelection: Selection = { entries: [...selection.entries, newEntry] };
           setSelection(newSelection);
         }
       } else {
-        const { id, kind } = item;
-        setSelection({ entries: [{ id, kind }] });
+        const { id } = item;
+        setSelection({ entries: [{ id }] });
       }
     }
   };
@@ -294,7 +294,7 @@ export const TreeItem = ({
     const isDraggedItemSelected = selection.entries.map((entry) => entry.id).includes(item.id);
     if (!isDraggedItemSelected) {
       // If we're dragging a non-selected item, drag it alone
-      const itemEntry: SelectionEntry = { id: item.id, kind: item.kind };
+      const itemEntry: SelectionEntry = { id: item.id };
       event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify([itemEntry]));
     } else if (selection.entries.length > 0) {
       // Otherwise drag the whole selection
