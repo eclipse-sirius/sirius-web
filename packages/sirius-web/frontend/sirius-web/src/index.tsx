@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,7 @@ import {
   SiriusWebApplication,
 } from '@eclipse-sirius/sirius-web-application';
 import { papayaExtensionRegistry } from '@eclipse-sirius/sirius-web-papaya';
-import { tableRegistry } from '@eclipse-sirius/sirius-web-table';
+import { forkRegistry } from '@eclipse-sirius/sirius-web-view-fork';
 import { createRoot } from 'react-dom/client';
 import { httpOrigin, wsOrigin } from './core/URL';
 import { EllipseNode } from './nodes/EllipseNode';
@@ -39,7 +39,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const registry = new ExtensionRegistry();
-registry.addAll(tableRegistry, new DefaultExtensionRegistryMergeStrategy());
+registry.addAll(forkRegistry, new DefaultExtensionRegistryMergeStrategy());
 registry.addAll(papayaExtensionRegistry, new DefaultExtensionRegistryMergeStrategy());
 
 const nodeTypeRegistry: NodeTypeRegistry = {

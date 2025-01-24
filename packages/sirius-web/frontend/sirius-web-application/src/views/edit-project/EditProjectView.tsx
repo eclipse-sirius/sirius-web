@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,7 @@ import {
 } from '@eclipse-sirius/sirius-components-trees';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
-import { generatePath, Navigate, useNavigate, useParams, useResolvedPath } from 'react-router-dom';
+import { generatePath, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { StateMachine } from 'xstate';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
@@ -58,7 +58,6 @@ const useEditProjectViewStyles = makeStyles()((_) => ({
 
 export const EditProjectView = () => {
   const navigate = useNavigate();
-  const routeMatch = useResolvedPath('.');
   const { projectId, representationId } = useParams<EditProjectViewParams>();
   const { classes } = useEditProjectViewStyles();
 
@@ -84,7 +83,7 @@ export const EditProjectView = () => {
   };
 
   useEffect(() => {
-    if (context.representation && context.representation.id !== representationId) {
+    if (context.representation && context.representation.id !== representationId && context.project.id === projectId) {
       const pathname = generatePath('/projects/:projectId/edit/:representationId', {
         projectId,
         representationId: context.representation.id,
@@ -94,7 +93,7 @@ export const EditProjectView = () => {
       const pathname = generatePath('/projects/:projectId/edit/', { projectId });
       navigate(pathname);
     }
-  }, [value, projectId, routeMatch, history, context.representation, representationId]);
+  }, [value, projectId, context.representation, representationId]);
 
   let content: React.ReactNode = null;
 

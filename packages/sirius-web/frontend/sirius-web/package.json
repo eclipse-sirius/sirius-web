@@ -30,7 +30,7 @@
     "@eclipse-sirius/sirius-components-validation": "*",
     "@eclipse-sirius/sirius-web-application": "*",
     "@eclipse-sirius/sirius-web-papaya": "*",
-    "@eclipse-sirius/sirius-web-table": "*",
+    "@eclipse-sirius/sirius-web-view-fork": "*",
     "@mui/icons-material": "5.15.19",
     "@mui/material": "5.15.19",
     "@ObeoNetwork/gantt-task-react": "0.6.1",

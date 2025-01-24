@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class URLParser implements IURLParser {
     public Map<String, List<String>> getParameterValues(String kind) {
         Map<String, List<String>> parameterValues = new HashMap<>();
 
-        String[] queryParameters = URI.create(kind).getRawQuery().split("&");
+        String[] queryParameters = Optional.ofNullable(URI.create(kind).getRawQuery()).orElse("").split("&");
         for (String queryParameter : queryParameters) {
             String[] data = queryParameter.split("=");
             if (data.length == 2 && !data[0].isBlank() && !data[1].isBlank()) {

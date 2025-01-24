@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,8 @@ package org.eclipse.sirius.web.application.controllers.studiofork.graphql;
 
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
-import org.eclipse.sirius.web.table.dto.CreateForkedStudioInput;
+import org.eclipse.sirius.web.view.fork.dto.CreateForkedStudioInput;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
