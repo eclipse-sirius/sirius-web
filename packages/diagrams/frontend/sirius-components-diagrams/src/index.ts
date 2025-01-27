@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,6 +37,9 @@ export { useConnectorNodeStyle } from './renderer/connector/useConnectorNodeStyl
 export { BorderNodePosition as BorderNodePosition } from './renderer/DiagramRenderer.types';
 export type { Diagram, EdgeData, NodeData, ReactFlowPropsCustomizer } from './renderer/DiagramRenderer.types';
 export { diagramRendererReactFlowPropsCustomizerExtensionPoint } from './renderer/DiagramRendererExtensionPoints';
+export { DiagramDirectEditInput } from './renderer/direct-edit/DiagramDirectEditInput';
+export type { DiagramDirectEditInputProps } from './renderer/direct-edit/DiagramDirectEditInput.types';
+export { useDiagramDirectEdit } from './renderer/direct-edit/useDiagramDirectEdit';
 export { useDrop } from './renderer/drop/useDrop';
 export { useDropNode } from './renderer/dropNode/useDropNode';
 export { useDropNodeStyle } from './renderer/dropNode/useDropNodeStyle';
