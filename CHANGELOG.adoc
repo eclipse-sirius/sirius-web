@@ -113,6 +113,7 @@ Because this new extension point offers complete control of this part of the UI,
 See `PapayaExtensionRegistry.tsx` for how the same result as before can be achieved with the new extension point.
 - https://github.com/eclipse-sirius/sirius-web/issues/4403[#4403] [table] Add support of actions in table rows context menu
 - https://github.com/eclipse-sirius/sirius-web/issues/4326[#4326] [diagram] Add quickAccessTools to diagram's palette in view dsl
+- https://github.com/eclipse-sirius/sirius-web/issues/4458[#4458] [sirius-web] Export direct edit functionalities.
 
 
 === Improvements
