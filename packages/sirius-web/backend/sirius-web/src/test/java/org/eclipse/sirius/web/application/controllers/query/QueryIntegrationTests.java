@@ -183,4 +183,72 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
         String name = JsonPath.read(result, "$.data.evaluateExpression.result.stringValue");
         assertThat(name).isEqualTo("sirius-web-domain");
     }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a project, when we execute an expression using the eSet EMF service, then the modification is executed")
+    public void givenProjectWhenWeExecuteAnExpressionUsingTheeSetEMFServiceThenTheModificationIsExecuted() {
+        var getNameExpression = "aql:self.eContainer(papaya::Project).eContents(papaya::Component)->first().name";
+        var selectedObjectIds = List.of(PapayaIdentifiers.SIRIUS_WEB_DOMAIN_OBJECT.toString());
+        var result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), getNameExpression, selectedObjectIds));
+
+        String payloadTypename = JsonPath.read(result, "$.data.evaluateExpression.__typename");
+        assertThat(payloadTypename).isEqualTo(EvaluateExpressionSuccessPayload.class.getSimpleName());
+
+        String resultTypename = JsonPath.read(result, "$.data.evaluateExpression.result.__typename");
+        assertThat(resultTypename).isEqualTo(StringExpressionResult.class.getSimpleName());
+
+        String name = JsonPath.read(result, "$.data.evaluateExpression.result.stringValue");
+        assertThat(name).isEqualTo("sirius-web-domain");
+
+        var componentNewName = "sirius-web-domain-renamed";
+        var setNameExpression = "aql:self.eContainer(papaya::Project).eContents(papaya::Component)->first().eSet('name' , '" + componentNewName + "')";
+        result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), setNameExpression, selectedObjectIds));
+
+        payloadTypename = JsonPath.read(result, "$.data.evaluateExpression.__typename");
+        assertThat(payloadTypename).isEqualTo(EvaluateExpressionSuccessPayload.class.getSimpleName());
+
+        resultTypename = JsonPath.read(result, "$.data.evaluateExpression.result.__typename");
+        assertThat(resultTypename).isEqualTo(VoidExpressionResult.class.getSimpleName());
+
+        result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), getNameExpression, selectedObjectIds));
+
+        name = JsonPath.read(result, "$.data.evaluateExpression.result.stringValue");
+        assertThat(name).isEqualTo(componentNewName);
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a project, when we execute an expression using the eUnset EMF service, then the modification is executed")
+    public void givenProjectWhenWeExecuteAnExpressionUsingTheeUnsetEMFServiceThenTheModificationIsExecuted() {
+        var getNameExpression = "aql:self.eContainer(papaya::Project).eContents(papaya::Component)->first().name";
+        var selectedObjectIds = List.of(PapayaIdentifiers.SIRIUS_WEB_DOMAIN_OBJECT.toString());
+        var result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), getNameExpression, selectedObjectIds));
+
+        String payloadTypename = JsonPath.read(result, "$.data.evaluateExpression.__typename");
+        assertThat(payloadTypename).isEqualTo(EvaluateExpressionSuccessPayload.class.getSimpleName());
+
+        String resultTypename = JsonPath.read(result, "$.data.evaluateExpression.result.__typename");
+        assertThat(resultTypename).isEqualTo(StringExpressionResult.class.getSimpleName());
+
+        String name = JsonPath.read(result, "$.data.evaluateExpression.result.stringValue");
+        assertThat(name).isEqualTo("sirius-web-domain");
+
+        var unsetNameExpression = "aql:self.eContainer(papaya::Project).eContents(papaya::Component)->first().eUnset('name')";
+        result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), unsetNameExpression, selectedObjectIds));
+
+        payloadTypename = JsonPath.read(result, "$.data.evaluateExpression.__typename");
+        assertThat(payloadTypename).isEqualTo(EvaluateExpressionSuccessPayload.class.getSimpleName());
+
+        resultTypename = JsonPath.read(result, "$.data.evaluateExpression.result.__typename");
+        assertThat(resultTypename).isEqualTo(VoidExpressionResult.class.getSimpleName());
+
+        result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_PROJECT.toString(), getNameExpression, selectedObjectIds));
+
+        payloadTypename = JsonPath.read(result, "$.data.evaluateExpression.__typename");
+        assertThat(payloadTypename).isEqualTo(EvaluateExpressionSuccessPayload.class.getSimpleName());
+
+        resultTypename = JsonPath.read(result, "$.data.evaluateExpression.result.__typename");
+        assertThat(resultTypename).isEqualTo(VoidExpressionResult.class.getSimpleName());
+    }
 }

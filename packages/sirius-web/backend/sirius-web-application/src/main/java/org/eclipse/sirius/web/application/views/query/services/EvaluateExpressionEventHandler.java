@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandl
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -59,12 +60,15 @@ public class EvaluateExpressionEventHandler implements IEditingContextEventHandl
 
     private final IMessageService messageService;
 
+    private final IFeedbackMessageService feedbackMessageService;
+
     private final Counter counter;
 
-    public EvaluateExpressionEventHandler(IAQLInterpreterProvider aqlInterpreterProvider, IObjectSearchService objectSearchService, IMessageService messageService, MeterRegistry meterRegistry) {
+    public EvaluateExpressionEventHandler(IAQLInterpreterProvider aqlInterpreterProvider, IObjectSearchService objectSearchService, IMessageService messageService, IFeedbackMessageService feedbackMessageService, MeterRegistry meterRegistry) {
         this.aqlInterpreterProvider = Objects.requireNonNull(aqlInterpreterProvider);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.messageService = Objects.requireNonNull(messageService);
+        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
@@ -113,6 +117,8 @@ public class EvaluateExpressionEventHandler implements IEditingContextEventHandl
         IPayload payload = null;
         if (evaluationResult.getStatus() == Status.ERROR) {
             payload = new ErrorPayload(inputId, this.messageService.unexpectedError());
+        } else if (!this.feedbackMessageService.getFeedbackMessages().isEmpty()) {
+            payload = new ErrorPayload(inputId, this.feedbackMessageService.getFeedbackMessages());
         } else {
             var optionalObject = evaluationResult.asObject();
             if (optionalObject.isPresent()) {
