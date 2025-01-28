@@ -64,7 +64,7 @@ export type {
   DiagramPaletteToolContributionProps,
 } from './renderer/palette/extensions/DiagramPaletteToolContribution.types';
 export { diagramPaletteToolExtensionPoint } from './renderer/palette/extensions/DiagramPaletteToolExtensionPoints';
-export type { GQLToolVariable, GQLToolVariableType } from './renderer/palette/usePalette.types';
+export type { GQLToolVariable, GQLToolVariableType } from './renderer/palette/tools/useInvokeTool.types';
 export type { DiagramPanelActionProps } from './renderer/panel/DiagramPanel.types';
 export { diagramPanelActionExtensionPoint } from './renderer/panel/DiagramPanelExtensionPoints';
 export { DiagramRepresentation } from './representation/DiagramRepresentation';

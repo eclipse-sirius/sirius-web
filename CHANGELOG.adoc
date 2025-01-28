@@ -143,6 +143,7 @@ Note that you may need to encode special characters like `[`(by `%5B`) and `]` (
 - https://github.com/eclipse-sirius/sirius-web/issues/4345[#4345] [table] Make table cells independently selectable
 - https://github.com/eclipse-sirius/sirius-web/issues/4352[#4352] [table] Add support to range column filters in table
 - https://github.com/eclipse-sirius/sirius-web/issues/4474[#4474] [query] Add EMF Services (eSet, eUnset) for the Query View.
+- https://github.com/eclipse-sirius/sirius-web/issues/4348[#4348] [sirius-web] Move quick tools declaration on the backend
 
 
 == v2025.1.0
