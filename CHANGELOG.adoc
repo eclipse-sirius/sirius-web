@@ -26,6 +26,7 @@
 - [ADR-180] Add support for widget diagnostics provider in View-based Forms
 - [ADR-181] Improve the customization of the navigation bar
 - [ADR-182] Add additional capabilities to synchronize some code with the deletion of a project
+- [ADR-183] Add support of row hierarchy in tables
 
 === Deprecation warning
 
