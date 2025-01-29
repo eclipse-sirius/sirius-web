@@ -464,7 +464,7 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
      * @generated
      */
     @Override
-    public EAttribute getCellDescription_ValueExpression() {
+    public EAttribute getCellDescription_SelectedTargetObjectExpression() {
         return (EAttribute) this.cellDescriptionEClass.getEStructuralFeatures().get(2);
     }
 
@@ -474,7 +474,7 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
      * @generated
      */
     @Override
-    public EAttribute getCellDescription_TooltipExpression() {
+    public EAttribute getCellDescription_ValueExpression() {
         return (EAttribute) this.cellDescriptionEClass.getEStructuralFeatures().get(3);
     }
 
@@ -484,8 +484,18 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
      * @generated
      */
     @Override
+    public EAttribute getCellDescription_TooltipExpression() {
+        return (EAttribute) this.cellDescriptionEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EReference getCellDescription_CellWidgetDescription() {
-        return (EReference) this.cellDescriptionEClass.getEStructuralFeatures().get(4);
+        return (EReference) this.cellDescriptionEClass.getEStructuralFeatures().get(5);
     }
 
     /**
@@ -671,6 +681,7 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
         this.cellDescriptionEClass = this.createEClass(CELL_DESCRIPTION);
         this.createEAttribute(this.cellDescriptionEClass, CELL_DESCRIPTION__NAME);
         this.createEAttribute(this.cellDescriptionEClass, CELL_DESCRIPTION__PRECONDITION_EXPRESSION);
+        this.createEAttribute(this.cellDescriptionEClass, CELL_DESCRIPTION__SELECTED_TARGET_OBJECT_EXPRESSION);
         this.createEAttribute(this.cellDescriptionEClass, CELL_DESCRIPTION__VALUE_EXPRESSION);
         this.createEAttribute(this.cellDescriptionEClass, CELL_DESCRIPTION__TOOLTIP_EXPRESSION);
         this.createEReference(this.cellDescriptionEClass, CELL_DESCRIPTION__CELL_WIDGET_DESCRIPTION);
@@ -782,6 +793,8 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
                 !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getCellDescription_PreconditionExpression(), theViewPackage.getInterpretedExpression(), "preconditionExpression", "", 0, 1, CellDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getCellDescription_SelectedTargetObjectExpression(), theViewPackage.getInterpretedExpression(), "selectedTargetObjectExpression", "", 0, 1, CellDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getCellDescription_ValueExpression(), theViewPackage.getInterpretedExpression(), "valueExpression", "", 0, 1, CellDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getCellDescription_TooltipExpression(), theViewPackage.getInterpretedExpression(), "tooltipExpression", "", 0, 1, CellDescription.class, !IS_TRANSIENT, !IS_VOLATILE,

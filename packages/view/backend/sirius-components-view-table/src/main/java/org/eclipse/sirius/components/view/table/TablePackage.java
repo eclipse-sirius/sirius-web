@@ -403,13 +403,22 @@ public interface TablePackage extends EPackage {
     int CELL_DESCRIPTION__PRECONDITION_EXPRESSION = 1;
 
     /**
+     * The feature id for the '<em><b>Selected Target Object Expression</b></em>' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CELL_DESCRIPTION__SELECTED_TARGET_OBJECT_EXPRESSION = 2;
+
+    /**
      * The feature id for the '<em><b>Value Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int CELL_DESCRIPTION__VALUE_EXPRESSION = 2;
+    int CELL_DESCRIPTION__VALUE_EXPRESSION = 3;
 
     /**
      * The feature id for the '<em><b>Tooltip Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -418,7 +427,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CELL_DESCRIPTION__TOOLTIP_EXPRESSION = 3;
+    int CELL_DESCRIPTION__TOOLTIP_EXPRESSION = 4;
 
     /**
      * The feature id for the '<em><b>Cell Widget Description</b></em>' containment reference. <!-- begin-user-doc -->
@@ -427,7 +436,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CELL_DESCRIPTION__CELL_WIDGET_DESCRIPTION = 4;
+    int CELL_DESCRIPTION__CELL_WIDGET_DESCRIPTION = 5;
 
     /**
      * The number of structural features of the '<em>Cell Description</em>' class. <!-- begin-user-doc --> <!--
@@ -436,7 +445,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CELL_DESCRIPTION_FEATURE_COUNT = 5;
+    int CELL_DESCRIPTION_FEATURE_COUNT = 6;
 
     /**
      * The number of operations of the '<em>Cell Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -994,6 +1003,18 @@ public interface TablePackage extends EPackage {
 
     /**
      * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.table.CellDescription#getSelectedTargetObjectExpression <em>Selected
+     * Target Object Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Selected Target Object Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.CellDescription#getSelectedTargetObjectExpression()
+     * @see #getCellDescription()
+     */
+    EAttribute getCellDescription_SelectedTargetObjectExpression();
+
+    /**
+     * Returns the meta object for the attribute
      * '{@link org.eclipse.sirius.components.view.table.CellDescription#getValueExpression <em>Value Expression</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1428,6 +1449,14 @@ public interface TablePackage extends EPackage {
          * @generated
          */
         EAttribute CELL_DESCRIPTION__PRECONDITION_EXPRESSION = eINSTANCE.getCellDescription_PreconditionExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Selected Target Object Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute CELL_DESCRIPTION__SELECTED_TARGET_OBJECT_EXPRESSION = eINSTANCE.getCellDescription_SelectedTargetObjectExpression();
 
         /**
          * The meta object literal for the '<em><b>Value Expression</b></em>' attribute feature. <!-- begin-user-doc -->

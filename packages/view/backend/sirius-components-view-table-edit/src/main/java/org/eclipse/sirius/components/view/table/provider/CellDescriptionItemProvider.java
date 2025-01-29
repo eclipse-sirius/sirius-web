@@ -67,6 +67,7 @@ public class CellDescriptionItemProvider extends ItemProviderAdapter implements 
 
             this.addNamePropertyDescriptor(object);
             this.addPreconditionExpressionPropertyDescriptor(object);
+            this.addSelectedTargetObjectExpressionPropertyDescriptor(object);
             this.addValueExpressionPropertyDescriptor(object);
             this.addTooltipExpressionPropertyDescriptor(object);
         }
@@ -102,6 +103,22 @@ public class CellDescriptionItemProvider extends ItemProviderAdapter implements 
                 this.getString("_UI_PropertyDescriptor_description", "_UI_CellDescription_preconditionExpression_feature",
                         "_UI_CellDescription_type"),
                 TablePackage.Literals.CELL_DESCRIPTION__PRECONDITION_EXPRESSION, true, false, false,
+                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Selected Target Object Expression
+     * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addSelectedTargetObjectExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
+                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_CellDescription_selectedTargetObjectExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description",
+                        "_UI_CellDescription_selectedTargetObjectExpression_feature", "_UI_CellDescription_type"),
+                TablePackage.Literals.CELL_DESCRIPTION__SELECTED_TARGET_OBJECT_EXPRESSION, true, false, false,
                 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -217,6 +234,7 @@ public class CellDescriptionItemProvider extends ItemProviderAdapter implements 
         switch (notification.getFeatureID(CellDescription.class)) {
             case TablePackage.CELL_DESCRIPTION__NAME:
             case TablePackage.CELL_DESCRIPTION__PRECONDITION_EXPRESSION:
+            case TablePackage.CELL_DESCRIPTION__SELECTED_TARGET_OBJECT_EXPRESSION:
             case TablePackage.CELL_DESCRIPTION__VALUE_EXPRESSION:
             case TablePackage.CELL_DESCRIPTION__TOOLTIP_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));

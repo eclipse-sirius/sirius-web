@@ -82,6 +82,30 @@ public interface CellDescription extends EObject {
     void setPreconditionExpression(String value);
 
     /**
+     * Returns the value of the '<em><b>Selected Target Object Expression</b></em>' attribute. The default value is
+     * <code>""</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Selected Target Object Expression</em>' attribute.
+     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     * @see #setSelectedTargetObjectExpression(String)
+     * @see org.eclipse.sirius.components.view.table.TablePackage#getCellDescription_SelectedTargetObjectExpression()
+     */
+    String getSelectedTargetObjectExpression();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.table.CellDescription#getSelectedTargetObjectExpression <em>Selected
+     * Target Object Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>Selected Target Object Expression</em>' attribute.
+     * @generated
+     * @see #getSelectedTargetObjectExpression()
+     */
+    void setSelectedTargetObjectExpression(String value);
+
+    /**
      * Returns the value of the '<em><b>Value Expression</b></em>' attribute. The default value is <code>""</code>. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *

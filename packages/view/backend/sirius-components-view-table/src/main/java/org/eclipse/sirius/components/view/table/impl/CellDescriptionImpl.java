@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.table.impl;
 
+import java.util.Objects;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
@@ -60,6 +62,15 @@ public class CellDescriptionImpl extends MinimalEObjectImpl.Container implements
      */
     protected static final String PRECONDITION_EXPRESSION_EDEFAULT = "";
     /**
+     * The default value of the '{@link #getSelectedTargetObjectExpression() <em>Selected Target Object
+     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getSelectedTargetObjectExpression()
+     */
+    protected static final String SELECTED_TARGET_OBJECT_EXPRESSION_EDEFAULT = "";
+    /**
      * The default value of the '{@link #getValueExpression() <em>Value Expression</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
@@ -95,6 +106,15 @@ public class CellDescriptionImpl extends MinimalEObjectImpl.Container implements
      * @see #getPreconditionExpression()
      */
     protected String preconditionExpression = PRECONDITION_EXPRESSION_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getSelectedTargetObjectExpression() <em>Selected Target Object Expression</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getSelectedTargetObjectExpression()
+     */
+    protected String selectedTargetObjectExpression = SELECTED_TARGET_OBJECT_EXPRESSION_EDEFAULT;
     /**
      * The cached value of the '{@link #getValueExpression() <em>Value Expression</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
@@ -187,6 +207,30 @@ public class CellDescriptionImpl extends MinimalEObjectImpl.Container implements
         this.preconditionExpression = newPreconditionExpression;
         if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.CELL_DESCRIPTION__PRECONDITION_EXPRESSION, oldPreconditionExpression, this.preconditionExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getSelectedTargetObjectExpression() {
+        return this.selectedTargetObjectExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setSelectedTargetObjectExpression(String newSelectedTargetObjectExpression) {
+        String oldSelectedTargetObjectExpression = this.selectedTargetObjectExpression;
+        this.selectedTargetObjectExpression = newSelectedTargetObjectExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.CELL_DESCRIPTION__SELECTED_TARGET_OBJECT_EXPRESSION, oldSelectedTargetObjectExpression,
+                    this.selectedTargetObjectExpression));
     }
 
     /**
@@ -309,6 +353,8 @@ public class CellDescriptionImpl extends MinimalEObjectImpl.Container implements
                 return this.getName();
             case TablePackage.CELL_DESCRIPTION__PRECONDITION_EXPRESSION:
                 return this.getPreconditionExpression();
+            case TablePackage.CELL_DESCRIPTION__SELECTED_TARGET_OBJECT_EXPRESSION:
+                return this.getSelectedTargetObjectExpression();
             case TablePackage.CELL_DESCRIPTION__VALUE_EXPRESSION:
                 return this.getValueExpression();
             case TablePackage.CELL_DESCRIPTION__TOOLTIP_EXPRESSION:
@@ -332,6 +378,9 @@ public class CellDescriptionImpl extends MinimalEObjectImpl.Container implements
                 return;
             case TablePackage.CELL_DESCRIPTION__PRECONDITION_EXPRESSION:
                 this.setPreconditionExpression((String) newValue);
+                return;
+            case TablePackage.CELL_DESCRIPTION__SELECTED_TARGET_OBJECT_EXPRESSION:
+                this.setSelectedTargetObjectExpression((String) newValue);
                 return;
             case TablePackage.CELL_DESCRIPTION__VALUE_EXPRESSION:
                 this.setValueExpression((String) newValue);
@@ -360,6 +409,9 @@ public class CellDescriptionImpl extends MinimalEObjectImpl.Container implements
             case TablePackage.CELL_DESCRIPTION__PRECONDITION_EXPRESSION:
                 this.setPreconditionExpression(PRECONDITION_EXPRESSION_EDEFAULT);
                 return;
+            case TablePackage.CELL_DESCRIPTION__SELECTED_TARGET_OBJECT_EXPRESSION:
+                this.setSelectedTargetObjectExpression(SELECTED_TARGET_OBJECT_EXPRESSION_EDEFAULT);
+                return;
             case TablePackage.CELL_DESCRIPTION__VALUE_EXPRESSION:
                 this.setValueExpression(VALUE_EXPRESSION_EDEFAULT);
                 return;
@@ -367,7 +419,7 @@ public class CellDescriptionImpl extends MinimalEObjectImpl.Container implements
                 this.setTooltipExpression(TOOLTIP_EXPRESSION_EDEFAULT);
                 return;
             case TablePackage.CELL_DESCRIPTION__CELL_WIDGET_DESCRIPTION:
-                this.setCellWidgetDescription((CellWidgetDescription) null);
+                this.setCellWidgetDescription(null);
                 return;
         }
         super.eUnset(featureID);
@@ -382,9 +434,12 @@ public class CellDescriptionImpl extends MinimalEObjectImpl.Container implements
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case TablePackage.CELL_DESCRIPTION__NAME:
-                return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
+                return !Objects.equals(NAME_EDEFAULT, this.name);
             case TablePackage.CELL_DESCRIPTION__PRECONDITION_EXPRESSION:
                 return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
+            case TablePackage.CELL_DESCRIPTION__SELECTED_TARGET_OBJECT_EXPRESSION:
+                return SELECTED_TARGET_OBJECT_EXPRESSION_EDEFAULT == null ? this.selectedTargetObjectExpression != null
+                        : !SELECTED_TARGET_OBJECT_EXPRESSION_EDEFAULT.equals(this.selectedTargetObjectExpression);
             case TablePackage.CELL_DESCRIPTION__VALUE_EXPRESSION:
                 return VALUE_EXPRESSION_EDEFAULT == null ? this.valueExpression != null : !VALUE_EXPRESSION_EDEFAULT.equals(this.valueExpression);
             case TablePackage.CELL_DESCRIPTION__TOOLTIP_EXPRESSION:
@@ -405,17 +460,18 @@ public class CellDescriptionImpl extends MinimalEObjectImpl.Container implements
         if (this.eIsProxy())
             return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (name: ");
-        result.append(this.name);
-        result.append(", preconditionExpression: ");
-        result.append(this.preconditionExpression);
-        result.append(", valueExpression: ");
-        result.append(this.valueExpression);
-        result.append(", tooltipExpression: ");
-        result.append(this.tooltipExpression);
-        result.append(')');
-        return result.toString();
+        String result = super.toString() + " (name: " +
+                this.name +
+                ", preconditionExpression: " +
+                this.preconditionExpression +
+                ", selectedTargetObjectExpression: " +
+                this.selectedTargetObjectExpression +
+                ", valueExpression: " +
+                this.valueExpression +
+                ", tooltipExpression: " +
+                this.tooltipExpression +
+                ')';
+        return result;
     }
 
 } // CellDescriptionImpl

@@ -44,6 +44,7 @@
     <genClasses ecoreClass="table.ecore#//CellDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//CellDescription/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//CellDescription/preconditionExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//CellDescription/selectedTargetObjectExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//CellDescription/valueExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//CellDescription/tooltipExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference table.ecore#//CellDescription/cellWidgetDescription"/>
