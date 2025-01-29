@@ -14,9 +14,12 @@ package org.eclipse.sirius.web.application.controllers.documents;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
@@ -42,7 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author sbegaudeau
  */
 @Transactional
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"sirius.web.test.enabled=studio"})
 public class DocumentDownloadControllerIntegrationTests extends AbstractIntegrationTests {
 
     @LocalServerPort
@@ -67,7 +70,7 @@ public class DocumentDownloadControllerIntegrationTests extends AbstractIntegrat
 
         var testRestTemplate = new TestRestTemplate();
 
-        var uri = "http://localhost:" + port + "/api/editingcontexts/" + StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString() + "/documents/" + StudioIdentifiers.DOMAIN_DOCUMENT.toString();
+        var uri = "http://localhost:" + this.port + "/api/editingcontexts/" + StudioIdentifiers.SAMPLE_STUDIO_PROJECT + "/documents/" + StudioIdentifiers.DOMAIN_DOCUMENT;
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.APPLICATION_XML));
@@ -75,5 +78,26 @@ public class DocumentDownloadControllerIntegrationTests extends AbstractIntegrat
 
         var response = testRestTemplate.exchange(uri, HttpMethod.GET, entity, Resource.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a download document request, when a resource search service is provided, then the good resource is retrieved")
+    public void givenDownloadDocumentRequestWhenAResourceSearchServiceIsProvidedThenTheGoodResourceIsRetrieved() throws IOException {
+        this.givenCommittedTransaction.commit();
+
+        var testRestTemplate = new TestRestTemplate();
+
+        var uri = "http://localhost:" + this.port + "/api/editingcontexts/" + PapayaIdentifiers.PAPAYA_PROJECT + "/documents/" + PapayaIdentifiers.PROJECT_OBJECT;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(List.of(MediaType.APPLICATION_XML));
+        HttpEntity<String> entity = new HttpEntity<>(null, headers);
+
+        var response = testRestTemplate.exchange(uri, HttpMethod.GET, entity, Resource.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().getContentAsString(StandardCharsets.UTF_8)).isEqualToIgnoringWhitespace("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+                "<xmi:XMI xmi:version=\"2.0\" xmlns:xmi=\"http://www.omg.org/XMI\"/>\n"); //Empty resource load from PapayaDocumentDownloadResourceSearchService
     }
 }

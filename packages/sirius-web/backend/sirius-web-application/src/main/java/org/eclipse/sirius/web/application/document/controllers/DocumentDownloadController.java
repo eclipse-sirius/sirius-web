@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.web.application.document.services.api.IDocumentDownloadResourceSearchService;
 import org.eclipse.sirius.web.application.document.services.api.IDocumentExporter;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -57,15 +58,24 @@ public class DocumentDownloadController {
 
     private final List<IDocumentExporter> documentExporters;
 
-    public DocumentDownloadController(IEditingContextSearchService editingContextSearchService, List<IDocumentExporter> documentExporters) {
+    private final List<IDocumentDownloadResourceSearchService> documentDownloadResourceSearchServices;
+
+    public DocumentDownloadController(IEditingContextSearchService editingContextSearchService, List<IDocumentExporter> documentExporters, List<IDocumentDownloadResourceSearchService> documentDownloadResourceSearchServices) {
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.documentExporters = Objects.requireNonNull(documentExporters);
+        this.documentDownloadResourceSearchServices = Objects.requireNonNull(documentDownloadResourceSearchServices);
     }
 
     @ResponseBody
     @GetMapping(path = "/{documentId}")
     public ResponseEntity<Resource> downloadDocument(@PathVariable String editingContextId, @PathVariable String documentId, @RequestHeader HttpHeaders requestHeaders) {
-        var optionalResource = this.getResource(editingContextId, documentId);
+        var optionalResource =
+                this.documentDownloadResourceSearchServices.stream()
+                        .map(documentDownloadResourceSearchService -> documentDownloadResourceSearchService.findResource(editingContextId, documentId))
+                        .filter(Optional::isPresent)
+                        .findFirst()
+                        .orElseGet(() -> this.getResource(editingContextId, documentId));
+
         if (optionalResource.isPresent()) {
             var resource = optionalResource.get();
 
