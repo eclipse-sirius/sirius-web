@@ -43,13 +43,15 @@ There is no more need for a specific serializer for this `RestDataVersion#payloa
 The `Map<String, Object>` is handled by the default serializer/deserializer. 
 `RestDataVersionRequest#payload` is now typed by a `Map<String, Object>` instead of `IRestDataRequest`.
 The `Map<String, Object>` is handled by the default serializer/deserializer.
+- [releng] We now use Sirius EMF JSON 2.4.0 (from 2.3.2 before), which changed its Mave `groupId` from `org.eclipse.sirius.emfjson` to `org.eclipse.sirius` to match all other Maven artifacts produced in Eclipse Sirius.
+The new GAV is `org.eclipse.sirius:org.eclipse.sirius.emfjson:2.4.0-SNAPSHOT`.
 
 === Dependency update
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4620[#4620] [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.3[Spring Boot 3.4.3].
 - [releng] Switch to xyflow 12.4.4
 - [releng] Switch to Turbo 2.4.4
-
+- [releng] Switch to Sirius EMF JSON 2.4.0.
 
 === Bug fixes
 
