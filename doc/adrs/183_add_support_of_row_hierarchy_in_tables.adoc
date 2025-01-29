@@ -1,0 +1,42 @@
+= ADR-183 Add support of row hierarchy in tables
+
+* GitHub Issue: https://github.com/eclipse-sirius/sirius-web/issues/4477[#4477]
+
+== Context
+
+Currently, Sirius Web tables representation allows only one row description that handles table rows at the same level.
+
+Downstream applications (e.g. Papyrus web) may require a more flexible way to describe rows with several levels of hierarchy.
+
+== Decision
+
+=== Back end
+
+Currently, `LineDescription.getSemanticElementsProvider` (and `LineDescription::semanticCandidatesExpression` for view description) is in charge of retrieving the semantic elements associated to table rows.
+This is where the pagination comes into play to retrieve only the number of elements that a page can support.
+Pages navigation allows of retrieval of further elements.
+
+The need to support hierarchical rows implies to know the level of each row in term of hierarchy depth.
+We suggest to introduce a new provider in `LineDescription` such as `getDepthLevel` (and `LineDescription::depthLevelExpression` for the view table description).
+For the rows displayed at the root level of the tree, this provider should return 0.
+A depth level of a row should be equal to the depth level of its parent plus 1.
+
+We prefer let the specifier provide a depth level instead of a direct indentation in pixel.
+This seems more understandable and easy to handle from the specifier perspective.
+Otherwise what if the given indentations are not consistent among elements of the same level (for instance 43,59,64)?
+Moreover, this depth level can be easily translated into the left indentation of rows in the tree.
+
+=== Front-end
+
+Since the front-end does rely on the server to paginate rows in tables and we do not want to be limited to the basic support provided by MRT, we need to handle the hierarchy of rows by our own. +
+We need to update the row header component `RowHeader` (always the left most column of the table) to support the chevron icon to indicate that there are children rows.
+
+The indentation of this chevron icon should be computed based on the depth level of the row. +
+The click handler of this icon should collapse or expand the row to hide or show sub rows.
+
+To reduce the complexity, in a first version, this will be handled only in the font-end side only, without back-end communication.
+This implies that there won't be any semantic candidates computation according to expanded state of rows nor expanded state persistence.
+
+== Status
+
+In progress
