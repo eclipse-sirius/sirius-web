@@ -66,6 +66,16 @@ public class CellDescriptionBuilder {
     }
 
     /**
+     * Setter for SelectedTargetObjectExpression.
+     *
+     * @generated
+     */
+    public CellDescriptionBuilder selectedTargetObjectExpression(java.lang.String value) {
+        this.getCellDescription().setSelectedTargetObjectExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for ValueExpression.
      *
      * @generated

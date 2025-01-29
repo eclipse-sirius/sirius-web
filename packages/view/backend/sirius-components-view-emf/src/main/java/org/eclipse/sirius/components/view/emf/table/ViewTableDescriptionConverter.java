@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.view.emf.table;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -151,27 +152,48 @@ public class ViewTableDescriptionConverter implements IRepresentationDescription
     private Optional<ICellDescription> convertCellDescription(org.eclipse.sirius.components.view.table.CellDescription viewCellDescription, AQLInterpreter interpreter) {
         Optional<ICellDescription> optionalICellDescription = Optional.empty();
 
+        Function<VariableManager, String> targetObjectIdProvider = variableManager -> {
+            Optional<Object> optionalSelf = this.self(variableManager);
+            if (viewCellDescription.getSelectedTargetObjectExpression() != null && !viewCellDescription.getSelectedTargetObjectExpression().isBlank()) {
+                optionalSelf = interpreter.evaluateExpression(variableManager.getVariables(), viewCellDescription.getSelectedTargetObjectExpression()).asObject();
+            }
+            return optionalSelf
+                    .map(this.objectService::getId)
+                    .orElse("");
+        };
+
+        Function<VariableManager, String> targetObjectKindProvider = variableManager -> {
+            Optional<Object> optionalSelf = this.self(variableManager);
+            if (viewCellDescription.getSelectedTargetObjectExpression() != null && !viewCellDescription.getSelectedTargetObjectExpression().isBlank()) {
+                optionalSelf = interpreter.evaluateExpression(variableManager.getVariables(), viewCellDescription.getSelectedTargetObjectExpression()).asObject();
+            }
+            return optionalSelf
+                    .map(this.objectService::getKind)
+                    .orElse("");
+        };
+
+        Predicate<VariableManager> canCreatePredicate =
+                variableManager -> interpreter.evaluateExpression(variableManager.getVariables(), viewCellDescription.getPreconditionExpression()).asBoolean().orElse(false);
+
+        BiFunction<VariableManager, Object, String> cellValueProvider = (variableManager, columnTargetObject) -> {
+            var child = variableManager.createChild();
+            child.put("columnTargetObject", columnTargetObject);
+            return this.evaluateString(interpreter, child, viewCellDescription.getValueExpression());
+        };
+
         if (viewCellDescription.getCellWidgetDescription() instanceof CellTextfieldWidgetDescription cellTextfieldWidgetDescription) {
             optionalICellDescription = Optional.of(TextfieldCellDescription.newTextfieldCellDescription(this.tableIdProvider.getId(viewCellDescription))
-                    .targetObjectIdProvider(this.semanticTargetIdProvider)
-                    .targetObjectKindProvider(this.semanticTargetKindProvider)
-                    .canCreatePredicate(variableManager -> interpreter.evaluateExpression(variableManager.getVariables(), viewCellDescription.getPreconditionExpression()).asBoolean().orElse(false))
-                    .cellValueProvider((variableManager, columnTargetObject) -> {
-                        var child = variableManager.createChild();
-                        child.put("columnTargetObject", columnTargetObject);
-                        return this.evaluateString(interpreter, child, viewCellDescription.getValueExpression());
-                    })
+                    .targetObjectIdProvider(targetObjectIdProvider)
+                    .targetObjectKindProvider(targetObjectKindProvider)
+                    .canCreatePredicate(canCreatePredicate)
+                    .cellValueProvider(cellValueProvider)
                     .build());
         } else if (viewCellDescription.getCellWidgetDescription() instanceof CellLabelWidgetDescription cellLabelWidgetDescription) {
             optionalICellDescription = Optional.of(IconLabelCellDescription.newIconLabelCellDescription(this.tableIdProvider.getId(viewCellDescription))
-                    .targetObjectIdProvider(this.semanticTargetIdProvider)
-                    .targetObjectKindProvider(this.semanticTargetKindProvider)
-                    .canCreatePredicate(variableManager -> interpreter.evaluateExpression(variableManager.getVariables(), viewCellDescription.getPreconditionExpression()).asBoolean().orElse(false))
-                    .cellValueProvider((variableManager, columnTargetObject) -> {
-                        var child = variableManager.createChild();
-                        child.put("columnTargetObject", columnTargetObject);
-                        return this.evaluateString(interpreter, child, viewCellDescription.getValueExpression());
-                    })
+                    .targetObjectIdProvider(targetObjectIdProvider)
+                    .targetObjectKindProvider(targetObjectKindProvider)
+                    .canCreatePredicate(canCreatePredicate)
+                    .cellValueProvider(cellValueProvider)
                     .cellIconURLsProvider((variableManager, columnTargetObject) -> {
                         var child = variableManager.createChild();
                         child.put("columnTargetObject", columnTargetObject);
@@ -180,14 +202,10 @@ public class ViewTableDescriptionConverter implements IRepresentationDescription
                     .build());
         } else if (viewCellDescription.getCellWidgetDescription() instanceof CellTextareaWidgetDescription) {
             optionalICellDescription = Optional.of(TextareaCellDescription.newTextareaCellDescription(this.tableIdProvider.getId(viewCellDescription))
-                    .targetObjectIdProvider(this.semanticTargetIdProvider)
-                    .targetObjectKindProvider(this.semanticTargetKindProvider)
-                    .canCreatePredicate(variableManager -> interpreter.evaluateExpression(variableManager.getVariables(), viewCellDescription.getPreconditionExpression()).asBoolean().orElse(false))
-                    .cellValueProvider((variableManager, columnTargetObject) -> {
-                        var child = variableManager.createChild();
-                        child.put("columnTargetObject", columnTargetObject);
-                        return this.evaluateString(interpreter, child, viewCellDescription.getValueExpression());
-                    })
+                    .targetObjectIdProvider(targetObjectIdProvider)
+                    .targetObjectKindProvider(targetObjectKindProvider)
+                    .canCreatePredicate(canCreatePredicate)
+                    .cellValueProvider(cellValueProvider)
                     .build());
         }
         return optionalICellDescription;
