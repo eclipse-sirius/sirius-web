@@ -37,8 +37,11 @@ public class DiagnosticProvider implements Function<VariableManager, List<?>> {
 
     @Override
     public List<?> apply(VariableManager variableManager) {
-        return this.interpreter.evaluateExpression(variableManager.getVariables(), this.diagnosticExpression)
-                .asObjects()
-                .orElse(List.of());
+        if (this.diagnosticExpression != null && !this.diagnosticExpression.isBlank()) {
+            return this.interpreter.evaluateExpression(variableManager.getVariables(), this.diagnosticExpression)
+                    .asObjects()
+                    .orElse(List.of());
+        }
+        return List.of();
     }
 }

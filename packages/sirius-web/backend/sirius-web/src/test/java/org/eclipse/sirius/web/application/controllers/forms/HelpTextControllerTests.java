@@ -25,15 +25,18 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.collaborative.forms.dto.FormEventInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.forms.tests.graphql.HelpTextQueryRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
+import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.services.forms.FormWithTextfieldDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedFormSubscription;
+import org.eclipse.sirius.web.tests.services.api.IGivenCreatedRepresentation;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -54,6 +57,30 @@ import reactor.test.StepVerifier;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
 public class HelpTextControllerTests extends AbstractIntegrationTests {
 
+    private static final String HELP_TEXT_FORM_EVENT_SUBSCRIPTION = """
+            subscription formEvent($input: FormEventInput!) {
+              formEvent(input: $input) {
+                __typename
+                ... on FormRefreshedEventPayload {
+                 form {
+                   id
+                   pages {
+                     id
+                     groups {
+                       id
+                       widgets {
+                         ... on Textfield {
+                           hasHelpText
+                         }
+                       }
+                     }
+                   }
+                 }
+               }
+              }
+            }
+            """;
+
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
@@ -66,6 +93,12 @@ public class HelpTextControllerTests extends AbstractIntegrationTests {
     @Autowired
     private HelpTextQueryRunner helpTextQueryRunner;
 
+    @Autowired
+    private IGivenCreatedRepresentation givenCreatedRepresentation;
+
+    @Autowired
+    private IGraphQLRequestor graphQLRequestor;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -77,7 +110,7 @@ public class HelpTextControllerTests extends AbstractIntegrationTests {
     public void givenTextfieldWidgetWhenItsHelpTextIsRequestedThenItIsProperlyReceived() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_PROJECT,
                 this.formWithTextfieldDescriptionProvider.getRepresentationDescriptionId(),
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "FormWithTextfield"
@@ -115,6 +148,33 @@ public class HelpTextControllerTests extends AbstractIntegrationTests {
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)
                 .then(requestHelpText)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a textfield widget, when we ask if it support help text, then its support is received")
+    public void givenTextfieldWidgetWhenWeAskIfItSupportHelpTextThenItsSupportIsReceived() {
+        var createRepresentationInput = new CreateRepresentationInput(
+                UUID.randomUUID(),
+                StudioIdentifiers.SAMPLE_STUDIO_PROJECT,
+                this.formWithTextfieldDescriptionProvider.getRepresentationDescriptionId(),
+                StudioIdentifiers.DOMAIN_OBJECT.toString(),
+                "FormWithTextfield"
+        );
+        String representationId = this.givenCreatedRepresentation.createRepresentation(createRepresentationInput);
+
+        var formEventInput = new FormEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT, representationId);
+        var flux = this.graphQLRequestor.subscribeToSpecification(HELP_TEXT_FORM_EVENT_SUBSCRIPTION, formEventInput);
+
+        Consumer<String> initialFormContentConsumer = payload -> {
+            boolean hasHelpText = JsonPath.read(payload, "$.data.formEvent.form.pages[0].groups[0].widgets[0].hasHelpText");
+            assertThat(hasHelpText).isTrue();
+        };
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialFormContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
