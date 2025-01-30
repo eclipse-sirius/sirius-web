@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,9 +25,8 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.dto.CreateChildInput;
-import org.eclipse.sirius.components.collaborative.dto.GetOmniboxCommandsInput;
-import org.eclipse.sirius.components.collaborative.dto.GetOmniboxCommandsPayload;
-import org.eclipse.sirius.components.collaborative.dto.OmniboxCommand;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxSearchInput;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxSearchPayload;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -44,23 +43,22 @@ import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Sinks;
 
 /**
- * The event handler to retrieve omnibox commands in the context of an editing context.
+ * The event handler to perform the omnibox search.
  *
- * @author gcoutable
+ * @author gdaniel
  */
 @Service
-public class EditingContextOmniboxCommandsEventHandler implements IEditingContextEventHandler {
-
-    private final IObjectService objectService;
+public class OmniboxSearchEventHandler implements IEditingContextEventHandler {
 
     private final ICollaborativeMessageService messageService;
 
+    private final IObjectService objectService;
+
     private final Counter counter;
 
-    public EditingContextOmniboxCommandsEventHandler(IObjectService objectService, ICollaborativeMessageService messageService, MeterRegistry meterRegistry) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public OmniboxSearchEventHandler(ICollaborativeMessageService messageService, IObjectService objectService, MeterRegistry meterRegistry) {
         this.messageService = Objects.requireNonNull(messageService);
-
+        this.objectService = Objects.requireNonNull(objectService);
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
@@ -68,7 +66,7 @@ public class EditingContextOmniboxCommandsEventHandler implements IEditingContex
 
     @Override
     public boolean canHandle(IEditingContext editingContext, IInput input) {
-        return input instanceof GetOmniboxCommandsInput;
+        return editingContext instanceof IEMFEditingContext && input instanceof OmniboxSearchInput;
     }
 
     @Override
@@ -80,13 +78,12 @@ public class EditingContextOmniboxCommandsEventHandler implements IEditingContex
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
         IPayload payload = null;
 
-        if (input instanceof GetOmniboxCommandsInput getOmniboxCommandsInput) {
-            List<OmniboxCommand> omniboxCommands = this.getAllEditingContextContentByLabel(editingContext, getOmniboxCommandsInput.query()).stream()
-                    .map(this::toOmniboxCommand)
-                    .sorted(Comparator.comparingInt(command -> command.label().length()))
+        if (input instanceof OmniboxSearchInput omniboxSearchInput) {
+            List<Object> objects = this.getAllEditingContextContentByLabel(editingContext, omniboxSearchInput.query()).stream()
+                    .sorted(Comparator.comparingInt(object -> this.objectService.getLabel(object).length()))
                     .toList();
 
-            payload = new GetOmniboxCommandsPayload(input.id(), omniboxCommands);
+            payload = new OmniboxSearchPayload(input.id(), objects);
         }
 
         if (payload == null) {
@@ -97,23 +94,15 @@ public class EditingContextOmniboxCommandsEventHandler implements IEditingContex
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private OmniboxCommand toOmniboxCommand(Object object) {
-        var id = this.objectService.getId(object);
-        var label = this.objectService.getLabel(object);
-        var kind = this.objectService.getKind(object);
-        var iconURL = this.objectService.getImagePath(object);
-        return new OmniboxCommand(id, label, kind, iconURL, "Click to select the element");
-    }
-
     private List<Object> getAllEditingContextContentByLabel(IEditingContext editingContext, String query) {
         var results = new ArrayList<>();
-        if (editingContext instanceof IEMFEditingContext iemfEditingContext) {
-            var editingDomain = iemfEditingContext.getDomain();
+        if (editingContext instanceof IEMFEditingContext emfEditingContext) {
+            var editingDomain = emfEditingContext.getDomain();
             var iterator = editingDomain.getResourceSet().getAllContents();
             while (iterator.hasNext()) {
                 Notifier notifier = iterator.next();
                 var adapter = editingDomain.getAdapterFactory().adapt(notifier, IItemLabelProvider.class);
-                if (adapter instanceof IItemLabelProvider itemLabelProvider && itemLabelProvider.getText(notifier).contains(query)) {
+                if (adapter instanceof IItemLabelProvider itemLabelProvider && itemLabelProvider.getText(notifier).toLowerCase().contains(query.toLowerCase())) {
                     results.add(notifier);
                 }
             }

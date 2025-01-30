@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2025, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,23 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
-package org.eclipse.sirius.components.collaborative.dto;
+package org.eclipse.sirius.components.collaborative.omnibox.api;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 
-import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
 
 /**
- * The payload for the get omnibox commands query.
+ * Sorts omnibox commands.
  *
- * @author gcoutable
+ * @author gdaniel
  */
-public record GetOmniboxCommandsPayload(UUID id, List<OmniboxCommand> omniboxCommands) implements IPayload {
-    public GetOmniboxCommandsPayload {
-        Objects.requireNonNull(id);
-        Objects.requireNonNull(omniboxCommands);
-    }
+public interface IOmniboxCommandOrderer {
+
+    void order(List<OmniboxCommand> omniboxCommands);
+
 }

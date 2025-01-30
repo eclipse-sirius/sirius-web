@@ -53,6 +53,7 @@ import reactor.test.StepVerifier;
  * @author sbegaudeau
  */
 @Transactional
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class EditingContextControllerIntegrationTests extends AbstractIntegrationTests {
 

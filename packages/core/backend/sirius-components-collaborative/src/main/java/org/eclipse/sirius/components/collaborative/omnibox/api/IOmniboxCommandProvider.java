@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.collaborative.omnibox.api;
 
-import { OmniboxContextEntry } from './Omnibox.types';
+import java.util.List;
 
-export interface OmniboxProviderProps {
-  initialContextEntries?: OmniboxContextEntry[];
-  children: React.ReactNode;
-}
+import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
 
-export interface OmniboxProviderState {
-  open: boolean;
+/**
+ * Provides commands for the omnibox.
+ *
+ * @author gdaniel
+ */
+public interface IOmniboxCommandProvider {
+
+    List<OmniboxCommand> getCommands(String editingContextId, String query);
+
 }

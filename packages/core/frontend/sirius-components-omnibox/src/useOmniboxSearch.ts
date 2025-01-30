@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,37 +15,29 @@ import { gql, useLazyQuery } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useEffect } from 'react';
 import {
-  GQLGetOmniboxCommandsQueryData,
-  GQLGetOmniboxCommandsQueryVariables,
-  UseOmniboxCommandsValue,
-} from './useOmniboxCommands.types';
+  GQLGetOmniboxSearchResultsQueryData,
+  GQLGetOmniboxSearchResultsQueryVariables,
+  UseOmniboxSearchValue,
+} from './useOmniboxSearch.types';
 
-const getOmniboxCommandsQuery = gql`
-  query getOmniboxCommands($contextEntries: [OmniboxContextEntry!]!, $query: String!) {
+const getOmniboxSearchResultsQuery = gql`
+  query getOmniboxSearchResults($contextEntries: [OmniboxContextEntry!]!, $query: String!) {
     viewer {
-      omniboxCommands(contextEntries: $contextEntries, query: $query) {
-        edges {
-          node {
-            id
-            label
-            iconURLs
-            description
-            __typename
-          }
-        }
-        pageInfo {
-          count
-        }
+      omniboxSearch(contextEntries: $contextEntries, query: $query) {
+        id
+        kind
+        label
+        iconURLs
       }
     }
   }
 `;
 
-export const useOmniboxCommands = (): UseOmniboxCommandsValue => {
-  const [getOmniboxCommands, { loading, data, error }] = useLazyQuery<
-    GQLGetOmniboxCommandsQueryData,
-    GQLGetOmniboxCommandsQueryVariables
-  >(getOmniboxCommandsQuery);
+export const useOmniboxSearch = (): UseOmniboxSearchValue => {
+  const [getOmniboxSearchResults, { loading, data, error }] = useLazyQuery<
+    GQLGetOmniboxSearchResultsQueryData,
+    GQLGetOmniboxSearchResultsQueryVariables
+  >(getOmniboxSearchResultsQuery);
 
   const { addErrorMessage } = useMultiToast();
   useEffect(() => {
@@ -55,7 +47,7 @@ export const useOmniboxCommands = (): UseOmniboxCommandsValue => {
   }, [error]);
 
   return {
-    getOmniboxCommands,
+    getOmniboxSearchResults,
     loading,
     data: data ?? null,
   };

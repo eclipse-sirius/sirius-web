@@ -11,29 +11,21 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface OmniboxProps {
-  initialContextEntries: OmniboxContextEntry[];
-  open: boolean;
-  onClose: () => void;
-}
+package org.eclipse.sirius.components.collaborative.omnibox.dto;
 
-export interface OmniboxState {
-  queryHasChanged: boolean;
-  mode: OmniboxMode;
-}
+import java.util.List;
+import java.util.Objects;
 
-export type OmniboxMode = 'Command' | 'Search';
-
-export interface OmniboxContextEntry {
-  id: string;
-  label: string;
-  kind: OmniboxContextKind;
-}
-
-export type OmniboxContextKind = 'EditingContext';
-
-export interface OmniboxAction {
-  id: string;
-  icon: JSX.Element;
-  label: string;
+/**
+ * The omnibox command.
+ *
+ * @author gcoutable
+ */
+public record OmniboxCommand(String id, String label, List<String> iconURLs, String description) {
+    public OmniboxCommand {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(label);
+        Objects.requireNonNull(iconURLs);
+        Objects.requireNonNull(description);
+    }
 }

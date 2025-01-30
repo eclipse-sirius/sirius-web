@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,21 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.sirius.components.collaborative.dto;
-
-import java.util.Objects;
-import java.util.UUID;
-
-import org.eclipse.sirius.components.core.api.IInput;
+package org.eclipse.sirius.components.collaborative.omnibox.dto;
 
 /**
- * The input for the get omnibox commands query.
+ * The omnibox context entry.
  *
  * @author gcoutable
  */
-public record GetOmniboxCommandsInput(UUID id, String query) implements IInput {
-    public GetOmniboxCommandsInput {
-        Objects.requireNonNull(id);
-        Objects.requireNonNull(query);
-    }
+public record OmniboxContextEntry(String id, String kind) {
 }
