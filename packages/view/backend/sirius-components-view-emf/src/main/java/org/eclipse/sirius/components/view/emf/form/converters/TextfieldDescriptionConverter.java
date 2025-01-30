@@ -77,18 +77,22 @@ public class TextfieldDescriptionConverter {
             return new TextfieldStyleProvider(effectiveStyle).apply(childVariableManager);
         };
 
-        return TextfieldDescription.newTextfieldDescription(descriptionId)
+        var builder = TextfieldDescription.newTextfieldDescription(descriptionId)
                 .idProvider(new WidgetIdProvider())
                 .targetObjectIdProvider(new TargetObjectIdProvider(this.objectService))
                 .labelProvider(new StringValueProvider(this.interpreter, viewTextfieldDescription.getLabelExpression()))
                 .isReadOnlyProvider(new ReadOnlyValueProvider(this.interpreter, viewTextfieldDescription.getIsEnabledExpression()))
                 .valueProvider(new StringValueProvider(this.interpreter, viewTextfieldDescription.getValueExpression()))
                 .newValueHandler(new NewValueHandler<>(this.interpreter, this.editService, this.feedbackMessageService, viewTextfieldDescription.getBody()))
-                .styleProvider(styleProvider)
-                .diagnosticsProvider(new DiagnosticProvider(this.interpreter, viewTextfieldDescription.getDiagnosticsExpression()))
-                .kindProvider(new DiagnosticKindProvider())
-                .messageProvider(new DiagnosticMessageProvider())
-                .helpTextProvider(new StringValueProvider(this.interpreter, viewTextfieldDescription.getHelpExpression()))
-                .build();
+                .styleProvider(styleProvider);
+        if (viewTextfieldDescription.getDiagnosticsExpression() != null && !viewTextfieldDescription.getDiagnosticsExpression().isBlank()) {
+            builder.diagnosticsProvider(new DiagnosticProvider(this.interpreter, viewTextfieldDescription.getDiagnosticsExpression()))
+                   .kindProvider(new DiagnosticKindProvider())
+                   .messageProvider(new DiagnosticMessageProvider());
+        }
+        if (viewTextfieldDescription.getHelpExpression() != null && !viewTextfieldDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(new StringValueProvider(this.interpreter, viewTextfieldDescription.getHelpExpression()));
+        }
+        return builder.build();
     }
 }
