@@ -1,0 +1,122 @@
+= ADR-182 - Add support of row level filters in tables
+
+* GitHub Issue: https://github.com/eclipse-sirius/sirius-web/issues/4483[#4483]
+
+== Context
+
+Currently, the Sirius Web tables does not allow the user to activate or deactivate filters to hide (or show) table rows.
+Row filtering is only provided for search purpose via the global filtering or the column filtering.
+
+Downstream applications (e.g. Papyrus) may require a more flexible mechanism to allow user to activate or deactivate predefined filters based on the table description.
+
+== Decision
+
+We need to introduce a new way to allow specifiers to express filters that could be activated or not by the user.
+These filters become important when there are multiple "kind" of rows in the table to allow user to focus on specific rows.
+
+=== Back end
+
+==== View Table DSL
+
+First, `TableDescription` model should be augmented with a new property (`rowFilters`) containing a list of `RowFilterDescription` (which could be empty).
+
+`RowFilterDescription` as the following properties:
+
+* id
+* labelExpression: string (which is visible in the UI)
+* rowPreconditionExpression: boolean (if it is evaluated to `true` then the filter applies and the row is hidden from the table)
+* isInitiallyActive: boolean, if set to `true` then this filter will be added in active row filter list without any user interaction.
+
+The view table converter would convert these descriptions into programmatic equivalent.
+
+==== API
+
+The `TableDescription` class needs to be augmented with the list of row filters:
+
+[code,java]
+----
+public final class TableDescription implements IRepresentationDescription {
+    ...
+    private List<RowFilterDescription> rowFilters;
+    ...
+}
+----
+
+with
+
+[code,java]
+----
+public class ColumnDescription {
+
+    private String id;
+
+    private Function<VariableManager, String> labelProvider;
+
+    private Predicate<VariableManager> predicate;
+}
+----
+
+The back-end first needs to provide to the front-end the list of filters to expose to the end user and use those filters in the render mechanism in order to skip the rows that are filtered by them (only activated ones).
+
+We would introduce a new GraphQL query to return all defined row filters to the front-end:
+
+[code,GraphQL]
+----
+type Table implements Representation {
+  ...
+  rowFilters: [RowFilter!]!
+  ...
+}
+
+type RowFilter {
+  id: ID!
+  label: String!
+  isActive: Boolean!
+}
+----
+
+We need also a new mutation to set the active state of a row filter.
+This mutation would be called by the front-end when the user activates (or deactivates) a row filter.
+
+[code,GraphQL]
+----
+extend type Mutation {
+  changeRowFilterState(input: ChangeRowFilterStateInput!): ChangeRowFilterStatePayload!
+}
+
+input ChangeRowFilterStateInput {
+  id: ID!
+  rowFilterId: ID!
+  isActive: Boolean!
+}
+----
+
+We need then to introduce a new event handler and a new `TableChangeKind` literal to be processed inside the `TableEventProcessor.refresh` method.
+
+In the `TableComponent.render` method we would compute the active list of row filters based on `TableDescription.getRowFiltersProvider` and the current list of active filter ids set in the props.
+From this list we would put a new variable in the variable manager containing all active filter predicates before to retrieve the list of row semantic elements.
+This variable, `activeRowFilters` can be used inside the `LineDescription.semanticElementsProvider` provider.
+The `CursorBaseNavigationService.collect` api would be updated to handle the list of active row filter predicate as well as the default predicate for finding element inside the whole model.
+
+We would also provide a generic service such as `CursorBaseNavigationService.toPaginatedData` Java service to apply filters in AQL expression of the view DSL:
+
+[code,java]
+----
+public List<Object> filter(List<Object> elements, List<Predicate<Object>> activeRowFilters)
+----
+
+That way, a specifier could chain this service with the `toPaginatedData`.
+
+=== Front end
+
+The front-end needs to handle the GraphQL query that retrieve all row filters and expose them in a custom UI component in a similar way than the columns visibility menu.
+This would add a new action button in the top right toolbar of the table, that allows to activate (or deactivate) filters individually.
+Which then trigger a back-end the GraphQL mutation `changeRowFilterState`.
+
+== Status
+
+Work in progress
+
+== Consequences
+
+None identified
