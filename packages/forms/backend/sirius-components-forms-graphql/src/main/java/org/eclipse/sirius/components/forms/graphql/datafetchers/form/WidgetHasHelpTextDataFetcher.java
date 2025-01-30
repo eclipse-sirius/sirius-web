@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -77,7 +77,11 @@ public class WidgetHasHelpTextDataFetcher  implements IDataFetcherWithFieldCoord
     @Override
     public Boolean get(DataFetchingEnvironment environment) throws Exception {
         AbstractWidget item = environment.getSource();
-        return item.getHelpTextProvider() != null;
+        if (item.getHelpTextProvider() == null) {
+            return false;
+        }
+        var helpText = item.getHelpTextProvider().get();
+        return helpText != null && !helpText.isBlank();
     }
 
 }
