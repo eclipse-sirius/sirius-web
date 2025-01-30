@@ -70,6 +70,7 @@ Now they are executed for some data if the data was coming from a studio too.
 - https://github.com/eclipse-sirius/sirius-web/issues/4422[#4422] [diagram] Prevent application crash when an edge path is malformed during node moves
 - https://github.com/eclipse-sirius/sirius-web/issues/4437[#4437] [diagram] Fix selection dialog not opening
 - https://github.com/eclipse-sirius/sirius-web/issues/4414[#4414] [sirius-web] Provide a default behavior to return valid JSON on `/api/rest/projects/{projectId}/commits/{commitId}/changes` REST APIs.
+- https://github.com/eclipse-sirius/sirius-web/issues/4489[#4489] [table] Fix an issue where the next page is disabled although there are still following elements
 
 === New Features
 

@@ -87,7 +87,7 @@ public class CursorBasedNavigationServices {
                     int startIndex = Math.max(cursorIndex - size, 0);
                     subList = objects.subList(startIndex, cursorIndex);
                     hasPrevious = startIndex > 0;
-                    hasNext = cursorIndex < objects.size() - 1;
+                    hasNext = cursorIndex < objects.size();
                 }
             }
         } else {
