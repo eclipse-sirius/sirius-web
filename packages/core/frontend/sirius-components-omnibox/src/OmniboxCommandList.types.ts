@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,12 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.sirius.components.collaborative.dto;
+import { OmniboxAction } from './Omnibox.types';
+import { GQLGetOmniboxCommandsQueryData } from './useOmniboxCommands.types';
 
-/**
- * The omnibox context entry.
- *
- * @author gcoutable
- */
-public record OmniboxContextEntry(String id, String kind) {
+export interface OmniboxCommandListProps {
+  data: GQLGetOmniboxCommandsQueryData | null;
+  loading: boolean;
+  onActionClick: (action: OmniboxAction) => void;
 }

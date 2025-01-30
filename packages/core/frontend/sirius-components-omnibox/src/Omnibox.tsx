@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { IconOverlay, useSelection } from '@eclipse-sirius/sirius-components-core';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import SubdirectoryArrowLeftIcon from '@mui/icons-material/SubdirectoryArrowLeft';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -20,16 +19,15 @@ import DialogTitle from '@mui/material/DialogTitle';
 import FormControl from '@mui/material/FormControl';
 import IconButton from '@mui/material/IconButton';
 import Input from '@mui/material/Input';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { OmniboxAction, OmniboxProps, OmniboxState } from './Omnibox.types';
+import { OmniboxCommandList } from './OmniboxCommandList';
+import { OmniboxObjectList } from './OmniboxObjectList';
 import { useOmniboxCommands } from './useOmniboxCommands';
 import { GQLGetOmniboxCommandsQueryVariables } from './useOmniboxCommands.types';
+import { useOmniboxSearch } from './useOmniboxSearch';
+import { GQLGetOmniboxSearchResultsQueryVariables } from './useOmniboxSearch.types';
 
 const useOmniboxStyles = makeStyles()((theme) => ({
   omnibox: {
@@ -68,12 +66,20 @@ const useOmniboxStyles = makeStyles()((theme) => ({
 
 export const Omnibox = ({ open, initialContextEntries, onClose }: OmniboxProps) => {
   const [state, setState] = useState<OmniboxState>({
-    contextEntries: initialContextEntries,
     queryHasChanged: true,
+    mode: 'Command',
   });
 
-  const { setSelection } = useSelection();
-  const { getOmniboxCommands, loading, data } = useOmniboxCommands();
+  const { getOmniboxCommands, loading: commandLoading, data: commandData } = useOmniboxCommands();
+  const { getOmniboxSearchResults, loading: searchResultsLoading, data: searchResultsData } = useOmniboxSearch();
+
+  useEffect(() => {
+    const variables: GQLGetOmniboxCommandsQueryVariables = {
+      contextEntries: initialContextEntries.map((entry) => ({ id: entry.id, kind: entry.kind })),
+      query: '',
+    };
+    getOmniboxCommands({ variables });
+  }, []);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
@@ -86,11 +92,19 @@ export const Omnibox = ({ open, initialContextEntries, onClose }: OmniboxProps) 
 
   const sendQuery = (query: string) => {
     setState((prevState) => ({ ...prevState, queryHasChanged: false }));
-    const variables: GQLGetOmniboxCommandsQueryVariables = {
-      contextEntries: state.contextEntries.map((entry) => ({ id: entry.id, kind: entry.kind })),
-      query,
-    };
-    getOmniboxCommands({ variables });
+    if (state.mode === 'Search') {
+      const variables: GQLGetOmniboxSearchResultsQueryVariables = {
+        contextEntries: initialContextEntries.map((entry) => ({ id: entry.id, kind: entry.kind })),
+        query,
+      };
+      getOmniboxSearchResults({ variables });
+    } else {
+      const variables: GQLGetOmniboxCommandsQueryVariables = {
+        contextEntries: initialContextEntries.map((entry) => ({ id: entry.id, kind: entry.kind })),
+        query,
+      };
+      getOmniboxCommands({ variables });
+    }
   };
 
   const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement> = (event) => {
@@ -113,81 +127,42 @@ export const Omnibox = ({ open, initialContextEntries, onClose }: OmniboxProps) 
     }
   };
 
-  const handleListItemKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
-    if (event.key === 'ArrowDown') {
-      const nextListItemButton = event.currentTarget.nextSibling;
-      if (nextListItemButton instanceof HTMLElement) {
-        nextListItemButton.focus();
+  const handleOnActionClick = (action: OmniboxAction) => {
+    if (action.id === 'search') {
+      setState((prevState) => ({
+        ...prevState,
+        mode: 'Search',
+        queryHasChanged: true,
+      }));
+      if (inputRef.current) {
+        inputRef.current.value = '';
       }
-    } else if (event.key === 'ArrowUp') {
-      const previousListItemButton = event.currentTarget.previousSibling;
-      if (previousListItemButton instanceof HTMLElement) {
-        previousListItemButton.focus();
-      }
-    } else {
       inputRef.current?.focus();
     }
+    // Other commands are not supported for now.
   };
 
-  const handleOnActionClick = (action: OmniboxAction) => {
-    setSelection({ entries: [{ id: action.id, kind: action.kind }] });
-    onClose();
-  };
-
-  let listItems: JSX.Element[] = [];
-  if (loading) {
-    listItems = [
-      <ListItem key={'loading-action-key'}>
-        <ListItemText sx={{ color: (theme) => theme.palette.text.disabled }} data-testid="fetch-omnibox-result">
-          Fetching result...
-        </ListItemText>
-      </ListItem>,
-    ];
+  let omniboxResult: JSX.Element | null = null;
+  if (state.mode === 'Command') {
+    omniboxResult = (
+      <OmniboxCommandList
+        loading={commandLoading}
+        data={commandData}
+        onActionClick={handleOnActionClick}
+        ref={listRef}
+      />
+    );
   }
-  if (!loading && data) {
-    listItems = [
-      <ListItem key={'no-result-key'}>
-        <ListItemText data-testid="omnibox-no-result">No result</ListItemText>
-      </ListItem>,
-    ];
-    const omniboxCommands = data.viewer.omniboxCommands.edges.map((edge) => edge.node);
-    if (omniboxCommands.length > 0) {
-      listItems = omniboxCommands
-        .map((node) => {
-          return {
-            id: node.id,
-            icon: <IconOverlay iconURL={node.iconURLs} alt={node.kind} />,
-            kind: node.kind,
-            label: node.label,
-          };
-        })
-        .map((action) => {
-          return (
-            <ListItemButton
-              key={action.id}
-              data-testid={action.label}
-              onClick={() => handleOnActionClick(action)}
-              onKeyDown={handleListItemKeyDown}>
-              <ListItemIcon>{action.icon}</ListItemIcon>
-              <ListItemText sx={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{action.label}</ListItemText>
-            </ListItemButton>
-          );
-        });
-    }
+  if (state.mode === 'Search') {
+    omniboxResult = (
+      <OmniboxObjectList loading={searchResultsLoading} data={searchResultsData} onClose={onClose} ref={listRef} />
+    );
   }
 
   const { classes } = useOmniboxStyles();
-  return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      fullWidth
-      PaperProps={{
-        className: classes.omniboxPaper,
-      }}
-      className={classes.omnibox}
-      scroll="paper"
-      data-testid="omnibox">
+
+  const dialogContent = (
+    <>
       <DialogTitle component="div" className={classes.omniboxInputArea}>
         <ChevronRightIcon className={classes.omniboxIcon} />
         <FormControl variant="standard" className={classes.omniboxFormControl}>
@@ -195,7 +170,9 @@ export const Omnibox = ({ open, initialContextEntries, onClose }: OmniboxProps) 
             inputRef={inputRef}
             onChange={() => onChange()}
             onKeyDown={handleKeyDown}
-            placeholder="Hit 'Enter' to run the command..."
+            placeholder={
+              state.mode === 'Search' ? "Hit 'Enter' to search an element..." : "Hit 'Enter' to search a command..."
+            }
             disableUnderline
             autoFocus
             fullWidth
@@ -213,14 +190,35 @@ export const Omnibox = ({ open, initialContextEntries, onClose }: OmniboxProps) 
           data-testid="submit-query-button"
           color="primary"
           disabled={!state.queryHasChanged}>
-          {loading ? <CircularProgress size="24px" color="inherit" /> : <SubdirectoryArrowLeftIcon color="inherit" />}
+          {commandLoading || searchResultsLoading ? (
+            <CircularProgress size="24px" color="inherit" />
+          ) : (
+            <SubdirectoryArrowLeftIcon color="inherit" />
+          )}
         </IconButton>
       </DialogTitle>
-      <DialogContent dividers={listItems.length > 0} className={classes.omniboxResultArea}>
-        <List ref={listRef} dense disablePadding>
-          {listItems}
-        </List>
+      <DialogContent
+        dividers={
+          (state.mode === 'Command' && commandData !== null) || (state.mode === 'Search' && searchResultsData !== null)
+        }
+        className={classes.omniboxResultArea}>
+        {omniboxResult}
       </DialogContent>
+    </>
+  );
+
+  return (
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      PaperProps={{
+        className: classes.omniboxPaper,
+      }}
+      className={classes.omnibox}
+      scroll="paper"
+      data-testid="omnibox">
+      {dialogContent}
     </Dialog>
   );
 };

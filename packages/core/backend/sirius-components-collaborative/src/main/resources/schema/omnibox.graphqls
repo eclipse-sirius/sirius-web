@@ -1,6 +1,8 @@
 extend type Viewer {
+  omniboxSearch(contextEntries: [OmniboxContextEntry!]!, query: String!): [Object!]!
   omniboxCommands(contextEntries: [OmniboxContextEntry!]!, query: String!): ViewerOmniboxCommandsConnection!
 }
+
 input OmniboxContextEntry {
   id: ID!
   kind: String!
@@ -18,7 +20,6 @@ type OmniboxCommandsEdge {
 type OmniboxCommand {
   id: ID!
   label: String!
-  kind: String!
   iconURLs: [String!]!
   description: String!
 }

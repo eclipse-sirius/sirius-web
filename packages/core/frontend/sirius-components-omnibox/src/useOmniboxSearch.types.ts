@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,13 +13,16 @@
 
 import { LazyQueryExecFunction } from '@apollo/client';
 
-export interface UseOmniboxCommandsValue {
-  getOmniboxCommands: LazyQueryExecFunction<GQLGetOmniboxCommandsQueryData, GQLGetOmniboxCommandsQueryVariables>;
+export interface UseOmniboxSearchValue {
+  getOmniboxSearchResults: LazyQueryExecFunction<
+    GQLGetOmniboxSearchResultsQueryData,
+    GQLGetOmniboxSearchResultsQueryVariables
+  >;
   loading: boolean;
-  data: GQLGetOmniboxCommandsQueryData | null;
+  data: GQLGetOmniboxSearchResultsQueryData | null;
 }
 
-export interface GQLGetOmniboxCommandsQueryVariables {
+export interface GQLGetOmniboxSearchResultsQueryVariables {
   contextEntries: GQLOmniboxContextEntry[];
   query: string;
 }
@@ -29,31 +32,17 @@ export interface GQLOmniboxContextEntry {
   kind: string;
 }
 
-export interface GQLGetOmniboxCommandsQueryData {
+export interface GQLGetOmniboxSearchResultsQueryData {
   viewer: GQLViewer;
 }
 
 export interface GQLViewer {
-  omniboxCommands: GQLViewerOmniboxCommandsConnection;
+  omniboxSearch: GQLObject[];
 }
 
-export interface GQLViewerOmniboxCommandsConnection {
-  edges: GQLViewerOmniboxCommandsEdge[];
-  pageInfo: GQLPageInfo;
-}
-
-export interface GQLViewerOmniboxCommandsEdge {
-  node: GQLViewerOmniboxCommand;
-}
-
-export interface GQLViewerOmniboxCommand {
+export interface GQLObject {
   id: string;
+  kind: string;
   label: string;
   iconURLs: string[];
-  description: string;
-  __typename: string;
-}
-
-export interface GQLPageInfo {
-  count: number;
 }

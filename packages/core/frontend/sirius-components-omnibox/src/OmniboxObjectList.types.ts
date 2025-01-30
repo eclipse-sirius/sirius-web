@@ -10,30 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLGetOmniboxSearchResultsQueryData } from './useOmniboxSearch.types';
 
-export interface OmniboxProps {
-  initialContextEntries: OmniboxContextEntry[];
-  open: boolean;
+export interface OmniboxObjectListProps {
+  loading: boolean;
+  data: GQLGetOmniboxSearchResultsQueryData | null;
   onClose: () => void;
 }
 
-export interface OmniboxState {
-  queryHasChanged: boolean;
-  mode: OmniboxMode;
-}
-
-export type OmniboxMode = 'Command' | 'Search';
-
-export interface OmniboxContextEntry {
-  id: string;
-  label: string;
-  kind: OmniboxContextKind;
-}
-
-export type OmniboxContextKind = 'EditingContext';
-
-export interface OmniboxAction {
+export interface ObjectAction {
   id: string;
   icon: JSX.Element;
+  kind: string;
   label: string;
 }
