@@ -22,14 +22,14 @@ import java.util.Objects;
 
 import org.eclipse.sirius.web.application.project.data.versioning.dto.RestDataVersion;
 import org.eclipse.sirius.web.application.project.data.versioning.services.api.IRestDataVersionPayloadSerializerService;
-import org.springframework.stereotype.Service;
+import org.springframework.boot.jackson.JsonComponent;
 
 /**
  * Specific JSON serializer for the payload attribute of {@link RestDataVersion}.
  *
  * @author arichard
  */
-@Service
+@JsonComponent
 public class RestDataVersionPayloadSerializer extends JsonSerializer<Object> {
 
     private final List<IRestDataVersionPayloadSerializerService> restDataVersionPayloadSerializerServices;
