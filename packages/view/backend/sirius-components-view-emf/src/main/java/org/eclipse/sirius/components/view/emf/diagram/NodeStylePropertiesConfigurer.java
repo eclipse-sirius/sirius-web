@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,12 +29,16 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IParametricSVGImageRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.NodeType;
+import org.eclipse.sirius.components.emf.forms.EMFFormDescriptionProvider;
+import org.eclipse.sirius.components.emf.forms.EStructuralFeatureChoiceOfValueProvider;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.forms.components.SelectComponent;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
@@ -78,14 +82,19 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
     private final IPropertiesConfigurerService propertiesConfigurerService;
     private final IPropertiesWidgetCreationService propertiesWidgetCreationService;
     private final IObjectService objectService;
+    private final ComposedAdapterFactory composedAdapterFactory;
+    private final ILabelService labelService;
 
     public NodeStylePropertiesConfigurer(ICustomImageMetadataSearchService customImageSearchService,
-            List<IParametricSVGImageRegistry> parametricSVGImageRegistries, PropertiesConfigurerService propertiesConfigurerService, IPropertiesWidgetCreationService propertiesWidgetCreationService, IObjectService objectService) {
+            List<IParametricSVGImageRegistry> parametricSVGImageRegistries, PropertiesConfigurerService propertiesConfigurerService, IPropertiesWidgetCreationService propertiesWidgetCreationService, IObjectService objectService,
+            ComposedAdapterFactory composedAdapterFactory, ILabelService labelService) {
         this.customImageSearchService = Objects.requireNonNull(customImageSearchService);
         this.parametricSVGImageRegistries = parametricSVGImageRegistries;
         this.propertiesConfigurerService = Objects.requireNonNull(propertiesConfigurerService);
         this.propertiesWidgetCreationService = Objects.requireNonNull(propertiesWidgetCreationService);
         this.objectService = Objects.requireNonNull(objectService);
+        this.composedAdapterFactory = composedAdapterFactory;
+        this.labelService = labelService;
     }
 
     @Override
@@ -125,6 +134,26 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 this::getSubNodes);
         controls.add(growableNodes);
 
+        controls.add(this.propertiesWidgetCreationService.createReferenceWidget("listLayoutStrategy.onWestBorderNodes",
+                "On West At Creation Border Nodes",
+                DiagramPackage.Literals.LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES,
+                this.getBorderNodeOptionsProvider()));
+
+        controls.add(this.propertiesWidgetCreationService.createReferenceWidget("listLayoutStrategy.onEastBorderNodes",
+                "On East At Creation Border Nodes",
+                DiagramPackage.Literals.LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES,
+                this.getBorderNodeOptionsProvider()));
+
+        controls.add(this.propertiesWidgetCreationService.createReferenceWidget("listLayoutStrategy.onSouthBorderNodes",
+                "On South At Creation Border Nodes",
+                DiagramPackage.Literals.LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES,
+                this.getBorderNodeOptionsProvider()));
+
+        controls.add(this.propertiesWidgetCreationService.createReferenceWidget("listLayoutStrategy.onNorthBorderNodes",
+                "On North At Creation Border Nodes",
+                DiagramPackage.Literals.LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES,
+                this.getBorderNodeOptionsProvider()));
+
         GroupDescription groupDescription = this.propertiesWidgetCreationService.createSimpleGroupDescription(controls);
 
         Predicate<VariableManager> canCreatePagePredicate = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
@@ -132,6 +161,10 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .isPresent();
 
         return this.propertiesWidgetCreationService.createSimplePageDescription(id, groupDescription, canCreatePagePredicate);
+    }
+
+    private Function<VariableManager, List<?>> getBorderNodeOptionsProvider() {
+        return new EStructuralFeatureChoiceOfValueProvider(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
     }
 
     private List<NodeDescription> getSubNodes(VariableManager variableManager) {

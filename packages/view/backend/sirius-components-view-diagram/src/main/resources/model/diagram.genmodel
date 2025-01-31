@@ -139,7 +139,12 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//EdgeDescription/style"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//EdgeDescription/conditionalStyles"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="diagram.ecore#//LayoutStrategyDescription"/>
+    <genClasses image="false" ecoreClass="diagram.ecore#//LayoutStrategyDescription">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference diagram.ecore#//LayoutStrategyDescription/onWestAtCreationBorderNodes"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference diagram.ecore#//LayoutStrategyDescription/onEastAtCreationBorderNodes"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference diagram.ecore#//LayoutStrategyDescription/onSouthAtCreationBorderNodes"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference diagram.ecore#//LayoutStrategyDescription/onNorthAtCreationBorderNodes"/>
+    </genClasses>
     <genClasses ecoreClass="diagram.ecore#//ListLayoutStrategyDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//ListLayoutStrategyDescription/areChildNodesDraggableExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//ListLayoutStrategyDescription/topGapExpression"/>
