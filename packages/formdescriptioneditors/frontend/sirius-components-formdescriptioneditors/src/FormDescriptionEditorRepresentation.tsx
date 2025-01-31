@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import { RepresentationComponentProps, Toast, useData } from '@eclipse-sirius/si
 import { widgetContributionExtensionPoint } from '@eclipse-sirius/sirius-components-forms';
 import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import WebIcon from '@mui/icons-material/Web';
+import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import { useMachine } from '@xstate/react';
 import React, { useEffect } from 'react';
@@ -315,6 +316,12 @@ export const FormDescriptionEditorRepresentation = ({
         <Typography variant="h5" align="center" data-testid="FormDescriptionEditor-complete-message">
           The form description editor does not exist
         </Typography>
+      </div>
+    );
+  } else if (formDescriptionEditorRepresentation !== 'ready') {
+    return (
+      <div className={classes.formDescriptionEditor}>
+        <LinearProgress />
       </div>
     );
   }
