@@ -183,6 +183,25 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
                 .verify(Duration.ofSeconds(10));
     }
 
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a view table description with a selected target object expression , when a subscription is created, then the cell target object data are correct")
+    public void givenViewTableWithSelectedTargetObjectExpressionWhenSubscriptionIsCreatedThenCellTargetObjectDataAreCorrectlyExecuted() {
+        var flux = this.givenSubscriptionToViewTableRepresentation();
+
+        Consumer<Object> tableContentConsumer = this.getTableSubscriptionConsumer(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getLines()).hasSize(2);
+            assertThat(table.getLines().get(0).getCells().get(0).getTargetObjectId()).isEqualTo(PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString());
+            assertThat(table.getLines().get(0).getCells().get(0).getTargetObjectKind()).isEqualTo("siriusComponents://semantic?domain=papaya&entity=Package");
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(tableContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
     private Consumer<Object> getTableSubscriptionConsumer(Consumer<Table> tableConsumer) {
         return payload -> Optional.of(payload)
                 .filter(TableRefreshedEventPayload.class::isInstance)
