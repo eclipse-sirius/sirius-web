@@ -112,6 +112,7 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
                 .preconditionExpression("aql:columnTargetObject.equals('Name')")
                 .valueExpression("aql:self.name")
                 .cellWidgetDescription(new TableBuilders().newCellTextfieldWidgetDescription().build())
+                .selectedTargetObjectExpression("aql:self.eContainer()")
                 .build();
 
         var descriptionCellDescription = new TableBuilders().newCellDescription()
