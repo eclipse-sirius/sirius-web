@@ -15,6 +15,7 @@
 - Improve image export
 - Add the current selection to the URL of the project workbench
 - Improve the customization of the navigation bar
+- Add support for border node initial positioning
 
 
 === Architectural decision records
