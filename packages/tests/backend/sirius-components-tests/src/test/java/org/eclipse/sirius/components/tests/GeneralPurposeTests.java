@@ -124,7 +124,8 @@ public class GeneralPurposeTests {
             "/sirius-web-customwidgets",
             "/sirius-components-widget-reference-view",
             "/sirius-components-view-diagram-customnodes",
-            "/sirius-components-papaya"
+            "/sirius-components-papaya",
+            "/sirius-components-widget-table-view"
     );
 
     /**
@@ -391,11 +392,11 @@ public class GeneralPurposeTests {
      * </p>
      *
      * @param index
-     *            The number of the line
+     *         The number of the line
      * @param line
-     *            The line to check
+     *         The line to check
      * @param cssFilePath
-     *            The path of the CSS file
+     *         The path of the CSS file
      */
     private void testHeight100Percent(int index, String line, Path cssFilePath) {
         // @formatter:off
@@ -424,11 +425,11 @@ public class GeneralPurposeTests {
      * </p>
      *
      * @param index
-     *            The number of the line
+     *         The number of the line
      * @param line
-     *            The line to check
+     *         The line to check
      * @param cssFilePath
-     *            The path of the CSS file
+     *         The path of the CSS file
      */
     private void testWidth100Percent(int index, String line, Path cssFilePath) {
         // @formatter:off

@@ -42,6 +42,7 @@ import org.eclipse.sirius.components.forms.List;
 import org.eclipse.sirius.components.forms.MultiSelect;
 import org.eclipse.sirius.components.forms.Radio;
 import org.eclipse.sirius.components.forms.Select;
+import org.eclipse.sirius.components.forms.TableWidget;
 import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -91,7 +92,7 @@ public class FormDescriptionEditorControllerIntegrationTests extends AbstractInt
     private Flux<Object> givenSubscriptionToFormDescriptionEditor() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 UUID.nameUUIDFromBytes("FormDescriptionEditor".getBytes()).toString(),
                 StudioIdentifiers.FORM_DESCRIPTION_OBJECT.toString(),
                 "FormDescriptionEditor"
@@ -231,6 +232,13 @@ public class FormDescriptionEditorControllerIntegrationTests extends AbstractInt
         this.givenFormDescriptionEditorWhenWeAddSomethingThenTheRepresentationIsUpdated("FormElementIf", FormDescriptionEditorIf.class);
     }
 
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a form description editor, when we add a table widget, then the representation is updated")
+    public void givenFormDescriptionEditorWhenWeAddATableWidgetThenTheRepresentationIsUpdated() {
+        this.givenFormDescriptionEditorWhenWeAddSomethingThenTheRepresentationIsUpdated("TableWidget", TableWidget.class);
+    }
+
     private void givenFormDescriptionEditorWhenWeAddSomethingThenTheRepresentationIsUpdated(String widgetKind, Class<? extends AbstractWidget> expectedWidgetClass) {
         var flux = this.givenSubscriptionToFormDescriptionEditor();
 
@@ -251,7 +259,7 @@ public class FormDescriptionEditorControllerIntegrationTests extends AbstractInt
         Runnable addWidget = () -> {
             var addWidgetInput = new AddWidgetInput(
                     UUID.randomUUID(),
-                    StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                    StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                     formDescriptionEditorId.get(),
                     StudioIdentifiers.GROUP_OBJECT.toString(),
                     widgetKind,
@@ -303,7 +311,7 @@ public class FormDescriptionEditorControllerIntegrationTests extends AbstractInt
         Runnable addPage = () -> {
             var addPageInput = new AddPageInput(
                     UUID.randomUUID(),
-                    StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                    StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                     formDescriptionEditorId.get(),
                     0
             );

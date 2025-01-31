@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.emf.tables.CursorBasedNavigationServices;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
@@ -55,7 +56,7 @@ public class FormDescriptionConverter implements IFormDescriptionConverter {
         });
 
         // Convert the View-based FormDescription and register the result into the system
-        AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(), List.of(PapayaPackage.eINSTANCE));
+        AQLInterpreter interpreter = new AQLInterpreter(List.of(CursorBasedNavigationServices.class), List.of(), List.of(PapayaPackage.eINSTANCE));
 
         return view.getDescriptions().stream()
                 .filter(org.eclipse.sirius.components.view.form.FormDescription.class::isInstance)

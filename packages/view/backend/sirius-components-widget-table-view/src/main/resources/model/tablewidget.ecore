@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="tablewidget" nsURI="https://www.eclipse.org/sirius/widgets/tablewidget"
+    nsPrefix="tablewidget">
+  <eClassifiers xsi:type="ecore:EClass" name="TableWidgetDescription" eSuperTypes="../../../../../sirius-components-view-form/src/main/resources/model/form.ecore#//WidgetDescription">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="columnDescriptions" upperBound="-1"
+          eType="ecore:EClass ../../../../../sirius-components-view-table/src/main/resources/model/table.ecore#//ColumnDescription"
+          containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="rowDescription" eType="ecore:EClass ../../../../../sirius-components-view-table/src/main/resources/model/table.ecore#//RowDescription"
+          containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="cellDescriptions" upperBound="-1"
+          eType="ecore:EClass ../../../../../sirius-components-view-table/src/main/resources/model/table.ecore#//CellDescription"
+          containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="useStripedRowsExpression"
+          eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="IsEnabledExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    </eClassifiers>
+</ecore:EPackage>

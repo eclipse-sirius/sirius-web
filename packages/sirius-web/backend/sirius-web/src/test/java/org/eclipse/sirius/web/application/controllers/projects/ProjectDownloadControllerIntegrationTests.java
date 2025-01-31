@@ -104,7 +104,8 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
                         "http://www.eclipse.org/sirius-web/table",
                         "http://www.eclipse.org/sirius-web/tree",
                         "http://www.eclipse.org/sirius-web/view",
-                        "https://www.eclipse.org/sirius/widgets/reference"
+                        "https://www.eclipse.org/sirius/widgets/reference",
+                        "https://www.eclipse.org/sirius/widgets/tablewidget"
                       ],
                       "representations":{}
                     }

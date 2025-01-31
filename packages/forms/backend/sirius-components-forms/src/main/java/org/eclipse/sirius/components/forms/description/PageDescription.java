@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -79,10 +79,6 @@ public final class PageDescription {
         return new Builder(id);
     }
 
-    public static Builder newPageDescription(PageDescription pageDescription) {
-        return new Builder(pageDescription);
-    }
-
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}'}'";
@@ -97,7 +93,7 @@ public final class PageDescription {
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
-        private String id;
+        private final String id;
 
         private Function<VariableManager, String> idProvider;
 
@@ -113,16 +109,6 @@ public final class PageDescription {
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
-        }
-
-        private Builder(PageDescription pageDescription) {
-            this.id = Objects.requireNonNull(pageDescription.getId());
-            this.idProvider = Objects.requireNonNull(pageDescription.getIdProvider());
-            this.labelProvider = Objects.requireNonNull(pageDescription.getLabelProvider());
-            this.semanticElementsProvider = Objects.requireNonNull(pageDescription.getSemanticElementsProvider());
-            this.groupDescriptions = Objects.requireNonNull(pageDescription.getGroupDescriptions());
-            this.toolbarActionDescriptions = Objects.requireNonNull(pageDescription.getToolbarActionDescriptions());
-            this.canCreatePredicate = Objects.requireNonNull(pageDescription.getCanCreatePredicate());
         }
 
         public Builder idProvider(Function<VariableManager, String> idProvider) {

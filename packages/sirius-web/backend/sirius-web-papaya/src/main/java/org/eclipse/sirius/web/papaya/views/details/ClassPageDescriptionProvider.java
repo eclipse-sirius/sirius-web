@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,8 @@ package org.eclipse.sirius.web.papaya.views.details;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.view.builder.generated.form.FormBuilders;
+import org.eclipse.sirius.components.view.builder.generated.table.TableBuilders;
+import org.eclipse.sirius.components.view.builder.generated.tablewidget.TableWidgetBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.form.CheckboxDescription;
@@ -22,6 +24,7 @@ import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
 import org.eclipse.sirius.components.view.form.PageDescription;
 import org.eclipse.sirius.components.view.form.SelectDescription;
+import org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription;
 import org.eclipse.sirius.web.papaya.views.details.api.IPageDescriptionProvider;
 import org.springframework.stereotype.Service;
 
@@ -158,6 +161,37 @@ public class ClassPageDescriptionProvider implements IPageDescriptionProvider {
                 .labelExpression("Additional Information")
                 .semanticCandidatesExpression("aql:self")
                 .displayMode(GroupDisplayMode.LIST)
+                .children(this.getAttributesWidget())
+                .build();
+    }
+
+    private TableWidgetDescription getAttributesWidget() {
+        var columnDescriptions = new TableBuilders().newColumnDescription()
+                .name("Name")
+                .semanticCandidatesExpression("aql:'NameColumn'")
+                .headerLabelExpression("Name")
+                .isResizableExpression("false")
+                .initialWidthExpression("-1")
+                .build();
+        var rowDescription = new TableBuilders().newRowDescription()
+                .name("AttributesRow")
+                .semanticCandidatesExpression("aql:self.attributes->toPaginatedData()")
+                .isResizableExpression("false")
+                .initialHeightExpression("-1")
+                .build();
+        var cellDescriptions = new TableBuilders().newCellDescription()
+                .name("AttributesCell")
+                .preconditionExpression("true")
+                .cellWidgetDescription(new TableBuilders().newCellTextfieldWidgetDescription().build())
+                .valueExpression("aql:self.name")
+                .build();
+        return new TableWidgetBuilders().newTableWidgetDescription()
+                .name("Attributes")
+                .labelExpression("Attributes")
+                .useStripedRowsExpression("true")
+                .columnDescriptions(columnDescriptions)
+                .rowDescription(rowDescription)
+                .cellDescriptions(cellDescriptions)
                 .build();
     }
 }

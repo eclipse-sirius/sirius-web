@@ -117,6 +117,10 @@ public class BuilderGenerator {
         Resource referenceResource = resourceSet.getResource(referenceURI, true);
         allViewContent.addAll(referenceResource.getContents());
 
+        URI tableWidgetURI = URI.createFileURI(args[1] + "/../sirius-components-widget-table-view/src/main/resources/model/tablewidget.genmodel");
+        Resource tableWidgetResource = resourceSet.getResource(tableWidgetURI, true);
+        allViewContent.addAll(tableWidgetResource.getContents());
+
         URI customNodesURI = URI.createFileURI(args[1] + "/../sirius-components-view-diagram-customnodes/src/main/resources/model/customnodes.genmodel");
         Resource customNodesResource = resourceSet.getResource(customNodesURI, true);
         allViewContent.addAll(customNodesResource.getContents());
@@ -147,7 +151,7 @@ public class BuilderGenerator {
                             public #builderClassName new#className() {
                                 return new #builderClassName();
                             }
-
+                        
                         """.replace(BUILDER_CLASSNAME, this.builderClasssName(clazz))
                         .replace("#className", clazz.getName()));
             }
@@ -171,7 +175,7 @@ public class BuilderGenerator {
                  *     Obeo - initial API and implementation
                  *******************************************************************************/
                 package #package;
-
+                
                 /**
                  * Use to instantiate a new builder.
                  *
@@ -197,7 +201,7 @@ public class BuilderGenerator {
                          * @generated
                          */
                         private #eObjType #eObjNameLowerCase = #packageFactory.create#eObjName();
-
+                    
                         /**
                          * Return instance #eObjType.
                          * @generated
@@ -205,7 +209,7 @@ public class BuilderGenerator {
                         protected #eObjType get#eObjName() {
                             return this.#eObjNameLowerCase;
                         }
-
+                    
                         /**
                          * Return instance #eObjType.
                          * @generated
@@ -213,7 +217,7 @@ public class BuilderGenerator {
                         public #eObjType build() {
                             return this.get#eObjName();
                         }
-
+                    
                     """.replace("#packageFactory", clazz.getGenPackage().getQualifiedEFactoryInternalInstanceAccessor())
                     .replace("#eObjType", clazz.getQualifiedInterfaceName())
                     .replace("#eObjNameLowerCase", clazz.uncapPrefixedName(clazz.getSafeUncapName()))
@@ -253,7 +257,7 @@ public class BuilderGenerator {
                                     }
                                     return this;
                                 }
-
+                            
                             """.replace(BUILDER_CLASSNAME, this.builderClasssName(clazz))
                             .replace("#paramType", feat.getListItemType(clazz))
                             .replace("#accessor", feat.getAccessorName())
@@ -284,7 +288,7 @@ public class BuilderGenerator {
                      *     Obeo - initial API and implementation
                      *******************************************************************************/
                     package #package;
-
+                    
                     /**
                      * Builder for #qualifiedType.
                      *
@@ -292,16 +296,16 @@ public class BuilderGenerator {
                      * @generated
                      */
                     public abstract class #builderClassName {
-
+                    
                         /**
                          * Builder for #qualifiedType.
                          * @generated
                          */
                         protected abstract #qualifiedType get#eObjName();
-
+                    
                     #classbody
                     }
-
+                    
                     """.replace(BUILDER_CLASSNAME, this.builderClasssName(clazz))
                     .replace("#qualifiedType", this.qualifiedNameFromGenClass(clazz))
                     .replace(CLASSBODY, body)
@@ -322,7 +326,7 @@ public class BuilderGenerator {
                      *     Obeo - initial API and implementation
                      *******************************************************************************/
                     package #package;
-
+                    
                     /**
                      * Builder for #builderClassName.
                      *
@@ -330,10 +334,10 @@ public class BuilderGenerator {
                      * @generated
                      */
                     public class #builderClassName {
-
+                    
                     #classbody
                     }
-
+                    
                     """.replace(BUILDER_CLASSNAME, this.builderClasssName(clazz))
                     .replace("#qualifiedType", clazz.getQualifiedInterfaceName())
                     .replace(CLASSBODY, body)

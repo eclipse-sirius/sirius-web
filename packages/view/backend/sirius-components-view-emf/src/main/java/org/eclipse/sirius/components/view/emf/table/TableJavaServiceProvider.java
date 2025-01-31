@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.sirius.components.emf.tables.CursorBasedNavigationServices;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
+import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.components.view.table.TableDescription;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +34,10 @@ public class TableJavaServiceProvider implements IJavaServiceProvider {
         boolean isTableRelatedView = view.getDescriptions().stream()
                 .anyMatch(TableDescription.class::isInstance);
 
-        if (isTableRelatedView) {
+        boolean isTableWidgetRelatedView = view.getDescriptions().stream()
+                .anyMatch(FormDescription.class::isInstance);
+
+        if (isTableRelatedView || isTableWidgetRelatedView) {
             return List.of(CursorBasedNavigationServices.class);
         }
         return List.of();

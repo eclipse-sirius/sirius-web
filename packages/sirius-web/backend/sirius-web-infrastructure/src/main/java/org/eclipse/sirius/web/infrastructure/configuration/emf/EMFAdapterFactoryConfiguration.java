@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.view.gantt.provider.GanttItemProviderAdapte
 import org.eclipse.sirius.components.view.provider.ViewItemProviderAdapterFactory;
 import org.eclipse.sirius.components.view.table.provider.TableItemProviderAdapterFactory;
 import org.eclipse.sirius.components.view.tree.provider.TreeItemProviderAdapterFactory;
+import org.eclipse.sirius.components.view.widget.tablewidget.provider.TableWidgetItemProviderAdapterFactory;
 import org.eclipse.sirius.components.widgets.reference.provider.ReferenceItemProviderAdapterFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -82,5 +83,10 @@ public class EMFAdapterFactoryConfiguration {
     @Bean
     public AdapterFactory tableAdapterFactory() {
         return new TableItemProviderAdapterFactory();
+    }
+
+    @Bean
+    public AdapterFactory tableWidgetAdapterFactory() {
+        return new TableWidgetItemProviderAdapterFactory();
     }
 }

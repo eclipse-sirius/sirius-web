@@ -46,6 +46,7 @@ import {
   ReferencePreview,
   ReferencePropertySection,
 } from '@eclipse-sirius/sirius-components-widget-reference';
+import { TableWidgetPreview } from '@eclipse-sirius/sirius-components-widget-table';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import Filter from '@mui/icons-material/Filter';
@@ -54,6 +55,7 @@ import ImageIcon from '@mui/icons-material/Image';
 import LinkIcon from '@mui/icons-material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import TableViewIcon from '@mui/icons-material/TableView';
 import WarningIcon from '@mui/icons-material/Warning';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -381,7 +383,7 @@ defaultExtensionRegistry.putData(apolloClientOptionsConfigurersExtensionPoint, {
 const isReferenceWidget = (widget: GQLWidget): widget is GQLReferenceWidget => widget.__typename === 'ReferenceWidget';
 
 defaultExtensionRegistry.putData(widgetContributionExtensionPoint, {
-  identifier: `siriusWeb_${widgetContributionExtensionPoint.identifier}_referenceWidget`,
+  identifier: `siriusWeb_${widgetContributionExtensionPoint.identifier}`,
   data: [
     {
       name: 'ReferenceWidget',
@@ -395,6 +397,12 @@ defaultExtensionRegistry.putData(widgetContributionExtensionPoint, {
         }
         return propertySectionComponent;
       },
+    },
+    {
+      name: 'TableWidget',
+      icon: <TableViewIcon />,
+      previewComponent: TableWidgetPreview,
+      component: (_widget: GQLWidget): PropertySectionComponent<GQLWidget> | null => null,
     },
   ],
 });

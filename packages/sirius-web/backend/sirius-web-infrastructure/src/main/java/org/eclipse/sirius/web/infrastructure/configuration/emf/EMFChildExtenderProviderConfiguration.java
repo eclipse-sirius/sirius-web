@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.view.form.provider.FormItemProviderAdapterF
 import org.eclipse.sirius.components.view.gantt.provider.GanttItemProviderAdapterFactory;
 import org.eclipse.sirius.components.view.table.provider.TableItemProviderAdapterFactory;
 import org.eclipse.sirius.components.view.tree.provider.TreeItemProviderAdapterFactory;
+import org.eclipse.sirius.components.view.widget.tablewidget.provider.TableWidgetItemProviderAdapterFactory;
 import org.eclipse.sirius.components.widgets.reference.provider.ReferenceItemProviderAdapterFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -73,5 +74,10 @@ public class EMFChildExtenderProviderConfiguration {
     @Bean
     public ChildExtenderProvider referenceWidgetChildExtenderProvider() {
         return new ChildExtenderProvider(FormPackage.eNS_URI, ReferenceItemProviderAdapterFactory.FormChildCreationExtender::new);
+    }
+
+    @Bean
+    public ChildExtenderProvider tableWidgetChildExtenderProvider() {
+        return new ChildExtenderProvider(FormPackage.eNS_URI, TableWidgetItemProviderAdapterFactory.FormChildCreationExtender::new);
     }
 }

@@ -53,5 +53,8 @@
 		<module>sirius-components-view-table-edit</module>
 		<module>sirius-components-view-tree</module>
 		<module>sirius-components-view-tree-edit</module>
+		<module>sirius-components-widget-table-view</module>
+		<module>sirius-components-widget-table-view-edit</module>
+		<module>sirius-components-view-emf-widget-table</module>
 	</modules>
 </project>
