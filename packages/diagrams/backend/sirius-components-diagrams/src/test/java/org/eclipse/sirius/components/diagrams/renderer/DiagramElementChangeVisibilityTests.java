@@ -142,6 +142,7 @@ public class DiagramElementChangeVisibilityTests {
                 .childNodeDescriptions(children)
                 .labelEditHandler((variableManager, newLabel) -> new Success())
                 .deleteHandler(variableManager -> new Success())
+                .initialChildBorderNodePositions(Map.of())
                 .build();
         return nodeDescription;
     }

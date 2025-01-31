@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.diagrams.components.BorderNodePosition;
 
 /**
  * A node.
@@ -44,6 +45,8 @@ public final class Node implements IDiagramElement {
     private String descriptionId;
 
     private boolean borderNode;
+
+    private BorderNodePosition initialBorderNodePosition;
 
     private Set<ViewModifier> modifiers;
 
@@ -100,7 +103,6 @@ public final class Node implements IDiagramElement {
      * Returns the kind of the semantic element used as the target of the node.
      *
      * @return The kind of the semantic element
-     *
      * @technical-debt This method should be removed since this requirement was caused by some technical debt
      * @deprecated See the <a href="https://github.com/eclipse-sirius/sirius-web/issues/5114">Github issue</a>
      */
@@ -113,7 +115,6 @@ public final class Node implements IDiagramElement {
      * Returns the label of the semantic element used as the target of the node.
      *
      * @return The label of the semantic element
-     *
      * @technical-debt This method should be removed since this requirement was caused by some technical debt
      * @deprecated See the <a href="https://github.com/eclipse-sirius/sirius-web/issues/5114">Github issue</a>
      */
@@ -129,6 +130,10 @@ public final class Node implements IDiagramElement {
 
     public boolean isBorderNode() {
         return this.borderNode;
+    }
+
+    public BorderNodePosition getInitialBorderNodePosition() {
+        return this.initialBorderNodePosition;
     }
 
     public Set<ViewModifier> getModifiers() {
@@ -216,6 +221,8 @@ public final class Node implements IDiagramElement {
 
         private boolean borderNode;
 
+        private BorderNodePosition initialBorderNodePosition;
+
         private Set<ViewModifier> modifiers;
 
         private ViewModifier state;
@@ -254,6 +261,7 @@ public final class Node implements IDiagramElement {
             this.targetObjectLabel = node.getTargetObjectLabel();
             this.descriptionId = node.getDescriptionId();
             this.borderNode = node.isBorderNode();
+            this.initialBorderNodePosition = node.getInitialBorderNodePosition();
             this.modifiers = node.getModifiers();
             this.state = node.getState();
             this.collapsingState = node.getCollapsingState();
@@ -296,6 +304,11 @@ public final class Node implements IDiagramElement {
 
         public Builder borderNode(boolean borderNode) {
             this.borderNode = borderNode;
+            return this;
+        }
+
+        public Builder initialBorderNodePosition(BorderNodePosition initialBorderNodePosition) {
+            this.initialBorderNodePosition = Objects.requireNonNull(initialBorderNodePosition);
             return this;
         }
 
@@ -373,6 +386,7 @@ public final class Node implements IDiagramElement {
             node.targetObjectLabel = Objects.requireNonNull(this.targetObjectLabel);
             node.descriptionId = Objects.requireNonNull(this.descriptionId);
             node.borderNode = this.borderNode;
+            node.initialBorderNodePosition = Objects.requireNonNull(this.initialBorderNodePosition);
             node.modifiers = Objects.requireNonNull(this.modifiers);
             node.state = Objects.requireNonNull(this.state);
             node.collapsingState = Objects.requireNonNull(this.collapsingState);

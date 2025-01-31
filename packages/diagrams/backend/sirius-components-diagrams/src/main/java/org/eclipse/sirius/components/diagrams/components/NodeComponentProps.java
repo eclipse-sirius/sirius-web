@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo and others.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.diagrams.components;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
@@ -63,8 +64,14 @@ public final class NodeComponentProps implements IProps {
 
     private List<INodeAppearanceHandler> nodeAppearanceHandlers;
 
+    private Map<String, BorderNodePosition> initialBorderNodePositions;
+
     private NodeComponentProps() {
         // Prevent instantiation
+    }
+
+    public static Builder newNodeComponentProps() {
+        return new Builder();
     }
 
     public VariableManager getVariableManager() {
@@ -123,8 +130,8 @@ public final class NodeComponentProps implements IProps {
         return this.nodeAppearanceHandlers;
     }
 
-    public static Builder newNodeComponentProps() {
-        return new Builder();
+    public Map<String, BorderNodePosition> getInitialBorderNodePositions() {
+        return this.initialBorderNodePositions;
     }
 
     /**
@@ -162,6 +169,8 @@ public final class NodeComponentProps implements IProps {
         private List<IDiagramEvent> diagramEvents;
 
         private List<INodeAppearanceHandler> nodeAppearanceHandlers;
+
+        private Map<String, BorderNodePosition> initialBorderNodePositions;
 
         public Builder variableManager(VariableManager variableManager) {
             this.variableManager = Objects.requireNonNull(variableManager);
@@ -233,6 +242,11 @@ public final class NodeComponentProps implements IProps {
             return this;
         }
 
+        public Builder initialBorderNodePositions(Map<String, BorderNodePosition> initialBorderNodePositions) {
+            this.initialBorderNodePositions = Objects.requireNonNull(initialBorderNodePositions);
+            return this;
+        }
+
         public NodeComponentProps build() {
             NodeComponentProps nodeComponentProps = new NodeComponentProps();
             nodeComponentProps.variableManager = Objects.requireNonNull(this.variableManager);
@@ -249,6 +263,7 @@ public final class NodeComponentProps implements IProps {
             nodeComponentProps.operationValidator = Objects.requireNonNull(this.operationValidator);
             nodeComponentProps.parentElementState = Objects.requireNonNull(this.parentElementState);
             nodeComponentProps.nodeAppearanceHandlers = Objects.requireNonNull(this.nodeAppearanceHandlers);
+            nodeComponentProps.initialBorderNodePositions = Objects.requireNonNull(this.initialBorderNodePositions);
             return nodeComponentProps;
         }
     }

@@ -67,7 +67,7 @@ public class DiagramBorderNodeDomainProvider implements IDomainProvider {
         borders.setContainment(true);
         borders.setOptional(true);
         borders.setMany(true);
-        borders.setTargetType(entity1);
+        borders.setTargetType(border);
         entity1.getRelations().add(borders);
 
         this.addAttribute(entity1, "name", DataType.STRING);

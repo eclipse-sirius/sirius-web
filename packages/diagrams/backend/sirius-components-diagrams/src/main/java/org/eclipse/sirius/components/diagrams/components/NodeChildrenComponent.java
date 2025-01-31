@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.diagrams.components;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -75,7 +76,8 @@ public class NodeChildrenComponent implements IComponent {
     private List<Element> getOutsideLabel(String nodeId) {
         List<OutsideLabel> optionalPreviousLabels = Optional.ofNullable(this.props.getPreviousParentNode()).map(Node::getOutsideLabels).orElse(new ArrayList<>());
         return this.props.getNodeComponentProps().getNodeDescription().getOutsideLabelDescriptions().stream().map(outsideLabelDescription -> {
-            OutsideLabelComponentProps outsideLabelComponentProps = new OutsideLabelComponentProps(this.props.getVariableManager(), outsideLabelDescription, nodeId, optionalPreviousLabels, this.props.getNodeComponentProps().getDiagramEvents());
+            OutsideLabelComponentProps outsideLabelComponentProps = new OutsideLabelComponentProps(this.props.getVariableManager(), outsideLabelDescription, nodeId, optionalPreviousLabels, this.props.getNodeComponentProps()
+                    .getDiagramEvents());
             return new Element(OutsideLabelComponent.class, outsideLabelComponentProps);
         }).toList();
 
@@ -92,6 +94,8 @@ public class NodeChildrenComponent implements IComponent {
                 .forEach(borderNodeDescriptions::add);
 
         var descendantNodesVariableManager = this.getDescendantNodesVariableManager();
+
+        Map<String, BorderNodePosition> initialBorderNodePositions = nodeDescription.getInitialChildBorderNodePositions();
 
         return borderNodeDescriptions.stream().map(borderNodeDescription -> {
             List<Node> previousBorderNodes = optionalPreviousNode.map(previousNode -> new DiagramElementRequestor().getBorderNodes(previousNode, borderNodeDescription))
@@ -113,6 +117,7 @@ public class NodeChildrenComponent implements IComponent {
                     .parentElementState(this.props.getState())
                     .operationValidator(this.props.getNodeComponentProps().getOperationValidator())
                     .nodeAppearanceHandlers(this.props.getNodeComponentProps().getNodeAppearanceHandlers())
+                    .initialBorderNodePositions(initialBorderNodePositions)
                     .build();
             return new Element(NodeComponent.class, nodeComponentProps);
         }).toList();
@@ -150,6 +155,7 @@ public class NodeChildrenComponent implements IComponent {
                     .parentElementState(this.props.getParentState())
                     .operationValidator(this.props.getNodeComponentProps().getOperationValidator())
                     .nodeAppearanceHandlers(this.props.getNodeComponentProps().getNodeAppearanceHandlers())
+                    .initialBorderNodePositions(Map.of())// is not a border node, thus not used
                     .build();
 
             return new Element(NodeComponent.class, nodeComponentProps);
