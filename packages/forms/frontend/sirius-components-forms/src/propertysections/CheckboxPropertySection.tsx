@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,8 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { getCSSColor, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { getCSSColor, theme, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import Backdrop from '@mui/material/Backdrop';
 import Checkbox from '@mui/material/Checkbox';
+import CircularProgress from '@mui/material/CircularProgress';
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import { useEffect } from 'react';
@@ -59,6 +61,15 @@ const useStyle = makeStyles<CheckboxStyleProps>()((theme, { color, gridLayout })
     propertySectionWidget: {
       gridColumn: widgetGridColumn,
       gridRow: widgetGridRow ?? '1/2',
+    },
+    loadingIndicator: {
+      color: theme.palette.divider,
+      marginLeft: theme.spacing(2),
+    },
+    loadingBackdrop: {
+      backgroundColor: 'transparent',
+      boxShadow: 'none',
+      zIndex: theme.zIndex.drawer + 1,
     },
   };
 });
@@ -119,23 +130,30 @@ export const CheckboxPropertySection: PropertySectionComponent<GQLCheckbox> = ({
   const { addErrorMessage, addMessages } = useMultiToast();
 
   useEffect(() => {
-    if (!loading) {
-      if (error) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (data) {
-        const { editCheckbox } = data;
-        if (isErrorPayload(editCheckbox) || isSuccessPayload(editCheckbox)) {
-          addMessages(editCheckbox.messages);
-        }
+    if (error) {
+      addErrorMessage(error.message);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (data) {
+      const { editCheckbox } = data;
+      if (isErrorPayload(editCheckbox) || isSuccessPayload(editCheckbox)) {
+        addMessages(editCheckbox.messages);
       }
     }
-  }, [loading, error, data]);
+  }, [data]);
 
   return (
     <FormControl classes={{ root: classes.propertySection }} error={widget.diagnostics.length > 0}>
       <div className={classes.propertySectionLabel}>
         <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
+        {loading ? (
+          <>
+            <CircularProgress className={classes.loadingIndicator} size={`${theme.spacing(2)}`} />
+            <Backdrop className={classes.loadingBackdrop} open={loading}></Backdrop>
+          </>
+        ) : null}
       </div>
       <div className={classes.propertySectionWidget}>
         <Checkbox

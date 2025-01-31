@@ -123,6 +123,7 @@ See `PapayaExtensionRegistry.tsx` for how the same result as before can be achie
 - https://github.com/eclipse-sirius/sirius-web/issues/4326[#4326] [diagram] Add quickAccessTools to diagram's palette in view dsl
 - https://github.com/eclipse-sirius/sirius-web/issues/4458[#4458] [sirius-web] Export direct edit functionalities.
 - https://github.com/eclipse-sirius/sirius-web/issues/4481[#4481] [table] Add support for cell custom target object in View DSL
+- https://github.com/eclipse-sirius/sirius-web/issues/4495[#4495] [form] Add an user indicator when executing form actions
 
 
 === Improvements

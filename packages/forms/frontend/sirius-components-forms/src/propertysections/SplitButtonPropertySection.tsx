@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,10 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { ServerContext, ServerContextValue, getCSSColor, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import {
+  ServerContext,
+  ServerContextValue,
+  getCSSColor,
+  theme,
+  useMultiToast,
+} from '@eclipse-sirius/sirius-components-core';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import Backdrop from '@mui/material/Backdrop';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
+import CircularProgress from '@mui/material/CircularProgress';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
 import MenuItem from '@mui/material/MenuItem';
@@ -76,6 +84,15 @@ const useContainerStyle = makeStyles()((theme) => ({
     display: 'flex',
     flexDirection: 'row',
     gap: theme.spacing(2),
+  },
+  loadingIndicator: {
+    color: theme.palette.divider,
+    marginLeft: theme.spacing(2),
+  },
+  loadingBackdrop: {
+    backgroundColor: 'transparent',
+    boxShadow: 'none',
+    zIndex: theme.zIndex.drawer + 1,
   },
 }));
 
@@ -154,18 +171,19 @@ export const SplitButtonPropertySection = ({
   );
 
   useEffect(() => {
-    if (!loading) {
-      if (error) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (data) {
-        const { pushButton } = data;
-        if (isErrorPayload(pushButton) || isSuccessPayload(pushButton)) {
-          addMessages(pushButton.messages);
-        }
+    if (error) {
+      addErrorMessage(error.message);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (data) {
+      const { pushButton } = data;
+      if (isErrorPayload(pushButton) || isSuccessPayload(pushButton)) {
+        addMessages(pushButton.messages);
       }
     }
-  }, [loading, error, data]);
+  }, [data]);
 
   const handleClick = () => {
     const button: GQLButton = widget.actions[state.selectedIndex];
@@ -233,6 +251,12 @@ export const SplitButtonPropertySection = ({
           <ArrowDropDownIcon />
         </Button>
       </ButtonGroup>
+      {loading ? (
+        <>
+          <CircularProgress className={containerClasses.loadingIndicator} size={`${theme.spacing(2)}`} />
+          <Backdrop className={containerClasses.loadingBackdrop} open={loading}></Backdrop>
+        </>
+      ) : null}
       <Popper open={state.open} anchorEl={buttonGroupRef.current} transition placement="bottom">
         {({ TransitionProps, placement }) => (
           <Grow

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,8 @@ import {
   useSelection,
 } from '@eclipse-sirius/sirius-components-core';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import IconButton from '@mui/material/IconButton';
@@ -111,6 +113,20 @@ const useListPropertySectionStyles = makeStyles<ListStyleProps>()(
       whiteSpace: 'nowrap',
       flexGrow: 1,
     },
+    loadingIndicator: {
+      color: theme.palette.divider,
+      marginLeft: theme.spacing(2),
+    },
+    loadingBackdrop: {
+      backgroundColor: 'transparent',
+      boxShadow: 'none',
+      zIndex: theme.zIndex.drawer + 1,
+    },
+    propertySectionLabel: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
   })
 );
 
@@ -179,7 +195,7 @@ export const ListPropertySection: PropertySectionComponent<GQLList> = ({
   useEffect(() => {
     if (!deleteLoading) {
       if (deleteError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(deleteError.message);
       }
       if (deleteData) {
         const { deleteListItem } = deleteData;
@@ -193,7 +209,7 @@ export const ListPropertySection: PropertySectionComponent<GQLList> = ({
   useEffect(() => {
     if (!clickLoading) {
       if (clickError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(clickError.message);
       }
       if (clickData) {
         const { clickListItem } = clickData;
@@ -203,6 +219,7 @@ export const ListPropertySection: PropertySectionComponent<GQLList> = ({
       }
     }
   }, [clickLoading, clickError, clickData]);
+
   const onSimpleClick = (item: GQLListItem) => {
     const { id, kind } = item;
     setSelection({ entries: [{ id, kind }] });
@@ -268,7 +285,15 @@ export const ListPropertySection: PropertySectionComponent<GQLList> = ({
 
   return (
     <FormControl error={widget.diagnostics.length > 0} fullWidth>
-      <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
+      <div className={classes.propertySectionLabel}>
+        <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
+        {clickLoading || deleteLoading ? (
+          <>
+            <CircularProgress className={classes.loadingIndicator} size={`${theme.spacing(2)}`} />
+            <Backdrop className={classes.loadingBackdrop} open={clickLoading || deleteLoading}></Backdrop>
+          </>
+        ) : null}
+      </div>
       <Table size="small" data-testid={`table-${widget.label}`}>
         <TableBody>
           {items.map((item) => (
