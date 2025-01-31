@@ -12,7 +12,7 @@
      Obeo - initial API and implementation
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.eclipse.sirius</groupId>
@@ -36,5 +36,6 @@
 		<module>sirius-components-collaborative-formdescriptioneditors</module>
 		<module>sirius-components-formdescriptioneditors-graphql</module>
 		<module>sirius-components-collaborative-formdescriptioneditors-widget-reference</module>
+		<module>sirius-components-collaborative-formdescriptioneditors-widget-table</module>
 	</modules>
 </project>

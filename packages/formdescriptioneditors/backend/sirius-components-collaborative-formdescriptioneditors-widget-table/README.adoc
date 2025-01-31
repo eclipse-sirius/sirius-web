@@ -1,0 +1,12 @@
+= sirius-components-collaborative-formdescriptioneditors-widget-table
+
+== Goal
+
+This project is used to add support for the table widget to form description editors.
+
+== Dependencies
+
+- sirius-components-collaborative-formdescriptioneditors
+- sirius-components-widget-table-view
+
+This project should not depend on anything else without a good reason to do so.

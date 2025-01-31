@@ -45,6 +45,7 @@ import org.eclipse.sirius.components.tables.tests.navigation.TableNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.services.forms.FormWithTableDescriptionProvider;
+import org.eclipse.sirius.web.services.forms.FormWithViewTableDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedFormSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -85,6 +86,9 @@ public class TableControllerTests extends AbstractIntegrationTests {
 
     @Autowired
     private EditMultiSelectCellMutationRunner editMultiSelectCellMutationRunner;
+
+    @Autowired
+    private FormWithViewTableDescriptionProvider formWithViewTableDescriptionProvider;
 
     @BeforeEach
     public void beforeEach() {
@@ -202,6 +206,38 @@ public class TableControllerTests extends AbstractIntegrationTests {
                 .consumeNextWith(editDependenciesConsumer)
                 .then(editIsDoneCheckboxCell)
                 .consumeNextWith(editIsDoneConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a form with a view based table widget, when it is displayed, then it is properly initialized")
+    public void givenFormWithViewBasedTableWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
+        var input = new CreateRepresentationInput(
+                UUID.randomUUID(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                this.formWithViewTableDescriptionProvider.getRepresentationDescriptionId(),
+                PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString(),
+                "FormWithViewTable");
+        var flux = this.givenCreatedFormSubscription.createAndSubscribe(input);
+
+        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload).filter(FormRefreshedEventPayload.class::isInstance).map(FormRefreshedEventPayload.class::cast)
+                .map(FormRefreshedEventPayload::form).ifPresentOrElse(form -> {
+                    var tableWidget = new FormNavigator(form).page("Page").group("Group").findWidget("Types", TableWidget.class);
+                    assertThat(tableWidget.getTable().getColumns()).hasSize(1);
+                    assertThat(tableWidget.getTable().getLines()).hasSize(2);
+                    assertThat(tableWidget.getTable().getLines().stream().flatMap(line -> line.getCells().stream()).toList()).hasSize(2);
+                    Line line = tableWidget.getTable().getLines().get(0);
+                    LineNavigator lineNavigator = new LineNavigator(line);
+
+                    TableNavigator tableNavigator = new TableNavigator(tableWidget.getTable());
+                    assertThat(lineNavigator.textfieldCellByColumnId(tableNavigator.column("Name").getId())).hasValue("Success");
+
+                }, () -> fail("Missing form"));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialFormContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

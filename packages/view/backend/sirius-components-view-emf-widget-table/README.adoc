@@ -1,0 +1,12 @@
+= sirius-components-view-emf-widget-table
+
+== Goal
+
+This project is used to add support for the table widget to the view converter.
+
+== Dependencies
+
+- sirius-components-view-emf
+- sirius-components-widget-table-view
+
+This project should not depend on anything else without a good reason to do so.

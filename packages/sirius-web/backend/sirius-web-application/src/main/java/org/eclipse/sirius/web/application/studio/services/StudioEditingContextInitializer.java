@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.gantt.GanttPackage;
 import org.eclipse.sirius.components.view.table.TablePackage;
 import org.eclipse.sirius.components.view.tree.TreePackage;
 import org.eclipse.sirius.components.view.widget.reference.ReferencePackage;
+import org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetPackage;
 import org.eclipse.sirius.web.application.studio.services.api.IStudioCapableEditingContextPredicate;
 import org.eclipse.sirius.web.application.studio.services.api.IStudioColorPalettesLoader;
 import org.springframework.stereotype.Service;
@@ -66,6 +67,7 @@ public class StudioEditingContextInitializer implements IEditingContextProcessor
             packageRegistry.put(TreePackage.eNS_URI, TreePackage.eINSTANCE);
             packageRegistry.put(TablePackage.eNS_URI, TablePackage.eINSTANCE);
             packageRegistry.put(ReferencePackage.eNS_URI, ReferencePackage.eINSTANCE);
+            packageRegistry.put(TableWidgetPackage.eNS_URI, TableWidgetPackage.eINSTANCE);
 
             var resourceSet = emfEditingContext.getDomain().getResourceSet();
             this.studioColorPalettesLoader.loadStudioColorPalettes(resourceSet).ifPresent(view -> {

@@ -171,6 +171,16 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-widget-table-view</artifactId>
+			<version>2025.1.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-widget-table-view-edit</artifactId>
+			<version>2025.1.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-gantt</artifactId>
 			<version>2025.1.6</version>
 		</dependency>

@@ -41,7 +41,7 @@ public class ReadOnlyValueProvider implements Function<VariableManager, Boolean>
     public Boolean apply(VariableManager variableManager) {
         VariableManager childVariableManager = variableManager.createChild();
         childVariableManager.put(VARIABLE_MANAGER, variableManager);
-        Result result = this.interpreter.evaluateExpression(childVariableManager.getVariables(), expression);
+        Result result = this.interpreter.evaluateExpression(childVariableManager.getVariables(), this.expression);
         return result.asBoolean()
                 .map(value -> !value)
                 .orElse(Boolean.FALSE);

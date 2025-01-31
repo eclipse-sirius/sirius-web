@@ -140,6 +140,7 @@
     "@eclipse-sirius/sirius-components-trees": "*",
     "@eclipse-sirius/sirius-components-validation": "*",
     "@eclipse-sirius/sirius-components-widget-reference": "*",
+    "@eclipse-sirius/sirius-components-widget-table": "*",
     "@eclipse-sirius/sirius-web-application": "*",
     "@mui/icons-material": "5.15.19",
     "@mui/material": "5.15.19",

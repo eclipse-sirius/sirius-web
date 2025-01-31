@@ -98,4 +98,8 @@ public class CursorBasedNavigationServices {
 
         return new PaginatedData(subList, hasPrevious, hasNext, objects.size());
     }
+
+    public PaginatedData toPaginatedData(List<Object> objects) {
+        return new PaginatedData(objects, false, false, objects.size());
+    }
 }
