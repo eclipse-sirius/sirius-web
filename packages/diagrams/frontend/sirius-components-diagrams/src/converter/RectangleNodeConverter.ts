@@ -20,7 +20,6 @@ import {
   GQLRectangularNodeStyle,
   GQLViewModifier,
 } from '../graphql/subscription/nodeFragment.types';
-import { BorderNodePosition } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { defaultHeight, defaultWidth } from '../renderer/layout/layoutParams';
 import { FreeFormNodeData } from '../renderer/node/FreeFormNode.types';
@@ -29,6 +28,7 @@ import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
 import { convertLineStyle, isListLayoutStrategy } from './convertDiagram';
 import { convertHandles } from './convertHandles';
 import { convertInsideLabel, convertOutsideLabels } from './convertLabel';
+import { convertBorderNodePosition } from './convertBorderNodes';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
@@ -88,7 +88,7 @@ const toRectangularNode = (
     defaultWidth: gqlNode.defaultWidth,
     defaultHeight: gqlNode.defaultHeight,
     isBorderNode: isBorderNode,
-    borderNodePosition: isBorderNode ? BorderNodePosition.EAST : null,
+    borderNodePosition: convertBorderNodePosition(gqlNode.initialBorderNodePosition),
     labelEditable,
     positionDependentRotation: false,
     connectionHandles,

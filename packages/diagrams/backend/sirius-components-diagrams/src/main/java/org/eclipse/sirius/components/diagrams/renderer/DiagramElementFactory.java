@@ -112,6 +112,7 @@ public class DiagramElementFactory implements IElementFactory {
                     .targetObjectLabel(nodeElementProps.getTargetObjectLabel())
                     .descriptionId(nodeElementProps.getDescriptionId())
                     .borderNode(nodeElementProps.isBorderNode())
+                    .initialBorderNodePosition(nodeElementProps.getInitialBorderNodePosition())
                     .style(nodeElementProps.getStyle())
                     .borderNodes(borderNodes)
                     .childNodes(childNodes)

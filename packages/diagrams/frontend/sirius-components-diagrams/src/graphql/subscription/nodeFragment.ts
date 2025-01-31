@@ -61,6 +61,7 @@ fragment nodeFragment on Node {
   defaultHeight
   labelEditable
   customizedStyleProperties
+  initialBorderNodePosition
 }
 
 fragment childrenLayoutStrategyFragment on ILayoutStrategy {

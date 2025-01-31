@@ -18,7 +18,7 @@ export class PlaywrightNode {
 
   constructor(page: Page, name: string, type: string = 'FreeForm') {
     this.page = page;
-    this.nodeLocator = this.page.locator(`[data-testid$="${type} - ${name}"]`).first().locator('..');
+    this.nodeLocator = this.page.locator(`[data-testid="${type} - ${name}"]`).first().locator('..');
   }
 
   async click() {

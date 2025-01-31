@@ -84,6 +84,7 @@ public class DiagramComponent implements IComponent {
                             .parentElementState(ViewModifier.Normal)
                             .operationValidator(this.props.getOperationValidator())
                             .nodeAppearanceHandlers(this.props.getNodeAppearanceHandlers())
+                            .initialBorderNodePosition(BorderNodePosition.NONE)
                             .build();
                     return new Element(NodeComponent.class, nodeComponentProps);
                 }).toList();

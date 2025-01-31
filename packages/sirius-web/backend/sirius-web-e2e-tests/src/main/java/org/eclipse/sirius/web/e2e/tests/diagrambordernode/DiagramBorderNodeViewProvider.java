@@ -90,7 +90,7 @@ public class DiagramBorderNodeViewProvider implements IE2EViewProvider {
 
 
     private NodeDescription getNodeDescription(IColorProvider colorProvider) {
-
+        var borderNodeDescription = this.getChildrenBorderDescription(colorProvider);
         return new DiagramBuilders()
                 .newNodeDescription()
                 .name("Entity Node 1")
@@ -108,7 +108,7 @@ public class DiagramBorderNodeViewProvider implements IE2EViewProvider {
                                 .borderRadius(3)
                                 .borderSize(1)
                                 .borderLineStyle(LineStyle.SOLID)
-                                .childrenLayoutStrategy(new DiagramBuilders().newFreeFormLayoutStrategyDescription().build())
+                                .childrenLayoutStrategy(new DiagramBuilders().newFreeFormLayoutStrategyDescription().onNorthAtCreationBorderNodes(borderNodeDescription).build())
                                 .build()
                 )
                 .insideLabel(
@@ -137,15 +137,16 @@ public class DiagramBorderNodeViewProvider implements IE2EViewProvider {
                                 )
                                 .build()
                 )
-                .borderNodesDescriptions(this.getChildrenBorderDescription(colorProvider))
+                .borderNodesDescriptions(borderNodeDescription)
                 .build();
     }
 
     private NodeDescription getChildrenBorderDescription(IColorProvider colorProvider) {
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name("CompartmentList")
-                .semanticCandidatesExpression("aql:self")
+                .name("Border")
+                .domainType(DiagramBorderNodeDomainProvider.DOMAIN_NAME + "::Border")
+                .semanticCandidatesExpression("aql:self.eContents()")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .collapsible(false)
                 .userResizable(UserResizableDirection.BOTH)
@@ -161,19 +162,6 @@ public class DiagramBorderNodeViewProvider implements IE2EViewProvider {
                                 .borderSize(1)
                                 .borderLineStyle(LineStyle.SOLID)
                                 .childrenLayoutStrategy(new DiagramBuilders().newFreeFormLayoutStrategyDescription().build())
-                                .build()
-                )
-                .outsideLabels(
-                        new DiagramBuilders()
-                                .newOutsideLabelDescription()
-                                .labelExpression("border")
-                                .style(
-                                        new DiagramBuilders()
-                                                .newOutsideLabelStyle()
-                                                .labelColor(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_DARK))
-                                                .borderSize(0)
-                                                .build()
-                                )
                                 .build()
                 )
                 .build();

@@ -90,3 +90,4 @@ export { svgExportIElementSVGExportHandlerExtensionPoint } from './renderer/pane
 export type { GQLToolVariable, GQLToolVariableType } from './renderer/tools/useInvokePaletteTool.types';
 export { DiagramRepresentation } from './representation/DiagramRepresentation';
 export type { GQLDiagramDescription } from './representation/DiagramRepresentation.types';
+export { convertBorderNodePosition } from './converter/convertBorderNodes';

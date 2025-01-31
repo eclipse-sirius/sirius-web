@@ -651,13 +651,49 @@ public interface DiagramPackage extends EPackage {
     int LAYOUT_STRATEGY_DESCRIPTION = 4;
 
     /**
+     * The feature id for the '<em><b>On West At Creation Border Nodes</b></em>' reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES = 0;
+
+    /**
+     * The feature id for the '<em><b>On East At Creation Border Nodes</b></em>' reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES = 1;
+
+    /**
+     * The feature id for the '<em><b>On South At Creation Border Nodes</b></em>' reference list. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES = 2;
+
+    /**
+     * The feature id for the '<em><b>On North At Creation Border Nodes</b></em>' reference list. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES = 3;
+
+    /**
      * The number of structural features of the '<em>Layout Strategy Description</em>' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int LAYOUT_STRATEGY_DESCRIPTION_FEATURE_COUNT = 0;
+    int LAYOUT_STRATEGY_DESCRIPTION_FEATURE_COUNT = 4;
 
     /**
      * The number of operations of the '<em>Layout Strategy Description</em>' class. <!-- begin-user-doc --> <!--
@@ -678,6 +714,42 @@ public interface DiagramPackage extends EPackage {
      * @generated
      */
     int LIST_LAYOUT_STRATEGY_DESCRIPTION = 5;
+
+    /**
+     * The feature id for the '<em><b>On West At Creation Border Nodes</b></em>' reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES = LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES;
+
+    /**
+     * The feature id for the '<em><b>On East At Creation Border Nodes</b></em>' reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES = LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES;
+
+    /**
+     * The feature id for the '<em><b>On South At Creation Border Nodes</b></em>' reference list. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES = LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES;
+
+    /**
+     * The feature id for the '<em><b>On North At Creation Border Nodes</b></em>' reference list. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES = LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES;
 
     /**
      * The feature id for the '<em><b>Are Child Nodes Draggable Expression</b></em>' attribute. <!-- begin-user-doc -->
@@ -743,6 +815,42 @@ public interface DiagramPackage extends EPackage {
      * @generated
      */
     int FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION = 6;
+
+    /**
+     * The feature id for the '<em><b>On West At Creation Border Nodes</b></em>' reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES = LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES;
+
+    /**
+     * The feature id for the '<em><b>On East At Creation Border Nodes</b></em>' reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES = LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES;
+
+    /**
+     * The feature id for the '<em><b>On South At Creation Border Nodes</b></em>' reference list. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES = LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES;
+
+    /**
+     * The feature id for the '<em><b>On North At Creation Border Nodes</b></em>' reference list. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES = LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES;
 
     /**
      * The number of structural features of the '<em>Free Form Layout Strategy Description</em>' class. <!--
@@ -4372,6 +4480,54 @@ public interface DiagramPackage extends EPackage {
     EClass getLayoutStrategyDescription();
 
     /**
+     * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription#getOnWestAtCreationBorderNodes
+     * <em>On West At Creation Border Nodes</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>On West At Creation Border Nodes</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription#getOnWestAtCreationBorderNodes()
+     * @see #getLayoutStrategyDescription()
+     * @generated
+     */
+    EReference getLayoutStrategyDescription_OnWestAtCreationBorderNodes();
+
+    /**
+     * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription#getOnEastAtCreationBorderNodes
+     * <em>On East At Creation Border Nodes</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>On East At Creation Border Nodes</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription#getOnEastAtCreationBorderNodes()
+     * @see #getLayoutStrategyDescription()
+     * @generated
+     */
+    EReference getLayoutStrategyDescription_OnEastAtCreationBorderNodes();
+
+    /**
+     * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription#getOnSouthAtCreationBorderNodes
+     * <em>On South At Creation Border Nodes</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>On South At Creation Border Nodes</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription#getOnSouthAtCreationBorderNodes()
+     * @see #getLayoutStrategyDescription()
+     * @generated
+     */
+    EReference getLayoutStrategyDescription_OnSouthAtCreationBorderNodes();
+
+    /**
+     * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription#getOnNorthAtCreationBorderNodes
+     * <em>On North At Creation Border Nodes</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>On North At Creation Border Nodes</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription#getOnNorthAtCreationBorderNodes()
+     * @see #getLayoutStrategyDescription()
+     * @generated
+     */
+    EReference getLayoutStrategyDescription_OnNorthAtCreationBorderNodes();
+
+    /**
      * Returns the meta object for class
      * '{@link org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription <em>List Layout Strategy
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6505,6 +6661,38 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EClass LAYOUT_STRATEGY_DESCRIPTION = eINSTANCE.getLayoutStrategyDescription();
+
+        /**
+         * The meta object literal for the '<em><b>On West At Creation Border Nodes</b></em>' reference list feature.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES = eINSTANCE.getLayoutStrategyDescription_OnWestAtCreationBorderNodes();
+
+        /**
+         * The meta object literal for the '<em><b>On East At Creation Border Nodes</b></em>' reference list feature.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES = eINSTANCE.getLayoutStrategyDescription_OnEastAtCreationBorderNodes();
+
+        /**
+         * The meta object literal for the '<em><b>On South At Creation Border Nodes</b></em>' reference list feature.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES = eINSTANCE.getLayoutStrategyDescription_OnSouthAtCreationBorderNodes();
+
+        /**
+         * The meta object literal for the '<em><b>On North At Creation Border Nodes</b></em>' reference list feature.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES = eINSTANCE.getLayoutStrategyDescription_OnNorthAtCreationBorderNodes();
 
         /**
          * The meta object literal for the

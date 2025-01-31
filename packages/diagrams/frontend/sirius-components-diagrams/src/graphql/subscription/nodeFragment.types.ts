@@ -32,7 +32,10 @@ export interface GQLNode<T extends GQLNodeStyle> {
   defaultHeight: number | null;
   labelEditable: boolean;
   customizedStyleProperties: string[];
+  initialBorderNodePosition: GQLBorderNodePosition;
 }
+
+export type GQLBorderNodePosition = 'WEST' | 'EAST' | 'SOUTH' | 'NORTH' | 'NONE';
 
 export interface ILayoutStrategy {
   __typename: string;

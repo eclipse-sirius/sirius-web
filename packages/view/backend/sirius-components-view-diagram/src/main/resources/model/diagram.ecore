@@ -163,7 +163,16 @@
         eType="#//ConditionalEdgeStyle" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="LayoutStrategyDescription" abstract="true"
-      interface="true"/>
+      interface="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="onWestAtCreationBorderNodes"
+        upperBound="-1" eType="#//NodeDescription"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="onEastAtCreationBorderNodes"
+        upperBound="-1" eType="#//NodeDescription"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="onSouthAtCreationBorderNodes"
+        upperBound="-1" eType="#//NodeDescription"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="onNorthAtCreationBorderNodes"
+        upperBound="-1" eType="#//NodeDescription"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ListLayoutStrategyDescription" eSuperTypes="#//LayoutStrategyDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="areChildNodesDraggableExpression"
         lowerBound="1" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"

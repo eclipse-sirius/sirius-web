@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
+import org.eclipse.sirius.components.diagrams.components.BorderNodePosition;
 import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
@@ -173,6 +174,7 @@ public class CreateViewOperationHandler implements IOperationHandler {
                 .borderNodes(List.of())
                 .childNodes(List.of())
                 .customizedStyleProperties(Set.of())
+                .initialBorderNodePosition(BorderNodePosition.EAST)
                 .build();
     }
 }

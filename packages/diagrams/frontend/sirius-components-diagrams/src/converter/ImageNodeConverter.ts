@@ -15,12 +15,12 @@ import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.typ
 import { GQLDiagram, GQLHandleLayoutData, GQLNodeLayoutData } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
 import { GQLImageNodeStyle, GQLNode, GQLNodeStyle, GQLViewModifier } from '../graphql/subscription/nodeFragment.types';
-import { BorderNodePosition } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { defaultHeight, defaultWidth } from '../renderer/layout/layoutParams';
 import { FreeFormNodeData } from '../renderer/node/FreeFormNode.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
+import { convertBorderNodePosition } from './convertBorderNodes';
 import { convertLineStyle, isListLayoutStrategy } from './convertDiagram';
 import { convertHandles } from './convertHandles';
 import { convertInsideLabel, convertOutsideLabels } from './convertLabel';
@@ -82,7 +82,7 @@ const toImageNode = (
     defaultWidth: gqlNode.defaultWidth,
     defaultHeight: gqlNode.defaultHeight,
     isBorderNode: isBorderNode,
-    borderNodePosition: isBorderNode ? BorderNodePosition.WEST : null,
+    borderNodePosition: convertBorderNodePosition(gqlNode.initialBorderNodePosition),
     labelEditable,
     positionDependentRotation: style.positionDependentRotation,
     connectionHandles,

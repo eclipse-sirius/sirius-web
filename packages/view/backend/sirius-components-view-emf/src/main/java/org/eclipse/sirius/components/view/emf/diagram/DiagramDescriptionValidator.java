@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
@@ -46,6 +47,8 @@ import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 
@@ -95,12 +98,88 @@ public class DiagramDescriptionValidator implements EValidator {
         if (eObject instanceof CreateInstance createInstance) {
             isValid = this.hasProperDomainType(createInstance, diagnostics) && isValid;
         }
+        if (eObject instanceof LayoutStrategyDescription layoutStrategyDescription) {
+            isValid = this.hasNonRedondantBorderNodeInitialPosition(layoutStrategyDescription, diagnostics) && isValid;
+        }
+        if (eObject instanceof LayoutStrategyDescription layoutStrategyDescription) {
+            isValid = this.hasValidBorderNodeInitialPosition(layoutStrategyDescription, diagnostics) && isValid;
+        }
         return isValid;
     }
 
     @Override
     public boolean validate(EDataType eDataType, Object value, DiagnosticChain diagnostics, Map<Object, Object> context) {
         return true;
+    }
+
+
+    private boolean hasNonRedondantBorderNodeInitialPosition(LayoutStrategyDescription layoutStrategyDescription, DiagnosticChain diagnostics) {
+        EList<NodeDescription> onWestAtCreationBorderNodes = layoutStrategyDescription.getOnWestAtCreationBorderNodes();
+        EList<NodeDescription> onEastAtCreationBorderNodes = layoutStrategyDescription.getOnEastAtCreationBorderNodes();
+        EList<NodeDescription> onSouthAtCreationBorderNodes = layoutStrategyDescription.getOnSouthAtCreationBorderNodes();
+        EList<NodeDescription> onNorthAtCreationBorderNodes = layoutStrategyDescription.getOnNorthAtCreationBorderNodes();
+
+        List<NodeDescription> allNodeDescriptions = new ArrayList<>(onWestAtCreationBorderNodes);
+        allNodeDescriptions.addAll(onEastAtCreationBorderNodes);
+        allNodeDescriptions.addAll(onSouthAtCreationBorderNodes);
+        allNodeDescriptions.addAll(onNorthAtCreationBorderNodes);
+
+        boolean isValid = allNodeDescriptions.stream().collect(Collectors.toSet()).size() == allNodeDescriptions.size();
+
+        if (!isValid && diagnostics != null) {
+            String objectInError = layoutStrategyDescription.eClass().getName();
+            if (layoutStrategyDescription.eContainer().eContainer() instanceof NodeDescription nodeDescription) {
+                objectInError = nodeDescription.getName();
+            }
+            BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
+                    SIRIUS_COMPONENTS_EMF_PACKAGE,
+                    0,
+                    String.format("The border node descriptions of \"%1$s\" should have at most one initial position", objectInError),
+                    new Object[] {
+                        layoutStrategyDescription,
+                        DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY,
+                    });
+
+            diagnostics.add(basicDiagnostic);
+        }
+
+        return isValid;
+    }
+
+    /**
+     * It checks that the border node descriptions referenced for the initial position are only border node descriptions of the current NodeDescription, including reused border node descriptions.
+     */
+    private boolean hasValidBorderNodeInitialPosition(LayoutStrategyDescription layoutStrategyDescription, DiagnosticChain diagnostics) {
+        boolean isValid = true;
+
+        if (layoutStrategyDescription.eContainer().eContainer() instanceof NodeDescription nodeDescription) {
+            List<NodeDescription> allNodeDescriptionsForInitialPosition = new ArrayList<>(layoutStrategyDescription.getOnWestAtCreationBorderNodes());
+            allNodeDescriptionsForInitialPosition.addAll(layoutStrategyDescription.getOnEastAtCreationBorderNodes());
+            allNodeDescriptionsForInitialPosition.addAll(layoutStrategyDescription.getOnSouthAtCreationBorderNodes());
+            allNodeDescriptionsForInitialPosition.addAll(layoutStrategyDescription.getOnNorthAtCreationBorderNodes());
+
+            List<NodeDescription> allAuthorizedNodeDescriptions = new ArrayList<>(nodeDescription.getBorderNodesDescriptions());
+            allAuthorizedNodeDescriptions.addAll(nodeDescription.getReusedBorderNodeDescriptions());
+
+            isValid = allAuthorizedNodeDescriptions.containsAll(allNodeDescriptionsForInitialPosition);
+
+            if (!isValid && diagnostics != null) {
+                BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
+                        SIRIUS_COMPONENTS_EMF_PACKAGE,
+                        0,
+                        String.format(
+                                "In the node description \"%1$s\", the border node descriptions for initial position should be among the border node descriptions(owned and reused) of the node description.",
+                                nodeDescription.getName()),
+                        new Object[] {
+                            layoutStrategyDescription,
+                            DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY,
+                        });
+
+                diagnostics.add(basicDiagnostic);
+            }
+
+        }
+        return isValid;
     }
 
     private boolean conditionIsPresent(Conditional conditional, DiagnosticChain diagnostics) {
