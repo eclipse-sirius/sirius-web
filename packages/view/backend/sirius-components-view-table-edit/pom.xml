@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-view-table-edit</artifactId>
-	<version>2025.1.3</version>
+	<version>2025.1.4</version>
 	<name>sirius-components-view-table-edit</name>
 	<description>Sirius Components Table View Definition DSL - Edit Support</description>
 
@@ -40,12 +40,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-table</artifactId>
-			<version>2025.1.3</version>
+			<version>2025.1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-edit</artifactId>
-			<version>2025.1.3</version>
+			<version>2025.1.4</version>
 		</dependency>
 	</dependencies>
 
