@@ -1,0 +1,47 @@
+= Add Support For Border Node Initial Positioning
+
+== Problem
+
+In a diagram, a `Border Node` is always created on the right of the `Node`(EAST position).
+
+== Key Result
+
+As a specifier, I can define, in the `View` model the side of the `Node` where the `Border Node` will be created.
+
+As an end-user, I can see that the border node is created on the right side of the node accordingly to the view model.
+
+== Solution
+
+Currently, there is only the `NodeDescription` concept used for container, node and border node.
+A `NodeDescription` is considered as the description of a border node if it is contained by the feature `NodeDescription.borderNodeDescriptions`
+
+We need to define the information on which side of the parent node will the border node be created.
+The information will be hold by the parent layout strategy `NodeDescription.childrenLayoutStrategy`
+
+
+```
+class LayoutStrategyDescription {
+    onWestAtCreationBorderNodes: List<NodeDescription>
+    onEastAtCreationBorderNodes: List<NodeDescription>
+    onNorthAtCreationBorderNodes: List<NodeDescription>
+    onSouthAtCreationBorderNodes: List<NodeDescription>
+}
+```
+
+For those four features, we will make sure that
+
+* the specifier is capable of selecting only the border nodes of the current NodeDescription
+* a given border node description can only be in one of the four features
+
+== Cutting Backs
+
+No
+
+== Rabbit Holes
+
+Not identified.
+With this proposal, we avoid putting the information on border node itself because it would lower the reusability of this border node. 
+
+== No-Gos
+
+No
