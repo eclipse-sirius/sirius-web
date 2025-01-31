@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.typ
 import { GQLDiagram, GQLNodeLayoutData } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
 import {
+  GQLBorderNodePosition,
   GQLNode,
   GQLNodeStyle,
   GQLRectangularNodeStyle,
@@ -61,6 +62,20 @@ const toRectangularNode = (
   const isNew = gqlNodeLayoutData === undefined;
   const resizedByUser = gqlNodeLayoutData?.resizedByUser ?? false;
 
+  const convertBorderNodePosition = (initialBorderNodePosition: GQLBorderNodePosition) => {
+    let borderNodePosition: BorderNodePosition = BorderNodePosition.EAST;
+    if (initialBorderNodePosition === 'WEST') {
+      borderNodePosition = BorderNodePosition.WEST;
+    } else if (initialBorderNodePosition === 'EAST') {
+      borderNodePosition = BorderNodePosition.EAST;
+    } else if (initialBorderNodePosition === 'SOUTH') {
+      borderNodePosition = BorderNodePosition.SOUTH;
+    } else if (initialBorderNodePosition === 'NORTH') {
+      borderNodePosition = BorderNodePosition.NORTH;
+    }
+    return borderNodePosition;
+  };
+
   const data: FreeFormNodeData = {
     targetObjectId,
     targetObjectLabel,
@@ -83,7 +98,7 @@ const toRectangularNode = (
     defaultWidth: gqlNode.defaultWidth,
     defaultHeight: gqlNode.defaultHeight,
     isBorderNode: isBorderNode,
-    borderNodePosition: isBorderNode ? BorderNodePosition.EAST : null,
+    borderNodePosition: isBorderNode ? convertBorderNodePosition(gqlNode.initialBorderNodePosition) : null,
     labelEditable,
     positionDependentRotation: false,
     connectionHandles,

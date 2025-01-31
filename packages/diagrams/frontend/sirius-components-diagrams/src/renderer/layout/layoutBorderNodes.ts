@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -61,7 +61,7 @@ export const computeBorderNodePositions = (nodes: Node<NodeData, DiagramNodeType
       const parentNode = nodes.find((node) => node.id === borderNode.parentId);
       if (parentNode) {
         const newPosition = findBorderNodePosition(borderNode.position, borderNode, parentNode);
-        borderNode.data.borderNodePosition = newPosition ?? BorderNodePosition.EAST;
+        borderNode.data.borderNodePosition = newPosition ?? borderNode.data.borderNodePosition;
       }
     });
 };

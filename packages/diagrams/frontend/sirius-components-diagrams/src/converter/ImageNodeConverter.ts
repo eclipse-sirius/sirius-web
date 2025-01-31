@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,13 @@ import { Node, XYPosition } from '@xyflow/react';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagram, GQLNodeLayoutData } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
-import { GQLImageNodeStyle, GQLNode, GQLNodeStyle, GQLViewModifier } from '../graphql/subscription/nodeFragment.types';
+import {
+  GQLBorderNodePosition,
+  GQLImageNodeStyle,
+  GQLNode,
+  GQLNodeStyle,
+  GQLViewModifier,
+} from '../graphql/subscription/nodeFragment.types';
 import { BorderNodePosition } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { defaultHeight, defaultWidth } from '../renderer/layout/layoutParams';
@@ -56,6 +62,20 @@ const toImageNode = (
   const isNew = gqlNodeLayoutData === undefined;
   const resizedByUser = gqlNodeLayoutData?.resizedByUser ?? false;
 
+  const convertBorderNodePosition = (initialBorderNodePosition: GQLBorderNodePosition) => {
+    let borderNodePosition: BorderNodePosition = BorderNodePosition.WEST;
+    if (initialBorderNodePosition === 'WEST') {
+      borderNodePosition = BorderNodePosition.WEST;
+    } else if (initialBorderNodePosition === 'EAST') {
+      borderNodePosition = BorderNodePosition.EAST;
+    } else if (initialBorderNodePosition === 'SOUTH') {
+      borderNodePosition = BorderNodePosition.SOUTH;
+    } else if (initialBorderNodePosition === 'NORTH') {
+      borderNodePosition = BorderNodePosition.NORTH;
+    }
+    return borderNodePosition;
+  };
+
   const data: FreeFormNodeData = {
     targetObjectId,
     targetObjectLabel,
@@ -76,7 +96,7 @@ const toImageNode = (
     defaultWidth: gqlNode.defaultWidth,
     defaultHeight: gqlNode.defaultHeight,
     isBorderNode: isBorderNode,
-    borderNodePosition: isBorderNode ? BorderNodePosition.WEST : null,
+    borderNodePosition: isBorderNode ? convertBorderNodePosition(gqlNode.initialBorderNodePosition) : null,
     labelEditable,
     positionDependentRotation: style.positionDependentRotation,
     connectionHandles,
