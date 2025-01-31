@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { RepresentationComponentProps } from '@eclipse-sirius/sirius-components-core';
+import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
@@ -88,20 +89,19 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
     }
   };
 
-  let completeMessage: JSX.Element | null = null;
   if (complete) {
-    completeMessage = (
+    return (
       <div className={classes.complete}>
         <Typography variant="h6" align="center">
           The table does not exist anymore
         </Typography>
       </div>
     );
-  }
-
-  return (
-    <div data-testid={'table-representation'} className={classes.representation}>
-      {table !== null && !complete ? (
+  } else if (!table) {
+    return <LinearProgress />;
+  } else {
+    return (
+      <div data-testid={'table-representation'} className={classes.representation}>
         <TableContent
           editingContextId={editingContextId}
           representationId={tableId}
@@ -120,8 +120,7 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
           enableColumnOrdering
           expandedRowIds={state.expanded}
         />
-      ) : null}
-      {completeMessage}
-    </div>
-  );
+      </div>
+    );
+  }
 };

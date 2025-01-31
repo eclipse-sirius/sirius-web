@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { RepresentationComponentProps } from '@eclipse-sirius/sirius-components-core';
+import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
@@ -114,6 +115,9 @@ export const FormRepresentation = ({ editingContextId, representationId, readOnl
         </Typography>
       </div>
     );
+  }
+  if (!state.form) {
+    return <LinearProgress />;
   }
 
   return (

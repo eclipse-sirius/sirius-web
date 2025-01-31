@@ -18,6 +18,7 @@ import {
   GQLFormRefreshedEventPayload,
   Group,
 } from '@eclipse-sirius/sirius-components-forms';
+import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
@@ -90,26 +91,33 @@ export const RelatedElementsView = ({ editingContextId, readOnly }: WorkbenchVie
     }
   };
 
-  if (!state.form || complete) {
+  if (complete) {
     return (
       <div className={classes.idle}>
         <Typography variant="subtitle2">No object selected</Typography>
       </div>
     );
+  } else if (!state.form) {
+    return (
+      <div className={classes.idle}>
+        <LinearProgress />
+      </div>
+    );
+  } else {
+    return (
+      <div data-representation-kind="form-related-elements">
+        <FormContext.Provider
+          value={{
+            payload: payload,
+          }}>
+          <FormBasedView
+            editingContextId={editingContextId}
+            form={state.form}
+            readOnly={readOnly}
+            postProcessor={extractFirstGroup}
+          />
+        </FormContext.Provider>
+      </div>
+    );
   }
-  return (
-    <div data-representation-kind="form-related-elements">
-      <FormContext.Provider
-        value={{
-          payload: payload,
-        }}>
-        <FormBasedView
-          editingContextId={editingContextId}
-          form={state.form}
-          readOnly={readOnly}
-          postProcessor={extractFirstGroup}
-        />
-      </FormContext.Provider>
-    </div>
-  );
 };

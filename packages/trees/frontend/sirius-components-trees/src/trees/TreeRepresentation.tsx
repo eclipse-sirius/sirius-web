@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { RepresentationComponentProps } from '@eclipse-sirius/sirius-components-core';
+import LinearProgress from '@mui/material/LinearProgress';
 import { useState } from 'react';
 import { TreeView } from '../views/TreeView';
 import { TreeRepresentationState } from './TreeRepresentation.types';
@@ -22,15 +23,16 @@ export const TreeRepresentation = ({ editingContextId, representationId, readOnl
     expanded: [],
     maxDepth: 1,
   });
-  const { tree } = useTreeSubscription(editingContextId, representationId, state.expanded, state.maxDepth);
+  const { tree, loading } = useTreeSubscription(editingContextId, representationId, state.expanded, state.maxDepth);
 
   const onExpandedElementChange = (expanded: string[], maxDepth: number) => {
     setState((prevState) => ({ ...prevState, expanded, maxDepth }));
   };
-
-  return (
-    <div>
-      {tree !== null ? (
+  if (!tree || loading) {
+    return <LinearProgress />;
+  } else {
+    return (
+      <div>
         <TreeView
           editingContextId={editingContextId}
           readOnly={readOnly}
@@ -44,7 +46,7 @@ export const TreeRepresentation = ({ editingContextId, representationId, readOnl
           expanded={state.expanded}
           maxDepth={state.maxDepth}
         />
-      ) : null}
-    </div>
-  );
+      </div>
+    );
+  }
 };
