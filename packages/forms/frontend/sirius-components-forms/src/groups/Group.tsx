@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -137,13 +137,13 @@ export const Group = ({ editingContextId, formId, group, readOnly }: GroupProps)
       <div className={group.displayMode === 'LIST' ? classes.verticalSections : classes.adaptableSections}>
         {group.widgets
           .filter((widget) => visibleWidgetIds.includes(widget.id))
-          .map((widget) => (
+          .map((widget, index) => (
             <PropertySection
               editingContextId={editingContextId}
               formId={formId}
               widget={widget}
               readOnly={readOnly}
-              key={widget.id}
+              key={`${widget.id}#${index}`}
             />
           ))}
       </div>

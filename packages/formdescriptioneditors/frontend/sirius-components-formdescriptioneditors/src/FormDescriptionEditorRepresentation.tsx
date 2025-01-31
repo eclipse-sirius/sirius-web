@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, OnDataOptions, useSubscription } from '@apollo/client';
-import { RepresentationComponentProps, Toast, useData } from '@eclipse-sirius/sirius-components-core';
+import {
+  RepresentationComponentProps,
+  RepresentationLoadingIndicator,
+  Toast,
+  useData,
+} from '@eclipse-sirius/sirius-components-core';
 import { widgetContributionExtensionPoint } from '@eclipse-sirius/sirius-components-forms';
 import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import WebIcon from '@mui/icons-material/Web';
@@ -315,6 +320,12 @@ export const FormDescriptionEditorRepresentation = ({
         <Typography variant="h5" align="center" data-testid="FormDescriptionEditor-complete-message">
           The form description editor does not exist
         </Typography>
+      </div>
+    );
+  } else if (formDescriptionEditorRepresentation !== 'ready') {
+    return (
+      <div className={classes.formDescriptionEditor}>
+        <RepresentationLoadingIndicator />
       </div>
     );
   }

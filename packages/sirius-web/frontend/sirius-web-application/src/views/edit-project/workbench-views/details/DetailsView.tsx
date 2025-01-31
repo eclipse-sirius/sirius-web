@@ -10,8 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useSelection, WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
+import {
+  RepresentationLoadingIndicator,
+  useSelection,
+  WorkbenchViewComponentProps,
+} from '@eclipse-sirius/sirius-components-core';
 import { FormBasedView, FormContext } from '@eclipse-sirius/sirius-components-forms';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
@@ -22,6 +27,10 @@ import { GQLDetailsEventPayload, GQLFormRefreshedEventPayload } from './useDetai
 const useDetailsViewStyles = makeStyles()((theme) => ({
   idle: {
     padding: theme.spacing(1),
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
   },
 }));
 
@@ -37,7 +46,7 @@ export const DetailsView = ({ editingContextId, readOnly }: WorkbenchViewCompone
 
   const objectIds: string[] = selection.entries.map((entry) => entry.id);
   const skip = objectIds.length === 0;
-  const { payload, complete } = useDetailsViewSubscription(editingContextId, objectIds, skip);
+  const { payload, complete, loading } = useDetailsViewSubscription(editingContextId, objectIds, skip);
 
   useEffect(() => {
     if (isFormRefreshedEventPayload(payload)) {
@@ -47,21 +56,37 @@ export const DetailsView = ({ editingContextId, readOnly }: WorkbenchViewCompone
 
   const { classes } = useDetailsViewStyles();
 
-  if (!state.form || complete || skip) {
+  if (complete || skip) {
     return (
       <div className={classes.idle}>
         <Typography variant="subtitle2">No object selected</Typography>
       </div>
     );
+  } else {
+    return (
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateRows: '1fr',
+          gridTemplateColumns: '1fr',
+        }}
+        data-representation-kind="form-details">
+        {!state.form || loading ? (
+          <Box sx={{ gridRow: '1', gridColumn: '1', zIndex: 1 }}>
+            <RepresentationLoadingIndicator />
+          </Box>
+        ) : null}
+        {state.form ? (
+          <Box sx={{ gridRow: '1', gridColumn: '1' }}>
+            <FormContext.Provider
+              value={{
+                payload: payload,
+              }}>
+              <FormBasedView editingContextId={editingContextId} form={state.form} readOnly={readOnly} />
+            </FormContext.Provider>
+          </Box>
+        ) : null}
+      </Box>
+    );
   }
-  return (
-    <div data-representation-kind="form-details">
-      <FormContext.Provider
-        value={{
-          payload: payload,
-        }}>
-        <FormBasedView editingContextId={editingContextId} form={state.form} readOnly={readOnly} />
-      </FormContext.Provider>
-    </div>
-  );
 };

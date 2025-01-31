@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,12 @@
  *******************************************************************************/
 import { Task, TaskOrEmpty } from '@ObeoNetwork/gantt-task-react';
 import { ApolloError, OnDataOptions, useSubscription } from '@apollo/client';
-import { RepresentationComponentProps, useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
+import {
+  RepresentationComponentProps,
+  RepresentationLoadingIndicator,
+  useMultiToast,
+  useSelection,
+} from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { flushSync } from 'react-dom';
@@ -151,7 +156,9 @@ export const GanttRepresentation = ({ editingContextId, representationId }: Repr
         </Typography>
       </div>
     );
-  } else if (gantt) {
+  } else if (!gantt) {
+    return <RepresentationLoadingIndicator />;
+  } else {
     const tasks = getTaskFromGQLTask(gantt.tasks, '');
     content = (
       <Gantt

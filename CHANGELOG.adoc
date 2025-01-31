@@ -109,6 +109,7 @@ The publication of a studio that references elements from imported libraries now
 image:doc/screenshots/duplicationDialog.png[DuplicationDialog, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/4383[#4383] [sirius-web] Add support for representation duplication from explorer
 - https://github.com/eclipse-sirius/sirius-web/issues/4700[#4700] [view-diagram] It is now possible to set an edge as the source or target of an edge in the view dsl, following work will allow the actual rendering on the back-end and front-end.
+- https://github.com/eclipse-sirius/sirius-web/issues/4493[#4493] [sirius-web] Add an user indicator when a representation is loading 
 
 
 === Improvements

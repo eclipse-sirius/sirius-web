@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import LinearProgress from '@mui/material/LinearProgress';
+import { RepresentationLoadingIndicator } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
 import { memo, useEffect, useState } from 'react';
 import { DialogContextProvider } from '../dialog/DialogContext';
@@ -53,7 +53,7 @@ export const DiagramSubscriptionProvider = memo(({ diagramId, editingContextId }
   }
 
   if (!state.diagramRefreshedEventPayload) {
-    return <LinearProgress />;
+    return <RepresentationLoadingIndicator />;
   }
 
   return (
