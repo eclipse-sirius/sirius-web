@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.diagrams.components;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -147,6 +148,7 @@ public class NodeComponent implements IComponent {
         NodeDescription nodeDescription = this.props.getNodeDescription();
         NodeContainmentKind containmentKind = this.props.getContainmentKind();
         boolean isBorderNode = containmentKind == NodeContainmentKind.BORDER_NODE;
+        Map<String, BorderNodePosition> borderNodeInitialPositions = this.props.getInitialBorderNodePositions();
 
         String nodeId = optionalPreviousNode.map(Node::getId).orElseGet(() -> this.computeNodeId(targetObjectId));
 
@@ -155,6 +157,7 @@ public class NodeComponent implements IComponent {
         ViewModifier state = this.computeState(modifiers);
 
         boolean isPinned = this.isPinned(diagramEvents, nodeId, optionalPreviousNode);
+        BorderNodePosition borderNodePosition = this.getBorderNodePosition(nodeDescription, borderNodeInitialPositions);
         boolean isCollapsedByDefault = nodeDescription.getIsCollapsedByDefaultPredicate().test(nodeVariableManager);
         CollapsingState collapsingState = this.computeCollapsingState(nodeId, optionalPreviousNode, diagramEvents, isCollapsedByDefault);
 
@@ -193,6 +196,7 @@ public class NodeComponent implements IComponent {
                 .targetObjectLabel(targetObjectLabel)
                 .descriptionId(nodeDescription.getId())
                 .borderNode(isBorderNode)
+                .initialBorderNodePosition(borderNodePosition)
                 .style(style)
                 .children(List.of(nodeChildren))
                 .modifiers(modifiers)
@@ -208,6 +212,10 @@ public class NodeComponent implements IComponent {
         }
 
         return new Element(NodeElementProps.TYPE, nodeElementPropsBuilder.build());
+    }
+
+    private BorderNodePosition getBorderNodePosition(NodeDescription nodeDescription, Map<String, BorderNodePosition> borderNodeInitialPositions) {
+        return Optional.ofNullable(borderNodeInitialPositions).map(map -> map.get(nodeDescription.getId())).orElse(null);
     }
 
     private CollapsingState computeCollapsingState(String nodeId, Optional<Node> optionalPreviousNode, List<IDiagramEvent> diagramEvents, boolean isCollapsedByDefault) {

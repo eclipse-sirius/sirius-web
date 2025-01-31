@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,14 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
  * The following features are implemented:
  * </p>
  * <ul>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ListLayoutStrategyDescriptionImpl#getOnWestAtCreationBorderNodes
+ * <em>On West At Creation Border Nodes</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ListLayoutStrategyDescriptionImpl#getOnEastAtCreationBorderNodes
+ * <em>On East At Creation Border Nodes</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ListLayoutStrategyDescriptionImpl#getOnSouthAtCreationBorderNodes
+ * <em>On South At Creation Border Nodes</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ListLayoutStrategyDescriptionImpl#getOnNorthAtCreationBorderNodes
+ * <em>On North At Creation Border Nodes</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ListLayoutStrategyDescriptionImpl#getAreChildNodesDraggableExpression
  * <em>Are Child Nodes Draggable Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ListLayoutStrategyDescriptionImpl#getTopGapExpression
@@ -44,6 +52,46 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
  * @generated
  */
 public class ListLayoutStrategyDescriptionImpl extends MinimalEObjectImpl.Container implements ListLayoutStrategyDescription {
+
+    /**
+     * The cached value of the '{@link #getOnWestAtCreationBorderNodes() <em>On West At Creation Border Nodes</em>}'
+     * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getOnWestAtCreationBorderNodes()
+     * @generated
+     * @ordered
+     */
+    protected EList<NodeDescription> onWestAtCreationBorderNodes;
+
+    /**
+     * The cached value of the '{@link #getOnEastAtCreationBorderNodes() <em>On East At Creation Border Nodes</em>}'
+     * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getOnEastAtCreationBorderNodes()
+     * @generated
+     * @ordered
+     */
+    protected EList<NodeDescription> onEastAtCreationBorderNodes;
+
+    /**
+     * The cached value of the '{@link #getOnSouthAtCreationBorderNodes() <em>On South At Creation Border Nodes</em>}'
+     * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getOnSouthAtCreationBorderNodes()
+     * @generated
+     * @ordered
+     */
+    protected EList<NodeDescription> onSouthAtCreationBorderNodes;
+
+    /**
+     * The cached value of the '{@link #getOnNorthAtCreationBorderNodes() <em>On North At Creation Border Nodes</em>}'
+     * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getOnNorthAtCreationBorderNodes()
+     * @generated
+     * @ordered
+     */
+    protected EList<NodeDescription> onNorthAtCreationBorderNodes;
 
     /**
      * The default value of the '{@link #getAreChildNodesDraggableExpression() <em>Are Child Nodes Draggable
@@ -140,6 +188,62 @@ public class ListLayoutStrategyDescriptionImpl extends MinimalEObjectImpl.Contai
      * @generated
      */
     @Override
+    public EList<NodeDescription> getOnWestAtCreationBorderNodes() {
+        if (this.onWestAtCreationBorderNodes == null) {
+            this.onWestAtCreationBorderNodes = new EObjectResolvingEList<>(NodeDescription.class, this,
+                    DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES);
+        }
+        return this.onWestAtCreationBorderNodes;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EList<NodeDescription> getOnEastAtCreationBorderNodes() {
+        if (this.onEastAtCreationBorderNodes == null) {
+            this.onEastAtCreationBorderNodes = new EObjectResolvingEList<>(NodeDescription.class, this,
+                    DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES);
+        }
+        return this.onEastAtCreationBorderNodes;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EList<NodeDescription> getOnSouthAtCreationBorderNodes() {
+        if (this.onSouthAtCreationBorderNodes == null) {
+            this.onSouthAtCreationBorderNodes = new EObjectResolvingEList<>(NodeDescription.class, this,
+                    DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES);
+        }
+        return this.onSouthAtCreationBorderNodes;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EList<NodeDescription> getOnNorthAtCreationBorderNodes() {
+        if (this.onNorthAtCreationBorderNodes == null) {
+            this.onNorthAtCreationBorderNodes = new EObjectResolvingEList<>(NodeDescription.class, this,
+                    DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES);
+        }
+        return this.onNorthAtCreationBorderNodes;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public String getAreChildNodesDraggableExpression() {
         return this.areChildNodesDraggableExpression;
     }
@@ -225,6 +329,14 @@ public class ListLayoutStrategyDescriptionImpl extends MinimalEObjectImpl.Contai
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
+            case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES:
+                return this.getOnWestAtCreationBorderNodes();
+            case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES:
+                return this.getOnEastAtCreationBorderNodes();
+            case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES:
+                return this.getOnSouthAtCreationBorderNodes();
+            case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES:
+                return this.getOnNorthAtCreationBorderNodes();
             case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ARE_CHILD_NODES_DRAGGABLE_EXPRESSION:
                 return this.getAreChildNodesDraggableExpression();
             case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__TOP_GAP_EXPRESSION:
@@ -246,6 +358,22 @@ public class ListLayoutStrategyDescriptionImpl extends MinimalEObjectImpl.Contai
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
+            case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES:
+                this.getOnWestAtCreationBorderNodes().clear();
+                this.getOnWestAtCreationBorderNodes().addAll((Collection<? extends NodeDescription>) newValue);
+                return;
+            case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES:
+                this.getOnEastAtCreationBorderNodes().clear();
+                this.getOnEastAtCreationBorderNodes().addAll((Collection<? extends NodeDescription>) newValue);
+                return;
+            case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES:
+                this.getOnSouthAtCreationBorderNodes().clear();
+                this.getOnSouthAtCreationBorderNodes().addAll((Collection<? extends NodeDescription>) newValue);
+                return;
+            case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES:
+                this.getOnNorthAtCreationBorderNodes().clear();
+                this.getOnNorthAtCreationBorderNodes().addAll((Collection<? extends NodeDescription>) newValue);
+                return;
             case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ARE_CHILD_NODES_DRAGGABLE_EXPRESSION:
                 this.setAreChildNodesDraggableExpression((String) newValue);
                 return;
@@ -271,6 +399,18 @@ public class ListLayoutStrategyDescriptionImpl extends MinimalEObjectImpl.Contai
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
+            case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES:
+                this.getOnWestAtCreationBorderNodes().clear();
+                return;
+            case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES:
+                this.getOnEastAtCreationBorderNodes().clear();
+                return;
+            case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES:
+                this.getOnSouthAtCreationBorderNodes().clear();
+                return;
+            case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES:
+                this.getOnNorthAtCreationBorderNodes().clear();
+                return;
             case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ARE_CHILD_NODES_DRAGGABLE_EXPRESSION:
                 this.setAreChildNodesDraggableExpression(ARE_CHILD_NODES_DRAGGABLE_EXPRESSION_EDEFAULT);
                 return;
@@ -295,6 +435,14 @@ public class ListLayoutStrategyDescriptionImpl extends MinimalEObjectImpl.Contai
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
+            case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES:
+                return this.onWestAtCreationBorderNodes != null && !this.onWestAtCreationBorderNodes.isEmpty();
+            case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES:
+                return this.onEastAtCreationBorderNodes != null && !this.onEastAtCreationBorderNodes.isEmpty();
+            case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES:
+                return this.onSouthAtCreationBorderNodes != null && !this.onSouthAtCreationBorderNodes.isEmpty();
+            case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES:
+                return this.onNorthAtCreationBorderNodes != null && !this.onNorthAtCreationBorderNodes.isEmpty();
             case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ARE_CHILD_NODES_DRAGGABLE_EXPRESSION:
                 return ARE_CHILD_NODES_DRAGGABLE_EXPRESSION_EDEFAULT == null ? this.areChildNodesDraggableExpression != null
                         : !ARE_CHILD_NODES_DRAGGABLE_EXPRESSION_EDEFAULT.equals(this.areChildNodesDraggableExpression);

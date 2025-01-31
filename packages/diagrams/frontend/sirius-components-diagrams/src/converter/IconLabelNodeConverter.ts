@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,7 @@ import { defaultHeight, defaultWidth } from '../renderer/layout/layoutParams';
 import { IconLabelNodeData } from '../renderer/node/IconsLabelNode.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
+import { convertBorderNodePosition } from './convertBorderNodes';
 import { isListLayoutStrategy } from './convertDiagram';
 import { convertInsideLabel, convertOutsideLabels } from './convertLabel';
 
@@ -71,7 +72,9 @@ const toIconLabelNode = (
     insideLabel: null,
     outsideLabels: convertOutsideLabels(outsideLabels),
     isBorderNode: isBorderNode,
-    borderNodePosition: isBorderNode ? BorderNodePosition.WEST : null,
+    borderNodePosition: isBorderNode
+      ? convertBorderNodePosition(gqlNode.initialBorderNodePosition, BorderNodePosition.WEST)
+      : null,
     faded: state === GQLViewModifier.Faded,
     pinned,
     nodeDescription,
