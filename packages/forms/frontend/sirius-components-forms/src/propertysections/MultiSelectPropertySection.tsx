@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,8 @@ import { useEffect } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLMultiSelect } from '../form/FormEventFragments.types';
+import { getTextDecorationLineValue } from './getTextDecorationLineValue';
+import { LoadingIndicator } from './LoadingIndicator';
 import {
   GQLEditMultiSelectMutationData,
   GQLEditMultiSelectPayload,
@@ -31,7 +33,6 @@ import {
   MultiSelectStyleProps,
 } from './MultiSelectPropertySection.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
-import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 
 const useStyle = makeStyles<MultiSelectStyleProps>()(
   (theme, { backgroundColor, foregroundColor, fontSize, italic, bold, underline, strikeThrough, gridLayout }) => {
@@ -72,6 +73,7 @@ const useStyle = makeStyles<MultiSelectStyleProps>()(
         gridRow: labelGridRow,
         display: 'flex',
         flexDirection: 'row',
+        gap: theme.spacing(2),
         alignItems: 'center',
       },
       propertySectionWidget: {
@@ -145,23 +147,22 @@ export const MultiSelectPropertySection: PropertySectionComponent<GQLMultiSelect
   const { addErrorMessage, addMessages } = useMultiToast();
 
   useEffect(() => {
-    if (!loading) {
-      if (error) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (data) {
-        const { editMultiSelect } = data;
-        if (isErrorPayload(editMultiSelect) || isSuccessPayload(editMultiSelect)) {
-          addMessages(editMultiSelect.messages);
-        }
+    if (error) {
+      addErrorMessage('An unexpected error has occurred, please refresh the page');
+    }
+    if (data) {
+      const { editMultiSelect } = data;
+      if (isErrorPayload(editMultiSelect) || isSuccessPayload(editMultiSelect)) {
+        addMessages(editMultiSelect.messages);
       }
     }
-  }, [loading, error, data]);
+  }, [error, data]);
 
   return (
     <FormControl error={widget.diagnostics.length > 0} className={classes.propertySection}>
       <div className={classes.propertySectionLabel}>
         <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
+        <LoadingIndicator loading={loading} />
       </div>
       <div className={classes.propertySectionWidget}>
         <Select

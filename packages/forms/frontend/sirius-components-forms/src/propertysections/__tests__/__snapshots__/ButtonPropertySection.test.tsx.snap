@@ -14,9 +14,6 @@ exports[`should display the error received 1`] = `
         >
           Label
         </h6>
-        <div
-          class="css-vrp56w-decorators"
-        />
       </div>
       <button
         class="MuiButtonBase-root MuiButton-root css-35i3u7-style MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary MuiButton-root css-35i3u7-style MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary css-sghohy-MuiButtonBase-root-MuiButton-root"
@@ -48,9 +45,6 @@ exports[`should display the error received 2`] = `
         >
           Label
         </h6>
-        <div
-          class="css-vrp56w-decorators"
-        />
       </div>
       <button
         class="MuiButtonBase-root MuiButton-root css-35i3u7-style MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary MuiButton-root css-35i3u7-style MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary css-sghohy-MuiButtonBase-root-MuiButton-root"
@@ -81,9 +75,6 @@ exports[`should render a readOnly button 1`] = `
       >
         Label
       </h6>
-      <div
-        class="css-vrp56w-decorators"
-      />
     </div>
     <button
       class="MuiButtonBase-root MuiButton-root css-35i3u7-style MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary Mui-disabled MuiButton-root css-35i3u7-style MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary css-sghohy-MuiButtonBase-root-MuiButton-root"
@@ -112,9 +103,6 @@ exports[`should render a readOnly button from widget properties 1`] = `
         >
           Label
         </h6>
-        <div
-          class="css-vrp56w-decorators"
-        />
       </div>
       <button
         class="MuiButtonBase-root MuiButton-root css-35i3u7-style MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary Mui-disabled MuiButton-root css-35i3u7-style MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary css-sghohy-MuiButtonBase-root-MuiButton-root"
@@ -143,9 +131,6 @@ exports[`should render the button 1`] = `
       >
         Label
       </h6>
-      <div
-        class="css-vrp56w-decorators"
-      />
     </div>
     <button
       class="MuiButtonBase-root MuiButton-root css-35i3u7-style MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary MuiButton-root css-35i3u7-style MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary css-sghohy-MuiButtonBase-root-MuiButton-root"
@@ -176,9 +161,6 @@ exports[`should render the button with empty style 1`] = `
         >
           Label
         </h6>
-        <div
-          class="css-vrp56w-decorators"
-        />
       </div>
       <button
         class="MuiButtonBase-root MuiButton-root css-35i3u7-style MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary MuiButton-root css-35i3u7-style MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary css-sghohy-MuiButtonBase-root-MuiButton-root"
@@ -260,9 +242,6 @@ exports[`should render the button with style 1`] = `
         >
           Label
         </h6>
-        <div
-          class="css-vrp56w-decorators"
-        />
       </div>
       <button
         class="MuiButtonBase-root MuiButton-root css-1h1gv87-style MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary MuiButton-root css-1h1gv87-style MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary css-sghohy-MuiButtonBase-root-MuiButton-root"
@@ -294,9 +273,6 @@ exports[`should render the button without style 1`] = `
         >
           Label
         </h6>
-        <div
-          class="css-vrp56w-decorators"
-        />
       </div>
       <button
         class="MuiButtonBase-root MuiButton-root css-35i3u7-style MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary MuiButton-root css-35i3u7-style MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary css-sghohy-MuiButtonBase-root-MuiButton-root"
@@ -327,9 +303,6 @@ exports[`should send mutation when clicked 1`] = `
       >
         Label
       </h6>
-      <div
-        class="css-vrp56w-decorators"
-      />
     </div>
     <button
       class="MuiButtonBase-root MuiButton-root css-35i3u7-style MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary MuiButton-root css-35i3u7-style MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary css-sghohy-MuiButtonBase-root-MuiButton-root"
@@ -359,9 +332,6 @@ exports[`should send mutation when clicked 2`] = `
       >
         Label
       </h6>
-      <div
-        class="css-vrp56w-decorators"
-      />
     </div>
     <button
       class="MuiButtonBase-root MuiButton-root css-35i3u7-style MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary MuiButton-root css-35i3u7-style MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary css-sghohy-MuiButtonBase-root-MuiButton-root"

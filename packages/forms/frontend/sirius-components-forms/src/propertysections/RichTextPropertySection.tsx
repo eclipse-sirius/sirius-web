@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,9 +14,11 @@
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useEffect } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLRichText } from '../form/FormEventFragments.types';
 import { RichTextEditor } from '../richtexteditor/RichTextEditor';
+import { LoadingIndicator } from './LoadingIndicator';
 import { PropertySectionLabel } from './PropertySectionLabel';
 import {
   GQLEditRichTextInput,
@@ -52,6 +54,15 @@ const isErrorPayload = (payload: GQLEditRichTextPayload): payload is GQLErrorPay
 const isSuccessPayload = (payload: GQLEditRichTextPayload): payload is GQLSuccessPayload =>
   payload.__typename === 'SuccessPayload';
 
+const useRichTextSectionStyles = makeStyles()((theme) => ({
+  propertySectionLabel: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: theme.spacing(2),
+    alignItems: 'center',
+  },
+}));
+
 /**
  * Defines the content of a Rich Text property section.
  * The content is submitted when the focus is lost.
@@ -62,8 +73,11 @@ export const RichTextPropertySection: PropertySectionComponent<GQLRichText> = ({
   widget,
   readOnly,
 }: PropertySectionComponentProps<GQLRichText>) => {
+  const { classes } = useRichTextSectionStyles();
+
   const [editRichText, { loading: updateRichTextLoading, data: updateRichTextData, error: updateRichTextError }] =
     useMutation<GQLEditRichTextMutationData, GQLEditRichTextMutationVariables>(editRichTextMutation);
+
   const sendEditedValue = (newValue) => {
     const input: GQLEditRichTextInput = {
       id: crypto.randomUUID(),
@@ -79,18 +93,16 @@ export const RichTextPropertySection: PropertySectionComponent<GQLRichText> = ({
   const { addErrorMessage, addMessages } = useMultiToast();
 
   useEffect(() => {
-    if (!updateRichTextLoading) {
-      if (updateRichTextError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (updateRichTextData) {
-        const { editRichText } = updateRichTextData;
-        if (isErrorPayload(editRichText) || isSuccessPayload(editRichText)) {
-          addMessages(editRichText.messages);
-        }
+    if (updateRichTextError) {
+      addErrorMessage('An unexpected error has occurred, please refresh the page');
+    }
+    if (updateRichTextData) {
+      const { editRichText } = updateRichTextData;
+      if (isErrorPayload(editRichText) || isSuccessPayload(editRichText)) {
+        addMessages(editRichText.messages);
       }
     }
-  }, [updateRichTextLoading, updateRichTextData, updateRichTextError]);
+  }, [updateRichTextError, updateRichTextData]);
 
   const onBlur = (currentText: string) => {
     if (currentText !== widget.stringValue) {
@@ -100,7 +112,10 @@ export const RichTextPropertySection: PropertySectionComponent<GQLRichText> = ({
 
   return (
     <div>
-      <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
+      <div className={classes.propertySectionLabel}>
+        <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
+        <LoadingIndicator loading={updateRichTextLoading} />
+      </div>
       <div data-testid={widget.label}>
         <RichTextEditor
           value={widget.stringValue}

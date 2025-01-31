@@ -54,9 +54,6 @@ exports[`render image widget with maxWidth 1`] = `
       >
         myImage
       </h6>
-      <div
-        class="css-vrp56w-decorators"
-      />
     </div>
     <div
       class="css-10jootx-container"
@@ -82,9 +79,6 @@ exports[`render image widget without maxWidth 1`] = `
       >
         myImage
       </h6>
-      <div
-        class="css-vrp56w-decorators"
-      />
     </div>
     <div
       class="css-a3l62e-container"

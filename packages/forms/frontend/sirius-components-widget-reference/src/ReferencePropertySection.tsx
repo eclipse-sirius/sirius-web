@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import {
 } from '@eclipse-sirius/sirius-components-core';
 import {
   GQLWidget,
+  LoadingIndicator,
   PropertySectionComponent,
   PropertySectionComponentProps,
   PropertySectionLabel,
@@ -53,9 +54,15 @@ import { BrowseModal } from './modals/BrowseModal';
 import { CreateModal } from './modals/CreateModal';
 import { TransferModal } from './modals/TransferModal';
 
-const useStyles = makeStyles()(() => ({
+const useStyles = makeStyles()((theme) => ({
   root: {
     overflow: 'hidden',
+  },
+  propertySectionLabel: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: theme.spacing(2),
+    alignItems: 'center',
   },
 }));
 
@@ -235,72 +242,59 @@ const RawReferencePropertySection: PropertySectionComponent<GQLReferenceWidget> 
   const clickHandler = useClickHandler<GQLReferenceValue>(onReferenceValueSimpleClick, onReferenceValueDoubleClick);
 
   const { addErrorMessage, addMessages } = useMultiToast();
+  const isLoading = clearLoading || removeLoading || setLoading || addLoading || moveLoading;
+  const error = clearError || removeError || setError || addError || moveError;
 
   useEffect(() => {
-    if (!clearLoading) {
-      if (clearError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (clearData) {
-        const { clearReference } = clearData;
-        if (isErrorPayload(clearReference) || isSuccessPayload(clearReference)) {
-          addMessages(clearReference.messages);
-        }
-      }
+    if (error) {
+      addErrorMessage(error.message);
     }
-  }, [clearLoading, clearError, clearData]);
+  }, [error]);
+
   useEffect(() => {
-    if (!removeLoading) {
-      if (removeError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (removeData) {
-        const { removeReferenceValue } = removeData;
-        if (isErrorPayload(removeReferenceValue) || isSuccessPayload(removeReferenceValue)) {
-          addMessages(removeReferenceValue.messages);
-        }
+    if (clearData) {
+      const { clearReference } = clearData;
+      if (isErrorPayload(clearReference) || isSuccessPayload(clearReference)) {
+        addMessages(clearReference.messages);
       }
     }
-  }, [removeLoading, removeError, removeData]);
+  }, [clearData]);
+
   useEffect(() => {
-    if (!setLoading) {
-      if (setError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (setData) {
-        const { setReferenceValue } = setData;
-        if (isErrorPayload(setReferenceValue) || isSuccessPayload(setReferenceValue)) {
-          addMessages(setReferenceValue.messages);
-        }
+    if (removeData) {
+      const { removeReferenceValue } = removeData;
+      if (isErrorPayload(removeReferenceValue) || isSuccessPayload(removeReferenceValue)) {
+        addMessages(removeReferenceValue.messages);
       }
     }
-  }, [setLoading, setError, setData]);
+  }, [removeData]);
+
   useEffect(() => {
-    if (!addLoading) {
-      if (addError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (addData) {
-        const { addReferenceValues } = addData;
-        if (isErrorPayload(addReferenceValues) || isSuccessPayload(addReferenceValues)) {
-          addMessages(addReferenceValues.messages);
-        }
+    if (setData) {
+      const { setReferenceValue } = setData;
+      if (isErrorPayload(setReferenceValue) || isSuccessPayload(setReferenceValue)) {
+        addMessages(setReferenceValue.messages);
       }
     }
-  }, [addLoading, addError, addData]);
+  }, [setData]);
+
   useEffect(() => {
-    if (!moveLoading) {
-      if (moveError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (moveData) {
-        const { moveReferenceValue } = moveData;
-        if (isErrorPayload(moveReferenceValue) || isSuccessPayload(moveReferenceValue)) {
-          addMessages(moveReferenceValue.messages);
-        }
+    if (addData) {
+      const { addReferenceValues } = addData;
+      if (isErrorPayload(addReferenceValues) || isSuccessPayload(addReferenceValues)) {
+        addMessages(addReferenceValues.messages);
       }
     }
-  }, [moveLoading, moveError, moveData]);
+  }, [addData]);
+
+  useEffect(() => {
+    if (moveData) {
+      const { moveReferenceValue } = moveData;
+      if (isErrorPayload(moveReferenceValue) || isSuccessPayload(moveReferenceValue)) {
+        addMessages(moveReferenceValue.messages);
+      }
+    }
+  }, [moveData]);
 
   const callClearReference = () => {
     const variables = {
@@ -476,12 +470,15 @@ const RawReferencePropertySection: PropertySectionComponent<GQLReferenceWidget> 
   return (
     <>
       <div className={classes.root}>
-        <PropertySectionLabel
-          editingContextId={editingContextId}
-          formId={formId}
-          widget={widget}
-          data-testid={widget.label + '_' + widget.reference.referenceKind}
-        />
+        <div className={classes.propertySectionLabel}>
+          <PropertySectionLabel
+            editingContextId={editingContextId}
+            formId={formId}
+            widget={widget}
+            data-testid={widget.label + '_' + widget.reference.referenceKind}
+          />
+          <LoadingIndicator loading={isLoading} />
+        </div>
         <ValuedReferenceAutocomplete
           editingContextId={editingContextId}
           formId={formId}

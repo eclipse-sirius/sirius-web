@@ -7,7 +7,7 @@ exports[`should display the error received 1`] = `
       class="MuiFormControl-root css-1lq62oj-propertySection css-1nrlq1o-MuiFormControl-root"
     >
       <div
-        class="css-7ge0w8-propertySectionLabel"
+        class="css-6pxhee-propertySectionLabel"
       >
         <div
           class="css-1ccipwk-propertySectionLabel"
@@ -17,9 +17,6 @@ exports[`should display the error received 1`] = `
           >
             CheckboxLabel
           </h6>
-          <div
-            class="css-vrp56w-decorators"
-          />
         </div>
       </div>
       <div
@@ -63,7 +60,7 @@ exports[`should display the error received 2`] = `
       class="MuiFormControl-root css-1lq62oj-propertySection css-1nrlq1o-MuiFormControl-root"
     >
       <div
-        class="css-7ge0w8-propertySectionLabel"
+        class="css-6pxhee-propertySectionLabel"
       >
         <div
           class="css-1ccipwk-propertySectionLabel"
@@ -73,9 +70,6 @@ exports[`should display the error received 2`] = `
           >
             CheckboxLabel
           </h6>
-          <div
-            class="css-vrp56w-decorators"
-          />
         </div>
       </div>
       <div
@@ -118,7 +112,7 @@ exports[`should render a checkbox with help hint 1`] = `
     class="MuiFormControl-root css-1lq62oj-propertySection css-1nrlq1o-MuiFormControl-root"
   >
     <div
-      class="css-7ge0w8-propertySectionLabel"
+      class="css-6pxhee-propertySectionLabel"
     >
       <div
         class="css-1ccipwk-propertySectionLabel"
@@ -187,7 +181,7 @@ exports[`should render a readOnly checkbox 1`] = `
     class="MuiFormControl-root css-1lq62oj-propertySection css-1nrlq1o-MuiFormControl-root"
   >
     <div
-      class="css-7ge0w8-propertySectionLabel"
+      class="css-6pxhee-propertySectionLabel"
     >
       <div
         class="css-1ccipwk-propertySectionLabel"
@@ -197,9 +191,6 @@ exports[`should render a readOnly checkbox 1`] = `
         >
           CheckboxLabel
         </h6>
-        <div
-          class="css-vrp56w-decorators"
-        />
       </div>
     </div>
     <div
@@ -241,7 +232,7 @@ exports[`should render a readOnly checkbox from widget properties 1`] = `
     class="MuiFormControl-root css-1lq62oj-propertySection css-1nrlq1o-MuiFormControl-root"
   >
     <div
-      class="css-7ge0w8-propertySectionLabel"
+      class="css-6pxhee-propertySectionLabel"
     >
       <div
         class="css-1ccipwk-propertySectionLabel"
@@ -251,9 +242,6 @@ exports[`should render a readOnly checkbox from widget properties 1`] = `
         >
           CheckboxLabel
         </h6>
-        <div
-          class="css-vrp56w-decorators"
-        />
       </div>
     </div>
     <div
@@ -295,7 +283,7 @@ exports[`should render the checkbox 1`] = `
     class="MuiFormControl-root css-1lq62oj-propertySection css-1nrlq1o-MuiFormControl-root"
   >
     <div
-      class="css-7ge0w8-propertySectionLabel"
+      class="css-6pxhee-propertySectionLabel"
     >
       <div
         class="css-1ccipwk-propertySectionLabel"
@@ -305,9 +293,6 @@ exports[`should render the checkbox 1`] = `
         >
           CheckboxLabel
         </h6>
-        <div
-          class="css-vrp56w-decorators"
-        />
       </div>
     </div>
     <div
@@ -350,7 +335,7 @@ exports[`should render the checkbox with empty style 1`] = `
       class="MuiFormControl-root css-1lq62oj-propertySection css-1nrlq1o-MuiFormControl-root"
     >
       <div
-        class="css-7ge0w8-propertySectionLabel"
+        class="css-6pxhee-propertySectionLabel"
       >
         <div
           class="css-1ccipwk-propertySectionLabel"
@@ -360,9 +345,6 @@ exports[`should render the checkbox with empty style 1`] = `
           >
             CheckboxLabel
           </h6>
-          <div
-            class="css-vrp56w-decorators"
-          />
         </div>
       </div>
       <div
@@ -406,7 +388,7 @@ exports[`should render the checkbox with style 1`] = `
       class="MuiFormControl-root css-1lq62oj-propertySection css-1nrlq1o-MuiFormControl-root"
     >
       <div
-        class="css-7ge0w8-propertySectionLabel"
+        class="css-6pxhee-propertySectionLabel"
       >
         <div
           class="css-1ccipwk-propertySectionLabel"
@@ -416,9 +398,6 @@ exports[`should render the checkbox with style 1`] = `
           >
             CheckboxLabel
           </h6>
-          <div
-            class="css-vrp56w-decorators"
-          />
         </div>
       </div>
       <div
@@ -462,7 +441,7 @@ exports[`should render the checkbox without style 1`] = `
       class="MuiFormControl-root css-1lq62oj-propertySection css-1nrlq1o-MuiFormControl-root"
     >
       <div
-        class="css-7ge0w8-propertySectionLabel"
+        class="css-6pxhee-propertySectionLabel"
       >
         <div
           class="css-1ccipwk-propertySectionLabel"
@@ -472,9 +451,6 @@ exports[`should render the checkbox without style 1`] = `
           >
             CheckboxLabel
           </h6>
-          <div
-            class="css-vrp56w-decorators"
-          />
         </div>
       </div>
       <div
@@ -517,7 +493,7 @@ exports[`should send mutation when clicked 1`] = `
     class="MuiFormControl-root css-1lq62oj-propertySection css-1nrlq1o-MuiFormControl-root"
   >
     <div
-      class="css-7ge0w8-propertySectionLabel"
+      class="css-6pxhee-propertySectionLabel"
     >
       <div
         class="css-1ccipwk-propertySectionLabel"
@@ -527,9 +503,6 @@ exports[`should send mutation when clicked 1`] = `
         >
           CheckboxLabel
         </h6>
-        <div
-          class="css-vrp56w-decorators"
-        />
       </div>
     </div>
     <div
@@ -571,7 +544,7 @@ exports[`should send mutation when clicked 2`] = `
     class="MuiFormControl-root css-1lq62oj-propertySection css-1nrlq1o-MuiFormControl-root"
   >
     <div
-      class="css-7ge0w8-propertySectionLabel"
+      class="css-6pxhee-propertySectionLabel"
     >
       <div
         class="css-1ccipwk-propertySectionLabel"
@@ -581,9 +554,6 @@ exports[`should send mutation when clicked 2`] = `
         >
           CheckboxLabel
         </h6>
-        <div
-          class="css-vrp56w-decorators"
-        />
       </div>
     </div>
     <div

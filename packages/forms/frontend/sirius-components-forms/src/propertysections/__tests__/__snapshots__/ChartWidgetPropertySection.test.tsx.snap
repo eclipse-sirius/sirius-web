@@ -11,9 +11,6 @@ exports[`render pie-chart widget 1`] = `
       >
         myPieChart
       </h6>
-      <div
-        class="css-vrp56w-decorators"
-      />
     </div>
     <svg
       height="300"
@@ -157,9 +154,6 @@ exports[`render pie-chart widget with empty style 1`] = `
       >
         myPieChart
       </h6>
-      <div
-        class="css-vrp56w-decorators"
-      />
     </div>
     <svg
       height="300"
@@ -464,9 +458,6 @@ exports[`render pie-chart widget with style 1`] = `
       >
         myPieChart
       </h6>
-      <div
-        class="css-vrp56w-decorators"
-      />
     </div>
     <svg
       height="300"
@@ -610,9 +601,6 @@ exports[`render the bar-chart widget 1`] = `
       >
         myBarChart
       </h6>
-      <div
-        class="css-vrp56w-decorators"
-      />
     </div>
     <div
       class="css-10o30ln-chart"
@@ -898,9 +886,6 @@ exports[`render the bar-chart widget with empty style 1`] = `
       >
         myBarChart
       </h6>
-      <div
-        class="css-vrp56w-decorators"
-      />
     </div>
     <div
       class="css-10o30ln-chart"
@@ -1489,9 +1474,6 @@ exports[`render the bar-chart widget with style 1`] = `
       >
         myBarChart
       </h6>
-      <div
-        class="css-vrp56w-decorators"
-      />
     </div>
     <div
       class="css-10o30ln-chart"

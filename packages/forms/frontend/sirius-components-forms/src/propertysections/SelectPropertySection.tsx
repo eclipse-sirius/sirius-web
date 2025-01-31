@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,8 @@ import { useEffect } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLSelect } from '../form/FormEventFragments.types';
+import { getTextDecorationLineValue } from './getTextDecorationLineValue';
+import { LoadingIndicator } from './LoadingIndicator';
 import { PropertySectionLabel } from './PropertySectionLabel';
 import {
   GQLEditSelectMutationData,
@@ -29,7 +31,6 @@ import {
   GQLSuccessPayload,
   SelectStyleProps,
 } from './SelectPropertySection.types';
-import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 
 const useStyle = makeStyles<SelectStyleProps>()(
   (theme, { backgroundColor, foregroundColor, fontSize, italic, bold, underline, strikeThrough, gridLayout }) => {
@@ -68,6 +69,7 @@ const useStyle = makeStyles<SelectStyleProps>()(
         gridRow: labelGridRow,
         display: 'flex',
         flexDirection: 'row',
+        gap: theme.spacing(2),
         alignItems: 'center',
       },
       propertySectionWidget: {
@@ -139,23 +141,22 @@ export const SelectPropertySection: PropertySectionComponent<GQLSelect> = ({
   const { addErrorMessage, addMessages } = useMultiToast();
 
   useEffect(() => {
-    if (!loading) {
-      if (error) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (data) {
-        const { editSelect } = data;
-        if (isErrorPayload(editSelect) || isSuccessPayload(editSelect)) {
-          addMessages(editSelect.messages);
-        }
+    if (error) {
+      addErrorMessage('An unexpected error has occurred, please refresh the page');
+    }
+    if (data) {
+      const { editSelect } = data;
+      if (isErrorPayload(editSelect) || isSuccessPayload(editSelect)) {
+        addMessages(editSelect.messages);
       }
     }
-  }, [loading, error, data]);
+  }, [error, data]);
 
   return (
     <FormControl error={widget.diagnostics.length > 0} className={classes.propertySection}>
       <div className={classes.propertySectionLabel}>
         <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
+        <LoadingIndicator loading={loading} />
       </div>
       <div className={classes.propertySectionWidget}>
         <Select
