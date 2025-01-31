@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,21 +41,8 @@ export const PropertySectionLabel = ({ editingContextId, formId, widget }: Prope
   const propertySectionPanelDecorators: ComponentExtension<PropertySectionLabelDecoratorProps>[] = useComponents(
     propertySectionLabelDecoratorExtensionPoint
   );
-  const decorators = (
-    <div className={classes.decorators}>
-      {widget.hasHelpText ? (
-        <HelpTooltip editingContextId={editingContextId} formId={formId} widgetId={widget.id} />
-      ) : null}
-      {propertySectionPanelDecorators.map(({ Component: PropertySectionPanelDecorator }, index) => (
-        <PropertySectionPanelDecorator
-          editingContextId={editingContextId}
-          formId={formId}
-          widget={widget}
-          key={index}
-        />
-      ))}
-    </div>
-  );
+
+  const hasDecorator = widget.hasHelpText || propertySectionPanelDecorators.length > 0;
 
   return (
     <div className={classes.propertySectionLabel}>
@@ -64,7 +51,21 @@ export const PropertySectionLabel = ({ editingContextId, formId, widget }: Prope
           {widget.label}
         </Typography>
       ) : null}
-      {decorators}
+      {hasDecorator ? (
+        <div className={classes.decorators}>
+          {widget.hasHelpText ? (
+            <HelpTooltip editingContextId={editingContextId} formId={formId} widgetId={widget.id} />
+          ) : null}
+          {propertySectionPanelDecorators.map(({ Component: PropertySectionPanelDecorator }, index) => (
+            <PropertySectionPanelDecorator
+              editingContextId={editingContextId}
+              formId={formId}
+              widget={widget}
+              key={index}
+            />
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 };

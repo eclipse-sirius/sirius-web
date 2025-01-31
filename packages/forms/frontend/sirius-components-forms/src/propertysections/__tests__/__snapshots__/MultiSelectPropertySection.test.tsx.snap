@@ -7,7 +7,7 @@ exports[`should render a readOnly multiselect from widget properties 1`] = `
       class="MuiFormControl-root css-b0kbao-propertySection css-1nrlq1o-MuiFormControl-root"
     >
       <div
-        class="css-1vrv3vk-propertySectionLabel"
+        class="css-2huy39-propertySectionLabel"
       >
         <div
           class="css-1ccipwk-propertySectionLabel"
@@ -17,9 +17,6 @@ exports[`should render a readOnly multiselect from widget properties 1`] = `
           >
             MultiSelectLabel
           </h6>
-          <div
-            class="css-vrp56w-decorators"
-          />
         </div>
       </div>
       <div
@@ -79,7 +76,7 @@ exports[`should render the multiSelect help hint 1`] = `
       class="MuiFormControl-root css-b0kbao-propertySection css-1nrlq1o-MuiFormControl-root"
     >
       <div
-        class="css-1vrv3vk-propertySectionLabel"
+        class="css-2huy39-propertySectionLabel"
       >
         <div
           class="css-1ccipwk-propertySectionLabel"
@@ -165,7 +162,7 @@ exports[`should render the multiSelect with empty style 1`] = `
       class="MuiFormControl-root css-b0kbao-propertySection css-1nrlq1o-MuiFormControl-root"
     >
       <div
-        class="css-1vrv3vk-propertySectionLabel"
+        class="css-2huy39-propertySectionLabel"
       >
         <div
           class="css-1ccipwk-propertySectionLabel"
@@ -175,9 +172,6 @@ exports[`should render the multiSelect with empty style 1`] = `
           >
             MultiSelectLabel
           </h6>
-          <div
-            class="css-vrp56w-decorators"
-          />
         </div>
       </div>
       <div
@@ -236,7 +230,7 @@ exports[`should render the multiSelect with style 1`] = `
       class="MuiFormControl-root css-b0kbao-propertySection css-1nrlq1o-MuiFormControl-root"
     >
       <div
-        class="css-1vrv3vk-propertySectionLabel"
+        class="css-2huy39-propertySectionLabel"
       >
         <div
           class="css-1ccipwk-propertySectionLabel"
@@ -246,9 +240,6 @@ exports[`should render the multiSelect with style 1`] = `
           >
             MultiSelectLabel
           </h6>
-          <div
-            class="css-vrp56w-decorators"
-          />
         </div>
       </div>
       <div
@@ -307,7 +298,7 @@ exports[`should render the multiSelect without style 1`] = `
       class="MuiFormControl-root css-b0kbao-propertySection css-1nrlq1o-MuiFormControl-root"
     >
       <div
-        class="css-1vrv3vk-propertySectionLabel"
+        class="css-2huy39-propertySectionLabel"
       >
         <div
           class="css-1ccipwk-propertySectionLabel"
@@ -317,9 +308,6 @@ exports[`should render the multiSelect without style 1`] = `
           >
             MultiSelectLabel
           </h6>
-          <div
-            class="css-vrp56w-decorators"
-          />
         </div>
       </div>
       <div

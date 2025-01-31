@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,9 @@ import { makeStyles } from 'tss-react/mui';
 import { StateMachine } from 'xstate';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLTextarea, GQLTextfield, GQLWidget } from '../form/FormEventFragments.types';
+import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 import { GQLSuccessPayload } from './ListPropertySection.types';
+import { LoadingIndicator } from './LoadingIndicator';
 import { PropertySectionLabel } from './PropertySectionLabel';
 import { ProposalsList } from './ProposalsList';
 import {
@@ -47,7 +49,6 @@ import {
   textfieldPropertySectionMachine,
   TextfieldPropertySectionStateSchema,
 } from './TextfieldPropertySectionMachine';
-import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 
 const useStyle = makeStyles<TextfieldStyleProps>()(
   (theme, { backgroundColor, foregroundColor, fontSize, italic, bold, underline, strikeThrough, gridLayout }) => {
@@ -92,6 +93,7 @@ const useStyle = makeStyles<TextfieldStyleProps>()(
         gridRow: labelGridRow,
         display: 'flex',
         flexDirection: 'row',
+        gap: theme.spacing(2),
         alignItems: 'center',
       },
       propertySectionWidget: {
@@ -363,6 +365,7 @@ export const TextfieldPropertySection: PropertySectionComponent<GQLTextfield | G
       className={classes.propertySection}>
       <div className={classes.propertySectionLabel}>
         <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
+        <LoadingIndicator loading={updateTextfieldLoading} />
       </div>
       <div className={classes.propertySectionWidget}>
         <TextField

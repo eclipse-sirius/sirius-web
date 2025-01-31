@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,6 +41,7 @@ import {
   GQLSuccessPayload,
   ListStyleProps,
 } from './ListPropertySection.types';
+import { LoadingIndicator } from './LoadingIndicator';
 import { PropertySectionLabel } from './PropertySectionLabel';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 import { useClickHandler } from './useClickHandler';
@@ -110,6 +111,12 @@ const useListPropertySectionStyles = makeStyles<ListStyleProps>()(
       textOverflow: 'ellipsis',
       whiteSpace: 'nowrap',
       flexGrow: 1,
+    },
+    propertySectionLabel: {
+      display: 'flex',
+      flexDirection: 'row',
+      gap: theme.spacing(2),
+      alignItems: 'center',
     },
   })
 );
@@ -203,6 +210,7 @@ export const ListPropertySection: PropertySectionComponent<GQLList> = ({
       }
     }
   }, [clickLoading, clickError, clickData]);
+
   const onSimpleClick = (item: GQLListItem) => {
     const { id, kind } = item;
     setSelection({ entries: [{ id, kind }] });
@@ -268,7 +276,10 @@ export const ListPropertySection: PropertySectionComponent<GQLList> = ({
 
   return (
     <FormControl error={widget.diagnostics.length > 0} fullWidth>
-      <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
+      <div className={classes.propertySectionLabel}>
+        <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
+        <LoadingIndicator loading={clickLoading || deleteLoading} />
+      </div>
       <Table size="small" data-testid={`table-${widget.label}`}>
         <TableBody>
           {items.map((item) => (

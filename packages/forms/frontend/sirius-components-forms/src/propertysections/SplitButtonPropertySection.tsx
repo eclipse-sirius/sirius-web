@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,9 +34,10 @@ import {
   GQLPushButtonPayload,
   GQLSuccessPayload,
 } from './ButtonPropertySection.types';
+import { getTextDecorationLineValue } from './getTextDecorationLineValue';
+import { LoadingIndicator } from './LoadingIndicator';
 import { PropertySectionLabel } from './PropertySectionLabel';
 import { SplitButtonPropertySectionProps, SplitButtonState } from './SplitButtonPropertySection.types';
-import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 
 const useStyle = makeStyles<ButtonStyleProps>()(
   (theme, { backgroundColor, foregroundColor, fontSize, italic, bold, underline, strikeThrough, iconOnly }) => ({
@@ -154,18 +155,16 @@ export const SplitButtonPropertySection = ({
   );
 
   useEffect(() => {
-    if (!loading) {
-      if (error) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (data) {
-        const { pushButton } = data;
-        if (isErrorPayload(pushButton) || isSuccessPayload(pushButton)) {
-          addMessages(pushButton.messages);
-        }
+    if (error) {
+      addErrorMessage('An unexpected error has occurred, please refresh the page');
+    }
+    if (data) {
+      const { pushButton } = data;
+      if (isErrorPayload(pushButton) || isSuccessPayload(pushButton)) {
+        addMessages(pushButton.messages);
       }
     }
-  }, [loading, error, data]);
+  }, [error, data]);
 
   const handleClick = () => {
     const button: GQLButton = widget.actions[state.selectedIndex];
@@ -233,6 +232,7 @@ export const SplitButtonPropertySection = ({
           <ArrowDropDownIcon />
         </Button>
       </ButtonGroup>
+      <LoadingIndicator loading={loading} />
       <Popper open={state.open} anchorEl={buttonGroupRef.current} transition placement="bottom">
         {({ TransitionProps, placement }) => (
           <Grow

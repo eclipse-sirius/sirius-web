@@ -11,9 +11,6 @@ exports[`should change the selection when a selectable node is clicked 1`] = `
       >
         Tree
       </h6>
-      <div
-        class="css-vrp56w-decorators"
-      />
     </div>
     <ul
       aria-multiselectable="false"
@@ -186,9 +183,6 @@ exports[`should collapse/expand a non-selectable node when clicked 1`] = `
       >
         Tree
       </h6>
-      <div
-        class="css-vrp56w-decorators"
-      />
     </div>
     <ul
       aria-multiselectable="false"
@@ -348,9 +342,6 @@ exports[`should correctly interpret the order of nodes with the same parent in t
       >
         Deep Tree
       </h6>
-      <div
-        class="css-vrp56w-decorators"
-      />
     </div>
     <ul
       aria-multiselectable="false"
@@ -807,9 +798,6 @@ exports[`should only expand the specified nodes on initial render 1`] = `
       >
         Deep Tree
       </h6>
-      <div
-        class="css-vrp56w-decorators"
-      />
     </div>
     <ul
       aria-multiselectable="false"
@@ -1076,9 +1064,6 @@ exports[`should render a multi-level tree correctly 1`] = `
       >
         Deep Tree
       </h6>
-      <div
-        class="css-vrp56w-decorators"
-      />
     </div>
     <ul
       aria-multiselectable="false"
@@ -1535,9 +1520,6 @@ exports[`should render the tree 1`] = `
       >
         Default Tree
       </h6>
-      <div
-        class="css-vrp56w-decorators"
-      />
     </div>
     <ul
       aria-multiselectable="false"

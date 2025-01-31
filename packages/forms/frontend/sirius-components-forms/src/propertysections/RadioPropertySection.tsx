@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { getCSSColor, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
@@ -20,11 +20,10 @@ import RadioGroup from '@mui/material/RadioGroup';
 import Typography from '@mui/material/Typography';
 import { useEffect } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { getTextDecorationLineValue } from './getTextDecorationLineValue';
-
-import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLRadio } from '../form/FormEventFragments.types';
+import { getTextDecorationLineValue } from './getTextDecorationLineValue';
+import { LoadingIndicator } from './LoadingIndicator';
 import { PropertySectionLabel } from './PropertySectionLabel';
 import {
   GQLEditRadioInput,
@@ -72,6 +71,12 @@ const useRadioPropertySectionStyles = makeStyles<RadioStyleProps>()(
       paddingBottom: theme.spacing(0.5),
       paddingTop: theme.spacing(0.5),
     },
+    propertySectionLabel: {
+      display: 'flex',
+      flexDirection: 'row',
+      gap: theme.spacing(2),
+      alignItems: 'center',
+    },
   })
 );
 
@@ -114,23 +119,24 @@ export const RadioPropertySection: PropertySectionComponent<GQLRadio> = ({
   const { addErrorMessage, addMessages } = useMultiToast();
 
   useEffect(() => {
-    if (!loading) {
-      if (error) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (data) {
-        const { editRadio } = data;
-        if (isErrorPayload(editRadio) || isSuccessPayload(editRadio)) {
-          addMessages(editRadio.messages);
-        }
+    if (error) {
+      addErrorMessage('An unexpected error has occurred, please refresh the page');
+    }
+    if (data) {
+      const { editRadio } = data;
+      if (isErrorPayload(editRadio) || isSuccessPayload(editRadio)) {
+        addMessages(editRadio.messages);
       }
     }
-  }, [loading, error, data]);
+  }, [error, data]);
 
   const selectedOption = widget.options.find((option) => option.selected);
   return (
     <FormControl error={widget.diagnostics.length > 0}>
-      <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
+      <div className={classes.propertySectionLabel}>
+        <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
+        <LoadingIndicator loading={loading} />
+      </div>
       <RadioGroup
         classes={{ root: classes.radioGroupRoot }}
         aria-label={widget.label}

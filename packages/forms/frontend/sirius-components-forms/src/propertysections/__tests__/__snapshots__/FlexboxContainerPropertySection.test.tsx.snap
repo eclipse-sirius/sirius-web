@@ -14,9 +14,6 @@ exports[`should render the flexbox container with border style 1`] = `
       >
         label
       </h6>
-      <div
-        class="css-vrp56w-decorators"
-      />
     </div>
     <div
       class="css-4r0vbw-container"
@@ -39,9 +36,6 @@ exports[`should render the flexbox container without style 1`] = `
       >
         label
       </h6>
-      <div
-        class="css-vrp56w-decorators"
-      />
     </div>
     <div
       class="css-4r0vbw-container"

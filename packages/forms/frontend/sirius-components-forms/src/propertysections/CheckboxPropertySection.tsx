@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,7 @@ import {
   GQLErrorPayload,
   GQLSuccessPayload,
 } from './CheckboxPropertySection.types';
+import { LoadingIndicator } from './LoadingIndicator';
 import { PropertySectionLabel } from './PropertySectionLabel';
 
 const useStyle = makeStyles<CheckboxStyleProps>()((theme, { color, gridLayout }) => {
@@ -54,6 +55,7 @@ const useStyle = makeStyles<CheckboxStyleProps>()((theme, { color, gridLayout })
       gridRow: labelGridRow,
       display: 'flex',
       flexDirection: 'row',
+      gap: theme.spacing(2),
       alignItems: 'center',
     },
     propertySectionWidget: {
@@ -119,23 +121,22 @@ export const CheckboxPropertySection: PropertySectionComponent<GQLCheckbox> = ({
   const { addErrorMessage, addMessages } = useMultiToast();
 
   useEffect(() => {
-    if (!loading) {
-      if (error) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (data) {
-        const { editCheckbox } = data;
-        if (isErrorPayload(editCheckbox) || isSuccessPayload(editCheckbox)) {
-          addMessages(editCheckbox.messages);
-        }
+    if (error) {
+      addErrorMessage('An unexpected error has occurred, please refresh the page');
+    }
+    if (data) {
+      const { editCheckbox } = data;
+      if (isErrorPayload(editCheckbox) || isSuccessPayload(editCheckbox)) {
+        addMessages(editCheckbox.messages);
       }
     }
-  }, [loading, error, data]);
+  }, [error, data]);
 
   return (
     <FormControl classes={{ root: classes.propertySection }} error={widget.diagnostics.length > 0}>
       <div className={classes.propertySectionLabel}>
         <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
+        <LoadingIndicator loading={loading} />
       </div>
       <div className={classes.propertySectionWidget}>
         <Checkbox

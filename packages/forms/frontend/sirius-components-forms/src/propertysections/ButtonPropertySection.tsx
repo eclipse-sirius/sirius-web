@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,8 +27,9 @@ import {
   GQLPushButtonPayload,
   GQLSuccessPayload,
 } from './ButtonPropertySection.types';
-import { PropertySectionLabel } from './PropertySectionLabel';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
+import { LoadingIndicator } from './LoadingIndicator';
+import { PropertySectionLabel } from './PropertySectionLabel';
 
 const useStyle = makeStyles<ButtonStyleProps>()(
   (theme, { backgroundColor, foregroundColor, fontSize, italic, bold, underline, strikeThrough, iconOnly }) => ({
@@ -118,18 +119,16 @@ export const ButtonPropertySection: PropertySectionComponent<GQLButton> = ({
   const { addErrorMessage, addMessages } = useMultiToast();
 
   useEffect(() => {
-    if (!loading) {
-      if (error) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (data) {
-        const { pushButton } = data;
-        if (isErrorPayload(pushButton) || isSuccessPayload(pushButton)) {
-          addMessages(pushButton.messages);
-        }
+    if (error) {
+      addErrorMessage('An unexpected error has occurred, please refresh the page');
+    }
+    if (data) {
+      const { pushButton } = data;
+      if (isErrorPayload(pushButton) || isSuccessPayload(pushButton)) {
+        addMessages(pushButton.messages);
       }
     }
-  }, [loading, error, data]);
+  }, [error, data]);
 
   const onClick = () => {
     const input: GQLPushButtonInput = {
@@ -162,6 +161,7 @@ export const ButtonPropertySection: PropertySectionComponent<GQLButton> = ({
         ) : null}
         {widget.buttonLabel}
       </Button>
+      <LoadingIndicator loading={loading} />
     </div>
   );
 };
