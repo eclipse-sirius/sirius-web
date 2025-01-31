@@ -10,14 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { RepresentationComponentProps } from '@eclipse-sirius/sirius-components-core';
+import { RepresentationComponentProps, RepresentationLoadingIndicator } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { TableContent } from '../table/TableContent';
 import { ColumnFilter } from '../table/TableContent.types';
 import { tableIdProvider } from './tableIdProvider';
-import { TableRepresentationState, TableRepresentationPagination } from './TableRepresentation.types';
+import { TableRepresentationPagination, TableRepresentationState } from './TableRepresentation.types';
 import { useTableSubscription } from './useTableSubscription';
 
 const useTableRepresentationStyles = makeStyles()((theme) => ({
@@ -88,20 +88,19 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
     }
   };
 
-  let completeMessage: JSX.Element | null = null;
   if (complete) {
-    completeMessage = (
+    return (
       <div className={classes.complete}>
         <Typography variant="h6" align="center">
           The table does not exist anymore
         </Typography>
       </div>
     );
-  }
-
-  return (
-    <div data-testid={'table-representation'} className={classes.representation}>
-      {table !== null && !complete ? (
+  } else if (!table) {
+    return <RepresentationLoadingIndicator />;
+  } else {
+    return (
+      <div data-testid={'table-representation'} className={classes.representation}>
         <TableContent
           editingContextId={editingContextId}
           representationId={tableId}
@@ -120,8 +119,7 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
           enableColumnOrdering
           expandedRowIds={state.expanded}
         />
-      ) : null}
-      {completeMessage}
-    </div>
-  );
+      </div>
+    );
+  }
 };

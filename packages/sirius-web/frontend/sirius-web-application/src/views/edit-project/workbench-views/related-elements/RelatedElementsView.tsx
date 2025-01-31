@@ -10,7 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useSelection, WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
+import {
+  RepresentationLoadingIndicator,
+  useSelection,
+  WorkbenchViewComponentProps,
+} from '@eclipse-sirius/sirius-components-core';
 import {
   FormBasedView,
   FormContext,
@@ -90,26 +94,33 @@ export const RelatedElementsView = ({ editingContextId, readOnly }: WorkbenchVie
     }
   };
 
-  if (!state.form || complete) {
+  if (complete) {
     return (
       <div className={classes.idle}>
         <Typography variant="subtitle2">No object selected</Typography>
       </div>
     );
+  } else if (!state.form) {
+    return (
+      <div className={classes.idle}>
+        <RepresentationLoadingIndicator />
+      </div>
+    );
+  } else {
+    return (
+      <div data-representation-kind="form-related-elements">
+        <FormContext.Provider
+          value={{
+            payload: payload,
+          }}>
+          <FormBasedView
+            editingContextId={editingContextId}
+            form={state.form}
+            readOnly={readOnly}
+            postProcessor={extractFirstGroup}
+          />
+        </FormContext.Provider>
+      </div>
+    );
   }
-  return (
-    <div data-representation-kind="form-related-elements">
-      <FormContext.Provider
-        value={{
-          payload: payload,
-        }}>
-        <FormBasedView
-          editingContextId={editingContextId}
-          form={state.form}
-          readOnly={readOnly}
-          postProcessor={extractFirstGroup}
-        />
-      </FormContext.Provider>
-    </div>
-  );
 };

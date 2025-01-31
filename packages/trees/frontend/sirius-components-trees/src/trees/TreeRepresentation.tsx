@@ -13,6 +13,7 @@
 
 import {
   RepresentationComponentProps,
+  RepresentationLoadingIndicator,
   Selection,
   SelectionEntry,
   useSelection,
@@ -30,7 +31,7 @@ export const TreeRepresentation = ({ editingContextId, representationId, readOnl
     expanded: [],
     maxDepth: 1,
   });
-  const { tree } = useTreeSubscription(editingContextId, representationId, state.expanded, state.maxDepth);
+  const { tree, loading } = useTreeSubscription(editingContextId, representationId, state.expanded, state.maxDepth);
 
   const { selection, setSelection } = useSelection();
 
@@ -102,10 +103,11 @@ export const TreeRepresentation = ({ editingContextId, representationId, readOnl
       setSelection({ entries: [{ id }] });
     }
   };
-
-  return (
-    <div>
-      {tree !== null ? (
+  if (!tree || loading) {
+    return <RepresentationLoadingIndicator />;
+  } else {
+    return (
+      <div>
         <TreeView
           editingContextId={editingContextId}
           readOnly={readOnly}
@@ -118,7 +120,7 @@ export const TreeRepresentation = ({ editingContextId, representationId, readOnl
           onTreeItemClick={onTreeItemClick}
           selectedTreeItemIds={selection.entries.map((entry) => entry.id)}
         />
-      ) : null}
-    </div>
-  );
+      </div>
+    );
+  }
 };

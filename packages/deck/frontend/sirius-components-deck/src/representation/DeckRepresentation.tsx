@@ -14,6 +14,7 @@
 import { ApolloError, OnDataOptions, useSubscription } from '@apollo/client';
 import {
   RepresentationComponentProps,
+  RepresentationLoadingIndicator,
   UseSelectionValue,
   useMultiToast,
   useSelection,
@@ -196,7 +197,9 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
         </Typography>
       </div>
     );
-  } else if (deck) {
+  } else if (!deck) {
+    return <RepresentationLoadingIndicator />;
+  } else {
     const selectedElementIds: string[] = selection.entries.map((entry) => entry.id);
     const data = convertToTrelloDeckData(deck, selectedElementIds, theme);
     content = (

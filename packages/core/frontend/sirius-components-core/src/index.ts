@@ -48,6 +48,7 @@ export * from './modals/confirmation/useConfirmationDialog';
 export type * from './modals/confirmation/useConfirmationDialog.types';
 export * from './modals/share-representation/ShareRepresentationModal';
 export type * from './modals/share-representation/ShareRepresentationModal.types';
+export * from './progress/RepresentationLoadingIndicator';
 export * from './representationmetadata/useRepresentationMetadata';
 export * from './selection/SelectionContext';
 export type * from './selection/SelectionContext.types';

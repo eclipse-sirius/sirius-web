@@ -30,6 +30,7 @@ import {
   useReactFlow,
   useStoreApi,
 } from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
 import React, { MouseEvent as ReactMouseEvent, memo, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramContextValue } from '../contexts/DiagramContext.types';
@@ -76,8 +77,6 @@ import { useResizeChange } from './resize/useResizeChange';
 import { useDiagramSelection } from './selection/useDiagramSelection';
 import { useShiftSelection } from './selection/useShiftSelection';
 import { useSnapToGrid } from './snap-to-grid/useSnapToGrid';
-
-import '@xyflow/react/dist/style.css';
 
 const GRID_STEP: number = 10;
 
@@ -468,7 +467,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     connectionMode: ConnectionMode.Loose,
     zoomOnDoubleClick: false,
     connectionLineType: ConnectionLineType.SmoothStep,
-    nodesDraggable: nodesDraggable,
+    nodesDraggable: nodesDraggable && !readOnly,
     tabIndex: -1,
     children: (
       <>

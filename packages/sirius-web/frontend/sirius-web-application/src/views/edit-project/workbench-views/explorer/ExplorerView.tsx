@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
+  RepresentationLoadingIndicator,
   Selection,
   SelectionEntry,
   useSelection,
@@ -317,6 +318,14 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
       }
     />
   );
+
+  if (!state.tree || loading) {
+    return (
+      <div className={styles.treeView} ref={treeElement}>
+        <RepresentationLoadingIndicator />
+      </div>
+    );
+  }
 
   return (
     <div className={styles.treeView} ref={treeElement}>
