@@ -134,6 +134,7 @@ Add the extension point `navigationBarMenuHeaderExtensionPoint` to make possible
 - https://github.com/eclipse-sirius/sirius-web/issues/4065[#4065] [diagram] Make outside and edge labels draggable in diagrams
 - https://github.com/eclipse-sirius/sirius-web/issues/5471[#5471] [diagram] Add support for the management of the appearance of edge labels
 - https://github.com/eclipse-sirius/sirius-web/issues/5447[#5447] [diagram] Removed some unncessary animations on the diagram, which no longer zooms/pans on newly created or selected node if they are already fully visible.
+- https://github.com/eclipse-sirius/sirius-web/issues/4374[#4374] [diagram] Add support for border node initial position
 
 === Improvements
 

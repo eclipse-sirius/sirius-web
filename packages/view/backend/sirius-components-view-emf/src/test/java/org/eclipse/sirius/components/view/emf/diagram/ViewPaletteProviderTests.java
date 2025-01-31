@@ -304,6 +304,7 @@ public class ViewPaletteProviderTests {
                 .childNodeDescriptions(List.of())
                 .labelEditHandler((variableManager, newLabel) -> new Success())
                 .deleteHandler(variableManager -> new Success())
+                .initialChildBorderNodePositions(Map.of())
                 .build();
     }
 }

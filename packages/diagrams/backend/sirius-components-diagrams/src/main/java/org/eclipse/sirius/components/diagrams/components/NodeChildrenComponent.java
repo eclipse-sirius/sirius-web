@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.diagrams.components;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -75,7 +76,8 @@ public class NodeChildrenComponent implements IComponent {
     private List<Element> getOutsideLabel(String nodeId) {
         List<OutsideLabel> optionalPreviousLabels = Optional.ofNullable(this.props.getPreviousParentNode()).map(Node::getOutsideLabels).orElse(new ArrayList<>());
         return this.props.getNodeComponentProps().getNodeDescription().getOutsideLabelDescriptions().stream().map(outsideLabelDescription -> {
-            OutsideLabelComponentProps outsideLabelComponentProps = new OutsideLabelComponentProps(this.props.getVariableManager(), outsideLabelDescription, nodeId, optionalPreviousLabels, this.props.getNodeComponentProps().getDiagramEvents());
+            OutsideLabelComponentProps outsideLabelComponentProps = new OutsideLabelComponentProps(this.props.getVariableManager(), outsideLabelDescription, nodeId, optionalPreviousLabels, this.props.getNodeComponentProps()
+                    .getDiagramEvents());
             return new Element(OutsideLabelComponent.class, outsideLabelComponentProps);
         }).toList();
 
@@ -98,6 +100,7 @@ public class NodeChildrenComponent implements IComponent {
                     .orElse(List.of());
             List<String> previousBorderNodesTargetObjectIds = previousBorderNodes.stream().map(Node::getTargetObjectId).toList();
             INodesRequestor borderNodesRequestor = new NodesRequestor(previousBorderNodes);
+            BorderNodePosition initialBorderNodePosition = this.getBorderNodePosition(borderNodeDescription, nodeDescription.getInitialChildBorderNodePositions());
             var nodeComponentProps = NodeComponentProps.newNodeComponentProps()
                     .variableManager(descendantNodesVariableManager)
                     .nodeDescription(borderNodeDescription)
@@ -113,6 +116,7 @@ public class NodeChildrenComponent implements IComponent {
                     .parentElementState(this.props.getState())
                     .operationValidator(this.props.getNodeComponentProps().getOperationValidator())
                     .nodeAppearanceHandlers(this.props.getNodeComponentProps().getNodeAppearanceHandlers())
+                    .initialBorderNodePosition(initialBorderNodePosition)
                     .build();
             return new Element(NodeComponent.class, nodeComponentProps);
         }).toList();
@@ -150,6 +154,7 @@ public class NodeChildrenComponent implements IComponent {
                     .parentElementState(this.props.getParentState())
                     .operationValidator(this.props.getNodeComponentProps().getOperationValidator())
                     .nodeAppearanceHandlers(this.props.getNodeComponentProps().getNodeAppearanceHandlers())
+                    .initialBorderNodePosition(BorderNodePosition.NONE)
                     .build();
 
             return new Element(NodeComponent.class, nodeComponentProps);
@@ -173,5 +178,9 @@ public class NodeChildrenComponent implements IComponent {
 
         childNodeVariableManager.put(NodeDescription.ANCESTORS, ancestors);
         return childNodeVariableManager;
+    }
+
+    private BorderNodePosition getBorderNodePosition(NodeDescription nodeDescription, Map<String, BorderNodePosition> borderNodeInitialPositions) {
+        return Optional.ofNullable(borderNodeInitialPositions.get(nodeDescription.getId())).orElse(BorderNodePosition.EAST);
     }
 }

@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -318,6 +319,7 @@ public class UnsynchronizedDiagramTests {
                 .childNodeDescriptions(new ArrayList<>())
                 .labelEditHandler((variableManager, newLabel) -> new Success())
                 .deleteHandler(variableManager -> new Success())
+                .initialChildBorderNodePositions(Map.of())
                 .build();
 
         NodeDescription unsynchronizedNodeDescription = NodeDescription.newNodeDescription("unsynchronized")
@@ -333,6 +335,7 @@ public class UnsynchronizedDiagramTests {
                 .childNodeDescriptions(List.of(subUnsynchronizedNodeDescription))
                 .labelEditHandler((variableManager, newLabel) -> new Success())
                 .deleteHandler(variableManager -> new Success())
+                .initialChildBorderNodePositions(Map.of())
                 .build();
 
         NodeDescription synchronizedNodeDescription = NodeDescription.newNodeDescription("synchronized")
@@ -348,6 +351,7 @@ public class UnsynchronizedDiagramTests {
                 .childNodeDescriptions(new ArrayList<>())
                 .labelEditHandler((variableManager, newLabel) -> new Success())
                 .deleteHandler(variableManager -> new Success())
+                .initialChildBorderNodePositions(Map.of())
                 .build();
 
         return DiagramDescription.newDiagramDescription("diagram")

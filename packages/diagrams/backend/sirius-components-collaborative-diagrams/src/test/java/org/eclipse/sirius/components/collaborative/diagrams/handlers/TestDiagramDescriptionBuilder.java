@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.collaborative.diagrams.handlers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
@@ -147,6 +148,7 @@ public class TestDiagramDescriptionBuilder {
                 .childNodeDescriptions(new ArrayList<>())
                 .labelEditHandler((variableManager, newLabel) -> new Success())
                 .deleteHandler(variableManager -> new Success())
+                .initialChildBorderNodePositions(Map.of())
                 .build();
     }
 

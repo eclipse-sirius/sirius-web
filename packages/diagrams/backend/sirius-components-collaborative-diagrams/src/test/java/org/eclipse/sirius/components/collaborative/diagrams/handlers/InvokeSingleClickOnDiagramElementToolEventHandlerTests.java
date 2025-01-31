@@ -22,7 +22,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
 
-import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
@@ -54,6 +53,7 @@ import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
+import org.eclipse.sirius.components.diagrams.components.BorderNodePosition;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
@@ -67,6 +67,8 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.representations.WorkbenchSelection;
 import org.eclipse.sirius.components.representations.WorkbenchSelectionEntry;
 import org.junit.jupiter.api.Test;
+
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import reactor.core.publisher.Sinks;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
@@ -507,6 +509,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .state(ViewModifier.Normal)
                 .collapsingState(CollapsingState.EXPANDED)
                 .customizedStyleProperties(Set.of())
+                .initialBorderNodePosition(BorderNodePosition.EAST)
                 .build();
     }
 
@@ -551,6 +554,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .targetObjectKindProvider(vm -> "")
                 .targetObjectLabelProvider(vm -> "")
                 .typeProvider(vm -> "")
+                .initialChildBorderNodePositions(Map.of())
                 .build();
     }
 

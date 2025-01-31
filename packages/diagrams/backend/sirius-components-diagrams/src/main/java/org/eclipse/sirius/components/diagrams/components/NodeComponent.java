@@ -204,6 +204,7 @@ public class NodeComponent implements IComponent {
 
         Integer defaultWidth = nodeDescription.getDefaultWidthProvider().apply(nodeVariableManager);
         Integer defaultHeight = nodeDescription.getDefaultHeightProvider().apply(nodeVariableManager);
+        var initialBorderNodePosition = this.props.getInitialBorderNodePosition();
 
         var nodeElementProps = NodeElementProps.newNodeElementProps(nodeId)
                 .type(type)
@@ -212,6 +213,7 @@ public class NodeComponent implements IComponent {
                 .targetObjectLabel(targetObjectLabel)
                 .descriptionId(nodeDescription.getId())
                 .borderNode(isBorderNode)
+                .initialBorderNodePosition(initialBorderNodePosition)
                 .style(appearance.style())
                 .children(List.of(nodeChildren))
                 .modifiers(modifiers)

@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.diagrams.description;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -23,6 +24,7 @@ import java.util.function.Predicate;
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.UserResizableDirection;
+import org.eclipse.sirius.components.diagrams.components.BorderNodePosition;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -91,6 +93,8 @@ public final class NodeDescription implements IDiagramElementDescription {
     private Function<VariableManager, Integer> defaultHeightProvider;
 
     private Function<VariableManager, IStatus> dropNodeHandler;
+
+    private Map<String, BorderNodePosition> initialChildBorderNodePositions;
 
     private NodeDescription() {
         // Prevent instantiation
@@ -300,6 +304,10 @@ public final class NodeDescription implements IDiagramElementDescription {
         return this.defaultHeightProvider;
     }
 
+    public Map<String, BorderNodePosition> getInitialChildBorderNodePositions() {
+        return this.initialChildBorderNodePositions;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, borderNodeDescriptionCount: {2}, childNodeDescriptionCount: {3}'}'";
@@ -366,6 +374,8 @@ public final class NodeDescription implements IDiagramElementDescription {
 
         private Function<VariableManager, IStatus> dropNodeHandler;
 
+        private Map<String, BorderNodePosition> initialChildBorderNodePositions;
+
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -396,6 +406,7 @@ public final class NodeDescription implements IDiagramElementDescription {
             this.isFadedByDefaultPredicate = nodeDescription.getIsFadedByDefaultPredicate();
             this.defaultWidthProvider = nodeDescription.getDefaultWidthProvider();
             this.defaultHeightProvider = nodeDescription.getDefaultHeightProvider();
+            this.initialChildBorderNodePositions = nodeDescription.getInitialChildBorderNodePositions();
         }
 
         public Builder synchronizationPolicy(SynchronizationPolicy synchronizationPolicy) {
@@ -523,6 +534,11 @@ public final class NodeDescription implements IDiagramElementDescription {
             return this;
         }
 
+        public Builder initialChildBorderNodePositions(Map<String, BorderNodePosition> initialChildBorderNodePositions) {
+            this.initialChildBorderNodePositions = Objects.requireNonNull(initialChildBorderNodePositions);
+            return this;
+        }
+
         public NodeDescription build() {
             NodeDescription nodeDescription = new NodeDescription();
             nodeDescription.id = Objects.requireNonNull(this.id);
@@ -551,8 +567,8 @@ public final class NodeDescription implements IDiagramElementDescription {
             nodeDescription.isFadedByDefaultPredicate = Objects.requireNonNull(this.isFadedByDefaultPredicate);
             nodeDescription.defaultWidthProvider = Objects.requireNonNull(this.defaultWidthProvider);
             nodeDescription.defaultHeightProvider = Objects.requireNonNull(this.defaultHeightProvider);
+            nodeDescription.initialChildBorderNodePositions = Objects.requireNonNull(this.initialChildBorderNodePositions);
             return nodeDescription;
         }
     }
-
 }

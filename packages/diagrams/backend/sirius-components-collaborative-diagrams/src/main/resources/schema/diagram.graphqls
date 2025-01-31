@@ -112,6 +112,7 @@ type Node {
   defaultHeight: Int
   labelEditable: Boolean!
   customizedStyleProperties: [NodeStyleProperty!]!
+  initialBorderNodePosition: BorderNodePosition!
 }
 
 enum NodeStyleProperty {
@@ -120,6 +121,14 @@ enum NodeStyleProperty {
   BORDER_RADIUS,
   BORDER_SIZE,
   BORDER_STYLE
+}
+
+enum BorderNodePosition {
+  WEST
+  EAST
+  SOUTH
+  NORTH
+  NONE
 }
 
 type FreeFormLayoutStrategy {
