@@ -15,8 +15,8 @@ import { Edge, Node, useReactFlow, useViewport } from '@xyflow/react';
 import { LayoutOptions } from 'elkjs/lib/elk-api';
 import ELK, { ElkLabel, ElkNode } from 'elkjs/lib/elk.bundled';
 import { useContext } from 'react';
-import { DiagramContext } from '../../contexts/DiagramContext';
-import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { DiagramPayloadContext } from '../../contexts/DiagramPayloadContext';
+import { DiagramPayloadContextValue } from '../../contexts/DiagramPayloadContext.types';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { ListNodeData } from '../node/ListNode.types';
@@ -123,7 +123,7 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
   const { diagramDescription } = useDiagramDescription();
-  const { refreshEventPayloadId } = useContext<DiagramContextValue>(DiagramContext);
+  const { refreshEventPayloadId } = useContext<DiagramPayloadContextValue>(DiagramPayloadContext);
   const { resolveNodeOverlap } = useOverlap();
   const { addErrorMessage } = useMultiToast();
 

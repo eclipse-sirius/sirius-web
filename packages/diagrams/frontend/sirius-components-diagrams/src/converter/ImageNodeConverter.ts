@@ -10,12 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, XYPosition } from '@xyflow/react';
+import { InternalNode, Node, XYPosition } from '@xyflow/react';
+import { NodeLookup } from '@xyflow/system';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagram, GQLNodeLayoutData } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
 import { GQLImageNodeStyle, GQLNode, GQLNodeStyle, GQLViewModifier } from '../graphql/subscription/nodeFragment.types';
-import { BorderNodePosition } from '../renderer/DiagramRenderer.types';
+import { BorderNodePosition, NodeData } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { defaultHeight, defaultWidth } from '../renderer/layout/layoutParams';
 import { FreeFormNodeData } from '../renderer/node/FreeFormNode.types';
@@ -28,6 +29,7 @@ import { convertInsideLabel, convertOutsideLabels } from './convertLabel';
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
 const toImageNode = (
+  nodeLookUp: NodeLookup<InternalNode<Node<NodeData>>>,
   gqlDiagram: GQLDiagram,
   gqlNode: GQLNode<GQLImageNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
@@ -101,6 +103,7 @@ const toImageNode = (
     data,
     position: defaultPosition,
     hidden: state === GQLViewModifier.Hidden,
+    selected: !!nodeLookUp.get(id)?.selected,
   };
 
   if (gqlParentNode) {
@@ -136,6 +139,7 @@ export class ImageNodeConverter implements INodeConverter {
 
   handle(
     convertEngine: IConvertEngine,
+    nodeLookUp: NodeLookup<InternalNode<Node<NodeData>>>,
     gqlDiagram: GQLDiagram,
     gqlNode: GQLNode<GQLImageNodeStyle>,
     gqlEdges: GQLEdge[],
@@ -147,7 +151,7 @@ export class ImageNodeConverter implements INodeConverter {
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
     if (nodeDescription) {
-      nodes.push(toImageNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+      nodes.push(toImageNode(nodeLookUp, gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
     }
 
     const borderNodeDescriptions: GQLNodeDescription[] = (nodeDescription?.borderNodeDescriptionIds ?? []).flatMap(
@@ -160,6 +164,7 @@ export class ImageNodeConverter implements INodeConverter {
     );
 
     convertEngine.convertNodes(
+      nodeLookUp,
       gqlDiagram,
       gqlNode.borderNodes ?? [],
       gqlNode,
@@ -168,6 +173,7 @@ export class ImageNodeConverter implements INodeConverter {
       borderNodeDescriptions
     );
     convertEngine.convertNodes(
+      nodeLookUp,
       gqlDiagram,
       gqlNode.childNodes ?? [],
       gqlNode,

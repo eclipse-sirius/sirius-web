@@ -10,7 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, XYPosition } from '@xyflow/react';
+import { InternalNode, Node, XYPosition } from '@xyflow/react';
+import { NodeLookup } from '@xyflow/system';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagram, GQLNodeLayoutData } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
@@ -33,6 +34,7 @@ import { convertInsideLabel, convertOutsideLabels } from './convertLabel';
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
 const toListNode = (
+  nodeLookUp: NodeLookup<InternalNode<Node<NodeData>>>,
   gqlDiagram: GQLDiagram,
   gqlNode: GQLNode<GQLRectangularNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
@@ -116,6 +118,7 @@ const toListNode = (
     data,
     position: defaultPosition,
     hidden: state === GQLViewModifier.Hidden,
+    selected: !!nodeLookUp.get(id)?.selected,
   };
 
   if (gqlParentNode) {
@@ -177,6 +180,7 @@ export class ListNodeConverter implements INodeConverter {
 
   handle(
     convertEngine: IConvertEngine,
+    nodeLookUp: NodeLookup<InternalNode<Node<NodeData>>>,
     gqlDiagram: GQLDiagram,
     gqlNode: GQLNode<GQLRectangularNodeStyle>,
     gqlEdges: GQLEdge[],
@@ -188,7 +192,7 @@ export class ListNodeConverter implements INodeConverter {
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
     if (nodeDescription) {
-      nodes.push(toListNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+      nodes.push(toListNode(nodeLookUp, gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
     }
 
     const borderNodeDescriptions: GQLNodeDescription[] = (nodeDescription?.borderNodeDescriptionIds ?? []).flatMap(
@@ -201,6 +205,7 @@ export class ListNodeConverter implements INodeConverter {
     );
 
     convertEngine.convertNodes(
+      nodeLookUp,
       gqlDiagram,
       gqlNode.borderNodes ?? [],
       gqlNode,
@@ -209,6 +214,7 @@ export class ListNodeConverter implements INodeConverter {
       borderNodeDescriptions
     );
     convertEngine.convertNodes(
+      nodeLookUp,
       gqlDiagram,
       gqlNode.childNodes ?? [],
       gqlNode,

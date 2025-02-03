@@ -28,7 +28,6 @@ import {
   ReactFlow,
   ReactFlowProps,
   applyNodeChanges,
-  useReactFlow,
   useStoreApi,
 } from '@xyflow/react';
 import React, { MouseEvent as ReactMouseEvent, memo, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
@@ -128,14 +127,28 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { edgeType, setEdgeType } = useEdgeType();
 
   useInitialFitToScreen();
-  const { getNode } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+  const { nodeLookup, edgeLookup } = store.getState();
   useEffect(() => {
     const { diagram, cause } = diagramRefreshedEventPayload;
-    const convertedDiagram: Diagram = convertDiagram(diagram, nodeConverters, diagramDescription, edgeType);
+    const convertedDiagram: Diagram = convertDiagram(
+      nodeLookup,
+      edgeLookup,
+      diagram,
+      nodeConverters,
+      diagramDescription,
+      edgeType
+    );
 
     convertedDiagram.nodes = convertedDiagram.nodes.map((convertedNode) => {
-      const currentNode = getNode(convertedNode.id);
+      const currentNode = nodeLookup.get(convertedNode.id);
+      if (currentNode?.selected !== convertedNode.selected) {
+        console.log('CHANGED SELECTION');
+        console.log(currentNode);
+        console.log(currentNode?.selected);
+        console.log(convertedNode.selected);
+        console.log('-------------------');
+      }
       if (
         !!currentNode &&
         (convertedNode.position.x !== currentNode.position.x ||
@@ -144,12 +157,15 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
           convertedNode.height !== currentNode.height ||
           (!!currentNode && JSON.stringify(convertedNode.data) !== JSON.stringify(currentNode.data)))
       ) {
+        console.log('not equal');
         return {
           ...convertedNode,
         };
       } else if (!!currentNode) {
+        console.log('EQUAL');
         return currentNode;
       } else {
+        console.log('added');
         return {
           ...convertedNode,
         };
@@ -208,14 +224,31 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
       }
 
       // Apply the new graphical selection
-      convertedDiagram.nodes = convertedDiagram.nodes.map((node) => ({
-        ...node,
-        selected: viewsToSelect.get(node.data?.targetObjectId)?.includes(node.id),
-      }));
-      convertedDiagram.edges = convertedDiagram.edges.map((edge) => ({
-        ...edge,
-        selected: !!(edge.data?.targetObjectId && viewsToSelect.get(edge.data?.targetObjectId)?.includes(edge.id)),
-      }));
+      convertedDiagram.nodes = convertedDiagram.nodes.map((node) => {
+        const shouldBeSelected = !!viewsToSelect.get(node.data?.targetObjectId)?.includes(node.id);
+        if (shouldBeSelected === node.selected) {
+          return node;
+        } else {
+          return {
+            ...node,
+            selected: shouldBeSelected,
+          };
+        }
+      });
+
+      convertedDiagram.edges = convertedDiagram.edges.map((edge) => {
+        const shouldBeSelected = !!(
+          edge.data?.targetObjectId && viewsToSelect.get(edge.data?.targetObjectId)?.includes(edge.id)
+        );
+        if (shouldBeSelected === edge.selected) {
+          return edge;
+        } else {
+          return {
+            ...edge,
+            selected: shouldBeSelected,
+          };
+        }
+      });
 
       setEdges(convertedDiagram.edges);
       setNodes(convertedDiagram.nodes);
@@ -229,20 +262,30 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
         laidOutDiagram.nodes = laidOutDiagram.nodes.map((node) => {
           if (nodeLookup.get(node.id)) {
-            return {
-              ...node,
-              selected: !!nodeLookup.get(node.id)?.selected,
-            };
+            const shouldBeSelected = !!nodeLookup.get(node.id)?.selected;
+            if (shouldBeSelected === node.selected) {
+              return node;
+            } else {
+              return {
+                ...node,
+                selected: shouldBeSelected,
+              };
+            }
           }
           return node;
         });
 
         laidOutDiagram.edges = laidOutDiagram.edges.map((edge) => {
           if (edgeLookup.get(edge.id)) {
-            return {
-              ...edge,
-              selected: !!edgeLookup.get(edge.id)?.selected,
-            };
+            const shouldBeSelected = !!edgeLookup.get(edge.id)?.selected;
+            if (shouldBeSelected === edge.selected) {
+              return edge;
+            } else {
+              return {
+                ...edge,
+                selected: shouldBeSelected,
+              };
+            }
           }
           return edge;
         });

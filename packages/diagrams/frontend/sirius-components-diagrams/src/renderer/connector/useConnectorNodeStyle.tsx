@@ -21,7 +21,7 @@ import { UseConnectorNodeStyleValue } from './useConnectorStyle.types';
 
 export const useConnectorNodeStyle = (nodeId: string, descriptionId: string): UseConnectorNodeStyleValue => {
   const theme = useTheme();
-
+  //TODO uses data.hoveredNode ? rework connection ... not important
   const { candidates, isNewConnection } = useContext<ConnectorContextValue>(ConnectorContext);
   const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
 

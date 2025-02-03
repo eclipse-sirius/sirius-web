@@ -11,60 +11,52 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Node, NodeMouseHandler } from '@xyflow/react';
-import { useCallback, useContext } from 'react';
-import { useStore } from '../../representation/useStore';
+import { Node, NodeMouseHandler, useReactFlow } from '@xyflow/react';
+import { useCallback } from 'react';
 import { NodeData } from '../DiagramRenderer.types';
-import { DropNodeContext } from '../dropNode/DropNodeContext';
-import { DropNodeContextValue } from '../dropNode/DropNodeContext.types';
 import { UseNodeHoverValue } from './useNodeHover.types';
 
 export const useNodeHover = (): UseNodeHoverValue => {
-  const { setNodes } = useStore();
-  const { draggedNodeId } = useContext<DropNodeContextValue>(DropNodeContext);
+  const { setNodes } = useReactFlow();
 
   const onNodeMouseEnter: NodeMouseHandler<Node<NodeData>> = useCallback(
     (_: React.MouseEvent<Element, MouseEvent>, node: Node<NodeData>) => {
-      if (!draggedNodeId) {
-        setNodes((nds) =>
-          nds.map((n) => {
-            if (n.id === node.id) {
-              if (!n.data.isHovered) {
-                return {
-                  ...n,
-                  data: {
-                    ...n.data,
-                    isHovered: true,
-                  },
-                };
-              }
-            }
-            return n;
-          })
-        );
-      }
-    },
-    [setNodes, draggedNodeId]
-  );
-
-  const onNodeMouseLeave: NodeMouseHandler = useCallback(() => {
-    if (!draggedNodeId) {
       setNodes((nds) =>
         nds.map((n) => {
-          if (n.data.isHovered) {
-            return {
-              ...n,
-              data: {
-                ...n.data,
-                isHovered: false,
-              },
-            };
+          if (n.id === node.id) {
+            if (!n.data.isHovered) {
+              return {
+                ...n,
+                data: {
+                  ...n.data,
+                  isHovered: true,
+                },
+              };
+            }
           }
           return n;
         })
       );
-    }
-  }, [setNodes, draggedNodeId]);
+    },
+    []
+  );
+
+  const onNodeMouseLeave: NodeMouseHandler = useCallback(() => {
+    setNodes((nds) =>
+      nds.map((n) => {
+        if (n.data.isHovered) {
+          return {
+            ...n,
+            data: {
+              ...n.data,
+              isHovered: false,
+            },
+          };
+        }
+        return n;
+      })
+    );
+  }, []);
 
   return {
     onNodeMouseEnter,

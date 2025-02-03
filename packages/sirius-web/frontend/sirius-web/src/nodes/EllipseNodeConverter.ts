@@ -13,6 +13,12 @@
 import {
   BorderNodePosition,
   ConnectionHandle,
+  convertHandles,
+  convertInsideLabel,
+  convertLineStyle,
+  convertOutsideLabels,
+  defaultHeight,
+  defaultWidth,
   GQLDiagram,
   GQLDiagramDescription,
   GQLEdge,
@@ -23,20 +29,17 @@ import {
   GQLViewModifier,
   IConvertEngine,
   INodeConverter,
-  convertHandles,
-  convertInsideLabel,
-  convertLineStyle,
-  convertOutsideLabels,
   isListLayoutStrategy,
-  defaultHeight,
-  defaultWidth,
+  NodeData,
 } from '@eclipse-sirius/sirius-components-diagrams';
-import { Node, XYPosition } from '@xyflow/react';
+import { InternalNode, Node, XYPosition } from '@xyflow/react';
+import { NodeLookup } from '@xyflow/system';
 import { EllipseNodeData, GQLEllipseNodeStyle } from './EllipseNode.types';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
 const toEllipseNode = (
+  nodeLookUp: NodeLookup<InternalNode<Node<NodeData>>>,
   gqlDiagram: GQLDiagram,
   gqlNode: GQLNode<GQLEllipseNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
@@ -108,6 +111,7 @@ const toEllipseNode = (
     data,
     position: defaultPosition,
     hidden: gqlNode.state === GQLViewModifier.Hidden,
+    selected: !!nodeLookUp.get(id)?.selected,
   };
 
   if (gqlParentNode) {
@@ -143,6 +147,7 @@ export class EllipseNodeConverter implements INodeConverter {
 
   handle(
     convertEngine: IConvertEngine,
+    nodeLookUp: NodeLookup<InternalNode<Node<NodeData>>>,
     gqlDiagram: GQLDiagram,
     gqlNode: GQLNode<GQLEllipseNodeStyle>,
     gqlEdges: GQLEdge[],
@@ -153,7 +158,7 @@ export class EllipseNodeConverter implements INodeConverter {
     nodeDescriptions: GQLNodeDescription[]
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
-    nodes.push(toEllipseNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+    nodes.push(toEllipseNode(nodeLookUp, gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
 
     const borderNodeDescriptions: GQLNodeDescription[] = (nodeDescription?.borderNodeDescriptionIds ?? []).flatMap(
       (nodeDescriptionId) =>
@@ -165,6 +170,7 @@ export class EllipseNodeConverter implements INodeConverter {
     );
 
     convertEngine.convertNodes(
+      nodeLookUp,
       gqlDiagram,
       gqlNode.borderNodes ?? [],
       gqlNode,
@@ -173,6 +179,7 @@ export class EllipseNodeConverter implements INodeConverter {
       borderNodeDescriptions
     );
     convertEngine.convertNodes(
+      nodeLookUp,
       gqlDiagram,
       gqlNode.childNodes ?? [],
       gqlNode,

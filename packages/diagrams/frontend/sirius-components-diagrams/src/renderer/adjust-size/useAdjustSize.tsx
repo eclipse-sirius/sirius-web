@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,8 @@
  *******************************************************************************/
 import { Edge, Node, useReactFlow } from '@xyflow/react';
 import { useContext } from 'react';
-import { DiagramContext } from '../../contexts/DiagramContext';
-import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { DiagramPayloadContext } from '../../contexts/DiagramPayloadContext';
+import { DiagramPayloadContextValue } from '../../contexts/DiagramPayloadContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { RawDiagram } from '../layout/layout.types';
 import { useLayout } from '../layout/useLayout';
@@ -24,7 +24,7 @@ import { UseAdjustSizeValue } from './useAdjustSize.types';
 
 export const useAdjustSize = (): UseAdjustSizeValue => {
   const { layout } = useLayout();
-  const { refreshEventPayloadId } = useContext<DiagramContextValue>(DiagramContext);
+  const { refreshEventPayloadId } = useContext<DiagramPayloadContextValue>(DiagramPayloadContext);
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
   const { hideDiagramElementPalette } = useDiagramElementPalette();
   const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();

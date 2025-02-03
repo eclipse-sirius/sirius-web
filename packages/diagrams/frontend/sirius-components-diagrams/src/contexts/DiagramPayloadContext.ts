@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,12 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import React from 'react';
-import { DiagramContextValue } from './DiagramContext.types';
+import { DiagramPayloadContextValue } from './DiagramPayloadContext.types';
 
-const value: DiagramContextValue = {
-  editingContextId: '',
-  diagramId: '',
-  readOnly: false,
+const value: DiagramPayloadContextValue = {
+  refreshEventPayloadId: '',
+  payload: null,
 };
 
-export const DiagramContext = React.createContext<DiagramContextValue>(value);
+export const DiagramPayloadContext = React.createContext<DiagramPayloadContextValue>(value);

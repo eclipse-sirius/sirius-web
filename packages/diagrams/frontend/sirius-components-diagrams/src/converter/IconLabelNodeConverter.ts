@@ -10,7 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, XYPosition } from '@xyflow/react';
+import { InternalNode, Node, XYPosition } from '@xyflow/react';
+import { NodeLookup } from '@xyflow/system';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagram, GQLNodeLayoutData } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
@@ -20,7 +21,7 @@ import {
   GQLNodeStyle,
   GQLViewModifier,
 } from '../graphql/subscription/nodeFragment.types';
-import { BorderNodePosition } from '../renderer/DiagramRenderer.types';
+import { BorderNodePosition, NodeData } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { defaultHeight, defaultWidth } from '../renderer/layout/layoutParams';
 import { IconLabelNodeData } from '../renderer/node/IconsLabelNode.types';
@@ -32,6 +33,7 @@ import { convertInsideLabel, convertOutsideLabels } from './convertLabel';
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
 const toIconLabelNode = (
+  nodeLookUp: NodeLookup<InternalNode<Node<NodeData>>>,
   gqlDiagram: GQLDiagram,
   gqlNode: GQLNode<GQLIconLabelNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
@@ -95,6 +97,7 @@ const toIconLabelNode = (
     data,
     position: defaultPosition,
     hidden: state === GQLViewModifier.Hidden,
+    selected: !!nodeLookUp.get(id)?.selected,
   };
 
   if (gqlParentNode) {
@@ -130,6 +133,7 @@ export class IconLabelNodeConverter implements INodeConverter {
 
   handle(
     _convertEngine: IConvertEngine,
+    nodeLookUp: NodeLookup<InternalNode<Node<NodeData>>>,
     gqlDiagram: GQLDiagram,
     gqlNode: GQLNode<GQLIconLabelNodeStyle>,
     _gqlEdges: GQLEdge[],
@@ -141,7 +145,7 @@ export class IconLabelNodeConverter implements INodeConverter {
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
     if (nodeDescription) {
-      nodes.push(toIconLabelNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode));
+      nodes.push(toIconLabelNode(nodeLookUp, gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode));
     }
   }
 }

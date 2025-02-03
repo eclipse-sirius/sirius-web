@@ -10,15 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node } from '@xyflow/react';
+import { InternalNode, Node } from '@xyflow/react';
+import { NodeLookup } from '@xyflow/system';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagram } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
 import { GQLNode, GQLNodeStyle } from '../graphql/subscription/nodeFragment.types';
+import { NodeData } from '../renderer/DiagramRenderer.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
-
 export interface IConvertEngine {
   convertNodes(
+    nodeLookUp: NodeLookup<InternalNode<Node<NodeData>>>,
     gqlDiagram: GQLDiagram,
     gqlNodesToConvert: GQLNode<GQLNodeStyle>[],
     parentNode: GQLNode<GQLNodeStyle> | null,
@@ -33,6 +35,7 @@ export interface INodeConverter {
 
   handle(
     convertEngine: IConvertEngine,
+    nodeLookUp: NodeLookup<InternalNode<Node<NodeData>>>,
     gqlDiagram: GQLDiagram,
     gqlNode: GQLNode<GQLNodeStyle>,
     gqlEdges: GQLEdge[],

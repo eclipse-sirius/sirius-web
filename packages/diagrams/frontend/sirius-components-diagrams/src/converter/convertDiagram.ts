@@ -11,7 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Edge, Node } from '@xyflow/react';
+import { Edge, InternalNode, Node } from '@xyflow/react';
+import { EdgeLookup, NodeLookup } from '@xyflow/system';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagram } from '../graphql/subscription/diagramFragment.types';
 import { GQLLabel } from '../graphql/subscription/labelFragment.types';
@@ -28,6 +29,7 @@ import { MultiLabelEdgeData } from '../renderer/edge/MultiLabelEdge.types';
 import { RawDiagram } from '../renderer/layout/layout.types';
 import { computeBorderNodeExtents, computeBorderNodePositions } from '../renderer/layout/layoutBorderNodes';
 import { layoutHandles } from '../renderer/layout/layoutHandles';
+import { GQLEdgeLayoutData } from '../renderer/layout/useSynchronizeLayoutData.types';
 import { DiagramNodeType } from '../renderer/node/NodeTypes.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
@@ -36,7 +38,6 @@ import { ImageNodeConverter } from './ImageNodeConverter';
 import { ListNodeConverter } from './ListNodeConverter';
 import { RectangleNodeConverter } from './RectangleNodeConverter';
 import { convertContentStyle, convertLabelStyle } from './convertLabel';
-import { GQLEdgeLayoutData } from '../renderer/layout/useSynchronizeLayoutData.types';
 
 const nodeDepth = (nodeId2node: Map<string, Node>, nodeId: string): number => {
   const node = nodeId2node.get(nodeId);
@@ -87,6 +88,8 @@ const defaultNodeConverters: INodeConverter[] = [
 ];
 
 export const convertDiagram = (
+  nodeLookUp: NodeLookup<InternalNode<Node<NodeData>>>,
+  edgeLookUp: EdgeLookup<Edge<EdgeData>>,
   gqlDiagram: GQLDiagram,
   nodeConverterContributions: INodeConverter[],
   diagramDescription: GQLDiagramDescription,
@@ -95,6 +98,7 @@ export const convertDiagram = (
   const nodes: Node<NodeData, DiagramNodeType>[] = [];
   const convertEngine: IConvertEngine = {
     convertNodes(
+      nodeLookUp: NodeLookup<InternalNode<Node<NodeData>>>,
       gqlDiagram: GQLDiagram,
       gqlNodesToConvert: GQLNode<GQLNodeStyle>[],
       parentNode: GQLNode<GQLNodeStyle> | null,
@@ -112,6 +116,7 @@ export const convertDiagram = (
           const isBorderNode: boolean = !!parentNode?.borderNodes?.map((borderNode) => borderNode.id).includes(node.id);
           nodeConverter.handle(
             this,
+            nodeLookUp,
             gqlDiagram,
             node,
             gqlDiagram.edges,
@@ -127,6 +132,7 @@ export const convertDiagram = (
   };
 
   convertEngine.convertNodes(
+    nodeLookUp,
     gqlDiagram,
     gqlDiagram.nodes,
     null,
@@ -208,6 +214,7 @@ export const convertDiagram = (
       sourceNode: sourceNode,
       targetNode: targetNode,
       reconnectable: false,
+      selected: !!edgeLookUp.get(gqlEdge.id)?.selected,
     };
   });
 
@@ -216,14 +223,14 @@ export const convertDiagram = (
     edges,
   };
 
-  const nodeLookUp = new Map();
+  const futurNodeLookUp = new Map();
   nodes.forEach((node) => {
-    nodeLookUp.set(node.id, node);
+    futurNodeLookUp.set(node.id, node);
   });
 
   computeBorderNodeExtents(rawDiagram.nodes);
   computeBorderNodePositions(rawDiagram.nodes);
-  layoutHandles(rawDiagram, diagramDescription, nodeLookUp);
+  layoutHandles(rawDiagram, diagramDescription, futurNodeLookUp);
 
   return {
     nodes: rawDiagram.nodes,

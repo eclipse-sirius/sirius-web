@@ -15,6 +15,7 @@ import { gql, useQuery } from '@apollo/client';
 import { RepresentationComponentProps, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { ReactFlowProvider } from '@xyflow/react';
 import { memo, useEffect, useState } from 'react';
+import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramDescriptionContext } from '../contexts/DiagramDescriptionContext';
 import { ConnectorContextProvider } from '../renderer/connector/ConnectorContext';
 import { DiagramDirectEditContextProvider } from '../renderer/direct-edit/DiagramDirectEditContext';
@@ -31,6 +32,7 @@ import {
   GQLDiagramDescriptionVariables,
 } from './DiagramRepresentation.types';
 import { DiagramSubscriptionProvider } from './DiagramSubscriptionProvider';
+import { StoreContextProvider } from './StoreContext';
 
 export const getDiagramDescription = gql`
   query getDiagramDescription($editingContextId: ID!, $representationId: ID!) {
@@ -108,27 +110,36 @@ export const DiagramRepresentation = memo(
 
     return (
       <ReactFlowProvider>
-        <DiagramDirectEditContextProvider>
-          <DiagramPaletteContextProvider>
-            <DiagramElementPaletteContextProvider>
-              <ConnectorContextProvider>
-                <DropNodeContextProvider>
-                  <NodeContextProvider>
-                    <MarkerDefinitions />
-                    <FullscreenContextProvider>
-                      <DiagramDescriptionContext.Provider value={{ diagramDescription }}>
-                        <DiagramSubscriptionProvider
-                          diagramId={representationId}
-                          editingContextId={editingContextId}
-                          readOnly={readOnly}></DiagramSubscriptionProvider>
-                      </DiagramDescriptionContext.Provider>
-                    </FullscreenContextProvider>
-                  </NodeContextProvider>
-                </DropNodeContextProvider>
-              </ConnectorContextProvider>
-            </DiagramElementPaletteContextProvider>
-          </DiagramPaletteContextProvider>
-        </DiagramDirectEditContextProvider>
+        <StoreContextProvider>
+          <DiagramDirectEditContextProvider>
+            <DiagramPaletteContextProvider>
+              <DiagramElementPaletteContextProvider>
+                <ConnectorContextProvider>
+                  <DropNodeContextProvider>
+                    <NodeContextProvider>
+                      <MarkerDefinitions />
+                      <FullscreenContextProvider>
+                        <DiagramDescriptionContext.Provider value={{ diagramDescription }}>
+                          <DiagramContext.Provider
+                            value={{
+                              editingContextId,
+                              diagramId: representationId,
+                              readOnly,
+                            }}>
+                            <DiagramSubscriptionProvider
+                              diagramId={representationId}
+                              editingContextId={editingContextId}
+                              readOnly={readOnly}></DiagramSubscriptionProvider>
+                          </DiagramContext.Provider>
+                        </DiagramDescriptionContext.Provider>
+                      </FullscreenContextProvider>
+                    </NodeContextProvider>
+                  </DropNodeContextProvider>
+                </ConnectorContextProvider>
+              </DiagramElementPaletteContextProvider>
+            </DiagramPaletteContextProvider>
+          </DiagramDirectEditContextProvider>
+        </StoreContextProvider>
       </ReactFlowProvider>
     );
   }
