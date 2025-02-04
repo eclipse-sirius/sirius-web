@@ -31,6 +31,7 @@
   },
   "peerDependencies": {
     "@apollo/client": "3.10.4",
+    "@eclipse-sirius/sirius-components-browser": "*",
     "@eclipse-sirius/sirius-components-core": "*",
     "@eclipse-sirius/sirius-components-charts": "*",
     "@eclipse-sirius/sirius-components-diagrams": "*",
@@ -75,6 +76,7 @@
   },
   "devDependencies": {
     "@apollo/client": "3.10.4",
+    "@eclipse-sirius/sirius-components-browser": "*",
     "@eclipse-sirius/sirius-components-core": "*",
     "@eclipse-sirius/sirius-components-charts": "*",
     "@eclipse-sirius/sirius-components-diagrams": "*",

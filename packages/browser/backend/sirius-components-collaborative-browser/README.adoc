@@ -1,0 +1,7 @@
+= sirius-components-collaborative-browser
+
+== Goal
+
+This project provides support for our model browser collaborative.
+
+== Dependencies

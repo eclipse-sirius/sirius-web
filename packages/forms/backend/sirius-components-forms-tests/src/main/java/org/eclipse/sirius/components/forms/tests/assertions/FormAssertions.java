@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,6 @@ import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.forms.TreeWidget;
 import org.eclipse.sirius.components.forms.WidgetGridLayout;
-import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
 
 /**
  * Entry point of all the AssertJ assertions with the form specific ones too.
@@ -59,10 +58,6 @@ public class FormAssertions extends Assertions {
 
     public static MultiSelectAssert assertThat(MultiSelect multiSelect) {
         return new MultiSelectAssert(multiSelect);
-    }
-
-    public static ReferenceWidgetAssert assertThat(ReferenceWidget referenceWidget) {
-        return new ReferenceWidgetAssert(referenceWidget);
     }
 
     public static RichTextAssert assertThat(RichText richText) {

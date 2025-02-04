@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { ModelBrowserTreeView } from '@eclipse-sirius/sirius-components-browser';
 import { Selection, SelectionContext } from '@eclipse-sirius/sirius-components-core';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -19,7 +20,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { makeStyles } from 'tss-react/mui';
 import { useState } from 'react';
-import { ModelBrowserTreeView } from '../components/ModelBrowserTreeView';
 import { BrowseModalProps } from './BrowseModal.types';
 
 const useBrowserModalStyles = makeStyles()((_) => ({
@@ -48,7 +48,10 @@ export const BrowseModal = ({ editingContextId, widget, onClose }: BrowseModalPr
         <DialogContent className={styles.content}>
           <ModelBrowserTreeView
             editingContextId={editingContextId}
-            widget={widget}
+            referenceKind={widget.reference.referenceKind}
+            ownerId={widget.ownerId}
+            descriptionId={widget.descriptionId}
+            isContainment={widget.reference.containment}
             markedItemIds={[]}
             enableMultiSelection={widget.reference.manyValued}
             title={'Choices'}

@@ -13,7 +13,7 @@
 package org.eclipse.sirius.web.application.controllers.forms;
 
 import static org.assertj.core.api.Assertions.fail;
-import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
+import static org.eclipse.sirius.components.widget.reference.tests.assertions.ReferenceWidgetAssertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
@@ -27,9 +27,13 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
-import org.eclipse.sirius.components.forms.tests.graphql.ReferenceValueOptionsQueryRunner;
+import org.eclipse.sirius.components.collaborative.widget.reference.dto.ClearReferenceInput;
+import org.eclipse.sirius.components.collaborative.widget.reference.dto.RemoveReferenceValueInput;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
+import org.eclipse.sirius.components.widget.reference.tests.graphql.ReferenceClearMutationRunner;
+import org.eclipse.sirius.components.widget.reference.tests.graphql.ReferenceRemoveMutationRunner;
+import org.eclipse.sirius.components.widget.reference.tests.graphql.ReferenceValueOptionsQueryRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.services.forms.FormWithReferenceWidgetDescriptionProvider;
@@ -52,7 +56,7 @@ import reactor.test.StepVerifier;
  */
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"sirius.web.test.enabled=studio"})
 public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
 
     @Autowired
@@ -67,6 +71,12 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
     @Autowired
     private ReferenceValueOptionsQueryRunner referenceValueOptionsQueryRunner;
 
+    @Autowired
+    private ReferenceClearMutationRunner referenceClearMutationRunner;
+
+    @Autowired
+    private ReferenceRemoveMutationRunner referenceRemoveMutationRunner;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -78,7 +88,7 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
     public void givenReferenceWidgetWhenItIsDisplayedThenItIsProperlyInitialized() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_PROJECT,
                 this.formWithReferenceWidgetDescriptionProvider.getRepresentationDescriptionId(),
                 StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString(),
                 "FormWithReferenceWidget"
@@ -110,7 +120,7 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
     public void givenReferenceWidgetWhenItsOptionsAreRequestedThenSomeValuesAreReturned() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_PROJECT,
                 this.formWithReferenceWidgetDescriptionProvider.getRepresentationDescriptionId(),
                 StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString(),
                 "FormWithReferenceWidget"
@@ -135,7 +145,7 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
 
         Runnable requestReferenceValueOptions = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(),
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_PROJECT,
                     "representationId", formId.get(),
                     "referenceWidgetId", referenceWidgetId.get()
             );
@@ -151,6 +161,126 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)
                 .then(requestReferenceValueOptions)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a reference widget, when the clear mutation is trigger, then values are removed")
+    public void givenReferenceWidgetWhenClearMutationIsTriggerThenValuesAreRemoved() {
+        var input = new CreateRepresentationInput(
+                UUID.randomUUID(),
+                StudioIdentifiers.SAMPLE_STUDIO_PROJECT,
+                this.formWithReferenceWidgetDescriptionProvider.getRepresentationDescriptionId(),
+                StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString(),
+                "FormWithReferenceWidget"
+        );
+        var flux = this.givenCreatedFormSubscription.createAndSubscribe(input);
+
+        var formId = new AtomicReference<String>();
+        var referenceWidgetId = new AtomicReference<String>();
+
+        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
+                .map(FormRefreshedEventPayload::form)
+                .ifPresentOrElse(form -> {
+                    formId.set(form.getId());
+
+                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+                    var referenceWidget = groupNavigator.findWidget("Super types", ReferenceWidget.class);
+                    assertThat(referenceWidget).hasValueWithLabel("NamedElement");
+                    referenceWidgetId.set(referenceWidget.getId());
+                }, () -> fail("Missing form"));
+
+        Runnable clearValueMutation = () -> {
+            var clearReferenceInput = new ClearReferenceInput(UUID.randomUUID(),
+                    StudioIdentifiers.SAMPLE_STUDIO_PROJECT, formId.get(), referenceWidgetId.get());
+            var result = this.referenceClearMutationRunner.run(clearReferenceInput);
+
+            String mutationResult = JsonPath.read(result, "$.data.clearReference.__typename");
+            assertThat(mutationResult).isEqualTo("SuccessPayload");
+
+        };
+
+        Consumer<Object> afterClearContentConsumer = payload -> Optional.of(payload)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
+                .map(FormRefreshedEventPayload::form)
+                .ifPresentOrElse(form -> {
+
+                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+                    var referenceWidget = groupNavigator.findWidget("Super types", ReferenceWidget.class);
+                    assertThat(referenceWidget).hasNoValue();
+                }, () -> fail("Missing form"));
+
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialFormContentConsumer)
+                .then(clearValueMutation)
+                .consumeNextWith(afterClearContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a reference widget, when the remove reference mutation is trigger, then value is removed")
+    public void givenReferenceWidgetWhenRemoveReferenceMutationIsTriggerThenValueIsRemoved() {
+        var input = new CreateRepresentationInput(
+                UUID.randomUUID(),
+                StudioIdentifiers.SAMPLE_STUDIO_PROJECT,
+                this.formWithReferenceWidgetDescriptionProvider.getRepresentationDescriptionId(),
+                StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString(),
+                "FormWithReferenceWidget"
+        );
+        var flux = this.givenCreatedFormSubscription.createAndSubscribe(input);
+
+        var formId = new AtomicReference<String>();
+        var referenceWidgetId = new AtomicReference<String>();
+        var referenceValueId = new AtomicReference<String>();
+
+        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
+                .map(FormRefreshedEventPayload::form)
+                .ifPresentOrElse(form -> {
+                    formId.set(form.getId());
+
+                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+                    var referenceWidget = groupNavigator.findWidget("Super types", ReferenceWidget.class);
+                    assertThat(referenceWidget).hasValueWithLabel("NamedElement");
+                    referenceValueId.set(referenceWidget.getReferenceValues().get(0).getId());
+                    referenceWidgetId.set(referenceWidget.getId());
+                }, () -> fail("Missing form"));
+
+        Runnable removeReferenceValueMutation = () -> {
+            var removeReferenceValueInput = new RemoveReferenceValueInput(UUID.randomUUID(),
+                    StudioIdentifiers.SAMPLE_STUDIO_PROJECT, formId.get(), referenceWidgetId.get(), referenceValueId.get());
+            var result = this.referenceRemoveMutationRunner.run(removeReferenceValueInput);
+
+            String mutationResult = JsonPath.read(result, "$.data.removeReferenceValue.__typename");
+            assertThat(mutationResult).isEqualTo("SuccessPayload");
+
+        };
+
+        Consumer<Object> afterRemoveReferenceContentConsumer = payload -> Optional.of(payload)
+                .filter(FormRefreshedEventPayload.class::isInstance)
+                .map(FormRefreshedEventPayload.class::cast)
+                .map(FormRefreshedEventPayload::form)
+                .ifPresentOrElse(form -> {
+
+                    var groupNavigator = new FormNavigator(form).page("Page").group("Group");
+                    var referenceWidget = groupNavigator.findWidget("Super types", ReferenceWidget.class);
+                    assertThat(referenceWidget).hasNoValue();
+                }, () -> fail("Missing form"));
+
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialFormContentConsumer)
+                .then(removeReferenceValueMutation)
+                .consumeNextWith(afterRemoveReferenceContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

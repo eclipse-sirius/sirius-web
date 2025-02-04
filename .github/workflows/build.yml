@@ -90,6 +90,7 @@ jobs:
         run: |
           echo "//npm.pkg.github.com/:_authToken=${{ github.token }}" >> .npmrc
           npm install -g vsce
+          npx yalc add @eclipse-sirius/sirius-components-browser
           npx yalc add @eclipse-sirius/sirius-components-charts
           npx yalc add @eclipse-sirius/sirius-components-core
           npx yalc add @eclipse-sirius/sirius-components-deck
