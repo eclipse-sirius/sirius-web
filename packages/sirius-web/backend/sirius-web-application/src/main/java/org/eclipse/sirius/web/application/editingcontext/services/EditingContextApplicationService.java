@@ -12,12 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.editingcontext.services;
 
-import java.util.Objects;
-
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextApplicationService;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Used to interact with editing contexts.
@@ -27,15 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class EditingContextApplicationService implements IEditingContextApplicationService {
 
-    private final IProjectSearchService projectSearchService;
-
-    public EditingContextApplicationService(IProjectSearchService projectSearchService) {
-        this.projectSearchService = Objects.requireNonNull(projectSearchService);
-    }
-
     @Override
-    @Transactional(readOnly = true)
-    public boolean existsById(String editingContextId) {
-        return this.projectSearchService.existsById(editingContextId);
+    public String getCurrentEditingContextId(String projectId) {
+        return projectId;
     }
 }

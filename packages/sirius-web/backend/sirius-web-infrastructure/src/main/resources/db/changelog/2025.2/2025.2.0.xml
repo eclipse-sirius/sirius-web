@@ -16,4 +16,5 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
     <include file="db/changelog/2025.2/01-alter_project_id_type.xml" />
+    <include file="db/changelog/2025.2/02-drop-fk-semantic-data-project-id-add-project-semantic-data.xml" />
 </databaseChangeLog>

@@ -27,6 +27,8 @@ import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingCo
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextPersistenceFilter;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceToDocumentService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataUpdateService;
 import org.slf4j.Logger;
@@ -48,6 +50,8 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
 
     private static final String TIMER_NAME = "siriusweb_editingcontext_save";
 
+    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
+
     private final ISemanticDataUpdateService semanticDataUpdateService;
 
     private final IResourceToDocumentService resourceToDocumentService;
@@ -60,7 +64,8 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
 
     private final Logger logger = LoggerFactory.getLogger(EditingContextPersistenceService.class);
 
-    public EditingContextPersistenceService(ISemanticDataUpdateService semanticDataUpdateService, IResourceToDocumentService resourceToDocumentService, List<IEditingContextPersistenceFilter> persistenceFilters, List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates, MeterRegistry meterRegistry) {
+    public EditingContextPersistenceService(IProjectSemanticDataSearchService projectSemanticDataSearchService, ISemanticDataUpdateService semanticDataUpdateService, IResourceToDocumentService resourceToDocumentService, List<IEditingContextPersistenceFilter> persistenceFilters, List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates, MeterRegistry meterRegistry) {
+        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
         this.semanticDataUpdateService = Objects.requireNonNull(semanticDataUpdateService);
         this.resourceToDocumentService = Objects.requireNonNull(resourceToDocumentService);
         this.persistenceFilters = Objects.requireNonNull(persistenceFilters);
@@ -92,7 +97,9 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
                 domainUris.addAll(data.ePackageEntries().stream().map(EPackageEntry::nsURI).toList());
             });
 
-            this.semanticDataUpdateService.updateDocuments(cause, projectId, documents, domainUris);
+            this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(editingContext.getId()))
+                    .map(ProjectSemanticData::getSemanticData)
+                    .ifPresent(semanticData -> this.semanticDataUpdateService.updateDocuments(cause, semanticData, documents, domainUris));
         }
 
         long end = System.currentTimeMillis();

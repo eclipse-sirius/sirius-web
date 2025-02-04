@@ -23,6 +23,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectNameUpdatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectUpdateService;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationContentUpdatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentUpdateService;
@@ -48,6 +49,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author pcdavid
  */
 @Transactional
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class DomainEventsTest extends AbstractIntegrationTests {
 
@@ -62,6 +64,9 @@ public class DomainEventsTest extends AbstractIntegrationTests {
 
     @Autowired
     private ISemanticDataSearchService semanticDataSearchService;
+
+    @Autowired
+    private IProjectSemanticDataSearchService projectSemanticDataSearchService;
 
     @Autowired
     private ISemanticDataUpdateService semanticDataUpdateService;
@@ -115,7 +120,12 @@ public class DomainEventsTest extends AbstractIntegrationTests {
         assertThat(this.domainEventCollector.getDomainEvents()).isEmpty();
         AggregateReference<Project, String> projectId = AggregateReference.to(TestIdentifiers.ECORE_SAMPLE_PROJECT);
 
-        var optionalSemanticData = this.semanticDataSearchService.findByProject(projectId);
+        var optionalProjectSemanticData = this.projectSemanticDataSearchService.findByProjectId(projectId);
+        assertThat(optionalProjectSemanticData).isPresent();
+
+        var projectSemanticData = optionalProjectSemanticData.get();
+
+        var optionalSemanticData = this.semanticDataSearchService.findById(projectSemanticData.getSemanticData().getId());
         assertThat(optionalSemanticData).isPresent();
 
         var semanticData = optionalSemanticData.get();
@@ -126,7 +136,7 @@ public class DomainEventsTest extends AbstractIntegrationTests {
 
         var newDocumentName = "renamed document";
         var updatedDocument = Document.newDocument(originalDocument.getId()).name(newDocumentName).content(originalDocument.getContent()).build();
-        this.semanticDataUpdateService.updateDocuments(null, projectId, Set.of(updatedDocument), semanticData.getDomains().stream().map(SemanticDataDomain::uri).collect(Collectors.toSet()));
+        this.semanticDataUpdateService.updateDocuments(null, projectSemanticData.getSemanticData(), Set.of(updatedDocument), semanticData.getDomains().stream().map(SemanticDataDomain::uri).collect(Collectors.toSet()));
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
@@ -142,7 +152,12 @@ public class DomainEventsTest extends AbstractIntegrationTests {
         assertThat(this.domainEventCollector.getDomainEvents()).isEmpty();
         AggregateReference<Project, String> projectId = AggregateReference.to(TestIdentifiers.ECORE_SAMPLE_PROJECT);
 
-        var optionalSemanticData = this.semanticDataSearchService.findByProject(projectId);
+        var optionalProjectSemanticData = this.projectSemanticDataSearchService.findByProjectId(projectId);
+        assertThat(optionalProjectSemanticData).isPresent();
+
+        var projectSemanticData = optionalProjectSemanticData.get();
+
+        var optionalSemanticData = this.semanticDataSearchService.findById(projectSemanticData.getSemanticData().getId());
         assertThat(optionalSemanticData).isPresent();
 
         var semanticData = optionalSemanticData.get();
@@ -154,7 +169,7 @@ public class DomainEventsTest extends AbstractIntegrationTests {
         var newDocumentName = originalDocument.getName();
         // Identical to the original except for the timestamps
         var updatedDocument = Document.newDocument(originalDocument.getId()).name(newDocumentName).content(originalDocument.getContent()).build();
-        this.semanticDataUpdateService.updateDocuments(null, projectId, Set.of(updatedDocument), semanticData.getDomains().stream().map(SemanticDataDomain::uri).collect(Collectors.toSet()));
+        this.semanticDataUpdateService.updateDocuments(null, projectSemanticData.getSemanticData(), Set.of(updatedDocument), semanticData.getDomains().stream().map(SemanticDataDomain::uri).collect(Collectors.toSet()));
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
@@ -168,7 +183,12 @@ public class DomainEventsTest extends AbstractIntegrationTests {
         assertThat(this.domainEventCollector.getDomainEvents()).isEmpty();
         AggregateReference<Project, String> projectId = AggregateReference.to(TestIdentifiers.ECORE_SAMPLE_PROJECT);
 
-        var optionalSemanticData = this.semanticDataSearchService.findByProject(projectId);
+        var optionalProjectSemanticData = this.projectSemanticDataSearchService.findByProjectId(projectId);
+        assertThat(optionalProjectSemanticData).isPresent();
+
+        var projectSemanticData = optionalProjectSemanticData.get();
+
+        var optionalSemanticData = this.semanticDataSearchService.findById(projectSemanticData.getSemanticData().getId());
         assertThat(optionalSemanticData).isPresent();
 
         var semanticData = optionalSemanticData.get();
@@ -180,7 +200,7 @@ public class DomainEventsTest extends AbstractIntegrationTests {
         var originalContent = originalDocument.getContent();
         var newContent = originalContent + "modified";
         var updatedDocument = Document.newDocument(originalDocument.getId()).name(originalDocument.getName()).content(newContent).build();
-        this.semanticDataUpdateService.updateDocuments(null, projectId, Set.of(updatedDocument), semanticData.getDomains().stream().map(SemanticDataDomain::uri).collect(Collectors.toSet()));
+        this.semanticDataUpdateService.updateDocuments(null, projectSemanticData.getSemanticData(), Set.of(updatedDocument), semanticData.getDomains().stream().map(SemanticDataDomain::uri).collect(Collectors.toSet()));
         TestTransaction.flagForCommit();
         TestTransaction.end();
 

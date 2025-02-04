@@ -19,12 +19,25 @@ INSERT INTO nature (
 );
 INSERT INTO semantic_data (
   id,
-  project_id,
   created_on,
   last_modified_on
 ) VALUES (
   'cc89c500-c27e-4968-9c67-15cf767c6ef0',
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000'
+);
+INSERT INTO project_semantic_data (
+  id,
+  project_id,
+  semantic_data_id,
+  name,
+  created_on,
+  last_modified_on
+) VALUES (
+  '315c90b5-51a8-4f88-a8eb-ffa08c9b8045',
   'c3d7df85-e0bd-472c-aec1-c05cc88276e4',
+  'cc89c500-c27e-4968-9c67-15cf767c6ef0',
+  'main',
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );

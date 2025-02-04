@@ -24,6 +24,8 @@ import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextLoader;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextMigrationParticipantPredicate;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceLoader;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.slf4j.Logger;
@@ -43,6 +45,8 @@ public class EditingContextLoader implements IEditingContextLoader {
 
     private final ISemanticDataSearchService semanticDataSearchService;
 
+    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
+
     private final IResourceLoader resourceLoader;
 
     private final List<IEditingContextRepresentationDescriptionProvider> representationDescriptionProviders;
@@ -51,8 +55,9 @@ public class EditingContextLoader implements IEditingContextLoader {
 
     private final List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates;
 
-    public EditingContextLoader(ISemanticDataSearchService semanticDataSearchService, IResourceLoader resourceLoader, List<IEditingContextRepresentationDescriptionProvider> representationDescriptionProviders, List<IEditingContextProcessor> editingContextProcessors, List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates) {
+    public EditingContextLoader(ISemanticDataSearchService semanticDataSearchService, IProjectSemanticDataSearchService projectSemanticDataSearchService, IResourceLoader resourceLoader, List<IEditingContextRepresentationDescriptionProvider> representationDescriptionProviders, List<IEditingContextProcessor> editingContextProcessors, List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates) {
         this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
+        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
         this.resourceLoader = Objects.requireNonNull(resourceLoader);
         this.representationDescriptionProviders = Objects.requireNonNull(representationDescriptionProviders);
         this.editingContextProcessors = Objects.requireNonNull(editingContextProcessors);
@@ -62,7 +67,10 @@ public class EditingContextLoader implements IEditingContextLoader {
     public void load(EditingContext editingContext, String projectId) {
         this.editingContextProcessors.forEach(processor -> processor.preProcess(editingContext));
 
-        this.semanticDataSearchService.findByProject(AggregateReference.to(projectId))
+        this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(projectId))
+                .map(ProjectSemanticData::getSemanticData)
+                .map(AggregateReference::getId)
+                .flatMap(this.semanticDataSearchService::findById)
                 .ifPresent(semanticData -> this.loadSemanticData(editingContext, semanticData));
 
         this.representationDescriptionProviders.forEach(representationDescriptionProvider -> {

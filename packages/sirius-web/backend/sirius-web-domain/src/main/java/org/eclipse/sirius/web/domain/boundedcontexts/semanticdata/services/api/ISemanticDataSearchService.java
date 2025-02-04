@@ -14,10 +14,9 @@ package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 /**
  * Used to retrieve the semantic data.
@@ -26,7 +25,8 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
  */
 public interface ISemanticDataSearchService {
 
-    Optional<SemanticData> findByProject(AggregateReference<Project, String> project);
-
     List<SemanticData> findAllByDomains(List<String> domainUris);
+
+    Optional<SemanticData> findById(UUID id);
+
 }

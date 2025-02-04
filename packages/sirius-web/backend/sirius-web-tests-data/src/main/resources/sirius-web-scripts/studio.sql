@@ -19,16 +19,28 @@ INSERT INTO nature (
 );
 INSERT INTO semantic_data (
   id,
-  project_id,
   created_on,
   last_modified_on
 ) VALUES (
   'bd3017e3-d95f-4535-8701-af6ba982619f',
-  '250cabc0-a211-438c-8015-2d2aa136eb81',
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
-
+INSERT INTO project_semantic_data (
+  id,
+  project_id,
+  semantic_data_id,
+  name,
+  created_on,
+  last_modified_on
+) VALUES (
+  '4fcf8346-afb8-4c4a-ac6a-be31e9dd910a',
+  '250cabc0-a211-438c-8015-2d2aa136eb81',
+  'bd3017e3-d95f-4535-8701-af6ba982619f',
+  'main',
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000'
+);
 
 -- Sample studio project
 INSERT INTO project (
@@ -51,12 +63,25 @@ INSERT INTO nature (
 );
 INSERT INTO semantic_data (
   id,
-  project_id,
   created_on,
   last_modified_on
 ) VALUES (
   'e344d967-a639-4f6c-9c00-a466d51063c6',
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000'
+);
+INSERT INTO project_semantic_data (
+  id,
+  project_id,
+  semantic_data_id,
+  name,
+  created_on,
+  last_modified_on
+) VALUES (
+  'ce03e33d-0dcc-4c8c-a670-4e5cbc978b32',
   '01234836-0902-418a-900a-4c0afd20323e',
+  'e344d967-a639-4f6c-9c00-a466d51063c6',
+  'main',
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
@@ -662,12 +687,25 @@ INSERT INTO project (
 );
 INSERT INTO semantic_data (
   id,
-  project_id,
   created_on,
   last_modified_on
 ) VALUES (
   '63f4353f-0c71-4122-93be-2d359fc0fa16',
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000'
+);
+INSERT INTO project_semantic_data (
+  id,
+  project_id,
+  semantic_data_id,
+  name,
+  created_on,
+  last_modified_on
+) VALUES (
+  '70958e5d-9872-40c3-9ebe-1acadcd32b74',
   'bb66e0e9-4ab5-47ef-99f5-c6b26be995ea',
+  '63f4353f-0c71-4122-93be-2d359fc0fa16',
+  'main',
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
