@@ -81,7 +81,7 @@ public class EditingContextSearchService implements IEditingContextSearchService
         long start = System.currentTimeMillis();
 
         AdapterFactoryEditingDomain editingDomain = this.editingDomainFactory.createEditingDomain(project);
-        EditingContext editingContext = new EditingContext(project.getId().toString(), editingDomain, new HashMap<>(), new ArrayList<>());
+        EditingContext editingContext = new EditingContext(project.getId(), editingDomain, new HashMap<>(), new ArrayList<>());
         this.editingContextLoader.load(editingContext, project.getId());
 
         long end = System.currentTimeMillis();

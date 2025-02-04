@@ -34,6 +34,7 @@ import org.eclipse.sirius.web.application.controllers.studiofork.graphql.CreateF
 import org.eclipse.sirius.web.application.project.dto.CreateProjectSuccessPayload;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.repositories.ISemanticDataRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
@@ -46,6 +47,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.core.publisher.Flux;
@@ -81,6 +83,9 @@ public class TestCreateForkedStudio extends AbstractIntegrationTests {
 
     @Autowired
     private ISemanticDataRepository semanticDataRepository;
+
+    @Autowired
+    private IProjectSemanticDataSearchService projectSemanticDataSearchService;
 
     @Autowired
     private IURLParser urlParser;
@@ -160,7 +165,11 @@ public class TestCreateForkedStudio extends AbstractIntegrationTests {
 
 
             //Check that the content of the project contains a copy of the view
-            var semanticData = this.semanticDataRepository.findByProjectId(forkStudioProjectId.get());
+            var optionalProjectSemanticData = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(forkStudioProjectId.get()));
+            assertThat(optionalProjectSemanticData).isPresent();
+
+            var projectSemanticData = optionalProjectSemanticData.get();
+            var semanticData = this.semanticDataRepository.findById(projectSemanticData.getSemanticData().getId());
             assertThat(semanticData).isPresent();
             var documents = semanticData.get().getDocuments();
             var forkedDocument = documents.stream().filter(document -> document.getId().equals(UUID.fromString(sourceId.get()))).findFirst();

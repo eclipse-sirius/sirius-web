@@ -296,7 +296,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         assertThat(optionalProject).isPresent();
         optionalProject.ifPresent(project -> assertThat(project.getName()).isEqualTo(input.name()));
 
-        assertThat(this.domainEventCollector.getDomainEvents()).hasSize(2);
+        assertThat(this.domainEventCollector.getDomainEvents()).hasSize(3);
         var event = this.domainEventCollector.getDomainEvents().get(0);
         assertThat(event).isInstanceOf(ProjectCreatedEvent.class);
     }
@@ -353,7 +353,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         TestTransaction.end();
         TestTransaction.start();
 
-        assertThat(this.domainEventCollector.getDomainEvents()).hasSize(2);
+        assertThat(this.domainEventCollector.getDomainEvents()).hasSize(3);
         var event = this.domainEventCollector.getDomainEvents().get(0);
         assertThat(event).isInstanceOf(ProjectCreatedEvent.class);
 

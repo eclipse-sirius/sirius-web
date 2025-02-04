@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,6 +45,8 @@ import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.project.dto.NatureDTO;
 import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
@@ -69,6 +71,8 @@ public class CreateForkedStudioService implements ICreateForkedStudioService {
 
     private final ISemanticDataSearchService semanticDataSearchService;
 
+    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
+
     private final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
 
     private final IObjectService objectService;
@@ -77,9 +81,10 @@ public class CreateForkedStudioService implements ICreateForkedStudioService {
 
     private final IForkedStudioJdbcServices jdbcClient;
 
-    public CreateForkedStudioService(IRepresentationMetadataSearchService representationMetadataSearchService, IObjectService objectService, IURLParser urlParser,
+    public CreateForkedStudioService(IRepresentationMetadataSearchService representationMetadataSearchService, IProjectSemanticDataSearchService projectSemanticDataSearchService, IObjectService objectService, IURLParser urlParser,
                                      ForkedStudioJdbcClient jdbcClient, ISemanticDataSearchService semanticDataSearchService, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService) {
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
+        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
         this.objectService = Objects.requireNonNull(objectService);
         this.urlParser = Objects.requireNonNull(urlParser);
         this.jdbcClient = Objects.requireNonNull(jdbcClient);
@@ -153,7 +158,11 @@ public class CreateForkedStudioService implements ICreateForkedStudioService {
             var viewToSerialize = getViewDescriptionAsString(representationDescription.get(), sourceElementId);
 
             if (viewToSerialize.isPresent() && project.isPresent() && project.get().getId() != null) {
-                var semanticData = this.semanticDataSearchService.findByProject(AggregateReference.to(project.get().getId()));
+                var semanticData = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(project.get().getId()))
+                        .map(ProjectSemanticData::getSemanticData)
+                        .map(AggregateReference::getId)
+                        .flatMap(this.semanticDataSearchService::findById);
+
                 if (semanticData.isPresent() && semanticData.get().getId() != null) {
                     String semanticProjectId = semanticData.get().getId().toString();
 

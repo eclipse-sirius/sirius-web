@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.repositories;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
@@ -29,13 +28,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ISemanticDataRepository extends ListPagingAndSortingRepository<SemanticData, UUID>, ListCrudRepository<SemanticData, UUID> {
-
-    @Query("""
-        SELECT *
-        FROM semantic_data semanticData
-        WHERE semanticData.project_id = :projectId
-        """)
-    Optional<SemanticData> findByProjectId(String projectId);
 
     @Query("""
         SELECT semanticData.*
