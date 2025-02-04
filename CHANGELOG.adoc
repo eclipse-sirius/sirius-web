@@ -42,7 +42,9 @@ Use the new frontend extension point `navigationBarCenterContributionExtensionPo
 See `PapayaExtensionRegistry.tsx` for an example of how rendering a project subtitle can be achieved with the new extension point.
 - https://github.com/eclipse-sirius/sirius-web/issues/4408[#4408] [diagram] Display diagram contextual menu (a.k.a the Palette) with right click instead of left click.
 It is not an API breaking change but a breaking change from the end-user point of view.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4373[#4373] [trees] `onExpand` and `onExpandAll` is removed from `Tree` and all the tree components.
+It is now possible to expand a tree item by using `onExpandedElementChange`.
+The expand all entry (and its implementation) has been moved to Sirius Web as a contribution.
 
 === Dependency update
 
@@ -157,6 +159,10 @@ Note that you may need to encode special characters like `[`(by `%5B`) and `]` (
 - https://github.com/eclipse-sirius/sirius-web/issues/4474[#4474] [query] Add EMF Services (eSet, eUnset) for the Query View.
 - https://github.com/eclipse-sirius/sirius-web/issues/4354[#4354] [table] Add support for cursor based pagination in table view DSL
 - https://github.com/eclipse-sirius/sirius-web/issues/4478[#4478] [sirius-web] Provide an API to search custom resource on download document action
+- https://github.com/eclipse-sirius/sirius-web/issues/4373[#4373] [trees] Allow backend definition of ExpandAll tool in the explorer
+Specifiers can now create `CustomTreeItemContextMenuEntry` instances in the view DSL to indicate to use a frontend component with a given identifier as contextual menu entry.
+This information is passed to the frontend via a dedicated identifier in `SingleClickTreeItemContextMenuEntry#id`.
+The _ExpandAll_ tool is now a Sirius Web contribution that can be enabled via this mechanism.  
 
 
 == v2025.1.0

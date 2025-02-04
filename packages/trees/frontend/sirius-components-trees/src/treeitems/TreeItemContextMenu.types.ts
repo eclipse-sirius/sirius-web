@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,8 +19,9 @@ export interface TreeItemContextMenuProps {
   treeId: string;
   readOnly: boolean;
   depth: number;
-  onExpand: (id: string, depth: number) => void;
-  onExpandAll: (treeItem: GQLTreeItem) => void;
+  expanded: string[];
+  maxDepth: number;
+  onExpandedElementChange: (expanded: string[], maxDepth: number) => void;
   enterEditingMode: () => void;
   onClose: () => void;
 }
@@ -42,10 +43,6 @@ export interface GQLDeleteTreeItemInput {
   editingContextId: string;
   representationId: string;
   treeItemId: string;
-}
-
-export interface TreeItemContextMenuState {
-  menuEntries: TreeItemContextMenuEntry[];
 }
 
 export interface TreeItemContextMenuEntry {
