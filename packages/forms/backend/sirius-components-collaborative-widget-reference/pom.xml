@@ -60,6 +60,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-collaborative-browser</artifactId>
+			<version>2025.1.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-forms</artifactId>
 			<version>2025.1.5</version>
 		</dependency>

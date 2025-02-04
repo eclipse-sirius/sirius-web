@@ -32,6 +32,8 @@ record ModuleCoverage(String moduleName, double expectedCoverage) {}
 var moduleCoverageData = List.of(
   new ModuleCoverage("sirius-components-annotations", 0.0),
   new ModuleCoverage("sirius-components-annotations-spring", 0.0),
+  new ModuleCoverage("sirius-components-browser-graphql", 0.0),
+  new ModuleCoverage("sirius-components-collaborative-browser", 0.0),
   new ModuleCoverage("sirius-components-representations", 78.0),
   new ModuleCoverage("sirius-components-core", 79.0),
   new ModuleCoverage("sirius-components-collaborative", 88.0),

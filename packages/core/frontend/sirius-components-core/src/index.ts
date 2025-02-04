@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo and others.
+ * Copyright (c) 2022, 2025 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,6 +36,7 @@ export { type ExtensionRegistryMergeStrategy } from './extension/ExtensionRegist
 export { useComponent } from './extension/useComponent';
 export { useComponents } from './extension/useComponents';
 export { useData } from './extension/useData';
+export * from './filter/FilterBar';
 export type * from './graphql/GQLTypes.types';
 export * from './icon/IconOverlay';
 export * from './label/StyledLabel';

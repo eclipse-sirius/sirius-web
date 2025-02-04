@@ -21,8 +21,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
+import org.eclipse.sirius.components.collaborative.browser.dto.ModelBrowserEventInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
-import org.eclipse.sirius.components.collaborative.widget.reference.dto.ModelBrowserEventInput;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -70,7 +70,7 @@ public class ModelBrowserControllerTests extends AbstractIntegrationTests {
     @DisplayName("Given a reference widget, when we ask for the model browser for a reference, then its content is properly returned")
     public void givenReferenceWidgetWhenWeAskForTheModelBrowserForReferenceThenItsContentIsProperlyReturned() {
         var representationId = this.representationIdBuilder.buildModelBrowserRepresentationId("reference", "siriusComponents://semantic?domain=view&entity=Entity", "siriusComponents://semantic?domain=view&entity=Entity", StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString(), "domain.entity.superTypes", false, List.of(StudioIdentifiers.DOMAIN_DOCUMENT.toString(), StudioIdentifiers.DOMAIN_OBJECT.toString()));
-        var input = new ModelBrowserEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString(), representationId);
+        var input = new ModelBrowserEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT, representationId);
         var flux = this.treeEventSubscriptionRunner.run(input);
 
         Consumer<Object> initialTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {

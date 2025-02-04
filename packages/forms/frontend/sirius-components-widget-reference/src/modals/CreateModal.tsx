@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useLazyQuery, useMutation } from '@apollo/client';
+import { ModelBrowserTreeView } from '@eclipse-sirius/sirius-components-browser';
 import { IconOverlay, Selection, SelectionContext, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -25,7 +26,6 @@ import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { StateMachine } from 'xstate';
-import { ModelBrowserTreeView } from '../components/ModelBrowserTreeView';
 import {
   CreateModalProps,
   GQLCreateElementInReferenceInput,
@@ -395,7 +395,10 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
           {widget.reference.containment ? null : (
             <ModelBrowserTreeView
               editingContextId={editingContextId}
-              widget={widget}
+              referenceKind={widget.reference.referenceKind}
+              ownerId={widget.ownerId}
+              descriptionId={widget.descriptionId}
+              isContainment={widget.reference.containment}
               markedItemIds={[]}
               enableMultiSelection={false}
               title={'Select the container'}

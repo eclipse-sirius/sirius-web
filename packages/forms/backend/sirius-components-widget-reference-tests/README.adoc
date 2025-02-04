@@ -1,0 +1,13 @@
+= sirius-components-widget-reference-tests
+
+== Goal
+
+This project is used to tests widget-reference.
+
+== Dependencies
+
+- sirius-components-widget-reference
+- sirius-components-collaborative-widget-reference
+- AssertJ
+
+This project should not depend on anything else without a good reason to do so.

@@ -43,6 +43,7 @@ See `PapayaExtensionRegistry.tsx` for an example of how rendering a project subt
 - https://github.com/eclipse-sirius/sirius-web/issues/4408[#4408] [diagram] Display diagram contextual menu (a.k.a the Palette) with right click instead of left click.
 It is not an API breaking change but a breaking change from the end-user point of view.
 - https://github.com/eclipse-sirius/sirius-web/issues/4500[#4500] [sirius-web] Remove the tight coupling between `SemanticData` and `Project` by removing `SemanticData#project` along with the column `project_id` from the `semantic_data` table
+- https://github.com/eclipse-sirius/sirius-web/issues/4501[#4501] [browser] `IReferenceWidgetRootCandidateSearchProvider` API has been renamed to `IModelBrowserRootCandidateSearchProvider` and moved to the `sirius-components-collaborative-browser` module.
 
 
 === Dependency update
@@ -160,6 +161,7 @@ Note that you may need to encode special characters like `[`(by `%5B`) and `]` (
 - https://github.com/eclipse-sirius/sirius-web/issues/4478[#4478] [sirius-web] Provide an API to search custom resource on download document action
 - https://github.com/eclipse-sirius/sirius-web/issues/4500[#4500] [sirius-web] Reduce the coupling between semantic data and project to be able to leverage the semantic data concept in other use cases.
 To achieve that a new concept, `ProjectSemanticData` has been added along with a dedicated table to keep the information previously contained in `SemanticData`
+- https://github.com/eclipse-sirius/sirius-web/issues/4501[#4501] [browser] Extract the model browser into reusable modules
 
 
 == v2025.1.0

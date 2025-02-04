@@ -1,0 +1,10 @@
+= sirius-components-browser-graphql
+
+== Goal
+
+This project provides GraphQL support for our model browser.
+
+== Dependencies
+
+- sirius-components-collaborative-browser
+- Our GraphQL API

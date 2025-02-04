@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useQuery } from '@apollo/client';
+import { ModelBrowserTreeView } from '@eclipse-sirius/sirius-components-browser';
 import {
   DRAG_SOURCES_TYPE,
   SelectionContext,
@@ -30,7 +31,6 @@ import { makeStyles } from 'tss-react/mui';
 import React, { useEffect, useState } from 'react';
 import { FilterableSortableList } from '../components/FilterableSortableList';
 import { FilterableSortableListItem } from '../components/FilterableSortableList.types';
-import { ModelBrowserTreeView } from '../components/ModelBrowserTreeView';
 import {
   GQLFormDescription,
   GQLGetReferenceValueOptionsQueryData,
@@ -253,7 +253,10 @@ export const TransferModal = ({
               <div className={classes.paper} onDragOver={handleDragOverLeft} onDrop={handleDropLeft}>
                 <ModelBrowserTreeView
                   editingContextId={editingContextId}
-                  widget={widget}
+                  referenceKind={widget.reference.referenceKind}
+                  ownerId={widget.ownerId}
+                  descriptionId={widget.descriptionId}
+                  isContainment={widget.reference.containment}
                   markedItemIds={state.right.map((entry) => entry.id)}
                   enableMultiSelection={widget.reference.manyValued}
                   title={'Choices'}
