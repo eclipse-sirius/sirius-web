@@ -108,10 +108,16 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
                 .contextMenuEntries(contextMenuEntry)
                 .build();
 
+        var setNameOperation = new ViewBuilders().newSetValue()
+                .featureName("name")
+                .valueExpression("aql:newValue");
+
         var nameCellDescription = new TableBuilders().newCellDescription()
                 .preconditionExpression("aql:columnTargetObject.equals('Name')")
                 .valueExpression("aql:self.name")
-                .cellWidgetDescription(new TableBuilders().newCellTextfieldWidgetDescription().build())
+                .cellWidgetDescription(new TableBuilders().newCellTextfieldWidgetDescription()
+                        .body(setNameOperation.build())
+                        .build())
                 .selectedTargetObjectExpression("aql:self.eContainer()")
                 .build();
 
