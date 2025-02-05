@@ -16,16 +16,30 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.dto.Identified;
 import org.eclipse.sirius.web.application.object.services.api.IDefaultObjectRestService;
+import org.eclipse.sirius.web.application.object.services.api.IEObjectRestDeserializer;
+import org.eclipse.sirius.web.application.object.services.api.IEObjectRestSerializer;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.ChangeType;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.RestBranch;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.RestCommit;
@@ -55,10 +69,19 @@ public class DefaultProjectDataVersiongRestService implements IDefaultProjectDat
 
     private final IProjectEditingContextService projectEditingContextService;
 
-    public DefaultProjectDataVersiongRestService(IDefaultObjectRestService defaultObjectRestService, IObjectService objectService, IProjectEditingContextService projectEditingContextService) {
+    private final IEditService editService;
+
+    private final IEObjectRestSerializer eObjectRestSerializer;
+
+    private final IEObjectRestDeserializer objectRestDeserializer;
+
+    public DefaultProjectDataVersiongRestService(IDefaultObjectRestService defaultObjectRestService, IObjectService objectService, IProjectEditingContextService projectEditingContextService, IEditService editService, IEObjectRestSerializer eObjectRestSerializer, IEObjectRestDeserializer objectRestDeserializer) {
         this.defaultObjectRestService = Objects.requireNonNull(defaultObjectRestService);
         this.objectService = Objects.requireNonNull(objectService);
         this.projectEditingContextService = Objects.requireNonNull(projectEditingContextService);
+        this.editService = Objects.requireNonNull(editService);
+        this.eObjectRestSerializer = Objects.requireNonNull(eObjectRestSerializer);
+        this.objectRestDeserializer = Objects.requireNonNull(objectRestDeserializer);
     }
 
     /**
@@ -77,10 +100,57 @@ public class DefaultProjectDataVersiongRestService implements IDefaultProjectDat
     }
 
     /**
-     * The default implementation does not allow several commits per project.
+     * The default implementation does not allow several commits per project. An amend commit is then executed.
      */
     @Override
-    public RestCommit createCommit(IEditingContext editingContext, Optional<UUID> branchId) {
+    public RestCommit createCommit(IEditingContext editingContext, Optional<UUID> branchId, List<RestDataVersion> changes) {
+        var objectsToDelete = new HashSet<>();
+        var emptyNewObjects = new HashMap<EObject, Map<String, Object>>();
+        var objectsToUpdate = new HashMap<EObject, Map<String, Object>>();
+        var optionalProjectId = this.projectEditingContextService.getProjectId(editingContext.getId()).flatMap(new UUIDParser()::parse);
+        if (optionalProjectId.isPresent()) {
+            for (RestDataVersion dataVersion : changes) {
+                var payload = dataVersion.payload();
+                var identity = dataVersion.identity();
+
+                if (payload == null && identity != null && identity.id() != null) {
+                    this.objectService.getObject(editingContext, identity.id().toString()).ifPresent(objectsToDelete::add);
+                } else if (payload != null && identity == null) {
+                    var rawType = payload.get("@type");
+                    if (rawType instanceof String type) {
+                        this.createEmptyEObject(editingContext, type).ifPresent(newEObject -> {
+                            emptyNewObjects.put(newEObject, payload);
+                        });
+                    }
+                } else if (payload != null && identity != null && identity.id() != null) {
+                    this.objectService.getObject(editingContext, identity.id().toString())
+                        .filter(EObject.class::isInstance)
+                        .map(EObject.class::cast)
+                        .ifPresent(existingObject -> {
+                            objectsToUpdate.put(existingObject, payload);
+                        });
+                }
+            }
+            objectsToDelete.forEach(this.editService::delete);
+
+            var newObjectsAttached = new HashSet<EObject>();
+            emptyNewObjects.forEach((newEObject, payload) -> this.objectRestDeserializer.fromMap(editingContext, payload, newEObject, emptyNewObjects, newObjectsAttached));
+            objectsToUpdate.forEach((existingObject, payload) -> this.objectRestDeserializer.fromMap(editingContext, payload, existingObject, emptyNewObjects, newObjectsAttached));
+
+            emptyNewObjects.forEach((newObject, payload) -> {
+                if (!newObjectsAttached.contains(newObject)) {
+                    // object with no container, so add it as root object to the first sirius document found
+                    this.getResourceSet(editingContext).map(ResourceSet::getResources).stream()
+                        .flatMap(Collection::stream)
+                        .filter(r -> r.getURI().scheme().equals(IEMFEditingContext.RESOURCE_SCHEME))
+                        .findFirst()
+                        .ifPresent(r -> {
+                            r.getContents().add(newObject);
+                        });
+                }
+            });
+            return new RestCommit(optionalProjectId.get(), DEFAULT_CREATED, DEFAULT_COMMIT_DESCRIPTION, new Identified(optionalProjectId.get()), List.of());
+        }
         return null;
     }
 
@@ -111,11 +181,15 @@ public class DefaultProjectDataVersiongRestService implements IDefaultProjectDat
                 .flatMap(new UUIDParser()::parse);
 
         if (commitId != null && optionalProjectId.isPresent() && commitId.toString().equals(optionalProjectId.get().toString()) && changeTypesAllowed) {
-            var elements = this.defaultObjectRestService.getElements(editingContext);
+            var elements = this.defaultObjectRestService.getElements(editingContext).stream()
+                    .filter(EObject.class::isInstance)
+                    .map(EObject.class::cast)
+                    .toList();
             for (var element : elements) {
                 var elementId = this.objectService.getId(element);
                 var changeId = UUID.nameUUIDFromBytes((commitId + elementId).getBytes());
-                var dataVersion = new RestDataVersion(changeId, new RestDataIdentity(UUID.fromString(elementId)), element);
+                var payload = this.eObjectRestSerializer.toMap(element);
+                var dataVersion = new RestDataVersion(changeId, new RestDataIdentity(UUID.fromString(elementId)), payload);
                 dataVersions.add(dataVersion);
             }
         }
@@ -129,13 +203,17 @@ public class DefaultProjectDataVersiongRestService implements IDefaultProjectDat
                 .flatMap(new UUIDParser()::parse);
 
         if (changeId != null && commitId != null && optionalProjectId.isPresent() && commitId.toString().equals(optionalProjectId.get().toString())) {
-            var elements = this.defaultObjectRestService.getElements(editingContext);
+            var elements = this.defaultObjectRestService.getElements(editingContext).stream()
+                    .filter(EObject.class::isInstance)
+                    .map(EObject.class::cast)
+                    .toList();
             for (var element : elements) {
                 var elementId = this.objectService.getId(element);
                 if (elementId != null) {
                     var computedChangeId = UUID.nameUUIDFromBytes((commitId + elementId).getBytes());
                     if (changeId.toString().equals(computedChangeId.toString())) {
-                        dataVersion = new RestDataVersion(changeId, new RestDataIdentity(UUID.fromString(elementId)), element);
+                        var payload = this.eObjectRestSerializer.toMap(element);
+                        dataVersion = new RestDataVersion(changeId, new RestDataIdentity(UUID.fromString(elementId)), payload);
                         break;
                     }
                 }
@@ -184,5 +262,30 @@ public class DefaultProjectDataVersiongRestService implements IDefaultProjectDat
     @Override
     public RestBranch deleteBranch(IEditingContext editingContext, UUID branchId) {
         return null;
+    }
+
+    private Optional<ResourceSet> getResourceSet(IEditingContext editingContext) {
+        return Optional.of(editingContext)
+            .filter(IEMFEditingContext.class::isInstance)
+            .map(IEMFEditingContext.class::cast)
+            .map(IEMFEditingContext::getDomain)
+            .map(AdapterFactoryEditingDomain::getResourceSet);
+    }
+
+    private Optional<EObject> createEmptyEObject(IEditingContext editingContext, String type) {
+        return this.getResourceSet(editingContext)
+            .map(ResourceSet::getPackageRegistry)
+            .map(EPackage.Registry::values)
+            .stream()
+            .flatMap(Collection::stream)
+            .filter(EPackage.class::isInstance)
+            .map(EPackage.class::cast)
+            .map(ePackage -> Optional.ofNullable(ePackage.getEClassifier(type))
+                    .filter(EClass.class::isInstance)
+                    .map(EClass.class::cast)
+                    .filter(eClass -> !(eClass.isAbstract() || eClass.isInterface())))
+            .flatMap(Optional::stream)
+            .map(EcoreUtil::create)
+            .findFirst();
     }
 }

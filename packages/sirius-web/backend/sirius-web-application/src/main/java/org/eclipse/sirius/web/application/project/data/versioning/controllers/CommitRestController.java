@@ -140,7 +140,12 @@ public class CommitRestController {
             List<RestDataVersion> change = new ArrayList<>();
             if (dataVersionRequests != null) {
                 for (RestDataVersionRequest dataVersionRequest : dataVersionRequests) {
-                    change.add(new RestDataVersion(UUID.randomUUID(), new RestDataIdentity(dataVersionRequest.identity().id()), dataVersionRequest.payload()));
+                    RestDataIdentity dataIdentity = null;
+                    var identity = dataVersionRequest.identity();
+                    if (identity != null) {
+                        dataIdentity = new RestDataIdentity(identity.id());
+                    }
+                    change.add(new RestDataVersion(UUID.randomUUID(), dataIdentity, dataVersionRequest.payload()));
                 }
             }
             var payload = this.editingContextDispatcher.dispatchMutation(editingContextId, new CreateCommitRestInput(UUID.randomUUID(), branchId, change, requestBody.description())).block(Duration.ofSeconds(TIMEOUT));
