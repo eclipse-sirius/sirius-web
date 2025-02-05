@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.application.controllers.objects;
 
 import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.application.controllers.rest.RestTestsData;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -34,55 +35,6 @@ import org.springframework.transaction.annotation.Transactional;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTests {
-
-    private static final String ECORE_SAMPLE_PKG = """
-            {
-                "@id": "%s",
-                "@type": "EPackage",
-                "name": "Sample",
-                "nsURI": null,
-                "nsPrefix": null,
-                "eAnnotations": [],
-                "eClassifiers": [
-                    {
-                        "@id": "%s"
-                    }
-                ],
-                "eSubpackages": [],
-                "eSuperPackage": null
-            }
-            """.formatted(TestIdentifiers.EPACKAGE_OBJECT, TestIdentifiers.ECLASS_OBJECT);
-
-    private static final String ECORE_SAMPLE_ECLASS = """
-            {
-                "@id": "%s",
-                "@type": "EClass",
-                "name": "SampleEClass",
-                "instanceClassName": null,
-                "instanceClass": null,
-                "defaultValue": null,
-                "instanceTypeName": null,
-                "abstract": "false",
-                "interface": "false",
-                "eAnnotations": [],
-                "ePackage": { "@id": "%s" },
-                "eTypeParameters": [],
-                "eSuperTypes": [],
-                "eOperations": [],
-                "eAllAttributes": [],
-                "eAllReferences": [],
-                "eReferences": [],
-                "eAttributes": [],
-                "eAllContainments": [],
-                "eAllOperations": [],
-                "eAllStructuralFeatures": [],
-                "eAllSuperTypes": [],
-                "eIDAttribute": null,
-                "eStructuralFeatures": [],
-                "eGenericSuperTypes": [],
-                "eAllGenericSuperTypes": []
-            }
-            """.formatted(TestIdentifiers.ECLASS_OBJECT, TestIdentifiers.EPACKAGE_OBJECT);
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
@@ -114,7 +66,7 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
                 .expectStatus()
                 .isOk()
                 .expectBody()
-                .json("[%s, %s]".formatted(ECORE_SAMPLE_PKG, ECORE_SAMPLE_ECLASS));
+                .json("[%s, %s]".formatted(RestTestsData.ECORE_SAMPLE_PKG, RestTestsData.ECORE_SAMPLE_ECLASS));
 
 
         uri = String.format("/api/rest/projects/%s/commits/%s/elements", TestIdentifiers.UML_SAMPLE_PROJECT, TestIdentifiers.UML_SAMPLE_PROJECT);
@@ -158,7 +110,7 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
                 .expectStatus()
                 .isOk()
                 .expectBody()
-                .json(ECORE_SAMPLE_PKG);
+                .json(RestTestsData.ECORE_SAMPLE_PKG);
     }
 
     @Test
@@ -173,7 +125,8 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
         webTestClient.get()
                 .uri(uri)
                 .exchange()
-                .expectStatus().isNotFound();
+                .expectStatus()
+                .isNotFound();
     }
 
     @Test
@@ -225,7 +178,7 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
                 .expectStatus()
                 .isOk()
                 .expectBody()
-                .json("[%s]".formatted(ECORE_SAMPLE_PKG));
+                .json("[%s]".formatted(RestTestsData.ECORE_SAMPLE_PKG));
     }
 
     @Test

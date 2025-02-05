@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.application.project.data.versioning.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Map;
 import java.util.Objects;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -43,7 +44,7 @@ public record RestDataVersionRequest(
         RestDataIdentityRequest identity,
 
         @Schema(description = "DataVersion.payload should be populated with the Data being created")
-        IRestDataRequest payload) {
+        Map<String, Object> payload) {
 
     public RestDataVersionRequest {
         Objects.requireNonNull(type);
@@ -53,7 +54,7 @@ public record RestDataVersionRequest(
 
     public RestDataVersionRequest(
             RestDataIdentityRequest identity,
-            IRestDataRequest payload) {
+            Map<String, Object> payload) {
         this("DataVersion", identity, payload);
     }
 }

@@ -56,14 +56,14 @@ public class ComposedProjectDataVersioningRestService implements IProjectDataVer
     }
 
     @Override
-    public RestCommit createCommit(IEditingContext editingContext, Optional<UUID> branchId) {
+    public RestCommit createCommit(IEditingContext editingContext, Optional<UUID> branchId, List<RestDataVersion> changes) {
         var optionalDelegate = this.projectDataVersioningRestServiceDelegate.stream()
                 .filter(delegate -> delegate.canHandle(editingContext))
                 .findFirst();
         if (optionalDelegate.isPresent()) {
-            return optionalDelegate.get().createCommit(editingContext, branchId);
+            return optionalDelegate.get().createCommit(editingContext, branchId, changes);
         }
-        return this.defaultProjectDataVersioningRestService.createCommit(editingContext, branchId);
+        return this.defaultProjectDataVersioningRestService.createCommit(editingContext, branchId, changes);
     }
 
     @Override
