@@ -292,7 +292,6 @@ const nodesApolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (curre
   return {
     ...currentOptions,
     documentTransform: newDocumentTransform,
-    link: new ApolloLinkUndoRedoStack().concat(currentOptions.link),
   };
 };
 
@@ -308,9 +307,20 @@ const widgetsApolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (cur
   };
 };
 
+const undoRedoApolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (currentOptions) => {
+  return {
+    ...currentOptions,
+    link: new ApolloLinkUndoRedoStack().concat(currentOptions.link),
+  };
+};
+
 defaultExtensionRegistry.putData(apolloClientOptionsConfigurersExtensionPoint, {
   identifier: `siriusWeb_${apolloClientOptionsConfigurersExtensionPoint.identifier}`,
-  data: [nodesApolloClientOptionsConfigurer, widgetsApolloClientOptionsConfigurer],
+  data: [
+    nodesApolloClientOptionsConfigurer,
+    widgetsApolloClientOptionsConfigurer,
+    undoRedoApolloClientOptionsConfigurer,
+  ],
 });
 
 /*******************************************************************************
