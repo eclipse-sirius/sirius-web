@@ -50,6 +50,15 @@ It is not an API breaking change but a breaking change from the end-user point o
 In order to find the `editingContextId` from the `projectId` one should leverage `IProjectSemanticDataSearchService#findByProjectId` and use the `ìd` of the semantic data found.
 To find instead the `projectId` from the `editingContextId`, `IProjectSemanticDataSearchService#findBySemanticDataId` should be used along with the `id` of the project.
 The method `IEditingContextLoader#load` has also been updated to not use `projectId` as parameter anymore but instead the `SemanticData` directly.
+- https://github.com/eclipse-sirius/sirius-web/issues/4518[#4518] [sirius-web] Allow createCommit REST API to amend commit.
+`IProjectDataVersioningRestService#createCommit` has a new `List<RestDataVersion> changes` parameter.
+`IDefaultProjectDataVersioningRestService#createCommit` has a new `List<RestDataVersion> changes` parameter.
+`IProjectDataVersioningRestServiceDelegate#createCommit` has a new `List<RestDataVersion> changes` parameter.
+`RestDataVersionPayloadSerializer` has been deleted.
+There is no more need for a specific serializer for this `RestDataVersion#payload` attribute, because `RestDataVersion#payload` is now typed with a `Map<String, Object>` instead of `Object`.
+The `Map<String, Object>` is handled by the default serializer/deserializer. 
+`RestDataVersionRequest#payload` is now typed by a `Map<String, Object>` instead of `IRestDataRequest`.
+The `Map<String, Object>` is handled by the default serializer/deserializer. 
 
 
 === Dependency update
