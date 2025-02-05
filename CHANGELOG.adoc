@@ -21,7 +21,15 @@
 - [releng] Sirius Web now requires on PostgreSQL v15 or later.
 Version 12 which was documented/recommended in our README and used for the frontend e2e tests on the CI is EOL since last November (see https://www.postgresql.org/support/versioning/).
 Our backend integration tests actual use the `postgres:latest` image (see `AbstractIntegrationTests`), v15 is somewhat arbitrary middle ground of a still maintained version to test against for the e2e tests while not being the "bleeding edge".
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4518[#4518] [sirius-web] Allow createCommit REST API to amend commit.
+`IProjectDataVersioningRestService#createCommit` has a new `List<RestDataVersion> changes` parameter.
+`IDefaultProjectDataVersioningRestService#createCommit` has a new `List<RestDataVersion> changes` parameter.
+`IProjectDataVersioningRestServiceDelegate#createCommit` has a new `List<RestDataVersion> changes` parameter.
+`RestDataVersionPayloadSerializer` has been deleted.
+There is no more need for a specific serializer for this `RestDataVersion#payload` attribute, because `RestDataVersion#payload` is now typed with a `Map<String, Object>` instead of `Object`.
+The `Map<String, Object>` is handled by the default serializer/deserializer. 
+`RestDataVersionRequest#payload` is now typed by a `Map<String, Object>` instead of `IRestDataRequest`.
+The `Map<String, Object>` is handled by the default serializer/deserializer.
 
 === Dependency update
 
@@ -47,7 +55,7 @@ Except for the specific case where `cause === 'refresh'` in `DiagramRenderer` (w
 - https://github.com/eclipse-sirius/sirius-web/issues/4581[#4581] [sirius-web] Make (almost) all data fetchers use `IEditingContextDispatcher` instead of using `IEditingContextEventProcessorRegistry` directly.
 - https://github.com/eclipse-sirius/sirius-web/issues/4606[#4606] [sirius-web] Allow the loading of an editing context containing a papaya library
 - https://github.com/eclipse-sirius/sirius-web/issues/4628[#4628] [sirius-web] Allow the loading of an editing context containing a studio library
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4518[#4518] [sirius-web] Allow createCommit REST API to amend commit.
 
 
 == v2025.2.0
@@ -102,7 +110,6 @@ It is not an API breaking change but a breaking change from the end-user point o
 In order to find the `editingContextId` from the `projectId` one should leverage `IProjectSemanticDataSearchService#findByProjectId` and use the `ìd` of the semantic data found.
 To find instead the `projectId` from the `editingContextId`, `IProjectSemanticDataSearchService#findBySemanticDataId` should be used along with the `id` of the project.
 The method `IEditingContextLoader#load` has also been updated to not use `projectId` as parameter anymore but instead the `SemanticData` directly.
-
 
 === Dependency update
 

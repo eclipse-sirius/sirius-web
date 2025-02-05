@@ -196,7 +196,9 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           build: docker compose -f ../packages/sirius-web/backend/sirius-web/docker-compose.yml up -d
-          start: docker compose -f ../packages/sirius-web/backend/sirius-web/docker-compose.yml ps
+          start: |
+            docker compose -f ../packages/sirius-web/backend/sirius-web/docker-compose.yml ps
+            docker compose -f ../packages/sirius-web/backend/sirius-web/docker-compose.yml logs
           wait-on: "http://localhost:8080"
           wait-on-timeout: 180
           working-directory: integration-tests
