@@ -32,7 +32,15 @@ Given that it is an application service, it comes with some constraints with reg
 `IProjectEditingContextApplicationService` has thus been modified to be more focused on its original goal as the behavior of the `Project#currentEditingContext` datafetcher.
 - https://github.com/eclipse-sirius/sirius-web/issues/4443[#4443] [table] `ICell` has a new method `getDescriptionId` that all implementors should provide.
 - https://github.com/eclipse-sirius/sirius-web/issues/4577[#4577] [diagram] Remove `payload` and `refreshEventPayloadId` from `DiagramContext` since they are not used anymore
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4518[#4518] [sirius-web] Allow createCommit REST API to amend commit.
+`IProjectDataVersioningRestService#createCommit` has a new `List<RestDataVersion> changes` parameter.
+`IDefaultProjectDataVersioningRestService#createCommit` has a new `List<RestDataVersion> changes` parameter.
+`IProjectDataVersioningRestServiceDelegate#createCommit` has a new `List<RestDataVersion> changes` parameter.
+`RestDataVersionPayloadSerializer` has been deleted.
+There is no more need for a specific serializer for this `RestDataVersion#payload` attribute, because `RestDataVersion#payload` is now typed with a `Map<String, Object>` instead of `Object`.
+The `Map<String, Object>` is handled by the default serializer/deserializer. 
+`RestDataVersionRequest#payload` is now typed by a `Map<String, Object>` instead of `IRestDataRequest`.
+The `Map<String, Object>` is handled by the default serializer/deserializer.
 
 === Dependency update
 
@@ -72,7 +80,6 @@ A default implementation has been provided to return `true` if the object belong
 This predicate is used in Sirius Web's explorer to prevent users from deleting or renaming elements from libraries.
 This API is provisionnal for the moment and it may be moved or changed while improving the support for libraries.
 
-
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4495[#4495] [form] Add an user indicator when executing form actions
@@ -92,7 +99,7 @@ Except for the specific case where `cause === 'refresh'` in `DiagramRenderer` (w
 - https://github.com/eclipse-sirius/sirius-web/issues/4575[#4575] [diagram] Memoize the style of a label to avoid rerendering them all when refreshing the diagram
 - https://github.com/eclipse-sirius/sirius-web/issues/4577[#4577] [diagram] Improve the performance of the diagram by removing useless data from `DiagramContext`
 - https://github.com/eclipse-sirius/sirius-web/issues/4556[#4556] [table] Add the support of row hierarchy in tables
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4518[#4518] [sirius-web] Allow the createCommit REST API to amend commit
 
 
 == v2025.2.0
@@ -147,7 +154,6 @@ It is not an API breaking change but a breaking change from the end-user point o
 In order to find the `editingContextId` from the `projectId` one should leverage `IProjectSemanticDataSearchService#findByProjectId` and use the `ìd` of the semantic data found.
 To find instead the `projectId` from the `editingContextId`, `IProjectSemanticDataSearchService#findBySemanticDataId` should be used along with the `id` of the project.
 The method `IEditingContextLoader#load` has also been updated to not use `projectId` as parameter anymore but instead the `SemanticData` directly.
-
 
 === Dependency update
 

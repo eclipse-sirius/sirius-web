@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -64,21 +64,21 @@ public class CreateCommitRestEventHandler implements IEditingContextEventHandler
 
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
         this.counter.increment();
 
         String message = this.messageService.invalidInput(input.getClass().getSimpleName(), CreateCommitRestInput.class.getSimpleName());
         IPayload payload = new ErrorPayload(input.id(), message);
         if (input instanceof CreateCommitRestInput restInput) {
-            var commit = this.projectDataVersioningRestService.createCommit(editingContext, restInput.branchId());
+            var commit = this.projectDataVersioningRestService.createCommit(editingContext, restInput.branchId(), restInput.change());
             if (commit != null) {
                 payload = new CreateCommitRestSuccessPayload(UUID.randomUUID(), commit);
+                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
             } else {
                 payload = new ErrorPayload(input.id(), "Unable to create a new commit.");
             }
         }
         payloadSink.tryEmitValue(payload);
-
-        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 }

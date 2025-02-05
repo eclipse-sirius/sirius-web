@@ -93,6 +93,10 @@
 			<artifactId>sirius-web-e2e-tests</artifactId>
 			<version>2025.2.2</version>
 		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
 
 		<!-- Test Dependencies -->
 		<dependency>
