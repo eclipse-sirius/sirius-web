@@ -33,7 +33,7 @@ public interface IProjectDataVersioningRestServiceDelegate {
 
     List<RestCommit> getCommits(IEditingContext editingContext);
 
-    RestCommit createCommit(IEditingContext editingContext, Optional<UUID> branchId);
+    RestCommit createCommit(IEditingContext editingContext, Optional<UUID> branchId, List<RestDataVersion> changes);
 
     RestCommit getCommitById(IEditingContext editingContext, UUID commitId);
 
