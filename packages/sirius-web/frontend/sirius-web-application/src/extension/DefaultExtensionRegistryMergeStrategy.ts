@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,11 +25,15 @@ export class DefaultExtensionRegistryMergeStrategy implements ExtensionRegistryM
   ): ComponentExtension<any>[] {
     return [...existingValues, ...newValues];
   }
+
   public mergeDataExtensions(
     _identifier: string,
-    _existingValue: DataExtension<any>,
+    existingValue: DataExtension<any>,
     newValue: DataExtension<any>
   ): DataExtension<any> {
+    console.debug(
+      `The extension with identifier ${existingValue.identifier} has been overwritten by ${newValue.identifier}`
+    );
     return newValue;
   }
 }
