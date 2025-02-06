@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -95,6 +95,7 @@ export const editProjectViewMachine = Machine<EditProjectViewContext, EditProjec
             label: project.currentEditingContext.representation.label,
             kind: project.currentEditingContext.representation.kind,
             iconURLs: project.currentEditingContext.representation.iconURLs,
+            descriptionId: project.currentEditingContext.representation.descriptionId,
           };
         }
 
