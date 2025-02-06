@@ -39,6 +39,7 @@ type RepresentationMetadata {
   kind: String!
   description: RepresentationDescription!
   iconURLs: [String!]!
+  descriptionId: String!
 }
 
 interface Representation {
