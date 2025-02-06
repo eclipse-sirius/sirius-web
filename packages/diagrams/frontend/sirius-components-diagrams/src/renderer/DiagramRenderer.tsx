@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Selection, useData, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { Selection, theme, useData, useSelection } from '@eclipse-sirius/sirius-components-core';
 import {
   Background,
   BackgroundVariant,
@@ -77,9 +77,25 @@ import { useDiagramSelection } from './selection/useDiagramSelection';
 import { useShiftSelection } from './selection/useShiftSelection';
 import { useSnapToGrid } from './snap-to-grid/useSnapToGrid';
 
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 import '@xyflow/react/dist/style.css';
+import { makeStyles } from 'tss-react/mui';
+import { useActionsStates } from '../representation/useActionsStates';
 
 const GRID_STEP: number = 10;
+
+const useDiagramRendererStyles = makeStyles()((theme) => ({
+  loadingIndicator: {
+    color: theme.palette.divider,
+    marginLeft: theme.spacing(2),
+  },
+  loadingBackdrop: {
+    backgroundColor: 'transparent',
+    boxShadow: 'none',
+    zIndex: theme.zIndex.drawer + 1,
+  },
+}));
 
 export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRendererProps) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
@@ -420,6 +436,8 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   );
 
   const { nodesDraggable } = useNodesDraggable();
+  const { isLoading } = useActionsStates();
+  const { classes } = useDiagramRendererStyles();
 
   let reactFlowProps: ReactFlowProps<Node<NodeData>, Edge<EdgeData>> = {
     nodes: nodes,
@@ -458,7 +476,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     connectionMode: ConnectionMode.Loose,
     zoomOnDoubleClick: false,
     connectionLineType: ConnectionLineType.SmoothStep,
-    nodesDraggable: nodesDraggable,
+    nodesDraggable: nodesDraggable && !readOnly,
     children: (
       <>
         {snapToGrid ? (
@@ -505,6 +523,8 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         <ConnectorContextualMenu />
         {helperLinesEnabled ? <HelperLines horizontal={horizontalHelperLine} vertical={verticalHelperLine} /> : null}
         <MiniMap pannable zoomable zoomStep={2} />
+        <Backdrop className={classes.loadingBackdrop} open={isLoading}></Backdrop>
+        {isLoading ? <CircularProgress className={classes.loadingIndicator} size={`${theme.spacing(2)}`} /> : null}
       </>
     ),
   };

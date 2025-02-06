@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { useSelection, WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
 import { FormBasedView, FormContext } from '@eclipse-sirius/sirius-components-forms';
+import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
@@ -22,6 +23,10 @@ import { GQLDetailsEventPayload, GQLFormRefreshedEventPayload } from './useDetai
 const useDetailsViewStyles = makeStyles()((theme) => ({
   idle: {
     padding: theme.spacing(1),
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
   },
 }));
 
@@ -58,7 +63,7 @@ export const DetailsView = ({ editingContextId, readOnly }: WorkbenchViewCompone
 
   const objectIds: string[] = state.currentSelection.entries.map((entry) => entry.id);
   const skip = objectIds.length === 0;
-  const { payload, complete } = useDetailsViewSubscription(editingContextId, objectIds, skip);
+  const { payload, complete, loading } = useDetailsViewSubscription(editingContextId, objectIds, skip);
 
   useEffect(() => {
     if (isFormRefreshedEventPayload(payload)) {
@@ -68,21 +73,28 @@ export const DetailsView = ({ editingContextId, readOnly }: WorkbenchViewCompone
 
   const { classes } = useDetailsViewStyles();
 
-  if (!state.form || complete || skip) {
+  if (complete || skip) {
     return (
       <div className={classes.idle}>
         <Typography variant="subtitle2">No object selected</Typography>
       </div>
     );
+  } else if (!state.form || loading) {
+    return (
+      <div className={classes.form}>
+        <LinearProgress />
+      </div>
+    );
+  } else {
+    return (
+      <div data-representation-kind="form-details">
+        <FormContext.Provider
+          value={{
+            payload: payload,
+          }}>
+          <FormBasedView editingContextId={editingContextId} form={state.form} readOnly={readOnly} />
+        </FormContext.Provider>
+      </div>
+    );
   }
-  return (
-    <div data-representation-kind="form-details">
-      <FormContext.Provider
-        value={{
-          payload: payload,
-        }}>
-        <FormBasedView editingContextId={editingContextId} form={state.form} readOnly={readOnly} />
-      </FormContext.Provider>
-    </div>
-  );
 };

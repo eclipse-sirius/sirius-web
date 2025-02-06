@@ -24,6 +24,7 @@ import { FullscreenContextProvider } from '../renderer/fullscreen/FullscreenCont
 import { NodeContextProvider } from '../renderer/node/NodeContext';
 import { DiagramElementPaletteContextProvider } from '../renderer/palette/contexts/DiagramElementPaletteContext';
 import { DiagramPaletteContextProvider } from '../renderer/palette/contexts/DiagramPaletteContext';
+import { ActionsStateContextProvider } from './ActionsStateContext';
 import {
   DiagramRepresentationState,
   GQLDiagramDescription,
@@ -116,12 +117,14 @@ export const DiagramRepresentation = memo(
                   <NodeContextProvider>
                     <MarkerDefinitions />
                     <FullscreenContextProvider>
-                      <DiagramDescriptionContext.Provider value={{ diagramDescription }}>
-                        <DiagramSubscriptionProvider
-                          diagramId={representationId}
-                          editingContextId={editingContextId}
-                          readOnly={readOnly}></DiagramSubscriptionProvider>
-                      </DiagramDescriptionContext.Provider>
+                      <ActionsStateContextProvider>
+                        <DiagramDescriptionContext.Provider value={{ diagramDescription }}>
+                          <DiagramSubscriptionProvider
+                            diagramId={representationId}
+                            editingContextId={editingContextId}
+                            readOnly={readOnly}></DiagramSubscriptionProvider>
+                        </DiagramDescriptionContext.Provider>
+                      </ActionsStateContextProvider>
                     </FullscreenContextProvider>
                   </NodeContextProvider>
                 </DropNodeContextProvider>

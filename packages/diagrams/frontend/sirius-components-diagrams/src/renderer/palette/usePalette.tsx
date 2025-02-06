@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,9 +18,9 @@ import { useCallback, useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { useDialog } from '../../dialog/useDialog';
+import { useActionsStates } from '../../representation/useActionsStates';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { GQLPalette, GQLSingleClickOnDiagramElementTool, GQLTool } from './Palette.types';
-
 import { useDiagramElementPalette } from './useDiagramElementPalette';
 import { useDiagramPalette } from './useDiagramPalette';
 import {
@@ -185,6 +185,7 @@ export const usePalette = ({
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
   const { showDialog } = useDialog();
   const { setSelection } = useSelection();
+  const { setIsLoading } = useActionsStates();
 
   const { data: paletteData, error: paletteError } = useQuery<GQLGetToolSectionsData, GQLGetToolSectionsVariables>(
     getPaletteQuery,
@@ -225,6 +226,7 @@ export const usePalette = ({
 
   const invokeSingleClickTool = useCallback(
     async (tool: GQLTool, variables: GQLToolVariable[]) => {
+      setIsLoading(true);
       if (isSingleClickOnDiagramElementTool(tool)) {
         const { id: toolId } = tool;
         const input: GQLInvokeSingleClickOnDiagramElementToolInput = {
@@ -253,6 +255,7 @@ export const usePalette = ({
           if (isErrorPayload(invokeSingleClickOnDiagramElementTool)) {
             addMessages(invokeSingleClickOnDiagramElementTool.messages);
           }
+          setIsLoading(false);
         }
       }
     },
