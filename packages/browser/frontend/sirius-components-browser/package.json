@@ -71,6 +71,6 @@
     "typescript": "5.4.5",
     "tss-react": "4.9.7",
     "vite": "5.2.11",
-    "vitest": "1.6.0"
+    "vitest": "1.6.1"
   }
 }
