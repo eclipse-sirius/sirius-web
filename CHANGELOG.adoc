@@ -123,7 +123,8 @@ See `PapayaExtensionRegistry.tsx` for how the same result as before can be achie
 - https://github.com/eclipse-sirius/sirius-web/issues/4326[#4326] [diagram] Add quickAccessTools to diagram's palette in view dsl
 - https://github.com/eclipse-sirius/sirius-web/issues/4458[#4458] [sirius-web] Export direct edit functionalities.
 - https://github.com/eclipse-sirius/sirius-web/issues/4481[#4481] [table] Add support for cell custom target object in View DSL
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4376[#4376] [sirius-web] Add current workbench selection to the URL.
+Reversely, when resolving a URL, the specified elements automatically get selected.
 
 === Improvements
 

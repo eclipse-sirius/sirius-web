@@ -16,6 +16,7 @@ import { Edge, Node, useOnSelectionChange, useReactFlow, useStoreApi } from '@xy
 import { useCallback, useEffect, useState } from 'react';
 import { useStore } from '../../representation/useStore';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { useApplyWorkbenchSelectionToDiagram } from './useApplyWorkbenchSelectionToDiagram';
 
 // Compute a deterministic key from a selection
 const selectionKey = (entries: SelectionEntry[]) => {
@@ -35,50 +36,7 @@ export const useDiagramSelection = (onShiftSelection: boolean): void => {
   // Apply it on our diagram by selecting exactly the diagram elements
   // present which correspond to the workbench-selected semantic elements.
   useEffect(() => {
-    const allDiagramElements = [...getNodes(), ...getEdges()];
-    const displayedSemanticElements: Set<string> = new Set([
-      ...getNodes().map((node) => node.data.targetObjectId),
-      ...getEdges().map((edge) => edge.data?.targetObjectId ?? ''),
-    ]);
-    const displayedSemanticElementsToSelect = selection.entries
-      .map((entry) => entry.id)
-      .filter((id) => displayedSemanticElements.has(id))
-      .sort((id1: string, id2: string) => id1.localeCompare(id2));
-
-    const semanticElementsAlreadySelectedOnDiagram = allDiagramElements
-      .filter((element) => element.selected)
-      .map((element) => element.data?.targetObjectId ?? '')
-      .sort((id1: string, id2: string) => id1.localeCompare(id2));
-
-    if (
-      JSON.stringify(displayedSemanticElementsToSelect) !== JSON.stringify(semanticElementsAlreadySelectedOnDiagram)
-    ) {
-      const nodesToReveal: Set<string> = new Set();
-      const newNodes = getNodes().map((node) => {
-        const selected = displayedSemanticElementsToSelect.includes(node.data.targetObjectId);
-        const newNode = { ...node, selected };
-        if (selected) {
-          nodesToReveal.add(newNode.id);
-        }
-        return newNode;
-      });
-      const newEdges = getEdges().map((edge) => {
-        const selected = displayedSemanticElementsToSelect.includes(edge.data ? edge.data.targetObjectId : '');
-        const newEdge = { ...edge, selected };
-        if (selected) {
-          // React Flow does not support "fit on edge", so include its source & target nodes
-          // to ensure the edge is visible and in context
-          nodesToReveal.add(newEdge.source);
-          nodesToReveal.add(newEdge.target);
-        }
-        return newEdge;
-      });
-
-      setEdges(newEdges);
-      setNodes(newNodes);
-
-      fitView({ nodes: getNodes().filter((node) => nodesToReveal.has(node.id)), maxZoom: 1.5, duration: 1000 });
-    }
+    useApplyWorkbenchSelectionToDiagram(selection, getNodes, setNodes, getEdges, setEdges, fitView);
   }, [selection]);
 
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
