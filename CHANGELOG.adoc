@@ -162,7 +162,7 @@ Note that you may need to encode special characters like `[`(by `%5B`) and `]` (
 - https://github.com/eclipse-sirius/sirius-web/issues/4500[#4500] [sirius-web] Reduce the coupling between semantic data and project to be able to leverage the semantic data concept in other use cases.
 To achieve that a new concept, `ProjectSemanticData` has been added along with a dedicated table to keep the information previously contained in `SemanticData`
 - https://github.com/eclipse-sirius/sirius-web/issues/4501[#4501] [browser] Extract the model browser into reusable modules
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4514[#4514] [sirius-web] Added support for Ctrl+Shift+Z (Linux/macOS) to trigger redo in addition to Ctrl+Y (Windows)
 
 == v2025.1.0
 
