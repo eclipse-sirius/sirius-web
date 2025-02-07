@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.application.editingcontext.services;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Spliterator;
@@ -21,6 +22,7 @@ import java.util.Spliterators;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.StreamSupport;
 
+import io.micrometer.core.instrument.Timer;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
@@ -28,6 +30,7 @@ import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextLoader;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingDomainFactory;
+import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.slf4j.Logger;
@@ -36,7 +39,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.Timer;
 
 /**
  * Service used to find and retrieve editing contexts.
@@ -54,14 +56,14 @@ public class EditingContextSearchService implements IEditingContextSearchService
 
     private final IEditingDomainFactory editingDomainFactory;
 
-    private final IEditingContextLoader editingContextLoader;
+    private final List<IEditingContextLoader> editingContextLoaders;
 
     private final Timer timer;
 
-    public EditingContextSearchService(ISemanticDataSearchService semanticDataSearchService, IEditingDomainFactory editingDomainFactory, IEditingContextLoader editingContextLoader, MeterRegistry meterRegistry) {
+    public EditingContextSearchService(List<IEditingContextLoader> editingContextLoaders, ISemanticDataSearchService semanticDataSearchService, IProjectSearchService projectSearchService, IEditingDomainFactory editingDomainFactory, MeterRegistry meterRegistry) {
+        this.editingContextLoaders = Objects.requireNonNull(editingContextLoaders);
         this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
         this.editingDomainFactory = Objects.requireNonNull(editingDomainFactory);
-        this.editingContextLoader = Objects.requireNonNull(editingContextLoader);
         this.timer = Timer.builder(TIMER_NAME).register(meterRegistry);
     }
 
@@ -78,7 +80,7 @@ public class EditingContextSearchService implements IEditingContextSearchService
     public Optional<IEditingContext> findById(String editingContextId) {
         return new UUIDParser().parse(editingContextId)
                 .flatMap(this.semanticDataSearchService::findById)
-                .map(semanticData -> this.toEditingContext(semanticData));
+                .map(this::toEditingContext);
     }
 
     private IEditingContext toEditingContext(SemanticData semanticData) {
@@ -86,10 +88,13 @@ public class EditingContextSearchService implements IEditingContextSearchService
 
         AdapterFactoryEditingDomain editingDomain = this.editingDomainFactory.createEditingDomain();
         EditingContext editingContext = new EditingContext(semanticData.getId().toString(), editingDomain, new HashMap<>(), new ArrayList<>());
-        this.editingContextLoader.load(editingContext, semanticData);
 
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);
+
+        this.editingContextLoaders.stream()
+                .filter(loader -> loader.canHandle(semanticData.getId().toString()))
+                .forEach(loader -> loader.load(editingContext, semanticData));
 
         this.logger.atDebug()
                 .setMessage("EditingContext {}: {}ms to load {} objects")
@@ -104,5 +109,4 @@ public class EditingContextSearchService implements IEditingContextSearchService
 
         return editingContext;
     }
-
 }

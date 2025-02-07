@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,21 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.graphql.api;
+package org.eclipse.sirius.web.application.editingcontext.services.api;
+
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.events.ICause;
 
 /**
- * Used to store the local context constants.
+ * Used to load an editing context.
  *
- * @author sbegaudeau
+ * @author mcharfadi
  */
-public final class LocalContextConstants {
-    public static final String EDITING_CONTEXT_ID = "editingContextId";
+public interface IEditingContextSaver {
 
-    public static final String REPRESENTATION_ID = "representationId";
+    void save(ICause cause, IEditingContext editingContext);
 
-    public static final String RAW_PROJECT_ID = "rawProjectId";
-
-    private LocalContextConstants() {
-        // Prevent instantiation
-    }
+    boolean canHandle(String editingContextId);
 }

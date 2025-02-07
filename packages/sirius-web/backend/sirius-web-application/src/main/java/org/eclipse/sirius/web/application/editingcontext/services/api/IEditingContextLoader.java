@@ -24,4 +24,5 @@ public interface IEditingContextLoader {
 
     void load(EditingContext editingContext, SemanticData semanticData);
 
+    boolean canHandle(String editingContextId);
 }

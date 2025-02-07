@@ -50,6 +50,9 @@ It is not an API breaking change but a breaking change from the end-user point o
 In order to find the `editingContextId` from the `projectId` one should leverage `IProjectSemanticDataSearchService#findByProjectId` and use the `ìd` of the semantic data found.
 To find instead the `projectId` from the `editingContextId`, `IProjectSemanticDataSearchService#findBySemanticDataId` should be used along with the `id` of the project.
 The method `IEditingContextLoader#load` has also been updated to not use `projectId` as parameter anymore but instead the `SemanticData` directly.
+- https://github.com/eclipse-sirius/sirius-web/issues/4372[#4372] [sirius-web] The identifier used for editingContextId is now semanticDataId instead of the projectId.
+IEditingContextLoader@load method does not require projectId as parameter anymore
+- https://github.com/eclipse-sirius/sirius-web/issues/4444[#4444] [sirius-web] Allow multiple implementation of IEditingContextSaver & IEditingContextLoader
 
 
 === Dependency update
@@ -131,6 +134,7 @@ See `PapayaExtensionRegistry.tsx` for how the same result as before can be achie
 - https://github.com/eclipse-sirius/sirius-web/issues/4458[#4458] [sirius-web] Export direct edit functionalities.
 - https://github.com/eclipse-sirius/sirius-web/issues/4481[#4481] [table] Add support for cell custom target object in View DSL
 - https://github.com/eclipse-sirius/sirius-web/issues/4377[#4377] [sirius-web] Add the ability to update dynamically the description of any representation
+- https://github.com/eclipse-sirius/sirius-web/issues/4444[#4444] [sirius-web] Allow multiple implementation of IEditingContextSaver & IEditingContextLoader
 
 
 === Improvements

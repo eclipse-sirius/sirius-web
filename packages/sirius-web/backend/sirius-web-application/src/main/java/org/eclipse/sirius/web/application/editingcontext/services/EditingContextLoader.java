@@ -14,19 +14,18 @@ package org.eclipse.sirius.web.application.editingcontext.services;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
-import org.eclipse.sirius.components.emf.services.EditingContextCrossReferenceAdapter;
-import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextLoader;
-import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextMigrationParticipantPredicate;
-import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceLoader;
+import org.eclipse.sirius.web.application.editingcontext.services.api.ISemanticDataLoader;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -37,27 +36,34 @@ import org.springframework.stereotype.Service;
 @Service
 public class EditingContextLoader implements IEditingContextLoader {
 
+    private static final String TIMER_NAME = "siriusweb_editingcontext_load";
+
     private final Logger logger = LoggerFactory.getLogger(EditingContextLoader.class);
 
-    private final IResourceLoader resourceLoader;
+    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
+
+    private final ISemanticDataLoader semanticDataLoader;
 
     private final List<IEditingContextRepresentationDescriptionProvider> representationDescriptionProviders;
 
     private final List<IEditingContextProcessor> editingContextProcessors;
 
-    private final List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates;
-
-    public EditingContextLoader(IResourceLoader resourceLoader, List<IEditingContextRepresentationDescriptionProvider> representationDescriptionProviders, List<IEditingContextProcessor> editingContextProcessors, List<IEditingContextMigrationParticipantPredicate> migrationParticipantPredicates) {
-        this.resourceLoader = Objects.requireNonNull(resourceLoader);
+    public EditingContextLoader(IProjectSemanticDataSearchService projectSemanticDataSearchService, ISemanticDataLoader semanticDataLoader, List<IEditingContextRepresentationDescriptionProvider> representationDescriptionProviders, List<IEditingContextProcessor> editingContextProcessors) {
+        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
+        this.semanticDataLoader = Objects.requireNonNull(semanticDataLoader);
         this.representationDescriptionProviders = Objects.requireNonNull(representationDescriptionProviders);
         this.editingContextProcessors = Objects.requireNonNull(editingContextProcessors);
-        this.migrationParticipantPredicates = Objects.requireNonNull(migrationParticipantPredicates);
+    }
+
+    @Override
+    public boolean canHandle(String editingContextId) {
+        return this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(UUID.fromString(editingContextId))).isPresent();
     }
 
     public void load(EditingContext editingContext, SemanticData semanticData) {
         this.editingContextProcessors.forEach(processor -> processor.preProcess(editingContext));
 
-        this.loadSemanticData(editingContext, semanticData);
+        this.semanticDataLoader.load(editingContext);
 
         this.representationDescriptionProviders.forEach(representationDescriptionProvider -> {
             var representationDescriptions = representationDescriptionProvider.getRepresentationDescriptions(editingContext);
@@ -66,19 +72,4 @@ public class EditingContextLoader implements IEditingContextLoader {
 
         this.editingContextProcessors.forEach(processor -> processor.postProcess(editingContext));
     }
-
-    private void loadSemanticData(EditingContext editingContext, SemanticData semanticData) {
-        ResourceSet resourceSet = editingContext.getDomain().getResourceSet();
-        resourceSet.getLoadOptions().put(JsonResource.OPTION_SCHEMA_LOCATION, true);
-
-        semanticData.getDocuments().forEach(document -> this.resourceLoader.toResource(resourceSet, document.getId().toString(), document.getName(), document.getContent(),
-                this.migrationParticipantPredicates.stream().anyMatch(predicate -> predicate.test(editingContext.getId()))));
-
-        // The ECrossReferenceAdapter must be set after the resource loading because it needs to resolve proxies in case
-        // of inter-resources references
-        resourceSet.eAdapters().add(new EditingContextCrossReferenceAdapter());
-
-        this.logger.debug("{} documents loaded for the editing context {}", resourceSet.getResources().size(), editingContext.getId());
-    }
-
 }

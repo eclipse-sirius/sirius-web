@@ -132,6 +132,15 @@ INSERT INTO semantic_data (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+INSERT INTO semantic_data (
+  id,
+  created_on,
+  last_modified_on
+) VALUES (
+  'db004653-572d-4eb4-bff3-563a1b9d4206',
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000'
+);
 INSERT INTO project_semantic_data (
   id,
   project_id,
@@ -147,11 +156,33 @@ INSERT INTO project_semantic_data (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+INSERT INTO project_semantic_data (
+  id,
+  project_id,
+  semantic_data_id,
+  name,
+  created_on,
+  last_modified_on
+) VALUES (
+  '749e6ce0-dda4-4178-b80d-f828679681ea',
+  '99d336a2-3049-439a-8853-b104ffb22653',
+  'db004653-572d-4eb4-bff3-563a1b9d4206',
+  'test',
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000'
+);
 INSERT INTO semantic_data_domain (
   semantic_data_id,
   uri
 ) VALUES (
   'cb133bf0-d7aa-4a83-a277-0972919dd46a',
+  'http://www.eclipse.org/emf/2002/Ecore'
+);
+INSERT INTO semantic_data_domain (
+  semantic_data_id,
+  uri
+) VALUES (
+  'db004653-572d-4eb4-bff3-563a1b9d4206',
   'http://www.eclipse.org/emf/2002/Ecore'
 );
 INSERT INTO document (
@@ -185,6 +216,47 @@ INSERT INTO document (
               "eClass":"ecore:EClass",
               "data":{
                 "name":"SampleEClass"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }',
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000'
+);
+INSERT INTO document (
+  id,
+  semantic_data_id,
+  name,
+  content,
+  created_on,
+  last_modified_on
+) VALUES (
+  'ae4abeba-0742-4d42-81b0-fe6ab4b33fdf',
+  'db004653-572d-4eb4-bff3-563a1b9d4206',
+  'Ecore',
+  '{
+    "json":{
+      "version":"1.0",
+      "encoding":"utf-8"
+    },
+    "ns":{
+      "ecore":"http://www.eclipse.org/emf/2002/Ecore"
+    },
+    "content":[
+      {
+        "id":"3237b215-ae23-48d7-861e-f542a4b9a4b8",
+        "eClass":"ecore:EPackage",
+        "data":{
+          "name":"Sample",
+          "eClassifiers":[
+            {
+              "id":"f0eecd16-d9da-4c98-a422-c73897bc48f5",
+              "eClass":"ecore:EClass",
+              "data":{
+                "name":"SampleTestEClass"
               }
             }
           ]

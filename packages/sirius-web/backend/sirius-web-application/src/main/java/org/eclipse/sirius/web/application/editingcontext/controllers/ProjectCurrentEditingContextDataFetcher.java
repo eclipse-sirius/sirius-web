@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.editingcontext.controllers;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -20,10 +19,11 @@ import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextApplicationService;
-import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
 
 import graphql.execution.DataFetcherResult;
 import graphql.schema.DataFetchingEnvironment;
+
+import static org.eclipse.sirius.components.graphql.api.LocalContextConstants.RAW_PROJECT_ID;
 
 /**
  * Data fetcher for the field Project#currentEditingContext.
@@ -41,10 +41,10 @@ public class ProjectCurrentEditingContextDataFetcher implements IDataFetcherWith
 
     @Override
     public DataFetcherResult<String> get(DataFetchingEnvironment environment) throws Exception {
-        ProjectDTO project = environment.getSource();
-        String editingContextId = this.editingContextApplicationService.getCurrentEditingContextId(project.id());
+        Map<String, Object> localContext = environment.getLocalContext();
+        String projectId = (String) localContext.get(RAW_PROJECT_ID);
 
-        Map<String, Object> localContext = new HashMap<>();
+        String editingContextId = this.editingContextApplicationService.getCurrentEditingContextId(projectId);
         localContext.put(LocalContextConstants.EDITING_CONTEXT_ID, editingContextId);
 
         return DataFetcherResult.<String>newResult()
