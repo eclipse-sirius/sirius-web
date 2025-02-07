@@ -1,0 +1,29 @@
+= [ADR-184] Add support for project dependencies
+
+
+== Context
+
+https://github.com/eclipse-sirius/sirius-web/blob/master/doc/iterations/2025.2/add_support_for_the_import_of_libraries.adoc[This shape] describes how project can import libraries, but does not define how the project-to-library dependency is stored.
+
+We need to capture this information to implement future library import/upgrade strategies.
+For example, we need to know whether a part of a project comes from a library (to prevent users from editing it), or what are the libraries imported by a project that can be upgraded to a newer version.
+
+
+== Decision
+
+A new table `semantic_data_dependency` will be introduced with the following columns:
+
+- `semantic_data_id`
+- `library_id`
+
+An `IEditingContextProcessor` implementation should be provided to load the content of imported libraries.
+This solution reuses the approach described in https://github.com/eclipse-sirius/sirius-web/blob/master/doc/adrs/124_add_support_for_libraries.adoc[ADR 124].
+The loaded resources should have a dedicated URI scheme: `sirius:/library/`, and should not be persisted with the editing context of the project that imports them.
+
+A new `IReadOnlyObjectPredicate` should be created, as well as a `ComposedReadOnlyObjectPredicate` to let downstream application implement their own read-only policy.
+Sirius Web should provide a default implementation that returns `true` if the object is contained in a resource with the library scheme.
+
+
+== Status
+
+Work in progress
