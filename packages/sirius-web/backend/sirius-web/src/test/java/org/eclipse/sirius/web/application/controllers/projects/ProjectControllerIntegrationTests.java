@@ -35,6 +35,9 @@ import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectDeletedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.eclipse.sirius.web.services.api.IDomainEventCollector;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.CreateProjectMutationRunner;
@@ -50,6 +53,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.ScrollPosition;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,6 +90,12 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
 
     @Autowired
     private IProjectSearchService projectSearchService;
+
+    @Autowired
+    private IProjectSemanticDataSearchService projectSemanticDataSearchService;
+
+    @Autowired
+    private ISemanticDataSearchService semanticDataSearchService;
 
     @Autowired
     private IDomainEventCollector domainEventCollector;
@@ -372,6 +382,14 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     public void givenExistingProjectToDeleteWhenMutationIsPerformedThenProjectIsDeleted() {
         assertThat(this.projectSearchService.existsById(TestIdentifiers.UML_SAMPLE_PROJECT)).isTrue();
 
+        var optionalSemanticData = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(TestIdentifiers.UML_SAMPLE_PROJECT))
+                .map(ProjectSemanticData::getSemanticData)
+                .map(AggregateReference::getId)
+                .flatMap(this.semanticDataSearchService::findById);
+
+        assertThat(optionalSemanticData).isPresent();
+        var semanticData = optionalSemanticData.get();
+
         var input = new DeleteProjectInput(UUID.randomUUID(), TestIdentifiers.UML_SAMPLE_PROJECT);
         var result = this.deleteProjectMutationRunner.run(input);
 
@@ -383,10 +401,9 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
 
         assertThat(this.projectSearchService.existsById(TestIdentifiers.UML_SAMPLE_PROJECT)).isFalse();
+        assertThat(this.semanticDataSearchService.findById(semanticData.getId())).isEmpty();
 
-        assertThat(this.domainEventCollector.getDomainEvents()).hasSize(1);
-        var event = this.domainEventCollector.getDomainEvents().get(0);
-        assertThat(event).isInstanceOf(ProjectDeletedEvent.class);
+        assertThat(this.domainEventCollector.getDomainEvents()).anyMatch(ProjectDeletedEvent.class::isInstance);
     }
 
     @Test

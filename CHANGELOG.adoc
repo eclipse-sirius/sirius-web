@@ -25,6 +25,7 @@
 - [ADR-179] Add support for regular commands in the command palette
 - [ADR-180] Add support for widget diagnostics provider in View-based Forms
 - [ADR-181] Improve the customization of the navigation bar
+- [ADR-182] Add additional capabilities to synchronize some code with the deletion of a project
 
 === Deprecation warning
 
@@ -82,6 +83,7 @@ Now they are executed for some data if the data was coming from a studio too.
 - https://github.com/eclipse-sirius/sirius-web/issues/4310[#4310] [diagram] Fix the list node border visibility using _dash_ style
 - https://github.com/eclipse-sirius/sirius-web/issues/4390[#4390] [form] Fix an issue displaying irrelevant help text and diagnostics
 - [diagram] Replace `requestIdleCallback` with `setTimeout` for browser compatibility given the fact that `requestIdleCallback` is still a working draft
+- [sirius-web] Fix a recently introduced bug in which the semantic data of a project could remain after the deletion of the project
 
 
 === New Features

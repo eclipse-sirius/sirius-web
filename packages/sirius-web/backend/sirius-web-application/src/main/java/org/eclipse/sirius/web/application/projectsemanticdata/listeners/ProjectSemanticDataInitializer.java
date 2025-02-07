@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 /**
- * Service used to create the project semantic data of a semantic data.
+ * Service used to initialize the project semantic data.
  *
  * @author mcharfadi
  */

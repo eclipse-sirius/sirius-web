@@ -12,15 +12,19 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.project.services;
 
+import java.time.Instant;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectDeletionRequestedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.IProjectRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectDeletionService;
 import org.eclipse.sirius.web.domain.services.Failure;
 import org.eclipse.sirius.web.domain.services.IResult;
 import org.eclipse.sirius.web.domain.services.Success;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,10 +37,13 @@ public class ProjectDeletionService implements IProjectDeletionService {
 
     private final IProjectRepository projectRepository;
 
+    private final ApplicationEventPublisher applicationEventPublisher;
+
     private final IMessageService messageService;
 
-    public ProjectDeletionService(IProjectRepository projectRepository, IMessageService messageService) {
+    public ProjectDeletionService(IProjectRepository projectRepository, ApplicationEventPublisher applicationEventPublisher, IMessageService messageService) {
         this.projectRepository = Objects.requireNonNull(projectRepository);
+        this.applicationEventPublisher = Objects.requireNonNull(applicationEventPublisher);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
@@ -48,6 +55,8 @@ public class ProjectDeletionService implements IProjectDeletionService {
         if (optionalProject.isPresent()) {
             var project = optionalProject.get();
             project.dispose(cause);
+
+            this.applicationEventPublisher.publishEvent(new ProjectDeletionRequestedEvent(UUID.randomUUID(), Instant.now(), cause, project));
 
             this.projectRepository.delete(project);
             result = new Success<>(null);
