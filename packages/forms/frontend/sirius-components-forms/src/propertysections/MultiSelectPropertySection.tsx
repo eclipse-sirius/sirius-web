@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,8 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { IconOverlay, getCSSColor, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay, getCSSColor, theme, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import Backdrop from '@mui/material/Backdrop';
 import Checkbox from '@mui/material/Checkbox';
+import CircularProgress from '@mui/material/CircularProgress';
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -77,6 +79,15 @@ const useStyle = makeStyles<MultiSelectStyleProps>()(
       propertySectionWidget: {
         gridColumn: widgetGridColumn,
         gridRow: widgetGridRow,
+      },
+      loadingIndicator: {
+        color: theme.palette.divider,
+        marginLeft: theme.spacing(2),
+      },
+      loadingBackdrop: {
+        backgroundColor: 'transparent',
+        boxShadow: 'none',
+        zIndex: theme.zIndex.drawer + 1,
       },
     };
   }
@@ -145,23 +156,30 @@ export const MultiSelectPropertySection: PropertySectionComponent<GQLMultiSelect
   const { addErrorMessage, addMessages } = useMultiToast();
 
   useEffect(() => {
-    if (!loading) {
-      if (error) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (data) {
-        const { editMultiSelect } = data;
-        if (isErrorPayload(editMultiSelect) || isSuccessPayload(editMultiSelect)) {
-          addMessages(editMultiSelect.messages);
-        }
+    if (error) {
+      addErrorMessage(error.message);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (data) {
+      const { editMultiSelect } = data;
+      if (isErrorPayload(editMultiSelect) || isSuccessPayload(editMultiSelect)) {
+        addMessages(editMultiSelect.messages);
       }
     }
-  }, [loading, error, data]);
+  }, [data]);
 
   return (
     <FormControl error={widget.diagnostics.length > 0} className={classes.propertySection}>
       <div className={classes.propertySectionLabel}>
         <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
+        {loading ? (
+          <>
+            <CircularProgress className={classes.loadingIndicator} size={`${theme.spacing(2)}`} />
+            <Backdrop className={classes.loadingBackdrop} open={loading}></Backdrop>
+          </>
+        ) : null}
       </div>
       <div className={classes.propertySectionWidget}>
         <Select

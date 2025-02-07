@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { getCSSColor, useReporting } from '@eclipse-sirius/sirius-components-core';
+import { getCSSColor, theme, useReporting } from '@eclipse-sirius/sirius-components-core';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 import TextField from '@mui/material/TextField';
 import { FocusEvent, useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
@@ -66,6 +68,15 @@ const useStyle = makeStyles<DateTimeStyleProps>()(
       propertySectionWidget: {
         gridColumn: widgetGridColumn,
         gridRow: widgetGridRow,
+      },
+      loadingIndicator: {
+        color: theme.palette.divider,
+        marginLeft: theme.spacing(2),
+      },
+      loadingBackdrop: {
+        backgroundColor: 'transparent',
+        boxShadow: 'none',
+        zIndex: theme.zIndex.drawer + 1,
       },
     };
   }
@@ -170,6 +181,12 @@ export const DateTimeWidgetPropertySection: PropertySectionComponent<GQLDateTime
       className={classes.propertySection}>
       <div className={classes.propertySectionLabel}>
         <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
+        {mutationEditDateTimeResult.loading ? (
+          <>
+            <CircularProgress className={classes.loadingIndicator} size={`${theme.spacing(2)}`} />
+            <Backdrop className={classes.loadingBackdrop} open={mutationEditDateTimeResult.loading}></Backdrop>
+          </>
+        ) : null}
       </div>
       <div className={classes.propertySectionWidget}>
         <TextField

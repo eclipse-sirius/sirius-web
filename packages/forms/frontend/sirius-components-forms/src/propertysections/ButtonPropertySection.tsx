@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,8 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { ServerContext, ServerContextValue, getCSSColor, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import {
+  ServerContext,
+  ServerContextValue,
+  getCSSColor,
+  theme,
+  useMultiToast,
+} from '@eclipse-sirius/sirius-components-core';
+import Backdrop from '@mui/material/Backdrop';
 import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 import gql from 'graphql-tag';
 import { useContext, useEffect } from 'react';
 import { makeStyles } from 'tss-react/mui';
@@ -57,6 +65,15 @@ const useStyle = makeStyles<ButtonStyleProps>()(
       display: 'flex',
       flexDirection: 'row',
       gap: theme.spacing(2),
+    },
+    loadingIndicator: {
+      color: theme.palette.divider,
+      marginLeft: theme.spacing(2),
+    },
+    loadingBackdrop: {
+      backgroundColor: 'transparent',
+      boxShadow: 'none',
+      zIndex: theme.zIndex.drawer + 1,
     },
   })
 );
@@ -118,18 +135,19 @@ export const ButtonPropertySection: PropertySectionComponent<GQLButton> = ({
   const { addErrorMessage, addMessages } = useMultiToast();
 
   useEffect(() => {
-    if (!loading) {
-      if (error) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (data) {
-        const { pushButton } = data;
-        if (isErrorPayload(pushButton) || isSuccessPayload(pushButton)) {
-          addMessages(pushButton.messages);
-        }
+    if (error) {
+      addErrorMessage(error.message);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (data) {
+      const { pushButton } = data;
+      if (isErrorPayload(pushButton) || isSuccessPayload(pushButton)) {
+        addMessages(pushButton.messages);
       }
     }
-  }, [loading, error, data]);
+  }, [data]);
 
   const onClick = () => {
     const input: GQLPushButtonInput = {
@@ -162,6 +180,12 @@ export const ButtonPropertySection: PropertySectionComponent<GQLButton> = ({
         ) : null}
         {widget.buttonLabel}
       </Button>
+      {loading ? (
+        <>
+          <CircularProgress className={classes.loadingIndicator} size={`${theme.spacing(2)}`} />
+          <Backdrop className={classes.loadingBackdrop} open={loading}></Backdrop>
+        </>
+      ) : null}
     </div>
   );
 };
