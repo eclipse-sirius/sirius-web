@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -40,6 +41,11 @@ public class ProjectSemanticDataSearchService implements IProjectSemanticDataSea
     @Override
     public Optional<ProjectSemanticData> findByProjectId(AggregateReference<Project, String> project) {
         return this.findByProjectIdAndName(project, "main");
+    }
+
+    @Override
+    public List<ProjectSemanticData> findAllByProjectId(AggregateReference<Project, String> project) {
+        return this.projectSemanticDataRepository.findAllByProjectId(project.getId());
     }
 
     @Override

@@ -1,0 +1,82 @@
+= ADR-182 - Add additional capabilities to synchronize some code with the deletion of a project
+
+== Context
+
+Before some recent changes, `SemanticData` had a reference to `Project` thanks to the foreign key `SemanticData#project`.
+The relation in the database was thus:
+
+```
+Project <--[project_id]-- SemanticData
+```
+
+This relation has been updated by both introducing `ProjectSemanticData` and removing `SemanticData#project`.
+The relation in the database is now:
+
+```
+Project <--[project_id]-- ProjectSemanticData --[semantic_data_id]--> SemanticData
+```
+
+This new situation has created a bug, if a user delete a project, it will both delete the `Project` and its `ProjectSemanticData` thanks to an `ON DELETED CASCADE` option on the `ProjectSemanticData#project` foreign key but it will not delete the `SemanticData` object referenced.
+
+One should keep in mind two facts.
+The three concepts belong to three different bounded contexts and only `ProjectSemanticData` knows about the other two.
+The second thing to consider is that this is the result of a comprise made while implementing domain driven design best practices in a monolith.
+In a "perfect" implementation of those principles, `ProjectSemanticData` should not use the foreign key constraint for both of its references to `Project` and `SemanticData`.
+In a "perfect" domain driven design system, the deletion of a project should trigger an event which should be used to trigger the deletion of the project semantic data and semantic data.
+
+Unfortunately in our situation while the `ProjectDeletedEvent` is properly fired after the deletion, once we listen to the event the `ProjectSemanticData` have already been deleted so we don't know which `SemanticData` to delete.
+We could write a `@TransactionalEventListener` which would trigger before the transaction is being committed but it would create a new transaction for the deletion of the `SemanticData` and both transactions would try to delete the same `ProjectSemanticData` which would thus end up in a deadlock of JDBC transactions.
+
+In order to fix this situation, various solutions have been evaluated:
+
+=== Remove the foreign key constraint
+
+In a perfect implementation, we would probably remove the foreign key constraint and when the `ProjectDeletedEvent` is received, one would only have to look for the `ProjectSemanticData` which are referencing the project which has been deleted.
+While small, it would be a sizable change in philosophy in the way our database has been organized up until now.
+If this situation starts to become a common occurrence, we may consider this option.
+This would lower the coupling between some of our tables in the database which ultimately could be a good thing but it has a cost that we may not want to pay now.
+It would also bring our application closer to what we would need in a microservice architecture.
+
+As a consequence of this option, we would have to stop relying on `ON DELETE CASCADE` between bounded contexts to clean up references.
+It would fire tons of additional events with a smaller granularity.
+This could be a great opportunity for extensions of Sirius Web to synchronize themselves with our lifecycle.
+Implementing this change would be an ambitious change which would need to be communicated with our whole community since it may have an impact on downstream projects.
+
+
+=== Add an SQL trigger
+
+On the other hand, we could embrace fully that we are in a monolith and we do not intend to switch to a microservice architecture soon and use an SQL trigger.
+This would start creating some additional coupling between some tables of our database.
+On top of that, it would be the first time we start adding some behavior in the definition of our tables.
+
+While it is a perfectly valid solution, it would be an issue the day we want to consider a microservice architecture.
+
+
+=== Add a mechanism to participate to the transaction
+
+In this approach, we would add a mechanism to let others not only react after the transaction to delete a project but during this transaction too.
+We would either add an interface to participate in this transaction or fire an event during the transaction.
+
+While this would have a very small impact in term of code or philosophy, it would still be another compromise in the implementation of the domain driven design approach.
+This would let one bounded context be updated in the same transaction as another one.
+
+
+== Decision
+
+We will fire a new event `ProjectDeletionRequestedEvent` to let others participate in the transaction deleting a project.
+This solution has been choosen given its minimal impact.
+Yet all those who need to listen to this `ProjectDeletionRequestedEvent` need to be aware that the more it is needed, the faster we will probably delete it and switch to a more scalable approach.
+
+If this kind of pattern start being repeated, we will probably consider removing foreign keys between bounded contexts and leverage additional events instead.
+As of today, one cannot listen to the deletion of `SemanticData` for example and this kind of compromise do not make us bring us closer to this possibility.
+At the very least, an evaluation of the impact to such a solution will have to be done.
+
+== Status
+
+Accepted.
+
+== Consequences
+
+Other pieces of code in Sirius Web should NOT embrace this pattern as a good practice, it is a special compromise which may be temporary.
+Downstream applications should not start listening to this new event too.
+If you have the same issue, we should probably start embracing a lower granularity for our events instead.

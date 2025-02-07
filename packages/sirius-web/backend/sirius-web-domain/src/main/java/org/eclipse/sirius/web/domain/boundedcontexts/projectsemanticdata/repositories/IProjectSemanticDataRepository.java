@@ -12,14 +12,15 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.repositories;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.ListPagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Repository used to persist the semantic data aggregate.
@@ -43,4 +44,11 @@ public interface IProjectSemanticDataRepository extends ListPagingAndSortingRepo
         WHERE projectSemanticData.semantic_data_id = :semanticDataId
         """)
     Optional<ProjectSemanticData> findBySemanticDataId(UUID semanticDataId);
+
+    @Query("""
+        SELECT *
+        FROM project_semantic_data projectSemanticData
+        WHERE projectSemanticData.project_id = :projectId
+        """)
+    List<ProjectSemanticData> findAllByProjectId(String projectId);
 }
