@@ -16,6 +16,7 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/4609[#4609] [sirius-web] The field `RepresentationMetadata#project: AggregateReference<Project, String>` has been removed and replaced by `RepresentationMetadata#semanticData: AggregateReference<SemanticData, UUID>`
 
 
 === Dependency update
@@ -34,6 +35,7 @@
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4495[#4495] [form] Add an user indicator when executing form actions
 - https://github.com/eclipse-sirius/sirius-web/issues/4614[#4614] [view] Reduce the coupling of the `ViewFormDescriptionConverter`
+- https://github.com/eclipse-sirius/sirius-web/issues/4609[#4609] [sirius-web] Separate the representation metadata from the project bounded context.
 
 
 == v2025.2.0

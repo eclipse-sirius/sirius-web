@@ -21,10 +21,10 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.AbstractValidatingAggregateRoot;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationMetadataCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationMetadataDeletedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationMetadataUpdatedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
@@ -47,8 +47,8 @@ public class RepresentationMetadata extends AbstractValidatingAggregateRoot<Repr
     @Id
     private UUID id;
 
-    @Column("project_id")
-    private AggregateReference<Project, String> project;
+    @Column("semantic_data_id")
+    private AggregateReference<SemanticData, UUID> semanticData;
 
     private String targetObjectId;
 
@@ -72,8 +72,8 @@ public class RepresentationMetadata extends AbstractValidatingAggregateRoot<Repr
         return this.id;
     }
 
-    public AggregateReference<Project, String> getProject() {
-        return this.project;
+    public AggregateReference<SemanticData, UUID> getSemanticData() {
+        return this.semanticData;
     }
 
     public String getTargetObjectId() {
@@ -164,7 +164,7 @@ public class RepresentationMetadata extends AbstractValidatingAggregateRoot<Repr
 
         private final UUID id;
 
-        private AggregateReference<Project, String> project;
+        private AggregateReference<SemanticData, UUID> semanticData;
 
         private String targetObjectId;
 
@@ -182,8 +182,8 @@ public class RepresentationMetadata extends AbstractValidatingAggregateRoot<Repr
             this.id = Objects.requireNonNull(id);
         }
 
-        public Builder project(AggregateReference<Project, String> project) {
-            this.project = Objects.requireNonNull(project);
+        public Builder semanticData(AggregateReference<SemanticData, UUID> semanticData) {
+            this.semanticData = Objects.requireNonNull(semanticData);
             return this;
         }
 
@@ -221,7 +221,7 @@ public class RepresentationMetadata extends AbstractValidatingAggregateRoot<Repr
             var representationMetadata = new RepresentationMetadata();
             representationMetadata.isNew = true;
             representationMetadata.id = Objects.requireNonNull(this.id);
-            representationMetadata.project = Objects.requireNonNull(this.project);
+            representationMetadata.semanticData = Objects.requireNonNull(this.semanticData);
             representationMetadata.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             representationMetadata.descriptionId = Objects.requireNonNull(this.descriptionId);
             representationMetadata.label = Objects.requireNonNull(this.label);

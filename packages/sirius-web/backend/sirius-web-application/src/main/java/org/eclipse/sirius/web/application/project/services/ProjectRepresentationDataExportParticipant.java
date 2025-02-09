@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.zip.ZipEntry;
@@ -31,6 +32,8 @@ import org.eclipse.sirius.web.application.editingcontext.services.EditingContext
 import org.eclipse.sirius.web.application.project.services.api.IProjectExportParticipant;
 import org.eclipse.sirius.web.application.representation.services.api.IRepresentationContentMigrationService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.slf4j.Logger;
@@ -48,6 +51,8 @@ public class ProjectRepresentationDataExportParticipant implements IProjectExpor
 
     private final IEditingContextSearchService editingContextSearchService;
 
+    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
+
     private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
     private final IRepresentationContentSearchService representationContentSearchService;
@@ -60,9 +65,10 @@ public class ProjectRepresentationDataExportParticipant implements IProjectExpor
 
     private final Logger logger = LoggerFactory.getLogger(ProjectRepresentationDataExportParticipant.class);
 
-    public ProjectRepresentationDataExportParticipant(IEditingContextSearchService editingContextSearchService, IRepresentationMetadataSearchService representationMetadataSearchService,
-            IRepresentationContentSearchService representationContentSearchService, ObjectMapper objectMapper, IRepresentationContentMigrationService representationContentMigrationService, EditingContextApplicationService editingContextApplicationService) {
+    public ProjectRepresentationDataExportParticipant(IEditingContextSearchService editingContextSearchService, IProjectSemanticDataSearchService projectSemanticDataSearchService, IRepresentationMetadataSearchService representationMetadataSearchService,
+                                                      IRepresentationContentSearchService representationContentSearchService, ObjectMapper objectMapper, IRepresentationContentMigrationService representationContentMigrationService, EditingContextApplicationService editingContextApplicationService) {
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
+        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.representationContentSearchService = Objects.requireNonNull(representationContentSearchService);
         this.objectMapper = Objects.requireNonNull(objectMapper);
@@ -74,7 +80,10 @@ public class ProjectRepresentationDataExportParticipant implements IProjectExpor
     public Map<String, Object> exportData(Project project, ZipOutputStream outputStream) {
         Map<String, Map<String, String>> representationManifests = new HashMap<>();
 
-        var allRepresentationMetadata = this.representationMetadataSearchService.findAllMetadataByProject(AggregateReference.to(project.getId()));
+        var allRepresentationMetadata = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(project.getId()))
+                .map(ProjectSemanticData::getSemanticData)
+                .map(this.representationMetadataSearchService::findAllRepresentationMetadataBySemanticData)
+                .orElse(List.of());
         for (var representationMetadata: allRepresentationMetadata) {
             var optionalRepresentationContentNode = this.representationContentSearchService.findContentById(representationMetadata.getId())
                     .flatMap(representationContent -> this.representationContentMigrationService.getMigratedContent(representationMetadata, representationContent));
@@ -84,7 +93,7 @@ public class ProjectRepresentationDataExportParticipant implements IProjectExpor
 
                 var exportData = new RepresentationSerializedExportData(
                         representationMetadata.getId(),
-                        representationMetadata.getProject().getId(),
+                        project.getId(),
                         representationMetadata.getDescriptionId(),
                         representationMetadata.getTargetObjectId(),
                         representationMetadata.getLabel(),

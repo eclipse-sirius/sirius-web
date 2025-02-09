@@ -21,8 +21,6 @@ import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.web.application.UUIDParser;
-import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
-import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataDeletionService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
@@ -44,13 +42,10 @@ public class DanglingRepresentationDeletionService implements IDanglingRepresent
 
     private final IRepresentationMetadataDeletionService representationMetadataDeletionService;
 
-    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
-
-    public DanglingRepresentationDeletionService(IObjectSearchService objectSearchService, IRepresentationMetadataSearchService representationMetadataSearchService, IRepresentationMetadataDeletionService representationMetadataDeletionService, IProjectSemanticDataSearchService projectSemanticDataSearchService) {
+    public DanglingRepresentationDeletionService(IObjectSearchService objectSearchService, IRepresentationMetadataSearchService representationMetadataSearchService, IRepresentationMetadataDeletionService representationMetadataDeletionService) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.representationMetadataDeletionService = Objects.requireNonNull(representationMetadataDeletionService);
-        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
     }
 
     @Override
@@ -63,13 +58,8 @@ public class DanglingRepresentationDeletionService implements IDanglingRepresent
     @Override
     @Transactional
     public void deleteDanglingRepresentations(ICause cause, IEditingContext editingContext) {
-        var optionalProjectId = new UUIDParser().parse(editingContext.getId())
-                .flatMap(semanticDataId -> this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(semanticDataId)))
-                .map(ProjectSemanticData::getProject)
-                .map(AggregateReference::getId);
-
-        optionalProjectId.ifPresent(projectId ->
-                this.representationMetadataSearchService.findAllMetadataByProject(AggregateReference.to(projectId)).stream()
+        new UUIDParser().parse(editingContext.getId()).ifPresent(semanticDataId ->
+                this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticData(AggregateReference.to(semanticDataId)).stream()
                         .filter(representationMetadata -> this.objectSearchService.getObject(editingContext, representationMetadata.getTargetObjectId()).isEmpty())
                         .map(RepresentationMetadata::getId)
                         .forEach(representationId -> this.representationMetadataDeletionService.delete(cause, representationId))

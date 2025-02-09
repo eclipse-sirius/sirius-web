@@ -312,9 +312,9 @@ INSERT INTO document (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
-INSERT INTO public.representation_metadata (
+INSERT INTO representation_metadata (
     id,
-    project_id,
+    semantic_data_id,
     target_object_id,
     description_id,
     label,
@@ -324,7 +324,7 @@ INSERT INTO public.representation_metadata (
     last_modified_on
 ) VALUES (
     'dd0080f8-430d-441f-99a4-f46c7d9b28ef',
-    'c3d7df85-e0bd-472c-aec1-c05cc88276e4',
+    'cc89c500-c27e-4968-9c67-15cf767c6ef0',
     '569d3f9b-2a43-4254-b609-511258251d96',
     'papaya_package_table_description',
     '',
@@ -333,7 +333,7 @@ INSERT INTO public.representation_metadata (
     '2024-11-29 14:36:35.460101 +00:00'
 );
 
-INSERT INTO public.representation_content (
+INSERT INTO representation_content (
     id,
     content,
     last_migration_performed,
