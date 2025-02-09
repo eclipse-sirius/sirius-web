@@ -291,7 +291,7 @@ INSERT INTO document (
 
 INSERT INTO representation_metadata (
   id,
-  project_id,
+  semantic_data_id,
   target_object_id,
   description_id,
   label,
@@ -301,7 +301,7 @@ INSERT INTO representation_metadata (
   last_modified_on
 ) VALUES (
   '35f1cd7b-e5bb-443d-95ef-bab372a92b0f',
-  'a3b86086-23f5-41cb-97b9-5ac7234a98af',
+  '89d67892-0cc9-4ca4-b30e-28688470c0d4',
   '719d2b8f-ab70-438d-a999-306de10654a7',
   'siriusComponents://representationDescription?kind=TreeMap',
   'Hierarchy Migration',
@@ -497,7 +497,7 @@ INSERT INTO document (
 
 INSERT INTO representation_metadata (
   id,
-  project_id,
+  semantic_data_id,
   target_object_id,
   description_id,
   label,
@@ -507,7 +507,7 @@ INSERT INTO representation_metadata (
   last_modified_on
 ) VALUES (
   '9698833e-ffd4-435a-9aec-765622ce524e',
-  'a5441b64-83a5-4754-8794-57227bf8a322',
+  'e4a1dfda-81dd-481c-be93-63d96c6e7eb1',
   '79752a18-c7d8-41c0-8a27-a79ea9de09d8',
   'siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=e932123d-b916-3537-84d2-86a4f5873d93',
   'Diagram UserResizable Migration',

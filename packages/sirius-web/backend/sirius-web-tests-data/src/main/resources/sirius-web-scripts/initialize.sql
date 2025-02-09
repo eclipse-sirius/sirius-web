@@ -197,7 +197,7 @@ INSERT INTO document (
 );
 INSERT INTO representation_metadata (
   id,
-  project_id,
+  semantic_data_id,
   target_object_id,
   description_id,
   label,
@@ -207,7 +207,7 @@ INSERT INTO representation_metadata (
   last_modified_on
 ) VALUES (
   'e81eec5c-42d6-491c-8bcc-9beb951356f8',
-  '99d336a2-3049-439a-8853-b104ffb22653',
+  'cb133bf0-d7aa-4a83-a277-0972919dd46a',
   '3237b215-ae23-48d7-861e-f542a4b9a4b8',
   '69030a1b-0b5f-3c1d-8399-8ca260e4a672',
   'Portal',
@@ -262,7 +262,7 @@ INSERT INTO representation_content (
 );
 INSERT INTO representation_metadata (
   id,
-  project_id,
+  semantic_data_id,
   target_object_id,
   description_id,
   label,
@@ -272,7 +272,7 @@ INSERT INTO representation_metadata (
   last_modified_on
 ) VALUES (
   '05e44ccc-9363-443f-a816-25fc73e3e7f7',
-  '99d336a2-3049-439a-8853-b104ffb22653',
+  'cb133bf0-d7aa-4a83-a277-0972919dd46a',
   '3237b215-ae23-48d7-861e-f542a4b9a4b8',
   '69030a1b-0b5f-3c1d-8399-8ca260e4a672',
   'Portal',

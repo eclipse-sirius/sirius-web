@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,16 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
 @Module(
-    name = "Representation Data",
-    allowedDependencies = { "Semantic Data" },
+    name = "ProjectSemanticData",
+    allowedDependencies = { "Project", "Semantic Data" },
     exposedPackages = {
-        "org.eclipse.sirius.web.domain.boundedcontexts.representationdata",
-        "org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api",
-        "org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events"
+        "org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata",
+        "org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api",
+        "org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.events"
     }
 )
-package org.eclipse.sirius.web.domain.boundedcontexts.representationdata;
+package org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata;
 
 import org.eclipse.sirius.web.domain.annotations.Module;
