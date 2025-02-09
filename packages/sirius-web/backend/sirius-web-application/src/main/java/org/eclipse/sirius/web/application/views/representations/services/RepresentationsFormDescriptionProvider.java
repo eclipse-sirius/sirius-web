@@ -52,7 +52,6 @@ import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.application.UUIDParser;
-import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationIconURL;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
@@ -87,15 +86,12 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
 
     private final List<IRepresentationImageProvider> representationImageProviders;
 
-    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
-
-    public RepresentationsFormDescriptionProvider(IIdentityService identityService, ILabelService labelService, IRepresentationMetadataSearchService representationMetadataSearchService, IRepresentationSearchService representationSearchService, List<IRepresentationImageProvider> representationImageProviders, IProjectSemanticDataSearchService projectSemanticDataSearchService) {
+    public RepresentationsFormDescriptionProvider(IIdentityService identityService, ILabelService labelService, IRepresentationMetadataSearchService representationMetadataSearchService, IRepresentationSearchService representationSearchService, List<IRepresentationImageProvider> representationImageProviders) {
         this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.representationSearchService = Objects.requireNonNull(representationSearchService);
         this.representationImageProviders = Objects.requireNonNull(representationImageProviders);
-        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
     }
 
     @Override
@@ -213,16 +209,14 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
 
     private List<?> getItems(VariableManager variableManager) {
         Object object = variableManager.getVariables().get(VariableManager.SELF);
-        var optionalProjectId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+        var optionalSemanticDataId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
                 .map(IEditingContext::getId)
-                .flatMap(semanticDataId -> new UUIDParser().parse(semanticDataId))
-                .flatMap(semanticDataId -> this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(semanticDataId)))
-                .map(semanticData -> semanticData.getProject().getId());
+                .flatMap(semanticDataId -> new UUIDParser().parse(semanticDataId));
 
-        if (optionalProjectId.isPresent()) {
-            var projectId = optionalProjectId.get();
+        if (optionalSemanticDataId.isPresent()) {
+            var semanticDataId = optionalSemanticDataId.get();
             String id = this.identityService.getId(object);
-            return this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(projectId), id);
+            return this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticDataAndTargetObjectId(AggregateReference.to(semanticDataId), id);
         }
         return List.of();
     }
@@ -298,13 +292,11 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
                         items = this.getPortalChildren(optionalPortal.get());
                     }
                 } else if (id != null) {
-                    var optionalProjectId = optionalEditingContext
+                    var optionalSemanticDataId = optionalEditingContext
                             .map(IEditingContext::getId)
-                            .flatMap(semanticDataId -> new UUIDParser().parse(semanticDataId))
-                            .flatMap(semanticDataId -> this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(semanticDataId)))
-                            .map(semanticData -> semanticData.getProject().getId());
-                    if (optionalProjectId.isPresent()) {
-                        items = this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(optionalProjectId.get()), id).stream().toList();
+                            .flatMap(semanticDataId -> new UUIDParser().parse(semanticDataId));
+                    if (optionalSemanticDataId.isPresent()) {
+                        items = this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticDataAndTargetObjectId(AggregateReference.to(optionalSemanticDataId.get()), id).stream().toList();
                     }
                 }
             }

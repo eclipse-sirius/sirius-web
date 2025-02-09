@@ -40,31 +40,31 @@ public interface IRepresentationMetadataRepository extends ListPagingAndSortingR
     @Query("""
         SELECT representationMetadata.*
         FROM representation_metadata representationMetadata
-        WHERE representationMetadata.project_id = :projectId
+        WHERE representationMetadata.semantic_data_id = :semanticDataId
         """)
-    List<RepresentationMetadata> findAllMetadataByProjectId(String projectId);
+    List<RepresentationMetadata> findAllRepresentationMetadataBySemanticDataId(UUID semanticDataId);
 
     @Query("""
         SELECT representationMetadata.*
         FROM representation_metadata representationMetadata
-        WHERE representationMetadata.target_object_id = :targetObjectId
-        AND representationMetadata.project_id = :projectId
+        WHERE representationMetadata.semantic_data_id = :semanticDataId
+        AND representationMetadata.target_object_id = :targetObjectId
         """)
-    List<RepresentationMetadata> findAllMetadataByProjectAndTargetObjectId(String projectId, String targetObjectId);
+    List<RepresentationMetadata> findAllRepresentationMetadataBySemanticDataIdAndTargetObjectId(UUID semanticDataId, String targetObjectId);
 
     @Query("""
-        SELECT representationMetadata.project_id
+        SELECT representationMetadata.semantic_data_id
         FROM representation_metadata representationMetadata
         WHERE representationMetadata.id = :representationId
         """)
-    Optional<String> findProjectIdFromRepresentationId(UUID representationId);
+    Optional<UUID> findSemanticDataIdFromRepresentationId(UUID representationId);
 
     @Query("""
         SELECT CASE WHEN COUNT(*) > 0 THEN true ELSE false END
         FROM representation_metadata representationMetadata
-        WHERE representationMetadata.target_object_id = :targetObjectId
+        WHERE representationMetadata.semantic_data_id = :semanticDataId AND representationMetadata.target_object_id = :targetObjectId
         """)
-    boolean existAnyRepresentationForTargetObjectId(String targetObjectId);
+    boolean existAnyRepresentationMetadataForSemanticDataIdAndTargetObjectId(UUID semanticDataId, String targetObjectId);
 
     @Query("""
         SELECT CASE WHEN COUNT(*) > 0 THEN true ELSE false END

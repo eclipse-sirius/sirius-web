@@ -28,7 +28,6 @@ import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.Entity;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
-import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
@@ -51,14 +50,11 @@ public class DomainExplorerServices {
 
     private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
-    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
-
     private final IExplorerServices explorerServices;
 
-    public DomainExplorerServices(IObjectService objectService, IRepresentationMetadataSearchService representationMetadataSearchService, IProjectSemanticDataSearchService projectSemanticDataSearchService, IExplorerServices explorerServices) {
+    public DomainExplorerServices(IObjectService objectService, IRepresentationMetadataSearchService representationMetadataSearchService, IExplorerServices explorerServices) {
         this.objectService = Objects.requireNonNull(objectService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
-        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
         this.explorerServices = Objects.requireNonNull(explorerServices);
     }
 
@@ -105,12 +101,10 @@ public class DomainExplorerServices {
                 if (self instanceof Resource resource) {
                     result.addAll(resource.getContents());
                 } else if (self instanceof EObject) {
-                    var optionalProjectId = new UUIDParser().parse(editingContext.getId())
-                            .flatMap(semanticDataId -> this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(semanticDataId)))
-                            .map(projectSemanticData -> projectSemanticData.getProject().getId());
+                    var optionalSemanticDataId = new UUIDParser().parse(editingContext.getId());
 
-                    if (optionalProjectId.isPresent()) {
-                        var representationMetadata = new ArrayList<>(this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(optionalProjectId.get()), id));
+                    if (optionalSemanticDataId.isPresent()) {
+                        var representationMetadata = new ArrayList<>(this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticDataAndTargetObjectId(AggregateReference.to(optionalSemanticDataId.get()), id));
                         representationMetadata.sort(Comparator.comparing(org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata::getLabel));
                         result.addAll(representationMetadata);
                     }
