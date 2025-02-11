@@ -39,7 +39,7 @@ export const FadeElementTool = ({ diagramElementId, isFaded }: FadeElementToolPr
           aria-label="Unfade element"
           onClick={() => fadeDiagramElements([diagramElementId], false)}
           data-testid="Fade-element">
-          <TonalityIcon fontSize="small" />
+          <TonalityIcon sx={{ fontSize: 16 }} />
         </IconButton>
       </Tooltip>
     );
@@ -52,7 +52,7 @@ export const FadeElementTool = ({ diagramElementId, isFaded }: FadeElementToolPr
           aria-label="Fade element"
           onClick={() => fadeDiagramElements([diagramElementId], true)}
           data-testid="Fade-element">
-          <TonalityIcon fontSize="small" />
+          <TonalityIcon sx={{ fontSize: 16 }} />
         </IconButton>
       </Tooltip>
     );

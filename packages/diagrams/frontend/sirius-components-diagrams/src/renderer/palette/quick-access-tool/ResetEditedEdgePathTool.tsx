@@ -38,7 +38,7 @@ export const ResetEditedEdgePathTool = ({ diagramElementId }: ResetEditedEdgePat
         aria-label="Reset path"
         onClick={() => removeEdgeLayoutData(diagramElementId)}
         data-testid="Reset-path">
-        <DirectionsOffIcon fontSize="small" />
+        <DirectionsOffIcon sx={{ fontSize: 16 }} />
       </IconButton>
     </Tooltip>
   );

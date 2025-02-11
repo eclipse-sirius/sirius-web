@@ -38,7 +38,7 @@ export const AdjustSizeTool = ({ diagramElementId }: AdjustSizeToolProps) => {
         aria-label="Adjust element"
         onClick={() => adjustSize(diagramElementId)}
         data-testid="adjust-element">
-        <AdjustIcon fontSize="small" />
+        <AdjustIcon sx={{ fontSize: 16 }} />
       </IconButton>
     </Tooltip>
   );
