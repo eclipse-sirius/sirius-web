@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,7 @@ import { Edge, Node } from '@xyflow/react';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
 
 export interface DiagramPaletteToolContributionProps {
-  canHandle: (element: Node<NodeData> | Edge<EdgeData>) => boolean;
+  canHandle: (element: Node<NodeData> | Edge<EdgeData> | null) => boolean;
   component: React.ComponentType<DiagramPaletteToolContributionComponentProps>;
 }
 

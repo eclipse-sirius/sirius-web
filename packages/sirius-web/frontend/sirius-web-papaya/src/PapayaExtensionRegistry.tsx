@@ -29,6 +29,7 @@ import Typography from '@mui/material/Typography';
 import { Edge, Node, ReactFlowProps } from '@xyflow/react';
 import { PapayaDiagramInformationPanel } from './diagrams/PapayaDiagramInformationPanel';
 import { PapayaDiagramLegendPanel } from './diagrams/PapayaDiagramLegendPanel';
+import { PapayaComponentDiagramToolContribution } from './tools/PapayaComponentDiagramToolContribution';
 import { PapayaComponentLabelDetailToolContribution } from './tools/PapayaComponentLabelDetailToolContribution';
 
 const papayaExtensionRegistry = new ExtensionRegistry();
@@ -82,12 +83,16 @@ const papayaDiagramPanelExtension: DataExtension<Array<ReactFlowPropsCustomizer>
 papayaExtensionRegistry.putData(diagramRendererReactFlowPropsCustomizerExtensionPoint, papayaDiagramPanelExtension);
 const diagramPaletteToolContributions: DiagramPaletteToolContributionProps[] = [
   {
-    canHandle: (diagamElement: Node<NodeData> | Edge<EdgeData>) => {
-      return diagamElement.data
-        ? diagamElement.data.targetObjectKind.startsWith('siriusComponents://semantic?domain=papaya&entity=Component')
+    canHandle: (diagramElement: Node<NodeData> | Edge<EdgeData> | null) => {
+      return diagramElement?.data
+        ? diagramElement.data.targetObjectKind.startsWith('siriusComponents://semantic?domain=papaya&entity=Component')
         : false;
     },
     component: PapayaComponentLabelDetailToolContribution,
+  },
+  {
+    canHandle: (diagramElement: Node<NodeData> | Edge<EdgeData> | null) => diagramElement === null,
+    component: PapayaComponentDiagramToolContribution,
   },
 ];
 papayaExtensionRegistry.putData<DiagramPaletteToolContributionProps[]>(diagramPaletteToolExtensionPoint, {

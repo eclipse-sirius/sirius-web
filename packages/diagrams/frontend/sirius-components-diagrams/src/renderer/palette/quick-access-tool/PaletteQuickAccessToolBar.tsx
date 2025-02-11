@@ -26,6 +26,7 @@ import { PaletteQuickAccessToolBarProps } from './PaletteQuickAccessToolBar.type
 import { PinUnPinTool } from './PinUnPinTool';
 import { ResetEditedEdgePathTool } from './ResetEditedEdgePathTool';
 import { Tool } from './Tool';
+
 const isPinnable = (diagramElement: Node<NodeData> | Edge<EdgeData>): diagramElement is Node<NodeData> => {
   return !!diagramElement.data && 'pinned' in diagramElement.data;
 };
@@ -94,25 +95,25 @@ export const PaletteQuickAccessToolBar = ({
     quickAccessToolComponents.push(
       <AdjustSizeTool diagramElementId={diagramElementId} key={'tool_adjustSizeTool'}></AdjustSizeTool>
     );
-
-    const paletteToolData: DataExtension<DiagramPaletteToolContributionProps[]> = useData(
-      diagramPaletteToolExtensionPoint
-    );
-
-    paletteToolData.data
-      .filter((data) => data.canHandle(diagramElement))
-      .map((data) => data.component)
-      .forEach((PaletteToolComponent, index) =>
-        quickAccessToolComponents.push(
-          <PaletteToolComponent
-            x={x}
-            y={y}
-            diagramElementId={diagramElementId}
-            key={'paletteToolComponents_' + index.toString()}
-          />
-        )
-      );
   }
+
+  const paletteToolData: DataExtension<DiagramPaletteToolContributionProps[]> = useData(
+    diagramPaletteToolExtensionPoint
+  );
+
+  paletteToolData.data
+    .filter((data) => data.canHandle(diagramElement ?? null))
+    .map((data) => data.component)
+    .forEach((PaletteToolComponent, index) =>
+      quickAccessToolComponents.push(
+        <PaletteToolComponent
+          x={x}
+          y={y}
+          diagramElementId={diagramElementId}
+          key={'paletteToolComponents_' + index.toString()}
+        />
+      )
+    );
 
   if (quickAccessToolComponents.length > 0) {
     return (
