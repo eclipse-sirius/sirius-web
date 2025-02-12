@@ -191,7 +191,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
       setEdges(convertedDiagram.edges);
       setNodes(convertedDiagram.nodes);
-    } else if (cause === 'refresh') {
+    } else if (cause === 'refresh' && !readOnly) {
       const previousDiagram: RawDiagram = {
         nodes,
         edges,
