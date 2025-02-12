@@ -27,7 +27,7 @@
     "build": "vite build && tsc",
     "format": "prettier --write \"src/**/*.{js,ts,tsx,css}\"",
     "format-lint": "prettier --list-different \"src/**/*.{js,ts,tsx,css}\"",
-    "publish:local": "yalc push"
+    "publish:local": "ls -all && yalc push"
   },
   "peerDependencies": {
     "@apollo/client": "3.10.4",
