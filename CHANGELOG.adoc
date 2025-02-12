@@ -88,7 +88,7 @@ Now they are executed for some data if the data was coming from a studio too.
 - https://github.com/eclipse-sirius/sirius-web/issues/4390[#4390] [form] Fix an issue displaying irrelevant help text and diagnostics
 - [diagram] Replace `requestIdleCallback` with `setTimeout` for browser compatibility given the fact that `requestIdleCallback` is still a working draft
 - [sirius-web] Fix a recently introduced bug in which the semantic data of a project could remain after the deletion of the project
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4536[#4536] [sirius-web] Fix a recently introduced bug which broke semantic Undo/Redo support
 
 === New Features
 
