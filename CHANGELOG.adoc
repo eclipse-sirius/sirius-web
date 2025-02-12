@@ -136,6 +136,8 @@ See `PapayaExtensionRegistry.tsx` for how the same result as before can be achie
 - https://github.com/eclipse-sirius/sirius-web/issues/4458[#4458] [sirius-web] Export direct edit functionalities.
 - https://github.com/eclipse-sirius/sirius-web/issues/4481[#4481] [table] Add support for cell custom target object in View DSL
 - https://github.com/eclipse-sirius/sirius-web/issues/4377[#4377] [sirius-web] Add the ability to update dynamically the description of any representation
+- https://github.com/eclipse-sirius/sirius-web/issues/4462[#4462] [sirius-web] Add support for visualization of the libraries available on a server.
+For that, a new page `/libraries` showing all the libraries has been contributed.
 
 
 === Improvements

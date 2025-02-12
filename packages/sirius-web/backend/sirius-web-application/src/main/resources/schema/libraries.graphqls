@@ -1,0 +1,21 @@
+extend type Viewer {
+  libraries(page: Int!, limit: Int!): ViewerLibrariesConnection!
+}
+
+type ViewerLibrariesConnection {
+  edges: [ViewerLibrariesEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ViewerLibrariesEdge {
+  node: Library!
+}
+
+type Library {
+  id: ID!
+  namespace: String!
+  name: String!
+  version: String!
+  description: String!
+  createdOn: Instant!
+}

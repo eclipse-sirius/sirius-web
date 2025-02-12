@@ -12,10 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services;
 
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.repositories.ISemanticDataRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataCreationService;
@@ -38,9 +39,10 @@ public class SemanticDataCreationService implements ISemanticDataCreationService
     }
 
     @Override
-    public IResult<SemanticData> create(ICause cause) {
+    public IResult<SemanticData> create(ICause cause, List<Document> documents, List<String> domains) {
         var semanticData = SemanticData.newSemanticData()
-                .documents(Set.of())
+                .documents(documents)
+                .domains(domains)
                 .build(cause);
         this.semanticDataRepository.save(semanticData);
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,20 +10,25 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api;
+package org.eclipse.sirius.web.domain.boundedcontexts.library.events;
 
-import java.util.List;
+import java.time.Instant;
+import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
-import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
-import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
-import org.eclipse.sirius.web.domain.services.IResult;
+import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
- * Used to create the semantic data.
+ * Event fired when a library is created.
  *
- * @author sbegaudeau
+ * @author gdaniel
  */
-public interface ISemanticDataCreationService {
-    IResult<SemanticData> create(ICause cause, List<Document> documents, List<String> domains);
+public record LibraryCreatedEvent(
+        @NotNull UUID id,
+        @NotNull Instant createdOn,
+        @NotNull ICause causedBy,
+        @NotNull Library library) implements ILibraryEvent {
+
 }
