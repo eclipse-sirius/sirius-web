@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,20 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api;
+package org.eclipse.sirius.web.domain.boundedcontexts.library.services.api;
 
-import java.util.List;
-
-import org.eclipse.sirius.components.events.ICause;
-import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
-import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.services.IResult;
 
 /**
- * Used to create the semantic data.
+ * Used to create a library.
  *
  * @author sbegaudeau
  */
-public interface ISemanticDataCreationService {
-    IResult<SemanticData> create(ICause cause, List<Document> documents, List<String> domains);
+public interface ILibraryCreationService {
+    IResult<Library> createLibrary(Library library);
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,20 +10,23 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api;
+package org.eclipse.sirius.web.papaya.services.library;
 
-import java.util.List;
+import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
-import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
-import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
-import org.eclipse.sirius.web.domain.services.IResult;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
- * Used to create the semantic data.
+ * Input used to track the initialization of the standard library.
  *
  * @author sbegaudeau
  */
-public interface ISemanticDataCreationService {
-    IResult<SemanticData> create(ICause cause, List<Document> documents, List<String> domains);
+public record InitializeStandardLibraryEvent(
+        @NotNull UUID id,
+        @NotNull String namespace,
+        @NotNull String name,
+        @NotNull String version,
+        @NotNull String description) implements ICause {
 }

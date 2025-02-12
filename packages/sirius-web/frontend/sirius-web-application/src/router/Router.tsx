@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ import { useData } from '@eclipse-sirius/sirius-components-core';
 import { Navigate, Route, Routes, useRouteError } from 'react-router-dom';
 import { EditProjectView } from '../views/edit-project/EditProjectView';
 import { ErrorView } from '../views/error/ErrorView';
+import { LibraryBrowser } from '../views/library-browser/LibraryBrowser';
 import { NewProjectView } from '../views/new-project/NewProjectView';
 import { ProjectBrowser } from '../views/project-browser/ProjectBrowser';
 import { ProjectSettingsView } from '../views/project-settings/ProjectSettingsView';
@@ -39,6 +40,7 @@ export const Router = () => {
         ErrorBoundary={ErrorBoundary}
       />
       <Route path="/projects/:projectId/settings/*" element={<ProjectSettingsView />} ErrorBoundary={ErrorBoundary} />
+      <Route path="/libraries" element={<LibraryBrowser />} ErrorBoundary={ErrorBoundary} />
       <Route path="/errors/:code" element={<ErrorView />} />
       {routes.map((props, index) => (
         <Route key={index} {...props} ErrorBoundary={ErrorBoundary} />

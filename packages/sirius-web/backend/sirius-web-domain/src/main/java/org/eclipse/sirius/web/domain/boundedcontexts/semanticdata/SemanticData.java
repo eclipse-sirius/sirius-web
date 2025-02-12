@@ -13,9 +13,9 @@
 package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata;
 
 import java.time.Instant;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -153,12 +153,13 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
 
         private Set<SemanticDataDomain> domains = new LinkedHashSet<>();
 
-        public Builder documents(Set<Document> documents) {
-            this.documents = Objects.requireNonNull(documents);
+        public Builder documents(List<Document> documents) {
+            this.documents = documents.stream()
+                    .collect(Collectors.toSet());
             return this;
         }
 
-        public Builder domains(Collection<String> domains) {
+        public Builder domains(List<String> domains) {
             this.domains = domains.stream()
                     .map(SemanticDataDomain::new)
                     .collect(Collectors.toSet());

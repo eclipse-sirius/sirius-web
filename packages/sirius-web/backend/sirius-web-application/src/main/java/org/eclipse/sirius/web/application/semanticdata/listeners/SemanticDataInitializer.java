@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.semanticdata.listeners;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectCreatedEvent;
@@ -38,6 +39,6 @@ public class SemanticDataInitializer {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener
     public void onProjectCreatedEvent(ProjectCreatedEvent event) {
-        this.semanticDataCreationService.create(event);
+        this.semanticDataCreationService.create(event, List.of(), List.of());
     }
 }
