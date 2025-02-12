@@ -36,13 +36,13 @@ export const useExportToImage = (): UseExportToImage => {
     const viewport: Viewport = getViewportForBounds(nodesBounds, imageWidth, imageHeight, 0.5, 2, 0.05);
 
     const edges: HTMLElement | null = document.querySelector<HTMLElement>('.react-flow__edges');
-    const edgeMarkersDefs: HTMLElement | null = document.getElementById('edge-markers-defs');
+    const edgeMarkers: HTMLElement | null = document.getElementById('edge-markers');
 
     const reactFlowNodeContainer: HTMLElement | null = document.querySelector<HTMLElement>('.react-flow__viewport');
 
-    if (reactFlowNodeContainer && edges && edgeMarkersDefs) {
-      const clonedEdgeMarkersDefs: Node = edgeMarkersDefs.cloneNode(true);
-      edges.insertBefore(clonedEdgeMarkersDefs, edges.firstChild);
+    if (reactFlowNodeContainer && edges && edgeMarkers) {
+      const clonedEdgeMarkers: Node = edgeMarkers.cloneNode(true);
+      edges.insertBefore(clonedEdgeMarkers, edges.firstChild);
 
       toSvg(reactFlowNodeContainer, {
         backgroundColor: '#ffffff',
@@ -55,7 +55,7 @@ export const useExportToImage = (): UseExportToImage => {
         },
       })
         .then((dataUrl) => callback(dataUrl))
-        .finally(() => edges.removeChild(clonedEdgeMarkersDefs));
+        .finally(() => edges.removeChild(clonedEdgeMarkers));
     }
   }, []);
 
@@ -67,12 +67,12 @@ export const useExportToImage = (): UseExportToImage => {
     const viewport: Viewport = getViewportForBounds(nodesBounds, imageWidth, imageHeight, 0.5, 2, 0.05);
 
     const edges: HTMLElement | null = document.querySelector<HTMLElement>('.react-flow__edges');
-    const edgeMarkersDefs: HTMLElement | null = document.getElementById('edge-markers-defs');
+    const edgeMarkers: HTMLElement | null = document.getElementById('edge-markers');
 
     const reactFlowNodeContainer: HTMLElement | null = document.querySelector<HTMLElement>('.react-flow__viewport');
 
-    if (reactFlowNodeContainer && edges && edgeMarkersDefs) {
-      const clonedEdgeMarkersDefs: Node = edgeMarkersDefs.cloneNode(true);
+    if (reactFlowNodeContainer && edges && edgeMarkers) {
+      const clonedEdgeMarkersDefs: Node = edgeMarkers.cloneNode(true);
       edges.insertBefore(clonedEdgeMarkersDefs, edges.firstChild);
 
       toPng(reactFlowNodeContainer, {
