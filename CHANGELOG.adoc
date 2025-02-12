@@ -25,7 +25,7 @@
 
 === Bug fixes
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4540[#4540] [diagram] Do not invoke mutation `layoutDiagram` when in read-only mode
 
 === New Features
 
