@@ -23,7 +23,6 @@ import {
   Node,
   NodeChange,
   OnEdgesChange,
-  OnMove,
   OnNodesChange,
   ReactFlow,
   ReactFlowProps,
@@ -98,13 +97,9 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     onDiagramBackgroundContextMenu,
     onDiagramElementContextMenu: diagramPaletteOnDiagramElementContextMenu,
     hideDiagramPalette,
-    isOpened: isDiagramPaletteOpened,
   } = useDiagramPalette();
-  const {
-    onDiagramElementContextMenu: elementPaletteOnDiagramElementContextMenu,
-    hideDiagramElementPalette,
-    isOpened: isDiagramElementPaletteOpened,
-  } = useDiagramElementPalette();
+  const { onDiagramElementContextMenu: elementPaletteOnDiagramElementContextMenu, hideDiagramElementPalette } =
+    useDiagramElementPalette();
 
   const {
     onDiagramElementContextMenu: groupPaletteOnDiagramElementContextMenu,
@@ -328,10 +323,6 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     hideGroupPalette();
   }, [hideDiagramPalette, hideDiagramElementPalette, hideGroupPalette]);
 
-  const handleMove: OnMove = useCallback(() => {
-    hideAllPalettes();
-  }, [isDiagramElementPaletteOpened, isDiagramPaletteOpened]);
-
   const handleNodeContextMenu = useCallback(
     (event: React.MouseEvent<Element, MouseEvent>, element: Node<NodeData>) => {
       if (selection.entries.length <= 1 && !event.shiftKey) {
@@ -425,6 +416,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     nodes: nodes,
     nodeTypes: nodeTypes,
     onNodesChange: handleNodesChange,
+    onMoveStart: hideAllPalettes,
     edges: edges,
     edgeTypes: edgeTypes,
     edgesReconnectable: !readOnly,
@@ -439,7 +431,6 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     onPaneContextMenu: handlePaneContextMenu,
     onEdgeContextMenu: handleEdgeContextMenu,
     onNodeContextMenu: handleNodeContextMenu,
-    onMove: handleMove,
     nodeDragThreshold: 1,
     onDrop: onDrop,
     onDragOver: onDragOver,
