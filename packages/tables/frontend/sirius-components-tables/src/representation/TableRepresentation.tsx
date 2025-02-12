@@ -61,11 +61,21 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
   };
 
   const onGlobalFilterChange = (globalFilter: string) => {
-    setState((prevState) => ({ ...prevState, ...defaultPagination, globalFilter }));
+    setState((prevState) => ({
+      ...prevState,
+      cursor: defaultPagination.cursor,
+      direction: defaultPagination.direction,
+      globalFilter,
+    }));
   };
 
   const onColumnFiltersChange = (columnFilters: ColumnFilter[]) => {
-    setState((prevState) => ({ ...prevState, ...defaultPagination, columnFilters }));
+    setState((prevState) => ({
+      ...prevState,
+      cursor: defaultPagination.cursor,
+      direction: defaultPagination.direction,
+      columnFilters,
+    }));
   };
 
   let completeMessage: JSX.Element | null = null;

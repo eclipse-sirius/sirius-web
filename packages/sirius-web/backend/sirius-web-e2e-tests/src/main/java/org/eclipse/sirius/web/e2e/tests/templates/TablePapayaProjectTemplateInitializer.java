@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -61,9 +61,34 @@ public class TablePapayaProjectTemplateInitializer implements IProjectTemplateIn
             component.getPackages().add(firstPackage);
 
             var firstClass = PapayaFactory.eINSTANCE.createClass();
-            firstClass.setName("Class");
+            firstClass.setName("Class 1");
             firstClass.setDescription("This is a class");
             firstPackage.getTypes().add(firstClass);
+
+            var secondClass = PapayaFactory.eINSTANCE.createClass();
+            secondClass.setName("Class 2");
+            firstPackage.getTypes().add(secondClass);
+
+            var thirdClass = PapayaFactory.eINSTANCE.createClass();
+            thirdClass.setName("Class 3");
+            firstPackage.getTypes().add(thirdClass);
+
+            var fourthClass = PapayaFactory.eINSTANCE.createClass();
+            fourthClass.setName("Class 4");
+            firstPackage.getTypes().add(fourthClass);
+
+            var firstRecord = PapayaFactory.eINSTANCE.createRecord();
+            firstRecord.setName("Record 1");
+            firstRecord.setDescription("This is a record");
+            firstPackage.getTypes().add(firstRecord);
+
+            var secondRecord = PapayaFactory.eINSTANCE.createRecord();
+            secondRecord.setName("Record 2");
+            firstPackage.getTypes().add(secondRecord);
+
+            var thirdRecord = PapayaFactory.eINSTANCE.createRecord();
+            thirdRecord.setName("Record 3");
+            firstPackage.getTypes().add(thirdRecord);
 
             resource.getContents().add(project);
         }
