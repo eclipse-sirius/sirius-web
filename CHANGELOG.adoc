@@ -41,6 +41,7 @@ Given that it is an application service, it comes with some constraints with reg
 - https://github.com/eclipse-sirius/sirius-web/issues/4618[#4618] [diagram] Restore diagram layout propagation
 - https://github.com/eclipse-sirius/sirius-web/issues/4257[#4257] [diagram] Prevent the width of list parent nodes from increasing on each layout.
 - https://github.com/eclipse-sirius/sirius-web/issues/4534[#4534] [table] Fix an issue that prevent row action to be trigger on row in the next paginated data
+- https://github.com/eclipse-sirius/sirius-web/issues/4535[#4535] [table] Prevent page size from being reset after global search has been cleared
 
 
 === New Features
@@ -172,6 +173,7 @@ Now they are executed for some data if the data was coming from a studio too.
 - https://github.com/eclipse-sirius/sirius-web/issues/4257[#4257] [diagram] Prevent the width of list nodes from increasing on each layout
 - https://github.com/eclipse-sirius/sirius-web/issues/4554[#4554] [diagram] Stop synchronizing selection from the explorer if the corresponding node is hidden
 - https://github.com/eclipse-sirius/sirius-web/issues/4285[#4285] [diagram] Fix direct edit after closing the palette
+
 
 
 === New Features
