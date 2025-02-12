@@ -36,6 +36,8 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/4495[#4495] [form] Add an user indicator when executing form actions
 - https://github.com/eclipse-sirius/sirius-web/issues/4614[#4614] [view] Reduce the coupling of the `ViewFormDescriptionConverter`
 - https://github.com/eclipse-sirius/sirius-web/issues/4609[#4609] [sirius-web] Separate the representation metadata from the project bounded context.
+- https://github.com/eclipse-sirius/sirius-web/issues/4618[#4618] [diagram] Ensure layout-related mutations use a unique event id.
+Except for the specific case where `cause === 'refresh'` in `DiagramRenderer` (which corresponds to a layout update *after* an existing operation which caused the refresh, in which case we must reuse the original event id), other diagram-related mutations should behave like all the others and get a unique event id to clearly identify them.
 
 
 == v2025.2.0

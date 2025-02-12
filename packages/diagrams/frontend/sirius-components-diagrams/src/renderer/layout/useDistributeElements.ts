@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,9 +12,7 @@
  *******************************************************************************/
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { Edge, Node, XYPosition, useReactFlow } from '@xyflow/react';
-import { useCallback, useContext } from 'react';
-import { DiagramContext } from '../../contexts/DiagramContext';
-import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { useCallback } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { useOverlap } from '../overlap/useOverlap';
@@ -40,7 +38,6 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
   const { addMessages } = useMultiToast();
-  const { refreshEventPayloadId } = useContext<DiagramContextValue>(DiagramContext);
   const { resolveNodeOverlap } = useOverlap();
 
   const processLayoutTool = (
@@ -85,7 +82,7 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
           nodes: overlapFreeNodesAfterLayout as Node<NodeData, DiagramNodeType>[],
           edges: laidOutDiagram.edges,
         };
-        synchronizeLayoutData(refreshEventPayloadId, finalDiagram);
+        synchronizeLayoutData(crypto.randomUUID(), finalDiagram);
       });
     }
   };
@@ -157,11 +154,11 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
               nodes: laidOutDiagram.nodes,
               edges: laidOutDiagram.edges,
             };
-            synchronizeLayoutData(refreshEventPayloadId, finalDiagram);
+            synchronizeLayoutData(crypto.randomUUID(), finalDiagram);
           });
         }
       },
-      [resolveNodeOverlap, refreshEventPayloadId]
+      [resolveNodeOverlap]
     );
   };
 
@@ -219,7 +216,7 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
           ['left', 'right', 'center'].includes(orientation) ? 'vertical' : 'horizontal'
         );
       },
-      [resolveNodeOverlap, refreshEventPayloadId]
+      [resolveNodeOverlap]
     );
   };
 
@@ -242,7 +239,7 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
           refElementId
         );
       },
-      [resolveNodeOverlap, refreshEventPayloadId]
+      [resolveNodeOverlap]
     );
   };
 
@@ -444,7 +441,7 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
         refElementId
       );
     },
-    [resolveNodeOverlap, refreshEventPayloadId]
+    [resolveNodeOverlap]
   );
 
   return {

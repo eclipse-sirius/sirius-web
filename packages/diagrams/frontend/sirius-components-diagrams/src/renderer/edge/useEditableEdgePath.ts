@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,19 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Edge, Node } from '@xyflow/react';
-import { useCallback, useContext } from 'react';
-import { UseEditableEdgePathValue } from './useEditableEdgePath.types';
-import { NodeData, EdgeData } from '../DiagramRenderer.types';
-import { RawDiagram } from '../layout/layout.types';
-import { DiagramNodeType } from '../node/NodeTypes.types';
+import { useCallback } from 'react';
 import { useStore } from '../../representation/useStore';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { RawDiagram } from '../layout/layout.types';
 import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
-import { DiagramContextValue } from '../../contexts/DiagramContext.types';
-import { DiagramContext } from '../../contexts/DiagramContext';
+import { DiagramNodeType } from '../node/NodeTypes.types';
+import { UseEditableEdgePathValue } from './useEditableEdgePath.types';
 
 export const useEditableEdgePath = (): UseEditableEdgePathValue => {
   const { getEdges, getNodes, setEdges } = useStore();
-  const { refreshEventPayloadId } = useContext<DiagramContextValue>(DiagramContext);
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
 
   const synchronizeEdgeLayoutData = useCallback(
@@ -32,9 +29,9 @@ export const useEditableEdgePath = (): UseEditableEdgePathValue => {
         nodes: [...getNodes()] as Node<NodeData, DiagramNodeType>[],
         edges: edges,
       };
-      synchronizeLayoutData(refreshEventPayloadId, finalDiagram);
+      synchronizeLayoutData(crypto.randomUUID(), finalDiagram);
     },
-    [refreshEventPayloadId, getNodes, synchronizeLayoutData]
+    [getNodes, synchronizeLayoutData]
   );
 
   const removeEdgeLayoutData = useCallback(
