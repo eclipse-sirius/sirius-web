@@ -41,7 +41,13 @@ public class EditingContextApplicationService implements IEditingContextApplicat
     @Override
     @Transactional(readOnly = true)
     public String getCurrentEditingContextId(String projectId) {
-        return this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(projectId))
+        var rawProjectId = projectId.split("@");
+        var name = "main";
+        if (rawProjectId.length > 1) {
+            name = rawProjectId[1];
+        }
+
+        return this.projectSemanticDataSearchService.findByProjectIdAndName(AggregateReference.to(rawProjectId[0]), name)
                 .map(ProjectSemanticData::getSemanticData)
                 .map(AggregateReference::getId)
                 .map(UUID::toString)

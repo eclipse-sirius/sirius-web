@@ -85,29 +85,40 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
     @GivenSiriusWebServer
     @DisplayName("Given an editing context id, when a query is performed, then the editing context is returned")
     public void givenEditingContextIdWhenQueryIsPerformedThenTheEditingContextIsReturned() {
-        Map<String, Object> variables = Map.of("editingContextId", TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString());
+        Map<String, Object> variables = Map.of("editingContextId", TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID);
         var result = this.editingContextQueryRunner.run(variables);
 
         String editingContextId = JsonPath.read(result, "$.data.viewer.editingContext.id");
-        assertThat(editingContextId).isEqualTo(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString());
+        assertThat(editingContextId).isEqualTo(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID);
     }
 
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given a project, when a query is performed, then the editing context id is returned")
     public void givenProjectWhenQueryIsPerformedThenTheEditingContextIdIsReturned() {
-        Map<String, Object> variables = Map.of("projectId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString());
+        Map<String, Object> variables = Map.of("projectId", TestIdentifiers.ECORE_SAMPLE_PROJECT);
         var result = this.currentEditingContextQueryRunner.run(variables);
 
         String editingContextId = JsonPath.read(result, "$.data.viewer.project.currentEditingContext.id");
-        assertThat(editingContextId).isEqualTo(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString());
+        assertThat(editingContextId).isEqualTo(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID);
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a project with a project semantic data name, when a query is performed, then the editing context id is returned")
+    public void givenProjectWithAProjectSemanticDataNameWhenQueryIsPerformedThenTheEditingContextIdIsReturned() {
+        Map<String, Object> variables = Map.of("projectId", TestIdentifiers.ECORE_SAMPLE_PROJECT + "@test");
+        var result = this.currentEditingContextQueryRunner.run(variables);
+
+        String editingContextId = JsonPath.read(result, "$.data.viewer.project.currentEditingContext.id");
+        assertThat(editingContextId).isEqualTo(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_TEST_ID);
     }
 
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given an editing context id, when a query is performed, then its actions are returned")
     public void givenEditingContextIdWhenQueryIsPerformedThenItsActionsAreReturned() {
-        Map<String, Object> variables = Map.of("editingContextId", TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString());
+        Map<String, Object> variables = Map.of("editingContextId", TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID);
         var result = this.editingContextActionsQueryRunner.run(variables);
 
         boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.editingContext.actions.pageInfo.hasPreviousPage");
