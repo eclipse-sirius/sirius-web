@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,8 +21,10 @@ import { PinUnPinToolProps } from './PinUnPinTool.types';
 
 const useStyle = makeStyles()((theme) => ({
   toolIcon: {
-    width: theme.spacing(4.5),
+    minWidth: theme.spacing(3),
+    minHeight: theme.spacing(3),
     color: theme.palette.text.primary,
+    padding: 0,
   },
 }));
 

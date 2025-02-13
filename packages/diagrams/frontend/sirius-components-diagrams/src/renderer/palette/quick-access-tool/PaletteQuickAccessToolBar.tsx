@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,17 +14,18 @@
 import { DataExtension, useData } from '@eclipse-sirius/sirius-components-core';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
+import { Theme } from '@mui/material/styles';
 import { Edge, Node, useStoreApi } from '@xyflow/react';
 import { makeStyles } from 'tss-react/mui';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
 import { diagramPaletteToolExtensionPoint } from '../extensions/DiagramPaletteToolExtensionPoints';
-import { Tool } from './../../Tool';
 import { DiagramPaletteToolContributionProps } from './../extensions/DiagramPaletteToolContribution.types';
 import { AdjustSizeTool } from './AdjustSizeTool';
 import { FadeElementTool } from './FadeElementTool';
 import { PaletteQuickAccessToolBarProps } from './PaletteQuickAccessToolBar.types';
 import { PinUnPinTool } from './PinUnPinTool';
 import { ResetEditedEdgePathTool } from './ResetEditedEdgePathTool';
+import { Tool } from './Tool';
 const isPinnable = (diagramElement: Node<NodeData> | Edge<EdgeData>): diagramElement is Node<NodeData> => {
   return !!diagramElement.data && 'pinned' in diagramElement.data;
 };
@@ -35,13 +36,15 @@ const isBendable = (diagramElement: Node<NodeData> | Edge<EdgeData>): diagramEle
   return !!diagramElement.data && 'bendingPoints' in diagramElement.data && !!diagramElement.data.bendingPoints;
 };
 
-const useStyle = makeStyles()(() => ({
+const useStyle = makeStyles()((theme: Theme) => ({
   quickAccessTools: {
     display: 'flex',
     flexWrap: 'nowrap',
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
+    gap: theme.spacing(0.5),
+    paddingLeft: theme.spacing(0.5),
     overflowX: 'auto',
   },
 }));
@@ -60,7 +63,7 @@ export const PaletteQuickAccessToolBar = ({
 
   const quickAccessToolComponents: JSX.Element[] = [];
   quickAccessTools.forEach((tool) =>
-    quickAccessToolComponents.push(<Tool tool={tool} onClick={onToolClick} thumbnail key={'tool_' + tool.id} />)
+    quickAccessToolComponents.push(<Tool tool={tool} onClick={onToolClick} key={'tool_' + tool.id} />)
   );
 
   if (diagramElement) {

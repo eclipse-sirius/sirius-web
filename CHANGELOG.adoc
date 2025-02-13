@@ -92,6 +92,7 @@ Now they are executed for some data if the data was coming from a studio too.
 - https://github.com/eclipse-sirius/sirius-web/issues/4498[#4498] [diagram] Fix an issue where the arrow heads were lost during SVG/PNG export.
 - https://github.com/eclipse-sirius/sirius-web/issues/4545[#4545] [view] Ensure that widgets used to edit numbers are not created twice in view based forms
 - https://github.com/eclipse-sirius/sirius-web/issues/4530[#4530] [formdescriptioneditor] Ensure that the frontend will not crash while trying to display some nested structure
+- https://github.com/eclipse-sirius/sirius-web/issues/4544[#4544] [diagram] Fix an issue where quicktools could be misaligned by ensuring now that all quick tools provided by Sirius Web are 24px in width and 24px in height
 
 
 === New Features
