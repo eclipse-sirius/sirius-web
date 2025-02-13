@@ -359,13 +359,22 @@ public interface TablePackage extends EPackage {
     int ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES = 7;
 
     /**
+     * The feature id for the '<em><b>Depth Level Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ROW_DESCRIPTION__DEPTH_LEVEL_EXPRESSION = 8;
+
+    /**
      * The number of structural features of the '<em>Row Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int ROW_DESCRIPTION_FEATURE_COUNT = 8;
+    int ROW_DESCRIPTION_FEATURE_COUNT = 9;
 
     /**
      * The number of operations of the '<em>Row Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -968,6 +977,18 @@ public interface TablePackage extends EPackage {
     EReference getRowDescription_ContextMenuEntries();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.table.RowDescription#getDepthLevelExpression <em>Depth Level
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Depth Level Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.RowDescription#getDepthLevelExpression()
+     * @see #getRowDescription()
+     */
+    EAttribute getRowDescription_DepthLevelExpression();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.table.CellDescription <em>Cell
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1423,6 +1444,14 @@ public interface TablePackage extends EPackage {
          * @generated
          */
         EReference ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES = eINSTANCE.getRowDescription_ContextMenuEntries();
+
+        /**
+         * The meta object literal for the '<em><b>Depth Level Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute ROW_DESCRIPTION__DEPTH_LEVEL_EXPRESSION = eINSTANCE.getRowDescription_DepthLevelExpression();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.table.impl.CellDescriptionImpl

@@ -52,6 +52,7 @@ public class TableWidgetPreviewConverterProvider implements IWidgetPreviewConver
                         .headerIndexLabelProvider(vm -> "")
                         .isResizablePredicate(vm -> false)
                         .initialHeightProvider(vm -> -1)
+                        .depthLevelProvider(vm -> 0)
                         .build();
                 var tableDescription = TableDescription.newTableDescription(UUID.randomUUID().toString())
                         .label("")

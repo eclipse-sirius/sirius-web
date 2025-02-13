@@ -125,7 +125,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
                 .ifPresentOrElse(table -> {
                     tableId.set(table.getId());
                     assertThat(table).isNotNull();
-                    assertThat(table.getLines()).hasSize(2);
+                    assertThat(table.getLines()).hasSize(4);
                     rowRef.set(table.getLines().get(0));
                     assertThat(table.getLines().get(0).getHeight()).isEqualTo(53);
                 }, () -> fail(MISSING_TABLE));
@@ -148,7 +148,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
                 .map(TableRefreshedEventPayload::table)
                 .ifPresentOrElse(table -> {
                     assertThat(table).isNotNull();
-                    assertThat(table.getLines()).hasSize(2);
+                    assertThat(table.getLines()).hasSize(4);
                     assertThat(table.getLines().get(0).getHeight()).isEqualTo(100);
                 }, () -> fail(MISSING_TABLE));
 
@@ -185,7 +185,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
                 .ifPresentOrElse(table -> {
                     tableId.set(table.getId());
                     assertThat(table).isNotNull();
-                    assertThat(table.getLines()).hasSize(2);
+                    assertThat(table.getLines()).hasSize(4);
                     assertThat(table.getLines().get(1).getHeight()).isEqualTo(100);
                 }, () -> fail(MISSING_TABLE));
 
@@ -209,7 +209,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
                 .map(TableRefreshedEventPayload::table)
                 .ifPresentOrElse(table -> {
                     assertThat(table).isNotNull();
-                    assertThat(table.getLines()).hasSize(2);
+                    assertThat(table.getLines()).hasSize(4);
                     assertThat(table.getLines().get(1).getHeight()).isEqualTo(53);
                 }, () -> fail(MISSING_TABLE));
 
@@ -246,7 +246,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
                 .map(TableRefreshedEventPayload::table)
                 .ifPresentOrElse(table -> {
                     assertThat(table).isNotNull();
-                    assertThat(table.getLines()).hasSize(2);
+                    assertThat(table.getLines()).hasSize(4);
                     tableId.set(table.getId());
                     rowId.set(table.getLines().get(0).getId());
                 }, () -> fail(MISSING_TABLE));
@@ -298,7 +298,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
                 .map(TableRefreshedEventPayload::table)
                 .ifPresentOrElse(table -> {
                     assertThat(table).isNotNull();
-                    assertThat(table.getLines()).hasSize(2);
+                    assertThat(table.getLines()).hasSize(4);
                     tableId.set(table.getId());
                     rowId.set(table.getLines().get(0).getId());
                 }, () -> fail(MISSING_TABLE));
@@ -327,13 +327,39 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
                 .map(TableRefreshedEventPayload::table)
                 .ifPresentOrElse(table -> {
                     assertThat(table).isNotNull();
-                    assertThat(table.getLines()).hasSize(1);
+                    assertThat(table.getLines()).hasSize(3);
                 }, () -> fail(MISSING_TABLE));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTableContentConsumer)
                 .then(invokeDeleteRowAction)
                 .consumeNextWith(updatedTableContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a table representation, when we subscribe to its event, then the representation data has the correct row depth levels")
+    public void givenTableRepresentationWhenWeSubscribeToItsEventThenTheRepresentationDataHasTheCorrectRowDepthLevels() {
+        var flux = this.givenSubscriptionToTable();
+
+        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
+                .filter(TableRefreshedEventPayload.class::isInstance)
+                .map(TableRefreshedEventPayload.class::cast)
+                .map(TableRefreshedEventPayload::table)
+                .ifPresentOrElse(table -> {
+                    assertThat(table).isNotNull();
+                    assertThat(table.getColumns()).hasSize(6);
+                    assertThat(table.getLines()).hasSize(4);
+                    assertThat(table.getLines().get(0).getDepthLevel()).isEqualTo(0);
+                    assertThat(table.getLines().get(1).getDepthLevel()).isEqualTo(0);
+                    assertThat(table.getLines().get(2).getDepthLevel()).isEqualTo(1);
+                    assertThat(table.getLines().get(3).getDepthLevel()).isEqualTo(2);
+                }, () -> fail(MISSING_TABLE));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialTableContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
