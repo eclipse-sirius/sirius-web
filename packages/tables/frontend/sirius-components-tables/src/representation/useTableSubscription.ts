@@ -74,6 +74,7 @@ export const getTableEventSubscription = `
             headerIndexLabel
             height
             isResizable
+            depthLevel
             cells {
               __typename
               id

@@ -30,8 +30,17 @@ export const useTableColumns = (
   enableColumnFilters: boolean,
   enableColumnOrdering: boolean,
   enableRowSizing: boolean,
-  handleRowHeightChange: (rowId: string, height: number) => void
+  handleRowHeightChange: (rowId: string, height: number) => void,
+  onExpandCollapse: (rowId: string) => void,
+  expandedRowIds: string[]
 ): UseTableColumnsValue => {
+  const hasChildren = (id: string) => {
+    const index = table.lines.findIndex((row) => row.id === id);
+    return (
+      index < table.lines.length - 1 && table.lines.at(index + 1)!.depthLevel === table.lines.at(index)!.depthLevel + 1
+    );
+  };
+
   const { setSelection } = useSelection();
   const columns = useMemo<MRT_ColumnDef<GQLLine, string>[]>(() => {
     const columnDefs: MRT_ColumnDef<GQLLine, string>[] = table.columns.map((column) => {
@@ -80,7 +89,12 @@ export const useTableColumns = (
             };
             setSelection(newSelection);
           }}>
-          <RowHeader row={row.original} />
+          <RowHeader
+            row={row.original}
+            isExpanded={expandedRowIds.includes(row.original.id)}
+            hasChildren={hasChildren(row.original.id)}
+            onExpandCollapse={onExpandCollapse}
+          />
           {enableRowSizing ? (
             <ResizeRowHandler
               editingContextId={editingContextId}
@@ -95,7 +109,7 @@ export const useTableColumns = (
       ),
     };
     return [rowHeaderColumn, ...columnDefs];
-  }, [table]);
+  }, [table, expandedRowIds]);
 
   return {
     columns,

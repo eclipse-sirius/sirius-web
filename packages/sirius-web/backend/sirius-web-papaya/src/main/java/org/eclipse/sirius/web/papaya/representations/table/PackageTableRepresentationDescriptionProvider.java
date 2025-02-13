@@ -33,8 +33,10 @@ import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.emf.tables.CursorBasedNavigationServices;
 import org.eclipse.sirius.components.papaya.AnnotableElement;
+import org.eclipse.sirius.components.papaya.Operation;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
+import org.eclipse.sirius.components.papaya.Parameter;
 import org.eclipse.sirius.components.papaya.Type;
 import org.eclipse.sirius.components.papaya.spec.PackageSpec;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
@@ -101,6 +103,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .headerIndexLabelProvider(headerIndexLabelProvider)
                 .isResizablePredicate(variableManager -> true)
                 .initialHeightProvider(variableManager -> 53)
+                .depthLevelProvider(this::getSemanticElementDepthLevel)
                 .build();
 
         var tableDescription = TableDescription.newTableDescription(TABLE_DESCRIPTION_ID)
@@ -135,9 +138,10 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
         List<ColumnFilter> columnFilters = variableManager.get(TableRenderer.COLUMN_FILTERS, List.class).orElse(List.of());
 
         Predicate<EObject> predicate = eObject -> {
-            boolean isValidCandidate = eObject instanceof Type && EcoreUtil.isAncestor(self, eObject);
-            if (isValidCandidate) {
-                var type = (Type) eObject;
+            boolean isValidCandidate = (eObject instanceof Type && EcoreUtil.isAncestor(self, eObject)) ||
+                    eObject instanceof Operation ||
+                    eObject instanceof Parameter;
+            if (isValidCandidate && eObject instanceof Type type) {
                 if (globalFilter != null && !globalFilter.isBlank()) {
                     isValidCandidate = type.getName() != null && type.getName().contains(globalFilter);
                     isValidCandidate = isValidCandidate || type.getDescription() != null && type.getDescription().contains(globalFilter);
@@ -150,6 +154,17 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
         };
 
         return new CursorBasedNavigationServices().collect(self, cursor, direction, size, predicate);
+    }
+
+    private Integer getSemanticElementDepthLevel(VariableManager variableManager) {
+        int result = 0;
+        var self = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
+        if (self instanceof Operation) {
+            result = 1;
+        } else if (self instanceof Parameter) {
+            result = 2;
+        }
+        return result;
     }
 
     private List<ColumnDescription> getColumnDescriptions() {

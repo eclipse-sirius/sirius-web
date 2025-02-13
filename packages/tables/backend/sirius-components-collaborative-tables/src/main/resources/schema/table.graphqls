@@ -66,6 +66,7 @@ type Line {
   headerIndexLabel: String!
   height: Int!
   isResizable: Boolean!
+  depthLevel: Int!
 }
 
 type PaginationData {
