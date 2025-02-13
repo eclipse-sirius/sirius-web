@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,7 @@ import {
   ProviderResult,
   TreeDataProvider,
   TreeItem,
-  TreeItemCollapsibleState
+  TreeItemCollapsibleState,
 } from 'vscode';
 import { ModelData } from '../../data/ModelData';
 import { ProjectData } from '../../data/ProjectData';
@@ -146,7 +146,7 @@ export class ExplorerViewProvider implements TreeDataProvider<ModelItem> {
           serverData.serverAddress,
           serverData.username,
           serverData.password,
-          projectData.id,
+          projectData.editingContextId,
           element.id,
           element.label,
           element.kind,

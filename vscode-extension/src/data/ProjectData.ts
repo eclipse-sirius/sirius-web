@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,12 @@ export class ProjectData {
   private representationsData: RepresentationData[];
   private subscriptionTreeEventId: string | undefined;
 
-  constructor(public readonly id: string, public readonly name: string, public readonly serverId: string) {
+  constructor(
+    public readonly id: string,
+    public readonly editingContextId: string,
+    public readonly name: string,
+    public readonly serverId: string
+  ) {
     this.modelsData = [];
     this.representationsData = [];
   }
@@ -71,7 +76,7 @@ export class ProjectData {
             representationId: `explorer://?treeDescriptionId=explorer_tree_description&expandedIds=[${expandedItems
               .map(encodeURIComponent)
               .join(',')}]&activeFilterIds=[]`,
-            editingContextId: this.id,
+            editingContextId: this.editingContextId,
           },
         },
       };
@@ -126,7 +131,7 @@ export class ProjectData {
             element.kind,
             element.imageURL,
             this.serverId,
-            this.id,
+            this.editingContextId,
             element.hasChildren
           );
           modelsData.push(modelData);
@@ -166,7 +171,7 @@ export class ProjectData {
         queryURL,
         {
           query: graphQLQuery,
-          variables: { editingContextId: this.id },
+          variables: { editingContextId: this.editingContextId },
         },
         headers
       )
@@ -180,7 +185,12 @@ export class ProjectData {
             .map((e) => e.node)
             .filter(this.isHandledRepresentation);
           representations.forEach((diagram) => {
-            const representationData = new RepresentationData(diagram.id, diagram.label, diagram.kind, this.id);
+            const representationData = new RepresentationData(
+              diagram.id,
+              diagram.label,
+              diagram.kind,
+              this.editingContextId
+            );
             this.representationsData.push(representationData);
           });
           return Promise.resolve(this.representationsData);
