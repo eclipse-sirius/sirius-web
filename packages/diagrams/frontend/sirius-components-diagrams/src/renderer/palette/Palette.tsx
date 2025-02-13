@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,10 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import CloseIcon from '@mui/icons-material/Close';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
+import Tooltip from '@mui/material/Tooltip';
 import { Edge, Node, useStoreApi, useViewport, XYPosition } from '@xyflow/react';
 import React, { useEffect, useState } from 'react';
 import Draggable, { DraggableData } from 'react-draggable';
@@ -52,7 +55,7 @@ const usePaletteStyle = makeStyles<PaletteStyleProps>()((theme, props) => ({
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: `${theme.palette.secondary.main}08`,
   },
@@ -104,7 +107,7 @@ export const Palette = ({
   diagramElementId,
   targetObjectId,
   onDirectEditClick,
-  onEscape,
+  onClose,
 }: PaletteProps) => {
   const { domNode, nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
   const { x: viewportWidth, y: viewportHeight } = computeDraggableBounds(domNode?.getBoundingClientRect());
@@ -169,6 +172,11 @@ export const Palette = ({
         onClick={(event) => event.stopPropagation()}>
         <Box id="tool-palette-header" className={classes.paletteHeader}>
           <DragIndicatorIcon />
+          <Tooltip title="Close">
+            <IconButton size="small" aria-label="close" color="inherit" data-testid="Close-palette" onClick={onClose}>
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
         </Box>
         <Divider />
         <PaletteQuickAccessToolBar
@@ -180,7 +188,7 @@ export const Palette = ({
         />
         <PaletteSearchField
           onValueChanged={onSearchFieldValueChanged}
-          onEscape={onEscape}
+          onEscape={onClose}
           onDirectEditClick={onDirectEditClick}
         />
         {state.searchToolValue.length > 0 ? (

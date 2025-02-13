@@ -145,6 +145,7 @@ See `PapayaExtensionRegistry.tsx` for how the same result as before can be achie
 - https://github.com/eclipse-sirius/sirius-web/issues/4377[#4377] [sirius-web] Add the ability to update dynamically the description of any representation
 - https://github.com/eclipse-sirius/sirius-web/issues/4462[#4462] [sirius-web] Add support for visualization of the libraries available on a server.
 For that, a new page `/libraries` showing all the libraries has been contributed.
+- https://github.com/eclipse-sirius/sirius-web/issues/4564[#4564] [sirius-web] Add an arrow to close the palette on its header
 
 
 === Improvements
