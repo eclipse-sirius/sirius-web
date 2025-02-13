@@ -45,6 +45,7 @@ import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedTableSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -64,7 +65,7 @@ import reactor.test.StepVerifier;
  */
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"sirius.web.test.enabled=studio"})
 public class PapayaTableRowControllerIntegrationTests extends AbstractIntegrationTests {
 
     private static final String MISSING_TABLE = "Missing table";
@@ -92,6 +93,9 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
 
     @Autowired
     private IGivenCommittedTransaction givenCommittedTransaction;
+
+    @Autowired
+    private RepresentationIdBuilder representationIdBuilder;
 
     @BeforeEach
     public void beforeEach() {
@@ -254,7 +258,57 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
         Runnable getContextMenuActions = () -> {
             Map<String, Object> variables = Map.of(
                     "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
-                    "representationId", tableId.get(),
+                    "representationId", this.representationIdBuilder.buildTableRepresentationId(tableId.get(), null, "NEXT", 10),
+                    "tableId", tableId.get(),
+                    "rowId", rowId.get().toString()
+            );
+            var result = this.rowContextMenuQueryRunner.run(variables);
+
+            List<String> actionLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.rowContextMenuEntries[*].label");
+            assertThat(actionLabels).isNotEmpty().hasSize(1);
+            assertThat(actionLabels.get(0)).isEqualTo("Delete row");
+        };
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialTableContentConsumer)
+                .then(getContextMenuActions)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a table with pagination in next data, when row context menu entries are queried, then the correct entries are returned")
+    public void giveATableWithPaginationInNextDataWhenRowContextMenuEntriesAreQueriedThenTheCorrectEntriesAreReturned() {
+        var representationId = this.representationIdBuilder.buildTableRepresentationId(PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString(), PapayaIdentifiers.PAPAYA_SUCCESS_CLASS_OBJECT.toString(), "NEXT", 1);
+        var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId);
+        var flux = this.tableEventSubscriptionRunner.run(tableEventInput);
+
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
+
+        var tableId = new AtomicReference<String>();
+        var rowId = new AtomicReference<UUID>();
+
+        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData)
+                .filter(TableRefreshedEventPayload.class::isInstance)
+                .map(TableRefreshedEventPayload.class::cast)
+                .map(TableRefreshedEventPayload::table)
+                .ifPresentOrElse(table -> {
+                    assertThat(table).isNotNull();
+                    assertThat(table.getLines()).hasSize(1);
+                    tableId.set(table.getId());
+                    rowId.set(table.getLines().get(0).getId());
+                }, () -> fail(MISSING_TABLE));
+
+        Runnable getContextMenuActions = () -> {
+            Map<String, Object> variables = Map.of(
+                    "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                    "representationId", this.representationIdBuilder.buildTableRepresentationId(tableId.get(), PapayaIdentifiers.PAPAYA_SUCCESS_CLASS_OBJECT.toString(), "NEXT", 1),
                     "tableId", tableId.get(),
                     "rowId", rowId.get().toString()
             );

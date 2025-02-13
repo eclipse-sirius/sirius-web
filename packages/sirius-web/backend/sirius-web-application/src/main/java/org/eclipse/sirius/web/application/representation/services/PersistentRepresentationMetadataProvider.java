@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,6 +30,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class PersistentRepresentationMetadataProvider implements IRepresentationMetadataProvider {
 
+    private static final String URL_PARAM = "?";
+
     private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
     public PersistentRepresentationMetadataProvider(IRepresentationMetadataSearchService representationMetadataSearchService) {
@@ -38,7 +40,11 @@ public class PersistentRepresentationMetadataProvider implements IRepresentation
 
     @Override
     public Optional<RepresentationMetadata> getMetadata(String representationId) {
-        return new UUIDParser().parse(representationId)
+        var cleanRepresentationId = representationId;
+        if (representationId.indexOf(URL_PARAM) > 0) {
+            cleanRepresentationId = representationId.substring(0, representationId.indexOf(URL_PARAM));
+        }
+        return new UUIDParser().parse(cleanRepresentationId)
                 .flatMap(this.representationMetadataSearchService::findMetadataById)
                 .map(representation -> RepresentationMetadata.newRepresentationMetadata(representation.getId().toString())
                         .kind(representation.getKind())

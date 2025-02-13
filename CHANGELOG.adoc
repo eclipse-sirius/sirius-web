@@ -40,6 +40,8 @@ Given that it is an application service, it comes with some constraints with reg
 - https://github.com/eclipse-sirius/sirius-web/issues/4636[#4636] [sirius-web] Remove an useless div in the `EditProjectView`
 - https://github.com/eclipse-sirius/sirius-web/issues/4618[#4618] [diagram] Restore diagram layout propagation
 - https://github.com/eclipse-sirius/sirius-web/issues/4257[#4257] [diagram] Prevent the width of list parent nodes from increasing on each layout.
+- https://github.com/eclipse-sirius/sirius-web/issues/4534[#4534] [table] Fix an issue that prevent row action to be trigger on row in the next paginated data
+
 
 === New Features
 
