@@ -145,13 +145,21 @@ public interface TablePackage extends EPackage {
     int TABLE_DESCRIPTION__CELL_DESCRIPTIONS = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
+     * The feature id for the '<em><b>Enable Sub Rows</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TABLE_DESCRIPTION__ENABLE_SUB_ROWS = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 4;
+
+    /**
      * The number of structural features of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int TABLE_DESCRIPTION_FEATURE_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 4;
+    int TABLE_DESCRIPTION_FEATURE_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
      * The number of operations of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -359,13 +367,22 @@ public interface TablePackage extends EPackage {
     int ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES = 7;
 
     /**
+     * The feature id for the '<em><b>Depth Level Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ROW_DESCRIPTION__DEPTH_LEVEL_EXPRESSION = 8;
+
+    /**
      * The number of structural features of the '<em>Row Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int ROW_DESCRIPTION_FEATURE_COUNT = 8;
+    int ROW_DESCRIPTION_FEATURE_COUNT = 9;
 
     /**
      * The number of operations of the '<em>Row Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -733,6 +750,18 @@ public interface TablePackage extends EPackage {
     EReference getTableDescription_CellDescriptions();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.table.TableDescription#isEnableSubRows <em>Enable Sub Rows</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Enable Sub Rows</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.TableDescription#isEnableSubRows()
+     * @see #getTableDescription()
+     */
+    EAttribute getTableDescription_EnableSubRows();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.table.ColumnDescription <em>Column
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -966,6 +995,18 @@ public interface TablePackage extends EPackage {
      * @see #getRowDescription()
      */
     EReference getRowDescription_ContextMenuEntries();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.table.RowDescription#getDepthLevelExpression <em>Depth Level
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Depth Level Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.RowDescription#getDepthLevelExpression()
+     * @see #getRowDescription()
+     */
+    EAttribute getRowDescription_DepthLevelExpression();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.table.CellDescription <em>Cell
@@ -1261,6 +1302,14 @@ public interface TablePackage extends EPackage {
         EReference TABLE_DESCRIPTION__CELL_DESCRIPTIONS = eINSTANCE.getTableDescription_CellDescriptions();
 
         /**
+         * The meta object literal for the '<em><b>Enable Sub Rows</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute TABLE_DESCRIPTION__ENABLE_SUB_ROWS = eINSTANCE.getTableDescription_EnableSubRows();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.table.impl.ColumnDescriptionImpl
          * <em>Column Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -1423,6 +1472,14 @@ public interface TablePackage extends EPackage {
          * @generated
          */
         EReference ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES = eINSTANCE.getRowDescription_ContextMenuEntries();
+
+        /**
+         * The meta object literal for the '<em><b>Depth Level Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute ROW_DESCRIPTION__DEPTH_LEVEL_EXPRESSION = eINSTANCE.getRowDescription_DepthLevelExpression();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.table.impl.CellDescriptionImpl

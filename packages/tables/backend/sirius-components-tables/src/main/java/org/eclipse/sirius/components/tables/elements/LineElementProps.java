@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,7 +34,8 @@ public record LineElementProps(
         List<String> headerIconURLs,
         String headerIndexLabel,
         int height,
-        boolean resizable) implements IProps {
+        boolean resizable,
+        int depthLevel) implements IProps {
 
     public static final String TYPE = "Line";
 
@@ -57,7 +58,7 @@ public record LineElementProps(
     public static Builder newLineElementProps(UUID id) {
         return new Builder(id);
     }
-
+    
     /**
      * The builder of the line element props.
      *
@@ -85,6 +86,8 @@ public record LineElementProps(
         private int height;
 
         private boolean resizable;
+
+        private int depthLevel;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -135,9 +138,15 @@ public record LineElementProps(
             return this;
         }
 
+        public Builder depthLevel(int depthLevel) {
+            this.depthLevel = depthLevel;
+            return this;
+        }
+
 
         public LineElementProps build() {
-            return new LineElementProps(this.id, this.descriptionId, this.targetObjectId, this.targetObjectKind, this.children, this.headerLabel, this.headerIconURLs, this.headerIndexLabel, this.height, this.resizable);
+            return new LineElementProps(this.id, this.descriptionId, this.targetObjectId, this.targetObjectKind, this.children, this.headerLabel, this.headerIconURLs, this.headerIndexLabel,
+                    this.height, this.resizable, this.depthLevel);
         }
     }
 }

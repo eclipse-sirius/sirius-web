@@ -36,6 +36,64 @@ import { GQLLine, TableContentProps, TablePaginationState } from './TableContent
 import { useGlobalFilter } from './useGlobalFilter';
 import { useTableColumns } from './useTableColumns';
 
+const keepRow = (row: GQLLine, visibleRows: GQLLine[]): number => {
+  visibleRows.push(row);
+  return row.depthLevel;
+};
+const getChildrenById = (rowId: string, rows: GQLLine[]): GQLLine[] => {
+  const rowIndex = rows.findIndex((row) => row.id === rowId);
+  const children: GQLLine[] = [];
+  if (rowIndex >= 0 && rowIndex + 1 < rows.length) {
+    const level = rows[rowIndex]?.depthLevel ?? 0;
+    let index = rowIndex + 1;
+    while (index < rows.length && (rows[index]?.depthLevel ?? 0) > level) {
+      // keep only direct children
+      const row = rows[index];
+      if (row && row.depthLevel === level + 1) {
+        children.push(row);
+      }
+      index++;
+    }
+  }
+  return children;
+};
+
+const rowIdsToCollapse = (rowId: string, rows: GQLLine[], expandedRowIds: string[]): string[] => {
+  const result: string[] = [];
+
+  result.push(rowId);
+  // need to check if some sub rows are expanded
+  const children = getChildrenById(rowId, rows);
+  for (const child of children) {
+    if (expandedRowIds.includes(child.id)) {
+      result.push(...rowIdsToCollapse(child.id, rows, expandedRowIds));
+    }
+  }
+  return result;
+};
+
+const filterRowsOnLevel = (rows: GQLLine[], expandedRowIds: string[]): GQLLine[] => {
+  let filteredRows: GQLLine[] = [];
+  let currentIndex = 0;
+  const firstRow = rows[currentIndex];
+  if (firstRow) {
+    let currentLevel = keepRow(firstRow, filteredRows);
+    for (let index = 1; index < rows.length; index++) {
+      const row = rows[index];
+      if (row && row.depthLevel <= currentLevel) {
+        currentLevel = keepRow(row, filteredRows);
+      } else if (row && row.depthLevel > currentLevel) {
+        const currentRow = rows[currentIndex];
+        if (currentRow && expandedRowIds.includes(currentRow.id)) {
+          currentLevel = keepRow(row, filteredRows);
+        }
+      }
+      currentIndex = index;
+    }
+  }
+  return filteredRows;
+};
+
 export const TableContent = memo(
   ({
     editingContextId,
@@ -60,6 +118,17 @@ export const TableContent = memo(
       setLinesState((prev) => prev.map((line) => (line.id === rowId ? { ...line, height } : line)));
     };
 
+    const onRowExpandCollapse = (rowId: string) => {
+      if (expandedRowIds.includes(rowId)) {
+        const toRemove = rowIdsToCollapse(rowId, table.lines, expandedRowIds);
+        setExpandedRowIds((prev) => [...prev.filter((id) => !toRemove.includes(id))]);
+      } else {
+        setExpandedRowIds((prev) => [...prev, rowId]);
+      }
+    };
+
+    const [expandedRowIds, setExpandedRowIds] = useState<string[]>([]);
+
     const { columns } = useTableColumns(
       editingContextId,
       representationId,
@@ -70,7 +139,9 @@ export const TableContent = memo(
       enableColumnFilters,
       enableColumnOrdering,
       enableRowSizing,
-      handleRowHeightChange
+      handleRowHeightChange,
+      onRowExpandCollapse,
+      expandedRowIds
     );
     const { columnSizing, setColumnSizing } = useTableColumnSizing(
       editingContextId,
@@ -97,7 +168,7 @@ export const TableContent = memo(
       onColumnFiltersChange,
       enableColumnFilters
     );
-    const [linesState, setLinesState] = useState<GQLLine[]>(table.lines);
+    const [linesState, setLinesState] = useState<GQLLine[]>([]);
 
     const { resetRowsHeight } = useResetRowsMutation(editingContextId, representationId, table.id, enableRowSizing);
 
@@ -151,8 +222,13 @@ export const TableContent = memo(
     }, [pagination.cursor, pagination.size, pagination.direction]);
 
     useEffect(() => {
-      setLinesState([...table.lines]);
-    }, [table]);
+      if (table.enableSubRows) {
+        const rowFiltered = filterRowsOnLevel(table.lines, expandedRowIds);
+        setLinesState([...rowFiltered]);
+      } else {
+        setLinesState([...table.lines]);
+      }
+    }, [table, expandedRowIds]);
 
     const tableOptions: MRT_TableOptions<GQLLine> = {
       columns,
@@ -172,7 +248,7 @@ export const TableContent = memo(
       enableGlobalFilter,
       manualFiltering: true,
       onGlobalFilterChange: setGlobalFilter,
-      enableColumnPinning: false,
+      enableColumnPinning: true,
       initialState: {
         showGlobalFilter: enableGlobalFilter,
         columnPinning: { left: ['mrt-row-header'], right: ['mrt-row-actions'] },
