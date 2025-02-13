@@ -91,6 +91,7 @@ Now they are executed for some data if the data was coming from a studio too.
 - https://github.com/eclipse-sirius/sirius-web/issues/4536[#4536] [sirius-web] Fix a recently introduced bug which broke semantic Undo/Redo support
 - https://github.com/eclipse-sirius/sirius-web/issues/4498[#4498] [diagram] Fix an issue where the arrow heads were lost during SVG/PNG export.
 - https://github.com/eclipse-sirius/sirius-web/issues/4545[#4545] [view] Ensure that widgets used to edit numbers are not created twice in view based forms
+- https://github.com/eclipse-sirius/sirius-web/issues/4530[#4530] [formdescriptioneditor] Ensure that the frontend will not crash while trying to display some nested structure
 
 
 === New Features

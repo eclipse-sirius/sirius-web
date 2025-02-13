@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -180,7 +180,7 @@ export const FlexboxContainerWidget = ({ page, widget }: FlexboxContainerWidgetP
       return;
     }
 
-    let index = widget.children.length || 0;
+    let index = widget.children?.length ?? 0;
     if (isKind(id) || widgetContributions.find((widgetContribution) => widgetContribution.name === id)) {
       const addWidgetInput: GQLAddWidgetInput = {
         id: crypto.randomUUID(),
@@ -193,7 +193,7 @@ export const FlexboxContainerWidget = ({ page, widget }: FlexboxContainerWidgetP
       const addWidgetVariables: GQLAddWidgetMutationVariables = { input: addWidgetInput };
       addWidget({ variables: addWidgetVariables });
     } else {
-      if (widget.children.find((w: GQLWidget) => w.id === id)) {
+      if (widget.children && widget.children.find((w: GQLWidget) => w.id === id)) {
         index--;
       }
       const moveWidgetInput: GQLMoveWidgetInput = {
@@ -209,7 +209,7 @@ export const FlexboxContainerWidget = ({ page, widget }: FlexboxContainerWidgetP
     }
   };
 
-  let children = widget.children.map((childWidget: GQLWidget) => {
+  let children = (widget.children ?? []).map((childWidget: GQLWidget) => {
     return (
       <WidgetEntry
         key={childWidget.id}
