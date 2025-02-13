@@ -98,6 +98,7 @@ Now they are executed for some data if the data was coming from a studio too.
 - https://github.com/eclipse-sirius/sirius-web/issues/4547[#4547] [vs-code] Adapt the VSCode extension to the use of SemanticData#id as editingContextId
 - https://github.com/eclipse-sirius/sirius-web/issues/4561[#4561] [sirius-web] Display boolean values properly in the query view
 - https://github.com/eclipse-sirius/sirius-web/issues/4522[#4522] [diagram] Fix an issue where custom tools were no longer contributed to the diagram palette
+- https://github.com/eclipse-sirius/sirius-web/issues/4549[#4549] [diagram] Fix an issue where edge tools could be shown in a palette tool section
 
 
 === New Features
