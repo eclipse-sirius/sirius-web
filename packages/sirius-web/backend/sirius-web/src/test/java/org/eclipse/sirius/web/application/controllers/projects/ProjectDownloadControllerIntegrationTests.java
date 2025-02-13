@@ -149,7 +149,7 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given a project, when the download of the project is requested, then the representation data are retrieved")
-    public void givenProjectWhenTheDownloadOfProjectIsRequestedThenTheRepresentationDataAreRetrieved() {
+    public void givenProjectWhenTheDownloadOfProjectIsRequestedThenTheRepresentationDataAreRetrieved2() {
         this.givenCommittedTransaction.commit();
 
         var response = this.download(TestIdentifiers.ECORE_SAMPLE_PROJECT);
@@ -164,6 +164,47 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
 
             var objectMapper = new ObjectMapper();
             assertThat(objectMapper.readTree(representationContent)).isEqualTo(objectMapper.readTree(representationContentExpected));
+        } catch (IOException exception) {
+            fail(exception.getMessage());
+        }
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a project with representations, when the download of the project is requested, then the manifest is exported")
+    public void givenProjectWithRepresentationsWhenTheDownloadOfProjectIsRequestedThenTheManifestIsExported() {
+        this.givenCommittedTransaction.commit();
+
+        var response = this.download(TestIdentifiers.ECORE_SAMPLE_PROJECT);
+
+        try (ZipInputStream inputStream = new ZipInputStream(response.getBody().getInputStream())) {
+            HashMap<String, ByteArrayOutputStream> zipEntries = this.toZipEntries(inputStream);
+            assertThat(zipEntries).isNotEmpty().containsKey("Ecore Sample/manifest.json");
+
+            String manifestContentExpected = """
+                    {
+                      "natures": ["ecore"],
+                      "documentIdsToName": { "48dc942a-6b76-4133-bca5-5b29ebee133d": "Ecore" },
+                      "metamodels": ["domain://buck", "http://www.eclipse.org/emf/2002/Ecore"],
+                      "representations": {
+                        "05e44ccc-9363-443f-a816-25fc73e3e7f7": {
+                          "descriptionURI": "69030a1b-0b5f-3c1d-8399-8ca260e4a672",
+                          "type": "siriusComponents://representation?type=Portal",
+                          "targetObjectURI": "sirius:///48dc942a-6b76-4133-bca5-5b29ebee133d#/"
+                        },
+                        "e81eec5c-42d6-491c-8bcc-9beb951356f8": {
+                          "descriptionURI": "69030a1b-0b5f-3c1d-8399-8ca260e4a672",
+                          "type": "siriusComponents://representation?type=Portal",
+                          "targetObjectURI": "sirius:///48dc942a-6b76-4133-bca5-5b29ebee133d#/"
+                        }
+                      }
+                    }
+                    """;
+
+            String manifestContent = zipEntries.get("Ecore Sample/manifest.json").toString(StandardCharsets.UTF_8);
+            var objectMapper = new ObjectMapper();
+            System.out.println(objectMapper.readTree(manifestContent));
+            assertThat(objectMapper.readTree(manifestContent)).isEqualTo(objectMapper.readTree(manifestContentExpected));
         } catch (IOException exception) {
             fail(exception.getMessage());
         }
