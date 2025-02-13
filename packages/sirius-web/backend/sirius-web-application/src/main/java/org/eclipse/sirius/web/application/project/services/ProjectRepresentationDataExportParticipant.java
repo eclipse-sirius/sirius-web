@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.emfjson.resource.JsonResourceFactoryImpl;
+import org.eclipse.sirius.web.application.editingcontext.services.EditingContextApplicationService;
 import org.eclipse.sirius.web.application.project.services.api.IProjectExportParticipant;
 import org.eclipse.sirius.web.application.representation.services.api.IRepresentationContentMigrationService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
@@ -55,15 +56,18 @@ public class ProjectRepresentationDataExportParticipant implements IProjectExpor
 
     private final IRepresentationContentMigrationService representationContentMigrationService;
 
+    private final EditingContextApplicationService editingContextApplicationService;
+
     private final Logger logger = LoggerFactory.getLogger(ProjectRepresentationDataExportParticipant.class);
 
     public ProjectRepresentationDataExportParticipant(IEditingContextSearchService editingContextSearchService, IRepresentationMetadataSearchService representationMetadataSearchService,
-            IRepresentationContentSearchService representationContentSearchService, ObjectMapper objectMapper, IRepresentationContentMigrationService representationContentMigrationService) {
+            IRepresentationContentSearchService representationContentSearchService, ObjectMapper objectMapper, IRepresentationContentMigrationService representationContentMigrationService, EditingContextApplicationService editingContextApplicationService) {
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.representationContentSearchService = Objects.requireNonNull(representationContentSearchService);
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.representationContentMigrationService = Objects.requireNonNull(representationContentMigrationService);
+        this.editingContextApplicationService = Objects.requireNonNull(editingContextApplicationService);
     }
 
     @Override
@@ -90,9 +94,11 @@ public class ProjectRepresentationDataExportParticipant implements IProjectExpor
 
                 // Get TargetObjectURI
                 String uriFragment = "";
-                var optionalEditingContext = this.editingContextSearchService.findById(project.getId().toString())
+                var editingContextId = this.editingContextApplicationService.getCurrentEditingContextId(project.getId());
+                var optionalEditingContext = this.editingContextSearchService.findById(editingContextId)
                         .filter(IEMFEditingContext.class::isInstance)
                         .map(IEMFEditingContext.class::cast);
+
                 if (optionalEditingContext.isPresent()) {
                     var editingContext = optionalEditingContext.get();
                     String targetObjectId = representationMetadata.getTargetObjectId();
