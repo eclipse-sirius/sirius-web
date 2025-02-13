@@ -41,6 +41,8 @@ public final class PapayaIdentifiers {
 
     public static final UUID PAPAYA_PACKAGE_TABLE_REPRESENTATION = UUID.fromString("dd0080f8-430d-441f-99a4-f46c7d9b28ef");
 
+    public static final UUID PAPAYA_SUCCESS_CLASS_OBJECT = UUID.fromString("c715807f-73f6-44fb-b17b-df6d12558458");
+
     private PapayaIdentifiers() {
         // Prevent instantiation
     }

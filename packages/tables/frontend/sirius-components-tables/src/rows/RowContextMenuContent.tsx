@@ -72,7 +72,7 @@ export const RowContextMenuContent = ({
   >(getRowContextMenuEntriesQuery, {
     variables: {
       editingContextId,
-      representationId: tableId,
+      representationId,
       tableId,
       rowId: row.original.id,
     },
