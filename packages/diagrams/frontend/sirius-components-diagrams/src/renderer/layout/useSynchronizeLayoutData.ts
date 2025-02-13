@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import { useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { RawDiagram } from './layout.types';
+import { useDebounce } from './useDebounce';
 import {
   GQLDiagramLayoutData,
   GQLErrorPayload,
@@ -89,7 +90,7 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
         position: { x, y },
       } = node;
       const { resizedByUser } = node.data;
-      if (height && width) {
+      if (height && width && !isNaN(x) && !isNaN(y)) {
         nodeLayoutData.push({
           id,
           position: {
@@ -134,7 +135,9 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
     layoutDiagram({ variables });
   };
 
+  const debouncedSynchronizeLayoutData = useDebounce(synchronizeLayoutData, 300);
+
   return {
-    synchronizeLayoutData,
+    synchronizeLayoutData: debouncedSynchronizeLayoutData,
   };
 };

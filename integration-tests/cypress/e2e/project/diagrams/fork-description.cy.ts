@@ -31,6 +31,7 @@ describe('Diagram - Fork Representation', () => {
         explorer.expandWithDoubleClick('Flow');
         explorer.expandWithDoubleClick('NewSystem');
         explorer.selectRepresentation('Topography');
+        new Diagram().getDiagram('Topography').should('exist');
       });
     });
 
