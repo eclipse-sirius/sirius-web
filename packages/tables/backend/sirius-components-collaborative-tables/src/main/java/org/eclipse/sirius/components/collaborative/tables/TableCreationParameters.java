@@ -42,6 +42,8 @@ public final class TableCreationParameters {
 
     private List<ColumnFilter> columnFilters;
 
+    private List<String> expanded;
+
     private TableCreationParameters() {
         // Prevent instantiation
     }
@@ -74,6 +76,10 @@ public final class TableCreationParameters {
         return this.columnFilters;
     }
 
+    public List<String> getExpanded() {
+        return this.expanded;
+    }
+
     public static Builder newTableCreationParameters(String id) {
         return new Builder(id);
     }
@@ -99,6 +105,8 @@ public final class TableCreationParameters {
         private String globalFilter;
 
         private List<ColumnFilter> columnFilters;
+
+        private List<String> expanded;
 
         private Builder(String id) {
             this.id = id;
@@ -134,6 +142,11 @@ public final class TableCreationParameters {
             return this;
         }
 
+        public Builder expanded(List<String> expanded) {
+            this.expanded = Objects.requireNonNull(expanded);
+            return this;
+        }
+
         public TableCreationParameters build() {
             TableCreationParameters tableCreationParameters = new TableCreationParameters();
             tableCreationParameters.id = Objects.requireNonNull(this.id);
@@ -143,6 +156,7 @@ public final class TableCreationParameters {
             tableCreationParameters.targetObject = Objects.requireNonNull(this.targetObject);
             tableCreationParameters.globalFilter = Objects.requireNonNull(this.globalFilter);
             tableCreationParameters.columnFilters = Objects.requireNonNull(this.columnFilters);
+            tableCreationParameters.expanded = Objects.requireNonNull(this.expanded);
             return tableCreationParameters;
         }
     }

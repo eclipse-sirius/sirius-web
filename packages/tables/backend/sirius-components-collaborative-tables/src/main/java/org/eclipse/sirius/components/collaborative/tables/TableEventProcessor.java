@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -79,7 +79,8 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
     private final Timer timer;
 
     public TableEventProcessor(TableCreationParameters tableCreationParameters, List<ITableEventHandler> tableEventHandlers, ITableContext tableContext,
-            ISubscriptionManager subscriptionManager, MeterRegistry meterRegistry, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry, IRepresentationPersistenceService representationPersistenceService) {
+            ISubscriptionManager subscriptionManager, MeterRegistry meterRegistry, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry,
+            IRepresentationPersistenceService representationPersistenceService) {
         this.logger.trace("Creating the table event processor {}", tableCreationParameters.getEditingContext().getId());
 
         this.tableCreationParameters = Objects.requireNonNull(tableCreationParameters);
@@ -206,6 +207,7 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
         variableManager.put(TableRenderer.PAGINATION_DIRECTION, this.tableCreationParameters.getCursorBasedPaginationData().direction());
         variableManager.put(TableRenderer.PAGINATION_SIZE, this.tableCreationParameters.getCursorBasedPaginationData().size());
         variableManager.put(TableRenderer.GLOBAL_FILTER_DATA, this.tableCreationParameters.getGlobalFilter());
+        variableManager.put(TableRenderer.EXPANDED_IDS, this.tableCreationParameters.getExpanded());
 
         TableComponentProps props = new TableComponentProps(
                 variableManager,

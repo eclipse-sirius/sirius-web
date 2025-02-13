@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,6 +47,8 @@ public final class Line {
 
     private boolean resizable;
 
+    private int depthLevel;
+
     private Line() {
         // Prevent instantiation
     }
@@ -91,6 +93,10 @@ public final class Line {
         return this.resizable;
     }
 
+    public int getDepthLevel() {
+        return this.depthLevel;
+    }
+
     public static Builder newLine(UUID id) {
         return new Builder(id);
     }
@@ -128,6 +134,8 @@ public final class Line {
         private int height;
 
         private boolean resizable;
+
+        private int depthLevel;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -178,6 +186,11 @@ public final class Line {
             return this;
         }
 
+        public Builder depthLevel(int depthLevel) {
+            this.depthLevel = depthLevel;
+            return this;
+        }
+
         public Line build() {
             Line line = new Line();
             line.id = Objects.requireNonNull(this.id);
@@ -190,6 +203,7 @@ public final class Line {
             line.headerIndexLabel = Objects.requireNonNull(this.headerIndexLabel);
             line.height = this.height;
             line.resizable = this.resizable;
+            line.depthLevel = this.depthLevel;
             return line;
         }
     }

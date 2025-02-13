@@ -78,6 +78,7 @@ public class ProjectTableRepresentationDescriptionProvider implements IEditingCo
                 .headerIndexLabelProvider(variableManager -> "")
                 .isResizablePredicate(variableManager -> false)
                 .initialHeightProvider(variableManager -> -1)
+                .depthLevelProvider(variableManager -> 0)
                 .build();
 
         var tableDescription = TableDescription.newTableDescription(TABLE_DESCRIPTION_ID)
@@ -91,6 +92,7 @@ public class ProjectTableRepresentationDescriptionProvider implements IEditingCo
                 .cellDescriptions(this.getCellDescriptions())
                 .iconURLsProvider(variableManager -> List.of("/papaya-representations/project-table.svg"))
                 .isStripeRowPredicate(variableManager -> false)
+                .enableSubRows(false)
                 .build();
 
         return List.of(tableDescription);

@@ -45,6 +45,8 @@ public final class PapayaIdentifiers {
 
     public static final UUID REACTIVE_STREAMS_LIBRARY_EDITING_CONTEXT_ID = UUID.fromString("7a273947-7b34-48dc-982d-4fac14a259d5");
 
+    public static final UUID PAPAYA_FAILURE_CLASS_OBJECT = UUID.fromString("b0f27d20-4705-40a7-9d28-67d605b5e9d1");
+
     private PapayaIdentifiers() {
         // Prevent instantiation
     }

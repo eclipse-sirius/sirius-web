@@ -93,6 +93,7 @@ public class TableWidgetDescriptionConverterSwitch extends TableWidgetSwitch<Opt
                 .cellDescriptions(new CellDescriptionConverter(this.tableIdProvider, this.objectService).convert(viewTableWidgetDescription.getCellDescriptions(), this.interpreter))
                 .lineDescription(new RowDescriptionConverter(this.tableIdProvider, this.semanticTargetIdProvider, variableManager -> "").convert(viewTableWidgetDescription.getRowDescription(),
                         this.interpreter))
+                .enableSubRows(false)
                 .build();
         var tableWidgetDescription = TableWidgetDescription.newTableWidgetDescription(descriptionId)
                 .targetObjectIdProvider(this.semanticTargetIdProvider)

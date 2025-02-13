@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -126,6 +126,16 @@ public class TableDescriptionBuilder {
         for (org.eclipse.sirius.components.view.table.CellDescription value : values) {
             this.getTableDescription().getCellDescriptions().add(value);
         }
+        return this;
+    }
+
+    /**
+     * Setter for EnableSubRows.
+     *
+     * @generated
+     */
+    public TableDescriptionBuilder enableSubRows(java.lang.Boolean value) {
+        this.getTableDescription().setEnableSubRows(value);
         return this;
     }
 

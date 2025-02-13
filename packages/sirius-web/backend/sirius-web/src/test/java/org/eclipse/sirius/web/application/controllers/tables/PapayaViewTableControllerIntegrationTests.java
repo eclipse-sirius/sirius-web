@@ -57,7 +57,7 @@ import reactor.test.StepVerifier;
  */
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"sirius.web.test.enabled=studio"})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
 public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrationTests {
 
     @Autowired
@@ -104,7 +104,7 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
             assertThat(table.getColumns().get(0).getHeaderIndexLabel()).isEqualTo("0");
             assertThat(table.getColumns().get(1).getHeaderLabel()).isEqualTo("Description");
             assertThat(table.getColumns().get(1).getHeaderIndexLabel()).isEqualTo("1");
-            assertThat(table.getLines()).hasSize(2);
+            assertThat(table.getLines()).hasSize(4);
             assertThat(table.getLines().get(0).getHeaderIndexLabel()).isEqualTo("0");
             assertThat(table.getLines().get(0).getCells().get(0)).isInstanceOf(TextfieldCell.class);
             assertThat(table.getLines().get(0).getCells().get(1)).isInstanceOf(TextareaCell.class);
@@ -131,7 +131,7 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
         var rowLabel = new AtomicReference<String>();
         Consumer<Object> tableContentConsumer = this.getTableSubscriptionConsumer(table -> {
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(2);
+            assertThat(table.getLines()).hasSize(4);
             tableId.set(table.getId());
             rowId.set(table.getLines().get(0).getId());
             rowLabel.set(table.getLines().get(0).getHeaderLabel());
@@ -185,15 +185,37 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a view table description with a selected target object expression , when a subscription is created, then the cell target object data are correct")
+    @DisplayName("Given a view table description with a selected target object expression, when a subscription is created, then the cell target object data are correct")
     public void givenViewTableWithSelectedTargetObjectExpressionWhenSubscriptionIsCreatedThenCellTargetObjectDataAreCorrectlyExecuted() {
         var flux = this.givenSubscriptionToViewTableRepresentation();
 
         Consumer<Object> tableContentConsumer = this.getTableSubscriptionConsumer(table -> {
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(2);
+            assertThat(table.getLines()).hasSize(4);
             assertThat(table.getLines().get(0).getCells().get(0).getTargetObjectId()).isEqualTo(PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString());
             assertThat(table.getLines().get(0).getCells().get(0).getTargetObjectKind()).isEqualTo("siriusComponents://semantic?domain=papaya&entity=Package");
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(tableContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a view table description with sub elements, when a subscription is created, then the depth levels are correct")
+    public void givenViewTableWithSubElementsWhenSubscriptionIsCreatedThenTheDepthLevelsAreCorrect() {
+        var flux = this.givenSubscriptionToViewTableRepresentation();
+
+        Consumer<Object> tableContentConsumer = this.getTableSubscriptionConsumer(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.isEnableSubRows()).isTrue();
+            assertThat(table.getLines()).hasSize(4);
+            assertThat(table.getLines().get(0).getDepthLevel()).isEqualTo(0);
+            assertThat(table.getLines().get(1).getDepthLevel()).isEqualTo(0);
+            assertThat(table.getLines().get(2).getDepthLevel()).isEqualTo(1);
+            assertThat(table.getLines().get(3).getDepthLevel()).isEqualTo(2);
         });
 
         StepVerifier.create(flux)

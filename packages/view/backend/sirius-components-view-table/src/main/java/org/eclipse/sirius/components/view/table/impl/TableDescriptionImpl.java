@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.view.table.impl;
 
 import java.util.Collection;
+import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -43,6 +44,8 @@ import org.eclipse.sirius.components.view.table.TablePackage;
  * Description</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.table.impl.TableDescriptionImpl#getCellDescriptions <em>Cell
  * Descriptions</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.table.impl.TableDescriptionImpl#isEnableSubRows <em>Enable Sub
+ * Rows</em>}</li>
  * </ul>
  *
  * @generated
@@ -58,7 +61,15 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
      * @see #getUseStripedRowsExpression()
      */
     protected static final String USE_STRIPED_ROWS_EXPRESSION_EDEFAULT = null;
-
+    /**
+     * The default value of the '{@link #isEnableSubRows() <em>Enable Sub Rows</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #isEnableSubRows()
+     */
+    protected static final boolean ENABLE_SUB_ROWS_EDEFAULT = false;
     /**
      * The cached value of the '{@link #getUseStripedRowsExpression() <em>Use Striped Rows Expression</em>}' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -98,6 +109,16 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
      * @see #getCellDescriptions()
      */
     protected EList<CellDescription> cellDescriptions;
+
+    /**
+     * The cached value of the '{@link #isEnableSubRows() <em>Enable Sub Rows</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #isEnableSubRows()
+     */
+    protected boolean enableSubRows = ENABLE_SUB_ROWS_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -221,6 +242,29 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
      * @generated
      */
     @Override
+    public boolean isEnableSubRows() {
+        return this.enableSubRows;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setEnableSubRows(boolean newEnableSubRows) {
+        boolean oldEnableSubRows = this.enableSubRows;
+        this.enableSubRows = newEnableSubRows;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.TABLE_DESCRIPTION__ENABLE_SUB_ROWS, oldEnableSubRows, this.enableSubRows));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case TablePackage.TABLE_DESCRIPTION__COLUMN_DESCRIPTIONS:
@@ -249,6 +293,8 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
                 return this.getRowDescription();
             case TablePackage.TABLE_DESCRIPTION__CELL_DESCRIPTIONS:
                 return this.getCellDescriptions();
+            case TablePackage.TABLE_DESCRIPTION__ENABLE_SUB_ROWS:
+                return this.isEnableSubRows();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -276,6 +322,9 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
                 this.getCellDescriptions().clear();
                 this.getCellDescriptions().addAll((Collection<? extends CellDescription>) newValue);
                 return;
+            case TablePackage.TABLE_DESCRIPTION__ENABLE_SUB_ROWS:
+                this.setEnableSubRows((Boolean) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -295,10 +344,13 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
                 this.getColumnDescriptions().clear();
                 return;
             case TablePackage.TABLE_DESCRIPTION__ROW_DESCRIPTION:
-                this.setRowDescription((RowDescription) null);
+                this.setRowDescription(null);
                 return;
             case TablePackage.TABLE_DESCRIPTION__CELL_DESCRIPTIONS:
                 this.getCellDescriptions().clear();
+                return;
+            case TablePackage.TABLE_DESCRIPTION__ENABLE_SUB_ROWS:
+                this.setEnableSubRows(ENABLE_SUB_ROWS_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -313,13 +365,15 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case TablePackage.TABLE_DESCRIPTION__USE_STRIPED_ROWS_EXPRESSION:
-                return USE_STRIPED_ROWS_EXPRESSION_EDEFAULT == null ? this.useStripedRowsExpression != null : !USE_STRIPED_ROWS_EXPRESSION_EDEFAULT.equals(this.useStripedRowsExpression);
+                return !Objects.equals(USE_STRIPED_ROWS_EXPRESSION_EDEFAULT, this.useStripedRowsExpression);
             case TablePackage.TABLE_DESCRIPTION__COLUMN_DESCRIPTIONS:
                 return this.columnDescriptions != null && !this.columnDescriptions.isEmpty();
             case TablePackage.TABLE_DESCRIPTION__ROW_DESCRIPTION:
                 return this.rowDescription != null;
             case TablePackage.TABLE_DESCRIPTION__CELL_DESCRIPTIONS:
                 return this.cellDescriptions != null && !this.cellDescriptions.isEmpty();
+            case TablePackage.TABLE_DESCRIPTION__ENABLE_SUB_ROWS:
+                return this.enableSubRows != ENABLE_SUB_ROWS_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -334,11 +388,12 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
         if (this.eIsProxy())
             return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (useStripedRowsExpression: ");
-        result.append(this.useStripedRowsExpression);
-        result.append(')');
-        return result.toString();
+        String result = super.toString() + " (useStripedRowsExpression: " +
+                this.useStripedRowsExpression +
+                ", enableSubRows: " +
+                this.enableSubRows +
+                ')';
+        return result;
     }
 
 } // TableDescriptionImpl

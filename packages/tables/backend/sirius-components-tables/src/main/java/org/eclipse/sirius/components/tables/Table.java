@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -50,6 +50,8 @@ public final class Table implements IRepresentation {
     private String globalFilter;
 
     private List<ColumnFilter> columnFilters;
+
+    private boolean enableSubRows;
 
     private Table() {
         // Prevent instantiation
@@ -103,10 +105,14 @@ public final class Table implements IRepresentation {
         return this.columnFilters;
     }
 
+    public boolean isEnableSubRows() {
+        return this.enableSubRows;
+    }
+
     public static Builder newTable(String id) {
         return new Builder(id);
     }
-
+    
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, targetObjectId: {2}, descriptionId: {3}'}'";
@@ -142,6 +148,8 @@ public final class Table implements IRepresentation {
         private String globalFilter;
 
         private List<ColumnFilter> columnFilters;
+
+        private boolean enableSubRows;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -192,6 +200,11 @@ public final class Table implements IRepresentation {
             return this;
         }
 
+        public Builder enableSubRows(boolean enableSubRows) {
+            this.enableSubRows = enableSubRows;
+            return this;
+        }
+
         public Table build() {
             Table table = new Table();
             table.id = Objects.requireNonNull(this.id);
@@ -205,6 +218,7 @@ public final class Table implements IRepresentation {
             table.paginationData = Objects.requireNonNull(this.paginationData);
             table.globalFilter = Objects.requireNonNull(this.globalFilter);
             table.columnFilters = Objects.requireNonNull(this.columnFilters);
+            table.enableSubRows = this.enableSubRows;
             return table;
         }
     }

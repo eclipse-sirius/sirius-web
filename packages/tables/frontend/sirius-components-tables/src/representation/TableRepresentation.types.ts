@@ -15,6 +15,7 @@ import { ColumnFilter } from '../table/TableContent.types';
 export interface TableRepresentationState extends TableRepresentationPagination {
   globalFilter: string | null;
   columnFilters: ColumnFilter[] | null;
+  expanded: string[];
 }
 
 export interface TableRepresentationPagination {

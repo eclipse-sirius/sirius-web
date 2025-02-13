@@ -91,6 +91,7 @@ Except for the specific case where `cause === 'refresh'` in `DiagramRenderer` (w
 - https://github.com/eclipse-sirius/sirius-web/issues/4451[#4451] [diagram] Keep using the same node after a refresh if possible in order to avoid rerendering all the nodes after converting the diagram
 - https://github.com/eclipse-sirius/sirius-web/issues/4575[#4575] [diagram] Memoize the style of a label to avoid rerendering them all when refreshing the diagram
 - https://github.com/eclipse-sirius/sirius-web/issues/4577[#4577] [diagram] Improve the performance of the diagram by removing useless data from `DiagramContext`
+- https://github.com/eclipse-sirius/sirius-web/issues/4556[#4556] [table] Add the support of row hierarchy in tables
 
 
 
@@ -297,7 +298,6 @@ To achieve that a new concept, `ProjectSemanticData` has been added along with a
 - https://github.com/eclipse-sirius/sirius-web/issues/4601[#4601] [core] Make the omnibox selection aware
 - https://github.com/eclipse-sirius/sirius-web/issues/4411[#4411] [sirius-web] Display a message in the query view if the expression does not return anything or if the result type is unknown
 - https://github.com/eclipse-sirius/sirius-web/issues/4411[#4411] [sirius-web] Add support for expressions returning a collection of strings in the query view
-
 
 
 == v2025.1.0

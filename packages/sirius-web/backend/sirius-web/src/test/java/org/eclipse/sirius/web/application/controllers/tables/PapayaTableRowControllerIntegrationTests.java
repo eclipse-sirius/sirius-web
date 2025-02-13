@@ -65,7 +65,7 @@ import reactor.test.StepVerifier;
  */
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"sirius.web.test.enabled=studio"})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
 public class PapayaTableRowControllerIntegrationTests extends AbstractIntegrationTests {
 
     private static final String MISSING_TABLE = "Missing table";
@@ -258,7 +258,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
         Runnable getContextMenuActions = () -> {
             Map<String, Object> variables = Map.of(
                     "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
-                    "representationId", this.representationIdBuilder.buildTableRepresentationId(tableId.get(), null, "NEXT", 10),
+                    "representationId", this.representationIdBuilder.buildTableRepresentationId(tableId.get(), null, "NEXT", 10, List.of()),
                     "tableId", tableId.get(),
                     "rowId", rowId.get().toString()
             );
@@ -280,7 +280,8 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
     @GivenSiriusWebServer
     @DisplayName("Given a table with pagination in next data, when row context menu entries are queried, then the correct entries are returned")
     public void giveATableWithPaginationInNextDataWhenRowContextMenuEntriesAreQueriedThenTheCorrectEntriesAreReturned() {
-        var representationId = this.representationIdBuilder.buildTableRepresentationId(PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString(), PapayaIdentifiers.PAPAYA_SUCCESS_CLASS_OBJECT.toString(), "NEXT", 1);
+        var representationId = this.representationIdBuilder.buildTableRepresentationId(PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString(),
+                PapayaIdentifiers.PAPAYA_SUCCESS_CLASS_OBJECT.toString(), "NEXT", 1, List.of());
         var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId);
         var flux = this.tableEventSubscriptionRunner.run(tableEventInput);
 
@@ -308,7 +309,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
         Runnable getContextMenuActions = () -> {
             Map<String, Object> variables = Map.of(
                     "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
-                    "representationId", this.representationIdBuilder.buildTableRepresentationId(tableId.get(), PapayaIdentifiers.PAPAYA_SUCCESS_CLASS_OBJECT.toString(), "NEXT", 1),
+                    "representationId", this.representationIdBuilder.buildTableRepresentationId(tableId.get(), PapayaIdentifiers.PAPAYA_SUCCESS_CLASS_OBJECT.toString(), "NEXT", 1, List.of()),
                     "tableId", tableId.get(),
                     "rowId", rowId.get().toString()
             );
@@ -388,6 +389,60 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
                 .consumeNextWith(initialTableContentConsumer)
                 .then(invokeDeleteRowAction)
                 .consumeNextWith(updatedTableContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a table representation, when we expand a row, then child of expanded row is returned")
+    public void givenTableRepresentationWhenWeExpandARowThenTheChildOfExpandedRowIsReturned() {
+        var flux = this.givenSubscriptionToTable();
+
+        var tableId = new AtomicReference<String>();
+        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
+                .filter(TableRefreshedEventPayload.class::isInstance)
+                .map(TableRefreshedEventPayload.class::cast)
+                .map(TableRefreshedEventPayload::table)
+                .ifPresentOrElse(table -> {
+                    assertThat(table).isNotNull();
+                    assertThat(table.getColumns()).hasSize(6);
+                    assertThat(table.getLines()).hasSize(2);
+                    assertThat(table.getLines().get(0).getDepthLevel()).isEqualTo(0);
+                    assertThat(table.getLines().get(1).getDepthLevel()).isEqualTo(0);
+                    tableId.set(table.getId());
+                }, () -> fail(MISSING_TABLE));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialTableContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+
+        String representationId = this.representationIdBuilder.buildTableRepresentationId(tableId.get(), null, "NEXT", 10, List.of(PapayaIdentifiers.PAPAYA_FAILURE_CLASS_OBJECT.toString()));
+        var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId);
+        var expandedFlux = this.tableEventSubscriptionRunner.run(tableEventInput);
+
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
+
+        Consumer<Object> expandedTableContentConsumer = payload -> Optional.of(payload)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData)
+                .filter(TableRefreshedEventPayload.class::isInstance)
+                .map(TableRefreshedEventPayload.class::cast)
+                .map(TableRefreshedEventPayload::table)
+                .ifPresentOrElse(table -> {
+                    assertThat(table).isNotNull();
+                    assertThat(table.getLines()).hasSize(3);
+                    assertThat(table.getLines().get(0).getDepthLevel()).isEqualTo(0);
+                    assertThat(table.getLines().get(1).getDepthLevel()).isEqualTo(0);
+                    assertThat(table.getLines().get(2).getDepthLevel()).isEqualTo(1);
+                }, () -> fail(MISSING_TABLE));
+
+        StepVerifier.create(expandedFlux)
+                .consumeNextWith(expandedTableContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

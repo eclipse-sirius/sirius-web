@@ -49,6 +49,7 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
     private static final String SIZE = "size";
     private static final String GLOBAL_FILTER = "globalFilter";
     private static final String COLUMN_FILTERS = "columnFilters";
+    private static final String EXPANDED_IDS = "expandedIds";
 
     private final IRepresentationSearchService representationSearchService;
 
@@ -66,6 +67,8 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
 
     private final IURLParser urlParser;
 
+    private final TableQueryService tableQueryService;
+
     public TableEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, IRepresentationPersistenceService representationPersistenceService,
             IObjectService objectService, List<ITableEventHandler> tableEventHandlers, IURLParser urlParser) {
         this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
@@ -76,6 +79,7 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
         this.subscriptionManagerFactory = Objects.requireNonNull(configuration.getSubscriptionManagerFactory());
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
         this.urlParser = Objects.requireNonNull(urlParser);
+        this.tableQueryService = new TableQueryService();
     }
 
     @Override
@@ -104,6 +108,7 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
                         .targetObject(object)
                         .globalFilter(this.getGlobalFilter(representationId, table))
                         .columnFilters(this.getColumnFilters(representationId, table))
+                        .expanded(this.getExpandedIdsFromRepresentationId(representationId, table))
                         .build();
 
                 IRepresentationEventProcessor tableEventProcessor = new TableEventProcessor(tableCreationParameters, this.tableEventHandlers, new TableContext(table),
@@ -170,5 +175,11 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
         return table.getColumnFilters();
     }
 
-
+    private List<String> getExpandedIdsFromRepresentationId(String representationId, Table table) {
+        var param = this.urlParser.getParameterValues(representationId);
+        return Optional.ofNullable(param.get(EXPANDED_IDS))
+                .map(expandedIds -> expandedIds.get(0))
+                .map(this.urlParser::getParameterEntries)
+                .orElse(List.of());
+    }
 }

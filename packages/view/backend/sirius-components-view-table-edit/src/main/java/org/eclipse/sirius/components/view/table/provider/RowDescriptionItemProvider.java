@@ -72,6 +72,7 @@ public class RowDescriptionItemProvider extends ItemProviderAdapter implements I
             this.addHeaderIndexLabelExpressionPropertyDescriptor(object);
             this.addInitialHeightExpressionPropertyDescriptor(object);
             this.addIsResizableExpressionPropertyDescriptor(object);
+            this.addDepthLevelExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -189,6 +190,19 @@ public class RowDescriptionItemProvider extends ItemProviderAdapter implements I
     }
 
     /**
+     * This adds a property descriptor for the Depth Level Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addDepthLevelExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_RowDescription_depthLevelExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_depthLevelExpression_feature", "_UI_RowDescription_type"),
+                TablePackage.Literals.ROW_DESCRIPTION__DEPTH_LEVEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
      * This specifies how to implement {@link #getChildren} and is used to deduce an
      * appropriate feature for an {@link org.eclipse.emf.edit.command.AddCommand},
      * {@link org.eclipse.emf.edit.command.RemoveCommand} or
@@ -273,6 +287,7 @@ public class RowDescriptionItemProvider extends ItemProviderAdapter implements I
             case TablePackage.ROW_DESCRIPTION__HEADER_INDEX_LABEL_EXPRESSION:
             case TablePackage.ROW_DESCRIPTION__INITIAL_HEIGHT_EXPRESSION:
             case TablePackage.ROW_DESCRIPTION__IS_RESIZABLE_EXPRESSION:
+            case TablePackage.ROW_DESCRIPTION__DEPTH_LEVEL_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case TablePackage.ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES:

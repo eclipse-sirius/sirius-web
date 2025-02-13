@@ -30,7 +30,9 @@ export const useTableColumns = (
   enableColumnFilters: boolean,
   enableColumnOrdering: boolean,
   enableRowSizing: boolean,
-  handleRowHeightChange: (rowId: string, height: number) => void
+  handleRowHeightChange: (rowId: string, height: number) => void,
+  onExpandedElement: (rowId: string) => void,
+  expandedRowIds: string[]
 ): UseTableColumnsValue => {
   const { setSelection } = useSelection();
   const columns = useMemo<MRT_ColumnDef<GQLLine, string>[]>(() => {
@@ -80,7 +82,12 @@ export const useTableColumns = (
             };
             setSelection(newSelection);
           }}>
-          <RowHeader row={row.original} />
+          <RowHeader
+            row={row.original}
+            enableSubRows={table.enableSubRows}
+            isExpanded={expandedRowIds.includes(row.original.targetObjectId)}
+            onClick={onExpandedElement}
+          />
           {enableRowSizing ? (
             <ResizeRowHandler
               editingContextId={editingContextId}
@@ -95,7 +102,7 @@ export const useTableColumns = (
       ),
     };
     return [rowHeaderColumn, ...columnDefs];
-  }, [table]);
+  }, [table, expandedRowIds]);
 
   return {
     columns,

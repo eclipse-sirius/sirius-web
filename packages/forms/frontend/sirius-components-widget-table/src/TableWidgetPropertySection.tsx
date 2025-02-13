@@ -11,10 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
+  GQLWidget,
   PropertySectionComponent,
   PropertySectionComponentProps,
   PropertySectionLabel,
-  GQLWidget,
 } from '@eclipse-sirius/sirius-components-forms';
 import { TableContent } from '@eclipse-sirius/sirius-components-tables';
 import { makeStyles } from 'tss-react/mui';
@@ -57,6 +57,7 @@ const RawTableWidgetPropertySection: PropertySectionComponent<GQLTableWidget> = 
         onPaginationChange={() => {}}
         onGlobalFilterChange={() => {}}
         onColumnFiltersChange={() => {}}
+        onExpandedElementChange={() => {}}
         enableColumnVisibility={false}
         enableColumnResizing={false}
         enableColumnFilters={false}
@@ -64,6 +65,7 @@ const RawTableWidgetPropertySection: PropertySectionComponent<GQLTableWidget> = 
         enableGlobalFilter={false}
         enablePagination={false}
         enableColumnOrdering={false}
+        expandedRowIds={[]}
       />
     </div>
   );

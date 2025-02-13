@@ -86,13 +86,13 @@ public class TableAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
-        public Adapter caseCellTextareaWidgetDescription(CellTextareaWidgetDescription object) {
-            return TableAdapterFactory.this.createCellTextareaWidgetDescriptionAdapter();
+        public Adapter caseRowContextMenuEntry(RowContextMenuEntry object) {
+            return TableAdapterFactory.this.createRowContextMenuEntryAdapter();
         }
 
         @Override
-        public Adapter caseRowContextMenuEntry(RowContextMenuEntry object) {
-            return TableAdapterFactory.this.createRowContextMenuEntryAdapter();
+        public Adapter caseCellTextareaWidgetDescription(CellTextareaWidgetDescription object) {
+            return TableAdapterFactory.this.createCellTextareaWidgetDescriptionAdapter();
         }
 
         @Override
@@ -268,8 +268,8 @@ public class TableAdapterFactory extends AdapterFactoryImpl {
      * end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.table.RowContextMenuEntry
      * @generated
+     * @see org.eclipse.sirius.components.view.table.RowContextMenuEntry
      */
     public Adapter createRowContextMenuEntryAdapter() {
         return null;

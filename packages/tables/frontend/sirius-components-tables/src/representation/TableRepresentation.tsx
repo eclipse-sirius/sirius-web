@@ -44,6 +44,7 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
     ...defaultPagination,
     globalFilter: null,
     columnFilters: null,
+    expanded: [],
   });
 
   const tableId = tableIdProvider(
@@ -52,7 +53,8 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
     state.direction,
     state.size,
     state.globalFilter,
-    state.columnFilters
+    state.columnFilters,
+    state.expanded
   );
   const { complete, table } = useTableSubscription(editingContextId, tableId);
 
@@ -78,6 +80,14 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
     }));
   };
 
+  const onExpandedElementChange = (rowId: string) => {
+    if (state.expanded.includes(rowId)) {
+      setState((prev) => ({ ...prev, expanded: prev.expanded.filter((id) => id !== rowId) }));
+    } else {
+      setState((prev) => ({ ...prev, expanded: [...prev.expanded, rowId] }));
+    }
+  };
+
   let completeMessage: JSX.Element | null = null;
   if (complete) {
     completeMessage = (
@@ -100,6 +110,7 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
           onPaginationChange={onPaginationChange}
           onGlobalFilterChange={onGlobalFilterChange}
           onColumnFiltersChange={onColumnFiltersChange}
+          onExpandedElementChange={onExpandedElementChange}
           enableColumnVisibility
           enableColumnResizing
           enableColumnFilters
@@ -107,6 +118,7 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
           enableGlobalFilter
           enablePagination
           enableColumnOrdering
+          expandedRowIds={state.expanded}
         />
       ) : null}
       {completeMessage}

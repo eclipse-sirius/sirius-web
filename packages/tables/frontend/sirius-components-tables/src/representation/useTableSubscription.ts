@@ -48,6 +48,7 @@ export const getTableEventSubscription = `
             totalRowCount
           }
           stripeRow
+          enableSubRows
           globalFilter
           columnFilters {
             id
@@ -74,6 +75,7 @@ export const getTableEventSubscription = `
             headerIndexLabel
             height
             isResizable
+            depthLevel
             cells {
               __typename
               id

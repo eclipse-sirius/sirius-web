@@ -38,7 +38,8 @@ public class RepresentationIdBuilder {
                 .map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8))
                 .toList();
 
-        return "explorer://?treeDescriptionId=" + URLEncoder.encode(treeDescriptionId, StandardCharsets.UTF_8) + "&expandedIds=[" + String.join(",", expandedObjectIds) + "]&activeFilterIds=[" + String.join(",", activatedFilterIds) + "]";
+        return "explorer://?treeDescriptionId=" + URLEncoder.encode(treeDescriptionId, StandardCharsets.UTF_8) + EXPANDED_IDS + String.join(",", expandedObjectIds) + "]&activeFilterIds=[" +
+                String.join(",", activatedFilterIds) + "]";
     }
 
     public String buildSelectionRepresentationId(String treeDescriptionId, String targetObjectId, List<String> expandedObjectIds) {
@@ -103,12 +104,18 @@ public class RepresentationIdBuilder {
         return treeId + "?expandedIds=[" + String.join(",", expandedObjectIds) + "]";
     }
 
-    public String buildTableRepresentationId(String tableId, String cursor, String direction, int size) {
+    public String buildTableRepresentationId(String tableId, String cursor, String direction, int size, List<String> expanded) {
+        var expandedIds = expanded.stream()
+                .map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8))
+                .toList();
         return tableId + "?cursor=" +
                 cursor +
                 "&direction=" +
                 direction +
                 "&size=" +
-                size;
+                size +
+                EXPANDED_IDS +
+                String.join(",", expandedIds) +
+                "]";
     }
 }

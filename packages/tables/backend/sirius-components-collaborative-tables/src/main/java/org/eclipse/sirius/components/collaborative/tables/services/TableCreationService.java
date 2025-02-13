@@ -58,6 +58,7 @@ public class TableCreationService {
         variableManager.put(TableRenderer.PAGINATION_CURSOR, null);
         variableManager.put(TableRenderer.PAGINATION_SIZE, 0);
         variableManager.put(TableRenderer.PAGINATION_DIRECTION, "NEXT");
+        variableManager.put(TableRenderer.EXPANDED_IDS, List.of());
 
         TableComponentProps tableComponentProps = new TableComponentProps(variableManager, tableDescription, Optional.empty(), List.of(), "", List.of());
 

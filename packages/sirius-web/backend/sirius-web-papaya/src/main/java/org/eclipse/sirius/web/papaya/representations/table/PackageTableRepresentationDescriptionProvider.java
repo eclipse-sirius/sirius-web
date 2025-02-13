@@ -33,8 +33,11 @@ import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.emf.tables.CursorBasedNavigationServices;
 import org.eclipse.sirius.components.papaya.AnnotableElement;
+import org.eclipse.sirius.components.papaya.Operation;
+import org.eclipse.sirius.components.papaya.Package;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
+import org.eclipse.sirius.components.papaya.Parameter;
 import org.eclipse.sirius.components.papaya.Type;
 import org.eclipse.sirius.components.papaya.spec.PackageSpec;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
@@ -101,6 +104,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .headerIndexLabelProvider(headerIndexLabelProvider)
                 .isResizablePredicate(variableManager -> true)
                 .initialHeightProvider(variableManager -> 53)
+                .depthLevelProvider(this::getSemanticElementDepthLevel)
                 .build();
 
         var tableDescription = TableDescription.newTableDescription(TABLE_DESCRIPTION_ID)
@@ -114,6 +118,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .cellDescriptions(this.getCellDescriptions())
                 .iconURLsProvider(variableManager -> List.of("/papaya-representations/package-table.svg"))
                 .isStripeRowPredicate(variableManager -> true)
+                .enableSubRows(true)
                 .build();
 
         return List.of(tableDescription);
@@ -133,11 +138,11 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
         var size = variableManager.get(TableRenderer.PAGINATION_SIZE, Integer.class).orElse(0);
         var globalFilter = variableManager.get(TableRenderer.GLOBAL_FILTER_DATA, String.class).orElse(null);
         List<ColumnFilter> columnFilters = variableManager.get(TableRenderer.COLUMN_FILTERS, List.class).orElse(List.of());
+        List<String> expandedIds = variableManager.get(TableRenderer.EXPANDED_IDS, List.class).orElse(List.of());
 
         Predicate<EObject> predicate = eObject -> {
-            boolean isValidCandidate = eObject instanceof Type && EcoreUtil.isAncestor(self, eObject);
-            if (isValidCandidate) {
-                var type = (Type) eObject;
+            boolean isValidCandidate = this.isValidType(eObject, self) && this.hasExpandedParent(eObject, expandedIds);
+            if (isValidCandidate && eObject instanceof Type type) {
                 if (globalFilter != null && !globalFilter.isBlank()) {
                     isValidCandidate = type.getName() != null && type.getName().contains(globalFilter);
                     isValidCandidate = isValidCandidate || type.getDescription() != null && type.getDescription().contains(globalFilter);
@@ -146,10 +151,56 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 }
                 isValidCandidate = isValidCandidate && columnFilters.stream().allMatch(new PapayaColumnFilterPredicate(this.objectMapper, type));
             }
+            if (isValidCandidate && eObject instanceof Operation operation) {
+                if (globalFilter != null && !globalFilter.isBlank()) {
+                    isValidCandidate = operation.getName() != null && operation.getName().contains(globalFilter);
+                    isValidCandidate = isValidCandidate || operation.getDescription() != null && operation.getDescription().contains(globalFilter);
+                    isValidCandidate = isValidCandidate || operation.getVisibility() != null && operation.getVisibility().getLiteral().contains(globalFilter);
+                }
+            }
+            if (isValidCandidate && eObject instanceof Parameter parameter) {
+                if (globalFilter != null && !globalFilter.isBlank()) {
+                    isValidCandidate = parameter.getName() != null && parameter.getName().contains(globalFilter);
+                    isValidCandidate = isValidCandidate || parameter.getDescription() != null && parameter.getDescription().contains(globalFilter);
+                }
+            }
             return isValidCandidate;
         };
 
         return new CursorBasedNavigationServices().collect(self, cursor, direction, size, predicate);
+    }
+
+    private boolean isValidType(EObject eObject, EObject self) {
+        // first should be inside the self element
+        boolean isValid = EcoreUtil.isAncestor(self, eObject);
+        boolean isValidElement = eObject instanceof Type ||
+                eObject instanceof Operation ||
+                // only consider parameter of regular operation (not constructor)
+                (eObject instanceof Parameter && eObject.eContainer() instanceof Operation);
+        return isValid && isValidElement;
+    }
+
+    private boolean hasExpandedParent(EObject eObject, List<String> expandedIds) {
+        EObject parent = eObject.eContainer();
+        if (parent != null && !(parent instanceof Package)) {
+            var parentId = this.identityService.getId(parent);
+            return expandedIds.contains(parentId) && this.hasExpandedParent(parent, expandedIds);
+        }
+        return true;
+    }
+
+    private Integer getSemanticElementDepthLevel(VariableManager variableManager) {
+        return variableManager.get(VariableManager.SELF, EObject.class)
+                .map(this::getEObjectDepthLevel)
+                .orElse(0);
+    }
+
+    private Integer getEObjectDepthLevel(EObject eObject) {
+        if (eObject instanceof Package) {
+            return -1;
+        } else {
+            return 1 + this.getEObjectDepthLevel(eObject.eContainer());
+        }
     }
 
     private List<ColumnDescription> getColumnDescriptions() {

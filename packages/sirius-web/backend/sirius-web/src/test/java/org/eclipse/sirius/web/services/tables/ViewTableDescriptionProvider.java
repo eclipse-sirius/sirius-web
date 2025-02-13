@@ -102,10 +102,12 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
                 .build();
 
         var rowDescription = new TableBuilders().newRowDescription()
-                .semanticCandidatesExpression("aql:self.eAllContents()->filter(papaya::Type)->toPaginatedData(cursor,direction,size)")
+                .semanticCandidatesExpression("aql:self.eAllContents()->filter({papaya::Type | papaya::Operation | papaya::Parameter})->toPaginatedData(cursor,direction,size)")
                 .headerIndexLabelExpression("aql:rowIndex")
                 .headerLabelExpression("aql:self.name")
                 .contextMenuEntries(contextMenuEntry)
+                .depthLevelExpression(
+                        "aql:if self.oclIsKindOf(papaya::Type) then 0 else if self.oclIsKindOf(papaya::Operation) then 1 else if self.oclIsKindOf(papaya::Parameter) then 2 else endif endif endif")
                 .build();
 
         var setNameOperation = new ViewBuilders().newSetValue()
@@ -134,6 +136,7 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
                 .rowDescription(rowDescription)
                 .cellDescriptions(nameCellDescription, descriptionCellDescription)
                 .useStripedRowsExpression("aql:false")
+                .enableSubRows(true)
                 .build();
 
         return this.tableDescription;
