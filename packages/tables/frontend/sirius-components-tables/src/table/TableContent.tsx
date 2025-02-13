@@ -60,6 +60,49 @@ export const TableContent = memo(
       setLinesState((prev) => prev.map((line) => (line.id === rowId ? { ...line, height } : line)));
     };
 
+    const getChildrenById = (id: string): GQLLine[] => {
+      const rowIndex = table.lines.findIndex((row) => row.id === id);
+      const children: GQLLine[] = [];
+      if (rowIndex >= 0 && rowIndex + 1 < table.lines.length) {
+        const level = table.lines[rowIndex]?.depthLevel ?? 0;
+        let index = rowIndex + 1;
+        while (index < table.lines.length && (table.lines[index]?.depthLevel ?? 0) > level) {
+          // keep only direct children
+          const row = table.lines[index];
+          if (row && row.depthLevel === level + 1) {
+            children.push(row);
+          }
+          index++;
+        }
+      }
+      return children;
+    };
+
+    const rowIdsToCollapse = (rowId: string): string[] => {
+      const result: string[] = [];
+
+      result.push(rowId);
+      // need to check if some sub rows are expanded
+      const children = getChildrenById(rowId);
+      for (const child of children) {
+        if (expandedRowIds.includes(child.id)) {
+          result.push(...rowIdsToCollapse(child.id));
+        }
+      }
+      return result;
+    };
+
+    const onRowExpandCollapse = (rowId: string) => {
+      if (expandedRowIds.includes(rowId)) {
+        const toRemove = rowIdsToCollapse(rowId);
+        setExpandedRowIds((prev) => [...prev.filter((id) => !toRemove.includes(id))]);
+      } else {
+        setExpandedRowIds((prev) => [...prev, rowId]);
+      }
+    };
+
+    const [expandedRowIds, setExpandedRowIds] = useState<string[]>([]);
+
     const { columns } = useTableColumns(
       editingContextId,
       representationId,
@@ -70,7 +113,9 @@ export const TableContent = memo(
       enableColumnFilters,
       enableColumnOrdering,
       enableRowSizing,
-      handleRowHeightChange
+      handleRowHeightChange,
+      onRowExpandCollapse,
+      expandedRowIds
     );
     const { columnSizing, setColumnSizing } = useTableColumnSizing(
       editingContextId,
@@ -92,7 +137,7 @@ export const TableContent = memo(
       onColumnFiltersChange,
       enableColumnFilters
     );
-    const [linesState, setLinesState] = useState<GQLLine[]>(table.lines);
+    const [linesState, setLinesState] = useState<GQLLine[]>([]);
 
     const { resetRowsHeight } = useResetRowsMutation(editingContextId, representationId, table.id, enableRowSizing);
 
@@ -145,9 +190,31 @@ export const TableContent = memo(
       onPaginationChange(pagination.cursor, pagination.direction, pagination.size);
     }, [pagination.cursor, pagination.size, pagination.direction]);
 
+    const keepRow = (row: GQLLine, visibleRows: GQLLine[]): number => {
+      visibleRows.push(row);
+      return row.depthLevel;
+    };
+
     useEffect(() => {
-      setLinesState([...table.lines]);
-    }, [table]);
+      let filteredRows: GQLLine[] = [];
+      let currentIndex = 0;
+      const firstRow = table.lines[currentIndex];
+      if (firstRow) {
+        let currentLevel = keepRow(firstRow, filteredRows);
+        for (let index = 1; index < table.lines.length; index++) {
+          const row = table.lines[index];
+          if (row && row.depthLevel <= currentLevel) {
+            currentLevel = keepRow(row, filteredRows);
+          } else if (row && row.depthLevel > currentLevel) {
+            if (expandedRowIds.includes(table.lines[currentIndex]!.id)) {
+              currentLevel = keepRow(row, filteredRows);
+            }
+          }
+          currentIndex = index;
+        }
+      }
+      setLinesState([...filteredRows]);
+    }, [table, expandedRowIds]);
 
     const tableOptions: MRT_TableOptions<GQLLine> = {
       columns,
@@ -167,7 +234,7 @@ export const TableContent = memo(
       enableGlobalFilter,
       manualFiltering: true,
       onGlobalFilterChange: setGlobalFilter,
-      enableColumnPinning: false,
+      enableColumnPinning: true,
       initialState: {
         showGlobalFilter: enableGlobalFilter,
         columnPinning: { left: ['mrt-row-header'], right: ['mrt-row-actions'] },

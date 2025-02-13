@@ -128,6 +128,7 @@ public class TableElementFactory implements IElementFactory {
                     .cells(cells)
                     .resizable(lineElementProps.resizable())
                     .height(lineElementProps.height())
+                    .depthLevel(lineElementProps.depthLevel())
                     .build();
         }
         return null;

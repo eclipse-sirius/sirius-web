@@ -94,6 +94,7 @@ export interface GQLLine {
   headerIndexLabel: string;
   height: number;
   isResizable: boolean;
+  depthLevel: number;
 }
 
 export interface GQLPaginationData {
@@ -145,4 +146,8 @@ export interface GQLSelectCellOption {
 export interface ColumnFilter {
   id: string;
   value: unknown;
+}
+
+export interface TreeRow extends GQLLine {
+  children: TreeRow[];
 }
