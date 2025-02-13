@@ -58,6 +58,9 @@ export class ServerData {
               node {
                 id
                 name
+                currentEditingContext {
+                  id
+                }
               }
             }
           }
@@ -82,8 +85,8 @@ export class ServerData {
         } else {
           this.projectsData = [];
           const projects = response.data.data.viewer.projects.edges.map((e: { node: any }) => e.node);
-          projects.forEach((node: { id: string; name: string; visibility: string }) => {
-            const projectData = new ProjectData(node.id, node.name, this.id);
+          projects.forEach((node: { id: string; name: string; currentEditingContext: { id: string } }) => {
+            const projectData = new ProjectData(node.id, node.currentEditingContext.id, node.name, this.id);
             this.projectsData.push(projectData);
           });
           return Promise.resolve(this.projectsData);

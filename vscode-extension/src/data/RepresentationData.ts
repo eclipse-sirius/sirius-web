@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,6 @@ export class RepresentationData {
     public readonly id: string,
     public readonly label: string,
     public readonly kind: string,
-    public readonly projectId: string
+    public readonly editingContextId: string
   ) {}
 }
