@@ -16,7 +16,7 @@ import { ApolloProvider } from '@apollo/client/react';
 import { MessageOptions, ServerContext, ToastContext, theme } from '@eclipse-sirius/sirius-components-core';
 import { ThemeProvider } from '@mui/material/styles';
 import { Node, NodeProps, ReactFlowProvider } from '@xyflow/react';
-import { Fragment, createElement } from 'react';
+import { Fragment, createElement, useEffect } from 'react';
 import { Root, createRoot } from 'react-dom/client';
 import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
 import { NodeData } from '../DiagramRenderer.types';
@@ -181,26 +181,30 @@ export const prepareLayoutArea = (
 
   const hiddenContainerContentElements: JSX.Element = createElement(Fragment, { children: elements });
 
-  const element = (
-    <ReactFlowProvider>
-      <ApolloProvider client={new ApolloClient({ cache: new InMemoryCache(), uri: '' })}>
-        <ThemeProvider theme={theme}>
-          <ServerContext.Provider value={{ httpOrigin }}>
-            <ToastContext.Provider
-              value={{
-                enqueueSnackbar: (_body: string, _options?: MessageOptions) => {},
-              }}>
-              <DiagramDirectEditContextProvider>{hiddenContainerContentElements}</DiagramDirectEditContextProvider>
-            </ToastContext.Provider>
-          </ServerContext.Provider>
-        </ThemeProvider>
-      </ApolloProvider>
-    </ReactFlowProvider>
-  );
+  const Element = () => {
+    useEffect(() => {
+      renderCallback();
+    }, []);
+    return (
+      <ReactFlowProvider>
+        <ApolloProvider client={new ApolloClient({ cache: new InMemoryCache(), uri: '' })}>
+          <ThemeProvider theme={theme}>
+            <ServerContext.Provider value={{ httpOrigin }}>
+              <ToastContext.Provider
+                value={{
+                  enqueueSnackbar: (_body: string, _options?: MessageOptions) => {},
+                }}>
+                <DiagramDirectEditContextProvider>{hiddenContainerContentElements}</DiagramDirectEditContextProvider>
+              </ToastContext.Provider>
+            </ServerContext.Provider>
+          </ThemeProvider>
+        </ApolloProvider>
+      </ReactFlowProvider>
+    );
+  };
 
   const root = createRoot(hiddenContainer!);
-  setTimeout(() => renderCallback(), 0);
-  root.render(element);
+  root.render(<Element />);
 
   return { hiddenContainer, root };
 };
