@@ -55,23 +55,34 @@ export const useDiagramSelection = (onShiftSelection: boolean): void => {
     ) {
       const nodesToReveal: Set<string> = new Set();
       const newNodes = getNodes().map((node) => {
-        const selected = displayedSemanticElementsToSelect.includes(node.data.targetObjectId);
-        const newNode = { ...node, selected };
-        if (selected) {
-          nodesToReveal.add(newNode.id);
+        const shouldSelect = displayedSemanticElementsToSelect.includes(node.data.targetObjectId) && !node.hidden;
+        if (shouldSelect) {
+          nodesToReveal.add(node.id);
         }
-        return newNode;
+        if (shouldSelect !== node.selected) {
+          return {
+            ...node,
+            selected: shouldSelect,
+          };
+        } else {
+          return node;
+        }
       });
       const newEdges = getEdges().map((edge) => {
-        const selected = displayedSemanticElementsToSelect.includes(edge.data ? edge.data.targetObjectId : '');
-        const newEdge = { ...edge, selected };
-        if (selected) {
-          // React Flow does not support "fit on edge", so include its source & target nodes
-          // to ensure the edge is visible and in context
-          nodesToReveal.add(newEdge.source);
-          nodesToReveal.add(newEdge.target);
+        const shouldSelect =
+          displayedSemanticElementsToSelect.includes(edge.data ? edge.data.targetObjectId : '') && !edge.hidden;
+        if (shouldSelect) {
+          nodesToReveal.add(edge.source);
+          nodesToReveal.add(edge.target);
         }
-        return newEdge;
+        if (shouldSelect !== edge.selected) {
+          return {
+            ...edge,
+            selected: shouldSelect,
+          };
+        } else {
+          return edge;
+        }
       });
 
       setEdges(newEdges);
