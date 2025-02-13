@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -217,8 +217,7 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
                 EcorePackage.Literals.ELONG,
                 EcorePackage.Literals.ELONG_OBJECT,
                 EcorePackage.Literals.ESHORT,
-                EcorePackage.Literals.ESHORT_OBJECT,
-                ViewPackage.Literals.LENGTH
+                EcorePackage.Literals.ESHORT_OBJECT
         );
         for (var dataType : numericDataTypes) {
             ifDescriptions.add(new NumberIfDescriptionProvider(dataType, this.composedAdapterFactory, this.propertiesValidationProvider, this.emfMessageService, this.semanticTargetIdProvider).getIfDescription());
