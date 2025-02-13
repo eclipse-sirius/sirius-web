@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
 import { makeStyles } from 'tss-react/mui';
+import { isSingleClickOnDiagramElementTool } from '../Palette';
 import { ToolListItem } from '../tool-list-item/ToolListItem';
 import { PaletteToolSectionListProps } from './PaletteToolSectionList.types';
 
@@ -68,7 +69,7 @@ export const PaletteToolSectionList = ({ toolSection, onToolClick, onBackToMainL
           <ListItemText className={classes.sectionTitleListItemText} primary={toolSection.label} />
         </ListItemButton>
       </Tooltip>
-      {toolSection.tools.map((tool) => (
+      {toolSection.tools.filter(isSingleClickOnDiagramElementTool).map((tool) => (
         <ToolListItem onToolClick={onToolClick} tool={tool} key={tool.id} />
       ))}
     </List>
