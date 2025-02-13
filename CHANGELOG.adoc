@@ -96,6 +96,7 @@ Now they are executed for some data if the data was coming from a studio too.
 - https://github.com/eclipse-sirius/sirius-web/issues/4523[#4523] [diagram] Fix an issue that caused the palette to be unopenable during a fit view
 - https://github.com/eclipse-sirius/sirius-web/issues/4557[#4557] [sirius-web] Fix an issue where targetObjectURI was not set in manifest.json during the download of a project
 - https://github.com/eclipse-sirius/sirius-web/issues/4547[#4547] [vs-code] Adapt the VSCode extension to the use of SemanticData#id as editingContextId
+- https://github.com/eclipse-sirius/sirius-web/issues/4561[#4561] [sirius-web] Display boolean values properly in the query view
 
 
 === New Features

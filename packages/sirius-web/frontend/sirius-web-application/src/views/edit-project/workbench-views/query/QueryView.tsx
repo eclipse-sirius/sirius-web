@@ -211,7 +211,7 @@ const BooleanExpressionResultViewer = ({ result }: ExpressionResultViewerProps) 
       </Typography>
       <List dense>
         <ListItem>
-          <ListItemText primary={booleanValue} />
+          <ListItemText primary={booleanValue.toString()} />
         </ListItem>
       </List>
     </Box>
