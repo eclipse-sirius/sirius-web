@@ -60,6 +60,8 @@ public final class TableDescription implements IRepresentationDescription {
 
     private Function<VariableManager, List<String>> iconURLsProvider;
 
+    private boolean enableSubRows;
+
     private TableDescription() {
         // Prevent instantiation
     }
@@ -110,6 +112,10 @@ public final class TableDescription implements IRepresentationDescription {
         return this.iconURLsProvider;
     }
 
+    public boolean isEnableSubRows() {
+        return this.enableSubRows;
+    }
+
     public static Builder newTableDescription(String id) {
         return new Builder(id);
     }
@@ -149,6 +155,8 @@ public final class TableDescription implements IRepresentationDescription {
         private List<ICellDescription> cellDescriptions;
 
         private Function<VariableManager, List<String>> iconURLsProvider;
+
+        private boolean enableSubRows;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -200,7 +208,12 @@ public final class TableDescription implements IRepresentationDescription {
         }
 
         public Builder iconURLsProvider(Function<VariableManager, List<String>> iconURLsProvider) {
-            this.iconURLsProvider =  Objects.requireNonNull(iconURLsProvider);
+            this.iconURLsProvider = Objects.requireNonNull(iconURLsProvider);
+            return this;
+        }
+
+        public Builder enableSubRows(boolean enableSubRows) {
+            this.enableSubRows = enableSubRows;
             return this;
         }
 
@@ -217,6 +230,7 @@ public final class TableDescription implements IRepresentationDescription {
             tableDescription.columnDescriptions = Objects.requireNonNull(this.columnDescriptions);
             tableDescription.cellDescriptions = Objects.requireNonNull(this.cellDescriptions);
             tableDescription.iconURLsProvider = Objects.requireNonNull(this.iconURLsProvider);
+            tableDescription.enableSubRows = this.enableSubRows;
             return tableDescription;
         }
     }

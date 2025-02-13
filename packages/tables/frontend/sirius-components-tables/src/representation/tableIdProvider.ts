@@ -19,7 +19,8 @@ export const tableIdProvider = (
   direction: 'PREV' | 'NEXT',
   size: number,
   globalFilter: string | null,
-  columnFilters: ColumnFilter[] | null
+  columnFilters: ColumnFilter[] | null,
+  expanded: string[]
 ) => {
   const globalFilterParam: string = globalFilter !== null ? `&globalFilter=${encodeURIComponent(globalFilter)}` : '';
   const columnFiltersParam: string =
@@ -31,5 +32,6 @@ export const tableIdProvider = (
           .map(encodeURIComponent)
           .join(',')}]`
       : '';
-  return `${tableId}?cursor=${cursor}&direction=${direction}&size=${size}${globalFilterParam}${columnFiltersParam}`;
+  const expandIds: string = `&expandedIds=[${expanded.map(encodeURIComponent).join(',')}]`;
+  return `${tableId}?cursor=${cursor}&direction=${direction}&size=${size}${globalFilterParam}${columnFiltersParam}${expandIds}`;
 };

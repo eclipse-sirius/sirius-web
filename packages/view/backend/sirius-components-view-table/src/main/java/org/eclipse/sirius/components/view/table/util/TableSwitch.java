@@ -134,18 +134,18 @@ public class TableSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
+            case TablePackage.ROW_CONTEXT_MENU_ENTRY: {
+                RowContextMenuEntry rowContextMenuEntry = (RowContextMenuEntry) theEObject;
+                T result = this.caseRowContextMenuEntry(rowContextMenuEntry);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
             case TablePackage.CELL_TEXTAREA_WIDGET_DESCRIPTION: {
                 CellTextareaWidgetDescription cellTextareaWidgetDescription = (CellTextareaWidgetDescription) theEObject;
                 T result = this.caseCellTextareaWidgetDescription(cellTextareaWidgetDescription);
                 if (result == null)
                     result = this.caseCellWidgetDescription(cellTextareaWidgetDescription);
-                if (result == null)
-                    result = this.defaultCase(theEObject);
-                return result;
-            }
-            case TablePackage.ROW_CONTEXT_MENU_ENTRY: {
-                RowContextMenuEntry rowContextMenuEntry = (RowContextMenuEntry) theEObject;
-                T result = this.caseRowContextMenuEntry(rowContextMenuEntry);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -280,10 +280,10 @@ public class TableSwitch<T> extends Switch<T> {
      * end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Row Context Menu Entry</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseRowContextMenuEntry(RowContextMenuEntry object) {
         return null;

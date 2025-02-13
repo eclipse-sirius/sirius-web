@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
  * <li>{@link org.eclipse.sirius.components.view.table.TableDescription#getRowDescription <em>Row Description</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.table.TableDescription#getCellDescriptions <em>Cell
  * Descriptions</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.table.TableDescription#isEnableSubRows <em>Enable Sub Rows</em>}</li>
  * </ul>
  *
  * @model
@@ -107,5 +108,28 @@ public interface TableDescription extends RepresentationDescription {
      * @see org.eclipse.sirius.components.view.table.TablePackage#getTableDescription_CellDescriptions()
      */
     EList<CellDescription> getCellDescriptions();
+
+    /**
+     * Returns the value of the '<em><b>Enable Sub Rows</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the value of the '<em>Enable Sub Rows</em>' attribute.
+     * @model required="true"
+     * @generated
+     * @see #setEnableSubRows(boolean)
+     * @see org.eclipse.sirius.components.view.table.TablePackage#getTableDescription_EnableSubRows()
+     */
+    boolean isEnableSubRows();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.table.TableDescription#isEnableSubRows
+     * <em>Enable Sub Rows</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>Enable Sub Rows</em>' attribute.
+     * @generated
+     * @see #isEnableSubRows()
+     */
+    void setEnableSubRows(boolean value);
 
 } // TableDescription

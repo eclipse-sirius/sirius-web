@@ -37,6 +37,8 @@ import org.eclipse.emf.ecore.EObject;
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.table.RowDescription#getContextMenuEntries <em>Context Menu
  * Entries</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.table.RowDescription#getDepthLevelExpression <em>Depth Level
+ * Expression</em>}</li>
  * </ul>
  *
  * @model
@@ -218,5 +220,28 @@ public interface RowDescription extends EObject {
      * @see org.eclipse.sirius.components.view.table.TablePackage#getRowDescription_ContextMenuEntries()
      */
     EList<RowContextMenuEntry> getContextMenuEntries();
+
+    /**
+     * Returns the value of the '<em><b>Depth Level Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Depth Level Expression</em>' attribute.
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     * @see #setDepthLevelExpression(String)
+     * @see org.eclipse.sirius.components.view.table.TablePackage#getRowDescription_DepthLevelExpression()
+     */
+    String getDepthLevelExpression();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.table.RowDescription#getDepthLevelExpression
+     * <em>Depth Level Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>Depth Level Expression</em>' attribute.
+     * @generated
+     * @see #getDepthLevelExpression()
+     */
+    void setDepthLevelExpression(String value);
 
 } // RowDescription

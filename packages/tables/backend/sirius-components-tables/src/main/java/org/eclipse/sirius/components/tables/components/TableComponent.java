@@ -100,6 +100,7 @@ public class TableComponent implements IComponent {
                 .paginationData(new PaginationData(paginatedData.hasPreviousPage(), paginatedData.hasNextPage(), paginatedData.totalRowCount()))
                 .globalFilter(this.props.globalFilter())
                 .columnFilters(columnsFilters)
+                .enableSubRows(tableDescription.isEnableSubRows())
                 .build();
 
         return new Element(TableElementProps.TYPE, tableElementProps);

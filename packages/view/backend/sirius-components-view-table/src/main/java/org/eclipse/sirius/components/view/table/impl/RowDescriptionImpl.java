@@ -109,6 +109,15 @@ public class RowDescriptionImpl extends MinimalEObjectImpl.Container implements 
      */
     protected static final String IS_RESIZABLE_EXPRESSION_EDEFAULT = "";
     /**
+     * The default value of the '{@link #getDepthLevelExpression() <em>Depth Level Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getDepthLevelExpression()
+     */
+    protected static final String DEPTH_LEVEL_EXPRESSION_EDEFAULT = null;
+    /**
      * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
@@ -171,7 +180,6 @@ public class RowDescriptionImpl extends MinimalEObjectImpl.Container implements 
      * @see #getIsResizableExpression()
      */
     protected String isResizableExpression = IS_RESIZABLE_EXPRESSION_EDEFAULT;
-
     /**
      * The cached value of the '{@link #getContextMenuEntries() <em>Context Menu Entries</em>}' containment reference
      * list. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -181,6 +189,15 @@ public class RowDescriptionImpl extends MinimalEObjectImpl.Container implements 
      * @see #getContextMenuEntries()
      */
     protected EList<RowContextMenuEntry> contextMenuEntries;
+    /**
+     * The cached value of the '{@link #getDepthLevelExpression() <em>Depth Level Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getDepthLevelExpression()
+     */
+    protected String depthLevelExpression = DEPTH_LEVEL_EXPRESSION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -382,6 +399,29 @@ public class RowDescriptionImpl extends MinimalEObjectImpl.Container implements 
      * @generated
      */
     @Override
+    public String getDepthLevelExpression() {
+        return this.depthLevelExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDepthLevelExpression(String newDepthLevelExpression) {
+        String oldDepthLevelExpression = this.depthLevelExpression;
+        this.depthLevelExpression = newDepthLevelExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.ROW_DESCRIPTION__DEPTH_LEVEL_EXPRESSION, oldDepthLevelExpression, this.depthLevelExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case TablePackage.ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES:
@@ -414,6 +454,8 @@ public class RowDescriptionImpl extends MinimalEObjectImpl.Container implements 
                 return this.getIsResizableExpression();
             case TablePackage.ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES:
                 return this.getContextMenuEntries();
+            case TablePackage.ROW_DESCRIPTION__DEPTH_LEVEL_EXPRESSION:
+                return this.getDepthLevelExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -452,6 +494,9 @@ public class RowDescriptionImpl extends MinimalEObjectImpl.Container implements 
                 this.getContextMenuEntries().clear();
                 this.getContextMenuEntries().addAll((Collection<? extends RowContextMenuEntry>) newValue);
                 return;
+            case TablePackage.ROW_DESCRIPTION__DEPTH_LEVEL_EXPRESSION:
+                this.setDepthLevelExpression((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -488,6 +533,9 @@ public class RowDescriptionImpl extends MinimalEObjectImpl.Container implements 
             case TablePackage.ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES:
                 this.getContextMenuEntries().clear();
                 return;
+            case TablePackage.ROW_DESCRIPTION__DEPTH_LEVEL_EXPRESSION:
+                this.setDepthLevelExpression(DEPTH_LEVEL_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -516,6 +564,8 @@ public class RowDescriptionImpl extends MinimalEObjectImpl.Container implements 
                 return IS_RESIZABLE_EXPRESSION_EDEFAULT == null ? this.isResizableExpression != null : !IS_RESIZABLE_EXPRESSION_EDEFAULT.equals(this.isResizableExpression);
             case TablePackage.ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES:
                 return this.contextMenuEntries != null && !this.contextMenuEntries.isEmpty();
+            case TablePackage.ROW_DESCRIPTION__DEPTH_LEVEL_EXPRESSION:
+                return !Objects.equals(DEPTH_LEVEL_EXPRESSION_EDEFAULT, this.depthLevelExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -544,6 +594,8 @@ public class RowDescriptionImpl extends MinimalEObjectImpl.Container implements 
                 this.initialHeightExpression +
                 ", isResizableExpression: " +
                 this.isResizableExpression +
+                ", depthLevelExpression: " +
+                this.depthLevelExpression +
                 ')';
         return result;
     }

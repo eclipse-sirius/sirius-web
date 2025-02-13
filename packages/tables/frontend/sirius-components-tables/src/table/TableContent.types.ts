@@ -20,6 +20,7 @@ export interface TableContentProps {
   onPaginationChange: (cursor: string | null, direction: 'PREV' | 'NEXT', size: number) => void;
   onGlobalFilterChange: (globalFilter: string) => void;
   onColumnFiltersChange: (columnFilters: ColumnFilter[]) => void;
+  onExpandedElementChange: (rowId: string) => void;
   enableColumnVisibility: boolean;
   enableColumnResizing: boolean;
   enableColumnFilters: boolean;
@@ -27,6 +28,7 @@ export interface TableContentProps {
   enableGlobalFilter: boolean;
   enablePagination: boolean;
   enableColumnOrdering: boolean;
+  expandedRowIds: string[];
 }
 
 export interface TablePaginationState {
@@ -52,6 +54,7 @@ export interface GQLTable {
   id: string;
   targetObjectId: string;
   stripeRow: boolean;
+  enableSubRows: boolean;
   globalFilter: string | null;
   columns: GQLColumn[];
   lines: GQLLine[];
@@ -94,6 +97,7 @@ export interface GQLLine {
   headerIndexLabel: string;
   height: number;
   isResizable: boolean;
+  depthLevel: number;
 }
 
 export interface GQLPaginationData {

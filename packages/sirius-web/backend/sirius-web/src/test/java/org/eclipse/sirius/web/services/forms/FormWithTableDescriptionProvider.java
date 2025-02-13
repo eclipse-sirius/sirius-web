@@ -143,6 +143,7 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
                 .headerIndexLabelProvider(variableManager -> "")
                 .isResizablePredicate(variableManager -> false)
                 .initialHeightProvider(variableManager -> 0)
+                .depthLevelProvider(variableManager -> 0)
                 .build();
 
         TableDescription tableDescription = TableDescription.newTableDescription(FORM_WITH_TABLE_ID)
@@ -155,6 +156,7 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
                 .cellDescriptions(this.getCellDescriptions())
                 .iconURLsProvider(variableManager -> List.of())
                 .isStripeRowPredicate(variableManager -> false)
+                .enableSubRows(false)
                 .build();
 
         return TableWidgetDescription.newTableWidgetDescription("tasksTableWidgetId")

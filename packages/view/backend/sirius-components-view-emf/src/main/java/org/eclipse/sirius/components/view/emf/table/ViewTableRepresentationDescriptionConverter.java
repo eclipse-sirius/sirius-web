@@ -88,6 +88,7 @@ public class ViewTableRepresentationDescriptionConverter implements IRepresentat
                 .cellDescriptions(new CellDescriptionConverter(this.tableIdProvider, this.objectService).convert(viewTableDescription.getCellDescriptions(), interpreter))
                 .isStripeRowPredicate(isStripeRowPredicate)
                 .iconURLsProvider(new ViewIconURLsProvider(interpreter, viewTableDescription.getIconExpression()))
+                .enableSubRows(viewTableDescription.isEnableSubRows())
                 .build();
     }
 

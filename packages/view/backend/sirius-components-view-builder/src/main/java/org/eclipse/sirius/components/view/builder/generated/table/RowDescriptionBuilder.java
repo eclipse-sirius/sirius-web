@@ -127,5 +127,15 @@ public class RowDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for DepthLevelExpression.
+     *
+     * @generated
+     */
+    public RowDescriptionBuilder depthLevelExpression(java.lang.String value) {
+        this.getRowDescription().setDepthLevelExpression(value);
+        return this;
+    }
+
 }
 

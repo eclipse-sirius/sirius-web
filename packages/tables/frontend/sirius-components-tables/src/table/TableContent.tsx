@@ -11,10 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useSelection } from '@eclipse-sirius/sirius-components-core';
+import FormatLineSpacingIcon from '@mui/icons-material/FormatLineSpacing';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import { Theme, useTheme } from '@mui/material/styles';
-import FormatLineSpacingIcon from '@mui/icons-material/FormatLineSpacing';
 import {
   MaterialReactTable,
   MRT_ShowHideColumnsButton,
@@ -45,6 +45,7 @@ export const TableContent = memo(
     onPaginationChange,
     onGlobalFilterChange,
     onColumnFiltersChange,
+    onExpandedElementChange,
     enableColumnVisibility,
     enableColumnResizing,
     enableColumnFilters,
@@ -52,6 +53,7 @@ export const TableContent = memo(
     enableGlobalFilter,
     enablePagination,
     enableColumnOrdering,
+    expandedRowIds,
   }: TableContentProps) => {
     const { selection } = useSelection();
     const theme: Theme = useTheme();
@@ -70,7 +72,9 @@ export const TableContent = memo(
       enableColumnFilters,
       enableColumnOrdering,
       enableRowSizing,
-      handleRowHeightChange
+      handleRowHeightChange,
+      onExpandedElementChange,
+      expandedRowIds
     );
     const { columnSizing, setColumnSizing } = useTableColumnSizing(
       editingContextId,
@@ -172,7 +176,7 @@ export const TableContent = memo(
       enableGlobalFilter,
       manualFiltering: true,
       onGlobalFilterChange: setGlobalFilter,
-      enableColumnPinning: false,
+      enableColumnPinning: true,
       initialState: {
         showGlobalFilter: enableGlobalFilter,
         columnPinning: { left: ['mrt-row-header'], right: ['mrt-row-actions'] },
