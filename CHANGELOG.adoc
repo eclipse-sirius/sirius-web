@@ -100,7 +100,7 @@ Now they are executed for some data if the data was coming from a studio too.
 - https://github.com/eclipse-sirius/sirius-web/issues/4522[#4522] [diagram] Fix an issue where custom tools were no longer contributed to the diagram palette
 - https://github.com/eclipse-sirius/sirius-web/issues/4549[#4549] [diagram] Fix an issue where edge tools could be shown in a palette tool section
 - https://github.com/eclipse-sirius/sirius-web/issues/4559[#4559] [diagram] Prevent list children positions to be set to (0,0) in certain random situations.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4257[#4257] [diagram] Prevent the width of list nodes from increasing on each layout
 
 === New Features
 

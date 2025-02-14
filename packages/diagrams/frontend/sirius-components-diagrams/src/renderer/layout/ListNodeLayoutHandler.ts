@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,7 @@ import {
   getDefaultOrMinHeight,
   getDefaultOrMinWidth,
   getEastBorderNodeFootprintHeight,
+  getInsideLabelWidthConstraint,
   getNorthBorderNodeFootprintWidth,
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
@@ -78,7 +79,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
   ) {
     const labelElement = document.getElementById(`${node.id}-label-${findNodeIndex(visibleNodes, node.id)}`);
 
-    const nodeMinComputeWidth = (labelElement?.getBoundingClientRect().width ?? 0) + borderWidth * 2;
+    const nodeMinComputeWidth = getInsideLabelWidthConstraint(node.data.insideLabel, labelElement) + borderWidth * 2;
     const nodeMinComputeHeight = (labelElement?.getBoundingClientRect().height ?? 0) + borderWidth * 2;
     const nodeWith = forceDimensions?.width ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
     const nodeHeight = forceDimensions?.height ?? getDefaultOrMinHeight(nodeMinComputeHeight, node);
@@ -141,7 +142,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
       const fixedWidth: number = Math.max(
         directNodesChildren.reduce<number>(
           (widerWidth, child) => Math.max(child.width ?? 0, widerWidth),
-          labelElement?.getBoundingClientRect().width ?? 0
+          getInsideLabelWidthConstraint(node.data.insideLabel, labelElement)
         ),
         northBorderNodeFootprintWidth,
         southBorderNodeFootprintWidth,
