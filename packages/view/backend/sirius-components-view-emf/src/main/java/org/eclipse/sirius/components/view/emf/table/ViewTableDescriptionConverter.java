@@ -137,6 +137,7 @@ public class ViewTableDescriptionConverter implements IRepresentationDescription
                 .headerIndexLabelProvider(variableManager -> this.evaluateString(interpreter, variableManager, rowDescription.getHeaderIndexLabelExpression()))
                 .isResizablePredicate(variableManager -> interpreter.evaluateExpression(variableManager.getVariables(), rowDescription.getIsResizableExpression()).asBoolean().orElse(false))
                 .initialHeightProvider(variableManager -> interpreter.evaluateExpression(variableManager.getVariables(), rowDescription.getInitialHeightExpression()).asInt().orElse(-1))
+                .depthLevelProvider(variableManager -> interpreter.evaluateExpression(variableManager.getVariables(), rowDescription.getDepthLevelExpression()).asInt().orElse(0))
                 .build();
     }
 
