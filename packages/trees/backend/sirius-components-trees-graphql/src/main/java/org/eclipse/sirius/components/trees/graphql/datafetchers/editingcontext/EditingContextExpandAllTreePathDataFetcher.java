@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,11 +17,11 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.trees.dto.ExpandAllTreePathInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.ExpandAllTreePathSuccessPayload;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreePath;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 
 import graphql.schema.DataFetchingEnvironment;
 
@@ -37,10 +37,10 @@ public class EditingContextExpandAllTreePathDataFetcher implements IDataFetcherW
 
     private static final String TREE_ITEM_ID = "treeItemId";
 
-    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+    private final IEditingContextDispatcher editingContextDispatcher;
 
-    public EditingContextExpandAllTreePathDataFetcher(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
-        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
+    public EditingContextExpandAllTreePathDataFetcher(IEditingContextDispatcher editingContextDispatcher) {
+        this.editingContextDispatcher = Objects.requireNonNull(editingContextDispatcher);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class EditingContextExpandAllTreePathDataFetcher implements IDataFetcherW
         String treeItemId = environment.getArgument(TREE_ITEM_ID);
 
         ExpandAllTreePathInput input = new ExpandAllTreePathInput(UUID.randomUUID(), editingContextId, treeId, treeItemId);
-        return this.editingContextEventProcessorRegistry.dispatchEvent(editingContextId, input)
+        return this.editingContextDispatcher.dispatchQuery(editingContextId, input)
                 .filter(ExpandAllTreePathSuccessPayload.class::isInstance)
                 .map(ExpandAllTreePathSuccessPayload.class::cast)
                 .map(ExpandAllTreePathSuccessPayload::treePath)
