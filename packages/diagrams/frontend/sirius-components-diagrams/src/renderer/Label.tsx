@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,7 @@
 
 import { getCSSColor, IconOverlay } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@mui/material/styles';
-import { memo, useContext } from 'react';
+import { memo, useContext, useMemo } from 'react';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramContextValue } from '../contexts/DiagramContext.types';
 import { EdgeLabel, InsideLabel, LabelOverflowStrategy, OutsideLabel } from './DiagramRenderer.types';
@@ -121,6 +121,10 @@ export const Label = memo(({ diagramElementId, label, faded }: LabelProps) => {
     }
   };
 
+  const customIconStyle = useMemo(() => {
+    return { marginRight: theme.spacing(1) };
+  }, []);
+
   const content: JSX.Element =
     label.id === currentlyEditedLabelId && !readOnly ? (
       <DiagramDirectEditInput editingKey={editingKey} onClose={handleClose} labelId={label.id} />
@@ -129,7 +133,7 @@ export const Label = memo(({ diagramElementId, label, faded }: LabelProps) => {
         data-id={`${label.id}-content`}
         data-testid={`Label content - ${label.text}`}
         style={labelContentStyle(theme, label)}>
-        <IconOverlay iconURL={label.iconURL} alt={label.text} customIconStyle={{ marginRight: theme.spacing(1) }} />
+        <IconOverlay iconURL={label.iconURL} alt={label.text} customIconStyle={customIconStyle} />
         <div style={labelOverflowStyle(label)}>{label.text}</div>
       </div>
     );

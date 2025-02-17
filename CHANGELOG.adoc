@@ -101,6 +101,7 @@ Now they are executed for some data if the data was coming from a studio too.
 - https://github.com/eclipse-sirius/sirius-web/issues/4549[#4549] [diagram] Fix an issue where edge tools could be shown in a palette tool section
 - https://github.com/eclipse-sirius/sirius-web/issues/4559[#4559] [diagram] Prevent list children positions to be set to (0,0) in certain random situations.
 - https://github.com/eclipse-sirius/sirius-web/issues/4451[#4451] [diagram] Keep using the same node after a refresh if possible in order to avoid rerendering all the nodes after converting the diagram
+- https://github.com/eclipse-sirius/sirius-web/issues/4575[#4575] [diagram] Memoize the style of a label to avoid rerendering them all when refreshing the diagram
 
 
 === New Features
