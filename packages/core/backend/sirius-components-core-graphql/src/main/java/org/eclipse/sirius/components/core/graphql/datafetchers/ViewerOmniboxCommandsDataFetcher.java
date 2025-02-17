@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,13 +22,13 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.dto.GetOmniboxCommandsInput;
 import org.eclipse.sirius.components.collaborative.dto.GetOmniboxCommandsPayload;
 import org.eclipse.sirius.components.collaborative.dto.OmniboxCommand;
 import org.eclipse.sirius.components.collaborative.dto.OmniboxContextEntry;
 import org.eclipse.sirius.components.core.graphql.dto.PageInfoWithCount;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 
 import graphql.relay.Connection;
 import graphql.relay.ConnectionCursor;
@@ -53,12 +53,12 @@ public class ViewerOmniboxCommandsDataFetcher implements IDataFetcherWithFieldCo
 
     private static final String QUERY_ARGUMENT = "query";
 
-    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+    private final IEditingContextDispatcher editingContextDispatcher;
 
     private final ObjectMapper objectMapper;
 
-    public ViewerOmniboxCommandsDataFetcher(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, ObjectMapper objectMapper) {
-        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
+    public ViewerOmniboxCommandsDataFetcher(IEditingContextDispatcher editingContextDispatcher, ObjectMapper objectMapper) {
+        this.editingContextDispatcher = Objects.requireNonNull(editingContextDispatcher);
         this.objectMapper = Objects.requireNonNull(objectMapper);
     }
 
@@ -71,7 +71,7 @@ public class ViewerOmniboxCommandsDataFetcher implements IDataFetcherWithFieldCo
 
         if (!omniboxContextEntries.isEmpty()) {
             var omniboxContextEntry = omniboxContextEntries.get(0);
-            return this.editingContextEventProcessorRegistry.dispatchEvent(omniboxContextEntry.id(), input)
+            return this.editingContextDispatcher.dispatchQuery(omniboxContextEntry.id(), input)
                     .filter(GetOmniboxCommandsPayload.class::isInstance)
                     .map(GetOmniboxCommandsPayload.class::cast)
                     .map(this::toConnection)

@@ -148,7 +148,6 @@ See `PapayaExtensionRegistry.tsx` for how the same result as before can be achie
 For that, a new page `/libraries` showing all the libraries has been contributed.
 - https://github.com/eclipse-sirius/sirius-web/issues/4564[#4564] [sirius-web] Add an arrow to close the palette on its header
 
-
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4368[#4368] [sirius-web] Add GraphQL subscription exception handler
@@ -188,7 +187,7 @@ To achieve that a new concept, `ProjectSemanticData` has been added along with a
 - https://github.com/eclipse-sirius/sirius-web/issues/4501[#4501] [browser] Extract the model browser into reusable modules
 - https://github.com/eclipse-sirius/sirius-web/issues/4514[#4514] [sirius-web] Added support for Ctrl+Shift+Z (Linux/macOS) to trigger redo in addition to Ctrl+Y (Windows)
 - https://github.com/eclipse-sirius/sirius-web/issues/4372[#4372] [sirius-web] Lower the coupling between project and editing context
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4581[#4581] [sirius-web] Make (almost) all data fetchers use `IEditingContextDispatcher` instead of using `IEditingContextEventProcessorRegistry` directly.
 
 == v2025.1.0
 

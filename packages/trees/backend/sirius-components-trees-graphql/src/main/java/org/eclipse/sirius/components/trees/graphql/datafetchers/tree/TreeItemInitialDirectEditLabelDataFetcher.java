@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,10 +19,10 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.trees.dto.InitialDirectEditElementLabelInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.InitialDirectEditElementLabelSuccessPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
 
 import graphql.schema.DataFetchingEnvironment;
@@ -38,10 +38,10 @@ public class TreeItemInitialDirectEditLabelDataFetcher implements IDataFetcherWi
 
     private static final String INPUT_ARGUMENT = "treeItemId";
 
-    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+    private final IEditingContextDispatcher editingContextDispatcher;
 
-    public TreeItemInitialDirectEditLabelDataFetcher(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
-        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
+    public TreeItemInitialDirectEditLabelDataFetcher(IEditingContextDispatcher editingContextDispatcher) {
+        this.editingContextDispatcher = Objects.requireNonNull(editingContextDispatcher);
     }
 
     @Override
@@ -53,13 +53,11 @@ public class TreeItemInitialDirectEditLabelDataFetcher implements IDataFetcherWi
 
         if (editingContextId != null && representationId != null && treeItemId != null) {
             var input = new InitialDirectEditElementLabelInput(UUID.randomUUID(), editingContextId, representationId, treeItemId, "");
-            // @formatter:off
-            return this.editingContextEventProcessorRegistry.dispatchEvent(editingContextId, input)
+            return this.editingContextDispatcher.dispatchQuery(editingContextId, input)
                     .filter(InitialDirectEditElementLabelSuccessPayload.class::isInstance)
                     .map(InitialDirectEditElementLabelSuccessPayload.class::cast)
                     .map(InitialDirectEditElementLabelSuccessPayload::initialDirectEditElementLabel)
                     .toFuture();
-            // @formatter:on
         }
         return Mono.<String> empty().toFuture();
     }

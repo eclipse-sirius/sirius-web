@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,12 +18,12 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.api.RepresentationDescriptionMetadata;
 import org.eclipse.sirius.components.collaborative.dto.EditingContextRepresentationDescriptionsInput;
 import org.eclipse.sirius.components.collaborative.dto.EditingContextRepresentationDescriptionsPayload;
 import org.eclipse.sirius.components.core.graphql.dto.PageInfoWithCount;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 
 import graphql.relay.Connection;
 import graphql.relay.ConnectionCursor;
@@ -47,10 +47,10 @@ public class EditingContextRepresentationDescriptionsDataFetcher implements IDat
 
     private static final String OBJECT_ID_ARGUMENT = "objectId";
 
-    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+    private final IEditingContextDispatcher editingContextDispatcher;
 
-    public EditingContextRepresentationDescriptionsDataFetcher(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
-        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
+    public EditingContextRepresentationDescriptionsDataFetcher(IEditingContextDispatcher editingContextDispatcher) {
+        this.editingContextDispatcher = Objects.requireNonNull(editingContextDispatcher);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class EditingContextRepresentationDescriptionsDataFetcher implements IDat
 
         EditingContextRepresentationDescriptionsInput input = new EditingContextRepresentationDescriptionsInput(UUID.randomUUID(), editingContextId, objectId);
 
-        return this.editingContextEventProcessorRegistry.dispatchEvent(input.editingContextId(), input)
+        return this.editingContextDispatcher.dispatchQuery(input.editingContextId(), input)
                 .filter(EditingContextRepresentationDescriptionsPayload.class::isInstance)
                 .map(EditingContextRepresentationDescriptionsPayload.class::cast)
                 .map(this::toConnection)

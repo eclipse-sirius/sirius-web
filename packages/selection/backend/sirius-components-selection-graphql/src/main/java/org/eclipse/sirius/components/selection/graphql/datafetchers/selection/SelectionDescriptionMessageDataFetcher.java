@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,11 +22,11 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.selection.dto.GetSelectionDescriptionMessageInput;
 import org.eclipse.sirius.components.collaborative.selection.dto.GetSelectionDescriptionMessagePayload;
 import org.eclipse.sirius.components.collaborative.selection.dto.SelectionDialogVariable;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
 import org.eclipse.sirius.components.selection.description.SelectionDescription;
 
@@ -41,13 +41,13 @@ public class SelectionDescriptionMessageDataFetcher  implements IDataFetcherWith
 
     private static final String VARIABLES = "variables";
 
-    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+    private final IEditingContextDispatcher editingContextDispatcher;
 
     private final ObjectMapper objectMapper;
 
-    public SelectionDescriptionMessageDataFetcher(ObjectMapper objectMapper, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
+    public SelectionDescriptionMessageDataFetcher(ObjectMapper objectMapper, IEditingContextDispatcher editingContextDispatcher) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
-        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
+        this.editingContextDispatcher = Objects.requireNonNull(editingContextDispatcher);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class SelectionDescriptionMessageDataFetcher  implements IDataFetcherWith
                 .toList();
 
         var input = new GetSelectionDescriptionMessageInput(UUID.randomUUID(), variables, selectionDescription);
-        return this.editingContextEventProcessorRegistry.dispatchEvent(editingContextId.get(), input)
+        return this.editingContextDispatcher.dispatchQuery(editingContextId.get(), input)
                .filter(GetSelectionDescriptionMessagePayload.class::isInstance)
                .map(GetSelectionDescriptionMessagePayload.class::cast)
                .map(GetSelectionDescriptionMessagePayload::message)
