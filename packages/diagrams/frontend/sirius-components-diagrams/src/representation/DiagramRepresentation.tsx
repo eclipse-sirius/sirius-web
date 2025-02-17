@@ -15,6 +15,7 @@ import { gql, useQuery } from '@apollo/client';
 import { RepresentationComponentProps, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { ReactFlowProvider } from '@xyflow/react';
 import { memo, useEffect, useState } from 'react';
+import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramDescriptionContext } from '../contexts/DiagramDescriptionContext';
 import { ConnectorContextProvider } from '../renderer/connector/ConnectorContext';
 import { DiagramDirectEditContextProvider } from '../renderer/direct-edit/DiagramDirectEditContext';
@@ -117,10 +118,17 @@ export const DiagramRepresentation = memo(
                     <MarkerDefinitions />
                     <FullscreenContextProvider>
                       <DiagramDescriptionContext.Provider value={{ diagramDescription }}>
-                        <DiagramSubscriptionProvider
-                          diagramId={representationId}
-                          editingContextId={editingContextId}
-                          readOnly={readOnly}></DiagramSubscriptionProvider>
+                        <DiagramContext.Provider
+                          value={{
+                            editingContextId,
+                            diagramId: representationId,
+                            readOnly,
+                          }}>
+                          <DiagramSubscriptionProvider
+                            diagramId={representationId}
+                            editingContextId={editingContextId}
+                            readOnly={readOnly}></DiagramSubscriptionProvider>
+                        </DiagramContext.Provider>
                       </DiagramDescriptionContext.Provider>
                     </FullscreenContextProvider>
                   </NodeContextProvider>

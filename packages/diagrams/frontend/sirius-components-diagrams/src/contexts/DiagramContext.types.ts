@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,12 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLDiagramEventPayload } from '../graphql/subscription/diagramEventSubscription.types';
-
 export interface DiagramContextValue {
   editingContextId: string;
   diagramId: string;
-  refreshEventPayloadId: string;
-  payload: GQLDiagramEventPayload | null;
   readOnly: boolean;
 }
