@@ -45,7 +45,7 @@ const usePaletteStyle = makeStyles<PaletteStyleProps>()((theme, props) => ({
     zIndex: 5,
     position: 'fixed',
     width: props.paletteWidth,
-    height: props.paletteHeight,
+    maxHeight: props.paletteHeight,
   },
   paletteHeader: {
     cursor: 'move',

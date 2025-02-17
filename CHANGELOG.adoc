@@ -185,6 +185,7 @@ To achieve that a new concept, `ProjectSemanticData` has been added along with a
 - https://github.com/eclipse-sirius/sirius-web/issues/4501[#4501] [browser] Extract the model browser into reusable modules
 - https://github.com/eclipse-sirius/sirius-web/issues/4514[#4514] [sirius-web] Added support for Ctrl+Shift+Z (Linux/macOS) to trigger redo in addition to Ctrl+Y (Windows)
 - https://github.com/eclipse-sirius/sirius-web/issues/4372[#4372] [sirius-web] Lower the coupling between project and editing context
+- https://github.com/eclipse-sirius/sirius-web/issues/4573[#4573] [sirius-web] Adapt the palette size to its content
 
 
 == v2025.1.0
