@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,11 +18,11 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.dto.EditingContextChildObjectCreationDescriptionsPayload;
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.ReferenceWidgetChildCreationDescriptionsInput;
 import org.eclipse.sirius.components.core.api.ChildCreationDescription;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 
 import graphql.schema.DataFetchingEnvironment;
 
@@ -38,10 +38,10 @@ public class ReferenceWidgetChildCreationDescriptionsDataFetcher implements IDat
     private static final String REFERENCE_KIND_ARGUMENT = "referenceKind";
     private static final String WIDGET_DESCRIPTION_ID_ARGUMENT = "descriptionId";
 
-    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+    private final IEditingContextDispatcher editingContextDispatcher;
 
-    public ReferenceWidgetChildCreationDescriptionsDataFetcher(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
-        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
+    public ReferenceWidgetChildCreationDescriptionsDataFetcher(IEditingContextDispatcher editingContextDispatcher) {
+        this.editingContextDispatcher = Objects.requireNonNull(editingContextDispatcher);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class ReferenceWidgetChildCreationDescriptionsDataFetcher implements IDat
         ReferenceWidgetChildCreationDescriptionsInput input = new ReferenceWidgetChildCreationDescriptionsInput(UUID.randomUUID(), editingContextId, kind,
                 referenceKind, descriptionId);
 
-        return this.editingContextEventProcessorRegistry.dispatchEvent(input.editingContextId(), input)
+        return this.editingContextDispatcher.dispatchQuery(input.editingContextId(), input)
                 .filter(EditingContextChildObjectCreationDescriptionsPayload.class::isInstance)
                 .map(EditingContextChildObjectCreationDescriptionsPayload.class::cast)
                 .map(EditingContextChildObjectCreationDescriptionsPayload::childCreationDescriptions)

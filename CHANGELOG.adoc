@@ -41,6 +41,7 @@ Our backend integration tests actual use the `postgres:latest` image (see `Abstr
 - https://github.com/eclipse-sirius/sirius-web/issues/4609[#4609] [sirius-web] Separate the representation metadata from the project bounded context.
 - https://github.com/eclipse-sirius/sirius-web/issues/4618[#4618] [diagram] Ensure layout-related mutations use a unique event id.
 Except for the specific case where `cause === 'refresh'` in `DiagramRenderer` (which corresponds to a layout update *after* an existing operation which caused the refresh, in which case we must reuse the original event id), other diagram-related mutations should behave like all the others and get a unique event id to clearly identify them.
+- https://github.com/eclipse-sirius/sirius-web/issues/4581[#4581] [sirius-web] Make (almost) all data fetchers use `IEditingContextDispatcher` instead of using `IEditingContextEventProcessorRegistry` directly.
 
 
 == v2025.2.0
@@ -200,7 +201,6 @@ A new search command as been contributed to the palette in Sirius Web, which can
 - https://github.com/eclipse-sirius/sirius-web/issues/4329[#4329] [form] Add support for tables as widget in the form view DSL
 - https://github.com/eclipse-sirius/sirius-web/issues/4586[#4586] [core] Allow to override the default behavior of commands in the command palette.
 The `omniboxCommandOverrideContributionExtensionPoint` extension point can be used to contribute components to use when a command is selected.
-
 
 === Improvements
 

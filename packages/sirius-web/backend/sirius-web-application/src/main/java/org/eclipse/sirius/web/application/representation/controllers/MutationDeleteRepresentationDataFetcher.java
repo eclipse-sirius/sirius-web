@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,11 +18,12 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.dto.DeleteRepresentationInput;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
+import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
 import org.eclipse.sirius.web.application.representation.services.api.IRepresentationApplicationService;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 
@@ -41,15 +42,18 @@ public class MutationDeleteRepresentationDataFetcher implements IDataFetcherWith
 
     private final ObjectMapper objectMapper;
 
-    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+    private final IExceptionWrapper exceptionWrapper;
+
+    private final IEditingContextDispatcher editingContextDispatcher;
 
     private final IRepresentationApplicationService representationApplicationService;
 
     private final IMessageService messageService;
 
-    public MutationDeleteRepresentationDataFetcher(ObjectMapper objectMapper, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, IRepresentationApplicationService representationApplicationService, IMessageService messageService) {
+    public MutationDeleteRepresentationDataFetcher(ObjectMapper objectMapper, IExceptionWrapper exceptionWrapper, IEditingContextDispatcher editingContextDispatcher, IRepresentationApplicationService representationApplicationService, IMessageService messageService) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
-        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
+        this.exceptionWrapper = Objects.requireNonNull(exceptionWrapper);
+        this.editingContextDispatcher = Objects.requireNonNull(editingContextDispatcher);
         this.representationApplicationService = Objects.requireNonNull(representationApplicationService);
         this.messageService = Objects.requireNonNull(messageService);
     }
@@ -59,10 +63,12 @@ public class MutationDeleteRepresentationDataFetcher implements IDataFetcherWith
         Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, DeleteRepresentationInput.class);
 
-        return this.representationApplicationService.findEditingContextIdFromRepresentationId(input.representationId())
-                .map(editingContextId -> this.editingContextEventProcessorRegistry.dispatchEvent(editingContextId, input))
-                .orElse(Mono.empty())
-                .defaultIfEmpty(new ErrorPayload(input.id(), this.messageService.unexpectedError()))
-                .toFuture();
+        var optionalEditingContextId = this.representationApplicationService.findEditingContextIdFromRepresentationId(input.representationId());
+        if (optionalEditingContextId.isPresent()) {
+            var editingContextId = optionalEditingContextId.get();
+            return this.exceptionWrapper.wrapMono(() -> this.editingContextDispatcher.dispatchMutation(editingContextId, input), input).toFuture();
+        } else {
+            return Mono.just((IPayload) new ErrorPayload(input.id(), this.messageService.notFound())).toFuture();
+        }
     }
 }

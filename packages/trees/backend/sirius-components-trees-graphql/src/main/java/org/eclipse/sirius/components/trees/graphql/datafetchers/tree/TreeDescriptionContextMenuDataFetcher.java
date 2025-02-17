@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,11 +20,11 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.trees.dto.ITreeItemContextMenuEntry;
-import org.eclipse.sirius.components.collaborative.trees.dto.TreeItemContextMenuSuccessPayload;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeItemContextMenuInput;
+import org.eclipse.sirius.components.collaborative.trees.dto.TreeItemContextMenuSuccessPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
 
 import graphql.schema.DataFetchingEnvironment;
@@ -39,10 +39,10 @@ public class TreeDescriptionContextMenuDataFetcher implements IDataFetcherWithFi
 
     private static final String INPUT_ARGUMENT = "treeItemId";
 
-    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+    private final IEditingContextDispatcher editingContextDispatcher;
 
-    public TreeDescriptionContextMenuDataFetcher(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
-        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
+    public TreeDescriptionContextMenuDataFetcher(IEditingContextDispatcher editingContextDispatcher) {
+        this.editingContextDispatcher = Objects.requireNonNull(editingContextDispatcher);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class TreeDescriptionContextMenuDataFetcher implements IDataFetcherWithFi
         String treeItemId = environment.getArgument(INPUT_ARGUMENT);
 
         var input = new TreeItemContextMenuInput(UUID.randomUUID(), editingContextId, representationId, treeItemId);
-        return this.editingContextEventProcessorRegistry.dispatchEvent(editingContextId, input)
+        return this.editingContextDispatcher.dispatchQuery(editingContextId, input)
                 .filter(TreeItemContextMenuSuccessPayload.class::isInstance)
                 .map(TreeItemContextMenuSuccessPayload.class::cast)
                 .map(TreeItemContextMenuSuccessPayload::actions)

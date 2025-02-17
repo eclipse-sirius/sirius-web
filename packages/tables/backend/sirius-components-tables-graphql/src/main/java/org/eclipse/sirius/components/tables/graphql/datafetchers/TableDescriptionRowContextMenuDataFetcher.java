@@ -21,11 +21,11 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.tables.dto.RowContextMenuEntriesInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.RowContextMenuEntry;
 import org.eclipse.sirius.components.collaborative.tables.dto.RowContextMenuSuccessPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
 
 import graphql.schema.DataFetchingEnvironment;
@@ -42,10 +42,10 @@ public class TableDescriptionRowContextMenuDataFetcher implements IDataFetcherWi
 
     private static final String ROW_ID_ARGUMENT = "rowId";
 
-    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+    private final IEditingContextDispatcher editingContextDispatcher;
 
-    public TableDescriptionRowContextMenuDataFetcher(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
-        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
+    public TableDescriptionRowContextMenuDataFetcher(IEditingContextDispatcher editingContextDispatcher) {
+        this.editingContextDispatcher = Objects.requireNonNull(editingContextDispatcher);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class TableDescriptionRowContextMenuDataFetcher implements IDataFetcherWi
         String rowId = environment.getArgument(ROW_ID_ARGUMENT);
 
         var input = new RowContextMenuEntriesInput(UUID.randomUUID(), editingContextId, representationId, tableId, UUID.fromString(rowId));
-        return this.editingContextEventProcessorRegistry.dispatchEvent(editingContextId, input)
+        return this.editingContextDispatcher.dispatchQuery(editingContextId, input)
                 .filter(RowContextMenuSuccessPayload.class::isInstance)
                 .map(RowContextMenuSuccessPayload.class::cast)
                 .map(RowContextMenuSuccessPayload::entries)
