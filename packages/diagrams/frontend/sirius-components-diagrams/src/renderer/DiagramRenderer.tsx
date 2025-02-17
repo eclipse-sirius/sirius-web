@@ -84,6 +84,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { diagramDescription } = useDiagramDescription();
   const { getEdges, onEdgesChange, getNodes, setEdges, setNodes } = useStore();
+  const storeApi = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const nodes = getNodes();
   const edges = getEdges();
 
@@ -126,7 +127,16 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   useEffect(() => {
     const { diagram, cause } = diagramRefreshedEventPayload;
-    const convertedDiagram: Diagram = convertDiagram(diagram, nodeConverters, diagramDescription, edgeType);
+    const { nodeLookup, edgeLookup } = storeApi.getState();
+
+    const convertedDiagram: Diagram = convertDiagram(
+      nodeLookup,
+      edgeLookup,
+      diagram,
+      nodeConverters,
+      diagramDescription,
+      edgeType
+    );
 
     if (cause === 'layout') {
       const diagramElementIds: string[] = [
@@ -180,14 +190,31 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
       }
 
       // Apply the new graphical selection
-      convertedDiagram.nodes = convertedDiagram.nodes.map((node) => ({
-        ...node,
-        selected: viewsToSelect.get(node.data?.targetObjectId)?.includes(node.id),
-      }));
-      convertedDiagram.edges = convertedDiagram.edges.map((edge) => ({
-        ...edge,
-        selected: !!(edge.data?.targetObjectId && viewsToSelect.get(edge.data?.targetObjectId)?.includes(edge.id)),
-      }));
+      convertedDiagram.nodes = convertedDiagram.nodes.map((node) => {
+        const shouldSelect = viewsToSelect.get(node.data?.targetObjectId)?.includes(node.id);
+        if (node.selected !== shouldSelect) {
+          return {
+            ...node,
+            selected: shouldSelect,
+          };
+        } else {
+          return node;
+        }
+      });
+
+      convertedDiagram.edges = convertedDiagram.edges.map((edge) => {
+        const shouldSelect = !!(
+          edge.data?.targetObjectId && viewsToSelect.get(edge.data?.targetObjectId)?.includes(edge.id)
+        );
+        if (edge.selected !== shouldSelect) {
+          return {
+            ...edge,
+            selected: shouldSelect,
+          };
+        } else {
+          return edge;
+        }
+      });
 
       setEdges(convertedDiagram.edges);
       setNodes(convertedDiagram.nodes);
@@ -200,23 +227,27 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         const { nodeLookup, edgeLookup } = store.getState();
 
         laidOutDiagram.nodes = laidOutDiagram.nodes.map((node) => {
-          if (nodeLookup.get(node.id)) {
+          const shouldSelect = !!nodeLookup.get(node.id)?.selected;
+          if (node.selected !== shouldSelect) {
             return {
               ...node,
-              selected: !!nodeLookup.get(node.id)?.selected,
+              selected: shouldSelect,
             };
+          } else {
+            return node;
           }
-          return node;
         });
 
         laidOutDiagram.edges = laidOutDiagram.edges.map((edge) => {
-          if (edgeLookup.get(edge.id)) {
+          const shouldSelect = !!edgeLookup.get(edge.id)?.selected;
+          if (edge.selected !== shouldSelect) {
             return {
               ...edge,
-              selected: !!edgeLookup.get(edge.id)?.selected,
+              selected: shouldSelect,
             };
+          } else {
+            return edge;
           }
-          return edge;
         });
 
         setEdges(laidOutDiagram.edges);

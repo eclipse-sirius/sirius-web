@@ -102,6 +102,7 @@ Now they are executed for some data if the data was coming from a studio too.
 - https://github.com/eclipse-sirius/sirius-web/issues/4559[#4559] [diagram] Prevent list children positions to be set to (0,0) in certain random situations.
 - https://github.com/eclipse-sirius/sirius-web/issues/4257[#4257] [diagram] Prevent the width of list nodes from increasing on each layout
 - https://github.com/eclipse-sirius/sirius-web/issues/4554[#4554] [diagram] Stop synchronizing selection from the explorer if the corresponding node is hidden
+- https://github.com/eclipse-sirius/sirius-web/issues/4578[#4578] [diagram] Fix an issue where the selected attribute of a node was lost during the conversion of the diagram
 
 === New Features
 
