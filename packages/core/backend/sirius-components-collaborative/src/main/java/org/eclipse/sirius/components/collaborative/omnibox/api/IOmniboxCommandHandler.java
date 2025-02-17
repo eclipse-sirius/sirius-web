@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.collaborative.omnibox.api;
 
-import { OmniboxContextEntry } from './Omnibox.types';
+import org.eclipse.sirius.components.collaborative.dto.ExecuteOmniboxCommandInput;
+import org.eclipse.sirius.components.core.api.IPayload;
 
-export interface OmniboxProviderProps {
-  editingContextId: string;
-  initialContextEntries?: OmniboxContextEntry[];
-  children: React.ReactNode;
-}
+/**
+ * Processes the input omnibox command.
+ *
+ * @author gdaniel
+ */
+public interface IOmniboxCommandHandler {
 
-export interface OmniboxProviderState {
-  open: boolean;
+    boolean canHandle(ExecuteOmniboxCommandInput input);
+
+    IPayload handle(ExecuteOmniboxCommandInput input);
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.web.papaya.dto;
 
-import { OmniboxContextEntry } from './Omnibox.types';
+import java.util.Objects;
+import java.util.UUID;
 
-export interface OmniboxProviderProps {
-  editingContextId: string;
-  initialContextEntries?: OmniboxContextEntry[];
-  children: React.ReactNode;
-}
+import org.eclipse.sirius.components.core.api.IInput;
 
-export interface OmniboxProviderState {
-  open: boolean;
+/**
+ * The input used to create a sample Papaya project.
+ *
+ * @author gdaniel
+ */
+public record PapayaCreateSampleProjectInput(UUID id) implements IInput {
+
+    public PapayaCreateSampleProjectInput {
+        Objects.requireNonNull(id);
+    }
 }

@@ -126,7 +126,9 @@ export const EditProjectView = () => {
     content = (
       <ProjectContext.Provider value={{ project: context.project }}>
         <SelectionContextProvider initialSelection={initialSelection}>
-          <OmniboxProvider initialContextEntries={initialContextEntries}>
+          <OmniboxProvider
+            editingContextId={context.project.currentEditingContext.id}
+            initialContextEntries={initialContextEntries}>
             <UndoRedo>
               <EditProjectNavbar readOnly={readOnly} />
               <TreeToolBarProvider>

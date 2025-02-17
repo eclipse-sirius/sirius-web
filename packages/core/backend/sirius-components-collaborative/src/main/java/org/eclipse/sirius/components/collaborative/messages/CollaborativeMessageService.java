@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,6 +45,11 @@ public class CollaborativeMessageService implements ICollaborativeMessageService
     @Override
     public String timeout() {
         return this.messageSourceAccessor.getMessage("TIMEOUT");
+    }
+
+    @Override
+    public String notFound() {
+        return this.messageSourceAccessor.getMessage("NOT_FOUND");
     }
 
 }

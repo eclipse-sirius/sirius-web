@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 export interface OmniboxProps {
+  editingContextId: string;
   initialContextEntries: OmniboxContextEntry[];
   open: boolean;
   onClose: () => void;
