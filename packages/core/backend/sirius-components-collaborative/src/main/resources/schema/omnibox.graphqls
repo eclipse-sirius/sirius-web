@@ -23,3 +23,15 @@ type OmniboxCommand {
   iconURLs: [String!]!
   description: String!
 }
+
+extend type Mutation {
+  executeOmniboxCommand(input: ExecuteOmniboxCommandInput!) : ExecuteOmniboxCommandPayload!
+}
+
+input ExecuteOmniboxCommandInput {
+  id: ID!
+  editingContextId: ID!
+  commandId: ID!
+}
+
+union ExecuteOmniboxCommandPayload = ErrorPayload | SuccessPayload

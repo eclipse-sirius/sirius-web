@@ -19,11 +19,12 @@ import DialogTitle from '@mui/material/DialogTitle';
 import FormControl from '@mui/material/FormControl';
 import IconButton from '@mui/material/IconButton';
 import Input from '@mui/material/Input';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { OmniboxAction, OmniboxProps, OmniboxState } from './Omnibox.types';
 import { OmniboxCommandList } from './OmniboxCommandList';
 import { OmniboxObjectList } from './OmniboxObjectList';
+import { useExecuteOmniboxCommand } from './useExecuteOmniboxCommand';
 import { useOmniboxCommands } from './useOmniboxCommands';
 import { GQLGetOmniboxCommandsQueryVariables } from './useOmniboxCommands.types';
 import { useOmniboxSearch } from './useOmniboxSearch';
@@ -64,7 +65,7 @@ const useOmniboxStyles = makeStyles()((theme) => ({
   },
 }));
 
-export const Omnibox = ({ open, initialContextEntries, onClose }: OmniboxProps) => {
+export const Omnibox = ({ open, editingContextId, initialContextEntries, onClose }: OmniboxProps) => {
   const [state, setState] = useState<OmniboxState>({
     queryHasChanged: true,
     mode: 'Command',
@@ -72,14 +73,7 @@ export const Omnibox = ({ open, initialContextEntries, onClose }: OmniboxProps) 
 
   const { getOmniboxCommands, loading: commandLoading, data: commandData } = useOmniboxCommands();
   const { getOmniboxSearchResults, loading: searchResultsLoading, data: searchResultsData } = useOmniboxSearch();
-
-  useEffect(() => {
-    const variables: GQLGetOmniboxCommandsQueryVariables = {
-      contextEntries: initialContextEntries.map((entry) => ({ id: entry.id, kind: entry.kind })),
-      query: '',
-    };
-    getOmniboxCommands({ variables });
-  }, []);
+  const { executeOmniboxCommand } = useExecuteOmniboxCommand();
 
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
@@ -138,8 +132,10 @@ export const Omnibox = ({ open, initialContextEntries, onClose }: OmniboxProps) 
         inputRef.current.value = '';
       }
       inputRef.current?.focus();
+    } else {
+      executeOmniboxCommand(editingContextId, action.id);
+      onClose();
     }
-    // Other commands are not supported for now.
   };
 
   let omniboxResult: JSX.Element | null = null;

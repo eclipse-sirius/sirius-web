@@ -23,6 +23,6 @@ import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
  */
 public interface IOmniboxCommandOrderer {
 
-    void order(List<OmniboxCommand> omniboxCommands);
+    List<OmniboxCommand> order(List<OmniboxCommand> omniboxCommands);
 
 }

@@ -149,6 +149,7 @@ For that, a new page `/libraries` showing all the libraries has been contributed
 - https://github.com/eclipse-sirius/sirius-web/issues/4564[#4564] [sirius-web] Add an arrow to close the palette on its header
 - https://github.com/eclipse-sirius/sirius-web/issues/4428[#4428] [core] Allow to contribute custom commands in the command palette.
 A new search command as been contributed to the palette in Sirius Web, which can be selected to set the palette in a 'search' mode that searches elements in the project.
+- https://github.com/eclipse-sirius/sirius-web/issues/4584[#4584] [core] Allow the command palette to execute custom commands.
 
 
 === Improvements

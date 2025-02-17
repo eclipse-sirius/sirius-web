@@ -18,11 +18,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandOrderer;
-import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandProvider;
+import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandSeachService;
 import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
 import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxContextEntry;
 import org.eclipse.sirius.components.core.graphql.dto.PageInfoWithCount;
@@ -49,16 +47,13 @@ public class ViewerOmniboxCommandsDataFetcher implements IDataFetcherWithFieldCo
 
     private static final String QUERY_ARGUMENT = "query";
 
-    private final List<IOmniboxCommandProvider> omniboxCommandProviders;
-
-    private final List<IOmniboxCommandOrderer> omniboxCommandOrderers;
+    private final IOmniboxCommandSeachService omniboxCommandSeachService;
 
     private final ObjectMapper objectMapper;
 
-    public ViewerOmniboxCommandsDataFetcher(ObjectMapper objectMapper, List<IOmniboxCommandProvider> omniboxCommandProviders, List<IOmniboxCommandOrderer> omniboxCommandOrderers) {
+    public ViewerOmniboxCommandsDataFetcher(IOmniboxCommandSeachService omniboxCommandSeachService, ObjectMapper objectMapper) {
+        this.omniboxCommandSeachService = Objects.requireNonNull(omniboxCommandSeachService);
         this.objectMapper = Objects.requireNonNull(objectMapper);
-        this.omniboxCommandProviders = Objects.requireNonNull(omniboxCommandProviders);
-        this.omniboxCommandOrderers = Objects.requireNonNull(omniboxCommandOrderers);
     }
 
     @Override
@@ -72,12 +67,7 @@ public class ViewerOmniboxCommandsDataFetcher implements IDataFetcherWithFieldCo
                 .map(OmniboxContextEntry::id)
                 .orElse(null);
 
-        List<OmniboxCommand> omniboxCommands = this.omniboxCommandProviders.stream()
-                .flatMap(provider -> provider.getCommands(editingContextId, query).stream())
-                .filter(command -> command.label().toLowerCase().contains(query.toLowerCase()))
-                .collect(Collectors.toList());
-
-        this.omniboxCommandOrderers.forEach(orderer -> orderer.order(omniboxCommands));
+        List<OmniboxCommand> omniboxCommands = this.omniboxCommandSeachService.findAll(editingContextId, query);
 
         return this.toConnection(omniboxCommands);
     }

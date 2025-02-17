@@ -17,7 +17,7 @@ import { OmniboxContext } from './OmniboxContext';
 import { OmniboxContextValue } from './OmniboxContext.types';
 import { OmniboxProviderProps, OmniboxProviderState } from './OmniboxProvider.types';
 
-export const OmniboxProvider = ({ initialContextEntries = [], children }: OmniboxProviderProps) => {
+export const OmniboxProvider = ({ editingContextId, initialContextEntries = [], children }: OmniboxProviderProps) => {
   const [state, setState] = useState<OmniboxProviderState>({
     open: false,
   });
@@ -48,7 +48,12 @@ export const OmniboxProvider = ({ initialContextEntries = [], children }: Omnibo
     <OmniboxContext.Provider value={omniboxContextValue}>
       {children}
       {state.open ? (
-        <Omnibox open={state.open} initialContextEntries={initialContextEntries} onClose={closeOmnibox} />
+        <Omnibox
+          open={state.open}
+          editingContextId={editingContextId}
+          initialContextEntries={initialContextEntries}
+          onClose={closeOmnibox}
+        />
       ) : null}
     </OmniboxContext.Provider>
   );
