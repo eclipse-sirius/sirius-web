@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,9 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { OmniboxAction } from './Omnibox.types';
 
-export { type OmniboxAction, type OmniboxContextEntry } from './Omnibox.types';
-export * from './OmniboxButton';
-export * from './OmniboxExtensionPoints';
-export * from './OmniboxExtensionPoints.types';
-export * from './OmniboxProvider';
+export interface OmniboxCommandOverrideContribution {
+  canHandle: (action: OmniboxAction) => boolean;
+  handle: (action: OmniboxAction) => void;
+}

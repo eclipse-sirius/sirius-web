@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { useData } from '@eclipse-sirius/sirius-components-core';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import SubdirectoryArrowLeftIcon from '@mui/icons-material/SubdirectoryArrowLeft';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -23,6 +24,8 @@ import { useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { OmniboxAction, OmniboxProps, OmniboxState } from './Omnibox.types';
 import { OmniboxCommandList } from './OmniboxCommandList';
+import { omniboxCommandOverrideContributionExtensionPoint } from './OmniboxExtensionPoints';
+import { OmniboxCommandOverrideContribution } from './OmniboxExtensionPoints.types';
 import { OmniboxObjectList } from './OmniboxObjectList';
 import { useExecuteOmniboxCommand } from './useExecuteOmniboxCommand';
 import { useOmniboxCommands } from './useOmniboxCommands';
@@ -75,6 +78,10 @@ export const Omnibox = ({ open, editingContextId, initialContextEntries, onClose
   const { getOmniboxSearchResults, loading: searchResultsLoading, data: searchResultsData } = useOmniboxSearch();
   const { executeOmniboxCommand } = useExecuteOmniboxCommand();
 
+  const { data: omniboxCommandOverrideContributions } = useData<OmniboxCommandOverrideContribution[]>(
+    omniboxCommandOverrideContributionExtensionPoint
+  );
+
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
 
@@ -122,7 +129,13 @@ export const Omnibox = ({ open, editingContextId, initialContextEntries, onClose
   };
 
   const handleOnActionClick = (action: OmniboxAction) => {
-    if (action.id === 'search') {
+    const commandOverride: OmniboxCommandOverrideContribution | undefined = omniboxCommandOverrideContributions.filter(
+      (contribution) => contribution.canHandle(action)
+    )[0];
+    if (commandOverride) {
+      commandOverride.handle(action);
+      onClose();
+    } else if (action.id === 'search') {
       setState((prevState) => ({
         ...prevState,
         mode: 'Search',

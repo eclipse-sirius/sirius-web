@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,8 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export { type OmniboxAction, type OmniboxContextEntry } from './Omnibox.types';
-export * from './OmniboxButton';
-export * from './OmniboxExtensionPoints';
-export * from './OmniboxExtensionPoints.types';
-export * from './OmniboxProvider';
+import { DataExtensionPoint } from '@eclipse-sirius/sirius-components-core';
+
+import { OmniboxCommandOverrideContribution } from './OmniboxExtensionPoints.types';
+
+export const omniboxCommandOverrideContributionExtensionPoint: DataExtensionPoint<
+  Array<OmniboxCommandOverrideContribution>
+> = {
+  identifier: 'omnibox#commandOverrideContribution',
+  fallback: [],
+};
