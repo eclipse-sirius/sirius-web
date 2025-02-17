@@ -50,6 +50,7 @@ It is not an API breaking change but a breaking change from the end-user point o
 In order to find the `editingContextId` from the `projectId` one should leverage `IProjectSemanticDataSearchService#findByProjectId` and use the `ìd` of the semantic data found.
 To find instead the `projectId` from the `editingContextId`, `IProjectSemanticDataSearchService#findBySemanticDataId` should be used along with the `id` of the project.
 The method `IEditingContextLoader#load` has also been updated to not use `projectId` as parameter anymore but instead the `SemanticData` directly.
+- https://github.com/eclipse-sirius/sirius-web/issues/4577[#4577] [diagram] Remove `payload` and `refreshEventPayloadId` from `DiagramContext` and add a new context `DiagramPayloadContext` to retrieve these values
 
 
 === Dependency update
@@ -187,6 +188,7 @@ To achieve that a new concept, `ProjectSemanticData` has been added along with a
 - https://github.com/eclipse-sirius/sirius-web/issues/4501[#4501] [browser] Extract the model browser into reusable modules
 - https://github.com/eclipse-sirius/sirius-web/issues/4514[#4514] [sirius-web] Added support for Ctrl+Shift+Z (Linux/macOS) to trigger redo in addition to Ctrl+Y (Windows)
 - https://github.com/eclipse-sirius/sirius-web/issues/4372[#4372] [sirius-web] Lower the coupling between project and editing context
+- https://github.com/eclipse-sirius/sirius-web/issues/4577[#4577] [diagram] Remove `payload` and `refreshEventPayloadId` from `DiagramContext` and add a new context `DiagramPayloadContext` to retrieve these values, this improve general performance on diagram
 
 
 == v2025.1.0
