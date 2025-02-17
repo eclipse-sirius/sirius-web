@@ -29,6 +29,9 @@ import { useOmniboxCommands } from './useOmniboxCommands';
 import { GQLGetOmniboxCommandsQueryVariables } from './useOmniboxCommands.types';
 import { useOmniboxSearch } from './useOmniboxSearch';
 import { GQLGetOmniboxSearchResultsQueryVariables } from './useOmniboxSearch.types';
+import { useData } from '@eclipse-sirius/sirius-components-core';
+import { OmniboxCommandOverrideContribution } from './OmniboxExtensionPoints.types';
+import { omniboxCommandOverrideContributionExtensionPoint } from './OmniboxExtensionPoints';
 
 const useOmniboxStyles = makeStyles()((theme) => ({
   omnibox: {
@@ -69,11 +72,16 @@ export const Omnibox = ({ open, editingContextId, initialContextEntries, onClose
   const [state, setState] = useState<OmniboxState>({
     queryHasChanged: true,
     mode: 'Command',
+    commandOverride: null,
   });
 
   const { getOmniboxCommands, loading: commandLoading, data: commandData } = useOmniboxCommands();
   const { getOmniboxSearchResults, loading: searchResultsLoading, data: searchResultsData } = useOmniboxSearch();
   const { executeOmniboxCommand } = useExecuteOmniboxCommand();
+
+  const { data: omniboxCommandOverrideContributions } = useData<OmniboxCommandOverrideContribution[]>(
+    omniboxCommandOverrideContributionExtensionPoint
+  );
 
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
@@ -122,7 +130,15 @@ export const Omnibox = ({ open, editingContextId, initialContextEntries, onClose
   };
 
   const handleOnActionClick = (action: OmniboxAction) => {
-    if (action.id === 'search') {
+    const commandOverrides = omniboxCommandOverrideContributions
+      .filter((contribution) => contribution.canHandle(action))
+      .map((contribution) => contribution.component);
+    if (commandOverrides.length > 0) {
+      setState((prevState) => ({
+        ...prevState,
+        commandOverride: commandOverrides[0] ?? null,
+      }));
+    } else if (action.id === 'search') {
       setState((prevState) => ({
         ...prevState,
         mode: 'Search',
@@ -203,7 +219,11 @@ export const Omnibox = ({ open, editingContextId, initialContextEntries, onClose
     </>
   );
 
-  return (
+  const CommandOverride = state.commandOverride;
+
+  return CommandOverride ? (
+    <CommandOverride onClose={onClose} />
+  ) : (
     <Dialog
       open={open}
       onClose={onClose}

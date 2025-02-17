@@ -21,6 +21,7 @@ export interface OmniboxProps {
 export interface OmniboxState {
   queryHasChanged: boolean;
   mode: OmniboxMode;
+  commandOverride: React.ComponentType<OmniboxCommandOverrideComponentProps> | null;
 }
 
 export type OmniboxMode = 'Command' | 'Search';
@@ -37,4 +38,8 @@ export interface OmniboxAction {
   id: string;
   icon: JSX.Element;
   label: string;
+}
+
+export interface OmniboxCommandOverrideComponentProps {
+  onClose: () => void;
 }
