@@ -1,0 +1,47 @@
+= ADR-185 - Add support for custom ordering of the representation descriptions in the creation modal
+
+== Context
+
+When creating a new representation from the UI, the user opens the `NewRepresentationModal` which proposes all the available representation descriptions which are compatible with the selected semantic target.
+In this modal, the available representation descriptions are obtained from the `viewer { editingContext { representationDescriptions() } }` query are presented in alphabetical order of their label.
+
+While a good (predictable) default in the absence of more information, this alphabetical order is often not the most useful choice in a concrete modeling workbench, in particular when there is an "obvious" default choice of representation for the given target element.
+
+In addition, this alphabetical order may not be stable over time, if the representation description's label is modified or if/when we support i18n for these labels.
+It should be possible to provide a custom order for these representations.
+
+== Decision
+
+We will provide a new optional API on the backend:
+
+[source,java]
+----
+public interface IRepresentationDescriptionMetadataSorter {
+  List<RepresentationDescriptionMetadata> sort(List<RepresentationDescriptionMetadata> representationDescriptions);
+}
+----
+
+`EditingContextRepresentationDescriptionsEventHandler` will use a default sort based on the `RepresentationDescriptionMetadata`'s `getLabel()`.
+All implementations of this interface provided will be used in `EditingContextRepresentationDescriptionsEventHandler` to sort the raw results obtained from `findAllCompatibleRepresentationDescriptions()`.
+
+On the frontend, `NewRepresentationModal.tsx` will present the `GQLRepresentationDescriptionMetadata` it receives from the backend in the order they are received, not applying any change (it currently does a `.sort((a, b) => a.label.localeCompare(b.label))`) to respect the choice of the backend.
+
+=== Breadboarding
+
+No UI changes.
+
+=== Cutting backs
+
+None.
+
+=== Rabbit holes
+
+== Status
+
+Proposed
+
+== Consequences
+
+* Downstream products (e.g. Eclipse SysON) will be able to provide a custom ordering of their representations.
+* Technically it is possible for an implementer of the extension point not to return all the compatible representations.
+While not directly intended, this could be a useful possibility in some special cases.
