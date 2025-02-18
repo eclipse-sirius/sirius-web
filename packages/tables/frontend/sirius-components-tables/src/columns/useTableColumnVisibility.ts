@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,7 @@
 import { gql, useMutation } from '@apollo/client';
 import { useReporting } from '@eclipse-sirius/sirius-components-core';
 import { MRT_VisibilityState } from 'material-react-table';
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { GQLTable } from '../table/TableContent.types';
 import {
   GQLChangeColumnVisibilityData,
@@ -43,39 +43,29 @@ export const changeColumnVisibilityMutation = gql`
   }
 `;
 
+const getColumnsVisibility = (table: GQLTable) => {
+  return table.columns.reduce((acc, obj) => {
+    acc[obj.id] = !obj.hidden;
+    return acc;
+  }, {});
+};
+
+const convertToGQLColumnVisibility = (record: Record<string, boolean>): GQLColumnVisibility[] => {
+  return Object.keys(record).reduce((acc: GQLColumnVisibility[], columnId: string) => {
+    acc.push({
+      columnId: columnId,
+      visible: record[columnId] ?? false,
+    });
+    return acc;
+  }, []);
+};
+
 export const useTableColumnVisibility = (
   editingContextId: string,
   representationId: string,
   table: GQLTable,
   enableColumnVisibility: boolean
 ): UseTableColumnVisibilityValue => {
-  const [columnVisibility, setColumnVisibility] = useState<MRT_VisibilityState>(
-    table.columns.reduce((acc, obj) => {
-      acc[obj.id] = !obj.hidden;
-      return acc;
-    }, {})
-  );
-
-  useEffect(() => {
-    if (enableColumnVisibility) {
-      changeColumnVisibility(
-        Object.entries(columnVisibility).map(([columnId, visible]) => ({
-          columnId,
-          visible,
-        }))
-      );
-    }
-  }, [columnVisibility]);
-
-  useEffect(() => {
-    setColumnVisibility(
-      table.columns.reduce((acc, obj) => {
-        acc[obj.id] = !obj.hidden;
-        return acc;
-      }, {})
-    );
-  }, [table.columns.map((column) => column.hidden).join()]);
-
   const [mutationChangeColumnVisibility, mutationChangeColumnVisibilityResult] = useMutation<
     GQLChangeColumnVisibilityData,
     GQLChangeColumnVisibilityVariables
@@ -96,6 +86,21 @@ export const useTableColumnVisibility = (
 
     mutationChangeColumnVisibility({ variables: { input } });
   };
+
+  const setColumnVisibility = (
+    columnVisibility: MRT_VisibilityState | ((prevState: MRT_VisibilityState) => MRT_VisibilityState)
+  ) => {
+    let newColumnVisibility: MRT_VisibilityState;
+    if (typeof columnVisibility === 'function') {
+      newColumnVisibility = columnVisibility(getColumnsVisibility(table));
+    } else {
+      newColumnVisibility = columnVisibility;
+    }
+
+    changeColumnVisibility(convertToGQLColumnVisibility(newColumnVisibility));
+  };
+
+  const columnVisibility = useMemo(() => getColumnsVisibility(table), [table]);
 
   if (!enableColumnVisibility) {
     return {

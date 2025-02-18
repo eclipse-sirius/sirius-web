@@ -42,15 +42,19 @@ const reorderColumnsMutation = gql`
   }
 `;
 
-const getColumnsOrder = (table: GQLTable) => {
+const getColumnsOrder = (table: GQLTable, enableColumnResizing: boolean) => {
   const ids = [...table.columns].map((col) => col.id);
-  return ['mrt-row-actions', ...ids, 'mrt-row-spacer'];
+  if (enableColumnResizing) {
+    return ['mrt-row-actions', ...ids, 'mrt-row-header', 'mrt-row-spacer'];
+  }
+  return ['mrt-row-actions', ...ids, 'mrt-row-header'];
 };
 
 export const useTableColumnOrdering = (
   editingContextId: string,
   representationId: string,
-  table: GQLTable
+  table: GQLTable,
+  enableColumnResizing: boolean
 ): UseTableColumnOrderingValue => {
   const [mutationReorderColumns, mutationReorderColumnsResult] = useMutation<
     GQLReorderColumnsData,
@@ -73,9 +77,9 @@ export const useTableColumnOrdering = (
   const setColumnOrder = (
     columnOrder: MRT_ColumnOrderState | ((prevState: MRT_ColumnOrderState) => MRT_ColumnOrderState)
   ) => {
-    let newColumnOrder: MRT_ColumnOrderState = [];
+    let newColumnOrder: MRT_ColumnOrderState;
     if (typeof columnOrder === 'function') {
-      newColumnOrder = columnOrder(getColumnsOrder(table));
+      newColumnOrder = columnOrder(getColumnsOrder(table, enableColumnResizing));
     } else {
       newColumnOrder = columnOrder;
     }
@@ -83,7 +87,7 @@ export const useTableColumnOrdering = (
     reorderColumns(newColumnOrder);
   };
 
-  const columnOrder = useMemo(() => getColumnsOrder(table), [table]);
+  const columnOrder = useMemo(() => getColumnsOrder(table, enableColumnResizing), [table, enableColumnResizing]);
 
   return {
     columnOrder,

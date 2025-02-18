@@ -78,7 +78,12 @@ export const TableContent = memo(
       table,
       enableColumnResizing
     );
-    const { columnOrder, setColumnOrder } = useTableColumnOrdering(editingContextId, representationId, table);
+    const { columnOrder, setColumnOrder } = useTableColumnOrdering(
+      editingContextId,
+      representationId,
+      table,
+      enableColumnResizing
+    );
     const { columnVisibility, setColumnVisibility } = useTableColumnVisibility(
       editingContextId,
       representationId,
