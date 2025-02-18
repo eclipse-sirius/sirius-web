@@ -1,0 +1,80 @@
+= (S) Make it easier to invoke the same tool multiple times in a row
+
+== Problem
+
+It is common when creating a model (or filling a diagram with views from an existing model) to invoke the same tool multiple times in a row.
+Currently this requires multiple clicks for each successive invocation, even with the palette remembering the last tool invoked.
+It should be easier to re-apply the same tools multiple times in a row with minimal user interactions (mouse clicks, etc.).
+
+
+== Key Result
+
+It is possible for a user to quickly invoke the same tool repeatidly without interacting with the palette each time explicitly.
+The solution should work both for node tools (applied on a single element) and edge tools (which need a source and target element).
+
+
+== Solution
+
+=== Node Tools
+
+Currently, when the user invokes a node tool from the palette, the palette for this kind of element already remembers this tool to make it easily available in the palette' UI (below the search field).
+
+If the user presses and holds the _Alt_ key, the cursor changes to [`cursor: copy`](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor).
+When in this mode, a single left mouse click on an element (or the diagram background) automatically invokes the last tool invoked in the corresponding palette.
+If there is no "last tool" for the palette of the target element, the palette opens normally for the user to choose to tool to invoke.
+
+
+=== Edge Tools
+
+The current behavior of the edge tool once the source & target are known is to automatically invoke the tool if there is a single one, or to open a list of compatible tools for the user to choose ohterwise.
+
+We will not change the behavior when there is a single tool compatible.
+
+In the case of multiple tools, we will change the component currently used to display the choices to reuse the same palette (`Palette.tsx`) as used for nodes.
+Then, as it does for nodes, the edge's tool palette will remember which tool was last used for a given combination or source and target element types.
+
+When selecting the target node of an edge tool, if the _Alt_ key is pressed and the corresponding palette has a "last invoked tool" in memory, it is invoked automatically without opening the UI.
+Otherwise the palette opens normally for the user to choose among the candidates (if there are several).
+
+
+=== Scenarios
+
+_Scenario 1:_
+
+1. Alice opens a diagram
+2. Alice right-clicks on the diagram's background and selects tool _TP_, which creates a new node _N1_
+3. Alice presses and holds _Alt_ and left clicks 3 times in a row on the diagram's background.
+4. Each time, the same tool _TP_ is re-invoked on the diagram, creating nodes _N2_, _N3_, _N4_.
+
+_Scenario 2 (after scenario 2):_
+
+1. Alice presses and holds _Alt_ and left clicks on _N1_.
+2. The palette for these nodes has not yet been used, so there is no "last tool" to invoke automatically: the palette opens as if Alice had done a normal right-click
+3. Alice chooses tool _TN_, which creates a sub-node in _N1_.
+4. Alice presses and holds _Alt_ and left clicks on _N2_, _N3_, and _N4_ in quick succession.
+5. Tool _TN_ is automatically re-invoked on _N2_, _N3, and _N4_, creating the corresponding sub-nodes.
+
+
+_Scenario 3 (after scenario 2):_
+
+1. Alice selects _N1_, drags an edge marker towards _N2_ and releases the mouse.
+2. A palette (using the same UI as for nodes) opens showing the compatible edge tools _TE1_ and _TE2_.
+3. Alice selects _TE1_, which is executed and creates an edge between _N1_ and _N2_.
+4. Alice selects _N3_, drags an edge marker towards _N4_, presses and holds _Alt_ when releasing the mouse button on _N2_.
+5. The last choice _TE1_ is automatically invokedd beween _N3_ and _N4_ creating the corresponding edge.
+
+=== Breadboarding
+
+None.
+
+=== Cutting backs
+
+* Add the icon of tool that will be invoked next to the mouse cursor when in "repeat mode" (_Alt_ held).
+* Add a (dimmed) text "Alt+<left click icon>" at the right of the "last tool" entry in the palette to help users discover this feature.
+
+== Rabbit holes
+
+* Small risk when applying the same palette currently used for nodes to edges as the two kinds of tools have different behavior and apply to different contexts (a single kinds of node for node tools, a pair of source and target nodes for edges).
+
+== No-gos
+

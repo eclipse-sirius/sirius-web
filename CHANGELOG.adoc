@@ -6,6 +6,7 @@
 
 - Add support for edges connected to edges
 - Preserve custom edges rectilinearity
+- Make it easier to invoke the same tool multiple times in a row
 
 
 === Architectural decision records
