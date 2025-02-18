@@ -1,6 +1,26 @@
 = Changelog
 
-== v2025.2.0 (work in progress)
+== v2025.4.0 (work in progress)
+
+=== Shapes
+
+- Make it easier to invoke the same tool multiple times in a row
+
+=== Architectural decision records
+
+=== Deprecation warning
+
+=== Breaking changes
+
+=== Dependency update
+
+=== Bug fixes
+
+=== New Features
+
+=== Improvements
+
+== v2025.2.0
 
 === Shapes
 
