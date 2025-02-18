@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
 import { useReporting } from '@eclipse-sirius/sirius-components-core';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { GQLTable } from './TableContent.types';
 import {
   GQLChangeGlobalFilterValueData,
@@ -40,6 +40,11 @@ export const changeGlobalFilterValueMutation = gql`
     }
   }
 `;
+
+const getGlobalFilter = (table: GQLTable): string => {
+  return table.globalFilter ?? '';
+};
+
 export const useGlobalFilter = (
   editingContextId: string,
   representationId: string,
@@ -47,19 +52,6 @@ export const useGlobalFilter = (
   onGlobalFilterChange: (globalFilter: string) => void,
   enableGlobalFilter: boolean
 ): UseGlobalFilterValue => {
-  const [globalFilter, setGlobalFilter] = useState<string>(table.globalFilter ?? '');
-
-  useEffect(() => {
-    if (enableGlobalFilter) {
-      changeGlobalFilterValue(globalFilter ?? '');
-      onGlobalFilterChange(globalFilter ?? '');
-    }
-  }, [globalFilter]);
-
-  useEffect(() => {
-    setGlobalFilter(table.globalFilter ?? '');
-  }, [table.globalFilter]);
-
   const [mutationChangeGlobalFilterValue, mutationChangeGlobalFilterValueResult] = useMutation<
     GQLChangeGlobalFilterValueData,
     GQLChangeGlobalFilterValueVariables
@@ -80,6 +72,23 @@ export const useGlobalFilter = (
 
     mutationChangeGlobalFilterValue({ variables: { input } });
   };
+
+  const setGlobalFilter = (globalFilter: string | ((prevState: string) => string)) => {
+    let newGlobalFilter: string;
+    if (typeof globalFilter === 'function') {
+      newGlobalFilter = globalFilter(getGlobalFilter(table)) ?? '';
+    } else {
+      newGlobalFilter = globalFilter ?? '';
+    }
+    onGlobalFilterChange(newGlobalFilter);
+    changeGlobalFilterValue(newGlobalFilter);
+  };
+
+  const globalFilter = useMemo(() => getGlobalFilter(table), [table]);
+
+  useEffect(() => {
+    onGlobalFilterChange(globalFilter);
+  }, [globalFilter]);
 
   if (!enableGlobalFilter) {
     return {

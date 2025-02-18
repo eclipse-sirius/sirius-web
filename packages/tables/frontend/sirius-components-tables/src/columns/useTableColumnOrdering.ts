@@ -44,7 +44,7 @@ const reorderColumnsMutation = gql`
 
 const getColumnsOrder = (table: GQLTable) => {
   const ids = [...table.columns].map((col) => col.id);
-  return ['mrt-row-actions', ...ids, 'mrt-row-spacer'];
+  return ['mrt-row-actions', ...ids, 'mrt-row-header', 'mrt-row-spacer'];
 };
 
 export const useTableColumnOrdering = (
@@ -73,7 +73,7 @@ export const useTableColumnOrdering = (
   const setColumnOrder = (
     columnOrder: MRT_ColumnOrderState | ((prevState: MRT_ColumnOrderState) => MRT_ColumnOrderState)
   ) => {
-    let newColumnOrder: MRT_ColumnOrderState = [];
+    let newColumnOrder: MRT_ColumnOrderState;
     if (typeof columnOrder === 'function') {
       newColumnOrder = columnOrder(getColumnsOrder(table));
     } else {
