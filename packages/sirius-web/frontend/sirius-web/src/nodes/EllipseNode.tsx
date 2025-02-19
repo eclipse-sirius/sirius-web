@@ -100,6 +100,7 @@ export const EllipseNode: NodeComponentsMap['ellipseNode'] = memo(
             ...connectionFeedbackStyle,
             ...dropFeedbackStyle,
           }}
+          data-svg="rect"
           onDragOver={onDragOver}
           onDrop={handleOnDrop}
           data-testid={`Ellipse - ${data?.insideLabel?.text}`}>
