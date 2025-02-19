@@ -134,13 +134,19 @@ export const Label = memo(({ diagramElementId, label, faded }: LabelProps) => {
         data-testid={`Label content - ${label.text}`}
         style={labelContentStyle(theme, label)}>
         <IconOverlay iconURL={label.iconURL} alt={label.text} customIconStyle={customIconStyle} />
-        <div style={labelOverflowStyle(label)}>{label.text}</div>
+        <div style={labelOverflowStyle(label)} data-svg="text">
+          {label.text}
+        </div>
       </div>
     );
   return (
     <>
       {isDisplayTopHeaderSeparator(label) && (
-        <div data-testid={`Label top separator - ${label.text}`} style={getHeaderSeparatorStyle(label)} />
+        <div
+          data-svg="rect"
+          data-testid={`Label top separator - ${label.text}`}
+          style={getHeaderSeparatorStyle(label)}
+        />
       )}
       <div
         data-id={label.id}
@@ -150,7 +156,11 @@ export const Label = memo(({ diagramElementId, label, faded }: LabelProps) => {
         {content}
       </div>
       {isDisplayBottomHeaderSeparator(label) && (
-        <div data-testid={`Label bottom separator - ${label.text}`} style={getHeaderSeparatorStyle(label)} />
+        <div
+          data-svg="rect"
+          data-testid={`Label bottom separator - ${label.text}`}
+          style={getHeaderSeparatorStyle(label)}
+        />
       )}
     </>
   );

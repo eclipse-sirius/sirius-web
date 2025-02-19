@@ -21,6 +21,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import { useCallback, useRef, useState } from 'react';
+import { useExperimentalSvgExport } from './experimental-svg-export/useExperimentalSvgExport';
 import { useExportToImage } from './useExportToImage';
 
 const downloadImage = (dataUrl: string, fileName: string) => {
@@ -38,6 +39,7 @@ export const ExportImageButton = () => {
   const onCloseExportImageMenu = () => setExportImageMenuOpen(false);
 
   const { exportToSVG, exportToPNG } = useExportToImage();
+  const { experimentalExportToSvg: protoExportToSvg } = useExperimentalSvgExport();
 
   const ref = useCallback((node: HTMLDivElement | null) => {
     if (node) {
@@ -80,17 +82,36 @@ export const ExportImageButton = () => {
           open={exportImageMenuOpen}
           anchorEl={anchorExportImageMenuRef.current}
           data-testid="export-diagram-to-image-menu"
-          onClick={onCloseExportImageMenu}
           onClose={onCloseExportImageMenu}>
           <MenuItem
-            onClick={() => exportToSVG((dataUrl: string) => downloadImage(dataUrl, 'diagram.svg'))}
+            onClick={() =>
+              exportToSVG((dataUrl: string) => {
+                downloadImage(dataUrl, 'diagram.svg');
+                onCloseExportImageMenu();
+              })
+            }
             data-testid="export-diagram-to-svg">
             <ListItemText primary="SVG" />
           </MenuItem>
           <MenuItem
-            onClick={() => exportToPNG((dataUrl: string) => downloadImage(dataUrl, 'diagram.png'))}
+            onClick={() =>
+              exportToPNG((dataUrl: string) => {
+                downloadImage(dataUrl, 'diagram.png');
+                onCloseExportImageMenu();
+              })
+            }
             data-testid="export-diagram-to-png">
             <ListItemText primary="PNG" />
+          </MenuItem>
+          <MenuItem
+            data-testid="experimental-export-diagram-to-svg"
+            onClick={() =>
+              protoExportToSvg((dataUrl: string) => {
+                downloadImage(dataUrl, 'diagram-proto.svg');
+                onCloseExportImageMenu();
+              })
+            }>
+            <ListItemText primary="SVG (Experimental)" />
           </MenuItem>
         </Menu>
       ) : null}
