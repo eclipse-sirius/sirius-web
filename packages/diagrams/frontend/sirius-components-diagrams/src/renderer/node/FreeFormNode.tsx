@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -142,10 +142,11 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
             ...connectionFeedbackStyle,
             ...dropFeedbackStyle,
           }}
+          data-svg="rect"
           onDragOver={onDragOver}
           onDrop={handleOnDrop}
           data-testid={`FreeForm - ${data?.targetObjectLabel}`}>
-          <div style={{ ...backgroundStyle }} />
+          <div data-svg="image" style={{ ...backgroundStyle }} />
           {data.insideLabel && <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} />}
           {selected ? (
             <DiagramElementPalette

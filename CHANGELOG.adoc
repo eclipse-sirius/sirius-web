@@ -110,6 +110,12 @@ image:doc/screenshots/duplicationDialog.png[DuplicationDialog, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/4383[#4383] [sirius-web] Add support for representation duplication from explorer
 - https://github.com/eclipse-sirius/sirius-web/issues/4700[#4700] [view-diagram] It is now possible to set an edge as the source or target of an edge in the view dsl, following work will allow the actual rendering on the back-end and front-end.
 - https://github.com/eclipse-sirius/sirius-web/issues/4493[#4493] [sirius-web] Add an user indicator when a representation is loading 
+- https://github.com/eclipse-sirius/sirius-web/issues/2807[#2807] [diagram] Add another experimental version of the SVG export.
++ Made in two steps, first it does the svg export of `html-to-image`, then use the result to create our own version.
++ We made this choice to rapidly solve the different css transform that `html-to-image` does for us.
++ It requires that downstream projects contributing custom nodes add the `data-svg="${rect|image|svg|text|defs}"` attribute on each dom element that will represent a part of the node in svg.
++ If any of the default value match the need, it is possible to contribute a `IElementSVGExportHandler` thanks to the `svgExportIElementSVGExportHandlerExtensionPoint` extension point.
++ The value of `data-svg` attribute should match the value from the contributed `IElementSVGExportHandler#canHandle`
 
 
 === Improvements
