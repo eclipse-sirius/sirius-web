@@ -12,6 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.tables.handlers;
 
+import java.util.List;
+import java.util.Map;
+
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
@@ -66,9 +69,11 @@ public class ResetTableRowsHeightEventHandler implements ITableEventHandler {
         IPayload payload = new ErrorPayload(tableInput.id(), message);
 
         if (tableInput instanceof ResetTableRowsHeightInput resetTableRowsHeightInput) {
-            tableContext.getTableEvents().add(new ResetTableRowsHeightEvent());
+            var resetTableRowsHeightEvent = new ResetTableRowsHeightEvent();
+            tableContext.getTableEvents().add(resetTableRowsHeightEvent);
             payload = new SuccessPayload(resetTableRowsHeightInput.id());
-            changeDescription = new ChangeDescription(TableChangeKind.TABLE_LAYOUT_CHANGE, tableInput.representationId(), tableInput);
+            changeDescription = new ChangeDescription(TableChangeKind.TABLE_LAYOUT_CHANGE, tableInput.representationId(), tableInput,
+                    Map.of(TableChangeKind.TABLE_EVENTS_PARAM, List.of(resetTableRowsHeightEvent)));
         }
 
         payloadSink.tryEmitValue(payload);
