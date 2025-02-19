@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
+import org.eclipse.sirius.components.diagrams.components.BorderNodePosition;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -48,6 +49,8 @@ public final class NodeElementProps implements IProps {
     private String descriptionId;
 
     private boolean borderNode;
+
+    private BorderNodePosition initialBorderNodePosition;
 
     private Set<ViewModifier> modifiers;
 
@@ -103,6 +106,10 @@ public final class NodeElementProps implements IProps {
 
     public boolean isBorderNode() {
         return this.borderNode;
+    }
+
+    public BorderNodePosition getInitialBorderNodePosition() {
+        return this.initialBorderNodePosition;
     }
 
     public Set<ViewModifier> getModifiers() {
@@ -174,6 +181,8 @@ public final class NodeElementProps implements IProps {
 
         private boolean borderNode;
 
+        private BorderNodePosition initialBorderNodePosition;
+
         private Set<ViewModifier> modifiers;
 
         private ViewModifier state;
@@ -225,6 +234,11 @@ public final class NodeElementProps implements IProps {
 
         public Builder borderNode(boolean borderNode) {
             this.borderNode = borderNode;
+            return this;
+        }
+
+        public Builder initialBorderNodePosition(BorderNodePosition initialBorderNodePosition) {
+            this.initialBorderNodePosition = initialBorderNodePosition;
             return this;
         }
 
@@ -287,6 +301,7 @@ public final class NodeElementProps implements IProps {
             nodeElementProps.targetObjectLabel = Objects.requireNonNull(this.targetObjectLabel);
             nodeElementProps.descriptionId = Objects.requireNonNull(this.descriptionId);
             nodeElementProps.borderNode = this.borderNode;
+            nodeElementProps.initialBorderNodePosition = this.initialBorderNodePosition;
             nodeElementProps.modifiers = Objects.requireNonNull(this.modifiers);
             nodeElementProps.state = Objects.requireNonNull(this.state);
             nodeElementProps.collapsingState = Objects.requireNonNull(this.collapsingState);
