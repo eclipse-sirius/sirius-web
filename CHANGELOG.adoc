@@ -53,6 +53,7 @@ Except for the specific case where `cause === 'refresh'` in `DiagramRenderer` (w
 - https://github.com/eclipse-sirius/sirius-web/issues/4581[#4581] [sirius-web] Make (almost) all data fetchers use `IEditingContextDispatcher` instead of using `IEditingContextEventProcessorRegistry` directly.
 - https://github.com/eclipse-sirius/sirius-web/issues/4606[#4606] [sirius-web] Allow the loading of an editing context containing a papaya library
 - https://github.com/eclipse-sirius/sirius-web/issues/4628[#4628] [sirius-web] Allow the loading of an editing context containing a studio library
+- https://github.com/eclipse-sirius/sirius-web/issues/4263[#4263] [table] Add a button to reset table row heights to their initial value
 
 
 
