@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -71,7 +71,7 @@ public class ResizeTableRowEventHandler implements ITableEventHandler {
 
         if (tableInput instanceof ResizeTableRowInput resizeTableRowInput) {
             var resizeTableRowEvent = new ResizeTableRowEvent(resizeTableRowInput.rowId(), resizeTableRowInput.height());
-            tableContext.getTableEvents().add(new ResizeTableRowEvent(resizeTableRowInput.rowId(), resizeTableRowInput.height()));
+            tableContext.getTableEvents().add(resizeTableRowEvent);
             payload = new SuccessPayload(resizeTableRowInput.id());
             changeDescription = new ChangeDescription(TableChangeKind.TABLE_LAYOUT_CHANGE, tableInput.representationId(), tableInput,
                     Map.of(TableChangeKind.TABLE_EVENTS_PARAM, List.of(resizeTableRowEvent)));
