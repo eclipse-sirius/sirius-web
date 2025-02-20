@@ -13,20 +13,17 @@
 package org.eclipse.sirius.web.application.library.services.api;
 
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.web.application.library.dto.LibraryDTO;
 import org.eclipse.sirius.web.application.library.dto.PublishLibrariesInput;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 /**
- * Application services used to manipulate libraries.
+ * Handles the publication of libraries.
  *
  * @author gdaniel
  */
-public interface ILibraryApplicationService {
+public interface ILibraryPublicationHandler {
 
-    Page<LibraryDTO> findAll(Pageable pageable);
+    boolean canHandle(PublishLibrariesInput input);
 
-    IPayload publishLibraries(PublishLibrariesInput input);
+    IPayload handle(PublishLibrariesInput input);
 
 }

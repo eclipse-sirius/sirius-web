@@ -95,6 +95,7 @@ import { OmniboxCommandOverrideContribution } from '@eclipse-sirius/sirius-compo
 import { omniboxCommandOverrideContributionExtensionPoint } from '@eclipse-sirius/sirius-components-omnibox';
 import { OmniboxAction } from '@eclipse-sirius/sirius-components-omnibox';
 import { ShowDocumentationOmniboxCommandOverride } from '../omnibox/ShowDocumentationOmniboxCommandOverride';
+import { PublishStudioOmniboxCommandOverride } from '../omnibox/PublishStudioOmniboxCommandOverride';
 
 const getType = (representation: RepresentationMetadata): string | null => {
   const query = representation.kind.substring(representation.kind.indexOf('?') + 1, representation.kind.length);
@@ -470,6 +471,12 @@ const omniboxCommandOverrides: OmniboxCommandOverrideContribution[] = [
       return action.id === 'showDocumentation';
     },
     component: ShowDocumentationOmniboxCommandOverride,
+  },
+  {
+    canHandle: (action: OmniboxAction) => {
+      return action.id === 'publishStudio';
+    },
+    component: PublishStudioOmniboxCommandOverride,
   },
 ];
 
