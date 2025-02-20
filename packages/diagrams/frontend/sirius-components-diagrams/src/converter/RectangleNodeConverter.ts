@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, XYPosition } from '@xyflow/react';
+import { InternalNode, Node, XYPosition } from '@xyflow/react';
+import { NodeLookup } from '@xyflow/system';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagram, GQLNodeLayoutData } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
@@ -20,7 +21,7 @@ import {
   GQLRectangularNodeStyle,
   GQLViewModifier,
 } from '../graphql/subscription/nodeFragment.types';
-import { BorderNodePosition } from '../renderer/DiagramRenderer.types';
+import { BorderNodePosition, NodeData } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { defaultHeight, defaultWidth } from '../renderer/layout/layoutParams';
 import { FreeFormNodeData } from '../renderer/node/FreeFormNode.types';
@@ -33,6 +34,7 @@ import { convertInsideLabel, convertOutsideLabels } from './convertLabel';
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
 const toRectangularNode = (
+  nodeLookUp: NodeLookup<InternalNode<Node<NodeData>>>,
   gqlDiagram: GQLDiagram,
   gqlNode: GQLNode<GQLRectangularNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
@@ -108,6 +110,7 @@ const toRectangularNode = (
     data,
     position: defaultPosition,
     hidden: state === GQLViewModifier.Hidden,
+    selected: !!nodeLookUp.get(id)?.selected,
   };
 
   if (gqlParentNode) {
@@ -143,6 +146,7 @@ export class RectangleNodeConverter implements INodeConverter {
 
   handle(
     convertEngine: IConvertEngine,
+    nodeLookUp: NodeLookup<InternalNode<Node<NodeData>>>,
     gqlDiagram: GQLDiagram,
     gqlNode: GQLNode<GQLRectangularNodeStyle>,
     gqlEdges: GQLEdge[],
@@ -154,7 +158,9 @@ export class RectangleNodeConverter implements INodeConverter {
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
     if (nodeDescription) {
-      nodes.push(toRectangularNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+      nodes.push(
+        toRectangularNode(nodeLookUp, gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges)
+      );
     }
 
     const borderNodeDescriptions: GQLNodeDescription[] = (nodeDescription?.borderNodeDescriptionIds ?? []).flatMap(
@@ -167,6 +173,7 @@ export class RectangleNodeConverter implements INodeConverter {
     );
 
     convertEngine.convertNodes(
+      nodeLookUp,
       gqlDiagram,
       gqlNode.borderNodes ?? [],
       gqlNode,
@@ -175,6 +182,7 @@ export class RectangleNodeConverter implements INodeConverter {
       borderNodeDescriptions
     );
     convertEngine.convertNodes(
+      nodeLookUp,
       gqlDiagram,
       gqlNode.childNodes ?? [],
       gqlNode,
