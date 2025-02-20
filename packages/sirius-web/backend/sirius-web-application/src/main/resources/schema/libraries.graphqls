@@ -19,3 +19,17 @@ type Library {
   description: String!
   createdOn: Instant!
 }
+
+extend type Mutation {
+  publishLibraries(input: PublishLibrariesInput!): PublishLibrariesPayload!
+}
+
+input PublishLibrariesInput {
+  id: ID!
+  projectId: ID!
+  publicationKind: String!
+  version: String!
+  description: String!
+}
+
+union PublishLibrariesPayload = ErrorPayload | SuccessPayload

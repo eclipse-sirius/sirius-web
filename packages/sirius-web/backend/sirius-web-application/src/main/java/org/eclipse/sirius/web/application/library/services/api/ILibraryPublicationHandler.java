@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,13 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.web.application.library.services.api;
 
-export {
-  type OmniboxAction,
-  type OmniboxCommandOverrideComponentProps,
-  type OmniboxContextEntry,
-} from './Omnibox.types';
-export * from './OmniboxButton';
-export * from './OmniboxExtensionPoints';
-export * from './OmniboxExtensionPoints.types';
-export * from './OmniboxProvider';
+import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.web.application.library.dto.PublishLibrariesInput;
+
+/**
+ * Handles the publication of libraries.
+ *
+ * @author gdaniel
+ */
+public interface ILibraryPublicationHandler {
+
+    boolean canHandle(PublishLibrariesInput input);
+
+    IPayload handle(PublishLibrariesInput input);
+
+}

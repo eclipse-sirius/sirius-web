@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,13 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.web.application.studio.services.library.api;
 
-export {
-  type OmniboxAction,
-  type OmniboxCommandOverrideComponentProps,
-  type OmniboxContextEntry,
-} from './Omnibox.types';
-export * from './OmniboxButton';
-export * from './OmniboxExtensionPoints';
-export * from './OmniboxExtensionPoints.types';
-export * from './OmniboxProvider';
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.sirius.web.application.library.services.DependencyGraph;
+
+/**
+ * Collects the dependencies between studio libraries.
+ *
+ * @author gdaniel
+ */
+public interface IStudioLibraryDependencyCollector {
+
+    DependencyGraph<EObject> collectDependencies(ResourceSet rSet);
+
+}

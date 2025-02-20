@@ -91,6 +91,11 @@ import { ProjectSettingTabContribution } from '../views/project-settings/Project
 import { projectSettingsTabExtensionPoint } from '../views/project-settings/ProjectSettingsViewExtensionPoints';
 import { ellipseNodeStyleDocumentTransform } from './EllipseNodeDocumentTransform';
 import { referenceWidgetDocumentTransform } from './ReferenceWidgetDocumentTransform';
+import { OmniboxCommandOverrideContribution } from '@eclipse-sirius/sirius-components-omnibox';
+import { omniboxCommandOverrideContributionExtensionPoint } from '@eclipse-sirius/sirius-components-omnibox';
+import { OmniboxAction } from '@eclipse-sirius/sirius-components-omnibox';
+import { ShowDocumentationOmniboxCommandOverride } from '../omnibox/ShowDocumentationOmniboxCommandOverride';
+import { PublishStudioOmniboxCommandOverride } from '../omnibox/PublishStudioOmniboxCommandOverride';
 
 const getType = (representation: RepresentationMetadata): string | null => {
   const query = representation.kind.substring(representation.kind.indexOf('?') + 1, representation.kind.length);
@@ -451,5 +456,36 @@ defaultExtensionRegistry.addComponent(projectContextMenuEntryExtensionPoint, {
   identifier: `siriusWeb_${projectContextMenuEntryExtensionPoint.identifier}_download`,
   Component: ProjectDownloadMenuItemExtension,
 });
+
+/*******************************************************************************
+ *
+ * Omnibox command overrides
+ *
+ * Used to override the default rendering of omnibox commands
+ *
+ *******************************************************************************/
+
+const omniboxCommandOverrides: OmniboxCommandOverrideContribution[] = [
+  {
+    canHandle: (action: OmniboxAction) => {
+      return action.id === 'showDocumentation';
+    },
+    component: ShowDocumentationOmniboxCommandOverride,
+  },
+  {
+    canHandle: (action: OmniboxAction) => {
+      return action.id === 'publishStudio';
+    },
+    component: PublishStudioOmniboxCommandOverride,
+  },
+];
+
+defaultExtensionRegistry.putData<OmniboxCommandOverrideContribution[]>(
+  omniboxCommandOverrideContributionExtensionPoint,
+  {
+    identifier: `siriusweb_${omniboxCommandOverrideContributionExtensionPoint.identifier}`,
+    data: omniboxCommandOverrides,
+  }
+);
 
 export { defaultExtensionRegistry };

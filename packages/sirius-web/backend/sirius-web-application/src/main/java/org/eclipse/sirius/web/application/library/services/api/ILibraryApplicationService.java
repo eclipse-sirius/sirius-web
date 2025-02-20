@@ -12,7 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.library.services.api;
 
+import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.web.application.library.dto.LibraryDTO;
+import org.eclipse.sirius.web.application.library.dto.PublishLibrariesInput;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -24,5 +26,7 @@ import org.springframework.data.domain.Pageable;
 public interface ILibraryApplicationService {
 
     Page<LibraryDTO> findAll(Pageable pageable);
+
+    IPayload publishLibraries(PublishLibrariesInput input);
 
 }
