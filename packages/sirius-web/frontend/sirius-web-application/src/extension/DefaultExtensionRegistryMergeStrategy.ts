@@ -27,13 +27,27 @@ export class DefaultExtensionRegistryMergeStrategy implements ExtensionRegistryM
   }
 
   public mergeDataExtensions(
-    _identifier: string,
+    identifier: string,
     existingValue: DataExtension<any>,
     newValue: DataExtension<any>
   ): DataExtension<any> {
-    console.debug(
-      `The extension with identifier ${existingValue.identifier} has been overwritten by ${newValue.identifier}`
-    );
-    return newValue;
+    if (identifier === 'omnibox#commandOverrideContribution') {
+      return this.mergeOmniboxCommandOverrideContributions(existingValue, newValue);
+    } else {
+      console.debug(
+        `The extension with identifier ${existingValue.identifier} has been overwritten by ${newValue.identifier}`
+      );
+      return newValue;
+    }
+  }
+
+  private mergeOmniboxCommandOverrideContributions(
+    existingValue: DataExtension<any>,
+    newValue: DataExtension<any>
+  ): DataExtension<any> {
+    return {
+      identifier: 'siriusweb_omnibox#commandOverrideContribution',
+      data: [...existingValue.data, ...newValue.data],
+    };
   }
 }
