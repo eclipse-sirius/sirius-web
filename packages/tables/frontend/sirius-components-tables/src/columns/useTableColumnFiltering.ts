@@ -13,7 +13,7 @@
 import { gql, useMutation } from '@apollo/client';
 import { useReporting } from '@eclipse-sirius/sirius-components-core';
 import { MRT_ColumnFiltersState } from 'material-react-table';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { ColumnFilter, GQLTable } from '../table/TableContent.types';
 import {
   GQLChangeColumnFilterData,
@@ -42,6 +42,13 @@ const changeColumnFilterMutation = gql`
   }
 `;
 
+const getColumnFilters = (table: GQLTable) => {
+  return table.columnFilters.map((filter) => ({
+    id: filter.id,
+    value: JSON.parse(filter.value as string),
+  }));
+};
+
 export const useTableColumnFiltering = (
   editingContextId: string,
   representationId: string,
@@ -49,24 +56,6 @@ export const useTableColumnFiltering = (
   onColumnFiltersChange: (columFilters: ColumnFilter[]) => void,
   enableColumnFilters: boolean
 ): UseTableColumnFilteringValue => {
-  const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(table.columnFilters);
-
-  useEffect(() => {
-    if (enableColumnFilters) {
-      changeColumnFilter(columnFilters);
-      onColumnFiltersChange(columnFilters);
-    }
-  }, [columnFilters]);
-
-  useEffect(() => {
-    setColumnFilters(
-      table.columnFilters.map((filter) => ({
-        id: filter.id,
-        value: JSON.parse(filter.value as string),
-      }))
-    );
-  }, [table.columnFilters.map((columnFilter) => columnFilter.id + columnFilter.value).join('')]);
-
   const [mutationChangeColumnFilter, mutationChangeColumnFilterResult] = useMutation<
     GQLChangeColumnFilterData,
     GQLChangeColumnFilterVariables
@@ -86,6 +75,25 @@ export const useTableColumnFiltering = (
     };
     mutationChangeColumnFilter({ variables: { input } });
   };
+
+  const setColumnFilters = (
+    columnFilters: MRT_ColumnFiltersState | ((prevState: MRT_ColumnFiltersState) => MRT_ColumnFiltersState)
+  ) => {
+    let newColumnFilter: MRT_ColumnFiltersState;
+    if (typeof columnFilters === 'function') {
+      newColumnFilter = columnFilters(getColumnFilters(table));
+    } else {
+      newColumnFilter = columnFilters;
+    }
+    onColumnFiltersChange(newColumnFilter);
+    changeColumnFilter(newColumnFilter);
+  };
+
+  const columnFilters = useMemo(() => getColumnFilters(table), [table]);
+
+  useEffect(() => {
+    onColumnFiltersChange(columnFilters);
+  }, [columnFilters]);
 
   if (!enableColumnFilters) {
     return {
