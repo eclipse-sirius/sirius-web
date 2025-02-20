@@ -1,0 +1,95 @@
+= ADR-189 - Add actions on diagram nodes
+
+== Context
+
+The Show/Hide menu of the diagram nodes context menu (a.k.a the palette) is difficult to understand for the end-users.
+Furthermore, it forces users to click 3 times to hide a graphical node:
+
+- right click on the diagram node to open the palette
+- left click on the Show/Hide section
+- click on Hide menu item
+
+== Decision
+
+A new UI should be available in Sirius Web, allowing to easily execute actions on diagram nodes.
+This UI would be an icon and would be placed on the top right corner of the node.
+The specifier will tell which node descriptions will have this UI.
+
+=== Backend
+
+==== View DSL Diagram
+
+On a `diagram::NodeDescription`, it will be possible to create new `diagram::NodeAction`.
+The `diagram::NodeAction` will have four properties:
+
+- a identifier, to let the frontend highjack the rendering of the node action
+- a labelExpression, to display the label of the action as a tooltip
+- a preconditionExpression, to only make available the action on a specific condition
+- an iconURLsExpression, to display the icon of the action
+
+On a `diagram::NodeAction`, it will be possible to add the view dsl operations (e.g. change context, create instance, delete element...)
+These view dsl operations will only be executed if the identifier of the `diagram::NodeAction` can't be handled by the frontend (see Frontend section for more details).
+
+When a new `diagram::NodeDescription` will be created, a default `diagram::NodeAction` will be created at the same time (as it is already the case for the node palette).
+This default `diagram::NodeAction` will allow to automatically hide the node.
+
+==== API
+
+A new API will allow to call the view dsl operations of a `diagram::NodeAction`.
+
+.org.eclipse.sirius.components.collaborative.diagrams.api
+[code,java]
+----
+public interface INodeActionHandler {
+  boolean canHandle(IDiagramInput diagramInput);
+  void handle(IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput);
+};
+----
+
+This is approximately the same behavior than the diagram tools (i.e. `InvokeSingleClickOnDiagramElementToolEventHandler.java`)
+
+
+A new `NodeAction` class will be available:
+
+.org.eclipse.sirius.components.diagram.actions
+[code,java]
+----
+public class NodeAction {
+  public String id;
+  public String label:
+  public List<String> iconURL;
+};
+----
+
+=== Frontend
+
+A new extension point named `diagramNodeActionExtensionPoint` will be available, allowing to register frontend components.
+
+[code,typescript]
+----
+export const diagramNodeActionExtensionPoint: DataExtensionPoint<Array<DiagramNodeActionProps>
+> = {
+  identifier: 'diagramNode#Action',
+  fallback: [],
+};
+----
+
+The values of this extension point will be used by the frontend to display the appropriate component when the user will click on the action.
+If a `diagram::NodeAction` has an identifier corresponding to a declared `diagramNodeActionExtensionPoint` then the React Component associated to this `diagramNodeActionExtensionPoint` will be executed.
+
+This is approximately the same behavior than the omnibox commands.
+
+== Breadboarding
+
+A new icon will be visible on the top right corner of a Node.
+A click on this icon will execute some backend code but it can be overridden by an extension to do anything else using a React Component.
+
+== Rabbit holes
+
+None.
+
+== Consequences
+
+None identified
+
+== Cutting backs

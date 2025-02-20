@@ -8,6 +8,7 @@
 - Preserve custom edges rectilinearity
 - Make it easier to invoke the same tool multiple times in a row
 - Add support to move edge handle
+- Add visibility tool on diagram nodes
 
 
 === Architectural decision records
@@ -16,7 +17,7 @@
 - [ADR-186] Add support of row level filters in tables
 - [ADR-187] Add support of row sorting in tables
 - [ADR-188] Add Support for edges on edges
-
+- [ADR-189] Add actions on diagram nodes
 
 === Deprecation warning
 
