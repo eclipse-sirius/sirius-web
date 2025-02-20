@@ -13,6 +13,8 @@
 
 export { DiagramContext } from './contexts/DiagramContext';
 export type { DiagramContextValue } from './contexts/DiagramContext.types';
+export { DiagramPayloadContext } from './contexts/DiagramPayloadContext';
+export type { DiagramPayloadContextValue } from './contexts/DiagramPayloadContext.types';
 export { NodeTypeContext } from './contexts/NodeContext';
 export type { NodeTypeContextValue, NodeTypeContributionElement } from './contexts/NodeContext.types';
 export { convertLineStyle, isListLayoutStrategy } from './converter/convertDiagram';
