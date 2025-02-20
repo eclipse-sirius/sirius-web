@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useData, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { useSelection } from '@eclipse-sirius/sirius-components-core';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import SubdirectoryArrowLeftIcon from '@mui/icons-material/SubdirectoryArrowLeft';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -22,12 +22,9 @@ import IconButton from '@mui/material/IconButton';
 import Input from '@mui/material/Input';
 import { useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { OmniboxAction, OmniboxProps, OmniboxState } from './Omnibox.types';
+import { OmniboxMode, OmniboxProps, OmniboxState } from './Omnibox.types';
 import { OmniboxCommandList } from './OmniboxCommandList';
-import { omniboxCommandOverrideContributionExtensionPoint } from './OmniboxExtensionPoints';
-import { OmniboxCommandOverrideContribution } from './OmniboxExtensionPoints.types';
 import { OmniboxObjectList } from './OmniboxObjectList';
-import { isExecuteOmniboxCommandSuccessPayload, useExecuteOmniboxCommand } from './useExecuteOmniboxCommand';
 import { useOmniboxCommands } from './useOmniboxCommands';
 import { GQLGetOmniboxCommandsQueryVariables } from './useOmniboxCommands.types';
 import { useOmniboxSearch } from './useOmniboxSearch';
@@ -76,7 +73,6 @@ export const Omnibox = ({ open, editingContextId, onClose }: OmniboxProps) => {
 
   const { getOmniboxCommands, loading: commandLoading, data: commandData } = useOmniboxCommands();
   const { getOmniboxSearchResults, loading: searchResultsLoading, data: searchResultsData } = useOmniboxSearch();
-  const { executeOmniboxCommand, data: executeOmniboxCommandData } = useExecuteOmniboxCommand();
 
   const { selection } = useSelection();
   const selectedObjectIds: string[] = selection.entries.map((entry) => entry.id);
@@ -89,10 +85,6 @@ export const Omnibox = ({ open, editingContextId, onClose }: OmniboxProps) => {
     };
     getOmniboxCommands({ variables });
   }, []);
-
-  const { data: omniboxCommandOverrideContributions } = useData<OmniboxCommandOverrideContribution[]>(
-    omniboxCommandOverrideContributionExtensionPoint
-  );
 
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
@@ -142,36 +134,17 @@ export const Omnibox = ({ open, editingContextId, onClose }: OmniboxProps) => {
     }
   };
 
-  const handleOnActionClick = (action: OmniboxAction) => {
-    const commandOverride: OmniboxCommandOverrideContribution | undefined = omniboxCommandOverrideContributions.filter(
-      (contribution) => contribution.canHandle(action)
-    )[0];
-    if (commandOverride) {
-      commandOverride.handle(action);
-      onClose();
-    } else if (action.id === 'search') {
-      setState((prevState) => ({
-        ...prevState,
-        mode: 'Search',
-        queryHasChanged: true,
-      }));
-      if (inputRef.current) {
-        inputRef.current.value = '';
-      }
-      inputRef.current?.focus();
-    } else {
-      executeOmniboxCommand(editingContextId, selectedObjectIds, action.id);
+  const onModeChanged = (mode: OmniboxMode) => {
+    setState((prevState) => ({
+      ...prevState,
+      mode,
+      queryHasChanged: true,
+    }));
+    if (inputRef.current) {
+      inputRef.current.value = '';
     }
+    inputRef.current?.focus();
   };
-
-  useEffect(() => {
-    if (
-      executeOmniboxCommandData &&
-      isExecuteOmniboxCommandSuccessPayload(executeOmniboxCommandData.executeOmniboxCommand)
-    ) {
-      onClose();
-    }
-  }, [executeOmniboxCommandData]);
 
   let omniboxResult: JSX.Element | null = null;
   if (state.mode === 'Command') {
@@ -179,7 +152,9 @@ export const Omnibox = ({ open, editingContextId, onClose }: OmniboxProps) => {
       <OmniboxCommandList
         loading={commandLoading}
         data={commandData}
-        onActionClick={handleOnActionClick}
+        editingContextId={editingContextId}
+        onClose={onClose}
+        onModeChanged={onModeChanged}
         ref={listRef}
       />
     );

@@ -10,15 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLOmniboxCommand } from './useOmniboxCommands.types';
+package org.eclipse.sirius.web.application.library.dto;
 
-export interface OmniboxCommandOverrideContribution {
-  canHandle: (action: GQLOmniboxCommand) => boolean;
-  component: React.ComponentType<OmniboxCommandComponentProps>;
-}
+import java.util.UUID;
 
-export interface OmniboxCommandComponentProps {
-  command: GQLOmniboxCommand;
-  onKeyDown: React.KeyboardEventHandler<HTMLDivElement>;
-  onClose: () => void;
+import org.eclipse.sirius.components.core.api.IInput;
+
+import jakarta.validation.constraints.NotNull;
+
+/**
+ * Input used to publish libraries.
+ *
+ * @author gdaniel
+ */
+public record PublishLibrariesInput(@NotNull UUID id, @NotNull String projectId, @NotNull String publicationKind, @NotNull String version, @NotNull String description) implements IInput {
+
 }

@@ -23,9 +23,3 @@ export interface OmniboxState {
 }
 
 export type OmniboxMode = 'Command' | 'Search';
-
-export interface OmniboxAction {
-  id: string;
-  icon: JSX.Element;
-  label: string;
-}

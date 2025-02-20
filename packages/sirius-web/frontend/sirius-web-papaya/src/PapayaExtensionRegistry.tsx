@@ -11,7 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { ComponentExtension, DataExtension, ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
+import {
+  ComponentExtension,
+  DataExtension,
+  ExtensionRegistry,
+  IconOverlay,
+} from '@eclipse-sirius/sirius-components-core';
 import {
   DiagramPaletteToolContributionProps,
   EdgeData,
@@ -21,7 +26,7 @@ import {
   diagramRendererReactFlowPropsCustomizerExtensionPoint,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import {
-  OmniboxAction,
+  GQLOmniboxCommand,
   OmniboxCommandOverrideContribution,
   omniboxCommandOverrideContributionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-omnibox';
@@ -36,6 +41,10 @@ import { PapayaDiagramInformationPanel } from './diagrams/PapayaDiagramInformati
 import { PapayaDiagramLegendPanel } from './diagrams/PapayaDiagramLegendPanel';
 import { PapayaComponentDiagramToolContribution } from './tools/PapayaComponentDiagramToolContribution';
 import { PapayaComponentLabelDetailToolContribution } from './tools/PapayaComponentLabelDetailToolContribution';
+import { OmniboxCommandComponentProps } from '@eclipse-sirius/sirius-components-omnibox';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 
 const papayaExtensionRegistry = new ExtensionRegistry();
 
@@ -112,15 +121,28 @@ papayaExtensionRegistry.putData<DiagramPaletteToolContributionProps[]>(diagramPa
  * Used to override the default rendering of omnibox commands
  *
  *******************************************************************************/
+const ShowDocumentationCommand = ({ command, onKeyDown, onClose }: OmniboxCommandComponentProps) => {
+  const handleClick = () => {
+    window.open('https://www.github.com/eclipse-sirius/sirius-web', '_blank')?.focus();
+    onClose();
+  };
+
+  return (
+    <ListItemButton key={command.id} data-testid={command.label} onClick={handleClick} onKeyDown={onKeyDown}>
+      <ListItemIcon>
+        <IconOverlay iconURL={command.iconURLs} alt={command.label} />
+      </ListItemIcon>
+      <ListItemText sx={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{command.label}</ListItemText>
+    </ListItemButton>
+  );
+};
 
 const omniboxCommandOverrides: OmniboxCommandOverrideContribution[] = [
   {
-    canHandle: (action: OmniboxAction) => {
-      return action.id === 'showDocumentation';
+    canHandle: (command: GQLOmniboxCommand) => {
+      return command.id === 'showDocumentation';
     },
-    handle: (_action: OmniboxAction) => {
-      window.open('https://www.github.com/eclipse-sirius/sirius-web', '_blank')?.focus();
-    },
+    component: ShowDocumentationCommand,
   },
 ];
 

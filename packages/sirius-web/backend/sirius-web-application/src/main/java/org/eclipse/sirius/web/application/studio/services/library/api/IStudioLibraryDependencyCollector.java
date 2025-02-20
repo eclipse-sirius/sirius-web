@@ -10,15 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLOmniboxCommand } from './useOmniboxCommands.types';
+package org.eclipse.sirius.web.application.studio.services.library.api;
 
-export interface OmniboxCommandOverrideContribution {
-  canHandle: (action: GQLOmniboxCommand) => boolean;
-  component: React.ComponentType<OmniboxCommandComponentProps>;
-}
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 
-export interface OmniboxCommandComponentProps {
-  command: GQLOmniboxCommand;
-  onKeyDown: React.KeyboardEventHandler<HTMLDivElement>;
-  onClose: () => void;
+/**
+ * Collects the dependencies between studio libraries.
+ *
+ * @author gdaniel
+ */
+public interface IStudioLibraryDependencyCollector {
+
+    DependencyGraph<EObject> collectDependencies(ResourceSet resourceSet);
+
 }

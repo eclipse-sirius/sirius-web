@@ -34,7 +34,12 @@ import {
   widgetContributionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-forms';
 import { GanttRepresentation } from '@eclipse-sirius/sirius-components-gantt';
-import { OmniboxButton } from '@eclipse-sirius/sirius-components-omnibox';
+import {
+  GQLOmniboxCommand,
+  OmniboxButton,
+  OmniboxCommandOverrideContribution,
+  omniboxCommandOverrideContributionExtensionPoint,
+} from '@eclipse-sirius/sirius-components-omnibox';
 import { PortalRepresentation } from '@eclipse-sirius/sirius-components-portals';
 import { SelectionDialog } from '@eclipse-sirius/sirius-components-selection';
 import { TableRepresentation } from '@eclipse-sirius/sirius-components-tables';
@@ -69,6 +74,7 @@ import { DiagramFilter } from '../diagrams/DiagramFilter';
 import { ApolloLinkUndoRedoStack } from '../graphql/ApolloLinkUndoRedoStack';
 import { ApolloClientOptionsConfigurer } from '../graphql/useCreateApolloClient.types';
 import { apolloClientOptionsConfigurersExtensionPoint } from '../graphql/useCreateApolloClientExtensionPoints';
+import { PublishStudioLibraryCommand } from '../libraries/PublishStudioLibraryCommand';
 import { NavigationBarRightContributionProps } from '../navigationBar/NavigationBar.types';
 import { navigationBarRightContributionExtensionPoint } from '../navigationBar/NavigationBarExtensionPoints';
 import { NavigationBarMenuItemProps } from '../navigationBar/NavigationBarMenu.types';
@@ -464,5 +470,30 @@ defaultExtensionRegistry.addComponent(projectContextMenuEntryExtensionPoint, {
   identifier: `siriusWeb_${projectContextMenuEntryExtensionPoint.identifier}_download`,
   Component: ProjectDownloadMenuItemExtension,
 });
+
+/*******************************************************************************
+ *
+ * Omnibox command overrides
+ *
+ * Used to override the default rendering of omnibox commands
+ *
+ *******************************************************************************/
+
+const omniboxCommandOverrides: OmniboxCommandOverrideContribution[] = [
+  {
+    canHandle: (action: GQLOmniboxCommand) => {
+      return action.id === 'publishStudio';
+    },
+    component: PublishStudioLibraryCommand,
+  },
+];
+
+defaultExtensionRegistry.putData<OmniboxCommandOverrideContribution[]>(
+  omniboxCommandOverrideContributionExtensionPoint,
+  {
+    identifier: `siriusweb_${omniboxCommandOverrideContributionExtensionPoint.identifier}`,
+    data: omniboxCommandOverrides,
+  }
+);
 
 export { defaultExtensionRegistry };
