@@ -13,13 +13,11 @@
 package org.eclipse.sirius.web.domain.boundedcontexts.library;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.AbstractValidatingAggregateRoot;
@@ -57,7 +55,7 @@ public class Library extends AbstractValidatingAggregateRoot<Library> implements
     private AggregateReference<SemanticData, UUID> semanticData;
 
     @MappedCollection(idColumn = "library_id", keyColumn = "index")
-    private Set<LibraryDependency> dependencies = new LinkedHashSet<>();
+    private List<LibraryDependency> dependencies = new ArrayList<>();
 
     private String description;
 
@@ -86,8 +84,8 @@ public class Library extends AbstractValidatingAggregateRoot<Library> implements
         return this.semanticData;
     }
 
-    public Set<LibraryDependency> getDependencies() {
-        return Collections.unmodifiableSet(this.dependencies);
+    public List<LibraryDependency> getDependencies() {
+        return Collections.unmodifiableList(this.dependencies);
     }
 
     public String getDescription() {
@@ -127,7 +125,7 @@ public class Library extends AbstractValidatingAggregateRoot<Library> implements
 
         private AggregateReference<SemanticData, UUID> semanticData;
 
-        private Set<LibraryDependency> dependencies = new LinkedHashSet<>();
+        private List<LibraryDependency> dependencies = new ArrayList<>();
 
         private String description;
 
@@ -154,7 +152,7 @@ public class Library extends AbstractValidatingAggregateRoot<Library> implements
         public Builder dependencies(List<AggregateReference<Library, UUID>> dependencies) {
             this.dependencies = dependencies.stream()
                 .map(LibraryDependency::new)
-                .collect(Collectors.toSet());
+                .toList();
             return this;
         }
 

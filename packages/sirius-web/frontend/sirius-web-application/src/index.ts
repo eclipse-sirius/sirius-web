@@ -62,6 +62,8 @@ export {
   navigationBarMenuHelpURLExtensionPoint,
   navigationBarMenuIconExtensionPoint,
 } from './navigationBar/NavigationBarMenuExtensionPoints';
+export { PublishLibraryDialog } from './omnibox/PublishLibraryDialog';
+export { type PublishLibraryDialogProps } from './omnibox/PublishLibraryDialog.types';
 export { routerExtensionPoint } from './router/RouterExtensionPoints';
 export type {
   EditProjectNavbarMenuContainerProps,
