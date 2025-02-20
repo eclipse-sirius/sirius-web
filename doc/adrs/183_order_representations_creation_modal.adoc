@@ -1,0 +1,62 @@
+= ADR-183 - Add support for ordering the representations in the creation modal
+
+== Context
+
+When creating a new representation from the UI, the user opens the `NewRepresentationModal` which proposes all the available representations which are compatible with the selected semantic target.
+In this modal, the available representations are obtained from the `viewer { editingContext { representationDescriptions() } }` query are presented [in alphabetical order of their label](https://github.com/eclipse-sirius/sirius-web/blob/master/packages/sirius-web/frontend/sirius-web-application/src/modals/new-representation/NewRepresentationModal.tsx#L256).
+
+While a good (predictable) default in the absence of more information, this alphabetical order is often not the most useful choice in a concrete modeling workbench, in particular when there is an "obvious" default choice of representation for the given target element.
+
+In addition, this alphabetical order may not be stable over time, if the representation's label is modified or if/when we support i18n for these labels.
+
+It should be possible to provide a custom order for these representations.
+
+== Decision
+
+We will provide a new extension point on the frontend with the following API:
+
+[source,js]
+----
+export type RepresentationDescriptionsSorter = (representationDescriptions: GQLRepresentationDescriptionMetadata[]) => GQLRepresentationDescriptionMetadata[];
+
+export const representationDescriptionsSorterExtensionPoint: DataExtensionPoint<epresentationDescriptionsSorter> = {
+  identifier: 'siriusWeb#representationDescriptionsSorter',
+  fallback: (representationDescriptions) => [...representationDescriptions].sort((a, b) => a.label.localeCompare(b.label)),
+};
+----
+
+In `NewRepresentationModal.tsx` it will be used when building the options for the `Select` component instead of the currently hard-coded `representationDescriptions.sort((a, b) => a.label.localeCompare(b.label))`:
+
+[source,js]
+----
+const { data: representationDescriptionsSorter } = useData(representationDescriptionsSorterExtensionPoint);
+// ...
+<Select>
+  {representationDescriptionsSorter(representationDescriptions)
+    .map((representationDescription) => (
+      <MenuItem value={representationDescription.id} key={representationDescription.id}>
+        {representationDescription.label}
+      </MenuItem>
+    ))}
+</Select>
+----
+
+=== Breadboarding
+
+No UI changes.
+
+=== Cutting backs
+
+None.
+
+=== Rabbit holes
+
+== Status
+
+Proposed
+
+== Consequences
+
+* Downstream products (e.g. Eclipse SysON) will be able to provide a custom ordering of 
+* Technically it is possible for an implementer of the extension point not to return all the compatible representations.
+While not directly intended, this could be a useful possibility in some special cases.
