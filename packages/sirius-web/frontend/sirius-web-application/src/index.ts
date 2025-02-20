@@ -32,6 +32,8 @@ export {
   httpOptionsConfigurersExtensionPoint,
   webSocketOptionsConfigurersExtensionPoint,
 } from './graphql/useCreateApolloClientExtensionPoints';
+export { PublishLibraryDialog } from './libraries/PublishLibraryDialog';
+export { type PublishLibraryDialogProps } from './libraries/PublishLibraryDialog.types';
 export { NewObjectModal } from './modals/new-object/NewObjectModal';
 export { type NewObjectModalProps } from './modals/new-object/NewObjectModal.types';
 export { NewRepresentationModal } from './modals/new-representation/NewRepresentationModal';

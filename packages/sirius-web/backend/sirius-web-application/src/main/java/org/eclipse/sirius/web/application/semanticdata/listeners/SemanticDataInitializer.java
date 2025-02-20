@@ -39,6 +39,6 @@ public class SemanticDataInitializer {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener
     public void onProjectCreatedEvent(ProjectCreatedEvent event) {
-        this.semanticDataCreationService.create(event, List.of(), List.of());
+        this.semanticDataCreationService.create(event, List.of(), List.of(), List.of());
     }
 }

@@ -33,7 +33,6 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
-import org.eclipse.sirius.components.graphql.tests.EditingContextEventSubscriptionRunner;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
 import org.eclipse.sirius.components.graphql.tests.ExecuteOmniboxCommandMutationRunner;
 import org.eclipse.sirius.components.graphql.tests.OmniboxCommandsQueryRunner;
@@ -71,9 +70,6 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
     private OmniboxSearchQueryRunner omniboxSearchQueryRunner;
 
     @Autowired
-    private EditingContextEventSubscriptionRunner editingContextEventSubscriptionRunner;
-
-    @Autowired
     private ExecuteOmniboxCommandMutationRunner executeOmniboxCommandMutationRunner;
 
     @Autowired
@@ -90,7 +86,7 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
         );
         var firstQueryResult = this.omniboxCommandsQueryRunner.run(firstQueryVariables);
         List<String> allCommandLabels = JsonPath.read(firstQueryResult, "$.data.viewer.omniboxCommands.edges[*].node.label");
-        assertThat(allCommandLabels).hasSize(1).anyMatch(label -> Objects.equals(label, "Search"));
+        assertThat(allCommandLabels).hasSize(2).contains("Search", "Publish Studio");
 
         Map<String, Object> secondQueryVariables = Map.of(
                 "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,

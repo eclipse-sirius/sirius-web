@@ -10,17 +10,35 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { IconOverlay } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay, useData, useSelection } from '@eclipse-sirius/sirius-components-core';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { forwardRef } from 'react';
+import { forwardRef, useEffect } from 'react';
 import { OmniboxCommandListProps } from './OmniboxCommandList.types';
+import { omniboxCommandOverrideContributionExtensionPoint } from './OmniboxExtensionPoints';
+import { OmniboxCommandOverrideContribution } from './OmniboxExtensionPoints.types';
+import { isExecuteOmniboxCommandSuccessPayload, useExecuteOmniboxCommand } from './useExecuteOmniboxCommand';
+import { GQLOmniboxCommand } from './useOmniboxCommands.types';
 
 export const OmniboxCommandList = forwardRef(
-  ({ loading, data, onActionClick }: OmniboxCommandListProps, ref: React.ForwardedRef<HTMLUListElement>) => {
+  (
+    { loading, data, editingContextId, onClose, onModeChanged }: OmniboxCommandListProps,
+    ref: React.ForwardedRef<HTMLUListElement>
+  ) => {
+    const { executeOmniboxCommand, data: executeOmniboxCommandData } = useExecuteOmniboxCommand();
+
+    useEffect(() => {
+      if (
+        executeOmniboxCommandData &&
+        isExecuteOmniboxCommandSuccessPayload(executeOmniboxCommandData.executeOmniboxCommand)
+      ) {
+        onClose();
+      }
+    }, [executeOmniboxCommandData]);
+
     const handleListItemKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
       if (event.key === 'ArrowDown') {
         const nextListItemButton = event.currentTarget.nextSibling;
@@ -35,6 +53,17 @@ export const OmniboxCommandList = forwardRef(
       }
     };
 
+    const { selection } = useSelection();
+    const selectedObjectIds: string[] = selection.entries.map((entry) => entry.id);
+
+    const handleOnActionClick = (command: GQLOmniboxCommand) => {
+      if (command.id === 'search') {
+        onModeChanged('Search');
+      } else {
+        executeOmniboxCommand(editingContextId, selectedObjectIds, command.id);
+      }
+    };
+
     let listItems: JSX.Element[] = [];
     if (loading) {
       listItems = [
@@ -46,29 +75,36 @@ export const OmniboxCommandList = forwardRef(
       ];
     }
 
+    const { data: omniboxCommandOverrideContributions } = useData<OmniboxCommandOverrideContribution[]>(
+      omniboxCommandOverrideContributionExtensionPoint
+    );
+
     if (!loading && data) {
       const commands = data.viewer.omniboxCommands.edges.map((edge) => edge.node);
       if (commands.length > 0) {
-        listItems = commands
-          .map((node) => {
-            return {
-              id: node.id,
-              icon: <IconOverlay iconURL={node.iconURLs} alt={node.label} />,
-              label: node.label,
-            };
-          })
-          .map((action) => {
+        listItems = commands.map((command) => {
+          const CommandOverride = omniboxCommandOverrideContributions
+            .filter((contribution) => contribution.canHandle(command))
+            .map((contribution) => contribution.component)[0];
+          if (CommandOverride) {
+            return (
+              <CommandOverride key={command.id} command={command} onClose={onClose} onKeyDown={handleListItemKeyDown} />
+            );
+          } else {
             return (
               <ListItemButton
-                key={action.id}
-                data-testid={action.label}
-                onClick={() => onActionClick(action)}
+                key={command.id}
+                data-testid={command.label}
+                onClick={() => handleOnActionClick(command)}
                 onKeyDown={handleListItemKeyDown}>
-                <ListItemIcon>{action.icon}</ListItemIcon>
-                <ListItemText sx={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{action.label}</ListItemText>
+                <ListItemIcon>
+                  <IconOverlay iconURL={command.iconURLs} alt={command.label} />
+                </ListItemIcon>
+                <ListItemText sx={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{command.label}</ListItemText>
               </ListItemButton>
             );
-          });
+          }
+        });
       } else {
         listItems = [
           <ListItem key={'no-result-key'}>

@@ -14,7 +14,6 @@ import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import { ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
 import { NodeTypeContribution } from '@eclipse-sirius/sirius-components-diagrams';
 import {
-  DefaultExtensionRegistryMergeStrategy,
   DiagramRepresentationConfiguration,
   NodeTypeRegistry,
   SiriusWebApplication,
@@ -27,9 +26,10 @@ import { EllipseNode } from './nodes/EllipseNode';
 import { EllipseNodeConverter } from './nodes/EllipseNodeConverter';
 import { EllipseNodeLayoutHandler } from './nodes/EllipseNodeLayoutHandler';
 
-import './ReactFlow.css';
+import { SiriusWebExtensionRegistryMergeStrategy } from './extension/SiriusWebExtensionRegistryMergerStrategy';
 import './fonts.css';
 import './portals.css';
+import './ReactFlow.css';
 import './reset.css';
 import './variables.css';
 
@@ -39,8 +39,8 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const registry = new ExtensionRegistry();
-registry.addAll(forkRegistry, new DefaultExtensionRegistryMergeStrategy());
-registry.addAll(papayaExtensionRegistry, new DefaultExtensionRegistryMergeStrategy());
+registry.addAll(forkRegistry, new SiriusWebExtensionRegistryMergeStrategy());
+registry.addAll(papayaExtensionRegistry, new SiriusWebExtensionRegistryMergeStrategy());
 
 const nodeTypeRegistry: NodeTypeRegistry = {
   nodeLayoutHandlers: [new EllipseNodeLayoutHandler()],
@@ -51,7 +51,11 @@ const nodeTypeRegistry: NodeTypeRegistry = {
 const container = document.getElementById('root');
 const root = createRoot(container!);
 root.render(
-  <SiriusWebApplication httpOrigin={httpOrigin} wsOrigin={wsOrigin} extensionRegistry={registry}>
+  <SiriusWebApplication
+    httpOrigin={httpOrigin}
+    wsOrigin={wsOrigin}
+    extensionRegistry={registry}
+    extensionRegistryMergeStrategy={new SiriusWebExtensionRegistryMergeStrategy()}>
     <DiagramRepresentationConfiguration nodeTypeRegistry={nodeTypeRegistry} />
   </SiriusWebApplication>
 );

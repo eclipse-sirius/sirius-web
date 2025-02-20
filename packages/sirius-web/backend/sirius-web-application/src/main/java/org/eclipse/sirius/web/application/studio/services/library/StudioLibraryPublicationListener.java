@@ -10,10 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.papaya.services.library;
+package org.eclipse.sirius.web.application.studio.services.library;
 
-import java.util.Objects;
-
+import org.eclipse.sirius.web.application.library.dto.PublishLibrariesInput;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibraryCreationService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataCreatedEvent;
@@ -24,30 +23,32 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 /**
- * Used to register the standard libraries once their semantic data have been created.
+ * Used to create a library once its semantic data are published.
  *
  * @author sbegaudeau
  */
 @Service
-public class StandardLibraryInitializer {
+public class StudioLibraryPublicationListener {
 
     private final ILibraryCreationService libraryCreationService;
 
-    public StandardLibraryInitializer(ILibraryCreationService libraryCreationService) {
-        this.libraryCreationService = Objects.requireNonNull(libraryCreationService);
+    public StudioLibraryPublicationListener(ILibraryCreationService libraryCreationService) {
+        this.libraryCreationService = libraryCreationService;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener
-    public void onSemanticDataCreatedEvent(SemanticDataCreatedEvent event) {
-        if (event.causedBy() instanceof InitializeStandardLibraryEvent initializeStandardLibraryEvent) {
-            var library = Library.newLibrary()
-                    .namespace(initializeStandardLibraryEvent.namespace())
-                    .name(initializeStandardLibraryEvent.name())
-                    .version(initializeStandardLibraryEvent.version())
-                    .semanticData(AggregateReference.to(event.semanticData().getId()))
-                    .description(initializeStandardLibraryEvent.description())
-                    .build(event);
+    public void onSemanticDataCreatedEvent(SemanticDataCreatedEvent semanticDataCreatedEvent) {
+        if (semanticDataCreatedEvent.causedBy() instanceof StudioLibrarySemanticDataCreationRequested request && request.causedBy() instanceof PublishLibrariesInput publishLibrariesInput) {
+            var semanticData = semanticDataCreatedEvent.semanticData();
+
+            Library library = Library.newLibrary()
+                    .namespace(publishLibrariesInput.projectId())
+                    .name(request.libraryName())
+                    .semanticData(AggregateReference.to(semanticData.getId()))
+                    .version(publishLibrariesInput.version())
+                    .description(publishLibrariesInput.description())
+                    .build(semanticDataCreatedEvent);
             this.libraryCreationService.createLibrary(library);
         }
     }

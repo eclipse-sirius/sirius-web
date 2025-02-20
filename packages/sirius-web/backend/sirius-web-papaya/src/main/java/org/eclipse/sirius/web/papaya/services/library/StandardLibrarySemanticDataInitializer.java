@@ -77,7 +77,7 @@ public class StandardLibrarySemanticDataInitializer implements IStandardLibraryS
         }
 
         this.resourceToDocumentService.toDocument(resource, false).ifPresent(documentData -> {
-            this.semanticDataCreationService.create(event, List.of(documentData.document()), documentData.ePackageEntries().stream().map(EPackageEntry::nsURI).toList());
+            this.semanticDataCreationService.create(event, List.of(documentData.document()), documentData.ePackageEntries().stream().map(EPackageEntry::nsURI).toList(), List.of());
         });
     }
 }

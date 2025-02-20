@@ -33,6 +33,7 @@ import org.springframework.test.context.jdbc.SqlGroup;
 @SqlGroup({
     @Sql(scripts = {
         "/sirius-web-scripts/initialize.sql",
+        "/sirius-web-scripts/papaya-library.sql",
         "/sirius-web-scripts/papaya.sql",
         "/sirius-web-scripts/studio.sql",
         "/sirius-web-scripts/migration.sql"

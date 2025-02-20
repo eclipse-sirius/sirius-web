@@ -39,10 +39,10 @@ export interface GQLViewerOmniboxCommandsConnection {
 }
 
 export interface GQLViewerOmniboxCommandsEdge {
-  node: GQLViewerOmniboxCommand;
+  node: GQLOmniboxCommand;
 }
 
-export interface GQLViewerOmniboxCommand {
+export interface GQLOmniboxCommand {
   id: string;
   label: string;
   iconURLs: string[];

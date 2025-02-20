@@ -10,15 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLOmniboxCommand } from './useOmniboxCommands.types';
 
-export interface OmniboxCommandOverrideContribution {
-  canHandle: (action: GQLOmniboxCommand) => boolean;
-  component: React.ComponentType<OmniboxCommandComponentProps>;
+export interface PublishLibraryDialogProps {
+  open: boolean;
+  title: string;
+  message: string;
+  publicationKind: string;
+  onClose: () => void;
 }
 
-export interface OmniboxCommandComponentProps {
-  command: GQLOmniboxCommand;
-  onKeyDown: React.KeyboardEventHandler<HTMLDivElement>;
-  onClose: () => void;
+export interface PublishLibraryDialogState {
+  version: string;
+  pristine: boolean;
+  description: string;
 }

@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -28,6 +29,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.Semanti
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -51,6 +53,9 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
     @MappedCollection(idColumn = "semantic_data_id")
     private Set<SemanticDataDomain> domains = new LinkedHashSet<>();
 
+    @MappedCollection(idColumn = "semantic_data_id", keyColumn = "index")
+    private List<SemanticDataDependency> dependencies = new ArrayList<>();
+
     private Instant createdOn;
 
     private Instant lastModifiedOn;
@@ -66,6 +71,10 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
 
     public Set<SemanticDataDomain> getDomains() {
         return Collections.unmodifiableSet(this.domains);
+    }
+
+    public List<SemanticDataDependency> getDependencies() {
+        return Collections.unmodifiableList(this.dependencies);
     }
 
     public Instant getCreatedOn() {
@@ -149,13 +158,14 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private Set<Document> documents = new LinkedHashSet<>();
+        private Set<Document> documents;
 
-        private Set<SemanticDataDomain> domains = new LinkedHashSet<>();
+        private Set<SemanticDataDomain> domains;
+
+        private List<SemanticDataDependency> dependencies;
 
         public Builder documents(List<Document> documents) {
-            this.documents = documents.stream()
-                    .collect(Collectors.toSet());
+            this.documents = documents.stream().collect(Collectors.toSet());
             return this;
         }
 
@@ -166,6 +176,13 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
             return this;
         }
 
+        public Builder dependencies(List<AggregateReference<SemanticData, UUID>> dependencies) {
+            this.dependencies = dependencies.stream()
+                    .map(SemanticDataDependency::new)
+                    .toList();
+            return this;
+        }
+
         public SemanticData build(ICause cause) {
             var semanticData = new SemanticData();
 
@@ -173,6 +190,7 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
             semanticData.id = UUID.randomUUID();
             semanticData.documents = Objects.requireNonNull(this.documents);
             semanticData.domains = Objects.requireNonNull(this.domains);
+            semanticData.dependencies = Objects.requireNonNull(this.dependencies);
 
             var now = Instant.now();
             semanticData.createdOn = now;

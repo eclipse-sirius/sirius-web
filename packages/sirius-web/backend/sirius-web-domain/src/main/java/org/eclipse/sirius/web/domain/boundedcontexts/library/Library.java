@@ -13,13 +13,8 @@
 package org.eclipse.sirius.web.domain.boundedcontexts.library;
 
 import java.time.Instant;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.AbstractValidatingAggregateRoot;
@@ -30,7 +25,6 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
@@ -55,9 +49,6 @@ public class Library extends AbstractValidatingAggregateRoot<Library> implements
 
     @Column("semantic_data_id")
     private AggregateReference<SemanticData, UUID> semanticData;
-
-    @MappedCollection(idColumn = "library_id", keyColumn = "index")
-    private Set<LibraryDependency> dependencies = new LinkedHashSet<>();
 
     private String description;
 
@@ -84,10 +75,6 @@ public class Library extends AbstractValidatingAggregateRoot<Library> implements
 
     public AggregateReference<SemanticData, UUID> getSemanticData() {
         return this.semanticData;
-    }
-
-    public Set<LibraryDependency> getDependencies() {
-        return Collections.unmodifiableSet(this.dependencies);
     }
 
     public String getDescription() {
@@ -127,8 +114,6 @@ public class Library extends AbstractValidatingAggregateRoot<Library> implements
 
         private AggregateReference<SemanticData, UUID> semanticData;
 
-        private Set<LibraryDependency> dependencies = new LinkedHashSet<>();
-
         private String description;
 
         public Builder namespace(String namespace) {
@@ -151,13 +136,6 @@ public class Library extends AbstractValidatingAggregateRoot<Library> implements
             return this;
         }
 
-        public Builder dependencies(List<AggregateReference<Library, UUID>> dependencies) {
-            this.dependencies = dependencies.stream()
-                .map(LibraryDependency::new)
-                .collect(Collectors.toSet());
-            return this;
-        }
-
         public Builder description(String description) {
             this.description = Objects.requireNonNull(description);
             return this;
@@ -171,7 +149,6 @@ public class Library extends AbstractValidatingAggregateRoot<Library> implements
             library.name = Objects.requireNonNull(this.name);
             library.version = Objects.requireNonNull(this.version);
             library.semanticData = Objects.requireNonNull(this.semanticData);
-            library.dependencies = Objects.requireNonNull(this.dependencies);
             library.description = Objects.requireNonNull(this.description);
 
             var now = Instant.now();

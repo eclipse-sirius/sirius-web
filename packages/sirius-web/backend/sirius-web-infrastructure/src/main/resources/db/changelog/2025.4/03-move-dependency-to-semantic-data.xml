@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2025 Obeo.
+  ~ This program and the accompanying materials
+  ~ are made available under the terms of the Eclipse Public License v2.0
+  ~ which accompanies this distribution, and is available at
+  ~ https://www.eclipse.org/legal/epl-2.0/
+  ~
+  ~ SPDX-License-Identifier: EPL-2.0
+  ~
+  ~ Contributors:
+  ~     Obeo - initial API and implementation
+  -->
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="03-move-dependency-to-semantic-data" author="sbegaudeau">
+        <dropTable tableName="library_dependency" />
+
+        <createTable tableName="semantic_data_dependency">
+            <column name="semantic_data_id" type="UUID">
+                <constraints nullable="false" />
+            </column>
+            <column name="dependency_semantic_data_id" type="UUID">
+                <constraints nullable="false" />
+            </column>
+            <column name="index" type="INTEGER">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="semantic_data_dependency" columnNames="semantic_data_id,dependency_semantic_data_id" />
+        <addForeignKeyConstraint baseTableName="semantic_data_dependency" baseColumnNames="semantic_data_id" constraintName="fk_semantic_data_id" referencedTableName="semantic_data" referencedColumnNames="id" />
+        <addForeignKeyConstraint baseTableName="semantic_data_dependency" baseColumnNames="dependency_semantic_data_id" constraintName="fk_dependency_semantic_data_id" referencedTableName="semantic_data" referencedColumnNames="id" />
+    </changeSet>
+
+
+</databaseChangeLog>

@@ -10,24 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.library;
+package org.eclipse.sirius.web.application.studio.services.library;
 
-import java.util.Objects;
 import java.util.UUID;
 
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
-import org.springframework.data.relational.core.mapping.Table;
+import org.eclipse.sirius.components.events.ICause;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
- * A dependency of a library.
+ * Used to indicate that the creation of a library has been requested.
  *
- * @author gdaniel
+ * @author sbegaudeau
  */
-@Table("library_dependency")
-public record LibraryDependency(AggregateReference<Library, UUID> dependencyLibraryId) {
-
-    public LibraryDependency {
-        Objects.requireNonNull(dependencyLibraryId);
-    }
-
+public record StudioLibrarySemanticDataCreationRequested(
+        @NotNull UUID id,
+        @NotNull ICause causedBy,
+        @NotNull String libraryName) implements ICause {
 }

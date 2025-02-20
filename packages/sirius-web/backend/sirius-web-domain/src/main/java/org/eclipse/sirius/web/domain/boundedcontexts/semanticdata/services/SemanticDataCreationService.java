@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
@@ -22,6 +23,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.repositories.I
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataCreationService;
 import org.eclipse.sirius.web.domain.services.IResult;
 import org.eclipse.sirius.web.domain.services.Success;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -39,10 +41,11 @@ public class SemanticDataCreationService implements ISemanticDataCreationService
     }
 
     @Override
-    public IResult<SemanticData> create(ICause cause, List<Document> documents, List<String> domains) {
+    public IResult<SemanticData> create(ICause cause, List<Document> documents, List<String> domains, List<AggregateReference<SemanticData, UUID>> dependencies) {
         var semanticData = SemanticData.newSemanticData()
                 .documents(documents)
                 .domains(domains)
+                .dependencies(dependencies)
                 .build(cause);
         this.semanticDataRepository.save(semanticData);
 
