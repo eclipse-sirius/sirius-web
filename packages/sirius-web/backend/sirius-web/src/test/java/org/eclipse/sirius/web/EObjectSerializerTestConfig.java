@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,9 @@
 package org.eclipse.sirius.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import org.eclipse.emf.ecore.EObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,8 @@ public class EObjectSerializerTestConfig implements ResponseBodyAdvice<Object> {
         SimpleModule module = new SimpleModule();
         module.addSerializer(EObject.class, new EObjectJsonSerializer());
         this.customObjectMapper.registerModule(module);
+        this.customObjectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        this.customObjectMapper.registerModule(new JavaTimeModule());
     }
 
     @Override
