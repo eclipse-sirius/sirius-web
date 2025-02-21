@@ -20,7 +20,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import FormControl from '@mui/material/FormControl';
 import IconButton from '@mui/material/IconButton';
 import Input from '@mui/material/Input';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { OmniboxAction, OmniboxProps, OmniboxState } from './Omnibox.types';
 import { OmniboxCommandList } from './OmniboxCommandList';
@@ -77,6 +77,14 @@ export const Omnibox = ({ open, editingContextId, initialContextEntries, onClose
   const { getOmniboxCommands, loading: commandLoading, data: commandData } = useOmniboxCommands();
   const { getOmniboxSearchResults, loading: searchResultsLoading, data: searchResultsData } = useOmniboxSearch();
   const { executeOmniboxCommand } = useExecuteOmniboxCommand();
+
+  useEffect(() => {
+    const variables: GQLGetOmniboxCommandsQueryVariables = {
+      contextEntries: initialContextEntries.map((entry) => ({ id: entry.id, kind: entry.kind })),
+      query: '',
+    };
+    getOmniboxCommands({ variables });
+  }, []);
 
   const { data: omniboxCommandOverrideContributions } = useData<OmniboxCommandOverrideContribution[]>(
     omniboxCommandOverrideContributionExtensionPoint
