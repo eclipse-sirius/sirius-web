@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.omnibox.dto;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -22,10 +23,11 @@ import org.eclipse.sirius.components.core.api.IInput;
  *
  * @author gdaniel
  */
-public record OmniboxSearchInput(UUID id, String editingContextId, String query) implements IInput {
+public record OmniboxSearchInput(UUID id, String editingContextId, List<OmniboxContextEntry> contextEntries, String query) implements IInput {
     public OmniboxSearchInput {
         Objects.requireNonNull(id);
         Objects.requireNonNull(editingContextId);
+        Objects.requireNonNull(contextEntries);
         Objects.requireNonNull(query);
     }
 }

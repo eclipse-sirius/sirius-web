@@ -80,6 +80,7 @@ export const Omnibox = ({ open, editingContextId, initialContextEntries, onClose
 
   useEffect(() => {
     const variables: GQLGetOmniboxCommandsQueryVariables = {
+      editingContextId,
       contextEntries: initialContextEntries.map((entry) => ({ id: entry.id, kind: entry.kind })),
       query: '',
     };
@@ -103,12 +104,14 @@ export const Omnibox = ({ open, editingContextId, initialContextEntries, onClose
     setState((prevState) => ({ ...prevState, queryHasChanged: false }));
     if (state.mode === 'Search') {
       const variables: GQLGetOmniboxSearchResultsQueryVariables = {
+        editingContextId,
         contextEntries: initialContextEntries.map((entry) => ({ id: entry.id, kind: entry.kind })),
         query,
       };
       getOmniboxSearchResults({ variables });
     } else {
       const variables: GQLGetOmniboxCommandsQueryVariables = {
+        editingContextId,
         contextEntries: initialContextEntries.map((entry) => ({ id: entry.id, kind: entry.kind })),
         query,
       };

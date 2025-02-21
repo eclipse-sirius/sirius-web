@@ -43,6 +43,8 @@ import graphql.schema.DataFetchingEnvironment;
 @QueryDataFetcher(type = "Viewer", field = "omniboxCommands")
 public class ViewerOmniboxCommandsDataFetcher implements IDataFetcherWithFieldCoordinates<Connection<OmniboxCommand>> {
 
+    private static final String EDITING_CONTEXT_ID_ARGUMENT = "editingContextId";
+
     private static final String CONTEXT_ENTRIES_ARGUMENT = "contextEntries";
 
     private static final String QUERY_ARGUMENT = "query";
@@ -58,16 +60,12 @@ public class ViewerOmniboxCommandsDataFetcher implements IDataFetcherWithFieldCo
 
     @Override
     public Connection<OmniboxCommand> get(DataFetchingEnvironment environment) throws Exception {
+        String editingContextId = environment.getArgument(EDITING_CONTEXT_ID_ARGUMENT);
         Object argument = environment.getArgument(CONTEXT_ENTRIES_ARGUMENT);
-        List<OmniboxContextEntry> omniboxContextEntries = this.objectMapper.convertValue(argument, new TypeReference<List<OmniboxContextEntry>>() { });
+        List<OmniboxContextEntry> contextEntries = this.objectMapper.convertValue(argument, new TypeReference<>() { });
         String query = environment.getArgument(QUERY_ARGUMENT);
 
-        var editingContextId = omniboxContextEntries.stream().findFirst()
-                .filter(omniboxContextEntry -> omniboxContextEntry.kind().equals("EditingContext"))
-                .map(OmniboxContextEntry::id)
-                .orElse(null);
-
-        List<OmniboxCommand> omniboxCommands = this.omniboxCommandSeachService.findAll(editingContextId, query);
+        List<OmniboxCommand> omniboxCommands = this.omniboxCommandSeachService.findAll(editingContextId, contextEntries, query);
 
         return this.toConnection(omniboxCommands);
     }

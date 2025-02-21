@@ -82,19 +82,29 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
     @GivenSiriusWebServer
     @DisplayName("Given context entries and a query, when a query is performed, then omnibox commands are returned")
     public void givenContextEntriesWhenAQueryIsPerformedThenCommandsAreReturned() {
-        var omniboxContextEntries = List.of(Map.of("id", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, "kind", "EditingContext"));
-
-        Map<String, Object> firstQueryVariables = Map.of("contextEntries", omniboxContextEntries, "query", "");
+        Map<String, Object> firstQueryVariables = Map.of(
+                "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
+                "contextEntries", List.of(),
+                "query", ""
+        );
         var firstQueryResult = this.omniboxCommandsQueryRunner.run(firstQueryVariables);
         List<String> allCommandLabels = JsonPath.read(firstQueryResult, "$.data.viewer.omniboxCommands.edges[*].node.label");
         assertThat(allCommandLabels).hasSize(1).anyMatch(label -> Objects.equals(label, "Search"));
 
-        Map<String, Object> secondQueryVariables = Map.of("contextEntries", omniboxContextEntries, "query", "Sea");
+        Map<String, Object> secondQueryVariables = Map.of(
+                "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
+                "contextEntries", List.of(),
+                "query", "Sea"
+        );
         var secondQueryResult = this.omniboxCommandsQueryRunner.run(secondQueryVariables);
         List<String> seaFilteredCommandsLabels = JsonPath.read(secondQueryResult, "$.data.viewer.omniboxCommands.edges[*].node.label");
         assertThat(seaFilteredCommandsLabels).hasSize(1).anyMatch(label -> Objects.equals(label, "Search"));
 
-        Map<String, Object> thirdQueryVariables = Map.of("contextEntries", omniboxContextEntries, "query", "yello");
+        Map<String, Object> thirdQueryVariables = Map.of(
+                "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
+                "contextEntries", List.of(),
+                "query", "yello"
+        );
         var thirdQueryResult = this.omniboxCommandsQueryRunner.run(thirdQueryVariables);
         List<String> yelloFilteredCommandsLabels = JsonPath.read(thirdQueryResult, "$.data.viewer.omniboxCommands.edges[*].node.label");
         assertThat(yelloFilteredCommandsLabels).isEmpty();
@@ -104,15 +114,21 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
     @GivenSiriusWebServer
     @DisplayName("Given context entries and a query, when the text-based objects are queried, then the objects are returned")
     public void givenContextEntriesAndQueryWhenTextBasedObjectsAreQueriedThenObjectsAreReturned() {
-        var omniboxContextEntries = List.of(Map.of("id", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, "kind", "EditingContext"));
-
-        Map<String, Object> emptyQueryVariables = Map.of("contextEntries", omniboxContextEntries, "query", "");
+        Map<String, Object> emptyQueryVariables = Map.of(
+                "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
+                "contextEntries", List.of(),
+                "query", ""
+        );
         var emptyQueryResult = this.omniboxSearchQueryRunner.run(emptyQueryVariables);
         List<String> emptyQueryObjectLabels = JsonPath.read(emptyQueryResult, "$.data.viewer.omniboxSearch[*].label");
         assertThat(emptyQueryObjectLabels).isNotEmpty();
 
         String filterQuery = "yello";
-        Map<String, Object> filterQueryVariables = Map.of("contextEntries", omniboxContextEntries, "query", filterQuery);
+        Map<String, Object> filterQueryVariables = Map.of(
+                "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
+                "contextEntries", List.of(),
+                "query", filterQuery
+        );
         var filterQueryResult = this.omniboxSearchQueryRunner.run(filterQueryVariables);
         List<String> filterQueryObjectLabels = JsonPath.read(filterQueryResult, "$.data.viewer.omniboxSearch[*].label");
         assertThat(filterQueryObjectLabels).isNotEmpty().allMatch(label -> label.toLowerCase().contains(filterQuery.toLowerCase()));

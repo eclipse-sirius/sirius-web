@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandProvider;
 import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxContextEntry;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,7 +30,7 @@ public class OmniboxSearchCommandProvider implements IOmniboxCommandProvider {
     public static final String SEARCH_COMMAND_ID = "search";
 
     @Override
-    public List<OmniboxCommand> getCommands(String editingContextId, String query) {
+    public List<OmniboxCommand> getCommands(String editingContextId, List<OmniboxContextEntry> contextEntries, String query) {
         return List.of(new OmniboxCommand(SEARCH_COMMAND_ID, "Search", List.of("/omnibox/search.svg"), "Search an element in the project"));
     }
 

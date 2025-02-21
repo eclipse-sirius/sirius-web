@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.collaborative.omnibox.api;
 import java.util.List;
 
 import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxContextEntry;
 
 /**
  * Provides commands for the omnibox.
@@ -23,6 +24,6 @@ import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
  */
 public interface IOmniboxCommandProvider {
 
-    List<OmniboxCommand> getCommands(String editingContextId, String query);
+    List<OmniboxCommand> getCommands(String editingContextId, List<OmniboxContextEntry> contextEntries, String query);
 
 }

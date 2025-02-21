@@ -38,6 +38,8 @@ import reactor.core.publisher.Mono;
 @QueryDataFetcher(type = "Viewer", field = "omniboxSearch")
 public class ViewerOmniboxSearchDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<List<Object>>> {
 
+    private static final String EDITING_CONTEXT_ID_ARGUMENT = "editingContextId";
+
     private static final String CONTEXT_ENTRIES_ARGUMENT = "contextEntries";
 
     private static final String QUERY_ARGUMENT = "query";
@@ -53,16 +55,12 @@ public class ViewerOmniboxSearchDataFetcher implements IDataFetcherWithFieldCoor
 
     @Override
     public CompletableFuture<List<Object>> get(DataFetchingEnvironment environment) throws Exception {
+        String editingContextId = environment.getArgument(EDITING_CONTEXT_ID_ARGUMENT);
         Object argument = environment.getArgument(CONTEXT_ENTRIES_ARGUMENT);
         List<OmniboxContextEntry> omniboxContextEntries = this.objectMapper.convertValue(argument, new TypeReference<List<OmniboxContextEntry>>() { });
         String query = environment.getArgument(QUERY_ARGUMENT);
 
-        var editingContextId = omniboxContextEntries.stream().findFirst()
-                .filter(omniboxContextEntry -> omniboxContextEntry.kind().equals("EditingContext"))
-                .map(OmniboxContextEntry::id)
-                .orElse(null);
-
-        var input = new OmniboxSearchInput(UUID.randomUUID(), editingContextId, query);
+        var input = new OmniboxSearchInput(UUID.randomUUID(), editingContextId, omniboxContextEntries, query);
 
         return this.editingContextDispatcher.dispatchQuery(input.editingContextId(), input)
                 .filter(OmniboxSearchPayload.class::isInstance)
