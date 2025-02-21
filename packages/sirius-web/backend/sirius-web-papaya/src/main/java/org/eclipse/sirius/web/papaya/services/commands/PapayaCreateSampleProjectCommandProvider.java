@@ -17,6 +17,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandProvider;
 import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxContextEntry;
 import org.eclipse.sirius.web.papaya.services.api.IPapayaCapableEditingContextPredicate;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +38,7 @@ public class PapayaCreateSampleProjectCommandProvider implements IOmniboxCommand
     }
 
     @Override
-    public List<OmniboxCommand> getCommands(String editingContextId, String query) {
+    public List<OmniboxCommand> getCommands(String editingContextId, List<OmniboxContextEntry> contextEntries, String query) {
         if (this.papayaCapableEditingContextPredicate.test(editingContextId)) {
             return List.of(new OmniboxCommand(CREATE_SAMPLE_PROJECT_COMMAND_ID, "Create Sample Papaya Project", List.of("/omnibox/create-sample-project.svg"), "Create a sample Papaya project"));
         }

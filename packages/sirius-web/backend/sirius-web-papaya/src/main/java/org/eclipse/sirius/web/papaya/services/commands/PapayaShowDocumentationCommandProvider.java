@@ -17,6 +17,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandProvider;
 import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxContextEntry;
 import org.eclipse.sirius.web.papaya.services.api.IPapayaCapableEditingContextPredicate;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,7 @@ public class PapayaShowDocumentationCommandProvider implements IOmniboxCommandPr
     }
 
     @Override
-    public List<OmniboxCommand> getCommands(String editingContextId, String query) {
+    public List<OmniboxCommand> getCommands(String editingContextId, List<OmniboxContextEntry> contextEntries, String query) {
         List<OmniboxCommand> result = List.of();
         if (this.papayaCapableEditingContextPredicate.test(editingContextId)) {
             result = List.of(new OmniboxCommand("showDocumentation", "Show documentation", List.of("/omnibox/show-documentation.svg"), "Navigate to Sirius Web's documentation"));

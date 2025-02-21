@@ -21,9 +21,9 @@ import {
 } from './useOmniboxCommands.types';
 
 const getOmniboxCommandsQuery = gql`
-  query getOmniboxCommands($contextEntries: [OmniboxContextEntry!]!, $query: String!) {
+  query getOmniboxCommands($editingContextId: ID!, $contextEntries: [OmniboxContextEntry!]!, $query: String!) {
     viewer {
-      omniboxCommands(contextEntries: $contextEntries, query: $query) {
+      omniboxCommands(editingContextId: $editingContextId, contextEntries: $contextEntries, query: $query) {
         edges {
           node {
             id

@@ -20,6 +20,7 @@ export interface UseOmniboxCommandsValue {
 }
 
 export interface GQLGetOmniboxCommandsQueryVariables {
+  editingContextId: string;
   contextEntries: GQLOmniboxContextEntry[];
   query: string;
 }

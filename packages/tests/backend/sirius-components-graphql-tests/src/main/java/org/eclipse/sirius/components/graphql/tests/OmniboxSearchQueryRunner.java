@@ -28,9 +28,9 @@ import org.springframework.stereotype.Service;
 public class OmniboxSearchQueryRunner implements IQueryRunner {
 
     private static final String OMNIBOX_SEARCH = """
-            query getOmniboxSearchResults($contextEntries: [OmniboxContextEntry!]!, $query: String!) {
+            query getOmniboxSearchResults($editingContextId: ID!, $contextEntries: [OmniboxContextEntry!]!, $query: String!) {
               viewer {
-                omniboxSearch(contextEntries: $contextEntries, query: $query) {
+                omniboxSearch(editingContextId: $editingContextId, contextEntries: $contextEntries, query: $query) {
                   id
                   kind
                   label

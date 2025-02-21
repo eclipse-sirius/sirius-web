@@ -1,6 +1,6 @@
 extend type Viewer {
-  omniboxSearch(contextEntries: [OmniboxContextEntry!]!, query: String!): [Object!]!
-  omniboxCommands(contextEntries: [OmniboxContextEntry!]!, query: String!): ViewerOmniboxCommandsConnection!
+  omniboxSearch(editingContextId: ID!, contextEntries: [OmniboxContextEntry!]!, query: String!): [Object!]!
+  omniboxCommands(editingContextId: ID!, contextEntries: [OmniboxContextEntry!]!, query: String!): ViewerOmniboxCommandsConnection!
 }
 
 input OmniboxContextEntry {
