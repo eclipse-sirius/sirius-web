@@ -28,9 +28,9 @@ import org.springframework.stereotype.Service;
 public class OmniboxCommandsQueryRunner implements IQueryRunner {
 
     private static final String OMNIBOX_COMMANDS = """
-            query getOmniboxCommands($editingContextId: ID!, $contextEntries: [OmniboxContextEntry!]!, $query: String!) {
+            query getOmniboxCommands($editingContextId: ID!, $selectedObjectIds: [ID!]!, $query: String!) {
               viewer {
-                omniboxCommands(editingContextId: $editingContextId, contextEntries: $contextEntries, query: $query) {
+                omniboxCommands(editingContextId: $editingContextId, selectedObjectIds: $selectedObjectIds, query: $query) {
                   edges {
                     node {
                       id

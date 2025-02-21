@@ -22,7 +22,6 @@ import java.util.Objects;
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandSeachService;
 import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
-import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxContextEntry;
 import org.eclipse.sirius.components.core.graphql.dto.PageInfoWithCount;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 
@@ -45,7 +44,7 @@ public class ViewerOmniboxCommandsDataFetcher implements IDataFetcherWithFieldCo
 
     private static final String EDITING_CONTEXT_ID_ARGUMENT = "editingContextId";
 
-    private static final String CONTEXT_ENTRIES_ARGUMENT = "contextEntries";
+    private static final String SELECTED_OBJECT_IDS_ARGUMENT = "selectedObjectIds";
 
     private static final String QUERY_ARGUMENT = "query";
 
@@ -61,11 +60,11 @@ public class ViewerOmniboxCommandsDataFetcher implements IDataFetcherWithFieldCo
     @Override
     public Connection<OmniboxCommand> get(DataFetchingEnvironment environment) throws Exception {
         String editingContextId = environment.getArgument(EDITING_CONTEXT_ID_ARGUMENT);
-        Object argument = environment.getArgument(CONTEXT_ENTRIES_ARGUMENT);
-        List<OmniboxContextEntry> contextEntries = this.objectMapper.convertValue(argument, new TypeReference<>() { });
+        Object argument = environment.getArgument(SELECTED_OBJECT_IDS_ARGUMENT);
+        List<String> selectedObjectIds = this.objectMapper.convertValue(argument, new TypeReference<>() { });
         String query = environment.getArgument(QUERY_ARGUMENT);
 
-        List<OmniboxCommand> omniboxCommands = this.omniboxCommandSeachService.findAll(editingContextId, contextEntries, query);
+        List<OmniboxCommand> omniboxCommands = this.omniboxCommandSeachService.findAll(editingContextId, selectedObjectIds, query);
 
         return this.toConnection(omniboxCommands);
     }

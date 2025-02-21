@@ -45,7 +45,7 @@ import org.eclipse.sirius.components.papaya.Project;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
-import org.eclipse.sirius.web.papaya.services.commands.PapayaCreateSampleProjectCommandProvider;
+import org.eclipse.sirius.web.papaya.omnibox.PapayaCreateSampleProjectCommandProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -80,11 +80,11 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given context entries and a query, when a query is performed, then omnibox commands are returned")
-    public void givenContextEntriesWhenAQueryIsPerformedThenCommandsAreReturned() {
+    @DisplayName("Given a query, when a query is performed, then omnibox commands are returned")
+    public void givenQueryWhenAQueryIsPerformedThenCommandsAreReturned() {
         Map<String, Object> firstQueryVariables = Map.of(
                 "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
-                "contextEntries", List.of(),
+                "selectedObjectIds", List.of(),
                 "query", ""
         );
         var firstQueryResult = this.omniboxCommandsQueryRunner.run(firstQueryVariables);
@@ -93,7 +93,7 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
 
         Map<String, Object> secondQueryVariables = Map.of(
                 "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
-                "contextEntries", List.of(),
+                "selectedObjectIds", List.of(),
                 "query", "Sea"
         );
         var secondQueryResult = this.omniboxCommandsQueryRunner.run(secondQueryVariables);
@@ -102,7 +102,7 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
 
         Map<String, Object> thirdQueryVariables = Map.of(
                 "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
-                "contextEntries", List.of(),
+                "selectedObjectIds", List.of(),
                 "query", "yello"
         );
         var thirdQueryResult = this.omniboxCommandsQueryRunner.run(thirdQueryVariables);
@@ -112,11 +112,11 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given context entries and a query, when the text-based objects are queried, then the objects are returned")
-    public void givenContextEntriesAndQueryWhenTextBasedObjectsAreQueriedThenObjectsAreReturned() {
+    @DisplayName("Given a query, when the text-based objects are queried, then the objects are returned")
+    public void givenQueryWhenTextBasedObjectsAreQueriedThenObjectsAreReturned() {
         Map<String, Object> emptyQueryVariables = Map.of(
                 "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
-                "contextEntries", List.of(),
+                "selectedObjectIds", List.of(),
                 "query", ""
         );
         var emptyQueryResult = this.omniboxSearchQueryRunner.run(emptyQueryVariables);
@@ -126,7 +126,7 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
         String filterQuery = "yello";
         Map<String, Object> filterQueryVariables = Map.of(
                 "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
-                "contextEntries", List.of(),
+                "selectedObjectIds", List.of(),
                 "query", filterQuery
         );
         var filterQueryResult = this.omniboxSearchQueryRunner.run(filterQueryVariables);
@@ -138,7 +138,7 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
     @GivenSiriusWebServer
     @DisplayName("Given an omnibox command id, when the mutation is performed, then the command is executed")
     public void givenAnOmniboxCommandIdWhenTheMutationIsPerformedThenTheCommandIsExecuted() {
-        var result = this.executeOmniboxCommandMutationRunner.run(new ExecuteOmniboxCommandInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), PapayaCreateSampleProjectCommandProvider.CREATE_SAMPLE_PROJECT_COMMAND_ID));
+        var result = this.executeOmniboxCommandMutationRunner.run(new ExecuteOmniboxCommandInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), List.of(), PapayaCreateSampleProjectCommandProvider.CREATE_SAMPLE_PROJECT_COMMAND_ID));
         String typename = JsonPath.read(result, "$.data.executeOmniboxCommand.__typename");
         assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
 

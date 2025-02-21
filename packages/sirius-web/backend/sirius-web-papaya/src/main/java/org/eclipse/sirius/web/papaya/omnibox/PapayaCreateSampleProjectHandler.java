@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.papaya.handlers;
+package org.eclipse.sirius.web.papaya.omnibox;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -29,7 +29,6 @@ import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
-import org.eclipse.sirius.web.papaya.dto.PapayaCreateSampleProjectInput;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;

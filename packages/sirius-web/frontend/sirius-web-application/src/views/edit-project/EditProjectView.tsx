@@ -17,7 +17,7 @@ import {
   useData,
   Workbench,
 } from '@eclipse-sirius/sirius-components-core';
-import { OmniboxContextEntry, OmniboxProvider } from '@eclipse-sirius/sirius-components-omnibox';
+import { OmniboxProvider } from '@eclipse-sirius/sirius-components-omnibox';
 import {
   TreeToolBarContext,
   TreeToolBarContextValue,
@@ -120,15 +120,10 @@ export const EditProjectView = () => {
     };
 
     const readOnly = readOnlyPredicate(context.project);
-    const initialContextEntries: OmniboxContextEntry[] = [
-      { id: context.project.currentEditingContext.id, label: context.project.name, kind: 'EditingContext' },
-    ];
     content = (
       <ProjectContext.Provider value={{ project: context.project }}>
         <SelectionContextProvider initialSelection={initialSelection}>
-          <OmniboxProvider
-            editingContextId={context.project.currentEditingContext.id}
-            initialContextEntries={initialContextEntries}>
+          <OmniboxProvider editingContextId={context.project.currentEditingContext.id}>
             <UndoRedo>
               <EditProjectNavbar readOnly={readOnly} />
               <TreeToolBarProvider>

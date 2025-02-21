@@ -15,7 +15,6 @@ package org.eclipse.sirius.components.collaborative.omnibox.api;
 import java.util.List;
 
 import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
-import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxContextEntry;
 
 /**
  * Used to find omnibox commands.
@@ -23,5 +22,5 @@ import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxContextEnt
  * @author sbegaudeau
  */
 public interface IOmniboxCommandSeachService {
-    List<OmniboxCommand> findAll(String editingContextId, List<OmniboxContextEntry> contextEntries, String query);
+    List<OmniboxCommand> findAll(String editingContextId, List<String> selectedObjectIds, String query);
 }

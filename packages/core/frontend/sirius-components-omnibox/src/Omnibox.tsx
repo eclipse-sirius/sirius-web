@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useData } from '@eclipse-sirius/sirius-components-core';
+import { useData, useSelection } from '@eclipse-sirius/sirius-components-core';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import SubdirectoryArrowLeftIcon from '@mui/icons-material/SubdirectoryArrowLeft';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -68,7 +68,7 @@ const useOmniboxStyles = makeStyles()((theme) => ({
   },
 }));
 
-export const Omnibox = ({ open, editingContextId, initialContextEntries, onClose }: OmniboxProps) => {
+export const Omnibox = ({ open, editingContextId, onClose }: OmniboxProps) => {
   const [state, setState] = useState<OmniboxState>({
     queryHasChanged: true,
     mode: 'Command',
@@ -78,10 +78,13 @@ export const Omnibox = ({ open, editingContextId, initialContextEntries, onClose
   const { getOmniboxSearchResults, loading: searchResultsLoading, data: searchResultsData } = useOmniboxSearch();
   const { executeOmniboxCommand } = useExecuteOmniboxCommand();
 
+  const { selection } = useSelection();
+  const selectedObjectIds: string[] = selection.entries.map((entry) => entry.id);
+
   useEffect(() => {
     const variables: GQLGetOmniboxCommandsQueryVariables = {
       editingContextId,
-      contextEntries: initialContextEntries.map((entry) => ({ id: entry.id, kind: entry.kind })),
+      selectedObjectIds,
       query: '',
     };
     getOmniboxCommands({ variables });
@@ -105,14 +108,14 @@ export const Omnibox = ({ open, editingContextId, initialContextEntries, onClose
     if (state.mode === 'Search') {
       const variables: GQLGetOmniboxSearchResultsQueryVariables = {
         editingContextId,
-        contextEntries: initialContextEntries.map((entry) => ({ id: entry.id, kind: entry.kind })),
+        selectedObjectIds,
         query,
       };
       getOmniboxSearchResults({ variables });
     } else {
       const variables: GQLGetOmniboxCommandsQueryVariables = {
         editingContextId,
-        contextEntries: initialContextEntries.map((entry) => ({ id: entry.id, kind: entry.kind })),
+        selectedObjectIds,
         query,
       };
       getOmniboxCommands({ variables });
@@ -157,7 +160,7 @@ export const Omnibox = ({ open, editingContextId, initialContextEntries, onClose
       }
       inputRef.current?.focus();
     } else {
-      executeOmniboxCommand(editingContextId, action.id);
+      executeOmniboxCommand(editingContextId, selectedObjectIds, action.id);
       onClose();
     }
   };

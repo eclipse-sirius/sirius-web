@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.dto;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -22,11 +23,12 @@ import org.eclipse.sirius.components.core.api.IInput;
  *
  * @author gdaniel
  */
-public record ExecuteOmniboxCommandInput(UUID id, String editingContextId, String commandId) implements IInput {
+public record ExecuteOmniboxCommandInput(UUID id, String editingContextId, List<String> selectedObjectIds, String commandId) implements IInput {
 
     public ExecuteOmniboxCommandInput {
         Objects.requireNonNull(id);
         Objects.requireNonNull(editingContextId);
+        Objects.requireNonNull(selectedObjectIds);
         Objects.requireNonNull(commandId);
     }
 }

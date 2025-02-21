@@ -71,11 +71,12 @@ export const useExecuteOmniboxCommand = (): UseExecuteOmniboxCommandValue => {
     }
   }, [data, error]);
 
-  const executeOmniboxCommand = (editingContextId: string, commandId: string) => {
+  const executeOmniboxCommand = (editingContextId: string, selectedObjectIds: string[], commandId: string) => {
     const variables: GQLExecuteOmniboxCommandVariables = {
       input: {
         id: crypto.randomUUID(),
         editingContextId,
+        selectedObjectIds,
         commandId,
       },
     };
