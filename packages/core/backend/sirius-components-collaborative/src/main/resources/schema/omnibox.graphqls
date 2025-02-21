@@ -35,4 +35,10 @@ input ExecuteOmniboxCommandInput {
   commandId: ID!
 }
 
-union ExecuteOmniboxCommandPayload = ErrorPayload | SuccessPayload
+union ExecuteOmniboxCommandPayload = ErrorPayload | ExecuteOmniboxCommandSuccessPayload
+
+type ExecuteOmniboxCommandSuccessPayload {
+  id: ID!
+  newSelection: WorkbenchSelection
+  messages: [Message]!
+}

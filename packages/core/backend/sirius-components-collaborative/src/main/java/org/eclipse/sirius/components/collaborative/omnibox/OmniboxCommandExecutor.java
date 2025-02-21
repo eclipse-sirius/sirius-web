@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.components.collaborative.dto.ExecuteOmniboxCommandInput;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteOmniboxCommandInput;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandExecutor;
 import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandHandler;

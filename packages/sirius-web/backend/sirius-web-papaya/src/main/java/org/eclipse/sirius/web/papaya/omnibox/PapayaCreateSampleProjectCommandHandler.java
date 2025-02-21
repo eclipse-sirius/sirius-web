@@ -15,7 +15,7 @@ package org.eclipse.sirius.web.papaya.omnibox;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandHandler;
-import org.eclipse.sirius.components.collaborative.dto.ExecuteOmniboxCommandInput;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteOmniboxCommandInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 import org.springframework.stereotype.Service;
