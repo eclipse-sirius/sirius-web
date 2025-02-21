@@ -23,13 +23,9 @@ export interface UseOmniboxSearchValue {
 }
 
 export interface GQLGetOmniboxSearchResultsQueryVariables {
-  contextEntries: GQLOmniboxContextEntry[];
+  editingContextId: string;
+  selectedObjectIds: string[];
   query: string;
-}
-
-export interface GQLOmniboxContextEntry {
-  id: string;
-  kind: string;
 }
 
 export interface GQLGetOmniboxSearchResultsQueryData {

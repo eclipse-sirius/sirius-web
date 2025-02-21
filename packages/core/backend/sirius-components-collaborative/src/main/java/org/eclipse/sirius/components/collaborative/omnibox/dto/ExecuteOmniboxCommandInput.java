@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,8 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.dto;
+package org.eclipse.sirius.components.collaborative.omnibox.dto;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -22,11 +23,12 @@ import org.eclipse.sirius.components.core.api.IInput;
  *
  * @author gdaniel
  */
-public record ExecuteOmniboxCommandInput(UUID id, String editingContextId, String commandId) implements IInput {
+public record ExecuteOmniboxCommandInput(UUID id, String editingContextId, List<String> selectedObjectIds, String commandId) implements IInput {
 
     public ExecuteOmniboxCommandInput {
         Objects.requireNonNull(id);
         Objects.requireNonNull(editingContextId);
+        Objects.requireNonNull(selectedObjectIds);
         Objects.requireNonNull(commandId);
     }
 }

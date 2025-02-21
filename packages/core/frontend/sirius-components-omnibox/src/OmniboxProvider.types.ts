@@ -11,11 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { OmniboxContextEntry } from './Omnibox.types';
-
 export interface OmniboxProviderProps {
   editingContextId: string;
-  initialContextEntries?: OmniboxContextEntry[];
   children: React.ReactNode;
 }
 

@@ -1,6 +1,6 @@
 extend type Viewer {
-  omniboxSearch(contextEntries: [OmniboxContextEntry!]!, query: String!): [Object!]!
-  omniboxCommands(contextEntries: [OmniboxContextEntry!]!, query: String!): ViewerOmniboxCommandsConnection!
+  omniboxSearch(editingContextId: ID!, selectedObjectIds: [ID!]!, query: String!): [Object!]!
+  omniboxCommands(editingContextId: ID!, selectedObjectIds: [ID!]!, query: String!): ViewerOmniboxCommandsConnection!
 }
 
 input OmniboxContextEntry {
@@ -31,7 +31,14 @@ extend type Mutation {
 input ExecuteOmniboxCommandInput {
   id: ID!
   editingContextId: ID!
+  selectedObjectIds: [ID!]!
   commandId: ID!
 }
 
-union ExecuteOmniboxCommandPayload = ErrorPayload | SuccessPayload
+union ExecuteOmniboxCommandPayload = ErrorPayload | ExecuteOmniboxCommandSuccessPayload
+
+type ExecuteOmniboxCommandSuccessPayload {
+  id: ID!
+  newSelection: WorkbenchSelection
+  messages: [Message]!
+}

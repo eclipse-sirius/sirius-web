@@ -23,6 +23,6 @@ import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
  */
 public interface IOmniboxCommandProvider {
 
-    List<OmniboxCommand> getCommands(String editingContextId, String query);
+    List<OmniboxCommand> getCommands(String editingContextId, List<String> selectedObjectIds, String query);
 
 }

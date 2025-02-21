@@ -10,21 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.papaya.dto;
 
-import java.util.Objects;
-import java.util.UUID;
+import { DataExtensionPoint } from '@eclipse-sirius/sirius-components-core';
 
-import org.eclipse.sirius.components.core.api.IInput;
+import { OmniboxCommandOverrideContribution } from './OmniboxExtensionPoints.types';
 
-/**
- * The input used to create a sample Papaya project.
- *
- * @author gdaniel
- */
-public record PapayaCreateSampleProjectInput(UUID id) implements IInput {
-
-    public PapayaCreateSampleProjectInput {
-        Objects.requireNonNull(id);
-    }
-}
+export const omniboxCommandOverrideContributionExtensionPoint: DataExtensionPoint<
+  Array<OmniboxCommandOverrideContribution>
+> = {
+  identifier: 'omnibox#commandOverrideContribution',
+  fallback: [],
+};

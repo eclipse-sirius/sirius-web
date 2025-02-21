@@ -22,5 +22,5 @@ import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
  * @author sbegaudeau
  */
 public interface IOmniboxCommandSeachService {
-    List<OmniboxCommand> findAll(String editingContextId, String query);
+    List<OmniboxCommand> findAll(String editingContextId, List<String> selectedObjectIds, String query);
 }

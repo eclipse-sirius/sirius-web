@@ -13,7 +13,6 @@
 
 export interface OmniboxProps {
   editingContextId: string;
-  initialContextEntries: OmniboxContextEntry[];
   open: boolean;
   onClose: () => void;
 }
@@ -24,14 +23,6 @@ export interface OmniboxState {
 }
 
 export type OmniboxMode = 'Command' | 'Search';
-
-export interface OmniboxContextEntry {
-  id: string;
-  label: string;
-  kind: OmniboxContextKind;
-}
-
-export type OmniboxContextKind = 'EditingContext';
 
 export interface OmniboxAction {
   id: string;

@@ -12,14 +12,13 @@
  *******************************************************************************/
 
 import { gql, useMutation } from '@apollo/client';
-import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { useEffect } from 'react';
+import { Selection, useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
 import {
   GQLErrorPayload,
   GQLExecuteOmniboxCommandData,
   GQLExecuteOmniboxCommandPayload,
+  GQLExecuteOmniboxCommandSuccessPayload,
   GQLExecuteOmniboxCommandVariables,
-  GQLSuccessPayload,
   UseExecuteOmniboxCommandValue,
 } from './useExecuteOmniboxCommand.types';
 
@@ -27,7 +26,13 @@ const executeOmniboxCommandMutation = gql`
   mutation executeOmniboxCommand($input: ExecuteOmniboxCommandInput!) {
     executeOmniboxCommand(input: $input) {
       __typename
-      ... on SuccessPayload {
+      ... on ExecuteOmniboxCommandSuccessPayload {
+        newSelection {
+          entries {
+            id
+            kind
+          }
+        }
         messages {
           body
           level
@@ -46,36 +51,46 @@ const executeOmniboxCommandMutation = gql`
 const isErrorPayload = (payload: GQLExecuteOmniboxCommandPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
-const isSuccessPayload = (payload: GQLExecuteOmniboxCommandPayload): payload is GQLSuccessPayload =>
-  payload.__typename === 'SuccessPayload';
+export const isExecuteOmniboxCommandSuccessPayload = (
+  payload: GQLExecuteOmniboxCommandPayload
+): payload is GQLExecuteOmniboxCommandSuccessPayload => payload.__typename === 'ExecuteOmniboxCommandSuccessPayload';
 
 export const useExecuteOmniboxCommand = (): UseExecuteOmniboxCommandValue => {
+  const { setSelection } = useSelection();
   const { addErrorMessage, addMessages } = useMultiToast();
-  const [performExecuteOmniboxCommand, { loading, data, error }] = useMutation<
+
+  // While it does not make any sense, the following mutation does not return any meaningful value in loading, data or error.
+  // It only works by using onCompleted / onError
+  const [performExecuteOmniboxCommand, { loading, data }] = useMutation<
     GQLExecuteOmniboxCommandData,
     GQLExecuteOmniboxCommandVariables
-  >(executeOmniboxCommandMutation);
-
-  useEffect(() => {
-    if (data) {
+  >(executeOmniboxCommandMutation, {
+    onCompleted: (data, _clientOptions) => {
       const { executeOmniboxCommand } = data;
       if (isErrorPayload(executeOmniboxCommand)) {
         addMessages(executeOmniboxCommand.messages);
       }
-      if (isSuccessPayload(executeOmniboxCommand)) {
+      if (isExecuteOmniboxCommandSuccessPayload(executeOmniboxCommand)) {
         addMessages(executeOmniboxCommand.messages);
+        if (isExecuteOmniboxCommandSuccessPayload(executeOmniboxCommand) && executeOmniboxCommand.newSelection) {
+          const selection: Selection = {
+            entries: executeOmniboxCommand.newSelection.entries.map((entry) => ({ id: entry.id, kind: entry.kind })),
+          };
+          setSelection(selection);
+        }
       }
-    }
-    if (error) {
+    },
+    onError: () => {
       addErrorMessage('An unexpected error has occurred, please refresh the page');
-    }
-  }, [data, error]);
+    },
+  });
 
-  const executeOmniboxCommand = (editingContextId: string, commandId: string) => {
+  const executeOmniboxCommand = (editingContextId: string, selectedObjectIds: string[], commandId: string) => {
     const variables: GQLExecuteOmniboxCommandVariables = {
       input: {
         id: crypto.randomUUID(),
         editingContextId,
+        selectedObjectIds,
         commandId,
       },
     };

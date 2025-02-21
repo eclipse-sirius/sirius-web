@@ -21,9 +21,9 @@ import {
 } from './useOmniboxSearch.types';
 
 const getOmniboxSearchResultsQuery = gql`
-  query getOmniboxSearchResults($contextEntries: [OmniboxContextEntry!]!, $query: String!) {
+  query getOmniboxSearchResults($editingContextId: ID!, $selectedObjectIds: [ID!]!, $query: String!) {
     viewer {
-      omniboxSearch(contextEntries: $contextEntries, query: $query) {
+      omniboxSearch(editingContextId: $editingContextId, selectedObjectIds: $selectedObjectIds, query: $query) {
         id
         kind
         label

@@ -21,6 +21,11 @@ import {
   diagramRendererReactFlowPropsCustomizerExtensionPoint,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import {
+  OmniboxAction,
+  OmniboxCommandOverrideContribution,
+  omniboxCommandOverrideContributionExtensionPoint,
+} from '@eclipse-sirius/sirius-components-omnibox';
+import {
   NavigationBarProps,
   navigationBarCenterContributionExtensionPoint,
   useCurrentProject,
@@ -99,5 +104,32 @@ papayaExtensionRegistry.putData<DiagramPaletteToolContributionProps[]>(diagramPa
   identifier: `papaya_${diagramPaletteToolExtensionPoint.identifier}`,
   data: diagramPaletteToolContributions,
 });
+
+/*******************************************************************************
+ *
+ * Omnibox command overrides
+ *
+ * Used to override the default rendering of omnibox commands
+ *
+ *******************************************************************************/
+
+const omniboxCommandOverrides: OmniboxCommandOverrideContribution[] = [
+  {
+    canHandle: (action: OmniboxAction) => {
+      return action.id === 'showDocumentation';
+    },
+    handle: (_action: OmniboxAction) => {
+      window.open('https://www.github.com/eclipse-sirius/sirius-web', '_blank')?.focus();
+    },
+  },
+];
+
+papayaExtensionRegistry.putData<OmniboxCommandOverrideContribution[]>(
+  omniboxCommandOverrideContributionExtensionPoint,
+  {
+    identifier: `siriusweb_${omniboxCommandOverrideContributionExtensionPoint.identifier}`,
+    data: omniboxCommandOverrides,
+  }
+);
 
 export { papayaExtensionRegistry };

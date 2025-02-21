@@ -11,10 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+import { GQLMessage, Selection } from '@eclipse-sirius/sirius-components-core';
 
 export interface UseExecuteOmniboxCommandValue {
-  executeOmniboxCommand: (editingContextId: string, commandId: string) => void;
+  executeOmniboxCommand: (editingContextId: string, selectedObjectIds: string[], commandId: string) => void;
   loading: boolean;
   data: GQLExecuteOmniboxCommandData | null;
 }
@@ -26,6 +26,7 @@ export interface GQLExecuteOmniboxCommandVariables {
 export interface GQLExecuteOmniboxInput {
   id: string;
   editingContextId: string;
+  selectedObjectIds: string[];
   commandId: string;
 }
 
@@ -37,7 +38,8 @@ export interface GQLExecuteOmniboxCommandPayload {
   __typename: string;
 }
 
-export interface GQLSuccessPayload extends GQLExecuteOmniboxCommandPayload {
+export interface GQLExecuteOmniboxCommandSuccessPayload extends GQLExecuteOmniboxCommandPayload {
+  newSelection: Selection | null;
   messages: GQLMessage[];
 }
 

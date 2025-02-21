@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.papaya.services.commands;
+package org.eclipse.sirius.web.papaya.omnibox;
 
 import java.util.List;
 import java.util.Objects;
@@ -21,26 +21,26 @@ import org.eclipse.sirius.web.papaya.services.api.IPapayaCapableEditingContextPr
 import org.springframework.stereotype.Service;
 
 /**
- * Provides the sample project creation command for Papaya projects.
+ * Provides the show documentation command for Papaya projects.
  *
  * @author gdaniel
  */
 @Service
-public class PapayaCreateSampleProjectCommandProvider implements IOmniboxCommandProvider {
-
-    public static final String CREATE_SAMPLE_PROJECT_COMMAND_ID = "create_papaya_sample_project";
+public class PapayaShowDocumentationCommandProvider implements IOmniboxCommandProvider {
 
     private final IPapayaCapableEditingContextPredicate papayaCapableEditingContextPredicate;
 
-    public PapayaCreateSampleProjectCommandProvider(IPapayaCapableEditingContextPredicate papayaCapableEditingContextPredicate) {
+    public PapayaShowDocumentationCommandProvider(IPapayaCapableEditingContextPredicate papayaCapableEditingContextPredicate) {
         this.papayaCapableEditingContextPredicate = Objects.requireNonNull(papayaCapableEditingContextPredicate);
     }
 
     @Override
-    public List<OmniboxCommand> getCommands(String editingContextId, String query) {
+    public List<OmniboxCommand> getCommands(String editingContextId, List<String> selectedObjectIds, String query) {
+        List<OmniboxCommand> result = List.of();
         if (this.papayaCapableEditingContextPredicate.test(editingContextId)) {
-            return List.of(new OmniboxCommand(CREATE_SAMPLE_PROJECT_COMMAND_ID, "Create Sample Papaya Project", List.of("/omnibox/create-sample-project.svg"), "Create a sample Papaya project"));
+            result = List.of(new OmniboxCommand("showDocumentation", "Show documentation", List.of("/omnibox/show-documentation.svg"), "Navigate to Sirius Web's documentation"));
         }
-        return List.of();
+        return result;
     }
+
 }

@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { useData, useSelection } from '@eclipse-sirius/sirius-components-core';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import SubdirectoryArrowLeftIcon from '@mui/icons-material/SubdirectoryArrowLeft';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -19,10 +20,12 @@ import DialogTitle from '@mui/material/DialogTitle';
 import FormControl from '@mui/material/FormControl';
 import IconButton from '@mui/material/IconButton';
 import Input from '@mui/material/Input';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { OmniboxAction, OmniboxProps, OmniboxState } from './Omnibox.types';
 import { OmniboxCommandList } from './OmniboxCommandList';
+import { omniboxCommandOverrideContributionExtensionPoint } from './OmniboxExtensionPoints';
+import { OmniboxCommandOverrideContribution } from './OmniboxExtensionPoints.types';
 import { OmniboxObjectList } from './OmniboxObjectList';
 import { useExecuteOmniboxCommand } from './useExecuteOmniboxCommand';
 import { useOmniboxCommands } from './useOmniboxCommands';
@@ -65,7 +68,7 @@ const useOmniboxStyles = makeStyles()((theme) => ({
   },
 }));
 
-export const Omnibox = ({ open, editingContextId, initialContextEntries, onClose }: OmniboxProps) => {
+export const Omnibox = ({ open, editingContextId, onClose }: OmniboxProps) => {
   const [state, setState] = useState<OmniboxState>({
     queryHasChanged: true,
     mode: 'Command',
@@ -74,6 +77,22 @@ export const Omnibox = ({ open, editingContextId, initialContextEntries, onClose
   const { getOmniboxCommands, loading: commandLoading, data: commandData } = useOmniboxCommands();
   const { getOmniboxSearchResults, loading: searchResultsLoading, data: searchResultsData } = useOmniboxSearch();
   const { executeOmniboxCommand } = useExecuteOmniboxCommand();
+
+  const { selection } = useSelection();
+  const selectedObjectIds: string[] = selection.entries.map((entry) => entry.id);
+
+  useEffect(() => {
+    const variables: GQLGetOmniboxCommandsQueryVariables = {
+      editingContextId,
+      selectedObjectIds,
+      query: '',
+    };
+    getOmniboxCommands({ variables });
+  }, []);
+
+  const { data: omniboxCommandOverrideContributions } = useData<OmniboxCommandOverrideContribution[]>(
+    omniboxCommandOverrideContributionExtensionPoint
+  );
 
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
@@ -88,13 +107,15 @@ export const Omnibox = ({ open, editingContextId, initialContextEntries, onClose
     setState((prevState) => ({ ...prevState, queryHasChanged: false }));
     if (state.mode === 'Search') {
       const variables: GQLGetOmniboxSearchResultsQueryVariables = {
-        contextEntries: initialContextEntries.map((entry) => ({ id: entry.id, kind: entry.kind })),
+        editingContextId,
+        selectedObjectIds,
         query,
       };
       getOmniboxSearchResults({ variables });
     } else {
       const variables: GQLGetOmniboxCommandsQueryVariables = {
-        contextEntries: initialContextEntries.map((entry) => ({ id: entry.id, kind: entry.kind })),
+        editingContextId,
+        selectedObjectIds,
         query,
       };
       getOmniboxCommands({ variables });
@@ -122,7 +143,13 @@ export const Omnibox = ({ open, editingContextId, initialContextEntries, onClose
   };
 
   const handleOnActionClick = (action: OmniboxAction) => {
-    if (action.id === 'search') {
+    const commandOverride: OmniboxCommandOverrideContribution | undefined = omniboxCommandOverrideContributions.filter(
+      (contribution) => contribution.canHandle(action)
+    )[0];
+    if (commandOverride) {
+      commandOverride.handle(action);
+      onClose();
+    } else if (action.id === 'search') {
       setState((prevState) => ({
         ...prevState,
         mode: 'Search',
@@ -133,7 +160,7 @@ export const Omnibox = ({ open, editingContextId, initialContextEntries, onClose
       }
       inputRef.current?.focus();
     } else {
-      executeOmniboxCommand(editingContextId, action.id);
+      executeOmniboxCommand(editingContextId, selectedObjectIds, action.id);
       onClose();
     }
   };

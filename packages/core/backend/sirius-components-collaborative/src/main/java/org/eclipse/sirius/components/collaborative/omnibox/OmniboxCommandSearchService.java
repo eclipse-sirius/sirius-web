@@ -39,9 +39,9 @@ public class OmniboxCommandSearchService implements IOmniboxCommandSeachService 
     }
 
     @Override
-    public List<OmniboxCommand> findAll(String editingContextId, String query) {
+    public List<OmniboxCommand> findAll(String editingContextId, List<String> selectedObjectIds, String query) {
         List<OmniboxCommand> omniboxCommands = this.omniboxCommandProviders.stream()
-                .flatMap(provider -> provider.getCommands(editingContextId, query).stream())
+                .flatMap(provider -> provider.getCommands(editingContextId, selectedObjectIds, query).stream())
                 .filter(command -> command.label().toLowerCase().contains(query.toLowerCase()))
                 .toList();
 
