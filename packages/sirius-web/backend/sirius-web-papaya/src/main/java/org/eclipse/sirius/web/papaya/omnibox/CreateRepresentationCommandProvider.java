@@ -60,7 +60,7 @@ public class CreateRepresentationCommandProvider implements IOmniboxCommandProvi
 
     private List<OmniboxCommand> toCommands(EditingContextRepresentationDescriptionsPayload payload) {
         return payload.representationDescriptions().stream()
-                .map(representationDescriptionMetadata -> new OmniboxCommand(ACTION_PREFIX + representationDescriptionMetadata.getId(), representationDescriptionMetadata.getLabel(), List.of(), ""))
+                .map(representationDescriptionMetadata -> new OmniboxCommand(ACTION_PREFIX + representationDescriptionMetadata.getId(), "Create a new " + representationDescriptionMetadata.getLabel(), List.of("/omnibox/create.svg"), ""))
                 .toList();
     }
 }

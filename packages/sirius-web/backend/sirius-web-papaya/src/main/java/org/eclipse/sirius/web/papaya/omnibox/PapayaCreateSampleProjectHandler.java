@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.papaya.omnibox;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -19,11 +20,11 @@ import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteOmniboxCommandSuccessPayload;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
@@ -90,7 +91,7 @@ public class PapayaCreateSampleProjectHandler implements IEditingContextEventHan
 
             resource.getContents().add(project);
             changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
-            payload = new SuccessPayload(input.id());
+            payload = new ExecuteOmniboxCommandSuccessPayload(input.id(), null, List.of());
         }
         payloadSink.tryEmitValue(payload);
         changeDescriptionSink.tryEmitNext(changeDescription);

@@ -14,7 +14,7 @@ package org.eclipse.sirius.components.graphql.tests;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.collaborative.dto.ExecuteOmniboxCommandInput;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteOmniboxCommandInput;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;

@@ -39,7 +39,7 @@ public class PapayaCreateSampleProjectCommandProvider implements IOmniboxCommand
     @Override
     public List<OmniboxCommand> getCommands(String editingContextId, List<String> selectedObjectIds, String query) {
         if (this.papayaCapableEditingContextPredicate.test(editingContextId)) {
-            return List.of(new OmniboxCommand(CREATE_SAMPLE_PROJECT_COMMAND_ID, "Create Sample Papaya Project", List.of("/omnibox/create-sample-project.svg"), "Create a sample Papaya project"));
+            return List.of(new OmniboxCommand(CREATE_SAMPLE_PROJECT_COMMAND_ID, "Create Sample Papaya Project", List.of("/omnibox/create.svg"), "Create a sample Papaya project"));
         }
         return List.of();
     }

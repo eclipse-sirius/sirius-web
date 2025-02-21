@@ -27,7 +27,7 @@ import { OmniboxCommandList } from './OmniboxCommandList';
 import { omniboxCommandOverrideContributionExtensionPoint } from './OmniboxExtensionPoints';
 import { OmniboxCommandOverrideContribution } from './OmniboxExtensionPoints.types';
 import { OmniboxObjectList } from './OmniboxObjectList';
-import { useExecuteOmniboxCommand } from './useExecuteOmniboxCommand';
+import { isExecuteOmniboxCommandSuccessPayload, useExecuteOmniboxCommand } from './useExecuteOmniboxCommand';
 import { useOmniboxCommands } from './useOmniboxCommands';
 import { GQLGetOmniboxCommandsQueryVariables } from './useOmniboxCommands.types';
 import { useOmniboxSearch } from './useOmniboxSearch';
@@ -76,7 +76,7 @@ export const Omnibox = ({ open, editingContextId, onClose }: OmniboxProps) => {
 
   const { getOmniboxCommands, loading: commandLoading, data: commandData } = useOmniboxCommands();
   const { getOmniboxSearchResults, loading: searchResultsLoading, data: searchResultsData } = useOmniboxSearch();
-  const { executeOmniboxCommand } = useExecuteOmniboxCommand();
+  const { executeOmniboxCommand, data: executeOmniboxCommandData } = useExecuteOmniboxCommand();
 
   const { selection } = useSelection();
   const selectedObjectIds: string[] = selection.entries.map((entry) => entry.id);
@@ -161,9 +161,17 @@ export const Omnibox = ({ open, editingContextId, onClose }: OmniboxProps) => {
       inputRef.current?.focus();
     } else {
       executeOmniboxCommand(editingContextId, selectedObjectIds, action.id);
-      onClose();
     }
   };
+
+  useEffect(() => {
+    if (
+      executeOmniboxCommandData &&
+      isExecuteOmniboxCommandSuccessPayload(executeOmniboxCommandData.executeOmniboxCommand)
+    ) {
+      onClose();
+    }
+  }, [executeOmniboxCommandData]);
 
   let omniboxResult: JSX.Element | null = null;
   if (state.mode === 'Command') {
