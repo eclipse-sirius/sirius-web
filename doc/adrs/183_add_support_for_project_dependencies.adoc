@@ -1,0 +1,40 @@
+= [ADR-183] Add support for project dependencies
+
+
+== Context
+
+https://github.com/eclipse-sirius/sirius-web/blob/master/doc/iterations/2025.2/add_support_for_the_import_of_libraries.adoc[This shape] describes how project can import libraries, but does not define how the project-to-library dependency is stored.
+
+We need to capture this information to implement future library import/upgrade strategies.
+For example: we need to know whether a part of a project comes from a library (to prevent users from editing it), or what are the libraries imported by a project that can be upgraded to a newer version.
+
+== Decision
+
+A new table `project_dependency` with the following columns should be created
+
+- `projectId`
+- `libraryId`
+
+The `library` table should be updated with a `nature` column to give hints on the nature of the content stored in the library.
+
+An `IEditingContextProcessor` implementation should be provided to load the content of imported libraries with the `Sirius` nature as Sirius Web resources in the editing context.
+This solution reuses the approach described in https://github.com/eclipse-sirius/sirius-web/blob/master/doc/adrs/124_add_support_for_libraries.adoc[ADR 124].
+The loaded resources should have a dedicated URI schema: `sirius:/library/`, and should not be persisted with the editing context of the project that imports them.
+
+Downstream applications need to implement their own `IEditingContextProcessor` to handle libraries with a different nature.
+
+The `IObjectService` should have a method to check whether an object is read-only.
+```java
+public interface IObjectService {
+    // [...]
+
+    boolean isReadOnly(Object object);
+}
+```
+
+A new `IReadOnlyObjectService` should be created, as well as a `ComposedReadOnlyObjectService` to let downstream application implement their own read-only checks.
+Sirius Web should provide a default implementation that returns `true` if the object is or is contained in a resource with the library schema.
+
+== Status
+
+Work in progress
