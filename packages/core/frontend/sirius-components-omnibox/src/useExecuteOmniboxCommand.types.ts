@@ -14,7 +14,7 @@
 import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
 
 export interface UseExecuteOmniboxCommandValue {
-  executeOmniboxCommand: (editingContextId: string, commandId: string) => void;
+  executeOmniboxCommand: (editingContextId: string, selectedObjectIds: string[], commandId: string) => void;
   loading: boolean;
   data: GQLExecuteOmniboxCommandData | null;
 }
@@ -26,6 +26,7 @@ export interface GQLExecuteOmniboxCommandVariables {
 export interface GQLExecuteOmniboxInput {
   id: string;
   editingContextId: string;
+  selectedObjectIds: string[];
   commandId: string;
 }
 

@@ -21,7 +21,6 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxContextEntry;
 import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxSearchInput;
 import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxSearchPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
@@ -40,7 +39,7 @@ public class ViewerOmniboxSearchDataFetcher implements IDataFetcherWithFieldCoor
 
     private static final String EDITING_CONTEXT_ID_ARGUMENT = "editingContextId";
 
-    private static final String CONTEXT_ENTRIES_ARGUMENT = "contextEntries";
+    private static final String SELECTED_OBJECT_IDS_ARGUMENT = "selectedObjectIds";
 
     private static final String QUERY_ARGUMENT = "query";
 
@@ -56,11 +55,11 @@ public class ViewerOmniboxSearchDataFetcher implements IDataFetcherWithFieldCoor
     @Override
     public CompletableFuture<List<Object>> get(DataFetchingEnvironment environment) throws Exception {
         String editingContextId = environment.getArgument(EDITING_CONTEXT_ID_ARGUMENT);
-        Object argument = environment.getArgument(CONTEXT_ENTRIES_ARGUMENT);
-        List<OmniboxContextEntry> omniboxContextEntries = this.objectMapper.convertValue(argument, new TypeReference<List<OmniboxContextEntry>>() { });
+        Object argument = environment.getArgument(SELECTED_OBJECT_IDS_ARGUMENT);
+        List<String> selectedObjectIds = this.objectMapper.convertValue(argument, new TypeReference<>() { });
         String query = environment.getArgument(QUERY_ARGUMENT);
 
-        var input = new OmniboxSearchInput(UUID.randomUUID(), editingContextId, omniboxContextEntries, query);
+        var input = new OmniboxSearchInput(UUID.randomUUID(), editingContextId, selectedObjectIds, query);
 
         return this.editingContextDispatcher.dispatchQuery(input.editingContextId(), input)
                 .filter(OmniboxSearchPayload.class::isInstance)

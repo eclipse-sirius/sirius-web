@@ -23,11 +23,11 @@ import org.eclipse.sirius.components.core.api.IInput;
  *
  * @author gdaniel
  */
-public record OmniboxSearchInput(UUID id, String editingContextId, List<OmniboxContextEntry> contextEntries, String query) implements IInput {
+public record OmniboxSearchInput(UUID id, String editingContextId, List<String> selectedObjectIds, String query) implements IInput {
     public OmniboxSearchInput {
         Objects.requireNonNull(id);
         Objects.requireNonNull(editingContextId);
-        Objects.requireNonNull(contextEntries);
+        Objects.requireNonNull(selectedObjectIds);
         Objects.requireNonNull(query);
     }
 }

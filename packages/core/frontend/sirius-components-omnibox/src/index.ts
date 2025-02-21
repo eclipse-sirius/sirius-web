@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export { type OmniboxAction, type OmniboxContextEntry } from './Omnibox.types';
+export { type OmniboxAction } from './Omnibox.types';
 export * from './OmniboxButton';
 export * from './OmniboxExtensionPoints';
 export * from './OmniboxExtensionPoints.types';

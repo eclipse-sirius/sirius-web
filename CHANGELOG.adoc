@@ -197,6 +197,7 @@ To achieve that a new concept, `ProjectSemanticData` has been added along with a
 - https://github.com/eclipse-sirius/sirius-web/issues/4514[#4514] [sirius-web] Added support for Ctrl+Shift+Z (Linux/macOS) to trigger redo in addition to Ctrl+Y (Windows)
 - https://github.com/eclipse-sirius/sirius-web/issues/4372[#4372] [sirius-web] Lower the coupling between project and editing context
 - https://github.com/eclipse-sirius/sirius-web/issues/4600[#4600] [core] Fetch the commands of the omnibox automatically when it is opened
+- https://github.com/eclipse-sirius/sirius-web/issues/4601[#4601] [core] Make the omnibox selection aware
 
 
 == v2025.1.0
