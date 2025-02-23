@@ -19,6 +19,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import { Theme } from '@mui/material/styles';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import {
   FilterableSortableListProps,
@@ -107,6 +108,7 @@ export const FilterableSortableList = ({
   moveElement,
 }: FilterableSortableListProps) => {
   const { classes } = useStyles();
+  const { t } = useTranslation('siriusComponentsWidgetReference', { keyPrefix: 'edit' });
 
   const [state, setState] = useState<FilterableSortableListState>({
     filterBarText: '',
@@ -201,7 +203,7 @@ export const FilterableSortableList = ({
         }
         text={state.filterBarText}
       />
-      <span className={classes.title}>Selected</span>
+      <span className={classes.title}>{t('selected')}</span>
       <div className={classes.borderStyle} onDrop={handleDropNewItem} onDragOver={handleDragOverNewItem}>
         <List dense component="div" role="list" data-testid="selected-items-list">
           {items

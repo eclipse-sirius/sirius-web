@@ -29,6 +29,7 @@ import Paper from '@mui/material/Paper';
 import Tooltip from '@mui/material/Tooltip';
 import { Edge, Node, Panel, useNodesInitialized, useReactFlow } from '@xyflow/react';
 import { memo, useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { HelperLinesIcon } from '../../icons/HelperLinesIcon';
@@ -56,6 +57,8 @@ export const DiagramPanel = memo(
     edgeType,
     onEdgeType,
   }: DiagramPanelProps) => {
+    const { t } = useTranslation('siriusComponentsDiagrams', { keyPrefix: 'panel' });
+
     const [state, setState] = useState<DiagramPanelState>({
       dialogOpen: null,
       arrangeAllDone: false,
@@ -109,82 +112,82 @@ export const DiagramPanel = memo(
         <Panel position="top-left">
           <Paper>
             {fullscreen ? (
-              <Tooltip title="Exit full screen mode">
-                <IconButton size="small" aria-label="exit full screen mode" onClick={() => onFullscreen(false)}>
+              <Tooltip title={t('exitFullScreen')}>
+                <IconButton size="small" aria-label={t('exitFullScreen')} onClick={() => onFullscreen(false)}>
                   <FullscreenExitIcon />
                 </IconButton>
               </Tooltip>
             ) : (
-              <Tooltip title="Toggle full screen mode">
-                <IconButton size="small" aria-label="toggle full screen mode" onClick={() => onFullscreen(true)}>
+              <Tooltip title={t('toggleFullScreen')}>
+                <IconButton size="small" aria-label={t('toggleFullScreen')} onClick={() => onFullscreen(true)}>
                   <FullscreenIcon />
                 </IconButton>
               </Tooltip>
             )}
-            <Tooltip title="Fit to screen">
+            <Tooltip title={t('fitToScreen')}>
               <IconButton
                 size="small"
-                aria-label="fit to screen"
+                aria-label={t('fitToScreen')}
                 onClick={handleFitToScreen}
                 data-testid="fit-to-screen">
                 <AspectRatioIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Zoom in">
-              <IconButton size="small" aria-label="zoom in" onClick={handleZoomIn}>
+            <Tooltip title={t('zoomIn')}>
+              <IconButton size="small" aria-label={t('zoomIn')} onClick={handleZoomIn}>
                 <ZoomInIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Zoom out">
-              <IconButton size="small" aria-label="zoom out" onClick={handleZoomOut}>
+            <Tooltip title={t('zoomOut')}>
+              <IconButton size="small" aria-label={t('zoomOut')} onClick={handleZoomOut}>
                 <ZoomOutIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Share diagram">
-              <IconButton size="small" aria-label="share diagram" onClick={handleShare} data-testid="share">
+            <Tooltip title={t('shareDiagram')}>
+              <IconButton size="small" aria-label={t('shareDiagram')} onClick={handleShare} data-testid="share">
                 <ShareIcon />
               </IconButton>
             </Tooltip>
             <ExportImageButton />
             {snapToGrid ? (
-              <Tooltip title="Exit snap to grid mode">
-                <IconButton size="small" aria-label="exit snap to grid mode" onClick={() => onSnapToGrid(false)}>
+              <Tooltip title={t('exitSnapToGrid')}>
+                <IconButton size="small" aria-label={t('exitSnapToGrid')} onClick={() => onSnapToGrid(false)}>
                   <GridOffIcon />
                 </IconButton>
               </Tooltip>
             ) : (
-              <Tooltip title="Toggle snap to grid mode">
-                <IconButton size="small" aria-label="toggle snap to grid mode" onClick={() => onSnapToGrid(true)}>
+              <Tooltip title={t('toggleSnapToGrid')}>
+                <IconButton size="small" aria-label={t('toggleSnapToGrid')} onClick={() => onSnapToGrid(true)}>
                   <GridOnIcon />
                 </IconButton>
               </Tooltip>
             )}
             {helperLines ? (
-              <Tooltip title="Hide helper lines">
+              <Tooltip title={t('hideHelperLines')}>
                 <IconButton
                   size="small"
-                  aria-label="hide helper lines"
+                  aria-label={t('hideHelperLines')}
                   onClick={() => onHelperLines(false)}
                   data-testid="hide-helper-lines">
                   <HelperLinesIconOff />
                 </IconButton>
               </Tooltip>
             ) : (
-              <Tooltip title="Show helper lines">
+              <Tooltip title={t('showHelperLines')}>
                 <IconButton
                   size="small"
-                  aria-label="show helper lines"
+                  aria-label={t('showHelperLines')}
                   onClick={() => onHelperLines(true)}
                   data-testid="show-helper-lines">
                   <HelperLinesIcon />
                 </IconButton>
               </Tooltip>
             )}
-            <Tooltip title="Arrange all elements">
+            <Tooltip title={t('arrangeAll')}>
               <span>
                 <IconButton
                   size="small"
-                  aria-label="arrange all elements"
+                  aria-label={t('arrangeAll')}
                   onClick={() => {
                     setState((prevState) => ({
                       ...prevState,
@@ -229,11 +232,11 @@ export const DiagramPanel = memo(
                 </IconButton>
               </Tooltip>
             )}
-            <Tooltip title="Reveal hidden elements">
+            <Tooltip title={t('revealHidden')}>
               <span>
                 <IconButton
                   size="small"
-                  aria-label="reveal hidden elements"
+                  aria-label={t('revealHidden')}
                   onClick={onUnhideAll}
                   data-testid="reveal-hidden-elements"
                   disabled={readOnly}>
@@ -241,11 +244,11 @@ export const DiagramPanel = memo(
                 </IconButton>
               </span>
             </Tooltip>
-            <Tooltip title="Reveal faded elements">
+            <Tooltip title={t('revealFaded')}>
               <span>
                 <IconButton
                   size="small"
-                  aria-label="reveal faded elements"
+                  aria-label={t('revealFaded')}
                   onClick={onUnfadeAll}
                   data-testid="reveal-faded-elements"
                   disabled={readOnly}>
@@ -253,11 +256,11 @@ export const DiagramPanel = memo(
                 </IconButton>
               </span>
             </Tooltip>
-            <Tooltip title="Unpin all elements">
+            <Tooltip title={t('unpinAll')}>
               <span>
                 <IconButton
                   size="small"
-                  aria-label="unpin all elements"
+                  aria-label={t('unpinAll')}
                   onClick={onUnpinAll}
                   data-testid="unpin-all-elements"
                   disabled={readOnly}>

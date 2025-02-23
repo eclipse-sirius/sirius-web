@@ -20,6 +20,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { makeStyles } from 'tss-react/mui';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BrowseModalProps } from './BrowseModal.types';
 
 const useBrowserModalStyles = makeStyles()((_) => ({
@@ -30,6 +31,7 @@ const useBrowserModalStyles = makeStyles()((_) => ({
 
 export const BrowseModal = ({ editingContextId, widget, onClose }: BrowseModalProps) => {
   const { classes: styles } = useBrowserModalStyles();
+  const { t } = useTranslation('siriusComponentsWidgetReference', { keyPrefix: 'select' });
   const [browserSelection, setBrowserSelection] = useState<Selection>({ entries: widget.referenceValues });
 
   return (
@@ -44,7 +46,7 @@ export const BrowseModal = ({ editingContextId, widget, onClose }: BrowseModalPr
         aria-labelledby="dialog-title"
         fullWidth
         data-testid="browse-modal">
-        <DialogTitle id="dialog-title">Select an object</DialogTitle>
+        <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
         <DialogContent className={styles.content}>
           <ModelBrowserTreeView
             editingContextId={editingContextId}
@@ -54,7 +56,7 @@ export const BrowseModal = ({ editingContextId, widget, onClose }: BrowseModalPr
             isContainment={widget.reference.containment}
             markedItemIds={[]}
             enableMultiSelection={widget.reference.manyValued}
-            title={'Choices'}
+            title={t('choices')}
             leafType={'reference'}
             ownerKind={widget.reference.ownerKind}
           />
@@ -71,7 +73,7 @@ export const BrowseModal = ({ editingContextId, widget, onClose }: BrowseModalPr
                 onClose(selectedElement.id);
               }
             }}>
-            Select
+            {t('submit')}
           </Button>
         </DialogActions>
       </Dialog>
