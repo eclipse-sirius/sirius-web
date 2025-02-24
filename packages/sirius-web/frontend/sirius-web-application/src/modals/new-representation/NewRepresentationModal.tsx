@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -252,16 +252,14 @@ export const NewRepresentationModal = ({
               inputProps={{ 'data-testid': 'representationDescription-input' }}
               fullWidth
               data-testid="representationDescription">
-              {representationDescriptions
-                .sort((a, b) => a.label.localeCompare(b.label))
-                .map((representationDescription) => (
-                  <MenuItem
-                    value={representationDescription.id}
-                    key={representationDescription.id}
-                    data-testid={representationDescription.label}>
-                    {representationDescription.label}
-                  </MenuItem>
-                ))}
+              {representationDescriptions.map((representationDescription) => (
+                <MenuItem
+                  value={representationDescription.id}
+                  key={representationDescription.id}
+                  data-testid={representationDescription.label}>
+                  {representationDescription.label}
+                </MenuItem>
+              ))}
             </Select>
           </div>
         </DialogContent>
