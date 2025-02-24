@@ -1,6 +1,26 @@
 = Changelog
 
-== v2025.2.0 (work in progress)
+== v2025.4.0 (work in progress)
+
+=== Shapes
+
+=== Architectural decision records
+
+=== Deprecation warning
+
+=== Breaking changes
+
+=== Dependency update
+
+=== Bug fixes
+
+- https://github.com/eclipse-sirius/sirius-web/issues/4540[#4540] [diagram] Do not invoke mutation `layoutDiagram` when in read-only mode
+
+=== New Features
+
+=== Improvements
+
+== v2025.2.0
 
 === Shapes
 
