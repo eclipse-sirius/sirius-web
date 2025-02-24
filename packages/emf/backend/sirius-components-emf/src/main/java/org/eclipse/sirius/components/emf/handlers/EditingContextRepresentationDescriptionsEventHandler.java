@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,8 @@
 package org.eclipse.sirius.components.emf.handlers;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -36,6 +38,7 @@ import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchSe
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
+import org.eclipse.sirius.components.emf.services.api.IRepresentationDescriptionMetadataSorter;
 import org.eclipse.sirius.components.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -62,13 +65,16 @@ public class EditingContextRepresentationDescriptionsEventHandler implements IEd
 
     private final List<IRepresentationDescriptionsProvider> representationDescriptionsProviders;
 
+    private final List<IRepresentationDescriptionMetadataSorter> representationDescriptionMetadataSorters;
+
     public EditingContextRepresentationDescriptionsEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IEMFKindService emfKindService,
-            IEMFMessageService emfMessageService, IObjectService objectService, List<IRepresentationDescriptionsProvider> representationDescriptionsProviders) {
+            IEMFMessageService emfMessageService, IObjectService objectService, List<IRepresentationDescriptionsProvider> representationDescriptionsProviders, List<IRepresentationDescriptionMetadataSorter> representationDescriptionMetadataSorters) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.emfMessageService = Objects.requireNonNull(emfMessageService);
         this.objectService = Objects.requireNonNull(objectService);
         this.representationDescriptionsProviders = Objects.requireNonNull(representationDescriptionsProviders);
+        this.representationDescriptionMetadataSorters = Objects.requireNonNull(representationDescriptionMetadataSorters);
     }
 
     @Override
@@ -79,8 +85,7 @@ public class EditingContextRepresentationDescriptionsEventHandler implements IEd
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
         var optionalObject = Optional.empty();
-        if (input instanceof EditingContextRepresentationDescriptionsInput) {
-            EditingContextRepresentationDescriptionsInput editingContextRepresentationDescriptionsInput = (EditingContextRepresentationDescriptionsInput) input;
+        if (input instanceof EditingContextRepresentationDescriptionsInput editingContextRepresentationDescriptionsInput) {
             String objectId = editingContextRepresentationDescriptionsInput.objectId();
             optionalObject = this.objectService.getObject(editingContext, objectId);
         }
@@ -109,16 +114,21 @@ public class EditingContextRepresentationDescriptionsEventHandler implements IEd
                 Predicate<VariableManager> canCreatePredicate = description.getCanCreatePredicate();
                 boolean canCreate = canCreatePredicate.test(variableManager);
                 if (canCreate) {
-                    Object targetObject = object;
-                    this.representationDescriptionsProviders.forEach(provider -> {
-                        if (provider.canHandle(description)) {
-                            var descriptions = provider.handle(editingContext, targetObject, description);
-                            result.addAll(descriptions);
-                        }
-                    });
+                    var representationDescriptions = this.representationDescriptionsProviders.stream()
+                            .filter(provider -> provider.canHandle(description))
+                            .map(provider -> provider.handle(editingContext, object, description))
+                            .flatMap(Collection::stream)
+                            .toList();
+                    result.addAll(representationDescriptions);
                 }
             }
         }
+
+        result.sort(Comparator.comparing(RepresentationDescriptionMetadata::getLabel));
+        for (var representationDescriptionMetadataSorter: this.representationDescriptionMetadataSorters) {
+            result = representationDescriptionMetadataSorter.sort(result);
+        }
+
         return result;
     }
 
@@ -129,20 +139,18 @@ public class EditingContextRepresentationDescriptionsEventHandler implements IEd
             String ePackageName = this.emfKindService.getEPackageName(kind);
             String eClassName = this.emfKindService.getEClassName(kind);
 
-            // @formatter:off
             return this.emfKindService.findEPackage(ePackageRegistry, ePackageName)
                     .map(ePackage -> ePackage.getEClassifier(eClassName))
                     .filter(EClass.class::isInstance)
                     .map(EClass.class::cast);
-            // @formatter:on
         } else {
             return Optional.empty();
         }
     }
 
     private Optional<Registry> getPackageRegistry(IEditingContext editingContext) {
-        if (editingContext instanceof IEMFEditingContext) {
-            Registry packageRegistry = ((IEMFEditingContext) editingContext).getDomain().getResourceSet().getPackageRegistry();
+        if (editingContext instanceof IEMFEditingContext emfEditingContext) {
+            Registry packageRegistry = emfEditingContext.getDomain().getResourceSet().getPackageRegistry();
             return Optional.of(packageRegistry);
         } else {
             return Optional.empty();
