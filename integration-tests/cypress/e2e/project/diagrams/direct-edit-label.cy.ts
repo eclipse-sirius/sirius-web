@@ -45,7 +45,7 @@ describe('Diagram - edit node label', () => {
       cy.getByTestId('name-edit').should('exist');
       diagram.getPalette().should('not.exist');
       //Edit
-      cy.wait(100);
+      cy.getByTestId('name-edit').find('textarea').should('have.value', 'DataSource1');
       cy.getByTestId('name-edit').type('Edited{enter}', { delay: 10 });
       cy.getByTestId('name-edit').should('not.exist');
       diagram.getNodes('Topography', 'Edited').should('exist');
@@ -60,7 +60,6 @@ describe('Diagram - edit node label', () => {
       diagram.getNodes('Topography', 'DataSource1').should('exist');
       diagram.getNodes('Topography', 'DataSource1').click();
       //Edit
-      cy.wait(100);
       cy.focused().click().type('Edited{enter}');
       cy.getByTestId('name-edit').should('not.exist');
       diagram.getNodes('Topography', 'Edited').should('exist');
@@ -79,7 +78,7 @@ describe('Diagram - edit node label', () => {
       cy.getByTestId('name-edit').should('exist');
       diagram.getPalette().should('not.exist');
       //Cancel direct edit with escp
-      cy.wait(100);
+      cy.getByTestId('name-edit').find('textarea').should('have.value', 'DataSource1');
       cy.getByTestId('name-edit').type('test{esc}');
       cy.getByTestId('name-edit').should('not.exist');
       diagram.getNodes('Topography', 'DataSource1').should('exist');
@@ -101,7 +100,7 @@ describe('Diagram - edit node label', () => {
       cy.getByTestId('name-edit').should('exist');
       diagram.getPalette().should('not.exist');
       //Edit
-      cy.wait(100);
+      cy.getByTestId('name-edit').find('textarea').should('have.value', 'DataSource1');
       cy.getByTestId('name-edit').type('Edited{enter}');
       cy.getByTestId('name-edit').should('not.exist');
       diagram.getNodes('Topography', 'Edited').should('exist');
@@ -126,7 +125,7 @@ describe('Diagram - edit node label', () => {
       cy.getByTestId('name-edit').should('exist');
       diagram.getPalette().should('not.exist');
       //Edit
-      cy.wait(100);
+      cy.getByTestId('name-edit').find('textarea').should('have.value', 'DataSource1');
       cy.getByTestId('name-edit').type('Edited{enter}');
       cy.getByTestId('name-edit').should('not.exist');
       diagram.getNodes('Topography', 'Edited').should('exist');
@@ -152,7 +151,7 @@ describe('Diagram - edit node label', () => {
       cy.getByTestId('name-edit').should('exist');
       diagram.getPalette().should('not.exist');
       //Edit
-      cy.wait(100);
+      cy.getByTestId('name-edit').find('textarea').should('have.value', 'CompositeProcessor2');
       cy.getByTestId('name-edit').type('Edited2{enter}');
       cy.getByTestId('name-edit').should('not.exist');
       diagram.getNodes('Topography', 'Edited2').should('exist');
