@@ -25,7 +25,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.dto.Identified;
-import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextApplicationService;
+import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextApplicationService;
 import org.eclipse.sirius.web.application.object.services.api.IDefaultObjectRestService;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.ChangeType;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.RestBranch;
@@ -53,12 +53,12 @@ public class DefaultProjectDataVersiongRestService implements IDefaultProjectDat
 
     private final IObjectService objectService;
 
-    private final IEditingContextApplicationService editingContextApplicationService;
+    private final IProjectEditingContextApplicationService projectEditingContextApplicationService;
 
-    public DefaultProjectDataVersiongRestService(IDefaultObjectRestService defaultObjectRestService, IObjectService objectService, IEditingContextApplicationService editingContextApplicationService) {
+    public DefaultProjectDataVersiongRestService(IDefaultObjectRestService defaultObjectRestService, IObjectService objectService, IProjectEditingContextApplicationService projectEditingContextApplicationService) {
         this.defaultObjectRestService = Objects.requireNonNull(defaultObjectRestService);
         this.objectService = Objects.requireNonNull(objectService);
-        this.editingContextApplicationService = Objects.requireNonNull(editingContextApplicationService);
+        this.projectEditingContextApplicationService = Objects.requireNonNull(projectEditingContextApplicationService);
     }
 
     /**
@@ -69,7 +69,7 @@ public class DefaultProjectDataVersiongRestService implements IDefaultProjectDat
      */
     @Override
     public List<RestCommit> getCommits(IEditingContext editingContext) {
-        return this.editingContextApplicationService.getProjectId(editingContext.getId())
+        return this.projectEditingContextApplicationService.getProjectId(editingContext.getId())
                 .flatMap(new UUIDParser()::parse)
                 .map(projectId -> new RestCommit(projectId, DEFAULT_CREATED, DEFAULT_COMMIT_DESCRIPTION, new Identified(projectId), List.of()))
                 .map(List::of)
@@ -87,7 +87,7 @@ public class DefaultProjectDataVersiongRestService implements IDefaultProjectDat
     @Override
     public RestCommit getCommitById(IEditingContext editingContext, UUID commitId) {
         RestCommit commit = null;
-        var optionalProjectId = this.editingContextApplicationService.getProjectId(editingContext.getId())
+        var optionalProjectId = this.projectEditingContextApplicationService.getProjectId(editingContext.getId())
                 .flatMap(new UUIDParser()::parse);
         if (commitId != null && optionalProjectId.isPresent() && commitId.toString().equals(optionalProjectId.get().toString())) {
             var projectId = optionalProjectId.get();
@@ -107,7 +107,7 @@ public class DefaultProjectDataVersiongRestService implements IDefaultProjectDat
     public List<RestDataVersion> getCommitChange(IEditingContext editingContext, UUID commitId, List<ChangeType> changeTypes) {
         List<RestDataVersion> dataVersions = new ArrayList<>();
         var changeTypesAllowed = changeTypes == null || changeTypes.isEmpty();
-        var optionalProjectId = this.editingContextApplicationService.getProjectId(editingContext.getId())
+        var optionalProjectId = this.projectEditingContextApplicationService.getProjectId(editingContext.getId())
                 .flatMap(new UUIDParser()::parse);
 
         if (commitId != null && optionalProjectId.isPresent() && commitId.toString().equals(optionalProjectId.get().toString()) && changeTypesAllowed) {
@@ -125,7 +125,7 @@ public class DefaultProjectDataVersiongRestService implements IDefaultProjectDat
     @Override
     public RestDataVersion getCommitChangeById(IEditingContext editingContext, UUID commitId, UUID changeId) {
         RestDataVersion dataVersion = null;
-        var optionalProjectId = this.editingContextApplicationService.getProjectId(editingContext.getId())
+        var optionalProjectId = this.projectEditingContextApplicationService.getProjectId(editingContext.getId())
                 .flatMap(new UUIDParser()::parse);
 
         if (changeId != null && commitId != null && optionalProjectId.isPresent() && commitId.toString().equals(optionalProjectId.get().toString())) {
@@ -152,7 +152,7 @@ public class DefaultProjectDataVersiongRestService implements IDefaultProjectDat
      */
     @Override
     public List<RestBranch> getBranches(IEditingContext editingContext) {
-        return this.editingContextApplicationService.getProjectId(editingContext.getId())
+        return this.projectEditingContextApplicationService.getProjectId(editingContext.getId())
                 .flatMap(new UUIDParser()::parse)
                 .map(projectId -> List.of(new RestBranch(projectId, DEFAULT_CREATED, new Identified(projectId), DEFAULT_BRANCH_NAME, new Identified(projectId), new Identified(projectId))))
                 .orElse(List.of());
@@ -169,7 +169,7 @@ public class DefaultProjectDataVersiongRestService implements IDefaultProjectDat
     @Override
     public RestBranch getBranchById(IEditingContext editingContext, UUID branchId) {
         RestBranch branch = null;
-        var optionalProjectId = this.editingContextApplicationService.getProjectId(editingContext.getId())
+        var optionalProjectId = this.projectEditingContextApplicationService.getProjectId(editingContext.getId())
                 .flatMap(new UUIDParser()::parse);
         if (optionalProjectId.isPresent() && branchId != null && branchId.toString().equals(optionalProjectId.get().toString())) {
             var projectId = optionalProjectId.get();

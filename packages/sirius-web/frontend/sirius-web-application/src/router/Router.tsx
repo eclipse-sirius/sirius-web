@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { useData } from '@eclipse-sirius/sirius-components-core';
 import { Navigate, Route, Routes, useRouteError } from 'react-router-dom';
+import { DisplayLibraryView } from '../views/display-library/DisplayLibraryView';
 import { EditProjectView } from '../views/edit-project/EditProjectView';
 import { ErrorView } from '../views/error/ErrorView';
 import { LibraryBrowser } from '../views/library-browser/LibraryBrowser';
@@ -41,6 +42,11 @@ export const Router = () => {
       />
       <Route path="/projects/:projectId/settings/*" element={<ProjectSettingsView />} ErrorBoundary={ErrorBoundary} />
       <Route path="/libraries" element={<LibraryBrowser />} ErrorBoundary={ErrorBoundary} />
+      <Route
+        path="/libraries/:namespace/:name/:version"
+        element={<DisplayLibraryView />}
+        ErrorBoundary={ErrorBoundary}
+      />
       <Route path="/errors/:code" element={<ErrorView />} />
       {routes.map((props, index) => (
         <Route key={index} {...props} ErrorBoundary={ErrorBoundary} />

@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
-import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextApplicationService;
+import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextApplicationService;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.ChangeType;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.CreateCommitRestInput;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.CreateCommitRestSuccessPayload;
@@ -67,11 +67,11 @@ public class CommitRestController {
 
     private final IEditingContextDispatcher editingContextDispatcher;
 
-    private final IEditingContextApplicationService editingContextApplicationService;
+    private final IProjectEditingContextApplicationService projectEditingContextApplicationService;
 
-    public CommitRestController(IEditingContextDispatcher editingContextDispatcher, IEditingContextApplicationService editingContextApplicationService) {
+    public CommitRestController(IEditingContextDispatcher editingContextDispatcher, IProjectEditingContextApplicationService projectEditingContextApplicationService) {
         this.editingContextDispatcher = Objects.requireNonNull(editingContextDispatcher);
-        this.editingContextApplicationService = Objects.requireNonNull(editingContextApplicationService);
+        this.projectEditingContextApplicationService = Objects.requireNonNull(projectEditingContextApplicationService);
     }
 
     @Operation(description = "Get all the commits in the given project.")
@@ -83,7 +83,7 @@ public class CommitRestController {
     })
     @GetMapping
     public ResponseEntity<List<RestCommit>> getCommits(@PathVariable String projectId) {
-        var editingContextId = editingContextApplicationService.getCurrentEditingContextId(projectId);
+        var editingContextId = projectEditingContextApplicationService.getCurrentEditingContextId(projectId);
         var payload = this.editingContextDispatcher.dispatchQuery(editingContextId, new GetCommitsRestInput(UUID.randomUUID())).block(Duration.ofSeconds(TIMEOUT));
         if (payload instanceof GetCommitsRestSuccessPayload successPayload) {
             return new ResponseEntity<>(successPayload.commits(), HttpStatus.OK);
@@ -130,7 +130,7 @@ public class CommitRestController {
     })
     @PostMapping
     public ResponseEntity<RestCommit> createCommit(@PathVariable String projectId, @RequestParam Optional<UUID> branchId, @RequestBody RestCommitRequest requestBody) {
-        var editingContextId = editingContextApplicationService.getCurrentEditingContextId(projectId);
+        var editingContextId = projectEditingContextApplicationService.getCurrentEditingContextId(projectId);
         List<RestDataVersionRequest> dataVersionRequests = requestBody.change();
         List<RestDataVersion> change = new ArrayList<>();
         if (dataVersionRequests != null) {
@@ -155,7 +155,7 @@ public class CommitRestController {
     })
     @GetMapping(path = "/{commitId}")
     public ResponseEntity<RestCommit> getCommitById(@PathVariable String projectId, @PathVariable UUID commitId) {
-        var editingContextId = editingContextApplicationService.getCurrentEditingContextId(projectId);
+        var editingContextId = projectEditingContextApplicationService.getCurrentEditingContextId(projectId);
         var payload = this.editingContextDispatcher.dispatchQuery(editingContextId, new GetCommitByIdRestInput(UUID.randomUUID(), commitId)).block(Duration.ofSeconds(TIMEOUT));
         if (payload instanceof GetCommitByIdRestSuccessPayload successPayload) {
             return new ResponseEntity<>(successPayload.commit(), HttpStatus.OK);
@@ -172,7 +172,7 @@ public class CommitRestController {
     })
     @GetMapping(path = "/{commitId}/changes")
     public ResponseEntity<List<RestDataVersion>> getCommitChange(@PathVariable String projectId, @PathVariable UUID commitId, @RequestParam Optional<List<ChangeType>> changeTypes) {
-        var editingContextId = editingContextApplicationService.getCurrentEditingContextId(projectId);
+        var editingContextId = projectEditingContextApplicationService.getCurrentEditingContextId(projectId);
         var payload = this.editingContextDispatcher.dispatchQuery(editingContextId, new GetCommitChangeRestInput(UUID.randomUUID(), commitId)).block(Duration.ofSeconds(TIMEOUT));
         if (payload instanceof GetCommitChangeRestSuccessPayload successPayload) {
             return new ResponseEntity<>(successPayload.commitChanges(), HttpStatus.OK);
@@ -189,7 +189,7 @@ public class CommitRestController {
     })
     @GetMapping(path = "/{commitId}/changes/{changeId}")
     public ResponseEntity<RestDataVersion> getCommitChangeById(@PathVariable String projectId, @PathVariable UUID commitId, @PathVariable UUID changeId) {
-        var editingContextId = editingContextApplicationService.getCurrentEditingContextId(projectId);
+        var editingContextId = projectEditingContextApplicationService.getCurrentEditingContextId(projectId);
         var payload = this.editingContextDispatcher.dispatchQuery(editingContextId, new GetCommitChangeByIdRestInput(UUID.randomUUID(), commitId, changeId)).block(Duration.ofSeconds(TIMEOUT));
         if (payload instanceof GetCommitChangeByIdRestSuccessPayload successPayload) {
             return new ResponseEntity<>(successPayload.commitChange(), HttpStatus.OK);

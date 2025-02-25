@@ -12,21 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.library.services.api;
 
-import java.util.Optional;
-
-import org.eclipse.sirius.web.application.library.dto.LibraryDTO;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
 /**
- * Application services used to manipulate libraries.
+ * Used to interact with the editing context of libraries.
  *
- * @author gdaniel
+ * @author sbegaudeau
  */
-public interface ILibraryApplicationService {
-
-    Page<LibraryDTO> findAll(Pageable pageable);
-
-    Optional<LibraryDTO> findByNamespaceAndNameAndVersion(String namespace, String name, String version);
-
+public interface ILibraryEditingContextApplicationService {
+    String getCurrentEditingContextId(String namespace, String name, String version);
 }

@@ -66,7 +66,7 @@ public class ViewerLibrariesDataFetcher implements IDataFetcherWithFieldCoordina
 
     private Connection<LibraryDTO> toConnection(Page<LibraryDTO> libraryPage) {
         var edges = libraryPage.stream().map(libraryDTO -> {
-            var globalId = new Relay().toGlobalId("Library", libraryDTO.id().toString());
+            var globalId = new Relay().toGlobalId("Library", libraryDTO.namespace() + libraryDTO.name() + libraryDTO.version());
             var cursor = new DefaultConnectionCursor(globalId);
             return (Edge<LibraryDTO>) new DefaultEdge<>(libraryDTO, cursor);
         }).toList();

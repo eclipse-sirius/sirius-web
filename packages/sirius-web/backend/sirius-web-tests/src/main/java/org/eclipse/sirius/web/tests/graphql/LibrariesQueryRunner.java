@@ -33,7 +33,6 @@ public class LibrariesQueryRunner implements IQueryRunner {
                 libraries(page: $page, limit: $limit) {
                   edges {
                     node {
-                      id
                       namespace
                       name
                       version

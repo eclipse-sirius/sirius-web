@@ -28,7 +28,6 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.emfjson.resource.JsonResourceFactoryImpl;
-import org.eclipse.sirius.web.application.editingcontext.services.EditingContextApplicationService;
 import org.eclipse.sirius.web.application.project.services.api.IProjectExportParticipant;
 import org.eclipse.sirius.web.application.representation.services.api.IRepresentationContentMigrationService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
@@ -61,12 +60,12 @@ public class ProjectRepresentationDataExportParticipant implements IProjectExpor
 
     private final IRepresentationContentMigrationService representationContentMigrationService;
 
-    private final EditingContextApplicationService editingContextApplicationService;
+    private final ProjectEditingContextApplicationService editingContextApplicationService;
 
     private final Logger logger = LoggerFactory.getLogger(ProjectRepresentationDataExportParticipant.class);
 
     public ProjectRepresentationDataExportParticipant(IEditingContextSearchService editingContextSearchService, IProjectSemanticDataSearchService projectSemanticDataSearchService, IRepresentationMetadataSearchService representationMetadataSearchService,
-                                                      IRepresentationContentSearchService representationContentSearchService, ObjectMapper objectMapper, IRepresentationContentMigrationService representationContentMigrationService, EditingContextApplicationService editingContextApplicationService) {
+                                                      IRepresentationContentSearchService representationContentSearchService, ObjectMapper objectMapper, IRepresentationContentMigrationService representationContentMigrationService, ProjectEditingContextApplicationService editingContextApplicationService) {
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);

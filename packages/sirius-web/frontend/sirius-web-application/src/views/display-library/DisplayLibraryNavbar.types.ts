@@ -11,33 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { gql } from '@apollo/client';
+import { GQLLibrary } from './useLibrary.types';
 
-export const ViewerLibrariesFragment = gql`
-  fragment ViewerLibraries on Viewer {
-    libraries(page: $page, limit: $limit) {
-      edges {
-        node {
-          ...Library
-        }
-      }
-      pageInfo {
-        hasNextPage
-        hasPreviousPage
-        startCursor
-        endCursor
-        count
-      }
-    }
-  }
-`;
-
-export const LibraryFragment = gql`
-  fragment Library on Library {
-    namespace
-    name
-    version
-    description
-    createdOn
-  }
-`;
+export interface DisplayLibraryNavbarProps {
+  library: GQLLibrary;
+}
