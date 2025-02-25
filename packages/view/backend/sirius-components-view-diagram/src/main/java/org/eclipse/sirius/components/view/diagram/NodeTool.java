@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,22 +24,25 @@ package org.eclipse.sirius.components.view.diagram;
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.NodeTool#getElementsToSelectExpression <em>Elements To Select
  * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.NodeTool#isWithImpactAnalysis <em>With Impact
+ * Analysis</em>}</li>
  * </ul>
  *
- * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeTool()
  * @model
  * @generated
+ * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeTool()
  */
 public interface NodeTool extends Tool {
+
     /**
      * Returns the value of the '<em><b>Dialog Description</b></em>' containment reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @return the value of the '<em>Dialog Description</em>' containment reference.
-     * @see #setDialogDescription(DialogDescription)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeTool_DialogDescription()
      * @model containment="true"
      * @generated
+     * @see #setDialogDescription(DialogDescription)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeTool_DialogDescription()
      */
     DialogDescription getDialogDescription();
 
@@ -48,9 +51,9 @@ public interface NodeTool extends Tool {
      * Description</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Dialog Description</em>' containment reference.
-     * @see #getDialogDescription()
+     *         the new value of the '<em>Dialog Description</em>' containment reference.
      * @generated
+     * @see #getDialogDescription()
      */
     void setDialogDescription(DialogDescription value);
 
@@ -59,10 +62,10 @@ public interface NodeTool extends Tool {
      * end-user-doc -->
      *
      * @return the value of the '<em>Icon UR Ls Expression</em>' attribute.
-     * @see #setIconURLsExpression(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeTool_IconURLsExpression()
      * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
+     * @see #setIconURLsExpression(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeTool_IconURLsExpression()
      */
     String getIconURLsExpression();
 
@@ -71,9 +74,9 @@ public interface NodeTool extends Tool {
      * UR Ls Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Icon UR Ls Expression</em>' attribute.
-     * @see #getIconURLsExpression()
+     *         the new value of the '<em>Icon UR Ls Expression</em>' attribute.
      * @generated
+     * @see #getIconURLsExpression()
      */
     void setIconURLsExpression(String value);
 
@@ -82,10 +85,10 @@ public interface NodeTool extends Tool {
      * end-user-doc -->
      *
      * @return the value of the '<em>Elements To Select Expression</em>' attribute.
-     * @see #setElementsToSelectExpression(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeTool_ElementsToSelectExpression()
      * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
+     * @see #setElementsToSelectExpression(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeTool_ElementsToSelectExpression()
      */
     String getElementsToSelectExpression();
 
@@ -94,10 +97,33 @@ public interface NodeTool extends Tool {
      * <em>Elements To Select Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Elements To Select Expression</em>' attribute.
-     * @see #getElementsToSelectExpression()
+     *         the new value of the '<em>Elements To Select Expression</em>' attribute.
      * @generated
+     * @see #getElementsToSelectExpression()
      */
     void setElementsToSelectExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>With Impact Analysis</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>With Impact Analysis</em>' attribute.
+     * @model
+     * @generated
+     * @see #setWithImpactAnalysis(boolean)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeTool_WithImpactAnalysis()
+     */
+    boolean isWithImpactAnalysis();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.NodeTool#isWithImpactAnalysis <em>With
+     * Impact Analysis</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>With Impact Analysis</em>' attribute.
+     * @generated
+     * @see #isWithImpactAnalysis()
+     */
+    void setWithImpactAnalysis(boolean value);
 
 } // NodeTool
