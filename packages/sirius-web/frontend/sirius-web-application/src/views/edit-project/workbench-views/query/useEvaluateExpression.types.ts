@@ -58,6 +58,10 @@ export interface GQLIntExpressionResult extends GQLExpressionResult {
   intValue: number;
 }
 
+export interface GQLStringsExpressionResult extends GQLExpressionResult {
+  stringsValue: string[];
+}
+
 export interface GQLStringExpressionResult extends GQLExpressionResult {
   stringValue: string;
 }

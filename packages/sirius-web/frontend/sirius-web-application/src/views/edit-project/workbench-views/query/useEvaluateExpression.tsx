@@ -52,6 +52,9 @@ const evaluateExpressionMutation = gql`
           ... on IntExpressionResult {
             intValue: value
           }
+          ... on StringsExpressionResult {
+            stringsValue: value
+          }
           ... on StringExpressionResult {
             stringValue: value
           }

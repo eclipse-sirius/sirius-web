@@ -16,7 +16,7 @@ type EvaluateExpressionSuccessPayload {
   result: EvaluateExpressionResult!
 }
 
-union EvaluateExpressionResult = ObjectExpressionResult | ObjectsExpressionResult | BooleanExpressionResult | IntExpressionResult | StringExpressionResult | VoidExpressionResult
+union EvaluateExpressionResult = ObjectExpressionResult | ObjectsExpressionResult | BooleanExpressionResult | IntExpressionResult | StringExpressionResult | StringsExpressionResult | VoidExpressionResult
 
 type ObjectExpressionResult {
   value: Object!
@@ -36,6 +36,10 @@ type IntExpressionResult {
 
 type StringExpressionResult {
   value: String!
+}
+
+type StringsExpressionResult {
+  value: [String!]!
 }
 
 type VoidExpressionResult {
