@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -96,7 +96,6 @@ public class CreateFormEventHandler implements IEditingContextEventHandler {
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
         if (input instanceof CreateRepresentationInput createRepresentationInput) {
-
             Optional<IRepresentationDescription> optionalRepresentationDescription = this.representationDescriptionSearchService.findById(editingContext,
                     createRepresentationInput.representationDescriptionId());
             Optional<Object> optionalObject = this.objectService.getObject(editingContext, createRepresentationInput.objectId());

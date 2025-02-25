@@ -24,27 +24,38 @@ import org.eclipse.sirius.components.representations.VariableManager;
 /**
  * Used to evaluate an expression returning a list of values.
  *
+ * @param <T>
+ *     The expected type of the elements of the collection returned
+ *
  * @author sbegaudeau
  */
-public class MultiValueProvider implements Function<VariableManager, List<?>> {
+public class MultiValueProvider<T> implements Function<VariableManager, List<T>> {
 
     private final AQLInterpreter interpreter;
 
     private final String expression;
 
-    public MultiValueProvider(AQLInterpreter interpreter, String expression) {
+    private final Class<T> type;
+
+    public MultiValueProvider(AQLInterpreter interpreter, String expression, Class<T> type) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.expression = expression;
+        this.type = type;
     }
 
     @Override
-    public List<?> apply(VariableManager variableManager) {
+    public List<T> apply(VariableManager variableManager) {
         VariableManager childVariableManager = variableManager.createChild();
         childVariableManager.put(VARIABLE_MANAGER, variableManager);
         if (this.expression != null && !this.expression.isBlank()) {
-            return this.interpreter.evaluateExpression(childVariableManager.getVariables(), expression)
-                    .asObjects()
-                    .orElse(List.of());
+            var optionalCollection = this.interpreter.evaluateExpression(childVariableManager.getVariables(), expression).asObjects();
+            if (optionalCollection.isPresent()) {
+                var collection = optionalCollection.get();
+                return collection.stream()
+                        .filter(this.type::isInstance)
+                        .map(this.type::cast)
+                        .toList();
+            }
         }
         return List.of();
     }
