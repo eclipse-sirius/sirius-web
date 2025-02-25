@@ -258,12 +258,21 @@ const IntExpressionResultViewer = ({ result }: ExpressionResultViewerProps) => {
   );
 };
 
+const VoidExpressionResultViewer = ({ result }: ExpressionResultViewerProps) => {
+  if (result.__typename !== 'VoidExpressionResult') {
+    return null;
+  }
+
+  return <Typography variant="body2">The evaluation of this expression has not returned any result</Typography>;
+};
+
 const resultType2viewer: Record<string, ComponentType<ExpressionResultViewerProps>> = {
   ObjectExpressionResult: ObjectExpressionResultViewer,
   ObjectsExpressionResult: ObjectsExpressionResultViewer,
   BooleanExpressionResult: BooleanExpressionResultViewer,
   StringExpressionResult: StringExpressionResultViewer,
   IntExpressionResult: IntExpressionResultViewer,
+  VoidExpressionResult: VoidExpressionResultViewer,
 };
 
 const LoadingViewer = () => {
@@ -317,6 +326,8 @@ const ResultArea = ({ loading, payload, width, height }: ResultAreaProps) => {
     const Viewer = resultType2viewer[payload.result.__typename];
     if (Viewer) {
       content = <Viewer result={payload.result} width={width} height={height} />;
+    } else {
+      content = <Typography variant="body2">The expression has returned a result that is not supported</Typography>;
     }
   }
 
