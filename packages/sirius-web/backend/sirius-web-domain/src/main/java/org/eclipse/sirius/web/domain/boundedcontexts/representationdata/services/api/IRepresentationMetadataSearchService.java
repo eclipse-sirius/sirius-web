@@ -16,8 +16,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 /**
@@ -33,11 +33,11 @@ public interface IRepresentationMetadataSearchService {
 
     boolean existsByIdAndKind(UUID id, List<String> kinds);
 
-    List<RepresentationMetadata> findAllMetadataByProject(AggregateReference<Project, String> project);
+    List<RepresentationMetadata> findAllRepresentationMetadataBySemanticData(AggregateReference<SemanticData, UUID> semanticData);
 
-    List<RepresentationMetadata> findAllMetadataByProjectAndTargetObjectId(AggregateReference<Project, String> project, String targetObjectId);
+    List<RepresentationMetadata> findAllRepresentationMetadataBySemanticDataAndTargetObjectId(AggregateReference<SemanticData, UUID> semanticData, String targetObjectId);
 
-    boolean existAnyRepresentationForProjectAndTargetObjectId(AggregateReference<Project, String> project, String targetObjectId);
+    boolean existAnyRepresentationMetadataForSemanticDataAndTargetObjectId(AggregateReference<SemanticData, UUID> semanticData, String targetObjectId);
 
-    Optional<AggregateReference<Project, String>> findProjectByRepresentationId(UUID representationId);
+    Optional<AggregateReference<SemanticData, UUID>> findSemanticDataByRepresentationId(UUID representationId);
 }

@@ -17,10 +17,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationMetadataRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
@@ -54,23 +54,23 @@ public class RepresentationMetadataSearchService implements IRepresentationMetad
     }
 
     @Override
-    public List<RepresentationMetadata> findAllMetadataByProject(AggregateReference<Project, String> project) {
-        return this.representationMetadataRepository.findAllMetadataByProjectId(project.getId());
+    public List<RepresentationMetadata> findAllRepresentationMetadataBySemanticData(AggregateReference<SemanticData, UUID> semanticData) {
+        return this.representationMetadataRepository.findAllRepresentationMetadataBySemanticDataId(semanticData.getId());
     }
 
     @Override
-    public List<RepresentationMetadata> findAllMetadataByProjectAndTargetObjectId(AggregateReference<Project, String> project, String targetObjectId) {
-        return this.representationMetadataRepository.findAllMetadataByProjectAndTargetObjectId(project.getId(), targetObjectId);
+    public List<RepresentationMetadata> findAllRepresentationMetadataBySemanticDataAndTargetObjectId(AggregateReference<SemanticData, UUID> semanticData, String targetObjectId) {
+        return this.representationMetadataRepository.findAllRepresentationMetadataBySemanticDataIdAndTargetObjectId(semanticData.getId(), targetObjectId);
     }
 
     @Override
-    public boolean existAnyRepresentationForProjectAndTargetObjectId(AggregateReference<Project, String> project, String targetObjectId) {
-        return this.representationMetadataRepository.existAnyRepresentationForTargetObjectId(targetObjectId);
+    public boolean existAnyRepresentationMetadataForSemanticDataAndTargetObjectId(AggregateReference<SemanticData, UUID> semanticData, String targetObjectId) {
+        return this.representationMetadataRepository.existAnyRepresentationMetadataForSemanticDataIdAndTargetObjectId(semanticData.getId(), targetObjectId);
     }
 
     @Override
-    public Optional<AggregateReference<Project, String>> findProjectByRepresentationId(UUID representationId) {
-        return this.representationMetadataRepository.findProjectIdFromRepresentationId(representationId)
+    public Optional<AggregateReference<SemanticData, UUID>> findSemanticDataByRepresentationId(UUID representationId) {
+        return this.representationMetadataRepository.findSemanticDataIdFromRepresentationId(representationId)
                 .map(AggregateReference::to);
     }
 }
