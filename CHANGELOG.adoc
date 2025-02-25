@@ -32,7 +32,7 @@
 
 === Improvements
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4614[#4614] [view] Reduce the coupling of the `ViewFormDescriptionConverter`
 
 
 == v2025.2.0

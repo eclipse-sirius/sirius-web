@@ -82,7 +82,7 @@ public class RadioDescriptionConverter {
                 .targetObjectIdProvider(new TargetObjectIdProvider(this.objectService))
                 .labelProvider(new StringValueProvider(this.interpreter, viewRadioDescription.getLabelExpression()))
                 .isReadOnlyProvider(new ReadOnlyValueProvider(this.interpreter, viewRadioDescription.getIsEnabledExpression()))
-                .optionsProvider(new MultiValueProvider(this.interpreter, viewRadioDescription.getCandidatesExpression()))
+                .optionsProvider(new MultiValueProvider(this.interpreter, viewRadioDescription.getCandidatesExpression(), Object.class))
                 .optionIdProvider(new OptionIdProvider(this.objectService))
                 .optionLabelProvider(new StringValueProvider(this.interpreter, viewRadioDescription.getCandidateLabelExpression()))
                 .optionSelectedProvider(new OptionSelectedProvider(this.interpreter, viewRadioDescription.getValueExpression()))
