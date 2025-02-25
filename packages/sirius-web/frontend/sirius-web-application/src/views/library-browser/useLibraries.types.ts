@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { GQLEditingContext } from '../edit-project/useProjectAndRepresentationMetadata.types';
+
 export interface UseLibrariesValue {
   data: GQLGetLibrariesQueryData | null;
   loading: boolean;
@@ -46,6 +48,7 @@ export interface GQLLibrary {
   version: string;
   description: string;
   createdOn: string;
+  currentEditingContext?: GQLEditingContext;
 }
 
 export interface GQLPageInfo {

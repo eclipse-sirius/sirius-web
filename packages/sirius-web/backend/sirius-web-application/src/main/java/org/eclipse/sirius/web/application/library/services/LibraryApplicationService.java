@@ -13,10 +13,12 @@
 package org.eclipse.sirius.web.application.library.services;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.sirius.web.application.library.dto.LibraryDTO;
 import org.eclipse.sirius.web.application.library.services.api.ILibraryApplicationService;
 import org.eclipse.sirius.web.application.library.services.api.ILibraryMapper;
+import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -45,4 +47,12 @@ public class LibraryApplicationService implements ILibraryApplicationService {
     public Page<LibraryDTO> findAll(Pageable pageable) {
         return this.librarySearchService.findAll(pageable).map(this.libraryMapper::toDTO);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Library> findByNamespaceAndNameAndVersion(String namespace, String name, String version) {
+        return this.librarySearchService.findByNamespaceAndNameAndVersion(namespace, name, version);
+    }
+
+
 }
