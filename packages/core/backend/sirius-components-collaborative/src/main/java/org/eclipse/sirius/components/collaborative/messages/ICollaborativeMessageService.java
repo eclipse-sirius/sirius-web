@@ -18,7 +18,10 @@ package org.eclipse.sirius.components.collaborative.messages;
  * @author sbegaudeau
  */
 public interface ICollaborativeMessageService {
+
     String invalidInput(String expectedInputTypeName, String receivedInputTypeName);
+
+    String objectDoesNotExist(String objectId);
 
     String objectCreationFailed();
 
@@ -35,6 +38,11 @@ public interface ICollaborativeMessageService {
 
         @Override
         public String invalidInput(String expectedInputTypeName, String receivedInputTypeName) {
+            return "";
+        }
+
+        @Override
+        public String objectDoesNotExist(String objectId) {
             return "";
         }
 
