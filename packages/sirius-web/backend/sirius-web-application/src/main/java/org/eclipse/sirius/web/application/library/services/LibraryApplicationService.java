@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.application.library.services;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.sirius.web.application.library.dto.LibraryDTO;
 import org.eclipse.sirius.web.application.library.services.api.ILibraryApplicationService;
@@ -45,4 +46,12 @@ public class LibraryApplicationService implements ILibraryApplicationService {
     public Page<LibraryDTO> findAll(Pageable pageable) {
         return this.librarySearchService.findAll(pageable).map(this.libraryMapper::toDTO);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<LibraryDTO> findByNamespaceAndNameAndVersion(String namespace, String name, String version) {
+        return this.librarySearchService.findByNamespaceAndNameAndVersion(namespace, name, version).map(this.libraryMapper::toDTO);
+    }
+
+
 }

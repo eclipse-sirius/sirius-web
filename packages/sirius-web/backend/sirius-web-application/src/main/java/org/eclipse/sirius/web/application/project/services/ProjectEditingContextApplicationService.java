@@ -10,14 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.editingcontext.services;
+package org.eclipse.sirius.web.application.project.services;
 
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.application.UUIDParser;
-import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextApplicationService;
+import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextApplicationService;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -30,11 +30,11 @@ import org.springframework.transaction.annotation.Transactional;
  * @author sbegaudeau
  */
 @Service
-public class EditingContextApplicationService implements IEditingContextApplicationService {
+public class ProjectEditingContextApplicationService implements IProjectEditingContextApplicationService {
 
     private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
 
-    public EditingContextApplicationService(IProjectSemanticDataSearchService projectSemanticDataSearchService) {
+    public ProjectEditingContextApplicationService(IProjectSemanticDataSearchService projectSemanticDataSearchService) {
         this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
     }
     

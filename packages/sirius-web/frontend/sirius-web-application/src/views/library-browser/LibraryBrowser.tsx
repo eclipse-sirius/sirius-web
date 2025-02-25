@@ -16,6 +16,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { MaterialReactTable, MRT_ColumnDef, MRT_PaginationState, useMaterialReactTable } from 'material-react-table';
 import { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { footerExtensionPoint } from '../../footer/FooterExtensionPoints';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
@@ -94,7 +95,16 @@ const LibrariesTable = ({}: LibrariesTableProps) => {
         accessorFn: (row) => row.name,
         header: 'Name',
         size: 200,
-        Cell: ({ renderedCellValue }) => <Typography noWrap>{renderedCellValue}</Typography>,
+        Cell: ({ renderedCellValue, row }) => (
+          <Typography noWrap>
+            <Link
+              to={`/libraries/${encodeURIComponent(row.original.namespace)}/${encodeURIComponent(
+                row.original.name
+              )}/${encodeURIComponent(row.original.version)}`}>
+              {renderedCellValue}
+            </Link>
+          </Typography>
+        ),
       },
       {
         accessorFn: (row) => row.version,

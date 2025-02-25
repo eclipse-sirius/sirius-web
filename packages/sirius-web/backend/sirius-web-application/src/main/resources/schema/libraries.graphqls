@@ -1,5 +1,6 @@
 extend type Viewer {
   libraries(page: Int!, limit: Int!): ViewerLibrariesConnection!
+  library(namespace: String!, name: String!, version: String!): Library
 }
 
 type ViewerLibrariesConnection {
@@ -12,10 +13,10 @@ type ViewerLibrariesEdge {
 }
 
 type Library {
-  id: ID!
   namespace: String!
   name: String!
   version: String!
   description: String!
   createdOn: Instant!
+  currentEditingContext: EditingContext!
 }

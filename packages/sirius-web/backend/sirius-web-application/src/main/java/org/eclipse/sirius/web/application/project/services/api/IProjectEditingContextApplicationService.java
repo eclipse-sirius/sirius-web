@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,23 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.library.services.api;
+package org.eclipse.sirius.web.application.project.services.api;
 
 import java.util.Optional;
 
-import org.eclipse.sirius.web.application.library.dto.LibraryDTO;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
 /**
- * Application services used to manipulate libraries.
+ * Used to interact with the editing context of projects.
  *
- * @author gdaniel
+ * @author sbegaudeau
  */
-public interface ILibraryApplicationService {
+public interface IProjectEditingContextApplicationService {
+    String getCurrentEditingContextId(String projectId);
 
-    Page<LibraryDTO> findAll(Pageable pageable);
-
-    Optional<LibraryDTO> findByNamespaceAndNameAndVersion(String namespace, String name, String version);
-
+    Optional<String> getProjectId(String editingContextId);
 }
