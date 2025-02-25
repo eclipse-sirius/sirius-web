@@ -42,6 +42,8 @@ Our backend integration tests actual use the `postgres:latest` image (see `Abstr
 - https://github.com/eclipse-sirius/sirius-web/issues/4618[#4618] [diagram] Ensure layout-related mutations use a unique event id.
 Except for the specific case where `cause === 'refresh'` in `DiagramRenderer` (which corresponds to a layout update *after* an existing operation which caused the refresh, in which case we must reuse the original event id), other diagram-related mutations should behave like all the others and get a unique event id to clearly identify them.
 - https://github.com/eclipse-sirius/sirius-web/issues/4581[#4581] [sirius-web] Make (almost) all data fetchers use `IEditingContextDispatcher` instead of using `IEditingContextEventProcessorRegistry` directly.
+- https://github.com/eclipse-sirius/sirius-web/issues/4606[#4606] [sirius-web] Allow the loading of an editing context containing a papaya library
+
 
 
 == v2025.2.0
@@ -245,6 +247,7 @@ To achieve that a new concept, `ProjectSemanticData` has been added along with a
 - https://github.com/eclipse-sirius/sirius-web/issues/4601[#4601] [core] Make the omnibox selection aware
 - https://github.com/eclipse-sirius/sirius-web/issues/4411[#4411] [sirius-web] Display a message in the query view if the expression does not return anything or if the result type is unknown
 - https://github.com/eclipse-sirius/sirius-web/issues/4411[#4411] [sirius-web] Add support for expressions returning a collection of strings in the query view
+
 
 
 == v2025.1.0
