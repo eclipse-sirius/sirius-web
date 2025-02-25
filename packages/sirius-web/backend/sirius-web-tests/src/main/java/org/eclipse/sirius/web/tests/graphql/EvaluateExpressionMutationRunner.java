@@ -54,6 +54,9 @@ public class EvaluateExpressionMutationRunner implements IMutationRunner<Evaluat
                     ... on IntExpressionResult {
                       intValue: value
                     }
+                    ... on StringsExpressionResult {
+                      stringsValue: value
+                    }
                     ... on StringExpressionResult {
                       stringValue: value
                     }

@@ -37,6 +37,7 @@ import org.eclipse.sirius.web.application.views.query.dto.IntExpressionResult;
 import org.eclipse.sirius.web.application.views.query.dto.ObjectExpressionResult;
 import org.eclipse.sirius.web.application.views.query.dto.ObjectsExpressionResult;
 import org.eclipse.sirius.web.application.views.query.dto.StringExpressionResult;
+import org.eclipse.sirius.web.application.views.query.dto.StringsExpressionResult;
 import org.eclipse.sirius.web.application.views.query.dto.VoidExpressionResult;
 import org.eclipse.sirius.web.application.views.query.services.api.IAQLInterpreterProvider;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
@@ -123,7 +124,10 @@ public class EvaluateExpressionEventHandler implements IEditingContextEventHandl
             var optionalObject = evaluationResult.asObject();
             if (optionalObject.isPresent()) {
                 var object = optionalObject.get();
-                if (object instanceof Collection<?> collectionValue) {
+                if (object instanceof Collection<?> collectionValue && collectionValue.stream().allMatch(String.class::isInstance)) {
+                    var value = collectionValue.stream().filter(String.class::isInstance).map(String.class::cast).toList();
+                    payload = new EvaluateExpressionSuccessPayload(inputId, new StringsExpressionResult(value));
+                } else if (object instanceof Collection<?> collectionValue) {
                     var value = collectionValue.stream().map(Object.class::cast).toList();
                     payload = new EvaluateExpressionSuccessPayload(inputId, new ObjectsExpressionResult(value));
                 } else if (object instanceof Boolean booleanValue) {

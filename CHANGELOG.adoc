@@ -201,6 +201,7 @@ To achieve that a new concept, `ProjectSemanticData` has been added along with a
 - https://github.com/eclipse-sirius/sirius-web/issues/4600[#4600] [core] Fetch the commands of the omnibox automatically when it is opened
 - https://github.com/eclipse-sirius/sirius-web/issues/4601[#4601] [core] Make the omnibox selection aware
 - https://github.com/eclipse-sirius/sirius-web/issues/4411[#4411] [sirius-web] Display a message in the query view if the expression does not return anything or if the result type is unknown
+- https://github.com/eclipse-sirius/sirius-web/issues/4411[#4411] [sirius-web] Add support for expressions returning a collection of strings in the query view
 
 
 == v2025.1.0

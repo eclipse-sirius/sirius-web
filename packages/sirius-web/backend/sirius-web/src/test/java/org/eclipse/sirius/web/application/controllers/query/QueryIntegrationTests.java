@@ -27,6 +27,7 @@ import org.eclipse.sirius.web.application.views.query.dto.IntExpressionResult;
 import org.eclipse.sirius.web.application.views.query.dto.ObjectExpressionResult;
 import org.eclipse.sirius.web.application.views.query.dto.ObjectsExpressionResult;
 import org.eclipse.sirius.web.application.views.query.dto.StringExpressionResult;
+import org.eclipse.sirius.web.application.views.query.dto.StringsExpressionResult;
 import org.eclipse.sirius.web.application.views.query.dto.VoidExpressionResult;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
@@ -128,6 +129,25 @@ public class QueryIntegrationTests extends AbstractIntegrationTests {
 
         boolean isEmpty = JsonPath.read(result, "$.data.evaluateExpression.result.booleanValue");
         assertThat(isEmpty).isFalse();
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a project, when we execute an expression returning a collection of strings, then the result is returned")
+    public void givenProjectWhenWeExecuteAnExpressionReturningCollectionOfStringsThenTheResultIsReturned() {
+        var expression = "aql:editingContext.allContents()->filter(papaya::Component).name";
+        var result = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), expression, List.of()));
+
+        String payloadTypename = JsonPath.read(result, "$.data.evaluateExpression.__typename");
+        assertThat(payloadTypename).isEqualTo(EvaluateExpressionSuccessPayload.class.getSimpleName());
+
+        String resultTypename = JsonPath.read(result, "$.data.evaluateExpression.result.__typename");
+        assertThat(resultTypename).isEqualTo(StringsExpressionResult.class.getSimpleName());
+
+        List<String> values = JsonPath.read(result, "$.data.evaluateExpression.result.stringsValue[*]");
+        assertThat(values)
+                .isNotEmpty()
+                .containsExactly("sirius-web-domain", "sirius-web-application", "sirius-web-infrastructure", "sirius-web-starter", "sirius-web");
     }
 
     @Test

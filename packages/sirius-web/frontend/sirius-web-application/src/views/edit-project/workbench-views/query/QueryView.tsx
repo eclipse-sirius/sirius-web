@@ -33,6 +33,7 @@ import {
   GQLObjectExpressionResult,
   GQLObjectsExpressionResult,
   GQLStringExpressionResult,
+  GQLStringsExpressionResult,
 } from './useEvaluateExpression.types';
 import { useExpression } from './useExpression';
 import { useResultAreaSize } from './useResultAreaSize';
@@ -218,6 +219,50 @@ const BooleanExpressionResultViewer = ({ result }: ExpressionResultViewerProps) 
   );
 };
 
+const StringRow = ({ data, index, style }: ListChildComponentProps) => {
+  const listItemStyle: SxProps<Theme> = (theme) => ({
+    gap: theme.spacing(2),
+  });
+
+  const value = data[index];
+
+  return (
+    <ListItem key={index} style={style} sx={listItemStyle}>
+      <ListItemText primary={value} />
+    </ListItem>
+  );
+};
+
+const StringsExpressionResultViewer = ({ result, width, height }: ExpressionResultViewerProps) => {
+  if (result.__typename !== 'StringsExpressionResult') {
+    return null;
+  }
+
+  const { stringsValue } = result as GQLStringsExpressionResult;
+
+  const listStyle: SxProps<Theme> = (theme) => ({
+    border: `1px solid ${theme.palette.divider}`,
+  });
+
+  return (
+    <Box>
+      <Typography variant="body2" gutterBottom>
+        A collection of {stringsValue.length} string{stringsValue.length > 1 ? 's' : ''} has been returned
+      </Typography>
+      <List dense disablePadding sx={listStyle}>
+        <FixedSizeList
+          height={height}
+          width={width}
+          itemData={stringsValue}
+          itemCount={stringsValue.length}
+          itemSize={34}>
+          {StringRow}
+        </FixedSizeList>
+      </List>
+    </Box>
+  );
+};
+
 const StringExpressionResultViewer = ({ result }: ExpressionResultViewerProps) => {
   if (result.__typename !== 'StringExpressionResult') {
     return null;
@@ -270,6 +315,7 @@ const resultType2viewer: Record<string, ComponentType<ExpressionResultViewerProp
   ObjectExpressionResult: ObjectExpressionResultViewer,
   ObjectsExpressionResult: ObjectsExpressionResultViewer,
   BooleanExpressionResult: BooleanExpressionResultViewer,
+  StringsExpressionResult: StringsExpressionResultViewer,
   StringExpressionResult: StringExpressionResultViewer,
   IntExpressionResult: IntExpressionResultViewer,
   VoidExpressionResult: VoidExpressionResultViewer,
