@@ -434,6 +434,16 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
      * @generated
      */
     @Override
+    public EAttribute getRowDescription_DepthLevelExpression() {
+        return (EAttribute) this.rowDescriptionEClass.getEStructuralFeatures().get(8);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getCellDescription() {
         return this.cellDescriptionEClass;
     }
@@ -677,6 +687,7 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
         this.createEAttribute(this.rowDescriptionEClass, ROW_DESCRIPTION__INITIAL_HEIGHT_EXPRESSION);
         this.createEAttribute(this.rowDescriptionEClass, ROW_DESCRIPTION__IS_RESIZABLE_EXPRESSION);
         this.createEReference(this.rowDescriptionEClass, ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES);
+        this.createEAttribute(this.rowDescriptionEClass, ROW_DESCRIPTION__DEPTH_LEVEL_EXPRESSION);
 
         this.cellDescriptionEClass = this.createEClass(CELL_DESCRIPTION);
         this.createEAttribute(this.cellDescriptionEClass, CELL_DESCRIPTION__NAME);
@@ -787,6 +798,8 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getRowDescription_ContextMenuEntries(), this.getRowContextMenuEntry(), null, "contextMenuEntries", null, 0, -1, RowDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getRowDescription_DepthLevelExpression(), theViewPackage.getInterpretedExpression(), "depthLevelExpression", null, 0, 1, RowDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.cellDescriptionEClass, CellDescription.class, "CellDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getCellDescription_Name(), theViewPackage.getIdentifier(), "name", null, 0, 1, CellDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,

@@ -43,42 +43,46 @@ public class TableWidgetPreviewConverterProvider implements IWidgetPreviewConver
                 VariableManager childVariableManager = variableManager.createChild();
                 childVariableManager.put(VariableManager.SELF, viewTableDescription);
                 String id = formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
-                var lineDescription = LineDescription.newLineDescription(UUID.randomUUID().toString())
-                        .targetObjectIdProvider(vm -> "")
-                        .targetObjectKindProvider(vm -> "")
-                        .semanticElementsProvider(vm -> new PaginatedData(List.of(), false, false, 0))
-                        .headerLabelProvider(vm -> "")
-                        .headerIconURLsProvider(vm -> List.of())
-                        .headerIndexLabelProvider(vm -> "")
-                        .isResizablePredicate(vm -> false)
-                        .initialHeightProvider(vm -> -1)
-                        .build();
-                var tableDescription = TableDescription.newTableDescription(UUID.randomUUID().toString())
-                        .label("")
-                        .labelProvider(vm -> TableWidgetPreviewConverterProvider.this.getWidgetLabel(viewTableDescription, "Table"))
-                        .canCreatePredicate(vm -> true)
-                        .targetObjectIdProvider(vm -> "")
-                        .targetObjectKindProvider(vm -> "")
-                        .isStripeRowPredicate(vm -> false)
-                        .iconURLsProvider(vm -> List.of())
-                        .columnDescriptions(List.of())
-                        .cellDescriptions(List.of())
-                        .lineDescription(lineDescription)
-                        .build();
-                return TableWidgetDescription.newTableWidgetDescription(UUID.randomUUID().toString())
-                        .idProvider(vm -> id)
-                        .targetObjectIdProvider(vm -> "")
-                        .labelProvider(vm -> TableWidgetPreviewConverterProvider.this.getWidgetLabel(viewTableDescription, "Table"))
-                        .diagnosticsProvider(vm -> List.of())
-                        .kindProvider(object -> "")
-                        .messageProvider(object -> "")
-                        .helpTextProvider(vm -> "")
-                        .tableDescription(tableDescription)
-                        .build();
+                return TableWidgetPreviewConverterProvider.this.getTableWidgetDescription(viewTableDescription, id);
             }
         };
     }
 
+    private TableWidgetDescription getTableWidgetDescription(org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription viewTableDescription, String id) {
+        var lineDescription = LineDescription.newLineDescription(UUID.randomUUID().toString())
+                .targetObjectIdProvider(vm -> "")
+                .targetObjectKindProvider(vm -> "")
+                .semanticElementsProvider(vm -> new PaginatedData(List.of(), false, false, 0))
+                .headerLabelProvider(vm -> "")
+                .headerIconURLsProvider(vm -> List.of())
+                .headerIndexLabelProvider(vm -> "")
+                .isResizablePredicate(vm -> false)
+                .initialHeightProvider(vm -> -1)
+                .depthLevelProvider(vm -> 0)
+                .build();
+        var tableDescription = TableDescription.newTableDescription(UUID.randomUUID().toString())
+                .label("")
+                .labelProvider(vm -> this.getWidgetLabel(viewTableDescription, "Table"))
+                .canCreatePredicate(vm -> true)
+                .targetObjectIdProvider(vm -> "")
+                .targetObjectKindProvider(vm -> "")
+                .isStripeRowPredicate(vm -> false)
+                .iconURLsProvider(vm -> List.of())
+                .columnDescriptions(List.of())
+                .cellDescriptions(List.of())
+                .lineDescription(lineDescription)
+                .build();
+        return TableWidgetDescription.newTableWidgetDescription(UUID.randomUUID().toString())
+                .idProvider(vm -> id)
+                .targetObjectIdProvider(vm -> "")
+                .labelProvider(vm -> this.getWidgetLabel(viewTableDescription, "Table"))
+                .diagnosticsProvider(vm -> List.of())
+                .kindProvider(object -> "")
+                .messageProvider(object -> "")
+                .helpTextProvider(vm -> "")
+                .tableDescription(tableDescription)
+                .build();
+    }
 
     public String getWidgetLabel(org.eclipse.sirius.components.view.form.WidgetDescription widgetDescription, String defaultLabel) {
         String widgetLabel = defaultLabel;
@@ -91,5 +95,4 @@ public class TableWidgetPreviewConverterProvider implements IWidgetPreviewConver
         }
         return widgetLabel;
     }
-
 }
