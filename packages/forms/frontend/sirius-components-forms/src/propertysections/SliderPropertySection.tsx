@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,8 +14,10 @@ import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import Slider from '@mui/material/Slider';
 import { useEffect, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLSlider } from '../form/FormEventFragments.types';
+import { LoadingIndicator } from './LoadingIndicator';
 import { PropertySectionLabel } from './PropertySectionLabel';
 import {
   GQLEditSliderInput,
@@ -51,12 +53,23 @@ const isErrorPayload = (payload: GQLEditSliderPayload): payload is GQLErrorPaylo
 const isSuccessPayload = (payload: GQLEditSliderPayload): payload is GQLSuccessPayload =>
   payload.__typename === 'SuccessPayload';
 
+const useSliderSectionStyles = makeStyles()((theme) => ({
+  propertySectionLabel: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: theme.spacing(2),
+    alignItems: 'center',
+  },
+}));
+
 export const SliderPropertySection: PropertySectionComponent<GQLSlider> = ({
   editingContextId,
   formId,
   widget,
   readOnly,
 }: PropertySectionComponentProps<GQLSlider>) => {
+  const { classes } = useSliderSectionStyles();
+
   const [editSlider, { loading, data, error }] = useMutation<GQLEditSliderMutationData, GQLEditSliderMutationVariables>(
     editSliderMutation
   );
@@ -64,18 +77,16 @@ export const SliderPropertySection: PropertySectionComponent<GQLSlider> = ({
   const { addErrorMessage, addMessages } = useMultiToast();
 
   useEffect(() => {
-    if (!loading) {
-      if (error) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (data) {
-        const { editSlider } = data;
-        if (isErrorPayload(editSlider) || isSuccessPayload(editSlider)) {
-          addMessages(editSlider.messages);
-        }
+    if (error) {
+      addErrorMessage('An unexpected error has occurred, please refresh the page');
+    }
+    if (data) {
+      const { editSlider } = data;
+      if (isErrorPayload(editSlider) || isSuccessPayload(editSlider)) {
+        addMessages(editSlider.messages);
       }
     }
-  }, [loading, error, data]);
+  }, [error, data]);
 
   const onValueChanged = (_, value) => {
     const input: GQLEditSliderInput = {
@@ -96,12 +107,15 @@ export const SliderPropertySection: PropertySectionComponent<GQLSlider> = ({
 
   return (
     <div>
-      <PropertySectionLabel
-        editingContextId={editingContextId}
-        formId={formId}
-        widget={widget}
-        data-testid={widget.label}
-      />
+      <div className={classes.propertySectionLabel}>
+        <PropertySectionLabel
+          editingContextId={editingContextId}
+          formId={formId}
+          widget={widget}
+          data-testid={widget.label}
+        />
+        <LoadingIndicator loading={loading} />
+      </div>
       <Slider
         data-testid={widget.label}
         disabled={readOnly || widget.readOnly}

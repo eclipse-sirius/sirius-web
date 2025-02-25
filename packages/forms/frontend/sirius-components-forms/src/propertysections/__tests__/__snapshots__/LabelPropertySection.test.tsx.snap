@@ -13,9 +13,6 @@ exports[`render label widget 1`] = `
       >
         myLabel
       </h6>
-      <div
-        class="css-vrp56w-decorators"
-      />
     </div>
     <p
       class="MuiTypography-root MuiTypography-body1 css-18r0vyq-style css-ahj2mt-MuiTypography-root"
@@ -80,9 +77,6 @@ exports[`render label widget with style 1`] = `
       >
         myLabel
       </h6>
-      <div
-        class="css-vrp56w-decorators"
-      />
     </div>
     <p
       class="MuiTypography-root MuiTypography-body1 css-4wo1qn-style css-ahj2mt-MuiTypography-root"

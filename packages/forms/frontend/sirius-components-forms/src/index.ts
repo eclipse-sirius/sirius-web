@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo and others.
+ * Copyright (c) 2022, 2025 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,8 @@ export type { LabelStyleProps } from './propertysections/LabelWidgetPropertySect
 export type { LinkStyleProps } from './propertysections/LinkPropertySection.types';
 export * from './propertysections/ListPropertySection';
 export type { ListStyleProps } from './propertysections/ListPropertySection.types';
+export * from './propertysections/LoadingIndicator';
+export type { LoadingIndicatorProps } from './propertysections/LoadingIndicator.types';
 export type { MultiSelectStyleProps } from './propertysections/MultiSelectPropertySection.types';
 export * from './propertysections/PropertySectionLabel';
 export type { PropertySectionLabelDecoratorProps } from './propertysections/PropertySectionLabel.types';

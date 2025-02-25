@@ -7,7 +7,7 @@ exports[`should render a readOnly select from widget properties 1`] = `
       class="MuiFormControl-root css-b0kbao-propertySection css-1nrlq1o-MuiFormControl-root"
     >
       <div
-        class="css-1vrv3vk-propertySectionLabel"
+        class="css-2huy39-propertySectionLabel"
       >
         <div
           class="css-1ccipwk-propertySectionLabel"
@@ -17,9 +17,6 @@ exports[`should render a readOnly select from widget properties 1`] = `
           >
             SelectLabel
           </h6>
-          <div
-            class="css-vrp56w-decorators"
-          />
         </div>
       </div>
       <div
@@ -77,7 +74,7 @@ exports[`should render the select with empty style 1`] = `
       class="MuiFormControl-root css-b0kbao-propertySection css-1nrlq1o-MuiFormControl-root"
     >
       <div
-        class="css-1vrv3vk-propertySectionLabel"
+        class="css-2huy39-propertySectionLabel"
       >
         <div
           class="css-1ccipwk-propertySectionLabel"
@@ -87,9 +84,6 @@ exports[`should render the select with empty style 1`] = `
           >
             SelectLabel
           </h6>
-          <div
-            class="css-vrp56w-decorators"
-          />
         </div>
       </div>
       <div
@@ -146,7 +140,7 @@ exports[`should render the select with help hint 1`] = `
       class="MuiFormControl-root css-b0kbao-propertySection css-1nrlq1o-MuiFormControl-root"
     >
       <div
-        class="css-1vrv3vk-propertySectionLabel"
+        class="css-2huy39-propertySectionLabel"
       >
         <div
           class="css-1ccipwk-propertySectionLabel"
@@ -230,7 +224,7 @@ exports[`should render the select with style 1`] = `
       class="MuiFormControl-root css-b0kbao-propertySection css-1nrlq1o-MuiFormControl-root"
     >
       <div
-        class="css-1vrv3vk-propertySectionLabel"
+        class="css-2huy39-propertySectionLabel"
       >
         <div
           class="css-1ccipwk-propertySectionLabel"
@@ -240,9 +234,6 @@ exports[`should render the select with style 1`] = `
           >
             SelectLabel
           </h6>
-          <div
-            class="css-vrp56w-decorators"
-          />
         </div>
       </div>
       <div
@@ -299,7 +290,7 @@ exports[`should render the select without style 1`] = `
       class="MuiFormControl-root css-b0kbao-propertySection css-1nrlq1o-MuiFormControl-root"
     >
       <div
-        class="css-1vrv3vk-propertySectionLabel"
+        class="css-2huy39-propertySectionLabel"
       >
         <div
           class="css-1ccipwk-propertySectionLabel"
@@ -309,9 +300,6 @@ exports[`should render the select without style 1`] = `
           >
             SelectLabel
           </h6>
-          <div
-            class="css-vrp56w-decorators"
-          />
         </div>
       </div>
       <div

@@ -32,7 +32,7 @@
 
 === Improvements
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4495[#4495] [form] Add an user indicator when executing form actions
 
 
 == v2025.2.0

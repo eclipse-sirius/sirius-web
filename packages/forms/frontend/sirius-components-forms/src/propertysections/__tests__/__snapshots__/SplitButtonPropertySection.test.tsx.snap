@@ -14,9 +14,6 @@ exports[`should display the error received 1`] = `
         >
           Label
         </h6>
-        <div
-          class="css-vrp56w-decorators"
-        />
       </div>
       <div
         aria-label="split button"
@@ -77,9 +74,6 @@ exports[`should display the error received 2`] = `
         >
           Label
         </h6>
-        <div
-          class="css-vrp56w-decorators"
-        />
       </div>
       <div
         aria-label="split button"
@@ -139,9 +133,6 @@ exports[`should render a readOnly button and his actions 1`] = `
       >
         Label
       </h6>
-      <div
-        class="css-vrp56w-decorators"
-      />
     </div>
     <div
       aria-label="split button"
@@ -197,9 +188,6 @@ exports[`should render the button and his actions with style 1`] = `
         >
           Label
         </h6>
-        <div
-          class="css-vrp56w-decorators"
-        />
       </div>
       <div
         aria-label="split button"
@@ -381,9 +369,6 @@ exports[`should render the split button and his actions 1`] = `
       >
         Label
       </h6>
-      <div
-        class="css-vrp56w-decorators"
-      />
     </div>
     <div
       aria-label="split button"
@@ -444,9 +429,6 @@ exports[`should send mutation when clicked 1`] = `
       >
         Label
       </h6>
-      <div
-        class="css-vrp56w-decorators"
-      />
     </div>
     <div
       aria-label="split button"
@@ -505,9 +487,6 @@ exports[`should send mutation when clicked 2`] = `
       >
         Label
       </h6>
-      <div
-        class="css-vrp56w-decorators"
-      />
     </div>
     <div
       aria-label="split button"

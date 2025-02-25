@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import {
   GQLEditDateTimeMutationData,
   GQLEditDateTimeMutationVariables,
 } from './DateTimeWidgetPropertySection.types';
+import { LoadingIndicator } from './LoadingIndicator';
 import { PropertySectionLabel } from './PropertySectionLabel';
 
 const useStyle = makeStyles<DateTimeStyleProps>()(
@@ -53,6 +54,7 @@ const useStyle = makeStyles<DateTimeStyleProps>()(
         gridRow: labelGridRow,
         display: 'flex',
         flexDirection: 'row',
+        gap: theme.spacing(2),
         alignItems: 'center',
       },
       input: {},
@@ -170,6 +172,7 @@ export const DateTimeWidgetPropertySection: PropertySectionComponent<GQLDateTime
       className={classes.propertySection}>
       <div className={classes.propertySectionLabel}>
         <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
+        <LoadingIndicator loading={mutationEditDateTimeResult.loading} />
       </div>
       <div className={classes.propertySectionWidget}>
         <TextField

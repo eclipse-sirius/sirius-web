@@ -7,16 +7,17 @@ exports[`should display the error received 1`] = `
       class="MuiFormControl-root css-1nrlq1o-MuiFormControl-root"
     >
       <div
-        class="css-1ccipwk-propertySectionLabel"
+        class="css-2huy39-propertySectionLabel"
       >
-        <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
-        >
-          Status:
-        </h6>
         <div
-          class="css-vrp56w-decorators"
-        />
+          class="css-1ccipwk-propertySectionLabel"
+        >
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          >
+            Status:
+          </h6>
+        </div>
       </div>
       <div
         aria-label="Status:"
@@ -138,16 +139,17 @@ exports[`should display the error received 2`] = `
       class="MuiFormControl-root css-1nrlq1o-MuiFormControl-root"
     >
       <div
-        class="css-1ccipwk-propertySectionLabel"
+        class="css-2huy39-propertySectionLabel"
       >
-        <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
-        >
-          Status:
-        </h6>
         <div
-          class="css-vrp56w-decorators"
-        />
+          class="css-1ccipwk-propertySectionLabel"
+        >
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          >
+            Status:
+          </h6>
+        </div>
       </div>
       <div
         aria-label="Status:"
@@ -268,16 +270,17 @@ exports[`should render a readOnly radio 1`] = `
     class="MuiFormControl-root css-1nrlq1o-MuiFormControl-root"
   >
     <div
-      class="css-1ccipwk-propertySectionLabel"
+      class="css-2huy39-propertySectionLabel"
     >
-      <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
-      >
-        Status:
-      </h6>
       <div
-        class="css-vrp56w-decorators"
-      />
+        class="css-1ccipwk-propertySectionLabel"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+        >
+          Status:
+        </h6>
+      </div>
     </div>
     <div
       aria-label="Status:"
@@ -397,16 +400,17 @@ exports[`should render a readOnly radio from widget properties 1`] = `
     class="MuiFormControl-root css-1nrlq1o-MuiFormControl-root"
   >
     <div
-      class="css-1ccipwk-propertySectionLabel"
+      class="css-2huy39-propertySectionLabel"
     >
-      <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
-      >
-        Status:
-      </h6>
       <div
-        class="css-vrp56w-decorators"
-      />
+        class="css-1ccipwk-propertySectionLabel"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+        >
+          Status:
+        </h6>
+      </div>
     </div>
     <div
       aria-label="Status:"
@@ -526,16 +530,17 @@ exports[`should render the radio 1`] = `
     class="MuiFormControl-root css-1nrlq1o-MuiFormControl-root"
   >
     <div
-      class="css-1ccipwk-propertySectionLabel"
+      class="css-2huy39-propertySectionLabel"
     >
-      <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
-      >
-        Status:
-      </h6>
       <div
-        class="css-vrp56w-decorators"
-      />
+        class="css-1ccipwk-propertySectionLabel"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+        >
+          Status:
+        </h6>
+      </div>
     </div>
     <div
       aria-label="Status:"
@@ -656,16 +661,17 @@ exports[`should render the radio with empty style 1`] = `
       class="MuiFormControl-root css-1nrlq1o-MuiFormControl-root"
     >
       <div
-        class="css-1ccipwk-propertySectionLabel"
+        class="css-2huy39-propertySectionLabel"
       >
-        <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
-        >
-          Status:
-        </h6>
         <div
-          class="css-vrp56w-decorators"
-        />
+          class="css-1ccipwk-propertySectionLabel"
+        >
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          >
+            Status:
+          </h6>
+        </div>
       </div>
       <div
         aria-label="Status:"
@@ -787,30 +793,34 @@ exports[`should render the radio with help hint 1`] = `
       class="MuiFormControl-root css-1nrlq1o-MuiFormControl-root"
     >
       <div
-        class="css-1ccipwk-propertySectionLabel"
+        class="css-2huy39-propertySectionLabel"
       >
-        <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
-        >
-          Status:
-        </h6>
         <div
-          class="css-vrp56w-decorators"
+          class="css-1ccipwk-propertySectionLabel"
         >
-          <svg
-            aria-hidden="true"
-            aria-label=""
-            class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeMedium css-kw0y8f-MuiSvgIcon-root"
-            data-mui-internal-clone-element="true"
-            data-testid="HelpOutlineOutlinedIcon"
-            focusable="false"
-            style="margin-left: 8px; font-size: 16px;"
-            viewBox="0 0 24 24"
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
           >
-            <path
-              d="M11 18h2v-2h-2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4"
-            />
-          </svg>
+            Status:
+          </h6>
+          <div
+            class="css-vrp56w-decorators"
+          >
+            <svg
+              aria-hidden="true"
+              aria-label=""
+              class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeMedium css-kw0y8f-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="HelpOutlineOutlinedIcon"
+              focusable="false"
+              style="margin-left: 8px; font-size: 16px;"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M11 18h2v-2h-2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4"
+              />
+            </svg>
+          </div>
         </div>
       </div>
       <div
@@ -933,16 +943,17 @@ exports[`should render the radio with style 1`] = `
       class="MuiFormControl-root css-1nrlq1o-MuiFormControl-root"
     >
       <div
-        class="css-1ccipwk-propertySectionLabel"
+        class="css-2huy39-propertySectionLabel"
       >
-        <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
-        >
-          Status:
-        </h6>
         <div
-          class="css-vrp56w-decorators"
-        />
+          class="css-1ccipwk-propertySectionLabel"
+        >
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          >
+            Status:
+          </h6>
+        </div>
       </div>
       <div
         aria-label="Status:"
@@ -1064,16 +1075,17 @@ exports[`should render the radio without style 1`] = `
       class="MuiFormControl-root css-1nrlq1o-MuiFormControl-root"
     >
       <div
-        class="css-1ccipwk-propertySectionLabel"
+        class="css-2huy39-propertySectionLabel"
       >
-        <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
-        >
-          Status:
-        </h6>
         <div
-          class="css-vrp56w-decorators"
-        />
+          class="css-1ccipwk-propertySectionLabel"
+        >
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          >
+            Status:
+          </h6>
+        </div>
       </div>
       <div
         aria-label="Status:"
@@ -1194,16 +1206,17 @@ exports[`should send mutation when clicked 1`] = `
     class="MuiFormControl-root css-1nrlq1o-MuiFormControl-root"
   >
     <div
-      class="css-1ccipwk-propertySectionLabel"
+      class="css-2huy39-propertySectionLabel"
     >
-      <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
-      >
-        Status:
-      </h6>
       <div
-        class="css-vrp56w-decorators"
-      />
+        class="css-1ccipwk-propertySectionLabel"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+        >
+          Status:
+        </h6>
+      </div>
     </div>
     <div
       aria-label="Status:"
@@ -1323,16 +1336,17 @@ exports[`should send mutation when clicked 2`] = `
     class="MuiFormControl-root css-1nrlq1o-MuiFormControl-root"
   >
     <div
-      class="css-1ccipwk-propertySectionLabel"
+      class="css-2huy39-propertySectionLabel"
     >
-      <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
-      >
-        Status:
-      </h6>
       <div
-        class="css-vrp56w-decorators"
-      />
+        class="css-1ccipwk-propertySectionLabel"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+        >
+          Status:
+        </h6>
+      </div>
     </div>
     <div
       aria-label="Status:"
