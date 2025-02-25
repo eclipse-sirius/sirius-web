@@ -83,7 +83,7 @@ public class SelectDescriptionConverter {
                 .labelProvider(new StringValueProvider(this.interpreter, viewSelectDescription.getLabelExpression()))
                 .isReadOnlyProvider(new ReadOnlyValueProvider(this.interpreter, viewSelectDescription.getIsEnabledExpression()))
                 .valueProvider(new SelectValueProvider(this.interpreter, this.objectService, viewSelectDescription.getValueExpression()))
-                .optionsProvider(new MultiValueProvider(this.interpreter, viewSelectDescription.getCandidatesExpression()))
+                .optionsProvider(new MultiValueProvider(this.interpreter, viewSelectDescription.getCandidatesExpression(), Object.class))
                 .optionIdProvider(new OptionIdProvider(this.objectService))
                 .optionLabelProvider(new StringValueProvider(this.interpreter, viewSelectDescription.getCandidateLabelExpression()))
                 .optionIconURLProvider(new OptionIconURLsProvider(this.objectService))

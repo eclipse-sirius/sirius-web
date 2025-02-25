@@ -83,7 +83,7 @@ public class MultiSelectDescriptionConverter {
                 .labelProvider(new StringValueProvider(this.interpreter, viewMultiSelectDescription.getLabelExpression()))
                 .isReadOnlyProvider(new ReadOnlyValueProvider(this.interpreter, viewMultiSelectDescription.getIsEnabledExpression()))
                 .valuesProvider(new MultiSelectValuesProvider(this.interpreter, this.objectService, viewMultiSelectDescription.getValueExpression()))
-                .optionsProvider(new MultiValueProvider(this.interpreter, viewMultiSelectDescription.getCandidatesExpression()))
+                .optionsProvider(new MultiValueProvider(this.interpreter, viewMultiSelectDescription.getCandidatesExpression(), Object.class))
                 .optionIdProvider(new OptionIdProvider(this.objectService))
                 .optionLabelProvider(new StringValueProvider(this.interpreter, viewMultiSelectDescription.getCandidateLabelExpression()))
                 .optionIconURLProvider(new OptionIconURLsProvider(this.objectService))
