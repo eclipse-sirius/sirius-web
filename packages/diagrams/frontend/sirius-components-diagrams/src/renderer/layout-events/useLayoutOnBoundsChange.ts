@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,7 @@ import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { UseLayoutOnBoundsChangeValue } from './useLayoutOnBoundsChange.types';
 
-export const useLayoutOnBoundsChange = (refreshEventPayloadId: string): UseLayoutOnBoundsChangeValue => {
+export const useLayoutOnBoundsChange = (): UseLayoutOnBoundsChangeValue => {
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
   const { getEdges, getNodes } = useStore();
@@ -116,11 +116,11 @@ export const useLayoutOnBoundsChange = (refreshEventPayloadId: string): UseLayou
             edges: laidOutDiagram.edges,
           };
 
-          synchronizeLayoutData(refreshEventPayloadId, finalDiagram);
+          synchronizeLayoutData(crypto.randomUUID(), finalDiagram);
         });
       }
     },
-    [refreshEventPayloadId, synchronizeLayoutData, getNodes]
+    [synchronizeLayoutData, getNodes]
   );
 
   return { layoutOnBoundsChange };

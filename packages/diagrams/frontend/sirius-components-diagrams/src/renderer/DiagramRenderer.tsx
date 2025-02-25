@@ -238,7 +238,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { transformUndraggableListNodeChanges, applyMoveChange } = useMoveChange();
   const { transformResizeListNodeChanges } = useResizeChange();
   const { applyHandleChange } = useHandleChange();
-  const { layoutOnBoundsChange } = useLayoutOnBoundsChange(diagramRefreshedEventPayload.id);
+  const { layoutOnBoundsChange } = useLayoutOnBoundsChange();
   const { filterReadOnlyChanges } = useFilterReadOnlyChanges();
   const {
     helperLinesEnabled,

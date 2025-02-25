@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,9 +14,6 @@ import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { Edge, Node, useReactFlow, useViewport } from '@xyflow/react';
 import { LayoutOptions } from 'elkjs/lib/elk-api';
 import ELK, { ElkLabel, ElkNode } from 'elkjs/lib/elk.bundled';
-import { useContext } from 'react';
-import { DiagramContext } from '../../contexts/DiagramContext';
-import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { ListNodeData } from '../node/ListNode.types';
@@ -123,7 +120,6 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
   const { diagramDescription } = useDiagramDescription();
-  const { refreshEventPayloadId } = useContext<DiagramContextValue>(DiagramContext);
   const { resolveNodeOverlap } = useOverlap();
   const { addErrorMessage } = useMultiToast();
 
@@ -277,7 +273,7 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
             nodes: laidOutNodesWithElk,
             edges: laidOutDiagram.edges,
           };
-          synchronizeLayoutData(refreshEventPayloadId, finalDiagram);
+          synchronizeLayoutData(crypto.randomUUID(), finalDiagram);
           resolve();
         });
       });
