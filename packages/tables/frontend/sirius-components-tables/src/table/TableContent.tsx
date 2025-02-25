@@ -12,8 +12,17 @@
  *******************************************************************************/
 import { useSelection } from '@eclipse-sirius/sirius-components-core';
 import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
 import { Theme, useTheme } from '@mui/material/styles';
-import { MaterialReactTable, MRT_DensityState, MRT_TableOptions, useMaterialReactTable } from 'material-react-table';
+import FormatLineSpacingIcon from '@mui/icons-material/FormatLineSpacing';
+import {
+  MaterialReactTable,
+  MRT_ShowHideColumnsButton,
+  MRT_TableOptions,
+  MRT_ToggleFiltersButton,
+  MRT_ToggleFullScreenButton,
+  useMaterialReactTable,
+} from 'material-react-table';
 import { memo, useEffect, useState } from 'react';
 import { SettingsButton } from '../actions/SettingsButton';
 import { useTableColumnFiltering } from '../columns/useTableColumnFiltering';
@@ -83,7 +92,6 @@ export const TableContent = memo(
       onColumnFiltersChange,
       enableColumnFilters
     );
-    const [density, setDensity] = useState<MRT_DensityState>('comfortable');
     const [linesState, setLinesState] = useState<GQLLine[]>(table.lines);
 
     const { resetRowsHeight } = useResetRowsMutation(editingContextId, representationId, table.id, enableRowSizing);
@@ -141,12 +149,6 @@ export const TableContent = memo(
       setLinesState([...table.lines]);
     }, [table]);
 
-    useEffect(() => {
-      if (density != 'comfortable') {
-        resetRowsHeight();
-      }
-    }, [density]);
-
     const tableOptions: MRT_TableOptions<GQLLine> = {
       columns,
       data: linesState,
@@ -172,11 +174,10 @@ export const TableContent = memo(
       },
       onColumnSizingChange: setColumnSizing,
       onColumnVisibilityChange: setColumnVisibility,
-      onDensityChange: setDensity,
       enableColumnOrdering,
       enableColumnDragging: enableColumnOrdering,
       onColumnOrderChange: setColumnOrder,
-      state: { columnSizing, columnVisibility, globalFilter, density, columnFilters, columnOrder },
+      state: { columnSizing, columnVisibility, globalFilter, columnFilters, columnOrder },
       muiTableBodyRowProps: ({ row }) => {
         return {
           selected: selection.entries.map((entry) => entry.id).includes(row.original.targetObjectId),
@@ -224,6 +225,20 @@ export const TableContent = memo(
           row={row}
           readOnly={readOnly}
         />
+      ),
+      renderToolbarInternalActions: ({ table }) => (
+        <Box>
+          <IconButton
+            aria-label="Reset row heights"
+            title="Reset row heights"
+            data-testid="reset-row-heights"
+            onClick={() => resetRowsHeight()}>
+            <FormatLineSpacingIcon />
+          </IconButton>
+          <MRT_ToggleFiltersButton table={table} />
+          <MRT_ShowHideColumnsButton table={table} />
+          <MRT_ToggleFullScreenButton table={table} />
+        </Box>
       ),
     };
 
