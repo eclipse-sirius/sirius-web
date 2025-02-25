@@ -1,6 +1,33 @@
 = Changelog
 
-== v2025.2.0 (work in progress)
+== v2025.4.0 (work in progress)
+
+=== Shapes
+
+
+=== Architectural decision records
+
+
+=== Deprecation warning
+
+
+=== Breaking changes
+
+
+=== Dependency update
+
+
+=== Bug fixes
+
+
+=== New Features
+
+
+=== Improvements
+
+- https://github.com/eclipse-sirius/sirius-web/issues/4583[#4583] [sirius-web] Improve the performance to retrieve if a representation is view based
+
+== v2025.2.0
 
 === Shapes
 
