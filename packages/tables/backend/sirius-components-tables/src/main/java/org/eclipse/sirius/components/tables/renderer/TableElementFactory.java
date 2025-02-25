@@ -81,6 +81,7 @@ public class TableElementFactory implements IElementFactory {
                     .paginationData(tableElementProps.paginationData())
                     .globalFilter(tableElementProps.globalFilter())
                     .columnFilters(tableElementProps.columnFilters())
+                    .enableSubRows(tableElementProps.enableSubRows())
                     .build();
         }
         return null;
