@@ -92,6 +92,7 @@ public class ProjectTableRepresentationDescriptionProvider implements IEditingCo
                 .cellDescriptions(this.getCellDescriptions())
                 .iconURLsProvider(variableManager -> List.of("/papaya-representations/project-table.svg"))
                 .isStripeRowPredicate(variableManager -> false)
+                .enableSubRows(false)
                 .build();
 
         return List.of(tableDescription);

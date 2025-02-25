@@ -108,6 +108,7 @@ export const tableWidgetDocumentTransform = new DocumentTransform((document) => 
                   fieldBuilder('totalRowCount'),
                 ]),
                 fieldBuilder('stripeRow'),
+                fieldBuilder('enableSubRows'),
                 fieldBuilder('globalFilter'),
                 structuredFieldBuilder('columnFilters', [fieldBuilder('id'), fieldBuilder('value')]),
                 structuredFieldBuilder('columns', [

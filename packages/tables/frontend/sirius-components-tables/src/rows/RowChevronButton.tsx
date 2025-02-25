@@ -22,7 +22,7 @@ export const RowChevronButton = ({ row, isExpanded, onExpandCollapse, hasChildre
     <IconButton
       onClick={(_) => onExpandCollapse(row.id)}
       // the contrast between disabled and default text color is not enough
-      sx={{ marginLeft: theme.spacing(row.depthLevel), color: 'black' }}
+      sx={{ marginLeft: theme.spacing(row.depthLevel), marginRight: theme.spacing(-2), color: 'black' }}
       disabled={!hasChildren}>
       {isExpanded ? <ExpandMoreIcon /> : <ChevronRightIcon />}
     </IconButton>

@@ -19,6 +19,12 @@ import { ResizeRowHandler } from '../rows/ResizeRowHandler';
 import { RowHeader } from '../rows/RowHeader';
 import { GQLCell, GQLLine, GQLTable } from './TableContent.types';
 import { UseTableColumnsValue } from './useTableColumns.types';
+import { RowChevronButton } from '../rows/RowChevronButton';
+
+const hasChildren = (id: string, rows: GQLLine[]) => {
+  const index = rows.findIndex((row) => row.id === id);
+  return index < rows.length - 1 && (rows.at(index + 1)?.depthLevel ?? 0) === (rows.at(index)?.depthLevel ?? 0) + 1;
+};
 
 export const useTableColumns = (
   editingContextId: string,
@@ -34,14 +40,6 @@ export const useTableColumns = (
   onExpandCollapse: (rowId: string) => void,
   expandedRowIds: string[]
 ): UseTableColumnsValue => {
-  const hasChildren = (id: string) => {
-    const index = table.lines.findIndex((row) => row.id === id);
-    return (
-      index < table.lines.length - 1 &&
-      (table.lines.at(index + 1)?.depthLevel ?? 0) === (table.lines.at(index)?.depthLevel ?? 0) + 1
-    );
-  };
-
   const { setSelection } = useSelection();
   const columns = useMemo<MRT_ColumnDef<GQLLine, string>[]>(() => {
     const columnDefs: MRT_ColumnDef<GQLLine, string>[] = table.columns.map((column) => {
@@ -90,12 +88,16 @@ export const useTableColumns = (
             };
             setSelection(newSelection);
           }}>
-          <RowHeader
-            row={row.original}
-            isExpanded={expandedRowIds.includes(row.original.id)}
-            hasChildren={hasChildren(row.original.id)}
-            onExpandCollapse={onExpandCollapse}
-          />
+          <RowHeader row={row.original}>
+            {table.enableSubRows && (
+              <RowChevronButton
+                row={row.original}
+                isExpanded={expandedRowIds.includes(row.original.id)}
+                onExpandCollapse={onExpandCollapse}
+                hasChildren={hasChildren(row.original.id, table.lines)}
+              />
+            )}
+          </RowHeader>
           {enableRowSizing ? (
             <ResizeRowHandler
               editingContextId={editingContextId}

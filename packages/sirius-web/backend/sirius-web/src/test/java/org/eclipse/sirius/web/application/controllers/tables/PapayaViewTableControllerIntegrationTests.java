@@ -210,6 +210,7 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
 
         Consumer<Object> tableContentConsumer = this.getTableSubscriptionConsumer(table -> {
             assertThat(table).isNotNull();
+            assertThat(table.isEnableSubRows()).isTrue();
             assertThat(table.getLines()).hasSize(4);
             assertThat(table.getLines().get(0).getDepthLevel()).isEqualTo(0);
             assertThat(table.getLines().get(1).getDepthLevel()).isEqualTo(0);

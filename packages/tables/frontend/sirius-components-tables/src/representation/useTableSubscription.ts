@@ -48,6 +48,7 @@ export const getTableEventSubscription = `
             totalRowCount
           }
           stripeRow
+          enableSubRows
           globalFilter
           columnFilters {
             id

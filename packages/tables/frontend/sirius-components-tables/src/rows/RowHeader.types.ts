@@ -14,7 +14,5 @@ import { GQLLine } from '../table/TableContent.types';
 
 export interface RowHeaderProps {
   row: GQLLine;
-  isExpanded: boolean;
-  onExpandCollapse: (rowId: string) => void;
-  hasChildren: boolean;
+  children: React.ReactNode;
 }

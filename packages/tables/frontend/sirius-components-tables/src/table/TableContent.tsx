@@ -36,6 +36,64 @@ import { GQLLine, TableContentProps, TablePaginationState } from './TableContent
 import { useGlobalFilter } from './useGlobalFilter';
 import { useTableColumns } from './useTableColumns';
 
+const keepRow = (row: GQLLine, visibleRows: GQLLine[]): number => {
+  visibleRows.push(row);
+  return row.depthLevel;
+};
+const getChildrenById = (rowId: string, rows: GQLLine[]): GQLLine[] => {
+  const rowIndex = rows.findIndex((row) => row.id === rowId);
+  const children: GQLLine[] = [];
+  if (rowIndex >= 0 && rowIndex + 1 < rows.length) {
+    const level = rows[rowIndex]?.depthLevel ?? 0;
+    let index = rowIndex + 1;
+    while (index < rows.length && (rows[index]?.depthLevel ?? 0) > level) {
+      // keep only direct children
+      const row = rows[index];
+      if (row && row.depthLevel === level + 1) {
+        children.push(row);
+      }
+      index++;
+    }
+  }
+  return children;
+};
+
+const rowIdsToCollapse = (rowId: string, rows: GQLLine[], expandedRowIds: string[]): string[] => {
+  const result: string[] = [];
+
+  result.push(rowId);
+  // need to check if some sub rows are expanded
+  const children = getChildrenById(rowId, rows);
+  for (const child of children) {
+    if (expandedRowIds.includes(child.id)) {
+      result.push(...rowIdsToCollapse(child.id, rows, expandedRowIds));
+    }
+  }
+  return result;
+};
+
+const filterRowsOnLevel = (rows: GQLLine[], expandedRowIds: string[]): GQLLine[] => {
+  let filteredRows: GQLLine[] = [];
+  let currentIndex = 0;
+  const firstRow = rows[currentIndex];
+  if (firstRow) {
+    let currentLevel = keepRow(firstRow, filteredRows);
+    for (let index = 1; index < rows.length; index++) {
+      const row = rows[index];
+      if (row && row.depthLevel <= currentLevel) {
+        currentLevel = keepRow(row, filteredRows);
+      } else if (row && row.depthLevel > currentLevel) {
+        const currentRow = rows[currentIndex];
+        if (currentRow && expandedRowIds.includes(currentRow.id)) {
+          currentLevel = keepRow(row, filteredRows);
+        }
+      }
+      currentIndex = index;
+    }
+  }
+  return filteredRows;
+};
+
 export const TableContent = memo(
   ({
     editingContextId,
@@ -60,41 +118,9 @@ export const TableContent = memo(
       setLinesState((prev) => prev.map((line) => (line.id === rowId ? { ...line, height } : line)));
     };
 
-    const getChildrenById = (id: string): GQLLine[] => {
-      const rowIndex = table.lines.findIndex((row) => row.id === id);
-      const children: GQLLine[] = [];
-      if (rowIndex >= 0 && rowIndex + 1 < table.lines.length) {
-        const level = table.lines[rowIndex]?.depthLevel ?? 0;
-        let index = rowIndex + 1;
-        while (index < table.lines.length && (table.lines[index]?.depthLevel ?? 0) > level) {
-          // keep only direct children
-          const row = table.lines[index];
-          if (row && row.depthLevel === level + 1) {
-            children.push(row);
-          }
-          index++;
-        }
-      }
-      return children;
-    };
-
-    const rowIdsToCollapse = (rowId: string): string[] => {
-      const result: string[] = [];
-
-      result.push(rowId);
-      // need to check if some sub rows are expanded
-      const children = getChildrenById(rowId);
-      for (const child of children) {
-        if (expandedRowIds.includes(child.id)) {
-          result.push(...rowIdsToCollapse(child.id));
-        }
-      }
-      return result;
-    };
-
     const onRowExpandCollapse = (rowId: string) => {
       if (expandedRowIds.includes(rowId)) {
-        const toRemove = rowIdsToCollapse(rowId);
+        const toRemove = rowIdsToCollapse(rowId, table.lines, expandedRowIds);
         setExpandedRowIds((prev) => [...prev.filter((id) => !toRemove.includes(id))]);
       } else {
         setExpandedRowIds((prev) => [...prev, rowId]);
@@ -190,30 +216,13 @@ export const TableContent = memo(
       onPaginationChange(pagination.cursor, pagination.direction, pagination.size);
     }, [pagination.cursor, pagination.size, pagination.direction]);
 
-    const keepRow = (row: GQLLine, visibleRows: GQLLine[]): number => {
-      visibleRows.push(row);
-      return row.depthLevel;
-    };
-
     useEffect(() => {
-      let filteredRows: GQLLine[] = [];
-      let currentIndex = 0;
-      const firstRow = table.lines[currentIndex];
-      if (firstRow) {
-        let currentLevel = keepRow(firstRow, filteredRows);
-        for (let index = 1; index < table.lines.length; index++) {
-          const row = table.lines[index];
-          if (row && row.depthLevel <= currentLevel) {
-            currentLevel = keepRow(row, filteredRows);
-          } else if (row && row.depthLevel > currentLevel) {
-            if (expandedRowIds.includes(table.lines[currentIndex]!.id)) {
-              currentLevel = keepRow(row, filteredRows);
-            }
-          }
-          currentIndex = index;
-        }
+      if (table.enableSubRows) {
+        const rowFiltered = filterRowsOnLevel(table.lines, expandedRowIds);
+        setLinesState([...rowFiltered]);
+      } else {
+        setLinesState([...table.lines]);
       }
-      setLinesState([...filteredRows]);
     }, [table, expandedRowIds]);
 
     const tableOptions: MRT_TableOptions<GQLLine> = {
