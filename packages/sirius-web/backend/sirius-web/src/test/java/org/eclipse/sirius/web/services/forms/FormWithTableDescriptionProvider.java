@@ -156,6 +156,7 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
                 .cellDescriptions(this.getCellDescriptions())
                 .iconURLsProvider(variableManager -> List.of())
                 .isStripeRowPredicate(variableManager -> false)
+                .enableSubRows(false)
                 .build();
 
         return TableWidgetDescription.newTableWidgetDescription("tasksTableWidgetId")

@@ -118,6 +118,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .cellDescriptions(this.getCellDescriptions())
                 .iconURLsProvider(variableManager -> List.of("/papaya-representations/package-table.svg"))
                 .isStripeRowPredicate(variableManager -> true)
+                .enableSubRows(true)
                 .build();
 
         return List.of(tableDescription);

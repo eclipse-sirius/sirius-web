@@ -18,6 +18,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference table.ecore#//TableDescription/columnDescriptions"/>
       <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference table.ecore#//TableDescription/rowDescription"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference table.ecore#//TableDescription/cellDescriptions"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//TableDescription/enableSubRows"/>
     </genClasses>
     <genClasses ecoreClass="table.ecore#//ColumnDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//ColumnDescription/name"/>

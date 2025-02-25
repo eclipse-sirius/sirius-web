@@ -130,6 +130,7 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
                 .rowDescription(rowDescription)
                 .cellDescriptions(nameCellDescription, descriptionCellDescription)
                 .useStripedRowsExpression("aql:false")
+                .enableSubRows(true)
                 .build();
 
         return this.tableDescription;

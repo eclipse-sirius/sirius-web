@@ -332,6 +332,7 @@ export const widgetFields = `
         totalRowCount
       }
       stripeRow
+      enableSubRows
       globalFilter
       columnFilters {
         id

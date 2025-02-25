@@ -185,7 +185,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
                 .ifPresentOrElse(table -> {
                     tableId.set(table.getId());
                     assertThat(table).isNotNull();
-                    assertThat(table.getLines()).hasSize(4);
+                    assertThat(table.getLines()).hasSize(3);
                     assertThat(table.getLines().get(1).getHeight()).isEqualTo(100);
                 }, () -> fail(MISSING_TABLE));
 
@@ -209,7 +209,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
                 .map(TableRefreshedEventPayload::table)
                 .ifPresentOrElse(table -> {
                     assertThat(table).isNotNull();
-                    assertThat(table.getLines()).hasSize(4);
+                    assertThat(table.getLines()).hasSize(3);
                     assertThat(table.getLines().get(1).getHeight()).isEqualTo(53);
                 }, () -> fail(MISSING_TABLE));
 
@@ -246,7 +246,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
                 .map(TableRefreshedEventPayload::table)
                 .ifPresentOrElse(table -> {
                     assertThat(table).isNotNull();
-                    assertThat(table.getLines()).hasSize(4);
+                    assertThat(table.getLines()).hasSize(3);
                     tableId.set(table.getId());
                     rowId.set(table.getLines().get(0).getId());
                 }, () -> fail(MISSING_TABLE));
@@ -298,7 +298,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
                 .map(TableRefreshedEventPayload::table)
                 .ifPresentOrElse(table -> {
                     assertThat(table).isNotNull();
-                    assertThat(table.getLines()).hasSize(4);
+                    assertThat(table.getLines()).hasSize(3);
                     tableId.set(table.getId());
                     rowId.set(table.getLines().get(0).getId());
                 }, () -> fail(MISSING_TABLE));
@@ -327,7 +327,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
                 .map(TableRefreshedEventPayload::table)
                 .ifPresentOrElse(table -> {
                     assertThat(table).isNotNull();
-                    assertThat(table.getLines()).hasSize(3);
+                    assertThat(table.getLines()).hasSize(2);
                 }, () -> fail(MISSING_TABLE));
 
         StepVerifier.create(flux)

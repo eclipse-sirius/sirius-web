@@ -41,6 +41,7 @@ type Table implements Representation {
   paginationData: PaginationData
   globalFilter: String
   columnFilters: [ColumnFilter!]!
+  enableSubRows: Boolean!
 }
 
 type Column {
