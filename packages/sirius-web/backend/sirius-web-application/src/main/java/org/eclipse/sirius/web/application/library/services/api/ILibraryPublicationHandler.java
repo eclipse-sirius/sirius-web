@@ -10,15 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLOmniboxCommand } from './useOmniboxCommands.types';
+package org.eclipse.sirius.web.application.library.services.api;
 
-export interface OmniboxCommandOverrideContribution {
-  canHandle: (action: GQLOmniboxCommand) => boolean;
-  component: React.ComponentType<OmniboxCommandComponentProps>;
-}
+import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.web.application.library.dto.PublishLibrariesInput;
 
-export interface OmniboxCommandComponentProps {
-  command: GQLOmniboxCommand;
-  onKeyDown: React.KeyboardEventHandler<HTMLDivElement>;
-  onClose: () => void;
+/**
+ * Handles the publication of libraries.
+ *
+ * @author gdaniel
+ */
+public interface ILibraryPublicationHandler {
+
+    boolean canHandle(PublishLibrariesInput input);
+
+    IPayload handle(PublishLibrariesInput input);
+
 }
