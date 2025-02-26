@@ -18,6 +18,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference table.ecore#//TableDescription/columnDescriptions"/>
       <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference table.ecore#//TableDescription/rowDescription"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference table.ecore#//TableDescription/cellDescriptions"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//TableDescription/enableSubRows"/>
     </genClasses>
     <genClasses ecoreClass="table.ecore#//ColumnDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//ColumnDescription/name"/>
@@ -40,6 +41,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//RowDescription/initialHeightExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//RowDescription/isResizableExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference table.ecore#//RowDescription/contextMenuEntries"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//RowDescription/depthLevelExpression"/>
     </genClasses>
     <genClasses ecoreClass="table.ecore#//CellDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//CellDescription/name"/>

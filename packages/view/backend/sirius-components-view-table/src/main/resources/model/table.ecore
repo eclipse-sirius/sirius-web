@@ -10,6 +10,8 @@
         containment="true" eKeys="#//RowDescription/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="cellDescriptions" upperBound="-1"
         eType="#//CellDescription" containment="true" eKeys="#//CellDescription/name"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="enableSubRows" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ColumnDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"/>
@@ -58,6 +60,7 @@
         defaultValueLiteral=""/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="contextMenuEntries" upperBound="-1"
         eType="#//RowContextMenuEntry" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="depthLevelExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CellDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"/>

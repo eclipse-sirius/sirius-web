@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.tables.PaginationData;
  * @author lfasani
  */
 public record TableElementProps(String id, String descriptionId, String targetObjectId, String targetObjectKind,
-                                PaginationData paginationData, boolean stripeRow, List<Element> children, String globalFilter, List<ColumnFilter> columnFilters) implements IProps {
+        PaginationData paginationData, boolean stripeRow, List<Element> children, String globalFilter, List<ColumnFilter> columnFilters, boolean enableSubRows) implements IProps {
 
     public static final String TYPE = "Table";
 
@@ -76,6 +76,8 @@ public record TableElementProps(String id, String descriptionId, String targetOb
 
         private List<ColumnFilter> columnFilters;
 
+        private boolean enableSubRows;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -120,8 +122,14 @@ public record TableElementProps(String id, String descriptionId, String targetOb
             return this;
         }
 
+        public Builder enableSubRows(boolean enableSubRows) {
+            this.enableSubRows = enableSubRows;
+            return this;
+        }
+
         public TableElementProps build() {
-            return new TableElementProps(this.id, this.descriptionId, this.targetObjectId, this.targetObjectKind, this.paginationData, this.stripeRow, this.children, this.globalFilter, this.columnFilters);
+            return new TableElementProps(this.id, this.descriptionId, this.targetObjectId, this.targetObjectKind, this.paginationData, this.stripeRow, this.children, this.globalFilter,
+                    this.columnFilters, this.enableSubRows);
         }
     }
 }

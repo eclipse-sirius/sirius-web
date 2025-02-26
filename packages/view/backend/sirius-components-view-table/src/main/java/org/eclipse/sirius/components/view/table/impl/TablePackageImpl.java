@@ -42,71 +42,61 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
      *
      * @generated
      */
+    private static boolean isInited = false;
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     private EClass tableDescriptionEClass = null;
-
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private EClass columnDescriptionEClass = null;
-
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private EClass rowDescriptionEClass = null;
-
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private EClass cellDescriptionEClass = null;
-
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private EClass cellWidgetDescriptionEClass = null;
-
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private EClass cellTextfieldWidgetDescriptionEClass = null;
-
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private EClass cellLabelWidgetDescriptionEClass = null;
-
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private EClass cellTextareaWidgetDescriptionEClass = null;
-
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private EClass rowContextMenuEntryEClass = null;
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    private static boolean isInited = false;
-
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -226,6 +216,16 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
     @Override
     public EReference getTableDescription_CellDescriptions() {
         return (EReference) this.tableDescriptionEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getTableDescription_EnableSubRows() {
+        return (EAttribute) this.tableDescriptionEClass.getEStructuralFeatures().get(4);
     }
 
     /**
@@ -426,6 +426,16 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
     @Override
     public EReference getRowDescription_ContextMenuEntries() {
         return (EReference) this.rowDescriptionEClass.getEStructuralFeatures().get(7);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getRowDescription_DepthLevelExpression() {
+        return (EAttribute) this.rowDescriptionEClass.getEStructuralFeatures().get(8);
     }
 
     /**
@@ -655,6 +665,7 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
         this.createEReference(this.tableDescriptionEClass, TABLE_DESCRIPTION__COLUMN_DESCRIPTIONS);
         this.createEReference(this.tableDescriptionEClass, TABLE_DESCRIPTION__ROW_DESCRIPTION);
         this.createEReference(this.tableDescriptionEClass, TABLE_DESCRIPTION__CELL_DESCRIPTIONS);
+        this.createEAttribute(this.tableDescriptionEClass, TABLE_DESCRIPTION__ENABLE_SUB_ROWS);
 
         this.columnDescriptionEClass = this.createEClass(COLUMN_DESCRIPTION);
         this.createEAttribute(this.columnDescriptionEClass, COLUMN_DESCRIPTION__NAME);
@@ -677,6 +688,7 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
         this.createEAttribute(this.rowDescriptionEClass, ROW_DESCRIPTION__INITIAL_HEIGHT_EXPRESSION);
         this.createEAttribute(this.rowDescriptionEClass, ROW_DESCRIPTION__IS_RESIZABLE_EXPRESSION);
         this.createEReference(this.rowDescriptionEClass, ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES);
+        this.createEAttribute(this.rowDescriptionEClass, ROW_DESCRIPTION__DEPTH_LEVEL_EXPRESSION);
 
         this.cellDescriptionEClass = this.createEClass(CELL_DESCRIPTION);
         this.createEAttribute(this.cellDescriptionEClass, CELL_DESCRIPTION__NAME);
@@ -747,6 +759,8 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
         this.initEReference(this.getTableDescription_CellDescriptions(), this.getCellDescription(), null, "cellDescriptions", null, 0, -1, TableDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.getTableDescription_CellDescriptions().getEKeys().add(this.getCellDescription_Name());
+        this.initEAttribute(this.getTableDescription_EnableSubRows(), this.ecorePackage.getEBoolean(), "enableSubRows", null, 1, 1, TableDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.columnDescriptionEClass, ColumnDescription.class, "ColumnDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getColumnDescription_Name(), theViewPackage.getIdentifier(), "name", null, 0, 1, ColumnDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
@@ -787,6 +801,8 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getRowDescription_ContextMenuEntries(), this.getRowContextMenuEntry(), null, "contextMenuEntries", null, 0, -1, RowDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getRowDescription_DepthLevelExpression(), theViewPackage.getInterpretedExpression(), "depthLevelExpression", null, 0, 1, RowDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.cellDescriptionEClass, CellDescription.class, "CellDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getCellDescription_Name(), theViewPackage.getIdentifier(), "name", null, 0, 1, CellDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,

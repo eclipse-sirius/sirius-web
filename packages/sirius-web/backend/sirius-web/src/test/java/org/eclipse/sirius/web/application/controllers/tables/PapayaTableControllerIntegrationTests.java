@@ -66,7 +66,7 @@ import reactor.test.StepVerifier;
  */
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"sirius.web.test.enabled=studio"})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
 public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTests {
 
     private static final String MISSING_TABLE = "Missing table";
@@ -122,7 +122,7 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
                 .ifPresentOrElse(table -> {
                     assertThat(table).isNotNull();
                     assertThat(table.getColumns()).hasSize(6);
-                    assertThat(table.getLines()).hasSize(2);
+                    assertThat(table.getLines()).hasSize(4);
                 }, () -> fail(MISSING_TABLE));
 
         StepVerifier.create(flux)
@@ -146,7 +146,7 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
                 .ifPresentOrElse(table -> {
                     assertThat(table).isNotNull();
                     assertThat(table.getColumns()).hasSize(6);
-                    assertThat(table.getLines()).hasSize(2);
+                    assertThat(table.getLines()).hasSize(4);
 
                     tableId.set(table.getId());
                 }, () -> fail("Missing table"));

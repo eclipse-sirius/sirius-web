@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,6 +60,7 @@ public class TableDescriptionItemProvider extends RepresentationDescriptionItemP
 
             this.addUseStripedRowsExpressionPropertyDescriptor(object);
             this.addRowDescriptionPropertyDescriptor(object);
+            this.addEnableSubRowsPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -93,6 +94,18 @@ public class TableDescriptionItemProvider extends RepresentationDescriptionItemP
                         this.getString("_UI_PropertyDescriptor_description", "_UI_TableDescription_rowDescription_feature",
                                 "_UI_TableDescription_type"),
                         TablePackage.Literals.TABLE_DESCRIPTION__ROW_DESCRIPTION, true, false, true, null, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Enable Sub Rows feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addEnableSubRowsPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_TableDescription_enableSubRows_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_TableDescription_enableSubRows_feature", "_UI_TableDescription_type"),
+                TablePackage.Literals.TABLE_DESCRIPTION__ENABLE_SUB_ROWS, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -176,6 +189,7 @@ public class TableDescriptionItemProvider extends RepresentationDescriptionItemP
 
         switch (notification.getFeatureID(TableDescription.class)) {
             case TablePackage.TABLE_DESCRIPTION__USE_STRIPED_ROWS_EXPRESSION:
+            case TablePackage.TABLE_DESCRIPTION__ENABLE_SUB_ROWS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case TablePackage.TABLE_DESCRIPTION__COLUMN_DESCRIPTIONS:

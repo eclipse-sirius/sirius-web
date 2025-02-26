@@ -239,6 +239,7 @@ To achieve that a new concept, `ProjectSemanticData` has been added along with a
 - https://github.com/eclipse-sirius/sirius-web/issues/4411[#4411] [sirius-web] Display a message in the query view if the expression does not return anything or if the result type is unknown
 - https://github.com/eclipse-sirius/sirius-web/issues/4411[#4411] [sirius-web] Add support for expressions returning a collection of strings in the query view
 
+- https://github.com/eclipse-sirius/sirius-web/issues/4556[#4556] [table] Add the support of row hierarchy in tables
 
 == v2025.1.0
 
