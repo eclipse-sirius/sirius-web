@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,8 +41,14 @@ public final class SelectCell implements ICell {
 
     private String value;
 
+    private String descriptionId;
+
     private SelectCell() {
         // Prevent instantiation
+    }
+
+    public static Builder newSelectCell(UUID id) {
+        return new Builder(id);
     }
 
     public List<SelectCellOption> getOptions() {
@@ -51,10 +57,6 @@ public final class SelectCell implements ICell {
 
     public String getValue() {
         return this.value;
-    }
-
-    public static Builder newSelectCell(UUID id) {
-        return new Builder(id);
     }
 
     @Override
@@ -88,6 +90,11 @@ public final class SelectCell implements ICell {
         return this.columnId;
     }
 
+    @Override
+    public String getDescriptionId() {
+        return this.descriptionId;
+    }
+
     /**
      * The builder used to create a cell.
      *
@@ -107,6 +114,8 @@ public final class SelectCell implements ICell {
         private List<SelectCellOption> options;
 
         private String value;
+
+        private String descriptionId;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -137,6 +146,11 @@ public final class SelectCell implements ICell {
             return this;
         }
 
+        public Builder descriptionId(String descriptionId) {
+            this.descriptionId = descriptionId;
+            return this;
+        }
+
         public SelectCell build() {
             SelectCell cell = new SelectCell();
             cell.id = Objects.requireNonNull(this.id);
@@ -145,6 +159,7 @@ public final class SelectCell implements ICell {
             cell.columnId = Objects.requireNonNull(this.columnId);
             cell.options = Objects.requireNonNull(this.options);
             cell.value = this.value;
+            cell.descriptionId = Objects.requireNonNull(this.descriptionId);
             return cell;
         }
     }

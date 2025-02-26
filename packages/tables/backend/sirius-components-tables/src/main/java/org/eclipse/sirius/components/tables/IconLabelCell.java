@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,8 +41,14 @@ public final class IconLabelCell implements ICell {
 
     private List<String> iconURLs;
 
+    private String descriptionId;
+
     private IconLabelCell() {
         // Prevent instantiation
+    }
+
+    public static Builder newIconLabelCell(UUID id) {
+        return new Builder(id);
     }
 
     public String getValue() {
@@ -51,10 +57,6 @@ public final class IconLabelCell implements ICell {
 
     public List<String> getIconURLs() {
         return this.iconURLs;
-    }
-
-    public static Builder newIconLabelCell(UUID id) {
-        return new Builder(id);
     }
 
     @Override
@@ -88,6 +90,11 @@ public final class IconLabelCell implements ICell {
         return this.columnId;
     }
 
+    @Override
+    public String getDescriptionId() {
+        return this.descriptionId;
+    }
+
     /**
      * The builder used to create a cell.
      *
@@ -107,6 +114,8 @@ public final class IconLabelCell implements ICell {
         private String value;
 
         private List<String> iconURLs;
+
+        private String descriptionId;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -137,6 +146,11 @@ public final class IconLabelCell implements ICell {
             return this;
         }
 
+        public Builder descriptionId(String descriptionId) {
+            this.descriptionId = Objects.requireNonNull(descriptionId);
+            return this;
+        }
+
         public IconLabelCell build() {
             IconLabelCell cell = new IconLabelCell();
             cell.id = Objects.requireNonNull(this.id);
@@ -145,6 +159,7 @@ public final class IconLabelCell implements ICell {
             cell.columnId = Objects.requireNonNull(this.columnId);
             cell.value = Objects.requireNonNull(this.value);
             cell.iconURLs = Objects.requireNonNull(this.iconURLs);
+            cell.descriptionId = Objects.requireNonNull(this.descriptionId);
             return cell;
         }
     }

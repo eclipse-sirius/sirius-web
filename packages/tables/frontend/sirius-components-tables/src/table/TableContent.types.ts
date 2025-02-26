@@ -105,6 +105,7 @@ export interface GQLPaginationData {
 export interface GQLCell {
   __typename: string;
   id: string;
+  descriptionId: string;
   columnId: string;
   targetObjectId: string;
   targetObjectKind: string;

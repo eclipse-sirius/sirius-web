@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,8 @@ import org.eclipse.sirius.components.tables.SelectCellOption;
  *
  * @author lfasani
  */
-public record MultiSelectCellElementProps(UUID id, String targetObjectId, String targetObjectKind, UUID columnId, List<SelectCellOption> options, List<String> values) implements IProps {
+public record MultiSelectCellElementProps(UUID id, String targetObjectId, String targetObjectKind, UUID columnId, List<SelectCellOption> options, List<String> values, String descriptionId)
+        implements IProps {
 
     public static final String TYPE = "MultiSelectCell";
 
@@ -35,5 +36,6 @@ public record MultiSelectCellElementProps(UUID id, String targetObjectId, String
         Objects.requireNonNull(columnId);
         Objects.requireNonNull(options);
         Objects.requireNonNull(values);
+        Objects.requireNonNull(descriptionId);
     }
 }
