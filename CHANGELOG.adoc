@@ -20,7 +20,7 @@
 
 === Dependency update
 
-
+- [releng] Switch to Turbo 2.4.4
 
 === Bug fixes
 
