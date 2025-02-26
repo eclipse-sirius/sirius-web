@@ -70,7 +70,7 @@
     "react-dom": "18.3.1",
     "react-router-dom": "6.26.0",
     "react-window": "1.8.11",
-    "@xyflow/react": "12.2.1",
+    "@xyflow/react": "12.4.4",
     "tss-react": "4.9.7",
     "xstate": "4.32.1"
   },
@@ -107,7 +107,7 @@
     "d3": "7.0.0",
     "@lexical/react": "0.8.1",
     "lexical": "0.8.1",
-    "@xyflow/react": "12.2.1",
+    "@xyflow/react": "12.4.4",
     "@types/node": "20.12.12",
     "@types/react": "18.3.3",
     "@vitejs/plugin-react": "4.3.0",
