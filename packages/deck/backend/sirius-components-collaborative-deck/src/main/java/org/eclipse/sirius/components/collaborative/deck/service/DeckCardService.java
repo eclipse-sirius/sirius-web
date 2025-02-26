@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,7 @@ import org.eclipse.sirius.components.collaborative.deck.dto.input.EditDeckCardIn
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
@@ -55,12 +55,12 @@ public class DeckCardService implements IDeckCardService {
 
     private final IFeedbackMessageService feedbackMessageService;
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
-    public DeckCardService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IFeedbackMessageService feedbackMessageService, IObjectService objectService) {
+    public DeckCardService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IFeedbackMessageService feedbackMessageService, IObjectSearchService objectSearchService) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
     }
 
     @Override
@@ -70,18 +70,18 @@ public class DeckCardService implements IDeckCardService {
         String currentLaneId = createDeckCardInput.currentLaneId();
         Optional<Lane> optionalParentLane = this.findLane(lane -> Objects.equals(lane.id(), currentLaneId), deck);
         Optional<LaneDescription> optionalLaneDescription = optionalParentLane.flatMap(lane -> this.findLaneDescription(lane.descriptionId(), deck, editingContext));
-        Optional<Object> optionalDeckTarget = this.objectService.getObject(editingContext, deck.getTargetObjectId());
+        Optional<Object> optionalDeckTarget = this.objectSearchService.getObject(editingContext, deck.getTargetObjectId());
 
         if (optionalLaneDescription.isPresent() && optionalDeckTarget.isPresent()) {
             VariableManager variableManager = new VariableManager();
             Optional<Object> optionalTargetObject;
             if (currentLaneId != null) {
-                optionalTargetObject = optionalParentLane.map(card -> this.objectService.getObject(editingContext, card.targetObjectId())).map(Optional::get);
+                optionalTargetObject = optionalParentLane.map(card -> this.objectSearchService.getObject(editingContext, card.targetObjectId())).map(Optional::get);
                 if (optionalTargetObject.isEmpty()) {
                     this.feedbackMessageService.addFeedbackMessage(new Message(MessageFormat.format("The current lane of id ''{0}'' is not found", currentLaneId), MessageLevel.ERROR));
                 }
             } else {
-                optionalTargetObject = this.objectService.getObject(editingContext, deck.targetObjectId());
+                optionalTargetObject = this.objectSearchService.getObject(editingContext, deck.targetObjectId());
             }
             if (optionalTargetObject.isPresent()) {
                 variableManager.put(VariableManager.SELF, optionalTargetObject.get());
@@ -107,7 +107,7 @@ public class DeckCardService implements IDeckCardService {
         Optional<CardDescription> optionalCardDescription = optionalCard.flatMap(card -> this.findCardDescription(card.descriptionId(), deck, editingContext));
 
         if (optionalCard.isPresent() && optionalCardDescription.isPresent()) {
-            Optional<Object> optionalTargetObject = this.objectService.getObject(editingContext, optionalCard.get().targetObjectId());
+            Optional<Object> optionalTargetObject = this.objectSearchService.getObject(editingContext, optionalCard.get().targetObjectId());
             if (optionalTargetObject.isPresent()) {
                 VariableManager variableManager = new VariableManager();
                 variableManager.put(VariableManager.SELF, optionalTargetObject.get());
@@ -127,7 +127,7 @@ public class DeckCardService implements IDeckCardService {
         Optional<CardDescription> optionalCardDescription = optionalCard.flatMap(card -> this.findCardDescription(card.descriptionId(), deck, editingContext));
 
         if (optionalCard.isPresent() && optionalCardDescription.isPresent()) {
-            Optional<Object> optionalTargetObject = this.objectService.getObject(editingContext, optionalCard.get().targetObjectId());
+            Optional<Object> optionalTargetObject = this.objectSearchService.getObject(editingContext, optionalCard.get().targetObjectId());
             if (optionalTargetObject.isPresent()) {
                 VariableManager variableManager = new VariableManager();
                 variableManager.put(VariableManager.SELF, optionalTargetObject.get());
@@ -153,18 +153,14 @@ public class DeckCardService implements IDeckCardService {
         Optional<LaneDescription> optionalLaneDescription = optionalNewLane.flatMap(lane -> this.findLaneDescription(lane.descriptionId(), deck, editingContext));
 
         if (optionalCard.isPresent() && optionalLaneDescription.isPresent()) {
-            Optional<Object> optionalTargetObject = this.objectService.getObject(editingContext, optionalCard.get().targetObjectId());
+            Optional<Object> optionalTargetObject = this.objectSearchService.getObject(editingContext, optionalCard.get().targetObjectId());
             if (optionalTargetObject.isPresent()) {
                 VariableManager variableManager = new VariableManager();
                 variableManager.put(VariableManager.SELF, optionalTargetObject.get());
                 variableManager.put(LaneDescription.OLD_LANE, optionalOldLane.orElse(null));
-                variableManager.put(LaneDescription.OLD_LANE_TARGET, optionalOldLane.flatMap(lane -> {
-                    return this.objectService.getObject(editingContext, lane.targetObjectId());
-                }).orElse(null));
+                variableManager.put(LaneDescription.OLD_LANE_TARGET, optionalOldLane.flatMap(lane -> this.objectSearchService.getObject(editingContext, lane.targetObjectId())).orElse(null));
                 variableManager.put(LaneDescription.NEW_LANE, optionalNewLane.orElse(null));
-                variableManager.put(LaneDescription.NEW_LANE_TARGET, optionalNewLane.flatMap(lane -> {
-                    return this.objectService.getObject(editingContext, lane.targetObjectId());
-                }).orElse(null));
+                variableManager.put(LaneDescription.NEW_LANE_TARGET, optionalNewLane.flatMap(lane -> this.objectSearchService.getObject(editingContext, lane.targetObjectId())).orElse(null));
                 variableManager.put(LaneDescription.INDEX, dropDeckCardInput.addedIndex());
                 optionalLaneDescription.get().dropCardProvider().accept(variableManager);
 

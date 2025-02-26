@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,13 +18,13 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorContext;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorCreationService;
 import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
@@ -51,9 +51,9 @@ public class FormDescriptionEditorCreationService implements IFormDescriptionEdi
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
-    private final IRepresentationPersistenceService representationPersistenceService;
+    private final IIdentityService identityService;
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final List<IWidgetDescriptor> widgetDescriptors;
 
@@ -61,11 +61,11 @@ public class FormDescriptionEditorCreationService implements IFormDescriptionEdi
 
     private final Timer timer;
 
-    public FormDescriptionEditorCreationService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationPersistenceService representationPersistenceService,
-            IObjectService objectService, List<IWidgetDescriptor> widgetDescriptors, List<IWidgetPreviewConverterProvider> customWidgetConverterProviders, MeterRegistry meterRegistry) {
+    public FormDescriptionEditorCreationService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IIdentityService identityService,
+            IObjectSearchService objectSearchService, List<IWidgetDescriptor> widgetDescriptors, List<IWidgetPreviewConverterProvider> customWidgetConverterProviders, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
-        this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.identityService = Objects.requireNonNull(identityService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
         this.customWidgetConverterProviders = Objects.requireNonNull(customWidgetConverterProviders);
 
@@ -77,7 +77,7 @@ public class FormDescriptionEditorCreationService implements IFormDescriptionEdi
     @Override
     public FormDescriptionEditor create(ICause cause, Object targetObject, FormDescriptionEditorDescription formDescriptionEditorDescription, IEditingContext editingContext) {
         return FormDescriptionEditor.newFormDescriptionEditor(UUID.randomUUID().toString())
-                .targetObjectId(this.objectService.getId(targetObject))
+                .targetObjectId(this.identityService.getId(targetObject))
                 .descriptionId(formDescriptionEditorDescription.getId())
                 .pages(List.of()) // We don't store form description editor pages, it will be re-render by the FormDescriptionEditorProcessor.
                 .build();
@@ -86,7 +86,7 @@ public class FormDescriptionEditorCreationService implements IFormDescriptionEdi
     @Override
     public FormDescriptionEditor refresh(IEditingContext editingContext, IFormDescriptionEditorContext formDescriptionEditorContext) {
         FormDescriptionEditor previousFormDescriptionEditor = formDescriptionEditorContext.getFormDescriptionEditor();
-        var optionalObject = this.objectService.getObject(editingContext, previousFormDescriptionEditor.getTargetObjectId());
+        var optionalObject = this.objectSearchService.getObject(editingContext, previousFormDescriptionEditor.getTargetObjectId());
         var optionalFormDescriptionEditorDescription = this.representationDescriptionSearchService.findById(editingContext, previousFormDescriptionEditor.getDescriptionId())
                 .filter(FormDescriptionEditorDescription.class::isInstance)
                 .map(FormDescriptionEditorDescription.class::cast);

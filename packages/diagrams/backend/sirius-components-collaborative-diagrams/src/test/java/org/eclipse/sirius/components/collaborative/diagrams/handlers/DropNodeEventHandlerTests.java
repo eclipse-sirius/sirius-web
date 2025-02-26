@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,7 +32,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborat
 import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
@@ -60,7 +60,7 @@ public class DropNodeEventHandlerTests {
 
     private static final String TARGET_ELEMENT_ID = "targetElementId";
 
-    private final IObjectService objectService = new IObjectService.NoOp() {
+    private final IObjectSearchService objectSearchService = new IObjectSearchService.NoOp() {
         @Override
         public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
             return Optional.of(new Object());
@@ -110,7 +110,7 @@ public class DropNodeEventHandlerTests {
 
     @Test
     public void testDropNodeToDiagram() {
-        var handler = new DropNodeEventHandler(this.objectService, this.diagramQueryService, this.diagramDescriptionService, this.representationDescriptionSearchService,
+        var handler = new DropNodeEventHandler(this.objectSearchService, this.diagramQueryService, this.diagramDescriptionService, this.representationDescriptionSearchService,
                 new ICollaborativeDiagramMessageService.NoOp(), new IFeedbackMessageService.NoOp(), new SimpleMeterRegistry());
 
         var input = new DropNodeInput(UUID.randomUUID(), "editingContextId", "representationId", DROPPED_ELEMENT_ID, null, 0, 0);
@@ -134,7 +134,7 @@ public class DropNodeEventHandlerTests {
 
     @Test
     public void testDropNodeToOtherNode() {
-        var handler = new DropNodeEventHandler(this.objectService, this.diagramQueryService, this.diagramDescriptionService, this.representationDescriptionSearchService,
+        var handler = new DropNodeEventHandler(this.objectSearchService, this.diagramQueryService, this.diagramDescriptionService, this.representationDescriptionSearchService,
                 new ICollaborativeDiagramMessageService.NoOp(), new IFeedbackMessageService.NoOp(), new SimpleMeterRegistry());
 
         var input = new DropNodeInput(UUID.randomUUID(), "editingContextId", "representationId", DROPPED_ELEMENT_ID, TARGET_ELEMENT_ID, 0, 0);

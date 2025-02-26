@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.junit.jupiter.api.Test;
 
@@ -87,14 +87,14 @@ public class CreateChildEventHandlerTests {
     }
 
     void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditService editService) {
-        IObjectService objectService = new IObjectService.NoOp() {
+        IObjectSearchService objectSearchService = new IObjectSearchService.NoOp() {
             @Override
             public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
                 return Optional.of(new Object());
             }
         };
 
-        CreateChildEventHandler handler = new CreateChildEventHandler(objectService, editService, new ICollaborativeMessageService.NoOp(), new IFeedbackMessageService.NoOp(), new SimpleMeterRegistry());
+        CreateChildEventHandler handler = new CreateChildEventHandler(objectSearchService, editService, new ICollaborativeMessageService.NoOp(), new IFeedbackMessageService.NoOp(), new SimpleMeterRegistry());
         var input = new CreateChildInput(UUID.randomUUID(), UUID.randomUUID().toString(), "parentObjectId", "childCreationDescriptionId");
 
         IEditingContext editingContext = () -> UUID.randomUUID().toString();

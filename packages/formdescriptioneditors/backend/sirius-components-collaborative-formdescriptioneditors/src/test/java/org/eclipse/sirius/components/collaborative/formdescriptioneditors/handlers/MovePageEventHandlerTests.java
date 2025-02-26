@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IF
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.MovePageInput;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.messages.ICollaborativeFormDescriptionEditorMessageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
@@ -59,7 +59,7 @@ public class MovePageEventHandlerTests {
 
         FormDescriptionEditor formDescriptionEditor = new TestFormDescriptionEditorBuilder().getFormDescriptionEditor(UUID.randomUUID().toString());
 
-        var objectService = new IObjectService.NoOp() {
+        var objectSearchService = new IObjectSearchService.NoOp() {
             @Override
             public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
                 Optional<Object> result = Optional.empty();
@@ -76,15 +76,15 @@ public class MovePageEventHandlerTests {
             }
         };
 
-        this.invokMove(formDescriptionEditor, objectService, "page2", 0);
+        this.invokMove(formDescriptionEditor, objectSearchService, "page2", 0);
         assertThat(formDescription.getPages()).isEqualTo(List.of(pageDescription2, pageDescription1, pageDescription3));
-        this.invokMove(formDescriptionEditor, objectService, "page1", 2);
+        this.invokMove(formDescriptionEditor, objectSearchService, "page1", 2);
         assertThat(formDescription.getPages()).isEqualTo(List.of(pageDescription2, pageDescription3, pageDescription1));
 
     }
 
-    private void invokMove(FormDescriptionEditor formDescriptionEditor, IObjectService.NoOp objectService, String pageId, int index) {
-        var handler = new MovePageEventHandler(objectService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
+    private void invokMove(FormDescriptionEditor formDescriptionEditor, IObjectSearchService objectSearchService, String pageId, int index) {
+        var handler = new MovePageEventHandler(objectSearchService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
         var input = new MovePageInput(UUID.randomUUID(), "editingContextId", formDescriptionEditor.getId(), pageId, index);
 
         assertThat(handler.canHandle(input)).isTrue();

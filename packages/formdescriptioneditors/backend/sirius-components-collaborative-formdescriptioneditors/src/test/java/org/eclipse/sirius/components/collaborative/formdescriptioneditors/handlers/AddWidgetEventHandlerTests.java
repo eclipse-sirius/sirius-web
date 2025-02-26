@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IF
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.AddWidgetInput;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.messages.ICollaborativeFormDescriptionEditorMessageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.view.form.FormFactory;
@@ -45,13 +45,13 @@ import reactor.core.publisher.Sinks.One;
 public class AddWidgetEventHandlerTests {
     @Test
     public void testAddWidget() {
-        var objectService = new IObjectService.NoOp() {
+        var objectSearchService = new IObjectSearchService.NoOp() {
             @Override
             public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
                 return Optional.of(FormFactory.eINSTANCE.createFlexboxContainerDescription());
             }
         };
-        var handler = new AddWidgetEventHandler(objectService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), List.of(), new SimpleMeterRegistry());
+        var handler = new AddWidgetEventHandler(objectSearchService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), List.of(), new SimpleMeterRegistry());
         var input = new AddWidgetInput(UUID.randomUUID(), "editingContextId", "representationId", "containerId", "Checkbox", 0);
 
         assertThat(handler.canHandle(input)).isTrue();

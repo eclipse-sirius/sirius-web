@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,7 @@ import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IInput;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
@@ -47,7 +47,7 @@ import reactor.core.publisher.Sinks.One;
 @Service
 public class CreateChildEventHandler implements IEditingContextEventHandler {
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final IEditService editService;
 
@@ -57,8 +57,8 @@ public class CreateChildEventHandler implements IEditingContextEventHandler {
 
     private final Counter counter;
 
-    public CreateChildEventHandler(IObjectService objectService, IEditService editService, ICollaborativeMessageService messageService, IFeedbackMessageService feedbackMessageService, MeterRegistry meterRegistry) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public CreateChildEventHandler(IObjectSearchService objectSearchService, IEditService editService, ICollaborativeMessageService messageService, IFeedbackMessageService feedbackMessageService, MeterRegistry meterRegistry) {
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.editService = Objects.requireNonNull(editService);
         this.messageService = Objects.requireNonNull(messageService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
@@ -86,7 +86,7 @@ public class CreateChildEventHandler implements IEditingContextEventHandler {
             String parentObjectId = createChildInput.objectId();
             String childCreationDescriptionId = createChildInput.childCreationDescriptionId();
 
-            Optional<Object> createdChildOptional = this.objectService.getObject(editingContext, parentObjectId)
+            Optional<Object> createdChildOptional = this.objectSearchService.getObject(editingContext, parentObjectId)
                     .flatMap(parent -> this.editService.createChild(editingContext, parent, childCreationDescriptionId));
 
             if (createdChildOptional.isPresent()) {

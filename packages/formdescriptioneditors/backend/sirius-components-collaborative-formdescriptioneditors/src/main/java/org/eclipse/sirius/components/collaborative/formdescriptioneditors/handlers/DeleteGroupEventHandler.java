@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,7 @@ import org.eclipse.sirius.components.collaborative.formdescriptioneditors.messag
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.springframework.stereotype.Service;
@@ -43,7 +43,7 @@ import reactor.core.publisher.Sinks.One;
 @Service
 public class DeleteGroupEventHandler implements IFormDescriptionEditorEventHandler {
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final IEditService editService;
 
@@ -51,8 +51,8 @@ public class DeleteGroupEventHandler implements IFormDescriptionEditorEventHandl
 
     private final Counter counter;
 
-    public DeleteGroupEventHandler(IObjectService objectService, IEditService editService, ICollaborativeFormDescriptionEditorMessageService messageService, MeterRegistry meterRegistry) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public DeleteGroupEventHandler(IObjectSearchService objectSearchService, IEditService editService, ICollaborativeFormDescriptionEditorMessageService messageService, MeterRegistry meterRegistry) {
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.editService = Objects.requireNonNull(editService);
         this.messageService = Objects.requireNonNull(messageService);
 
@@ -79,7 +79,7 @@ public class DeleteGroupEventHandler implements IFormDescriptionEditorEventHandl
 
         if (formDescriptionEditorInput instanceof DeleteGroupInput) {
             String groupId = ((DeleteGroupInput) formDescriptionEditorInput).groupId();
-            boolean deleteGroup = this.deleteGroup(editingContext, formDescriptionEditorContext, groupId);
+            boolean deleteGroup = this.deleteGroup(editingContext, groupId);
             if (deleteGroup) {
                 payload = new SuccessPayload(formDescriptionEditorInput.id());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formDescriptionEditorInput.representationId(), formDescriptionEditorInput);
@@ -90,8 +90,8 @@ public class DeleteGroupEventHandler implements IFormDescriptionEditorEventHandl
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    protected boolean deleteGroup(IEditingContext editingContext, IFormDescriptionEditorContext formDescriptionEditorContext, String groupId) {
-        var optionalSelf = this.objectService.getObject(editingContext, groupId);
+    protected boolean deleteGroup(IEditingContext editingContext, String groupId) {
+        var optionalSelf = this.objectSearchService.getObject(editingContext, groupId);
         if (optionalSelf.isPresent()) {
             this.editService.delete(optionalSelf.get());
             return true;

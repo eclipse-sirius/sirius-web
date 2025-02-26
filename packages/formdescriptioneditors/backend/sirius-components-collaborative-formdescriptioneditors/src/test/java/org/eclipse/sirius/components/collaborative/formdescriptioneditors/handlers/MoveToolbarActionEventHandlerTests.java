@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,8 +26,7 @@ import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IF
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.MoveToolbarActionInput;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.messages.ICollaborativeFormDescriptionEditorMessageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.core.api.IObjectService.NoOp;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
@@ -69,7 +68,7 @@ public class MoveToolbarActionEventHandlerTests {
         groupDescription.getToolbarActions().add(toolbarButton3);
         pageDescription.getToolbarActions().add(toolbarButton4);
 
-        var objectService = new IObjectService.NoOp() {
+        var objectSearchService = new IObjectSearchService.NoOp() {
             @Override
             public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
                 Optional<Object> result = Optional.empty();
@@ -92,20 +91,20 @@ public class MoveToolbarActionEventHandlerTests {
             }
         };
 
-        this.invokMove(formDescriptionEditor, objectService, formDescriptionEditor.getPages().get(0).getGroups().get(0)
+        this.invokMove(formDescriptionEditor, objectSearchService, formDescriptionEditor.getPages().get(0).getGroups().get(0)
                 .getId(), "button2", 0);
         assertThat(groupDescription.getToolbarActions()).isEqualTo(List.of(toolbarButton2, toolbarButton1, toolbarButton3));
-        this.invokMove(formDescriptionEditor, objectService, formDescriptionEditor.getPages().get(0).getGroups().get(0)
+        this.invokMove(formDescriptionEditor, objectSearchService, formDescriptionEditor.getPages().get(0).getGroups().get(0)
                 .getId(), "button1", 2);
         assertThat(groupDescription.getToolbarActions()).isEqualTo(List.of(toolbarButton2, toolbarButton3, toolbarButton1));
-        this.invokMove(formDescriptionEditor, objectService, formDescriptionEditor.getPages().get(0)
+        this.invokMove(formDescriptionEditor, objectSearchService, formDescriptionEditor.getPages().get(0)
                 .getId(), "button3", 1);
         assertThat(groupDescription.getToolbarActions()).isEqualTo(List.of(toolbarButton2, toolbarButton1));
         assertThat(pageDescription.getToolbarActions()).isEqualTo(List.of(toolbarButton4, toolbarButton3));
     }
 
-    private void invokMove(FormDescriptionEditor formDescriptionEditor, NoOp objectService, String containerId, String toolbarActionId, int index) {
-        var handler = new MoveToolbarActionEventHandler(objectService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
+    private void invokMove(FormDescriptionEditor formDescriptionEditor, IObjectSearchService objectSearchService, String containerId, String toolbarActionId, int index) {
+        var handler = new MoveToolbarActionEventHandler(objectSearchService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
         var input = new MoveToolbarActionInput(UUID.randomUUID(), "editingContextId", formDescriptionEditor.getId(), containerId, toolbarActionId, index);
 
         assertThat(handler.canHandle(input)).isTrue();

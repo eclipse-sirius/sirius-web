@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreation
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
@@ -56,7 +56,7 @@ public class DiagramCreationService implements IDiagramCreationService {
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final IOperationValidator operationValidator;
 
@@ -64,10 +64,10 @@ public class DiagramCreationService implements IDiagramCreationService {
 
     private final Logger logger = LoggerFactory.getLogger(DiagramCreationService.class);
 
-    public DiagramCreationService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IObjectService objectService,
+    public DiagramCreationService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IObjectSearchService objectSearchService,
                                   IOperationValidator operationValidator, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.operationValidator = Objects.requireNonNull(operationValidator);
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
                 .tag(Monitoring.NAME, "diagram")
@@ -90,7 +90,7 @@ public class DiagramCreationService implements IDiagramCreationService {
     public Optional<Diagram> refresh(IEditingContext editingContext, IDiagramContext diagramContext) {
         Diagram previousDiagram = diagramContext.getDiagram();
 
-        var optionalObject = this.objectService.getObject(editingContext, previousDiagram.getTargetObjectId());
+        var optionalObject = this.objectSearchService.getObject(editingContext, previousDiagram.getTargetObjectId());
         var optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, previousDiagram.getDescriptionId())
                 .filter(DiagramDescription.class::isInstance)
                 .map(DiagramDescription.class::cast);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,7 +29,7 @@ import org.eclipse.sirius.components.collaborative.formdescriptioneditors.TestFo
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IFormDescriptionEditorCreationService;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.messages.ICollaborativeFormDescriptionEditorMessageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.events.ICause;
@@ -75,14 +75,14 @@ public class CreateFormDescriptionEditorEventHandlerTests {
 
         };
 
-        IObjectService objectService = new IObjectService.NoOp() {
+        IObjectSearchService objectSearchService = new IObjectSearchService.NoOp() {
             @Override
             public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
                 return Optional.of(new Object());
             }
         };
 
-        CreateFormDescriptionEditorEventHandler handler = new CreateFormDescriptionEditorEventHandler(representationDescriptionSearchService, new IRepresentationMetadataPersistenceService.NoOp(), new IRepresentationPersistenceService.NoOp(), objectService,
+        CreateFormDescriptionEditorEventHandler handler = new CreateFormDescriptionEditorEventHandler(representationDescriptionSearchService, new IRepresentationMetadataPersistenceService.NoOp(), new IRepresentationPersistenceService.NoOp(), objectSearchService,
                 new ICollaborativeFormDescriptionEditorMessageService.NoOp(), formDescriptionEditorCreationService, new SimpleMeterRegistry());
 
         var input = new CreateRepresentationInput(UUID.randomUUID(), UUID.randomUUID().toString(), UUID.randomUUID().toString(), "objectId", "representationName");

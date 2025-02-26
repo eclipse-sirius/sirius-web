@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,7 +33,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborat
 import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
@@ -61,10 +61,9 @@ import reactor.core.publisher.Sinks.One;
 @Service
 public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagramEventHandler {
 
-
     private final Logger logger = LoggerFactory.getLogger(InvokeSingleClickOnDiagramElementToolEventHandler.class);
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final IDiagramQueryService diagramQueryService;
 
@@ -74,9 +73,9 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
 
     private final Counter counter;
 
-    public InvokeSingleClickOnDiagramElementToolEventHandler(IObjectService objectService, IDiagramQueryService diagramQueryService, IToolService toolService,
+    public InvokeSingleClickOnDiagramElementToolEventHandler(IObjectSearchService objectSearchService, IDiagramQueryService diagramQueryService, IToolService toolService,
             ICollaborativeDiagramMessageService messageService, MeterRegistry meterRegistry) {
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.toolService = Objects.requireNonNull(toolService);
         this.messageService = Objects.requireNonNull(messageService);
@@ -153,14 +152,14 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
         switch (toolvariable.type()) {
             case STRING -> variableManager.put(toolvariable.name(), toolvariable.value());
             case OBJECT_ID -> {
-                var optionalObject = this.objectService.getObject(editingContext, toolvariable.value());
+                var optionalObject = this.objectSearchService.getObject(editingContext, toolvariable.value());
                 variableManager.put(toolvariable.name(), optionalObject.orElse(null));
             }
             case OBJECT_ID_ARRAY -> {
                 String value = toolvariable.value();
                 List<String> objectsIds = List.of(value.split(","));
                 List<Object> objects = objectsIds.stream()
-                        .map(objectId -> this.objectService.getObject(editingContext, objectId))
+                        .map(objectId -> this.objectSearchService.getObject(editingContext, objectId))
                         .map(optionalObject -> optionalObject.orElse(null))
                         .toList();
                 variableManager.put(toolvariable.name(), objects);
@@ -175,11 +174,11 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
             Optional<Edge> edge) {
         Optional<Object> self = Optional.empty();
         if (node.isPresent()) {
-            self = this.objectService.getObject(editingContext, node.get().getTargetObjectId());
+            self = this.objectSearchService.getObject(editingContext, node.get().getTargetObjectId());
         } else if (edge.isPresent()) {
-            self = this.objectService.getObject(editingContext, edge.get().getTargetObjectId());
+            self = this.objectSearchService.getObject(editingContext, edge.get().getTargetObjectId());
         } else if (Objects.equals(diagram.getId(), diagramElementId)) {
-            self = this.objectService.getObject(editingContext, diagram.getTargetObjectId());
+            self = this.objectSearchService.getObject(editingContext, diagram.getTargetObjectId());
         } else {
             this.logger.warn("The tool {0} cannot be applied on the current diagram {1} and editing context {2}", tool.getId(), diagram.getId(), editingContext.getId());
         }

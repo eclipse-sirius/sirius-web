@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
@@ -58,7 +58,7 @@ import reactor.core.publisher.Sinks.One;
 @Service
 public class EditLabelEventHandler implements IDiagramEventHandler {
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final IDiagramQueryService diagramQueryService;
 
@@ -74,9 +74,9 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
 
     private final Counter counter;
 
-    public EditLabelEventHandler(IObjectService objectService, IDiagramQueryService diagramQueryService, IDiagramDescriptionService diagramDescriptionService,
+    public EditLabelEventHandler(IObjectSearchService objectSearchService, IDiagramQueryService diagramQueryService, IDiagramDescriptionService diagramDescriptionService,
             IRepresentationDescriptionSearchService representationDescriptionSearchService, ICollaborativeDiagramMessageService messageService, IFeedbackMessageService feedbackMessageService, MeterRegistry meterRegistry) {
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
@@ -133,7 +133,7 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
         if (optionalNodeDescription.isPresent()) {
             NodeDescription nodeDescription = optionalNodeDescription.get();
 
-            var optionalSelf = this.objectService.getObject(editingContext, node.getTargetObjectId());
+            var optionalSelf = this.objectSearchService.getObject(editingContext, node.getTargetObjectId());
             if (optionalSelf.isPresent()) {
                 Object self = optionalSelf.get();
 
@@ -153,7 +153,7 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
         if (optionalEdgeDescription.isPresent()) {
             EdgeDescription edgeDescription = optionalEdgeDescription.get();
 
-            var optionalSelf = this.objectService.getObject(editingContext, edge.getTargetObjectId());
+            var optionalSelf = this.objectSearchService.getObject(editingContext, edge.getTargetObjectId());
             if (optionalSelf.isPresent()) {
                 Object self = optionalSelf.get();
 
@@ -170,10 +170,10 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
                     variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
                     variableManager.put(VariableManager.SELF, self);
                     var semanticEdgeSource = this.diagramQueryService.findNodeById(diagram, edge.getSourceId())
-                            .flatMap(node -> this.objectService.getObject(editingContext, node.getTargetObjectId()))
+                            .flatMap(node -> this.objectSearchService.getObject(editingContext, node.getTargetObjectId()))
                             .orElse(null);
                     var semanticEdgeTarget = this.diagramQueryService.findNodeById(diagram, edge.getTargetId())
-                            .flatMap(node -> this.objectService.getObject(editingContext, node.getTargetObjectId()))
+                            .flatMap(node -> this.objectSearchService.getObject(editingContext, node.getTargetObjectId()))
                             .orElse(null);
                     variableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, semanticEdgeSource);
                     variableManager.put(EdgeDescription.SEMANTIC_EDGE_TARGET, semanticEdgeTarget);

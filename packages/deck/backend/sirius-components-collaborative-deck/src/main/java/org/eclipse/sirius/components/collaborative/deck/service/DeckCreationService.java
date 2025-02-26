@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,7 @@ import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckContext;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckCreationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.deck.Deck;
 import org.eclipse.sirius.components.deck.description.DeckDescription;
@@ -45,13 +45,13 @@ public class DeckCreationService implements IDeckCreationService {
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final Timer timer;
 
-    public DeckCreationService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IObjectService objectService, MeterRegistry meterRegistry) {
+    public DeckCreationService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IObjectSearchService objectSearchService, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
                 .tag(Monitoring.NAME, "deck")
                 .register(meterRegistry);
@@ -65,7 +65,7 @@ public class DeckCreationService implements IDeckCreationService {
     @Override
     public Optional<Deck> refresh(IEditingContext editingContext, IDeckContext deckContext) {
         Deck previousDeck = deckContext.getDeck();
-        var optionalObject = this.objectService.getObject(editingContext, previousDeck.targetObjectId());
+        var optionalObject = this.objectSearchService.getObject(editingContext, previousDeck.targetObjectId());
         var optionalDeckDescription = this.representationDescriptionSearchService.findById(editingContext, previousDeck.getDescriptionId())
                 .filter(DeckDescription.class::isInstance)
                 .map(DeckDescription.class::cast);

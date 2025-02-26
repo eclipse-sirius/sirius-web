@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,7 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.slf4j.Logger;
@@ -47,7 +47,7 @@ public class DeleteObjectEventHandler implements IEditingContextEventHandler {
 
     private final Logger logger = LoggerFactory.getLogger(DeleteObjectEventHandler.class);
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final IEditService editService;
 
@@ -55,8 +55,8 @@ public class DeleteObjectEventHandler implements IEditingContextEventHandler {
 
     private final Counter counter;
 
-    public DeleteObjectEventHandler(IObjectService objectService, IEditService editService, ICollaborativeMessageService messageService, MeterRegistry meterRegistry) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public DeleteObjectEventHandler(IObjectSearchService objectSearchService, IEditService editService, ICollaborativeMessageService messageService, MeterRegistry meterRegistry) {
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.editService = Objects.requireNonNull(editService);
         this.messageService = Objects.requireNonNull(messageService);
 
@@ -83,7 +83,7 @@ public class DeleteObjectEventHandler implements IEditingContextEventHandler {
         if (input instanceof DeleteObjectInput) {
             DeleteObjectInput deleteObjectInput = (DeleteObjectInput) input;
 
-            Optional<Object> optionalObject = this.objectService.getObject(editingContext, deleteObjectInput.objectId());
+            Optional<Object> optionalObject = this.objectSearchService.getObject(editingContext, deleteObjectInput.objectId());
             if (optionalObject.isPresent()) {
                 Object object = optionalObject.get();
                 this.editService.delete(object);

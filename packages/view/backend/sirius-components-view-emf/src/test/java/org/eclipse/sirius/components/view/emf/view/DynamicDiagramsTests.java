@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.DiagramCreationServi
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
@@ -165,9 +166,8 @@ public class DynamicDiagramsTests {
             }
         };
 
-        IObjectService objectService = new IObjectService.NoOp();
         MeterRegistry meterRegistry = new SimpleMeterRegistry();
-        var diagramCreationService = new DiagramCreationService(representationDescriptionSearchService, objectService, new IOperationValidator.NoOp(), meterRegistry);
+        var diagramCreationService = new DiagramCreationService(representationDescriptionSearchService, new IObjectSearchService.NoOp(), new IOperationValidator.NoOp(), meterRegistry);
 
         IEditingContext editinContext = new IEditingContext.NoOp();
 

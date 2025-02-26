@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,7 +35,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborat
 import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
@@ -64,7 +64,7 @@ import reactor.core.publisher.Sinks.One;
 @Service
 public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements IDiagramEventHandler {
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final IDiagramQueryService diagramQueryService;
 
@@ -78,10 +78,10 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
 
     private final Counter counter;
 
-    public InvokeSingleClickOnTwoDiagramElementsToolEventHandler(IObjectService objectService, IDiagramQueryService diagramQueryService, IToolService toolService,
+    public InvokeSingleClickOnTwoDiagramElementsToolEventHandler(IObjectSearchService objectSearchService, IDiagramQueryService diagramQueryService, IToolService toolService,
             ICollaborativeDiagramMessageService messageService, IRepresentationDescriptionSearchService representationDescriptionSearchService, List<IConnectorToolsProvider> connectorToolsProviders,
             MeterRegistry meterRegistry) {
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.toolService = Objects.requireNonNull(toolService);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
@@ -146,8 +146,8 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
         if (sourceNode.isPresent() && targetNode.isPresent()) {
             sourceView = sourceNode.get();
             targetView = targetNode.get();
-            source = this.objectService.getObject(editingContext, sourceNode.get().getTargetObjectId());
-            target = this.objectService.getObject(editingContext, targetNode.get().getTargetObjectId());
+            source = this.objectSearchService.getObject(editingContext, sourceNode.get().getTargetObjectId());
+            target = this.objectSearchService.getObject(editingContext, targetNode.get().getTargetObjectId());
         }
 
         if (source.isPresent() && target.isPresent()) {
@@ -172,14 +172,14 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
         switch (toolvariable.type()) {
             case STRING -> variableManager.put(toolvariable.name(), toolvariable.value());
             case OBJECT_ID -> {
-                var optionalObject = this.objectService.getObject(editingContext, toolvariable.value());
+                var optionalObject = this.objectSearchService.getObject(editingContext, toolvariable.value());
                 variableManager.put(toolvariable.name(), optionalObject.orElse(null));
             }
             case OBJECT_ID_ARRAY -> {
                 String value = toolvariable.value();
                 List<String> objectsIds = List.of(value.split(","));
                 List<Object> objects = objectsIds.stream()
-                        .map(objectId -> this.objectService.getObject(editingContext, objectId))
+                        .map(objectId -> this.objectSearchService.getObject(editingContext, objectId))
                         .map(optionalObject -> optionalObject.orElse(null))
                         .toList();
                 variableManager.put(toolvariable.name(), objects);

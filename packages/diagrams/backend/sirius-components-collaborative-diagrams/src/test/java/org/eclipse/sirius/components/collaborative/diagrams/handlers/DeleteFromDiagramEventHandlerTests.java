@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.DeletionPolicy;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
@@ -60,7 +60,7 @@ public class DeleteFromDiagramEventHandlerTests {
 
     private static final String EDGE_ID = "edgeId";
 
-    private final IObjectService objectService = new IObjectService.NoOp() {
+    private final IObjectSearchService objectSearchService = new IObjectSearchService.NoOp() {
         @Override
         public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
             return Optional.of(new Object());
@@ -101,7 +101,7 @@ public class DeleteFromDiagramEventHandlerTests {
 
     @Test
     public void testNodeSemanticDeletionFromDiagram() {
-        var handler = new DeleteFromDiagramEventHandler(this.objectService, this.diagramQueryService, this.diagramDescriptionService, this.representationDescriptionSearchService,
+        var handler = new DeleteFromDiagramEventHandler(this.objectSearchService, this.diagramQueryService, this.diagramDescriptionService, this.representationDescriptionSearchService,
                 new ICollaborativeDiagramMessageService.NoOp(), new IFeedbackMessageService.NoOp(), new SimpleMeterRegistry());
 
         var nodeIds = List.of(NODE_ID);
@@ -125,7 +125,7 @@ public class DeleteFromDiagramEventHandlerTests {
 
     @Test
     public void testEdgeSemanticDeletionFromDiagram() {
-        var handler = new DeleteFromDiagramEventHandler(this.objectService, this.diagramQueryService, this.diagramDescriptionService, this.representationDescriptionSearchService,
+        var handler = new DeleteFromDiagramEventHandler(this.objectSearchService, this.diagramQueryService, this.diagramDescriptionService, this.representationDescriptionSearchService,
                 new ICollaborativeDiagramMessageService.NoOp(), new IFeedbackMessageService.NoOp(), new SimpleMeterRegistry());
 
         var nodeIds = List.<String>of();
