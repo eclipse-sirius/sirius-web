@@ -157,6 +157,7 @@ public class TableElementFactory implements IElementFactory {
         ICell cell = null;
         if (props instanceof TextfieldCellElementProps textfieldCellElementProps) {
             cell = TextfieldCell.newTextfieldCell(textfieldCellElementProps.id())
+                    .descriptionId(textfieldCellElementProps.descriptionId())
                     .columnId(textfieldCellElementProps.columnId())
                     .targetObjectId(textfieldCellElementProps.targetObjectId())
                     .targetObjectKind(textfieldCellElementProps.targetObjectKind())
@@ -164,6 +165,7 @@ public class TableElementFactory implements IElementFactory {
                     .build();
         } else if (props instanceof TextareaCellElementProps textareaCellElementProps) {
             cell = TextareaCell.newTextareaCell(textareaCellElementProps.id())
+                    .descriptionId(textareaCellElementProps.descriptionId())
                     .columnId(textareaCellElementProps.columnId())
                     .targetObjectId(textareaCellElementProps.targetObjectId())
                     .targetObjectKind(textareaCellElementProps.targetObjectKind())
@@ -171,6 +173,7 @@ public class TableElementFactory implements IElementFactory {
                     .build();
         } else if (props instanceof CheckboxCellElementProps checkboxCellElementProps) {
             cell = CheckboxCell.newCheckboxCell(checkboxCellElementProps.id())
+                    .descriptionId(checkboxCellElementProps.descriptionId())
                     .columnId(checkboxCellElementProps.columnId())
                     .targetObjectId(checkboxCellElementProps.targetObjectId())
                     .targetObjectKind(checkboxCellElementProps.targetObjectKind())
@@ -178,6 +181,7 @@ public class TableElementFactory implements IElementFactory {
                     .build();
         } else if (props instanceof SelectCellElementProps selectCellElementProps) {
             cell = SelectCell.newSelectCell(selectCellElementProps.id())
+                    .descriptionId(selectCellElementProps.descriptionId())
                     .columnId(selectCellElementProps.columnId())
                     .targetObjectId(selectCellElementProps.targetObjectId())
                     .targetObjectKind(selectCellElementProps.targetObjectKind())
@@ -186,6 +190,7 @@ public class TableElementFactory implements IElementFactory {
                     .build();
         } else if (props instanceof MultiSelectCellElementProps multiSelectCellElementProps) {
             cell = MultiSelectCell.newMultiSelectCell(multiSelectCellElementProps.id())
+                    .descriptionId(multiSelectCellElementProps.descriptionId())
                     .columnId(multiSelectCellElementProps.columnId())
                     .targetObjectId(multiSelectCellElementProps.targetObjectId())
                     .targetObjectKind(multiSelectCellElementProps.targetObjectKind())
@@ -194,6 +199,7 @@ public class TableElementFactory implements IElementFactory {
                     .build();
         } else if (props instanceof IconLabelCellElementProps iconLabelCellElementProps) {
             cell = IconLabelCell.newIconLabelCell(iconLabelCellElementProps.id())
+                    .descriptionId(iconLabelCellElementProps.descriptionId())
                     .columnId(iconLabelCellElementProps.columnId())
                     .targetObjectId(iconLabelCellElementProps.targetObjectId())
                     .targetObjectKind(iconLabelCellElementProps.targetObjectKind())

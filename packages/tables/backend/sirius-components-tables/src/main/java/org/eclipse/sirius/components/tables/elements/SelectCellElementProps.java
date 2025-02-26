@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,7 @@ import org.eclipse.sirius.components.tables.SelectCellOption;
  *
  * @author lfasani
  */
-public record SelectCellElementProps(UUID id, String targetObjectId, String targetObjectKind, UUID columnId, List<SelectCellOption> options, String value) implements IProps {
+public record SelectCellElementProps(UUID id, String targetObjectId, String targetObjectKind, UUID columnId, List<SelectCellOption> options, String value, String descriptionId) implements IProps {
 
     public static final String TYPE = "SelectCell";
 
@@ -35,5 +35,6 @@ public record SelectCellElementProps(UUID id, String targetObjectId, String targ
         Objects.requireNonNull(columnId);
         Objects.requireNonNull(options);
         Objects.requireNonNull(value);
+        Objects.requireNonNull(descriptionId);
     }
 }

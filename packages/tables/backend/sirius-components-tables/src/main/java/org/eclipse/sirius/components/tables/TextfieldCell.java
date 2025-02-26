@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,16 +38,18 @@ public final class TextfieldCell implements ICell {
 
     private String value;
 
+    private String descriptionId;
+
     private TextfieldCell() {
         // Prevent instantiation
     }
 
-    public String getValue() {
-        return this.value;
-    }
-
     public static Builder newTextfieldCell(UUID id) {
         return new Builder(id);
+    }
+
+    public String getValue() {
+        return this.value;
     }
 
     @Override
@@ -81,6 +83,11 @@ public final class TextfieldCell implements ICell {
         return this.columnId;
     }
 
+    @Override
+    public String getDescriptionId() {
+        return this.descriptionId;
+    }
+
     /**
      * The builder used to create a cell.
      *
@@ -98,6 +105,8 @@ public final class TextfieldCell implements ICell {
         private UUID columnId;
 
         private String value;
+
+        private String descriptionId;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -123,6 +132,11 @@ public final class TextfieldCell implements ICell {
             return this;
         }
 
+        public Builder descriptionId(String descriptionId) {
+            this.descriptionId = descriptionId;
+            return this;
+        }
+
         public TextfieldCell build() {
             TextfieldCell cell = new TextfieldCell();
             cell.id = Objects.requireNonNull(this.id);
@@ -130,6 +144,7 @@ public final class TextfieldCell implements ICell {
             cell.targetObjectKind = Objects.requireNonNull(this.targetObjectKind);
             cell.columnId = Objects.requireNonNull(this.columnId);
             cell.value = Objects.requireNonNull(this.value);
+            cell.descriptionId = Objects.requireNonNull(this.descriptionId);
             return cell;
         }
     }

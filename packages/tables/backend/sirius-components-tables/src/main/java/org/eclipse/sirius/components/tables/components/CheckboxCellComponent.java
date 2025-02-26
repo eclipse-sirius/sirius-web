@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,7 +42,8 @@ public class CheckboxCellComponent implements IComponent {
         String targetObjectKind = cellDescription.getTargetObjectKindProvider().apply(variableManager);
 
         Boolean value = cellDescription.getCellValueProvider().apply(variableManager, this.props.columnTargetObject());
-        CheckboxCellElementProps cellElementProps = new CheckboxCellElementProps(this.props.cellId(), targetObjectId, targetObjectKind, this.props.columnId(), value);
+        CheckboxCellElementProps cellElementProps = new CheckboxCellElementProps(this.props.cellId(), targetObjectId, targetObjectKind, this.props.columnId(), value,
+                this.props.checkboxCellDescription().getId());
         return new Element(CheckboxCellElementProps.TYPE, cellElementProps);
     }
 }

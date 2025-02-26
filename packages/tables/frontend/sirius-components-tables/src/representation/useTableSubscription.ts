@@ -77,6 +77,7 @@ export const getTableEventSubscription = `
             cells {
               __typename
               id
+              descriptionId
               targetObjectId
               targetObjectKind
               columnId
