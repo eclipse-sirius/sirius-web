@@ -43,6 +43,7 @@ Our backend integration tests actual use the `postgres:latest` image (see `Abstr
 Except for the specific case where `cause === 'refresh'` in `DiagramRenderer` (which corresponds to a layout update *after* an existing operation which caused the refresh, in which case we must reuse the original event id), other diagram-related mutations should behave like all the others and get a unique event id to clearly identify them.
 - https://github.com/eclipse-sirius/sirius-web/issues/4581[#4581] [sirius-web] Make (almost) all data fetchers use `IEditingContextDispatcher` instead of using `IEditingContextEventProcessorRegistry` directly.
 - https://github.com/eclipse-sirius/sirius-web/issues/4606[#4606] [sirius-web] Allow the loading of an editing context containing a papaya library
+- https://github.com/eclipse-sirius/sirius-web/issues/4628[#4628] [sirius-web] Allow the loading of an editing context containing a studio library
 
 
 
