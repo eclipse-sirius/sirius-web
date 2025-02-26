@@ -145,7 +145,7 @@
     "@mui/icons-material": "5.15.19",
     "@mui/material": "5.15.19",
     "@xstate/react": "3.0.0",
-    "@xyflow/react": "12.2.1",
+    "@xyflow/react": "12.4.4",
     "axios": "0.21.4",
     "d3": "7.0.0",
     "elkjs": "0.8.2",
