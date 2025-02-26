@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
@@ -57,7 +57,7 @@ public class CreateFormDescriptionEditorEventHandler implements IEditingContextE
 
     private final IRepresentationPersistenceService representationPersistenceService;
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final ICollaborativeFormDescriptionEditorMessageService messageService;
 
@@ -66,12 +66,12 @@ public class CreateFormDescriptionEditorEventHandler implements IEditingContextE
     private final Counter counter;
 
     public CreateFormDescriptionEditorEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService,
-            IRepresentationMetadataPersistenceService representationMetadataPersistenceService, IRepresentationPersistenceService representationPersistenceService, IObjectService objectService,
+            IRepresentationMetadataPersistenceService representationMetadataPersistenceService, IRepresentationPersistenceService representationPersistenceService, IObjectSearchService objectSearchService,
             ICollaborativeFormDescriptionEditorMessageService messageService, IFormDescriptionEditorCreationService formDescriptionEditorCreationService, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.representationMetadataPersistenceService = Objects.requireNonNull(representationMetadataPersistenceService);
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.messageService = Objects.requireNonNull(messageService);
         this.formDescriptionEditorCreationService = Objects.requireNonNull(formDescriptionEditorCreationService);
 
@@ -99,12 +99,11 @@ public class CreateFormDescriptionEditorEventHandler implements IEditingContextE
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
         if (input instanceof CreateRepresentationInput createRepresentationInput) {
-
             Optional<FormDescriptionEditorDescription> optionalFormDescriptionEditorDescription = this.representationDescriptionSearchService.findById(editingContext, createRepresentationInput.representationDescriptionId())
                     .filter(FormDescriptionEditorDescription.class::isInstance)
                     .map(FormDescriptionEditorDescription.class::cast);
 
-            Optional<Object> optionalObject = this.objectService.getObject(editingContext, createRepresentationInput.objectId());
+            Optional<Object> optionalObject = this.objectSearchService.getObject(editingContext, createRepresentationInput.objectId());
 
             if (optionalFormDescriptionEditorDescription.isPresent() && optionalObject.isPresent()) {
                 FormDescriptionEditorDescription representationDescription = optionalFormDescriptionEditorDescription.get();

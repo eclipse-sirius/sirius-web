@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,7 @@ import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.Mo
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.messages.ICollaborativeFormDescriptionEditorMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.view.form.FormDescription;
@@ -49,14 +49,14 @@ public class MovePageEventHandler implements IFormDescriptionEditorEventHandler 
 
     private final Logger logger = LoggerFactory.getLogger(MovePageEventHandler.class);
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final ICollaborativeFormDescriptionEditorMessageService messageService;
 
     private final Counter counter;
 
-    public MovePageEventHandler(IObjectService objectService, ICollaborativeFormDescriptionEditorMessageService messageService, MeterRegistry meterRegistry) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public MovePageEventHandler(IObjectSearchService objectSearchService, ICollaborativeFormDescriptionEditorMessageService messageService, MeterRegistry meterRegistry) {
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.messageService = Objects.requireNonNull(messageService);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
@@ -93,10 +93,10 @@ public class MovePageEventHandler implements IFormDescriptionEditorEventHandler 
 
     private boolean movePage(IEditingContext editingContext, IFormDescriptionEditorContext formDescriptionEditorContext, String pageId, int index) {
         AtomicBoolean success = new AtomicBoolean(false);
-        this.objectService.getObject(editingContext, formDescriptionEditorContext.getFormDescriptionEditor().getTargetObjectId())
+        this.objectSearchService.getObject(editingContext, formDescriptionEditorContext.getFormDescriptionEditor().getTargetObjectId())
                 .filter(FormDescription.class::isInstance)
                 .map(FormDescription.class::cast)
-                .ifPresent(formDescription -> this.objectService.getObject(editingContext, pageId)
+                .ifPresent(formDescription -> this.objectSearchService.getObject(editingContext, pageId)
                         .filter(PageDescription.class::isInstance)
                         .map(PageDescription.class::cast)
                         .ifPresent(pageDescription -> {

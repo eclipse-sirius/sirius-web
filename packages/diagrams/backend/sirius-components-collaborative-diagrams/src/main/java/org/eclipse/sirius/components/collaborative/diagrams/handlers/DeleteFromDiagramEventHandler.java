@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,7 +35,7 @@ import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
@@ -70,7 +70,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
 
     public static final String DELETION_POLICY = "deletionPolicy";
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final IDiagramQueryService diagramQueryService;
 
@@ -86,9 +86,9 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
 
     private final Counter counter;
 
-    public DeleteFromDiagramEventHandler(IObjectService objectService, IDiagramQueryService diagramQueryService, IDiagramDescriptionService diagramDescriptionService,
+    public DeleteFromDiagramEventHandler(IObjectSearchService objectSearchService, IDiagramQueryService diagramQueryService, IDiagramDescriptionService diagramDescriptionService,
             IRepresentationDescriptionSearchService representationDescriptionSearchService, ICollaborativeDiagramMessageService messageService, IFeedbackMessageService feedbackMessageService, MeterRegistry meterRegistry) {
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
@@ -185,7 +185,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
         var optionalNodeDescription = this.findNodeDescription(node, diagramContext.getDiagram(), editingContext);
 
         if (optionalNodeDescription.isPresent()) {
-            var optionalSelf = this.objectService.getObject(editingContext, node.getTargetObjectId());
+            var optionalSelf = this.objectSearchService.getObject(editingContext, node.getTargetObjectId());
             if (optionalSelf.isPresent()) {
                 var self = optionalSelf.get();
                 var variableManager = this.populateVariableManager(editingContext, diagramContext, self, node, null, deletionPolicy);
@@ -209,15 +209,15 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
         IStatus result = new Failure("");
         var optionalEdgeDescription = this.findEdgeDescription(edge, diagramContext.getDiagram(), editingContext);
         if (optionalEdgeDescription.isPresent()) {
-            var optionalSelf = this.objectService.getObject(editingContext, edge.getTargetObjectId());
+            var optionalSelf = this.objectSearchService.getObject(editingContext, edge.getTargetObjectId());
             if (optionalSelf.isPresent()) {
                 var self = optionalSelf.get();
                 var variableManager = this.populateVariableManager(editingContext, diagramContext, self, null, edge, deletionPolicy);
                 this.diagramQueryService.findNodeById(diagramContext.getDiagram(), edge.getSourceId())
-                        .flatMap(node -> this.objectService.getObject(editingContext, node.getTargetObjectId()))
+                        .flatMap(node -> this.objectSearchService.getObject(editingContext, node.getTargetObjectId()))
                         .ifPresent(semanticElement -> variableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, semanticElement));
                 this.diagramQueryService.findNodeById(diagramContext.getDiagram(), edge.getTargetId())
-                        .flatMap(node -> this.objectService.getObject(editingContext, node.getTargetObjectId()))
+                        .flatMap(node -> this.objectSearchService.getObject(editingContext, node.getTargetObjectId()))
                         .ifPresent(semanticElement -> variableManager.put(EdgeDescription.SEMANTIC_EDGE_TARGET, semanticElement));
 
                 EdgeDescription edgeDescription = optionalEdgeDescription.get();

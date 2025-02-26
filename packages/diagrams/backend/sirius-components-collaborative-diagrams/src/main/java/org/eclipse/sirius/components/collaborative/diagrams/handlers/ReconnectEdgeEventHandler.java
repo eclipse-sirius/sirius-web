@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,7 +35,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborat
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
@@ -68,7 +68,7 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final List<IReconnectionToolsExecutor> reconnectionToolsExecutors;
 
@@ -82,7 +82,7 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
         this.diagramQueryService = Objects.requireNonNull(diagramEventHandlerConfiguration.getDiagramQueryService());
         this.diagramDescriptionService = Objects.requireNonNull(diagramEventHandlerConfiguration.getDiagramDescriptionService());
         this.representationDescriptionSearchService = Objects.requireNonNull(diagramEventHandlerConfiguration.getRepresentationDescriptionSearchService());
-        this.objectService = Objects.requireNonNull(diagramEventHandlerConfiguration.getObjectService());
+        this.objectSearchService = Objects.requireNonNull(diagramEventHandlerConfiguration.getObjectSearchService());
         this.reconnectionToolsExecutors = Objects.requireNonNull(reconnectionToolsExecutors);
         this.messageService = Objects.requireNonNull(diagramEventHandlerConfiguration.getMessageService());
         this.feedbackMessageService = Objects.requireNonNull(diagramEventHandlerConfiguration.getFeedbackMessageService());
@@ -148,7 +148,7 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
         if (optionalDiagramDescription.isPresent()) {
             DiagramDescription diagramDescription = optionalDiagramDescription.get();
             var optionalReconnectionToolExecutor = this.reconnectionToolsExecutors.stream().filter(reconnectionToolExecutor -> reconnectionToolExecutor.canExecute(diagramDescription)).findFirst();
-            var optionalSemanticTargetElement = this.objectService.getObject(editingContext, edge.getTargetObjectId());
+            var optionalSemanticTargetElement = this.objectSearchService.getObject(editingContext, edge.getTargetObjectId());
             var optionalEdgeDescription = this.diagramDescriptionService.findEdgeDescriptionById(diagramDescription, edge.getDescriptionId());
 
             ReconnectEdgeKind reconnectEdgeKind = reconnectEdgeInput.reconnectEdgeKind();
@@ -166,11 +166,11 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
                 optionalOtherEdgeEnd = optionalEdgeSource;
             }
 
-            var optionalPreviousSemanticEdgeEnd = optionalPreviousEdgeEnd.map(Node::getTargetObjectId).flatMap(targetObjectId -> this.objectService.getObject(editingContext, targetObjectId));
+            var optionalPreviousSemanticEdgeEnd = optionalPreviousEdgeEnd.map(Node::getTargetObjectId).flatMap(targetObjectId -> this.objectSearchService.getObject(editingContext, targetObjectId));
 
             var optionalNewEdgeEnd = this.getNode(diagram.getNodes(), reconnectEdgeInput.newEdgeEndId());
-            var optionalNewSemanticEdgeEnd = optionalNewEdgeEnd.map(Node::getTargetObjectId).flatMap(targetObjectId -> this.objectService.getObject(editingContext, targetObjectId));
-            var optionalSemanticOtherEdgeEnd = optionalOtherEdgeEnd.map(Node::getTargetObjectId).flatMap(otherEndEdgeId -> this.objectService.getObject(editingContext, otherEndEdgeId));
+            var optionalNewSemanticEdgeEnd = optionalNewEdgeEnd.map(Node::getTargetObjectId).flatMap(targetObjectId -> this.objectSearchService.getObject(editingContext, targetObjectId));
+            var optionalSemanticOtherEdgeEnd = optionalOtherEdgeEnd.map(Node::getTargetObjectId).flatMap(otherEndEdgeId -> this.objectSearchService.getObject(editingContext, otherEndEdgeId));
 
             boolean canExecuteReconnectTool = optionalReconnectionToolExecutor.isPresent();
             canExecuteReconnectTool = canExecuteReconnectTool && optionalSemanticTargetElement.isPresent();

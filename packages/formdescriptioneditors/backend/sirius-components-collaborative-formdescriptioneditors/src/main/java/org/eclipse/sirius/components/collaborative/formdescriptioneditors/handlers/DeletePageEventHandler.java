@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,7 @@ import org.eclipse.sirius.components.collaborative.formdescriptioneditors.messag
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.springframework.stereotype.Service;
@@ -43,7 +43,7 @@ import reactor.core.publisher.Sinks.One;
 @Service
 public class DeletePageEventHandler implements IFormDescriptionEditorEventHandler {
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final IEditService editService;
 
@@ -51,8 +51,8 @@ public class DeletePageEventHandler implements IFormDescriptionEditorEventHandle
 
     private final Counter counter;
 
-    public DeletePageEventHandler(IObjectService objectService, IEditService editService, ICollaborativeFormDescriptionEditorMessageService messageService, MeterRegistry meterRegistry) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public DeletePageEventHandler(IObjectSearchService objectSearchService, IEditService editService, ICollaborativeFormDescriptionEditorMessageService messageService, MeterRegistry meterRegistry) {
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.editService = Objects.requireNonNull(editService);
         this.messageService = Objects.requireNonNull(messageService);
 
@@ -88,7 +88,7 @@ public class DeletePageEventHandler implements IFormDescriptionEditorEventHandle
     }
 
     protected boolean deletePage(IEditingContext editingContext, String pageId) {
-        var optionalSelf = this.objectService.getObject(editingContext, pageId);
+        var optionalSelf = this.objectSearchService.getObject(editingContext, pageId);
         if (optionalSelf.isPresent()) {
             this.editService.delete(optionalSelf.get());
             return true;

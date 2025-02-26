@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.ReconnectEdgeInp
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
@@ -107,7 +107,7 @@ public class ReconnectEdgeEventHandlerTests {
             }
         };
 
-        var objectService = new IObjectService.NoOp() {
+        var objectSearchService = new IObjectSearchService.NoOp() {
 
             @Override
             public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
@@ -128,7 +128,7 @@ public class ReconnectEdgeEventHandlerTests {
         };
         var messageService = new ICollaborativeDiagramMessageService.NoOp();
 
-        var handler = new ReconnectEdgeEventHandler(new DiagramEventHandlerConfiguration(objectService, diagramQueryService, diagramDescriptionService, representationDescriptionSearchService,
+        var handler = new ReconnectEdgeEventHandler(new DiagramEventHandlerConfiguration(objectSearchService, diagramQueryService, diagramDescriptionService, representationDescriptionSearchService,
                 messageService, new IFeedbackMessageService.NoOp()), List.of(reconnectionToolExecutor), new SimpleMeterRegistry());
         var input = new ReconnectEdgeInput(UUID.randomUUID(), "editingContextId", "representationId", edgeId, newEdgeEndId, ReconnectEdgeKind.TARGET);
 

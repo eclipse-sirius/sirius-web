@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,7 +35,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariableType
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
@@ -115,7 +115,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
 
     @Test
     public void testInvokeToolOnDiagram() {
-        var objectService = new IObjectService.NoOp() {
+        var objectSearchService = new IObjectSearchService.NoOp() {
             @Override
             public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
                 return Optional.of(new Object());
@@ -133,7 +133,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
             }
         };
 
-        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
+        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectSearchService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
 
         var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), EDITING_CONTEXT_ID, REPRESENTATION_ID, DIAGRAM_ID, TOOL_ID, 5.0, 8.0, VARIABLES);
 
@@ -158,7 +158,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
     public void testInvokeToolOnNode() {
         var object1 = new Object();
 
-        var objectService = new IObjectService.NoOp() {
+        var objectSearchService = new IObjectSearchService.NoOp() {
             @Override
             public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
                 return Optional.of(object1);
@@ -184,7 +184,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
             }
         };
 
-        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
+        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectSearchService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
 
         var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), EDITING_CONTEXT_ID, REPRESENTATION_ID, NODE_1_ID, TOOL_ID, 5.0, 8.0, VARIABLES);
 
@@ -211,7 +211,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
         var object2 = new Object();
         var object3 = new Object();
 
-        var objectService = new IObjectService.NoOp() {
+        var objectSearchService = new IObjectSearchService.NoOp() {
             @Override
             public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
                 Object object = switch (objectId) {
@@ -234,7 +234,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
             }
         };
 
-        final Map<String, Object> computedVariables = new HashMap<>();
+        Map<String, Object> computedVariables = new HashMap<>();
 
         Function<VariableManager, IStatus> toolHandler = variableManager -> {
             computedVariables.putAll(variableManager.getVariables());
@@ -250,7 +250,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
             }
         };
 
-        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
+        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectSearchService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
 
         var variables = List.of(new ToolVariable(SELECTED_OBJECT, OBJECT_2_ID, ToolVariableType.OBJECT_ID), new ToolVariable(NAME_VARIABLE, NAME_VARIABLE_VALUE, ToolVariableType.STRING),
                 new ToolVariable(SELECTED_OBJECTS, OBJECT_1_ID + "," + OBJECT_2_ID + "," + OBJECT_3_ID, ToolVariableType.OBJECT_ID_ARRAY));
@@ -279,7 +279,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
     public void testInvokeToolOnWrongNode() {
         var object1 = new Object();
 
-        var objectService = new IObjectService.NoOp() {
+        var objectSearchService = new IObjectSearchService.NoOp() {
             @Override
             public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
                 return Optional.of(object1);
@@ -308,7 +308,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
             }
         };
 
-        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
+        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectSearchService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
 
         var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), EDITING_CONTEXT_ID, REPRESENTATION_ID, "anotherNodeId", TOOL_ID, 5.0, 8.0, VARIABLES);
 
@@ -333,7 +333,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
     public void testInvokeToolOnEdge() {
         var link1 = new Object();
 
-        var objectService = new IObjectService.NoOp() {
+        var objectSearchService = new IObjectSearchService.NoOp() {
             @Override
             public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
                 return Optional.of(link1);
@@ -374,7 +374,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
             }
         };
 
-        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
+        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectSearchService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
 
         var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), EDITING_CONTEXT_ID, REPRESENTATION_ID, EDGE_1_ID, TOOL_ID, 5.0, 8.0, VARIABLES);
 
@@ -403,7 +403,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
     public void testInvokeToolOnWrongEdge() {
         var link1 = new Object();
 
-        var objectService = new IObjectService.NoOp() {
+        var objectSearchService = new IObjectSearchService.NoOp() {
             @Override
             public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
                 return Optional.of(link1);
@@ -432,7 +432,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
             }
         };
 
-        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
+        var handler = new InvokeSingleClickOnDiagramElementToolEventHandler(objectSearchService, diagramQueryService, toolService, new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
 
         var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), EDITING_CONTEXT_ID, REPRESENTATION_ID, "anotherEdgeId", TOOL_ID, 5.0, 8.0, VARIABLES);
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,10 +21,9 @@ import org.eclipse.sirius.components.charts.hierarchy.components.HierarchyCompon
 import org.eclipse.sirius.components.charts.hierarchy.components.HierarchyComponentProps;
 import org.eclipse.sirius.components.charts.hierarchy.descriptions.HierarchyDescription;
 import org.eclipse.sirius.components.charts.hierarchy.renderer.HierarchyRenderer;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -43,17 +42,13 @@ public class HierarchyCreationService {
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
-    private final IRepresentationPersistenceService representationPersistenceService;
-
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final Timer timer;
 
-    public HierarchyCreationService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationPersistenceService representationPersistenceService,
-            IObjectService objectService, MeterRegistry meterRegistry) {
+    public HierarchyCreationService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IObjectSearchService objectSearchService, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
-        this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
                 .tag(Monitoring.NAME, "hierarchy")
                 .register(meterRegistry);
@@ -65,7 +60,7 @@ public class HierarchyCreationService {
 
     public Optional<Hierarchy> refresh(IEditingContext editingContext, HierarchyContext hierarchyContext) {
         Hierarchy previousHierarchy = hierarchyContext.getHierarchy();
-        var optionalObject = this.objectService.getObject(editingContext, previousHierarchy.getTargetObjectId());
+        var optionalObject = this.objectSearchService.getObject(editingContext, previousHierarchy.getTargetObjectId());
         var optionalHierarchyDescription = this.representationDescriptionSearchService.findById(editingContext, previousHierarchy.getDescriptionId())
                 .filter(HierarchyDescription.class::isInstance)
                 .map(HierarchyDescription.class::cast);

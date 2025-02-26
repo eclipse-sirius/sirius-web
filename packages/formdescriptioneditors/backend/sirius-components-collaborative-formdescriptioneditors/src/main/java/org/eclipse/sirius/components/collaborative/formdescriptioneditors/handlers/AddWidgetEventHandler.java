@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.Ad
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.messages.ICollaborativeFormDescriptionEditorMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.formdescriptioneditors.IWidgetDescriptionProvider;
@@ -60,7 +60,7 @@ import reactor.core.publisher.Sinks.One;
 @Service
 public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler {
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final ICollaborativeFormDescriptionEditorMessageService messageService;
 
@@ -68,8 +68,8 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
 
     private final Counter counter;
 
-    public AddWidgetEventHandler(IObjectService objectService, ICollaborativeFormDescriptionEditorMessageService messageService, List<IWidgetDescriptionProvider> widgetDescriptionProviders, MeterRegistry meterRegistry) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public AddWidgetEventHandler(IObjectSearchService objectSearchService, ICollaborativeFormDescriptionEditorMessageService messageService, List<IWidgetDescriptionProvider> widgetDescriptionProviders, MeterRegistry meterRegistry) {
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.messageService = Objects.requireNonNull(messageService);
         this.widgetDescriptionProviders = Objects.requireNonNull(widgetDescriptionProviders);
 
@@ -111,7 +111,7 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
 
     private boolean addWidget(IEditingContext editingContext, String containerId, String kind, int index) {
         boolean success = false;
-        var optionalSelf = this.objectService.getObject(editingContext, containerId);
+        var optionalSelf = this.objectSearchService.getObject(editingContext, containerId);
         if (optionalSelf.isPresent()) {
             Object container = optionalSelf.get();
             EClassifier eClassifier = this.getWidgetDescriptionType(kind);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ import org.eclipse.sirius.components.collaborative.deck.dto.input.EditDeckLaneIn
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
@@ -57,12 +57,12 @@ public class DeckLaneService implements IDeckLaneService {
 
     private final IFeedbackMessageService feedbackMessageService;
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
-    public DeckLaneService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IFeedbackMessageService feedbackMessageService, IObjectService objectService) {
+    public DeckLaneService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IFeedbackMessageService feedbackMessageService, IObjectSearchService objectSearchService) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
     }
 
 
@@ -75,7 +75,7 @@ public class DeckLaneService implements IDeckLaneService {
         Optional<LaneDescription> optionalLaneDescription = optionalLane.flatMap(lane -> this.findLaneDescription(lane.descriptionId(), deck, editingContext));
 
         if (optionalLane.isPresent() && optionalLaneDescription.isPresent()) {
-            Optional<Object> optionalTargetObject = this.objectService.getObject(editingContext, optionalLane.get().targetObjectId());
+            Optional<Object> optionalTargetObject = this.objectSearchService.getObject(editingContext, optionalLane.get().targetObjectId());
             if (optionalTargetObject.isPresent()) {
                 VariableManager variableManager = new VariableManager();
                 variableManager.put(VariableManager.SELF, optionalTargetObject.get());
@@ -97,7 +97,7 @@ public class DeckLaneService implements IDeckLaneService {
         Optional<DeckDescription> optionalDeckDescription =  this.findDeckDescription(deck.descriptionId(), editingContext);
 
         if (optionalLane.isPresent() && optionalDeckDescription.isPresent()) {
-            Optional<Object> optionalTargetObject = this.objectService.getObject(editingContext, optionalLane.get().targetObjectId());
+            Optional<Object> optionalTargetObject = this.objectSearchService.getObject(editingContext, optionalLane.get().targetObjectId());
             if (optionalTargetObject.isPresent()) {
                 VariableManager variableManager = new VariableManager();
                 variableManager.put(VariableManager.SELF, optionalTargetObject.get());

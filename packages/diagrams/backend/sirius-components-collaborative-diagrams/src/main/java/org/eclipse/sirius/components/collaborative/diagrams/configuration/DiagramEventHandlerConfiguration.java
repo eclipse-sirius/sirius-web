@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescript
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class DiagramEventHandlerConfiguration {
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final IDiagramQueryService diagramQueryService;
 
@@ -40,8 +40,8 @@ public class DiagramEventHandlerConfiguration {
 
     private final IFeedbackMessageService feedbackMessageService;
 
-    public DiagramEventHandlerConfiguration(IObjectService objectService, IDiagramQueryService diagramQueryService, IDiagramDescriptionService diagramDescriptionService, IRepresentationDescriptionSearchService representationDescriptionSearchService, ICollaborativeDiagramMessageService messageService, IFeedbackMessageService feedbackMessageService) {
-        this.objectService = objectService;
+    public DiagramEventHandlerConfiguration(IObjectSearchService objectSearchService, IDiagramQueryService diagramQueryService, IDiagramDescriptionService diagramDescriptionService, IRepresentationDescriptionSearchService representationDescriptionSearchService, ICollaborativeDiagramMessageService messageService, IFeedbackMessageService feedbackMessageService) {
+        this.objectSearchService = objectSearchService;
         this.diagramQueryService = diagramQueryService;
         this.diagramDescriptionService = diagramDescriptionService;
         this.representationDescriptionSearchService = representationDescriptionSearchService;
@@ -49,8 +49,8 @@ public class DiagramEventHandlerConfiguration {
         this.feedbackMessageService = feedbackMessageService;
     }
 
-    public IObjectService getObjectService() {
-        return this.objectService;
+    public IObjectSearchService getObjectSearchService() {
+        return this.objectSearchService;
     }
 
     public IDiagramQueryService getDiagramQueryService() {

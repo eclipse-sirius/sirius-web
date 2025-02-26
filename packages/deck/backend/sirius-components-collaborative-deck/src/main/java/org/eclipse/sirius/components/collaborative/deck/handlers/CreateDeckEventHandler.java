@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.deck.Deck;
@@ -59,19 +59,19 @@ public class CreateDeckEventHandler implements IEditingContextEventHandler {
 
     private final IDeckCreationService deckCreationService;
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final ICollaborativeMessageService messageService;
 
     private final Counter counter;
 
     public CreateDeckEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationMetadataPersistenceService representationMetadataPersistenceService, IRepresentationPersistenceService representationPersistenceService,
-            IDeckCreationService diagramCreationService, IObjectService objectService, ICollaborativeMessageService messageService, MeterRegistry meterRegistry) {
+            IDeckCreationService diagramCreationService, IObjectSearchService objectSearchService, ICollaborativeMessageService messageService, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.representationMetadataPersistenceService = Objects.requireNonNull(representationMetadataPersistenceService);
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
         this.deckCreationService = Objects.requireNonNull(diagramCreationService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.messageService = Objects.requireNonNull(messageService);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
@@ -101,7 +101,7 @@ public class CreateDeckEventHandler implements IEditingContextEventHandler {
             Optional<DeckDescription> optionalDeckDescription = this.representationDescriptionSearchService.findById(editingContext, createRepresentationInput.representationDescriptionId())
                     .filter(DeckDescription.class::isInstance)
                     .map(DeckDescription.class::cast);
-            Optional<Object> optionalObject = this.objectService.getObject(editingContext, createRepresentationInput.objectId());
+            Optional<Object> optionalObject = this.objectSearchService.getObject(editingContext, createRepresentationInput.objectId());
 
             if (optionalDeckDescription.isPresent() && optionalObject.isPresent()) {
                 DeckDescription deckDescription = optionalDeckDescription.get();

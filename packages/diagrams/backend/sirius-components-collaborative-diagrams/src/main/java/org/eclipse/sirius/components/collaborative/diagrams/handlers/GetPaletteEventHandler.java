@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,7 +31,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.Palette;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
@@ -59,7 +59,7 @@ public class GetPaletteEventHandler implements IDiagramEventHandler {
 
     private final IDiagramDescriptionService diagramDescriptionService;
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final List<IPaletteProvider> toolSectionsProviders;
 
@@ -68,12 +68,12 @@ public class GetPaletteEventHandler implements IDiagramEventHandler {
     private final Counter counter;
 
     public GetPaletteEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IDiagramQueryService diagramQueryService,
-            IDiagramDescriptionService diagramDescriptionService, IObjectService objectService, List<IPaletteProvider> toolSectionsProviders, ICollaborativeMessageService messageService,
+            IDiagramDescriptionService diagramDescriptionService, IObjectSearchService objectSearchService, List<IPaletteProvider> toolSectionsProviders, ICollaborativeMessageService messageService,
             MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.toolSectionsProviders = Objects.requireNonNull(toolSectionsProviders);
         this.messageService = Objects.requireNonNull(messageService);
 
@@ -184,7 +184,7 @@ public class GetPaletteEventHandler implements IDiagramEventHandler {
             }
         }
         if (targetObjectId != null) {
-            return this.objectService.getObject(editingContext, targetObjectId);
+            return this.objectSearchService.getObject(editingContext, targetObjectId);
         }
         return Optional.empty();
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,7 @@ import org.eclipse.sirius.components.collaborative.formdescriptioneditors.api.IF
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.AddToolbarActionInput;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.messages.ICollaborativeFormDescriptionEditorMessageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.view.form.FormDescription;
@@ -53,13 +53,14 @@ public class AddToolbarActionEventHandlerTests {
         GroupDescription groupDescription = FormFactory.eINSTANCE.createGroupDescription();
         pageDescription.getGroups().add(groupDescription);
         formDescription.getPages().add(pageDescription);
-        var objectService = new IObjectService.NoOp() {
+
+        var objectSearchService = new IObjectSearchService.NoOp() {
             @Override
             public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
                 return Optional.of(groupDescription);
             }
         };
-        var handler = new AddToolbarActionEventHandler(objectService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
+        var handler = new AddToolbarActionEventHandler(objectSearchService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
         var input = new AddToolbarActionInput(UUID.randomUUID(), "editingContextId", "representationId", "containerId");
 
         assertThat(handler.canHandle(input)).isTrue();
@@ -84,13 +85,14 @@ public class AddToolbarActionEventHandlerTests {
         FormDescription formDescription = FormFactory.eINSTANCE.createFormDescription();
         PageDescription pageDescription = FormFactory.eINSTANCE.createPageDescription();
         formDescription.getPages().add(pageDescription);
-        var objectService = new IObjectService.NoOp() {
+
+        var objectSearchService = new IObjectSearchService.NoOp() {
             @Override
             public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
                 return Optional.of(pageDescription);
             }
         };
-        var handler = new AddToolbarActionEventHandler(objectService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
+        var handler = new AddToolbarActionEventHandler(objectSearchService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry());
         var input = new AddToolbarActionInput(UUID.randomUUID(), "editingContextId", "representationId", "containerId");
 
         assertThat(handler.canHandle(input)).isTrue();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,7 +32,7 @@ import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
@@ -66,7 +66,7 @@ public class DropNodeEventHandler implements IDiagramEventHandler {
 
     private static final String TARGET_ELEMENT = "targetElement";
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final IDiagramQueryService diagramQueryService;
 
@@ -80,9 +80,9 @@ public class DropNodeEventHandler implements IDiagramEventHandler {
 
     private final Counter counter;
 
-    public DropNodeEventHandler(IObjectService objectService, IDiagramQueryService diagramQueryService, IDiagramDescriptionService diagramDescriptionService,
+    public DropNodeEventHandler(IObjectSearchService objectSearchService, IDiagramQueryService diagramQueryService, IDiagramDescriptionService diagramDescriptionService,
             IRepresentationDescriptionSearchService representationDescriptionSearchService, ICollaborativeDiagramMessageService messageService, IFeedbackMessageService feedbackMessageService, MeterRegistry meterRegistry) {
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
@@ -125,8 +125,8 @@ public class DropNodeEventHandler implements IDiagramEventHandler {
 
     private boolean invokeDropNodeTool(IEditingContext editingContext, IDiagramContext diagramContext, Diagram diagram, Node droppedNode, Optional<Node> optionalDropTargetNode) {
         var optionalHandler = this.findDropNodeHandler(editingContext, diagram, optionalDropTargetNode);
-        var optionalTargetElement = this.objectService.getObject(editingContext, optionalDropTargetNode.map(Node::getTargetObjectId).orElse(diagram.getTargetObjectId()));
-        var optionalDroppedElement = this.objectService.getObject(editingContext, droppedNode.getTargetObjectId());
+        var optionalTargetElement = this.objectSearchService.getObject(editingContext, optionalDropTargetNode.map(Node::getTargetObjectId).orElse(diagram.getTargetObjectId()));
+        var optionalDroppedElement = this.objectSearchService.getObject(editingContext, droppedNode.getTargetObjectId());
         if (optionalHandler.isPresent() && optionalTargetElement.isPresent() && optionalDroppedElement.isPresent()) {
             var handler = optionalHandler.get();
             var targetElement = optionalTargetElement.get();

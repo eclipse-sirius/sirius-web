@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,7 @@ import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.De
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.messages.ICollaborativeFormDescriptionEditorMessageService;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.junit.jupiter.api.Test;
@@ -43,9 +43,9 @@ import reactor.core.publisher.Sinks.One;
 public class DeleteWidgetEventHandlerTests {
     @Test
     public void testDeleteWidget() {
-        var handler = new DeleteWidgetEventHandler(new IObjectService.NoOp(), new IEditService.NoOp(), new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry()) {
+        var handler = new DeleteWidgetEventHandler(new IObjectSearchService.NoOp(), new IEditService.NoOp(), new ICollaborativeFormDescriptionEditorMessageService.NoOp(), new SimpleMeterRegistry()) {
             @Override
-            protected boolean deleteWidget(IEditingContext editingContext, IFormDescriptionEditorContext formDescriptionEditorContext, String widgetId) {
+            protected boolean deleteWidget(IEditingContext editingContext, String widgetId) {
                 return true;
             }
         };

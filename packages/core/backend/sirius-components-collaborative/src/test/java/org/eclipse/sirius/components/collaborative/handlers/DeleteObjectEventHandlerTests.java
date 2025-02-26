@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,7 @@ import org.eclipse.sirius.components.collaborative.dto.DeleteObjectInput;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.junit.jupiter.api.Test;
@@ -42,7 +42,7 @@ import reactor.core.publisher.Sinks.One;
 public class DeleteObjectEventHandlerTests {
     @Test
     public void testDeleteObject() {
-        IObjectService objectService = new IObjectService.NoOp() {
+        IObjectSearchService objectSearchService = new IObjectSearchService.NoOp() {
             @Override
             public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
                 return Optional.of(new Object());
@@ -57,7 +57,7 @@ public class DeleteObjectEventHandlerTests {
             }
         };
 
-        DeleteObjectEventHandler handler = new DeleteObjectEventHandler(objectService, editService, new ICollaborativeMessageService.NoOp(), new SimpleMeterRegistry());
+        DeleteObjectEventHandler handler = new DeleteObjectEventHandler(objectSearchService, editService, new ICollaborativeMessageService.NoOp(), new SimpleMeterRegistry());
         var input = new DeleteObjectInput(UUID.randomUUID(), UUID.randomUUID().toString(), "objectId");
         IEditingContext editingContext = () -> UUID.randomUUID().toString();
 

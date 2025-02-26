@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,7 @@ import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.Mo
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.messages.ICollaborativeFormDescriptionEditorMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.view.form.FlexboxContainerDescription;
@@ -51,14 +51,14 @@ public class MoveWidgetEventHandler implements IFormDescriptionEditorEventHandle
 
     private final Logger logger = LoggerFactory.getLogger(MoveWidgetEventHandler.class);
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final ICollaborativeFormDescriptionEditorMessageService messageService;
 
     private final Counter counter;
 
-    public MoveWidgetEventHandler(IObjectService objectService, ICollaborativeFormDescriptionEditorMessageService messageService, MeterRegistry meterRegistry) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public MoveWidgetEventHandler(IObjectSearchService objectSearchService, ICollaborativeFormDescriptionEditorMessageService messageService, MeterRegistry meterRegistry) {
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.messageService = Objects.requireNonNull(messageService);
 
         // @formatter:off
@@ -86,7 +86,7 @@ public class MoveWidgetEventHandler implements IFormDescriptionEditorEventHandle
             String containerId = ((MoveWidgetInput) formDescriptionEditorInput).containerId();
             String widgetId = ((MoveWidgetInput) formDescriptionEditorInput).widgetId();
             int index = ((MoveWidgetInput) formDescriptionEditorInput).index();
-            boolean moveWidget = this.moveWidget(editingContext, formDescriptionEditorContext, containerId, widgetId, index);
+            boolean moveWidget = this.moveWidget(editingContext, containerId, widgetId, index);
             if (moveWidget) {
                 payload = new SuccessPayload(formDescriptionEditorInput.id());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formDescriptionEditorInput.representationId(), formDescriptionEditorInput);
@@ -97,12 +97,12 @@ public class MoveWidgetEventHandler implements IFormDescriptionEditorEventHandle
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private boolean moveWidget(IEditingContext editingContext, IFormDescriptionEditorContext formDescriptionEditorContext, String containerId, String widgetId, int index) {
+    private boolean moveWidget(IEditingContext editingContext, String containerId, String widgetId, int index) {
         boolean success = false;
-        var optionalSelf = this.objectService.getObject(editingContext, containerId);
+        var optionalSelf = this.objectSearchService.getObject(editingContext, containerId);
         if (optionalSelf.isPresent()) {
             Object container = optionalSelf.get();
-            var objectToMove = this.objectService.getObject(editingContext, widgetId);
+            var objectToMove = this.objectSearchService.getObject(editingContext, widgetId);
             if (objectToMove.filter(FormElementDescription.class::isInstance).isPresent()) {
                 FormElementDescription elementToMove = (FormElementDescription) objectToMove.get();
                 try {
