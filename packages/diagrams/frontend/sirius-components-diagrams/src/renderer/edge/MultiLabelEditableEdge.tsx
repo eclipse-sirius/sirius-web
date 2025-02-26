@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,7 @@ import { Label } from '../Label';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { BendPoint, TemporaryBendPoint } from './BendPoint';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
-import { MultiLabelEditableEdgeProps, MultiLabelEditableEdgeState } from './MultiLabelEditableEdge.types';
+import { MultiLabelEditableEdgeProps, MultiLabelEditableEdgeState, MiddlePoint } from './MultiLabelEditableEdge.types';
 import { useEditableEdgePath } from './useEditableEdgePath';
 
 const multiLabelEdgeStyle = (
@@ -73,6 +73,56 @@ function isMultipleOfTwo(num: number): boolean {
   return num % 2 === 0;
 }
 
+const generateNewBendPointToKeepRectilinearSegment = (
+  existingBendPoint: XYPosition[],
+  bendPointIndex: number,
+  newX: number,
+  newY: number,
+  prevMiddlePoint: XYPosition,
+  nextMiddlePoint: XYPosition
+) => {
+  const newPoints = [...existingBendPoint];
+  newPoints[bendPointIndex] = prevMiddlePoint;
+  newPoints.splice(bendPointIndex + 1, 0, {
+    x: prevMiddlePoint.x,
+    y: newY,
+  });
+  newPoints.splice(bendPointIndex + 2, 0, {
+    x: newX,
+    y: newY,
+  });
+  newPoints.splice(bendPointIndex + 3, 0, {
+    x: newX,
+    y: nextMiddlePoint.y,
+  });
+  newPoints.splice(bendPointIndex + 4, 0, nextMiddlePoint);
+  return newPoints;
+};
+
+const cleanBendPoint = (bendPoints: XYPosition[]): XYPosition[] => {
+  const cleanedPoints: XYPosition[] = [];
+
+  const margin = 1.8;
+  for (let i = 0; i < bendPoints.length; i++) {
+    const { x: x1, y: y1 } = bendPoints[i]!;
+    let isSimilar = false;
+
+    if (i < bendPoints.length - 1) {
+      const { x: x2, y: y2 } = bendPoints[i + 1]!;
+
+      if (Math.abs(x1 - x2) <= margin && Math.abs(y1 - y2) <= margin) {
+        isSimilar = true;
+        i++;
+      }
+    }
+
+    if (!isSimilar) {
+      cleanedPoints.push({ x: x1, y: y1 });
+    }
+  }
+  return cleanedPoints;
+};
+
 export const MultiLabelEditableEdge = memo(
   ({
     id,
@@ -113,83 +163,115 @@ export const MultiLabelEditableEdge = memo(
     const onBendingPointDragStop = (eventData: DraggableData, index: number) => {
       const edges = getEdges();
       const edge = edges.find((edge) => edge.id === id);
-      bendingPoints[index] = {
-        x: eventData.x,
-        y: eventData.y,
-      };
+      const prevMiddle = getMiddlePoint(
+        bendingPoints[index - 1] ?? {
+          x: sourceX,
+          y: sourceY,
+        },
+        bendingPoints[index]!
+      );
+      const nextMiddle = getMiddlePoint(
+        bendingPoints[index]!,
+        bendingPoints[index + 1] ?? {
+          x: targetX,
+          y: targetY,
+        }
+      );
+
+      const newPoints = generateNewBendPointToKeepRectilinearSegment(
+        bendingPoints,
+        index,
+        eventData.x,
+        eventData.y,
+        prevMiddle,
+        nextMiddle
+      );
       if (edge?.data) {
-        edge.data.bendingPoints = bendingPoints;
+        edge.data.bendingPoints = cleanBendPoint(newPoints);
       }
-      setState((prevState) => ({ ...prevState, localBendingPoints: bendingPoints }));
+      setState((prevState) => ({ ...prevState, localBendingPoints: newPoints }));
       setEdges(edges);
       synchronizeEdgeLayoutData(edges);
     };
 
     const onBendingPointDrag = (eventData: DraggableData, index: number) => {
-      const newPoints = [...state.localBendingPoints];
-      newPoints[index] = {
-        x: eventData.x,
-        y: eventData.y,
-      };
+      const prevMiddle = getMiddlePoint(
+        bendingPoints[index - 1] ?? {
+          x: sourceX,
+          y: sourceY,
+        },
+        bendingPoints[index]!
+      );
+      const nextMiddle = getMiddlePoint(
+        bendingPoints[index]!,
+        bendingPoints[index + 1] ?? {
+          x: targetX,
+          y: targetY,
+        }
+      );
+
+      const newPoints = generateNewBendPointToKeepRectilinearSegment(
+        bendingPoints,
+        index,
+        eventData.x,
+        eventData.y,
+        prevMiddle,
+        nextMiddle
+      );
+
       setState((prevState) => ({ ...prevState, localBendingPoints: newPoints }));
     };
 
-    const onTemporaryPointDragStop = (eventData: DraggableData, index: number) => {
+    const onTemporaryPointDragStop = (_eventData: DraggableData, _index: number) => {
       const edges = getEdges();
       const edge = edges.find((edge) => edge.id === id);
       if (edge?.data) {
-        bendingPoints.splice(index, 0, {
-          x: eventData.x,
-          y: eventData.y,
-        });
-        edge.data.bendingPoints = bendingPoints;
-        setEdges(edges);
-        synchronizeEdgeLayoutData(edges);
-        setState((prevState) => ({
-          ...prevState,
-          localBendingPoints: bendingPoints,
-          temporaryPointDragPosition: null,
-          temporaryPointDragIndex: null,
-        }));
-      }
-    };
-
-    const onTemporaryPointDrag = (eventData: DraggableData, index: number) => {
-      const temporaryPointDragPosition = {
-        x: eventData.x,
-        y: eventData.y,
-      };
-      setState((prevState) => ({ ...prevState, temporaryPointDragPosition, temporaryPointDragIndex: index }));
-    };
-
-    const onBendingPointDoubleClick = (index: number) => {
-      const edges = getEdges();
-      const edge = edges.find((edge) => edge.id === id);
-      if (edge?.data?.bendingPoints) {
-        edge.data.bendingPoints.splice(index, 1);
+        edge.data.bendingPoints = cleanBendPoint(state.localBendingPoints);
         setEdges(edges);
         synchronizeEdgeLayoutData(edges);
       }
+    };
+
+    const onTemporaryPointDrag = (eventData: DraggableData, index: number, direction: 'x' | 'y') => {
+      const newPoints = [...bendingPoints];
+
+      if (direction === 'x' && newPoints[index - 1] && newPoints[index]) {
+        newPoints[index - 1]!.x = eventData.x;
+        newPoints[index]!.x = eventData.x;
+      } else if (direction === 'y' && newPoints[index - 1] && newPoints[index]) {
+        newPoints[index - 1]!.y = eventData.y;
+        newPoints[index]!.y = eventData.y;
+      }
+
+      setState((prevState) => ({ ...prevState, localBendingPoints: newPoints }));
     };
 
     const computeMiddlePoints = () => {
-      const middlePoints: XYPosition[] = [];
+      const middlePoints: MiddlePoint[] = [];
+      const margin = 1.8;
       if (state.localBendingPoints.length > 0) {
         for (let i = 0; i < state.localBendingPoints.length; i++) {
           const p1 = i === 0 ? { x: sourceX, y: sourceY } : state.localBendingPoints[i - 1];
           const p2 = state.localBendingPoints[i];
           if (p1 && p2) {
-            middlePoints.push(getMiddlePoint(p1, p2));
+            middlePoints.push({
+              ...getMiddlePoint(p1, p2),
+              direction: Math.abs(p1.x - p2.x) <= margin ? 'x' : 'y',
+            });
           }
         }
-        middlePoints.push(
-          getMiddlePoint(state.localBendingPoints[state.localBendingPoints.length - 1]!, {
+        middlePoints.push({
+          ...getMiddlePoint(state.localBendingPoints[state.localBendingPoints.length - 1]!, {
             x: targetX,
             y: targetY,
-          })
-        );
+          }),
+          direction: state.localBendingPoints[state.localBendingPoints.length - 1]!.x === targetX ? 'x' : 'y',
+        });
       } else {
-        middlePoints.push(getMiddlePoint({ x: sourceX, y: sourceY }, { x: targetX, y: targetY }));
+        middlePoints.push({
+          ...getMiddlePoint({ x: sourceX, y: sourceY }, { x: targetX, y: targetY }),
+          direction: sourceX === targetX ? 'x' : 'y',
+        });
       }
       return middlePoints;
     };
@@ -215,13 +297,7 @@ export const MultiLabelEditableEdge = memo(
     const edgePath: string = useMemo(() => {
       let edgePath = `M ${sourceX} ${sourceY}`;
       for (let i = 0; i < state.localBendingPoints.length; i++) {
-        if (state.temporaryPointDragIndex === i && state.temporaryPointDragPosition) {
-          edgePath += ` L ${state.temporaryPointDragPosition.x} ${state.temporaryPointDragPosition.y}`;
-        }
         edgePath += ` L ${state.localBendingPoints[i]?.x} ${state.localBendingPoints[i]?.y}`;
-      }
-      if (state.localBendingPoints.length === state.temporaryPointDragIndex && state.temporaryPointDragPosition) {
-        edgePath += ` L ${state.temporaryPointDragPosition.x} ${state.temporaryPointDragPosition.y}`;
       }
       edgePath += ` L ${targetX} ${targetY}`;
       return edgePath;
@@ -261,7 +337,6 @@ export const MultiLabelEditableEdge = memo(
               index={index}
               onDrag={onBendingPointDrag}
               onDragStop={onBendingPointDragStop}
-              onDoubleClick={onBendingPointDoubleClick}
             />
           ))}
         {selected &&
@@ -271,6 +346,7 @@ export const MultiLabelEditableEdge = memo(
               key={index}
               x={point.x}
               y={point.y}
+              direction={point.direction}
               index={index}
               onDrag={onTemporaryPointDrag}
               onDragStop={onTemporaryPointDragStop}
