@@ -132,6 +132,9 @@ export const prepareLayoutArea = (
           type: 'freeFormNode',
           id: node.id,
           data: node.data,
+          deletable: true,
+          draggable: true,
+          selectable: true,
         };
 
         const element = createElement(FreeFormNode, {
@@ -148,6 +151,9 @@ export const prepareLayoutArea = (
           type: 'listNode',
           id: node.id,
           data: node.data,
+          deletable: true,
+          draggable: true,
+          selectable: true,
         };
 
         const element = createElement(ListNode, {

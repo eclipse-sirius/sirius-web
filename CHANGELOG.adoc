@@ -24,6 +24,7 @@ Our backend integration tests actual use the `postgres:latest` image (see `Abstr
 
 === Dependency update
 
+[releng] Switch to xyflow 12.4.3
 
 
 === Bug fixes
