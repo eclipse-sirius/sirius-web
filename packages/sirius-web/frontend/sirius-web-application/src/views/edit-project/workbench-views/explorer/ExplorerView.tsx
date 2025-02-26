@@ -28,6 +28,7 @@ import { TreeDescriptionsMenu } from './TreeDescriptionsMenu';
 import { useExplorerDescriptions } from './useExplorerDescriptions';
 import { useExplorerSubscription } from './useExplorerSubscription';
 import { GQLTreeEventPayload, GQLTreeRefreshedEventPayload } from './useExplorerSubscription.types';
+import { DuplicateObjectKeyboardShortcut } from '../../../../modals/duplicate-object/DuplicateObjectKeyboardShortcut';
 
 const useStyles = makeStyles()((theme: Theme) => ({
   treeView: {
@@ -194,24 +195,26 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
         treeToolBarContributionComponents={treeToolBarContributionComponents}>
         {treeDescriptionSelector}
       </TreeToolBar>
-      <div className={styles.treeContent}>
-        {filterBar}
-        {state.tree !== null ? (
-          <TreeView
-            editingContextId={editingContextId}
-            readOnly={readOnly}
-            treeId={'explorer://'}
-            tree={state.tree}
-            enableMultiSelection={true}
-            synchronizedWithSelection={state.synchronizedWithSelection}
-            textToHighlight={state.filterBarText}
-            textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
-            onExpandedElementChange={onExpandedElementChange}
-            expanded={state.expanded[state.activeTreeDescriptionId] ?? []}
-            maxDepth={state.maxDepth[state.activeTreeDescriptionId] ?? 1}
-          />
-        ) : null}
-      </div>
+      <DuplicateObjectKeyboardShortcut editingContextId={editingContextId} readOnly={readOnly}>
+        <div className={styles.treeContent}>
+          {filterBar}
+          {state.tree !== null ? (
+            <TreeView
+              editingContextId={editingContextId}
+              readOnly={readOnly}
+              treeId={'explorer://'}
+              tree={state.tree}
+              enableMultiSelection={true}
+              synchronizedWithSelection={state.synchronizedWithSelection}
+              textToHighlight={state.filterBarText}
+              textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
+              onExpandedElementChange={onExpandedElementChange}
+              expanded={state.expanded[state.activeTreeDescriptionId] ?? []}
+              maxDepth={state.maxDepth[state.activeTreeDescriptionId] ?? 1}
+            />
+          ) : null}
+        </div>
+      </DuplicateObjectKeyboardShortcut>
     </div>
   );
 };
