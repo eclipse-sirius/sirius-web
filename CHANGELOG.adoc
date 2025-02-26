@@ -33,6 +33,7 @@ Given that it is an application service, it comes with some constraints with reg
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4620[#4620] [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.3[Spring Boot 3.4.3].
 - [releng] Switch to xyflow 12.4.4
+- [releng] Switch to Turbo 2.4.4
 
 
 === Bug fixes
