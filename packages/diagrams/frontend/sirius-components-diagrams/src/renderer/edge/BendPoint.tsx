@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,7 @@ import { useViewport } from '@xyflow/react';
 import Draggable, { DraggableData } from 'react-draggable';
 import { BendPointProps, TemporaryBendPointProps } from './BendPoint.types';
 
-export const BendPoint = ({ x, y, index, onDrag, onDragStop, onDoubleClick }: BendPointProps) => {
+export const BendPoint = ({ x, y, index, onDrag, onDragStop }: BendPointProps) => {
   const { zoom } = useViewport();
   const nodeRef = useRef<SVGCircleElement>(null);
 
@@ -26,26 +26,20 @@ export const BendPoint = ({ x, y, index, onDrag, onDragStop, onDoubleClick }: Be
       onDrag={(_e, eventData: DraggableData) => onDrag(eventData, index)}
       onStop={(_e, eventData: DraggableData) => onDragStop(eventData, index)}
       nodeRef={nodeRef as unknown as RefObject<HTMLElement>}>
-      <circle
-        style={{ pointerEvents: 'all' }}
-        ref={nodeRef}
-        r={3}
-        fill={'black'}
-        onDoubleClick={() => onDoubleClick(index)}
-        data-testid={`bend-point-${index}`}
-      />
+      <circle style={{ pointerEvents: 'all' }} ref={nodeRef} r={3} fill={'black'} data-testid={`bend-point-${index}`} />
     </Draggable>
   );
 };
 
-export const TemporaryBendPoint = ({ x, y, index, onDrag, onDragStop }: TemporaryBendPointProps) => {
+export const TemporaryBendPoint = ({ x, y, direction, index, onDrag, onDragStop }: TemporaryBendPointProps) => {
   const { zoom } = useViewport();
   const nodeRef = useRef<SVGCircleElement>(null);
   return (
     <Draggable
       position={{ x: x, y: y }}
       scale={zoom}
-      onDrag={(_e, eventData: DraggableData) => onDrag(eventData, index)}
+      axis={direction}
+      onDrag={(_e, eventData: DraggableData) => onDrag(eventData, index, direction)}
       onStop={(_e, eventData: DraggableData) => onDragStop(eventData, index)}
       nodeRef={nodeRef as unknown as RefObject<HTMLElement>}>
       <circle

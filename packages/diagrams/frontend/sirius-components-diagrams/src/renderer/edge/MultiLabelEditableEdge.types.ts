@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,13 @@ export type MultiLabelEditableEdgeProps<T extends Edge<Record<string, unknown>, 
 
 export type MultiLabelEditableEdgeState = {
   localBendingPoints: XYPosition[];
-  middleBendingPoints: XYPosition[];
+  middleBendingPoints: MiddlePoint[];
   temporaryPointDragPosition: XYPosition | null;
   temporaryPointDragIndex: number | null;
+};
+
+export type MiddlePoint = {
+  x: number;
+  y: number;
+  direction: 'x' | 'y';
 };
