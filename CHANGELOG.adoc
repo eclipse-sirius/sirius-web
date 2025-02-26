@@ -17,6 +17,9 @@
 === Breaking changes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4609[#4609] [sirius-web] The field `RepresentationMetadata#project: AggregateReference<Project, String>` has been removed and replaced by `RepresentationMetadata#semanticData: AggregateReference<SemanticData, UUID>`
+- [releng] Sirius Web now requires on PostgreSQL v15 or later.
+Version 12 which was documented/recommended in our README and used for the frontend e2e tests on the CI is EOL since last November (see https://www.postgresql.org/support/versioning/).
+Our backend integration tests actual use the `postgres:latest` image (see `AbstractIntegrationTests`), v15 is somewhat arbitrary middle ground of a still maintained version to test against for the e2e tests while not being the "bleeding edge".
 
 
 === Dependency update

@@ -39,7 +39,7 @@ docker run -p 5433:5432 --rm --name sirius-web-postgres \
                              -e POSTGRES_USER=dbuser \
                              -e POSTGRES_PASSWORD=dbpwd \
                              -e POSTGRES_DB=sirius-web-db \
-                             -d postgres:12
+                             -d postgres:15
 ----
 +
 WARNING: This may take a while the first time you run this as Docker will first pull the PostgreSQL image.
