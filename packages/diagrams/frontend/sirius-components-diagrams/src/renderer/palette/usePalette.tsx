@@ -12,7 +12,13 @@
  *******************************************************************************/
 
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { useDeletionConfirmationDialog, useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
+import {
+  useDeletionConfirmationDialog,
+  useMultiToast,
+  useSelection,
+  useImpactAnalysisDialog,
+  GQLToolVariable,
+} from '@eclipse-sirius/sirius-components-core';
 import { Edge, Node, useStoreApi } from '@xyflow/react';
 import { useCallback, useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
@@ -41,7 +47,6 @@ import {
   GQLInvokeSingleClickOnDiagramElementToolSuccessPayload,
   GQLInvokeSingleClickOnDiagramElementToolVariables,
   GQLRepresentationDescription,
-  GQLToolVariable,
   GQLUpdateCollapsingStateData,
   GQLUpdateCollapsingStateInput,
   GQLUpdateCollapsingStateVariables,
@@ -61,6 +66,7 @@ export const getPaletteQuery = gql`
       }
       appliesToDiagramRoot
       dialogDescriptionId
+      withImpactAnalysis
     }
   }
   query getPalette($editingContextId: ID!, $diagramId: ID!, $diagramElementId: ID!) {
@@ -185,6 +191,7 @@ export const usePalette = ({
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
   const { showDialog } = useDialog();
   const { setSelection } = useSelection();
+  const { showImpactAnalysisDialog } = useImpactAnalysisDialog();
 
   const { data: paletteData, error: paletteError } = useQuery<GQLGetToolSectionsData, GQLGetToolSectionsVariables>(
     getPaletteQuery,
@@ -317,9 +324,21 @@ export const usePalette = ({
 
   const handleDialogDescription = (tool: GQLSingleClickOnDiagramElementTool) => {
     const onConfirm = (variables: GQLToolVariable[]) => {
-      invokeSingleClickTool(tool, variables);
+      if (tool.withImpactAnalysis) {
+        showImpactAnalysisDialog(editingContextId, diagramId, tool.id, tool.label, diagramElementId, variables, () =>
+          invokeSingleClickTool(tool, variables)
+        );
+      } else {
+        invokeSingleClickTool(tool, variables);
+      }
     };
     showDialog(tool.dialogDescriptionId, [{ name: 'targetObjectId', value: targetObjectId }], onConfirm, () => {});
+  };
+
+  const handleImpactAnalysisDialog = (tool: GQLTool, diagramElementId: string) => {
+    showImpactAnalysisDialog(editingContextId, diagramId, tool.id, tool.label, diagramElementId, [], () =>
+      invokeSingleClickTool(tool, [])
+    );
   };
 
   const { setLastToolInvoked } = useDiagramPalette();
@@ -349,7 +368,11 @@ export const usePalette = ({
           if (tool.dialogDescriptionId) {
             handleDialogDescription(tool);
           } else {
-            invokeSingleClickTool(tool, []);
+            if (tool.withImpactAnalysis) {
+              handleImpactAnalysisDialog(tool, diagramElementId);
+            } else {
+              invokeSingleClickTool(tool, []);
+            }
           }
         }
         break;
