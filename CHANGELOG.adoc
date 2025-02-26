@@ -33,6 +33,8 @@ Our backend integration tests actual use the `postgres:latest` image (see `Abstr
 
 === New Features
 
+- https://github.com/eclipse-sirius/sirius-web/issues/4588[#4588] [core] Added support for custom ordering in representation creation modal.
+See the new interface `org.eclipse.sirius.components.emf.services.api.IRepresentationDescriptionMetadataSorter`.
 
 
 === Improvements
