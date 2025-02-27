@@ -187,7 +187,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
 
     const childrenContentBox = computeNodesBox(visibleNodes, directNodesChildren);
 
-    const labelOnlyWidth = labelElement?.getBoundingClientRect().width ?? 0;
+    const labelOnlyWidth = getInsideLabelWidthConstraint(node.data.insideLabel, labelElement);
     const nodeMinComputeWidth = Math.max(childrenContentBox.width, labelOnlyWidth) + borderWidth * 2;
 
     const directChildrenAwareNodeHeight =

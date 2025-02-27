@@ -34,7 +34,7 @@ Our backend integration tests actual use the `postgres:latest` image (see `Abstr
 - https://github.com/eclipse-sirius/sirius-web/issues/4631[#4631] [table] Add support for textarea cell type in widget tables
 - https://github.com/eclipse-sirius/sirius-web/issues/4636[#4636] [sirius-web] Remove an useless div in the `EditProjectView`
 - https://github.com/eclipse-sirius/sirius-web/issues/4618[#4618] [diagram] Restore diagram layout propagation
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4257[#4257] [diagram] Prevent the width of list parent nodes from increasing on each layout.
 
 === New Features
 
