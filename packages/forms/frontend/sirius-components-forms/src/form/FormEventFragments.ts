@@ -321,81 +321,6 @@ export const widgetFields = `
     }
   }
 
-  fragment tableWidgetFields on TableWidget {
-    label
-    iconURL
-    table {
-      id
-      paginationData {
-        hasPreviousPage
-        hasNextPage
-        totalRowCount
-      }
-      stripeRow
-      globalFilter
-      columnFilters {
-        id
-        value
-      }
-      columns {
-        id
-        headerLabel
-        headerIconURLs
-        headerIndexLabel
-        targetObjectId
-        targetObjectKind
-        width
-        isResizable 
-        hidden
-        filterVariant
-      }
-      lines {
-        id
-        targetObjectId
-        targetObjectKind
-        headerLabel
-        headerIconURLs
-        headerIndexLabel
-        height
-        isResizable
-        cells {
-          __typename
-          id
-          targetObjectId
-          targetObjectKind
-          columnId
-          ... on CheckboxCell {
-            booleanValue: value
-          }
-          ... on SelectCell {
-            value
-            options {
-              id
-              label
-            }
-          }
-          ... on MultiSelectCell {
-            values
-            options {
-              id
-              label
-            }
-          }
-          ... on TextfieldCell {
-            stringValue: value
-          }
-          ... on IconLabelCell {
-            label: value
-            iconURLs
-          }
-          ... on TextareaCell {
-            stringValue: value
-          }
-        }
-      }
-    }
-  }
-
   fragment widgetFields on Widget {
     ...commonFields
     ... on Textfield {
@@ -452,9 +377,6 @@ export const widgetFields = `
     ... on DateTime {
       ...dateTimeFields
       }
-    ... on TableWidget {
-      ...tableWidgetFields
-    }
   }
 `;
 

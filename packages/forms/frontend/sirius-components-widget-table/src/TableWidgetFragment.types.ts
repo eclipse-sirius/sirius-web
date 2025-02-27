@@ -10,6 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-export * from './TableWidgetFragment.types';
-export * from './TableWidgetPreview';
-export * from './TableWidgetPropertySection';
+import { GQLWidget } from '@eclipse-sirius/sirius-components-forms';
+import { GQLTable } from '@eclipse-sirius/sirius-components-tables';
+
+export interface GQLTableWidget extends GQLWidget {
+  table: GQLTable;
+}

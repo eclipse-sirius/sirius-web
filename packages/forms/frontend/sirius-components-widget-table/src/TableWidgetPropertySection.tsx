@@ -10,11 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import {
+  PropertySectionComponent,
+  PropertySectionComponentProps,
+  PropertySectionLabel,
+  GQLWidget,
+} from '@eclipse-sirius/sirius-components-forms';
 import { TableContent } from '@eclipse-sirius/sirius-components-tables';
 import { makeStyles } from 'tss-react/mui';
-import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
-import { GQLTableWidget } from '../form/FormEventFragments.types';
-import { PropertySectionLabel } from './PropertySectionLabel';
+import { GQLTableWidget } from './TableWidgetFragment.types';
 
 const useStyle = makeStyles()(() => ({
   main: {
@@ -22,7 +26,19 @@ const useStyle = makeStyles()(() => ({
   },
 }));
 
-export const TableWidgetPropertySection: PropertySectionComponent<GQLTableWidget> = ({
+const isTableWidget = (widget: GQLWidget): widget is GQLTableWidget => widget.__typename === 'TableWidget';
+
+export const TableWidgetPropertySection: PropertySectionComponent<GQLWidget> = ({
+  widget,
+  ...props
+}: PropertySectionComponentProps<GQLWidget>) => {
+  if (isTableWidget(widget)) {
+    return <RawTableWidgetPropertySection widget={widget} {...props} />;
+  }
+  return null;
+};
+
+const RawTableWidgetPropertySection: PropertySectionComponent<GQLTableWidget> = ({
   editingContextId,
   formId,
   widget,
