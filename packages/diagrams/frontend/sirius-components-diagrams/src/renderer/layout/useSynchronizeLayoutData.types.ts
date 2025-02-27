@@ -15,7 +15,7 @@ import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
 import { RawDiagram } from './layout.types';
 
 export interface UseSynchronizeLayoutDataValue {
-  synchronizeLayoutData: (id: string, diagram: RawDiagram) => void;
+  synchronizeLayoutData: (id: string, cause: string, diagram: RawDiagram) => void;
 }
 
 export interface GQLDiagramLayoutData {
@@ -69,5 +69,6 @@ export interface GQLLayoutDiagramInput {
   id: string;
   editingContextId: string;
   representationId: string;
+  cause: string;
   diagramLayoutData: GQLDiagramLayoutData;
 }

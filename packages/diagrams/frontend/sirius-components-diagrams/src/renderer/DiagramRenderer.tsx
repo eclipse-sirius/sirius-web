@@ -223,7 +223,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         setNodes(laidOutDiagram.nodes);
         hideAllPalettes();
 
-        synchronizeLayoutData(diagramRefreshedEventPayload.id, laidOutDiagram);
+        synchronizeLayoutData(diagramRefreshedEventPayload.id, 'refresh', laidOutDiagram);
       });
     }
   }, [diagramRefreshedEventPayload, diagramDescription, edgeType]);

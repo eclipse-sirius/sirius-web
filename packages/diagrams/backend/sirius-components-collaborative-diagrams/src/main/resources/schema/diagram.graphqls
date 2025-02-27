@@ -271,7 +271,7 @@ type Palette {
 }
 
 union PaletteEntry =
-    ToolSection
+  ToolSection
   | SingleClickOnDiagramElementTool
   | SingleClickOnTwoDiagramElementsTool
   | PaletteDivider
@@ -580,6 +580,7 @@ input LayoutDiagramInput {
   id: ID!
   editingContextId: ID!
   representationId: ID!
+  cause: String!
   diagramLayoutData: DiagramLayoutDataInput!
 }
 

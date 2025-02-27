@@ -116,7 +116,7 @@ export const useLayoutOnBoundsChange = (): UseLayoutOnBoundsChangeValue => {
             edges: laidOutDiagram.edges,
           };
 
-          synchronizeLayoutData(crypto.randomUUID(), finalDiagram);
+          synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
         });
       }
     },

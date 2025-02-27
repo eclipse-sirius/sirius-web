@@ -33,6 +33,7 @@ Our backend integration tests actual use the `postgres:latest` image (see `Abstr
 - https://github.com/eclipse-sirius/sirius-web/issues/4629[#4629] [diagram] Fix a cypress test on the direct edit diagram that was unstable
 - https://github.com/eclipse-sirius/sirius-web/issues/4631[#4631] [table] Add support for textarea cell type in widget tables
 - https://github.com/eclipse-sirius/sirius-web/issues/4636[#4636] [sirius-web] Remove an useless div in the `EditProjectView`
+- https://github.com/eclipse-sirius/sirius-web/issues/4618[#4618] [diagram] Restore diagram layout propagation
 
 
 === New Features
