@@ -28,5 +28,5 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
  */
 public interface IProjectSemanticDataCreationService {
     
-    IResult<ProjectSemanticData> create(ICause cause, AggregateReference<Project, String> project, AggregateReference<SemanticData, UUID> semanticData);
+    IResult<ProjectSemanticData> create(ICause cause, AggregateReference<Project, String> project, AggregateReference<SemanticData, UUID> semanticData, String name);
 }

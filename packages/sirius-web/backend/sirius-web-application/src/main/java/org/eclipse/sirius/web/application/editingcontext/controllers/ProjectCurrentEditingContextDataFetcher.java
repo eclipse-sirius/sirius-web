@@ -33,6 +33,8 @@ import graphql.schema.DataFetchingEnvironment;
 @QueryDataFetcher(type = "Project", field = "currentEditingContext")
 public class ProjectCurrentEditingContextDataFetcher implements IDataFetcherWithFieldCoordinates<DataFetcherResult<String>> {
 
+    private static final String NAME = "name";
+
     private final IProjectEditingContextApplicationService projectEditingContextApplicationService;
 
     public ProjectCurrentEditingContextDataFetcher(IProjectEditingContextApplicationService projectEditingContextApplicationService) {
@@ -42,8 +44,14 @@ public class ProjectCurrentEditingContextDataFetcher implements IDataFetcherWith
     @Override
     public DataFetcherResult<String> get(DataFetchingEnvironment environment) throws Exception {
         ProjectDTO project = environment.getSource();
-        String editingContextId = this.projectEditingContextApplicationService.getCurrentEditingContextId(project.id());
+        String name = environment.getArgument(NAME);
 
+        return this.projectEditingContextApplicationService.getEditingContextId(project.id(), name)
+                .map(this::toDataFetcherResult)
+                .orElse(null);
+    }
+
+    private DataFetcherResult<String> toDataFetcherResult(String editingContextId) {
         Map<String, Object> localContext = new HashMap<>();
         localContext.put(LocalContextConstants.EDITING_CONTEXT_ID, editingContextId);
 

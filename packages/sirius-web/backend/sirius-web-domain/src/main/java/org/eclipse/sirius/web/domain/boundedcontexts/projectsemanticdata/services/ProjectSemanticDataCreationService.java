@@ -41,11 +41,11 @@ public class ProjectSemanticDataCreationService implements IProjectSemanticDataC
     }
 
     @Override
-    public IResult<ProjectSemanticData> create(ICause cause, AggregateReference<Project, String> project, AggregateReference<SemanticData, UUID> semanticData) {
+    public IResult<ProjectSemanticData> create(ICause cause, AggregateReference<Project, String> project, AggregateReference<SemanticData, UUID> semanticData, String name) {
         var projectSemanticData = ProjectSemanticData.newProjectSemanticData()
                 .project(project)
                 .semanticData(semanticData)
-                .name("main")
+                .name(name)
                 .build(cause);
         this.projectSemanticDataRepository.save(projectSemanticData);
 

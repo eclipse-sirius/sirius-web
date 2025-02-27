@@ -17,7 +17,7 @@ type ViewerProjectsEdge {
 type Project {
   id: ID!
   name: String!
-  currentEditingContext: EditingContext!
+  currentEditingContext(name: ID): EditingContext
   natures: [Nature!]!
 }
 
