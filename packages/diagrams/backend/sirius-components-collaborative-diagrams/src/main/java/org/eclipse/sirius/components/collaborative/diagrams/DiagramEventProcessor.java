@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -132,7 +132,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
         if (representationInput instanceof LayoutDiagramInput layoutDiagramInput) {
-            if (layoutDiagramInput.id().equals(this.currentRevisionId)) {
+            if (LayoutDiagramInput.CAUSE_LAYOUT.equals(layoutDiagramInput.cause()) || layoutDiagramInput.id().equals(this.currentRevisionId)) {
                 var diagram = this.diagramContext.getDiagram();
                 var nodeLayoutData = layoutDiagramInput.diagramLayoutData().nodeLayoutData().stream()
                         .collect(Collectors.toMap(
@@ -159,6 +159,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
                 this.diagramEventFlux.diagramRefreshed(layoutDiagramInput.id(), laidOutDiagram, DiagramRefreshedEventPayload.CAUSE_LAYOUT, null);
 
                 this.currentRevisionCause = DiagramRefreshedEventPayload.CAUSE_LAYOUT;
+                this.currentRevisionId = layoutDiagramInput.id();
 
                 payloadSink.tryEmitValue(new SuccessPayload(layoutDiagramInput.id()));
             } else {

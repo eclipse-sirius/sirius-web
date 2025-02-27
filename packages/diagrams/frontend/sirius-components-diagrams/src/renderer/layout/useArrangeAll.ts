@@ -273,7 +273,7 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
             nodes: laidOutNodesWithElk,
             edges: laidOutDiagram.edges,
           };
-          synchronizeLayoutData(crypto.randomUUID(), finalDiagram);
+          synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
           resolve();
         });
       });

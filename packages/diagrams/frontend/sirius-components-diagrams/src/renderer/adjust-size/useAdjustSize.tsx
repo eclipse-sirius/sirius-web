@@ -54,7 +54,7 @@ export const useAdjustSize = (): UseAdjustSizeValue => {
           nodes: nodes,
           edges: laidOutDiagram.edges,
         };
-        synchronizeLayoutData(crypto.randomUUID(), finalDiagram);
+        synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
         hideDiagramElementPalette();
       });
     }

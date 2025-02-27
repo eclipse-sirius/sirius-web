@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -121,12 +121,13 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
     };
   };
 
-  const synchronizeLayoutData = (id: string, diagram: RawDiagram) => {
+  const synchronizeLayoutData = (id: string, cause: string, diagram: RawDiagram) => {
     const diagramLayoutData = toDiagramLayoutData(diagram);
     const input: GQLLayoutDiagramInput = {
       id,
       editingContextId,
       representationId,
+      cause,
       diagramLayoutData,
     };
 

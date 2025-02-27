@@ -29,7 +29,7 @@ export const useEditableEdgePath = (): UseEditableEdgePathValue => {
         nodes: [...getNodes()] as Node<NodeData, DiagramNodeType>[],
         edges: edges,
       };
-      synchronizeLayoutData(crypto.randomUUID(), finalDiagram);
+      synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
     },
     [getNodes, synchronizeLayoutData]
   );

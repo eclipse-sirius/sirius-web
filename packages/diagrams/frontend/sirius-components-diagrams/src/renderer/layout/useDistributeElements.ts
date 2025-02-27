@@ -82,7 +82,7 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
           nodes: overlapFreeNodesAfterLayout as Node<NodeData, DiagramNodeType>[],
           edges: laidOutDiagram.edges,
         };
-        synchronizeLayoutData(crypto.randomUUID(), finalDiagram);
+        synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
       });
     }
   };
@@ -154,7 +154,7 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
               nodes: laidOutDiagram.nodes,
               edges: laidOutDiagram.edges,
             };
-            synchronizeLayoutData(crypto.randomUUID(), finalDiagram);
+            synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
           });
         }
       },
