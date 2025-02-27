@@ -19,7 +19,6 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
-import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextApplicationService;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.CreateBranchRestInput;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.CreateBranchRestSuccessPayload;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.DeleteBranchRestInput;
@@ -31,6 +30,7 @@ import org.eclipse.sirius.web.application.project.data.versioning.dto.GetBranche
 import org.eclipse.sirius.web.application.project.data.versioning.dto.RestBranch;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.RestBranchRequest;
 import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
+import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -63,12 +63,12 @@ public class BranchRestController {
 
     private final IProjectApplicationService projectApplicationService;
 
-    private final IProjectEditingContextApplicationService projectEditingContextApplicationService;
+    private final IProjectEditingContextService projectEditingContextService;
 
-    public BranchRestController(IEditingContextDispatcher editingContextDispatcher, IProjectApplicationService projectApplicationService, IProjectEditingContextApplicationService projectEditingContextApplicationService) {
+    public BranchRestController(IEditingContextDispatcher editingContextDispatcher, IProjectApplicationService projectApplicationService, IProjectEditingContextService projectEditingContextService) {
         this.editingContextDispatcher = Objects.requireNonNull(editingContextDispatcher);
         this.projectApplicationService = Objects.requireNonNull(projectApplicationService);
-        this.projectEditingContextApplicationService = Objects.requireNonNull(projectEditingContextApplicationService);
+        this.projectEditingContextService = Objects.requireNonNull(projectEditingContextService);
     }
 
     @Operation(description = "Get branches by project.")
@@ -80,10 +80,13 @@ public class BranchRestController {
     })
     @GetMapping
     public ResponseEntity<List<RestBranch>> getBranches(@PathVariable String projectId) {
-        var editingContextId = projectEditingContextApplicationService.getCurrentEditingContextId(projectId);
-        var payload = this.editingContextDispatcher.dispatchQuery(editingContextId, new GetBranchesRestInput(UUID.randomUUID())).block(Duration.ofSeconds(TIMEOUT));
-        if (payload instanceof GetBranchesRestSuccessPayload successPayload) {
-            return new ResponseEntity<>(successPayload.branches(), HttpStatus.OK);
+        var optionalEditingContextId = this.projectEditingContextService.getEditingContextId(projectId);
+        if (optionalEditingContextId.isPresent()) {
+            var editingContextId = optionalEditingContextId.get();
+            var payload = this.editingContextDispatcher.dispatchQuery(editingContextId, new GetBranchesRestInput(UUID.randomUUID())).block(Duration.ofSeconds(TIMEOUT));
+            if (payload instanceof GetBranchesRestSuccessPayload successPayload) {
+                return new ResponseEntity<>(successPayload.branches(), HttpStatus.OK);
+            }
         }
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
@@ -96,15 +99,18 @@ public class BranchRestController {
     })
     @PostMapping
     public ResponseEntity<RestBranch> createBranch(@PathVariable String projectId, @RequestBody RestBranchRequest requestBody) {
-        var editingContextId = projectEditingContextApplicationService.getCurrentEditingContextId(projectId);
-        UUID commitId = null;
-        var head = requestBody.head();
-        if (head != null) {
-            commitId = UUID.fromString(head.id());
-        }
-        var payload = this.editingContextDispatcher.dispatchMutation(editingContextId, new CreateBranchRestInput(UUID.randomUUID(), requestBody.name(), commitId)).block(Duration.ofSeconds(TIMEOUT));
-        if (payload instanceof CreateBranchRestSuccessPayload successPayload) {
-            return new ResponseEntity<>(successPayload.branch(), HttpStatus.CREATED);
+        var optionalEditingContextId = this.projectEditingContextService.getEditingContextId(projectId);
+        if (optionalEditingContextId.isPresent()) {
+            var editingContextId = optionalEditingContextId.get();
+            UUID commitId = null;
+            var head = requestBody.head();
+            if (head != null) {
+                commitId = UUID.fromString(head.id());
+            }
+            var payload = this.editingContextDispatcher.dispatchMutation(editingContextId, new CreateBranchRestInput(UUID.randomUUID(), requestBody.name(), commitId)).block(Duration.ofSeconds(TIMEOUT));
+            if (payload instanceof CreateBranchRestSuccessPayload successPayload) {
+                return new ResponseEntity<>(successPayload.branch(), HttpStatus.CREATED);
+            }
         }
         // The specification does not handle other HttpStatus than HttpStatus.CREATED for this endpoint
         return null;
@@ -119,10 +125,13 @@ public class BranchRestController {
     })
     @GetMapping(path = "/{branchId}")
     public ResponseEntity<RestBranch> getBranchById(@PathVariable String projectId, @PathVariable UUID branchId) {
-        var editingContextId = projectEditingContextApplicationService.getCurrentEditingContextId(projectId);
-        var payload = this.editingContextDispatcher.dispatchQuery(editingContextId, new GetBranchByIdRestInput(UUID.randomUUID(), branchId)).block(Duration.ofSeconds(TIMEOUT));
-        if (payload instanceof GetBranchByIdRestSuccessPayload successPayload) {
-            return new ResponseEntity<>(successPayload.branch(), HttpStatus.OK);
+        var optionalEditingContextId = this.projectEditingContextService.getEditingContextId(projectId);
+        if (optionalEditingContextId.isPresent()) {
+            var editingContextId = optionalEditingContextId.get();
+            var payload = this.editingContextDispatcher.dispatchQuery(editingContextId, new GetBranchByIdRestInput(UUID.randomUUID(), branchId)).block(Duration.ofSeconds(TIMEOUT));
+            if (payload instanceof GetBranchByIdRestSuccessPayload successPayload) {
+                return new ResponseEntity<>(successPayload.branch(), HttpStatus.OK);
+            }
         }
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
@@ -137,17 +146,22 @@ public class BranchRestController {
     })
     @DeleteMapping(path = "/{branchId}")
     public ResponseEntity<RestBranch> deleteBranch(@PathVariable String projectId, @PathVariable UUID branchId) {
-        var editingContextId = projectEditingContextApplicationService.getCurrentEditingContextId(projectId);
         ResponseEntity<RestBranch> responseEntity = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        var restProject = this.projectApplicationService.findById(projectId);
-        if (restProject.isPresent()) {
-            var payload = this.editingContextDispatcher.dispatchQuery(editingContextId, new DeleteBranchRestInput(UUID.randomUUID(), branchId)).block(Duration.ofSeconds(TIMEOUT));
-            if (payload instanceof DeleteBranchRestSuccessPayload successPayload) {
-                responseEntity = new ResponseEntity<>(successPayload.branch(), HttpStatus.OK);
-            } else if (payload instanceof ErrorPayload) {
-                responseEntity = new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+
+        var optionalEditingContextId = this.projectEditingContextService.getEditingContextId(projectId);
+        if (optionalEditingContextId.isPresent()) {
+            var editingContextId = optionalEditingContextId.get();
+            var restProject = this.projectApplicationService.findById(projectId);
+            if (restProject.isPresent()) {
+                var payload = this.editingContextDispatcher.dispatchQuery(editingContextId, new DeleteBranchRestInput(UUID.randomUUID(), branchId)).block(Duration.ofSeconds(TIMEOUT));
+                if (payload instanceof DeleteBranchRestSuccessPayload successPayload) {
+                    responseEntity = new ResponseEntity<>(successPayload.branch(), HttpStatus.OK);
+                } else if (payload instanceof ErrorPayload) {
+                    responseEntity = new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+                }
             }
         }
+
         return responseEntity;
     }
 }

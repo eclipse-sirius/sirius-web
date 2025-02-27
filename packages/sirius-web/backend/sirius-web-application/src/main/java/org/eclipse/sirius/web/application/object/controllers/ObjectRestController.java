@@ -19,7 +19,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
-import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextApplicationService;
 import org.eclipse.sirius.web.application.object.dto.Direction;
 import org.eclipse.sirius.web.application.object.dto.GetElementByIdRestInput;
 import org.eclipse.sirius.web.application.object.dto.GetElementByIdRestSuccessPayload;
@@ -29,6 +28,7 @@ import org.eclipse.sirius.web.application.object.dto.GetRelationshipsByRelatedEl
 import org.eclipse.sirius.web.application.object.dto.GetRelationshipsByRelatedElementRestSuccessPayload;
 import org.eclipse.sirius.web.application.object.dto.GetRootElementsRestInput;
 import org.eclipse.sirius.web.application.object.dto.GetRootElementsRestSuccessPayload;
+import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,11 +55,11 @@ public class ObjectRestController {
 
     private final IEditingContextDispatcher editingContextDispatcher;
 
-    private final IProjectEditingContextApplicationService projectEditingContextApplicationService;
+    private final IProjectEditingContextService projectEditingContextService;
 
-    public ObjectRestController(IEditingContextDispatcher editingContextDispatcher, IProjectEditingContextApplicationService projectEditingContextApplicationService) {
+    public ObjectRestController(IEditingContextDispatcher editingContextDispatcher, IProjectEditingContextService projectEditingContextService) {
         this.editingContextDispatcher = Objects.requireNonNull(editingContextDispatcher);
-        this.projectEditingContextApplicationService = Objects.requireNonNull(projectEditingContextApplicationService);
+        this.projectEditingContextService = Objects.requireNonNull(projectEditingContextService);
     }
 
     @Operation(description = "Get all the elements in a given project at the given commit.")
@@ -73,11 +73,14 @@ public class ObjectRestController {
     })
     @GetMapping(path = "/elements")
     public ResponseEntity<List<Object>> getElements(@PathVariable String projectId, @PathVariable UUID commitId) {
-        var editingContextId = this.projectEditingContextApplicationService.getCurrentEditingContextId(projectId);
-        var payload = this.editingContextDispatcher.dispatchQuery(editingContextId, new GetElementsRestInput(UUID.randomUUID()))
-                .block(Duration.ofSeconds(TIMEOUT));
-        if (payload instanceof GetElementsRestSuccessPayload successPayload) {
-            return new ResponseEntity<>(successPayload.elements(), HttpStatus.OK);
+        var optionalEditingContextId = this.projectEditingContextService.getEditingContextId(projectId);
+        if (optionalEditingContextId.isPresent()) {
+            var editingContextId = optionalEditingContextId.get();
+            var payload = this.editingContextDispatcher.dispatchQuery(editingContextId, new GetElementsRestInput(UUID.randomUUID()))
+                    .block(Duration.ofSeconds(TIMEOUT));
+            if (payload instanceof GetElementsRestSuccessPayload successPayload) {
+                return new ResponseEntity<>(successPayload.elements(), HttpStatus.OK);
+            }
         }
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
@@ -93,11 +96,14 @@ public class ObjectRestController {
     })
     @GetMapping(path = "/elements/{elementId}")
     public ResponseEntity<Object> getElementById(@PathVariable String projectId, @PathVariable UUID commitId, @PathVariable UUID elementId) {
-        var editingContextId = this.projectEditingContextApplicationService.getCurrentEditingContextId(projectId);
-        var payload = this.editingContextDispatcher.dispatchQuery(editingContextId, new GetElementByIdRestInput(UUID.randomUUID(), elementId.toString()))
-                .block(Duration.ofSeconds(TIMEOUT));
-        if (payload instanceof GetElementByIdRestSuccessPayload successPayload) {
-            return new ResponseEntity<>(successPayload.element(), HttpStatus.OK);
+        var optionalEditingContextId = this.projectEditingContextService.getEditingContextId(projectId);
+        if (optionalEditingContextId.isPresent()) {
+            var editingContextId = optionalEditingContextId.get();
+            var payload = this.editingContextDispatcher.dispatchQuery(editingContextId, new GetElementByIdRestInput(UUID.randomUUID(), elementId.toString()))
+                    .block(Duration.ofSeconds(TIMEOUT));
+            if (payload instanceof GetElementByIdRestSuccessPayload successPayload) {
+                return new ResponseEntity<>(successPayload.element(), HttpStatus.OK);
+            }
         }
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
@@ -114,13 +120,16 @@ public class ObjectRestController {
     @GetMapping(path = "/elements/{relatedElementId}/relationships")
     public ResponseEntity<List<Object>> getRelationshipsByRelatedElement(@PathVariable String projectId, @PathVariable UUID commitId, @PathVariable UUID relatedElementId, Optional<Direction> direction) {
         Direction directionParam = direction.orElse(Direction.BOTH);
-        var editingContextId = this.projectEditingContextApplicationService.getCurrentEditingContextId(projectId);
-
-        var payload = this.editingContextDispatcher.dispatchQuery(editingContextId, new GetRelationshipsByRelatedElementRestInput(UUID.randomUUID(), relatedElementId.toString(), directionParam))
-                .block(Duration.ofSeconds(TIMEOUT));
-        if (payload instanceof GetRelationshipsByRelatedElementRestSuccessPayload successPayload) {
-            return new ResponseEntity<>(successPayload.relationships(), HttpStatus.OK);
+        var optionalEditingContextId = this.projectEditingContextService.getEditingContextId(projectId);
+        if (optionalEditingContextId.isPresent()) {
+            var editingContextId = optionalEditingContextId.get();
+            var payload = this.editingContextDispatcher.dispatchQuery(editingContextId, new GetRelationshipsByRelatedElementRestInput(UUID.randomUUID(), relatedElementId.toString(), directionParam))
+                    .block(Duration.ofSeconds(TIMEOUT));
+            if (payload instanceof GetRelationshipsByRelatedElementRestSuccessPayload successPayload) {
+                return new ResponseEntity<>(successPayload.relationships(), HttpStatus.OK);
+            }
         }
+
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
@@ -135,11 +144,14 @@ public class ObjectRestController {
     })
     @GetMapping(path = "/roots")
     public ResponseEntity<List<Object>> getRootElements(@PathVariable String projectId, @PathVariable UUID commitId) {
-        var editingContextId = this.projectEditingContextApplicationService.getCurrentEditingContextId(projectId);
-        var payload = this.editingContextDispatcher.dispatchQuery(editingContextId, new GetRootElementsRestInput(UUID.randomUUID()))
-                .block(Duration.ofSeconds(TIMEOUT));
-        if (payload instanceof GetRootElementsRestSuccessPayload successPayload) {
-            return new ResponseEntity<>(successPayload.rootElements(), HttpStatus.OK);
+        var optionalEditingContextId = this.projectEditingContextService.getEditingContextId(projectId);
+        if (optionalEditingContextId.isPresent()) {
+            var editingContextId = optionalEditingContextId.get();
+            var payload = this.editingContextDispatcher.dispatchQuery(editingContextId, new GetRootElementsRestInput(UUID.randomUUID()))
+                    .block(Duration.ofSeconds(TIMEOUT));
+            if (payload instanceof GetRootElementsRestSuccessPayload successPayload) {
+                return new ResponseEntity<>(successPayload.rootElements(), HttpStatus.OK);
+            }
         }
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }

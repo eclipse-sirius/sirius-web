@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,12 @@ import {
 } from './useProjectAndRepresentationMetadata.types';
 
 const getProjectQuery = gql`
-  query getProjectAndRepresentation($projectId: ID!, $representationId: ID!, $includeRepresentation: Boolean!) {
+  query getProjectAndRepresentation(
+    $projectId: ID!
+    $name: ID
+    $representationId: ID!
+    $includeRepresentation: Boolean!
+  ) {
     viewer {
       project(projectId: $projectId) {
         ...ProjectAndRepresentationFragment
@@ -32,6 +37,7 @@ const getProjectQuery = gql`
 
 export const useProjectAndRepresentationMetadata = (
   projectId: string,
+  name: string | null,
   representationId: string | null
 ): UseProjectAndRepresentationMetadataValue => {
   const { loading, data, error } = useQuery<
@@ -40,6 +46,7 @@ export const useProjectAndRepresentationMetadata = (
   >(getProjectQuery, {
     variables: {
       projectId,
+      name,
       representationId: representationId ?? '',
       includeRepresentation: !!representationId,
     },

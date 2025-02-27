@@ -41,7 +41,7 @@ public class ProjectSemanticDataInitializer {
     @TransactionalEventListener
     public void onSemanticDataCreatedEvent(SemanticDataCreatedEvent event) {
         if (event.causedBy() instanceof ProjectCreatedEvent projectCreatedEvent) {
-            this.projectSemanticDataCreationService.create(event, AggregateReference.to(projectCreatedEvent.project().getId()), AggregateReference.to(event.semanticData().getId()));
+            this.projectSemanticDataCreationService.create(event, AggregateReference.to(projectCreatedEvent.project().getId()), AggregateReference.to(event.semanticData().getId()), "main");
         }
     }
 }

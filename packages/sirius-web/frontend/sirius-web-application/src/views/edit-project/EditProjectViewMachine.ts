@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -80,7 +80,7 @@ export const editProjectViewMachine = Machine<EditProjectViewContext, EditProjec
     guards: {
       isMissing: (_, event) => {
         const { data } = event as HandleFetchedProjectEvent;
-        return !data.viewer.project;
+        return !data.viewer.project || !data.viewer.project.currentEditingContext;
       },
     },
     actions: {

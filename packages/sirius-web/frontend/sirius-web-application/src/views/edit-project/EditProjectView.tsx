@@ -46,6 +46,8 @@ import { UploadDocumentModalContribution } from './TreeToolBarContributions/Uplo
 import { UndoRedo } from './UndoRedo';
 import { useProjectAndRepresentationMetadata } from './useProjectAndRepresentationMetadata';
 
+const PROJECT_ID_SEPARATOR = '@';
+
 const useEditProjectViewStyles = makeStyles()((_) => ({
   editProjectView: {
     display: 'grid',
@@ -58,7 +60,7 @@ const useEditProjectViewStyles = makeStyles()((_) => ({
 
 export const EditProjectView = () => {
   const navigate = useNavigate();
-  const { projectId, representationId } = useParams<EditProjectViewParams>();
+  const { projectId: rawProjectId, representationId } = useParams<EditProjectViewParams>();
   const { classes } = useEditProjectViewStyles();
 
   const [{ value, context }, dispatch] =
@@ -66,7 +68,12 @@ export const EditProjectView = () => {
       editProjectViewMachine
     );
 
-  const { data } = useProjectAndRepresentationMetadata(projectId, representationId);
+  const separatorIndex = rawProjectId.indexOf(PROJECT_ID_SEPARATOR);
+  const projectId: string = separatorIndex !== -1 ? rawProjectId.substring(0, separatorIndex) : rawProjectId;
+  const name: string | null =
+    separatorIndex !== -1 ? rawProjectId.substring(separatorIndex + 1, rawProjectId.length) : null;
+
+  const { data } = useProjectAndRepresentationMetadata(projectId, name, representationId);
   useEffect(() => {
     if (data) {
       const fetchProjectEvent: HandleFetchedProjectEvent = { type: 'HANDLE_FETCHED_PROJECT', data };
@@ -83,14 +90,15 @@ export const EditProjectView = () => {
   };
 
   useEffect(() => {
+    const projectIdToRedirect = name ? projectId + PROJECT_ID_SEPARATOR + name : projectId;
     if (context.representation && context.representation.id !== representationId && context.project.id === projectId) {
       const pathname = generatePath('/projects/:projectId/edit/:representationId', {
-        projectId,
+        projectId: projectIdToRedirect,
         representationId: context.representation.id,
       });
       navigate(pathname);
     } else if (value === 'loaded' && context.representation === null && representationId) {
-      const pathname = generatePath('/projects/:projectId/edit/', { projectId });
+      const pathname = generatePath('/projects/:projectId/edit/', { projectId: projectIdToRedirect });
       navigate(pathname);
     }
   }, [value, projectId, context.representation, representationId]);
@@ -107,7 +115,7 @@ export const EditProjectView = () => {
 
   const { data: readOnlyPredicate } = useData(editProjectViewReadOnlyPredicateExtensionPoint);
 
-  if (value === 'loaded' && context.project) {
+  if (value === 'loaded' && context.project && context.project.currentEditingContext) {
     const initialSelection: Selection = {
       entries: context.representation
         ? [

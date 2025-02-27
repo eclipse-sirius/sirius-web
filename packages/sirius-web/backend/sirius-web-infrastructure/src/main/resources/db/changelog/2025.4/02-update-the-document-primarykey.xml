@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2025, 2025 Obeo.
+  ~ Copyright (c) 2025 Obeo.
   ~ This program and the accompanying materials
   ~ are made available under the terms of the Eclipse Public License v2.0
   ~ which accompanies this distribution, and is available at
@@ -15,6 +15,11 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
-    <include file="db/changelog/2025.4/01-switch-representation-metadata-from-project-to-semantic-data.xml" />
-    <include file="db/changelog/2025.4/02-update-the-document-primarykey.xml" />
+
+    <changeSet id="02-update-the-document-primarykey" author="sbegaudeau">
+        <dropPrimaryKey tableName="document" />
+        <addPrimaryKey tableName="document" columnNames="id, semantic_data_id" />
+    </changeSet>
+
+
 </databaseChangeLog>

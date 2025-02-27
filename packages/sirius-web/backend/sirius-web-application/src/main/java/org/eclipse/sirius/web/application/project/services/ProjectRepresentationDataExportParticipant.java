@@ -28,6 +28,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.emfjson.resource.JsonResourceFactoryImpl;
+import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
 import org.eclipse.sirius.web.application.project.services.api.IProjectExportParticipant;
 import org.eclipse.sirius.web.application.representation.services.api.IRepresentationContentMigrationService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
@@ -60,19 +61,19 @@ public class ProjectRepresentationDataExportParticipant implements IProjectExpor
 
     private final IRepresentationContentMigrationService representationContentMigrationService;
 
-    private final ProjectEditingContextApplicationService editingContextApplicationService;
+    private final IProjectEditingContextService projectEditingContextService;
 
     private final Logger logger = LoggerFactory.getLogger(ProjectRepresentationDataExportParticipant.class);
 
     public ProjectRepresentationDataExportParticipant(IEditingContextSearchService editingContextSearchService, IProjectSemanticDataSearchService projectSemanticDataSearchService, IRepresentationMetadataSearchService representationMetadataSearchService,
-                                                      IRepresentationContentSearchService representationContentSearchService, ObjectMapper objectMapper, IRepresentationContentMigrationService representationContentMigrationService, ProjectEditingContextApplicationService editingContextApplicationService) {
+                                                      IRepresentationContentSearchService representationContentSearchService, ObjectMapper objectMapper, IRepresentationContentMigrationService representationContentMigrationService, IProjectEditingContextService projectEditingContextService) {
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.representationContentSearchService = Objects.requireNonNull(representationContentSearchService);
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.representationContentMigrationService = Objects.requireNonNull(representationContentMigrationService);
-        this.editingContextApplicationService = Objects.requireNonNull(editingContextApplicationService);
+        this.projectEditingContextService = Objects.requireNonNull(projectEditingContextService);
     }
 
     @Override
@@ -102,8 +103,8 @@ public class ProjectRepresentationDataExportParticipant implements IProjectExpor
 
                 // Get TargetObjectURI
                 String uriFragment = "";
-                var editingContextId = this.editingContextApplicationService.getCurrentEditingContextId(project.getId());
-                var optionalEditingContext = this.editingContextSearchService.findById(editingContextId)
+                var optionalEditingContext = this.projectEditingContextService.getEditingContextId(project.getId())
+                        .flatMap(this.editingContextSearchService::findById)
                         .filter(IEMFEditingContext.class::isInstance)
                         .map(IEMFEditingContext.class::cast);
 

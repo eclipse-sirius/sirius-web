@@ -23,6 +23,10 @@ Version 12 which was documented/recommended in our README and used for the front
 Our backend integration tests actual use the `postgres:latest` image (see `AbstractIntegrationTests`), v15 is somewhat arbitrary middle ground of a still maintained version to test against for the e2e tests while not being the "bleeding edge".
 - https://github.com/eclipse-sirius/sirius-web/issues/4641[#4641] [table] Table widget is now a custom widget contribute to form.
 You have to add `tableWidgetDocumentTransform` to your extensionRegistry to use it.
+- https://github.com/eclipse-sirius/sirius-web/issues/4635[#4635] [sirius-web] Since the switch from using the `Project#id` as the `editingContextId` to the use of the `SemanticData#id` instead, `IProjectEditingContextApplicationService` could have been used as a service to switch from the `Project#id` to the `editingContextId`.
+Given that it is an application service, it comes with some constraints with regard to transactions, for that a new reusable service named `IProjectEditingContextService` has now been added to manipulate the `projectId` and `editingContextId` instead.
+`IProjectEditingContextApplicationService` has thus been modified to be more focused on its original goal as the behavior of the `Project#currentEditingContext` datafetcher.
+
 
 === Dependency update
 
@@ -56,6 +60,7 @@ Except for the specific case where `cause === 'refresh'` in `DiagramRenderer` (w
 - https://github.com/eclipse-sirius/sirius-web/issues/4628[#4628] [sirius-web] Allow the loading of an editing context containing a studio library
 - https://github.com/eclipse-sirius/sirius-web/issues/4263[#4263] [table] Add a button to reset table row heights to their initial value
 - https://github.com/eclipse-sirius/sirius-web/issues/4641[#4641] [form] Remove front dependency between form and table
+- https://github.com/eclipse-sirius/sirius-web/issues/4635[#4635] [sirius-web] Derive the project semantic data from the project id
 
 
 
