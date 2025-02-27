@@ -21,7 +21,8 @@
 - [releng] Sirius Web now requires on PostgreSQL v15 or later.
 Version 12 which was documented/recommended in our README and used for the frontend e2e tests on the CI is EOL since last November (see https://www.postgresql.org/support/versioning/).
 Our backend integration tests actual use the `postgres:latest` image (see `AbstractIntegrationTests`), v15 is somewhat arbitrary middle ground of a still maintained version to test against for the e2e tests while not being the "bleeding edge".
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4641[#4641] [table] Table widget is now a custom widget contribute to form.
+You have to add `tableWidgetDocumentTransform` to your extensionRegistry to use it.
 
 === Dependency update
 
@@ -54,6 +55,7 @@ Except for the specific case where `cause === 'refresh'` in `DiagramRenderer` (w
 - https://github.com/eclipse-sirius/sirius-web/issues/4606[#4606] [sirius-web] Allow the loading of an editing context containing a papaya library
 - https://github.com/eclipse-sirius/sirius-web/issues/4628[#4628] [sirius-web] Allow the loading of an editing context containing a studio library
 - https://github.com/eclipse-sirius/sirius-web/issues/4263[#4263] [table] Add a button to reset table row heights to their initial value
+- https://github.com/eclipse-sirius/sirius-web/issues/4641[#4641] [form] Remove front dependency between form and table
 
 
 

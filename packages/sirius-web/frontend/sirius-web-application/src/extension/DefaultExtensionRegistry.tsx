@@ -46,7 +46,11 @@ import {
   ReferencePreview,
   ReferencePropertySection,
 } from '@eclipse-sirius/sirius-components-widget-reference';
-import { TableWidgetPreview } from '@eclipse-sirius/sirius-components-widget-table';
+import {
+  GQLTableWidget,
+  TableWidgetPreview,
+  TableWidgetPropertySection,
+} from '@eclipse-sirius/sirius-components-widget-table';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import Filter from '@mui/icons-material/Filter';
@@ -91,6 +95,7 @@ import { ProjectSettingTabContribution } from '../views/project-settings/Project
 import { projectSettingsTabExtensionPoint } from '../views/project-settings/ProjectSettingsViewExtensionPoints';
 import { ellipseNodeStyleDocumentTransform } from './EllipseNodeDocumentTransform';
 import { referenceWidgetDocumentTransform } from './ReferenceWidgetDocumentTransform';
+import { tableWidgetDocumentTransform } from './TableWidgetDocumentTransform';
 
 const getType = (representation: RepresentationMetadata): string | null => {
   const query = representation.kind.substring(representation.kind.indexOf('?') + 1, representation.kind.length);
@@ -348,8 +353,8 @@ const widgetsApolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (cur
   const { documentTransform } = currentOptions;
 
   const newDocumentTransform = documentTransform
-    ? documentTransform.concat(referenceWidgetDocumentTransform)
-    : referenceWidgetDocumentTransform;
+    ? documentTransform.concat(referenceWidgetDocumentTransform).concat(tableWidgetDocumentTransform)
+    : referenceWidgetDocumentTransform.concat(tableWidgetDocumentTransform);
   return {
     ...currentOptions,
     documentTransform: newDocumentTransform,
@@ -381,6 +386,7 @@ defaultExtensionRegistry.putData(apolloClientOptionsConfigurersExtensionPoint, {
  *******************************************************************************/
 
 const isReferenceWidget = (widget: GQLWidget): widget is GQLReferenceWidget => widget.__typename === 'ReferenceWidget';
+const isTableWidget = (widget: GQLWidget): widget is GQLTableWidget => widget.__typename === 'TableWidget';
 
 defaultExtensionRegistry.putData(widgetContributionExtensionPoint, {
   identifier: `siriusWeb_${widgetContributionExtensionPoint.identifier}`,
@@ -402,7 +408,14 @@ defaultExtensionRegistry.putData(widgetContributionExtensionPoint, {
       name: 'TableWidget',
       icon: <TableViewIcon />,
       previewComponent: TableWidgetPreview,
-      component: (_widget: GQLWidget): PropertySectionComponent<GQLWidget> | null => null,
+      component: (widget: GQLWidget): PropertySectionComponent<GQLWidget> | null => {
+        let propertySectionComponent: PropertySectionComponent<GQLWidget> | null = null;
+
+        if (isTableWidget(widget)) {
+          propertySectionComponent = TableWidgetPropertySection;
+        }
+        return propertySectionComponent;
+      },
     },
   ],
 });
