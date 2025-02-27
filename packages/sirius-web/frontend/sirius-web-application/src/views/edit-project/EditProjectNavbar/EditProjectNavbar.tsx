@@ -209,58 +209,60 @@ export const EditProjectNavbar = ({ readOnly }: EditProjectNavbarProps) => {
           </div>
         </div>
       </NavigationBar>
-      <ContextMenuContainer>
-        <Menu
-          open={navbar === 'contextualMenuDisplayedState'}
-          anchorEl={projectMenuAnchor}
-          data-testid="navbar-contextmenu"
-          onClose={onCloseContextMenu}>
-          <MenuItem
-            onClick={() => {
-              const showModal: HandleShowModalEvent = {
-                type: 'HANDLE_SHOW_MODAL_EVENT',
-                modalName: 'RenameProject',
-              };
-              dispatch(showModal);
-            }}
-            disabled={readOnly}
-            data-testid="rename">
-            <ListItemIcon>
-              <EditIcon />
-            </ListItemIcon>
-            <ListItemText primary="Rename" />
-          </MenuItem>
-          {menuItemComponentExtensions.map(({ Component: ProjectContextMenuItem }, index) => (
-            <ProjectContextMenuItem key={index} projectId={project?.id || ''} onCloseContextMenu={onCloseContextMenu} />
-          ))}
-          <MenuItem
-            divider
-            component={RouterLink}
-            to={`/projects/${project?.id}/settings`}
-            onClick={onCloseContextMenu}
-            data-testid="project-settings-link">
-            <ListItemIcon>
-              <SettingsIcon />
-            </ListItemIcon>
-            <ListItemText primary="Settings" />
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              const showModal: HandleShowModalEvent = {
-                type: 'HANDLE_SHOW_MODAL_EVENT',
-                modalName: 'DeleteProject',
-              };
-              dispatch(showModal);
-            }}
-            disabled={readOnly}
-            data-testid="delete">
-            <ListItemIcon>
-              <DeleteIcon />
-            </ListItemIcon>
-            <ListItemText primary="Delete" />
-          </MenuItem>
-        </Menu>
-      </ContextMenuContainer>
+      {navbar === 'contextualMenuDisplayedState' ? (
+        <ContextMenuContainer>
+          <Menu open anchorEl={projectMenuAnchor} data-testid="navbar-contextmenu" onClose={onCloseContextMenu}>
+            <MenuItem
+              onClick={() => {
+                const showModal: HandleShowModalEvent = {
+                  type: 'HANDLE_SHOW_MODAL_EVENT',
+                  modalName: 'RenameProject',
+                };
+                dispatch(showModal);
+              }}
+              disabled={readOnly}
+              data-testid="rename">
+              <ListItemIcon>
+                <EditIcon />
+              </ListItemIcon>
+              <ListItemText primary="Rename" />
+            </MenuItem>
+            {menuItemComponentExtensions.map(({ Component: ProjectContextMenuItem }, index) => (
+              <ProjectContextMenuItem
+                key={index}
+                projectId={project?.id || ''}
+                onCloseContextMenu={onCloseContextMenu}
+              />
+            ))}
+            <MenuItem
+              divider
+              component={RouterLink}
+              to={`/projects/${project?.id}/settings`}
+              onClick={onCloseContextMenu}
+              data-testid="project-settings-link">
+              <ListItemIcon>
+                <SettingsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Settings" />
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                const showModal: HandleShowModalEvent = {
+                  type: 'HANDLE_SHOW_MODAL_EVENT',
+                  modalName: 'DeleteProject',
+                };
+                dispatch(showModal);
+              }}
+              disabled={readOnly}
+              data-testid="delete">
+              <ListItemIcon>
+                <DeleteIcon />
+              </ListItemIcon>
+              <ListItemText primary="Delete" />
+            </MenuItem>
+          </Menu>
+        </ContextMenuContainer>
+      ) : null}
       <Toast
         message={message}
         open={toast === 'visible'}

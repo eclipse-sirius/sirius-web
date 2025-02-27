@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo and others.
+ * Copyright (c) 2021, 2025 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@
 import { GQLProject } from './useProjectAndRepresentationMetadata.types';
 
 export type EditProjectViewParams = 'projectId' | 'representationId';
+
 export interface TreeItemContextMenuProviderProps {
   children: React.ReactNode;
 }
