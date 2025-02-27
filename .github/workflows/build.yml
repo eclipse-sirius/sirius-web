@@ -193,10 +193,12 @@ jobs:
 
       - name: Run end to end tests against the sirius-web application
         if: startsWith(github.ref, 'refs/tags/v') == false && github.ref != 'refs/heads/master'
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           build: docker compose -f ../packages/sirius-web/backend/sirius-web/docker-compose.yml up -d
-          start: docker compose -f ../packages/sirius-web/backend/sirius-web/docker-compose.yml ps
+          start: |
+            docker compose -f ../packages/sirius-web/backend/sirius-web/docker-compose.yml ps
+            docker compose -f ../packages/sirius-web/backend/sirius-web/docker-compose.yml logs
           wait-on: "http://localhost:8080"
           wait-on-timeout: 180
           working-directory: integration-tests

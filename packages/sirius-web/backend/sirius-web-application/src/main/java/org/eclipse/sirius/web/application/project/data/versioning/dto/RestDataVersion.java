@@ -13,12 +13,10 @@
 package org.eclipse.sirius.web.application.project.data.versioning.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
-
-import org.eclipse.sirius.web.application.project.data.versioning.services.RestDataVersionPayloadSerializer;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
@@ -43,20 +41,19 @@ public record RestDataVersion(
         RestDataIdentity identity,
 
         @Schema(description = "Data if exists in the commit, null otherwise")
-        @JsonSerialize(using = RestDataVersionPayloadSerializer.class)
-        Object payload) {
+        Map<String, Object> payload) {
 
     public RestDataVersion {
         Objects.requireNonNull(id);
         Objects.requireNonNull(type);
-        Objects.requireNonNull(identity);
+        // identity cannot be null in the specification but can be null in the description of createCommit
         // payload can be null
     }
 
     public RestDataVersion(
             UUID id,
             RestDataIdentity identity,
-            Object payload) {
+            Map<String, Object> payload) {
         this(id, "DataVersion", identity, payload);
     }
 }
