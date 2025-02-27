@@ -146,7 +146,7 @@ describe('Diagram - edit node label', () => {
       diagram.getNodes('Topography', 'CompositeProcessor2').should('exist');
       cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
       //Trigger direct edit with f2
-      cy.wait(100);
+      diagram.getSelectedNodes('Topography', 'CompositeProcessor2').should('exist');
       cy.focused().trigger('keydown', { altKey: true, keyCode: 113, which: 113 }); // key code for F2
       cy.getByTestId('name-edit').should('exist');
       diagram.getPalette().should('not.exist');
@@ -172,7 +172,7 @@ describe('Diagram - edit node label', () => {
       diagram.getNodes('Topography', 'CompositeProcessor2').should('exist');
       cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
       //Edit
-      cy.wait(100);
+      diagram.getSelectedNodes('Topography', 'CompositeProcessor2').should('exist');
       cy.focused().type('Edited2{enter}');
       cy.getByTestId('name-edit').should('not.exist');
       diagram.getNodes('Topography', 'Edited2').should('exist');
