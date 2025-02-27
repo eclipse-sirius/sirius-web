@@ -31,6 +31,8 @@ Our backend integration tests actual use the `postgres:latest` image (see `Abstr
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4540[#4540] [diagram] Do not invoke mutation `layoutDiagram` when in read-only mode
 - https://github.com/eclipse-sirius/sirius-web/issues/4629[#4629] [diagram] Fix a cypress test on the direct edit diagram that was unstable
+- https://github.com/eclipse-sirius/sirius-web/issues/4631[#4631] [table] Add support for textarea cell type in widget tables
+
 
 === New Features
 
