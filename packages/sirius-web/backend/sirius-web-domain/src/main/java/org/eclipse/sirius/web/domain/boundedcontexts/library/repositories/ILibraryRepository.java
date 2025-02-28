@@ -41,4 +41,14 @@ public interface ILibraryRepository extends ListPagingAndSortingRepository<Libra
         WHERE library.namespace = :namespace AND library.name = :name AND library.version = :version
         """)
     Optional<Library> findByNamespaceAndNameAndVersion(String namespace, String name, String version);
+
+    @Query("""
+            SELECT library.*
+            FROM library
+            JOIN document
+            ON document.semantic_data_id = library.semantic_data_id
+            WHERE document.id = :documentId
+            GROUP BY library.id
+            """)
+    Optional<Library> findByDocumentId(UUID documentId);
 }

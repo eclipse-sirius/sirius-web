@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.studio.services.library;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,16 +37,19 @@ import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.view.RepresentationDescription;
+import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.editingcontext.services.DocumentData;
 import org.eclipse.sirius.web.application.editingcontext.services.EPackageEntry;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceToDocumentService;
 import org.eclipse.sirius.web.application.library.dto.PublishLibrariesInput;
 import org.eclipse.sirius.web.application.library.services.DependencyGraph;
+import org.eclipse.sirius.web.application.library.services.api.IEditingContextLibraryLoader;
 import org.eclipse.sirius.web.application.library.services.api.ILibraryPublicationHandler;
 import org.eclipse.sirius.web.application.studio.services.library.api.IStudioLibraryDependencyCollector;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibraryCreationService;
+import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataCreationService;
@@ -73,16 +77,19 @@ public class StudioLibraryPublicationHandler implements ILibraryPublicationHandl
 
     private final ILibraryCreationService libraryCreationService;
 
+    private ILibrarySearchService librarySearchService;
+
     private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
 
     private final IMessageService messageService;
 
-    public StudioLibraryPublicationHandler(IEditingContextSearchService editingContextSearchService, ISemanticDataCreationService semanticDataCreationService, IResourceToDocumentService resourceToDocumentService, IStudioLibraryDependencyCollector studioLibraryDependencyCollector, ILibraryCreationService libraryCreationService, IProjectSemanticDataSearchService projectSemanticDataSearchService, IMessageService messageService) {
+    public StudioLibraryPublicationHandler(IEditingContextSearchService editingContextSearchService, ISemanticDataCreationService semanticDataCreationService, IResourceToDocumentService resourceToDocumentService, IStudioLibraryDependencyCollector studioLibraryDependencyCollector, ILibraryCreationService libraryCreationService, ILibrarySearchService librarySearchService, IProjectSemanticDataSearchService projectSemanticDataSearchService, IMessageService messageService) {
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.semanticDataCreationService = Objects.requireNonNull(semanticDataCreationService);
         this.resourceToDocumentService = Objects.requireNonNull(resourceToDocumentService);
         this.studioLibraryDependencyCollector = Objects.requireNonNull(studioLibraryDependencyCollector);
         this.libraryCreationService = Objects.requireNonNull(libraryCreationService);
+        this.librarySearchService = Objects.requireNonNull(librarySearchService);
         this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
         this.messageService = Objects.requireNonNull(messageService);
     }
@@ -108,22 +115,24 @@ public class StudioLibraryPublicationHandler implements ILibraryPublicationHandl
             List<EObject> libraryCandidates = dependencyGraph.computeTopologicalOrdering();
 
             for (EObject libraryCandidate : libraryCandidates) {
-                if (libraryCandidate instanceof Domain || libraryCandidate instanceof RepresentationDescription) {
-                    Optional<String> optionalLibraryName = this.getUniqueLibraryName(libraryCandidate, libraryCandidates);
-                    if (optionalLibraryName.isPresent()) {
-                        Resource libraryResource = this.getOrCreateLibraryResource(input.projectId(), optionalLibraryName.get(), input.version(), rSet);
-                        libraryResource.getContents().add(libraryCandidate);
+                if (!libraryCandidate.eResource().getURI().scheme().equals(IEditingContextLibraryLoader.LIBRARY_SCHEME)) {
+                    if (libraryCandidate instanceof Domain || libraryCandidate instanceof RepresentationDescription) {
+                        Optional<String> optionalLibraryName = this.getUniqueLibraryName(libraryCandidate, libraryCandidates);
+                        if (optionalLibraryName.isPresent()) {
+                            Resource libraryResource = this.getOrCreateLibraryResource(input.projectId(), optionalLibraryName.get(), input.version(), rSet);
+                            libraryResource.getContents().add(libraryCandidate);
+                        }
+                    } else {
+                        Resource sharedComponentsResource = this.getOrCreateLibraryResource(input.projectId(), "shared_components", input.version(), rSet);
+                        sharedComponentsResource.getContents().add(libraryCandidate);
                     }
-                } else {
-                    Resource sharedComponentsResource = this.getOrCreateLibraryResource(input.projectId(), "shared_components", input.version(), rSet);
-                    sharedComponentsResource.getContents().add(libraryCandidate);
                 }
             }
 
-
             Map<String, Library> createdLibraries = new HashMap<>();
             for (EObject libraryCandidate : libraryCandidates) {
-                if (!createdLibraries.containsKey(this.getResourceName(libraryCandidate.eResource()))) {
+                if (!createdLibraries.containsKey(this.getResourceName(libraryCandidate.eResource()))
+                        && !libraryCandidate.eResource().getURI().scheme().equals(IEditingContextLibraryLoader.LIBRARY_SCHEME)) {
                     Optional<SemanticData> optionalSemanticData = this.toSemanticData(input, libraryCandidate.eResource());
                     if (optionalSemanticData.isPresent()) {
                         String libraryName = this.getResourceName(libraryCandidate.eResource());
@@ -131,11 +140,7 @@ public class StudioLibraryPublicationHandler implements ILibraryPublicationHandl
                                 .namespace(input.projectId())
                                 .name(libraryName)
                                 .semanticData(AggregateReference.to(optionalSemanticData.get().getId()))
-                                .dependencies(dependencyGraph.getDependencies(libraryCandidate).stream()
-                                        .map(dependency -> createdLibraries.get(this.getResourceName(dependency.eResource())).getId())
-                                        .distinct()
-                                        .map(AggregateReference::<Library, UUID>to)
-                                        .toList())
+                                .dependencies(this.getDependencies(dependencyGraph, libraryCandidate, createdLibraries))
                                 .version(input.version())
                                 .description(input.description())
                                 .build(input);
@@ -148,6 +153,29 @@ public class StudioLibraryPublicationHandler implements ILibraryPublicationHandl
             result = new SuccessPayload(input.id(), List.of(new Message(createdLibraries.keySet().size() + " libraries published", MessageLevel.SUCCESS)));
         }
         return result;
+    }
+
+    private List<AggregateReference<Library, UUID>> getDependencies(DependencyGraph<EObject> dependencyGraph, EObject libraryCandidate, Map<String, Library> createdLibraries) {
+        List<Library> dependencies = new ArrayList<>();
+        for (EObject dependencyCandidate : dependencyGraph.getDependencies(libraryCandidate)) {
+            if (dependencyCandidate.eResource().getURI().scheme().equals(IEditingContextLibraryLoader.LIBRARY_SCHEME)) {
+                Optional<Library> optExistingLibrary = new UUIDParser().parse(dependencyCandidate.eResource().getURI().path().substring(1))
+                        .flatMap(this.librarySearchService::findByDocumentId);
+                if (optExistingLibrary.isPresent()) {
+                    dependencies.add(optExistingLibrary.get());
+                }
+            } else {
+                Library createdLibrary = createdLibraries.get(this.getResourceName(dependencyCandidate.eResource()));
+                if (createdLibrary != null) {
+                    dependencies.add(createdLibrary);
+                }
+            }
+        }
+        return dependencies.stream()
+                .map(Library::getId)
+                .distinct()
+                .map(AggregateReference::<Library, UUID>to)
+                .toList();
     }
 
 

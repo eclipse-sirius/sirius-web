@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.library.services.api;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -34,6 +35,10 @@ public interface ILibrarySearchService {
     Optional<Library> findByNamespaceAndNameAndVersion(String namespace, String name, String version);
 
     Optional<Library> findById(UUID id);
+
+    List<Library> findAllById(Iterable<UUID> ids);
+
+    Optional<Library> findByDocumentId(UUID documentId);
 
     Set<Library> findAllTransitiveDependencyLibrariesByLibrary(Library library);
 }

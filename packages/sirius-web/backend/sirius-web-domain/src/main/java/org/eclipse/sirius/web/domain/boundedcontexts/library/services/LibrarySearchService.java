@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.domain.boundedcontexts.library.services;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -59,6 +60,16 @@ public class LibrarySearchService implements ILibrarySearchService {
     @Override
     public Optional<Library> findById(UUID id) {
         return this.libraryRepository.findById(id);
+    }
+
+    @Override
+    public List<Library> findAllById(Iterable<UUID> ids) {
+        return this.libraryRepository.findAllById(ids);
+    }
+
+    @Override
+    public Optional<Library> findByDocumentId(UUID documentId) {
+        return this.libraryRepository.findByDocumentId(documentId);
     }
 
     @Override

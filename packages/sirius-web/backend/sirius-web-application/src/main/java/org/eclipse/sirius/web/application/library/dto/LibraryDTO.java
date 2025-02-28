@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.application.library.dto;
 
 import java.time.Instant;
+import java.util.UUID;
 
 import jakarta.validation.constraints.NotNull;
 
@@ -22,6 +23,7 @@ import jakarta.validation.constraints.NotNull;
  * @author gdaniel
  */
 public record LibraryDTO(
+        @NotNull UUID id,
         @NotNull String namespace,
         @NotNull String name,
         @NotNull String version,

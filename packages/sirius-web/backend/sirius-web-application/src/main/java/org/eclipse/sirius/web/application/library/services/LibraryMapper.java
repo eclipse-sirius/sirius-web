@@ -28,6 +28,7 @@ public class LibraryMapper implements ILibraryMapper {
     @Override
     public LibraryDTO toDTO(Library library) {
         return new LibraryDTO(
+                library.getId(),
                 library.getNamespace(),
                 library.getName(),
                 library.getVersion(),

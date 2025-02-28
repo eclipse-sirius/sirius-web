@@ -99,6 +99,7 @@ import { tableWidgetDocumentTransform } from './TableWidgetDocumentTransform';
 import { OmniboxCommandOverrideContribution } from '@eclipse-sirius/sirius-components-omnibox';
 import { omniboxCommandOverrideContributionExtensionPoint } from '@eclipse-sirius/sirius-components-omnibox';
 import { PublishStudioLibraryCommand } from '../omnibox/PublishStudioLibraryCommand';
+import { ImportLibraryCommand } from '../omnibox/ImportLibraryCommand';
 
 const getType = (representation: RepresentationMetadata): string | null => {
   const query = representation.kind.substring(representation.kind.indexOf('?') + 1, representation.kind.length);
@@ -482,6 +483,12 @@ const omniboxCommandOverrides: OmniboxCommandOverrideContribution[] = [
       return action.id === 'publishStudio';
     },
     component: PublishStudioLibraryCommand,
+  },
+  {
+    canHandle: (action: GQLOmniboxCommand) => {
+      return action.id === 'importLibrary';
+    },
+    component: ImportLibraryCommand,
   },
 ];
 
