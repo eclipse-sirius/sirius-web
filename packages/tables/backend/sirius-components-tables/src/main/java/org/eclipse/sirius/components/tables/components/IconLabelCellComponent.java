@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,7 +45,7 @@ public class IconLabelCellComponent implements IComponent {
         String value = cellDescription.getCellValueProvider().apply(variableManager, this.props.columnTargetObject());
         List<String> iconURLs = cellDescription.getCellIconURLsProvider().apply(variableManager, this.props.columnTargetObject());
 
-        IconLabelCellElementProps cellElementProps = new IconLabelCellElementProps(this.props.cellId(), targetObjectId, targetObjectKind, this.props.columnId(), value, iconURLs);
+        IconLabelCellElementProps cellElementProps = new IconLabelCellElementProps(this.props.cellId(), this.props.iconLabelCellDescription().getId(), targetObjectId, targetObjectKind, this.props.columnId(), value, iconURLs);
         return new Element(IconLabelCellElementProps.TYPE, cellElementProps);
     }
 }
