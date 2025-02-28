@@ -19,10 +19,15 @@ type Project {
   name: String!
   currentEditingContext: EditingContext!
   natures: [Nature!]!
+  projectSettings: ProjectSettings!
 }
 
 type Nature {
   name: String!
+}
+
+type ProjectSettings {
+  featureFlags: [String!]!
 }
 
 type ViewerProjectTemplatesConnection {
