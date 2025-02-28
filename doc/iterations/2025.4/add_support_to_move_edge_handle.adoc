@@ -1,0 +1,40 @@
+= (M) Add support to move edge handle
+
+
+== Problem
+
+When creating an edge on a diagram, the handle side (South, North, East, West) and its position on one side is automatically chosen.
+The user can't set the position of the handle manually.
+
+== Key Result
+
+A user can set the handle position manually by reconnecting an edge.
+
+=== Acceptance Criteria
+
+Cypress tests will be implemented.
+
+== Solution
+
+We will use the prop `onReconnectEnd?: (event: MouseEvent | TouchEvent, edge: EdgeType, handleType: HandleType) => void;` to implement the desired behaviour.
+
+For the user, it will be like an actual reconnection.
+
+=== Breadboarding
+
+=== Cutting backs
+
+== Rabbit holes
+
+The handle will not be set manually when creating an edge or reconnecting to another edge in a first time. 
+The handle will only change position when reconnecting to the same node.
+
+Later, we will try to ensure that the handle is always placed at a specific location.
+We will also explore an option to let the end user switch back to the previous behavior where handles were laid out automatically.
+
+
+== No-go
+
+
+
+
