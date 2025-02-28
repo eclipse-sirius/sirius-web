@@ -13,6 +13,7 @@ type ViewerLibrariesEdge {
 }
 
 type Library {
+  id: ID!
   namespace: String!
   name: String!
   version: String!
@@ -23,6 +24,8 @@ type Library {
 
 extend type Mutation {
   publishLibraries(input: PublishLibrariesInput!): PublishLibrariesPayload!
+  importLibraries(input: ImportLibrariesInput!): ImportLibrariesPayload!
+  
 }
 
 input PublishLibrariesInput {
@@ -34,3 +37,12 @@ input PublishLibrariesInput {
 }
 
 union PublishLibrariesPayload = ErrorPayload | SuccessPayload
+
+input ImportLibrariesInput {
+  id: ID!
+  editingContextId: ID!
+  type: String!
+  libraryIds: [ID!]!
+}
+
+union ImportLibrariesPayload = ErrorPayload | SuccessPayload

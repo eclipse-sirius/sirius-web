@@ -42,11 +42,12 @@ import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Used to get libraries from the GraphQL API.
+ * Integration tests of the library controllers.
  *
  * @author gdaniel
  */
 @Transactional
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class LibraryControllerIntegrationTests extends AbstractIntegrationTests {
 

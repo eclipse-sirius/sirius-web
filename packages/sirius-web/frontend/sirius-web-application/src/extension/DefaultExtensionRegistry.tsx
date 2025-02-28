@@ -102,6 +102,7 @@ import { projectSettingsTabExtensionPoint } from '../views/project-settings/Proj
 import { ellipseNodeStyleDocumentTransform } from './EllipseNodeDocumentTransform';
 import { referenceWidgetDocumentTransform } from './ReferenceWidgetDocumentTransform';
 import { tableWidgetDocumentTransform } from './TableWidgetDocumentTransform';
+import { ImportLibraryCommand } from '../omnibox/ImportLibraryCommand';
 
 const getType = (representation: RepresentationMetadata): string | null => {
   const query = representation.kind.substring(representation.kind.indexOf('?') + 1, representation.kind.length);
@@ -485,6 +486,12 @@ const omniboxCommandOverrides: OmniboxCommandOverrideContribution[] = [
       return action.id === 'publishStudio';
     },
     component: PublishStudioLibraryCommand,
+  },
+  {
+    canHandle: (action: GQLOmniboxCommand) => {
+      return action.id === 'importLibrary';
+    },
+    component: ImportLibraryCommand,
   },
 ];
 

@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.studio.services.library;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,9 +40,11 @@ import org.eclipse.sirius.web.application.editingcontext.services.DocumentData;
 import org.eclipse.sirius.web.application.editingcontext.services.EPackageEntry;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceToDocumentService;
 import org.eclipse.sirius.web.application.library.dto.PublishLibrariesInput;
-import org.eclipse.sirius.web.application.studio.services.library.api.DependencyGraph;
+import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.eclipse.sirius.web.application.library.services.api.ILibraryPublicationHandler;
+import org.eclipse.sirius.web.application.studio.services.library.api.DependencyGraph;
 import org.eclipse.sirius.web.application.studio.services.library.api.IStudioLibraryDependencyCollector;
+import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataCreationService;
@@ -69,14 +72,17 @@ public class StudioLibraryPublicationHandler implements ILibraryPublicationHandl
 
     private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
 
+    private final ILibrarySearchService librarySearchService;
+
     private final IMessageService messageService;
 
-    public StudioLibraryPublicationHandler(IEditingContextSearchService editingContextSearchService, ISemanticDataCreationService semanticDataCreationService, IResourceToDocumentService resourceToDocumentService, IStudioLibraryDependencyCollector studioLibraryDependencyCollector, IProjectSemanticDataSearchService projectSemanticDataSearchService, IMessageService messageService) {
+    public StudioLibraryPublicationHandler(IEditingContextSearchService editingContextSearchService, ISemanticDataCreationService semanticDataCreationService, IResourceToDocumentService resourceToDocumentService, IStudioLibraryDependencyCollector studioLibraryDependencyCollector, IProjectSemanticDataSearchService projectSemanticDataSearchService, ILibrarySearchService librarySearchService, IMessageService messageService) {
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.semanticDataCreationService = Objects.requireNonNull(semanticDataCreationService);
         this.resourceToDocumentService = Objects.requireNonNull(resourceToDocumentService);
         this.studioLibraryDependencyCollector = Objects.requireNonNull(studioLibraryDependencyCollector);
         this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
+        this.librarySearchService = Objects.requireNonNull(librarySearchService);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
@@ -105,27 +111,25 @@ public class StudioLibraryPublicationHandler implements ILibraryPublicationHandl
             List<EObject> libraryCandidates = dependencyGraph.computeTopologicalOrdering();
 
             for (EObject libraryCandidate : libraryCandidates) {
-                if (libraryCandidate instanceof Domain || libraryCandidate instanceof RepresentationDescription) {
-                    Optional<String> optionalLibraryName = this.getUniqueLibraryName(libraryCandidate, libraryCandidates);
-                    if (optionalLibraryName.isPresent()) {
-                        Resource libraryResource = this.getOrCreateLibraryResource(input.projectId(), optionalLibraryName.get(), input.version(), resourceSet);
-                        libraryResource.getContents().add(libraryCandidate);
+                if (!this.isLibrary(libraryCandidate.eResource())) {
+                    if (libraryCandidate instanceof Domain || libraryCandidate instanceof RepresentationDescription) {
+                        this.getUniqueLibraryName(libraryCandidate, libraryCandidates).ifPresent(libraryName -> {
+                            Resource libraryResource = this.getOrCreateLibraryResource(input.projectId(), libraryName, input.version(), resourceSet);
+                            libraryResource.getContents().add(libraryCandidate);
+                        });
+                    } else {
+                        Resource sharedComponentsResource = this.getOrCreateLibraryResource(input.projectId(), "shared_components", input.version(), resourceSet);
+                        sharedComponentsResource.getContents().add(libraryCandidate);
                     }
-                } else {
-                    Resource sharedComponentsResource = this.getOrCreateLibraryResource(input.projectId(), "shared_components", input.version(), resourceSet);
-                    sharedComponentsResource.getContents().add(libraryCandidate);
                 }
             }
 
             Map<String, SemanticData> createdSemanticData = new HashMap<>();
             for (EObject libraryCandidate : libraryCandidates) {
                 String libraryName = this.getResourceName(libraryCandidate.eResource());
-                if (!createdSemanticData.containsKey(libraryName)) {
-                    List<AggregateReference<SemanticData, UUID>> dependencies = dependencyGraph.getDependencies(libraryCandidate).stream()
-                            .map(dependency -> createdSemanticData.get(this.getResourceName(dependency.eResource())).getId())
-                            .distinct()
-                            .map(AggregateReference::<SemanticData, UUID>to)
-                            .toList();
+                if (!createdSemanticData.containsKey(libraryName)
+                        && !this.isLibrary(libraryCandidate.eResource())) {
+                    List<AggregateReference<SemanticData, UUID>> dependencies = this.getDependencies(dependencyGraph, libraryCandidate, createdSemanticData);
                     ICause cause = new StudioLibrarySemanticDataCreationRequested(UUID.randomUUID(), input, libraryName);
                     Optional<SemanticData> optionalSemanticData = this.createSemanticData(cause, libraryCandidate.eResource(), dependencies);
                     if (optionalSemanticData.isPresent()) {
@@ -191,6 +195,10 @@ public class StudioLibraryPublicationHandler implements ILibraryPublicationHandl
                 .orElse(null);
     }
 
+    private boolean isLibrary(Resource resource) {
+        return resource.eAdapters().stream().anyMatch(LibraryMetadataAdapter.class::isInstance);
+    }
+
     private Resource getOrCreateLibraryResource(String projectId, String name, String version, ResourceSet resourceSet) {
         String resourceId = projectId + ":" + name + ":" + version;
         URI resourceURI = new JSONResourceFactory().createResourceURI(UUID.nameUUIDFromBytes(resourceId.getBytes()).toString());
@@ -200,5 +208,28 @@ public class StudioLibraryPublicationHandler implements ILibraryPublicationHandl
             resource.eAdapters().add(new ResourceMetadataAdapter(name));
         }
         return resource;
+    }
+
+    private List<AggregateReference<SemanticData, UUID>> getDependencies(DependencyGraph<EObject> dependencyGraph, EObject libraryCandidate, Map<String, SemanticData> createdSemanticData) {
+        List<AggregateReference<SemanticData, UUID>> dependencies = new ArrayList<>();
+        for (EObject dependencyCandidate : dependencyGraph.getDependencies(libraryCandidate)) {
+            Optional<LibraryMetadataAdapter> optLibraryMetadata = dependencyCandidate.eResource().eAdapters().stream()
+                .filter(LibraryMetadataAdapter.class::isInstance)
+                .map(LibraryMetadataAdapter.class::cast)
+                .findFirst();
+            if (optLibraryMetadata.isPresent()) {
+                LibraryMetadataAdapter libraryMetadata = optLibraryMetadata.get();
+                this.librarySearchService.findByNamespaceAndNameAndVersion(libraryMetadata.getNamespace(), libraryMetadata.getName(), libraryMetadata.getVersion())
+                        .ifPresent(library -> dependencies.add(library.getSemanticData()));
+            } else {
+                SemanticData existingSemanticData = createdSemanticData.get(this.getResourceName(dependencyCandidate.eResource()));
+                if (existingSemanticData != null) {
+                    dependencies.add(AggregateReference.to(existingSemanticData.getId()));
+                }
+            }
+        }
+        return dependencies.stream()
+                .distinct()
+                .toList();
     }
 }

@@ -86,7 +86,7 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
         );
         var firstQueryResult = this.omniboxCommandsQueryRunner.run(firstQueryVariables);
         List<String> allCommandLabels = JsonPath.read(firstQueryResult, "$.data.viewer.omniboxCommands.edges[*].node.label");
-        assertThat(allCommandLabels).hasSize(2).contains("Search", "Publish Studio");
+        assertThat(allCommandLabels).hasSize(3).contains("Search", "Publish Studio", "Import studio libraries");
 
         Map<String, Object> secondQueryVariables = Map.of(
                 "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,

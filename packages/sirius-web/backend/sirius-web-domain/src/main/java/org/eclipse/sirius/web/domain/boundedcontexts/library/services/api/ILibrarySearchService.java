@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.library.services.api;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -35,4 +36,6 @@ public interface ILibrarySearchService {
     Optional<Library> findByNamespaceAndNameAndVersion(String namespace, String name, String version);
 
     Optional<Library> findBySemanticData(AggregateReference<SemanticData, UUID> semanticData);
+
+    List<Library> findAllById(Iterable<UUID> ids);
 }

@@ -96,6 +96,10 @@ For that a new predicate `IReadOnlyObjectPredicate` has been added to figure out
 A default implementation has been provided to return `true` if the object belongs to the semantic data of a library.
 This predicate is used in Sirius Web's explorer to prevent users from deleting or renaming elements from libraries.
 This API is provisionnal for the moment and it may be moved or changed while improving the support for libraries.
+- https://github.com/eclipse-sirius/sirius-web/issues/4509[#4509] [sirius-web] Add a command to import libraries into a studio
+The command is only present in studio projects, but the corresponding mutation can work on any project.
+Downstream applications can provide their own command to import libraries into their projects, and rely on Sirius Web's import mechanism to load libraries.
+The publication of a studio that references elements from imported libraries now produces libraries with the appropriate dependencies.
 
 === Improvements
 

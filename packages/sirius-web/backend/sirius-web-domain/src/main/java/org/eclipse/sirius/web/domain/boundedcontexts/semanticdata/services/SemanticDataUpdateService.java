@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -42,6 +43,14 @@ public class SemanticDataUpdateService implements ISemanticDataUpdateService {
     public void updateDocuments(ICause cause, AggregateReference<SemanticData, UUID> semanticDataId, Set<Document> documents, Set<String> domainUris) {
         this.semanticDataRepository.findById(semanticDataId.getId()).ifPresent(semanticData -> {
             semanticData.updateDocuments(cause, documents, domainUris);
+            this.semanticDataRepository.save(semanticData);
+        });
+    }
+
+    @Override
+    public void addDependencies(ICause cause, AggregateReference<SemanticData, UUID> semanticDataId, List<AggregateReference<SemanticData, UUID>> dependencySemanticDataIds) {
+        this.semanticDataRepository.findById(semanticDataId.getId()).ifPresent(semanticData -> {
+            semanticData.addDependencies(cause, dependencySemanticDataIds);
             this.semanticDataRepository.save(semanticData);
         });
     }
