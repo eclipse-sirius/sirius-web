@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,6 +30,8 @@ public final class TextfieldCell implements ICell {
 
     private UUID id;
 
+    private String descriptionId;
+
     private String targetObjectId;
 
     private String targetObjectKind;
@@ -42,23 +44,14 @@ public final class TextfieldCell implements ICell {
         // Prevent instantiation
     }
 
-    public String getValue() {
-        return this.value;
-    }
-
-    public static Builder newTextfieldCell(UUID id) {
-        return new Builder(id);
-    }
-
-    @Override
-    public String toString() {
-        String pattern = "{0} '{'id: {1}, columnId: {2}, value: {3}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.getId(), this.columnId, this.value);
-    }
-
     @Override
     public UUID getId() {
         return this.id;
+    }
+
+    @Override
+    public String getDescriptionId() {
+        return this.descriptionId;
     }
 
     @Override
@@ -81,6 +74,20 @@ public final class TextfieldCell implements ICell {
         return this.columnId;
     }
 
+    public String getValue() {
+        return this.value;
+    }
+
+    @Override
+    public String toString() {
+        String pattern = "{0} '{'id: {1}, columnId: {2}, value: {3}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.getId(), this.columnId, this.value);
+    }
+
+    public static Builder newTextfieldCell(UUID id) {
+        return new Builder(id);
+    }
+
     /**
      * The builder used to create a cell.
      *
@@ -90,6 +97,8 @@ public final class TextfieldCell implements ICell {
     public static final class Builder {
 
         private final UUID id;
+
+        private String descriptionId;
 
         private String targetObjectId;
 
@@ -123,9 +132,15 @@ public final class TextfieldCell implements ICell {
             return this;
         }
 
+        public Builder descriptionId(String descriptionId) {
+            this.descriptionId = Objects.requireNonNull(descriptionId);
+            return this;
+        }
+
         public TextfieldCell build() {
             TextfieldCell cell = new TextfieldCell();
             cell.id = Objects.requireNonNull(this.id);
+            cell.descriptionId = Objects.requireNonNull(this.descriptionId);
             cell.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             cell.targetObjectKind = Objects.requireNonNull(this.targetObjectKind);
             cell.columnId = Objects.requireNonNull(this.columnId);

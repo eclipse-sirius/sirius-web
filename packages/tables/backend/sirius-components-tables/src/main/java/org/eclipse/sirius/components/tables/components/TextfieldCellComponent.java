@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,7 +43,7 @@ public class TextfieldCellComponent implements IComponent {
 
         String value = cellDescription.getCellValueProvider().apply(variableManager, this.props.columnTargetObject());
 
-        TextfieldCellElementProps cellElementProps = new TextfieldCellElementProps(this.props.cellId(), targetObjectId, targetObjectKind, this.props.columnId(), value);
+        TextfieldCellElementProps cellElementProps = new TextfieldCellElementProps(this.props.cellId(), this.props.textfieldCellDescription().getId(), targetObjectId, targetObjectKind, this.props.columnId(), value);
         return new Element(TextfieldCellElementProps.TYPE, cellElementProps);
     }
 }

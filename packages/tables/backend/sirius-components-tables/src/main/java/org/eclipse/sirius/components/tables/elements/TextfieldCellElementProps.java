@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,12 +22,13 @@ import org.eclipse.sirius.components.representations.IProps;
  *
  * @author lfasani
  */
-public record TextfieldCellElementProps(UUID id, String targetObjectId, String targetObjectKind, UUID columnId, String value) implements IProps {
+public record TextfieldCellElementProps(UUID id, String descriptionId, String targetObjectId, String targetObjectKind, UUID columnId, String value) implements IProps {
 
     public static final String TYPE = "TextfieldCell";
 
     public TextfieldCellElementProps {
         Objects.requireNonNull(id);
+        Objects.requireNonNull(descriptionId);
         Objects.requireNonNull(targetObjectId);
         Objects.requireNonNull(targetObjectKind);
         Objects.requireNonNull(columnId);

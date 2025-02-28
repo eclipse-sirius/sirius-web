@@ -22,12 +22,13 @@ import org.eclipse.sirius.components.representations.IProps;
  *
  * @author Jerome Gout
  */
-public record TextareaCellElementProps(UUID id, String targetObjectId, String targetObjectKind, UUID columnId, String value) implements IProps {
+public record TextareaCellElementProps(UUID id, String descriptionId, String targetObjectId, String targetObjectKind, UUID columnId, String value) implements IProps {
 
     public static final String TYPE = "TextareaCell";
 
     public TextareaCellElementProps {
         Objects.requireNonNull(id);
+        Objects.requireNonNull(descriptionId);
         Objects.requireNonNull(targetObjectId);
         Objects.requireNonNull(targetObjectKind);
         Objects.requireNonNull(columnId);

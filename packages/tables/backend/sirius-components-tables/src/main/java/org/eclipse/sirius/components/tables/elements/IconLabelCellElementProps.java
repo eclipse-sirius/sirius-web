@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,12 +23,13 @@ import org.eclipse.sirius.components.representations.IProps;
  *
  * @author frouene
  */
-public record IconLabelCellElementProps(UUID id, String targetObjectId, String targetObjectKind, UUID columnId, String value, List<String> iconURLs) implements IProps {
+public record IconLabelCellElementProps(UUID id, String descriptionId, String targetObjectId, String targetObjectKind, UUID columnId, String value, List<String> iconURLs) implements IProps {
 
     public static final String TYPE = "IconLabelCell";
 
     public IconLabelCellElementProps {
         Objects.requireNonNull(id);
+        Objects.requireNonNull(descriptionId);
         Objects.requireNonNull(targetObjectId);
         Objects.requireNonNull(targetObjectKind);
         Objects.requireNonNull(columnId);

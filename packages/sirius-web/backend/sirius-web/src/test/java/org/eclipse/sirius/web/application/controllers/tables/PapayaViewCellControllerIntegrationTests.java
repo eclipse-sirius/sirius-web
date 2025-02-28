@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 CEA LIST and others.
+ * Copyright (c) 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,16 +25,16 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.tables.TableRefreshedEventPayload;
-import org.eclipse.sirius.components.collaborative.tables.dto.EditTextareaCellInput;
+import org.eclipse.sirius.components.collaborative.tables.dto.EditTextfieldCellInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
-import org.eclipse.sirius.components.tables.ICell;
 import org.eclipse.sirius.components.tables.Table;
-import org.eclipse.sirius.components.tables.TextareaCell;
-import org.eclipse.sirius.components.tables.tests.graphql.EditTextareaCellMutationRunner;
+import org.eclipse.sirius.components.tables.TextfieldCell;
+import org.eclipse.sirius.components.tables.tests.graphql.EditTextfieldCellMutationRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
+import org.eclipse.sirius.web.services.tables.ViewTableDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
-import org.eclipse.sirius.web.tests.services.api.IGivenCreatedTableSubscription;
+import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -47,86 +47,79 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 /**
- * Integration tests of the table's cell with a papaya model.
+ * Integration tests of the view table cell description.
  *
  * @author Jerome Gout
  */
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
-public class PapayaTableCellControllerIntegrationTests extends AbstractIntegrationTests {
+public class PapayaViewCellControllerIntegrationTests extends AbstractIntegrationTests {
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
-    private IGivenCreatedTableSubscription givenCreatedTableSubscription;
+    private IGivenCreatedDiagramSubscription givenCreatedDiagramSubscription;
 
     @Autowired
-    private EditTextareaCellMutationRunner editTextareaCellMutationRunner;
+    private ViewTableDescriptionProvider viewTableDescriptionProvider;
+
+    @Autowired
+    private EditTextfieldCellMutationRunner editTextfieldCellMutationRunner;
 
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
     }
 
-    private Flux<Object> givenSubscriptionToTable() {
+    private Flux<Object> givenSubscriptionToViewTableRepresentation() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
-                "papaya_package_table_description",
+                this.viewTableDescriptionProvider.getRepresentationDescriptionId(),
                 PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString(),
-                "Table"
+                "ViewTableDescription"
         );
-        return this.givenCreatedTableSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
     }
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a table, when an edit textarea mutation is triggered, then the representation is refreshed with the new cell content")
-    public void givenTableWhenEditTextareaMutationTriggeredThenTheRepresentationIsRefreshedWithNewCellContent() {
-        var flux = this.givenSubscriptionToTable();
+    @DisplayName("Given a table, when an cell edit mutation is triggered, then the representation is refreshed with the new cell value")
+    public void givenTableWhenCellEditMutationTriggeredThenTheRepresentationIsRefreshedWithNewCellValue() {
+        var flux = this.givenSubscriptionToViewTableRepresentation();
 
-        var cellRef = new AtomicReference<ICell>();
+        var cellId = new AtomicReference<UUID>();
         var tableId = new AtomicReference<String>();
 
         Consumer<Object> initialTableContentConsumer = this.getTableSubscriptionConsumer(table -> {
+            tableId.set(table.getId());
             assertThat(table).isNotNull();
             assertThat(table.getLines()).hasSize(2);
-            assertThat(table.getLines().get(0).getCells()).hasSize(6);
-            assertThat(table.getLines().get(0).getCells().get(1)).isInstanceOf(TextareaCell.class);
-            assertThat(table.getLines().get(0).getCells().get(1)).isInstanceOf(TextareaCell.class);
-            assertThat(((TextareaCell) table.getLines().get(0).getCells().get(1)).getValue()).isEqualTo("");
-            cellRef.set(table.getLines().get(0).getCells().get(1));
-            tableId.set(table.getId());
+            assertThat(table.getLines().get(0).getCells()).hasSize(2);
+            assertThat(table.getLines().get(0).getCells().get(0)).isInstanceOf(TextfieldCell.class);
+            assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(0)).getValue()).isEqualTo("Success");
+            cellId.set(table.getLines().get(0).getCells().get(0).getId());
         });
 
-        Runnable editTextarea = () -> {
-            var editTextareaCellInput = new EditTextareaCellInput(
-                    UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
-                    tableId.get(),
-                    tableId.get(),
-                    cellRef.get().getId(),
-                    "new description");
-            var result = this.editTextareaCellMutationRunner.run(editTextareaCellInput);
+        Runnable editName = () -> {
+            var input = new EditTextfieldCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), tableId.get(), tableId.get(), cellId.get(), "newName");
+            var result = this.editTextfieldCellMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.editTextareaCell.__typename");
+            String typename = JsonPath.read(result, "$.data.editTextfieldCell.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
-
 
         Consumer<Object> updatedTableContentConsumer = this.getTableSubscriptionConsumer(table -> {
             assertThat(table).isNotNull();
             assertThat(table.getLines()).hasSize(2);
-            assertThat(table.getLines().get(0).getCells()).hasSize(6);
-            assertThat(table.getLines().get(0).getCells().get(1)).isInstanceOf(TextareaCell.class);
-            assertThat(((TextareaCell) table.getLines().get(0).getCells().get(1)).getValue()).isEqualTo("new description");
+            assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(0)).getValue()).isEqualTo("newName");
         });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTableContentConsumer)
-                .then(editTextarea)
+                .then(editName)
                 .consumeNextWith(updatedTableContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
