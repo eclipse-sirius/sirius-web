@@ -109,6 +109,20 @@ public class Library extends AbstractValidatingAggregateRoot<Library> implements
         return new Builder();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        boolean result = false;
+        if (obj instanceof Library library) {
+            result = Objects.equals(this.id, library.getId());
+        }
+        return result;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.id.hashCode();
+    }
+
     /**
      * Used to create new libraries.
      *

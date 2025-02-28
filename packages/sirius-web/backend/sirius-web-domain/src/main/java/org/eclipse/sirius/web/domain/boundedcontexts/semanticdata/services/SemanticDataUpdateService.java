@@ -21,6 +21,10 @@ import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.repositories.ISemanticDataRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataUpdateService;
+import org.eclipse.sirius.web.domain.services.Failure;
+import org.eclipse.sirius.web.domain.services.IResult;
+import org.eclipse.sirius.web.domain.services.Success;
+import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +38,11 @@ public class SemanticDataUpdateService implements ISemanticDataUpdateService {
 
     private final ISemanticDataRepository semanticDataRepository;
 
-    public SemanticDataUpdateService(ISemanticDataRepository semanticDataRepository) {
+    private final IMessageService messageService;
+
+    public SemanticDataUpdateService(ISemanticDataRepository semanticDataRepository, IMessageService messageService) {
         this.semanticDataRepository = Objects.requireNonNull(semanticDataRepository);
+        this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
@@ -44,5 +51,39 @@ public class SemanticDataUpdateService implements ISemanticDataUpdateService {
             semanticData.updateDocuments(cause, documents, domainUris);
             this.semanticDataRepository.save(semanticData);
         });
+    }
+
+    @Override
+    public IResult<Void> addDependency(ICause cause, UUID semanticDataId, UUID libraryId) {
+        IResult<Void> result = null;
+
+        var optionalSemanticData = this.semanticDataRepository.findById(semanticDataId);
+        if (optionalSemanticData.isEmpty()) {
+            result = new Failure<>(this.messageService.notFound());
+        } else {
+            var semanticData = optionalSemanticData.get();
+            semanticData.addDependency(cause, libraryId);
+            this.semanticDataRepository.save(semanticData);
+            result = new Success<>(null);
+        }
+
+        return result;
+    }
+
+    @Override
+    public IResult<Void> removeDependency(ICause cause, UUID semanticDataId, UUID libraryId) {
+        IResult<Void> result = null;
+
+        var optionalSemanticData = this.semanticDataRepository.findById(semanticDataId);
+        if (optionalSemanticData.isEmpty()) {
+            result = new Failure<>(this.messageService.notFound());
+        } else {
+            var semanticData = optionalSemanticData.get();
+            semanticData.removeDependency(cause, libraryId);
+            this.semanticDataRepository.save(semanticData);
+            result = new Success<>(null);
+        }
+
+        return result;
     }
 }

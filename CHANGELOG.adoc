@@ -45,6 +45,10 @@ See the new interface `org.eclipse.sirius.components.emf.services.api.IRepresent
 - https://github.com/eclipse-sirius/sirius-web/issues/4597[#4597] [sirius-web] Add a command to publish libraries from studios
 The command creates a library for each _RepresentationDescription_ and _Domain_ in the studio, and creates the dependencies between them.
 A _shared components_ library can be created in the process to store elements that are needed by other libraries but are not stored in libraries themselves.
+- https://github.com/eclipse-sirius/sirius-web/issues/4652[#4652] [sirius-web] Add support for project to library dependencies
+Project can have dependencies to libraries, which are loaded along the project's semantic data.
+Loading a library in the editing context loads all the libraries it transitively depends on.
+A new predicate `IReadOnlyObjectPredicate` has been added with a default implementation that returns `true` if the object is in a library.
 
 
 === Improvements

@@ -18,6 +18,7 @@ import java.util.UUID;
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
+import org.eclipse.sirius.web.domain.services.IResult;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 /**
@@ -27,4 +28,9 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
  */
 public interface ISemanticDataUpdateService {
     void updateDocuments(ICause cause, AggregateReference<SemanticData, UUID> semanticData, Set<Document> documents, Set<String> domainUris);
+
+    IResult<Void> addDependency(ICause cause, UUID semanticDataId, UUID libraryId);
+
+    IResult<Void> removeDependency(ICause cause, UUID semanticDataID, UUID libraryId);
+
 }

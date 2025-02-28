@@ -18,17 +18,32 @@ import com.jayway.jsonpath.JsonPath;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.BiFunction;
 
 import org.assertj.core.api.InstanceOfAssertFactories;
+import org.eclipse.sirius.components.core.api.ErrorPayload;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
+import org.eclipse.sirius.components.graphql.tests.api.IExecuteEditingContextFunctionRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.library.dto.PublishLibrariesInput;
+import org.eclipse.sirius.web.application.library.services.api.IEditingContextLibraryLoader;
+import org.eclipse.sirius.web.application.object.services.api.IReadOnlyObjectPredicate;
+import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.LibraryDependency;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataUpdateService;
+import org.eclipse.sirius.web.domain.services.Success;
 import org.eclipse.sirius.web.papaya.services.library.InitializeStandardLibraryEvent;
 import org.eclipse.sirius.web.papaya.services.library.api.IStandardLibrarySemanticDataInitializer;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
@@ -50,6 +65,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author gdaniel
  */
 @Transactional
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class LibraryControllerIntegrationTests extends AbstractIntegrationTests {
 
@@ -64,6 +80,15 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
 
     @Autowired
     private IStandardLibrarySemanticDataInitializer standardLibrarySemanticDataInitializer;
+
+    @Autowired
+    private ISemanticDataUpdateService semanticDataUpdateService;
+
+    @Autowired
+    private IExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
+
+    @Autowired
+    private IReadOnlyObjectPredicate readOnlyObjectPredicate;
 
     @BeforeEach
     public void beforeEach() {
@@ -101,6 +126,43 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
         assertThat(libraryNamespaces)
                 .isNotEmpty()
                 .anySatisfy(namespace -> assertThat(namespace).isEqualTo("java"));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a project, when a dependency to a library is added, then the editing context contains the library and the library is read-only")
+    public void givenProjectWhenLibraryDependencyIsAddedThenEditingContextContainsLibrary() {
+        Optional<Library> library = this.librarySearchService.findByNamespaceAndNameAndVersion("java", "Java Standard Library", "17.0.0");
+        assertThat(library).isPresent();
+        var result = this.semanticDataUpdateService.addDependency(null, PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID, library.get().getId());
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
+        assertThat(result).isInstanceOf(Success.class);
+
+
+        BiFunction<IEditingContext, IInput, IPayload> function = (editingContext, executeEditingContextFunctionInput) -> {
+            if (editingContext instanceof IEMFEditingContext emfEditingContext) {
+                assertThat(emfEditingContext.getDomain().getResourceSet().getResources())
+                    .anyMatch(resource -> {
+                        Optional<String> optName = resource.eAdapters().stream()
+                                .filter(ResourceMetadataAdapter.class::isInstance)
+                                .map(ResourceMetadataAdapter.class::cast)
+                                .map(ResourceMetadataAdapter::getName)
+                                .findFirst();
+                        return optName.isPresent()
+                                && optName.get().equals("Java Standard Library")
+                                && Objects.equals(resource.getURI().scheme(), IEditingContextLibraryLoader.LIBRARY_SCHEME)
+                                && this.readOnlyObjectPredicate.test(resource);
+                    });
+                return new SuccessPayload(executeEditingContextFunctionInput.id());
+            }
+            return new ErrorPayload(executeEditingContextFunctionInput.id(), "Invalid editing context");
+        };
+
+        var input = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), function);
+        var payload = this.executeEditingContextFunctionRunner.execute(input).block();
+        assertThat(payload).isInstanceOf(SuccessPayload.class);
     }
 
     @Test

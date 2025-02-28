@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -24,6 +25,8 @@ import java.util.stream.Collectors;
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.AbstractValidatingAggregateRoot;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataCreatedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataDependencyAddedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataDependencyRemovedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataUpdatedEvent;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -51,6 +54,9 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
     @MappedCollection(idColumn = "semantic_data_id")
     private Set<SemanticDataDomain> domains = new LinkedHashSet<>();
 
+    @MappedCollection(idColumn = "semantic_data_id", keyColumn = "index")
+    private List<SemanticDataDependency> dependencies = new ArrayList<>();
+
     private Instant createdOn;
 
     private Instant lastModifiedOn;
@@ -66,6 +72,31 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
 
     public Set<SemanticDataDomain> getDomains() {
         return Collections.unmodifiableSet(this.domains);
+    }
+
+    public List<SemanticDataDependency> getDependencies() {
+        return Collections.unmodifiableList(this.dependencies);
+    }
+
+    public void addDependency(ICause cause, UUID libraryId) {
+        var newDependency = new SemanticDataDependency(libraryId);
+        this.dependencies.add(newDependency);
+        this.lastModifiedOn = Instant.now();
+
+        this.registerEvent(new SemanticDataDependencyAddedEvent(UUID.randomUUID(), this.lastModifiedOn, cause, this, newDependency));
+
+    }
+
+    public void removeDependency(ICause cause, UUID libraryId) {
+        this.dependencies.stream()
+                .filter(dependency -> dependency.libraryId().equals(libraryId))
+                .findFirst()
+                .ifPresent(dependency -> {
+                    this.dependencies.remove(dependency);
+                    this.lastModifiedOn = Instant.now();
+
+                    this.registerEvent(new SemanticDataDependencyRemovedEvent(UUID.randomUUID(), this.lastModifiedOn, cause, this, dependency));
+                });
     }
 
     public Instant getCreatedOn() {
