@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -27,4 +28,6 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
  */
 public interface ISemanticDataUpdateService {
     void updateDocuments(ICause cause, AggregateReference<SemanticData, UUID> semanticData, Set<Document> documents, Set<String> domainUris);
+
+    void addDependencies(ICause cause, AggregateReference<SemanticData, UUID> semanticData, List<AggregateReference<SemanticData, UUID>> dependencySemanticDataIds);
 }

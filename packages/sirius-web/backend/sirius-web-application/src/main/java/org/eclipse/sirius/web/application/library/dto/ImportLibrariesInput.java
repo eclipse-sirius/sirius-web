@@ -10,35 +10,24 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.web.application.library.dto;
 
-import { gql } from '@apollo/client';
+import java.util.List;
+import java.util.UUID;
 
-export const ViewerLibrariesFragment = gql`
-  fragment ViewerLibraries on Viewer {
-    libraries(page: $page, limit: $limit) {
-      edges {
-        node {
-          ...Library
-        }
-      }
-      pageInfo {
-        hasNextPage
-        hasPreviousPage
-        startCursor
-        endCursor
-        count
-      }
-    }
-  }
-`;
+import org.eclipse.sirius.components.core.api.IInput;
 
-export const LibraryFragment = gql`
-  fragment Library on Library {
-    id
-    namespace
-    name
-    version
-    description
-    createdOn
-  }
-`;
+import jakarta.validation.constraints.NotNull;
+
+/**
+ * Input used to import libraries.
+ *
+ * @author gdaniel
+ */
+public record ImportLibrariesInput(
+        @NotNull UUID id,
+        @NotNull String editingContextId,
+        @NotNull String type,
+        @NotNull List<String> libraryIds) implements IInput {
+
+}

@@ -44,9 +44,9 @@ public interface ISemanticDataRepository extends ListPagingAndSortingRepository<
           SELECT semanticDataDependency.*
           FROM semantic_data_dependency semanticDataDependency
           WHERE semanticDataDependency.semantic_data_id = :id
-          
+
           UNION
-          
+
           SELECT childSemanticDataDependency.*
           FROM semantic_data_dependency childSemanticDataDependency
           INNER JOIN dependencies dependency ON dependency.dependency_semantic_data_id = childSemanticDataDependency.semantic_data_id

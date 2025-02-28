@@ -40,6 +40,7 @@ export interface GQLViewerLibraryEdge {
 }
 
 export interface GQLLibrary {
+  id: string;
   namespace: string;
   name: string;
   version: string;

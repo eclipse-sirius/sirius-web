@@ -23,6 +23,7 @@ import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingCo
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceLoader;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -59,16 +60,33 @@ public class EditingContextDependencyLoader implements IEditingContextDependency
                     .orElse(List.of());
             for (SemanticData semanticData : dependenciesSemanticData) {
                 var optionalLibrary = this.librarySearchService.findBySemanticData(AggregateReference.to(semanticData.getId()));
-                semanticData.getDocuments().forEach(document -> {
-                    var applyMigrationParticipants = this.migrationParticipantPredicates.stream().anyMatch(predicate -> predicate.test(editingContext.getId()));
-                    this.resourceLoader.toResource(emfEditingContext.getDomain().getResourceSet(), document.getId().toString(), document.getName(), document.getContent(), applyMigrationParticipants).ifPresent(resource -> {
-                        if (optionalLibrary.isPresent()) {
-                            var library = optionalLibrary.get();
-                            resource.eAdapters().add(new LibraryMetadataAdapter(library.getNamespace(), library.getName(), library.getVersion()));
-                        }
-                    });
-                });
+                semanticData.getDocuments().stream()
+                        .filter(document -> !this.isAlreadyLoaded(emfEditingContext, document))
+                        .forEach(document -> {
+                            var applyMigrationParticipants = this.migrationParticipantPredicates.stream().anyMatch(predicate -> predicate.test(editingContext.getId()));
+                            this.resourceLoader.toResource(emfEditingContext.getDomain().getResourceSet(), document.getId().toString(), document.getName(), document.getContent(), applyMigrationParticipants).ifPresent(resource -> {
+                                if (optionalLibrary.isPresent()) {
+                                    var library = optionalLibrary.get();
+                                    resource.eAdapters().add(new LibraryMetadataAdapter(library.getNamespace(), library.getName(), library.getVersion()));
+                                }
+                            });
+                        });
             }
         }
+    }
+
+    /**
+     * Uses to ensure that we are not loading twice a resource with the same identity.
+     *
+     * This could easily happen while trying to load two dependencies that both share a dependency to another one.
+     * We don't want to load the common dependency twice.
+     *
+     * @param editingContext The editing context
+     * @param document The document being loaded
+     * @return true if the document is matching an existing resource of the resource set, false otherwise
+     */
+    private boolean isAlreadyLoaded(IEMFEditingContext editingContext, Document document) {
+        return editingContext.getDomain().getResourceSet().getResources().stream()
+                .anyMatch(resource -> resource.getURI().path().substring(1).equals(document.getId().toString()));
     }
 }

@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.library.services;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -57,5 +58,10 @@ public class LibrarySearchService implements ILibrarySearchService {
     @Override
     public Optional<Library> findBySemanticData(AggregateReference<SemanticData, UUID> semanticData) {
         return this.libraryRepository.findBySemanticDataId(semanticData.getId());
+    }
+
+    @Override
+    public List<Library> findAllById(Iterable<UUID> ids) {
+        return this.libraryRepository.findAllById(ids);
     }
 }
