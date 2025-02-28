@@ -1,0 +1,43 @@
+= (M) Add support for edges connected to edges
+
+== Problem
+
+We can't connect an edge to another edge.
+
+
+== Key Result
+
+A user can connect and edge to another edge.
+
+
+=== Acceptance Criteria
+
+Cypress tests will be implemented.
+
+
+== Solution
+
+In a studio, on an edge description the current Source/Target node description will be replaced by Source/Target element description.
+
+The user wants to connect to an edge or node from an edge or node.
+
+* He selects a node or edge
+* He starts a connection line by clicking on the handle, the elements that cannot be considered as candidates have a lesser opacity.
+* When hovering a candidate element, the element is highlighted
+* When letting go of the connection line on a candidate element, the new edge is created.
+
+If an edge has multiple edges connected to it, the edges sources and target positions are evenly distributed along the edge.
+
+
+=== Breadboarding
+
+
+=== Cutting backs
+
+
+== Rabbit holes
+
+Evenly positioning the handles along the edge path could be tricky since the path can have many segments that can also be changed by moving connected nodes or manually adding/removing segments.
+
+
+== No-go

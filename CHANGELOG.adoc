@@ -4,6 +4,7 @@
 
 === Shapes
 
+-  Add support for edges connected to edges
 
 
 === Architectural decision records
