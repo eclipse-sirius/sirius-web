@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { DiagramDialogVariable } from '@eclipse-sirius/sirius-components-diagrams';
+
 import {
   GQLGetExpandAllTreePathVariables,
   GQLTreeItem,
@@ -22,64 +22,83 @@ import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import IconButton from '@mui/material/IconButton';
 import { useState, useEffect } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { SelectionDialogTreeViewProps, SelectionDialogTreeViewState } from './SelectionDialogTreeView.types';
-import { useSelectionDialogTreeSubscription } from './useSelectionDialogTreeSubscription';
-
-export const SELECTION_DIALOG_TYPE: string = 'selectionDialogDescription';
+import { ModelBrowserFilterBar } from './ModelBrowserFilterBar';
+import { ModelBrowserTreeViewProps, ModelBrowserTreeViewState } from './ModelBrowserTreeView.types';
+import { useModelBrowserSubscription } from './useModelBrowserSubscription';
 
 const useTreeStyle = makeStyles()((theme) => ({
+  title: {
+    opacity: 0.6,
+    fontSize: theme.typography.caption.fontSize,
+  },
   borderStyle: {
     border: '1px solid',
-    borderColor: theme.palette.divider,
-    height: 600,
+    borderColor: theme.palette.grey[500],
+    height: 300,
     overflow: 'auto',
   },
 }));
 
-const initialState: SelectionDialogTreeViewState = {
-  expanded: [],
-  maxDepth: 1,
-};
-
-export const SelectionDialogTreeView = ({
+export const ModelBrowserTreeView = ({
   editingContextId,
-  treeDescriptionId,
-  variables,
+  widget,
+  markedItemIds,
   enableMultiSelection,
-}: SelectionDialogTreeViewProps) => {
+  title,
+  leafType,
+  ownerKind,
+}: ModelBrowserTreeViewProps) => {
   const { classes } = useTreeStyle();
-  const [state, setState] = useState<SelectionDialogTreeViewState>(initialState);
 
-  const treeId = `selection://?treeDescriptionId=${encodeURIComponent(treeDescriptionId)}${encodeVariables(variables)}`;
-  const { tree } = useSelectionDialogTreeSubscription(editingContextId, treeId, state.expanded, state.maxDepth);
+  const [state, setState] = useState<ModelBrowserTreeViewState>({
+    filterBarText: '',
+    expanded: [],
+    maxDepth: 1,
+  });
+
+  const treeId: string = `modelBrowser://${leafType}?ownerKind=${encodeURIComponent(
+    ownerKind
+  )}&targetType=${encodeURIComponent(widget.reference.referenceKind)}&ownerId=${
+    widget.ownerId
+  }&descriptionId=${encodeURIComponent(widget.descriptionId)}&isContainment=${widget.reference.containment}`;
+  const { tree } = useModelBrowserSubscription(editingContextId, treeId, state.expanded, state.maxDepth);
 
   const onExpandedElementChange = (expanded: string[], maxDepth: number) => {
     setState((prevState) => ({ ...prevState, expanded, maxDepth }));
   };
 
   return (
-    <div className={classes.borderStyle}>
-      {tree ? (
-        <TreeView
-          editingContextId={editingContextId}
-          readOnly={true}
-          treeId={treeId}
-          enableMultiSelection={enableMultiSelection}
-          synchronizedWithSelection={true}
-          tree={tree}
-          textToFilter={''}
-          textToHighlight={''}
-          treeItemActionRender={(props) => <SelectionDialogTreeItemAction {...props} />}
-          onExpandedElementChange={onExpandedElementChange}
-          expanded={state.expanded}
-          maxDepth={state.maxDepth}
-        />
-      ) : null}
-    </div>
+    <>
+      <ModelBrowserFilterBar
+        onTextChange={(event) => setState((prevState) => ({ ...prevState, filterBarText: event.target.value }))}
+        onTextClear={() => setState((prevState) => ({ ...prevState, filterBarText: '' }))}
+        text={state.filterBarText}
+      />
+      <span className={classes.title}>{title}</span>
+      <div className={classes.borderStyle}>
+        {tree !== null ? (
+          <TreeView
+            editingContextId={editingContextId}
+            readOnly={true}
+            treeId={treeId}
+            tree={tree}
+            enableMultiSelection={enableMultiSelection}
+            synchronizedWithSelection={true}
+            textToFilter={state.filterBarText}
+            textToHighlight={state.filterBarText}
+            markedItemIds={markedItemIds}
+            treeItemActionRender={(props) => <WidgetReferenceTreeItemAction {...props} />}
+            onExpandedElementChange={onExpandedElementChange}
+            expanded={state.expanded}
+            maxDepth={state.maxDepth}
+          />
+        ) : null}
+      </div>
+    </>
   );
 };
 
-const SelectionDialogTreeItemAction = ({
+const WidgetReferenceTreeItemAction = ({
   editingContextId,
   treeId,
   item,
@@ -126,13 +145,4 @@ const SelectionDialogTreeItemAction = ({
       <UnfoldMoreIcon style={{ fontSize: 12 }} />
     </IconButton>
   );
-};
-
-const encodeVariables = (variables: DiagramDialogVariable[]): string => {
-  let encodedVariables = '';
-  if (variables.length > 0) {
-    encodedVariables =
-      '&' + variables.map((variable) => variable.name + '=' + encodeURIComponent(variable.value)).join('&');
-  }
-  return encodedVariables;
 };

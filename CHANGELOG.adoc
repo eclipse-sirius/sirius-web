@@ -26,6 +26,9 @@ You have to add `tableWidgetDocumentTransform` to your extensionRegistry to use 
 - https://github.com/eclipse-sirius/sirius-web/issues/4635[#4635] [sirius-web] Since the switch from using the `Project#id` as the `editingContextId` to the use of the `SemanticData#id` instead, `IProjectEditingContextApplicationService` could have been used as a service to switch from the `Project#id` to the `editingContextId`.
 Given that it is an application service, it comes with some constraints with regard to transactions, for that a new reusable service named `IProjectEditingContextService` has now been added to manipulate the `projectId` and `editingContextId` instead.
 `IProjectEditingContextApplicationService` has thus been modified to be more focused on its original goal as the behavior of the `Project#currentEditingContext` datafetcher.
+- https://github.com/eclipse-sirius/sirius-web/issues/4373[#4373] [trees] `onExpand` and `onExpandAll` is removed from `Tree` and all the tree components props.
+It is now possible to expand a tree item by using `onExpandedElementChange`.
+The "expand all" contextual menu entry (and its implementation) has been moved to Sirius Web as a contribution.
 
 
 === Dependency update
@@ -61,6 +64,9 @@ Except for the specific case where `cause === 'refresh'` in `DiagramRenderer` (w
 - https://github.com/eclipse-sirius/sirius-web/issues/4263[#4263] [table] Add a button to reset table row heights to their initial value
 - https://github.com/eclipse-sirius/sirius-web/issues/4641[#4641] [form] Remove front dependency between form and table
 - https://github.com/eclipse-sirius/sirius-web/issues/4635[#4635] [sirius-web] Derive the project semantic data from the project id
+- https://github.com/eclipse-sirius/sirius-web/issues/4373[#4373] [trees] Allow backend definition of ExpandAll tool in the explorer
+Specifiers can now create `CustomTreeItemContextMenuEntry` instances in the view DSL to indicate to use a frontend component as contextual menu entry.
+The _ExpandAll_ tool is now a Sirius Web contribution that can be enabled via this mechanism.  
 
 
 

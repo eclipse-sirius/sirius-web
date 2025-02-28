@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,17 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLTreeItem } from '../views/TreeView.types';
+import { TreeItemContextMenuEntry } from './TreeItemContextMenu.types';
+import { TreeItemContextMenuComponentProps } from './TreeItemContextMenuEntry.types';
 
-export interface TreeItemContextMenuComponentProps {
-  editingContextId: string;
-  treeId: string;
-  item: GQLTreeItem;
-  readOnly: boolean;
-  expandItem: () => void;
-  onExpandedElementChange: (expanded: string[], maxDepth: number) => void;
-  onClose: () => void;
-  key: string;
-  expanded: string[];
-  maxDepth: number;
+export interface TreeItemContextMenuOverrideContribution {
+  canHandle: (entry: TreeItemContextMenuEntry) => boolean;
+  component: React.ComponentType<TreeItemContextMenuComponentProps>;
 }
