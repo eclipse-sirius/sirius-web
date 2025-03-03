@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.table.impl;
 
+import java.util.Objects;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -600,11 +602,11 @@ public class ColumnDescriptionImpl extends MinimalEObjectImpl.Container implemen
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case TablePackage.COLUMN_DESCRIPTION__NAME:
-                return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
+                return !Objects.equals(NAME_EDEFAULT, this.name);
             case TablePackage.COLUMN_DESCRIPTION__DOMAIN_TYPE:
                 return DOMAIN_TYPE_EDEFAULT == null ? this.domainType != null : !DOMAIN_TYPE_EDEFAULT.equals(this.domainType);
             case TablePackage.COLUMN_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
-                return SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT == null ? this.semanticCandidatesExpression != null : !SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT.equals(this.semanticCandidatesExpression);
+                return !Objects.equals(SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT, this.semanticCandidatesExpression);
             case TablePackage.COLUMN_DESCRIPTION__PRECONDITION_EXPRESSION:
                 return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
             case TablePackage.COLUMN_DESCRIPTION__HEADER_INDEX_LABEL_EXPRESSION:
@@ -633,29 +635,28 @@ public class ColumnDescriptionImpl extends MinimalEObjectImpl.Container implemen
         if (this.eIsProxy())
             return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (name: ");
-        result.append(this.name);
-        result.append(", domainType: ");
-        result.append(this.domainType);
-        result.append(", semanticCandidatesExpression: ");
-        result.append(this.semanticCandidatesExpression);
-        result.append(", preconditionExpression: ");
-        result.append(this.preconditionExpression);
-        result.append(", headerIndexLabelExpression: ");
-        result.append(this.headerIndexLabelExpression);
-        result.append(", headerLabelExpression: ");
-        result.append(this.headerLabelExpression);
-        result.append(", headerIconExpression: ");
-        result.append(this.headerIconExpression);
-        result.append(", initialWidthExpression: ");
-        result.append(this.initialWidthExpression);
-        result.append(", isResizableExpression: ");
-        result.append(this.isResizableExpression);
-        result.append(", filterWidgetExpression: ");
-        result.append(this.filterWidgetExpression);
-        result.append(')');
-        return result.toString();
+        String result = super.toString() + " (name: " +
+                this.name +
+                ", domainType: " +
+                this.domainType +
+                ", semanticCandidatesExpression: " +
+                this.semanticCandidatesExpression +
+                ", preconditionExpression: " +
+                this.preconditionExpression +
+                ", headerIndexLabelExpression: " +
+                this.headerIndexLabelExpression +
+                ", headerLabelExpression: " +
+                this.headerLabelExpression +
+                ", headerIconExpression: " +
+                this.headerIconExpression +
+                ", initialWidthExpression: " +
+                this.initialWidthExpression +
+                ", isResizableExpression: " +
+                this.isResizableExpression +
+                ", filterWidgetExpression: " +
+                this.filterWidgetExpression +
+                ')';
+        return result;
     }
 
 } // ColumnDescriptionImpl
