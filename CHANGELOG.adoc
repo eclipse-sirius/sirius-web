@@ -15,6 +15,8 @@
 - [ADR-185] Add support for custom ordering of the representation descriptions in the creation modal
 - [ADR-186] Add support of row level filters in tables
 - [ADR-187] Add support of row sorting in tables
+- [ADR-188] Add Support for edges on edges
+
 
 === Deprecation warning
 

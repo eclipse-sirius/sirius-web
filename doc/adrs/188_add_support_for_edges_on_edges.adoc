@@ -1,0 +1,105 @@
+= ADR-188 - Add Support for edges on edges
+
+
+== Context
+
+We can't currently create edges that have another edge as source or target.
+
+== Decision
+
+=== Back-end
+
+==== View dsl and converter
+
+The attributes `sourceNodeDescriptions` will be renamed to `sourceDescriptions` and `targetNodeDescriptions` to `targetDescriptions`.
+They'll both be of type `DiagramElementDescription`.
+
+`ViewDiagramDescriptionConverterContext` will need to have another map `convertedDiagramElements` containing all nodes and edges in order to set the `sourceNodeDescriptions` and `targetNodeDescriptions` in `ViewDiagramDescriptionConverter` during the conversion of an `org.eclipse.sirius.components.view.diagram.EdgeDescription`.
+This could be contributed in one dedicated PR but if we do, we should add a guard to not convert edges that have another edge for source or target yet.
+
+
+==== Edge renderer
+
+In order to render the edges connected to other edges, we need to convert the edges that have for source and target a node first.
+This could be done by putting the edges that have another edge as source or target at the end of the list of edges to convert.
+Or this could be done more efficiently by using a recursive method.
+
+We will only handle edges that have for source `or` target another edge that have for source `and` target a node.
+Below is a rough implementation that would need to be improved in order to be more efficient.
+
+[source,java]
+----
+var edgeWithNodeDescriptions = diagramDescription.getEdgeDescriptions().stream()
+        .filter(edge -> edge.getTargetNodeDescriptions().stream().allMatch(desc -> desc instanceof NodeDescription)
+                && edge.getSourceNodeDescriptions().stream().allMatch(desc -> desc instanceof NodeDescription))
+        .toList();
+
+var edgeWithEdgeDescriptions = diagramDescription.getEdgeDescriptions().stream()
+        .filter(edge -> !edgesWithNodeDescription.contains(edge) && (edge.getTargetNodeDescriptions().stream()
+                .allMatch(desc -> desc instanceof NodeDescription || (desc instanceof EdgeDescription && edgesWithNodeDescription.contains(desc)))
+                || edge.getSourceNodeDescriptions().stream()
+                .allMatch(desc -> desc instanceof NodeDescription || (desc instanceof EdgeDescription && edgesWithNodeDescription.contains(desc)))))
+        .toList();
+
+var edgeDescriptions = new ArrayList<>(edgeWithNodeDescriptions);
+edgeDescriptions.addAll(edgeWithEdgeDescriptions);
+
+var edges = edges.stream()
+        .map(edgeDescription -> {
+            var previousEdges = optionalPreviousDiagram.map(previousDiagram -> diagramElementRequestor.getEdges(previousDiagram, edgeDescription))
+                    .orElse(List.of());
+            IEdgesRequestor edgesRequestor = new EdgesRequestor(previousEdges);
+            var edgeComponentProps = new EdgeComponentProps(variableManager, edgeDescription, edgesRequestor, cache, this.props.getOperationValidator(), this.props.getDiagramEvents());
+            return new Element(EdgeComponent.class, edgeComponentProps);
+        })
+        .toList();
+children.addAll(nodes);
+children.addAll(edges);
+----
+
+We will also need to change the methods `hasNodeCandidates` and `getId` in `EdgeComponent` that always assume the element source or taget is node.
+And finally we will need to put in the cache the edge when it's rendered.
+
+
+=== Front-end
+
+==== Edge handles
+
+In order to create an edge we need handles and a node that contains these handles.
+We will create special nodes `EdgeNode` that will be hidden and placed along the edges to act as source or target of an edge.
+Theses nodes will be `placed along an edge` by reusing parts of the methods used to get the middle of an edge path (the methods used by the bending points)
+When the edge moves, the `EdgeNode` position is updated.
+
+
+==== Edge creation
+
+We will set `edge.data.isHovered` when an edge is hovered in order to know what edge is targeted when making a new connection.
+We will also set `edge.data.isCandidate` when starting a new connection in order to know what edges are candidates for the new connection.
+The edges that are not candidates for a new connection will have a greater opacity.
+When creating an edge from another edge an EdgeNode selected will be placed on the middle of the edge in order to have some connections handles.
+
+
+==== Edge converter
+
+When converting the diagram we will set `edge.data.EdgesNodes` that will contain an array with all the ids of the EdgeNode that will have to be placed along the edge.
+This will be used to know what EdgeNode position needs to be updated when rerendering an edge.
+We will not convert edges that have for source or target two others edges in this first contribution.
+
+
+=== Breadboarding
+
+The `EdgeNode` will be hidden when used as connection handles.
+An `EdgeNode` will be visible and selected when selecting an edge to expose some creation handles.
+
+
+== Status
+
+Accepted.
+
+== Consequences
+
+A `migration participant` will ensure the migration of existing models.
+Since we need to have a node selected in order to create connection from an edge, we need to update how the palette is opened to avoid having a group palette when an edge is selected.
+
+
+== References
