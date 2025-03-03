@@ -1,0 +1,91 @@
+= ADR-186 - Add support of row level filters in tables
+
+* GitHub Issue: https://github.com/eclipse-sirius/sirius-web/issues/4483[#4483]
+
+== Context
+
+Currently, the Sirius Web tables do not allow the user to activate or deactivate filters to hide (or show) table rows.
+Row filtering is only provided for search purpose via the global filtering or the column filtering.
+
+Downstream applications (e.g. Papyrus) may require a more flexible mechanism to allow user to activate or deactivate predefined filters based on the table description.
+
+== Decision
+
+We need to introduce a new way to allow specifiers to express filters that could be activated or not by the user.
+These filters become important when there are multiple "kind" of rows in the table to allow user to focus on specific rows.
+
+=== Back end
+
+==== View Table DSL
+
+First, `TableDescription` model should be augmented with a new property (`rowFilters`) containing a list of `RowFilterDescription` (which could be empty).
+
+`RowFilterDescription` as the following properties:
+
+* id
+* labelExpression: string (which is visible in the UI)
+* rowPreconditionExpression: boolean (if it is evaluated to `true` then the filter applies and the row is hidden from the table)
+* isInitiallyActive: boolean, if set to `true` then this filter will be added in active row filter list without any user interaction.
+
+The view table converter would convert these descriptions into programmatic equivalent.
+
+==== API
+
+New filter class should be added to describe a row filter:
+
+[code,java]
+----
+public record RowFilter(String id, String label, boolean defaultState) {
+}
+----
+
+then we need a provider interface of those filters in order to gather all filters available on a given table description:
+
+[code,java]
+----
+public interface IRowFilterProvider {
+    List<RowFilter> get(String editingContextId, TableDescription tableDescription, String representationId);
+}
+----
+
+The back-end first needs to provide to the front-end the list of filters to expose to the end user and use those filters in the render mechanism in order to skip the rows that are filtered by them (only activated ones).
+
+We would introduce a new GraphQL query to return all defined row filters to the front-end:
+
+[code,GraphQL]
+----
+type TableDescription implements RepresentationDescription {
+  ...
+  rowFilters: [RowFilter!]!
+  ...
+}
+
+type RowFilter {
+  id: ID!
+  label: String!
+  defaultState: Boolean!
+}
+----
+The data fetcher of this query would have a list of `IRowFilterProvider` injected to gather all filters available.
+
+As far as the current state of filters is concerned, we only manage activated filters (by users) through a list of active filter id persisted inside the table representation id such is it done in the tree representation.
+
+In the `TableComponent.render` method we would retrieve the active list of row filters found in the representation id.
+From this list we would put a new variable in the variable manager containing all active filter predicates before to retrieve the list of row semantic elements.
+This variable, `activeRowFilters` can be used inside the `LineDescription.semanticElementsProvider` provider.
+The `CursorBaseNavigationService.collect` api would be updated to handle the list of active row filter predicate as well as the default predicate for finding element inside the whole model.
+
+=== Front end
+
+The front-end needs to handle the GraphQL query that retrieve all row filters and expose them in a custom UI component in a similar way than the columns visibility menu.
+The default state read from the query result, is used initially to activate or not filters in the menu.
+This menu would be triggered through a new action button in the top right toolbar of the table.
+When a filter state is changed, this will update the active filter list that is present in the representation id property of the table subscription.
+
+== Status
+
+Work in progress
+
+== Consequences
+
+None identified
