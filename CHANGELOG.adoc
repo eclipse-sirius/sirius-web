@@ -13,7 +13,7 @@
 === Architectural decision records
 
 - [ADR-185] Add support for custom ordering of the representation descriptions in the creation modal
-
+- [ADR-186] Add support of row level filters in tables
 
 === Deprecation warning
 
