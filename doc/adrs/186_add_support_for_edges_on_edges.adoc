@@ -1,0 +1,65 @@
+= ADR-186 - Add Support for edges on edges
+
+
+== Context
+
+We can't currently create edges that have another edge as source or targer
+
+== Decision
+
+=== View dsl
+
+The attributes `sourceNodeDescription` will be renamed to `sourceDescription` and `targetNodeDescription` to `targetDescription`.
+
+They'll both be of type `DiagramElementDescription`.
+
+=== Edge handles
+
+In order to create an edge we need handles and a node that contains these handles.
+
+We will create special nodes `EdgeNode` that will be hidden and placed along the edges to act as source or target of an edge.
+
+Theses nodes will be `placed along an edge` by reusing parts of the methods used to get the middle of an edge path (the methods used by the bending points)
+
+When the edge moves, the `EdgeNode` position is updated.
+
+=== Edge creation
+
+We will set `edge.data.isHovered` when an edge is hovered in order to know what edge is targeted when making a new connection.
+
+We will also set `edge.data.isCandidate` when starting a new connection in order to know what edges are candidates for the new connection.
+
+The edges that are not candidates for a new connection will have a greater opacity.
+
+When creating an edge from another edge an EdgeNode selected will be placed on the middle of the edge in order to have some connections handles.
+
+=== Edge converter
+
+When converting the diagram we will set `edge.data.EdgesNodes` that will contain an array with all the ids of the EdgeNode that will have to be placed along the edge.
+
+This will be used to know what EdgeNode position needs to be updated when rerendering an edge.
+
+=== Breadboarding
+
+The `EdgeNode` will be hidden when used as connection handles.
+
+An `EdgeNode` will be visible and selected when selecting an edge to expose some creation handles.
+
+== Status
+
+Accepted.
+
+== Consequences
+
+A `migration participant` will ensure the migration of existing models.
+
+Since we need to have a node selected in order to create connection from an edge, we need to update how the palette is opened to avoid having a group palette when an edge is selected.
+
+== References
+
+
+
+
+
+
+
