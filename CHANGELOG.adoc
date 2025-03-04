@@ -51,6 +51,7 @@ Given that it is an application service, it comes with some constraints with reg
 - https://github.com/eclipse-sirius/sirius-web/issues/4588[#4588] [core] Added support for custom ordering in representation creation modal.
 See the new interface `org.eclipse.sirius.components.emf.services.api.IRepresentationDescriptionMetadataSorter`.
 - https://github.com/eclipse-sirius/sirius-web/issues/4616[#4616] [sirius-web] Allow end users to see the content of a library in a workbench, the path of the new page is `/libraries/:namespace/:name/:version`
+- https://github.com/eclipse-sirius/sirius-web/issues/1028[#1028] [core] Add i18n support for frontend
 
 
 === Improvements
