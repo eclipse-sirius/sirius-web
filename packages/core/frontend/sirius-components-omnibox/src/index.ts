@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export { type OmniboxAction } from './Omnibox.types';
 export * from './OmniboxButton';
 export * from './OmniboxExtensionPoints';
 export * from './OmniboxExtensionPoints.types';
 export * from './OmniboxProvider';
+export { type GQLOmniboxCommand } from './useOmniboxCommands.types';

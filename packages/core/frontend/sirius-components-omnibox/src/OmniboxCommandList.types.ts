@@ -11,11 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { OmniboxAction } from './Omnibox.types';
+import { OmniboxMode } from './Omnibox.types';
 import { GQLGetOmniboxCommandsQueryData } from './useOmniboxCommands.types';
 
 export interface OmniboxCommandListProps {
   data: GQLGetOmniboxCommandsQueryData | null;
   loading: boolean;
-  onActionClick: (action: OmniboxAction) => void;
+  editingContextId: string;
+  onClose: () => void;
+  onModeChanged: (mode: OmniboxMode) => void;
 }

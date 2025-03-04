@@ -51,6 +51,9 @@ Given that it is an application service, it comes with some constraints with reg
 - https://github.com/eclipse-sirius/sirius-web/issues/4588[#4588] [core] Added support for custom ordering in representation creation modal.
 See the new interface `org.eclipse.sirius.components.emf.services.api.IRepresentationDescriptionMetadataSorter`.
 - https://github.com/eclipse-sirius/sirius-web/issues/4616[#4616] [sirius-web] Allow end users to see the content of a library in a workbench, the path of the new page is `/libraries/:namespace/:name/:version`
+- https://github.com/eclipse-sirius/sirius-web/issues/4597[#4597] [sirius-web] Add a command to publish libraries from studios
+The command creates a library for each _RepresentationDescription_ and _Domain_ in the studio, and creates the dependencies between them.
+A _shared components_ library can be created in the process to store elements that are needed by other libraries but are not stored in libraries themselves.
 
 
 === Improvements
