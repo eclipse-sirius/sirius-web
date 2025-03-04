@@ -1,0 +1,51 @@
+= ADR-186 - Add support for feature flags
+
+== Context
+
+Since the beginning of Sirius-web we have added a lot of feature, and we expect a lot of new ones.
+It could happen that some feature are not always wanted by downstream projects.
+So we need to implement a way that can easily disable a frontend feature.
+
+== Decision
+
+Each view must handle its own feature flags, which means a "feature flag data fetcher" will be added everytime its is needed, like in the `ProjectSettingsView`.
+
+.siriusweb.graphqls
+[source,graphql]
+----
+type Project {
+  projectSettings: ProjectSettings!
+}
+
+type ProjectSettings {
+  featureFlags: [String!]!
+}
+----
+
+The frontend `ComponentExtension` and `DataExtension` type will change to include the attribute `feature`, which will map the values retrieved by the `featureFlags` attribute.
+
+.ExtensionRegistry.types.ts
+[source,typescript]
+----
+export interface ComponentExtension<P> {
+  identifier: string;
+  feature: string;
+  Component: React.ComponentType<P>;
+}
+
+export interface DataExtension<P> {
+  identifier: string;
+  feature: string;
+  data: P;
+}
+----
+
+NOTE: Instead of adding `feature` attribute to `ComponentExtension` and `DataExtension`, we can also add it one extension at a time.
+
+
+NOTE: A draft of a prototype that filters the image project settings view https://github.com/eclipse-sirius/sirius-web/pull/4648
+
+
+== Status
+
+WIP
