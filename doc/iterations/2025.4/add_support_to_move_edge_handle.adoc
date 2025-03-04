@@ -1,0 +1,41 @@
+= (M) Add support to move edge handle
+
+
+== Problem
+
+When creating an edge on a diagram, the handle side (South, North, East, West) and its position on one side is automatically chosen.
+The user can't set the position of the handle manually.
+
+== Key Result
+
+A user can set the handle position manually by moving an edge segment.
+
+=== Acceptance Criteria
+
+Cypress tests will be implemented.
+
+== Solution
+
+We add a dedicated behaviour for handling moving the first and last segment of and edge.
+
+The user wants to move the target handle :
+
+* He selects an edge
+* He moves the segment connected to the handle to the desired position
+* He can't move the edge in a position that would create a new segment that would be out of the bounds of the node.
+
+=== Breadboarding
+
+=== Cutting backs
+
+== Rabbit holes
+
+If we allow the user to move every handle, there is a chance that the user will put the edges too close from one another and that the interaction with a specific edge would become impossible.
+In order to prevent this, we should allow the "reset path" tool to be executed on multiple edges in order to revert to an usable situation.
+
+== No-go
+
+- Moving a handle from one side to another by moving the edge segment.
+
+
+

@@ -4,6 +4,7 @@
 
 === Shapes
 
+- Add support to move edge handle
 
 
 === Architectural decision records
