@@ -21,7 +21,7 @@ import { useDiagramPalette } from './useDiagramPalette';
 
 export const DiagramPalette = memo(({ diagramElementId, targetObjectId }: DiagramPaletteProps) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
-  const { isOpened, x, y, hideDiagramPalette } = useDiagramPalette();
+  const { isOpened, x, y, repeatLastTool, hideDiagramPalette } = useDiagramPalette();
 
   if (readOnly) {
     return null;
@@ -44,6 +44,7 @@ export const DiagramPalette = memo(({ diagramElementId, targetObjectId }: Diagra
         <Palette
           x={x}
           y={y}
+          repeatLastTool={repeatLastTool}
           diagramElementId={diagramElementId}
           targetObjectId={targetObjectId}
           onDirectEditClick={() => {}}

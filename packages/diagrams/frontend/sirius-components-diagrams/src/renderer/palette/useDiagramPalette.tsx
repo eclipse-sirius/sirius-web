@@ -25,8 +25,16 @@ const computePalettePosition = (event: MouseEvent | React.MouseEvent, bounds?: D
 };
 
 export const useDiagramPalette = (): UseDiagramPaletteValue => {
-  const { x, y, isOpened, hideDiagramPalette, showDiagramPalette, getLastToolInvoked, setLastToolInvoked } =
-    useContext<DiagramPaletteContextValue>(DiagramPaletteContext);
+  const {
+    x,
+    y,
+    isOpened,
+    repeatLastTool,
+    hideDiagramPalette,
+    showDiagramPalette,
+    getLastToolInvoked,
+    setLastToolInvoked,
+  } = useContext<DiagramPaletteContextValue>(DiagramPaletteContext);
   const store = useStoreApi();
 
   const onDiagramBackgroundContextMenu = useCallback(
@@ -34,10 +42,9 @@ export const useDiagramPalette = (): UseDiagramPaletteValue => {
       const { domNode } = store.getState();
       const element = domNode?.getBoundingClientRect();
       const palettePosition = computePalettePosition(event, element);
-      if (!event.altKey) {
-        event.preventDefault();
-        showDiagramPalette(palettePosition.x, palettePosition.y);
-      }
+      const repeatLastTool = event.altKey;
+      event.preventDefault();
+      showDiagramPalette(palettePosition.x, palettePosition.y, repeatLastTool);
     },
     [showDiagramPalette]
   );
@@ -48,6 +55,7 @@ export const useDiagramPalette = (): UseDiagramPaletteValue => {
     x,
     y,
     isOpened,
+    repeatLastTool,
     hideDiagramPalette,
     showDiagramPalette,
     onDiagramBackgroundContextMenu,

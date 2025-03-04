@@ -70,6 +70,7 @@ export const DiagramElementPalette = memo(
           <Palette
             x={x}
             y={y}
+            repeatLastTool={false}
             diagramElementId={diagramElementId}
             targetObjectId={targetObjectId}
             onDirectEditClick={handleDirectEditClick}
