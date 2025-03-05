@@ -183,6 +183,7 @@ export const MultiLabelRectilinearEditableEdge = memo(
           <>
             <DiagramElementPalette
               diagramElementId={id}
+              elementDescriptionId={data?.descriptionId ?? ''}
               targetObjectId={data?.targetObjectId ?? ''}
               labelId={label ? label.id : null}
             />
