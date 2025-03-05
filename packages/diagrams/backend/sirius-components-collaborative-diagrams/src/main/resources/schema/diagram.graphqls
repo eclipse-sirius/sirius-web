@@ -84,6 +84,14 @@ type Node {
   defaultWidth: Int
   defaultHeight: Int
   labelEditable: Boolean!
+  initialBorderNodePosition: BorderNodePosition
+}
+
+enum BorderNodePosition {
+  WEST
+  EAST
+  SOUTH
+  NORTH
 }
 
 type FreeFormLayoutStrategy {
