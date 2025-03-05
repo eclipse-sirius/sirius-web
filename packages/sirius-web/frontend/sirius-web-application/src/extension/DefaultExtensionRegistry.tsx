@@ -438,6 +438,7 @@ const defaultSettingPages: ProjectSettingTabContribution[] = [
     id: 'images',
     title: 'Images',
     icon: <ImageIcon />,
+    feature: 'imageEnabled',
     component: ProjectImagesSettings,
   },
 ];
