@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,4 +14,8 @@
 /* The circle used to reconnect an edge */
 .react-flow__edgeupdater {
   stroke-width: 15;
+}
+
+.react-flow.cursor-crosshair .react-flow__pane {
+  cursor: crosshair;
 }

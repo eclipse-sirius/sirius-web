@@ -29,7 +29,16 @@ import {
   applyNodeChanges,
   useStoreApi,
 } from '@xyflow/react';
-import React, { MouseEvent as ReactMouseEvent, memo, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
+import React, {
+  MouseEvent as ReactMouseEvent,
+  memo,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramContextValue } from '../contexts/DiagramContext.types';
 import { NodeTypeContext } from '../contexts/NodeContext';
@@ -80,6 +89,34 @@ import '@xyflow/react/dist/style.css';
 
 const GRID_STEP: number = 10;
 
+const useAltKeyPressedStatus = (refDomNode: React.MutableRefObject<HTMLElement | null>) => {
+  const [isKeyPressed, setKeyPressed] = useState<boolean>(false);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.altKey) {
+        setKeyPressed(true);
+      }
+    };
+
+    const onKeyUp = (event: KeyboardEvent) => {
+      if (!event.altKey) {
+        setKeyPressed(false);
+      }
+    };
+
+    refDomNode.current?.addEventListener('keydown', onKeyDown);
+    refDomNode.current?.addEventListener('keyup', onKeyUp);
+
+    return () => {
+      refDomNode.current?.removeEventListener('keydown', onKeyDown);
+      refDomNode.current?.removeEventListener('keyup', onKeyUp);
+    };
+  }, [refDomNode]);
+
+  return isKeyPressed;
+};
+
 export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRendererProps) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { diagramDescription } = useDiagramDescription();
@@ -91,6 +128,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { onDelete } = useDiagramDelete();
 
   const ref = useRef<HTMLDivElement | null>(null);
+  const isAltKeyDown = useAltKeyPressedStatus(ref);
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
   const {
@@ -413,6 +451,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { nodesDraggable } = useNodesDraggable();
 
   let reactFlowProps: ReactFlowProps<Node<NodeData>, Edge<EdgeData>> = {
+    className: isAltKeyDown ? 'cursor-crosshair' : '',
     nodes: nodes,
     nodeTypes: nodeTypes,
     onNodesChange: handleNodesChange,
