@@ -447,6 +447,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     onConnectStart: onConnectStart,
     onConnectEnd: onConnectEnd,
     connectionLineComponent: ConnectionLine,
+    connectionRadius: 0,
     onEdgesChange: handleEdgesChange,
     onReconnect: reconnectEdge,
     onPaneContextMenu: handlePaneContextMenu,
