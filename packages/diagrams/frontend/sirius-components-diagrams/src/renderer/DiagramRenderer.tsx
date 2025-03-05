@@ -11,8 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { useData } from '@eclipse-sirius/sirius-components-core';
-import { usePalette } from '@eclipse-sirius/sirius-components-palette';
+import { useApolloClient } from '@apollo/client';
+import { useData, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { GQLTool, isTool, isToolSection, usePalette } from '@eclipse-sirius/sirius-components-palette';
 import {
   applyNodeChanges,
   Background,
@@ -33,7 +34,16 @@ import {
   useStoreApi,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import React, { memo, MouseEvent as ReactMouseEvent, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
+import React, {
+  memo,
+  MouseEvent as ReactMouseEvent,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramContextValue } from '../contexts/DiagramContext.types';
 import { NodeTypeContext } from '../contexts/NodeContext';
@@ -79,6 +89,12 @@ import { MiniMapContextValue } from './mini-map/MiniMapContext.types';
 import { useMoveChange } from './move/useMoveChange';
 import { useNodeType } from './node/useNodeType';
 import { DiagramPalette } from './palette/DiagramPalette';
+import { getPaletteQuery } from './palette/usePaletteContents';
+import {
+  GQLDiagramDescription,
+  GQLGetToolSectionsData,
+  GQLGetToolSectionsVariables,
+} from './palette/usePaletteContents.types';
 import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
 import { useMultiSelectResizeChange } from './resize/useMultiSelectResizeChange';
 import { useResizeChange } from './resize/useResizeChange';
@@ -90,11 +106,36 @@ import { useRectangleSelection } from './selection/useRectangleSelection';
 import { SnapToGridContext } from './snap-to-grid/SnapToGridContext';
 import { SnapToGridContextValue } from './snap-to-grid/SnapToGridContext.types';
 import { DiagramToolbar } from './toolbar/DiagramToolbar';
+import { DiagramToolExecutorContext } from './tools/DiagramToolExecutorContext';
+import { DiagramToolExecutorContextValue } from './tools/DiagramToolExecutorContext.types';
 
 const GRID_STEP: number = 10;
 
+const useAltKeyPressedStatus = (refDomNode: React.MutableRefObject<HTMLElement | null>): boolean => {
+  const [isKeyPressed, setKeyPressed] = useState<boolean>(false);
+
+  useEffect(() => {
+    const domNode = refDomNode.current;
+    const onKeyDown = (event: KeyboardEvent) => setKeyPressed(event.altKey);
+    const onKeyUp = (event: KeyboardEvent) => setKeyPressed(event.altKey);
+    const onBlur = () => setKeyPressed(false);
+
+    domNode?.addEventListener('keydown', onKeyDown);
+    domNode?.addEventListener('keyup', onKeyUp);
+    window.addEventListener('blur', onBlur);
+
+    return () => {
+      domNode?.removeEventListener('keydown', onKeyDown);
+      domNode?.removeEventListener('keyup', onKeyUp);
+      window.removeEventListener('blur', onBlur);
+    };
+  }, [refDomNode]);
+
+  return isKeyPressed;
+};
+
 export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRendererProps) => {
-  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
+  const { readOnly, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
   const { diagramDescription } = useDiagramDescription();
   const { getEdges, onEdgesChange, getNodes, setEdges, setNodes } = useStore();
   const nodes = getNodes();
@@ -106,6 +147,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { onKeyBinding } = useDiagramKeyBinding(diagramRefreshedEventPayload.diagram.targetObjectId);
 
   const ref = useRef<HTMLDivElement | null>(null);
+  const isAltKeyDown = useAltKeyPressedStatus(ref);
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
   const { onConnectEnd } = useConnector();
@@ -124,8 +166,12 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   useInitialFitToScreen(diagramRefreshedEventPayload.diagram.nodes.length === 0);
   useResetXYFlowConnection();
   usePostToolSelection(diagramRefreshedEventPayload);
-  const { getNode } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const { getNode, screenToFlowPosition } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+  const client = useApolloClient();
+  const { getLastToolInvokedId } = usePalette();
+  const { executeTool } = useContext<DiagramToolExecutorContextValue>(DiagramToolExecutorContext);
+  const { addErrorMessage } = useMultiToast();
 
   useEffect(() => {
     const { diagram, cause, referencePosition } = diagramRefreshedEventPayload;
@@ -353,7 +399,63 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { onEdgeContextMenu, onNodeContextMenu, onPaneContextMenu, onPaneClick, onSelectionContextMenu } =
     useOnClickElement(selectedElementsIds);
 
+  const repeatLastTool = useCallback(
+    async (event: MouseEvent | ReactMouseEvent<Element, MouseEvent>, node: Node<NodeData> | null): Promise<void> => {
+      if (readOnly || !event.altKey) {
+        return;
+      }
+
+      const diagramId = diagramRefreshedEventPayload.diagram.id;
+      const diagramElementId = node?.id ?? diagramId;
+      const clientX = event.clientX;
+      const clientY = event.clientY;
+      try {
+        const { data } = await client.query<GQLGetToolSectionsData, GQLGetToolSectionsVariables>({
+          query: getPaletteQuery,
+          variables: { editingContextId, diagramId, diagramElementIds: [diagramElementId] },
+        });
+        const description = data.viewer.editingContext.representation.description;
+        if (description.__typename !== 'DiagramDescription') {
+          return;
+        }
+        const palette = (description as GQLDiagramDescription).palette;
+        const lastToolId = getLastToolInvokedId(palette.id);
+        if (!lastToolId) {
+          return;
+        }
+        const tools: GQLTool[] = [
+          ...palette.quickAccessTools,
+          ...palette.paletteEntries.flatMap((entry) => {
+            if (isToolSection(entry)) {
+              return entry.tools;
+            }
+            return isTool(entry) ? [entry] : [];
+          }),
+        ];
+        const lastTool = tools.find((tool) => tool.id === lastToolId);
+        if (lastTool) {
+          const { x, y } = screenToFlowPosition({ x: clientX, y: clientY });
+          const targetObjectId = node?.data.targetObjectId ?? diagramRefreshedEventPayload.diagram.targetObjectId;
+          executeTool(x, y, [diagramElementId], targetObjectId, () => {}, lastTool);
+        }
+      } catch {
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
+      }
+    },
+    [
+      readOnly,
+      diagramRefreshedEventPayload,
+      client,
+      editingContextId,
+      getLastToolInvokedId,
+      screenToFlowPosition,
+      executeTool,
+      addErrorMessage,
+    ]
+  );
+
   let reactFlowProps: ReactFlowProps<Node<NodeData>, Edge<EdgeData>> = {
+    className: isAltKeyDown ? 'cursor-crosshair' : '',
     nodes: nodes,
     nodeTypes: nodeTypes,
     onNodesChange: handleNodesChange,
@@ -368,10 +470,16 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     onReconnectEnd: onReconnectEdgeEnd,
     connectionRadius: 0,
     onEdgesChange: handleEdgesChange,
-    onPaneClick: onPaneClick,
+    onPaneClick: (event) => {
+      onPaneClick(event);
+      void repeatLastTool(event, null);
+    },
     onPaneContextMenu: onPaneContextMenu,
     onEdgeContextMenu: onEdgeContextMenu,
     onNodeContextMenu: onNodeContextMenu,
+    onNodeClick: (event, node) => {
+      void repeatLastTool(event, node);
+    },
     onSelectionContextMenu: onSelectionContextMenu,
     nodeDragThreshold: 5,
     onDrop: onDrop,
