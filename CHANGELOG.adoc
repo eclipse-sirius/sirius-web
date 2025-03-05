@@ -44,6 +44,7 @@ Given that it is an application service, it comes with some constraints with reg
 - https://github.com/eclipse-sirius/sirius-web/issues/4534[#4534] [table] Fix an issue that prevent row action to be trigger on row in the next paginated data
 - https://github.com/eclipse-sirius/sirius-web/issues/4535[#4535] [table] Prevent page size from being reset after global search has been cleared
 - https://github.com/eclipse-sirius/sirius-web/issues/4443[#4443] [table] Add missing edit handler for table cells in view
+- https://github.com/eclipse-sirius/sirius-web/issues/4661[#4661] [table] Prevent table pagination to be reset on the first page
 
 
 === New Features

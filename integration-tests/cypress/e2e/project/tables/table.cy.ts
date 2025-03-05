@@ -53,5 +53,16 @@ describe('Tables', () => {
       table.resetGlobalSearchValue();
       table.checkRowCount(5);
     });
+
+    it('Check paginate to the next page is working', () => {
+      new Explorer().createRepresentation('Package Package', 'Papaya package table', 'Table');
+      const table = new Table();
+      table.getTableRepresentation().should('exist');
+      table.checkRowCount(7);
+      table.changeRowPerPage(5);
+      table.checkRowCount(5);
+      table.navigateNextPage();
+      table.checkRowCount(2);
+    });
   });
 });

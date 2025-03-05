@@ -37,4 +37,8 @@ export class Table {
     cy.get('ul[role="listbox"]').contains(pageSize).click();
     cy.getByTestId('cursor-based-pagination-size').should('contain', '5');
   }
+
+  public navigateNextPage(): void {
+    cy.getByTestId('pagination-next').click();
+  }
 }
