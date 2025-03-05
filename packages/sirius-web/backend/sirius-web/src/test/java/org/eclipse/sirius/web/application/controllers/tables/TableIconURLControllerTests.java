@@ -134,12 +134,14 @@ public class TableIconURLControllerTests extends AbstractIntegrationTests {
                             });
 
                     List<List<String>> rowIconURLs = JsonPath.read(body, "$.data.tableEvent.table.lines[*].headerIconURLs");
+                    assertThat(rowIconURLs).hasSize(4);
+                    assertThat(rowIconURLs.get(0)).hasSize(2);
+                    assertThat(rowIconURLs.get(1)).hasSize(2);
+                    assertThat(rowIconURLs.get(2)).hasSize(2);
+                    assertThat(rowIconURLs.get(3)).hasSize(1);
                     assertThat(rowIconURLs)
-                            .isNotEmpty()
                             .allSatisfy(iconURLs -> {
                                 assertThat(iconURLs)
-                                        .isNotEmpty()
-                                        .hasSize(2)
                                         .allSatisfy(iconURL -> assertThat(iconURL).startsWith(URLConstants.IMAGE_BASE_PATH));
                             });
                 }, () -> fail("Missing table"));
@@ -176,11 +178,15 @@ public class TableIconURLControllerTests extends AbstractIntegrationTests {
                     assertThat(typename).isEqualTo(TableRefreshedEventPayload.class.getSimpleName());
 
                     List<List<String>> iconLabelCellIconURLs = JsonPath.read(body, "$.data.tableEvent.table.lines[*].cells[*].iconURLs");
-                    assertThat(iconLabelCellIconURLs.stream().filter(iconURL -> !iconURL.isEmpty()).toList())
+                    List<List<String>> filteredIconLavelCellIconURLs = iconLabelCellIconURLs.stream().filter(iconURL -> !iconURL.isEmpty()).toList();
+                    assertThat(filteredIconLavelCellIconURLs).hasSize(4);
+                    assertThat(filteredIconLavelCellIconURLs.get(0)).hasSize(2);
+                    assertThat(filteredIconLavelCellIconURLs.get(1)).hasSize(2);
+                    assertThat(filteredIconLavelCellIconURLs.get(2)).hasSize(2);
+                    assertThat(filteredIconLavelCellIconURLs.get(3)).hasSize(1);
+                    assertThat(filteredIconLavelCellIconURLs)
                             .isNotEmpty()
                             .allSatisfy(iconURLs -> assertThat(iconURLs)
-                                    .isNotEmpty()
-                                    .hasSize(2)
                                     .allSatisfy(iconURL -> assertThat(iconURL).startsWith(URLConstants.IMAGE_BASE_PATH)));
                 }, () -> fail("Missing table"));
 

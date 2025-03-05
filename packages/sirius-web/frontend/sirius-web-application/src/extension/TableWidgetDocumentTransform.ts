@@ -108,6 +108,7 @@ export const tableWidgetDocumentTransform = new DocumentTransform((document) => 
                   fieldBuilder('totalRowCount'),
                 ]),
                 fieldBuilder('stripeRow'),
+                fieldBuilder('enableSubRows'),
                 fieldBuilder('globalFilter'),
                 structuredFieldBuilder('columnFilters', [fieldBuilder('id'), fieldBuilder('value')]),
                 structuredFieldBuilder('columns', [
@@ -131,6 +132,7 @@ export const tableWidgetDocumentTransform = new DocumentTransform((document) => 
                   fieldBuilder('headerIndexLabel'),
                   fieldBuilder('height'),
                   fieldBuilder('isResizable'),
+                  fieldBuilder('depthLevel'),
                   structuredFieldBuilder('cells', [
                     fieldBuilder('id'),
                     fieldBuilder('targetObjectId'),

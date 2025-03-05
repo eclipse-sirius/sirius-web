@@ -52,6 +52,7 @@ export interface GQLTable {
   id: string;
   targetObjectId: string;
   stripeRow: boolean;
+  enableSubRows: boolean;
   globalFilter: string | null;
   columns: GQLColumn[];
   lines: GQLLine[];
@@ -94,6 +95,7 @@ export interface GQLLine {
   headerIndexLabel: string;
   height: number;
   isResizable: boolean;
+  depthLevel: number;
 }
 
 export interface GQLPaginationData {
