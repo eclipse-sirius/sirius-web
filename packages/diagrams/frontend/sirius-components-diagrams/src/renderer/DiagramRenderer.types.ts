@@ -54,6 +54,7 @@ export interface NodeData extends Record<string, unknown> {
   isDropNodeTarget: boolean;
   isDropNodeCandidate: boolean;
   isHovered: boolean;
+  isFake?: boolean;
 }
 
 export enum BorderNodePosition {
