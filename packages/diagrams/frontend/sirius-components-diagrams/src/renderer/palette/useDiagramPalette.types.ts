@@ -17,8 +17,9 @@ export interface UseDiagramPaletteValue {
   x: number | null;
   y: number | null;
   isOpened: boolean;
+  repeatLastTool: boolean;
   hideDiagramPalette: () => void;
-  showDiagramPalette: (x: number, y: number) => void;
+  showDiagramPalette: (x: number, y: number, repeatLastTool: boolean) => void;
   onDiagramBackgroundContextMenu: (event: MouseEvent | React.MouseEvent<Element, MouseEvent>) => void;
   onDiagramElementContextMenu: () => void;
   getLastToolInvoked: (paletteId: string) => GQLTool | null;

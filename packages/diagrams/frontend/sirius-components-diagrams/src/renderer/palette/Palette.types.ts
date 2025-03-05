@@ -37,6 +37,7 @@ export interface PaletteProps {
   y: number;
   diagramElementId: string;
   targetObjectId: string;
+  repeatLastTool: boolean;
   onDirectEditClick: () => void;
   onClose: () => void;
 }

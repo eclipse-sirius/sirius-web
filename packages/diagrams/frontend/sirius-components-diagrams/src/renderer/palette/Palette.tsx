@@ -37,6 +37,7 @@ import { PaletteQuickAccessToolBar } from './quick-access-tool/PaletteQuickAcces
 import { PaletteSearchField } from './search/PaletteSearchField';
 import { PaletteSearchResult } from './search/PaletteSearchResult';
 import { PaletteToolList } from './tool-list/PaletteToolList';
+import { useDiagramPalette } from './useDiagramPalette';
 import { usePalette } from './usePalette';
 
 const usePaletteStyle = makeStyles<PaletteStyleProps>()((theme, props) => ({
@@ -101,9 +102,15 @@ const computePaletteLocation = (
   };
 };
 
+const initialState = {
+  searchToolValue: '',
+  controlledPosition: { x: 0, y: 0 },
+};
+
 export const Palette = ({
   x: paletteX,
   y: paletteY,
+  repeatLastTool,
   diagramElementId,
   targetObjectId,
   onDirectEditClick,
@@ -112,10 +119,8 @@ export const Palette = ({
   const { domNode, nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
   const { x: viewportWidth, y: viewportHeight } = computeDraggableBounds(domNode?.getBoundingClientRect());
 
-  const [state, setState] = useState<PaletteState>({
-    searchToolValue: '',
-    controlledPosition: { x: 0, y: 0 },
-  });
+  const [state, setState] = useState<PaletteState>(initialState);
+  const [executingLastTool, setExecutingLastTool] = useState<boolean>(false);
 
   const diagramElement = nodeLookup.get(diagramElementId) || edgeLookup.get(diagramElementId);
 
@@ -136,8 +141,23 @@ export const Palette = ({
   const { classes } = usePaletteStyle({ paletteWidth: `${paletteWidth}px`, paletteHeight: `${paletteHeight}px` });
 
   const shouldRender = palette && (getPaletteToolCount(palette) > 0 || !!diagramElement);
+  const { getLastToolInvoked } = useDiagramPalette();
+
+  const lastToolInvoked = palette ? getLastToolInvoked(palette.id) : null;
+  useEffect(() => {
+    if (repeatLastTool && lastToolInvoked && !executingLastTool) {
+      handleToolClick(lastToolInvoked);
+      setExecutingLastTool(true);
+    } else {
+      setExecutingLastTool(false);
+    }
+  }, [repeatLastTool, getLastToolInvoked, handleToolClick, executingLastTool]);
 
   if (!shouldRender) {
+    return null;
+  }
+
+  if (repeatLastTool && lastToolInvoked) {
     return null;
   }
 

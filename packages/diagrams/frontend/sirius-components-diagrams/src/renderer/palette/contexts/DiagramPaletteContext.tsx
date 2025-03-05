@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ const defaultValue: DiagramPaletteContextValue = {
   x: null,
   y: null,
   isOpened: false,
+  repeatLastTool: false,
   hideDiagramPalette: () => {},
   showDiagramPalette: () => {},
   getLastToolInvoked: () => null,
@@ -32,21 +33,24 @@ const defaultValue: DiagramPaletteContextValue = {
 
 export const DiagramPaletteContext = React.createContext<DiagramPaletteContextValue>(defaultValue);
 
-export const DiagramPaletteContextProvider = ({ children }: DiagramPaletteContextProviderProps) => {
-  const [state, setState] = useState<DiagramPaletteContextProviderState>({
-    x: null,
-    y: null,
-    isOpened: false,
-    lastToolsInvoked: [],
-  });
+const initialState = {
+  x: null,
+  y: null,
+  isOpened: false,
+  repeatLastTool: false,
+  lastToolsInvoked: [],
+};
 
-  const showPalette = useCallback((x: number, y: number) => {
-    setState((prevState) => ({ ...prevState, x, y, isOpened: true }));
+export const DiagramPaletteContextProvider = ({ children }: DiagramPaletteContextProviderProps) => {
+  const [state, setState] = useState<DiagramPaletteContextProviderState>(initialState);
+
+  const showPalette = useCallback((x: number, y: number, repeatLastTool: boolean = false) => {
+    setState((prevState) => ({ ...prevState, x, y, isOpened: true, repeatLastTool }));
   }, []);
 
   const hidePalette = useCallback(() => {
     if (state.isOpened) {
-      setState((prevState) => ({ ...prevState, x: null, y: null, isOpened: false }));
+      setState((prevState) => ({ ...prevState, x: null, y: null, isOpened: false, repeatLastTool: false }));
     }
   }, [state.isOpened]);
 
@@ -74,6 +78,7 @@ export const DiagramPaletteContextProvider = ({ children }: DiagramPaletteContex
         x: state.x,
         y: state.y,
         isOpened: state.isOpened,
+        repeatLastTool: state.repeatLastTool,
         showDiagramPalette: showPalette,
         hideDiagramPalette: hidePalette,
         getLastToolInvoked,

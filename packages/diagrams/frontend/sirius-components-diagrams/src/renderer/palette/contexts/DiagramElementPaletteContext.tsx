@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ const defaultValue: DiagramElementPaletteContextValue = {
   x: null,
   y: null,
   isOpened: false,
+  repeatLastTool: false,
   hideDiagramElementPalette: () => {},
   showDiagramElementPalette: () => {},
 };
@@ -33,15 +34,16 @@ export const DiagramElementPaletteContextProvider = ({ children }: DiagramElemen
     x: null,
     y: null,
     isOpened: false,
+    repeatLastTool: false,
   });
 
-  const showPalette = useCallback((x: number, y: number) => {
-    setState((prevState) => ({ ...prevState, x, y, isOpened: true }));
+  const showPalette = useCallback((x: number, y: number, repeatLastTool: boolean = false) => {
+    setState((prevState) => ({ ...prevState, x, y, isOpened: true, repeatLastTool }));
   }, []);
 
   const hidePalette = useCallback(() => {
     if (state.isOpened) {
-      setState((prevState) => ({ ...prevState, x: null, y: null, isOpened: false }));
+      setState((prevState) => ({ ...prevState, x: null, y: null, isOpened: false, repeatLastTool: false }));
     }
   }, [state.isOpened]);
 
@@ -51,6 +53,7 @@ export const DiagramElementPaletteContextProvider = ({ children }: DiagramElemen
         x: state.x,
         y: state.y,
         isOpened: state.isOpened,
+        repeatLastTool: state.repeatLastTool,
         showDiagramElementPalette: showPalette,
         hideDiagramElementPalette: hidePalette,
       }}>
