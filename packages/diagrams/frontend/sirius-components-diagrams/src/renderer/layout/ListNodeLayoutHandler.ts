@@ -87,6 +87,11 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);
     const previousDimensions = computePreviousSize(previousNode, node);
 
+    const heightLostSincePrevDiagram: number =
+      previousDiagram?.nodes
+        .filter((prevNode) => prevNode.parentId === node.id && !prevNode.hidden)
+        .reduce<number>((height, node) => height + (node.height ?? 0), 0) ?? 0;
+
     if (node.data.resizedByUser) {
       if (nodeMinComputeWidth > previousDimensions.width) {
         node.width = nodeMinComputeWidth;
@@ -96,7 +101,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
       if (nodeMinComputeHeight > previousDimensions.height) {
         node.height = nodeMinComputeHeight;
       } else {
-        node.height = previousDimensions.height;
+        node.height = getDefaultOrMinHeight(previousDimensions.height - heightLostSincePrevDiagram, node);
       }
     } else {
       node.width = nodeWith;
@@ -128,6 +133,12 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     const previousNode: Node<NodeData, string> | undefined = (previousDiagram?.nodes ?? []).find(
       (previouseNode) => previouseNode.id === node.id
     );
+
+    const heightLostSincePrevDiagram: number =
+      previousDiagram?.nodes
+        .filter((prevNode) => prevNode.parentId === node.id && !prevNode.hidden)
+        .filter((prevNode) => !directChildren.map((child) => child.id).includes(prevNode.id))
+        .reduce<number>((height, node) => height + (node.height ?? 0), 0) ?? 0;
 
     if (!forceDimensions) {
       let previousChildrenContentBoxWidthToConsider: number = getDefaultOrMinWidth(0, node) - borderWidth * 2;
@@ -161,6 +172,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
         (height, node) => height + (node.height ?? 0),
         0
       );
+      previousChildrenContentBoxHeightToConsider -= node.data.topGap + node.data.bottomGap;
 
       const growableChilds = directNodesChildren.filter(
         (child) => node.data.growableNodeIds.includes(child.data.descriptionId) && !child.data.resizedByUser
@@ -215,7 +227,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
       if (nodeMinComputeHeight > previousDimensions.height) {
         node.height = nodeMinComputeHeight;
       } else {
-        node.height = previousDimensions.height;
+        node.height = getDefaultOrMinHeight(previousDimensions.height - heightLostSincePrevDiagram, node);
       }
     } else {
       node.width = nodeWidth;
