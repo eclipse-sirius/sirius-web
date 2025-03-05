@@ -70,6 +70,7 @@ export const Palette = ({
   x: paletteX,
   y: paletteY,
   diagramElementId,
+  elementDescriptionId,
   targetObjectId,
   onDirectEditClick,
   onClose,
@@ -103,7 +104,7 @@ export const Palette = ({
     }
     executeTool(x, y, diagramElementId, targetObjectId, onDirectEditClick, tool);
     if (palette) {
-      setLastToolInvoked(palette.id, tool);
+      setLastToolInvoked(elementDescriptionId, tool);
     }
     const position = getUpdatedModalPosition({ x: state.controlledPosition.x, y: state.controlledPosition.y }, nodeRef);
     setState((prevState) => {
@@ -220,7 +221,8 @@ export const Palette = ({
                 onToolClick={handleToolClick}
                 onBackToMainList={handleBackToMainList}
                 onClose={onClose}
-                diagramElementId={diagramElementId}>
+                diagramElementId={diagramElementId}
+                elementDescriptionId={elementDescriptionId}>
                 {children}
               </PaletteToolList>
             )}

@@ -48,3 +48,7 @@
 .source_handle_left ~ .react-flow__edgeupdater-source {
   transform: translate(20px, 0px);
 }
+
+.react-flow.cursor-crosshair .react-flow__pane {
+  cursor: crosshair;
+}
