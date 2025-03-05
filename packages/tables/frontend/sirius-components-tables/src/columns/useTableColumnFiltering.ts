@@ -93,7 +93,7 @@ export const useTableColumnFiltering = (
 
   useEffect(() => {
     onColumnFiltersChange(columnFilters);
-  }, [columnFilters]);
+  }, [columnFilters.map((columnFilter) => columnFilter.id + columnFilter.value).join()]);
 
   if (!enableColumnFilters) {
     return {

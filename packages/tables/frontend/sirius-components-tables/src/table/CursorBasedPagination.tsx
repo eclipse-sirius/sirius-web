@@ -46,10 +46,10 @@ export const CursorBasedPagination = ({
         </Select>
       </Box>
       <Box display="flex" alignItems="center">
-        <IconButton onClick={onPrev} disabled={!hasPrev}>
+        <IconButton onClick={onPrev} disabled={!hasPrev} data-testid="pagination-prev">
           <ArrowBack />
         </IconButton>
-        <IconButton onClick={onNext} disabled={!hasNext}>
+        <IconButton onClick={onNext} disabled={!hasNext} data-testid="pagination-next">
           <ArrowForward />
         </IconButton>
       </Box>
