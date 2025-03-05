@@ -61,6 +61,7 @@ See the new interface `org.eclipse.sirius.components.emf.services.api.IRepresent
 - https://github.com/eclipse-sirius/sirius-web/issues/4597[#4597] [sirius-web] Add a command to publish libraries from studios
 The command creates a library for each _RepresentationDescription_ and _Domain_ in the studio, and creates the dependencies between them.
 A _shared components_ library can be created in the process to store elements that are needed by other libraries but are not stored in libraries themselves.
+- https://github.com/eclipse-sirius/sirius-web/issues/4664[#4664] [diagram] Make ConnectionLine snap to the border of a node
 
 
 === Improvements

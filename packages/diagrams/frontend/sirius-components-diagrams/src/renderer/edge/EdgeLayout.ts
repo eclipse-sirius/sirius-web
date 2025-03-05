@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,39 @@ import {
   GetUpdatedConnectionHandlesParameters,
   NodeCenter,
 } from './EdgeLayout.types';
+
+const clamp = (n: number, lower: number, upper: number) => Math.max(lower, Math.min(upper, n));
+
+export const getNearestPointInPerimeter = (
+  rectX: number,
+  rectY: number,
+  width: number,
+  height: number,
+  x: number,
+  y: number
+): { XYpostion: XYPosition; position: Position } => {
+  const rectX2 = rectX + width;
+  const rectY2 = rectY + height;
+
+  x = clamp(x, rectX, rectX2);
+  y = clamp(y, rectY, rectY2);
+
+  const left = Math.abs(x - rectX);
+  const right = Math.abs(x - rectX2);
+  const top = Math.abs(y - rectY);
+  const bottom = Math.abs(y - rectY2);
+  const m = Math.min(left, right, top, bottom);
+
+  if (m === top) {
+    return { XYpostion: { x, y: rectY }, position: Position.Top };
+  } else if (m === bottom) {
+    return { XYpostion: { x, y: rectY2 }, position: Position.Bottom };
+  } else if (m === left) {
+    return { XYpostion: { x: rectX, y }, position: Position.Left };
+  } else {
+    return { XYpostion: { x: rectX2, y }, position: Position.Right };
+  }
+};
 
 export const getUpdatedConnectionHandles: GetUpdatedConnectionHandlesParameters = (
   sourceNode,
