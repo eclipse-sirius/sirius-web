@@ -15,12 +15,9 @@ package org.eclipse.sirius.web.application.studio.services.library;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
@@ -31,7 +28,6 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
-import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
@@ -40,7 +36,6 @@ import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceL
 import org.eclipse.sirius.web.application.library.dto.ImportLibrariesInput;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
-import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.springframework.stereotype.Service;
@@ -108,18 +103,10 @@ public class CopyLibraryImportHandler implements IEditingContextEventHandler {
                         });
                 }
 
-                for (SemanticData semanticData: semanticDataToCopy) {
-                    for (Document document : semanticData.getDocuments()) {
-                        Optional<Resource> optionalResource = this.resourceLoader.toResource(siriusWebEditingContext.getDomain().getResourceSet(), document.getId().toString(), document.getName(), document.getContent(),
-                                this.migrationParticipantPredicates.stream().anyMatch(predicate -> predicate.test(editingContext.getId())));
-                        optionalResource.ifPresent(resource -> {
-                            URI newResourceURI = new JSONResourceFactory().createResourceURI(UUID.randomUUID().toString());
-                            URI oldResourceURI = resource.getURI();
-                            siriusWebEditingContext.getDomain().getResourceSet().getURIConverter().getURIMap().put(oldResourceURI, newResourceURI);
-                            resource.setURI(newResourceURI);
-                        });
-                    }
-                }
+                semanticDataToCopy.stream()
+                    .flatMap(semanticData -> semanticData.getDocuments().stream())
+                    .forEach(document -> this.resourceLoader.toResource(siriusWebEditingContext.getDomain().getResourceSet(), document.getId().toString(), document.getName(), document.getContent(),
+                                this.migrationParticipantPredicates.stream().anyMatch(predicate -> predicate.test(editingContext.getId()))));
 
                 payload = new SuccessPayload(input.id(), List.of(new Message("Libraries imported", MessageLevel.SUCCESS)));
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), importLibrariesInput);

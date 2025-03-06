@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,23 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.papaya.services.library;
+package org.eclipse.sirius.web.application.library.dto;
 
 import java.util.UUID;
 
-import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.components.core.api.IInput;
 
 import jakarta.validation.constraints.NotNull;
 
 /**
- * Input used to track the initialization of the standard library.
+ * Input used to update a library.
  *
- * @author sbegaudeau
+ * @author gdaniel
  */
-public record InitializeStandardLibraryEvent(
-        @NotNull UUID id,
-        @NotNull String namespace,
-        @NotNull String name,
-        @NotNull String version,
-        @NotNull String description) implements ICause {
+public record UpdateLibraryInput(@NotNull UUID id, @NotNull String editingContextId, @NotNull UUID libraryId) implements IInput {
+
 }

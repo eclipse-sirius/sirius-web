@@ -17,6 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 /**
  * Used to retrieve the semantic data.
@@ -30,6 +31,8 @@ public interface ISemanticDataSearchService {
     Optional<SemanticData> findById(UUID id);
 
     boolean existsById(UUID id);
+
+    List<AggregateReference<SemanticData, UUID>> findAllDependenciesIdById(UUID id);
 
     List<SemanticData> findAllDependenciesRecursivelyById(UUID id);
 }

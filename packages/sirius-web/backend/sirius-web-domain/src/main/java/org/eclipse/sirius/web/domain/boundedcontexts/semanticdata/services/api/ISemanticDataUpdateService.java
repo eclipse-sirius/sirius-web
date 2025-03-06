@@ -30,4 +30,6 @@ public interface ISemanticDataUpdateService {
     void updateDocuments(ICause cause, AggregateReference<SemanticData, UUID> semanticData, Set<Document> documents, Set<String> domainUris);
 
     void addDependencies(ICause cause, AggregateReference<SemanticData, UUID> semanticData, List<AggregateReference<SemanticData, UUID>> dependencySemanticDataIds);
+
+    void removeDependencies(ICause cause, AggregateReference<SemanticData, UUID> semanticData, List<AggregateReference<SemanticData, UUID>> dependencySemanticDataIds);
 }

@@ -54,4 +54,12 @@ public class SemanticDataUpdateService implements ISemanticDataUpdateService {
             this.semanticDataRepository.save(semanticData);
         });
     }
+
+    @Override
+    public void removeDependencies(ICause cause, AggregateReference<SemanticData, UUID> semanticDataId, List<AggregateReference<SemanticData, UUID>> dependencySemanticDataIds) {
+        this.semanticDataRepository.findById(semanticDataId.getId()).ifPresent(semanticData -> {
+            semanticData.removeDependencies(cause, dependencySemanticDataIds);
+            this.semanticDataRepository.save(semanticData);
+        });
+    }
 }

@@ -37,5 +37,9 @@ public interface ILibrarySearchService {
 
     Optional<Library> findBySemanticData(AggregateReference<SemanticData, UUID> semanticData);
 
+    Page<Library> findAllByNamespaceAndName(String namespace, String name, Pageable pageable);
+
     List<Library> findAllById(Iterable<UUID> ids);
+
+    Optional<Library> findById(UUID id);
 }
