@@ -122,7 +122,7 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
                 .ifPresentOrElse(table -> {
                     assertThat(table).isNotNull();
                     assertThat(table.getColumns()).hasSize(6);
-                    assertThat(table.getLines()).hasSize(2);
+                    assertThat(table.getLines()).hasSize(3);
                 }, () -> fail(MISSING_TABLE));
 
         StepVerifier.create(flux)
@@ -146,7 +146,7 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
                 .ifPresentOrElse(table -> {
                     assertThat(table).isNotNull();
                     assertThat(table.getColumns()).hasSize(6);
-                    assertThat(table.getLines()).hasSize(2);
+                    assertThat(table.getLines()).hasSize(3);
 
                     tableId.set(table.getId());
                 }, () -> fail("Missing table"));

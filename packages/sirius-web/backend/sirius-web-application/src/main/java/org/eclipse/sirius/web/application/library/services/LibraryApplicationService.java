@@ -70,6 +70,12 @@ public class LibraryApplicationService implements ILibraryApplicationService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public Page<LibraryDTO> findByNamespaceAndName(String namespace, String name, Pageable pageable) {
+        return this.librarySearchService.findAllByNamespaceAndName(namespace, name, pageable).map(this.libraryMapper::toDTO);
+    }
+
+    @Override
     @Transactional
     public IPayload publishLibraries(PublishLibrariesInput input) {
         IPayload payload = new ErrorPayload(input.id(), this.messageService.unexpectedError());

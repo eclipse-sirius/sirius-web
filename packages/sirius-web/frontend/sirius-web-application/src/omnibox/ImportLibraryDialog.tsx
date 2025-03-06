@@ -66,7 +66,7 @@ export const ImportLibraryDialog = ({ open, title, onClose }: ImportLibraryDialo
   };
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="md" scroll="paper" data-testid="importStudios">
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="lg" scroll="paper" data-testid="import-library">
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>
         <LibrariesImportTable onSelectionChange={onSelectionChange} />

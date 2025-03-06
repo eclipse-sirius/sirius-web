@@ -20,6 +20,7 @@ import java.util.UUID;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.repositories.ISemanticDataRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -49,6 +50,13 @@ public class SemanticDataSearchService implements ISemanticDataSearchService {
     @Override
     public boolean existsById(UUID id) {
         return this.semanticDataRepository.existsById(id);
+    }
+
+    @Override
+    public List<AggregateReference<SemanticData, UUID>> findAllDependenciesIdById(UUID id) {
+        return this.semanticDataRepository.findAllDependenciesById(id).stream()
+                .map(AggregateReference::<SemanticData, UUID>to)
+                .toList();
     }
 
     @Override

@@ -146,6 +146,12 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
         }
     }
 
+    public void removeDependencies(ICause cause, List<AggregateReference<SemanticData, UUID>> dependencySemanticDataIds) {
+        this.dependencies.removeIf(dependency -> dependencySemanticDataIds.contains(dependency.dependencySemanticDataId()));
+        this.lastModifiedOn = Instant.now();
+        this.registerEvent(new SemanticDataUpdatedEvent(UUID.randomUUID(), this.lastModifiedOn, cause, this));
+    }
+
     private boolean sameContent(Document currentDocument, Document newDocument) {
         return currentDocument.getId().equals(newDocument.getId())
                 && currentDocument.getName().equals(newDocument.getName())

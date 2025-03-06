@@ -61,7 +61,17 @@ public class LibrarySearchService implements ILibrarySearchService {
     }
 
     @Override
+    public Page<Library> findAllByNamespaceAndName(String namespace, String name, Pageable pageable) {
+        return this.libraryRepository.findAllByNamespaceAndName(namespace, name, pageable);
+    }
+
+    @Override
     public List<Library> findAllById(Iterable<UUID> ids) {
         return this.libraryRepository.findAllById(ids);
+    }
+
+    @Override
+    public Optional<Library> findById(UUID id) {
+        return this.libraryRepository.findById(id);
     }
 }

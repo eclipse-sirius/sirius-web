@@ -21,6 +21,7 @@ export * from './treeitems/TreeItemContextMenu';
 export * from './treeitems/TreeItemContextMenu.types';
 export * from './treeitems/TreeItemContextMenuEntry.types';
 export * from './treeitems/TreeItemContextMenuEntryExtensionPoints';
+export * from './treeitems/TreeItemContextMenuEntryExtensionPoints.types';
 export * from './trees/FilterBar';
 export * from './trees/TreeRepresentation';
 export * from './views/getTreeEventSubscription';

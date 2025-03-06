@@ -16,6 +16,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.ListPagingAndSortingRepository;
@@ -41,6 +43,8 @@ public interface ILibraryRepository extends ListPagingAndSortingRepository<Libra
         WHERE library.namespace = :namespace AND library.name = :name AND library.version = :version
         """)
     Optional<Library> findByNamespaceAndNameAndVersion(String namespace, String name, String version);
+
+    Page<Library> findAllByNamespaceAndName(String namespace, String name, Pageable pageable);
 
     @Query("""
         SELECT * FROM library

@@ -20,10 +20,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.BiFunction;
 
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.sirius.components.core.api.ErrorPayload;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
+import org.eclipse.sirius.components.graphql.tests.api.IExecuteEditingContextFunctionRunner;
+import org.eclipse.sirius.components.papaya.Interface;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.library.dto.PublishLibrariesInput;
+import org.eclipse.sirius.web.application.library.dto.UpdateLibraryInput;
+import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
+import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
@@ -32,6 +47,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.I
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.LibrariesQueryRunner;
 import org.eclipse.sirius.web.tests.graphql.PublishLibrariesMutationRunner;
+import org.eclipse.sirius.web.tests.graphql.UpdateLibraryMutationRunner;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,10 +74,19 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
     private PublishLibrariesMutationRunner publishLibrariesMutationRunner;
 
     @Autowired
+    private UpdateLibraryMutationRunner updateLibraryMutationRunner;
+
+    @Autowired
+    private IExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
+
+    @Autowired
     private ILibrarySearchService librarySearchService;
 
     @Autowired
     private ISemanticDataSearchService semanticDataSearchService;
+
+    @Autowired
+    private IObjectService objectService;
 
     @Test
     @GivenSiriusWebServer
@@ -142,6 +167,72 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
         this.assertThatLibraryHasCorrectDescriptionAndDependencies(rootDiagram1DescriptionLibrary.get(), description, List.of(buckLibrary, sharedComponentsLibrary));
     }
 
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a project with dependencies, when a dependency is updated, then the editing context contains the new version of the dependency")
+    public void givenProjectWithDependenciesWhenDependencyIsUpdatedThenEditingContextContainsTheNewVersionOfDependency() {
+        Optional<Library> optionalLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "sirius-web-tests-data", "2.0.0");
+        assertThat(optionalLibrary).isPresent();
+
+        BiFunction<IEditingContext, IInput, IPayload> checkInitialEditingContextFunction = (editingContext, executeEditingContextFunctionInput) -> {
+            if (editingContext instanceof IEMFEditingContext emfEditingContext) {
+                assertThat(emfEditingContext.getDomain().getResourceSet().getResources())
+                    .anyMatch(resource -> this.hasResourceName(resource, "Sirius Web Tests Data")
+                            && this.hasLibraryMetadata(resource, "papaya", "sirius-web-tests-data", "1.0.0"));
+                Optional<Object> optAbstractTest = this.objectService.getObject(editingContext, PapayaIdentifiers.PAPAYA_ABSTRACT_TEST_OBJECT.toString());
+                assertThat(optAbstractTest)
+                    .isPresent()
+                    .get()
+                    .isInstanceOf(Interface.class);
+                Interface abstractTestInterface = (Interface) optAbstractTest.get();
+                assertThat(abstractTestInterface.getAnnotations())
+                    .hasSize(1)
+                    .allMatch(annotation -> !annotation.eIsProxy()
+                            && annotation.eResource() != null
+                            && this.hasLibraryMetadata(annotation.eResource(), "papaya", "sirius-web-tests-data", "1.0.0"));
+                return new SuccessPayload(executeEditingContextFunctionInput.id());
+            }
+            return new ErrorPayload(executeEditingContextFunctionInput.id(), "Invalid editing context");
+        };
+
+        var checkInitialEditingContextInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), checkInitialEditingContextFunction);
+        var checkInitialEditingContextPayload = this.executeEditingContextFunctionRunner.execute(checkInitialEditingContextInput).block();
+        assertThat(checkInitialEditingContextPayload).isInstanceOf(SuccessPayload.class);
+
+        var input = new UpdateLibraryInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), optionalLibrary.get().getId());
+        var result = this.updateLibraryMutationRunner.run(input);
+        String typename = JsonPath.read(result, "$.data.updateLibrary.__typename");
+        assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+
+        BiFunction<IEditingContext, IInput, IPayload> checkUpdatedEditingContextFunction = (editingContext, executeEditingContextFunctionInput) -> {
+            if (editingContext instanceof IEMFEditingContext emfEditingContext) {
+                assertThat(emfEditingContext.getDomain().getResourceSet().getResources())
+                    .anyMatch(resource -> this.hasResourceName(resource, "Sirius Web Tests Data")
+                            && this.hasLibraryMetadata(resource, "papaya", "sirius-web-tests-data", "2.0.0"))
+                    .noneMatch(resource -> this.hasResourceName(resource, "Sirius Web Tests Data")
+                            && this.hasLibraryMetadata(resource, "papaya", "sirius-web-tests-data", "1.0.0"));
+                Optional<Object> optAbstractTest = this.objectService.getObject(editingContext, PapayaIdentifiers.PAPAYA_ABSTRACT_TEST_OBJECT.toString());
+                assertThat(optAbstractTest)
+                    .isPresent()
+                    .get()
+                    .isInstanceOf(Interface.class);
+                Interface abstractTestInterface = (Interface) optAbstractTest.get();
+                assertThat(abstractTestInterface.getAnnotations())
+                    .hasSize(1)
+                    .allMatch(annotation -> !annotation.eIsProxy()
+                            && annotation.eResource() != null
+                            && this.hasLibraryMetadata(annotation.eResource(), "papaya", "sirius-web-tests-data", "2.0.0"));
+
+                return new SuccessPayload(executeEditingContextFunctionInput.id());
+            }
+            return new ErrorPayload(executeEditingContextFunctionInput.id(), "Invalid editing context");
+        };
+
+        var checkUpdatedEditingContextInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), checkUpdatedEditingContextFunction);
+        var checkUpdatedEditingContextPayload = this.executeEditingContextFunctionRunner.execute(checkUpdatedEditingContextInput).block();
+        assertThat(checkUpdatedEditingContextPayload).isInstanceOf(SuccessPayload.class);
+    }
+
     private void assertThatLibraryHasCorrectDescriptionAndDependencies(Library library, String description, List<Library> dependencyLibraries) {
         var optionalLibrarySemanticData = this.semanticDataSearchService.findById(library.getSemanticData().getId());
 
@@ -157,6 +248,20 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
                 .map(Library::getSemanticData)
                 .map(AggregateReference::getId).toList();
         assertThat(expectedDependencyIds).containsExactlyInAnyOrderElementsOf(dependencyIds);
+    }
+
+    private boolean hasResourceName(Resource resource, String name) {
+        return resource.eAdapters().stream()
+                .filter(ResourceMetadataAdapter.class::isInstance)
+                .map(ResourceMetadataAdapter.class::cast)
+                .anyMatch(resourceMetadata -> resourceMetadata.getName().equals(name));
+    }
+
+    private boolean hasLibraryMetadata(Resource resource, String namespace, String name, String version) {
+        return resource.eAdapters().stream()
+                .filter(LibraryMetadataAdapter.class::isInstance)
+                .map(LibraryMetadataAdapter.class::cast)
+                .anyMatch(libraryMetadata -> libraryMetadata.getNamespace().equals(namespace) && libraryMetadata.getName().equals(name) && libraryMetadata.getVersion().equals(version));
     }
 
 }

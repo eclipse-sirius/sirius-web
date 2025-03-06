@@ -10,15 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.papaya.services.library.api;
 
-import org.eclipse.sirius.web.papaya.services.library.InitializeStandardLibraryEvent;
-
-/**
- * Used to initialize the semantic data of a Papaya standard library.
- *
- * @author sbegaudeau
- */
-public interface IStandardLibrarySemanticDataInitializer {
-    void initializeStandardLibrary(InitializeStandardLibraryEvent event);
+export interface UpdateLibraryTableProps {
+  namespace: string;
+  name: string;
+  version: string;
+  onLibrarySelected(libraryId: string);
 }

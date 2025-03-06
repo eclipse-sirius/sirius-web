@@ -92,7 +92,7 @@ public class PapayaTableCellControllerIntegrationTests extends AbstractIntegrati
 
         Consumer<Object> initialTableContentConsumer = this.getTableSubscriptionConsumer(table -> {
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(2);
+            assertThat(table.getLines()).hasSize(3);
             assertThat(table.getLines().get(0).getCells()).hasSize(6);
             assertThat(table.getLines().get(0).getCells().get(1)).isInstanceOf(TextareaCell.class);
             assertThat(table.getLines().get(0).getCells().get(1)).isInstanceOf(TextareaCell.class);
@@ -118,7 +118,7 @@ public class PapayaTableCellControllerIntegrationTests extends AbstractIntegrati
 
         Consumer<Object> updatedTableContentConsumer = this.getTableSubscriptionConsumer(table -> {
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(2);
+            assertThat(table.getLines()).hasSize(3);
             assertThat(table.getLines().get(0).getCells()).hasSize(6);
             assertThat(table.getLines().get(0).getCells().get(1)).isInstanceOf(TextareaCell.class);
             assertThat(((TextareaCell) table.getLines().get(0).getCells().get(1)).getValue()).isEqualTo("new description");
