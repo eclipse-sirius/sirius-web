@@ -31,5 +31,7 @@ public interface ILibraryApplicationService {
 
     Optional<LibraryDTO> findByNamespaceAndNameAndVersion(String namespace, String name, String version);
 
+    Page<LibraryDTO> findByNamespaceAndName(String namespace, String name, Pageable pageable);
+
     IPayload publishLibraries(PublishLibrariesInput input);
 }

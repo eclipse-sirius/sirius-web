@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.forms;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.eclipse.sirius.components.tables.tests.assertions.TablesAssertions.assertThat;
 
@@ -226,8 +227,8 @@ public class TableControllerTests extends AbstractIntegrationTests {
                 .map(FormRefreshedEventPayload::form).ifPresentOrElse(form -> {
                     var tableWidget = new FormNavigator(form).page("Page").group("Group").findWidget("Types", TableWidget.class);
                     assertThat(tableWidget.getTable().getColumns()).hasSize(1);
-                    assertThat(tableWidget.getTable().getLines()).hasSize(2);
-                    assertThat(tableWidget.getTable().getLines().stream().flatMap(line -> line.getCells().stream()).toList()).hasSize(2);
+                    assertThat(tableWidget.getTable().getLines()).hasSize(3);
+                    assertThat(tableWidget.getTable().getLines().stream().flatMap(line -> line.getCells().stream()).toList()).hasSize(3);
                     Line line = tableWidget.getTable().getLines().get(0);
                     LineNavigator lineNavigator = new LineNavigator(line);
 

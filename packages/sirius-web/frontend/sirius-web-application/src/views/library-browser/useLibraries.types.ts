@@ -14,7 +14,6 @@
 export interface UseLibrariesValue {
   data: GQLGetLibrariesQueryData | null;
   loading: boolean;
-  refreshLibraries: (page: number, limit: number) => void;
 }
 
 export interface GQLGetLibrariesQueryVariables {

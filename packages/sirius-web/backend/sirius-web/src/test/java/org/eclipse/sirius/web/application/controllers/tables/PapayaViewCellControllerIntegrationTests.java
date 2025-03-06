@@ -96,7 +96,7 @@ public class PapayaViewCellControllerIntegrationTests extends AbstractIntegratio
         Consumer<Object> initialTableContentConsumer = this.getTableSubscriptionConsumer(table -> {
             tableId.set(table.getId());
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(4);
+            assertThat(table.getLines()).hasSize(5);
             assertThat(table.getLines().get(0).getCells()).hasSize(2);
             assertThat(table.getLines().get(0).getCells().get(0)).isInstanceOf(TextfieldCell.class);
             assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(0)).getValue()).isEqualTo("Success");
@@ -113,7 +113,7 @@ public class PapayaViewCellControllerIntegrationTests extends AbstractIntegratio
 
         Consumer<Object> updatedTableContentConsumer = this.getTableSubscriptionConsumer(table -> {
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(4);
+            assertThat(table.getLines()).hasSize(5);
             assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(0)).getValue()).isEqualTo("newName");
         });
 

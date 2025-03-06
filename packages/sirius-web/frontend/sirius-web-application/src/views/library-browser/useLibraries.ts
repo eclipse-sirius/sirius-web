@@ -29,7 +29,7 @@ export const useLibraries = (page: number, limit: number): UseLibrariesValue => 
     page,
     limit,
   };
-  const { data, loading, error, refetch } = useQuery<GQLGetLibrariesQueryData, GQLGetLibrariesQueryVariables>(
+  const { data, loading, error } = useQuery<GQLGetLibrariesQueryData, GQLGetLibrariesQueryVariables>(
     getLibrariesQuery,
     {
       variables,
@@ -43,11 +43,8 @@ export const useLibraries = (page: number, limit: number): UseLibrariesValue => 
     }
   }, [error]);
 
-  const refreshLibraries = (page: number, limit: number) => refetch({ page, limit });
-
   return {
     data: data ?? null,
     loading,
-    refreshLibraries,
   };
 };

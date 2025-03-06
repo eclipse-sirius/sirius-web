@@ -73,7 +73,7 @@ export const PublishLibraryDialog = ({ open, title, message, publicationKind, on
   const isInvalid: boolean = isVersionInvalid;
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth scroll="paper" data-testid="omnibox">
+    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth scroll="paper" data-testid="publish-library">
       <DialogTitle>{title}</DialogTitle>
       <DialogContent className={classes.content}>
         <DialogContentText>{message}</DialogContentText>

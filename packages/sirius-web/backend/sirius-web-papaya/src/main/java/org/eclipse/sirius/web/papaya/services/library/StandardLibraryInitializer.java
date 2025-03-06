@@ -40,13 +40,13 @@ public class StandardLibraryInitializer {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener
     public void onSemanticDataCreatedEvent(SemanticDataCreatedEvent event) {
-        if (event.causedBy() instanceof InitializeStandardLibraryEvent initializeStandardLibraryEvent) {
+        if (event.causedBy() instanceof PublishPapayaLibraryCommand publishPapayaLibraryCommand) {
             var library = Library.newLibrary()
-                    .namespace(initializeStandardLibraryEvent.namespace())
-                    .name(initializeStandardLibraryEvent.name())
-                    .version(initializeStandardLibraryEvent.version())
+                    .namespace(publishPapayaLibraryCommand.namespace())
+                    .name(publishPapayaLibraryCommand.name())
+                    .version(publishPapayaLibraryCommand.version())
                     .semanticData(AggregateReference.to(event.semanticData().getId()))
-                    .description(initializeStandardLibraryEvent.description())
+                    .description(publishPapayaLibraryCommand.description())
                     .build(event);
             this.libraryCreationService.createLibrary(library);
         }

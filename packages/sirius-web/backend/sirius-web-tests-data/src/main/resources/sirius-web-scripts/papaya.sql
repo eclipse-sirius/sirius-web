@@ -48,6 +48,15 @@ INSERT INTO semantic_data_domain (
   'cc89c500-c27e-4968-9c67-15cf767c6ef0',
   'https://www.eclipse.org/sirius-web/papaya'
 );
+INSERT INTO semantic_data_dependency (
+  semantic_data_id,
+  dependency_semantic_data_id,
+  index
+) VALUES (
+  'cc89c500-c27e-4968-9c67-15cf767c6ef0',
+  '6f24a044-1605-484d-96c3-553ff6bc184d',
+  0
+);
 INSERT INTO document (
   id,
   semantic_data_id,
@@ -116,7 +125,17 @@ INSERT INTO document (
                                }
                              ]
                            }
-                         }
+                         },
+                         {
+                          "id": "0e18f8e9-c5e3-4ccc-afe6-c937478f78ad",
+                          "eClass": "papaya:Interface",
+                          "data": {
+                            "name": "AbstractTest",
+                            "annotations":[
+                              "papaya:Annotation 27d8bea1-c595-4616-9208-a97218ad2316#//@components.0/@packages.0/@types.0"
+                            ]
+                          }
+                        }
                        ]
                      }
                    }
