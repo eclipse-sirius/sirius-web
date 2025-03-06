@@ -104,6 +104,9 @@ The publication of a studio that references elements from imported libraries now
 +
 image:doc/screenshots/duplicationDialog.png[DuplicationDialog, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/4383[#4383] [sirius-web] Add support for representation duplication from explorer
+https://github.com/eclipse-sirius/sirius-web/issues/4694[#4694] [sirius-web] Add a contextual menu action to update imported libraries
+The action is visible on libraries that are first-level dependencies of the project (it is not visible on transitive dependencies).
+The implementation of the library update mechanism is generic and works on any project containing EMF resources.
 
 
 === Improvements

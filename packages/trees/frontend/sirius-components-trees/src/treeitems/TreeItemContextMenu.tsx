@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import {
   ComponentExtension,
   IconOverlay,
   useComponents,
+  useData,
   useDeletionConfirmationDialog,
   useMultiToast,
 } from '@eclipse-sirius/sirius-components-core';
@@ -25,7 +26,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import {
   GQLDeleteTreeItemData,
   GQLDeleteTreeItemInput,
@@ -39,11 +40,14 @@ import {
   GQLInvokeSingleClickTreeItemContextMenuEntryVariables,
   TreeItemContextMenuEntry,
   TreeItemContextMenuProps,
-  TreeItemContextMenuState,
 } from './TreeItemContextMenu.types';
 import { TreeItemContextMenuComponentProps } from './TreeItemContextMenuEntry.types';
-import { treeItemContextMenuEntryExtensionPoint } from './TreeItemContextMenuEntryExtensionPoints';
+import {
+  treeItemContextMenuEntryExtensionPoint,
+  treeItemContextMenuEntryOverrideExtensionPoint,
+} from './TreeItemContextMenuEntryExtensionPoints';
 import { useContextMenuEntries } from './useContextMenuEntries';
+import { TreeItemContextMenuOverrideContribution } from './TreeItemContextMenuEntryExtensionPoints.types';
 
 const deleteTreeItemMutation = gql`
   mutation deleteTreeItem($input: DeleteTreeItemInput!) {
@@ -106,16 +110,16 @@ export const TreeItemContextMenu = ({
   enterEditingMode,
   onClose,
 }: TreeItemContextMenuProps) => {
-  const [state, setState] = useState<TreeItemContextMenuState>({
-    menuEntries: [],
-  });
-
   const { addErrorMessage } = useMultiToast();
 
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
 
   const treeItemMenuContextComponents: ComponentExtension<TreeItemContextMenuComponentProps>[] = useComponents(
     treeItemContextMenuEntryExtensionPoint
+  );
+
+  const { data: treeItemContextMenuOverrideContributions } = useData<TreeItemContextMenuOverrideContribution[]>(
+    treeItemContextMenuEntryOverrideExtensionPoint
   );
 
   const expandItem = () => {
@@ -155,12 +159,6 @@ export const TreeItemContextMenu = ({
   }, [deleteTreeItemLoading, deleteTreeItemError, deleteTreeItemData]);
 
   const { contextMenuEntries } = useContextMenuEntries(editingContextId, treeId, item.id);
-
-  useEffect(() => {
-    if (contextMenuEntries) {
-      setState((prevState) => ({ ...prevState, menuEntries: contextMenuEntries }));
-    }
-  }, [contextMenuEntries]);
 
   const [getFetchData, { loading, data, error }] = useLazyQuery<
     GQLFetchTreeItemContextEntryDataData,
@@ -299,23 +297,42 @@ export const TreeItemContextMenu = ({
             <ListItemText primary="Delete" />
           </MenuItem>
         ) : null}
-        {state.menuEntries.map((entry) => (
-          <MenuItem
-            key={entry.id}
-            onClick={(_) => invokeContextMenuEntry(entry)}
-            data-testid={`context-menu-entry-${entry.label}`}
-            disabled={readOnly}
-            aria-disabled>
-            <ListItemIcon>
-              {entry.iconURL.length > 0 ? (
-                <IconOverlay iconURL={entry.iconURL} alt={entry.label} title={entry.label} />
-              ) : (
-                <div style={{ marginRight: '16px' }} />
-              )}
-            </ListItemIcon>
-            <ListItemText primary={entry.label} />
-          </MenuItem>
-        ))}
+        {contextMenuEntries.map((entry) => {
+          const contributedTreeItemMenuContextComponents = treeItemContextMenuOverrideContributions
+            .filter((contribution) => contribution.canHandle(entry))
+            .map((contribution) => contribution.component);
+          if (contributedTreeItemMenuContextComponents.length > 0) {
+            return contributedTreeItemMenuContextComponents.map((TreeItemMenuContextComponent, index) => (
+              <TreeItemMenuContextComponent
+                editingContextId={editingContextId}
+                item={item}
+                readOnly={readOnly}
+                onClose={onClose}
+                expandItem={expandItem}
+                key={index.toString()}
+                treeId={treeId}
+              />
+            ));
+          } else {
+            return (
+              <MenuItem
+                key={entry.id}
+                onClick={(_) => invokeContextMenuEntry(entry)}
+                data-testid={`context-menu-entry-${entry.label}`}
+                disabled={readOnly}
+                aria-disabled>
+                <ListItemIcon>
+                  {entry.iconURL.length > 0 ? (
+                    <IconOverlay iconURL={entry.iconURL} alt={entry.label} title={entry.label} />
+                  ) : (
+                    <div style={{ marginRight: '16px' }} />
+                  )}
+                </ListItemIcon>
+                <ListItemText primary={entry.label} />
+              </MenuItem>
+            );
+          }
+        })}
       </Menu>
     </>
   );

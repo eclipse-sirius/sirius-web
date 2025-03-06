@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,27 +14,31 @@
 import { gql, useQuery } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useEffect } from 'react';
-import { GQLGetLibrariesQueryData, GQLGetLibrariesQueryVariables, UseLibrariesValue } from './useLibraries.types';
+import { GQLGetObjectQueryData, GQLGetObjectQueryVariables, UseObjectValue } from './useObject.types';
 
-const getLibrariesQuery = gql`
-  query getLibraries($page: Int!, $limit: Int!) {
+const getObjectLibrary = gql`
+  query getObjectLibrary($editingContextId: ID!, $objectId: ID!) {
     viewer {
-      ...ViewerLibraries
+      editingContext(editingContextId: $editingContextId) {
+        object(objectId: $objectId) {
+          library {
+            namespace
+            name
+            version
+          }
+        }
+      }
     }
   }
 `;
 
-export const useLibraries = (page: number, limit: number): UseLibrariesValue => {
-  const variables: GQLGetLibrariesQueryVariables = {
-    page,
-    limit,
-  };
-  const { data, loading, error } = useQuery<GQLGetLibrariesQueryData, GQLGetLibrariesQueryVariables>(
-    getLibrariesQuery,
-    {
-      variables,
-    }
-  );
+export const useObject = (editingContextId: string, objectId: string): UseObjectValue => {
+  const { loading, data, error } = useQuery<GQLGetObjectQueryData, GQLGetObjectQueryVariables>(getObjectLibrary, {
+    variables: {
+      editingContextId,
+      objectId,
+    },
+  });
 
   const { addErrorMessage } = useMultiToast();
   useEffect(() => {

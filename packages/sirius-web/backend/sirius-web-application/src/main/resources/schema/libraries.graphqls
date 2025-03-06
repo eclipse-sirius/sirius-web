@@ -17,6 +17,7 @@ type Library {
   namespace: String!
   name: String!
   version: String!
+  versions(page: Int!, limit: Int!): ViewerLibrariesConnection!
   description: String!
   createdOn: Instant!
   currentEditingContext: EditingContext!
@@ -25,7 +26,12 @@ type Library {
 extend type Mutation {
   publishLibraries(input: PublishLibrariesInput!): PublishLibrariesPayload!
   importLibraries(input: ImportLibrariesInput!): ImportLibrariesPayload!
+  updateLibrary(input: UpdateLibraryInput!): UpdateLibraryPayload!
   
+}
+
+extend type Object {
+	library: Library
 }
 
 input PublishLibrariesInput {
@@ -46,3 +52,11 @@ input ImportLibrariesInput {
 }
 
 union ImportLibrariesPayload = ErrorPayload | SuccessPayload
+
+input UpdateLibraryInput {
+  id: ID!
+  editingContextId: ID!
+  libraryId: String!
+}
+
+union UpdateLibraryPayload = ErrorPayload | SuccessPayload
