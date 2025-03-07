@@ -39,7 +39,8 @@ INSERT INTO document (
         "id":"a463e723-5748-4817-92d8-12d7e6ef967d",
         "eClass":"papaya:Package",
         "data":{
-          "name":"java.lang","types":[
+          "name":"java.lang",
+          "types":[
             {
               "id":"f15f11fc-fb6e-47a1-bb48-c23d1088a70e",
               "eClass":"papaya:DataType",
@@ -161,19 +162,22 @@ INSERT INTO document (
               "data":{
                 "name":"Character"
               }
-            },{
+            },
+            {
               "id":"755101b7-ad25-41cd-b89b-7a3da865c7e4",
               "eClass":"papaya:Interface",
               "data":{
                 "name":"AutoCloseable"
               }
-            },{
+            },
+            {
               "id":"c94e7a4d-5600-4641-bb7f-eca0c5e3e50a",
               "eClass":"papaya:Interface",
               "data":{
                 "name":"Cloneable"
               }
-            },{
+            },
+            {
               "id":"44e9bf70-c1f9-4f4e-ac70-84106288d8e9",
               "eClass":"papaya:Interface",
               "data":{
@@ -188,7 +192,8 @@ INSERT INTO document (
                   }
                 ]
               }
-            },{
+            },
+            {
               "id":"b3d47762-6a34-4e3c-875a-cb134634a66e",
               "eClass":"papaya:Interface",
               "data":{
@@ -224,11 +229,157 @@ INSERT INTO library (
   last_modified_on
 ) VALUES (
   '221c7352-c371-4c88-9542-8ea015c859e6',
+  'papaya',
   'java',
-  'Java Standard Library',
-  '0.0.1',
+  '1.0.0',
   '5b7cb887-b38a-4424-9508-ea7aa869ba6f',
   'The standard library of the Java programming language',
   '2025-02-12 10:25:11.524',
   '2025-02-12 10:25:11.524'
+);
+
+INSERT INTO semantic_data (
+  id,
+  created_on,
+  last_modified_on
+) VALUES (
+  '7a273947-7b34-48dc-982d-4fac14a259d5',
+  '2025-03-12 10:25:11.267',
+  '2025-03-12 10:25:11.267'
+);
+
+INSERT INTO semantic_data_domain (
+  semantic_data_id,
+  uri
+) VALUES (
+  '7a273947-7b34-48dc-982d-4fac14a259d5',
+  'https://www.eclipse.org/sirius-web/papaya'
+);
+
+INSERT INTO semantic_data_dependency (
+  semantic_data_id,
+  dependency_semantic_data_id,
+  index
+) VALUES (
+  '7a273947-7b34-48dc-982d-4fac14a259d5',
+  '5b7cb887-b38a-4424-9508-ea7aa869ba6f',
+  0
+);
+
+INSERT INTO document (
+  id,
+  semantic_data_id,
+  name,
+  content,
+  created_on,
+  last_modified_on
+) VALUES (
+  '1700060e-4b20-481b-8301-217c40aaacbd',
+  '7a273947-7b34-48dc-982d-4fac14a259d5',
+  'Reactive Streams Library',
+  '{
+    "json":{
+      "version":"1.0",
+      "encoding":"utf-8"
+    },
+    "ns":{
+      "papaya":"https://www.eclipse.org/sirius-web/papaya"
+    },"content":[
+      {
+        "id":"20c243a1-6475-4c29-80cc-5b790ad209d8",
+        "eClass":"papaya:Package",
+        "data":{
+          "name":"org.reactivestreams",
+          "types":[
+            {
+              "id":"084acf02-fbc7-4da4-ae4f-9b2f2a37eab0",
+              "eClass":"papaya:Interface",
+              "data":{
+                "name":"Processor",
+                "typeParameters":[
+                  {
+                    "id":"41dde7be-a49a-4bd2-a622-812be097580b",
+                    "eClass":"papaya:TypeParameter",
+                    "data":{
+                      "name":"T"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "id":"79612d73-9057-4dd7-a63a-aff5e570fa54",
+              "eClass":"papaya:Interface",
+              "data":{
+                "name":"Publisher",
+                "typeParameters":[
+                  {
+                    "id":"a554e132-a8dc-4864-b668-91514dcd203c",
+                    "eClass":"papaya:TypeParameter",
+                    "data":{
+                      "name":"T"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "id":"aa496ed9-42a1-44e9-9b3d-e6ce76a31203",
+              "eClass":"papaya:Interface",
+              "data":{
+                "name":"Subscriber",
+                "typeParameters":[
+                  {
+                    "id":"bda5b8e6-98cd-4556-93f8-10e525648109",
+                    "eClass":"papaya:TypeParameter",
+                    "data":{
+                      "name":"T"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "id":"60936785-ae13-45a7-858c-27ab3fbb56e7",
+              "eClass":"papaya:Interface",
+              "data":{
+                "name":"Subscription",
+                "typeParameters":[
+                  {
+                    "id":"dd16679b-9282-414a-8e79-7099667f7a74",
+                    "eClass":"papaya:TypeParameter",
+                    "data":{
+                      "name":"T"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }',
+  '2025-02-12 10:25:11.265977+01',
+  '2025-02-12 10:25:11.265977+01'
+);
+
+INSERT INTO library (
+  id,
+  namespace,
+  name,
+  version,
+  semantic_data_id,
+  description,
+  created_on,
+  last_modified_on
+) VALUES (
+  '0ee984b0-7c40-4b63-bcd9-16dc5e97e455',
+  'papaya',
+  'reactivestreams',
+  '1.0.0',
+  '7a273947-7b34-48dc-982d-4fac14a259d5',
+  'The Reactive Stream library',
+  '2025-03-12 10:25:11.524',
+  '2025-03-12 10:25:11.524'
 );

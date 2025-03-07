@@ -14,12 +14,15 @@ package org.eclipse.sirius.web.domain.boundedcontexts.library.services;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.repositories.ILibraryRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -49,5 +52,10 @@ public class LibrarySearchService implements ILibrarySearchService {
     @Override
     public Optional<Library> findByNamespaceAndNameAndVersion(String namespace, String name, String version) {
         return this.libraryRepository.findByNamespaceAndNameAndVersion(namespace, name, version);
+    }
+
+    @Override
+    public Optional<Library> findBySemanticData(AggregateReference<SemanticData, UUID> semanticData) {
+        return this.libraryRepository.findBySemanticDataId(semanticData.getId());
     }
 }

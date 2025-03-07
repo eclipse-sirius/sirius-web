@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.papaya.services.library;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -25,9 +26,12 @@ import org.eclipse.sirius.web.application.editingcontext.services.EPackageEntry;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingDomainFactory;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceToDocumentService;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataCreationService;
 import org.eclipse.sirius.web.papaya.factories.JavaLangFactory;
+import org.eclipse.sirius.web.papaya.factories.ReactiveStreamsFactory;
 import org.eclipse.sirius.web.papaya.services.library.api.IStandardLibrarySemanticDataInitializer;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author sbegaudeau
  */
 @Service
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class StandardLibrarySemanticDataInitializer implements IStandardLibrarySemanticDataInitializer {
 
     private final ILibrarySearchService librarySearchService;
@@ -71,13 +76,24 @@ public class StandardLibrarySemanticDataInitializer implements IStandardLibraryS
         resource.eAdapters().add(resourceMetadataAdapter);
         editingDomain.getResourceSet().getResources().add(resource);
 
-        if (event.namespace().equals("java") && event.name().equals("Java Standard Library")) {
+        List<AggregateReference<SemanticData, UUID>> dependencies = new ArrayList<>();
+
+        if (event.namespace().equals("papaya") && event.name().equals("java")) {
             var javaLangPackage = new JavaLangFactory().javaLang();
             resource.getContents().add(javaLangPackage);
+        } else if (event.namespace().equals("papaya") && event.name().equals("reactivestreams")) {
+            var optionalJavaStandardLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "java", "17.0.0");
+            if (optionalJavaStandardLibrary.isPresent()) {
+                var orgReactiveStreamsPackage = new ReactiveStreamsFactory().orgReactiveStreams();
+                resource.getContents().add(orgReactiveStreamsPackage);
+
+                var javaStandardLibrary = optionalJavaStandardLibrary.get();
+                dependencies.add(javaStandardLibrary.getSemanticData());
+            }
         }
 
         this.resourceToDocumentService.toDocument(resource, false).ifPresent(documentData -> {
-            this.semanticDataCreationService.create(event, List.of(documentData.document()), documentData.ePackageEntries().stream().map(EPackageEntry::nsURI).toList(), List.of());
+            this.semanticDataCreationService.create(event, List.of(documentData.document()), documentData.ePackageEntries().stream().map(EPackageEntry::nsURI).toList(), dependencies);
         });
     }
 }

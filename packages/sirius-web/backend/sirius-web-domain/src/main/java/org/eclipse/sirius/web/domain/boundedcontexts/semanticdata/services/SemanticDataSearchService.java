@@ -50,4 +50,10 @@ public class SemanticDataSearchService implements ISemanticDataSearchService {
     public boolean existsById(UUID id) {
         return this.semanticDataRepository.existsById(id);
     }
+
+    @Override
+    public List<SemanticData> findAllDependenciesRecursivelyById(UUID id) {
+        var semanticDataIds = this.semanticDataRepository.findAllDependenciesRecursivelyById(id);
+        return this.semanticDataRepository.findAllById(semanticDataIds);
+    }
 }
