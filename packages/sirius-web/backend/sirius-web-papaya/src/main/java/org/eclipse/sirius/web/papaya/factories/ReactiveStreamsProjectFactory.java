@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,6 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.papaya.Component;
-import org.eclipse.sirius.components.papaya.Package;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.Project;
 import org.eclipse.sirius.web.papaya.factories.services.api.IEObjectIndexer;
@@ -55,40 +54,9 @@ public class ReactiveStreamsProjectFactory implements IObjectFactory {
     private Component reactiveStreams() {
         var reactiveStreams = PapayaFactory.eINSTANCE.createComponent();
         reactiveStreams.setName("reactive-streams");
-        reactiveStreams.getPackages().add(this.orgReactiveStreams());
+        reactiveStreams.getPackages().add(new ReactiveStreamsFactory().orgReactiveStreams());
 
         return reactiveStreams;
-    }
-
-    private Package orgReactiveStreams() {
-        var orgReactiveStreams = PapayaFactory.eINSTANCE.createPackage();
-        orgReactiveStreams.setName("org.reactivestreams");
-
-        var processorTTypeParameter = PapayaFactory.eINSTANCE.createTypeParameter();
-        processorTTypeParameter.setName("T");
-        var processorInterface = PapayaFactory.eINSTANCE.createInterface();
-        processorInterface.setName("Processor");
-        processorInterface.getTypeParameters().add(processorTTypeParameter);
-
-        var publisherTTypeParameter = PapayaFactory.eINSTANCE.createTypeParameter();
-        publisherTTypeParameter.setName("T");
-        var publisherInterface = PapayaFactory.eINSTANCE.createInterface();
-        publisherInterface.setName("Publisher");
-        publisherInterface.getTypeParameters().add(publisherTTypeParameter);
-
-        var subscriberTTypeParameter = PapayaFactory.eINSTANCE.createTypeParameter();
-        subscriberTTypeParameter.setName("T");
-        var subscriberInterface = PapayaFactory.eINSTANCE.createInterface();
-        subscriberInterface.setName("Subscriber");
-        subscriberInterface.getTypeParameters().add(subscriberTTypeParameter);
-
-        var subscriptionInterface = PapayaFactory.eINSTANCE.createInterface();
-        subscriptionInterface.setName("Subscription");
-
-        var reactiveStreamsTypes = List.of(processorInterface, publisherInterface, subscriberInterface, subscriptionInterface);
-        orgReactiveStreams.getTypes().addAll(reactiveStreamsTypes);
-
-        return orgReactiveStreams;
     }
 
     @Override

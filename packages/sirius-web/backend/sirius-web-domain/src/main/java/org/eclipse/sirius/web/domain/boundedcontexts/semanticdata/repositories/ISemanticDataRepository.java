@@ -38,4 +38,20 @@ public interface ISemanticDataRepository extends ListPagingAndSortingRepository<
         GROUP BY semanticData.id
         """)
     List<SemanticData> findAllByDomains(List<String> domainUris);
+
+    @Query("""
+        WITH RECURSIVE dependencies AS (
+          SELECT semanticDataDependency.*
+          FROM semantic_data_dependency semanticDataDependency
+          WHERE semanticDataDependency.semantic_data_id = :id
+          
+          UNION
+          
+          SELECT childSemanticDataDependency.*
+          FROM semantic_data_dependency childSemanticDataDependency
+          INNER JOIN dependencies dependency ON dependency.dependency_semantic_data_id = childSemanticDataDependency.semantic_data_id
+        )
+        SELECT dependency_semantic_data_id FROM dependencies
+        """)
+    List<UUID> findAllDependenciesRecursivelyById(UUID id);
 }

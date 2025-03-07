@@ -45,7 +45,7 @@ public class LibraryLifecycleIntegrationTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a library, when its editing context is loaded, then all its data are loaded properly")
     public void givenLibraryWhenItsEditingContextIsLoadedThenAllItsDataAreLoadedProperly() {
-        var optionalLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("java", "Java Standard Library", "17.0.0");
+        var optionalLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "java", "1.0.0");
         assertThat(optionalLibrary).isPresent();
 
         var library = optionalLibrary.get();

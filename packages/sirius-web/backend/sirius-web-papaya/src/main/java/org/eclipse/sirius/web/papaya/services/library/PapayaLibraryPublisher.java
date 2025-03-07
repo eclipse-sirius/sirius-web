@@ -25,17 +25,20 @@ import org.springframework.stereotype.Service;
  * @author sbegaudeau
  */
 @Service
-public class PapayaJavaStandardLibraryPublisher implements CommandLineRunner {
+public class PapayaLibraryPublisher implements CommandLineRunner {
 
     private final IStandardLibrarySemanticDataInitializer standardLibrarySemanticDataInitializer;
 
-    public PapayaJavaStandardLibraryPublisher(IStandardLibrarySemanticDataInitializer standardLibrarySemanticDataInitializer) {
+    public PapayaLibraryPublisher(IStandardLibrarySemanticDataInitializer standardLibrarySemanticDataInitializer) {
         this.standardLibrarySemanticDataInitializer = Objects.requireNonNull(standardLibrarySemanticDataInitializer);
     }
 
     @Override
     public void run(String... args) throws Exception {
-        var initializeJavaStandardLibraryEvent = new InitializeStandardLibraryEvent(UUID.randomUUID(), "java", "Java Standard Library", "17.0.0", "The standard library of the Java programming language");
+        var initializeJavaStandardLibraryEvent = new InitializeStandardLibraryEvent(UUID.randomUUID(), "papaya", "java", "17.0.0", "The standard library of the Java programming language");
         this.standardLibrarySemanticDataInitializer.initializeStandardLibrary(initializeJavaStandardLibraryEvent);
+
+        var initializeReactiveStreamsStandardLibraryEvent = new InitializeStandardLibraryEvent(UUID.randomUUID(), "papaya", "reactivestreams", "1.0.4", "The reactive stream library");
+        this.standardLibrarySemanticDataInitializer.initializeStandardLibrary(initializeReactiveStreamsStandardLibraryEvent);
     }
 }

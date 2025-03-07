@@ -29,7 +29,6 @@ import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticDataDependency;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
-import org.eclipse.sirius.web.papaya.services.library.api.IStandardLibrarySemanticDataInitializer;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.LibrariesQueryRunner;
 import org.eclipse.sirius.web.tests.graphql.PublishLibrariesMutationRunner;
@@ -63,9 +62,6 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
     @Autowired
     private ISemanticDataSearchService semanticDataSearchService;
 
-    @Autowired
-    private IStandardLibrarySemanticDataInitializer standardLibrarySemanticDataInitializer;
-
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given a set of libraries, when a query is performed, then the libraries are returned")
@@ -91,7 +87,7 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
         List<String> libraryNamespaces = JsonPath.read(result, "$.data.viewer.libraries.edges[*].node.namespace");
         assertThat(libraryNamespaces)
                 .isNotEmpty()
-                .anySatisfy(namespace -> assertThat(namespace).isEqualTo("java"));
+                .anySatisfy(namespace -> assertThat(namespace).isEqualTo("papaya"));
     }
 
     @Test

@@ -13,10 +13,13 @@
 package org.eclipse.sirius.web.domain.boundedcontexts.library.services.api;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 /**
  * Used to retrieve libraries.
@@ -30,4 +33,6 @@ public interface ILibrarySearchService {
     boolean existsByNamespaceAndNameAndVersion(String namespace, String name, String version);
 
     Optional<Library> findByNamespaceAndNameAndVersion(String namespace, String name, String version);
+
+    Optional<Library> findBySemanticData(AggregateReference<SemanticData, UUID> semanticData);
 }
