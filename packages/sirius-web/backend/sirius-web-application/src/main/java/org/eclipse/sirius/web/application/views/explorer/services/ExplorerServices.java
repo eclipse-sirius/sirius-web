@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.application.UUIDParser;
+import org.eclipse.sirius.web.application.object.services.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationIconURL;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
@@ -56,11 +57,14 @@ public class ExplorerServices implements IExplorerServices {
 
     private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
-    public ExplorerServices(IObjectService objectService, IURLParser urlParser, List<IRepresentationImageProvider> representationImageProviders, IRepresentationMetadataSearchService representationMetadataSearchService) {
+    private final IReadOnlyObjectPredicate readOnlyObjectPredicate;
+
+    public ExplorerServices(IObjectService objectService, IURLParser urlParser, List<IRepresentationImageProvider> representationImageProviders, IRepresentationMetadataSearchService representationMetadataSearchService, IReadOnlyObjectPredicate readOnlyObjectPredicate) {
         this.objectService = Objects.requireNonNull(objectService);
         this.urlParser = Objects.requireNonNull(urlParser);
         this.representationImageProviders = Objects.requireNonNull(representationImageProviders);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
+        this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
     }
 
     @Override
@@ -114,19 +118,21 @@ public class ExplorerServices implements IExplorerServices {
     @Override
     public boolean isEditable(Object self) {
         boolean editable = false;
-        if (self instanceof RepresentationMetadata) {
-            editable = true;
-        } else if (self instanceof Resource) {
-            editable = true;
-        } else if (self instanceof EObject) {
-            editable = this.objectService.isLabelEditable(self);
+        if (!this.readOnlyObjectPredicate.test(self)) {
+            if (self instanceof RepresentationMetadata) {
+                editable = true;
+            } else if (self instanceof Resource) {
+                editable = true;
+            } else if (self instanceof EObject) {
+                editable = this.objectService.isLabelEditable(self);
+            }
         }
         return editable;
     }
 
     @Override
     public boolean isDeletable(Object self) {
-        return true;
+        return !this.readOnlyObjectPredicate.test(self);
     }
 
     @Override

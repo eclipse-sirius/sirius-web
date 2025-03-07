@@ -13,11 +13,18 @@
 package org.eclipse.sirius.web.application.controllers.libraries;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
+
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.papaya.Package;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
+import org.eclipse.sirius.web.application.object.services.api.IReadOnlyObjectPredicate;
+import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.junit.jupiter.api.DisplayName;
@@ -41,6 +48,9 @@ public class LibraryLifecycleIntegrationTests extends AbstractIntegrationTests {
     @Autowired
     private IEditingContextSearchService editingContextSearchService;
 
+    @Autowired
+    private IReadOnlyObjectPredicate readOnlyObjectPredicate;
+
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given a library, when its editing context is loaded, then all its data are loaded properly")
@@ -59,6 +69,25 @@ public class LibraryLifecycleIntegrationTests extends AbstractIntegrationTests {
         assertThat(resources.get(0).getContents())
                 .hasSize(1)
                 .anyMatch(Package.class::isInstance);
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a library with a dependency, when the loading is performed, then all the content is read only")
+    public void givenLibraryWithDependencyWhenTheLoadingIsPerformedThenAllTheContentIsReadOnly() {
+        var optionalEditingContext = this.editingContextSearchService.findById(PapayaIdentifiers.REACTIVE_STREAMS_LIBRARY_EDITING_CONTEXT_ID.toString());
+        assertThat(optionalEditingContext).isPresent();
+
+        var editingContext = optionalEditingContext.get();
+        assertThat(editingContext.getId()).isEqualTo(PapayaIdentifiers.REACTIVE_STREAMS_LIBRARY_EDITING_CONTEXT_ID.toString());
+        if (editingContext instanceof EditingContext siriusWebEditingContext) {
+            var resourceSet = siriusWebEditingContext.getDomain().getResourceSet();
+
+            var stream = StreamSupport.stream(Spliterators.spliteratorUnknownSize(resourceSet.getAllContents(), Spliterator.ORDERED), false);
+            assertThat(stream).isNotEmpty().allMatch(this.readOnlyObjectPredicate);
+        } else {
+            fail("Invalid editing context");
+        }
     }
 
 }
