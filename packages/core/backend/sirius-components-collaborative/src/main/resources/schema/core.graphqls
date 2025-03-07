@@ -72,10 +72,10 @@ type EditingContextRepresentationDescriptionConnection {
 }
 
 type EditingContextRepresentationDescriptionEdge {
-  node: RepresentationDescriptionMetadadata!
+  node: RepresentationDescriptionMetadata!
 }
 
-type RepresentationDescriptionMetadadata {
+type RepresentationDescriptionMetadata {
   id: ID!
   label: String!
   defaultName: String!
