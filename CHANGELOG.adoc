@@ -66,6 +66,11 @@ A _shared components_ library can be created in the process to store elements th
 - https://github.com/eclipse-sirius/sirius-web/issues/4664[#4664] [diagram] Make ConnectionLine snap to the border of a node
 - https://github.com/eclipse-sirius/sirius-web/issues/4652[#4652] [sirius-web] Add support for loading semantic data with their dependencies
 Semantic data can have dependencies between them, which are transitively loaded when an editing context is loaded.
+- https://github.com/eclipse-sirius/sirius-web/issues/4668[#4668] [sirius-web] Ensure that the resources loaded from libraries are identified as read only.
+For that a new predicate `IReadOnlyObjectPredicate` has been added to figure out if objects are read only.
+A default implementation has been provided to return `true` if the object belongs to the semantic data of a library.
+This predicate is used in Sirius Web's explorer to prevent users from deleting or renaming elements from libraries.
+This API is provisionnal for the moment and it may be moved or changed while improving the support for libraries.
 
 
 === Improvements
