@@ -33,5 +33,7 @@ export const tableIdProvider = (
           .join(',')}]`
       : '';
   const expandIds: string = `&expandedIds=[${expanded.map(encodeURIComponent).join(',')}]`;
-  return `${tableId}?cursor=${cursor}&direction=${direction}&size=${size}${globalFilterParam}${columnFiltersParam}${expandIds}`;
+  return `${tableId}?cursor=${
+    cursor ? encodeURIComponent(cursor) : cursor
+  }&direction=${direction}&size=${size}${globalFilterParam}${columnFiltersParam}${expandIds}`;
 };
