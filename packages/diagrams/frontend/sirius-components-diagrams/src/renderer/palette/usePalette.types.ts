@@ -32,65 +32,7 @@ export interface GQLGetToolSectionsVariables {
   diagramElementId: string;
 }
 
-export interface GQLUpdateCollapsingStateData {
-  collapseExpandDiagramElement: GQLUpdateCollapsingStatePayload;
-}
-
-export interface GQLUpdateCollapsingStatePayload {
-  __typename: string;
-}
-
-export interface GQLUpdateCollapsingStateVariables {
-  input: GQLUpdateCollapsingStateInput;
-}
-
-export interface GQLUpdateCollapsingStateInput {
-  id: string;
-  editingContextId: string;
-  representationId: string;
-  diagramElementId: string;
-  collapsingState: GQLCollapsingState;
-}
-
-export enum GQLCollapsingState {
-  EXPANDED = 'EXPANDED',
-  COLLAPSED = 'COLLAPSED',
-}
-
-export interface GQLDeleteFromDiagramSuccessPayload extends GQLDeleteFromDiagramPayload {
-  messages: GQLMessage[];
-}
-
-export interface GQLDeleteFromDiagramVariables {
-  input: GQLDeleteFromDiagramInput;
-}
-
-export interface GQLDeleteFromDiagramInput {
-  id: string;
-  editingContextId: string;
-  representationId: string;
-  nodeIds: string[];
-  edgeIds: string[];
-  deletionPolicy: GQLDeletionPolicy;
-}
-
-export interface GQLDeleteFromDiagramData {
-  deleteFromDiagram: GQLDeleteFromDiagramPayload;
-}
-
-export interface GQLDeleteFromDiagramPayload {
-  __typename: string;
-}
-
-export enum GQLDeletionPolicy {
-  SEMANTIC = 'SEMANTIC',
-  GRAPHICAL = 'GRAPHICAL',
-}
-
-export interface GQLErrorPayload
-  extends GQLInvokeSingleClickOnDiagramElementToolPayload,
-    GQLDeleteFromDiagramPayload,
-    GQLUpdateCollapsingStatePayload {
+export interface GQLErrorPayload extends GQLInvokeSingleClickOnDiagramElementToolPayload {
   message: string;
   messages: GQLMessage[];
 }
