@@ -23,10 +23,6 @@ export const DiagramPalette = memo(({ diagramElementId, targetObjectId }: Diagra
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { isOpened, x, y, hideDiagramPalette } = useDiagramPalette();
 
-  if (readOnly) {
-    return null;
-  }
-
   const onKeyDown = useCallback(
     (event: React.KeyboardEvent<Element>) => {
       const { key } = event;
@@ -37,6 +33,10 @@ export const DiagramPalette = memo(({ diagramElementId, targetObjectId }: Diagra
     },
     [hideDiagramPalette, isOpened]
   );
+
+  if (readOnly) {
+    return null;
+  }
 
   return isOpened && x && y ? (
     <PalettePortal>
