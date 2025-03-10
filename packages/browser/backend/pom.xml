@@ -17,7 +17,7 @@
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-browser-parent</artifactId>
-	<version>2025.2.1</version>
+	<version>2025.2.2</version>
 
 	<name>sirius-components-browser-parent</name>
 	<description>Sirius Components Browser Parent</description>
