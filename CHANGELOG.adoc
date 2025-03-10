@@ -104,6 +104,7 @@ Except for the specific case where `cause === 'refresh'` in `DiagramRenderer` (w
 - https://github.com/eclipse-sirius/sirius-web/issues/4577[#4577] [diagram] Improve the performance of the diagram by removing useless data from `DiagramContext`
 - https://github.com/eclipse-sirius/sirius-web/issues/4556[#4556] [table] Add the support of row hierarchy in tables
 - https://github.com/eclipse-sirius/sirius-web/issues/4518[#4518] [sirius-web] Allow the createCommit REST API to amend commit
+- https://github.com/eclipse-sirius/sirius-web/issues/4678[#4678] [table] Add support of virtual rows in tables
 
 
 == v2025.2.0
