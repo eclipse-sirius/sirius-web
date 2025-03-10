@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,24 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.diagrams.dto;
+package org.eclipse.sirius.components.collaborative.dto;
 
 /**
- * Represent the Type of the Tool Variable.
+ * Represents a ToolVariable entry.
  *
  * @author fbarbin
  */
-public enum ToolVariableType {
-    /**
-     * The Value is a simple string.
-     */
-    STRING,
-    /**
-     * The value represents an Object ID.
-     */
-    OBJECT_ID,
-    /**
-     * The value represent an Array of Object IDs, separated by a ",".
-     */
-    OBJECT_ID_ARRAY
+public record ToolVariable(String name, String value, ToolVariableType type) {
+
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,6 +40,11 @@ public class PortalServicesTests {
     private static final IEditingContext NOOP_EDITING_CONTEXT = new IEditingContext.NoOp();
 
     private static final IRepresentationSearchService NOOP_SEARCH_SERVICE = new IRepresentationSearchService() {
+        @Override
+        public Optional<IRepresentation> findById(IEditingContext editingContext, String representationId) {
+            return Optional.empty();
+        }
+
         @Override
         public <T extends IRepresentation> Optional<T> findById(IEditingContext editingContext, String representationId, Class<T> representationClass) {
             return Optional.empty();
@@ -137,6 +142,11 @@ public class PortalServicesTests {
 
         IRepresentationSearchService mockSearchService = new IRepresentationSearchService() {
             @Override
+            public Optional<IRepresentation> findById(IEditingContext editingContext, String representationId) {
+                return Optional.empty();
+            }
+
+            @Override
             public <T extends IRepresentation> Optional<T> findById(IEditingContext editingContext, String representationId, Class<T> representationClass) {
                 return Optional.of(representationClass.cast(portal));
             }
@@ -167,6 +177,11 @@ public class PortalServicesTests {
         portalsRepository.add(portal2);
 
         IRepresentationSearchService mockSearchService = new IRepresentationSearchService() {
+            @Override
+            public Optional<IRepresentation> findById(IEditingContext editingContext, String representationId) {
+                return Optional.empty();
+            }
+
             @Override
             public <T extends IRepresentation> Optional<T> findById(IEditingContext editingContext, String representationId, Class<T> representationClass) {
                 return portalsRepository.stream().filter(portal -> portal.getId().equals(representationId)).findFirst().map(representationClass::cast);
