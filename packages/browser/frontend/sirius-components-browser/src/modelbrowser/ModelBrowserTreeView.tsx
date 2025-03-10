@@ -12,10 +12,18 @@
  *******************************************************************************/
 
 import { FilterBar } from '@eclipse-sirius/sirius-components-core';
-import { TreeItemActionProps, TreeView } from '@eclipse-sirius/sirius-components-trees';
+import {
+  GQLGetExpandAllTreePathVariables,
+  GQLGetTreePathVariables,
+  GQLTreeItem,
+  TreeItemActionProps,
+  TreeView,
+  useExpandAllTreePath,
+  useTreePath,
+} from '@eclipse-sirius/sirius-components-trees';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import IconButton from '@mui/material/IconButton';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { ModelBrowserTreeViewProps, ModelBrowserTreeViewState } from './ModelBrowserTreeView.types';
 import { useModelBrowserSubscription } from './useModelBrowserSubscription';
@@ -40,10 +48,11 @@ export const ModelBrowserTreeView = ({
   descriptionId,
   isContainment,
   markedItemIds,
-  enableMultiSelection,
   title,
   leafType,
   ownerKind,
+  onTreeItemClick,
+  selectedTreeItemIds,
 }: ModelBrowserTreeViewProps) => {
   const { classes } = useTreeStyle();
 
@@ -53,6 +62,28 @@ export const ModelBrowserTreeView = ({
     maxDepth: 1,
   });
 
+  const { getExpandAllTreePath, data: expandAllTreePathData } = useExpandAllTreePath();
+
+  useEffect(() => {
+    if (expandAllTreePathData && expandAllTreePathData.viewer?.editingContext?.expandAllTreePath) {
+      const { expanded, maxDepth } = state;
+      const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } =
+        expandAllTreePathData.viewer.editingContext.expandAllTreePath;
+      const newExpanded: string[] = [...expanded];
+
+      treeItemIdsToExpand?.forEach((itemToExpand) => {
+        if (!expanded.includes(itemToExpand)) {
+          newExpanded.push(itemToExpand);
+        }
+      });
+      setState((prevState) => ({
+        ...prevState,
+        expanded: newExpanded,
+        maxDepth: Math.max(expandedMaxDepth, maxDepth),
+      }));
+    }
+  }, [expandAllTreePathData]);
+
   const treeId: string = `modelBrowser://${leafType}?ownerKind=${encodeURIComponent(
     ownerKind
   )}&targetType=${encodeURIComponent(referenceKind)}&ownerId=${ownerId}&descriptionId=${encodeURIComponent(
@@ -60,9 +91,64 @@ export const ModelBrowserTreeView = ({
   )}&isContainment=${isContainment}`;
   const { tree } = useModelBrowserSubscription(editingContextId, treeId, state.expanded, state.maxDepth);
 
-  const onExpandedElementChange = (expanded: string[], maxDepth: number) => {
-    setState((prevState) => ({ ...prevState, expanded, maxDepth }));
+  const onExpand = (id: string, depth: number) => {
+    const { expanded, maxDepth } = state;
+
+    if (expanded.includes(id)) {
+      const newExpanded = [...expanded];
+      newExpanded.splice(newExpanded.indexOf(id), 1);
+
+      setState((prevState) => ({
+        ...prevState,
+        expanded: newExpanded,
+        maxDepth: Math.max(maxDepth, depth),
+      }));
+    } else {
+      setState((prevState) => ({ ...prevState, expanded: [...expanded, id], maxDepth: Math.max(maxDepth, depth) }));
+    }
   };
+
+  const onExpandAll = (treeItem: GQLTreeItem) => {
+    if (tree) {
+      const variables: GQLGetExpandAllTreePathVariables = {
+        editingContextId,
+        treeId: tree.id,
+        treeItemId: treeItem.id,
+      };
+      getExpandAllTreePath({ variables });
+    }
+  };
+
+  const { getTreePath, data: treePathData } = useTreePath();
+  useEffect(() => {
+    if (tree?.id) {
+      const variables: GQLGetTreePathVariables = {
+        editingContextId,
+        treeId: tree.id,
+        selectionEntryIds: selectedTreeItemIds,
+      };
+      getTreePath({ variables });
+    }
+  }, [editingContextId, tree?.id, selectedTreeItemIds, getTreePath]);
+
+  useEffect(() => {
+    if (treePathData && treePathData.viewer?.editingContext?.treePath) {
+      const { expanded, maxDepth } = state;
+      const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } = treePathData.viewer.editingContext.treePath;
+      const newExpanded: string[] = [...expanded];
+
+      treeItemIdsToExpand?.forEach((itemToExpand) => {
+        if (!expanded.includes(itemToExpand)) {
+          newExpanded.push(itemToExpand);
+        }
+      });
+      setState((prevState) => ({
+        ...prevState,
+        expanded: newExpanded,
+        maxDepth: Math.max(expandedMaxDepth, maxDepth),
+      }));
+    }
+  }, [treePathData]);
 
   return (
     <>
@@ -79,15 +165,14 @@ export const ModelBrowserTreeView = ({
             readOnly={true}
             treeId={treeId}
             tree={tree}
-            enableMultiSelection={enableMultiSelection}
-            synchronizedWithSelection={true}
             textToFilter={state.filterBarText}
             textToHighlight={state.filterBarText}
             markedItemIds={markedItemIds}
             treeItemActionRender={(props) => <ExpandAllTreeItemAction {...props} />}
-            onExpandedElementChange={onExpandedElementChange}
-            expanded={state.expanded}
-            maxDepth={state.maxDepth}
+            onExpand={onExpand}
+            onExpandAll={onExpandAll}
+            onTreeItemClick={onTreeItemClick}
+            selectedTreeItemIds={selectedTreeItemIds}
           />
         ) : null}
       </div>

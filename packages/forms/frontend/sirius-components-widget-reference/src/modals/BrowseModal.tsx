@@ -12,14 +12,14 @@
  *******************************************************************************/
 
 import { ModelBrowserTreeView } from '@eclipse-sirius/sirius-components-browser';
-import { Selection, SelectionContext } from '@eclipse-sirius/sirius-components-core';
+import { GQLTreeItem } from '@eclipse-sirius/sirius-components-trees';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { makeStyles } from 'tss-react/mui';
 import { useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { BrowseModalProps } from './BrowseModal.types';
 
 const useBrowserModalStyles = makeStyles()((_) => ({
@@ -30,51 +30,65 @@ const useBrowserModalStyles = makeStyles()((_) => ({
 
 export const BrowseModal = ({ editingContextId, widget, onClose }: BrowseModalProps) => {
   const { classes: styles } = useBrowserModalStyles();
-  const [browserSelection, setBrowserSelection] = useState<Selection>({ entries: widget.referenceValues });
+  const [selectedTreeItemIds, setSelectedTreeItemIds] = useState<string[]>(
+    widget.referenceValues.map((value) => value.id)
+  );
+
+  const onTreeItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem) => {
+    if (widget.reference.manyValued) {
+      if (event.ctrlKey || event.metaKey) {
+        event.stopPropagation();
+        if (selectedTreeItemIds.includes(item.id)) {
+          setSelectedTreeItemIds((prevState) => prevState.filter((itemId) => itemId !== item.id));
+        } else {
+          setSelectedTreeItemIds((prevState) => [...prevState, item.id]);
+        }
+      } else {
+        setSelectedTreeItemIds([item.id]);
+      }
+    } else {
+      setSelectedTreeItemIds([item.id]);
+    }
+  };
 
   return (
-    <SelectionContext.Provider
-      value={{
-        selection: browserSelection,
-        setSelection: setBrowserSelection,
-      }}>
-      <Dialog
-        open={true}
-        onClose={() => onClose(null)}
-        aria-labelledby="dialog-title"
-        fullWidth
-        data-testid="browse-modal">
-        <DialogTitle id="dialog-title">Select an object</DialogTitle>
-        <DialogContent className={styles.content}>
-          <ModelBrowserTreeView
-            editingContextId={editingContextId}
-            referenceKind={widget.reference.referenceKind}
-            ownerId={widget.ownerId}
-            descriptionId={widget.descriptionId}
-            isContainment={widget.reference.containment}
-            markedItemIds={[]}
-            enableMultiSelection={widget.reference.manyValued}
-            title={'Choices'}
-            leafType={'reference'}
-            ownerKind={widget.reference.ownerKind}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button
-            variant="contained"
-            color="primary"
-            type="button"
-            data-testid="select-value"
-            onClick={() => {
-              const selectedElement = browserSelection?.entries.length > 0 ? browserSelection.entries[0] : null;
-              if (selectedElement) {
-                onClose(selectedElement.id);
-              }
-            }}>
-            Select
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </SelectionContext.Provider>
+    <Dialog
+      open={true}
+      onClose={() => onClose(null)}
+      aria-labelledby="dialog-title"
+      fullWidth
+      data-testid="browse-modal">
+      <DialogTitle id="dialog-title">Select an object</DialogTitle>
+      <DialogContent className={styles.content}>
+        <ModelBrowserTreeView
+          editingContextId={editingContextId}
+          referenceKind={widget.reference.referenceKind}
+          ownerId={widget.ownerId}
+          descriptionId={widget.descriptionId}
+          isContainment={widget.reference.containment}
+          markedItemIds={[]}
+          title={'Choices'}
+          leafType={'reference'}
+          ownerKind={widget.reference.ownerKind}
+          onTreeItemClick={onTreeItemClick}
+          selectedTreeItemIds={selectedTreeItemIds}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button
+          variant="contained"
+          color="primary"
+          type="button"
+          data-testid="select-value"
+          onClick={() => {
+            const selectedElementId = selectedTreeItemIds?.length > 0 ? selectedTreeItemIds[0] : null;
+            if (selectedElementId) {
+              onClose(selectedElementId);
+            }
+          }}>
+          Select
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };

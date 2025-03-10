@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,8 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Selection, SelectionContext } from '@eclipse-sirius/sirius-components-core';
 import { DiagramDialogComponentProps, GQLToolVariable } from '@eclipse-sirius/sirius-components-diagrams';
+import { GQLTreeItem } from '@eclipse-sirius/sirius-components-trees';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -33,7 +33,7 @@ export const SelectionDialog = ({
   onFinish,
 }: DiagramDialogComponentProps) => {
   const [state, setState] = useState<SelectionDialogState>({
-    selectedObjects: [],
+    selectedObjectIds: [],
   });
 
   const { selectionDescription } = useSelectionDescription({
@@ -46,18 +46,36 @@ export const SelectionDialog = ({
   const treeDescriptionId: string | null = selectionDescription?.treeDescription.id ?? null;
   const multiple: boolean = selectionDescription?.multiple ?? false;
 
-  const setDialogSelection = (selection: Selection) => {
-    setState((prevState) => ({ ...prevState, selectedObjects: [...selection.entries] }));
+  const onTreeItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem) => {
+    if (multiple) {
+      if (event.ctrlKey || event.metaKey) {
+        event.stopPropagation();
+        if (state.selectedObjectIds.includes(item.id)) {
+          setState((prevState) => ({
+            ...prevState,
+            selectedObjectIds: prevState.selectedObjectIds.filter((itemId) => itemId !== item.id),
+          }));
+        } else {
+          setState((prevState) => ({
+            ...prevState,
+            selectedObjectIds: [...prevState.selectedObjectIds, item.id],
+          }));
+        }
+      } else {
+        setState((prevState) => ({ ...prevState, selectedObjectIds: [item.id] }));
+      }
+    } else {
+      setState((prevState) => ({ ...prevState, selectedObjectIds: [item.id] }));
+    }
   };
 
   const handleClick = () => {
     let variables: GQLToolVariable[] = [];
-    if (state.selectedObjects.length > 0) {
+    if (state.selectedObjectIds.length > 0) {
       if (multiple) {
-        const selectedObjectIds = state.selectedObjects.map((selectedObject) => selectedObject.id).join(',');
-        variables = [{ name: 'selectedObjects', value: selectedObjectIds, type: 'OBJECT_ID_ARRAY' }];
+        variables = [{ name: 'selectedObjects', value: state.selectedObjectIds.join(','), type: 'OBJECT_ID_ARRAY' }];
       } else {
-        const selectedObjectId = state.selectedObjects[0]?.id ?? '';
+        const selectedObjectId = state.selectedObjectIds[0] ?? '';
         variables = [{ name: 'selectedObject', value: selectedObjectId, type: 'OBJECT_ID' }];
       }
       onFinish(variables);
@@ -71,37 +89,35 @@ export const SelectionDialog = ({
         editingContextId={editingContextId}
         variables={variables}
         treeDescriptionId={treeDescriptionId}
-        enableMultiSelection={multiple}
+        onTreeItemClick={onTreeItemClick}
+        selectedTreeItemIds={state.selectedObjectIds}
       />
     );
   }
 
   return (
-    <SelectionContext.Provider
-      value={{ selection: { entries: [...state.selectedObjects] }, setSelection: setDialogSelection }}>
-      <Dialog
-        open
-        onClose={onClose}
-        aria-labelledby="dialog-title"
-        maxWidth="md"
-        fullWidth
-        data-testid="selection-dialog">
-        <DialogTitle id="selection-dialog-title">Selection Dialog</DialogTitle>
-        <DialogContent>
-          <DialogContentText data-testid="selection-dialog-message">{message}</DialogContentText>
-          {content}
-        </DialogContent>
-        <DialogActions>
-          <Button
-            variant="contained"
-            disabled={state.selectedObjects.length == 0}
-            data-testid="finish-action"
-            color="primary"
-            onClick={handleClick}>
-            Finish
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </SelectionContext.Provider>
+    <Dialog
+      open
+      onClose={onClose}
+      aria-labelledby="dialog-title"
+      maxWidth="md"
+      fullWidth
+      data-testid="selection-dialog">
+      <DialogTitle id="selection-dialog-title">Selection Dialog</DialogTitle>
+      <DialogContent>
+        <DialogContentText data-testid="selection-dialog-message">{message}</DialogContentText>
+        {content}
+      </DialogContent>
+      <DialogActions>
+        <Button
+          variant="contained"
+          disabled={state.selectedObjectIds.length == 0}
+          data-testid="finish-action"
+          color="primary"
+          onClick={handleClick}>
+          Finish
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };

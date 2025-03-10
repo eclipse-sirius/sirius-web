@@ -29,11 +29,12 @@ export const Tree = ({
   onExpand,
   onExpandAll,
   readOnly,
-  enableMultiSelection = true,
   textToHighlight,
   textToFilter,
   markedItemIds,
   treeItemActionRender,
+  onTreeItemClick,
+  selectedTreeItemIds,
 }: TreeProps) => {
   const { classes } = useTreeStyle();
   const treeElement = useRef<HTMLDivElement | null>(null);
@@ -121,12 +122,13 @@ export const Tree = ({
                 depth={1}
                 onExpand={onExpand}
                 onExpandAll={onExpandAll}
-                enableMultiSelection={enableMultiSelection}
                 readOnly={readOnly}
                 textToHighlight={textToHighlight}
                 textToFilter={textToFilter}
                 markedItemIds={markedItemIds}
                 treeItemActionRender={treeItemActionRender}
+                onTreeItemClick={onTreeItemClick}
+                selectedTreeItemIds={selectedTreeItemIds}
               />
             </li>
           ))}

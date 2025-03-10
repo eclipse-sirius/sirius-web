@@ -13,7 +13,6 @@
 import { gql, useMutation } from '@apollo/client';
 import {
   DRAG_SOURCES_TYPE,
-  SelectionEntry,
   useDeletionConfirmationDialog,
   useMultiToast,
   useSelection,
@@ -401,18 +400,14 @@ const RawReferencePropertySection: PropertySectionComponent<GQLReferenceWidget> 
       if (dragSourcesStringified) {
         const sources = JSON.parse(dragSourcesStringified);
         if (Array.isArray(sources) && sources.length > 0) {
-          const entries = sources as SelectionEntry[];
-          const semanticElementIds = entries
-            .filter((entry) => entry.kind.startsWith('siriusComponents://semantic?'))
-            .map((entry) => entry.id);
           if (widget.reference.manyValued) {
-            callAddReferenceValues([...semanticElementIds]);
+            callAddReferenceValues([...sources]);
           } else {
             // mono-valued reference could not receive multiple elements
-            if (semanticElementIds.length > 1) {
+            if (sources.length > 1) {
               addErrorMessage('Single-valued reference can only accept a single value');
             } else {
-              callSetReferenceValue(semanticElementIds[0] ?? null);
+              callSetReferenceValue(sources[0] ?? null);
             }
           }
         }
