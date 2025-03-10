@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,9 +60,8 @@ const getFirstDroppedElementId = (event): string | null => {
   if (dragSourcesStringified) {
     const sources = JSON.parse(dragSourcesStringified);
     if (Array.isArray(sources)) {
-      const sourceIds: string[] = sources.filter((source) => source?.id).map((source) => source.id);
-      if (sourceIds.length > 0) {
-        return sourceIds[0] || null;
+      if (sources.length > 0) {
+        return sources[0] || null;
       }
     }
   }

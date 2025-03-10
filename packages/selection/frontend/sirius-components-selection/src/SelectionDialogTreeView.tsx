@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,10 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { DiagramDialogVariable } from '@eclipse-sirius/sirius-components-diagrams';
-import { TreeItemActionProps, TreeView } from '@eclipse-sirius/sirius-components-trees';
+import {
+  GQLGetExpandAllTreePathVariables,
+  GQLTreeItem,
+  TreeItemActionProps,
+  TreeView,
+  useExpandAllTreePath,
+} from '@eclipse-sirius/sirius-components-trees';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import IconButton from '@mui/material/IconButton';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { SelectionDialogTreeViewProps, SelectionDialogTreeViewState } from './SelectionDialogTreeView.types';
 import { useSelectionDialogTreeSubscription } from './useSelectionDialogTreeSubscription';
@@ -39,7 +45,8 @@ export const SelectionDialogTreeView = ({
   editingContextId,
   treeDescriptionId,
   variables,
-  enableMultiSelection,
+  onTreeItemClick,
+  selectedTreeItemIds,
 }: SelectionDialogTreeViewProps) => {
   const { classes } = useTreeStyle();
   const [state, setState] = useState<SelectionDialogTreeViewState>(initialState);
@@ -47,8 +54,54 @@ export const SelectionDialogTreeView = ({
   const treeId = `selection://?treeDescriptionId=${encodeURIComponent(treeDescriptionId)}${encodeVariables(variables)}`;
   const { tree } = useSelectionDialogTreeSubscription(editingContextId, treeId, state.expanded, state.maxDepth);
 
-  const onExpandedElementChange = (expanded: string[], maxDepth: number) => {
-    setState((prevState) => ({ ...prevState, expanded, maxDepth }));
+  const { getExpandAllTreePath, data: expandAllTreePathData } = useExpandAllTreePath();
+
+  useEffect(() => {
+    if (expandAllTreePathData && expandAllTreePathData.viewer?.editingContext?.expandAllTreePath) {
+      const { expanded, maxDepth } = state;
+      const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } =
+        expandAllTreePathData.viewer.editingContext.expandAllTreePath;
+      const newExpanded: string[] = [...expanded];
+
+      treeItemIdsToExpand?.forEach((itemToExpand) => {
+        if (!expanded.includes(itemToExpand)) {
+          newExpanded.push(itemToExpand);
+        }
+      });
+      setState((prevState) => ({
+        ...prevState,
+        expanded: newExpanded,
+        maxDepth: Math.max(expandedMaxDepth, maxDepth),
+      }));
+    }
+  }, [expandAllTreePathData]);
+
+  const onExpand = (id: string, depth: number) => {
+    const { expanded, maxDepth } = state;
+
+    if (expanded.includes(id)) {
+      const newExpanded = [...expanded];
+      newExpanded.splice(newExpanded.indexOf(id), 1);
+
+      setState((prevState) => ({
+        ...prevState,
+        expanded: newExpanded,
+        maxDepth: Math.max(maxDepth, depth),
+      }));
+    } else {
+      setState((prevState) => ({ ...prevState, expanded: [...expanded, id], maxDepth: Math.max(maxDepth, depth) }));
+    }
+  };
+
+  const onExpandAll = (treeItem: GQLTreeItem) => {
+    if (tree) {
+      const variables: GQLGetExpandAllTreePathVariables = {
+        editingContextId,
+        treeId: tree.id,
+        treeItemId: treeItem.id,
+      };
+      getExpandAllTreePath({ variables });
+    }
   };
 
   return (
@@ -58,15 +111,14 @@ export const SelectionDialogTreeView = ({
           editingContextId={editingContextId}
           readOnly={true}
           treeId={treeId}
-          enableMultiSelection={enableMultiSelection}
-          synchronizedWithSelection={true}
           tree={tree}
           textToFilter={''}
           textToHighlight={''}
           treeItemActionRender={(props) => <SelectionDialogTreeItemAction {...props} />}
-          onExpandedElementChange={onExpandedElementChange}
-          expanded={state.expanded}
-          maxDepth={state.maxDepth}
+          onExpand={onExpand}
+          onExpandAll={onExpandAll}
+          onTreeItemClick={onTreeItemClick}
+          selectedTreeItemIds={selectedTreeItemIds}
         />
       ) : null}
     </div>

@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLTreeItem } from '@eclipse-sirius/sirius-components-trees';
 
 export interface ModelBrowserTreeViewProps {
   editingContextId: string;
@@ -18,10 +19,11 @@ export interface ModelBrowserTreeViewProps {
   descriptionId: string;
   isContainment: boolean;
   markedItemIds: string[];
-  enableMultiSelection: boolean;
   title: string;
   leafType: 'reference' | 'container';
   ownerKind: string;
+  onTreeItemClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem) => void;
+  selectedTreeItemIds: string[];
 }
 
 export interface ModelBrowserTreeViewState {

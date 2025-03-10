@@ -10,15 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import {
-  DRAG_SOURCES_TYPE,
-  GQLStyledString,
-  IconOverlay,
-  Selection,
-  SelectionEntry,
-  StyledLabel,
-  useSelection,
-} from '@eclipse-sirius/sirius-components-core';
+import { DRAG_SOURCES_TYPE, GQLStyledString, IconOverlay, StyledLabel } from '@eclipse-sirius/sirius-components-core';
 import CropDinIcon from '@mui/icons-material/CropDin';
 import React, { useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
@@ -119,9 +111,10 @@ export const TreeItem = ({
   readOnly,
   textToHighlight,
   textToFilter,
-  enableMultiSelection,
   markedItemIds,
   treeItemActionRender,
+  onTreeItemClick,
+  selectedTreeItemIds,
 }: TreeItemProps) => {
   const [state, setState] = useState<TreeItemState>({
     editingMode: false,
@@ -132,7 +125,6 @@ export const TreeItem = ({
   const refDom = useRef() as any;
 
   const { classes } = useTreeItemStyle({ depth });
-  const { selection, setSelection } = useSelection();
   const { onDropTreeItem } = useDropTreeItem(editingContextId, treeId);
 
   const handleMouseEnter = (partHovered: PartHovered) => {
@@ -172,12 +164,13 @@ export const TreeItem = ({
                 depth={depth + 1}
                 onExpand={onExpand}
                 onExpandAll={onExpandAll}
-                enableMultiSelection={enableMultiSelection}
                 readOnly={readOnly}
                 textToHighlight={textToHighlight}
                 textToFilter={textToFilter}
                 markedItemIds={markedItemIds}
                 treeItemActionRender={treeItemActionRender}
+                onTreeItemClick={onTreeItemClick}
+                selectedTreeItemIds={selectedTreeItemIds}
               />
             </li>
           );
@@ -189,7 +182,7 @@ export const TreeItem = ({
   let className = classes.treeItem;
   let dataTestid: string | undefined = undefined;
 
-  const selected = selection.entries.find((entry) => entry.id === item.id);
+  const selected = selectedTreeItemIds.find((id) => id === item.id);
   if (selected) {
     className = `${className} ${classes.selected}`;
     dataTestid = 'selected';
@@ -240,7 +233,7 @@ export const TreeItem = ({
     text = <StyledLabel {...styledLabelProps}></StyledLabel>;
   }
 
-  const onClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
+  const onClick: React.MouseEventHandler<HTMLDivElement> = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!state.editingMode && event.currentTarget.contains(event.target as HTMLElement)) {
       refDom.current.focus();
       if (!item.selectable) {
@@ -253,22 +246,7 @@ export const TreeItem = ({
         return;
       }
 
-      if ((event.ctrlKey || event.metaKey) && enableMultiSelection) {
-        event.stopPropagation();
-        const isItemInSelection = selection.entries.find((entry) => entry.id === item.id);
-        if (isItemInSelection) {
-          const newSelection: Selection = { entries: selection.entries.filter((entry) => entry.id !== item.id) };
-          setSelection(newSelection);
-        } else {
-          const { id, label, kind } = item;
-          const newEntry = { id, label: getString(label), kind };
-          const newSelection: Selection = { entries: [...selection.entries, newEntry] };
-          setSelection(newSelection);
-        }
-      } else {
-        const { id, kind } = item;
-        setSelection({ entries: [{ id, kind }] });
-      }
+      onTreeItemClick(event, item);
     }
   };
 
@@ -291,14 +269,13 @@ export const TreeItem = ({
   };
 
   const dragStart: React.DragEventHandler<HTMLDivElement> = (event) => {
-    const isDraggedItemSelected = selection.entries.map((entry) => entry.id).includes(item.id);
+    const isDraggedItemSelected = selectedTreeItemIds.map((id) => id).includes(item.id);
     if (!isDraggedItemSelected) {
       // If we're dragging a non-selected item, drag it alone
-      const itemEntry: SelectionEntry = { id: item.id, kind: item.kind };
-      event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify([itemEntry]));
-    } else if (selection.entries.length > 0) {
+      event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify([item.id]));
+    } else if (selectedTreeItemIds.length > 0) {
       // Otherwise drag the whole selection
-      event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify(selection.entries));
+      event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify(selectedTreeItemIds));
     }
   };
 
@@ -308,14 +285,14 @@ export const TreeItem = ({
 
   const onDropItem: React.DragEventHandler<HTMLDivElement> = (event) => {
     const dragSourcesStringified = event.dataTransfer.getData(DRAG_SOURCES_TYPE);
-    const selectedIds = JSON.parse(dragSourcesStringified).map((entry: SelectionEntry) => entry.id);
+    const selectedIds = JSON.parse(dragSourcesStringified);
     onDropTreeItem(selectedIds, item.id, -1);
     event.preventDefault();
   };
 
   const onDropBefore: React.DragEventHandler<HTMLDivElement> = (event) => {
     const dragSourcesStringified = event.dataTransfer.getData(DRAG_SOURCES_TYPE);
-    const selectedIds = JSON.parse(dragSourcesStringified).map((entry: SelectionEntry) => entry.id);
+    const selectedIds = JSON.parse(dragSourcesStringified);
     onDropTreeItem(selectedIds, item.id, itemIndex);
     event.preventDefault();
   };

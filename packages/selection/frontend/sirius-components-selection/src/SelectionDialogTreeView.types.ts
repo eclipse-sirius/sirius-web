@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,12 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { DiagramDialogVariable } from '@eclipse-sirius/sirius-components-diagrams';
+import { GQLTreeItem } from '@eclipse-sirius/sirius-components-trees';
 
 export interface SelectionDialogTreeViewProps {
   editingContextId: string;
   treeDescriptionId: string;
   variables: DiagramDialogVariable[];
-  enableMultiSelection: boolean;
+  onTreeItemClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem) => void;
+  selectedTreeItemIds: string[];
 }
 
 export interface SelectionDialogTreeViewState {

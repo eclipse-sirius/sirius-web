@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,9 +24,10 @@ export interface TreeItemProps {
   readOnly: boolean;
   textToHighlight: string | null;
   textToFilter: string | null;
-  enableMultiSelection: boolean;
   markedItemIds: string[];
   treeItemActionRender?: (props: TreeItemActionProps) => React.ReactNode;
+  onTreeItemClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem) => void;
+  selectedTreeItemIds: string[];
 }
 
 export interface TreeItemState {

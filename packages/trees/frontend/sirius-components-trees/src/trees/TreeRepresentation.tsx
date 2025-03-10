@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,11 +11,23 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { RepresentationComponentProps } from '@eclipse-sirius/sirius-components-core';
-import { useState } from 'react';
+import {
+  GQLStyledString,
+  RepresentationComponentProps,
+  Selection,
+  useSelection,
+} from '@eclipse-sirius/sirius-components-core';
+import { useEffect, useState } from 'react';
 import { TreeView } from '../views/TreeView';
+import { GQLTreeItem } from '../views/TreeView.types';
+import { useExpandAllTreePath } from '../views/useExpandAllTreePath';
+import { GQLGetExpandAllTreePathVariables } from '../views/useExpandAllTreePath.types';
 import { TreeRepresentationState } from './TreeRepresentation.types';
 import { useTreeSubscription } from './useTreeSubscription';
+
+export const getString = (styledString: GQLStyledString): string => {
+  return styledString.styledStringFragments.map((fragments) => fragments.text).join('');
+};
 
 export const TreeRepresentation = ({ editingContextId, representationId, readOnly }: RepresentationComponentProps) => {
   const [state, setState] = useState<TreeRepresentationState>({
@@ -24,8 +36,75 @@ export const TreeRepresentation = ({ editingContextId, representationId, readOnl
   });
   const { tree } = useTreeSubscription(editingContextId, representationId, state.expanded, state.maxDepth);
 
-  const onExpandedElementChange = (expanded: string[], maxDepth: number) => {
-    setState((prevState) => ({ ...prevState, expanded, maxDepth }));
+  const { selection, setSelection } = useSelection();
+
+  const onExpand = (id: string, depth: number) => {
+    const { expanded, maxDepth } = state;
+
+    if (expanded.includes(id)) {
+      const newExpanded = [...expanded];
+      newExpanded.splice(newExpanded.indexOf(id), 1);
+
+      setState((prevState) => ({
+        ...prevState,
+        expanded: newExpanded,
+        maxDepth: Math.max(maxDepth, depth),
+      }));
+    } else {
+      setState((prevState) => ({ ...prevState, expanded: [...expanded, id], maxDepth: Math.max(maxDepth, depth) }));
+    }
+  };
+
+  const { getExpandAllTreePath, data: expandAllTreePathData } = useExpandAllTreePath();
+
+  useEffect(() => {
+    if (expandAllTreePathData && expandAllTreePathData.viewer?.editingContext?.expandAllTreePath) {
+      const { expanded, maxDepth } = state;
+      const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } =
+        expandAllTreePathData.viewer.editingContext.expandAllTreePath;
+      const newExpanded: string[] = [...expanded];
+
+      treeItemIdsToExpand?.forEach((itemToExpand) => {
+        if (!expanded.includes(itemToExpand)) {
+          newExpanded.push(itemToExpand);
+        }
+      });
+      setState((prevState) => ({
+        ...prevState,
+        expanded: newExpanded,
+        maxDepth: Math.max(expandedMaxDepth, maxDepth),
+      }));
+    }
+  }, [expandAllTreePathData]);
+
+  const onExpandAll = (treeItem: GQLTreeItem) => {
+    if (tree?.id) {
+      const variables: GQLGetExpandAllTreePathVariables = {
+        editingContextId,
+        treeId: tree.id,
+        treeItemId: treeItem.id,
+      };
+      getExpandAllTreePath({ variables });
+    }
+  };
+
+  const onTreeItemClick = (event, item: GQLTreeItem) => {
+    if (event.ctrlKey || event.metaKey) {
+      event.stopPropagation();
+      const isItemInSelection = selection.entries.find((entry) => entry.id === item.id);
+      if (isItemInSelection) {
+        const newSelection: Selection = { entries: selection.entries.filter((entry) => entry.id !== item.id) };
+        setSelection(newSelection);
+      } else {
+        const { id, label, kind } = item;
+        const newEntry = { id, label: getString(label), kind };
+        const newSelection: Selection = { entries: [...selection.entries, newEntry] };
+        setSelection(newSelection);
+      }
+    } else {
+      const { id, kind } = item;
+      setSelection({ entries: [{ id, kind }] });
+    }
   };
 
   return (
@@ -36,13 +115,12 @@ export const TreeRepresentation = ({ editingContextId, representationId, readOnl
           readOnly={readOnly}
           treeId={representationId}
           tree={tree}
-          enableMultiSelection={true}
-          synchronizedWithSelection={true}
           textToFilter={''}
           textToHighlight={''}
-          onExpandedElementChange={onExpandedElementChange}
-          expanded={state.expanded}
-          maxDepth={state.maxDepth}
+          onExpand={onExpand}
+          onExpandAll={onExpandAll}
+          onTreeItemClick={onTreeItemClick}
+          selectedTreeItemIds={selection.entries.map((entry) => entry.id)}
         />
       ) : null}
     </div>

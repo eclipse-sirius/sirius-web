@@ -12,12 +12,8 @@
  *******************************************************************************/
 import { gql, useQuery } from '@apollo/client';
 import { ModelBrowserTreeView } from '@eclipse-sirius/sirius-components-browser';
-import {
-  DRAG_SOURCES_TYPE,
-  SelectionContext,
-  SelectionEntry,
-  useMultiToast,
-} from '@eclipse-sirius/sirius-components-core';
+import { DRAG_SOURCES_TYPE, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { GQLTreeItem } from '@eclipse-sirius/sirius-components-trees';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Button from '@mui/material/Button';
@@ -98,6 +94,7 @@ export const TransferModal = ({
     draggingRightItemId: undefined,
     leftSelection: [],
     options: [],
+    selectedTreeItemIds: [],
   });
 
   const {
@@ -147,16 +144,6 @@ export const TransferModal = ({
     });
   }, [widget.referenceValues]);
 
-  const handleLeftSelection = (selection) => {
-    setState((prevState) => {
-      return {
-        ...prevState,
-        rightSelection: [],
-        leftSelection: selection.entries,
-      };
-    });
-  };
-
   const handleDragOverLeft = (event: React.DragEvent) => {
     event.preventDefault();
   };
@@ -192,10 +179,9 @@ export const TransferModal = ({
     if (dragSourcesStringified) {
       const sources = JSON.parse(dragSourcesStringified);
       if (Array.isArray(sources) && sources.length > 0) {
-        const entriesDragged = sources as SelectionEntry[];
-        const newElementIds = entriesDragged
-          .filter((newEntry) => !state.right.some((existingEntry) => existingEntry.id === newEntry.id))
-          .map((element) => element.id);
+        const newElementIds = sources.filter(
+          (newEntryId) => !state.right.some((existingEntry) => existingEntry.id === newEntryId)
+        );
         addElements(newElementIds);
       }
     }
@@ -212,7 +198,7 @@ export const TransferModal = ({
         return {
           ...prevState,
           rightSelection: newSelection,
-          leftSelection: newSelection,
+          selectedTreeItemIds: newSelection.map((selection) => selection.id),
         };
       });
     } else {
@@ -220,110 +206,128 @@ export const TransferModal = ({
         return {
           ...prevState,
           rightSelection: [item],
-          leftSelection: [item],
+          selectedTreeItemIds: [item.id],
         };
       });
     }
   };
 
   const handleDispatchRight = () => {
-    addElements(state.leftSelection.map((element) => element.id));
+    addElements(state.selectedTreeItemIds);
   };
 
   const handleDispatchLeft = () => {
     state.rightSelection.forEach((element) => removeElement(element.id));
   };
 
+  const onTreeItemClick = (event, item: GQLTreeItem) => {
+    if (widget.reference.manyValued) {
+      if (event.ctrlKey || event.metaKey) {
+        event.stopPropagation();
+        if (state.selectedTreeItemIds.includes(item.id)) {
+          setState((prevState) => ({
+            ...prevState,
+            selectedTreeItemIds: prevState.selectedTreeItemIds.filter((itemId) => itemId !== item.id),
+          }));
+        } else {
+          setState((prevState) => ({
+            ...prevState,
+            selectedTreeItemIds: [...prevState.selectedTreeItemIds, item.id],
+          }));
+        }
+      } else {
+        setState((prevState) => ({ ...prevState, selectedTreeItemIds: [item.id] }));
+      }
+    } else {
+      setState((prevState) => ({ ...prevState, selectedTreeItemIds: [item.id] }));
+    }
+  };
+
   return (
-    <SelectionContext.Provider
-      value={{
-        selection: { entries: state.leftSelection },
-        setSelection: handleLeftSelection,
-      }}>
-      <Dialog
-        open={true}
-        onClose={() => onClose()}
-        aria-labelledby="dialog-title"
-        maxWidth={false}
-        data-testid="transfer-modal">
-        <DialogTitle id="dialog-title">Edit reference</DialogTitle>
-        <DialogContent className={classes.dialogContent}>
-          <Grid container spacing={2} justifyContent="center" alignItems="center" className={classes.root}>
-            <Grid item>
-              <div className={classes.paper} onDragOver={handleDragOverLeft} onDrop={handleDropLeft}>
-                <ModelBrowserTreeView
-                  editingContextId={editingContextId}
-                  referenceKind={widget.reference.referenceKind}
-                  ownerId={widget.ownerId}
-                  descriptionId={widget.descriptionId}
-                  isContainment={widget.reference.containment}
-                  markedItemIds={state.right.map((entry) => entry.id)}
-                  enableMultiSelection={widget.reference.manyValued}
-                  title={'Choices'}
-                  leafType={'reference'}
-                  ownerKind={widget.reference.ownerKind}
-                />
-              </div>
-            </Grid>
-            <Grid item>
-              <Grid container direction="column" alignItems="center">
-                <IconButton
-                  className={classes.button}
-                  onClick={handleDispatchRight}
-                  disabled={
-                    !state.leftSelection.some(
-                      (leftEntry) => !state.right.some((rightEntry) => rightEntry.id === leftEntry.id)
-                    )
-                  }
-                  aria-label="move selected right"
-                  data-testid="move-right">
-                  <ChevronRightIcon />
-                </IconButton>
-                <IconButton
-                  className={classes.button}
-                  onClick={handleDispatchLeft}
-                  disabled={state.rightSelection.length === 0}
-                  aria-label="move selected left"
-                  data-testid="move-left">
-                  <ChevronLeftIcon />
-                </IconButton>
-              </Grid>
-            </Grid>
-            <Grid item>
-              <div className={classes.paper}>
-                <FilterableSortableList
-                  items={state.right}
-                  options={[...state.options, ...widget.referenceValues]}
-                  setItems={(items: FilterableSortableListItem[]) =>
-                    setState((prevState) => {
-                      return {
-                        ...prevState,
-                        right: items,
-                      };
-                    })
-                  }
-                  handleDragItemStart={handleDragStart}
-                  handleDragItemEnd={handleDragEnd}
-                  handleDropNewItem={handleDropRight}
-                  onClick={onClick}
-                  selectedItems={state.rightSelection}
-                  moveElement={moveElement}
-                />
-              </div>
+    <Dialog
+      open={true}
+      onClose={() => onClose()}
+      aria-labelledby="dialog-title"
+      maxWidth={false}
+      data-testid="transfer-modal">
+      <DialogTitle id="dialog-title">Edit reference</DialogTitle>
+      <DialogContent className={classes.dialogContent}>
+        <Grid container spacing={2} justifyContent="center" alignItems="center" className={classes.root}>
+          <Grid item>
+            <div className={classes.paper} onDragOver={handleDragOverLeft} onDrop={handleDropLeft}>
+              <ModelBrowserTreeView
+                editingContextId={editingContextId}
+                referenceKind={widget.reference.referenceKind}
+                ownerId={widget.ownerId}
+                descriptionId={widget.descriptionId}
+                isContainment={widget.reference.containment}
+                markedItemIds={state.right.map((entry) => entry.id)}
+                title={'Choices'}
+                leafType={'reference'}
+                ownerKind={widget.reference.ownerKind}
+                onTreeItemClick={onTreeItemClick}
+                selectedTreeItemIds={state.selectedTreeItemIds}
+              />
+            </div>
+          </Grid>
+          <Grid item>
+            <Grid container direction="column" alignItems="center">
+              <IconButton
+                className={classes.button}
+                onClick={handleDispatchRight}
+                disabled={
+                  !state.selectedTreeItemIds.some(
+                    (selectedId) => !state.right.some((rightEntry) => rightEntry.id === selectedId)
+                  )
+                }
+                aria-label="move selected right"
+                data-testid="move-right">
+                <ChevronRightIcon />
+              </IconButton>
+              <IconButton
+                className={classes.button}
+                onClick={handleDispatchLeft}
+                disabled={state.rightSelection.length === 0}
+                aria-label="move selected left"
+                data-testid="move-left">
+                <ChevronLeftIcon />
+              </IconButton>
             </Grid>
           </Grid>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            variant="contained"
-            color="primary"
-            type="button"
-            data-testid="close-transfer-modal"
-            onClick={() => onClose()}>
-            close
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </SelectionContext.Provider>
+          <Grid item>
+            <div className={classes.paper}>
+              <FilterableSortableList
+                items={state.right}
+                options={[...state.options, ...widget.referenceValues]}
+                setItems={(items: FilterableSortableListItem[]) =>
+                  setState((prevState) => {
+                    return {
+                      ...prevState,
+                      right: items,
+                    };
+                  })
+                }
+                handleDragItemStart={handleDragStart}
+                handleDragItemEnd={handleDragEnd}
+                handleDropNewItem={handleDropRight}
+                onClick={onClick}
+                selectedItems={state.rightSelection}
+                moveElement={moveElement}
+              />
+            </div>
+          </Grid>
+        </Grid>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          variant="contained"
+          color="primary"
+          type="button"
+          data-testid="close-transfer-modal"
+          onClick={() => onClose()}>
+          close
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
