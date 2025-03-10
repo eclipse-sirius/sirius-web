@@ -71,6 +71,7 @@ It now only contains the identifier of the tree item.
 - https://github.com/eclipse-sirius/sirius-web/issues/4535[#4535] [table] Prevent page size from being reset after global search has been cleared
 - https://github.com/eclipse-sirius/sirius-web/issues/4443[#4443] [table] Add missing edit handler for table cells in view
 - https://github.com/eclipse-sirius/sirius-web/issues/4661[#4661] [table] Prevent table pagination to be reset on the first page
+- https://github.com/eclipse-sirius/sirius-web/issues/4684[#4684] [diagram] Prevent diagram crash when switch to read-only
 
 
 === New Features
