@@ -19,18 +19,15 @@ import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { useDialog } from '../../dialog/useDialog';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { useCollapseExpand } from '../tools/useCollapseExpand';
+import { GQLCollapsingState } from '../tools/useCollapseExpand.types';
+import { useDelete } from '../tools/useDelete';
+import { GQLDeletionPolicy } from '../tools/useDelete.types';
 import { useImpactAnalysisDialog } from './impact-analysis/useImpactAnalysisDialog';
 import { GQLPalette, GQLSingleClickOnDiagramElementTool, GQLTool, GQLToolVariable } from './Palette.types';
 import { useDiagramElementPalette } from './useDiagramElementPalette';
 import { useDiagramPalette } from './useDiagramPalette';
 import {
-  GQLCollapsingState,
-  GQLDeleteFromDiagramData,
-  GQLDeleteFromDiagramInput,
-  GQLDeleteFromDiagramPayload,
-  GQLDeleteFromDiagramSuccessPayload,
-  GQLDeleteFromDiagramVariables,
-  GQLDeletionPolicy,
   GQLDiagramDescription,
   GQLErrorPayload,
   GQLGetToolSectionsData,
@@ -41,9 +38,6 @@ import {
   GQLInvokeSingleClickOnDiagramElementToolSuccessPayload,
   GQLInvokeSingleClickOnDiagramElementToolVariables,
   GQLRepresentationDescription,
-  GQLUpdateCollapsingStateData,
-  GQLUpdateCollapsingStateInput,
-  GQLUpdateCollapsingStateVariables,
   UsePaletteProps,
   UsePaletteValue,
 } from './usePalette.types';
@@ -119,45 +113,9 @@ const invokeSingleClickOnDiagramElementToolMutation = gql`
   }
 `;
 
-export const deleteFromDiagramMutation = gql`
-  mutation deleteFromDiagram($input: DeleteFromDiagramInput!) {
-    deleteFromDiagram(input: $input) {
-      __typename
-      ... on ErrorPayload {
-        messages {
-          body
-          level
-        }
-      }
-      ... on DeleteFromDiagramSuccessPayload {
-        messages {
-          body
-          level
-        }
-      }
-    }
-  }
-`;
+const isErrorPayload = (payload: GQLInvokeSingleClickOnDiagramElementToolPayload): payload is GQLErrorPayload =>
+  payload.__typename === 'ErrorPayload';
 
-const updateCollapsingStateMutation = gql`
-  mutation updateCollapsingState($input: UpdateCollapsingStateInput!) {
-    updateCollapsingState(input: $input) {
-      __typename
-      ... on SuccessPayload {
-        id
-      }
-      ... on ErrorPayload {
-        message
-      }
-    }
-  }
-`;
-
-const isErrorPayload = (
-  payload: GQLDeleteFromDiagramPayload | GQLInvokeSingleClickOnDiagramElementToolPayload
-): payload is GQLErrorPayload => payload.__typename === 'ErrorPayload';
-const isDeleteSuccessPayload = (payload: GQLDeleteFromDiagramPayload): payload is GQLDeleteFromDiagramSuccessPayload =>
-  payload.__typename === 'DeleteFromDiagramSuccessPayload';
 const isInvokeSingleClickSuccessPayload = (
   payload: GQLInvokeSingleClickOnDiagramElementToolPayload
 ): payload is GQLInvokeSingleClickOnDiagramElementToolSuccessPayload =>
@@ -215,10 +173,6 @@ export const usePalette = ({
     }
   }, [paletteError]);
 
-  const [deleteElementsMutation] = useMutation<GQLDeleteFromDiagramData, GQLDeleteFromDiagramVariables>(
-    deleteFromDiagramMutation
-  );
-
   const [invokeSingleClickOnDiagramElementTool] = useMutation<
     GQLInvokeSingleClickOnDiagramElementToolData,
     GQLInvokeSingleClickOnDiagramElementToolVariables
@@ -268,52 +222,17 @@ export const usePalette = ({
     ]
   );
 
+  const { deleteDiagramElements } = useDelete(editingContextId, diagramId);
+
   const invokeDelete = (diagramElementId: string, deletionPolicy: GQLDeletionPolicy) => {
     if (!!nodeLookup.get(diagramElementId)) {
-      invokeDeleteMutation([diagramElementId], [], deletionPolicy);
+      deleteDiagramElements([diagramElementId], [], deletionPolicy);
     } else if (!!edgeLookup.get(diagramElementId)) {
-      invokeDeleteMutation([], [diagramElementId], deletionPolicy);
+      deleteDiagramElements([], [diagramElementId], deletionPolicy);
     }
   };
 
-  const invokeDeleteMutation = useCallback(
-    async (nodeIds: string[], edgeIds: string[], deletionPolicy: GQLDeletionPolicy) => {
-      const input: GQLDeleteFromDiagramInput = {
-        id: crypto.randomUUID(),
-        editingContextId,
-        representationId: diagramId,
-        nodeIds,
-        edgeIds,
-        deletionPolicy,
-      };
-      const { data } = await deleteElementsMutation({ variables: { input } });
-      if (data) {
-        const { deleteFromDiagram } = data;
-        if (isErrorPayload(deleteFromDiagram) || isDeleteSuccessPayload(deleteFromDiagram)) {
-          addMessages(deleteFromDiagram.messages);
-        }
-      }
-    },
-    [editingContextId, diagramId, deleteElementsMutation]
-  );
-
-  const [collapseExpandMutation] = useMutation<GQLUpdateCollapsingStateData, GQLUpdateCollapsingStateVariables>(
-    updateCollapsingStateMutation
-  );
-
-  const collapseExpandElement = useCallback(
-    (nodeId: string, collapsingState: GQLCollapsingState) => {
-      const input: GQLUpdateCollapsingStateInput = {
-        id: crypto.randomUUID(),
-        editingContextId,
-        representationId: diagramId,
-        diagramElementId: nodeId,
-        collapsingState,
-      };
-      collapseExpandMutation({ variables: { input } });
-    },
-    [editingContextId, diagramId, collapseExpandMutation]
-  );
+  const { collapseExpandElement } = useCollapseExpand(editingContextId, diagramId);
 
   const handleDialogDescription = (tool: GQLSingleClickOnDiagramElementTool) => {
     const onConfirm = (variables: GQLToolVariable[]) => {
