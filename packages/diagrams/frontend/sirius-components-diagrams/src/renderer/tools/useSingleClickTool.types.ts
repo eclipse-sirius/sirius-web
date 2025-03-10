@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,32 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
 import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
-import { GQLPalette, GQLTool } from './Palette.types';
+import { GQLTool } from '../palette/Palette.types';
 
-export interface UsePaletteProps {
-  x: number;
-  y: number;
-  diagramElementId: string;
-  targetObjectId: string;
-  onDirectEditClick: () => void;
-}
-
-export interface UsePaletteValue {
-  handleToolClick: (tool: GQLTool) => void;
-  palette: GQLPalette | null;
-}
-
-export interface GQLGetToolSectionsVariables {
-  editingContextId: string;
-  diagramId: string;
-  diagramElementId: string;
-}
-
-export interface GQLErrorPayload extends GQLInvokeSingleClickOnDiagramElementToolPayload {
-  message: string;
-  messages: GQLMessage[];
+export interface UseSingleClickToolValue {
+  invokeSingleClickTool: (
+    editingContextId: string,
+    diagramId: string,
+    tool: GQLTool,
+    diagramElementId: string,
+    targetObjectId: string,
+    x: number,
+    y: number
+  ) => void;
+  loading: boolean;
+  data: GQLInvokeSingleClickOnDiagramElementToolData | null;
 }
 
 export interface GQLInvokeSingleClickOnDiagramElementToolData {
