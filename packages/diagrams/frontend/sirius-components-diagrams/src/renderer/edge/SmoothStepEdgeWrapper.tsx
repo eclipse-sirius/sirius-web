@@ -19,7 +19,7 @@ import { NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { getHandleCoordinatesByPosition } from './EdgeLayout';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
-import { MultiLabelEditableEdge } from './MultiLabelEditableEdge';
+import { MultiLabelRectilinearEditableEdge } from './rectilinear-edge/MultiLabelRectilinearEditableEdge';
 
 function isMultipleOfTwo(num: number): boolean {
   return num % 2 === 0;
@@ -159,13 +159,14 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
   }
 
   return (
-    <MultiLabelEditableEdge
+    <MultiLabelRectilinearEditableEdge
       {...props}
       sourceX={sourceX}
       sourceY={sourceY}
       targetX={targetX}
       targetY={targetY}
       bendingPoints={bendingPoints}
+      customEdge={!!data?.bendingPoints}
     />
   );
 });

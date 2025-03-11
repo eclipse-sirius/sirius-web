@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -310,9 +310,8 @@ describe('Diagram - edges', () => {
       diagram.getNodes('Topography', 'DataSource1').should('exist');
       explorer.select('standard');
       cy.getByTestId('bend-point-0');
-      cy.getByTestId('temporary-bend-point-0');
       cy.getByTestId('bend-point-1');
-      cy.getByTestId('temporary-bend-point-1');
+      cy.getByTestId('temporary-moving-line-1');
     });
   });
 });

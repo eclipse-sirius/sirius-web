@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,20 +12,19 @@
  *******************************************************************************/
 import { DraggableData } from 'react-draggable';
 
-export interface BendPointProps {
-  x: number;
-  y: number;
-  index: number;
-  onDrag: (eventData: DraggableData, index: number) => void;
-  onDragStop: (eventData: DraggableData, index: number) => void;
+export type LocalBendingPointsSetter = (
+  localBendingPoints: BendPointData[] | ((prevState: BendPointData[]) => BendPointData[])
+) => void;
+
+export interface UseBendingPointsValue {
+  localBendingPoints: BendPointData[];
+  setLocalBendingPoints: LocalBendingPointsSetter;
+  onBendingPointDragStop: (eventData: DraggableData, index: number) => void;
+  onBendingPointDrag: (eventData: DraggableData, index: number) => void;
 }
 
-export interface TemporaryMovingLineProps {
+export type BendPointData = {
   x: number;
   y: number;
-  direction: 'x' | 'y';
-  segmentLength: number;
-  index: number;
-  onDrag: (eventData: DraggableData, index: number, direction: 'x' | 'y') => void;
-  onDragStop: (eventData: DraggableData, index: number) => void;
-}
+  pathOrder: number;
+};
