@@ -11,10 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { gql, useMutation } from '@apollo/client';
 import { useDeletionConfirmationDialog, useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { Edge, Node, useStoreApi } from '@xyflow/react';
-import { useCallback, useContext, useEffect } from 'react';
+import { useCallback, useContext } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { useDialog } from '../../dialog/useDialog';
@@ -27,65 +27,17 @@ import { GQLPalette, GQLSingleClickOnDiagramElementTool, GQLTool } from './Palet
 import { useDiagramElementPalette } from './useDiagramElementPalette';
 import { useDiagramPalette } from './useDiagramPalette';
 import {
-  GQLDiagramDescription,
   GQLErrorPayload,
-  GQLGetToolSectionsData,
-  GQLGetToolSectionsVariables,
   GQLInvokeSingleClickOnDiagramElementToolData,
   GQLInvokeSingleClickOnDiagramElementToolInput,
   GQLInvokeSingleClickOnDiagramElementToolPayload,
   GQLInvokeSingleClickOnDiagramElementToolSuccessPayload,
   GQLInvokeSingleClickOnDiagramElementToolVariables,
-  GQLRepresentationDescription,
   GQLToolVariable,
   UsePaletteProps,
   UsePaletteValue,
 } from './usePalette.types';
-
-export const getPaletteQuery = gql`
-  fragment ToolFields on Tool {
-    __typename
-    id
-    label
-    iconURL
-    ... on SingleClickOnDiagramElementTool {
-      targetDescriptions {
-        id
-      }
-      appliesToDiagramRoot
-      dialogDescriptionId
-    }
-  }
-  query getPalette($editingContextId: ID!, $diagramId: ID!, $diagramElementId: ID!) {
-    viewer {
-      editingContext(editingContextId: $editingContextId) {
-        representation(representationId: $diagramId) {
-          description {
-            ... on DiagramDescription {
-              palette(diagramElementId: $diagramElementId) {
-                id
-                quickAccessTools {
-                  ...ToolFields
-                }
-                paletteEntries {
-                  ...ToolFields
-                  ... on ToolSection {
-                    id
-                    label
-                    iconURL
-                    tools {
-                      ...ToolFields
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
+import { usePaletteContents } from './usePaletteContents';
 
 const invokeSingleClickOnDiagramElementToolMutation = gql`
   mutation invokeSingleClickOnDiagramElementTool($input: InvokeSingleClickOnDiagramElementToolInput!) {
@@ -123,10 +75,6 @@ const isInvokeSingleClickSuccessPayload = (
 const isSingleClickOnDiagramElementTool = (tool: GQLTool): tool is GQLSingleClickOnDiagramElementTool =>
   tool.__typename === 'SingleClickOnDiagramElementTool';
 
-const isDiagramDescription = (
-  representationDescription: GQLRepresentationDescription
-): representationDescription is GQLDiagramDescription => representationDescription.__typename === 'DiagramDescription';
-
 export const usePalette = ({
   x,
   y,
@@ -136,22 +84,12 @@ export const usePalette = ({
 }: UsePaletteProps): UsePaletteValue => {
   const { nodeLookup, edgeLookup, domNode } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
+  const palette: GQLPalette | null = usePaletteContents(diagramElementId);
 
-  const { addErrorMessage, addMessages } = useMultiToast();
+  const { addMessages } = useMultiToast();
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
   const { showDialog } = useDialog();
   const { setSelection } = useSelection();
-
-  const { data: paletteData, error: paletteError } = useQuery<GQLGetToolSectionsData, GQLGetToolSectionsVariables>(
-    getPaletteQuery,
-    {
-      variables: {
-        editingContextId,
-        diagramId,
-        diagramElementId,
-      },
-    }
-  );
 
   const { hideDiagramPalette } = useDiagramPalette();
   const { hideDiagramElementPalette } = useDiagramElementPalette();
@@ -161,15 +99,6 @@ export const usePalette = ({
     hideDiagramElementPalette();
     domNode?.focus();
   }, [hideDiagramPalette, hideDiagramElementPalette]);
-
-  const description: GQLRepresentationDescription | undefined =
-    paletteData?.viewer.editingContext.representation.description;
-  const palette: GQLPalette | null = description && isDiagramDescription(description) ? description.palette : null;
-  useEffect(() => {
-    if (paletteError) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
-    }
-  }, [paletteError]);
 
   const [invokeSingleClickOnDiagramElementTool] = useMutation<
     GQLInvokeSingleClickOnDiagramElementToolData,
