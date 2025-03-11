@@ -77,6 +77,7 @@ We will also remove `GQLTreeItem#kind` later.
 - https://github.com/eclipse-sirius/sirius-web/issues/4661[#4661] [table] Prevent table pagination to be reset on the first page
 - https://github.com/eclipse-sirius/sirius-web/issues/4684[#4684] [diagram] Prevent diagram crash when switch to read-only
 - https://github.com/eclipse-sirius/sirius-web/issues/4693[#4693] [diagram] Fix an issue with nodes not correctly hidden on diagram representation
+- https://github.com/eclipse-sirius/sirius-web/issues/4691[#4691] [diagram] Fixed a bug where diagrams could appear empty when opened in a read-only context
 
 
 === New Features
