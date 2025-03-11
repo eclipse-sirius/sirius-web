@@ -28,6 +28,10 @@
         eType="#//Task" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="contributions" upperBound="-1"
         eType="#//Contribution" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="applicationConcerns" upperBound="-1"
+        eType="#//ApplicationConcern" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="domains" upperBound="-1"
+        eType="#//Domain" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="Instant" instanceClassName="java.time.Instant"/>
   <eClassifiers xsi:type="ecore:EClass" name="Iteration" eSuperTypes="#//NamedElement">
@@ -221,4 +225,62 @@
         eType="#//EnumLiteral" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EnumLiteral" eSuperTypes="#//NamedElement #//AnnotableElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ApplicationConcern" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="controllers" upperBound="-1"
+        eType="#//Controller" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="services" upperBound="-1"
+        eType="#//Service" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="events" upperBound="-1"
+        eType="#//Event" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="commands" upperBound="-1"
+        eType="#//Command" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="queries" upperBound="-1"
+        eType="#//Query" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="domains" upperBound="-1"
+        eType="#//Domain"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Controller" eSuperTypes="#//NamedElement #//MessageEmitter #//MessageListener">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="calls" upperBound="-1"
+        eType="#//Service"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Domain" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="services" upperBound="-1"
+        eType="#//Service" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="repositories" upperBound="-1"
+        eType="#//Repository" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="events" upperBound="-1"
+        eType="#//Event" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="commands" upperBound="-1"
+        eType="#//Command" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="queries" upperBound="-1"
+        eType="#//Query" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dependencies" upperBound="-1"
+        eType="#//Domain"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Service" eSuperTypes="#//NamedElement #//MessageListener #//MessageEmitter">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="calls" upperBound="-1"
+        eType="#//Service"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MessageListener" abstract="true" interface="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="listenedMessages" upperBound="-1"
+        eType="#//Message" eOpposite="#//Message/listenedBy"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MessageEmitter" abstract="true" interface="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="emittedMessages" upperBound="-1"
+        eType="#//Message" eOpposite="#//Message/emittedBy"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Message" abstract="true" interface="true"
+      eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="emittedBy" upperBound="-1"
+        eType="#//MessageEmitter" eOpposite="#//MessageEmitter/emittedMessages"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="listenedBy" upperBound="-1"
+        eType="#//MessageListener" eOpposite="#//MessageListener/listenedMessages"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Event" eSuperTypes="#//Message">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="causedBy" upperBound="-1"
+        eType="#//Message"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Command" eSuperTypes="#//Message"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Query" eSuperTypes="#//Message"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Repository" eSuperTypes="#//NamedElement"/>
 </ecore:EPackage>

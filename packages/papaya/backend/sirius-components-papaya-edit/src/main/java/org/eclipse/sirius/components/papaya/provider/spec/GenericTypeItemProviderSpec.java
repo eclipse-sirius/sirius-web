@@ -32,7 +32,7 @@ public class GenericTypeItemProviderSpec extends GenericTypeItemProvider {
 
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/GenericType.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/GenericType.svg"));
     }
 
     @Override

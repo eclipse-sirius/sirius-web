@@ -292,12 +292,30 @@ public interface PapayaPackage extends EPackage {
     int PROJECT__CONTRIBUTIONS = NAMED_ELEMENT_FEATURE_COUNT + 6;
 
     /**
+     * The feature id for the '<em><b>Application Concerns</b></em>' containment reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PROJECT__APPLICATION_CONCERNS = NAMED_ELEMENT_FEATURE_COUNT + 7;
+
+    /**
+     * The feature id for the '<em><b>Domains</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PROJECT__DOMAINS = NAMED_ELEMENT_FEATURE_COUNT + 8;
+
+    /**
      * The number of structural features of the '<em>Project</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int PROJECT_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 7;
+    int PROJECT_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 9;
 
     /**
      * The number of operations of the '<em>Project</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2733,6 +2751,776 @@ public interface PapayaPackage extends EPackage {
     int ENUM_LITERAL_OPERATION_COUNT = NAMED_ELEMENT_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.papaya.impl.ApplicationConcernImpl
+     * <em>Application Concern</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.papaya.impl.ApplicationConcernImpl
+     * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getApplicationConcern()
+     * @generated
+     */
+    int APPLICATION_CONCERN = 33;
+
+    /**
+     * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int APPLICATION_CONCERN__TAGS = NAMED_ELEMENT__TAGS;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int APPLICATION_CONCERN__NAME = NAMED_ELEMENT__NAME;
+
+    /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int APPLICATION_CONCERN__DESCRIPTION = NAMED_ELEMENT__DESCRIPTION;
+
+    /**
+     * The feature id for the '<em><b>Controllers</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int APPLICATION_CONCERN__CONTROLLERS = NAMED_ELEMENT_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Services</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int APPLICATION_CONCERN__SERVICES = NAMED_ELEMENT_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Events</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int APPLICATION_CONCERN__EVENTS = NAMED_ELEMENT_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Commands</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int APPLICATION_CONCERN__COMMANDS = NAMED_ELEMENT_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Queries</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int APPLICATION_CONCERN__QUERIES = NAMED_ELEMENT_FEATURE_COUNT + 4;
+
+    /**
+     * The feature id for the '<em><b>Domains</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int APPLICATION_CONCERN__DOMAINS = NAMED_ELEMENT_FEATURE_COUNT + 5;
+
+    /**
+     * The number of structural features of the '<em>Application Concern</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int APPLICATION_CONCERN_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 6;
+
+    /**
+     * The number of operations of the '<em>Application Concern</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int APPLICATION_CONCERN_OPERATION_COUNT = NAMED_ELEMENT_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.papaya.impl.ControllerImpl <em>Controller</em>}'
+     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.papaya.impl.ControllerImpl
+     * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getController()
+     * @generated
+     */
+    int CONTROLLER = 34;
+
+    /**
+     * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONTROLLER__TAGS = NAMED_ELEMENT__TAGS;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONTROLLER__NAME = NAMED_ELEMENT__NAME;
+
+    /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONTROLLER__DESCRIPTION = NAMED_ELEMENT__DESCRIPTION;
+
+    /**
+     * The feature id for the '<em><b>Emitted Messages</b></em>' reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONTROLLER__EMITTED_MESSAGES = NAMED_ELEMENT_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Listened Messages</b></em>' reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONTROLLER__LISTENED_MESSAGES = NAMED_ELEMENT_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Calls</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONTROLLER__CALLS = NAMED_ELEMENT_FEATURE_COUNT + 2;
+
+    /**
+     * The number of structural features of the '<em>Controller</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONTROLLER_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 3;
+
+    /**
+     * The number of operations of the '<em>Controller</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONTROLLER_OPERATION_COUNT = NAMED_ELEMENT_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.papaya.impl.DomainImpl <em>Domain</em>}' class.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.papaya.impl.DomainImpl
+     * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getDomain()
+     * @generated
+     */
+    int DOMAIN = 35;
+
+    /**
+     * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DOMAIN__TAGS = NAMED_ELEMENT__TAGS;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DOMAIN__NAME = NAMED_ELEMENT__NAME;
+
+    /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DOMAIN__DESCRIPTION = NAMED_ELEMENT__DESCRIPTION;
+
+    /**
+     * The feature id for the '<em><b>Services</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DOMAIN__SERVICES = NAMED_ELEMENT_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Repositories</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DOMAIN__REPOSITORIES = NAMED_ELEMENT_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Events</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DOMAIN__EVENTS = NAMED_ELEMENT_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Commands</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DOMAIN__COMMANDS = NAMED_ELEMENT_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Queries</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DOMAIN__QUERIES = NAMED_ELEMENT_FEATURE_COUNT + 4;
+
+    /**
+     * The feature id for the '<em><b>Dependencies</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DOMAIN__DEPENDENCIES = NAMED_ELEMENT_FEATURE_COUNT + 5;
+
+    /**
+     * The number of structural features of the '<em>Domain</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DOMAIN_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 6;
+
+    /**
+     * The number of operations of the '<em>Domain</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DOMAIN_OPERATION_COUNT = NAMED_ELEMENT_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.papaya.impl.ServiceImpl <em>Service</em>}'
+     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.papaya.impl.ServiceImpl
+     * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getService()
+     * @generated
+     */
+    int SERVICE = 36;
+
+    /**
+     * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SERVICE__TAGS = NAMED_ELEMENT__TAGS;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SERVICE__NAME = NAMED_ELEMENT__NAME;
+
+    /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SERVICE__DESCRIPTION = NAMED_ELEMENT__DESCRIPTION;
+
+    /**
+     * The feature id for the '<em><b>Listened Messages</b></em>' reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SERVICE__LISTENED_MESSAGES = NAMED_ELEMENT_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Emitted Messages</b></em>' reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SERVICE__EMITTED_MESSAGES = NAMED_ELEMENT_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Calls</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SERVICE__CALLS = NAMED_ELEMENT_FEATURE_COUNT + 2;
+
+    /**
+     * The number of structural features of the '<em>Service</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SERVICE_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 3;
+
+    /**
+     * The number of operations of the '<em>Service</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SERVICE_OPERATION_COUNT = NAMED_ELEMENT_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.papaya.MessageListener <em>Message
+     * Listener</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.papaya.MessageListener
+     * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getMessageListener()
+     * @generated
+     */
+    int MESSAGE_LISTENER = 37;
+
+    /**
+     * The feature id for the '<em><b>Listened Messages</b></em>' reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MESSAGE_LISTENER__LISTENED_MESSAGES = 0;
+
+    /**
+     * The number of structural features of the '<em>Message Listener</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MESSAGE_LISTENER_FEATURE_COUNT = 1;
+
+    /**
+     * The number of operations of the '<em>Message Listener</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MESSAGE_LISTENER_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.papaya.MessageEmitter <em>Message Emitter</em>}'
+     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.papaya.MessageEmitter
+     * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getMessageEmitter()
+     * @generated
+     */
+    int MESSAGE_EMITTER = 38;
+
+    /**
+     * The feature id for the '<em><b>Emitted Messages</b></em>' reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MESSAGE_EMITTER__EMITTED_MESSAGES = 0;
+
+    /**
+     * The number of structural features of the '<em>Message Emitter</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MESSAGE_EMITTER_FEATURE_COUNT = 1;
+
+    /**
+     * The number of operations of the '<em>Message Emitter</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MESSAGE_EMITTER_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.papaya.Message <em>Message</em>}' class. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.papaya.Message
+     * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getMessage()
+     * @generated
+     */
+    int MESSAGE = 39;
+
+    /**
+     * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MESSAGE__TAGS = NAMED_ELEMENT__TAGS;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MESSAGE__NAME = NAMED_ELEMENT__NAME;
+
+    /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MESSAGE__DESCRIPTION = NAMED_ELEMENT__DESCRIPTION;
+
+    /**
+     * The feature id for the '<em><b>Emitted By</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MESSAGE__EMITTED_BY = NAMED_ELEMENT_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Listened By</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MESSAGE__LISTENED_BY = NAMED_ELEMENT_FEATURE_COUNT + 1;
+
+    /**
+     * The number of structural features of the '<em>Message</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MESSAGE_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 2;
+
+    /**
+     * The number of operations of the '<em>Message</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MESSAGE_OPERATION_COUNT = NAMED_ELEMENT_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.papaya.impl.EventImpl <em>Event</em>}' class.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.papaya.impl.EventImpl
+     * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getEvent()
+     * @generated
+     */
+    int EVENT = 40;
+
+    /**
+     * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EVENT__TAGS = MESSAGE__TAGS;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EVENT__NAME = MESSAGE__NAME;
+
+    /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EVENT__DESCRIPTION = MESSAGE__DESCRIPTION;
+
+    /**
+     * The feature id for the '<em><b>Emitted By</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EVENT__EMITTED_BY = MESSAGE__EMITTED_BY;
+
+    /**
+     * The feature id for the '<em><b>Listened By</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EVENT__LISTENED_BY = MESSAGE__LISTENED_BY;
+
+    /**
+     * The feature id for the '<em><b>Caused By</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EVENT__CAUSED_BY = MESSAGE_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Event</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EVENT_FEATURE_COUNT = MESSAGE_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Event</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EVENT_OPERATION_COUNT = MESSAGE_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.papaya.impl.CommandImpl <em>Command</em>}'
+     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.papaya.impl.CommandImpl
+     * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getCommand()
+     * @generated
+     */
+    int COMMAND = 41;
+
+    /**
+     * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int COMMAND__TAGS = MESSAGE__TAGS;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int COMMAND__NAME = MESSAGE__NAME;
+
+    /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int COMMAND__DESCRIPTION = MESSAGE__DESCRIPTION;
+
+    /**
+     * The feature id for the '<em><b>Emitted By</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int COMMAND__EMITTED_BY = MESSAGE__EMITTED_BY;
+
+    /**
+     * The feature id for the '<em><b>Listened By</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int COMMAND__LISTENED_BY = MESSAGE__LISTENED_BY;
+
+    /**
+     * The number of structural features of the '<em>Command</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int COMMAND_FEATURE_COUNT = MESSAGE_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Command</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int COMMAND_OPERATION_COUNT = MESSAGE_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.papaya.impl.QueryImpl <em>Query</em>}' class.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.papaya.impl.QueryImpl
+     * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getQuery()
+     * @generated
+     */
+    int QUERY = 42;
+
+    /**
+     * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int QUERY__TAGS = MESSAGE__TAGS;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int QUERY__NAME = MESSAGE__NAME;
+
+    /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int QUERY__DESCRIPTION = MESSAGE__DESCRIPTION;
+
+    /**
+     * The feature id for the '<em><b>Emitted By</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int QUERY__EMITTED_BY = MESSAGE__EMITTED_BY;
+
+    /**
+     * The feature id for the '<em><b>Listened By</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int QUERY__LISTENED_BY = MESSAGE__LISTENED_BY;
+
+    /**
+     * The number of structural features of the '<em>Query</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int QUERY_FEATURE_COUNT = MESSAGE_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Query</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int QUERY_OPERATION_COUNT = MESSAGE_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.papaya.impl.RepositoryImpl <em>Repository</em>}'
+     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.papaya.impl.RepositoryImpl
+     * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getRepository()
+     * @generated
+     */
+    int REPOSITORY = 43;
+
+    /**
+     * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REPOSITORY__TAGS = NAMED_ELEMENT__TAGS;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REPOSITORY__NAME = NAMED_ELEMENT__NAME;
+
+    /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REPOSITORY__DESCRIPTION = NAMED_ELEMENT__DESCRIPTION;
+
+    /**
+     * The number of structural features of the '<em>Repository</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REPOSITORY_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Repository</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REPOSITORY_OPERATION_COUNT = NAMED_ELEMENT_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.papaya.Priority <em>Priority</em>}' enum. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -2740,7 +3528,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getPriority()
      * @generated
      */
-    int PRIORITY = 33;
+    int PRIORITY = 44;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.papaya.Visibility <em>Visibility</em>}' enum.
@@ -2750,7 +3538,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getVisibility()
      * @generated
      */
-    int VISIBILITY = 34;
+    int VISIBILITY = 45;
 
     /**
      * The meta object id for the '<em>Instant</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2759,7 +3547,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getInstant()
      * @generated
      */
-    int INSTANT = 35;
+    int INSTANT = 46;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.ModelElement <em>Model
@@ -2941,6 +3729,30 @@ public interface PapayaPackage extends EPackage {
      * @generated
      */
     EReference getProject_Contributions();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.papaya.Project#getApplicationConcerns <em>Application Concerns</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Application Concerns</em>'.
+     * @see org.eclipse.sirius.components.papaya.Project#getApplicationConcerns()
+     * @see #getProject()
+     * @generated
+     */
+    EReference getProject_ApplicationConcerns();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.papaya.Project#getDomains <em>Domains</em>}'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Domains</em>'.
+     * @see org.eclipse.sirius.components.papaya.Project#getDomains()
+     * @see #getProject()
+     * @generated
+     */
+    EReference getProject_Domains();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.Iteration <em>Iteration</em>}'.
@@ -4030,6 +4842,339 @@ public interface PapayaPackage extends EPackage {
     EClass getEnumLiteral();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.ApplicationConcern <em>Application
+     * Concern</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Application Concern</em>'.
+     * @see org.eclipse.sirius.components.papaya.ApplicationConcern
+     * @generated
+     */
+    EClass getApplicationConcern();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.papaya.ApplicationConcern#getControllers <em>Controllers</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Controllers</em>'.
+     * @see org.eclipse.sirius.components.papaya.ApplicationConcern#getControllers()
+     * @see #getApplicationConcern()
+     * @generated
+     */
+    EReference getApplicationConcern_Controllers();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.papaya.ApplicationConcern#getServices <em>Services</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Services</em>'.
+     * @see org.eclipse.sirius.components.papaya.ApplicationConcern#getServices()
+     * @see #getApplicationConcern()
+     * @generated
+     */
+    EReference getApplicationConcern_Services();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.papaya.ApplicationConcern#getEvents <em>Events</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Events</em>'.
+     * @see org.eclipse.sirius.components.papaya.ApplicationConcern#getEvents()
+     * @see #getApplicationConcern()
+     * @generated
+     */
+    EReference getApplicationConcern_Events();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.papaya.ApplicationConcern#getCommands <em>Commands</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Commands</em>'.
+     * @see org.eclipse.sirius.components.papaya.ApplicationConcern#getCommands()
+     * @see #getApplicationConcern()
+     * @generated
+     */
+    EReference getApplicationConcern_Commands();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.papaya.ApplicationConcern#getQueries <em>Queries</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Queries</em>'.
+     * @see org.eclipse.sirius.components.papaya.ApplicationConcern#getQueries()
+     * @see #getApplicationConcern()
+     * @generated
+     */
+    EReference getApplicationConcern_Queries();
+
+    /**
+     * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.components.papaya.ApplicationConcern#getDomains <em>Domains</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>Domains</em>'.
+     * @see org.eclipse.sirius.components.papaya.ApplicationConcern#getDomains()
+     * @see #getApplicationConcern()
+     * @generated
+     */
+    EReference getApplicationConcern_Domains();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.Controller <em>Controller</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Controller</em>'.
+     * @see org.eclipse.sirius.components.papaya.Controller
+     * @generated
+     */
+    EClass getController();
+
+    /**
+     * Returns the meta object for the reference list '{@link org.eclipse.sirius.components.papaya.Controller#getCalls
+     * <em>Calls</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>Calls</em>'.
+     * @see org.eclipse.sirius.components.papaya.Controller#getCalls()
+     * @see #getController()
+     * @generated
+     */
+    EReference getController_Calls();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.Domain <em>Domain</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Domain</em>'.
+     * @see org.eclipse.sirius.components.papaya.Domain
+     * @generated
+     */
+    EClass getDomain();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.papaya.Domain#getServices <em>Services</em>}'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Services</em>'.
+     * @see org.eclipse.sirius.components.papaya.Domain#getServices()
+     * @see #getDomain()
+     * @generated
+     */
+    EReference getDomain_Services();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.papaya.Domain#getRepositories <em>Repositories</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Repositories</em>'.
+     * @see org.eclipse.sirius.components.papaya.Domain#getRepositories()
+     * @see #getDomain()
+     * @generated
+     */
+    EReference getDomain_Repositories();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.papaya.Domain#getEvents <em>Events</em>}'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Events</em>'.
+     * @see org.eclipse.sirius.components.papaya.Domain#getEvents()
+     * @see #getDomain()
+     * @generated
+     */
+    EReference getDomain_Events();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.papaya.Domain#getCommands <em>Commands</em>}'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Commands</em>'.
+     * @see org.eclipse.sirius.components.papaya.Domain#getCommands()
+     * @see #getDomain()
+     * @generated
+     */
+    EReference getDomain_Commands();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.papaya.Domain#getQueries <em>Queries</em>}'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Queries</em>'.
+     * @see org.eclipse.sirius.components.papaya.Domain#getQueries()
+     * @see #getDomain()
+     * @generated
+     */
+    EReference getDomain_Queries();
+
+    /**
+     * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.components.papaya.Domain#getDependencies <em>Dependencies</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>Dependencies</em>'.
+     * @see org.eclipse.sirius.components.papaya.Domain#getDependencies()
+     * @see #getDomain()
+     * @generated
+     */
+    EReference getDomain_Dependencies();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.Service <em>Service</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Service</em>'.
+     * @see org.eclipse.sirius.components.papaya.Service
+     * @generated
+     */
+    EClass getService();
+
+    /**
+     * Returns the meta object for the reference list '{@link org.eclipse.sirius.components.papaya.Service#getCalls
+     * <em>Calls</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>Calls</em>'.
+     * @see org.eclipse.sirius.components.papaya.Service#getCalls()
+     * @see #getService()
+     * @generated
+     */
+    EReference getService_Calls();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.MessageListener <em>Message
+     * Listener</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Message Listener</em>'.
+     * @see org.eclipse.sirius.components.papaya.MessageListener
+     * @generated
+     */
+    EClass getMessageListener();
+
+    /**
+     * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.components.papaya.MessageListener#getListenedMessages <em>Listened Messages</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>Listened Messages</em>'.
+     * @see org.eclipse.sirius.components.papaya.MessageListener#getListenedMessages()
+     * @see #getMessageListener()
+     * @generated
+     */
+    EReference getMessageListener_ListenedMessages();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.MessageEmitter <em>Message
+     * Emitter</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Message Emitter</em>'.
+     * @see org.eclipse.sirius.components.papaya.MessageEmitter
+     * @generated
+     */
+    EClass getMessageEmitter();
+
+    /**
+     * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.components.papaya.MessageEmitter#getEmittedMessages <em>Emitted Messages</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>Emitted Messages</em>'.
+     * @see org.eclipse.sirius.components.papaya.MessageEmitter#getEmittedMessages()
+     * @see #getMessageEmitter()
+     * @generated
+     */
+    EReference getMessageEmitter_EmittedMessages();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.Message <em>Message</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Message</em>'.
+     * @see org.eclipse.sirius.components.papaya.Message
+     * @generated
+     */
+    EClass getMessage();
+
+    /**
+     * Returns the meta object for the reference list '{@link org.eclipse.sirius.components.papaya.Message#getEmittedBy
+     * <em>Emitted By</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>Emitted By</em>'.
+     * @see org.eclipse.sirius.components.papaya.Message#getEmittedBy()
+     * @see #getMessage()
+     * @generated
+     */
+    EReference getMessage_EmittedBy();
+
+    /**
+     * Returns the meta object for the reference list '{@link org.eclipse.sirius.components.papaya.Message#getListenedBy
+     * <em>Listened By</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>Listened By</em>'.
+     * @see org.eclipse.sirius.components.papaya.Message#getListenedBy()
+     * @see #getMessage()
+     * @generated
+     */
+    EReference getMessage_ListenedBy();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.Event <em>Event</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Event</em>'.
+     * @see org.eclipse.sirius.components.papaya.Event
+     * @generated
+     */
+    EClass getEvent();
+
+    /**
+     * Returns the meta object for the reference list '{@link org.eclipse.sirius.components.papaya.Event#getCausedBy
+     * <em>Caused By</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>Caused By</em>'.
+     * @see org.eclipse.sirius.components.papaya.Event#getCausedBy()
+     * @see #getEvent()
+     * @generated
+     */
+    EReference getEvent_CausedBy();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.Command <em>Command</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Command</em>'.
+     * @see org.eclipse.sirius.components.papaya.Command
+     * @generated
+     */
+    EClass getCommand();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.Query <em>Query</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Query</em>'.
+     * @see org.eclipse.sirius.components.papaya.Query
+     * @generated
+     */
+    EClass getQuery();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.Repository <em>Repository</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Repository</em>'.
+     * @see org.eclipse.sirius.components.papaya.Repository
+     * @generated
+     */
+    EClass getRepository();
+
+    /**
      * Returns the meta object for enum '{@link org.eclipse.sirius.components.papaya.Priority <em>Priority</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -4217,6 +5362,22 @@ public interface PapayaPackage extends EPackage {
          * @generated
          */
         EReference PROJECT__CONTRIBUTIONS = eINSTANCE.getProject_Contributions();
+
+        /**
+         * The meta object literal for the '<em><b>Application Concerns</b></em>' containment reference list feature.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference PROJECT__APPLICATION_CONCERNS = eINSTANCE.getProject_ApplicationConcerns();
+
+        /**
+         * The meta object literal for the '<em><b>Domains</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference PROJECT__DOMAINS = eINSTANCE.getProject_Domains();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.impl.IterationImpl
@@ -5059,6 +6220,268 @@ public interface PapayaPackage extends EPackage {
          * @generated
          */
         EClass ENUM_LITERAL = eINSTANCE.getEnumLiteral();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.impl.ApplicationConcernImpl
+         * <em>Application Concern</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.papaya.impl.ApplicationConcernImpl
+         * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getApplicationConcern()
+         * @generated
+         */
+        EClass APPLICATION_CONCERN = eINSTANCE.getApplicationConcern();
+
+        /**
+         * The meta object literal for the '<em><b>Controllers</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference APPLICATION_CONCERN__CONTROLLERS = eINSTANCE.getApplicationConcern_Controllers();
+
+        /**
+         * The meta object literal for the '<em><b>Services</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference APPLICATION_CONCERN__SERVICES = eINSTANCE.getApplicationConcern_Services();
+
+        /**
+         * The meta object literal for the '<em><b>Events</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference APPLICATION_CONCERN__EVENTS = eINSTANCE.getApplicationConcern_Events();
+
+        /**
+         * The meta object literal for the '<em><b>Commands</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference APPLICATION_CONCERN__COMMANDS = eINSTANCE.getApplicationConcern_Commands();
+
+        /**
+         * The meta object literal for the '<em><b>Queries</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference APPLICATION_CONCERN__QUERIES = eINSTANCE.getApplicationConcern_Queries();
+
+        /**
+         * The meta object literal for the '<em><b>Domains</b></em>' reference list feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference APPLICATION_CONCERN__DOMAINS = eINSTANCE.getApplicationConcern_Domains();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.impl.ControllerImpl
+         * <em>Controller</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.papaya.impl.ControllerImpl
+         * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getController()
+         * @generated
+         */
+        EClass CONTROLLER = eINSTANCE.getController();
+
+        /**
+         * The meta object literal for the '<em><b>Calls</b></em>' reference list feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EReference CONTROLLER__CALLS = eINSTANCE.getController_Calls();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.impl.DomainImpl
+         * <em>Domain</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.papaya.impl.DomainImpl
+         * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getDomain()
+         * @generated
+         */
+        EClass DOMAIN = eINSTANCE.getDomain();
+
+        /**
+         * The meta object literal for the '<em><b>Services</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DOMAIN__SERVICES = eINSTANCE.getDomain_Services();
+
+        /**
+         * The meta object literal for the '<em><b>Repositories</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DOMAIN__REPOSITORIES = eINSTANCE.getDomain_Repositories();
+
+        /**
+         * The meta object literal for the '<em><b>Events</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DOMAIN__EVENTS = eINSTANCE.getDomain_Events();
+
+        /**
+         * The meta object literal for the '<em><b>Commands</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DOMAIN__COMMANDS = eINSTANCE.getDomain_Commands();
+
+        /**
+         * The meta object literal for the '<em><b>Queries</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DOMAIN__QUERIES = eINSTANCE.getDomain_Queries();
+
+        /**
+         * The meta object literal for the '<em><b>Dependencies</b></em>' reference list feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DOMAIN__DEPENDENCIES = eINSTANCE.getDomain_Dependencies();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.impl.ServiceImpl
+         * <em>Service</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.papaya.impl.ServiceImpl
+         * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getService()
+         * @generated
+         */
+        EClass SERVICE = eINSTANCE.getService();
+
+        /**
+         * The meta object literal for the '<em><b>Calls</b></em>' reference list feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EReference SERVICE__CALLS = eINSTANCE.getService_Calls();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.MessageListener <em>Message
+         * Listener</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.papaya.MessageListener
+         * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getMessageListener()
+         * @generated
+         */
+        EClass MESSAGE_LISTENER = eINSTANCE.getMessageListener();
+
+        /**
+         * The meta object literal for the '<em><b>Listened Messages</b></em>' reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference MESSAGE_LISTENER__LISTENED_MESSAGES = eINSTANCE.getMessageListener_ListenedMessages();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.MessageEmitter <em>Message
+         * Emitter</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.papaya.MessageEmitter
+         * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getMessageEmitter()
+         * @generated
+         */
+        EClass MESSAGE_EMITTER = eINSTANCE.getMessageEmitter();
+
+        /**
+         * The meta object literal for the '<em><b>Emitted Messages</b></em>' reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference MESSAGE_EMITTER__EMITTED_MESSAGES = eINSTANCE.getMessageEmitter_EmittedMessages();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.Message <em>Message</em>}'
+         * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.papaya.Message
+         * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getMessage()
+         * @generated
+         */
+        EClass MESSAGE = eINSTANCE.getMessage();
+
+        /**
+         * The meta object literal for the '<em><b>Emitted By</b></em>' reference list feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference MESSAGE__EMITTED_BY = eINSTANCE.getMessage_EmittedBy();
+
+        /**
+         * The meta object literal for the '<em><b>Listened By</b></em>' reference list feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference MESSAGE__LISTENED_BY = eINSTANCE.getMessage_ListenedBy();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.impl.EventImpl <em>Event</em>}'
+         * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.papaya.impl.EventImpl
+         * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getEvent()
+         * @generated
+         */
+        EClass EVENT = eINSTANCE.getEvent();
+
+        /**
+         * The meta object literal for the '<em><b>Caused By</b></em>' reference list feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference EVENT__CAUSED_BY = eINSTANCE.getEvent_CausedBy();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.impl.CommandImpl
+         * <em>Command</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.papaya.impl.CommandImpl
+         * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getCommand()
+         * @generated
+         */
+        EClass COMMAND = eINSTANCE.getCommand();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.impl.QueryImpl <em>Query</em>}'
+         * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.papaya.impl.QueryImpl
+         * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getQuery()
+         * @generated
+         */
+        EClass QUERY = eINSTANCE.getQuery();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.impl.RepositoryImpl
+         * <em>Repository</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.papaya.impl.RepositoryImpl
+         * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getRepository()
+         * @generated
+         */
+        EClass REPOSITORY = eINSTANCE.getRepository();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.Priority <em>Priority</em>}'

@@ -37,11 +37,11 @@ public class InterfaceItemProviderSpec extends InterfaceItemProvider {
             var visibilityImage = new VisibilityOverlayImageProvider().overlayImage(this.getResourceLocator(), anInterface.getVisibility());
 
             return new ComposedImage(List.of(
-                    this.getResourceLocator().getImage("full/obj16/Interface.svg"),
+                    this.getResourceLocator().getImage("papaya/full/obj16/Interface.svg"),
                     visibilityImage
             ));
         }
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Interface.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/Interface.svg"));
     }
 
     @Override

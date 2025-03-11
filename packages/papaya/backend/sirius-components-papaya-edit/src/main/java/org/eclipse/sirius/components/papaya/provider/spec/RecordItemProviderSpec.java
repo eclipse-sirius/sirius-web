@@ -37,11 +37,11 @@ public class RecordItemProviderSpec extends RecordItemProvider {
             var visibilityImage = new VisibilityOverlayImageProvider().overlayImage(this.getResourceLocator(), record.getVisibility());
 
             return new ComposedImage(List.of(
-                    this.getResourceLocator().getImage("full/obj16/Record.svg"),
+                    this.getResourceLocator().getImage("papaya/full/obj16/Record.svg"),
                     visibilityImage
             ));
         }
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Record.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/Record.svg"));
     }
 
     @Override

@@ -19,19 +19,27 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.papaya.AnnotableElement;
 import org.eclipse.sirius.components.papaya.Annotation;
 import org.eclipse.sirius.components.papaya.AnnotationField;
+import org.eclipse.sirius.components.papaya.ApplicationConcern;
 import org.eclipse.sirius.components.papaya.Attribute;
 import org.eclipse.sirius.components.papaya.Classifier;
+import org.eclipse.sirius.components.papaya.Command;
 import org.eclipse.sirius.components.papaya.Component;
 import org.eclipse.sirius.components.papaya.ComponentExchange;
 import org.eclipse.sirius.components.papaya.ComponentPort;
 import org.eclipse.sirius.components.papaya.Constructor;
 import org.eclipse.sirius.components.papaya.Contribution;
+import org.eclipse.sirius.components.papaya.Controller;
 import org.eclipse.sirius.components.papaya.DataType;
+import org.eclipse.sirius.components.papaya.Domain;
 import org.eclipse.sirius.components.papaya.EnumLiteral;
+import org.eclipse.sirius.components.papaya.Event;
 import org.eclipse.sirius.components.papaya.GenericType;
 import org.eclipse.sirius.components.papaya.Interface;
 import org.eclipse.sirius.components.papaya.InterfaceImplementation;
 import org.eclipse.sirius.components.papaya.Iteration;
+import org.eclipse.sirius.components.papaya.Message;
+import org.eclipse.sirius.components.papaya.MessageEmitter;
+import org.eclipse.sirius.components.papaya.MessageListener;
 import org.eclipse.sirius.components.papaya.ModelElement;
 import org.eclipse.sirius.components.papaya.NamedElement;
 import org.eclipse.sirius.components.papaya.Operation;
@@ -39,8 +47,11 @@ import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.components.papaya.Parameter;
 import org.eclipse.sirius.components.papaya.Project;
 import org.eclipse.sirius.components.papaya.ProvidedService;
+import org.eclipse.sirius.components.papaya.Query;
 import org.eclipse.sirius.components.papaya.RecordComponent;
+import org.eclipse.sirius.components.papaya.Repository;
 import org.eclipse.sirius.components.papaya.RequiredService;
+import org.eclipse.sirius.components.papaya.Service;
 import org.eclipse.sirius.components.papaya.Tag;
 import org.eclipse.sirius.components.papaya.Task;
 import org.eclipse.sirius.components.papaya.Type;
@@ -261,6 +272,61 @@ public class PapayaAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseEnumLiteral(EnumLiteral object) {
             return PapayaAdapterFactory.this.createEnumLiteralAdapter();
+        }
+
+        @Override
+        public Adapter caseApplicationConcern(ApplicationConcern object) {
+            return PapayaAdapterFactory.this.createApplicationConcernAdapter();
+        }
+
+        @Override
+        public Adapter caseController(Controller object) {
+            return PapayaAdapterFactory.this.createControllerAdapter();
+        }
+
+        @Override
+        public Adapter caseDomain(Domain object) {
+            return PapayaAdapterFactory.this.createDomainAdapter();
+        }
+
+        @Override
+        public Adapter caseService(Service object) {
+            return PapayaAdapterFactory.this.createServiceAdapter();
+        }
+
+        @Override
+        public Adapter caseMessageListener(MessageListener object) {
+            return PapayaAdapterFactory.this.createMessageListenerAdapter();
+        }
+
+        @Override
+        public Adapter caseMessageEmitter(MessageEmitter object) {
+            return PapayaAdapterFactory.this.createMessageEmitterAdapter();
+        }
+
+        @Override
+        public Adapter caseMessage(Message object) {
+            return PapayaAdapterFactory.this.createMessageAdapter();
+        }
+
+        @Override
+        public Adapter caseEvent(Event object) {
+            return PapayaAdapterFactory.this.createEventAdapter();
+        }
+
+        @Override
+        public Adapter caseCommand(Command object) {
+            return PapayaAdapterFactory.this.createCommandAdapter();
+        }
+
+        @Override
+        public Adapter caseQuery(Query object) {
+            return PapayaAdapterFactory.this.createQueryAdapter();
+        }
+
+        @Override
+        public Adapter caseRepository(Repository object) {
+            return PapayaAdapterFactory.this.createRepositoryAdapter();
         }
 
         @Override
@@ -726,6 +792,154 @@ public class PapayaAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createEnumLiteralAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.papaya.ApplicationConcern
+     * <em>Application Concern</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.papaya.ApplicationConcern
+     * @generated
+     */
+    public Adapter createApplicationConcernAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.papaya.Controller
+     * <em>Controller</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.papaya.Controller
+     * @generated
+     */
+    public Adapter createControllerAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.papaya.Domain
+     * <em>Domain</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.papaya.Domain
+     * @generated
+     */
+    public Adapter createDomainAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.papaya.Service
+     * <em>Service</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.papaya.Service
+     * @generated
+     */
+    public Adapter createServiceAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.papaya.MessageListener
+     * <em>Message Listener</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.papaya.MessageListener
+     * @generated
+     */
+    public Adapter createMessageListenerAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.papaya.MessageEmitter
+     * <em>Message Emitter</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.papaya.MessageEmitter
+     * @generated
+     */
+    public Adapter createMessageEmitterAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.papaya.Message
+     * <em>Message</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.papaya.Message
+     * @generated
+     */
+    public Adapter createMessageAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.papaya.Event <em>Event</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.papaya.Event
+     * @generated
+     */
+    public Adapter createEventAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.papaya.Command
+     * <em>Command</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.papaya.Command
+     * @generated
+     */
+    public Adapter createCommandAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.papaya.Query <em>Query</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.papaya.Query
+     * @generated
+     */
+    public Adapter createQueryAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.papaya.Repository
+     * <em>Repository</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.papaya.Repository
+     * @generated
+     */
+    public Adapter createRepositoryAdapter() {
         return null;
     }
 

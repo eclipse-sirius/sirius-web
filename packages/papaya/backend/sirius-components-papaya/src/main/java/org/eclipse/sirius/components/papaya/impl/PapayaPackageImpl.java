@@ -26,19 +26,27 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.sirius.components.papaya.AnnotableElement;
 import org.eclipse.sirius.components.papaya.Annotation;
 import org.eclipse.sirius.components.papaya.AnnotationField;
+import org.eclipse.sirius.components.papaya.ApplicationConcern;
 import org.eclipse.sirius.components.papaya.Attribute;
 import org.eclipse.sirius.components.papaya.Classifier;
+import org.eclipse.sirius.components.papaya.Command;
 import org.eclipse.sirius.components.papaya.Component;
 import org.eclipse.sirius.components.papaya.ComponentExchange;
 import org.eclipse.sirius.components.papaya.ComponentPort;
 import org.eclipse.sirius.components.papaya.Constructor;
 import org.eclipse.sirius.components.papaya.Contribution;
+import org.eclipse.sirius.components.papaya.Controller;
 import org.eclipse.sirius.components.papaya.DataType;
+import org.eclipse.sirius.components.papaya.Domain;
 import org.eclipse.sirius.components.papaya.EnumLiteral;
+import org.eclipse.sirius.components.papaya.Event;
 import org.eclipse.sirius.components.papaya.GenericType;
 import org.eclipse.sirius.components.papaya.Interface;
 import org.eclipse.sirius.components.papaya.InterfaceImplementation;
 import org.eclipse.sirius.components.papaya.Iteration;
+import org.eclipse.sirius.components.papaya.Message;
+import org.eclipse.sirius.components.papaya.MessageEmitter;
+import org.eclipse.sirius.components.papaya.MessageListener;
 import org.eclipse.sirius.components.papaya.ModelElement;
 import org.eclipse.sirius.components.papaya.NamedElement;
 import org.eclipse.sirius.components.papaya.Operation;
@@ -48,8 +56,11 @@ import org.eclipse.sirius.components.papaya.Parameter;
 import org.eclipse.sirius.components.papaya.Priority;
 import org.eclipse.sirius.components.papaya.Project;
 import org.eclipse.sirius.components.papaya.ProvidedService;
+import org.eclipse.sirius.components.papaya.Query;
 import org.eclipse.sirius.components.papaya.RecordComponent;
+import org.eclipse.sirius.components.papaya.Repository;
 import org.eclipse.sirius.components.papaya.RequiredService;
+import org.eclipse.sirius.components.papaya.Service;
 import org.eclipse.sirius.components.papaya.Tag;
 import org.eclipse.sirius.components.papaya.Task;
 import org.eclipse.sirius.components.papaya.Type;
@@ -299,6 +310,83 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      *
      * @generated
      */
+    private EClass applicationConcernEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass controllerEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass domainEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass serviceEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass messageListenerEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass messageEmitterEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass messageEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass eventEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass commandEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass queryEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass repositoryEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     private EEnum priorityEEnum = null;
 
     /**
@@ -534,6 +622,26 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
     @Override
     public EReference getProject_Contributions() {
         return (EReference) this.projectEClass.getEStructuralFeatures().get(6);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getProject_ApplicationConcerns() {
+        return (EReference) this.projectEClass.getEStructuralFeatures().get(7);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getProject_Domains() {
+        return (EReference) this.projectEClass.getEStructuralFeatures().get(8);
     }
 
     /**
@@ -1522,6 +1630,306 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
+    public EClass getApplicationConcern() {
+        return this.applicationConcernEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getApplicationConcern_Controllers() {
+        return (EReference) this.applicationConcernEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getApplicationConcern_Services() {
+        return (EReference) this.applicationConcernEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getApplicationConcern_Events() {
+        return (EReference) this.applicationConcernEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getApplicationConcern_Commands() {
+        return (EReference) this.applicationConcernEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getApplicationConcern_Queries() {
+        return (EReference) this.applicationConcernEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getApplicationConcern_Domains() {
+        return (EReference) this.applicationConcernEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getController() {
+        return this.controllerEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getController_Calls() {
+        return (EReference) this.controllerEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getDomain() {
+        return this.domainEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getDomain_Services() {
+        return (EReference) this.domainEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getDomain_Repositories() {
+        return (EReference) this.domainEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getDomain_Events() {
+        return (EReference) this.domainEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getDomain_Commands() {
+        return (EReference) this.domainEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getDomain_Queries() {
+        return (EReference) this.domainEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getDomain_Dependencies() {
+        return (EReference) this.domainEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getService() {
+        return this.serviceEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getService_Calls() {
+        return (EReference) this.serviceEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getMessageListener() {
+        return this.messageListenerEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getMessageListener_ListenedMessages() {
+        return (EReference) this.messageListenerEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getMessageEmitter() {
+        return this.messageEmitterEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getMessageEmitter_EmittedMessages() {
+        return (EReference) this.messageEmitterEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getMessage() {
+        return this.messageEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getMessage_EmittedBy() {
+        return (EReference) this.messageEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getMessage_ListenedBy() {
+        return (EReference) this.messageEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getEvent() {
+        return this.eventEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getEvent_CausedBy() {
+        return (EReference) this.eventEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getCommand() {
+        return this.commandEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getQuery() {
+        return this.queryEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getRepository() {
+        return this.repositoryEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EEnum getPriority() {
         return this.priorityEEnum;
     }
@@ -1594,6 +2002,8 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
         this.createEReference(this.projectEClass, PROJECT__ITERATIONS);
         this.createEReference(this.projectEClass, PROJECT__TASKS);
         this.createEReference(this.projectEClass, PROJECT__CONTRIBUTIONS);
+        this.createEReference(this.projectEClass, PROJECT__APPLICATION_CONCERNS);
+        this.createEReference(this.projectEClass, PROJECT__DOMAINS);
 
         this.iterationEClass = this.createEClass(ITERATION);
         this.createEAttribute(this.iterationEClass, ITERATION__START_DATE);
@@ -1722,6 +2132,47 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
 
         this.enumLiteralEClass = this.createEClass(ENUM_LITERAL);
 
+        this.applicationConcernEClass = this.createEClass(APPLICATION_CONCERN);
+        this.createEReference(this.applicationConcernEClass, APPLICATION_CONCERN__CONTROLLERS);
+        this.createEReference(this.applicationConcernEClass, APPLICATION_CONCERN__SERVICES);
+        this.createEReference(this.applicationConcernEClass, APPLICATION_CONCERN__EVENTS);
+        this.createEReference(this.applicationConcernEClass, APPLICATION_CONCERN__COMMANDS);
+        this.createEReference(this.applicationConcernEClass, APPLICATION_CONCERN__QUERIES);
+        this.createEReference(this.applicationConcernEClass, APPLICATION_CONCERN__DOMAINS);
+
+        this.controllerEClass = this.createEClass(CONTROLLER);
+        this.createEReference(this.controllerEClass, CONTROLLER__CALLS);
+
+        this.domainEClass = this.createEClass(DOMAIN);
+        this.createEReference(this.domainEClass, DOMAIN__SERVICES);
+        this.createEReference(this.domainEClass, DOMAIN__REPOSITORIES);
+        this.createEReference(this.domainEClass, DOMAIN__EVENTS);
+        this.createEReference(this.domainEClass, DOMAIN__COMMANDS);
+        this.createEReference(this.domainEClass, DOMAIN__QUERIES);
+        this.createEReference(this.domainEClass, DOMAIN__DEPENDENCIES);
+
+        this.serviceEClass = this.createEClass(SERVICE);
+        this.createEReference(this.serviceEClass, SERVICE__CALLS);
+
+        this.messageListenerEClass = this.createEClass(MESSAGE_LISTENER);
+        this.createEReference(this.messageListenerEClass, MESSAGE_LISTENER__LISTENED_MESSAGES);
+
+        this.messageEmitterEClass = this.createEClass(MESSAGE_EMITTER);
+        this.createEReference(this.messageEmitterEClass, MESSAGE_EMITTER__EMITTED_MESSAGES);
+
+        this.messageEClass = this.createEClass(MESSAGE);
+        this.createEReference(this.messageEClass, MESSAGE__EMITTED_BY);
+        this.createEReference(this.messageEClass, MESSAGE__LISTENED_BY);
+
+        this.eventEClass = this.createEClass(EVENT);
+        this.createEReference(this.eventEClass, EVENT__CAUSED_BY);
+
+        this.commandEClass = this.createEClass(COMMAND);
+
+        this.queryEClass = this.createEClass(QUERY);
+
+        this.repositoryEClass = this.createEClass(REPOSITORY);
+
         // Create enums
         this.priorityEEnum = this.createEEnum(PRIORITY);
         this.visibilityEEnum = this.createEEnum(VISIBILITY);
@@ -1794,6 +2245,19 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
         this.enumEClass.getESuperTypes().add(this.getType());
         this.enumLiteralEClass.getESuperTypes().add(this.getNamedElement());
         this.enumLiteralEClass.getESuperTypes().add(this.getAnnotableElement());
+        this.applicationConcernEClass.getESuperTypes().add(this.getNamedElement());
+        this.controllerEClass.getESuperTypes().add(this.getNamedElement());
+        this.controllerEClass.getESuperTypes().add(this.getMessageEmitter());
+        this.controllerEClass.getESuperTypes().add(this.getMessageListener());
+        this.domainEClass.getESuperTypes().add(this.getNamedElement());
+        this.serviceEClass.getESuperTypes().add(this.getNamedElement());
+        this.serviceEClass.getESuperTypes().add(this.getMessageListener());
+        this.serviceEClass.getESuperTypes().add(this.getMessageEmitter());
+        this.messageEClass.getESuperTypes().add(this.getNamedElement());
+        this.eventEClass.getESuperTypes().add(this.getMessage());
+        this.commandEClass.getESuperTypes().add(this.getMessage());
+        this.queryEClass.getESuperTypes().add(this.getMessage());
+        this.repositoryEClass.getESuperTypes().add(this.getNamedElement());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.modelElementEClass, ModelElement.class, "ModelElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1827,6 +2291,10 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getProject_Contributions(), this.getContribution(), null, "contributions", null, 0, -1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getProject_ApplicationConcerns(), this.getApplicationConcern(), null, "applicationConcerns", null, 0, -1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getProject_Domains(), this.getDomain(), null, "domains", null, 0, -1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.iterationEClass, Iteration.class, "Iteration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getIteration_StartDate(), this.getInstant(), "startDate", null, 0, 1, Iteration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
@@ -2023,6 +2491,66 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.enumLiteralEClass, EnumLiteral.class, "EnumLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        this.initEClass(this.applicationConcernEClass, ApplicationConcern.class, "ApplicationConcern", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getApplicationConcern_Controllers(), this.getController(), null, "controllers", null, 0, -1, ApplicationConcern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getApplicationConcern_Services(), this.getService(), null, "services", null, 0, -1, ApplicationConcern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getApplicationConcern_Events(), this.getEvent(), null, "events", null, 0, -1, ApplicationConcern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getApplicationConcern_Commands(), this.getCommand(), null, "commands", null, 0, -1, ApplicationConcern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getApplicationConcern_Queries(), this.getQuery(), null, "queries", null, 0, -1, ApplicationConcern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getApplicationConcern_Domains(), this.getDomain(), null, "domains", null, 0, -1, ApplicationConcern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+                IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.controllerEClass, Controller.class, "Controller", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getController_Calls(), this.getService(), null, "calls", null, 0, -1, Controller.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.domainEClass, Domain.class, "Domain", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getDomain_Services(), this.getService(), null, "services", null, 0, -1, Domain.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getDomain_Repositories(), this.getRepository(), null, "repositories", null, 0, -1, Domain.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getDomain_Events(), this.getEvent(), null, "events", null, 0, -1, Domain.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getDomain_Commands(), this.getCommand(), null, "commands", null, 0, -1, Domain.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getDomain_Queries(), this.getQuery(), null, "queries", null, 0, -1, Domain.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getDomain_Dependencies(), this.getDomain(), null, "dependencies", null, 0, -1, Domain.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+                IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.serviceEClass, Service.class, "Service", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getService_Calls(), this.getService(), null, "calls", null, 0, -1, Service.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.messageListenerEClass, MessageListener.class, "MessageListener", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getMessageListener_ListenedMessages(), this.getMessage(), this.getMessage_ListenedBy(), "listenedMessages", null, 0, -1, MessageListener.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.messageEmitterEClass, MessageEmitter.class, "MessageEmitter", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getMessageEmitter_EmittedMessages(), this.getMessage(), this.getMessage_EmittedBy(), "emittedMessages", null, 0, -1, MessageEmitter.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.messageEClass, Message.class, "Message", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getMessage_EmittedBy(), this.getMessageEmitter(), this.getMessageEmitter_EmittedMessages(), "emittedBy", null, 0, -1, Message.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getMessage_ListenedBy(), this.getMessageListener(), this.getMessageListener_ListenedMessages(), "listenedBy", null, 0, -1, Message.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.eventEClass, Event.class, "Event", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getEvent_CausedBy(), this.getMessage(), null, "causedBy", null, 0, -1, Event.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.commandEClass, Command.class, "Command", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        this.initEClass(this.queryEClass, Query.class, "Query", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        this.initEClass(this.repositoryEClass, Repository.class, "Repository", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         // Initialize enums and add enum literals
         this.initEEnum(this.priorityEEnum, Priority.class, "Priority");

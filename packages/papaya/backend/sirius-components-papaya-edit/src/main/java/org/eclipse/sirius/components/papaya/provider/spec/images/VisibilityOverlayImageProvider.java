@@ -23,10 +23,10 @@ import org.eclipse.sirius.components.papaya.Visibility;
 public class VisibilityOverlayImageProvider {
     public Object overlayImage(ResourceLocator resourceLocator, Visibility visibility) {
         return switch (visibility) {
-            case PUBLIC -> resourceLocator.getImage("full/ovr16/Visibility_PUBLIC.svg");
-            case PROTECTED -> resourceLocator.getImage("full/ovr16/Visibility_PROTECTED.svg");
-            case PACKAGE -> resourceLocator.getImage("full/ovr16/Visibility_PACKAGE.svg");
-            case PRIVATE -> resourceLocator.getImage("full/ovr16/Visibility_PRIVATE.svg");
+            case PUBLIC -> resourceLocator.getImage("papaya/full/ovr16/Visibility_PUBLIC.svg");
+            case PROTECTED -> resourceLocator.getImage("papaya/full/ovr16/Visibility_PROTECTED.svg");
+            case PACKAGE -> resourceLocator.getImage("papaya/full/ovr16/Visibility_PACKAGE.svg");
+            case PRIVATE -> resourceLocator.getImage("papaya/full/ovr16/Visibility_PRIVATE.svg");
         };
     }
 }

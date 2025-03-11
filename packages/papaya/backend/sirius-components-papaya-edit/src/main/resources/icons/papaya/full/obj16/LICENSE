@@ -10,13 +10,22 @@
   - Operation.svg
 - https://github.com/carbon-design-system/carbon (Apache 2.0)
   - Annotation.svg
+  - ApplicationConcern.svg
+  - ApplicationService.svg
   - Class.svg
+  - Command.svg
   - ComponentExchange.svg
+  - Controller.svg
+  - Domain.svg
   - Enum.svg
+  - Event.svg
   - GenericType.svg
   - Parameter.svg
   - ProvidedService.svg
+  - Query.svg
+  - Repository.svg
   - RequiredService.svg
+  - Service.svg
   - Task.svg
   - TypeParameter.svg
 - https://github.com/microsoft/fluentui-system-icons (MIT LICENSE)
@@ -24,6 +33,7 @@
 - https://github.com/tabler/tabler-icons (MIT LICENSE)
   - Contribution.svg
 - https://github.com/phosphor-icons/core (MIT LICENSE)
+  - AnnotationField.svg
   - Attribute.svg
   - DataType.svg
   - EnumLiteral.svg

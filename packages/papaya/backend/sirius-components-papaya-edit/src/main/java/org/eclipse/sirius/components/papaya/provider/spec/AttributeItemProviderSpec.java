@@ -39,11 +39,11 @@ public class AttributeItemProviderSpec extends AttributeItemProvider {
             var visibilityImage = new VisibilityOverlayImageProvider().overlayImage(this.getResourceLocator(), attribute.getVisibility());
 
             return new ComposedImage(List.of(
-                    this.getResourceLocator().getImage("full/obj16/Attribute.svg"),
+                    this.getResourceLocator().getImage("papaya/full/obj16/Attribute.svg"),
                     visibilityImage
             ));
         }
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Attribute.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/Attribute.svg"));
     }
 
     @Override

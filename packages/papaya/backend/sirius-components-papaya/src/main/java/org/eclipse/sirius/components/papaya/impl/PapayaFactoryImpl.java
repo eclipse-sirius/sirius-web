@@ -23,14 +23,19 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.sirius.components.papaya.Annotation;
 import org.eclipse.sirius.components.papaya.AnnotationField;
+import org.eclipse.sirius.components.papaya.ApplicationConcern;
 import org.eclipse.sirius.components.papaya.Attribute;
+import org.eclipse.sirius.components.papaya.Command;
 import org.eclipse.sirius.components.papaya.Component;
 import org.eclipse.sirius.components.papaya.ComponentExchange;
 import org.eclipse.sirius.components.papaya.ComponentPort;
 import org.eclipse.sirius.components.papaya.Constructor;
 import org.eclipse.sirius.components.papaya.Contribution;
+import org.eclipse.sirius.components.papaya.Controller;
 import org.eclipse.sirius.components.papaya.DataType;
+import org.eclipse.sirius.components.papaya.Domain;
 import org.eclipse.sirius.components.papaya.EnumLiteral;
+import org.eclipse.sirius.components.papaya.Event;
 import org.eclipse.sirius.components.papaya.GenericType;
 import org.eclipse.sirius.components.papaya.Interface;
 import org.eclipse.sirius.components.papaya.Iteration;
@@ -41,8 +46,11 @@ import org.eclipse.sirius.components.papaya.Parameter;
 import org.eclipse.sirius.components.papaya.Priority;
 import org.eclipse.sirius.components.papaya.Project;
 import org.eclipse.sirius.components.papaya.ProvidedService;
+import org.eclipse.sirius.components.papaya.Query;
 import org.eclipse.sirius.components.papaya.RecordComponent;
+import org.eclipse.sirius.components.papaya.Repository;
 import org.eclipse.sirius.components.papaya.RequiredService;
+import org.eclipse.sirius.components.papaya.Service;
 import org.eclipse.sirius.components.papaya.Tag;
 import org.eclipse.sirius.components.papaya.Task;
 import org.eclipse.sirius.components.papaya.TypeParameter;
@@ -149,6 +157,22 @@ public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
                 return this.createEnum();
             case PapayaPackage.ENUM_LITERAL:
                 return this.createEnumLiteral();
+            case PapayaPackage.APPLICATION_CONCERN:
+                return this.createApplicationConcern();
+            case PapayaPackage.CONTROLLER:
+                return this.createController();
+            case PapayaPackage.DOMAIN:
+                return this.createDomain();
+            case PapayaPackage.SERVICE:
+                return this.createService();
+            case PapayaPackage.EVENT:
+                return this.createEvent();
+            case PapayaPackage.COMMAND:
+                return this.createCommand();
+            case PapayaPackage.QUERY:
+                return this.createQuery();
+            case PapayaPackage.REPOSITORY:
+                return this.createRepository();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -476,6 +500,94 @@ public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
     public EnumLiteral createEnumLiteral() {
         EnumLiteralImpl enumLiteral = new EnumLiteralImpl();
         return enumLiteral;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ApplicationConcern createApplicationConcern() {
+        ApplicationConcernImpl applicationConcern = new ApplicationConcernImpl();
+        return applicationConcern;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Controller createController() {
+        ControllerImpl controller = new ControllerImpl();
+        return controller;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Domain createDomain() {
+        DomainImpl domain = new DomainImpl();
+        return domain;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Service createService() {
+        ServiceImpl service = new ServiceImpl();
+        return service;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Event createEvent() {
+        EventImpl event = new EventImpl();
+        return event;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Command createCommand() {
+        CommandImpl command = new CommandImpl();
+        return command;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Query createQuery() {
+        QueryImpl query = new QueryImpl();
+        return query;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Repository createRepository() {
+        RepositoryImpl repository = new RepositoryImpl();
+        return repository;
     }
 
     /**

@@ -27,6 +27,6 @@ public class ComponentExchangeItemProviderSpec extends ComponentExchangeItemProv
 
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/ComponentExchange.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/ComponentExchange.svg"));
     }
 }

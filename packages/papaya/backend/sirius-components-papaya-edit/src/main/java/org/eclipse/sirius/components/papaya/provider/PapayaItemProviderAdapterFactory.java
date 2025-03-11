@@ -36,17 +36,23 @@ import org.eclipse.emf.edit.provider.INotifyChangedListener;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
+import org.eclipse.sirius.components.papaya.provider.spec.AnnotationFieldItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.AnnotationItemProviderSpec;
+import org.eclipse.sirius.components.papaya.provider.spec.ApplicationConcernItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.AttributeItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ClassItemProviderSpec;
+import org.eclipse.sirius.components.papaya.provider.spec.CommandItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ComponentExchangeItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ComponentItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ComponentPortItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ConstructorItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ContributionItemProviderSpec;
+import org.eclipse.sirius.components.papaya.provider.spec.ControllerItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.DataTypeItemProviderSpec;
+import org.eclipse.sirius.components.papaya.provider.spec.DomainItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.EnumItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.EnumLiteralItemProviderSpec;
+import org.eclipse.sirius.components.papaya.provider.spec.EventItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.GenericTypeItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.InterfaceItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.IterationItemProviderSpec;
@@ -55,9 +61,12 @@ import org.eclipse.sirius.components.papaya.provider.spec.PackageItemProviderSpe
 import org.eclipse.sirius.components.papaya.provider.spec.ParameterItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ProjectItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ProvidedServiceItemProviderSpec;
+import org.eclipse.sirius.components.papaya.provider.spec.QueryItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.RecordComponentItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.RecordItemProviderSpec;
+import org.eclipse.sirius.components.papaya.provider.spec.RepositoryItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.RequiredServiceItemProviderSpec;
+import org.eclipse.sirius.components.papaya.provider.spec.ServiceItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.TagItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.TaskItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.TypeParameterItemProviderSpec;
@@ -428,12 +437,12 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
      * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.AnnotationField}. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createAnnotationFieldAdapter() {
         if (this.annotationFieldItemProvider == null) {
-            this.annotationFieldItemProvider = new AnnotationFieldItemProvider(this);
+            this.annotationFieldItemProvider = new AnnotationFieldItemProviderSpec(this);
         }
 
         return this.annotationFieldItemProvider;
@@ -716,6 +725,190 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.ApplicationConcern}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ApplicationConcernItemProvider applicationConcernItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.ApplicationConcern}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Adapter createApplicationConcernAdapter() {
+        if (this.applicationConcernItemProvider == null) {
+            this.applicationConcernItemProvider = new ApplicationConcernItemProviderSpec(this);
+        }
+
+        return this.applicationConcernItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Controller}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ControllerItemProvider controllerItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.Controller}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Adapter createControllerAdapter() {
+        if (this.controllerItemProvider == null) {
+            this.controllerItemProvider = new ControllerItemProviderSpec(this);
+        }
+
+        return this.controllerItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Domain} instances.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected DomainItemProvider domainItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.Domain}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Adapter createDomainAdapter() {
+        if (this.domainItemProvider == null) {
+            this.domainItemProvider = new DomainItemProviderSpec(this);
+        }
+
+        return this.domainItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Service} instances.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ServiceItemProvider serviceItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.Service}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Adapter createServiceAdapter() {
+        if (this.serviceItemProvider == null) {
+            this.serviceItemProvider = new ServiceItemProviderSpec(this);
+        }
+
+        return this.serviceItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Event} instances.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected EventItemProvider eventItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.Event}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Adapter createEventAdapter() {
+        if (this.eventItemProvider == null) {
+            this.eventItemProvider = new EventItemProviderSpec(this);
+        }
+
+        return this.eventItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Command} instances.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected CommandItemProvider commandItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.Command}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Adapter createCommandAdapter() {
+        if (this.commandItemProvider == null) {
+            this.commandItemProvider = new CommandItemProviderSpec(this);
+        }
+
+        return this.commandItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Query} instances.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected QueryItemProvider queryItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.Query}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Adapter createQueryAdapter() {
+        if (this.queryItemProvider == null) {
+            this.queryItemProvider = new QueryItemProviderSpec(this);
+        }
+
+        return this.queryItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Repository}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected RepositoryItemProvider repositoryItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.Repository}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Adapter createRepositoryAdapter() {
+        if (this.repositoryItemProvider == null) {
+            this.repositoryItemProvider = new RepositoryItemProviderSpec(this);
+        }
+
+        return this.repositoryItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -896,6 +1089,22 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
             this.enumItemProvider.dispose();
         if (this.enumLiteralItemProvider != null)
             this.enumLiteralItemProvider.dispose();
+        if (this.applicationConcernItemProvider != null)
+            this.applicationConcernItemProvider.dispose();
+        if (this.controllerItemProvider != null)
+            this.controllerItemProvider.dispose();
+        if (this.domainItemProvider != null)
+            this.domainItemProvider.dispose();
+        if (this.serviceItemProvider != null)
+            this.serviceItemProvider.dispose();
+        if (this.eventItemProvider != null)
+            this.eventItemProvider.dispose();
+        if (this.commandItemProvider != null)
+            this.commandItemProvider.dispose();
+        if (this.queryItemProvider != null)
+            this.queryItemProvider.dispose();
+        if (this.repositoryItemProvider != null)
+            this.repositoryItemProvider.dispose();
     }
 
 }

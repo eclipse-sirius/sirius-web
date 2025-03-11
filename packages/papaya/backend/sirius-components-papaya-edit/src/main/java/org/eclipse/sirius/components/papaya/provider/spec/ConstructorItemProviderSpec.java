@@ -40,11 +40,11 @@ public class ConstructorItemProviderSpec extends ConstructorItemProvider {
             var visibilityImage = new VisibilityOverlayImageProvider().overlayImage(this.getResourceLocator(), constructor.getVisibility());
 
             return new ComposedImage(List.of(
-                    this.getResourceLocator().getImage("full/obj16/Constructor.svg"),
+                    this.getResourceLocator().getImage("papaya/full/obj16/Constructor.svg"),
                     visibilityImage
             ));
         }
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Constructor.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/Constructor.svg"));
     }
 
     @Override

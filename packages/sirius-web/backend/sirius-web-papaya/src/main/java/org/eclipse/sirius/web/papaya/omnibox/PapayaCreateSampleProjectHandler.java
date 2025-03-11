@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.papaya.omnibox;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -25,11 +24,10 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
-import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
-import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.eclipse.sirius.web.papaya.factories.SiriusWebProjectCreationLifecycleFactory;
+import org.eclipse.sirius.web.papaya.factories.services.EObjectIndexer;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -68,28 +66,14 @@ public class PapayaCreateSampleProjectHandler implements IEditingContextEventHan
         IPayload payload = new ErrorPayload(input.id(), this.messageService.unexpectedError());
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
         if (editingContext instanceof IEMFEditingContext emfEditingContext) {
-            var documentId = UUID.randomUUID();
-            var resource = new JSONResourceFactory().createResourceFromPath(documentId.toString());
-            var resourceMetadataAdapter = new ResourceMetadataAdapter("Sample Papaya");
-            resource.eAdapters().add(resourceMetadataAdapter);
-            emfEditingContext.getDomain().getResourceSet().getResources().add(resource);
+            var siriusWebProjectCreationLifecycleFactory = new SiriusWebProjectCreationLifecycleFactory();
+            siriusWebProjectCreationLifecycleFactory.create(emfEditingContext);
 
-            var project = PapayaFactory.eINSTANCE.createProject();
-            project.setName("Project");
+            var eObjectIndexer = new EObjectIndexer();
+            eObjectIndexer.index(emfEditingContext.getDomain().getResourceSet());
 
-            var component = PapayaFactory.eINSTANCE.createComponent();
-            component.setName("Component");
-            project.getComponents().add(component);
+            siriusWebProjectCreationLifecycleFactory.link(eObjectIndexer);
 
-            var pack = PapayaFactory.eINSTANCE.createPackage();
-            pack.setName("Package");
-            component.getPackages().add(pack);
-
-            var clazz = PapayaFactory.eINSTANCE.createClass();
-            clazz.setName("Class");
-            pack.getTypes().add(clazz);
-
-            resource.getContents().add(project);
             changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
             payload = new ExecuteOmniboxCommandSuccessPayload(input.id(), null, List.of());
         }
