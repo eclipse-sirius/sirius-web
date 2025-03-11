@@ -46,6 +46,14 @@ type NodeLayoutData {
   position: Position!
   size: Size!
   resizedByUser: Boolean!
+  handlesLayoutData: [HandleLayoutData!]!
+}
+
+type HandleLayoutData {
+  edgeId: ID!
+  position: Position!
+  handlePosition : String!
+  type: String!
 }
 
 type EdgeLayoutData {
@@ -594,6 +602,14 @@ input NodeLayoutDataInput {
   position: PositionInput!
   size: SizeInput!
   resizedByUser: Boolean!
+  handlesLayoutData: [HandleLayoutDataInput!]!
+}
+
+input HandleLayoutDataInput {
+  edgeId: ID!
+  position: PositionInput!
+  handlePosition : String!
+  type : String!
 }
 
 input EdgeLayoutDataInput {

@@ -111,7 +111,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   } = useGroupPalette();
 
   const { onConnect, onConnectStart, onConnectEnd } = useConnector();
-  const { reconnectEdge } = useReconnectEdge();
+  const { reconnectEdge, onReconnectEdgeEnd } = useReconnectEdge();
   const { onDrop, onDragOver } = useDrop();
   const { onNodeDragStart, onNodeDrag, onNodeDragStop } = useDropNode();
   const { backgroundColor, largeGridColor, smallGridColor } = useDropDiagramStyle();
@@ -258,7 +258,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { transformBorderNodeChanges } = useBorderChange();
   const { transformUndraggableListNodeChanges, applyMoveChange } = useMoveChange();
   const { transformResizeListNodeChanges } = useResizeChange();
-  const { applyHandleChange } = useHandleChange();
+  const { applyHandleChange, applyResizeHandleChange } = useHandleChange();
   const { layoutOnBoundsChange } = useLayoutOnBoundsChange();
   const { filterReadOnlyChanges } = useFilterReadOnlyChanges();
   const {
@@ -292,6 +292,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
         newNodes = applyMoveChange(transformedNodeChanges, newNodes);
         newNodes = applyHandleChange(transformedNodeChanges, newNodes);
+        newNodes = applyResizeHandleChange(transformedNodeChanges, newNodes);
 
         layoutOnBoundsChange(transformedNodeChanges, newNodes);
         setNodes(newNodes);
@@ -447,6 +448,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     onConnectStart: onConnectStart,
     onConnectEnd: onConnectEnd,
     connectionLineComponent: ConnectionLine,
+    onReconnectEnd: onReconnectEdgeEnd,
     connectionRadius: 0,
     onEdgesChange: handleEdgesChange,
     onReconnect: reconnectEdge,

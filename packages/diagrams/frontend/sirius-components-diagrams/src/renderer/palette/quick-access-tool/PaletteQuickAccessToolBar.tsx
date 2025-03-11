@@ -25,6 +25,7 @@ import { FadeElementTool } from './FadeElementTool';
 import { PaletteQuickAccessToolBarProps } from './PaletteQuickAccessToolBar.types';
 import { PinUnPinTool } from './PinUnPinTool';
 import { ResetEditedEdgePathTool } from './ResetEditedEdgePathTool';
+import { ResetManuallyLayoutedHandlesTool } from './ResetManuallyLayoutedHandlesTool';
 import { Tool } from './Tool';
 
 const isPinnable = (diagramElement: Node<NodeData> | Edge<EdgeData>): diagramElement is Node<NodeData> => {
@@ -91,6 +92,12 @@ export const PaletteQuickAccessToolBar = ({
           key={'tool_resetEditedEdgePathTool'}></ResetEditedEdgePathTool>
       );
     }
+
+    quickAccessToolComponents.push(
+      <ResetManuallyLayoutedHandlesTool
+        diagramElementId={diagramElementId}
+        key={'tool_resetManuallyLayoutedHandlesTool'}></ResetManuallyLayoutedHandlesTool>
+    );
 
     quickAccessToolComponents.push(
       <AdjustSizeTool diagramElementId={diagramElementId} key={'tool_adjustSizeTool'}></AdjustSizeTool>

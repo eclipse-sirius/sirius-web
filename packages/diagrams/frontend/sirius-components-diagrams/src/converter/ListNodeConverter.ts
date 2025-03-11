@@ -13,7 +13,7 @@
  *******************************************************************************/
 import { Node, XYPosition } from '@xyflow/react';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
-import { GQLDiagram, GQLNodeLayoutData } from '../graphql/subscription/diagramFragment.types';
+import { GQHandlesLayoutData, GQLDiagram, GQLNodeLayoutData } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
 import {
   GQLNode,
@@ -55,7 +55,12 @@ const toListNode = (
     labelEditable,
   } = gqlNode;
 
-  const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
+  const handlesLayoutData: GQHandlesLayoutData[] = gqlDiagram.layoutData.nodeLayoutData
+    .filter((nodeLayoutData) => nodeLayoutData.id === id)
+    .flatMap((nodeLayoutData) => nodeLayoutData.handlesLayoutData);
+
+  const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges, handlesLayoutData);
+
   const gqlNodeLayoutData: GQLNodeLayoutData | undefined = gqlDiagram.layoutData.nodeLayoutData.find(
     (nodeLayoutData) => nodeLayoutData.id === id
   );

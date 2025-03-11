@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,23 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Edge, Node, NodeChange, NodePositionChange, getConnectedEdges, useStoreApi } from '@xyflow/react';
-import { useCallback } from 'react';
+import {
+  Edge,
+  Node,
+  NodeChange,
+  NodeDimensionChange,
+  NodePositionChange,
+  getConnectedEdges,
+  useStoreApi,
+} from '@xyflow/react';
+import { useCallback, useState } from 'react';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 import { useStore } from '../../representation/useStore';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { getEdgeParametersWhileMoving, getUpdatedConnectionHandles } from '../edge/EdgeLayout';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ConnectionHandle } from './ConnectionHandles.types';
-import { UseHandleChangeValue } from './useHandleChange.types';
+import { UseHandleChangeState, UseHandleChangeValue } from './useHandleChange.types';
 
 const isNodePositionChange = (change: NodeChange<Node<NodeData>>): change is NodePositionChange =>
   change.type === 'position' && typeof change.dragging === 'boolean' && change.dragging;
@@ -28,6 +36,13 @@ export const useHandleChange = (): UseHandleChangeValue => {
   const { diagramDescription } = useDiagramDescription();
   const storeApi = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { nodeLookup } = storeApi.getState();
+  const [state, setState] = useState<UseHandleChangeState>({
+    initialWidth: null,
+    initialHeight: null,
+    finalWidth: null,
+    finalHeight: null,
+  });
+
   const applyHandleChange = useCallback(
     (
       changes: NodeChange<Node<NodeData>>[],
@@ -97,5 +112,75 @@ export const useHandleChange = (): UseHandleChangeValue => {
     [getEdges]
   );
 
-  return { applyHandleChange };
+  const applyResizeHandleChange = useCallback(
+    (
+      changes: NodeChange<Node<NodeData>>[],
+      nodes: Node<NodeData, DiagramNodeType>[]
+    ): Node<NodeData, DiagramNodeType>[] => {
+      if (changes.length === 1 && changes[0] && changes[0].type === 'dimensions') {
+        const change: NodeDimensionChange = changes[0];
+        const resizedNode = nodeLookup.get(change.id);
+        if (resizedNode && !state.initialHeight && !state.initialWidth && !!change.resizing) {
+          setState((prevState) => ({
+            ...prevState,
+            initialHeight: resizedNode.height ? resizedNode.height : null,
+            initialWidth: resizedNode.width ? resizedNode.width : null,
+          }));
+        } else if (state.initialHeight && state.initialWidth && !!change.resizing) {
+          setState((prevState) => ({
+            ...prevState,
+            finalHeight: change.dimensions ? change.dimensions.height : null,
+            finalWidth: change.dimensions ? change.dimensions.width : null,
+          }));
+        } else if (
+          state.initialHeight &&
+          state.initialWidth &&
+          state.finalHeight &&
+          state.finalWidth &&
+          !change.resizing
+        ) {
+          const coefHeight = state.finalHeight / state.initialHeight;
+          const coefWidth = state.finalWidth / state.initialWidth;
+
+          setState((prevState) => ({
+            ...prevState,
+            finalWidth: null,
+            initialHeight: null,
+            finalHeight: null,
+            initialWidth: null,
+          }));
+
+          return nodes.map((node) => {
+            if (node.id === resizedNode?.id) {
+              const connectionHandles = node.data.connectionHandles.map((handle) => {
+                if (handle.XYPosition) {
+                  return {
+                    ...handle,
+                    XYPosition: {
+                      x: coefWidth * handle.XYPosition.x,
+                      y: coefHeight * handle.XYPosition.y,
+                    },
+                  };
+                }
+                return handle;
+              });
+
+              return {
+                ...node,
+                data: {
+                  ...node.data,
+                  connectionHandles: connectionHandles,
+                },
+              };
+            }
+            return node;
+          });
+        }
+      }
+      return nodes;
+    },
+    []
+  );
+
+  return { applyHandleChange, applyResizeHandleChange };
 };

@@ -11,9 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Position, XYPosition } from '@xyflow/react';
+import { InternalNode, Node, Position, XYPosition } from '@xyflow/react';
 import { Handle } from '@xyflow/system';
-import { BorderNodePosition } from '../DiagramRenderer.types';
+import { BorderNodePosition, NodeData } from '../DiagramRenderer.types';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
 import { getPositionAbsoluteFromNodeChange, isDescendantOf, isSiblingOrDescendantOf } from '../layout/layoutNode';
 import { borderLeftAndRight, horizontalLayoutDirectionGap, verticalLayoutDirectionGap } from '../layout/layoutParams';
@@ -26,6 +26,64 @@ import {
   GetUpdatedConnectionHandlesParameters,
   NodeCenter,
 } from './EdgeLayout.types';
+
+const defaultHandleSize = 6;
+
+export const getNodesUpdatedWithHandles = (
+  nodes: Node<NodeData>[],
+  node: InternalNode<Node<NodeData>>,
+  edgeId: string,
+  handleId: string,
+  XYPosition: XYPosition,
+  position: Position
+): Node<NodeData>[] => {
+  if (node.height && node.width) {
+    //Take the size of the handle and its position into account
+    XYPosition = {
+      x: XYPosition.x - node.internals.positionAbsolute.x,
+      y: XYPosition.y - node.internals.positionAbsolute.y,
+    };
+
+    if (position === Position.Bottom) {
+      XYPosition = {
+        ...XYPosition,
+        y: XYPosition.y - node.height - defaultHandleSize,
+      };
+    }
+
+    if (position === Position.Right) {
+      XYPosition = {
+        ...XYPosition,
+        x: XYPosition.x - node.width - defaultHandleSize,
+      };
+    }
+  }
+
+  return nodes.map((n) => {
+    if (n.id === node.id) {
+      const handles = n.data.connectionHandles.map((handle) => {
+        if (handle.id === handleId) {
+          return {
+            ...handle,
+            edgeId,
+            XYPosition,
+            position,
+          };
+        }
+        return handle;
+      });
+
+      return {
+        ...n,
+        data: {
+          ...n.data,
+          connectionHandles: handles,
+        },
+      };
+    }
+    return n;
+  });
+};
 
 const clamp = (n: number, lower: number, upper: number) => Math.max(lower, Math.min(upper, n));
 
@@ -70,7 +128,11 @@ export const getUpdatedConnectionHandles: GetUpdatedConnectionHandlesParameters 
 ) => {
   const sourceConnectionHandles: ConnectionHandle[] = sourceNode.data.connectionHandles.map(
     (nodeConnectionHandle: ConnectionHandle) => {
-      if (nodeConnectionHandle.id === sourceHandle && nodeConnectionHandle.type === 'source') {
+      if (
+        nodeConnectionHandle.id === sourceHandle &&
+        nodeConnectionHandle.type === 'source' &&
+        !nodeConnectionHandle.XYPosition
+      ) {
         nodeConnectionHandle.position = sourcePosition;
       }
       return nodeConnectionHandle;
@@ -79,7 +141,11 @@ export const getUpdatedConnectionHandles: GetUpdatedConnectionHandlesParameters 
 
   const targetConnectionHandles: ConnectionHandle[] = targetNode.data.connectionHandles.map(
     (nodeConnectionHandle: ConnectionHandle) => {
-      if (nodeConnectionHandle.id === targetHandle && nodeConnectionHandle.type === 'target') {
+      if (
+        nodeConnectionHandle.id === targetHandle &&
+        nodeConnectionHandle.type === 'target' &&
+        !nodeConnectionHandle.XYPosition
+      ) {
         nodeConnectionHandle.position = targetPosition;
       }
       return nodeConnectionHandle;
