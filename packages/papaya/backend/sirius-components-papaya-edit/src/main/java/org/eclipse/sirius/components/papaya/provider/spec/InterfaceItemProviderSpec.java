@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,11 +37,11 @@ public class InterfaceItemProviderSpec extends InterfaceItemProvider {
             var visibilityImage = new VisibilityOverlayImageProvider().overlayImage(this.getResourceLocator(), anInterface.getVisibility());
 
             return new ComposedImage(List.of(
-                    this.getResourceLocator().getImage("full/obj16/Interface.svg"),
+                    this.getResourceLocator().getImage("papaya/full/obj16/Interface.svg"),
                     visibilityImage
             ));
         }
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Interface.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/Interface.svg"));
     }
 
     @Override
