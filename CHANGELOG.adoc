@@ -115,7 +115,7 @@ Except for the specific case where `cause === 'refresh'` in `DiagramRenderer` (w
 - https://github.com/eclipse-sirius/sirius-web/issues/4678[#4678] [table] Add support of virtual rows in tables
 - https://github.com/eclipse-sirius/sirius-web/issues/4679[#4679] [tree] Remove coupling between TreeView and useSelection
 - https://github.com/eclipse-sirius/sirius-web/issues/4657[#4657] [diagram] Resize a parent node using a list layout when one of its children has disappeared even when the node has been manually resized
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4464[#4464] [diagram] [portal] Reduce usage of the selection kind
 
 
 == v2025.2.0

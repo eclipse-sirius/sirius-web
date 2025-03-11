@@ -10,18 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import {
-  DRAG_SOURCES_TYPE,
-  RepresentationComponentProps,
-  Selection,
-  SelectionContext,
-  useMultiToast,
-  useSelection,
-} from '@eclipse-sirius/sirius-components-core';
+import { DRAG_SOURCES_TYPE, RepresentationComponentProps, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import AddIcon from '@mui/icons-material/Add';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import GridLayout, { Layout, LayoutItem, WidthProvider } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -77,7 +70,6 @@ export const PortalRepresentation = ({
   const { classes } = usePortalRepresentationStyles();
   const domNode = useRef<HTMLDivElement>(null);
   const { addErrorMessage } = useMultiToast();
-  const { selection, setSelection } = useSelection();
   const { portal, complete, message } = usePortal(editingContextId, representationId);
   const { addPortalView, removePortalView, layoutPortal, layoutInProgress } = usePortalMutations(
     editingContextId,
@@ -133,23 +125,6 @@ export const PortalRepresentation = ({
       layoutPortal(newLayoutData);
     }
   };
-
-  /*
-   * This is needed to avoid leaving the portal when an embedded representation
-   * is selected from inside its view (typically, when the user clicks in the
-   * background of a diagram).
-   */
-  const nonPropagatingSetSelection = useCallback(
-    (selection: Selection) => {
-      const filteredEntries = selection.entries.filter(
-        (entry) => !entry.kind.startsWith('siriusComponents://representation')
-      );
-      if (filteredEntries.length > 0) {
-        setSelection({ entries: filteredEntries });
-      }
-    },
-    [setSelection]
-  );
 
   let items: JSX.Element[] = [
     <div
@@ -224,29 +199,27 @@ export const PortalRepresentation = ({
         portalMode={mode}
         setPortalMode={(newMode) => setMode(newMode)}
       />
-      <SelectionContext.Provider value={{ selection, setSelection: nonPropagatingSetSelection }}>
-        <ResponsiveGridLayout
-          data-testid="portal-grid-layout"
-          className="layout"
-          rowHeight={cellSize}
-          autoSize={true}
-          margin={[parseInt(theme.spacing(1)), parseInt(theme.spacing(1))]}
-          compactType={portalHasViews ? 'vertical' : null}
-          draggableHandle=".draggable"
-          isDraggable={mode === 'edit'}
-          isResizable={mode === 'edit'}
-          isDroppable={mode === 'edit'}
-          allowOverlap={!portalHasViews}
-          droppingItem={{ i: 'drop-item', w: 4, h: 6 }}
-          onDrop={(_layout: Layout, item: LayoutItem, event: Event) => {
-            if (mode !== 'read-only') {
-              handleDrop(event, item);
-            }
-          }}
-          onLayoutChange={handleLayoutChange}>
-          {items}
-        </ResponsiveGridLayout>
-      </SelectionContext.Provider>
+      <ResponsiveGridLayout
+        data-testid="portal-grid-layout"
+        className="layout"
+        rowHeight={cellSize}
+        autoSize={true}
+        margin={[parseInt(theme.spacing(1)), parseInt(theme.spacing(1))]}
+        compactType={portalHasViews ? 'vertical' : null}
+        draggableHandle=".draggable"
+        isDraggable={mode === 'edit'}
+        isResizable={mode === 'edit'}
+        isDroppable={mode === 'edit'}
+        allowOverlap={!portalHasViews}
+        droppingItem={{ i: 'drop-item', w: 4, h: 6 }}
+        onDrop={(_layout: Layout, item: LayoutItem, event: Event) => {
+          if (mode !== 'read-only') {
+            handleDrop(event, item);
+          }
+        }}
+        onLayoutChange={handleLayoutChange}>
+        {items}
+      </ResponsiveGridLayout>
     </div>
   );
 };
