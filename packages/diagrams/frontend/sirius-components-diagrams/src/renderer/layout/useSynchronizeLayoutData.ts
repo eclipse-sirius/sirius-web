@@ -19,7 +19,9 @@ import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { RawDiagram } from './layout.types';
 import {
   GQLDiagramLayoutData,
+  GQLEdgeLayoutData,
   GQLErrorPayload,
+  GQLHandleLayoutData,
   GQLLayoutDiagramData,
   GQLLayoutDiagramInput,
   GQLLayoutDiagramPayload,
@@ -27,7 +29,6 @@ import {
   GQLNodeLayoutData,
   GQLSuccessPayload,
   UseSynchronizeLayoutDataValue,
-  GQLEdgeLayoutData,
 } from './useSynchronizeLayoutData.types';
 
 const layoutDiagramMutation = gql`
@@ -90,6 +91,18 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
       } = node;
       const { resizedByUser } = node.data;
       if (height && width) {
+        const handles: GQLHandleLayoutData[] = [];
+        node.data.connectionHandles.forEach((handle) => {
+          if (handle.XYPosition) {
+            handles.push({
+              edgeId: handle.edgeId,
+              position: { x: handle.XYPosition.x, y: handle.XYPosition.y },
+              handlePosition: handle.position,
+              type: handle.type,
+            });
+          }
+        });
+
         nodeLayoutData.push({
           id,
           position: {
@@ -101,6 +114,7 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
             width,
           },
           resizedByUser,
+          handleLayoutData: handles,
         });
       }
     });
@@ -123,6 +137,7 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
 
   const synchronizeLayoutData = (id: string, cause: string, diagram: RawDiagram) => {
     const diagramLayoutData = toDiagramLayoutData(diagram);
+
     const input: GQLLayoutDiagramInput = {
       id,
       editingContextId,

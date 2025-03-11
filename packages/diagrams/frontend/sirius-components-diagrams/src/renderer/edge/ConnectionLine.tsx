@@ -11,9 +11,17 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Theme, useTheme } from '@mui/material/styles';
-import { ConnectionLineComponentProps, getSmoothStepPath } from '@xyflow/react';
-import React, { memo } from 'react';
-import { getNearestPointInPerimeter } from './EdgeLayout';
+import {
+  ConnectionLineComponentProps,
+  Edge,
+  getSmoothStepPath,
+  Node,
+  useReactFlow,
+  useUpdateNodeInternals,
+} from '@xyflow/react';
+import React, { memo, useEffect } from 'react';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { getNearestPointInPerimeter, getNodesUpdatedWithHandles } from './EdgeLayout';
 
 const connectionLineStyle = (theme: Theme): React.CSSProperties => {
   return {
@@ -23,39 +31,59 @@ const connectionLineStyle = (theme: Theme): React.CSSProperties => {
 };
 
 export const ConnectionLine = memo(
-  ({ fromX, fromY, toX, toY, fromPosition, toPosition, fromNode, toNode }: ConnectionLineComponentProps) => {
+  ({
+    fromX,
+    fromY,
+    toX,
+    toY,
+    fromPosition,
+    toPosition,
+    fromNode,
+    toNode,
+    fromHandle,
+  }: ConnectionLineComponentProps<Node<NodeData>>) => {
     const theme = useTheme();
+    const { getNodes, setNodes, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+    const updateNodeInternals = useUpdateNodeInternals();
 
-    // Snap the ConnectionLine to the border of the targetted node
-    if (toNode && toNode.width && toNode.height) {
-      const pointToSnap = getNearestPointInPerimeter(
-        toNode.internals.positionAbsolute.x,
-        toNode.internals.positionAbsolute.y,
-        toNode.width,
-        toNode.height,
-        toX,
-        toY
-      );
+    const edgeId = fromNode.data.connectionHandles.find((handle) => handle.id === fromHandle?.id)?.edgeId;
+    const targetHandle = getEdges().find((e) => e.id === edgeId)?.targetHandle;
+    const sourceHandle = getEdges().find((e) => e.id === edgeId)?.sourceHandle;
+    const handleToUpdate = targetHandle === fromHandle.id ? sourceHandle : targetHandle;
 
-      toX = pointToSnap.XYpostion.x;
-      toY = pointToSnap.XYpostion.y;
-      toPosition = pointToSnap.position;
+    if (handleToUpdate) {
+      if (edgeId && toNode && toNode.width && toNode.height) {
+        // Snap the ConnectionLine to the border of the targetted node
+        const pointToSnap = getNearestPointInPerimeter(
+          toNode.internals.positionAbsolute.x,
+          toNode.internals.positionAbsolute.y,
+          toNode.width,
+          toNode.height,
+          toX,
+          toY
+        );
+
+        toX = pointToSnap.XYPosition.x;
+        toY = pointToSnap.XYPosition.y;
+        toPosition = pointToSnap.position;
+      }
     }
 
-    if (fromNode && fromNode.width && fromNode.height) {
-      const pointToSnap = getNearestPointInPerimeter(
-        fromNode.internals.positionAbsolute.x,
-        fromNode.internals.positionAbsolute.y,
-        fromNode.width,
-        fromNode.height,
-        fromX,
-        fromY
-      );
-
-      fromX = pointToSnap.XYpostion.x;
-      fromY = pointToSnap.XYpostion.y;
-      fromPosition = pointToSnap.position;
-    }
+    useEffect(() => {
+      if (toNode && edgeId && handleToUpdate) {
+        // Update handle position early to avoid flicking effect after onReconnectEnd
+        const nodes = getNodesUpdatedWithHandles(
+          getNodes(),
+          toNode,
+          edgeId,
+          handleToUpdate,
+          { x: toX, y: toY },
+          toPosition
+        );
+        setNodes(nodes);
+        updateNodeInternals(toNode.id);
+      }
+    }, [toX, toY]);
 
     const [edgePath] = getSmoothStepPath({
       sourceX: fromX,

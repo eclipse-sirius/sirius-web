@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,20 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.diagrams.layoutdata;
 
-import { HandleProps, XYPosition } from '@xyflow/react';
-
-export interface ConnectionHandlesProps {
-  connectionHandles: ConnectionHandle[];
-}
-
-export interface ConnectionHandle extends HandleProps {
-  nodeId: string;
-  edgeId: string;
-  index: number;
-  hidden: boolean;
-  XYPosition?: XYPosition;
-}
-export interface ConnectionHandlesState {
-  selectedHandles: string[];
+/**
+ * The layout data of a node.
+ *
+ * @author mcharfadi
+ */
+public record HandleLayoutData(String edgeId, Position position, String handlePosition, HandleType type) {
 }
