@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -49,7 +49,7 @@ public class EnumNodeDescriptionProvider implements INodeDescriptionProvider {
                 .showIconExpression("aql:true")
                 .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.IF_CHILDREN)
                 .withHeader(true)
-                .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .borderSize(0)
                 .build();
 
@@ -59,8 +59,8 @@ public class EnumNodeDescriptionProvider implements INodeDescriptionProvider {
                 .build();
 
         var enumNodeStyle = new DiagramBuilders().newRectangularNodeStyleDescription()
-                .background(this.colorProvider.getColor(PapayaColorPaletteProvider.DEFAULT_BACKGROUND))
-                .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .background(this.colorProvider.getColor(PapayaColorPaletteProvider.BACKGROUND))
+                .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .borderSize(1)
                 .borderRadius(0)
                 .borderLineStyle(LineStyle.SOLID)
@@ -87,7 +87,7 @@ public class EnumNodeDescriptionProvider implements INodeDescriptionProvider {
     private NodeDescription enumLiteralNodeDescription() {
         var insideLabelStyle = new DiagramBuilders().newInsideLabelStyle()
                 .showIconExpression("aql:true")
-                .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .borderSize(0)
                 .build();
 
@@ -98,8 +98,8 @@ public class EnumNodeDescriptionProvider implements INodeDescriptionProvider {
                 .build();
 
         var enumLiteralNodeStyle = new DiagramBuilders().newIconLabelNodeStyleDescription()
-                .background(this.colorProvider.getColor(PapayaColorPaletteProvider.DEFAULT_BACKGROUND))
-                .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .background(this.colorProvider.getColor(PapayaColorPaletteProvider.BACKGROUND))
+                .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .borderSize(0)
                 .borderRadius(0)
                 .borderLineStyle(LineStyle.SOLID)
