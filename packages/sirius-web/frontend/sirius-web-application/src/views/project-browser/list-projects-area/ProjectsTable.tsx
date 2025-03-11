@@ -28,6 +28,7 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 
 import FormControl from '@mui/material/FormControl';
+import { useTranslation } from 'react-i18next';
 import { ProjectsTableProps } from './ProjectsTable.types';
 import { projectsTableRowExtensionPoint } from './ProjectsTableExtensionPoints';
 
@@ -42,6 +43,7 @@ export const ProjectsTable = ({
   onPageSizeChange,
 }: ProjectsTableProps) => {
   const { Component: ProjectRow } = useComponent(projectsTableRowExtensionPoint);
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.list' });
 
   return (
     <Paper>
@@ -53,7 +55,7 @@ export const ProjectsTable = ({
           </colgroup>
           <TableHead>
             <TableRow>
-              <TableCell variant="head">Name</TableCell>
+              <TableCell variant="head">{t('name')}</TableCell>
               <TableCell variant="head"></TableCell>
             </TableRow>
           </TableHead>

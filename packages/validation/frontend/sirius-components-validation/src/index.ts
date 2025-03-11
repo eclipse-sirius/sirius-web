@@ -12,3 +12,4 @@
  *******************************************************************************/
 export * from './useValidationViewSubscription';
 export * from './ValidationView';
+export { default as siriusComponentsValidationEn } from './locales/en.json';

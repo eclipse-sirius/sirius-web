@@ -83,6 +83,7 @@ For that a new predicate `IReadOnlyObjectPredicate` has been added to figure out
 A default implementation has been provided to return `true` if the object belongs to the semantic data of a library.
 This predicate is used in Sirius Web's explorer to prevent users from deleting or renaming elements from libraries.
 This API is provisionnal for the moment and it may be moved or changed while improving the support for libraries.
+- https://github.com/eclipse-sirius/sirius-web/issues/1028[#1028] [core] Add i18n support for frontend
 
 === Improvements
 

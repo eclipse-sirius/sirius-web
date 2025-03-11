@@ -19,6 +19,7 @@ import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 
 import { ReactNode, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { useValidationViewSubscription } from './useValidationViewSubscription';
 import {
@@ -59,6 +60,7 @@ const isValidationRefreshedEventPayload = (
 export const ValidationView = ({ editingContextId }: WorkbenchViewComponentProps) => {
   const { classes } = useValidationViewStyle();
   const { payload, complete } = useValidationViewSubscription(editingContextId);
+  const { t } = useTranslation('siriusComponentsValidation');
 
   const [state, setState] = useState<ValidationRepresentationState>({
     validationPayload: null,
@@ -75,7 +77,7 @@ export const ValidationView = ({ editingContextId }: WorkbenchViewComponentProps
 
   let noDiagnostic: ReactNode = (
     <div className={classes.idle}>
-      <Typography variant="subtitle2">No diagnostic available</Typography>
+      <Typography variant="subtitle2">{t('noDiagnostic')}</Typography>
     </div>
   );
 
@@ -108,7 +110,9 @@ export const ValidationView = ({ editingContextId }: WorkbenchViewComponentProps
         <Accordion key={category.kind}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography className={classes.heading}>{category.kind}</Typography>
-            <Typography className={classes.secondaryHeading}>{category.diagnostics.length} diagnostics</Typography>
+            <Typography className={classes.secondaryHeading}>
+              {t('diagnosticCount', { count: category.diagnostics.length })}
+            </Typography>
           </AccordionSummary>
           <AccordionDetails className={classes.accordionDetailsRoot}>{details}</AccordionDetails>
         </Accordion>
