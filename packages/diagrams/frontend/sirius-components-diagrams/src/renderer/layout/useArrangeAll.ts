@@ -238,9 +238,21 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
         return !parentNode || !isListData(parentNode);
       });
 
+      const laidOutMovedNodeIds = laidOutNodesWithElk
+        .filter((node) => !node.data.isBorderNode && !node.data.pinned)
+        .map((node) => node.id);
+      const edges = getEdges();
+      edges
+        .filter((edge) => laidOutMovedNodeIds.includes(edge.source) || laidOutMovedNodeIds.includes(edge.target))
+        .forEach((edge: Edge<EdgeData, string>) => {
+          if (edge.data?.bendingPoints) {
+            edge.data.bendingPoints = null;
+          }
+        });
+
       const diagramToLayout: RawDiagram = {
         nodes: laidOutNodesWithElk,
-        edges: getEdges(),
+        edges: edges,
       };
       const layoutPromise = new Promise<void>((resolve) => {
         layout(diagramToLayout, diagramToLayout, null, (laidOutDiagram) => {
