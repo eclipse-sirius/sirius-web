@@ -31,12 +31,12 @@ public class PapayaColorPaletteProvider {
     public ColorPalette getColorPalette() {
         var paletteTextPrimary = new ViewBuilders().newFixedColor()
                 .name(PALETTE_TEXT_PRIMARY)
-                .value(PALETTE_TEXT_PRIMARY)
+                .value("#261E58")
                 .build();
 
         var paletteErrorMain = new ViewBuilders().newFixedColor()
                 .name(PALETTE_ERROR_MAIN)
-                .value(PALETTE_ERROR_MAIN)
+                .value("#d32f2f")
                 .build();
 
         var defaultBackground = new ViewBuilders().newFixedColor()

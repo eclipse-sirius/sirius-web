@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProv
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
+import org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
@@ -60,8 +61,8 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
     public NodeDescription create() {
         var insideLabelStyle = new DiagramBuilders().newInsideLabelStyle()
                 .showIconExpression("aql:true")
-                .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.IF_CHILDREN)
                 .withHeader(true)
+                .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.IF_CHILDREN)
                 .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
                 .borderSize(0)
                 .build();
@@ -70,6 +71,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .labelExpression("aql:self.label()")
                 .position(InsideLabelPosition.TOP_CENTER)
                 .style(insideLabelStyle)
+                .overflowStrategy(LabelOverflowStrategy.NONE)
                 .build();
 
         var classNodeStyle = new DiagramBuilders().newRectangularNodeStyleDescription()
@@ -111,6 +113,19 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
     }
 
     private NodeDescription constructorsNodeDescription() {
+        var insideLabelStyle = new DiagramBuilders().newInsideLabelStyle()
+                .showIconExpression("aql:false")
+                .withHeader(true)
+                .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.NEVER)
+                .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .borderSize(0)
+                .build();
+
+        var insideLabel = new DiagramBuilders().newInsideLabelDescription()
+                .labelExpression("Constructors")
+                .style(insideLabelStyle)
+                .build();
+
         var constructorsNodeStyle = new DiagramBuilders().newRectangularNodeStyleDescription()
                 .background(this.colorProvider.getColor(PapayaColorPaletteProvider.DEFAULT_BACKGROUND))
                 .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
@@ -129,7 +144,9 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .name(CONSTRUCTORS_NAME)
                 .domainType("papaya::Class")
                 .semanticCandidatesExpression("aql:self")
+                .insideLabel(insideLabel)
                 .style(constructorsNodeStyle)
+                .isHiddenByDefaultExpression("aql:true")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .childrenLayoutStrategy(childrenLayoutStrategy)
                 .childrenDescriptions(constructorNodeDescription)
@@ -171,7 +188,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         var insideLabelStyle = new DiagramBuilders().newInsideLabelStyle()
                 .showIconExpression("aql:false")
                 .withHeader(true)
-                .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.IF_CHILDREN)
+                .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.NEVER)
                 .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
                 .borderSize(0)
                 .build();
