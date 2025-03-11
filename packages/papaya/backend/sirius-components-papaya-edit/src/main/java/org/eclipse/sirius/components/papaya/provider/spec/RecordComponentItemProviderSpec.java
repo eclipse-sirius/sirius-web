@@ -27,6 +27,6 @@ public class RecordComponentItemProviderSpec extends RecordComponentItemProvider
 
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/RecordComponent.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/RecordComponent.svg"));
     }
 }

@@ -38,10 +38,6 @@ import org.eclipse.sirius.components.graphql.tests.ExecuteOmniboxCommandMutation
 import org.eclipse.sirius.components.graphql.tests.OmniboxCommandsQueryRunner;
 import org.eclipse.sirius.components.graphql.tests.OmniboxSearchQueryRunner;
 import org.eclipse.sirius.components.graphql.tests.api.IExecuteEditingContextFunctionRunner;
-import org.eclipse.sirius.components.papaya.Class;
-import org.eclipse.sirius.components.papaya.Component;
-import org.eclipse.sirius.components.papaya.Package;
-import org.eclipse.sirius.components.papaya.Project;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
@@ -141,26 +137,11 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
 
         BiFunction<IEditingContext, IInput, IPayload> function = (editingContext, executeEditingContextFunctionInput) -> {
             if (editingContext instanceof IEMFEditingContext emfEditingContext) {
-                Optional<Resource> optSamplePapayaResource = emfEditingContext.getDomain().getResourceSet().getResources().stream()
+                Optional<Resource> optionalResource = emfEditingContext.getDomain().getResourceSet().getResources().stream()
                         .filter(resource -> resource.eAdapters().stream()
-                                .anyMatch(adapter -> adapter instanceof ResourceMetadataAdapter resourceMetadataAdapter && Objects.equals(resourceMetadataAdapter.getName(), "Sample Papaya")))
+                                .anyMatch(adapter -> adapter instanceof ResourceMetadataAdapter resourceMetadataAdapter && Objects.equals(resourceMetadataAdapter.getName(), "Sirius Web - Lifecycle")))
                         .findFirst();
-                assertThat(optSamplePapayaResource).isPresent();
-                assertThat(optSamplePapayaResource.get().getContents()).hasSize(1).allMatch(Project.class::isInstance);
-
-                Project project = (Project) optSamplePapayaResource.get().getContents().get(0);
-                assertThat(project.getComponents()).hasSize(1);
-
-                Component component = project.getComponents().get(0);
-                assertThat(component.getName()).isEqualTo("Component");
-                assertThat(component.getPackages()).hasSize(1);
-
-                Package pack = component.getPackages().get(0);
-                assertThat(pack.getName()).isEqualTo("Package");
-                assertThat(pack.getTypes()).hasSize(1).allMatch(Class.class::isInstance);
-
-                Class clazz = (Class) pack.getTypes().get(0);
-                assertThat(clazz.getName()).isEqualTo("Class");
+                assertThat(optionalResource).isPresent();
                 return new SuccessPayload(executeEditingContextFunctionInput.id());
             }
             return new ErrorPayload(executeEditingContextFunctionInput.id(), "Invalid editing context");

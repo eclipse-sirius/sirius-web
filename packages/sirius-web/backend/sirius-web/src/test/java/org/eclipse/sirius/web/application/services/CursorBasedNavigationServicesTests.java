@@ -69,12 +69,12 @@ public class CursorBasedNavigationServicesTests {
                 "Task",
                 "contributions : Contribution",
                 "Contribution",
+                "applicationConcerns : ApplicationConcern",
+                "ApplicationConcern",
+                "domains : Domain",
+                "Domain",
                 "NamedElement",
-                "Iteration -> NamedElement [org.eclipse.sirius.components.papaya.Iteration]",
-                "startDate : Instant",
-                "Instant",
-                "endDate : Instant",
-                "Instant"
+                "Iteration -> NamedElement [org.eclipse.sirius.components.papaya.Iteration]"
         );
 
         assertThat(names)

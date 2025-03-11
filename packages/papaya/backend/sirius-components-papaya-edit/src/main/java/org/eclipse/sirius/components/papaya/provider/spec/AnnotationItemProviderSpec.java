@@ -37,11 +37,11 @@ public class AnnotationItemProviderSpec extends AnnotationItemProvider {
             var visibilityImage = new VisibilityOverlayImageProvider().overlayImage(this.getResourceLocator(), annotation.getVisibility());
 
             return new ComposedImage(List.of(
-                    this.getResourceLocator().getImage("full/obj16/Annotation.svg"),
+                    this.getResourceLocator().getImage("papaya/full/obj16/Annotation.svg"),
                     visibilityImage
             ));
         }
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Annotation.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/Annotation.svg"));
     }
 
     @Override

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="Copyright (c) 2024 Obeo.&#xA;This program and the accompanying materials&#xA;are made available under the terms of the Eclipse Public License v2.0&#xA;which accompanies this distribution, and is available at&#xA;https://www.eclipse.org/legal/epl-2.0/&#xA;&#xA;SPDX-License-Identifier: EPL-2.0&#xA;&#xA;Contributors:&#xA;    Obeo - initial API and implementation"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="Copyright (c) 2024, 2025 Obeo.&#xA;This program and the accompanying materials&#xA;are made available under the terms of the Eclipse Public License v2.0&#xA;which accompanies this distribution, and is available at&#xA;https://www.eclipse.org/legal/epl-2.0/&#xA;&#xA;SPDX-License-Identifier: EPL-2.0&#xA;&#xA;Contributors:&#xA;    Obeo - initial API and implementation"
     modelDirectory="/sirius-components-papaya/src/main/java" creationIcons="false"
     editDirectory="/sirius-components-papaya-edit/src/main/java" modelPluginID="sirius-components-papaya"
     modelName="Papaya" editPluginClass="org.eclipse.sirius.components.papaya.provider.PapayaEditPlugin"
@@ -44,6 +44,8 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Project/iterations"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Project/tasks"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Project/contributions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Project/applicationConcerns"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Project/domains"/>
     </genClasses>
     <genClasses ecoreClass="papaya.ecore#//Iteration">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Iteration/startDate"/>
@@ -166,5 +168,43 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Enum/literals"/>
     </genClasses>
     <genClasses ecoreClass="papaya.ecore#//EnumLiteral"/>
+    <genClasses ecoreClass="papaya.ecore#//ApplicationConcern">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//ApplicationConcern/controllers"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//ApplicationConcern/services"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//ApplicationConcern/events"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//ApplicationConcern/commands"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//ApplicationConcern/queries"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//ApplicationConcern/domains"/>
+    </genClasses>
+    <genClasses ecoreClass="papaya.ecore#//Controller">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Controller/calls"/>
+    </genClasses>
+    <genClasses ecoreClass="papaya.ecore#//Domain">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Domain/services"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Domain/repositories"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Domain/events"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Domain/commands"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Domain/queries"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Domain/dependencies"/>
+    </genClasses>
+    <genClasses ecoreClass="papaya.ecore#//Service">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Service/calls"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="papaya.ecore#//MessageListener">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//MessageListener/listenedMessages"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="papaya.ecore#//MessageEmitter">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//MessageEmitter/emittedMessages"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="papaya.ecore#//Message">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Message/emittedBy"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Message/listenedBy"/>
+    </genClasses>
+    <genClasses ecoreClass="papaya.ecore#//Event">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papaya.ecore#//Event/causedBy"/>
+    </genClasses>
+    <genClasses ecoreClass="papaya.ecore#//Command"/>
+    <genClasses ecoreClass="papaya.ecore#//Query"/>
+    <genClasses ecoreClass="papaya.ecore#//Repository"/>
   </genPackages>
 </genmodel:GenModel>

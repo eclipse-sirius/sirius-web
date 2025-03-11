@@ -27,6 +27,6 @@ public class TypeParameterItemProviderSpec extends TypeParameterItemProvider {
 
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/TypeParameter.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/TypeParameter.svg"));
     }
 }

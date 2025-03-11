@@ -31,7 +31,7 @@ public class ParameterItemProviderSpec extends ParameterItemProvider {
 
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Parameter.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/Parameter.svg"));
     }
 
     @Override

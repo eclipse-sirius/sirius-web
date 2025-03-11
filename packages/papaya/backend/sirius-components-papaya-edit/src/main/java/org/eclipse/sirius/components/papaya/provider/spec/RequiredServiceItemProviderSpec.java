@@ -27,6 +27,6 @@ public class RequiredServiceItemProviderSpec extends RequiredServiceItemProvider
 
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/RequiredService.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/RequiredService.svg"));
     }
 }

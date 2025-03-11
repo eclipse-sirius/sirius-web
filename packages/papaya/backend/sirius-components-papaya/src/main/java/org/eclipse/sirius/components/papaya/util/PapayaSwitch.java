@@ -18,19 +18,27 @@ import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.papaya.AnnotableElement;
 import org.eclipse.sirius.components.papaya.Annotation;
 import org.eclipse.sirius.components.papaya.AnnotationField;
+import org.eclipse.sirius.components.papaya.ApplicationConcern;
 import org.eclipse.sirius.components.papaya.Attribute;
 import org.eclipse.sirius.components.papaya.Classifier;
+import org.eclipse.sirius.components.papaya.Command;
 import org.eclipse.sirius.components.papaya.Component;
 import org.eclipse.sirius.components.papaya.ComponentExchange;
 import org.eclipse.sirius.components.papaya.ComponentPort;
 import org.eclipse.sirius.components.papaya.Constructor;
 import org.eclipse.sirius.components.papaya.Contribution;
+import org.eclipse.sirius.components.papaya.Controller;
 import org.eclipse.sirius.components.papaya.DataType;
+import org.eclipse.sirius.components.papaya.Domain;
 import org.eclipse.sirius.components.papaya.EnumLiteral;
+import org.eclipse.sirius.components.papaya.Event;
 import org.eclipse.sirius.components.papaya.GenericType;
 import org.eclipse.sirius.components.papaya.Interface;
 import org.eclipse.sirius.components.papaya.InterfaceImplementation;
 import org.eclipse.sirius.components.papaya.Iteration;
+import org.eclipse.sirius.components.papaya.Message;
+import org.eclipse.sirius.components.papaya.MessageEmitter;
+import org.eclipse.sirius.components.papaya.MessageListener;
 import org.eclipse.sirius.components.papaya.ModelElement;
 import org.eclipse.sirius.components.papaya.NamedElement;
 import org.eclipse.sirius.components.papaya.Operation;
@@ -38,8 +46,11 @@ import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.components.papaya.Parameter;
 import org.eclipse.sirius.components.papaya.Project;
 import org.eclipse.sirius.components.papaya.ProvidedService;
+import org.eclipse.sirius.components.papaya.Query;
 import org.eclipse.sirius.components.papaya.RecordComponent;
+import org.eclipse.sirius.components.papaya.Repository;
 import org.eclipse.sirius.components.papaya.RequiredService;
+import org.eclipse.sirius.components.papaya.Service;
 import org.eclipse.sirius.components.papaya.Tag;
 import org.eclipse.sirius.components.papaya.Task;
 import org.eclipse.sirius.components.papaya.Type;
@@ -502,6 +513,133 @@ public class PapayaSwitch<T> extends Switch<T> {
                     result = this.caseAnnotableElement(enumLiteral);
                 if (result == null)
                     result = this.caseModelElement(enumLiteral);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapayaPackage.APPLICATION_CONCERN: {
+                ApplicationConcern applicationConcern = (ApplicationConcern) theEObject;
+                T result = this.caseApplicationConcern(applicationConcern);
+                if (result == null)
+                    result = this.caseNamedElement(applicationConcern);
+                if (result == null)
+                    result = this.caseModelElement(applicationConcern);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapayaPackage.CONTROLLER: {
+                Controller controller = (Controller) theEObject;
+                T result = this.caseController(controller);
+                if (result == null)
+                    result = this.caseNamedElement(controller);
+                if (result == null)
+                    result = this.caseMessageEmitter(controller);
+                if (result == null)
+                    result = this.caseMessageListener(controller);
+                if (result == null)
+                    result = this.caseModelElement(controller);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapayaPackage.DOMAIN: {
+                Domain domain = (Domain) theEObject;
+                T result = this.caseDomain(domain);
+                if (result == null)
+                    result = this.caseNamedElement(domain);
+                if (result == null)
+                    result = this.caseModelElement(domain);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapayaPackage.SERVICE: {
+                Service service = (Service) theEObject;
+                T result = this.caseService(service);
+                if (result == null)
+                    result = this.caseNamedElement(service);
+                if (result == null)
+                    result = this.caseMessageListener(service);
+                if (result == null)
+                    result = this.caseMessageEmitter(service);
+                if (result == null)
+                    result = this.caseModelElement(service);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapayaPackage.MESSAGE_LISTENER: {
+                MessageListener messageListener = (MessageListener) theEObject;
+                T result = this.caseMessageListener(messageListener);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapayaPackage.MESSAGE_EMITTER: {
+                MessageEmitter messageEmitter = (MessageEmitter) theEObject;
+                T result = this.caseMessageEmitter(messageEmitter);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapayaPackage.MESSAGE: {
+                Message message = (Message) theEObject;
+                T result = this.caseMessage(message);
+                if (result == null)
+                    result = this.caseNamedElement(message);
+                if (result == null)
+                    result = this.caseModelElement(message);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapayaPackage.EVENT: {
+                Event event = (Event) theEObject;
+                T result = this.caseEvent(event);
+                if (result == null)
+                    result = this.caseMessage(event);
+                if (result == null)
+                    result = this.caseNamedElement(event);
+                if (result == null)
+                    result = this.caseModelElement(event);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapayaPackage.COMMAND: {
+                Command command = (Command) theEObject;
+                T result = this.caseCommand(command);
+                if (result == null)
+                    result = this.caseMessage(command);
+                if (result == null)
+                    result = this.caseNamedElement(command);
+                if (result == null)
+                    result = this.caseModelElement(command);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapayaPackage.QUERY: {
+                Query query = (Query) theEObject;
+                T result = this.caseQuery(query);
+                if (result == null)
+                    result = this.caseMessage(query);
+                if (result == null)
+                    result = this.caseNamedElement(query);
+                if (result == null)
+                    result = this.caseModelElement(query);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapayaPackage.REPOSITORY: {
+                Repository repository = (Repository) theEObject;
+                T result = this.caseRepository(repository);
+                if (result == null)
+                    result = this.caseNamedElement(repository);
+                if (result == null)
+                    result = this.caseModelElement(repository);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -979,6 +1117,163 @@ public class PapayaSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseEnumLiteral(EnumLiteral object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Application Concern</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Application Concern</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseApplicationConcern(ApplicationConcern object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Controller</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Controller</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseController(Controller object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Domain</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Domain</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDomain(Domain object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Service</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Service</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseService(Service object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Message Listener</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Message Listener</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseMessageListener(MessageListener object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Message Emitter</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Message Emitter</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseMessageEmitter(MessageEmitter object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Message</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Message</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseMessage(Message object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Event</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Event</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseEvent(Event object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Command</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Command</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseCommand(Command object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Query</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Query</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseQuery(Query object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Repository</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Repository</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseRepository(Repository object) {
         return null;
     }
 
