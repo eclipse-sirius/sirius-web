@@ -213,7 +213,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
       setEdges(convertedDiagram.edges);
       setNodes(convertedDiagram.nodes);
-    } else if (cause === 'refresh' && !readOnly) {
+    } else if (cause === 'refresh') {
       const previousDiagram: RawDiagram = {
         nodes,
         edges,
@@ -245,7 +245,9 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         setNodes(laidOutDiagram.nodes);
         hideAllPalettes();
 
-        synchronizeLayoutData(diagramRefreshedEventPayload.id, 'refresh', laidOutDiagram);
+        if (!readOnly) {
+          synchronizeLayoutData(diagramRefreshedEventPayload.id, 'refresh', laidOutDiagram);
+        }
       });
     }
   }, [diagramRefreshedEventPayload, diagramDescription, edgeType]);
