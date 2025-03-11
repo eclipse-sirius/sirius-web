@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,10 +36,10 @@ public class DataTypeItemProviderSpec extends DataTypeItemProvider {
             var visibilityImage = new VisibilityOverlayImageProvider().overlayImage(this.getResourceLocator(), dataType.getVisibility());
 
             return new ComposedImage(List.of(
-                    this.getResourceLocator().getImage("full/obj16/DataType.svg"),
+                    this.getResourceLocator().getImage("papaya/full/obj16/DataType.svg"),
                     visibilityImage
             ));
         }
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/DataType.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/DataType.svg"));
     }
 }

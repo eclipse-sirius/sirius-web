@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,8 @@ import org.eclipse.emf.common.util.EList;
  * <li>{@link org.eclipse.sirius.components.papaya.Project#getIterations <em>Iterations</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Project#getTasks <em>Tasks</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Project#getContributions <em>Contributions</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.Project#getApplicationConcerns <em>Application Concerns</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.Project#getDomains <em>Domains</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.papaya.PapayaPackage#getProject()
@@ -112,5 +114,28 @@ public interface Project extends NamedElement {
      * @generated
      */
     EList<Contribution> getContributions();
+
+    /**
+     * Returns the value of the '<em><b>Application Concerns</b></em>' containment reference list. The list contents are
+     * of type {@link org.eclipse.sirius.components.papaya.ApplicationConcern}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Application Concerns</em>' containment reference list.
+     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getProject_ApplicationConcerns()
+     * @model containment="true"
+     * @generated
+     */
+    EList<ApplicationConcern> getApplicationConcerns();
+
+    /**
+     * Returns the value of the '<em><b>Domains</b></em>' containment reference list. The list contents are of type
+     * {@link org.eclipse.sirius.components.papaya.Domain}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Domains</em>' containment reference list.
+     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getProject_Domains()
+     * @model containment="true"
+     * @generated
+     */
+    EList<Domain> getDomains();
 
 } // Project

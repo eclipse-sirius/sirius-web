@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -236,6 +236,70 @@ public interface PapayaFactory extends EFactory {
      * @generated
      */
     EnumLiteral createEnumLiteral();
+
+    /**
+     * Returns a new object of class '<em>Application Concern</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Application Concern</em>'.
+     * @generated
+     */
+    ApplicationConcern createApplicationConcern();
+
+    /**
+     * Returns a new object of class '<em>Controller</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Controller</em>'.
+     * @generated
+     */
+    Controller createController();
+
+    /**
+     * Returns a new object of class '<em>Domain</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Domain</em>'.
+     * @generated
+     */
+    Domain createDomain();
+
+    /**
+     * Returns a new object of class '<em>Service</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Service</em>'.
+     * @generated
+     */
+    Service createService();
+
+    /**
+     * Returns a new object of class '<em>Event</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Event</em>'.
+     * @generated
+     */
+    Event createEvent();
+
+    /**
+     * Returns a new object of class '<em>Command</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Command</em>'.
+     * @generated
+     */
+    Command createCommand();
+
+    /**
+     * Returns a new object of class '<em>Query</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Query</em>'.
+     * @generated
+     */
+    Query createQuery();
+
+    /**
+     * Returns a new object of class '<em>Repository</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Repository</em>'.
+     * @generated
+     */
+    Repository createRepository();
 
     /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
