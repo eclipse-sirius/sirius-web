@@ -96,7 +96,7 @@ describe('Diagram - del node', () => {
       diagram.getPalette().getByTestId('tool-Composite Processor').click();
       diagram.getNodes('Topography', 'CompositeProcessor2').should('exist');
       cy.get('@consoleDebug').should('be.calledWith', 'fit-to-screen has been performed:true');
-      cy.wait(100);
+      diagram.getSelectedNodes('Topography', 'CompositeProcessor2').should('exist');
       //Trigger delete
       cy.focused().type('{del}');
       diagram.getNodes('Topography', 'CompositeProcessor2').should('not.exist');
