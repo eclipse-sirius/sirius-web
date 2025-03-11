@@ -139,6 +139,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
           convertedNode.position.y !== currentNode.position.y ||
           convertedNode.width !== currentNode.width ||
           convertedNode.height !== currentNode.height ||
+          convertedNode.hidden !== currentNode.hidden ||
           (currentNode && JSON.stringify(convertedNode.data) !== JSON.stringify(currentNode.data)))
       ) {
         return convertedNode;
