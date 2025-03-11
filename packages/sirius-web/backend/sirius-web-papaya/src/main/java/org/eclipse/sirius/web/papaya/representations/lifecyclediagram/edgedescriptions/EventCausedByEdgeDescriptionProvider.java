@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,8 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.papaya.representations.classdiagram.edgedescriptions;
+package org.eclipse.sirius.web.papaya.representations.lifecyclediagram.edgedescriptions;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
@@ -22,30 +23,31 @@ import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
-import org.eclipse.sirius.web.papaya.representations.classdiagram.nodedescriptions.ClassNodeDescriptionProvider;
+import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.CommandNodeDescriptionProvider;
+import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.EventNodeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.services.PapayaColorPaletteProvider;
 
 /**
- * Used to create the class extends edge description.
+ * Used to create the event caused by edge description.
  *
  * @author sbegaudeau
  */
-public class ClassExtendsEdgeDescriptionProvider implements IEdgeDescriptionProvider {
+public class EventCausedByEdgeDescriptionProvider implements IEdgeDescriptionProvider {
 
-    public static final String NAME = "Class#extends";
+    public static final String NAME = "Event#causedBy";
 
     private final IColorProvider colorProvider;
 
-    public ClassExtendsEdgeDescriptionProvider(IColorProvider colorProvider) {
+    public EventCausedByEdgeDescriptionProvider(IColorProvider colorProvider) {
         this.colorProvider = Objects.requireNonNull(colorProvider);
     }
 
     @Override
     public EdgeDescription create() {
         var extendsEdgeStyle = new DiagramBuilders().newEdgeStyle()
-                .color(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
-                .sourceArrowStyle(ArrowStyle.NONE)
-                .targetArrowStyle(ArrowStyle.INPUT_FILL_CLOSED_ARROW)
+                .color(this.colorProvider.getColor(PapayaColorPaletteProvider.EVENT_DARK))
+                .sourceArrowStyle(ArrowStyle.INPUT_ARROW)
+                .targetArrowStyle(ArrowStyle.NONE)
                 .lineStyle(LineStyle.SOLID)
                 .edgeWidth(1)
                 .borderSize(0)
@@ -53,9 +55,9 @@ public class ClassExtendsEdgeDescriptionProvider implements IEdgeDescriptionProv
 
         return new DiagramBuilders().newEdgeDescription()
                 .name(NAME)
-                .centerLabelExpression("")
+                .centerLabelExpression("caused by")
                 .sourceNodesExpression("aql:self")
-                .targetNodesExpression("aql:self.extends")
+                .targetNodesExpression("aql:self.causedBy")
                 .isDomainBasedEdge(false)
                 .style(extendsEdgeStyle)
                 .build();
@@ -63,17 +65,12 @@ public class ClassExtendsEdgeDescriptionProvider implements IEdgeDescriptionProv
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var optionalClassNodeDescription = cache.getNodeDescription(ClassNodeDescriptionProvider.NAME);
-        var optionalClassExtendsEdgeDescription = cache.getEdgeDescription(NAME);
+        var eventCausedByEdgeDescription = cache.getEdgeDescription(NAME).orElse(null);
+        var commandNodeDescription = cache.getNodeDescription(CommandNodeDescriptionProvider.NAME).orElse(null);
+        var eventNodeDescription = cache.getNodeDescription(EventNodeDescriptionProvider.NAME).orElse(null);
 
-        if (optionalClassNodeDescription.isPresent() && optionalClassExtendsEdgeDescription.isPresent()) {
-            var classNodeDescription = optionalClassNodeDescription.get();
-            var classExtendsEdgeDescription = optionalClassExtendsEdgeDescription.get();
-
-            classExtendsEdgeDescription.getSourceNodeDescriptions().add(classNodeDescription);
-            classExtendsEdgeDescription.getTargetNodeDescriptions().add(classNodeDescription);
-
-            diagramDescription.getEdgeDescriptions().add(classExtendsEdgeDescription);
-        }
+        eventCausedByEdgeDescription.getSourceNodeDescriptions().addAll(List.of(eventNodeDescription));
+        eventCausedByEdgeDescription.getTargetNodeDescriptions().addAll(List.of(eventNodeDescription, commandNodeDescription));
+        diagramDescription.getEdgeDescriptions().add(eventCausedByEdgeDescription);
     }
 }

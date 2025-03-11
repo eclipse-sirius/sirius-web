@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.papaya.representations.componentdiagram.nodedescriptions;
+package org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions;
 
 import java.util.Objects;
 
@@ -19,26 +19,25 @@ import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuild
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
+import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
-import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
-import org.eclipse.sirius.web.papaya.representations.componentdiagram.tools.ImportAllDependenciesNodeToolProvider;
-import org.eclipse.sirius.web.papaya.representations.componentdiagram.tools.ImportDependenciesNodeToolProvider;
 import org.eclipse.sirius.web.papaya.services.PapayaColorPaletteProvider;
 
 /**
- * Used to create the component node description.
+ * Used to create the domain node description.
  *
  * @author sbegaudeau
  */
-public class ComponentNodeDescriptionProvider implements INodeDescriptionProvider {
+public class DomainNodeDescriptionProvider implements INodeDescriptionProvider {
 
-    public static final String NAME = "Component";
+    public static final String NAME = "Domain";
 
     private final IColorProvider colorProvider;
 
-    public ComponentNodeDescriptionProvider(IColorProvider colorProvider) {
+    public DomainNodeDescriptionProvider(IColorProvider colorProvider) {
         this.colorProvider = Objects.requireNonNull(colorProvider);
     }
 
@@ -46,21 +45,24 @@ public class ComponentNodeDescriptionProvider implements INodeDescriptionProvide
     public NodeDescription create() {
         var insideLabelStyle = new DiagramBuilders().newInsideLabelStyle()
                 .showIconExpression("aql:true")
-                .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
+                .withHeader(true)
+                .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.ALWAYS)
+                .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.DOMAIN_DARK))
                 .borderSize(0)
                 .build();
 
         var insideLabel = new DiagramBuilders().newInsideLabelDescription()
                 .labelExpression("aql:self.label()")
                 .style(insideLabelStyle)
+                .position(InsideLabelPosition.TOP_CENTER)
                 .build();
 
         var childrenLayoutStrategy = new DiagramBuilders().newFreeFormLayoutStrategyDescription()
                 .build();
 
-        var componentNodeStyle = new DiagramBuilders().newRectangularNodeStyleDescription()
-                .background(this.colorProvider.getColor(PapayaColorPaletteProvider.BACKGROUND))
-                .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
+        var nodeStyle = new DiagramBuilders().newRectangularNodeStyleDescription()
+                .background(this.colorProvider.getColor(PapayaColorPaletteProvider.DOMAIN_LIGHT))
+                .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.DOMAIN_DARK))
                 .borderSize(1)
                 .borderRadius(0)
                 .borderLineStyle(LineStyle.SOLID)
@@ -68,34 +70,19 @@ public class ComponentNodeDescriptionProvider implements INodeDescriptionProvide
 
         return new DiagramBuilders().newNodeDescription()
                 .name(NAME)
-                .domainType("papaya::Component")
-                .semanticCandidatesExpression("aql:editingContext.getSynchronizedObjects(semanticElementIds)")
+                .domainType("papaya::Domain")
+                .semanticCandidatesExpression("aql:self.domains")
                 .insideLabel(insideLabel)
-                .style(componentNodeStyle)
-                .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
+                .style(nodeStyle)
+                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .childrenLayoutStrategy(childrenLayoutStrategy)
                 .build();
     }
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var palette = this.palette(cache);
-
-        var optionalComponentNodeDescription = cache.getNodeDescription(NAME);
-        optionalComponentNodeDescription.ifPresent(componentNodeDescription -> {
-            componentNodeDescription.getChildrenDescriptions().add(componentNodeDescription);
-            componentNodeDescription.setPalette(palette);
-
-            diagramDescription.getNodeDescriptions().add(componentNodeDescription);
-        });
-    }
-
-    private NodePalette palette(IViewDiagramElementFinder cache) {
-        return new DiagramBuilders().newNodePalette()
-                .nodeTools(
-                        new ImportDependenciesNodeToolProvider().create(cache),
-                        new ImportAllDependenciesNodeToolProvider().create(cache)
-                )
-                .build();
+        var domainLayerNodeDescription = cache.getNodeDescription(DomainLayerNodeDescriptionProvider.NAME).orElse(null);
+        var domainNodeDescription = cache.getNodeDescription(NAME).orElse(null);
+        domainLayerNodeDescription.getChildrenDescriptions().add(domainNodeDescription);
     }
 }

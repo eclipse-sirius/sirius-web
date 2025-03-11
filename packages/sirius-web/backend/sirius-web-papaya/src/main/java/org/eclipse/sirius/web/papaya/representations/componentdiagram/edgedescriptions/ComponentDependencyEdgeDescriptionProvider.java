@@ -44,7 +44,7 @@ public class ComponentDependencyEdgeDescriptionProvider implements IEdgeDescript
     public EdgeDescription create() {
         var duplicateDependencyEdgeStyle = new DiagramBuilders().newConditionalEdgeStyle()
                 .condition("aql:semanticEdgeSource.dependencies->excluding(semanticEdgeTarget).allDependencies->includes(semanticEdgeTarget)")
-                .color(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_ERROR_MAIN))
+                .color(this.colorProvider.getColor(PapayaColorPaletteProvider.ERROR))
                 .sourceArrowStyle(ArrowStyle.NONE)
                 .targetArrowStyle(ArrowStyle.INPUT_FILL_CLOSED_ARROW)
                 .lineStyle(LineStyle.SOLID)
@@ -53,7 +53,7 @@ public class ComponentDependencyEdgeDescriptionProvider implements IEdgeDescript
                 .build();
 
         var dependencyEdgeStyle = new DiagramBuilders().newEdgeStyle()
-                .color(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .color(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .sourceArrowStyle(ArrowStyle.NONE)
                 .targetArrowStyle(ArrowStyle.INPUT_FILL_CLOSED_ARROW)
                 .lineStyle(LineStyle.SOLID)

@@ -50,7 +50,7 @@ public class InterfaceNodeDescriptionProvider implements INodeDescriptionProvide
                 .showIconExpression("aql:true")
                 .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.IF_CHILDREN)
                 .withHeader(true)
-                .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .borderSize(0)
                 .build();
 
@@ -60,8 +60,8 @@ public class InterfaceNodeDescriptionProvider implements INodeDescriptionProvide
                 .build();
 
         var interfaceNodeStyle = new DiagramBuilders().newRectangularNodeStyleDescription()
-                .background(this.colorProvider.getColor(PapayaColorPaletteProvider.DEFAULT_BACKGROUND))
-                .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .background(this.colorProvider.getColor(PapayaColorPaletteProvider.BACKGROUND))
+                .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .borderSize(1)
                 .borderRadius(0)
                 .borderLineStyle(LineStyle.SOLID)
@@ -88,7 +88,7 @@ public class InterfaceNodeDescriptionProvider implements INodeDescriptionProvide
     private NodeDescription operationNodeDescription() {
         var insideLabelStyle = new DiagramBuilders().newInsideLabelStyle()
                 .showIconExpression("aql:true")
-                .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .borderSize(0)
                 .build();
 
@@ -99,8 +99,8 @@ public class InterfaceNodeDescriptionProvider implements INodeDescriptionProvide
                 .build();
 
         var operationNodeStyle = new DiagramBuilders().newIconLabelNodeStyleDescription()
-                .background(this.colorProvider.getColor(PapayaColorPaletteProvider.DEFAULT_BACKGROUND))
-                .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .background(this.colorProvider.getColor(PapayaColorPaletteProvider.BACKGROUND))
+                .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .borderSize(0)
                 .borderRadius(0)
                 .borderLineStyle(LineStyle.SOLID)

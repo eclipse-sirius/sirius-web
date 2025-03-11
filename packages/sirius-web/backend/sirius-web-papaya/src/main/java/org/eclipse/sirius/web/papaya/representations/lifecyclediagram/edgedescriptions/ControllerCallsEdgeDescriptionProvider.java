@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.papaya.representations.classdiagram.edgedescriptions;
+package org.eclipse.sirius.web.papaya.representations.lifecyclediagram.edgedescriptions;
 
 import java.util.Objects;
 
@@ -22,30 +22,31 @@ import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
-import org.eclipse.sirius.web.papaya.representations.classdiagram.nodedescriptions.ClassNodeDescriptionProvider;
+import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.ControllerNodeDescriptionProvider;
+import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.ApplicationServiceNodeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.services.PapayaColorPaletteProvider;
 
 /**
- * Used to create the class extends edge description.
+ * Used to create the controller calls edge description.
  *
  * @author sbegaudeau
  */
-public class ClassExtendsEdgeDescriptionProvider implements IEdgeDescriptionProvider {
+public class ControllerCallsEdgeDescriptionProvider implements IEdgeDescriptionProvider {
 
-    public static final String NAME = "Class#extends";
+    public static final String NAME = "Controller#calls";
 
     private final IColorProvider colorProvider;
 
-    public ClassExtendsEdgeDescriptionProvider(IColorProvider colorProvider) {
+    public ControllerCallsEdgeDescriptionProvider(IColorProvider colorProvider) {
         this.colorProvider = Objects.requireNonNull(colorProvider);
     }
 
     @Override
     public EdgeDescription create() {
         var extendsEdgeStyle = new DiagramBuilders().newEdgeStyle()
-                .color(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
+                .color(this.colorProvider.getColor(PapayaColorPaletteProvider.SERVICE_DARK))
                 .sourceArrowStyle(ArrowStyle.NONE)
-                .targetArrowStyle(ArrowStyle.INPUT_FILL_CLOSED_ARROW)
+                .targetArrowStyle(ArrowStyle.INPUT_ARROW)
                 .lineStyle(LineStyle.SOLID)
                 .edgeWidth(1)
                 .borderSize(0)
@@ -53,9 +54,9 @@ public class ClassExtendsEdgeDescriptionProvider implements IEdgeDescriptionProv
 
         return new DiagramBuilders().newEdgeDescription()
                 .name(NAME)
-                .centerLabelExpression("")
+                .centerLabelExpression("calls")
                 .sourceNodesExpression("aql:self")
-                .targetNodesExpression("aql:self.extends")
+                .targetNodesExpression("aql:self.calls")
                 .isDomainBasedEdge(false)
                 .style(extendsEdgeStyle)
                 .build();
@@ -63,17 +64,12 @@ public class ClassExtendsEdgeDescriptionProvider implements IEdgeDescriptionProv
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var optionalClassNodeDescription = cache.getNodeDescription(ClassNodeDescriptionProvider.NAME);
-        var optionalClassExtendsEdgeDescription = cache.getEdgeDescription(NAME);
+        var controllerCallsEdgeDescription = cache.getEdgeDescription(NAME).orElse(null);
+        var controllerNodeDescription = cache.getNodeDescription(ControllerNodeDescriptionProvider.NAME).orElse(null);
+        var applicationServiceNodeDescription = cache.getNodeDescription(ApplicationServiceNodeDescriptionProvider.NAME).orElse(null);
 
-        if (optionalClassNodeDescription.isPresent() && optionalClassExtendsEdgeDescription.isPresent()) {
-            var classNodeDescription = optionalClassNodeDescription.get();
-            var classExtendsEdgeDescription = optionalClassExtendsEdgeDescription.get();
-
-            classExtendsEdgeDescription.getSourceNodeDescriptions().add(classNodeDescription);
-            classExtendsEdgeDescription.getTargetNodeDescriptions().add(classNodeDescription);
-
-            diagramDescription.getEdgeDescriptions().add(classExtendsEdgeDescription);
-        }
+        controllerCallsEdgeDescription.getSourceNodeDescriptions().add(controllerNodeDescription);
+        controllerCallsEdgeDescription.getTargetNodeDescriptions().add(applicationServiceNodeDescription);
+        diagramDescription.getEdgeDescriptions().add(controllerCallsEdgeDescription);
     }
 }
