@@ -11,69 +11,22 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { gql, useMutation } from '@apollo/client';
-import { useDeletionConfirmationDialog, useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { useDeletionConfirmationDialog } from '@eclipse-sirius/sirius-components-core';
 import { Edge, Node, useStoreApi } from '@xyflow/react';
 import { useCallback, useContext } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
-import { useDialog } from '../../dialog/useDialog';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useCollapseExpand } from '../tools/useCollapseExpand';
 import { GQLCollapsingState } from '../tools/useCollapseExpand.types';
 import { useDelete } from '../tools/useDelete';
 import { GQLDeletionPolicy } from '../tools/useDelete.types';
-import { useImpactAnalysisDialog } from './impact-analysis/useImpactAnalysisDialog';
-import { GQLPalette, GQLSingleClickOnDiagramElementTool, GQLTool, GQLToolVariable } from './Palette.types';
+import { useSingleClickTool } from '../tools/useSingleClickTool';
+import { GQLPalette, GQLTool } from './Palette.types';
 import { useDiagramElementPalette } from './useDiagramElementPalette';
 import { useDiagramPalette } from './useDiagramPalette';
-import {
-  GQLErrorPayload,
-  GQLInvokeSingleClickOnDiagramElementToolData,
-  GQLInvokeSingleClickOnDiagramElementToolInput,
-  GQLInvokeSingleClickOnDiagramElementToolPayload,
-  GQLInvokeSingleClickOnDiagramElementToolSuccessPayload,
-  GQLInvokeSingleClickOnDiagramElementToolVariables,
-  UsePaletteProps,
-  UsePaletteValue,
-} from './usePalette.types';
+import { UsePaletteProps, UsePaletteValue } from './usePalette.types';
 import { usePaletteContents } from './usePaletteContents';
-
-const invokeSingleClickOnDiagramElementToolMutation = gql`
-  mutation invokeSingleClickOnDiagramElementTool($input: InvokeSingleClickOnDiagramElementToolInput!) {
-    invokeSingleClickOnDiagramElementTool(input: $input) {
-      __typename
-      ... on InvokeSingleClickOnDiagramElementToolSuccessPayload {
-        newSelection {
-          entries {
-            id
-          }
-        }
-        messages {
-          body
-          level
-        }
-      }
-      ... on ErrorPayload {
-        messages {
-          body
-          level
-        }
-      }
-    }
-  }
-`;
-
-const isErrorPayload = (payload: GQLInvokeSingleClickOnDiagramElementToolPayload): payload is GQLErrorPayload =>
-  payload.__typename === 'ErrorPayload';
-
-const isInvokeSingleClickSuccessPayload = (
-  payload: GQLInvokeSingleClickOnDiagramElementToolPayload
-): payload is GQLInvokeSingleClickOnDiagramElementToolSuccessPayload =>
-  payload.__typename === 'InvokeSingleClickOnDiagramElementToolSuccessPayload';
-
-const isSingleClickOnDiagramElementTool = (tool: GQLTool): tool is GQLSingleClickOnDiagramElementTool =>
-  tool.__typename === 'SingleClickOnDiagramElementTool';
 
 export const usePalette = ({
   x,
@@ -85,14 +38,12 @@ export const usePalette = ({
   const { nodeLookup, edgeLookup, domNode } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
   const palette: GQLPalette | null = usePaletteContents(diagramElementId);
+  const { invokeSingleClickTool } = useSingleClickTool(editingContextId, diagramId);
+  const { collapseExpandElement } = useCollapseExpand(editingContextId, diagramId);
+  const { deleteDiagramElements } = useDelete(editingContextId, diagramId);
 
-  const { addMessages } = useMultiToast();
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
-  const { showDialog } = useDialog();
-  const { setSelection } = useSelection();
-  const { showImpactAnalysisDialog } = useImpactAnalysisDialog();
-
-  const { hideDiagramPalette } = useDiagramPalette();
+  const { hideDiagramPalette, setLastToolInvoked } = useDiagramPalette();
   const { hideDiagramElementPalette } = useDiagramElementPalette();
 
   const closeAllPalettes = useCallback(() => {
@@ -101,57 +52,6 @@ export const usePalette = ({
     domNode?.focus();
   }, [hideDiagramPalette, hideDiagramElementPalette]);
 
-  const [invokeSingleClickOnDiagramElementTool] = useMutation<
-    GQLInvokeSingleClickOnDiagramElementToolData,
-    GQLInvokeSingleClickOnDiagramElementToolVariables
-  >(invokeSingleClickOnDiagramElementToolMutation);
-
-  const invokeSingleClickTool = useCallback(
-    async (tool: GQLTool, variables: GQLToolVariable[]) => {
-      if (isSingleClickOnDiagramElementTool(tool)) {
-        const { id: toolId } = tool;
-        const input: GQLInvokeSingleClickOnDiagramElementToolInput = {
-          id: crypto.randomUUID(),
-          editingContextId,
-          representationId: diagramId,
-          diagramElementId,
-          toolId,
-          startingPositionX: x,
-          startingPositionY: y,
-          variables,
-        };
-
-        const { data } = await invokeSingleClickOnDiagramElementTool({
-          variables: { input },
-        });
-        if (data) {
-          const { invokeSingleClickOnDiagramElementTool } = data;
-          if (isInvokeSingleClickSuccessPayload(invokeSingleClickOnDiagramElementTool)) {
-            const { newSelection } = invokeSingleClickOnDiagramElementTool;
-            if (newSelection?.entries.length ?? 0 > 0) {
-              setSelection(newSelection);
-            }
-            addMessages(invokeSingleClickOnDiagramElementTool.messages);
-          }
-          if (isErrorPayload(invokeSingleClickOnDiagramElementTool)) {
-            addMessages(invokeSingleClickOnDiagramElementTool.messages);
-          }
-        }
-      }
-    },
-    [
-      x,
-      y,
-      editingContextId,
-      diagramId,
-      diagramElementId,
-      invokeSingleClickOnDiagramElementToolMutation,
-      isSingleClickOnDiagramElementTool,
-    ]
-  );
-
-  const { deleteDiagramElements } = useDelete(editingContextId, diagramId);
-
   const invokeDelete = (diagramElementId: string, deletionPolicy: GQLDeletionPolicy) => {
     if (!!nodeLookup.get(diagramElementId)) {
       deleteDiagramElements([diagramElementId], [], deletionPolicy);
@@ -159,29 +59,6 @@ export const usePalette = ({
       deleteDiagramElements([], [diagramElementId], deletionPolicy);
     }
   };
-
-  const { collapseExpandElement } = useCollapseExpand(editingContextId, diagramId);
-
-  const handleDialogDescription = (tool: GQLSingleClickOnDiagramElementTool) => {
-    const onConfirm = (variables: GQLToolVariable[]) => {
-      if (tool.withImpactAnalysis) {
-        showImpactAnalysisDialog(editingContextId, diagramId, tool.id, tool.label, diagramElementId, variables, () =>
-          invokeSingleClickTool(tool, variables)
-        );
-      } else {
-        invokeSingleClickTool(tool, variables);
-      }
-    };
-    showDialog(tool.dialogDescriptionId, [{ name: 'targetObjectId', value: targetObjectId }], onConfirm, () => {});
-  };
-
-  const handleImpactAnalysisDialog = (tool: GQLTool) => {
-    showImpactAnalysisDialog(editingContextId, diagramId, tool.id, tool.label, diagramElementId, [], () =>
-      invokeSingleClickTool(tool, [])
-    );
-  };
-
-  const { setLastToolInvoked } = useDiagramPalette();
 
   const handleToolClick = (tool: GQLTool) => {
     closeAllPalettes();
@@ -204,17 +81,7 @@ export const usePalette = ({
         collapseExpandElement(diagramElementId, GQLCollapsingState.COLLAPSED);
         break;
       default:
-        if (isSingleClickOnDiagramElementTool(tool)) {
-          if (tool.dialogDescriptionId) {
-            handleDialogDescription(tool);
-          } else {
-            if (tool.withImpactAnalysis) {
-              handleImpactAnalysisDialog(tool);
-            } else {
-              invokeSingleClickTool(tool, []);
-            }
-          }
-        }
+        invokeSingleClickTool(tool, diagramElementId, targetObjectId, x, y);
         break;
     }
     if (palette) {
