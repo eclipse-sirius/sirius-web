@@ -15,6 +15,7 @@ import { Connection, Edge } from '@xyflow/react';
 
 export interface UseReconnectEdge {
   reconnectEdge: (oldEdge: Edge, newConnection: Connection) => void;
+  onReconnectEdgeEnd: (event: MouseEvent | TouchEvent, edge: Edge, handleType: 'source' | 'target') => void;
 }
 
 export interface GQLReconnectEdgeVariables {

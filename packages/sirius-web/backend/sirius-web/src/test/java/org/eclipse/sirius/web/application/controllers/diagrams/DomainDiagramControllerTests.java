@@ -157,7 +157,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
                 }, () -> fail(MISSING_DIAGRAM));
 
         Runnable initialDiagramLayout = () -> {
-            var humanNodeLayout = new NodeLayoutDataInput(humanNodeId.get(), initialPosition, initialSize, true);
+            var humanNodeLayout = new NodeLayoutDataInput(humanNodeId.get(), initialPosition, initialSize, true, List.of());
             var layoutData = new DiagramLayoutDataInput(List.of(humanNodeLayout), List.of());
             var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, diagramId.get(), "refresh", layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);
@@ -184,7 +184,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
                 }, () -> fail(MISSING_DIAGRAM));
 
         Runnable modifyDiagramLayout = () -> {
-            var humanNodeLayout = new NodeLayoutDataInput(humanNodeId.get(), modifiedPosition, modifiedSize, true);
+            var humanNodeLayout = new NodeLayoutDataInput(humanNodeId.get(), modifiedPosition, modifiedSize, true, List.of());
             var layoutData = new DiagramLayoutDataInput(List.of(humanNodeLayout), List.of());
             var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, diagramId.get(), "refresh", layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);

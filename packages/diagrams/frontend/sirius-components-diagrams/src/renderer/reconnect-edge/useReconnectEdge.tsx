@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,10 +12,23 @@
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { Connection, Edge } from '@xyflow/react';
+import {
+  Connection,
+  Edge,
+  HandleType,
+  Node,
+  useReactFlow,
+  useStoreApi,
+  useUpdateNodeInternals,
+  XYPosition,
+} from '@xyflow/react';
 import { useCallback, useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { getNearestPointInPerimeter, getNodesUpdatedWithHandles } from '../edge/EdgeLayout';
+import { RawDiagram } from '../layout/layout.types';
+import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
 import {
   GQLErrorPayload,
   GQLReconnectEdgeData,
@@ -91,19 +104,75 @@ export const useReconnectEdge = (): UseReconnectEdge => {
 
   const reconnectEdge = useCallback(
     (oldEdge: Edge, newConnection: Connection) => {
-      const edgeId = oldEdge.id;
-      let reconnectEdgeKind = GQLReconnectKind.TARGET;
-      let newEdgeTargetId = newConnection.target;
-      if (oldEdge.target === newConnection.target) {
-        reconnectEdgeKind = GQLReconnectKind.SOURCE;
-        newEdgeTargetId = newConnection.source;
-      }
-      if (newEdgeTargetId) {
-        handleReconnectEdge(edgeId, newEdgeTargetId, reconnectEdgeKind);
+      if (oldEdge.target !== newConnection.target || oldEdge.source !== newConnection.source) {
+        const edgeId = oldEdge.id;
+        let reconnectEdgeKind = GQLReconnectKind.TARGET;
+        let newEdgeTargetId = newConnection.target;
+
+        if (oldEdge.target === newConnection.target) {
+          reconnectEdgeKind = GQLReconnectKind.SOURCE;
+          newEdgeTargetId = newConnection.source;
+        }
+        if (newEdgeTargetId) {
+          handleReconnectEdge(edgeId, newEdgeTargetId, reconnectEdgeKind);
+        }
       }
     },
     [handleReconnectEdge]
   );
 
-  return { reconnectEdge };
+  const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+  const { screenToFlowPosition, getNodes, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const { synchronizeLayoutData } = useSynchronizeLayoutData();
+
+  const updateNodeInternals = useUpdateNodeInternals();
+  const onReconnectEdgeEnd = useCallback(
+    (event: MouseEvent | TouchEvent, edge: Edge, handleType: HandleType) => {
+      const targetNodeHovered = getNodes().find((node) => node.data.isHovered);
+      const targetInternalNode = store.getState().nodeLookup.get(targetNodeHovered?.id ?? '');
+
+      const handle = handleType === 'source' ? edge.targetHandle : edge.sourceHandle;
+      if (
+        'clientX' in event &&
+        'clientY' in event &&
+        targetInternalNode &&
+        targetInternalNode.width &&
+        targetInternalNode.height &&
+        handle
+      ) {
+        let XYPosition: XYPosition = screenToFlowPosition({
+          x: event.clientX,
+          y: event.clientY,
+        });
+
+        const pointToSnap = getNearestPointInPerimeter(
+          targetInternalNode.internals.positionAbsolute.x,
+          targetInternalNode.internals.positionAbsolute.y,
+          targetInternalNode.width,
+          targetInternalNode.height,
+          XYPosition.x,
+          XYPosition.y
+        );
+
+        const nodes = getNodesUpdatedWithHandles(
+          getNodes(),
+          targetInternalNode,
+          edge.id,
+          handle,
+          pointToSnap.XYPosition,
+          pointToSnap.position
+        );
+
+        const finalDiagram: RawDiagram = {
+          nodes: nodes,
+          edges: getEdges(),
+        };
+        updateNodeInternals(targetInternalNode.id);
+        synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+      }
+    },
+    [getNodes, getEdges]
+  );
+
+  return { reconnectEdge, onReconnectEdgeEnd };
 };

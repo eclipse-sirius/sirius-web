@@ -56,6 +56,7 @@ import { edgeTypes } from './edge/EdgeTypes';
 import { useEdgeType } from './edge/useEdgeType';
 import { useInitialFitToScreen } from './fit-to-screen/useInitialFitToScreen';
 import { useHandleChange } from './handles/useHandleChange';
+import { useHandleResizedChange } from './handles/useHandleResizedChange';
 import { HelperLines } from './helper-lines/HelperLines';
 import { useHelperLines } from './helper-lines/useHelperLines';
 import { useNodeHover } from './hover/useNodeHover';
@@ -110,7 +111,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   } = useGroupPalette();
 
   const { onConnect, onConnectStart, onConnectEnd } = useConnector();
-  const { reconnectEdge } = useReconnectEdge();
+  const { reconnectEdge, onReconnectEdgeEnd } = useReconnectEdge();
   const { onDrop, onDragOver } = useDrop();
   const { onNodeDragStart, onNodeDrag, onNodeDragStop } = useDropNode();
   const { backgroundColor, largeGridColor, smallGridColor } = useDropDiagramStyle();
@@ -261,6 +262,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { transformUndraggableListNodeChanges, applyMoveChange } = useMoveChange();
   const { transformResizeListNodeChanges } = useResizeChange();
   const { applyHandleChange } = useHandleChange();
+  const { applyResizeHandleChange } = useHandleResizedChange();
   const { layoutOnBoundsChange } = useLayoutOnBoundsChange();
   const { filterReadOnlyChanges } = useFilterReadOnlyChanges();
   const {
@@ -294,6 +296,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
         newNodes = applyMoveChange(transformedNodeChanges, newNodes);
         newNodes = applyHandleChange(transformedNodeChanges, newNodes);
+        newNodes = applyResizeHandleChange(transformedNodeChanges, newNodes);
 
         layoutOnBoundsChange(transformedNodeChanges, newNodes);
         setNodes(newNodes);
@@ -443,6 +446,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     onConnectStart: onConnectStart,
     onConnectEnd: onConnectEnd,
     connectionLineComponent: ConnectionLine,
+    onReconnectEnd: onReconnectEdgeEnd,
     connectionRadius: 0,
     onEdgesChange: handleEdgesChange,
     onReconnect: reconnectEdge,

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import {
   GQLDiagram,
   GQLDiagramDescription,
   GQLEdge,
+  GQLHandleLayoutData,
   GQLNode,
   GQLNodeDescription,
   GQLNodeLayoutData,
@@ -27,9 +28,9 @@ import {
   convertInsideLabel,
   convertLineStyle,
   convertOutsideLabels,
-  isListLayoutStrategy,
   defaultHeight,
   defaultWidth,
+  isListLayoutStrategy,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Node, XYPosition } from '@xyflow/react';
 import { EllipseNodeData, GQLEllipseNodeStyle } from './EllipseNode.types';
@@ -58,7 +59,12 @@ const toEllipseNode = (
     labelEditable,
   } = gqlNode;
 
-  const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
+  const handleLayoutData: GQLHandleLayoutData[] = gqlDiagram.layoutData.nodeLayoutData
+    .filter((nodeLayoutData) => nodeLayoutData.id === id)
+    .flatMap((nodeLayoutData) => nodeLayoutData.handleLayoutData);
+
+  const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges, handleLayoutData);
+
   const gqlNodeLayoutData: GQLNodeLayoutData | undefined = gqlDiagram.layoutData.nodeLayoutData.find(
     (nodeLayoutData) => nodeLayoutData.id === id
   );

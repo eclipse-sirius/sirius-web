@@ -46,11 +46,24 @@ type NodeLayoutData {
   position: Position!
   size: Size!
   resizedByUser: Boolean!
+  handleLayoutData: [HandleLayoutData!]!
+}
+
+type HandleLayoutData {
+  edgeId: ID!
+  position: Position!
+  handlePosition : String!
+  type: HandleType!
 }
 
 type EdgeLayoutData {
   id: ID!
   bendingPoints: [Position!]!
+}
+
+enum HandleType {
+  source
+  target
 }
 
 enum ViewModifier {
@@ -596,6 +609,14 @@ input NodeLayoutDataInput {
   position: PositionInput!
   size: SizeInput!
   resizedByUser: Boolean!
+  handleLayoutData: [HandleLayoutDataInput!]!
+}
+
+input HandleLayoutDataInput {
+  edgeId: ID!
+  position: PositionInput!
+  handlePosition : String!
+  type : HandleType!
 }
 
 input EdgeLayoutDataInput {

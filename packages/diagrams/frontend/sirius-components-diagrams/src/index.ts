@@ -29,7 +29,7 @@ export type {
 export { useDialog } from './dialog/useDialog';
 export type { UseDialogValue } from './dialog/useDialog.types';
 export type { GQLNodeDescription } from './graphql/query/nodeDescriptionFragment.types';
-export type { GQLDiagram, GQLNodeLayoutData } from './graphql/subscription/diagramFragment.types';
+export type { GQLDiagram, GQLHandleLayoutData, GQLNodeLayoutData } from './graphql/subscription/diagramFragment.types';
 export type { GQLEdge } from './graphql/subscription/edgeFragment.types';
 export { GQLViewModifier } from './graphql/subscription/nodeFragment.types';
 export type { GQLNode, GQLNodeStyle } from './graphql/subscription/nodeFragment.types';
