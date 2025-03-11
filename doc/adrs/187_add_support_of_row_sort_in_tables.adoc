@@ -1,0 +1,58 @@
+= ADR-187 - Add support of row sorting in tables
+
+== Context
+
+Currently, the Sirius Web tables do not allow the user to enable or not row sorting on each column.
+
+== Decision
+
+We need to enable sorting on Material React Table and send the current sorting state to the backend.
+The specifier can then use this sorting data to generate the rows to be returned in its `rowSemanticCandidatesExpression`.
+
+=== Back end
+
+==== View Table DSL
+
+First, `ColumnDescription` model should be augmented with a new property (`enableSorting`).
+
+==== TableEventProcessor
+
+Just like the column filter, sorting state on a table representation should be persisted and shared.
+`tableId` will now contain a new parameter:
+
+* `columnFilters`  with type `Array<{ id: string, desc: boolean }>`
+
+The current sorting state will be added to the `variableManager` used during the evaluation of the `rowSemanticCandidatesExpression`.
+
+=== Front end
+
+For each column, depending on the value defined in View DSL, enable or disable sorting.
+When sorting is active on one or more columns, the current sorting state is sent to the backend through a new graphql mutation.
+
+==== graphql
+
+[code,graphql]
+----
+extend type Mutation {
+  changeColumnSorting(input: ChangeColumnSortingInput!): ChangeColumnSortingPayload!
+}
+input ChangeColumnSortingInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  tableId: ID!
+  columnSorting: [ColumnSortingInput!]!
+}
+
+input ColumnSortingInput {
+  id: ID!
+  desc: Boolean!
+}
+
+union ChangeColumnSortingPayload = ErrorPayload | SuccessPayload
+----
+
+== Status
+
+Work in progress
+
