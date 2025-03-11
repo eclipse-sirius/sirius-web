@@ -20,6 +20,7 @@ import {
   TreeView,
   useTreeFilters,
 } from '@eclipse-sirius/sirius-components-trees';
+import LinearProgress from '@mui/material/LinearProgress';
 import { Theme } from '@mui/material/styles';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
@@ -174,44 +175,52 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
     />
   );
 
-  return (
-    <div className={styles.treeView} ref={treeElement}>
-      <TreeToolBar
-        editingContextId={editingContextId}
-        readOnly={readOnly}
-        onSynchronizedClick={() =>
-          setState((prevState) => {
-            return { ...prevState, synchronizedWithSelection: !state.synchronizedWithSelection };
-          })
-        }
-        synchronized={state.synchronizedWithSelection}
-        treeFilters={state.treeFilters}
-        onTreeFilterMenuItemClick={(treeFilters) =>
-          setState((prevState) => {
-            return { ...prevState, treeFilters };
-          })
-        }
-        treeToolBarContributionComponents={treeToolBarContributionComponents}>
-        {treeDescriptionSelector}
-      </TreeToolBar>
-      <div className={styles.treeContent}>
-        {filterBar}
-        {state.tree !== null ? (
-          <TreeView
-            editingContextId={editingContextId}
-            readOnly={readOnly}
-            treeId={'explorer://'}
-            tree={state.tree}
-            enableMultiSelection={true}
-            synchronizedWithSelection={state.synchronizedWithSelection}
-            textToHighlight={state.filterBarText}
-            textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
-            onExpandedElementChange={onExpandedElementChange}
-            expanded={state.expanded[state.activeTreeDescriptionId] ?? []}
-            maxDepth={state.maxDepth[state.activeTreeDescriptionId] ?? 1}
-          />
-        ) : null}
+  if (!state.tree || loading) {
+    return (
+      <div className={styles.treeView} ref={treeElement}>
+        <LinearProgress />
       </div>
-    </div>
-  );
+    );
+  } else {
+    return (
+      <div className={styles.treeView} ref={treeElement}>
+        <TreeToolBar
+          editingContextId={editingContextId}
+          readOnly={readOnly}
+          onSynchronizedClick={() =>
+            setState((prevState) => {
+              return { ...prevState, synchronizedWithSelection: !state.synchronizedWithSelection };
+            })
+          }
+          synchronized={state.synchronizedWithSelection}
+          treeFilters={state.treeFilters}
+          onTreeFilterMenuItemClick={(treeFilters) =>
+            setState((prevState) => {
+              return { ...prevState, treeFilters };
+            })
+          }
+          treeToolBarContributionComponents={treeToolBarContributionComponents}>
+          {treeDescriptionSelector}
+        </TreeToolBar>
+        <div className={styles.treeContent}>
+          {filterBar}
+          {state.tree !== null ? (
+            <TreeView
+              editingContextId={editingContextId}
+              readOnly={readOnly}
+              treeId={'explorer://'}
+              tree={state.tree}
+              enableMultiSelection={true}
+              synchronizedWithSelection={state.synchronizedWithSelection}
+              textToHighlight={state.filterBarText}
+              textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
+              onExpandedElementChange={onExpandedElementChange}
+              expanded={state.expanded[state.activeTreeDescriptionId] ?? []}
+              maxDepth={state.maxDepth[state.activeTreeDescriptionId] ?? 1}
+            />
+          ) : null}
+        </div>
+      </div>
+    );
+  }
 };
