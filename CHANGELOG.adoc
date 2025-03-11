@@ -166,6 +166,7 @@ Actions are visible on nodes on diagrams, on the top right corner of the nodes, 
 - https://github.com/eclipse-sirius/sirius-web/issues/4744[#4744] [diagram] Allow execution of SingleClickOnTwoDiagramElements with edge as target
 - https://github.com/eclipse-sirius/sirius-web/issues/4748[#4748] [diagram] Allow execution of SingleClickOnTwoDiagramElements with edge as source
 - https://github.com/eclipse-sirius/sirius-web/issues/4761[#4761] [table] Add support for custom page size options
+- https://github.com/eclipse-sirius/sirius-web/issues/4626[#4626] [diagram] Conserve rectilinearity of custom edges
 
 
 === Improvements

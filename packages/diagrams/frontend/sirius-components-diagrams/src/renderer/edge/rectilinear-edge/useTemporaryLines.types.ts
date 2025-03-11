@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Edge, EdgeProps, XYPosition } from '@xyflow/react';
+import { DraggableData } from 'react-draggable';
 
-export type MultiLabelEditableEdgeProps<T extends Edge<Record<string, unknown>, string | undefined>> = {
-  bendingPoints: XYPosition[];
-} & EdgeProps<T>;
+export interface UseTemporaryLinesValue {
+  middleBendingPoints: MiddlePoint[];
+  onTemporaryLineDragStop: (eventData: DraggableData, index: number) => void;
+  onTemporaryLineDrag: (eventData: DraggableData, index: number, direction: 'x' | 'y') => void;
+}
 
-export type MultiLabelEditableEdgeState = {
-  localBendingPoints: XYPosition[];
-  middleBendingPoints: XYPosition[];
-  temporaryPointDragPosition: XYPosition | null;
-  temporaryPointDragIndex: number | null;
+export type MiddlePoint = {
+  x: number;
+  y: number;
+  direction: 'x' | 'y';
+  segmentLength: number;
 };
