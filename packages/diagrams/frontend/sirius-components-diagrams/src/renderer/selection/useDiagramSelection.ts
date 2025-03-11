@@ -109,16 +109,8 @@ export const useDiagramSelection = (onShiftSelection: boolean): void => {
         [...semanticElementsDisplayedOnDiagram].filter((id) => !semanticElementsSelectedOnDiagram.has(id))
       );
 
-      const semanticElementsSelectedInWorkbench: Set<string> = new Set(
-        selection.entries
-          .filter((entry) => entry.kind.startsWith('siriusComponents://semantic?'))
-          .map((entry) => entry.id)
-      );
-
       const nextSemanticElementsToSelect: Set<string> = new Set(
-        [...semanticElementsSelectedOnDiagram, ...semanticElementsSelectedInWorkbench].filter(
-          (id) => !semanticElementsUnselectedOnDiagram.has(id)
-        )
+        [...semanticElementsSelectedOnDiagram].filter((id) => !semanticElementsUnselectedOnDiagram.has(id))
       );
 
       const selectionEntriesFromDiagram: SelectionEntry[] = [...nodes, ...edges].map((node) => {
@@ -128,8 +120,8 @@ export const useDiagramSelection = (onShiftSelection: boolean): void => {
           kind: targetObjectKind,
         };
       });
-      const selectionEntriesFromWorkbench: SelectionEntry[] = selection.entries.filter(
-        (entry) => entry.kind.startsWith('siriusComponents://semantic?') && nextSemanticElementsToSelect.has(entry.id)
+      const selectionEntriesFromWorkbench: SelectionEntry[] = selection.entries.filter((entry) =>
+        nextSemanticElementsToSelect.has(entry.id)
       );
 
       const nextSelectionEntries = [...selectionEntriesFromDiagram];
