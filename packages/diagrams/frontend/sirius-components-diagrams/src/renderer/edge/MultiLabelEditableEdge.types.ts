@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,11 +14,23 @@ import { Edge, EdgeProps, XYPosition } from '@xyflow/react';
 
 export type MultiLabelEditableEdgeProps<T extends Edge<Record<string, unknown>, string | undefined>> = {
   bendingPoints: XYPosition[];
+  customEdge: boolean;
 } & EdgeProps<T>;
 
 export type MultiLabelEditableEdgeState = {
-  localBendingPoints: XYPosition[];
-  middleBendingPoints: XYPosition[];
-  temporaryPointDragPosition: XYPosition | null;
-  temporaryPointDragIndex: number | null;
+  localBendingPoints: BendPointData[];
+  middleBendingPoints: MiddlePoint[];
+};
+
+export type MiddlePoint = {
+  x: number;
+  y: number;
+  direction: 'x' | 'y';
+  segmentLength: number;
+};
+
+export type BendPointData = {
+  x: number;
+  y: number;
+  pathOrder: number;
 };
