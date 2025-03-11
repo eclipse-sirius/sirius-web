@@ -26,6 +26,7 @@ export interface UsePaletteValue {
   handleToolClick: (tool: GQLTool) => void;
   palette: GQLPalette | null;
 }
+
 export interface GQLGetToolSectionsVariables {
   editingContextId: string;
   diagramId: string;
@@ -82,31 +83,3 @@ export interface GQLToolVariable {
 }
 
 export type GQLToolVariableType = 'STRING' | 'OBJECT_ID' | 'OBJECT_ID_ARRAY';
-
-export interface GQLGetToolSectionsData {
-  viewer: GQLViewer;
-}
-
-export interface GQLViewer {
-  editingContext: GQLEditingContext;
-}
-
-export interface GQLEditingContext {
-  representation: GQLRepresentationMetadata;
-}
-
-export interface GQLRepresentationMetadata {
-  id: string;
-  label: string;
-  kind: string;
-  description: GQLRepresentationDescription;
-}
-
-export interface GQLRepresentationDescription {
-  id: string;
-  __typename: string;
-}
-
-export interface GQLDiagramDescription extends GQLRepresentationDescription {
-  palette: GQLPalette;
-}
