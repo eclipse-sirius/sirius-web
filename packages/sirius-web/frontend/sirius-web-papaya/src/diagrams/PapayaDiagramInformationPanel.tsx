@@ -43,7 +43,7 @@ export const PapayaDiagramInformationPanel = memo(() => {
     return null;
   }
   return (
-    <Panel position="bottom-center">
+    <Panel position="bottom-left">
       <Paper className={classes.papayaDiagramInformationPanel}>
         <Typography variant="subtitle2">Learn more</Typography>
         <Typography variant="body2">

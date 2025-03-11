@@ -27,6 +27,7 @@ import {
 } from '@eclipse-sirius/sirius-components-diagrams';
 import {
   GQLOmniboxCommand,
+  OmniboxCommandComponentProps,
   OmniboxCommandOverrideContribution,
   omniboxCommandOverrideContributionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-omnibox';
@@ -35,16 +36,14 @@ import {
   navigationBarCenterContributionExtensionPoint,
   useCurrentProject,
 } from '@eclipse-sirius/sirius-web-application';
-import Typography from '@mui/material/Typography';
-import { Edge, Node, ReactFlowProps } from '@xyflow/react';
-import { PapayaDiagramInformationPanel } from './diagrams/PapayaDiagramInformationPanel';
-import { PapayaDiagramLegendPanel } from './diagrams/PapayaDiagramLegendPanel';
-import { PapayaComponentDiagramToolContribution } from './tools/PapayaComponentDiagramToolContribution';
-import { PapayaComponentLabelDetailToolContribution } from './tools/PapayaComponentLabelDetailToolContribution';
-import { OmniboxCommandComponentProps } from '@eclipse-sirius/sirius-components-omnibox';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import Typography from '@mui/material/Typography';
+import { Edge, Node, ReactFlowProps } from '@xyflow/react';
+import { PapayaDiagramInformationPanel } from './diagrams/PapayaDiagramInformationPanel';
+import { PapayaComponentDiagramToolContribution } from './tools/PapayaComponentDiagramToolContribution';
+import { PapayaComponentLabelDetailToolContribution } from './tools/PapayaComponentLabelDetailToolContribution';
 
 const papayaExtensionRegistry = new ExtensionRegistry();
 
@@ -83,7 +82,6 @@ const reactFlowPropsCustomizer: ReactFlowPropsCustomizer = ({
   const newChildren = (
     <>
       {children}
-      <PapayaDiagramLegendPanel />
       <PapayaDiagramInformationPanel />
     </>
   );

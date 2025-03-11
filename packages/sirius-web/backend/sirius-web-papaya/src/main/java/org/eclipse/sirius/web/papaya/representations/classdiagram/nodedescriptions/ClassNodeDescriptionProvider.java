@@ -63,7 +63,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .showIconExpression("aql:true")
                 .withHeader(true)
                 .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.IF_CHILDREN)
-                .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .borderSize(0)
                 .build();
 
@@ -75,8 +75,8 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .build();
 
         var classNodeStyle = new DiagramBuilders().newRectangularNodeStyleDescription()
-                .background(this.colorProvider.getColor(PapayaColorPaletteProvider.DEFAULT_BACKGROUND))
-                .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .background(this.colorProvider.getColor(PapayaColorPaletteProvider.BACKGROUND))
+                .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .borderSize(1)
                 .borderRadius(0)
                 .borderLineStyle(LineStyle.SOLID)
@@ -117,7 +117,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .showIconExpression("aql:false")
                 .withHeader(true)
                 .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.NEVER)
-                .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .borderSize(0)
                 .build();
 
@@ -127,8 +127,8 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .build();
 
         var constructorsNodeStyle = new DiagramBuilders().newRectangularNodeStyleDescription()
-                .background(this.colorProvider.getColor(PapayaColorPaletteProvider.DEFAULT_BACKGROUND))
-                .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .background(this.colorProvider.getColor(PapayaColorPaletteProvider.BACKGROUND))
+                .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .borderSize(1)
                 .borderRadius(0)
                 .borderLineStyle(LineStyle.SOLID)
@@ -156,7 +156,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
     private NodeDescription constructorNodeDescription() {
         var insideLabelStyle = new DiagramBuilders().newInsideLabelStyle()
                 .showIconExpression("aql:true")
-                .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .borderSize(0)
                 .build();
 
@@ -167,8 +167,8 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .build();
 
         var constructorNodeStyle = new DiagramBuilders().newIconLabelNodeStyleDescription()
-                .background(this.colorProvider.getColor(PapayaColorPaletteProvider.DEFAULT_BACKGROUND))
-                .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .background(this.colorProvider.getColor(PapayaColorPaletteProvider.BACKGROUND))
+                .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .borderSize(0)
                 .borderRadius(0)
                 .borderLineStyle(LineStyle.SOLID)
@@ -189,7 +189,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .showIconExpression("aql:false")
                 .withHeader(true)
                 .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.NEVER)
-                .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .borderSize(0)
                 .build();
 
@@ -199,8 +199,8 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .build();
 
         var attributesNodeStyle = new DiagramBuilders().newRectangularNodeStyleDescription()
-                .background(this.colorProvider.getColor(PapayaColorPaletteProvider.DEFAULT_BACKGROUND))
-                .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .background(this.colorProvider.getColor(PapayaColorPaletteProvider.BACKGROUND))
+                .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .borderSize(1)
                 .borderRadius(0)
                 .borderLineStyle(LineStyle.SOLID)
@@ -227,7 +227,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
     private NodeDescription attributeNodeDescription() {
         var insideLabelStyle = new DiagramBuilders().newInsideLabelStyle()
                 .showIconExpression("aql:true")
-                .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .borderSize(0)
                 .build();
 
@@ -238,8 +238,8 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .build();
 
         var attributeNodeStyle = new DiagramBuilders().newIconLabelNodeStyleDescription()
-                .background(this.colorProvider.getColor(PapayaColorPaletteProvider.DEFAULT_BACKGROUND))
-                .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .background(this.colorProvider.getColor(PapayaColorPaletteProvider.BACKGROUND))
+                .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .borderSize(0)
                 .borderRadius(0)
                 .borderLineStyle(LineStyle.SOLID)
@@ -260,7 +260,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .showIconExpression("aql:false")
                 .withHeader(true)
                 .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.NEVER)
-                .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .borderSize(0)
                 .build();
 
@@ -270,8 +270,8 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .build();
 
         var operationsNodeStyle = new DiagramBuilders().newRectangularNodeStyleDescription()
-                .background(this.colorProvider.getColor(PapayaColorPaletteProvider.DEFAULT_BACKGROUND))
-                .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .background(this.colorProvider.getColor(PapayaColorPaletteProvider.BACKGROUND))
+                .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .borderSize(1)
                 .borderRadius(0)
                 .borderLineStyle(LineStyle.SOLID)
@@ -298,7 +298,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
     private NodeDescription operationNodeDescription() {
         var insideLabelStyle = new DiagramBuilders().newInsideLabelStyle()
                 .showIconExpression("aql:true")
-                .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .labelColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .borderSize(0)
                 .build();
 
@@ -309,8 +309,8 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .build();
 
         var operationNodeStyle = new DiagramBuilders().newIconLabelNodeStyleDescription()
-                .background(this.colorProvider.getColor(PapayaColorPaletteProvider.DEFAULT_BACKGROUND))
-                .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .background(this.colorProvider.getColor(PapayaColorPaletteProvider.BACKGROUND))
+                .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .borderSize(0)
                 .borderRadius(0)
                 .borderLineStyle(LineStyle.SOLID)

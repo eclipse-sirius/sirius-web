@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.papaya.representations.classdiagram.ClassDiagramDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.componentdiagram.ComponentDiagramDescriptionProvider;
+import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.LifecycleDiagramDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.table.ViewTablePapayaRepresentationDescriptionProvider;
 import org.eclipse.sirius.web.papaya.services.api.IPapayaViewProvider;
 import org.springframework.stereotype.Service;
@@ -47,10 +48,12 @@ public class PapayaViewProvider implements IPapayaViewProvider {
                 .build();
 
         IColorProvider colorProvider = new DefaultColorProvider(view);
+        var lifecycleDiagramDescription = new LifecycleDiagramDescriptionProvider().create(colorProvider);
         var componentDiagramDescription = new ComponentDiagramDescriptionProvider().create(colorProvider);
         var classDiagramDescription = new ClassDiagramDescriptionProvider().create(colorProvider);
         var tableDescription = new ViewTablePapayaRepresentationDescriptionProvider().create(colorProvider);
 
+        view.getDescriptions().add(lifecycleDiagramDescription);
         view.getDescriptions().add(componentDiagramDescription);
         view.getDescriptions().add(classDiagramDescription);
         view.getDescriptions().add(tableDescription);

@@ -47,7 +47,7 @@ public class TypeContainmentEdgeDescriptionProvider implements IEdgeDescriptionP
     @Override
     public EdgeDescription create() {
         var implementsEdgeStyle = new DiagramBuilders().newEdgeStyle()
-                .color(this.colorProvider.getColor(PapayaColorPaletteProvider.PALETTE_TEXT_PRIMARY))
+                .color(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .sourceArrowStyle(ArrowStyle.INPUT_ARROW_WITH_DIAMOND)
                 .targetArrowStyle(ArrowStyle.NONE)
                 .lineStyle(LineStyle.SOLID)
