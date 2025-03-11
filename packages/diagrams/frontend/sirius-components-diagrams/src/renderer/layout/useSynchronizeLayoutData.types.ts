@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+import { HandleType, Position } from '@xyflow/react';
 import { RawDiagram } from './layout.types';
 
 export interface UseSynchronizeLayoutDataValue {
@@ -28,6 +29,14 @@ export interface GQLNodeLayoutData {
   position: GQLPosition;
   size: GQLSize;
   resizedByUser: boolean;
+  handleLayoutData: GQLHandleLayoutData[];
+}
+
+export interface GQLHandleLayoutData {
+  edgeId: string;
+  position: GQLPosition;
+  handlePosition: Position;
+  type: HandleType;
 }
 
 export interface GQLEdgeLayoutData {

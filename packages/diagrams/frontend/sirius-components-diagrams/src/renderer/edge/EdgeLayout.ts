@@ -11,9 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Position, XYPosition } from '@xyflow/react';
+import { InternalNode, Node, Position, XYPosition } from '@xyflow/react';
 import { Handle } from '@xyflow/system';
-import { BorderNodePosition } from '../DiagramRenderer.types';
+import { BorderNodePosition, NodeData } from '../DiagramRenderer.types';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
 import { getPositionAbsoluteFromNodeChange, isDescendantOf, isSiblingOrDescendantOf } from '../layout/layoutNode';
 import { borderLeftAndRight, horizontalLayoutDirectionGap, verticalLayoutDirectionGap } from '../layout/layoutParams';
@@ -27,6 +27,65 @@ import {
   NodeCenter,
 } from './EdgeLayout.types';
 
+export const DEFAULT_HANDLE_SIZE = 6;
+
+export const getNodesUpdatedWithHandles = (
+  nodes: Node<NodeData>[],
+  node: InternalNode<Node<NodeData>>,
+  edgeId: string,
+  handleId: string,
+  XYPosition: XYPosition,
+  position: Position
+): Node<NodeData>[] => {
+  if (node.height && node.width) {
+    //Take the size of the handle and its position into account
+    XYPosition = {
+      x: XYPosition.x - node.internals.positionAbsolute.x,
+      y: XYPosition.y - node.internals.positionAbsolute.y,
+    };
+
+    if (position === Position.Bottom) {
+      XYPosition = {
+        ...XYPosition,
+        y: XYPosition.y - node.height - DEFAULT_HANDLE_SIZE,
+      };
+    }
+
+    if (position === Position.Right) {
+      XYPosition = {
+        ...XYPosition,
+        x: XYPosition.x - node.width - DEFAULT_HANDLE_SIZE,
+      };
+    }
+  }
+
+  const nodeId = node.id;
+  return nodes.map((node) => {
+    if (nodeId === node.id) {
+      const handles = node.data.connectionHandles.map((handle) => {
+        if (handle.id === handleId) {
+          return {
+            ...handle,
+            edgeId,
+            XYPosition,
+            position,
+          };
+        }
+        return handle;
+      });
+
+      return {
+        ...node,
+        data: {
+          ...node.data,
+          connectionHandles: handles,
+        },
+      };
+    }
+    return node;
+  });
+};
+
 const clamp = (n: number, lower: number, upper: number) => Math.max(lower, Math.min(upper, n));
 
 export const getNearestPointInPerimeter = (
@@ -36,7 +95,7 @@ export const getNearestPointInPerimeter = (
   height: number,
   x: number,
   y: number
-): { XYpostion: XYPosition; position: Position } => {
+): { XYPosition: XYPosition; position: Position } => {
   const rectX2 = rectX + width;
   const rectY2 = rectY + height;
 
@@ -50,13 +109,13 @@ export const getNearestPointInPerimeter = (
   const m = Math.min(left, right, top, bottom);
 
   if (m === top) {
-    return { XYpostion: { x, y: rectY }, position: Position.Top };
+    return { XYPosition: { x, y: rectY }, position: Position.Top };
   } else if (m === bottom) {
-    return { XYpostion: { x, y: rectY2 }, position: Position.Bottom };
+    return { XYPosition: { x, y: rectY2 }, position: Position.Bottom };
   } else if (m === left) {
-    return { XYpostion: { x: rectX, y }, position: Position.Left };
+    return { XYPosition: { x: rectX, y }, position: Position.Left };
   } else {
-    return { XYpostion: { x: rectX2, y }, position: Position.Right };
+    return { XYPosition: { x: rectX2, y }, position: Position.Right };
   }
 };
 
@@ -70,7 +129,11 @@ export const getUpdatedConnectionHandles: GetUpdatedConnectionHandlesParameters 
 ) => {
   const sourceConnectionHandles: ConnectionHandle[] = sourceNode.data.connectionHandles.map(
     (nodeConnectionHandle: ConnectionHandle) => {
-      if (nodeConnectionHandle.id === sourceHandle && nodeConnectionHandle.type === 'source') {
+      if (
+        nodeConnectionHandle.id === sourceHandle &&
+        nodeConnectionHandle.type === 'source' &&
+        !nodeConnectionHandle.XYPosition
+      ) {
         nodeConnectionHandle.position = sourcePosition;
       }
       return nodeConnectionHandle;
@@ -79,7 +142,11 @@ export const getUpdatedConnectionHandles: GetUpdatedConnectionHandlesParameters 
 
   const targetConnectionHandles: ConnectionHandle[] = targetNode.data.connectionHandles.map(
     (nodeConnectionHandle: ConnectionHandle) => {
-      if (nodeConnectionHandle.id === targetHandle && nodeConnectionHandle.type === 'target') {
+      if (
+        nodeConnectionHandle.id === targetHandle &&
+        nodeConnectionHandle.type === 'target' &&
+        !nodeConnectionHandle.XYPosition
+      ) {
         nodeConnectionHandle.position = targetPosition;
       }
       return nodeConnectionHandle;
