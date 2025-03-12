@@ -12,12 +12,14 @@
  *******************************************************************************/
 import { RepresentationComponentProps } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
+import { RowFilter } from '../rows/filters/RowFiltersMenu.types';
+import { useTableRowFilters } from '../rows/filters/useTableRowFilters';
 import { TableContent } from '../table/TableContent';
 import { ColumnFilter } from '../table/TableContent.types';
 import { tableIdProvider } from './tableIdProvider';
-import { TableRepresentationState, TableRepresentationPagination } from './TableRepresentation.types';
+import { TableRepresentationPagination, TableRepresentationState } from './TableRepresentation.types';
 import { useTableSubscription } from './useTableSubscription';
 
 const useTableRepresentationStyles = makeStyles()((theme) => ({
@@ -45,6 +47,7 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
     globalFilter: null,
     columnFilters: null,
     expanded: [],
+    rowFilters: null,
   });
 
   const tableId = tableIdProvider(
@@ -54,9 +57,24 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
     state.size,
     state.globalFilter,
     state.columnFilters,
-    state.expanded
+    state.expanded,
+    state.rowFilters?.filter((f) => f.state).map((f) => f.id) ?? []
   );
+
   const { complete, table } = useTableSubscription(editingContextId, tableId);
+
+  const { loading, rowFilters: gqlRowFilter } = useTableRowFilters(editingContextId, representationId);
+
+  useEffect(() => {
+    if (!loading) {
+      const allFilters: RowFilter[] = gqlRowFilter.map((gqlRowFilter) => ({
+        id: gqlRowFilter.id,
+        label: gqlRowFilter.label,
+        state: gqlRowFilter.defaultState,
+      }));
+      setState((prevState) => ({ ...prevState, rowFilters: allFilters }));
+    }
+  }, [loading, gqlRowFilter]);
 
   const onPaginationChange = (cursor: string | null, direction: 'PREV' | 'NEXT', size: number) => {
     setState((prevState) => ({ ...prevState, cursor, direction, size }));
@@ -77,6 +95,13 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
       cursor: defaultPagination.cursor,
       direction: defaultPagination.direction,
       columnFilters,
+    }));
+  };
+
+  const onRowFiltersChange = (rowFilters: RowFilter[]) => {
+    setState((prevState) => ({
+      ...prevState,
+      rowFilters,
     }));
   };
 
@@ -111,6 +136,7 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
           onGlobalFilterChange={onGlobalFilterChange}
           onColumnFiltersChange={onColumnFiltersChange}
           onExpandedElementChange={onExpandedElementChange}
+          onRowFiltersChange={onRowFiltersChange}
           enableColumnVisibility
           enableColumnResizing
           enableColumnFilters
@@ -119,6 +145,7 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
           enablePagination
           enableColumnOrdering
           expandedRowIds={state.expanded}
+          rowFilters={state.rowFilters}
         />
       ) : null}
       {completeMessage}

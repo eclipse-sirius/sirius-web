@@ -50,6 +50,7 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
     private static final String GLOBAL_FILTER = "globalFilter";
     private static final String COLUMN_FILTERS = "columnFilters";
     private static final String EXPANDED_IDS = "expandedIds";
+    private static final String ACTIVE_ROW_FILTER_IDS = "activeRowFilterIds";
 
     private final IRepresentationSearchService representationSearchService;
 
@@ -109,6 +110,7 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
                         .globalFilter(this.getGlobalFilter(representationId, table))
                         .columnFilters(this.getColumnFilters(representationId, table))
                         .expanded(this.getExpandedIdsFromRepresentationId(representationId, table))
+                        .activeRowFilterIds(this.getActiveRowFilterIds(representationId))
                         .build();
 
                 IRepresentationEventProcessor tableEventProcessor = new TableEventProcessor(tableCreationParameters, this.tableEventHandlers, new TableContext(table),
@@ -117,6 +119,14 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
             }
         }
         return Optional.empty();
+    }
+
+    private List<String> getActiveRowFilterIds(String representationId) {
+        var param = this.urlParser.getParameterValues(representationId);
+        return Optional.ofNullable(param.get(ACTIVE_ROW_FILTER_IDS))
+                .map(activeFilterIdsParams -> activeFilterIdsParams.get(0))
+                .map(this.urlParser::getParameterEntries)
+                .orElse(List.of());
     }
 
     private String getTableIdFromRepresentationId(String representationId) {

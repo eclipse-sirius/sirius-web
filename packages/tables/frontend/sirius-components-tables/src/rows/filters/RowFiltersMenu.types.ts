@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA List.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,18 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { RowFilter } from '../rows/filters/RowFiltersMenu.types';
-import { ColumnFilter } from '../table/TableContent.types';
 
-export interface TableRepresentationState extends TableRepresentationPagination {
-  globalFilter: string | null;
-  columnFilters: ColumnFilter[] | null;
-  expanded: string[];
-  rowFilters: RowFilter[] | null;
+export interface RowFiltersButtonProps {
+  readOnly: boolean;
+  rowFilters: RowFilter[];
+  onRowFiltersChange: (rowFilters: RowFilter[]) => void;
 }
 
-export interface TableRepresentationPagination {
-  cursor: string | null;
-  direction: 'PREV' | 'NEXT';
-  size: number;
+export interface RowFilter {
+  id: string;
+  label: string;
+  state: boolean;
+}
+
+export interface RowFiltersMenuState {
+  anchorEl: HTMLElement | null;
 }
