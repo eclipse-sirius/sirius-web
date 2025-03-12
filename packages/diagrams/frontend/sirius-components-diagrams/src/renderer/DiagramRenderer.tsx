@@ -312,16 +312,12 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     (event: MouseEvent | React.MouseEvent<Element, MouseEvent>) => {
       if (!event.shiftKey) {
         const {
-          diagram: {
-            id,
-            metadata: { kind },
-          },
+          diagram: { id },
         } = diagramRefreshedEventPayload;
         const selection: Selection = {
           entries: [
             {
               id,
-              kind,
             },
           ],
         };
@@ -352,7 +348,6 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
           entries: [
             {
               id: element.data?.targetObjectId || '',
-              kind: element.data?.targetObjectKind || '',
             },
           ],
         };
@@ -379,7 +374,6 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
           entries: [
             {
               id: element.data?.targetObjectId || '',
-              kind: element.data?.targetObjectKind || '',
             },
           ],
         };

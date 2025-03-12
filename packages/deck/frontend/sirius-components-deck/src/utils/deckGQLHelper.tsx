@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -58,12 +58,10 @@ export const convertToTrelloDeckData = (deck: GQLDeck, selectedElementIds: strin
 
 const convertGQLCard = (card: GQLCard, selectedElementIds: string[], theme: Theme): Card => {
   let editable: boolean = false;
-  const { targetObjectId, targetObjectLabel, targetObjectKind, style, ...otherCardProps } = card;
+  const { targetObjectId, style, ...otherCardProps } = card;
   const metadata = {
     selection: {
       id: targetObjectId,
-      label: targetObjectLabel,
-      kind: targetObjectKind,
     },
   };
   if (selectedElementIds.includes(card.targetObjectId)) {

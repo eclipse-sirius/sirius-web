@@ -38,7 +38,7 @@ export const OmniboxObjectList = forwardRef(
     };
 
     const handleOnActionClick = (action: ObjectAction) => {
-      setSelection({ entries: [{ id: action.id, kind: action.kind }] });
+      setSelection({ entries: [{ id: action.id }] });
       onClose();
     };
 

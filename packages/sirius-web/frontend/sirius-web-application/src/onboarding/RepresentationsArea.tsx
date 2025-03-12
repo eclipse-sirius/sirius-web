@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,7 +55,7 @@ export const RepresentationsArea = ({ representations }: RepresentationAreaProps
                   data-testid={`onboard-open-${representation.label}`}
                   onClick={() =>
                     setSelection({
-                      entries: [{ id: representation.id, kind: representation.kind }],
+                      entries: [{ id: representation.id }],
                     })
                   }>
                   <ListItemIcon>

@@ -56,7 +56,6 @@ const createRepresentationMutation = gql`
       ... on CreateRepresentationSuccessPayload {
         representation {
           id
-          kind
           __typename
         }
       }
@@ -123,7 +122,6 @@ export const NewRepresentationModal = ({
     selectedRepresentationDescriptionId,
     representationDescriptions,
     createdRepresentationId,
-    createdRepresentationKind,
     message,
   } = context;
 
@@ -216,12 +214,11 @@ export const NewRepresentationModal = ({
         entries: [
           {
             id: createdRepresentationId,
-            kind: createdRepresentationKind,
           },
         ],
       });
     }
-  }, [createdRepresentationId, createdRepresentationKind, newRepresentationModal]);
+  }, [createdRepresentationId, newRepresentationModal]);
 
   return (
     <>

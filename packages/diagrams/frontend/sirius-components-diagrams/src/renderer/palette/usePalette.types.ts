@@ -116,7 +116,6 @@ export interface GQLWorkbenchSelection {
 
 export interface GQLWorkbenchSelectionEntry {
   id: string;
-  kind: string;
 }
 
 export interface GQLInvokeSingleClickOnDiagramElementToolVariables {

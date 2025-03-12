@@ -76,7 +76,6 @@ export const useTableColumns = (
               entries: [
                 {
                   id: row.original.targetObjectId,
-                  kind: row.original.targetObjectKind,
                 },
               ],
             };

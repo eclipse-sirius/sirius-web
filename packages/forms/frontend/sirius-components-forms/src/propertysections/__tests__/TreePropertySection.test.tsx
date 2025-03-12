@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -286,7 +286,7 @@ test('should change the selection when a selectable node is clicked', () => {
     diagnostics: [],
   };
 
-  let selection: SelectionEntry = { id: 'undefined', kind: '' };
+  let selection: SelectionEntry = { id: 'undefined' };
 
   const mocks = [];
   const { container } = render(
@@ -322,13 +322,11 @@ test('should change the selection when a selectable node is clicked', () => {
   screen.getByText('Node-1.2').click();
   expect(selection).toEqual({
     id: 'undefined',
-    kind: '',
   });
   // 1.1 is selectable => should be the new selection
   screen.getByText('Node-1.1').click();
   expect(selection).toEqual({
     id: '1.1',
-    kind: 'siriusComponents://testNode',
   });
 });
 
@@ -344,7 +342,7 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
     expandedNodesIds: ['0', '0/0'],
     diagnostics: [],
   };
-  let selection: SelectionEntry = { id: 'undefined', kind: '' };
+  let selection: SelectionEntry = { id: 'undefined' };
 
   const mocks = [];
   const { container } = render(
@@ -377,7 +375,6 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
   ]);
   expect(selection).toEqual({
     id: 'undefined',
-    kind: '',
   });
   expect(screen.getByText('Node-1.1.1')).toBeDefined();
 
@@ -389,7 +386,6 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
     await waitFor(() => {
       expect(selection).toEqual({
         id: 'undefined',
-        kind: '',
       });
       expect(screen.queryByText('Node-1.1.1')).toBeNull();
     });
@@ -403,7 +399,6 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
     await waitFor(() => {
       expect(selection).toEqual({
         id: 'undefined',
-        kind: '',
       });
       expect(screen.getByText('Node-1.1.1')).toBeDefined();
     });

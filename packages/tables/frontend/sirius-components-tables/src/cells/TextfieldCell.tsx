@@ -45,7 +45,7 @@ export const TextfieldCell = ({ editingContextId, representationId, tableId, cel
 
   const { setSelection } = useSelection();
   const onClick = () => {
-    const newSelection: Selection = { entries: [{ id: cell.targetObjectId, kind: cell.targetObjectKind }] };
+    const newSelection: Selection = { entries: [{ id: cell.targetObjectId }] };
     setSelection(newSelection);
   };
 

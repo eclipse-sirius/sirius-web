@@ -78,7 +78,7 @@ export const useExecuteOmniboxCommand = (): UseExecuteOmniboxCommandValue => {
         addMessages(executeOmniboxCommand.messages);
         if (isExecuteOmniboxCommandSuccessPayload(executeOmniboxCommand) && executeOmniboxCommand.newSelection) {
           const selection: Selection = {
-            entries: executeOmniboxCommand.newSelection.entries.map((entry) => ({ id: entry.id, kind: entry.kind })),
+            entries: executeOmniboxCommand.newSelection.entries.map((entry) => ({ id: entry.id })),
           };
           setSelection(selection);
         }

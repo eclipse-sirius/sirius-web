@@ -52,7 +52,6 @@ export interface NewRepresentationModalContext {
   representationDescriptions: GQLRepresentationDescriptionMetadata[];
   message: string | null;
   createdRepresentationId: string | null;
-  createdRepresentationKind: string | null;
 }
 
 export type ShowToastEvent = { type: 'SHOW_TOAST'; message: string };
@@ -95,7 +94,6 @@ export const newRepresentationModalMachine = Machine<
       representationDescriptions: [],
       message: null,
       createdRepresentationId: null,
-      createdRepresentationKind: null,
     },
     states: {
       toast: {
@@ -248,7 +246,6 @@ export const newRepresentationModalMachine = Machine<
         );
         return {
           createdRepresentationId: createRepresentation.representation.id,
-          createdRepresentationKind: createRepresentation.representation.kind,
         };
       }),
       setMessage: assign((_, event) => {
