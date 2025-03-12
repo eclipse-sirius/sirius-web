@@ -90,6 +90,16 @@ public class TableBuilders {
     }
 
     /**
+     * Instantiate a RowFilterDescriptionBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public RowFilterDescriptionBuilder newRowFilterDescription() {
+        return new RowFilterDescriptionBuilder();
+    }
+
+    /**
      * Instantiate a RowContextMenuEntryBuilder .
      *
      * @author BuilderGenerator
