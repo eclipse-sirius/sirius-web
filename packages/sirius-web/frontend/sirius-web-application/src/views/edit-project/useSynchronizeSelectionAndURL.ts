@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { useEffect } from 'react';
-import { generatePath, useNavigate } from 'react-router-dom';
+import { generatePath, useNavigate, useSearchParams } from 'react-router-dom';
 
 const PROJECT_ID_SEPARATOR = '@';
 
@@ -25,6 +25,7 @@ export const useSynchronizeSelectionAndURL = (
   skip: boolean
 ): void => {
   const navigate = useNavigate();
+  const [urlSearchParams] = useSearchParams();
 
   useEffect(() => {
     const projectIdToRedirect = name ? projectId + PROJECT_ID_SEPARATOR + name : projectId;
@@ -39,7 +40,14 @@ export const useSynchronizeSelectionAndURL = (
     }
 
     if (!skip && pathname) {
-      navigate(pathname);
+      if (urlSearchParams !== null && urlSearchParams.size > 0) {
+        navigate({
+          pathname: pathname,
+          search: `?${urlSearchParams}`,
+        });
+      } else {
+        navigate(pathname);
+      }
     }
-  }, [projectId, selectedRepresentationId, representationId, skip]);
+  }, [projectId, selectedRepresentationId, representationId, skip, urlSearchParams]);
 };

@@ -137,6 +137,7 @@ The implementation of the library update mechanism is generic and works on any p
 - https://github.com/eclipse-sirius/sirius-web/issues/4483 [#4483] Add row level filters in table
 
 
+
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4495[#4495] [form] Add an user indicator when executing form actions
@@ -166,7 +167,7 @@ Except for the specific case where `cause === 'refresh'` in `DiagramRenderer` (w
 - https://github.com/eclipse-sirius/sirius-web/issues/4208[#4208] [form] Improve performance of details view rendering on selection change
 - https://github.com/eclipse-sirius/sirius-web/issues/4704[#4704] [diagram] Stop zooming in when selecting an element
 - [table] Remove the old "Fork Table View Model" from the settings of the table since this menu existed even on non view based tables and a more generic menu is now available in the explorer
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4376[#4376] [sirius-web] Keep URL search params while using the project workbench
 
 
 == v2025.2.0
