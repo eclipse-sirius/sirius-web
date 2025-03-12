@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.view.table.CellWidgetDescription;
 import org.eclipse.sirius.components.view.table.ColumnDescription;
 import org.eclipse.sirius.components.view.table.RowContextMenuEntry;
 import org.eclipse.sirius.components.view.table.RowDescription;
+import org.eclipse.sirius.components.view.table.RowFilterDescription;
 import org.eclipse.sirius.components.view.table.TableDescription;
 import org.eclipse.sirius.components.view.table.TablePackage;
 
@@ -60,7 +61,7 @@ public class TableSwitch<T> extends Switch<T> {
      * Checks whether this is a switch for the given package. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param ePackage
-     *         the package in question.
+     *            the package in question.
      * @return whether this is a switch for the given package.
      * @generated
      */
@@ -150,6 +151,13 @@ public class TableSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
+            case TablePackage.ROW_FILTER_DESCRIPTION: {
+                RowFilterDescription rowFilterDescription = (RowFilterDescription) theEObject;
+                T result = this.caseRowFilterDescription(rowFilterDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
             default:
                 return this.defaultCase(theEObject);
         }
@@ -160,7 +168,7 @@ public class TableSwitch<T> extends Switch<T> {
      * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
      * @param object
-     *         the target of the switch.
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -175,7 +183,7 @@ public class TableSwitch<T> extends Switch<T> {
      * end-user-doc -->
      *
      * @param object
-     *         the target of the switch.
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Column Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -190,7 +198,7 @@ public class TableSwitch<T> extends Switch<T> {
      * -->
      *
      * @param object
-     *         the target of the switch.
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Row Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -205,7 +213,7 @@ public class TableSwitch<T> extends Switch<T> {
      * -->
      *
      * @param object
-     *         the target of the switch.
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Cell Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -220,7 +228,7 @@ public class TableSwitch<T> extends Switch<T> {
      * end-user-doc -->
      *
      * @param object
-     *         the target of the switch.
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Cell Widget Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -235,7 +243,7 @@ public class TableSwitch<T> extends Switch<T> {
      * <!-- end-user-doc -->
      *
      * @param object
-     *         the target of the switch.
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Cell Textfield Widget Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -250,7 +258,7 @@ public class TableSwitch<T> extends Switch<T> {
      * end-user-doc -->
      *
      * @param object
-     *         the target of the switch.
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Cell Label Widget Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -265,7 +273,7 @@ public class TableSwitch<T> extends Switch<T> {
      * end-user-doc -->
      *
      * @param object
-     *         the target of the switch.
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Cell Textarea Widget Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -275,12 +283,27 @@ public class TableSwitch<T> extends Switch<T> {
     }
 
     /**
+     * Returns the result of interpreting the object as an instance of '<em>Row Filter Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Row Filter Description</em>'.
+     * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     */
+    public T caseRowFilterDescription(RowFilterDescription object) {
+        return null;
+    }
+
+    /**
      * Returns the result of interpreting the object as an instance of '<em>Row Context Menu Entry</em>'. <!--
      * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
      * end-user-doc -->
      *
      * @param object
-     *         the target of the switch.
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Row Context Menu Entry</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -295,7 +318,7 @@ public class TableSwitch<T> extends Switch<T> {
      * end-user-doc -->
      *
      * @param object
-     *         the target of the switch.
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Representation Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -310,7 +333,7 @@ public class TableSwitch<T> extends Switch<T> {
      * anyway. <!-- end-user-doc -->
      *
      * @param object
-     *         the target of the switch.
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject)

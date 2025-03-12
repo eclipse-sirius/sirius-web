@@ -139,6 +139,18 @@ public class TableDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for RowFilters.
+     *
+     * @generated
+     */
+    public TableDescriptionBuilder rowFilters(org.eclipse.sirius.components.view.table.RowFilterDescription ... values) {
+        for (org.eclipse.sirius.components.view.table.RowFilterDescription value : values) {
+            this.getTableDescription().getRowFilters().add(value);
+        }
+        return this;
+    }
+
 
 }
 

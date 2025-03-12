@@ -12,6 +12,8 @@
         eType="#//CellDescription" containment="true" eKeys="#//CellDescription/name"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="enableSubRows" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rowFilters" upperBound="-1"
+        eType="#//RowFilterDescription" containment="true" eKeys="#//RowFilterDescription/id"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ColumnDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"/>
@@ -99,5 +101,12 @@
   <eClassifiers xsi:type="ecore:EClass" name="CellTextareaWidgetDescription" eSuperTypes="#//CellWidgetDescription">
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Operation"
         containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RowFilterDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" lowerBound="1" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="initialStateExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
+        defaultValueLiteral=""/>
   </eClassifiers>
 </ecore:EPackage>

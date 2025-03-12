@@ -31,6 +31,7 @@ public class TableRenderer {
     public static final String GLOBAL_FILTER_DATA = "globalFilterData";
     public static final String COLUMN_FILTERS = "columnFilters";
     public static final String EXPANDED_IDS = "expandedIds";
+    public static final String ACTIVE_ROW_FILTER_IDS = "activeRowFilterIds";
 
     private final BaseRenderer baseRenderer;
 

@@ -153,13 +153,22 @@ public interface TablePackage extends EPackage {
     int TABLE_DESCRIPTION__ENABLE_SUB_ROWS = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
+     * The feature id for the '<em><b>Row Filters</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TABLE_DESCRIPTION__ROW_FILTERS = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 5;
+
+    /**
      * The number of structural features of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int TABLE_DESCRIPTION_FEATURE_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 5;
+    int TABLE_DESCRIPTION_FEATURE_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 6;
 
     /**
      * The number of operations of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -665,14 +674,6 @@ public interface TablePackage extends EPackage {
      * @ordered
      */
     int CELL_TEXTAREA_WIDGET_DESCRIPTION__BODY = CELL_WIDGET_DESCRIPTION_FEATURE_COUNT;
-
-    /**
-     * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    TablePackage eINSTANCE = org.eclipse.sirius.components.view.table.impl.TablePackageImpl.init();
-
     /**
      * The number of structural features of the '<em>Cell Textarea Widget Description</em>' class. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
@@ -681,7 +682,6 @@ public interface TablePackage extends EPackage {
      * @ordered
      */
     int CELL_TEXTAREA_WIDGET_DESCRIPTION_FEATURE_COUNT = CELL_WIDGET_DESCRIPTION_FEATURE_COUNT + 1;
-
     /**
      * The number of operations of the '<em>Cell Textarea Widget Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -690,6 +690,61 @@ public interface TablePackage extends EPackage {
      * @ordered
      */
     int CELL_TEXTAREA_WIDGET_DESCRIPTION_OPERATION_COUNT = CELL_WIDGET_DESCRIPTION_OPERATION_COUNT;
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.table.impl.RowFilterDescriptionImpl <em>Row
+     * Filter Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.impl.RowFilterDescriptionImpl
+     * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getRowFilterDescription()
+     */
+    int ROW_FILTER_DESCRIPTION = 9;
+    /**
+     * The feature id for the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ROW_FILTER_DESCRIPTION__ID = 0;
+    /**
+     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ROW_FILTER_DESCRIPTION__LABEL_EXPRESSION = 1;
+    /**
+     * The feature id for the '<em><b>Initial State Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ROW_FILTER_DESCRIPTION__INITIAL_STATE_EXPRESSION = 2;
+    /**
+     * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    TablePackage eINSTANCE = org.eclipse.sirius.components.view.table.impl.TablePackageImpl.init();
+    /**
+     * The number of structural features of the '<em>Row Filter Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ROW_FILTER_DESCRIPTION_FEATURE_COUNT = 3;
+
+    /**
+     * The number of operations of the '<em>Row Filter Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ROW_FILTER_DESCRIPTION_OPERATION_COUNT = 0;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.table.TableDescription
@@ -760,6 +815,18 @@ public interface TablePackage extends EPackage {
      * @see #getTableDescription()
      */
     EAttribute getTableDescription_EnableSubRows();
+
+    /**
+     * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.components.view.table.TableDescription#getRowFilters <em>Row Filters</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>Row Filters</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.TableDescription#getRowFilters()
+     * @see #getTableDescription()
+     */
+    EReference getTableDescription_RowFilters();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.table.ColumnDescription <em>Column
@@ -1167,6 +1234,52 @@ public interface TablePackage extends EPackage {
     EReference getCellTextareaWidgetDescription_Body();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.table.RowFilterDescription <em>Row
+     * Filter Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Row Filter Description</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.RowFilterDescription
+     */
+    EClass getRowFilterDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.table.RowFilterDescription#getId <em>Id</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Id</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.RowFilterDescription#getId()
+     * @see #getRowFilterDescription()
+     */
+    EAttribute getRowFilterDescription_Id();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.table.RowFilterDescription#getLabelExpression <em>Label
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Label Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.RowFilterDescription#getLabelExpression()
+     * @see #getRowFilterDescription()
+     */
+    EAttribute getRowFilterDescription_LabelExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.table.RowFilterDescription#getInitialStateExpression <em>Initial State
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Initial State Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.RowFilterDescription#getInitialStateExpression()
+     * @see #getRowFilterDescription()
+     */
+    EAttribute getRowFilterDescription_InitialStateExpression();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.table.RowContextMenuEntry <em>Row
      * Context Menu Entry</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1308,6 +1421,14 @@ public interface TablePackage extends EPackage {
          * @generated
          */
         EAttribute TABLE_DESCRIPTION__ENABLE_SUB_ROWS = eINSTANCE.getTableDescription_EnableSubRows();
+
+        /**
+         * The meta object literal for the '<em><b>Row Filters</b></em>' reference list feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference TABLE_DESCRIPTION__ROW_FILTERS = eINSTANCE.getTableDescription_RowFilters();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.table.impl.ColumnDescriptionImpl
@@ -1605,6 +1726,41 @@ public interface TablePackage extends EPackage {
          * @generated
          */
         EReference CELL_TEXTAREA_WIDGET_DESCRIPTION__BODY = eINSTANCE.getCellTextareaWidgetDescription_Body();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.table.impl.RowFilterDescriptionImpl <em>Row Filter
+         * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         * @see org.eclipse.sirius.components.view.table.impl.RowFilterDescriptionImpl
+         * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getRowFilterDescription()
+         */
+        EClass ROW_FILTER_DESCRIPTION = eINSTANCE.getRowFilterDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Id</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute ROW_FILTER_DESCRIPTION__ID = eINSTANCE.getRowFilterDescription_Id();
+
+        /**
+         * The meta object literal for the '<em><b>Label Expression</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute ROW_FILTER_DESCRIPTION__LABEL_EXPRESSION = eINSTANCE.getRowFilterDescription_LabelExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Initial State Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute ROW_FILTER_DESCRIPTION__INITIAL_STATE_EXPRESSION = eINSTANCE.getRowFilterDescription_InitialStateExpression();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.table.impl.RowContextMenuEntryImpl

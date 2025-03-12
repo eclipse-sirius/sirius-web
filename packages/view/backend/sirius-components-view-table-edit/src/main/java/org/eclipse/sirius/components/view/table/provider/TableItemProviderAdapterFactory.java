@@ -158,6 +158,15 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory
     protected CellTextareaWidgetDescriptionItemProvider cellTextareaWidgetDescriptionItemProvider;
 
     /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.table.RowFilterDescription} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected RowFilterDescriptionItemProvider rowFilterDescriptionItemProvider;
+
+    /**
      * This constructs an instance. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -283,7 +292,22 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory
 
     /**
      * This creates an adapter for a
-     * {@link org.eclipse.sirius.components.view.table.RowContextMenuEntry}. <!--
+     * {@link org.eclipse.sirius.components.view.table.RowFilterDescription}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createRowFilterDescriptionAdapter() {
+        if (this.rowFilterDescriptionItemProvider == null) {
+            this.rowFilterDescriptionItemProvider = new RowFilterDescriptionItemProvider(this);
+        }
+
+        return this.rowFilterDescriptionItemProvider;
+    }
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.table.RowContextMenuEntry}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -298,8 +322,7 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory
     }
 
     /**
-     * This returns the root adapter factory that contains this factory. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -443,11 +466,12 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory
             this.cellTextareaWidgetDescriptionItemProvider.dispose();
         if (this.rowContextMenuEntryItemProvider != null)
             this.rowContextMenuEntryItemProvider.dispose();
+        if (this.rowFilterDescriptionItemProvider != null)
+            this.rowFilterDescriptionItemProvider.dispose();
     }
 
     /**
-     * A child creation extender for the {@link ViewPackage}. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
+     * A child creation extender for the {@link ViewPackage}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */

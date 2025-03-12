@@ -208,6 +208,7 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
         variableManager.put(TableRenderer.PAGINATION_SIZE, this.tableCreationParameters.getCursorBasedPaginationData().size());
         variableManager.put(TableRenderer.GLOBAL_FILTER_DATA, this.tableCreationParameters.getGlobalFilter());
         variableManager.put(TableRenderer.EXPANDED_IDS, this.tableCreationParameters.getExpanded());
+        variableManager.put(TableRenderer.ACTIVE_ROW_FILTER_IDS, this.tableCreationParameters.getActiveRowFilterIds());
 
         TableComponentProps props = new TableComponentProps(
                 variableManager,

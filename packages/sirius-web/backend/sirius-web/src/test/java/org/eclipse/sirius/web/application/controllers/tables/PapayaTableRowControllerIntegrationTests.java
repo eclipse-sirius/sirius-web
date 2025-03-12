@@ -37,10 +37,12 @@ import org.eclipse.sirius.components.tables.tests.graphql.InvokeRowContextMenuEn
 import org.eclipse.sirius.components.tables.tests.graphql.ResetTableRowsHeightMutationRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.ResizeTableRowMutationRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.RowContextMenuQueryRunner;
+import org.eclipse.sirius.components.tables.tests.graphql.RowFiltersQueryRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.TableEventSubscriptionRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.papaya.representations.table.PackageTableRowContextMenuProvider;
+import org.eclipse.sirius.web.papaya.representations.table.PackageTableRowFiltersProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedTableSubscription;
@@ -87,6 +89,9 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
 
     @Autowired
     private RowContextMenuQueryRunner rowContextMenuQueryRunner;
+
+    @Autowired
+    private RowFiltersQueryRunner rowFiltersQueryRunner;
 
     @Autowired
     private TableEventSubscriptionRunner tableEventSubscriptionRunner;
@@ -258,7 +263,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
         Runnable getContextMenuActions = () -> {
             Map<String, Object> variables = Map.of(
                     "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
-                    "representationId", this.representationIdBuilder.buildTableRepresentationId(tableId.get(), null, "NEXT", 10, List.of()),
+                    "representationId", this.representationIdBuilder.buildTableRepresentationId(tableId.get(), null, "NEXT", 10, List.of(), List.of()),
                     "tableId", tableId.get(),
                     "rowId", rowId.get().toString()
             );
@@ -281,7 +286,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
     @DisplayName("Given a table with pagination in next data, when row context menu entries are queried, then the correct entries are returned")
     public void giveATableWithPaginationInNextDataWhenRowContextMenuEntriesAreQueriedThenTheCorrectEntriesAreReturned() {
         var representationId = this.representationIdBuilder.buildTableRepresentationId(PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString(),
-                PapayaIdentifiers.PAPAYA_SUCCESS_CLASS_OBJECT.toString(), "NEXT", 1, List.of());
+                PapayaIdentifiers.PAPAYA_SUCCESS_CLASS_OBJECT.toString(), "NEXT", 1, List.of(), List.of());
         var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId);
         var flux = this.tableEventSubscriptionRunner.run(tableEventInput);
 
@@ -309,7 +314,8 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
         Runnable getContextMenuActions = () -> {
             Map<String, Object> variables = Map.of(
                     "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
-                    "representationId", this.representationIdBuilder.buildTableRepresentationId(tableId.get(), PapayaIdentifiers.PAPAYA_SUCCESS_CLASS_OBJECT.toString(), "NEXT", 1, List.of()),
+                    "representationId",
+                    this.representationIdBuilder.buildTableRepresentationId(tableId.get(), PapayaIdentifiers.PAPAYA_SUCCESS_CLASS_OBJECT.toString(), "NEXT", 1, List.of(), List.of()),
                     "tableId", tableId.get(),
                     "rowId", rowId.get().toString()
             );
@@ -330,7 +336,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a table, when a row context menu entry is triggered, then the entry is correctly invoked ")
+    @DisplayName("Given a table, when a row context menu entry is triggered, then the entry is correctly invoked")
     public void giveATableWhenARowContextMenuEntryIsTriggeredThenTheEntryIsCorrectlyInvoked() {
         this.givenCommittedTransaction.commit();
 
@@ -418,7 +424,8 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
 
-        String representationId = this.representationIdBuilder.buildTableRepresentationId(tableId.get(), null, "NEXT", 10, List.of(PapayaIdentifiers.PAPAYA_FAILURE_CLASS_OBJECT.toString()));
+        String representationId = this.representationIdBuilder.buildTableRepresentationId(tableId.get(), null, "NEXT", 10, List.of(PapayaIdentifiers.PAPAYA_FAILURE_CLASS_OBJECT.toString()),
+                List.of());
         var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId);
         var expandedFlux = this.tableEventSubscriptionRunner.run(tableEventInput);
 
@@ -446,5 +453,39 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
                 .consumeNextWith(expandedTableContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a table id, when we request its row filters, then the list is returned")
+    public void givenTableIdWhenWeRequestItsRowFiltersThenTheListIsReturned() {
+        var flux = this.givenSubscriptionToTable();
+
+        var tableId = new AtomicReference<String>();
+        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
+                .filter(TableRefreshedEventPayload.class::isInstance)
+                .map(TableRefreshedEventPayload.class::cast)
+                .map(TableRefreshedEventPayload::table)
+                .ifPresentOrElse(table -> {
+                    assertThat(table).isNotNull();
+                    tableId.set(table.getId());
+                }, () -> fail(MISSING_TABLE));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialTableContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+
+        Map<String, Object> variables = Map.of(
+                "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                "representationId", PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString(),
+                "tableId", tableId.get()
+        );
+        var result = this.rowFiltersQueryRunner.run(variables);
+
+        List<String> tableFilterIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.rowFilters[*].id");
+        assertThat(tableFilterIds)
+                .isNotEmpty()
+                .anySatisfy(tableFilterId -> assertThat(tableFilterId).isEqualTo(PackageTableRowFiltersProvider.HIDE_RECORDS_ROW_FILTER_ID));
     }
 }

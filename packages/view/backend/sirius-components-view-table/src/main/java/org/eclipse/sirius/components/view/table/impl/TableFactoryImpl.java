@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.view.table.CellTextfieldWidgetDescription;
 import org.eclipse.sirius.components.view.table.ColumnDescription;
 import org.eclipse.sirius.components.view.table.RowContextMenuEntry;
 import org.eclipse.sirius.components.view.table.RowDescription;
+import org.eclipse.sirius.components.view.table.RowFilterDescription;
 import org.eclipse.sirius.components.view.table.TableDescription;
 import org.eclipse.sirius.components.view.table.TableFactory;
 import org.eclipse.sirius.components.view.table.TablePackage;
@@ -85,6 +86,8 @@ public class TableFactoryImpl extends EFactoryImpl implements TableFactory {
                 return this.createCellTextareaWidgetDescription();
             case TablePackage.ROW_CONTEXT_MENU_ENTRY:
                 return this.createRowContextMenuEntry();
+            case TablePackage.ROW_FILTER_DESCRIPTION:
+                return this.createRowFilterDescription();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -165,6 +168,17 @@ public class TableFactoryImpl extends EFactoryImpl implements TableFactory {
     public CellTextareaWidgetDescription createCellTextareaWidgetDescription() {
         CellTextareaWidgetDescriptionImpl cellTextareaWidgetDescription = new CellTextareaWidgetDescriptionImpl();
         return cellTextareaWidgetDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public RowFilterDescription createRowFilterDescription() {
+        RowFilterDescriptionImpl rowFilterDescription = new RowFilterDescriptionImpl();
+        return rowFilterDescription;
     }
 
     /**

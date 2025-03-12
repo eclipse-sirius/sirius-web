@@ -29,6 +29,7 @@ import { useTableColumnFiltering } from '../columns/useTableColumnFiltering';
 import { useTableColumnOrdering } from '../columns/useTableColumnOrdering';
 import { useTableColumnSizing } from '../columns/useTableColumnSizing';
 import { useTableColumnVisibility } from '../columns/useTableColumnVisibility';
+import { RowFiltersMenu } from '../rows/filters/RowFiltersMenu';
 import { RowAction } from '../rows/RowAction';
 import { useResetRowsMutation } from '../rows/useResetRows';
 import { CursorBasedPagination } from './CursorBasedPagination';
@@ -46,6 +47,7 @@ export const TableContent = memo(
     onGlobalFilterChange,
     onColumnFiltersChange,
     onExpandedElementChange,
+    onRowFiltersChange,
     enableColumnVisibility,
     enableColumnResizing,
     enableColumnFilters,
@@ -54,6 +56,8 @@ export const TableContent = memo(
     enablePagination,
     enableColumnOrdering,
     expandedRowIds,
+    rowFilters,
+    activeRowFilterIds,
   }: TableContentProps) => {
     const { selection } = useSelection();
     const theme: Theme = useTheme();
@@ -244,6 +248,13 @@ export const TableContent = memo(
             onClick={() => resetRowsHeight()}>
             <FormatLineSpacingIcon />
           </IconButton>
+          <RowFiltersMenu
+            data-testid="row-filters-menu-button"
+            readOnly={readOnly}
+            rowFilters={rowFilters ?? []}
+            activeRowFilterIds={activeRowFilterIds}
+            onRowFiltersChange={onRowFiltersChange}
+          />
           <MRT_ToggleFiltersButton table={table} />
           <MRT_ShowHideColumnsButton table={table} />
           <MRT_ToggleFullScreenButton table={table} />

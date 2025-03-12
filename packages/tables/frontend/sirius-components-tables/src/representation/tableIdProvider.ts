@@ -20,7 +20,8 @@ export const tableIdProvider = (
   size: number,
   globalFilter: string | null,
   columnFilters: ColumnFilter[] | null,
-  expanded: string[]
+  expanded: string[],
+  activeRowFilters: string[] | null
 ) => {
   const globalFilterParam: string = globalFilter !== null ? `&globalFilter=${encodeURIComponent(globalFilter)}` : '';
   const columnFiltersParam: string =
@@ -33,7 +34,9 @@ export const tableIdProvider = (
           .join(',')}]`
       : '';
   const expandIds: string = `&expandedIds=[${expanded.map(encodeURIComponent).join(',')}]`;
+  const activeFilterIds =
+    activeRowFilters !== null ? `&activeRowFilterIds=[${activeRowFilters.map(encodeURIComponent).join(',')}]` : '';
   return `${tableId}?cursor=${
     cursor ? encodeURIComponent(cursor) : cursor
-  }&direction=${direction}&size=${size}${globalFilterParam}${columnFiltersParam}${expandIds}`;
+  }&direction=${direction}&size=${size}${globalFilterParam}${columnFiltersParam}${activeFilterIds}${expandIds}`;
 };
