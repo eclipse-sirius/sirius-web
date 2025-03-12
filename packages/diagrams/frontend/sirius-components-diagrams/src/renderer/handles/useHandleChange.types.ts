@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,18 @@ export interface UseHandleChangeValue {
     changes: NodeChange<Node<NodeData>>[],
     nodes: Node<NodeData, DiagramNodeType>[]
   ) => Node<NodeData, DiagramNodeType>[];
+  applyResizeHandleChange: (
+    changes: NodeChange<Node<NodeData>>[],
+    nodes: Node<NodeData, DiagramNodeType>[]
+  ) => Node<NodeData, DiagramNodeType>[];
 }
+
+export type UseHandleChangeState = {
+  initialWidth: number | null;
+  initialHeight: number | null;
+  finalWidth: number | null;
+  finalHeight: number | null;
+};
 
 export type PopulateHandleIdToOtherHandNode = (
   edges: Edge<EdgeData>[],

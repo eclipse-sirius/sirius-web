@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 import {
   BorderNodePosition,
   ConnectionHandle,
+  GQHandlesLayoutData,
   GQLDiagram,
   GQLDiagramDescription,
   GQLEdge,
@@ -58,7 +59,11 @@ const toEllipseNode = (
     labelEditable,
   } = gqlNode;
 
-  const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
+  const handlesLayoutData: GQHandlesLayoutData[] = gqlDiagram.layoutData.nodeLayoutData
+    .filter((nodeLayoutData) => nodeLayoutData.id === id)
+    .flatMap((nodeLayoutData) => nodeLayoutData.handlesLayoutData);
+
+  const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges, handlesLayoutData);
   const gqlNodeLayoutData: GQLNodeLayoutData | undefined = gqlDiagram.layoutData.nodeLayoutData.find(
     (nodeLayoutData) => nodeLayoutData.id === id
   );

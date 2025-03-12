@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo and others.
+ * Copyright (c) 2023, 2025 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Handle, Position } from '@xyflow/react';
+import { Handle, Position, XYPosition } from '@xyflow/react';
 import React, { memo } from 'react';
 import { ConnectionHandlesProps } from './ConnectionHandles.types';
 
@@ -50,28 +50,58 @@ const borderHandlesStyle = (position: Position): React.CSSProperties => {
   return style;
 };
 
-const handleStyle = (position: Position, isVirtualHandle: boolean): React.CSSProperties => {
-  const style: React.CSSProperties = {
-    position: 'relative',
-    transform: 'none',
-    opacity: '0',
-    pointerEvents: 'none',
-  };
-  switch (position) {
-    case Position.Left:
-    case Position.Right:
-      style.top = 'auto';
-      break;
-    case Position.Top:
-    case Position.Bottom:
-      style.left = 'auto';
-      break;
+const handleStyle = (
+  position: Position,
+  isVirtualHandle: boolean,
+  XYPosition: XYPosition | undefined
+): React.CSSProperties => {
+  if (!!XYPosition) {
+    const style: React.CSSProperties = {
+      position: 'absolute',
+      transform: 'none',
+      opacity: '0',
+      pointerEvents: 'none',
+    };
+    switch (position) {
+      case Position.Left:
+      case Position.Top:
+        style.top = XYPosition.y;
+        style.left = XYPosition.x;
+        break;
+      case Position.Right:
+      case Position.Bottom:
+        style.top = XYPosition.y;
+        style.left = XYPosition.x;
+        break;
+    }
+    if (isVirtualHandle) {
+      style.position = 'absolute';
+      style.display = 'none';
+    }
+    return style;
+  } else {
+    const style: React.CSSProperties = {
+      position: 'relative',
+      transform: 'none',
+      opacity: '0',
+      pointerEvents: 'none',
+    };
+    switch (position) {
+      case Position.Left:
+      case Position.Right:
+        style.top = 'auto';
+        break;
+      case Position.Top:
+      case Position.Bottom:
+        style.left = 'auto';
+        break;
+    }
+    if (isVirtualHandle) {
+      style.position = 'absolute';
+      style.display = 'none';
+    }
+    return style;
   }
-  if (isVirtualHandle) {
-    style.position = 'absolute';
-    style.display = 'none';
-  }
-  return style;
 };
 
 export const ConnectionHandles = memo(({ connectionHandles }: ConnectionHandlesProps) => {
@@ -87,7 +117,7 @@ export const ConnectionHandles = memo(({ connectionHandles }: ConnectionHandlesP
               return (
                 <Handle
                   id={connectionHandle.id ?? ''}
-                  style={handleStyle(connectionHandle.position, connectionHandle.hidden)}
+                  style={handleStyle(connectionHandle.position, connectionHandle.hidden, connectionHandle.XYPosition)}
                   type={connectionHandle.type}
                   position={connectionHandle.position}
                   key={connectionHandle.id}
