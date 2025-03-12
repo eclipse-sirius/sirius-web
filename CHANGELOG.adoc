@@ -95,6 +95,12 @@ For that a new predicate `IReadOnlyObjectPredicate` has been added to figure out
 A default implementation has been provided to return `true` if the object belongs to the semantic data of a library.
 This predicate is used in Sirius Web's explorer to prevent users from deleting or renaming elements from libraries.
 This API is provisionnal for the moment and it may be moved or changed while improving the support for libraries.
+- https://github.com/eclipse-sirius/sirius-web/issues/2807[#2807] [diagram] Add another experimental version of the SVG export.
++ Made in two steps, first it does the svg export of `html-to-image`, then use the result to create our own version.
++ We made this choice to rapidly solve the different css transform that `html-to-image` does for us.
++ It requires that downstream projects contributing custom nodes add the `data-svg="${rect|image|svg|text|defs}"` attribute on each dom element that will represent a part of the node in svg.
++ If any of the default value match the need, it is possible to contribute a `IElementSVGExportHandler` thanks to the `svgExportIElementSVGExportHandlerExtensionPoint` extension point.
++ The value of `data-svg` attribute should match the value from the contributed `IElementSVGExportHandler#canHandle`
 
 === Improvements
 

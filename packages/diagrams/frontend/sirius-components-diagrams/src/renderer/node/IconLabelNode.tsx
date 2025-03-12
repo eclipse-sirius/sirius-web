@@ -60,6 +60,7 @@ export const IconLabelNode: NodeComponentsMap['iconLabelNode'] = memo(
           ...nodeStyle,
           ...dropFeedbackStyle,
         }}
+        data-svg="rect"
         onDragOver={onDragOver}
         onDrop={handleOnDrop}
         data-testid={`IconLabel - ${data?.insideLabel?.text}`}>

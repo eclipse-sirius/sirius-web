@@ -78,6 +78,7 @@ export const ListNode: NodeComponentsMap['listNode'] = memo(
             ...connectionFeedbackStyle,
             ...dropFeedbackStyle,
           }}
+          data-svg="rect"
           onDragOver={onDragOver}
           onDrop={handleOnDrop}
           data-testid={`List - ${data?.insideLabel?.text}`}>

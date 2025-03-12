@@ -142,10 +142,11 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
             ...connectionFeedbackStyle,
             ...dropFeedbackStyle,
           }}
+          data-svg="rect"
           onDragOver={onDragOver}
           onDrop={handleOnDrop}
           data-testid={`FreeForm - ${data?.targetObjectLabel}`}>
-          <div style={{ ...backgroundStyle }} />
+          <div data-svg="image" style={{ ...backgroundStyle }} />
           {data.insideLabel && <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} />}
           {selected ? (
             <DiagramElementPalette
