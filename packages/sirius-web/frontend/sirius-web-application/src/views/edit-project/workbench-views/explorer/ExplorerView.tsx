@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
-  GQLStyledString,
   Selection,
+  SelectionEntry,
   useSelection,
   WorkbenchViewComponentProps,
 } from '@eclipse-sirius/sirius-components-core';
@@ -53,10 +53,6 @@ const useStyles = makeStyles()((theme: Theme) => ({
 
 const isTreeRefreshedEventPayload = (payload: GQLTreeEventPayload): payload is GQLTreeRefreshedEventPayload =>
   payload && payload.__typename === 'TreeRefreshedEventPayload';
-
-export const getString = (styledString: GQLStyledString): string => {
-  return styledString.styledStringFragments.map((fragments) => fragments.text).join('');
-};
 
 export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewComponentProps) => {
   const { classes: styles } = useStyles();
@@ -283,14 +279,14 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
         const newSelection: Selection = { entries: selection.entries.filter((entry) => entry.id !== item.id) };
         setSelection(newSelection);
       } else {
-        const { id, label, kind } = item;
-        const newEntry = { id, label: getString(label), kind };
+        const { id } = item;
+        const newEntry: SelectionEntry = { id };
         const newSelection: Selection = { entries: [...selection.entries, newEntry] };
         setSelection(newSelection);
       }
     } else {
-      const { id, kind } = item;
-      setSelection({ entries: [{ id, kind }] });
+      const { id } = item;
+      setSelection({ entries: [{ id }] });
     }
   };
 

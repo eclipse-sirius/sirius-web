@@ -21,7 +21,7 @@ export const IconLabelCell = ({ cell }: IconLabelCellProps) => {
 
   const { setSelection } = useSelection();
   const handleClick = () => {
-    const newSelection: Selection = { entries: [{ id: cell.targetObjectId, kind: cell.targetObjectKind }] };
+    const newSelection: Selection = { entries: [{ id: cell.targetObjectId }] };
     setSelection(newSelection);
   };
 

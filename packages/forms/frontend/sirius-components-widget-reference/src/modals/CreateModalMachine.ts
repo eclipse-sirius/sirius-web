@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Selection } from '@eclipse-sirius/sirius-components-core';
+import { GQLTreeItem } from '@eclipse-sirius/sirius-components-trees';
 import { assign, Machine } from 'xstate';
 import {
   ChildCreationDescription,
@@ -63,7 +63,7 @@ export interface CreateModalContext {
   selectedChildCreationDescriptionId: string;
   creationDescriptions: ChildCreationDescription[];
   newObjectId: string | null;
-  containerSelected: Selection;
+  containerSelected: GQLTreeItem | null;
   containerId: string | null;
   containerKind: string | null;
 }
@@ -78,8 +78,8 @@ export type ChangeChildCreationDescriptionEvent = {
   childCreationDescriptionId: string;
 };
 export type ChangeContainerSelectionEvent = {
-  type: 'CHANGE_CONTAINER_SELECTION';
-  container: Selection;
+  type: 'CHANGE_CONTAINER';
+  container: GQLTreeItem;
 };
 export type ChangeContainmentModeEvent = {
   type: 'CHANGE_CONTAINMENT_MODE';
@@ -131,7 +131,7 @@ export const createModalMachine = Machine<CreateModalContext, CreateModalStateSc
       selectedChildCreationDescriptionId: '',
       creationDescriptions: [],
       newObjectId: null,
-      containerSelected: { entries: [] },
+      containerSelected: null,
       containerId: null,
       containerKind: null,
     },
@@ -145,7 +145,7 @@ export const createModalMachine = Machine<CreateModalContext, CreateModalStateSc
                 {
                   cond: 'isContainmentReference',
                   target: 'loadingChildCreationDescription',
-                  actions: 'updateContainer',
+                  actions: 'updateContainment',
                 },
                 {
                   target: 'selectContainer',
@@ -155,14 +155,14 @@ export const createModalMachine = Machine<CreateModalContext, CreateModalStateSc
           },
           selectContainer: {
             on: {
-              CHANGE_CONTAINER_SELECTION: [
+              CHANGE_CONTAINER: [
                 {
-                  actions: 'updateContainerSelection',
+                  actions: 'updateContainer',
                   cond: 'isRootContainer',
                   target: 'loadingDomains',
                 },
                 {
-                  actions: 'updateContainerSelection',
+                  actions: 'updateContainer',
                   target: 'loadingChildCreationDescription',
                 },
               ],
@@ -176,14 +176,14 @@ export const createModalMachine = Machine<CreateModalContext, CreateModalStateSc
                   actions: 'updateChildCreationDescriptions',
                 },
               ],
-              CHANGE_CONTAINER_SELECTION: [
+              CHANGE_CONTAINER: [
                 {
-                  actions: 'updateContainerSelection',
+                  actions: 'updateContainer',
                   cond: 'isRootContainer',
                   target: 'loadingDomains',
                 },
                 {
-                  actions: 'updateContainerSelection',
+                  actions: 'updateContainer',
                   target: 'loadingChildCreationDescription',
                 },
               ],
@@ -197,14 +197,14 @@ export const createModalMachine = Machine<CreateModalContext, CreateModalStateSc
                   target: 'loadingRootObjectCreationDescriptions',
                 },
               ],
-              CHANGE_CONTAINER_SELECTION: [
+              CHANGE_CONTAINER: [
                 {
-                  actions: 'updateContainerSelection',
+                  actions: 'updateContainer',
                   cond: 'isRootContainer',
                   target: 'loadingDomains',
                 },
                 {
-                  actions: 'updateContainerSelection',
+                  actions: 'updateContainer',
                   target: 'loadingChildCreationDescription',
                 },
               ],
@@ -227,14 +227,14 @@ export const createModalMachine = Machine<CreateModalContext, CreateModalStateSc
           },
           validForChild: {
             on: {
-              CHANGE_CONTAINER_SELECTION: [
+              CHANGE_CONTAINER: [
                 {
-                  actions: 'updateContainerSelection',
+                  actions: 'updateContainer',
                   cond: 'isRootContainer',
                   target: 'loadingDomains',
                 },
                 {
-                  actions: 'updateContainerSelection',
+                  actions: 'updateContainer',
                   target: 'loadingChildCreationDescription',
                 },
               ],
@@ -258,14 +258,14 @@ export const createModalMachine = Machine<CreateModalContext, CreateModalStateSc
           },
           validForRoot: {
             on: {
-              CHANGE_CONTAINER_SELECTION: [
+              CHANGE_CONTAINER: [
                 {
-                  actions: 'updateContainerSelection',
+                  actions: 'updateContainer',
                   cond: 'isRootContainer',
                   target: 'loadingDomains',
                 },
                 {
-                  actions: 'updateContainerSelection',
+                  actions: 'updateContainer',
                   target: 'loadingChildCreationDescription',
                 },
               ],
@@ -334,7 +334,7 @@ export const createModalMachine = Machine<CreateModalContext, CreateModalStateSc
       },
       isRootContainer: (_, event) => {
         const { container } = event as ChangeContainerSelectionEvent;
-        return container.entries[0]?.kind === 'siriusWeb://document';
+        return container.kind === 'siriusWeb://document';
       },
     },
     actions: {
@@ -364,19 +364,19 @@ export const createModalMachine = Machine<CreateModalContext, CreateModalStateSc
         const { childCreationDescriptionId } = event as ChangeChildCreationDescriptionEvent;
         return { selectedChildCreationDescriptionId: childCreationDescriptionId };
       }),
-      updateContainer: assign((_, event) => {
+      updateContainment: assign((_, event) => {
         const { containerKind, containerId } = event as ChangeContainmentModeEvent;
         return {
           containerId: containerId,
           containerKind: containerKind,
         };
       }),
-      updateContainerSelection: assign((_, event) => {
+      updateContainer: assign((_, event) => {
         const { container } = event as ChangeContainerSelectionEvent;
         return {
           containerSelected: container,
-          containerId: container.entries[0]?.id,
-          containerKind: container.entries[0]?.kind,
+          containerId: container.id,
+          containerKind: container.kind,
         };
       }),
       updateNewElementId: assign((_, event) => {

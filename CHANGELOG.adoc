@@ -49,6 +49,10 @@ The new GAV is `org.eclipse.sirius:org.eclipse.sirius.emfjson:2.4.0-SNAPSHOT`.
 The parent component is now responsible for this.
 With this change, the type of the data transfer provided when a tree item is dragged and dropped has changed from `{id: string, kind: string}[]` to `string[]`.
 It now only contains the identifier of the tree item.
+- https://github.com/eclipse-sirius/sirius-web/issues/4464[#4464] [core] After months of work since the removal of `SelectionEntry#label`, we have now successfully removed `SelectionEntry#kind`.
+Both properties were added to `SelectionEntry` years ago due to a leak in an abstraction used by the explorer.
+In the near future, we will start cleaning up the rest of the code by removing properties like `targetObjectKind` and `targetObjectLabel` which are now unnecessary.
+We will also remove `GQLTreeItem#kind` later.
 
 
 === Dependency update

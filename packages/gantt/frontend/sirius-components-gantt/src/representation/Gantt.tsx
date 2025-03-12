@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,9 +31,9 @@ import {
 } from '@ObeoNetwork/gantt-task-react';
 import '@ObeoNetwork/gantt-task-react/dist/style.css';
 import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { Theme, useTheme } from '@mui/material/styles';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Theme, useTheme } from '@mui/material/styles';
 import { useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { GQLGanttDateRoundingTimeUnit, SelectableTask } from '../graphql/subscription/GanttSubscription.types';
@@ -116,7 +116,6 @@ export const Gantt = ({
       entries: [
         {
           id: selectableTask.targetObjectId,
-          kind: selectableTask.targetObjectKind,
         },
       ],
     };

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,8 +16,8 @@ import { GQLFlexboxContainer, GQLPage, GQLWidget } from '@eclipse-sirius/sirius-
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
-import { makeStyles } from 'tss-react/mui';
 import React, { useEffect, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { addPageMutation, deletePageMutation, movePageMutation } from './FormDescriptionEditorEventFragment';
 import {
   GQLAddPageInput,
@@ -242,7 +242,6 @@ export const PageList = () => {
         entries: [
           {
             id: currentPage.id,
-            kind: `siriusComponents://semantic?domain=view&entity=PageDescription`,
           },
         ],
       };

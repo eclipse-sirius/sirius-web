@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,9 +14,9 @@ import { useMutation } from '@apollo/client';
 import {
   Selection,
   Toast,
+  useData,
   useDeletionConfirmationDialog,
   useSelection,
-  useData,
 } from '@eclipse-sirius/sirius-components-core';
 import {
   GQLButton,
@@ -45,8 +45,8 @@ import {
 } from '@eclipse-sirius/sirius-components-forms';
 import Tooltip from '@mui/material/Tooltip';
 import { Theme } from '@mui/material/styles';
-import { makeStyles, withStyles } from 'tss-react/mui';
 import React, { useEffect, useState } from 'react';
+import { makeStyles, withStyles } from 'tss-react/mui';
 import { BarChartWidget } from './BarChartWidget';
 import { ButtonWidget } from './ButtonWidget';
 import { CheckboxWidget } from './CheckboxWidget';
@@ -222,7 +222,6 @@ export const WidgetEntry = ({ page, container, widget, flexDirection, flexGrow }
       entries: [
         {
           id: widget.id,
-          kind: `siriusComponents://semantic?domain=view&entity=${widget.__typename}Description`,
         },
       ],
     };

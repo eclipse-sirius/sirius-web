@@ -212,8 +212,8 @@ export const ListPropertySection: PropertySectionComponent<GQLList> = ({
   }, [clickLoading, clickError, clickData]);
 
   const onSimpleClick = (item: GQLListItem) => {
-    const { id, kind } = item;
-    setSelection({ entries: [{ id, kind }] });
+    const { id } = item;
+    setSelection({ entries: [{ id }] });
     if (!readOnly && !widget.readOnly) {
       const variables: GQLClickListItemMutationVariables = {
         input: {
@@ -230,8 +230,8 @@ export const ListPropertySection: PropertySectionComponent<GQLList> = ({
     }
   };
   const onDoubleClick = (item: GQLListItem) => {
-    const { id, kind } = item;
-    setSelection({ entries: [{ id, kind }] });
+    const { id } = item;
+    setSelection({ entries: [{ id }] });
     if (!readOnly && !widget.readOnly) {
       const variables: GQLClickListItemMutationVariables = {
         input: {

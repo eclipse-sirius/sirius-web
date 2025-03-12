@@ -12,9 +12,9 @@
  *******************************************************************************/
 
 import {
-  GQLStyledString,
   RepresentationComponentProps,
   Selection,
+  SelectionEntry,
   useSelection,
 } from '@eclipse-sirius/sirius-components-core';
 import { useEffect, useState } from 'react';
@@ -24,10 +24,6 @@ import { useExpandAllTreePath } from '../views/useExpandAllTreePath';
 import { GQLGetExpandAllTreePathVariables } from '../views/useExpandAllTreePath.types';
 import { TreeRepresentationState } from './TreeRepresentation.types';
 import { useTreeSubscription } from './useTreeSubscription';
-
-export const getString = (styledString: GQLStyledString): string => {
-  return styledString.styledStringFragments.map((fragments) => fragments.text).join('');
-};
 
 export const TreeRepresentation = ({ editingContextId, representationId, readOnly }: RepresentationComponentProps) => {
   const [state, setState] = useState<TreeRepresentationState>({
@@ -96,14 +92,14 @@ export const TreeRepresentation = ({ editingContextId, representationId, readOnl
         const newSelection: Selection = { entries: selection.entries.filter((entry) => entry.id !== item.id) };
         setSelection(newSelection);
       } else {
-        const { id, label, kind } = item;
-        const newEntry = { id, label: getString(label), kind };
+        const { id } = item;
+        const newEntry: SelectionEntry = { id };
         const newSelection: Selection = { entries: [...selection.entries, newEntry] };
         setSelection(newSelection);
       }
     } else {
-      const { id, kind } = item;
-      setSelection({ entries: [{ id, kind }] });
+      const { id } = item;
+      setSelection({ entries: [{ id }] });
     }
   };
 

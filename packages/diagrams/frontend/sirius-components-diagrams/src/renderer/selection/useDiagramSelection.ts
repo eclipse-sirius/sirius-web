@@ -114,10 +114,9 @@ export const useDiagramSelection = (onShiftSelection: boolean): void => {
       );
 
       const selectionEntriesFromDiagram: SelectionEntry[] = [...nodes, ...edges].map((node) => {
-        const { targetObjectId, targetObjectKind } = node.data;
+        const { targetObjectId } = node.data;
         return {
           id: targetObjectId,
-          kind: targetObjectKind,
         };
       });
       const selectionEntriesFromWorkbench: SelectionEntry[] = selection.entries.filter((entry) =>

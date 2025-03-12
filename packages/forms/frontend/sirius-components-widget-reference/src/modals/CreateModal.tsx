@@ -373,8 +373,8 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
 
   const onTreeItemClick = (_event, item: GQLTreeItem) => {
     const changeContainerSelectionEvent: ChangeContainerSelectionEvent = {
-      type: 'CHANGE_CONTAINER_SELECTION',
-      container: { entries: [{ id: item.id, kind: item.kind }] },
+      type: 'CHANGE_CONTAINER',
+      container: item,
     };
     dispatch(changeContainerSelectionEvent);
   };
@@ -400,7 +400,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
             leafType={'container'}
             ownerKind={widget.reference.referenceKind}
             onTreeItemClick={onTreeItemClick}
-            selectedTreeItemIds={containerSelected.entries[0] ? [containerSelected.entries[0].id] : []}
+            selectedTreeItemIds={containerSelected ? [containerSelected.id] : []}
           />
         )}
         {containerKind === 'siriusWeb://document' && (
