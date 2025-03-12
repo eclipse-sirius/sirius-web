@@ -19,6 +19,7 @@
       <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference table.ecore#//TableDescription/rowDescription"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference table.ecore#//TableDescription/cellDescriptions"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//TableDescription/enableSubRows"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference table.ecore#//TableDescription/rowFilters"/>
     </genClasses>
     <genClasses ecoreClass="table.ecore#//ColumnDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//ColumnDescription/name"/>
@@ -67,6 +68,11 @@
     </genClasses>
     <genClasses ecoreClass="table.ecore#//CellTextareaWidgetDescription">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference table.ecore#//CellTextareaWidgetDescription/body"/>
+    </genClasses>
+    <genClasses ecoreClass="table.ecore#//RowFilterDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//RowFilterDescription/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//RowFilterDescription/labelExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//RowFilterDescription/initialStateExpression"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

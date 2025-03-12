@@ -42,6 +42,8 @@ import org.springframework.stereotype.Service;
 @Conditional(OnStudioTests.class)
 public class ViewTableDescriptionProvider implements IEditingContextProcessor {
 
+    public static final String HIDE_FAILURE_ROW_FILTER_ID = "hide-failure";
+
     private final TableIdProvider tableIdProvider;
 
     private final View view;
@@ -102,7 +104,8 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
                 .build();
 
         var rowDescription = new TableBuilders().newRowDescription()
-                .semanticCandidatesExpression("aql:self.eAllContents()->filter({papaya::Type | papaya::Operation | papaya::Parameter})->toPaginatedData(cursor,direction,size)")
+                .semanticCandidatesExpression(
+                        "aql:self.eAllContents()->filter({papaya::Type | papaya::Operation | papaya::Parameter})->select(t | not (activeRowFilterIds->includes('hide-failure') and (t.name = 'Failure')))->toPaginatedData(cursor,direction,size)")
                 .headerIndexLabelExpression("aql:rowIndex")
                 .headerLabelExpression("aql:self.name")
                 .contextMenuEntries(contextMenuEntry)
@@ -129,6 +132,12 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
                 .cellWidgetDescription(new TableBuilders().newCellTextareaWidgetDescription().build())
                 .build();
 
+        var hideFailureFilter = new TableBuilders().newRowFilterDescription()
+                .id(HIDE_FAILURE_ROW_FILTER_ID)
+                .labelExpression("aql:'Hide Failure elements'")
+                .initialStateExpression("aql:true")
+                .build();
+
         this.tableDescription = new TableBuilders().newTableDescription()
                 .domainType("papaya::Package")
                 .titleExpression("View Package Table")
@@ -137,6 +146,7 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
                 .cellDescriptions(nameCellDescription, descriptionCellDescription)
                 .useStripedRowsExpression("aql:false")
                 .enableSubRows(true)
+                .rowFilters(hideFailureFilter)
                 .build();
 
         return this.tableDescription;

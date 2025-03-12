@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,17 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ColumnFilter } from '../table/TableContent.types';
 
-export interface TableRepresentationState extends TableRepresentationPagination {
-  globalFilter: string | null;
-  columnFilters: ColumnFilter[] | null;
-  expanded: string[];
-  activeRowFilterIds: string[];
-}
+package org.eclipse.sirius.components.collaborative.tables.api;
 
-export interface TableRepresentationPagination {
-  cursor: string | null;
-  direction: 'PREV' | 'NEXT';
-  size: number;
+/**
+ * Filter used to hide rows in tables.
+ *
+ * @author Jerome Gout
+ */
+public record RowFilter(String id, String label, boolean defaultState) {
+
 }

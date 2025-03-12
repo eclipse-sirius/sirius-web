@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl;
 import org.eclipse.sirius.components.view.table.CellDescription;
 import org.eclipse.sirius.components.view.table.ColumnDescription;
 import org.eclipse.sirius.components.view.table.RowDescription;
+import org.eclipse.sirius.components.view.table.RowFilterDescription;
 import org.eclipse.sirius.components.view.table.TableDescription;
 import org.eclipse.sirius.components.view.table.TablePackage;
 
@@ -46,6 +47,8 @@ import org.eclipse.sirius.components.view.table.TablePackage;
  * Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.table.impl.TableDescriptionImpl#isEnableSubRows <em>Enable Sub
  * Rows</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.table.impl.TableDescriptionImpl#getRowFilters <em>Row
+ * Filters</em>}</li>
  * </ul>
  *
  * @generated
@@ -119,6 +122,16 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
      * @see #isEnableSubRows()
      */
     protected boolean enableSubRows = ENABLE_SUB_ROWS_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getRowFilters() <em>Row Filters</em>}' reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getRowFilters()
+     */
+    protected EList<RowFilterDescription> rowFilters;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -265,6 +278,19 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
      * @generated
      */
     @Override
+    public EList<RowFilterDescription> getRowFilters() {
+        if (this.rowFilters == null) {
+            this.rowFilters = new EObjectContainmentEList<>(RowFilterDescription.class, this, TablePackage.TABLE_DESCRIPTION__ROW_FILTERS);
+        }
+        return this.rowFilters;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case TablePackage.TABLE_DESCRIPTION__COLUMN_DESCRIPTIONS:
@@ -273,6 +299,8 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
                 return this.basicSetRowDescription(null, msgs);
             case TablePackage.TABLE_DESCRIPTION__CELL_DESCRIPTIONS:
                 return ((InternalEList<?>) this.getCellDescriptions()).basicRemove(otherEnd, msgs);
+            case TablePackage.TABLE_DESCRIPTION__ROW_FILTERS:
+                return ((InternalEList<?>) this.getRowFilters()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -295,6 +323,8 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
                 return this.getCellDescriptions();
             case TablePackage.TABLE_DESCRIPTION__ENABLE_SUB_ROWS:
                 return this.isEnableSubRows();
+            case TablePackage.TABLE_DESCRIPTION__ROW_FILTERS:
+                return this.getRowFilters();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -325,6 +355,10 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
             case TablePackage.TABLE_DESCRIPTION__ENABLE_SUB_ROWS:
                 this.setEnableSubRows((Boolean) newValue);
                 return;
+            case TablePackage.TABLE_DESCRIPTION__ROW_FILTERS:
+                this.getRowFilters().clear();
+                this.getRowFilters().addAll((Collection<? extends RowFilterDescription>) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -352,6 +386,9 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
             case TablePackage.TABLE_DESCRIPTION__ENABLE_SUB_ROWS:
                 this.setEnableSubRows(ENABLE_SUB_ROWS_EDEFAULT);
                 return;
+            case TablePackage.TABLE_DESCRIPTION__ROW_FILTERS:
+                this.getRowFilters().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -374,6 +411,8 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
                 return this.cellDescriptions != null && !this.cellDescriptions.isEmpty();
             case TablePackage.TABLE_DESCRIPTION__ENABLE_SUB_ROWS:
                 return this.enableSubRows != ENABLE_SUB_ROWS_EDEFAULT;
+            case TablePackage.TABLE_DESCRIPTION__ROW_FILTERS:
+                return this.rowFilters != null && !this.rowFilters.isEmpty();
         }
         return super.eIsSet(featureID);
     }

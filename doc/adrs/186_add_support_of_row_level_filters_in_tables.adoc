@@ -24,8 +24,8 @@ First, `TableDescription` model should be augmented with a new property (`rowFil
 
 * id
 * labelExpression: string (which is visible in the UI)
-* rowPreconditionExpression: boolean (if it is evaluated to `true` then the filter applies and the row is hidden from the table)
-* isInitiallyActive: boolean, if set to `true` then this filter will be added in active row filter list without any user interaction.
+* initiallyStateExpression: Aql expression to control the initial state of the filter.
+If expression evaluates to `true` then the filter will be active as soon as the table opens.
 
 The view table converter would convert these descriptions into programmatic equivalent.
 
@@ -44,6 +44,9 @@ then we need a provider interface of those filters in order to gather all filter
 [code,java]
 ----
 public interface IRowFilterProvider {
+
+    boolean canHandle(String editingContextId, TableDescription tableDescription, String representationId);
+
     List<RowFilter> get(String editingContextId, TableDescription tableDescription, String representationId);
 }
 ----
@@ -72,8 +75,8 @@ As far as the current state of filters is concerned, we only manage activated fi
 
 In the `TableComponent.render` method we would retrieve the active list of row filters found in the representation id.
 From this list we would put a new variable in the variable manager containing all active filter predicates before to retrieve the list of row semantic elements.
-This variable, `activeRowFilters` can be used inside the `LineDescription.semanticElementsProvider` provider.
-The `CursorBaseNavigationService.collect` api would be updated to handle the list of active row filter predicate as well as the default predicate for finding element inside the whole model.
+This variable, `activeRowFilterIds` can be used inside the `LineDescription.semanticElementsProvider` provider.
+This is the responsibility of the specifier (view or API) to handle the filters defined in the table when retrieving the list of row semantic elements.
 
 === Front end
 

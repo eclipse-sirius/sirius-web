@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.view.table.CellWidgetDescription;
 import org.eclipse.sirius.components.view.table.ColumnDescription;
 import org.eclipse.sirius.components.view.table.RowContextMenuEntry;
 import org.eclipse.sirius.components.view.table.RowDescription;
+import org.eclipse.sirius.components.view.table.RowFilterDescription;
 import org.eclipse.sirius.components.view.table.TableDescription;
 import org.eclipse.sirius.components.view.table.TablePackage;
 
@@ -96,6 +97,11 @@ public class TableAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
+        public Adapter caseRowFilterDescription(RowFilterDescription object) {
+            return TableAdapterFactory.this.createRowFilterDescriptionAdapter();
+        }
+
+        @Override
         public Adapter caseRepresentationDescription(RepresentationDescription object) {
             return TableAdapterFactory.this.createRepresentationDescriptionAdapter();
         }
@@ -140,7 +146,7 @@ public class TableAdapterFactory extends AdapterFactoryImpl {
      * Creates an adapter for the <code>target</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param target
-     *         the object to adapt.
+     *            the object to adapt.
      * @return the adapter for the <code>target</code>.
      * @generated
      */
@@ -258,6 +264,20 @@ public class TableAdapterFactory extends AdapterFactoryImpl {
      * @see org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription
      */
     public Adapter createCellTextareaWidgetDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.table.RowFilterDescription <em>Row Filter Description</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.RowFilterDescription
+     */
+    public Adapter createRowFilterDescriptionAdapter() {
         return null;
     }
 
