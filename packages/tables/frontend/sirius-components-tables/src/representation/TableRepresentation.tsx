@@ -12,8 +12,9 @@
  *******************************************************************************/
 import { RepresentationComponentProps, RepresentationLoadingIndicator } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
+import { useTableRowFilters } from '../rows/filters/useTableRowFilters';
 import { TableContent } from '../table/TableContent';
 import { ColumnFilter } from '../table/TableContent.types';
 import { tableIdProvider } from './tableIdProvider';
@@ -45,18 +46,27 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
     globalFilter: null,
     columnFilters: null,
     expanded: [],
+    activeRowFilterIds: [],
   });
 
-  const tableId = tableIdProvider(
+  const representationFullId = tableIdProvider(
     representationId,
     state.cursor,
     state.direction,
     state.size,
     state.globalFilter,
     state.columnFilters,
-    state.expanded
+    state.expanded,
+    state.activeRowFilterIds
   );
-  const { complete, table } = useTableSubscription(editingContextId, tableId);
+
+  const { complete, table } = useTableSubscription(editingContextId, representationFullId);
+
+  const { rowFilters, activeRowFilterIds } = useTableRowFilters(editingContextId, representationId);
+
+  useEffect(() => {
+    setState((prevState) => ({ ...prevState, activeRowFilterIds }));
+  }, [activeRowFilterIds.join('')]);
 
   const onPaginationChange = (cursor: string | null, direction: 'PREV' | 'NEXT', size: number) => {
     setState((prevState) => ({ ...prevState, cursor, direction, size }));
@@ -77,6 +87,15 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
       cursor: defaultPagination.cursor,
       direction: defaultPagination.direction,
       columnFilters,
+    }));
+  };
+
+  const onRowFiltersChange = (activeRowFilterIds: string[]) => {
+    setState((prevState) => ({
+      ...prevState,
+      cursor: defaultPagination.cursor,
+      direction: defaultPagination.direction,
+      activeRowFilterIds,
     }));
   };
 
@@ -103,13 +122,14 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
       <div data-testid={'table-representation'} className={classes.representation}>
         <TableContent
           editingContextId={editingContextId}
-          representationId={tableId}
+          representationId={representationFullId}
           table={table}
           readOnly={readOnly}
           onPaginationChange={onPaginationChange}
           onGlobalFilterChange={onGlobalFilterChange}
           onColumnFiltersChange={onColumnFiltersChange}
           onExpandedElementChange={onExpandedElementChange}
+          onRowFiltersChange={onRowFiltersChange}
           enableColumnVisibility
           enableColumnResizing
           enableColumnFilters
@@ -118,6 +138,8 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
           enablePagination
           enableColumnOrdering
           expandedRowIds={state.expanded}
+          rowFilters={rowFilters}
+          activeRowFilterIds={state.activeRowFilterIds}
         />
       </div>
     );

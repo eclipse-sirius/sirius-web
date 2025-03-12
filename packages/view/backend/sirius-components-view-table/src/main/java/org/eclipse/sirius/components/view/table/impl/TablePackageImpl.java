@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.table.CellWidgetDescription;
 import org.eclipse.sirius.components.view.table.ColumnDescription;
 import org.eclipse.sirius.components.view.table.RowContextMenuEntry;
 import org.eclipse.sirius.components.view.table.RowDescription;
+import org.eclipse.sirius.components.view.table.RowFilterDescription;
 import org.eclipse.sirius.components.view.table.TableDescription;
 import org.eclipse.sirius.components.view.table.TableFactory;
 import org.eclipse.sirius.components.view.table.TablePackage;
@@ -91,6 +92,14 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
      * @generated
      */
     private EClass cellTextareaWidgetDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass rowFilterDescriptionEClass = null;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -226,6 +235,16 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
     @Override
     public EAttribute getTableDescription_EnableSubRows() {
         return (EAttribute) this.tableDescriptionEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getTableDescription_RowFilters() {
+        return (EReference) this.tableDescriptionEClass.getEStructuralFeatures().get(5);
     }
 
     /**
@@ -584,6 +603,46 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
      * @generated
      */
     @Override
+    public EClass getRowFilterDescription() {
+        return this.rowFilterDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getRowFilterDescription_Id() {
+        return (EAttribute) this.rowFilterDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getRowFilterDescription_LabelExpression() {
+        return (EAttribute) this.rowFilterDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getRowFilterDescription_InitialStateExpression() {
+        return (EAttribute) this.rowFilterDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getRowContextMenuEntry() {
         return this.rowContextMenuEntryEClass;
     }
@@ -666,6 +725,7 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
         this.createEReference(this.tableDescriptionEClass, TABLE_DESCRIPTION__ROW_DESCRIPTION);
         this.createEReference(this.tableDescriptionEClass, TABLE_DESCRIPTION__CELL_DESCRIPTIONS);
         this.createEAttribute(this.tableDescriptionEClass, TABLE_DESCRIPTION__ENABLE_SUB_ROWS);
+        this.createEReference(this.tableDescriptionEClass, TABLE_DESCRIPTION__ROW_FILTERS);
 
         this.columnDescriptionEClass = this.createEClass(COLUMN_DESCRIPTION);
         this.createEAttribute(this.columnDescriptionEClass, COLUMN_DESCRIPTION__NAME);
@@ -715,6 +775,11 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
 
         this.cellTextareaWidgetDescriptionEClass = this.createEClass(CELL_TEXTAREA_WIDGET_DESCRIPTION);
         this.createEReference(this.cellTextareaWidgetDescriptionEClass, CELL_TEXTAREA_WIDGET_DESCRIPTION__BODY);
+
+        this.rowFilterDescriptionEClass = this.createEClass(ROW_FILTER_DESCRIPTION);
+        this.createEAttribute(this.rowFilterDescriptionEClass, ROW_FILTER_DESCRIPTION__ID);
+        this.createEAttribute(this.rowFilterDescriptionEClass, ROW_FILTER_DESCRIPTION__LABEL_EXPRESSION);
+        this.createEAttribute(this.rowFilterDescriptionEClass, ROW_FILTER_DESCRIPTION__INITIAL_STATE_EXPRESSION);
     }
 
     /**
@@ -761,6 +826,9 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
         this.getTableDescription_CellDescriptions().getEKeys().add(this.getCellDescription_Name());
         this.initEAttribute(this.getTableDescription_EnableSubRows(), this.ecorePackage.getEBoolean(), "enableSubRows", null, 1, 1, TableDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getTableDescription_RowFilters(), this.getRowFilterDescription(), null, "rowFilters", null, 0, -1, TableDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.getTableDescription_RowFilters().getEKeys().add(this.getRowFilterDescription_Id());
 
         this.initEClass(this.columnDescriptionEClass, ColumnDescription.class, "ColumnDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getColumnDescription_Name(), theViewPackage.getIdentifier(), "name", null, 0, 1, ColumnDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
@@ -843,6 +911,14 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
         this.initEClass(this.cellTextareaWidgetDescriptionEClass, CellTextareaWidgetDescription.class, "CellTextareaWidgetDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getCellTextareaWidgetDescription_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, CellTextareaWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.rowFilterDescriptionEClass, RowFilterDescription.class, "RowFilterDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getRowFilterDescription_Id(), theViewPackage.getIdentifier(), "id", null, 1, 1, RowFilterDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getRowFilterDescription_LabelExpression(), theViewPackage.getInterpretedExpression(), "labelExpression", null, 0, 1, RowFilterDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getRowFilterDescription_InitialStateExpression(), theViewPackage.getInterpretedExpression(), "initialStateExpression", "", 0, 1, RowFilterDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Create resource
         this.createResource(eNS_URI);

@@ -143,12 +143,19 @@ type TableDescription implements RepresentationDescription {
   id: ID!
   label: String!
   rowContextMenuEntries(tableId: ID!, rowId: ID!): [RowContextMenuEntry!]!
+  rowFilters(tableId: ID!): [RowFilter!]!
 }
 
 type RowContextMenuEntry {
   id: ID!
   label: String!
   iconURLs: [String!]!
+}
+
+type RowFilter {
+  id: ID!
+  label: String!
+  defaultState: Boolean!
 }
 
 extend type Mutation {

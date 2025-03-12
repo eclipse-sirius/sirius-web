@@ -26,6 +26,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.collaborative.tables.TableEventInput;
 import org.eclipse.sirius.components.collaborative.tables.TableRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.tables.dto.InvokeRowContextMenuEntryInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
@@ -34,19 +35,23 @@ import org.eclipse.sirius.components.tables.TextareaCell;
 import org.eclipse.sirius.components.tables.TextfieldCell;
 import org.eclipse.sirius.components.tables.tests.graphql.InvokeRowContextMenuEntryMutationRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.RowContextMenuQueryRunner;
+import org.eclipse.sirius.components.tables.tests.graphql.TableEventSubscriptionRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.services.tables.ViewTableDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
+import graphql.execution.DataFetcherResult;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -74,6 +79,12 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
 
     @Autowired
     private InvokeRowContextMenuEntryMutationRunner invokeRowContextMenuEntryMutationRunner;
+
+    @Autowired
+    private TableEventSubscriptionRunner tableEventSubscriptionRunner;
+
+    @Autowired
+    private RepresentationIdBuilder representationIdBuilder;
 
     @BeforeEach
     public void beforeEach() {
@@ -223,6 +234,52 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
                 .consumeNextWith(tableContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a view table description with Failure element, when hide-failure row filter is activated, then the failure row is not in table")
+    public void givenViewTableWithFailureElementWhenHideFailureRowFilterIsActivatedThenTheFailureRowNotInTable() {
+        var flux = this.givenSubscriptionToViewTableRepresentation();
+
+        AtomicReference<String> tableId = new AtomicReference<>();
+        Consumer<Object> tableContentConsumer = this.getTableSubscriptionConsumer(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getLines()).hasSize(5);
+            tableId.set(table.getId());
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(tableContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+
+        var representationId = this.representationIdBuilder.buildTableRepresentationId(tableId.get(), null, "NEXT", 1, List.of(), List.of(ViewTableDescriptionProvider.HIDE_FAILURE_ROW_FILTER_ID));
+        var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId);
+        var rowFilterFlux = this.tableEventSubscriptionRunner.run(tableEventInput);
+
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
+
+        Consumer<Object> updatedTableContentConsumer = payload -> Optional.of(payload)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData)
+                .filter(TableRefreshedEventPayload.class::isInstance)
+                .map(TableRefreshedEventPayload.class::cast)
+                .map(TableRefreshedEventPayload::table)
+                .ifPresentOrElse(table -> {
+                    assertThat(table).isNotNull();
+                    assertThat(table.getLines()).hasSize(1);
+                    assertThat(table.getLines().get(0).getHeaderLabel()).isEqualTo("Success");
+                }, () -> fail("Missing table"));
+
+        StepVerifier.create(rowFilterFlux)
+                .consumeNextWith(updatedTableContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+
     }
 
     private Consumer<Object> getTableSubscriptionConsumer(Consumer<Table> tableConsumer) {

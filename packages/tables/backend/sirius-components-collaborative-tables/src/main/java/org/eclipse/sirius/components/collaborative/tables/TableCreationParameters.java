@@ -44,6 +44,8 @@ public final class TableCreationParameters {
 
     private List<String> expanded;
 
+    private List<String> activeRowFilterIds;
+
     private TableCreationParameters() {
         // Prevent instantiation
     }
@@ -80,6 +82,10 @@ public final class TableCreationParameters {
         return this.expanded;
     }
 
+    public List<String> getActiveRowFilterIds() {
+        return this.activeRowFilterIds;
+    }
+
     public static Builder newTableCreationParameters(String id) {
         return new Builder(id);
     }
@@ -107,6 +113,8 @@ public final class TableCreationParameters {
         private List<ColumnFilter> columnFilters;
 
         private List<String> expanded;
+
+        private List<String> activeRowFilterIds;
 
         private Builder(String id) {
             this.id = id;
@@ -147,6 +155,11 @@ public final class TableCreationParameters {
             return this;
         }
 
+        public Builder activeRowFilterIds(List<String> activeRowFilterIds) {
+            this.activeRowFilterIds = Objects.requireNonNull(activeRowFilterIds);
+            return this;
+        }
+
         public TableCreationParameters build() {
             TableCreationParameters tableCreationParameters = new TableCreationParameters();
             tableCreationParameters.id = Objects.requireNonNull(this.id);
@@ -157,6 +170,7 @@ public final class TableCreationParameters {
             tableCreationParameters.globalFilter = Objects.requireNonNull(this.globalFilter);
             tableCreationParameters.columnFilters = Objects.requireNonNull(this.columnFilters);
             tableCreationParameters.expanded = Objects.requireNonNull(this.expanded);
+            tableCreationParameters.activeRowFilterIds = Objects.requireNonNull(this.activeRowFilterIds);
             return tableCreationParameters;
         }
     }

@@ -109,11 +109,10 @@ public class TableDescriptionItemProvider extends RepresentationDescriptionItemP
     }
 
     /**
-     * This specifies how to implement {@link #getChildren} and is used to deduce an
-     * appropriate feature for an {@link org.eclipse.emf.edit.command.AddCommand},
-     * {@link org.eclipse.emf.edit.command.RemoveCommand} or
-     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+     * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      */
@@ -124,6 +123,7 @@ public class TableDescriptionItemProvider extends RepresentationDescriptionItemP
             this.childrenFeatures.add(TablePackage.Literals.TABLE_DESCRIPTION__COLUMN_DESCRIPTIONS);
             this.childrenFeatures.add(TablePackage.Literals.TABLE_DESCRIPTION__ROW_DESCRIPTION);
             this.childrenFeatures.add(TablePackage.Literals.TABLE_DESCRIPTION__CELL_DESCRIPTIONS);
+            this.childrenFeatures.add(TablePackage.Literals.TABLE_DESCRIPTION__ROW_FILTERS);
         }
         return this.childrenFeatures;
     }
@@ -195,6 +195,7 @@ public class TableDescriptionItemProvider extends RepresentationDescriptionItemP
             case TablePackage.TABLE_DESCRIPTION__COLUMN_DESCRIPTIONS:
             case TablePackage.TABLE_DESCRIPTION__ROW_DESCRIPTION:
             case TablePackage.TABLE_DESCRIPTION__CELL_DESCRIPTIONS:
+            case TablePackage.TABLE_DESCRIPTION__ROW_FILTERS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -222,6 +223,9 @@ public class TableDescriptionItemProvider extends RepresentationDescriptionItemP
         cellDescription.setCellWidgetDescription(TableFactory.eINSTANCE.createCellTextfieldWidgetDescription());
         newChildDescriptors.add(
                 this.createChildParameter(TablePackage.Literals.TABLE_DESCRIPTION__CELL_DESCRIPTIONS, cellDescription));
+
+        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.TABLE_DESCRIPTION__ROW_FILTERS,
+                TableFactory.eINSTANCE.createRowFilterDescription()));
     }
 
 }

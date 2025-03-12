@@ -38,6 +38,7 @@ import org.eclipse.sirius.components.papaya.Package;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.components.papaya.Parameter;
+import org.eclipse.sirius.components.papaya.Record;
 import org.eclipse.sirius.components.papaya.Type;
 import org.eclipse.sirius.components.papaya.spec.PackageSpec;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
@@ -139,9 +140,10 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
         var globalFilter = variableManager.get(TableRenderer.GLOBAL_FILTER_DATA, String.class).orElse(null);
         List<ColumnFilter> columnFilters = variableManager.get(TableRenderer.COLUMN_FILTERS, List.class).orElse(List.of());
         List<String> expandedIds = variableManager.get(TableRenderer.EXPANDED_IDS, List.class).orElse(List.of());
+        List<String> activeRowFilterIds = variableManager.get(TableRenderer.ACTIVE_ROW_FILTER_IDS, List.class).orElse(List.of());
 
         Predicate<EObject> predicate = eObject -> {
-            boolean isValidCandidate = this.isValidType(eObject, self) && this.hasExpandedParent(eObject, expandedIds);
+            boolean isValidCandidate = this.isValidType(eObject, self) && this.hasExpandedParent(eObject, expandedIds) && this.validateFilters(eObject, activeRowFilterIds);
             if (isValidCandidate && eObject instanceof Type type) {
                 if (globalFilter != null && !globalFilter.isBlank()) {
                     isValidCandidate = type.getName() != null && type.getName().contains(globalFilter);
@@ -168,6 +170,15 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
         };
 
         return new CursorBasedNavigationServices().collect(self, cursor, direction, size, predicate);
+    }
+
+    private boolean validateFilters(EObject eObject, List<String> activeRowFilterIds) {
+        // by default element is not filtered
+        boolean isValid = true;
+        if (activeRowFilterIds.contains(PackageTableRowFiltersProvider.HIDE_RECORDS_ROW_FILTER_ID)) {
+            isValid = !(eObject instanceof Record);
+        }
+        return isValid;
     }
 
     private boolean isValidType(EObject eObject, EObject self) {

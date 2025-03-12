@@ -104,7 +104,7 @@ Semantic data can have dependencies between them, which are transitively loaded 
 For that a new predicate `IReadOnlyObjectPredicate` has been added to figure out if objects are read only.
 A default implementation has been provided to return `true` if the object belongs to the semantic data of a library.
 This predicate is used in Sirius Web's explorer to prevent users from deleting or renaming elements from libraries.
-This API is provisionnal for the moment and it may be moved or changed while improving the support for libraries.
+This API is provisional for the moment and it may be moved or changed while improving the support for libraries.
 - https://github.com/eclipse-sirius/sirius-web/issues/4509[#4509] [sirius-web] Add a command to import libraries into a studio
 The command is only present in studio projects, but the corresponding mutation can work on any project.
 Downstream applications can provide their own command to import libraries into their projects, and rely on Sirius Web's import mechanism to load libraries.
@@ -128,6 +128,7 @@ The existing update implementation assumes that the identifiers of documents con
 The implementation of the library update mechanism is generic and works on any project containing EMF resources.
 - https://github.com/eclipse-sirius/sirius-web/issues/4375[#4375] [diagram] Add support for a first version of impact analysis before tool execution.
 - https://github.com/eclipse-sirius/sirius-web/issues/4706[#4706] [diagram] The back-end now render edges that have for source or target another edge (only if this edge have for source or target a node), an edge won't be rendered if both his source and target are another edge.
+- https://github.com/eclipse-sirius/sirius-web/issues/4483 [#4483] Add row level filters in table
 
 
 === Improvements
