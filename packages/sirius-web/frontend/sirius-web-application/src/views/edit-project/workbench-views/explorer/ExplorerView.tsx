@@ -155,7 +155,7 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
     .sort()
     .join(':');
   useEffect(() => {
-    if (state.synchronizedWithSelection && state.tree?.id) {
+    if (state.synchronizedWithSelection && state.tree) {
       const variables: GQLGetTreePathVariables = {
         editingContextId,
         treeId: state.tree.id,
@@ -163,7 +163,7 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
       };
       getTreePath({ variables });
     }
-  }, [editingContextId, selectionKey, state.synchronizedWithSelection, getTreePath]);
+  }, [editingContextId, selectionKey, state.synchronizedWithSelection, state.tree, getTreePath]);
 
   useEffect(() => {
     if (treePathData && treePathData.viewer?.editingContext?.treePath) {

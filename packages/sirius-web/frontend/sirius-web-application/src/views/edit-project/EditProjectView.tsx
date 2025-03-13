@@ -15,6 +15,7 @@ import {
   RepresentationMetadata,
   Selection,
   SelectionContextProvider,
+  SelectionEntry,
   useData,
   Workbench,
 } from '@eclipse-sirius/sirius-components-core';
@@ -26,7 +27,7 @@ import {
 } from '@eclipse-sirius/sirius-components-trees';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useParams, useSearchParams } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { StateMachine } from 'xstate';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
@@ -42,6 +43,7 @@ import {
   SelectRepresentationEvent,
 } from './EditProjectViewMachine';
 import { ProjectContext } from './ProjectContext';
+import { SelectionSynchronizer } from './SelectionSynchronizer';
 import { NewDocumentModalContribution } from './TreeToolBarContributions/NewDocumentModalContribution';
 import { UploadDocumentModalContribution } from './TreeToolBarContributions/UploadDocumentModalContribution';
 import { UndoRedo } from './UndoRedo';
@@ -110,34 +112,32 @@ export const EditProjectView = () => {
 
   const { data: readOnlyPredicate } = useData(editProjectViewReadOnlyPredicateExtensionPoint);
 
+  const [urlSearchParams] = useSearchParams();
   if (value === 'loaded' && context.project && context.project.currentEditingContext) {
-    const initialSelection: Selection = {
-      entries: context.representation
-        ? [
-            {
-              id: context.representation.id,
-            },
-          ]
-        : [],
-    };
+    const urlSelectionValue: string = urlSearchParams.get('selection') ?? '';
+    const entries: SelectionEntry[] =
+      urlSelectionValue.trim().length > 0 ? urlSelectionValue.split(',').map((id) => ({ id })) : [];
+    const initialSelection: Selection = { entries };
 
     const readOnly = readOnlyPredicate(context.project);
     content = (
       <ProjectContext.Provider value={{ project: context.project }}>
         <SelectionContextProvider initialSelection={initialSelection}>
-          <OmniboxProvider editingContextId={context.project.currentEditingContext.id}>
-            <UndoRedo>
-              <EditProjectNavbar readOnly={readOnly} />
-              <TreeToolBarProvider>
-                <Workbench
-                  editingContextId={context.project.currentEditingContext.id}
-                  initialRepresentationSelected={context.representation}
-                  onRepresentationSelected={onRepresentationSelected}
-                  readOnly={readOnly}
-                />
-              </TreeToolBarProvider>
-            </UndoRedo>
-          </OmniboxProvider>
+          <SelectionSynchronizer>
+            <OmniboxProvider editingContextId={context.project.currentEditingContext.id}>
+              <UndoRedo>
+                <EditProjectNavbar readOnly={readOnly} />
+                <TreeToolBarProvider>
+                  <Workbench
+                    editingContextId={context.project.currentEditingContext.id}
+                    initialRepresentationSelected={context.representation}
+                    onRepresentationSelected={onRepresentationSelected}
+                    readOnly={readOnly}
+                  />
+                </TreeToolBarProvider>
+              </UndoRedo>
+            </OmniboxProvider>
+          </SelectionSynchronizer>
         </SelectionContextProvider>
       </ProjectContext.Provider>
     );
