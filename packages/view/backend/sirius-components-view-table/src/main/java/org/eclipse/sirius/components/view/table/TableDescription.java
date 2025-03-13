@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
  * <li>{@link org.eclipse.sirius.components.view.table.TableDescription#getCellDescriptions <em>Cell
  * Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.table.TableDescription#isEnableSubRows <em>Enable Sub Rows</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.table.TableDescription#getRowFilters <em>Row Filters</em>}</li>
  * </ul>
  *
  * @model
@@ -131,5 +132,17 @@ public interface TableDescription extends RepresentationDescription {
      * @see #isEnableSubRows()
      */
     void setEnableSubRows(boolean value);
+
+    /**
+     * Returns the value of the '<em><b>Row Filters</b></em>' reference list. The list contents are of type
+     * {@link org.eclipse.sirius.components.view.table.RowFilterDescription}. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the value of the '<em>Row Filters</em>' reference list.
+     * @model
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.TablePackage#getTableDescription_RowFilters()
+     */
+    EList<RowFilterDescription> getRowFilters();
 
 } // TableDescription

@@ -104,16 +104,23 @@ public class RepresentationIdBuilder {
         return treeId + "?expandedIds=[" + String.join(",", expandedObjectIds) + "]";
     }
 
-    public String buildTableRepresentationId(String tableId, String cursor, String direction, int size, List<String> expanded) {
+    public String buildTableRepresentationId(String tableId, String cursor, String direction, int size, List<String> expanded, List<String> activatedFilters) {
         var expandedIds = expanded.stream()
                 .map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8))
                 .toList();
+        List<String> activatedFilterIds = activatedFilters.stream()
+                .map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8))
+                .toList();
+
         return tableId + "?cursor=" +
                 cursor +
                 "&direction=" +
                 direction +
                 "&size=" +
                 size +
+                "&activeRowFilterIds=[" +
+                String.join(",", activatedFilterIds) +
+                "]" +
                 EXPANDED_IDS +
                 String.join(",", expandedIds) +
                 "]";
