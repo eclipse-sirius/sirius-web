@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,8 +55,8 @@ public class DataSourceToProcessorEdgeDescriptionProvider implements IEdgeDescri
                 .name(NAME)
                 .domainType("flow::DataFlow")
                 .semanticCandidatesExpression("aql:self.elements.eAllContents(flow::DataFlow)")
-                .targetNodesExpression("feature:target")
-                .sourceNodesExpression("feature:source")
+                .targetExpression("feature:target")
+                .sourceExpression("feature:source")
                 .isDomainBasedEdge(true)
                 .centerLabelExpression("aql:self.capacity")
                 .style(this.diagramBuilderHelper.newEdgeStyle()
@@ -77,8 +77,8 @@ public class DataSourceToProcessorEdgeDescriptionProvider implements IEdgeDescri
 
         if (optionalDataSourceToProcessorEdgeDescription.isPresent() && optionalDataSourceNodeDescription.isPresent() && optionalProcessorNodeDescription.isPresent()) {
             diagramDescription.getEdgeDescriptions().add(optionalDataSourceToProcessorEdgeDescription.get());
-            optionalDataSourceToProcessorEdgeDescription.get().getSourceNodeDescriptions().add(optionalDataSourceNodeDescription.get());
-            optionalDataSourceToProcessorEdgeDescription.get().getTargetNodeDescriptions().add(optionalProcessorNodeDescription.get());
+            optionalDataSourceToProcessorEdgeDescription.get().getSourceDescriptions().add(optionalDataSourceNodeDescription.get());
+            optionalDataSourceToProcessorEdgeDescription.get().getTargetDescriptions().add(optionalProcessorNodeDescription.get());
         }
     }
 

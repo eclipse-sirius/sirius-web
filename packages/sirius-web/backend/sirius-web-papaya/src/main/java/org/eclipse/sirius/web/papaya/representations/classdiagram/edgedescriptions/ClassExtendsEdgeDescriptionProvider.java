@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -54,8 +54,8 @@ public class ClassExtendsEdgeDescriptionProvider implements IEdgeDescriptionProv
         return new DiagramBuilders().newEdgeDescription()
                 .name(NAME)
                 .centerLabelExpression("")
-                .sourceNodesExpression("aql:self")
-                .targetNodesExpression("aql:self.extends")
+                .sourceExpression("aql:self")
+                .targetExpression("aql:self.extends")
                 .isDomainBasedEdge(false)
                 .style(extendsEdgeStyle)
                 .build();
@@ -70,8 +70,8 @@ public class ClassExtendsEdgeDescriptionProvider implements IEdgeDescriptionProv
             var classNodeDescription = optionalClassNodeDescription.get();
             var classExtendsEdgeDescription = optionalClassExtendsEdgeDescription.get();
 
-            classExtendsEdgeDescription.getSourceNodeDescriptions().add(classNodeDescription);
-            classExtendsEdgeDescription.getTargetNodeDescriptions().add(classNodeDescription);
+            classExtendsEdgeDescription.getSourceDescriptions().add(classNodeDescription);
+            classExtendsEdgeDescription.getTargetDescriptions().add(classNodeDescription);
 
             diagramDescription.getEdgeDescriptions().add(classExtendsEdgeDescription);
         }

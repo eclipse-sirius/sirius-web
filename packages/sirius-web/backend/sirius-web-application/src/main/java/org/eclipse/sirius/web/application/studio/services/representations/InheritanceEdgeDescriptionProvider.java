@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -51,7 +51,7 @@ public class InheritanceEdgeDescriptionProvider implements IEdgeDescriptionProvi
                 .newEdgeDescription()
                 .name("Inheritance")
                 .centerLabelExpression("")
-                .targetNodesExpression("aql:self.superTypes")
+                .targetExpression("aql:self.superTypes")
                 .style(this.inheritanceEdgeStyle())
                 .palette(palette)
                 .build();
@@ -108,8 +108,8 @@ public class InheritanceEdgeDescriptionProvider implements IEdgeDescriptionProvi
             var inheritanceEdgeDescription = optionalInheritanceEdgeDescription.get();
             var entityNodeDescription = optionalEntityNodeDescription.get();
 
-            inheritanceEdgeDescription.getSourceNodeDescriptions().add(entityNodeDescription);
-            inheritanceEdgeDescription.getTargetNodeDescriptions().add(entityNodeDescription);
+            inheritanceEdgeDescription.getSourceDescriptions().add(entityNodeDescription);
+            inheritanceEdgeDescription.getTargetDescriptions().add(entityNodeDescription);
 
             diagramDescription.getEdgeDescriptions().add(inheritanceEdgeDescription);
         }

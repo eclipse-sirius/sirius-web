@@ -947,7 +947,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getEdgeDescription_SourceNodeDescriptions() {
+    public EReference getEdgeDescription_SourceDescriptions() {
         return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(5);
     }
 
@@ -957,7 +957,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getEdgeDescription_TargetNodeDescriptions() {
+    public EReference getEdgeDescription_TargetDescriptions() {
         return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(6);
     }
 
@@ -967,7 +967,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EAttribute getEdgeDescription_SourceNodesExpression() {
+    public EAttribute getEdgeDescription_SourceExpression() {
         return (EAttribute) this.edgeDescriptionEClass.getEStructuralFeatures().get(7);
     }
 
@@ -977,7 +977,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EAttribute getEdgeDescription_TargetNodesExpression() {
+    public EAttribute getEdgeDescription_TargetExpression() {
         return (EAttribute) this.edgeDescriptionEClass.getEStructuralFeatures().get(8);
     }
 
@@ -2493,10 +2493,10 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEAttribute(this.edgeDescriptionEClass, EDGE_DESCRIPTION__END_LABEL_EXPRESSION);
         this.createEAttribute(this.edgeDescriptionEClass, EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE);
         this.createEReference(this.edgeDescriptionEClass, EDGE_DESCRIPTION__PALETTE);
-        this.createEReference(this.edgeDescriptionEClass, EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS);
-        this.createEReference(this.edgeDescriptionEClass, EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS);
-        this.createEAttribute(this.edgeDescriptionEClass, EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION);
-        this.createEAttribute(this.edgeDescriptionEClass, EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION);
+        this.createEReference(this.edgeDescriptionEClass, EDGE_DESCRIPTION__SOURCE_DESCRIPTIONS);
+        this.createEReference(this.edgeDescriptionEClass, EDGE_DESCRIPTION__TARGET_DESCRIPTIONS);
+        this.createEAttribute(this.edgeDescriptionEClass, EDGE_DESCRIPTION__SOURCE_EXPRESSION);
+        this.createEAttribute(this.edgeDescriptionEClass, EDGE_DESCRIPTION__TARGET_EXPRESSION);
         this.createEReference(this.edgeDescriptionEClass, EDGE_DESCRIPTION__STYLE);
         this.createEReference(this.edgeDescriptionEClass, EDGE_DESCRIPTION__CONDITIONAL_STYLES);
 
@@ -2829,14 +2829,14 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getEdgeDescription_Palette(), this.getEdgePalette(), null, "palette", null, 0, 1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getEdgeDescription_SourceNodeDescriptions(), this.getNodeDescription(), null, "sourceNodeDescriptions", null, 1, -1, EdgeDescription.class, !IS_TRANSIENT,
+        this.initEReference(this.getEdgeDescription_SourceDescriptions(), this.getDiagramElementDescription(), null, "sourceDescriptions", null, 1, -1, EdgeDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getEdgeDescription_TargetNodeDescriptions(), this.getNodeDescription(), null, "targetNodeDescriptions", null, 1, -1, EdgeDescription.class, !IS_TRANSIENT,
+        this.initEReference(this.getEdgeDescription_TargetDescriptions(), this.getDiagramElementDescription(), null, "targetDescriptions", null, 1, -1, EdgeDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getEdgeDescription_SourceNodesExpression(), theViewPackage.getInterpretedExpression(), "sourceNodesExpression", null, 0, 1, EdgeDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getEdgeDescription_TargetNodesExpression(), theViewPackage.getInterpretedExpression(), "targetNodesExpression", "aql:self.eCrossReferences()", 0, 1,
-                EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getEdgeDescription_SourceExpression(), theViewPackage.getInterpretedExpression(), "sourceExpression", null, 0, 1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getEdgeDescription_TargetExpression(), theViewPackage.getInterpretedExpression(), "targetExpression", "aql:self.eCrossReferences()", 0, 1, EdgeDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getEdgeDescription_Style(), this.getEdgeStyle(), null, "style", null, 0, 1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getEdgeDescription_ConditionalStyles(), this.getConditionalEdgeStyle(), null, "conditionalStyles", null, 0, -1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE,

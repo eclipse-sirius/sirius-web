@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -64,8 +64,8 @@ public class ComponentDependencyEdgeDescriptionProvider implements IEdgeDescript
         return new DiagramBuilders().newEdgeDescription()
                 .name(NAME)
                 .centerLabelExpression("")
-                .sourceNodesExpression("aql:self")
-                .targetNodesExpression("aql:self.dependencies")
+                .sourceExpression("aql:self")
+                .targetExpression("aql:self.dependencies")
                 .isDomainBasedEdge(false)
                 .style(dependencyEdgeStyle)
                 .conditionalStyles(duplicateDependencyEdgeStyle)
@@ -81,8 +81,8 @@ public class ComponentDependencyEdgeDescriptionProvider implements IEdgeDescript
             var componentNodeDescription = optionalComponentNodeDescription.get();
             var componentDependencyEdgeDescription = optionalComponentDependencyEdgeDescription.get();
 
-            componentDependencyEdgeDescription.getSourceNodeDescriptions().add(componentNodeDescription);
-            componentDependencyEdgeDescription.getTargetNodeDescriptions().add(componentNodeDescription);
+            componentDependencyEdgeDescription.getSourceDescriptions().add(componentNodeDescription);
+            componentDependencyEdgeDescription.getTargetDescriptions().add(componentNodeDescription);
 
             diagramDescription.getEdgeDescriptions().add(componentDependencyEdgeDescription);
         }

@@ -570,40 +570,40 @@ public interface DiagramPackage extends EPackage {
     int EDGE_DESCRIPTION__PALETTE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
-     * The feature id for the '<em><b>Source Node Descriptions</b></em>' reference list. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Source Descriptions</b></em>' reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
+    int EDGE_DESCRIPTION__SOURCE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
-     * The feature id for the '<em><b>Target Node Descriptions</b></em>' reference list. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Target Descriptions</b></em>' reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 6;
+    int EDGE_DESCRIPTION__TARGET_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 6;
 
     /**
-     * The feature id for the '<em><b>Source Nodes Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * The feature id for the '<em><b>Source Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 7;
+    int EDGE_DESCRIPTION__SOURCE_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 7;
 
     /**
-     * The feature id for the '<em><b>Target Nodes Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * The feature id for the '<em><b>Target Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 8;
+    int EDGE_DESCRIPTION__TARGET_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 8;
 
     /**
      * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
@@ -4160,51 +4160,51 @@ public interface DiagramPackage extends EPackage {
 
     /**
      * Returns the meta object for the reference list
-     * '{@link org.eclipse.sirius.components.view.diagram.EdgeDescription#getSourceNodeDescriptions <em>Source Node
+     * '{@link org.eclipse.sirius.components.view.diagram.EdgeDescription#getSourceDescriptions <em>Source
      * Descriptions</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the reference list '<em>Source Node Descriptions</em>'.
-     * @see org.eclipse.sirius.components.view.diagram.EdgeDescription#getSourceNodeDescriptions()
+     * @return the meta object for the reference list '<em>Source Descriptions</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.EdgeDescription#getSourceDescriptions()
      * @see #getEdgeDescription()
      * @generated
      */
-    EReference getEdgeDescription_SourceNodeDescriptions();
+    EReference getEdgeDescription_SourceDescriptions();
 
     /**
      * Returns the meta object for the reference list
-     * '{@link org.eclipse.sirius.components.view.diagram.EdgeDescription#getTargetNodeDescriptions <em>Target Node
+     * '{@link org.eclipse.sirius.components.view.diagram.EdgeDescription#getTargetDescriptions <em>Target
      * Descriptions</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the reference list '<em>Target Node Descriptions</em>'.
-     * @see org.eclipse.sirius.components.view.diagram.EdgeDescription#getTargetNodeDescriptions()
+     * @return the meta object for the reference list '<em>Target Descriptions</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.EdgeDescription#getTargetDescriptions()
      * @see #getEdgeDescription()
      * @generated
      */
-    EReference getEdgeDescription_TargetNodeDescriptions();
+    EReference getEdgeDescription_TargetDescriptions();
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.diagram.EdgeDescription#getSourceNodesExpression <em>Source Nodes
+     * '{@link org.eclipse.sirius.components.view.diagram.EdgeDescription#getSourceExpression <em>Source
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the attribute '<em>Source Nodes Expression</em>'.
-     * @see org.eclipse.sirius.components.view.diagram.EdgeDescription#getSourceNodesExpression()
+     * @return the meta object for the attribute '<em>Source Expression</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.EdgeDescription#getSourceExpression()
      * @see #getEdgeDescription()
      * @generated
      */
-    EAttribute getEdgeDescription_SourceNodesExpression();
+    EAttribute getEdgeDescription_SourceExpression();
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.diagram.EdgeDescription#getTargetNodesExpression <em>Target Nodes
+     * '{@link org.eclipse.sirius.components.view.diagram.EdgeDescription#getTargetExpression <em>Target
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the attribute '<em>Target Nodes Expression</em>'.
-     * @see org.eclipse.sirius.components.view.diagram.EdgeDescription#getTargetNodesExpression()
+     * @return the meta object for the attribute '<em>Target Expression</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.EdgeDescription#getTargetExpression()
      * @see #getEdgeDescription()
      * @generated
      */
-    EAttribute getEdgeDescription_TargetNodesExpression();
+    EAttribute getEdgeDescription_TargetExpression();
 
     /**
      * Returns the meta object for the containment reference
@@ -6171,36 +6171,36 @@ public interface DiagramPackage extends EPackage {
         EReference EDGE_DESCRIPTION__PALETTE = eINSTANCE.getEdgeDescription_Palette();
 
         /**
-         * The meta object literal for the '<em><b>Source Node Descriptions</b></em>' reference list feature. <!--
+         * The meta object literal for the '<em><b>Source Descriptions</b></em>' reference list feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
          */
-        EReference EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS = eINSTANCE.getEdgeDescription_SourceNodeDescriptions();
+        EReference EDGE_DESCRIPTION__SOURCE_DESCRIPTIONS = eINSTANCE.getEdgeDescription_SourceDescriptions();
 
         /**
-         * The meta object literal for the '<em><b>Target Node Descriptions</b></em>' reference list feature. <!--
+         * The meta object literal for the '<em><b>Target Descriptions</b></em>' reference list feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
          */
-        EReference EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS = eINSTANCE.getEdgeDescription_TargetNodeDescriptions();
+        EReference EDGE_DESCRIPTION__TARGET_DESCRIPTIONS = eINSTANCE.getEdgeDescription_TargetDescriptions();
 
         /**
-         * The meta object literal for the '<em><b>Source Nodes Expression</b></em>' attribute feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the '<em><b>Source Expression</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
          *
          * @generated
          */
-        EAttribute EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION = eINSTANCE.getEdgeDescription_SourceNodesExpression();
+        EAttribute EDGE_DESCRIPTION__SOURCE_EXPRESSION = eINSTANCE.getEdgeDescription_SourceExpression();
 
         /**
-         * The meta object literal for the '<em><b>Target Nodes Expression</b></em>' attribute feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the '<em><b>Target Expression</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
          *
          * @generated
          */
-        EAttribute EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION = eINSTANCE.getEdgeDescription_TargetNodesExpression();
+        EAttribute EDGE_DESCRIPTION__TARGET_EXPRESSION = eINSTANCE.getEdgeDescription_TargetExpression();
 
         /**
          * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc

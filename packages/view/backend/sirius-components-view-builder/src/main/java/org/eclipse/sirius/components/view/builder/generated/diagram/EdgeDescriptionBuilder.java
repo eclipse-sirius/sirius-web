@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -133,47 +133,49 @@ public class EdgeDescriptionBuilder {
         return this;
     }
     /**
-     * Setter for SourceNodeDescriptions.
+     * Setter for SourceDescriptions.
      *
      * @generated
      */
-    public EdgeDescriptionBuilder sourceNodeDescriptions(org.eclipse.sirius.components.view.diagram.NodeDescription ... values) {
-        for (org.eclipse.sirius.components.view.diagram.NodeDescription value : values) {
-            this.getEdgeDescription().getSourceNodeDescriptions().add(value);
+    public EdgeDescriptionBuilder sourceDescriptions(org.eclipse.sirius.components.view.diagram.DiagramElementDescription ... values) {
+        for (org.eclipse.sirius.components.view.diagram.DiagramElementDescription value : values) {
+            this.getEdgeDescription().getSourceDescriptions().add(value);
         }
         return this;
     }
 
     /**
-     * Setter for TargetNodeDescriptions.
+     * Setter for TargetDescriptions.
      *
      * @generated
      */
-    public EdgeDescriptionBuilder targetNodeDescriptions(org.eclipse.sirius.components.view.diagram.NodeDescription ... values) {
-        for (org.eclipse.sirius.components.view.diagram.NodeDescription value : values) {
-            this.getEdgeDescription().getTargetNodeDescriptions().add(value);
+    public EdgeDescriptionBuilder targetDescriptions(org.eclipse.sirius.components.view.diagram.DiagramElementDescription ... values) {
+        for (org.eclipse.sirius.components.view.diagram.DiagramElementDescription value : values) {
+            this.getEdgeDescription().getTargetDescriptions().add(value);
         }
         return this;
     }
 
     /**
-     * Setter for SourceNodesExpression.
+     * Setter for SourceExpression.
      *
      * @generated
      */
-    public EdgeDescriptionBuilder sourceNodesExpression(java.lang.String value) {
-        this.getEdgeDescription().setSourceNodesExpression(value);
+    public EdgeDescriptionBuilder sourceExpression(java.lang.String value) {
+        this.getEdgeDescription().setSourceExpression(value);
         return this;
     }
+
     /**
-     * Setter for TargetNodesExpression.
+     * Setter for TargetExpression.
      *
      * @generated
      */
-    public EdgeDescriptionBuilder targetNodesExpression(java.lang.String value) {
-        this.getEdgeDescription().setTargetNodesExpression(value);
+    public EdgeDescriptionBuilder targetExpression(java.lang.String value) {
+        this.getEdgeDescription().setTargetExpression(value);
         return this;
     }
+
     /**
      * Setter for Style.
      *
