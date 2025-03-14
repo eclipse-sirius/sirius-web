@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -136,10 +136,10 @@ public class DropNodeDiagramDescriptionProvider implements IEditingContextProces
 
         var edgeDescription = new DiagramBuilders().newEdgeDescription()
                 .centerLabelExpression("aql:semanticEdgeSource.name + ' -> ' + semanticEdgeTarget.name")
-                .sourceNodesExpression("aql:self")
-                .targetNodesExpression("aql:self.dependencies")
-                .sourceNodeDescriptions(nodeDescription)
-                .targetNodeDescriptions(nodeDescription)
+                .sourceExpression("aql:self")
+                .targetExpression("aql:self.dependencies")
+                .sourceDescriptions(nodeDescription)
+                .targetDescriptions(nodeDescription)
                 .palette(edgePalette)
                 .style(edgeStyle)
                 .build();

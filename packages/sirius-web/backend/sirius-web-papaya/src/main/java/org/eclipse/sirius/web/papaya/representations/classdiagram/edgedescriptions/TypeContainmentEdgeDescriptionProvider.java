@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -58,8 +58,8 @@ public class TypeContainmentEdgeDescriptionProvider implements IEdgeDescriptionP
         return new DiagramBuilders().newEdgeDescription()
                 .name(NAME)
                 .centerLabelExpression("")
-                .sourceNodesExpression("aql:self")
-                .targetNodesExpression("aql:self.types")
+                .sourceExpression("aql:self")
+                .targetExpression("aql:self.types")
                 .isDomainBasedEdge(false)
                 .style(implementsEdgeStyle)
                 .build();
@@ -87,8 +87,8 @@ public class TypeContainmentEdgeDescriptionProvider implements IEdgeDescriptionP
 
             var typeContainmentEdgeDescription = optionalTypeContainmentEdgeDescription.get();
 
-            typeContainmentEdgeDescription.getSourceNodeDescriptions().addAll(List.of(classNodeDescription, interfaceNodeDescription, enumNodeDescription, recordNodeDescription));
-            typeContainmentEdgeDescription.getTargetNodeDescriptions().addAll(List.of(classNodeDescription, interfaceNodeDescription, enumNodeDescription, recordNodeDescription));
+            typeContainmentEdgeDescription.getSourceDescriptions().addAll(List.of(classNodeDescription, interfaceNodeDescription, enumNodeDescription, recordNodeDescription));
+            typeContainmentEdgeDescription.getTargetDescriptions().addAll(List.of(classNodeDescription, interfaceNodeDescription, enumNodeDescription, recordNodeDescription));
 
             diagramDescription.getEdgeDescriptions().add(typeContainmentEdgeDescription);
         }

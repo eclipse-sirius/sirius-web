@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,8 +55,8 @@ public class RecordImplementsEdgeDescriptionProvider implements IEdgeDescription
         return new DiagramBuilders().newEdgeDescription()
                 .name(NAME)
                 .centerLabelExpression("")
-                .sourceNodesExpression("aql:self")
-                .targetNodesExpression("aql:self.implements")
+                .sourceExpression("aql:self")
+                .targetExpression("aql:self.implements")
                 .isDomainBasedEdge(false)
                 .style(implementsEdgeStyle)
                 .build();
@@ -73,8 +73,8 @@ public class RecordImplementsEdgeDescriptionProvider implements IEdgeDescription
             var interfaceNodeDescription = optionalInterfaceNodeDescription.get();
             var recordImplementsEdgeDescription = optionalRecordImplementsEdgeDescription.get();
 
-            recordImplementsEdgeDescription.getSourceNodeDescriptions().add(recordNodeDescription);
-            recordImplementsEdgeDescription.getTargetNodeDescriptions().add(interfaceNodeDescription);
+            recordImplementsEdgeDescription.getSourceDescriptions().add(recordNodeDescription);
+            recordImplementsEdgeDescription.getTargetDescriptions().add(interfaceNodeDescription);
 
             diagramDescription.getEdgeDescriptions().add(recordImplementsEdgeDescription);
         }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -146,10 +146,10 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
         linkedToEdge.setName("LinkedTo Edge");
         linkedToEdge.setSemanticCandidatesExpression("");
         linkedToEdge.setCenterLabelExpression("");
-        linkedToEdge.getSourceNodeDescriptions().add(entity1Node);
-        linkedToEdge.setSourceNodesExpression("aql:self");
-        linkedToEdge.getTargetNodeDescriptions().add(entity2Node);
-        linkedToEdge.setTargetNodesExpression("aql:self.linkedTo");
+        linkedToEdge.getSourceDescriptions().add(entity1Node);
+        linkedToEdge.setSourceExpression("aql:self");
+        linkedToEdge.getTargetDescriptions().add(entity2Node);
+        linkedToEdge.setTargetExpression("aql:self.linkedTo");
         linkedToEdge.setPalette(defaultToolsFactory.createDefaultEdgePalette());
         viewDiagramDescription.getEdgeDescriptions().add(linkedToEdge);
 

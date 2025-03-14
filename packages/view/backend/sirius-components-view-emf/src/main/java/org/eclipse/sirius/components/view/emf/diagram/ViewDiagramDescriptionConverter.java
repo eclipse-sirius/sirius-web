@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -142,7 +142,11 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
         // Nodes must be fully converted first.
         List<NodeDescription> nodeDescriptions = viewDiagramDescription.getNodeDescriptions().stream().map(node -> this.convert(node, converterContext, stylesFactory)).toList();
-        List<EdgeDescription> edgeDescriptions = viewDiagramDescription.getEdgeDescriptions().stream().map(edge -> this.convert(edge, converterContext, stylesFactory)).toList();
+        // Filter edges on edges that will be supported in a later PR
+        List<EdgeDescription> edgeDescriptions = viewDiagramDescription.getEdgeDescriptions().stream()
+                .filter(edge -> edge.getTargetDescriptions().stream().allMatch(description -> description instanceof org.eclipse.sirius.components.view.diagram.NodeDescription)
+                && edge.getSourceDescriptions().stream().allMatch(description -> description instanceof org.eclipse.sirius.components.view.diagram.NodeDescription))
+                .map(edge -> this.convert(edge, converterContext, stylesFactory)).toList();
         var toolConverter = new ToolConverter(this.objectService, this.editService, this.viewToolImageProvider, this.feedbackMessageService, this.diagramIdProvider);
 
         var builder = DiagramDescription.newDiagramDescription(this.diagramIdProvider.getId(viewDiagramDescription))
@@ -491,7 +495,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             semanticElementsProvider = this.getSemanticElementsProvider(viewEdgeDescription, interpreter);
         } else {
             //
-            var sourceNodeDescriptions = viewEdgeDescription.getSourceNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get);
+            var sourceNodeDescriptions = viewEdgeDescription.getSourceDescriptions().stream().map(converterContext.getConvertedNodes()::get);
             semanticElementsProvider = new RelationBasedSemanticElementsProvider(sourceNodeDescriptions.map(NodeDescription::getId).toList());
         }
 
@@ -508,14 +512,14 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                     return List.of();
                 }
                 DiagramRenderingCache cache = optionalCache.get();
-                String sourceFinderExpression = viewEdgeDescription.getSourceNodesExpression();
+                String sourceFinderExpression = viewEdgeDescription.getSourceExpression();
 
                 Result result = interpreter.evaluateExpression(variableManager.getVariables(), sourceFinderExpression);
                 List<Object> semanticCandidates = result.asObjects().orElse(List.of());
                 var nodeCandidates = semanticCandidates.stream().flatMap(semanticObject -> cache.getElementsRepresenting(semanticObject).stream());
 
                 return nodeCandidates
-                        .filter(nodeElement -> viewEdgeDescription.getSourceNodeDescriptions().stream().anyMatch(nodeDescription -> this.isFromDescription(nodeElement, nodeDescription)))
+                        .filter(nodeElement -> viewEdgeDescription.getSourceDescriptions().stream().anyMatch(nodeDescription -> this.isFromDescription(nodeElement, nodeDescription)))
                         .filter(Objects::nonNull)
                         .toList();
             };
@@ -554,8 +558,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .targetObjectKindProvider(this.semanticTargetKindProvider)
                 .targetObjectLabelProvider(this.semanticTargetLabelProvider)
-                .sourceNodeDescriptions(viewEdgeDescription.getSourceNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).toList())
-                .targetNodeDescriptions(viewEdgeDescription.getTargetNodeDescriptions().stream().map(converterContext.getConvertedNodes()::get).toList())
+                .sourceNodeDescriptions(viewEdgeDescription.getSourceDescriptions().stream().map(converterContext.getConvertedNodes()::get).toList())
+                .targetNodeDescriptions(viewEdgeDescription.getTargetDescriptions().stream().map(converterContext.getConvertedNodes()::get).toList())
                 .semanticElementsProvider(semanticElementsProvider)
                 .shouldRenderPredicate(shouldRenderPredicate)
                 .synchronizationPolicy(synchronizationPolicy)
@@ -685,7 +689,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
     }
 
     private Predicate<Element> isFromCompatibleSourceMapping(org.eclipse.sirius.components.view.diagram.EdgeDescription edgeDescription) {
-        return nodeElement -> edgeDescription.getSourceNodeDescriptions().stream().anyMatch(nodeDescription -> this.isFromDescription(nodeElement, nodeDescription));
+        return nodeElement -> edgeDescription.getSourceDescriptions().stream().anyMatch(nodeDescription -> this.isFromDescription(nodeElement, nodeDescription));
     }
 
     private boolean isFromDescription(Element nodeElement, DiagramElementDescription diagramElementDescription) {

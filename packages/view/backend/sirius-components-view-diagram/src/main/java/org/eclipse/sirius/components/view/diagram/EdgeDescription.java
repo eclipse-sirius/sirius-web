@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -164,72 +164,74 @@ public interface EdgeDescription extends DiagramElementDescription {
     void setPalette(EdgePalette value);
 
     /**
-     * Returns the value of the '<em><b>Source Node Descriptions</b></em>' reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.view.diagram.NodeDescription}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Source Node Descriptions</em>' reference list.
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_SourceNodeDescriptions()
-     * @model required="true"
-     * @generated
-     */
-    EList<NodeDescription> getSourceNodeDescriptions();
-
-    /**
-     * Returns the value of the '<em><b>Target Node Descriptions</b></em>' reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.view.diagram.NodeDescription}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Target Node Descriptions</em>' reference list.
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_TargetNodeDescriptions()
-     * @model required="true"
-     * @generated
-     */
-    EList<NodeDescription> getTargetNodeDescriptions();
-
-    /**
-     * Returns the value of the '<em><b>Source Nodes Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * Returns the value of the '<em><b>Source Descriptions</b></em>' reference list. The list contents are of type
+     * {@link org.eclipse.sirius.components.view.diagram.DiagramElementDescription}. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @return the value of the '<em>Source Nodes Expression</em>' attribute.
-     * @see #setSourceNodesExpression(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_SourceNodesExpression()
+     * @return the value of the '<em>Source Descriptions</em>' reference list.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_SourceDescriptions()
+     * @model required="true"
+     * @generated
+     */
+    EList<DiagramElementDescription> getSourceDescriptions();
+
+    /**
+     * Returns the value of the '<em><b>Target Descriptions</b></em>' reference list. The list contents are of type
+     * {@link org.eclipse.sirius.components.view.diagram.DiagramElementDescription}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Target Descriptions</em>' reference list.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_TargetDescriptions()
+     * @model required="true"
+     * @generated
+     */
+    EList<DiagramElementDescription> getTargetDescriptions();
+
+    /**
+     * Returns the value of the '<em><b>Source Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the value of the '<em>Source Expression</em>' attribute.
+     * @see #setSourceExpression(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_SourceExpression()
      * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
-    String getSourceNodesExpression();
+    String getSourceExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.EdgeDescription#getSourceNodesExpression
-     * <em>Source Nodes Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.EdgeDescription#getSourceExpression
+     * <em>Source Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Source Nodes Expression</em>' attribute.
-     * @see #getSourceNodesExpression()
+     *            the new value of the '<em>Source Expression</em>' attribute.
+     * @see #getSourceExpression()
      * @generated
      */
-    void setSourceNodesExpression(String value);
+    void setSourceExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Target Nodes Expression</b></em>' attribute. The default value is
+     * Returns the value of the '<em><b>Target Expression</b></em>' attribute. The default value is
      * <code>"aql:self.eCrossReferences()"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the value of the '<em>Target Nodes Expression</em>' attribute.
-     * @see #setTargetNodesExpression(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_TargetNodesExpression()
+     * @return the value of the '<em>Target Expression</em>' attribute.
+     * @see #setTargetExpression(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_TargetExpression()
      * @model default="aql:self.eCrossReferences()" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
-    String getTargetNodesExpression();
+    String getTargetExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.EdgeDescription#getTargetNodesExpression
-     * <em>Target Nodes Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.EdgeDescription#getTargetExpression
+     * <em>Target Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Target Nodes Expression</em>' attribute.
-     * @see #getTargetNodesExpression()
+     *            the new value of the '<em>Target Expression</em>' attribute.
+     * @see #getTargetExpression()
      * @generated
      */
-    void setTargetNodesExpression(String value);
+    void setTargetExpression(String value);
 
     /**
      * Returns the value of the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,11 +24,11 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle;
+import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgePalette;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
-import org.eclipse.sirius.components.view.diagram.NodeDescription;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Edge Description</b></em>'. <!-- end-user-doc
@@ -152,64 +152,64 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
     protected EdgePalette palette;
 
     /**
-     * The cached value of the '{@link #getSourceNodeDescriptions() <em>Source Node Descriptions</em>}' reference list.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getSourceNodeDescriptions()
-     * @generated
-     * @ordered
-     */
-    protected EList<NodeDescription> sourceNodeDescriptions;
-
-    /**
-     * The cached value of the '{@link #getTargetNodeDescriptions() <em>Target Node Descriptions</em>}' reference list.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getTargetNodeDescriptions()
-     * @generated
-     * @ordered
-     */
-    protected EList<NodeDescription> targetNodeDescriptions;
-
-    /**
-     * The default value of the '{@link #getSourceNodesExpression() <em>Source Nodes Expression</em>}' attribute. <!--
+     * The cached value of the '{@link #getSourceDescriptions() <em>Source Descriptions</em>}' reference list. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getSourceDescriptions()
      * @generated
      * @ordered
-     * @see #getSourceNodesExpression()
      */
-    protected static final String SOURCE_NODES_EXPRESSION_EDEFAULT = null;
+    protected EList<DiagramElementDescription> sourceDescriptions;
 
     /**
-     * The cached value of the '{@link #getSourceNodesExpression() <em>Source Nodes Expression</em>}' attribute. <!--
+     * The cached value of the '{@link #getTargetDescriptions() <em>Target Descriptions</em>}' reference list. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getTargetDescriptions()
      * @generated
      * @ordered
-     * @see #getSourceNodesExpression()
      */
-    protected String sourceNodesExpression = SOURCE_NODES_EXPRESSION_EDEFAULT;
+    protected EList<DiagramElementDescription> targetDescriptions;
 
     /**
-     * The default value of the '{@link #getTargetNodesExpression() <em>Target Nodes Expression</em>}' attribute. <!--
+     * The default value of the '{@link #getSourceExpression() <em>Source Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getSourceExpression()
      * @generated
      * @ordered
-     * @see #getTargetNodesExpression()
      */
-    protected static final String TARGET_NODES_EXPRESSION_EDEFAULT = "aql:self.eCrossReferences()";
+    protected static final String SOURCE_EXPRESSION_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getTargetNodesExpression() <em>Target Nodes Expression</em>}' attribute. <!--
+     * The cached value of the '{@link #getSourceExpression() <em>Source Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getSourceExpression()
      * @generated
      * @ordered
-     * @see #getTargetNodesExpression()
      */
-    protected String targetNodesExpression = TARGET_NODES_EXPRESSION_EDEFAULT;
+    protected String sourceExpression = SOURCE_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getTargetExpression() <em>Target Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getTargetExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String TARGET_EXPRESSION_EDEFAULT = "aql:self.eCrossReferences()";
+
+    /**
+     * The cached value of the '{@link #getTargetExpression() <em>Target Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getTargetExpression()
+     * @generated
+     * @ordered
+     */
+    protected String targetExpression = TARGET_EXPRESSION_EDEFAULT;
 
     /**
      * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
@@ -377,6 +377,78 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      *
      * @generated
      */
+    @Override
+    public EList<DiagramElementDescription> getSourceDescriptions() {
+        if (this.sourceDescriptions == null) {
+            this.sourceDescriptions = new EObjectResolvingEList<>(DiagramElementDescription.class, this, DiagramPackage.EDGE_DESCRIPTION__SOURCE_DESCRIPTIONS);
+        }
+        return this.sourceDescriptions;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EList<DiagramElementDescription> getTargetDescriptions() {
+        if (this.targetDescriptions == null) {
+            this.targetDescriptions = new EObjectResolvingEList<>(DiagramElementDescription.class, this, DiagramPackage.EDGE_DESCRIPTION__TARGET_DESCRIPTIONS);
+        }
+        return this.targetDescriptions;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getSourceExpression() {
+        return this.sourceExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setSourceExpression(String newSourceExpression) {
+        String oldSourceExpression = this.sourceExpression;
+        this.sourceExpression = newSourceExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_DESCRIPTION__SOURCE_EXPRESSION, oldSourceExpression, this.sourceExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getTargetExpression() {
+        return this.targetExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setTargetExpression(String newTargetExpression) {
+        String oldTargetExpression = this.targetExpression;
+        this.targetExpression = newTargetExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_DESCRIPTION__TARGET_EXPRESSION, oldTargetExpression, this.targetExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     public NotificationChain basicSetPalette(EdgePalette newPalette, NotificationChain msgs) {
         EdgePalette oldPalette = this.palette;
         this.palette = newPalette;
@@ -388,78 +460,6 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 msgs.add(notification);
         }
         return msgs;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EList<NodeDescription> getSourceNodeDescriptions() {
-        if (this.sourceNodeDescriptions == null) {
-            this.sourceNodeDescriptions = new EObjectResolvingEList<>(NodeDescription.class, this, DiagramPackage.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS);
-        }
-        return this.sourceNodeDescriptions;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EList<NodeDescription> getTargetNodeDescriptions() {
-        if (this.targetNodeDescriptions == null) {
-            this.targetNodeDescriptions = new EObjectResolvingEList<>(NodeDescription.class, this, DiagramPackage.EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS);
-        }
-        return this.targetNodeDescriptions;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public String getSourceNodesExpression() {
-        return this.sourceNodesExpression;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setSourceNodesExpression(String newSourceNodesExpression) {
-        String oldSourceNodesExpression = this.sourceNodesExpression;
-        this.sourceNodesExpression = newSourceNodesExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION, oldSourceNodesExpression, this.sourceNodesExpression));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public String getTargetNodesExpression() {
-        return this.targetNodesExpression;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setTargetNodesExpression(String newTargetNodesExpression) {
-        String oldTargetNodesExpression = this.targetNodesExpression;
-        this.targetNodesExpression = newTargetNodesExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION, oldTargetNodesExpression, this.targetNodesExpression));
     }
 
     /**
@@ -559,14 +559,14 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return this.isIsDomainBasedEdge();
             case DiagramPackage.EDGE_DESCRIPTION__PALETTE:
                 return this.getPalette();
-            case DiagramPackage.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS:
-                return this.getSourceNodeDescriptions();
-            case DiagramPackage.EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS:
-                return this.getTargetNodeDescriptions();
-            case DiagramPackage.EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION:
-                return this.getSourceNodesExpression();
-            case DiagramPackage.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION:
-                return this.getTargetNodesExpression();
+            case DiagramPackage.EDGE_DESCRIPTION__SOURCE_DESCRIPTIONS:
+                return this.getSourceDescriptions();
+            case DiagramPackage.EDGE_DESCRIPTION__TARGET_DESCRIPTIONS:
+                return this.getTargetDescriptions();
+            case DiagramPackage.EDGE_DESCRIPTION__SOURCE_EXPRESSION:
+                return this.getSourceExpression();
+            case DiagramPackage.EDGE_DESCRIPTION__TARGET_EXPRESSION:
+                return this.getTargetExpression();
             case DiagramPackage.EDGE_DESCRIPTION__STYLE:
                 return this.getStyle();
             case DiagramPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
@@ -599,19 +599,19 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
             case DiagramPackage.EDGE_DESCRIPTION__PALETTE:
                 this.setPalette((EdgePalette) newValue);
                 return;
-            case DiagramPackage.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS:
-                this.getSourceNodeDescriptions().clear();
-                this.getSourceNodeDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
+            case DiagramPackage.EDGE_DESCRIPTION__SOURCE_DESCRIPTIONS:
+                this.getSourceDescriptions().clear();
+                this.getSourceDescriptions().addAll((Collection<? extends DiagramElementDescription>) newValue);
                 return;
-            case DiagramPackage.EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS:
-                this.getTargetNodeDescriptions().clear();
-                this.getTargetNodeDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
+            case DiagramPackage.EDGE_DESCRIPTION__TARGET_DESCRIPTIONS:
+                this.getTargetDescriptions().clear();
+                this.getTargetDescriptions().addAll((Collection<? extends DiagramElementDescription>) newValue);
                 return;
-            case DiagramPackage.EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION:
-                this.setSourceNodesExpression((String) newValue);
+            case DiagramPackage.EDGE_DESCRIPTION__SOURCE_EXPRESSION:
+                this.setSourceExpression((String) newValue);
                 return;
-            case DiagramPackage.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION:
-                this.setTargetNodesExpression((String) newValue);
+            case DiagramPackage.EDGE_DESCRIPTION__TARGET_EXPRESSION:
+                this.setTargetExpression((String) newValue);
                 return;
             case DiagramPackage.EDGE_DESCRIPTION__STYLE:
                 this.setStyle((EdgeStyle) newValue);
@@ -647,17 +647,17 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
             case DiagramPackage.EDGE_DESCRIPTION__PALETTE:
                 this.setPalette((EdgePalette) null);
                 return;
-            case DiagramPackage.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS:
-                this.getSourceNodeDescriptions().clear();
+            case DiagramPackage.EDGE_DESCRIPTION__SOURCE_DESCRIPTIONS:
+                this.getSourceDescriptions().clear();
                 return;
-            case DiagramPackage.EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS:
-                this.getTargetNodeDescriptions().clear();
+            case DiagramPackage.EDGE_DESCRIPTION__TARGET_DESCRIPTIONS:
+                this.getTargetDescriptions().clear();
                 return;
-            case DiagramPackage.EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION:
-                this.setSourceNodesExpression(SOURCE_NODES_EXPRESSION_EDEFAULT);
+            case DiagramPackage.EDGE_DESCRIPTION__SOURCE_EXPRESSION:
+                this.setSourceExpression(SOURCE_EXPRESSION_EDEFAULT);
                 return;
-            case DiagramPackage.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION:
-                this.setTargetNodesExpression(TARGET_NODES_EXPRESSION_EDEFAULT);
+            case DiagramPackage.EDGE_DESCRIPTION__TARGET_EXPRESSION:
+                this.setTargetExpression(TARGET_EXPRESSION_EDEFAULT);
                 return;
             case DiagramPackage.EDGE_DESCRIPTION__STYLE:
                 this.setStyle((EdgeStyle) null);
@@ -687,14 +687,14 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return this.isDomainBasedEdge != IS_DOMAIN_BASED_EDGE_EDEFAULT;
             case DiagramPackage.EDGE_DESCRIPTION__PALETTE:
                 return this.palette != null;
-            case DiagramPackage.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS:
-                return this.sourceNodeDescriptions != null && !this.sourceNodeDescriptions.isEmpty();
-            case DiagramPackage.EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS:
-                return this.targetNodeDescriptions != null && !this.targetNodeDescriptions.isEmpty();
-            case DiagramPackage.EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION:
-                return SOURCE_NODES_EXPRESSION_EDEFAULT == null ? this.sourceNodesExpression != null : !SOURCE_NODES_EXPRESSION_EDEFAULT.equals(this.sourceNodesExpression);
-            case DiagramPackage.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION:
-                return TARGET_NODES_EXPRESSION_EDEFAULT == null ? this.targetNodesExpression != null : !TARGET_NODES_EXPRESSION_EDEFAULT.equals(this.targetNodesExpression);
+            case DiagramPackage.EDGE_DESCRIPTION__SOURCE_DESCRIPTIONS:
+                return this.sourceDescriptions != null && !this.sourceDescriptions.isEmpty();
+            case DiagramPackage.EDGE_DESCRIPTION__TARGET_DESCRIPTIONS:
+                return this.targetDescriptions != null && !this.targetDescriptions.isEmpty();
+            case DiagramPackage.EDGE_DESCRIPTION__SOURCE_EXPRESSION:
+                return SOURCE_EXPRESSION_EDEFAULT == null ? this.sourceExpression != null : !SOURCE_EXPRESSION_EDEFAULT.equals(this.sourceExpression);
+            case DiagramPackage.EDGE_DESCRIPTION__TARGET_EXPRESSION:
+                return TARGET_EXPRESSION_EDEFAULT == null ? this.targetExpression != null : !TARGET_EXPRESSION_EDEFAULT.equals(this.targetExpression);
             case DiagramPackage.EDGE_DESCRIPTION__STYLE:
                 return this.style != null;
             case DiagramPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
@@ -722,10 +722,10 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
         result.append(this.endLabelExpression);
         result.append(", isDomainBasedEdge: ");
         result.append(this.isDomainBasedEdge);
-        result.append(", sourceNodesExpression: ");
-        result.append(this.sourceNodesExpression);
-        result.append(", targetNodesExpression: ");
-        result.append(this.targetNodesExpression);
+        result.append(", sourceExpression: ");
+        result.append(this.sourceExpression);
+        result.append(", targetExpression: ");
+        result.append(this.targetExpression);
         result.append(')');
         return result.toString();
     }

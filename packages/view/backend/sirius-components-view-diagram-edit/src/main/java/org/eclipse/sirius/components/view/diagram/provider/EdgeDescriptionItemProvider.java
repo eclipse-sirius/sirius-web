@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -59,10 +59,10 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
             this.addCenterLabelExpressionPropertyDescriptor(object);
             this.addEndLabelExpressionPropertyDescriptor(object);
             this.addIsDomainBasedEdgePropertyDescriptor(object);
-            this.addSourceNodeDescriptionsPropertyDescriptor(object);
-            this.addTargetNodeDescriptionsPropertyDescriptor(object);
-            this.addSourceNodesExpressionPropertyDescriptor(object);
-            this.addTargetNodesExpressionPropertyDescriptor(object);
+            this.addSourceDescriptionsPropertyDescriptor(object);
+            this.addTargetDescriptionsPropertyDescriptor(object);
+            this.addSourceExpressionPropertyDescriptor(object);
+            this.addTargetExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -120,55 +120,53 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     }
 
     /**
-     * This adds a property descriptor for the Source Node Descriptions feature. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * This adds a property descriptor for the Source Descriptions feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
      * @generated
      */
-    protected void addSourceNodeDescriptionsPropertyDescriptor(Object object) {
+    protected void addSourceDescriptionsPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_EdgeDescription_sourceNodeDescriptions_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_sourceNodeDescriptions_feature", "_UI_EdgeDescription_type"),
-                DiagramPackage.Literals.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS, true, false, true, null, null, null));
+                this.getString("_UI_EdgeDescription_sourceDescriptions_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_sourceDescriptions_feature", "_UI_EdgeDescription_type"),
+                DiagramPackage.Literals.EDGE_DESCRIPTION__SOURCE_DESCRIPTIONS, true, false, true, null, null, null));
     }
 
     /**
-     * This adds a property descriptor for the Target Node Descriptions feature. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * This adds a property descriptor for the Target Descriptions feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
      * @generated
      */
-    protected void addTargetNodeDescriptionsPropertyDescriptor(Object object) {
+    protected void addTargetDescriptionsPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_EdgeDescription_targetNodeDescriptions_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_targetNodeDescriptions_feature", "_UI_EdgeDescription_type"),
-                DiagramPackage.Literals.EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS, true, false, true, null, null, null));
+                this.getString("_UI_EdgeDescription_targetDescriptions_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_targetDescriptions_feature", "_UI_EdgeDescription_type"),
+                DiagramPackage.Literals.EDGE_DESCRIPTION__TARGET_DESCRIPTIONS, true, false, true, null, null, null));
     }
 
     /**
-     * This adds a property descriptor for the Source Nodes Expression feature. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * This adds a property descriptor for the Source Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    protected void addSourceNodesExpressionPropertyDescriptor(Object object) {
+    protected void addSourceExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_EdgeDescription_sourceNodesExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_sourceNodesExpression_feature", "_UI_EdgeDescription_type"),
-                DiagramPackage.Literals.EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_EdgeDescription_sourceExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_sourceExpression_feature", "_UI_EdgeDescription_type"),
+                DiagramPackage.Literals.EDGE_DESCRIPTION__SOURCE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This adds a property descriptor for the Target Nodes Expression feature. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * This adds a property descriptor for the Target Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    protected void addTargetNodesExpressionPropertyDescriptor(Object object) {
+    protected void addTargetExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_EdgeDescription_targetNodesExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_targetNodesExpression_feature", "_UI_EdgeDescription_type"),
-                DiagramPackage.Literals.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_EdgeDescription_targetExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_targetExpression_feature", "_UI_EdgeDescription_type"),
+                DiagramPackage.Literals.EDGE_DESCRIPTION__TARGET_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -250,8 +248,8 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
             case DiagramPackage.EDGE_DESCRIPTION__CENTER_LABEL_EXPRESSION:
             case DiagramPackage.EDGE_DESCRIPTION__END_LABEL_EXPRESSION:
             case DiagramPackage.EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE:
-            case DiagramPackage.EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION:
-            case DiagramPackage.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION:
+            case DiagramPackage.EDGE_DESCRIPTION__SOURCE_EXPRESSION:
+            case DiagramPackage.EDGE_DESCRIPTION__TARGET_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case DiagramPackage.EDGE_DESCRIPTION__PALETTE:

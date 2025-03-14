@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -155,11 +155,11 @@ public class EditableLabelDiagramDescriptionProvider implements IEditingContextP
 
         var edgeDescription = new DiagramBuilders().newEdgeDescription()
                 .name("Dependency")
-                .sourceNodeDescriptions(nodeDescription)
-                .targetNodeDescriptions(nodeDescription)
+                .sourceDescriptions(nodeDescription)
+                .targetDescriptions(nodeDescription)
                 .centerLabelExpression("")
-                .sourceNodesExpression("aql:self")
-                .targetNodesExpression("aql:self.dependencies")
+                .sourceExpression("aql:self")
+                .targetExpression("aql:self.dependencies")
                 .isDomainBasedEdge(false)
                 .beginLabelExpression("aql:'source ' + semanticEdgeSource.name")
                 .centerLabelExpression("aql:semanticEdgeSource.name + ' - ' + semanticEdgeTarget.name")
