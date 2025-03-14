@@ -11,34 +11,36 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface UseLibrariesValue {
-  data: GQLGetLibrariesQueryData | null;
+export interface UseLibraryVersionsValue {
+  data: GQLGetLibraryVersionsQueryData | null;
   loading: boolean;
 }
 
-export interface GQLGetLibrariesQueryVariables {
-  page: number;
-  limit: number;
-}
-
-export interface GQLGetLibrariesQueryData {
+export interface GQLGetLibraryVersionsQueryData {
   viewer: GQLViewer;
 }
 
 export interface GQLViewer {
-  libraries: GQLViewerLibraryConnection;
-}
-
-export interface GQLViewerLibraryConnection {
-  edges: GQLViewerLibraryEdge[];
-  pageInfo: GQLPageInfo;
-}
-
-export interface GQLViewerLibraryEdge {
-  node: GQLLibrary;
+  library: GQLLibrary | null;
 }
 
 export interface GQLLibrary {
+  namespace: string;
+  name: string;
+  version: string;
+  versions: GQLLibraryVersionConnection;
+}
+
+export interface GQLLibraryVersionConnection {
+  edges: GQLLibraryVersionEdge[];
+  pageInfo: GQLPageInfo;
+}
+
+export interface GQLLibraryVersionEdge {
+  node: GQLLibraryVersion;
+}
+
+export interface GQLLibraryVersion {
   id: string;
   namespace: string;
   name: string;
@@ -51,4 +53,12 @@ export interface GQLPageInfo {
   hasPreviousPage: boolean;
   hasNextPage: boolean;
   count: number;
+}
+
+export interface GQLGetLibraryVersionsQueryVariables {
+  name: string;
+  namespace: string;
+  version: string;
+  page: number;
+  limit: number;
 }

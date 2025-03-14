@@ -43,7 +43,12 @@ import {
 import { PortalRepresentation } from '@eclipse-sirius/sirius-components-portals';
 import { SelectionDialog } from '@eclipse-sirius/sirius-components-selection';
 import { TableRepresentation } from '@eclipse-sirius/sirius-components-tables';
-import { TreeRepresentation, treeItemContextMenuEntryExtensionPoint } from '@eclipse-sirius/sirius-components-trees';
+import {
+  TreeRepresentation,
+  treeItemContextMenuEntryExtensionPoint,
+  treeItemContextMenuEntryOverrideExtensionPoint,
+  TreeItemContextMenuEntry,
+} from '@eclipse-sirius/sirius-components-trees';
 import { ValidationView } from '@eclipse-sirius/sirius-components-validation';
 import {
   GQLReferenceWidget,
@@ -104,6 +109,8 @@ import { projectSettingsTabExtensionPoint } from '../views/project-settings/Proj
 import { ellipseNodeStyleDocumentTransform } from './EllipseNodeDocumentTransform';
 import { referenceWidgetDocumentTransform } from './ReferenceWidgetDocumentTransform';
 import { tableWidgetDocumentTransform } from './TableWidgetDocumentTransform';
+import { UpdateLibraryTreeItemContextMenuContribution } from '../views/edit-project/UpdateLibraryTreeItemContextMenuContribution';
+import { TreeItemContextMenuOverrideContribution } from '@eclipse-sirius/sirius-components-trees';
 
 const getType = (representation: RepresentationMetadata): string | null => {
   const query = representation.kind.substring(representation.kind.indexOf('?') + 1, representation.kind.length);
@@ -340,6 +347,31 @@ defaultExtensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
   identifier: `siriusweb_${treeItemContextMenuEntryExtensionPoint.identifier}_representation`,
   Component: RepresentationTreeItemContextMenuContribution,
 });
+
+/*******************************************************************************
+ *
+ * Tree item context menu overrides
+ *
+ * Used to register components in the tree item context menu that override
+ * the default rendering of context menu items.
+ *
+ *******************************************************************************/
+const treeItemContextMenuOverrideContributions: TreeItemContextMenuOverrideContribution[] = [
+  {
+    canHandle: (entry: TreeItemContextMenuEntry) => {
+      return entry.id.includes('updateLibrary');
+    },
+    component: UpdateLibraryTreeItemContextMenuContribution,
+  },
+];
+
+defaultExtensionRegistry.putData<TreeItemContextMenuOverrideContribution[]>(
+  treeItemContextMenuEntryOverrideExtensionPoint,
+  {
+    identifier: `siriusweb_${treeItemContextMenuEntryOverrideExtensionPoint.identifier}`,
+    data: treeItemContextMenuOverrideContributions,
+  }
+);
 
 /*******************************************************************************
  *
