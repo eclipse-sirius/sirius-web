@@ -53,6 +53,7 @@ It now only contains the identifier of the tree item.
 Both properties were added to `SelectionEntry` years ago due to a leak in an abstraction used by the explorer.
 In the near future, we will start cleaning up the rest of the code by removing properties like `targetObjectKind` and `targetObjectLabel` which are now unnecessary.
 We will also remove `GQLTreeItem#kind` later.
+- https://github.com/eclipse-sirius/sirius-web/issues/4700[#4700] [view-diagram] The following attributes of `EdgeDescription` have been renamed : `sourceNodesDescriptions to sourceDescriptions`, `targetNodeDescriptions to targetDescriptions`, `sourceNodeExpression to sourceExpression` and `targetNodesExpression to targetExpression`.
 
 
 === Dependency update
@@ -104,6 +105,7 @@ The publication of a studio that references elements from imported libraries now
 +
 image:doc/screenshots/duplicationDialog.png[DuplicationDialog, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/4383[#4383] [sirius-web] Add support for representation duplication from explorer
+- https://github.com/eclipse-sirius/sirius-web/issues/4700[#4700] [view-diagram] It is now possible to set an edge as the source or target of an edge in the view dsl, following work will allow the actual rendering on the back-end and front-end.
 
 
 === Improvements

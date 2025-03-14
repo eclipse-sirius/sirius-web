@@ -55,8 +55,8 @@ public class RelationEdgeDescriptionProvider implements IEdgeDescriptionProvider
                 .isDomainBasedEdge(true)
                 .centerLabelExpression("aql:self.renderRelation()")
                 .semanticCandidatesExpression("aql:self.eResource().getContents().eAllContents()")
-                .sourceNodesExpression("aql:self.eContainer()")
-                .targetNodesExpression("aql:self.targetType")
+                .sourceExpression("aql:self.eContainer()")
+                .targetExpression("aql:self.targetType")
                 .style(this.defaultRelationEdgeStyle())
                 .conditionalStyles(this.containmentRelationEdgeStyle())
                 .palette(palette)
@@ -125,8 +125,8 @@ public class RelationEdgeDescriptionProvider implements IEdgeDescriptionProvider
             var relationEdgeDescription = optionalRelationEdgeDescription.get();
             var entityNodeDescription = optionalEntityNodeDescription.get();
 
-            relationEdgeDescription.getSourceNodeDescriptions().add(entityNodeDescription);
-            relationEdgeDescription.getTargetNodeDescriptions().add(entityNodeDescription);
+            relationEdgeDescription.getSourceDescriptions().add(entityNodeDescription);
+            relationEdgeDescription.getTargetDescriptions().add(entityNodeDescription);
 
             diagramDescription.getEdgeDescriptions().add(relationEdgeDescription);
         }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ import org.eclipse.sirius.components.view.diagram.EdgeDescription;
  * <ul>
  * <li>is an instance of one of the the edge's possible target types;</li>
  * <li>represents one of the semantic target elements returned by the
- * {@link EdgeDescription#getTargetNodesExpression()}.</li>
+ * {@link EdgeDescription#getTargetExpression()} ()}.</li>
  * </ul>
  * The implementation depends on the availability of the {@link DiagramRenderingCache} in the variables.
  *
@@ -60,7 +60,7 @@ public class TargetNodesProvider implements Function<VariableManager, List<Eleme
         DiagramRenderingCache cache = optionalCache.get();
 
         // @formatter:off
-        String expression = this.edgeDescription.getTargetNodesExpression();
+        String expression = this.edgeDescription.getTargetExpression();
         List<Object> semanticCandidates = this.interpreter.evaluateExpression(variableManager.getVariables(), expression).asObjects().orElse(List.of());
         return semanticCandidates.stream()
                 .flatMap(semanticObject-> cache.getElementsRepresenting(semanticObject).stream())
@@ -71,7 +71,7 @@ public class TargetNodesProvider implements Function<VariableManager, List<Eleme
     }
 
     private boolean isFromCompatibleTargetMapping(Element nodeElement) {
-        return this.edgeDescription.getTargetNodeDescriptions().stream()
+        return this.edgeDescription.getTargetDescriptions().stream()
                 .anyMatch(nodeDescription -> this.isFromDescription(nodeElement, nodeDescription));
     }
 
