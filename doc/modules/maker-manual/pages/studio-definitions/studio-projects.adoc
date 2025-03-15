@@ -1,0 +1,11 @@
+= {studio-projects}
+
+== Purpose
+
+A *_{studio-project}_* is a _{usr-project}_ with the _xref:user-manual:core-concepts/projects.adoc#project-nature-studio[Studio]_ {usr-project-nature}.
+
+The particularity of these _{projects}_ is that they have access to *all* _{mkr-data-models}_ and _{mkr-view-models}_ contributed to the platform. In particular, they have access to the _{mkr-domain}_ and _{mkr-view}_ {data-models}.
+
+== Creation
+
+To create a _{studio-project}_, use the `xref:user-manual:core-concepts.adoc#project-template-studio-blank[Blank Studio]` _{usr-project-template}_ provided by default by {sw}.
