@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,13 +18,14 @@ export interface BendPointProps {
   index: number;
   onDrag: (eventData: DraggableData, index: number) => void;
   onDragStop: (eventData: DraggableData, index: number) => void;
-  onDoubleClick: (index: number) => void;
 }
 
 export interface TemporaryBendPointProps {
   x: number;
   y: number;
+  direction: 'x' | 'y';
+  segmentLength: number;
   index: number;
-  onDrag: (eventData: DraggableData, index: number) => void;
+  onDrag: (eventData: DraggableData, index: number, direction: 'x' | 'y') => void;
   onDragStop: (eventData: DraggableData, index: number) => void;
 }
