@@ -164,8 +164,6 @@ type Mutation {
   createChild(input: CreateChildInput!): CreateChildPayload!
   createRepresentation(input: CreateRepresentationInput!): CreateRepresentationPayload!
   createRootObject(input: CreateRootObjectInput!): CreateRootObjectPayload!
-  deleteObject(input: DeleteObjectInput!): DeleteObjectPayload!
-  renameObject(input: RenameObjectInput!): RenameObjectPayload!
   invokeEditingContextAction(input: InvokeEditingContextActionInput!): InvokeEditingContextActionPayload!
 }
 
