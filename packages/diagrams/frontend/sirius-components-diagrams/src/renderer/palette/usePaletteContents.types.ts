@@ -13,12 +13,16 @@
 
 import { GQLPalette } from './Palette.types';
 
+export interface UsePaletteContentValue {
+  palette: GQLPalette | null;
+  loading: boolean;
+}
+
 export interface GQLDiagramDescription extends GQLRepresentationDescription {
   palette: GQLPalette;
 }
 
 export interface GQLRepresentationDescription {
-  id: string;
   __typename: string;
 }
 
@@ -41,8 +45,5 @@ export interface GQLEditingContext {
 }
 
 export interface GQLRepresentationMetadata {
-  id: string;
-  label: string;
-  kind: string;
   description: GQLRepresentationDescription;
 }

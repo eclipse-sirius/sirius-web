@@ -13,7 +13,14 @@
 import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
 
 export interface UseCollapseExpandValue {
-  collapseExpandElement: (nodeId: string, collapsingState: GQLCollapsingState) => void;
+  collapseExpandElement: (
+    editingContextId: string,
+    diagramId: string,
+    nodeId: string,
+    collapsingState: GQLCollapsingState
+  ) => void;
+  loading: boolean;
+  data: GQLUpdateCollapsingStateData | null;
 }
 
 export enum GQLCollapsingState {

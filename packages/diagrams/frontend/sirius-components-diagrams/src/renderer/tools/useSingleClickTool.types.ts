@@ -15,6 +15,8 @@ import { GQLTool } from '../palette/Palette.types';
 
 export interface UseSingleClickToolValue {
   invokeSingleClickTool: (
+    editingContextId: string,
+    diagramId: string,
     tool: GQLTool,
     diagramElementId: string,
     targetObjectId: string,

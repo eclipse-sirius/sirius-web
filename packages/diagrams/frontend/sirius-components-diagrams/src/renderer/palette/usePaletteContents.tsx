@@ -23,6 +23,7 @@ import {
   GQLGetToolSectionsData,
   GQLGetToolSectionsVariables,
   GQLRepresentationDescription,
+  UsePaletteContentValue,
 } from './usePaletteContents.types';
 
 export const getPaletteQuery = gql`
@@ -74,20 +75,21 @@ const isDiagramDescription = (
   representationDescription: GQLRepresentationDescription
 ): representationDescription is GQLDiagramDescription => representationDescription.__typename === 'DiagramDescription';
 
-export const usePaletteContents = (diagramElementId: string): GQLPalette | null => {
+export const usePaletteContents = (diagramElementId: string): UsePaletteContentValue => {
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
   const { addErrorMessage } = useMultiToast();
 
-  const { data: paletteData, error: paletteError } = useQuery<GQLGetToolSectionsData, GQLGetToolSectionsVariables>(
-    getPaletteQuery,
-    {
-      variables: {
-        editingContextId,
-        diagramId,
-        diagramElementId,
-      },
-    }
-  );
+  const {
+    data: paletteData,
+    loading,
+    error: paletteError,
+  } = useQuery<GQLGetToolSectionsData, GQLGetToolSectionsVariables>(getPaletteQuery, {
+    variables: {
+      editingContextId,
+      diagramId,
+      diagramElementId,
+    },
+  });
 
   const description: GQLRepresentationDescription | undefined =
     paletteData?.viewer.editingContext.representation.description;
@@ -99,5 +101,5 @@ export const usePaletteContents = (diagramElementId: string): GQLPalette | null 
     }
   }, [paletteError]);
 
-  return palette;
+  return { palette, loading };
 };
