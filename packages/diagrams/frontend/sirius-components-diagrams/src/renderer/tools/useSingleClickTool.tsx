@@ -12,7 +12,6 @@
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
 import { GQLErrorPayload, useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
-import { useCallback } from 'react';
 import { useDialog } from '../../dialog/useDialog';
 import { useImpactAnalysisDialog } from '../palette/impact-analysis/useImpactAnalysisDialog';
 import { GQLSingleClickOnDiagramElementTool, GQLTool } from '../palette/Palette.types';
@@ -62,7 +61,7 @@ const isInvokeSingleClickSuccessPayload = (
 const isSingleClickOnDiagramElementTool = (tool: GQLTool): tool is GQLSingleClickOnDiagramElementTool =>
   tool.__typename === 'SingleClickOnDiagramElementTool';
 
-export const useSingleClickTool = (editingContextId: string, diagramId: string): UseSingleClickToolValue => {
+export const useSingleClickTool = (): UseSingleClickToolValue => {
   const { addMessages } = useMultiToast();
   const { setSelection } = useSelection();
   const { showDialog } = useDialog();
@@ -73,43 +72,50 @@ export const useSingleClickTool = (editingContextId: string, diagramId: string):
     GQLInvokeSingleClickOnDiagramElementToolVariables
   >(invokeSingleClickOnDiagramElementToolMutation);
 
-  const invokeSingleClickTool = useCallback(
-    async (tool: GQLTool, diagramElementId: string, variables: GQLToolVariable[], x: number, y: number) => {
-      if (isSingleClickOnDiagramElementTool(tool)) {
-        const { id: toolId } = tool;
-        const input: GQLInvokeSingleClickOnDiagramElementToolInput = {
-          id: crypto.randomUUID(),
-          editingContextId,
-          representationId: diagramId,
-          diagramElementId,
-          toolId,
-          startingPositionX: x,
-          startingPositionY: y,
-          variables,
-        };
+  const invokeSingleClickTool = async (
+    editingContextId: string,
+    diagramId: string,
+    tool: GQLTool,
+    diagramElementId: string,
+    variables: GQLToolVariable[],
+    x: number,
+    y: number
+  ) => {
+    if (isSingleClickOnDiagramElementTool(tool)) {
+      const { id: toolId } = tool;
+      const input: GQLInvokeSingleClickOnDiagramElementToolInput = {
+        id: crypto.randomUUID(),
+        editingContextId,
+        representationId: diagramId,
+        diagramElementId,
+        toolId,
+        startingPositionX: x,
+        startingPositionY: y,
+        variables,
+      };
 
-        const { data } = await invokeSingleClickOnDiagramElementTool({
-          variables: { input },
-        });
-        if (data) {
-          const { invokeSingleClickOnDiagramElementTool } = data;
-          if (isInvokeSingleClickSuccessPayload(invokeSingleClickOnDiagramElementTool)) {
-            const { newSelection } = invokeSingleClickOnDiagramElementTool;
-            if (newSelection?.entries.length ?? 0 > 0) {
-              setSelection(newSelection);
-            }
-            addMessages(invokeSingleClickOnDiagramElementTool.messages);
+      const { data } = await invokeSingleClickOnDiagramElementTool({
+        variables: { input },
+      });
+      if (data) {
+        const { invokeSingleClickOnDiagramElementTool } = data;
+        if (isInvokeSingleClickSuccessPayload(invokeSingleClickOnDiagramElementTool)) {
+          const { newSelection } = invokeSingleClickOnDiagramElementTool;
+          if (newSelection?.entries.length ?? 0 > 0) {
+            setSelection(newSelection);
           }
-          if (isErrorPayload(invokeSingleClickOnDiagramElementTool)) {
-            addMessages(invokeSingleClickOnDiagramElementTool.messages);
-          }
+          addMessages(invokeSingleClickOnDiagramElementTool.messages);
+        }
+        if (isErrorPayload(invokeSingleClickOnDiagramElementTool)) {
+          addMessages(invokeSingleClickOnDiagramElementTool.messages);
         }
       }
-    },
-    [editingContextId, diagramId, invokeSingleClickOnDiagramElementToolMutation]
-  );
+    }
+  };
 
   const handleDialogDescription = (
+    editingContextId: string,
+    diagramId: string,
     tool: GQLSingleClickOnDiagramElementTool,
     diagramElementId: string,
     targetObjectId: string,
@@ -119,35 +125,45 @@ export const useSingleClickTool = (editingContextId: string, diagramId: string):
     const onConfirm = (variables: GQLToolVariable[]) => {
       if (tool.withImpactAnalysis) {
         showImpactAnalysisDialog(editingContextId, diagramId, tool.id, tool.label, diagramElementId, variables, () =>
-          invokeSingleClickTool(tool, diagramElementId, variables, x, y)
+          invokeSingleClickTool(editingContextId, diagramId, tool, diagramElementId, variables, x, y)
         );
       } else {
-        invokeSingleClickTool(tool, diagramElementId, variables, x, y);
+        invokeSingleClickTool(editingContextId, diagramId, tool, diagramElementId, variables, x, y);
       }
     };
     showDialog(tool.dialogDescriptionId, [{ name: 'targetObjectId', value: targetObjectId }], onConfirm, () => {});
   };
 
   const handleImpactAnalysisDialog = (
+    editingContextId: string,
+    diagramId: string,
     tool: GQLSingleClickOnDiagramElementTool,
     diagramElementId: string,
     x: number,
     y: number
   ) => {
     showImpactAnalysisDialog(editingContextId, diagramId, tool.id, tool.label, diagramElementId, [], () =>
-      invokeSingleClickTool(tool, diagramElementId, [], x, y)
+      invokeSingleClickTool(editingContextId, diagramId, tool, diagramElementId, [], x, y)
     );
   };
 
-  const invokeTool = (tool: GQLTool, diagramElementId: string, targetObjectId: string, x: number, y: number) => {
+  const invokeTool = (
+    editingContextId: string,
+    diagramId: string,
+    tool: GQLTool,
+    diagramElementId: string,
+    targetObjectId: string,
+    x: number,
+    y: number
+  ) => {
     if (isSingleClickOnDiagramElementTool(tool)) {
       if (tool.dialogDescriptionId) {
-        handleDialogDescription(tool, diagramElementId, targetObjectId, x, y);
+        handleDialogDescription(editingContextId, diagramId, tool, diagramElementId, targetObjectId, x, y);
       } else {
         if (tool.withImpactAnalysis) {
-          handleImpactAnalysisDialog(tool, diagramElementId, x, y);
+          handleImpactAnalysisDialog(editingContextId, diagramId, tool, diagramElementId, x, y);
         } else {
-          invokeSingleClickTool(tool, diagramElementId, [], x, y);
+          invokeSingleClickTool(editingContextId, diagramId, tool, diagramElementId, [], x, y);
         }
       }
     }

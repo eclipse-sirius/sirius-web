@@ -12,7 +12,6 @@
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
 import { useReporting } from '@eclipse-sirius/sirius-components-core';
-import { useCallback } from 'react';
 import {
   GQLDeleteFromDiagramData,
   GQLDeleteFromDiagramInput,
@@ -41,28 +40,35 @@ export const deleteFromDiagramMutation = gql`
   }
 `;
 
-export const useDelete = (editingContextId: string, diagramId: string): UseDeleteValue => {
+export const useDelete = (): UseDeleteValue => {
   const [rawDeleteFromDiagram, rawDeleteFromDiagramResult] = useMutation<
     GQLDeleteFromDiagramData,
     GQLDeleteFromDiagramVariables
   >(deleteFromDiagramMutation);
 
-  const deleteDiagramElements = useCallback(
-    (nodeIds: string[], edgeIds: string[], deletionPolicy: GQLDeletionPolicy) => {
-      const input: GQLDeleteFromDiagramInput = {
-        id: crypto.randomUUID(),
-        editingContextId,
-        representationId: diagramId,
-        nodeIds,
-        edgeIds,
-        deletionPolicy,
-      };
-      rawDeleteFromDiagram({ variables: { input } });
-    },
-    [editingContextId, diagramId, rawDeleteFromDiagram]
-  );
+  const deleteDiagramElements = (
+    editingContextId: string,
+    diagramId: string,
+    nodeIds: string[],
+    edgeIds: string[],
+    deletionPolicy: GQLDeletionPolicy
+  ) => {
+    const input: GQLDeleteFromDiagramInput = {
+      id: crypto.randomUUID(),
+      editingContextId,
+      representationId: diagramId,
+      nodeIds,
+      edgeIds,
+      deletionPolicy,
+    };
+    rawDeleteFromDiagram({ variables: { input } });
+  };
 
   useReporting(rawDeleteFromDiagramResult, (data: GQLDeleteFromDiagramData) => data.deleteFromDiagram);
 
-  return { deleteDiagramElements };
+  return {
+    deleteDiagramElements,
+    loading: rawDeleteFromDiagramResult.loading,
+    data: rawDeleteFromDiagramResult.data || null,
+  };
 };

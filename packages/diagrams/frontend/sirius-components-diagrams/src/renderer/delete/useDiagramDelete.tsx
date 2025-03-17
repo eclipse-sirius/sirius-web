@@ -25,7 +25,7 @@ export const useDiagramDelete = (): UseDiagramDeleteValue => {
   const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { getNodes } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
-  const { deleteDiagramElements } = useDelete(editingContextId, diagramId);
+  const { deleteDiagramElements } = useDelete();
 
   const onDelete = useCallback(
     (event: React.KeyboardEvent<Element>) => {
@@ -42,7 +42,7 @@ export const useDiagramDelete = (): UseDiagramDeleteValue => {
           .filter((node) => node.selected)
           .map((node) => node.id);
         showDeletionConfirmation(() => {
-          deleteDiagramElements(nodeToDeleteIds, [], GQLDeletionPolicy.SEMANTIC);
+          deleteDiagramElements(editingContextId, diagramId, nodeToDeleteIds, [], GQLDeletionPolicy.SEMANTIC);
         });
       }
     },

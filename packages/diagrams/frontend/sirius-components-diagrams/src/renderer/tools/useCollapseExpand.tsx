@@ -13,7 +13,6 @@
 
 import { gql, useMutation } from '@apollo/client';
 import { useReporting } from '@eclipse-sirius/sirius-components-core';
-import { useCallback } from 'react';
 import {
   GQLCollapsingState,
   GQLUpdateCollapsingStateData,
@@ -44,27 +43,33 @@ const updateCollapsingStateMutation = gql`
   }
 `;
 
-export const useCollapseExpand = (editingContextId: string, diagramId: string): UseCollapseExpandValue => {
+export const useCollapseExpand = (): UseCollapseExpandValue => {
   const [rawCollapseExpand, rawCollapseExpandResult] = useMutation<
     GQLUpdateCollapsingStateData,
     GQLUpdateCollapsingStateVariables
   >(updateCollapsingStateMutation);
 
-  const collapseExpandElement = useCallback(
-    (nodeId: string, collapsingState: GQLCollapsingState) => {
-      const input: GQLUpdateCollapsingStateInput = {
-        id: crypto.randomUUID(),
-        editingContextId,
-        representationId: diagramId,
-        diagramElementId: nodeId,
-        collapsingState,
-      };
-      rawCollapseExpand({ variables: { input } });
-    },
-    [editingContextId, diagramId, rawCollapseExpand]
-  );
+  const collapseExpandElement = (
+    editingContextId: string,
+    diagramId: string,
+    nodeId: string,
+    collapsingState: GQLCollapsingState
+  ) => {
+    const input: GQLUpdateCollapsingStateInput = {
+      id: crypto.randomUUID(),
+      editingContextId,
+      representationId: diagramId,
+      diagramElementId: nodeId,
+      collapsingState,
+    };
+    rawCollapseExpand({ variables: { input } });
+  };
 
   useReporting(rawCollapseExpandResult, (data: GQLUpdateCollapsingStateData) => data.collapseExpandDiagramElement);
 
-  return { collapseExpandElement };
+  return {
+    collapseExpandElement,
+    loading: rawCollapseExpandResult.loading,
+    data: rawCollapseExpandResult.data || null,
+  };
 };

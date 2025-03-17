@@ -22,11 +22,12 @@ import { GQLCollapsingState } from '../tools/useCollapseExpand.types';
 import { useDelete } from '../tools/useDelete';
 import { GQLDeletionPolicy } from '../tools/useDelete.types';
 import { useSingleClickTool } from '../tools/useSingleClickTool';
-import { GQLPalette, GQLTool } from './Palette.types';
+import { GQLTool } from './Palette.types';
 import { useDiagramElementPalette } from './useDiagramElementPalette';
 import { useDiagramPalette } from './useDiagramPalette';
 import { UsePaletteProps, UsePaletteValue } from './usePalette.types';
 import { usePaletteContents } from './usePaletteContents';
+import { UsePaletteContentValue } from './usePaletteContents.types';
 
 export const usePalette = ({
   x,
@@ -37,10 +38,10 @@ export const usePalette = ({
 }: UsePaletteProps): UsePaletteValue => {
   const { nodeLookup, edgeLookup, domNode } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
-  const palette: GQLPalette | null = usePaletteContents(diagramElementId);
-  const { invokeSingleClickTool } = useSingleClickTool(editingContextId, diagramId);
-  const { collapseExpandElement } = useCollapseExpand(editingContextId, diagramId);
-  const { deleteDiagramElements } = useDelete(editingContextId, diagramId);
+  const { palette }: UsePaletteContentValue = usePaletteContents(diagramElementId);
+  const { invokeSingleClickTool } = useSingleClickTool();
+  const { collapseExpandElement } = useCollapseExpand();
+  const { deleteDiagramElements } = useDelete();
 
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
   const { hideDiagramPalette, setLastToolInvoked } = useDiagramPalette();
@@ -54,9 +55,9 @@ export const usePalette = ({
 
   const invokeDelete = (diagramElementId: string, deletionPolicy: GQLDeletionPolicy) => {
     if (!!nodeLookup.get(diagramElementId)) {
-      deleteDiagramElements([diagramElementId], [], deletionPolicy);
+      deleteDiagramElements(editingContextId, diagramId, [diagramElementId], [], deletionPolicy);
     } else if (!!edgeLookup.get(diagramElementId)) {
-      deleteDiagramElements([], [diagramElementId], deletionPolicy);
+      deleteDiagramElements(editingContextId, diagramId, [], [diagramElementId], deletionPolicy);
     }
   };
 
@@ -75,13 +76,13 @@ export const usePalette = ({
         invokeDelete(diagramElementId, GQLDeletionPolicy.GRAPHICAL);
         break;
       case 'expand':
-        collapseExpandElement(diagramElementId, GQLCollapsingState.EXPANDED);
+        collapseExpandElement(editingContextId, diagramId, diagramElementId, GQLCollapsingState.EXPANDED);
         break;
       case 'collapse':
-        collapseExpandElement(diagramElementId, GQLCollapsingState.COLLAPSED);
+        collapseExpandElement(editingContextId, diagramId, diagramElementId, GQLCollapsingState.COLLAPSED);
         break;
       default:
-        invokeSingleClickTool(tool, diagramElementId, targetObjectId, x, y);
+        invokeSingleClickTool(editingContextId, diagramId, tool, diagramElementId, targetObjectId, x, y);
         break;
     }
     if (palette) {

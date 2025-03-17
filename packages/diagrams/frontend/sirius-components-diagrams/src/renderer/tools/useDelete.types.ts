@@ -13,7 +13,15 @@
 import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
 
 export interface UseDeleteValue {
-  deleteDiagramElements: (nodeIds: string[], edgeIds: string[], deletionPolicy: GQLDeletionPolicy) => void;
+  deleteDiagramElements: (
+    editingContextId: string,
+    diagramId: string,
+    nodeIds: string[],
+    edgeIds: string[],
+    deletionPolicy: GQLDeletionPolicy
+  ) => void;
+  loading: boolean;
+  data: GQLDeleteFromDiagramData | null;
 }
 
 export enum GQLDeletionPolicy {
