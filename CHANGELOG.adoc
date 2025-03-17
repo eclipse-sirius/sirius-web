@@ -104,6 +104,7 @@ The publication of a studio that references elements from imported libraries now
 +
 image:doc/screenshots/duplicationDialog.png[DuplicationDialog, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/4383[#4383] [sirius-web] Add support for representation duplication from explorer
+- https://github.com/eclipse-sirius/sirius-web/issues/4669[#4669] [diagram] Allow manual positioning of edge's handles by reconnecting an edge on the same node
 
 
 === Improvements
