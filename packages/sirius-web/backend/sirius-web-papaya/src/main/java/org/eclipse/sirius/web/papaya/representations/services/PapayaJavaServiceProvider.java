@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,7 +34,7 @@ public class PapayaJavaServiceProvider implements IJavaServiceProvider {
         var isPapayaRepresentation = view.getDescriptions().stream()
                 .anyMatch(representationDescription -> representationDescription.getDomainType().startsWith(PapayaPackage.eNS_PREFIX + ":"));
         if (isPapayaRepresentation) {
-            return List.of(PapayaRepresentationServices.class, ComponentDiagramServices.class, ClassDiagramServices.class);
+            return List.of(PapayaRepresentationServices.class, ComponentDiagramServices.class, ClassDiagramServices.class, PapayaTableServices.class);
         }
         return List.of();
     }

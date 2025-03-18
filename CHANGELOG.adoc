@@ -132,7 +132,7 @@ The publication of a studio that references elements from imported libraries now
 image:doc/screenshots/duplicationDialog.png[DuplicationDialog, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/4383[#4383] [sirius-web] Add support for representation duplication from explorer
 - https://github.com/eclipse-sirius/sirius-web/issues/4700[#4700] [view] It is now possible to set an edge as the source or target of an edge in the view dsl, following work will allow the actual rendering on the back-end and front-end.
-- https://github.com/eclipse-sirius/sirius-web/issues/4493[#4493] [sirius-web] Add an user indicator when a representation is loading 
+- https://github.com/eclipse-sirius/sirius-web/issues/4493[#4493] [sirius-web] Add an user indicator when a representation is loading
 - https://github.com/eclipse-sirius/sirius-web/issues/2807[#2807] [diagram] Add another experimental version of the SVG export.
 + Made in two steps, first it does the svg export of `html-to-image`, then use the result to create our own version.
 + We made this choice to rapidly solve the different css transform that `html-to-image` does for us.
@@ -156,6 +156,7 @@ An action is composed with a label, an icon, a precondition and a body.
 The body contains the operations available in the View DSL as they already exists for the tools for example.
 Actions are visible on nodes on diagrams, on the top right corner of the nodes, and represented by their icon set in the Action declaration in the View DSL.
 - https://github.com/eclipse-sirius/sirius-web/issues/4707[#4707] [diagram] Enable frontend rendering of edges that have another edge as source or target.
+- https://github.com/eclipse-sirius/sirius-web/issues/4710[#4710] [table] Add support for sorting tables
 
 
 === Improvements

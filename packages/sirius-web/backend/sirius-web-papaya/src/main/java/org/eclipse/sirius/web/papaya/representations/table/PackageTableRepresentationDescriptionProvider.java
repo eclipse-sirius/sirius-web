@@ -227,6 +227,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .targetObjectKindProvider(variableManager -> "")
                 .initialWidthProvider(variableManager -> 130)
                 .isResizablePredicate(variableManager -> false)
+                .isSortablePredicate(variableManager -> false)
                 .filterVariantProvider(variableManager -> "text")
                 .build();
 
@@ -239,6 +240,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .targetObjectKindProvider(variableManager -> "")
                 .initialWidthProvider(variableManager -> 250)
                 .isResizablePredicate(variableManager -> false)
+                .isSortablePredicate(variableManager -> false)
                 .filterVariantProvider(variableManager -> "range")
                 .build();
 
@@ -263,6 +265,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .targetObjectKindProvider(variableManager -> "")
                 .initialWidthProvider(variableManager -> 180)
                 .isResizablePredicate(variableManager -> true)
+                .isSortablePredicate(variableManager -> false)
                 .filterVariantProvider(variableManager -> "text")
                 .build();
         return List.of(iconColumnDescription, columnDescription, nbAnnotationsColumn);

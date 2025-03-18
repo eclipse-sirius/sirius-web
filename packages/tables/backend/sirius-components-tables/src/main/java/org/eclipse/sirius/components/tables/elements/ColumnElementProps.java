@@ -35,6 +35,7 @@ public record ColumnElementProps(
         boolean resizable,
         boolean hidden,
         String filterVariant,
+        boolean sortable,
         int index) implements IProps {
 
     public static final String TYPE = "Column";
@@ -83,6 +84,8 @@ public record ColumnElementProps(
         private boolean hidden;
 
         private String filterVariant;
+
+        private boolean sortable;
 
         private int index;
 
@@ -140,6 +143,11 @@ public record ColumnElementProps(
             return this;
         }
 
+        public Builder sortable(boolean sortable) {
+            this.sortable = sortable;
+            return this;
+        }
+
         public Builder index(int index) {
             this.index = index;
             return this;
@@ -147,7 +155,7 @@ public record ColumnElementProps(
 
         public ColumnElementProps build() {
             return new ColumnElementProps(this.id, this.descriptionId, this.headerLabel, this.headerIconURLs, this.headerIndexLabel, this.targetObjectId, this.targetObjectKind, this.width,
-                    this.resizable, this.hidden, this.filterVariant, this.index);
+                    this.resizable, this.hidden, this.filterVariant, this.sortable, this.index);
         }
     }
 }

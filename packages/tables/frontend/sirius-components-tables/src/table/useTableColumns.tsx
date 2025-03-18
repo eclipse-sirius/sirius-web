@@ -62,6 +62,7 @@ export const useTableColumns = (
         visibleInShowHideMenu: enableColumnVisibility,
         enableColumnDragging: enableColumnOrdering,
         enableColumnOrdering,
+        enableSorting: column.isSortable,
         Cell: ({ row }) => {
           const cell: GQLCell | null = row.original.cells.find((cell) => column.id === cell.columnId) ?? null;
           return (

@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { useTableRowFilters } from '../rows/filters/useTableRowFilters';
 import { TableContent } from '../table/TableContent';
-import { ColumnFilter } from '../table/TableContent.types';
+import { ColumnFilter, ColumnSort } from '../table/TableContent.types';
 import { tableIdProvider } from './tableIdProvider';
 import { TableRepresentationPagination, TableRepresentationState } from './TableRepresentation.types';
 import { useTableSubscription } from './useTableSubscription';
@@ -47,6 +47,7 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
     columnFilters: null,
     expanded: [],
     activeRowFilterIds: [],
+    columnSort: null,
   });
 
   const representationFullId = tableIdProvider(
@@ -57,7 +58,8 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
     state.globalFilter,
     state.columnFilters,
     state.expanded,
-    state.activeRowFilterIds
+    state.activeRowFilterIds,
+    state.columnSort
   );
 
   const { complete, table } = useTableSubscription(editingContextId, representationFullId);
@@ -99,6 +101,15 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
     }));
   };
 
+  const onSortingChange = (columnSort: ColumnSort[]) => {
+    setState((prevState) => ({
+      ...prevState,
+      cursor: defaultPagination.cursor,
+      direction: defaultPagination.direction,
+      columnSort,
+    }));
+  };
+
   const onExpandedElementChange = (rowId: string) => {
     if (state.expanded.includes(rowId)) {
       setState((prev) => ({ ...prev, expanded: prev.expanded.filter((id) => id !== rowId) }));
@@ -130,6 +141,7 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
           onColumnFiltersChange={onColumnFiltersChange}
           onExpandedElementChange={onExpandedElementChange}
           onRowFiltersChange={onRowFiltersChange}
+          onSortingChange={onSortingChange}
           enableColumnVisibility
           enableColumnResizing
           enableColumnFilters
@@ -141,6 +153,7 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
           expandedRowIds={state.expanded}
           rowFilters={rowFilters}
           activeRowFilterIds={state.activeRowFilterIds}
+          enableSorting
         />
       </div>
     );

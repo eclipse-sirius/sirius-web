@@ -674,7 +674,8 @@ INSERT INTO representation_content (
                 "id": "eabb569d-f99e-3e6e-86a6-db600b1fa526",
                 "value": "LIC"
             }
-        ]
+        ],
+        "columnSort": []
      }',
      'none',
      '0',
