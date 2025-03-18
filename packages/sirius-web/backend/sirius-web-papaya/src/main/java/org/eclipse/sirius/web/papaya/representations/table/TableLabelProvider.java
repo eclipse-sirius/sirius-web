@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,7 +36,8 @@ public class TableLabelProvider implements Function<VariableManager, String> {
     public String apply(VariableManager variableManager) {
         return variableManager.get(TableDescription.LABEL, String.class)
                 .orElseGet(() -> variableManager.get(VariableManager.SELF, Object.class)
-                        .map(this.labelService::getLabel)
+                        .map(this.labelService::getStyledLabel)
+                        .map(Objects::toString)
                         .orElse(null));
     }
 }

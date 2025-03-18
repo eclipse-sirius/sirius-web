@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,8 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.emf.forms.api.IEMFFormIfDescriptionProvider;
 import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.description.CheckboxDescription;
@@ -29,37 +31,43 @@ import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.springframework.stereotype.Service;
 
 /**
  * Provides the default description of the widget to use to support an EBoolean feature.
  *
  * @author sbegaudeau
  */
-public class EBooleanIfDescriptionProvider {
+@Service
+public class EBooleanIfDescriptionProvider implements IEMFFormIfDescriptionProvider {
 
-    private static final String IF_DESCRIPTION_ID = "EBoolean";
+    public static final String IF_DESCRIPTION_ID = "EBoolean";
 
     private static final String CHECKBOX_DESCRIPTION_ID = "Checkbox";
+
+    private final IIdentityService identityService;
 
     private final ComposedAdapterFactory composedAdapterFactory;
 
     private final IPropertiesValidationProvider propertiesValidationProvider;
 
-    private final Function<VariableManager, String> semanticTargetIdProvider;
-
-    public EBooleanIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider,
-            Function<VariableManager, String> semanticTargetIdProvider) {
+    public EBooleanIfDescriptionProvider(IIdentityService identityService, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider) {
+        this.identityService = Objects.requireNonNull(identityService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
-        this.semanticTargetIdProvider = Objects.requireNonNull(semanticTargetIdProvider);
     }
 
-    public IfDescription getIfDescription() {
-        return IfDescription.newIfDescription(IF_DESCRIPTION_ID)
-                .targetObjectIdProvider(this.semanticTargetIdProvider)
+    @Override
+    public List<IfDescription> getIfDescriptions() {
+        Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .map(this.identityService::getId)
+                .orElse(null);
+
+        return List.of(IfDescription.newIfDescription(IF_DESCRIPTION_ID)
+                .targetObjectIdProvider(targetObjectIdProvider)
                 .predicate(this.getPredicate())
                 .controlDescriptions(List.of(this.getCheckboxDescription()))
-                .build();
+                .build());
     }
 
     private Function<VariableManager, Boolean> getPredicate() {
@@ -72,8 +80,12 @@ public class EBooleanIfDescriptionProvider {
     }
 
     private CheckboxDescription getCheckboxDescription() {
+        Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .map(this.identityService::getId)
+                .orElse(null);
+
         return CheckboxDescription.newCheckboxDescription(CHECKBOX_DESCRIPTION_ID)
-                .targetObjectIdProvider(this.semanticTargetIdProvider)
+                .targetObjectIdProvider(targetObjectIdProvider)
                 .idProvider(new WidgetIdProvider())
                 .labelProvider(this.getLabelProvider())
                 .valueProvider(this.getValueProvider())

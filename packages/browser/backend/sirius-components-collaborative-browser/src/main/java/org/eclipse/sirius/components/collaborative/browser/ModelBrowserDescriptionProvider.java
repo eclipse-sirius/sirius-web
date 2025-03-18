@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.collaborative.browser.api.IModelBrowserRoot
 import org.eclipse.sirius.components.core.CoreImageConstants;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
@@ -78,6 +79,8 @@ public class ModelBrowserDescriptionProvider implements IEditingContextRepresent
 
     private final IObjectService objectService;
 
+    private final ILabelService labelService;
+
     private final IURLParser urlParser;
 
     private final IEMFKindService emfKindService;
@@ -86,8 +89,9 @@ public class ModelBrowserDescriptionProvider implements IEditingContextRepresent
 
     private final IModelBrowserRootCandidateSearchProvider defaultCandidateProvider;
 
-    public ModelBrowserDescriptionProvider(IObjectService objectService, IURLParser urlParser, IEMFKindService emfKindService, List<IModelBrowserRootCandidateSearchProvider> candidateProviders) {
+    public ModelBrowserDescriptionProvider(IObjectService objectService, ILabelService labelService, IURLParser urlParser, IEMFKindService emfKindService, List<IModelBrowserRootCandidateSearchProvider> candidateProviders) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.urlParser = Objects.requireNonNull(urlParser);
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.candidateProviders = Objects.requireNonNull(candidateProviders);
@@ -310,7 +314,7 @@ public class ModelBrowserDescriptionProvider implements IEditingContextRepresent
         Object self = variableManager.getVariables().get(VariableManager.SELF);
         List<String> imageURL = List.of(CoreImageConstants.DEFAULT_SVG);
         if (self instanceof EObject) {
-            imageURL = this.objectService.getImagePath(self);
+            imageURL = this.labelService.getImagePaths(self);
         } else if (self instanceof Resource) {
             imageURL = List.of("/reference-widget-images/Resource.svg");
         }
