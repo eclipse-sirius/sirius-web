@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -88,7 +88,7 @@ public class EdgeMappingConverterTests {
                 modelOperationHandlerSwitchProvider);
 
         EdgeDescription edgeDescription = edgeMappingConverter.convert(edgeMapping, new AQLInterpreter(List.of(), List.of()), id2NodeDescriptions);
-        assertThat(edgeDescription.getTargetNodeDescriptions()).contains(id2NodeDescriptions.get(containerMappingUUID));
+        assertThat(edgeDescription.getTargetDescriptions()).contains(id2NodeDescriptions.get(containerMappingUUID));
     }
 
     private NodeDescription createNodeDescription(String id) {
@@ -171,7 +171,7 @@ public class EdgeMappingConverterTests {
                 modelOperationHandlerSwitchProvider);
 
         EdgeDescription edgeDescription = edgeMappingConverter.convert(edgeMapping, new AQLInterpreter(List.of(), List.of()), id2NodeDescriptions);
-        assertThat(edgeDescription.getSourceNodeDescriptions()).contains(id2NodeDescriptions.get(containerMappingUUID));
+        assertThat(edgeDescription.getSourceDescriptions()).contains(id2NodeDescriptions.get(containerMappingUUID));
     }
 
     /**
@@ -209,7 +209,7 @@ public class EdgeMappingConverterTests {
                 modelOperationHandlerSwitchProvider);
 
         EdgeDescription edgeDescription = edgeMappingConverter.convert(edgeMapping, new AQLInterpreter(List.of(), List.of()), id2NodeDescriptions);
-        edgeDescription.getSourceNodeDescriptions().contains(id2NodeDescriptions.get(sourceContainerMappingUUID));
-        assertThat(edgeDescription.getTargetNodeDescriptions()).contains(id2NodeDescriptions.get(targetContainerMappingUUID));
+        edgeDescription.getSourceDescriptions().contains(id2NodeDescriptions.get(sourceContainerMappingUUID));
+        assertThat(edgeDescription.getTargetDescriptions()).contains(id2NodeDescriptions.get(targetContainerMappingUUID));
     }
 }

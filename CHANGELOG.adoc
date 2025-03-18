@@ -57,9 +57,11 @@ It now only contains the identifier of the tree item.
 Both properties were added to `SelectionEntry` years ago due to a leak in an abstraction used by the explorer.
 In the near future, we will start cleaning up the rest of the code by removing properties like `targetObjectKind` and `targetObjectLabel` which are now unnecessary.
 We will also remove `GQLTreeItem#kind` later.
-- https://github.com/eclipse-sirius/sirius-web/issues/4700[#4700] [view-diagram] The following attributes of `EdgeDescription` have been renamed : `sourceNodesDescriptions to sourceDescriptions`, `targetNodeDescriptions to targetDescriptions`, `sourceNodeExpression to sourceExpression` and `targetNodesExpression to targetExpression`.
+- https://github.com/eclipse-sirius/sirius-web/issues/4700[#4700] [view] The following attributes of `EdgeDescription` have been renamed : `sourceNodesDescriptions to sourceDescriptions`, `targetNodeDescriptions to targetDescriptions`, `sourceNodeExpression to sourceExpression` and `targetNodesExpression to targetExpression`.
 - https://github.com/eclipse-sirius/sirius-web/issues/4714[#4174] [sirius-web] Default routes are contributed thanks to the router extension point.
 Downstream projects contributing their own route will have to use a `ExtensionRegistryMergeStrategy` to either merge their contribution to the sirius-web one, or to add sirius-web routes to their own contribution.
+- https://github.com/eclipse-sirius/sirius-web/issues/4706[#4706] [diagram] The following attributes of `org.eclipse.sirius.components.diagrams.description.EdgeDescription` have been renamed : `sourceNodeDescriptions to sourceDescriptions`, `targetNodeDescriptions to targetDescriptions`, `sourceNodesProvider to sourceProvider` and `targetNodesProvider to targetProvider`.
+
 
 === Dependency update
 
@@ -111,8 +113,8 @@ The publication of a studio that references elements from imported libraries now
 +
 image:doc/screenshots/duplicationDialog.png[DuplicationDialog, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/4383[#4383] [sirius-web] Add support for representation duplication from explorer
-- https://github.com/eclipse-sirius/sirius-web/issues/4700[#4700] [view-diagram] It is now possible to set an edge as the source or target of an edge in the view dsl, following work will allow the actual rendering on the back-end and front-end.
-- https://github.com/eclipse-sirius/sirius-web/issues/4493[#4493] [sirius-web] Add an user indicator when a representation is loading
+- https://github.com/eclipse-sirius/sirius-web/issues/4700[#4700] [view] It is now possible to set an edge as the source or target of an edge in the view dsl, following work will allow the actual rendering on the back-end and front-end.
+- https://github.com/eclipse-sirius/sirius-web/issues/4493[#4493] [sirius-web] Add an user indicator when a representation is loading 
 - https://github.com/eclipse-sirius/sirius-web/issues/2807[#2807] [diagram] Add another experimental version of the SVG export.
 + Made in two steps, first it does the svg export of `html-to-image`, then use the result to create our own version.
 + We made this choice to rapidly solve the different css transform that `html-to-image` does for us.
@@ -125,6 +127,7 @@ Update operations producing dependencies to different versions of the same libra
 The existing update implementation assumes that the identifiers of documents contained in libraries are stable across versions of the library.
 The implementation of the library update mechanism is generic and works on any project containing EMF resources.
 - https://github.com/eclipse-sirius/sirius-web/issues/4375[#4375] [diagram] Add support for a first version of impact analysis before tool execution.
+- https://github.com/eclipse-sirius/sirius-web/issues/4706[#4706] [diagram] The back-end now render edges that have for source or target another edge (only if this edge have for source or target a node), an edge won't be rendered if both his source and target are another edge.
 
 
 === Improvements

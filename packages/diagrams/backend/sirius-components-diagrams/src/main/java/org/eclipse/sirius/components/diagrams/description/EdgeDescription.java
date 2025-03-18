@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -77,13 +77,13 @@ public final class EdgeDescription implements IDiagramElementDescription {
 
     private LabelDescription endLabelDescription;
 
-    private List<NodeDescription> sourceNodeDescriptions;
+    private List<IDiagramElementDescription> sourceDescriptions;
 
-    private List<NodeDescription> targetNodeDescriptions;
+    private List<IDiagramElementDescription> targetDescriptions;
 
-    private Function<VariableManager, List<Element>> sourceNodesProvider;
+    private Function<VariableManager, List<Element>> sourceProvider;
 
-    private Function<VariableManager, List<Element>> targetNodesProvider;
+    private Function<VariableManager, List<Element>> targetProvider;
 
     private Function<VariableManager, EdgeStyle> styleProvider;
 
@@ -140,20 +140,20 @@ public final class EdgeDescription implements IDiagramElementDescription {
         return this.endLabelDescription;
     }
 
-    public List<NodeDescription> getSourceNodeDescriptions() {
-        return this.sourceNodeDescriptions;
+    public List<IDiagramElementDescription> getSourceDescriptions() {
+        return this.sourceDescriptions;
     }
 
-    public List<NodeDescription> getTargetNodeDescriptions() {
-        return this.targetNodeDescriptions;
+    public List<IDiagramElementDescription> getTargetDescriptions() {
+        return this.targetDescriptions;
     }
 
-    public Function<VariableManager, List<Element>> getSourceNodesProvider() {
-        return this.sourceNodesProvider;
+    public Function<VariableManager, List<Element>> getSourceProvider() {
+        return this.sourceProvider;
     }
 
-    public Function<VariableManager, List<Element>> getTargetNodesProvider() {
-        return this.targetNodesProvider;
+    public Function<VariableManager, List<Element>> getTargetProvider() {
+        return this.targetProvider;
     }
 
     public Function<VariableManager, EdgeStyle> getStyleProvider() {
@@ -170,8 +170,8 @@ public final class EdgeDescription implements IDiagramElementDescription {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, sourceNodeDescriptionCount: {2}, targetNodeDescriptionCount: {3}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.sourceNodeDescriptions.size(), this.targetNodeDescriptions.size());
+        String pattern = "{0} '{'id: {1}, sourceDescriptionCount: {2}, targetDescriptionCount: {3}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.sourceDescriptions.size(), this.targetDescriptions.size());
     }
 
     /**
@@ -202,13 +202,13 @@ public final class EdgeDescription implements IDiagramElementDescription {
 
         private LabelDescription endLabelDescription;
 
-        private List<NodeDescription> sourceNodeDescriptions;
+        private List<IDiagramElementDescription> sourceDescriptions;
 
-        private List<NodeDescription> targetNodeDescriptions;
+        private List<IDiagramElementDescription> targetDescriptions;
 
-        private Function<VariableManager, List<Element>> sourceNodesProvider;
+        private Function<VariableManager, List<Element>> sourceProvider;
 
-        private Function<VariableManager, List<Element>> targetNodesProvider;
+        private Function<VariableManager, List<Element>> targetProvider;
 
         private Function<VariableManager, EdgeStyle> styleProvider;
 
@@ -265,24 +265,24 @@ public final class EdgeDescription implements IDiagramElementDescription {
             return this;
         }
 
-        public Builder sourceNodeDescriptions(List<NodeDescription> sourceNodeDescriptions) {
-            this.sourceNodeDescriptions = Objects.requireNonNull(sourceNodeDescriptions);
+        public Builder sourceDescriptions(List<IDiagramElementDescription> sourceDescriptions) {
+            this.sourceDescriptions = Objects.requireNonNull(sourceDescriptions);
             return this;
         }
 
-        public Builder targetNodeDescriptions(List<NodeDescription> targetNodeDescriptions) {
-            this.targetNodeDescriptions = Objects.requireNonNull(targetNodeDescriptions);
+        public Builder targetDescriptions(List<IDiagramElementDescription> targetDescriptions) {
+            this.targetDescriptions = Objects.requireNonNull(targetDescriptions);
             return this;
         }
 
-        public Builder sourceNodesProvider(Function<VariableManager, List<Element>> sourceNodesProvider) {
-            this.sourceNodesProvider = Objects.requireNonNull(sourceNodesProvider);
+        public Builder sourceProvider(Function<VariableManager, List<Element>> sourceProvider) {
+            this.sourceProvider = Objects.requireNonNull(sourceProvider);
             return this;
 
         }
 
-        public Builder targetNodesProvider(Function<VariableManager, List<Element>> targetNodesProvider) {
-            this.targetNodesProvider = Objects.requireNonNull(targetNodesProvider);
+        public Builder targetProvider(Function<VariableManager, List<Element>> targetProvider) {
+            this.targetProvider = Objects.requireNonNull(targetProvider);
             return this;
         }
 
@@ -308,19 +308,20 @@ public final class EdgeDescription implements IDiagramElementDescription {
             edgeDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             edgeDescription.targetObjectKindProvider = Objects.requireNonNull(this.targetObjectKindProvider);
             edgeDescription.targetObjectLabelProvider = Objects.requireNonNull(this.targetObjectLabelProvider);
-            edgeDescription.sourceNodeDescriptions = Objects.requireNonNull(this.sourceNodeDescriptions);
-            edgeDescription.targetNodeDescriptions = Objects.requireNonNull(this.targetNodeDescriptions);
+            edgeDescription.sourceDescriptions = Objects.requireNonNull(this.sourceDescriptions);
+            edgeDescription.targetDescriptions = Objects.requireNonNull(this.targetDescriptions);
             edgeDescription.semanticElementsProvider = Objects.requireNonNull(this.semanticElementsProvider);
             edgeDescription.shouldRenderPredicate = Objects.requireNonNull(this.shouldRenderPredicate);
             edgeDescription.beginLabelDescription = this.beginLabelDescription;
             edgeDescription.centerLabelDescription = this.centerLabelDescription;
             edgeDescription.endLabelDescription = this.endLabelDescription;
-            edgeDescription.sourceNodesProvider = Objects.requireNonNull(this.sourceNodesProvider);
-            edgeDescription.targetNodesProvider = Objects.requireNonNull(this.targetNodesProvider);
+            edgeDescription.sourceProvider = Objects.requireNonNull(this.sourceProvider);
+            edgeDescription.targetProvider = Objects.requireNonNull(this.targetProvider);
             edgeDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
             edgeDescription.deleteHandler = Objects.requireNonNull(this.deleteHandler);
             edgeDescription.labelEditHandler = this.labelEditHandler; // Optional on purpose
             return edgeDescription;
         }
+
     }
 }

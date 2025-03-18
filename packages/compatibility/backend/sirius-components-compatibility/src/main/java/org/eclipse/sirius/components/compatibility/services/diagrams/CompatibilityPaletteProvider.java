@@ -301,7 +301,7 @@ public class CompatibilityPaletteProvider implements IPaletteProvider {
             if (domainEdgeMapping.isPresent()) {
                 targetDescriptions.add(edgeDescription);
             } else {
-                targetDescriptions.addAll(edgeDescription.getSourceNodeDescriptions());
+                targetDescriptions.addAll(edgeDescription.getSourceDescriptions());
             }
             unsynchronizedMapping = SynchronizationPolicy.UNSYNCHRONIZED.equals(edgeDescription.getSynchronizationPolicy());
         }

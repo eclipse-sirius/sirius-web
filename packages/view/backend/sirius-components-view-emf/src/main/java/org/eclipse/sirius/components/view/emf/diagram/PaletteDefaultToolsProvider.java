@@ -67,7 +67,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
             targetDescriptions.add(nodeDescription);
             unsynchronizedMapping = SynchronizationPolicy.UNSYNCHRONIZED.equals(nodeDescription.getSynchronizationPolicy());
         } else if (diagramElementDescription instanceof EdgeDescription edgeDescription) {
-            targetDescriptions.addAll(edgeDescription.getSourceNodeDescriptions());
+            targetDescriptions.addAll(edgeDescription.getSourceDescriptions());
             unsynchronizedMapping = SynchronizationPolicy.UNSYNCHRONIZED.equals(edgeDescription.getSynchronizationPolicy());
         }
 

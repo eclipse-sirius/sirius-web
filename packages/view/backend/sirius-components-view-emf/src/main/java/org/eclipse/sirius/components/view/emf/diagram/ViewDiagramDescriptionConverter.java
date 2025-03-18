@@ -19,6 +19,7 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -56,6 +57,7 @@ import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.OutsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
+import org.eclipse.sirius.components.diagrams.elements.EdgeElementProps;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.sirius.components.emf.DomainClassPredicate;
@@ -142,10 +144,16 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
         // Nodes must be fully converted first.
         List<NodeDescription> nodeDescriptions = viewDiagramDescription.getNodeDescriptions().stream().map(node -> this.convert(node, converterContext, stylesFactory)).toList();
-        // Filter edges on edges that will be supported in a later PR
-        List<EdgeDescription> edgeDescriptions = viewDiagramDescription.getEdgeDescriptions().stream()
-                .filter(this::edgeDescriptionToConsider)
+        // Edges that have a node as source or target
+        List<org.eclipse.sirius.components.view.diagram.EdgeDescription> edgeDescriptionsWithNodesAsSourceOrTarget = viewDiagramDescription.getEdgeDescriptions().stream()
+                .filter(this::edgeDescriptionWithNodesAsSourceAndTargetToConsider).toList();
+        // Edges that have candidates edges as source or target
+        List<org.eclipse.sirius.components.view.diagram.EdgeDescription> edgeDescriptionsWithAnotherEdgeAsSourceOrTarget = viewDiagramDescription.getEdgeDescriptions().stream()
+                .filter(edgeDescription -> this.edgeDescriptionWithAnotherEdgeAsSourceOrTargetToConsider(edgeDescription, edgeDescriptionsWithNodesAsSourceOrTarget)).toList();
+        // Edges that have a node as source or target must be fully converted first
+        List<EdgeDescription> edgeDescriptions = Stream.concat(edgeDescriptionsWithNodesAsSourceOrTarget.stream(), edgeDescriptionsWithAnotherEdgeAsSourceOrTarget.stream())
                 .map(edge -> this.convert(edge, converterContext, stylesFactory)).toList();
+
         var toolConverter = new ToolConverter(this.objectService, this.editService, this.viewToolImageProvider, this.feedbackMessageService, this.diagramIdProvider);
 
         var builder = DiagramDescription.newDiagramDescription(this.diagramIdProvider.getId(viewDiagramDescription))
@@ -179,15 +187,33 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
     }
 
     /**
-     * Used to filter the edge descriptions that are supported by Sirius Web.
-     * We will only consider edge descriptions that are using node descriptions as their sources and targets.
+     * Used to filter the edge descriptions that are using node descriptions as their sources and targets.
      *
      * @param edgeDescription The edge description
      * @return true if we will use the edge description, false otherwise
      */
-    private boolean edgeDescriptionToConsider(org.eclipse.sirius.components.view.diagram.EdgeDescription edgeDescription) {
+    private boolean edgeDescriptionWithNodesAsSourceAndTargetToConsider(org.eclipse.sirius.components.view.diagram.EdgeDescription edgeDescription) {
         return edgeDescription.getTargetDescriptions().stream().allMatch(org.eclipse.sirius.components.view.diagram.NodeDescription.class::isInstance)
                 && edgeDescription.getSourceDescriptions().stream().allMatch(org.eclipse.sirius.components.view.diagram.NodeDescription.class::isInstance);
+    }
+
+    /**
+     * Used to filter the edge descriptions that are supported by Sirius Web.
+     * We will only consider edge descriptions that are using node descriptions as their sources and targets
+     * or another edge that is using node descriptions as their sources and targets
+     *
+     * @param edgeDescription The edge description
+     * @param candidateEdgeDescriptions The edges that can be used as source or target
+     * @return true if we will use the edge description, false otherwise
+     */
+    private boolean edgeDescriptionWithAnotherEdgeAsSourceOrTargetToConsider(org.eclipse.sirius.components.view.diagram.EdgeDescription edgeDescription, List<org.eclipse.sirius.components.view.diagram.EdgeDescription> candidateEdgeDescriptions) {
+        return !candidateEdgeDescriptions.contains(edgeDescription) &&
+                (edgeDescription.getTargetDescriptions().stream()
+                        .allMatch(description -> description instanceof org.eclipse.sirius.components.view.diagram.NodeDescription
+                                || (description instanceof org.eclipse.sirius.components.view.diagram.EdgeDescription && candidateEdgeDescriptions.contains(description)))
+                && edgeDescription.getSourceDescriptions().stream()
+                        .allMatch(description -> description instanceof org.eclipse.sirius.components.view.diagram.NodeDescription
+                                || (description instanceof org.eclipse.sirius.components.view.diagram.EdgeDescription && candidateEdgeDescriptions.contains(description))));
     }
 
     private Function<VariableManager, IStatus> createDiagramDropHandler(org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription,
@@ -515,9 +541,9 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             return result.asBoolean().orElse(true);
         };
 
-        Function<VariableManager, List<Element>> sourceNodesProvider = null;
+        Function<VariableManager, List<Element>> sourceProvider = null;
         if (viewEdgeDescription.isIsDomainBasedEdge()) {
-            sourceNodesProvider = variableManager -> {
+            sourceProvider = variableManager -> {
                 var optionalCache = variableManager.get(DiagramDescription.CACHE, DiagramRenderingCache.class);
                 if (optionalCache.isEmpty()) {
                     return List.of();
@@ -527,15 +553,15 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
                 Result result = interpreter.evaluateExpression(variableManager.getVariables(), sourceFinderExpression);
                 List<Object> semanticCandidates = result.asObjects().orElse(List.of());
-                var nodeCandidates = semanticCandidates.stream().flatMap(semanticObject -> cache.getElementsRepresenting(semanticObject).stream());
+                var diagramElementCandidates = semanticCandidates.stream().flatMap(semanticObject -> cache.getElementsRepresenting(semanticObject).stream());
 
-                return nodeCandidates
-                        .filter(nodeElement -> viewEdgeDescription.getSourceDescriptions().stream().anyMatch(nodeDescription -> this.isFromDescription(nodeElement, nodeDescription)))
+                return diagramElementCandidates
+                        .filter(diagramElement -> viewEdgeDescription.getSourceDescriptions().stream().anyMatch(description -> this.isFromDescription(diagramElement, description)))
                         .filter(Objects::nonNull)
                         .toList();
             };
         } else {
-            sourceNodesProvider = variableManager -> {
+            sourceProvider = variableManager -> {
                 var optionalObject = variableManager.get(VariableManager.SELF, Object.class);
                 var optionalCache = variableManager.get(DiagramDescription.CACHE, DiagramRenderingCache.class);
                 if (optionalObject.isEmpty() || optionalCache.isEmpty()) {
@@ -552,7 +578,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             };
         }
 
-        Function<VariableManager, List<Element>> targetNodesProvider = new TargetNodesProvider(this.diagramIdProvider, viewEdgeDescription, interpreter);
+        Function<VariableManager, List<Element>> targetProvider = new TargetProvider(this.diagramIdProvider, viewEdgeDescription, interpreter);
 
         Function<VariableManager, EdgeStyle> styleProvider = variableManager -> {
             var effectiveStyle = viewEdgeDescription.getConditionalStyles().stream()
@@ -569,13 +595,13 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .targetObjectKindProvider(this.semanticTargetKindProvider)
                 .targetObjectLabelProvider(this.semanticTargetLabelProvider)
-                .sourceNodeDescriptions(viewEdgeDescription.getSourceDescriptions().stream().map(converterContext.getConvertedNodes()::get).toList())
-                .targetNodeDescriptions(viewEdgeDescription.getTargetDescriptions().stream().map(converterContext.getConvertedNodes()::get).toList())
+                .sourceDescriptions(viewEdgeDescription.getSourceDescriptions().stream().map(converterContext.getConvertedElements()::get).toList())
+                .targetDescriptions(viewEdgeDescription.getTargetDescriptions().stream().map(converterContext.getConvertedElements()::get).toList())
                 .semanticElementsProvider(semanticElementsProvider)
                 .shouldRenderPredicate(shouldRenderPredicate)
                 .synchronizationPolicy(synchronizationPolicy)
-                .sourceNodesProvider(sourceNodesProvider)
-                .targetNodesProvider(targetNodesProvider)
+                .sourceProvider(sourceProvider)
+                .targetProvider(targetProvider)
                 .styleProvider(styleProvider)
                 .deleteHandler(this.createDeleteHandler(viewEdgeDescription, converterContext));
 
@@ -700,14 +726,12 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
     }
 
     private Predicate<Element> isFromCompatibleSourceMapping(org.eclipse.sirius.components.view.diagram.EdgeDescription edgeDescription) {
-        return nodeElement -> edgeDescription.getSourceDescriptions().stream().anyMatch(nodeDescription -> this.isFromDescription(nodeElement, nodeDescription));
+        return diagramElement -> edgeDescription.getSourceDescriptions().stream().anyMatch(description -> this.isFromDescription(diagramElement, description));
     }
 
-    private boolean isFromDescription(Element nodeElement, DiagramElementDescription diagramElementDescription) {
-        if (nodeElement.getProps() instanceof NodeElementProps props) {
-            return Objects.equals(this.diagramIdProvider.getId(diagramElementDescription), props.getDescriptionId());
-        }
-        return false;
+    private boolean isFromDescription(Element diagramElement, DiagramElementDescription diagramElementDescription) {
+        return diagramElement.getProps() instanceof NodeElementProps nodeElementProps && Objects.equals(this.diagramIdProvider.getId(diagramElementDescription), nodeElementProps.getDescriptionId())
+                || diagramElement.getProps() instanceof EdgeElementProps edgeElementProps && Objects.equals(this.diagramIdProvider.getId(diagramElementDescription), edgeElementProps.getDescriptionId());
     }
 
     private Optional<Object> self(VariableManager variableManager) {
