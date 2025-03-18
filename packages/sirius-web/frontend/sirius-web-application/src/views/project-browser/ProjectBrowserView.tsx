@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,7 @@ import { NavigationBar } from '../../navigationBar/NavigationBar';
 import { CreateProjectArea } from './create-projects-area/CreateProjectArea';
 import { ListProjectsArea } from './list-projects-area/ListProjectsArea';
 
-const useProjectsViewStyles = makeStyles()((theme) => ({
+const useProjectBrowserViewStyles = makeStyles()((theme) => ({
   projectsView: {
     display: 'grid',
     gridTemplateColumns: '1fr',
@@ -35,8 +35,8 @@ const useProjectsViewStyles = makeStyles()((theme) => ({
   },
 }));
 
-export const ProjectBrowser = () => {
-  const { classes } = useProjectsViewStyles();
+export const ProjectBrowserView = () => {
+  const { classes } = useProjectBrowserViewStyles();
   const { Component: Footer } = useComponent(footerExtensionPoint);
 
   return (

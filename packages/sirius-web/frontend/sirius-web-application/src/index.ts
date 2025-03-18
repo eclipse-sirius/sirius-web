@@ -66,6 +66,7 @@ export {
 } from './navigationBar/NavigationBarMenuExtensionPoints';
 export { ImportLibraryCommand } from './omnibox/ImportLibraryCommand';
 export { routerExtensionPoint } from './router/RouterExtensionPoints';
+export { DisplayLibraryView } from './views/display-library/DisplayLibraryView';
 export type {
   EditProjectNavbarMenuContainerProps,
   EditProjectNavbarMenuEntryProps,
@@ -75,6 +76,7 @@ export {
   editProjectNavbarMenuContainerExtensionPoint,
   editProjectNavbarMenuEntryExtensionPoint,
 } from './views/edit-project/EditProjectNavbar/EditProjectNavbarMenuExtensionPoints';
+export { EditProjectView } from './views/edit-project/EditProjectView';
 export { type ProjectReadOnlyPredicate } from './views/edit-project/EditProjectView.types';
 export { editProjectViewReadOnlyPredicateExtensionPoint } from './views/edit-project/EditProjectViewExtensionPoints';
 export { useCurrentProject } from './views/edit-project/useCurrentProject';
@@ -97,6 +99,8 @@ export {
 export { ErrorView } from './views/error/ErrorView';
 export { type ErrorMessageProvider } from './views/error/ErrorView.types';
 export { errorMessageProvidersExtensionPoint } from './views/error/ErrorViewExtensionPoints';
+export { LibraryBrowserView } from './views/library-browser/LibraryBrowserView';
+export { NewProjectView } from './views/new-project/NewProjectView';
 export { type CreateProjectAreaCardProps } from './views/project-browser/create-projects-area/CreateProjectArea.types';
 export { createProjectAreaCardExtensionPoint } from './views/project-browser/create-projects-area/CreateProjectAreaExtensionPoints';
 export { ProjectActionButton } from './views/project-browser/list-projects-area/ProjectActionButton';
@@ -107,12 +111,15 @@ export {
 } from './views/project-browser/list-projects-area/ProjectContextMenuExtensionPoints';
 export { type ProjectRowProps } from './views/project-browser/list-projects-area/ProjectRow.types';
 export { projectsTableRowExtensionPoint } from './views/project-browser/list-projects-area/ProjectsTableExtensionPoints';
+export { ProjectBrowserView } from './views/project-browser/ProjectBrowserView';
 export { type ProjectImagesSettingsModal } from './views/project-settings/images/ProjectImagesSettings.types';
 export { UploadImageModal } from './views/project-settings/images/upload-image/UploadImageModal';
 export { useProjectImages } from './views/project-settings/images/useProjectImages';
 export { type GQLImageMetadata } from './views/project-settings/images/useProjectImages.types';
+export { ProjectSettingsView } from './views/project-settings/ProjectSettingsView';
 export {
   type ProjectSettingTabContribution,
   type ProjectSettingTabProps,
 } from './views/project-settings/ProjectSettingsView.types';
 export * from './views/project-settings/ProjectSettingsViewExtensionPoints';
+export { UploadProjectView } from './views/upload-project/UploadProjectView';

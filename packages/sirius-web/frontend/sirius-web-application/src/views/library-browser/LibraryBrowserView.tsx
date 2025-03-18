@@ -20,11 +20,11 @@ import { Link } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { footerExtensionPoint } from '../../footer/FooterExtensionPoints';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
-import { LibrariesTableProps, LibrariesTableState } from './LibraryBrowser.types';
+import { LibrariesTableProps, LibrariesTableState } from './LibraryBrowserView.types';
 import { useLibraries } from './useLibraries';
 import { GQLLibrary } from './useLibraries.types';
 
-const useLibrariesViewStyle = makeStyles()((theme) => ({
+const useLibraryBrowserViewStyle = makeStyles()((theme) => ({
   librariesView: {
     display: 'grid',
     gridTemplateColumns: '1fr',
@@ -46,8 +46,8 @@ const useLibrariesViewStyle = makeStyles()((theme) => ({
   },
 }));
 
-export const LibraryBrowser = () => {
-  const { classes } = useLibrariesViewStyle();
+export const LibraryBrowserView = () => {
+  const { classes } = useLibraryBrowserViewStyle();
   const { Component: Footer } = useComponent(footerExtensionPoint);
 
   return (
