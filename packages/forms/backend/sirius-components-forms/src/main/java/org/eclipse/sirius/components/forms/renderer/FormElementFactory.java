@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -87,7 +87,7 @@ public class FormElementFactory implements IElementFactory {
 
     private final List<IWidgetDescriptor> widgetDescriptors;
 
-    private final TableElementFactory tableElementFactory = new TableElementFactory();
+    private final TableElementFactory tableElementFactory = new TableElementFactory(List.of());
 
     public FormElementFactory(List<IWidgetDescriptor> widgetDescriptors) {
         this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);

@@ -12,11 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.tables.renderer;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.representations.BaseRenderer;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.tables.Table;
+import org.eclipse.sirius.components.tables.components.ICustomCellDescriptor;
 
 /**
  * Renderer used to create table representations.
@@ -34,8 +36,8 @@ public class TableRenderer {
 
     private final BaseRenderer baseRenderer;
 
-    public TableRenderer() {
-        this.baseRenderer = new BaseRenderer(new TableInstancePropsValidator(), new TableComponentPropsValidator(), new TableElementFactory());
+    public TableRenderer(List<ICustomCellDescriptor> customCellDescriptors) {
+        this.baseRenderer = new BaseRenderer(new TableInstancePropsValidator(customCellDescriptors), new TableComponentPropsValidator(customCellDescriptors), new TableElementFactory(customCellDescriptors));
     }
 
     public Table render(Element element) {

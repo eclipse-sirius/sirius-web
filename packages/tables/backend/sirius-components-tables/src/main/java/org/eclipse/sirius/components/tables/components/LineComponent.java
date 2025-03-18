@@ -161,6 +161,13 @@ public class LineComponent implements IComponent {
             } else if (cellDescription instanceof IconLabelCellDescription iconLabelCellDescription) {
                 var cellComponentProps = new IconLabelCellComponentProps(variableManager, iconLabelCellDescription, cellId, columnId, columnTargetObject);
                 cellElement = new Element(IconLabelCellComponent.class, cellComponentProps);
+            } else {
+                cellElement = this.props.customCellDescriptors().stream()
+                        .map(widgetDescriptor -> widgetDescriptor.createElement(variableManager, cellDescription, cellId, columnId, columnTargetObject))
+                        .filter(Optional::isPresent)
+                        .findFirst()
+                        .map(Optional::get)
+                        .orElse(null);
             }
             if (cellElement != null) {
                 elements.add(cellElement);

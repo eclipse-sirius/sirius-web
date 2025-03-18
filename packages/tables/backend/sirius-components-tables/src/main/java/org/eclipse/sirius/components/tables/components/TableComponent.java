@@ -85,7 +85,9 @@ public class TableComponent implements IComponent {
 
         var previousLines = optionalPreviousTable.map(previousTable -> tableElementRequestor.getRootLines(previousTable, tableDescription.getLineDescription())).orElse(List.of());
         ILinesRequestor linesRequestor = new LinesRequestor(previousLines);
-        var lineComponentProps = new LineComponentProps(variableManager, tableDescription.getLineDescription(), tableDescription.getCellDescriptions(), linesRequestor, cache, id, paginatedData.rows(), this.props.tableEvents());
+        var lineComponentProps = new LineComponentProps(variableManager, tableDescription.getLineDescription(), tableDescription.getCellDescriptions(), linesRequestor,
+                this.props.customCellDescriptors(), cache, id,
+                paginatedData.rows(), this.props.tableEvents());
         var childrenLine = new Element(LineComponent.class, lineComponentProps);
 
         List<Element> children = new ArrayList<>(childrenColumns);

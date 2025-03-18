@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,7 @@ public record LineComponentProps(
         LineDescription lineDescription,
         List<ICellDescription> cellDescriptions,
         ILinesRequestor linesRequestor,
+        List<ICustomCellDescriptor> customCellDescriptors,
         TableRenderingCache cache,
         String parentElementId,
         List<Object> semanticRowElements,
@@ -42,6 +43,7 @@ public record LineComponentProps(
         Objects.requireNonNull(lineDescription);
         Objects.requireNonNull(cellDescriptions);
         Objects.requireNonNull(linesRequestor);
+        Objects.requireNonNull(customCellDescriptors);
         Objects.requireNonNull(cache);
         Objects.requireNonNull(parentElementId);
         Objects.requireNonNull(semanticRowElements);

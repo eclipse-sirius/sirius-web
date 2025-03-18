@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchSe
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.tables.ColumnFilter;
 import org.eclipse.sirius.components.tables.Table;
+import org.eclipse.sirius.components.tables.components.ICustomCellDescriptor;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 import org.springframework.stereotype.Service;
 
@@ -67,10 +68,10 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
 
     private final IURLParser urlParser;
 
-    private final TableQueryService tableQueryService;
+    private final List<ICustomCellDescriptor> customCellDescriptors;
 
     public TableEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, IRepresentationPersistenceService representationPersistenceService,
-            IObjectService objectService, List<ITableEventHandler> tableEventHandlers, IURLParser urlParser) {
+            IObjectService objectService, List<ITableEventHandler> tableEventHandlers, IURLParser urlParser, List<ICustomCellDescriptor> customCellDescriptors) {
         this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
         this.representationDescriptionSearchService = Objects.requireNonNull(configuration.getRepresentationDescriptionSearchService());
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
@@ -79,7 +80,7 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
         this.subscriptionManagerFactory = Objects.requireNonNull(configuration.getSubscriptionManagerFactory());
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
         this.urlParser = Objects.requireNonNull(urlParser);
-        this.tableQueryService = new TableQueryService();
+        this.customCellDescriptors = Objects.requireNonNull(customCellDescriptors);
     }
 
     @Override
@@ -109,6 +110,7 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
                         .globalFilter(this.getGlobalFilter(representationId, table))
                         .columnFilters(this.getColumnFilters(representationId, table))
                         .expanded(this.getExpandedIdsFromRepresentationId(representationId, table))
+                        .customCellDescriptors(this.customCellDescriptors)
                         .build();
 
                 IRepresentationEventProcessor tableEventProcessor = new TableEventProcessor(tableCreationParameters, this.tableEventHandlers, new TableContext(table),

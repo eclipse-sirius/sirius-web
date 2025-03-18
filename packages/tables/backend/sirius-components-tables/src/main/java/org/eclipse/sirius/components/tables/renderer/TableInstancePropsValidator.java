@@ -12,8 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.tables.renderer;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
 import org.eclipse.sirius.components.representations.IInstancePropsValidator;
 import org.eclipse.sirius.components.representations.IProps;
+import org.eclipse.sirius.components.tables.components.ICustomCellDescriptor;
 import org.eclipse.sirius.components.tables.elements.CheckboxCellElementProps;
 import org.eclipse.sirius.components.tables.elements.ColumnElementProps;
 import org.eclipse.sirius.components.tables.elements.IconLabelCellElementProps;
@@ -30,6 +35,12 @@ import org.eclipse.sirius.components.tables.elements.TextfieldCellElementProps;
  * @author arichard
  */
 public class TableInstancePropsValidator implements IInstancePropsValidator {
+
+    private final List<ICustomCellDescriptor> customCellDescriptors;
+
+    public TableInstancePropsValidator(List<ICustomCellDescriptor> customCellDescriptors) {
+        this.customCellDescriptors = Objects.requireNonNull(customCellDescriptors);
+    }
 
     @Override
     public boolean validateInstanceProps(String type, IProps props) {
@@ -53,6 +64,13 @@ public class TableInstancePropsValidator implements IInstancePropsValidator {
             checkValidProps = props instanceof MultiSelectCellElementProps;
         } else if (IconLabelCellElementProps.TYPE.equals(type)) {
             checkValidProps = props instanceof IconLabelCellElementProps;
+        } else {
+            checkValidProps = this.customCellDescriptors.stream()
+                    .map(customCellDescriptor -> customCellDescriptor.validateInstanceProps(type, props))
+                    .filter(Optional::isPresent)
+                    .findFirst()
+                    .map(Optional::get)
+                    .orElse(false);
         }
 
         return checkValidProps;

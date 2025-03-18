@@ -213,13 +213,14 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
                 variableManager,
                 this.tableCreationParameters.getTableDescription(),
                 Optional.ofNullable(this.tableContext.getTable()),
+                this.tableCreationParameters.getCustomCellDescriptors(),
                 this.tableContext.getTableEvents(),
                 this.tableCreationParameters.getGlobalFilter(),
                 this.tableCreationParameters.getColumnFilters()
         );
         Element element = new Element(TableComponent.class, props);
 
-        Table table = new TableRenderer().render(element);
+        Table table = new TableRenderer(this.tableCreationParameters.getCustomCellDescriptors()).render(element);
         this.logger.trace("Table refreshed: {}", this.tableCreationParameters.getEditingContext().getId());
         return table;
     }

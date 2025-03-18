@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -84,9 +84,10 @@ import org.eclipse.sirius.components.tables.renderer.TableComponentPropsValidato
  * @author sbegaudeau
  */
 public class FormComponentPropsValidator implements IComponentPropsValidator {
+
     private final List<IWidgetDescriptor> widgetDescriptors;
 
-    private final TableComponentPropsValidator tableComponentPropsValidator = new TableComponentPropsValidator();
+    private final TableComponentPropsValidator tableComponentPropsValidator = new TableComponentPropsValidator(List.of());
 
     public FormComponentPropsValidator(List<IWidgetDescriptor> widgetDescriptors) {
         this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
@@ -156,7 +157,7 @@ public class FormComponentPropsValidator implements IComponentPropsValidator {
         } else if (TableWidgetComponent.class.equals(componentType)) {
             checkValidProps = props instanceof TableWidgetComponentProps;
         } else {
-            checkValidProps = tableComponentPropsValidator.validateComponentProps(componentType, props);
+            checkValidProps = this.tableComponentPropsValidator.validateComponentProps(componentType, props);
             if (!checkValidProps) {
                 checkValidProps = this.widgetDescriptors.stream()
                         .map(widgetDescriptor -> widgetDescriptor.validateComponentProps(componentType, props))

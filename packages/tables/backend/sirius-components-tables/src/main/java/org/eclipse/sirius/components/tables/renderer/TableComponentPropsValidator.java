@@ -12,12 +12,17 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.tables.renderer;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
 import org.eclipse.sirius.components.representations.IComponentPropsValidator;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.tables.components.CheckboxCellComponent;
 import org.eclipse.sirius.components.tables.components.CheckboxCellComponentProps;
 import org.eclipse.sirius.components.tables.components.ColumnComponent;
 import org.eclipse.sirius.components.tables.components.ColumnComponentProps;
+import org.eclipse.sirius.components.tables.components.ICustomCellDescriptor;
 import org.eclipse.sirius.components.tables.components.IconLabelCellComponent;
 import org.eclipse.sirius.components.tables.components.IconLabelCellComponentProps;
 import org.eclipse.sirius.components.tables.components.LineComponent;
@@ -39,6 +44,12 @@ import org.eclipse.sirius.components.tables.components.TextfieldCellComponentPro
  * @author arichard
  */
 public class TableComponentPropsValidator implements IComponentPropsValidator {
+
+    private final List<ICustomCellDescriptor> customCellDescriptors;
+
+    public TableComponentPropsValidator(List<ICustomCellDescriptor> customCellDescriptors) {
+        this.customCellDescriptors = Objects.requireNonNull(customCellDescriptors);
+    }
 
     @Override
     public boolean validateComponentProps(Class<?> componentType, IProps props) {
@@ -62,6 +73,13 @@ public class TableComponentPropsValidator implements IComponentPropsValidator {
             checkValidProps = props instanceof MultiSelectCellComponentProps;
         } else if (IconLabelCellComponent.class.equals(componentType)) {
             checkValidProps = props instanceof IconLabelCellComponentProps;
+        } else {
+            checkValidProps = this.customCellDescriptors.stream()
+                    .map(customCellDescriptor -> customCellDescriptor.validateComponentProps(componentType, props))
+                    .filter(Optional::isPresent)
+                    .findFirst()
+                    .map(Optional::get)
+                    .orElse(false);
         }
 
         return checkValidProps;
