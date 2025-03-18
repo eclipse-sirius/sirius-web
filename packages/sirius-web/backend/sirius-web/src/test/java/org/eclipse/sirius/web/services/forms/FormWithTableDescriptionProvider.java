@@ -40,7 +40,7 @@ import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.core.api.IIdentityService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
@@ -83,12 +83,12 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
 
     private final IIdentityService identityService;
 
-    private final IObjectService objectService;
+    private final ILabelService labelService;
 
-    public FormWithTableDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IIdentityService identityService, IObjectService objectService) {
-        this.identityService = Objects.requireNonNull(identityService);
-        this.objectService = Objects.requireNonNull(objectService);
+    public FormWithTableDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IIdentityService identityService, ILabelService labelService) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
+        this.identityService = Objects.requireNonNull(identityService);
+        this.labelService = Objects.requireNonNull(labelService);
     }
 
     @Override
@@ -132,7 +132,8 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
                 .orElse(new PaginatedData(List.of(), false, false, 0));
 
         Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.objectService::getLabel)
+                .map(this.labelService::getStyledLabel)
+                .map(Object::toString)
                 .orElse(null);
 
         LineDescription lineDescription = LineDescription.newLineDescription(UUID.nameUUIDFromBytes("Table - Line".getBytes()).toString())
@@ -274,7 +275,7 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
                 Object objectValue = eObject.eGet(eStructuralFeature);
                 if (eStructuralFeature instanceof EReference eReference) {
                     if (!eReference.isMany() && !eReference.isContainment()) {
-                        value = this.objectService.getId(objectValue);
+                        value = this.identityService.getId(objectValue);
                     }
                 } else if (objectValue != null) {
                     value = objectValue.toString();
@@ -294,7 +295,7 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
                 if (eStructuralFeature instanceof EReference eReference) {
                     if (eReference.isMany() && !eReference.isContainment() && objectValue instanceof EList<?>) {
                         value = ((EList<?>) objectValue).stream()
-                                .map(this.objectService::getId)
+                                .map(this.identityService::getId)
                                 .toList();
                     }
                 }
@@ -320,19 +321,16 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
         return variableManager -> {
             Object candidate = variableManager.getVariables().get(SelectCellComponent.CANDIDATE_VARIABLE);
             if (candidate instanceof EEnumLiteral) {
-                return this.objectService.getLabel(candidate);
+                return this.labelService.getStyledLabel(candidate).toString();
             }
-            return this.objectService.getId(candidate);
+            return this.identityService.getId(candidate);
         };
     }
 
     private Function<VariableManager, String> getCellOptionsLabelProvider() {
         return variableManager -> {
             Object candidate = variableManager.getVariables().get(SelectCellComponent.CANDIDATE_VARIABLE);
-            if (candidate instanceof EEnumLiteral) {
-                return this.objectService.getLabel(candidate);
-            }
-            return this.objectService.getFullLabel(candidate);
+            return this.labelService.getStyledLabel(candidate).toString();
         };
     }
 

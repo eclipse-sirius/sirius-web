@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,24 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.emf.services;
+package org.eclipse.sirius.components.emf.services.api;
 
-import java.util.Optional;
+import java.util.List;
 
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.sirius.components.core.api.labels.StyledString;
 
 /**
- * Get the {@link EStructuralFeature} to use as label for a given {@link EObject}.
+ * The default implementation used to manipulate the label of EMF objects.
  *
- * @author arichard
+ * @author sbegaudeau
  */
-public interface ILabelFeatureProvider {
+public interface IDefaultEMFLabelService {
 
-    String getEPackageNsUri();
+    StyledString getStyledLabel(EObject self);
 
-    Optional<EAttribute> getLabelEAttribute(EObject eObject);
+    List<String> getImagePaths(EObject self);
 
-    boolean isLabelEditable(EObject eObject);
 }

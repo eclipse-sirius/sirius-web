@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,12 +25,10 @@ import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -46,7 +44,7 @@ import org.eclipse.sirius.components.core.api.ChildCreationDescription;
 import org.eclipse.sirius.components.core.api.IDefaultEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.emf.services.messages.IEMFMessageService;
@@ -70,17 +68,18 @@ public class DefaultEditService implements IDefaultEditService {
 
     private final ISuggestedRootObjectTypesProvider suggestedRootObjectTypesProvider;
 
-    private final IObjectService objectService;
+    private final ILabelService labelService;
 
     private final IFeedbackMessageService feedbackMessageService;
 
     private final IEMFMessageService messageService;
 
-    public DefaultEditService(IEMFKindService emfKindService, ComposedAdapterFactory composedAdapterFactory, Optional<ISuggestedRootObjectTypesProvider> optionalSuggestedRootObjectsProvider, IObjectService objectService, IFeedbackMessageService feedbackMessageService, IEMFMessageService messageService) {
+    public DefaultEditService(IEMFKindService emfKindService, ComposedAdapterFactory composedAdapterFactory, Optional<ISuggestedRootObjectTypesProvider> optionalSuggestedRootObjectsProvider,
+                              ILabelService labelService, IFeedbackMessageService feedbackMessageService, IEMFMessageService messageService) {
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.suggestedRootObjectTypesProvider = optionalSuggestedRootObjectsProvider.orElse(null);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.messageService = Objects.requireNonNull(messageService);
     }
@@ -148,7 +147,7 @@ public class DefaultEditService implements IDefaultEditService {
                         for (CommandParameter commandParameter : commandParameters) {
                             String id = this.getChildCreationDescriptionId(commandParameter);
                             String label = helper.getCreateChildText(eObject, commandParameter.getFeature(), commandParameter.getValue(), null);
-                            List<String> iconURL = this.objectService.getImagePath(commandParameter.getValue());
+                            List<String> iconURL = this.labelService.getImagePaths(commandParameter.getValue());
                             ChildCreationDescription childCreationDescription = new ChildCreationDescription(id, label, iconURL);
                             childCreationDescriptions.add(childCreationDescription);
                         }
@@ -230,7 +229,6 @@ public class DefaultEditService implements IDefaultEditService {
         List<ChildCreationDescription> rootObjectCreationDescription = new ArrayList<>();
 
         this.getPackageRegistry(editingContext).ifPresent(ePackageRegistry -> {
-
             EPackage ePackage = ePackageRegistry.getEPackage(domainId);
             if (ePackage != null) {
                 List<EClass> classes;
@@ -245,7 +243,7 @@ public class DefaultEditService implements IDefaultEditService {
                 for (EClass suggestedClass : classes) {
                     if (referenceKind == null || this.getEClass(ePackageRegistry, referenceKind).map(eClassReference -> eClassReference.isSuperTypeOf(suggestedClass))
                             .orElse(true)) {
-                        List<String> iconURL = this.objectService.getImagePath(EcoreUtil.create(suggestedClass));
+                        List<String> iconURL = this.labelService.getImagePaths(EcoreUtil.create(suggestedClass));
                         rootObjectCreationDescription.add(new ChildCreationDescription(suggestedClass.getName(), suggestedClass.getName(), iconURL));
                     }
                 }
@@ -308,17 +306,4 @@ public class DefaultEditService implements IDefaultEditService {
                 .filter(eClass -> !eClass.isAbstract() && !eClass.isInterface());
     }
 
-    @Override
-    public void editLabel(Object object, String labelField, String newValue) {
-        if (object instanceof EObject) {
-            EClass eClass = ((EObject) object).eClass();
-            EStructuralFeature eStructuralFeature = eClass.getEStructuralFeature(labelField);
-            if (eStructuralFeature instanceof EAttribute
-                    && !eStructuralFeature.isMany()
-                    && eStructuralFeature.isChangeable()
-                    && eStructuralFeature.getEType().getInstanceClass() == String.class) {
-                ((EObject) object).eSet(eStructuralFeature, newValue);
-            }
-        }
-    }
 }

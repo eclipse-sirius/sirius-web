@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,9 +17,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.trees.api.IRenameTreeItemHandler;
-import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
 import org.eclipse.sirius.components.representations.Failure;
@@ -29,6 +27,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
+import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerLabelService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -39,15 +38,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class RenameObjectTreeItemEventHandler implements IRenameTreeItemHandler {
 
-    private final IObjectService objectService;
-
-    private final IEditService editService;
+    private final IExplorerLabelService explorerLabelService;
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
-    public RenameObjectTreeItemEventHandler(IObjectService objectService, IEditService editService, IRepresentationDescriptionSearchService representationDescriptionSearchService) {
-        this.objectService = Objects.requireNonNull(objectService);
-        this.editService = Objects.requireNonNull(editService);
+    public RenameObjectTreeItemEventHandler(IExplorerLabelService explorerLabelService, IRepresentationDescriptionSearchService representationDescriptionSearchService) {
+        this.explorerLabelService = Objects.requireNonNull(explorerLabelService);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
     }
 
@@ -71,12 +67,8 @@ public class RenameObjectTreeItemEventHandler implements IRenameTreeItemHandler 
 
             var object = optionalTreeDescription.get().getTreeItemObjectProvider().apply(variableManager);
             if (object != null) {
-                var optionalLabelField = this.objectService.getLabelField(object);
-                if (optionalLabelField.isPresent()) {
-                    String labelField = optionalLabelField.get();
-                    this.editService.editLabel(object, labelField, newLabel);
-                    result = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of());
-                }
+                this.explorerLabelService.editLabel(object, newLabel);
+                result = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of());
             }
         }
         return result;

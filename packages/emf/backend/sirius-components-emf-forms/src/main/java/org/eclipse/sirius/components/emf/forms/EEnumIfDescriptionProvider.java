@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.emf.forms.api.IEMFFormIfDescriptionProvider;
 import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.components.SelectComponent;
@@ -39,38 +41,45 @@ import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 /**
  * Provides the default description of the widget to use to support an EEnum feature.
  *
  * @author sbegaudeau
  */
-public class EEnumIfDescriptionProvider {
+@Service
+public class EEnumIfDescriptionProvider implements IEMFFormIfDescriptionProvider {
 
-    private static final String IF_DESCRIPTION_ID = "EEnum";
+    public static final String IF_DESCRIPTION_ID = "EEnum";
 
     private static final String RADIO_DESCRIPTION_ID = "Radio";
 
     private final Logger logger = LoggerFactory.getLogger(EEnumIfDescriptionProvider.class);
 
+    private final IIdentityService identityService;
+
     private final ComposedAdapterFactory composedAdapterFactory;
 
     private final IPropertiesValidationProvider propertiesValidationProvider;
 
-    private final Function<VariableManager, String> semanticTargetIdProvider;
-
-    public EEnumIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider, Function<VariableManager, String> semanticTargetIdProvider) {
+    public EEnumIfDescriptionProvider(IIdentityService identityService, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider) {
+        this.identityService = Objects.requireNonNull(identityService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
-        this.semanticTargetIdProvider = Objects.requireNonNull(semanticTargetIdProvider);
     }
 
-    public IfDescription getIfDescription() {
-        return IfDescription.newIfDescription(IF_DESCRIPTION_ID)
-                .targetObjectIdProvider(this.semanticTargetIdProvider)
+    @Override
+    public List<IfDescription> getIfDescriptions() {
+        Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .map(this.identityService::getId)
+                .orElse(null);
+
+        return List.of(IfDescription.newIfDescription(IF_DESCRIPTION_ID)
+                .targetObjectIdProvider(targetObjectIdProvider)
                 .predicate(this.getPredicate())
                 .controlDescriptions(List.of(this.getRadioDescription()))
-                .build();
+                .build());
     }
 
     private Function<VariableManager, Boolean> getPredicate() {
@@ -83,8 +92,12 @@ public class EEnumIfDescriptionProvider {
     }
 
     private RadioDescription getRadioDescription() {
+        Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .map(this.identityService::getId)
+                .orElse(null);
+
         return RadioDescription.newRadioDescription(RADIO_DESCRIPTION_ID)
-                .targetObjectIdProvider(this.semanticTargetIdProvider)
+                .targetObjectIdProvider(targetObjectIdProvider)
                 .idProvider(new WidgetIdProvider())
                 .labelProvider(this.getLabelProvider())
                 .optionsProvider(this.getOptionsProvider())

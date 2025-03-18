@@ -14,11 +14,52 @@
 
 === Deprecation warning
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5027[#5027] [core] In Sirius Web v2024.3.0, we introduced smaller core services and indicated that `IObjectService` may be deprecated in the future.
+You can now consider that it is deprecated and will be removed soon.
 
 
 === Breaking changes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/5027[#5027] [core] Specific concerns from the Sirius Web explorer have been removed from core services, as such the following methods have been removed:
+* `ILabelService#getFullLabel`
+* `ILabelService#getLabelField`
+* `ILabelService#isLabelEditable`
+* `ILabelServiceDelegate#getFullLabel`
+* `ILabelServiceDelegate#getLabelField`
+* `ILabelServiceDelegate#isLabelEditable`
+* `IDefaultLabelService#getFullLabel`
+* `IDefaultLabelService#getLabelField`
+* `IDefaultLabelService#isLabelEditable`
+* `IEditService#editLabel`
+* `IEditServiceDelegate#editLabel`
+* `IDefaultEditService#editLabel`
+* `IObjectService#getFullLabel`
+* `IObjectService#getLabelField`
+* `IObjectService#isLabelEditable`
+* `IEditService#editLabel`
+* `IEditServiceDelegate#editLabel`
+* `IDefaultEditService#editLabel`
+The method `ILabelService#getImagePath` has also been renamed `ILabelService#getImagePaths` given that it returns a list of image paths.
+It has also been removed from `IObjectService`.
+The multiple methods available to compute a label (`ILabelService#getFullLabel`, `ILabelService#getLabel` and `ILabelService#getStyledLabel`) have thus been replaced with only `ILabelService#getStyledLabel` remaining.
+It will encourage the adoption of `StyledString` in various parts of the application and will provide one and only one entry point for specifiers who need to change the label of an object.
+For those who want to build a representation tightly coupled with the behavior of the Sirius Web explorer with regard to labels, new services have been introduced:
+* `o.e.s.w.application.views.explorer.services.api.IExplorerLabelService`
+* `o.e.s.w.application.views.explorer.services.api.IDefaultExplorerLabelService`
+* `o.e.s.w.application.views.explorer.services.api.IExplorerLabelServiceDelegate`
+Those services will replace the management of label which was tightly coupled with other concerns of the explorer in `IExplorerServices`.
+The following methods have also been removed:
+* `IExplorerServices#isEditable` which is replaced with `IExplorerLabelService#isEditable`
+* `IExplorerServices#getLabel` which is replaced with `ILabelService#getStyledLabel`
+The edition of the label of the explorer, which was previously done thanks to `IEditService#editLabel` is now performed thanks to `IExplorerLabelService#editLabel`.
+Specifiers who are relying on EMF based objects can customize the behavior of this specific part by implementing an instance of `IEMFLabelServiceDelegate`.
+This new API reduce the amount of code that needs to be written to change the label of EMF based objects in the explorer and other views (query, related elements, details, etc).
+Using the `IStyledStringConverter`, one can add support for EMF `IItemStyledLabelProvider` fairly easily.
+This support is not active by default for all metamodels because EMF uses both the name of the EClass and the value of the label feature by default.
+The name of the EClass being a bit redundant it was decided a long time ago in Sirius Web not to display it (this is the behavior of `DefaultEMFLabelService`).
+If your EMF based objects do not have a feature that can be used as a label, consider providing an `IEMFLabelServiceDelegate` to compute a proper label.
+This type of customization was not possible previously.
+Additional concerns will be removed in the future from `IObjectService` until we can remove this class entirely.
 
 
 
@@ -39,6 +80,7 @@
 
 === Improvements
 
+- https://github.com/eclipse-sirius/sirius-web/issues/5027[#5027] [core] Extract the management of labels in the explorer from core services and improve its extensibility.
 
 
 

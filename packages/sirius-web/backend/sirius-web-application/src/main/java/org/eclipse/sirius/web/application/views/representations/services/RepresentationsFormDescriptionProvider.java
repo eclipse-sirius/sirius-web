@@ -97,7 +97,8 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
     @Override
     public FormDescription getRepresentationsDescription() {
         Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.labelService::getFullLabel)
+                .map(this.labelService::getStyledLabel)
+                .map(Object::toString)
                 .orElse(TITLE);
 
         return FormDescription.newFormDescription(FORM_DESCRIPTION_ID)
