@@ -16,8 +16,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.util.Switch;
-import org.eclipse.sirius.components.core.api.IEditService;
-import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -34,18 +32,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class TableWidgetDescriptionConverterProvider implements IWidgetConverterProvider {
 
+    private final IObjectService objectService;
+
     private final IFormIdProvider formIdProvider;
 
     private final ITableIdProvider tableIdProvider;
 
-
-    public TableWidgetDescriptionConverterProvider(IFormIdProvider formIdProvider, ITableIdProvider tableIdProvider) {
+    public TableWidgetDescriptionConverterProvider(IObjectService objectService, IFormIdProvider formIdProvider, ITableIdProvider tableIdProvider) {
+        this.objectService = Objects.requireNonNull(objectService);
         this.formIdProvider = Objects.requireNonNull(formIdProvider);
         this.tableIdProvider = Objects.requireNonNull(tableIdProvider);
     }
 
     @Override
-    public Switch<Optional<AbstractWidgetDescription>> getWidgetConverter(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, IFeedbackMessageService feedbackMessageService) {
-        return new TableWidgetDescriptionConverterSwitch(interpreter, objectService, this.formIdProvider, this.tableIdProvider);
+    public Switch<Optional<AbstractWidgetDescription>> getWidgetConverter(AQLInterpreter interpreter) {
+        return new TableWidgetDescriptionConverterSwitch(interpreter, this.objectService, this.formIdProvider, this.tableIdProvider);
     }
 }

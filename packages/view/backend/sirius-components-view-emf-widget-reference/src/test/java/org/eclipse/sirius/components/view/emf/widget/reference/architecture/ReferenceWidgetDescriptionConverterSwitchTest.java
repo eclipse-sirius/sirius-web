@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.util.EcoreAdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
@@ -60,7 +61,7 @@ public class ReferenceWidgetDescriptionConverterSwitchTest {
         composedAdapterFactory.addAdapterFactory(new EcoreAdapterFactory());
         composedAdapterFactory.addAdapterFactory(new EcoreItemProviderAdapterFactory());
         var widgetIdProvider = new IFormIdProvider.NoOp();
-        var converterSwitch = new ReferenceWidgetDescriptionConverterSwitch(interpreter, objectService, editService, emfKindService, feedbackMessageService, composedAdapterFactory, widgetIdProvider);
+        var converterSwitch = new ReferenceWidgetDescriptionConverterSwitch(interpreter, objectService, new ILabelService.NoOp(), editService, emfKindService, feedbackMessageService, composedAdapterFactory, widgetIdProvider);
 
         EPackage ePackage = EcoreFactory.eINSTANCE.createEPackage();
         EClass eClass = EcoreFactory.eINSTANCE.createEClass();

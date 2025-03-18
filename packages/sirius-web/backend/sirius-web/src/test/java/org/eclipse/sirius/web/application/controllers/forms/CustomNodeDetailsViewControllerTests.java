@@ -87,7 +87,7 @@ public class CustomNodeDetailsViewControllerTests extends AbstractIntegrationTes
         var flux = this.detailsEventSubscriptionRunner.run(input);
 
         Predicate<Form> formPredicate = form -> {
-            var groupNavigator = new FormNavigator(form).page("").group("Core Properties");
+            var groupNavigator = new FormNavigator(form).page("EllipseNodeStyleDescription").group("Core Properties");
 
             var borderSizeTextField = groupNavigator.findWidget("Border Size", Textfield.class);
             FormAssertions.assertThat(borderSizeTextField)
@@ -133,7 +133,7 @@ public class CustomNodeDetailsViewControllerTests extends AbstractIntegrationTes
                 .ifPresentOrElse(form -> {
                     formId.set(form.getId());
 
-                    var groupNavigator = new FormNavigator(form).page("").group("Core Properties");
+                    var groupNavigator = new FormNavigator(form).page("EllipseNodeStyleDescription").group("Core Properties");
                     var textfield = groupNavigator.findWidget("Border Size", Textfield.class);
 
                     textfieldId.set(textfield.getId());
@@ -150,7 +150,7 @@ public class CustomNodeDetailsViewControllerTests extends AbstractIntegrationTes
         Consumer<FormRefreshedEventPayload> updatedFormContentConsumer = payload -> Optional.of(payload)
                 .map(FormRefreshedEventPayload::form)
                 .ifPresentOrElse(form -> {
-                    var groupNavigator = new FormNavigator(form).page("").group("Core Properties");
+                    var groupNavigator = new FormNavigator(form).page("EllipseNodeStyleDescription").group("Core Properties");
                     var textfield = groupNavigator.findWidget("Border Size", Textfield.class);
 
                     FormAssertions.assertThat(textfield)

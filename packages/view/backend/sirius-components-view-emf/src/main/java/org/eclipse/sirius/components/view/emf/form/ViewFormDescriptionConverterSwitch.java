@@ -18,6 +18,7 @@ import java.util.Optional;
 import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
@@ -65,17 +66,20 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
 
     private final IObjectService objectService;
 
+    private final ILabelService labelService;
+
     private final Switch<Optional<AbstractWidgetDescription>> customWidgetConverters;
 
     private final IFeedbackMessageService feedbackMessageService;
 
     private final IFormIdProvider widgetIdProvider;
 
-    public ViewFormDescriptionConverterSwitch(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, Switch<Optional<AbstractWidgetDescription>> customWidgetConverters,
-            IFeedbackMessageService feedbackMessageService, IFormIdProvider idProvider) {
+    public ViewFormDescriptionConverterSwitch(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, ILabelService labelService, Switch<Optional<AbstractWidgetDescription>> customWidgetConverters,
+                                              IFeedbackMessageService feedbackMessageService, IFormIdProvider idProvider) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.editService = Objects.requireNonNull(editService);
         this.objectService = Objects.requireNonNull(objectService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.customWidgetConverters = Objects.requireNonNull(customWidgetConverters);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.widgetIdProvider = Objects.requireNonNull(idProvider);
@@ -93,7 +97,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
 
     @Override
     public Optional<AbstractControlDescription> caseSelectDescription(org.eclipse.sirius.components.view.form.SelectDescription viewSelectDescription) {
-        return Optional.of(new SelectDescriptionConverter(this.interpreter, this.objectService, this.editService, this.feedbackMessageService, this.widgetIdProvider).convert(viewSelectDescription));
+        return Optional.of(new SelectDescriptionConverter(this.interpreter, this.objectService, this.labelService, this.editService, this.feedbackMessageService, this.widgetIdProvider).convert(viewSelectDescription));
     }
 
     @Override
@@ -108,7 +112,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
 
     @Override
     public Optional<AbstractControlDescription> caseMultiSelectDescription(org.eclipse.sirius.components.view.form.MultiSelectDescription viewMultiSelectDescription) {
-        return Optional.of(new MultiSelectDescriptionConverter(this.interpreter, this.objectService, this.editService, this.feedbackMessageService, this.widgetIdProvider).convert(viewMultiSelectDescription));
+        return Optional.of(new MultiSelectDescriptionConverter(this.interpreter, this.objectService, this.labelService, this.editService, this.feedbackMessageService, this.widgetIdProvider).convert(viewMultiSelectDescription));
     }
 
     @Override
@@ -153,7 +157,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
 
     @Override
     public Optional<AbstractControlDescription> caseListDescription(org.eclipse.sirius.components.view.form.ListDescription viewListDescription) {
-        return Optional.of(new ListDescriptionConverter(this.interpreter, this.objectService, this.editService, this.feedbackMessageService, this.widgetIdProvider).convert(viewListDescription));
+        return Optional.of(new ListDescriptionConverter(this.interpreter, this.objectService, this.labelService, this.editService, this.feedbackMessageService, this.widgetIdProvider).convert(viewListDescription));
     }
 
     @Override

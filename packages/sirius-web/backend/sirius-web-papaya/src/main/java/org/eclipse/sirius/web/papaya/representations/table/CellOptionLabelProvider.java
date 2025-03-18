@@ -34,6 +34,6 @@ public class CellOptionLabelProvider implements Function<VariableManager, String
     @Override
     public String apply(VariableManager variableManager) {
         Object candidate = variableManager.getVariables().get(SelectCellComponent.CANDIDATE_VARIABLE);
-        return this.labelService.getLabel(candidate);
+        return this.labelService.getStyledLabel(candidate).toString();
     }
 }

@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.ReconnectionTool
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
@@ -47,6 +48,8 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
 
     private final IObjectService objectService;
 
+    private final ILabelService labelService;
+
     private final IEditService editService;
 
     private final IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService;
@@ -57,8 +60,9 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
 
     private final IFeedbackMessageService feedbackMessageService;
 
-    public ViewReconnectionToolsExecutor(IObjectService objectService, IEditService editService, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IViewAQLInterpreterFactory aqlInterpreterFactory, IFeedbackMessageService feedbackMessageService) {
+    public ViewReconnectionToolsExecutor(IObjectService objectService, ILabelService labelService, IEditService editService, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IViewAQLInterpreterFactory aqlInterpreterFactory, IFeedbackMessageService feedbackMessageService) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.editService = Objects.requireNonNull(editService);
         this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
         this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(viewRepresentationDescriptionPredicate);
@@ -89,7 +93,7 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
                     VariableManager variableManager = this.createVariableManager(toolInterpreterData, editingContext);
 
                     AQLInterpreter interpreter = this.aqlInterpreterFactory.createInterpreter(editingContext, (View) viewDiagramDescription.eContainer());
-                    var diagramOperationInterpreter = new DiagramOperationInterpreter(interpreter, this.objectService, this.editService, toolInterpreterData.getDiagramContext(),
+                    var diagramOperationInterpreter = new DiagramOperationInterpreter(interpreter, this.objectService, this.labelService, this.editService, toolInterpreterData.getDiagramContext(),
                             Map.of(), this.feedbackMessageService);
                     diagramOperationInterpreter.executeOperations(edgeReconnectionTool.getBody(), variableManager);
                 }

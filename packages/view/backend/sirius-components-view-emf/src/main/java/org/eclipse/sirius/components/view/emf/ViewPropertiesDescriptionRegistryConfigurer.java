@@ -31,6 +31,7 @@ import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.forms.EBooleanIfDescriptionProvider;
 import org.eclipse.sirius.components.emf.forms.EEnumIfDescriptionProvider;
@@ -83,6 +84,8 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
 
     private final IObjectService objectService;
 
+    private final ILabelService labelService;
+
     private final ComposedAdapterFactory composedAdapterFactory;
 
     private final IPropertiesValidationProvider propertiesValidationProvider;
@@ -95,19 +98,16 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
 
     private final IFeedbackMessageService feedbackMessageService;
 
-    private final Function<VariableManager, String> semanticTargetIdProvider;
-
-
-    public ViewPropertiesDescriptionRegistryConfigurer(IObjectService objectService, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider, IEMFMessageService emfMessageService,
-            IEMFKindService emfKindService, List<ITextfieldCustomizer> customizers, IFeedbackMessageService feedbackMessageService) {
+    public ViewPropertiesDescriptionRegistryConfigurer(IObjectService objectService, ILabelService labelService, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider, IEMFMessageService emfMessageService,
+                                                       IEMFKindService emfKindService, List<ITextfieldCustomizer> customizers, IFeedbackMessageService feedbackMessageService) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
         this.emfMessageService = Objects.requireNonNull(emfMessageService);
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.customizers = Objects.requireNonNull(customizers);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
-        this.semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null);
     }
 
     @Override
@@ -138,7 +138,7 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
             var optionalSelf = variableManager.get(VariableManager.SELF, Object.class);
             if (optionalSelf.isPresent()) {
                 Object self = optionalSelf.get();
-                return this.objectService.getLabel(self);
+                return this.labelService.getStyledLabel(self).toString();
             }
             return UUID.randomUUID().toString();
         };
@@ -191,9 +191,13 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
             return objects;
         };
 
+        Function<VariableManager, String> semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .map(this.objectService::getId)
+                .orElse(null);
+
         List<AbstractControlDescription> ifDescriptions = new ArrayList<>();
         for (ITextfieldCustomizer customizer : this.customizers) {
-            ifDescriptions.add(new CustomizableEStringIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, customizer, this.semanticTargetIdProvider).getIfDescription());
+            ifDescriptions.add(new CustomizableEStringIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, customizer, semanticTargetIdProvider).getIfDescription());
         }
         ITextfieldCustomizer fallbackCustomizer = new ITextfieldCustomizer.NoOp() {
             @Override
@@ -201,11 +205,11 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
                 return ViewPropertiesDescriptionRegistryConfigurer.this.customizers.stream().noneMatch(customizer -> customizer.handles(eAttribute, eObject));
             }
         };
-        ifDescriptions.add(new CustomizableEStringIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, fallbackCustomizer, this.semanticTargetIdProvider).getIfDescription());
-        ifDescriptions.add(new EBooleanIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
-        ifDescriptions.add(new EEnumIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
+        ifDescriptions.add(new CustomizableEStringIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, fallbackCustomizer, semanticTargetIdProvider).getIfDescription());
+        ifDescriptions.add(new EBooleanIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, semanticTargetIdProvider).getIfDescription());
+        ifDescriptions.add(new EEnumIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, semanticTargetIdProvider).getIfDescription());
 
-        ifDescriptions.add(new NonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.emfKindService, this.feedbackMessageService, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
+        ifDescriptions.add(new NonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.labelService, this.emfKindService, this.feedbackMessageService, this.propertiesValidationProvider, semanticTargetIdProvider).getIfDescription());
 
         var numericDataTypes = List.of(
                 EcorePackage.Literals.EINT,
@@ -220,11 +224,11 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
                 EcorePackage.Literals.ESHORT_OBJECT
         );
         for (var dataType : numericDataTypes) {
-            ifDescriptions.add(new NumberIfDescriptionProvider(dataType, this.composedAdapterFactory, this.propertiesValidationProvider, this.emfMessageService, this.semanticTargetIdProvider).getIfDescription());
+            ifDescriptions.add(new NumberIfDescriptionProvider(dataType, this.composedAdapterFactory, this.propertiesValidationProvider, this.emfMessageService, semanticTargetIdProvider).getIfDescription());
         }
 
         ForDescription forDescription = ForDescription.newForDescription("forId")
-                .targetObjectIdProvider(this.semanticTargetIdProvider)
+                .targetObjectIdProvider(semanticTargetIdProvider)
                 .iterator(ESTRUCTURAL_FEATURE)
                 .iterableProvider(iterableProvider)
                 .controlDescriptions(ifDescriptions)

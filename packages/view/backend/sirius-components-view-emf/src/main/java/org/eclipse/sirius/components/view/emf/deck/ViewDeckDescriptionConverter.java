@@ -22,6 +22,7 @@ import java.util.function.Predicate;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.core.api.IEditService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.deck.DeckElementStyle;
 import org.eclipse.sirius.components.deck.DeckStyle;
@@ -56,6 +57,8 @@ public class ViewDeckDescriptionConverter implements IRepresentationDescriptionC
 
     private final IObjectService objectService;
 
+    private final ILabelService labelService;
+
     private final IEditService editService;
 
     private final Function<VariableManager, String> semanticTargetIdProvider;
@@ -66,13 +69,14 @@ public class ViewDeckDescriptionConverter implements IRepresentationDescriptionC
 
     private final DeckIdProvider deckIdProvider;
 
-    public ViewDeckDescriptionConverter(IObjectService objectService, IEditService editService, DeckIdProvider deckIdProvider) {
+    public ViewDeckDescriptionConverter(IObjectService objectService, ILabelService labelService, IEditService editService, DeckIdProvider deckIdProvider) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.editService = Objects.requireNonNull(editService);
         this.deckIdProvider = Objects.requireNonNull(deckIdProvider);
         this.semanticTargetIdProvider = variableManager -> this.self(variableManager).map(this.objectService::getId).orElse(null);
         this.semanticTargetKindProvider = variableManager -> this.self(variableManager).map(this.objectService::getKind).orElse(null);
-        this.semanticTargetLabelProvider = variableManager -> this.self(variableManager).map(this.objectService::getLabel).orElse(null);
+        this.semanticTargetLabelProvider = variableManager -> this.self(variableManager).map(this.labelService::getStyledLabel).map(Object::toString).orElse(null);
     }
 
     @Override

@@ -22,6 +22,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -50,6 +51,8 @@ public class DiagramOperationInterpreter implements IOperationInterpreter {
 
     private final IObjectService objectService;
 
+    private final ILabelService labelService;
+
     private final IEditService editService;
 
     private final IDiagramContext diagramContext;
@@ -58,10 +61,11 @@ public class DiagramOperationInterpreter implements IOperationInterpreter {
 
     private final Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes;
 
-    public DiagramOperationInterpreter(AQLInterpreter interpreter, IObjectService objectService, IEditService editService, IDiagramContext diagramContext,
-            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, IFeedbackMessageService feedbackMessageService) {
+    public DiagramOperationInterpreter(AQLInterpreter interpreter, IObjectService objectService, ILabelService labelService, IEditService editService, IDiagramContext diagramContext,
+                                       Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, IFeedbackMessageService feedbackMessageService) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.objectService = Objects.requireNonNull(objectService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.editService = Objects.requireNonNull(editService);
         this.diagramContext = diagramContext;
         this.convertedNodes = Objects.requireNonNull(convertedNodes);
@@ -109,8 +113,8 @@ public class DiagramOperationInterpreter implements IOperationInterpreter {
     }
 
     private Optional<VariableManager> executeOperation(Operation operation, VariableManager variableManager) {
-        DiagramSwitch<Optional<VariableManager>> dispatcher = new DiagramOperationInterpreterViewSwitch(variableManager, this.interpreter, this.objectService, this.editService, this.diagramContext,
-                this.convertedNodes, this);
+        DiagramSwitch<Optional<VariableManager>> dispatcher = new DiagramOperationInterpreterViewSwitch(variableManager, this.interpreter, this.objectService, this.labelService, this.editService,
+                this.convertedNodes, this, this.diagramContext);
         return dispatcher.doSwitch(operation);
     }
 }

@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.DiagramCreationServi
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
@@ -47,7 +48,6 @@ import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.emf.ViewConverter;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
-import org.eclipse.sirius.components.view.emf.diagram.providers.api.IViewToolImageProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.support.StaticApplicationContext;
@@ -150,8 +150,8 @@ public class DynamicDiagramsTests {
         res.getContents().add(view);
         new ResourceSetImpl().getResources().add(res);
 
-        ViewDiagramDescriptionConverter diagramDescriptionConverter = new ViewDiagramDescriptionConverter(new IObjectService.NoOp(), new IEditService.NoOp(), List.of(),
-                new IDiagramIdProvider.NoOp(), new IViewToolImageProvider.NoOp(), new IFeedbackMessageService.NoOp());
+        ViewDiagramDescriptionConverter diagramDescriptionConverter = new ViewDiagramDescriptionConverter(new IObjectService.NoOp(), new ILabelService.NoOp(), new IEditService.NoOp(), List.of(),
+                new IDiagramIdProvider.NoOp(), new IFeedbackMessageService.NoOp());
         var viewConverter = new ViewConverter(List.of(), List.of(diagramDescriptionConverter), new StaticApplicationContext(), List.of());
         List<IRepresentationDescription> conversionResult = viewConverter.convert(List.of(view), List.of(EcorePackage.eINSTANCE));
         assertThat(conversionResult).hasSize(1);

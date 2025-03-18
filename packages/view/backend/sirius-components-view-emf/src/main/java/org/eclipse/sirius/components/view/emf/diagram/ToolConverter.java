@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
 import org.eclipse.sirius.components.diagrams.tools.ITool;
@@ -50,7 +51,6 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.Tool;
 import org.eclipse.sirius.components.view.emf.OperationInterpreterViewSwitch;
-import org.eclipse.sirius.components.view.emf.diagram.providers.api.IViewToolImageProvider;
 
 /**
  * Convert View-based tool definitions into ITools.
@@ -63,6 +63,8 @@ public class ToolConverter {
 
     private final IObjectService objectService;
 
+    private final ILabelService labelService;
+
     private final IEditService editService;
 
     private final IFeedbackMessageService feedbackMessageService;
@@ -74,8 +76,9 @@ public class ToolConverter {
 
     private final IDiagramIdProvider diagramIdProvider;
 
-    public ToolConverter(IObjectService objectService, IEditService editService, IViewToolImageProvider viewToolImageProvider, IFeedbackMessageService feedbackMessageService, IDiagramIdProvider diagramIdProvider) {
+    public ToolConverter(IObjectService objectService, ILabelService labelService, IEditService editService, IFeedbackMessageService feedbackMessageService, IDiagramIdProvider diagramIdProvider) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.editService = Objects.requireNonNull(editService);
         this.feedbackMessageService = feedbackMessageService;
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
@@ -275,7 +278,7 @@ public class ToolConverter {
     private IStatus execute(ViewDiagramDescriptionConverterContext converterContext, Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes, Tool tool,
             VariableManager variableManager) {
         IDiagramContext diagramContext = variableManager.get(IDiagramContext.DIAGRAM_CONTEXT, IDiagramContext.class).orElse(null);
-        var operationInterpreter = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, diagramContext, convertedNodes,
+        var operationInterpreter = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.labelService, this.editService, diagramContext, convertedNodes,
                 this.feedbackMessageService);
         return operationInterpreter.executeTool(tool, variableManager);
     }

@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.handlers.DeleteFromD
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.diagrams.Edge;
@@ -84,7 +85,6 @@ import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.ViewIconURLsProvider;
-import org.eclipse.sirius.components.view.emf.diagram.providers.api.IViewToolImageProvider;
 import org.springframework.stereotype.Service;
 
 /**
@@ -101,11 +101,11 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private final IObjectService objectService;
 
+    private final ILabelService labelService;
+
     private final IEditService editService;
 
     private final IDiagramIdProvider diagramIdProvider;
-
-    private final IViewToolImageProvider viewToolImageProvider;
 
     private final Function<VariableManager, String> semanticTargetIdProvider;
 
@@ -115,18 +115,18 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private final IFeedbackMessageService feedbackMessageService;
 
-    private final List<INodeStyleProvider> iNodeStyleProviders;
+    private final List<INodeStyleProvider> nodeStyleProviders;
 
-    public ViewDiagramDescriptionConverter(IObjectService objectService, IEditService editService, List<INodeStyleProvider> iNodeStyleProviders, IDiagramIdProvider diagramIdProvider, IViewToolImageProvider viewToolImageProvider, IFeedbackMessageService feedbackMessageService) {
+    public ViewDiagramDescriptionConverter(IObjectService objectService, ILabelService labelService, IEditService editService, List<INodeStyleProvider> nodeStyleProviders, IDiagramIdProvider diagramIdProvider, IFeedbackMessageService feedbackMessageService) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.editService = Objects.requireNonNull(editService);
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
-        this.viewToolImageProvider = Objects.requireNonNull(viewToolImageProvider);
-        this.iNodeStyleProviders = Objects.requireNonNull(iNodeStyleProviders);
-        this.feedbackMessageService = feedbackMessageService;
+        this.nodeStyleProviders = Objects.requireNonNull(nodeStyleProviders);
+        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.semanticTargetIdProvider = variableManager -> this.self(variableManager).map(this.objectService::getId).orElse(null);
         this.semanticTargetKindProvider = variableManager -> this.self(variableManager).map(this.objectService::getKind).orElse(null);
-        this.semanticTargetLabelProvider = variableManager -> this.self(variableManager).map(this.objectService::getLabel).orElse(null);
+        this.semanticTargetLabelProvider = variableManager -> this.self(variableManager).map(this.labelService::getStyledLabel).map(Object::toString).orElse(null);
     }
 
     @Override
@@ -138,7 +138,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
     public IRepresentationDescription convert(RepresentationDescription viewRepresentationDescription, List<RepresentationDescription> allRepresentationDescriptions, AQLInterpreter interpreter) {
         final org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription = (org.eclipse.sirius.components.view.diagram.DiagramDescription) viewRepresentationDescription;
         ViewDiagramDescriptionConverterContext converterContext = new ViewDiagramDescriptionConverterContext(interpreter);
-        StylesFactory stylesFactory = new StylesFactory(Objects.requireNonNull(this.iNodeStyleProviders), this.objectService, interpreter);
+        StylesFactory stylesFactory = new StylesFactory(this.nodeStyleProviders, this.labelService, interpreter);
 
         // Nodes must be fully converted first.
         List<NodeDescription> nodeDescriptions = viewDiagramDescription.getNodeDescriptions().stream().map(node -> this.convert(node, converterContext, stylesFactory)).toList();
@@ -146,7 +146,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         List<EdgeDescription> edgeDescriptions = viewDiagramDescription.getEdgeDescriptions().stream()
                 .filter(this::edgeDescriptionToConsider)
                 .map(edge -> this.convert(edge, converterContext, stylesFactory)).toList();
-        var toolConverter = new ToolConverter(this.objectService, this.editService, this.viewToolImageProvider, this.feedbackMessageService, this.diagramIdProvider);
+        var toolConverter = new ToolConverter(this.objectService, this.labelService, this.editService, this.feedbackMessageService, this.diagramIdProvider);
 
         var builder = DiagramDescription.newDiagramDescription(this.diagramIdProvider.getId(viewDiagramDescription))
                 .label(Optional.ofNullable(viewDiagramDescription.getName()).orElse(DEFAULT_DIAGRAM_LABEL))
@@ -198,8 +198,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 var augmentedVariableManager = variableManager.createChild();
                 var convertedNodes = Collections.unmodifiableMap(converterContext.getConvertedNodes());
                 augmentedVariableManager.put(CONVERTED_NODES_VARIABLE, convertedNodes);
-                return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager),
-                        convertedNodes, this.feedbackMessageService)
+                return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.labelService, this.editService, this.getDiagramContext(variableManager), convertedNodes, this.feedbackMessageService)
                         .executeTool(optionalDropTool.get(), augmentedVariableManager);
             } else {
                 return new Failure("No drop handler configured");
@@ -604,8 +603,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
                 var optionalTooltool = new ToolFinder().findDeleteTool(diagramElementDescription);
                 if (optionalTooltool.isPresent()) {
-                    result = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager),
-                            convertedNodes, this.feedbackMessageService)
+                    result = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.labelService, this.editService, this.getDiagramContext(variableManager), convertedNodes, this.feedbackMessageService)
                             .executeTool(optionalTooltool.get(), child);
                 } else {
                     result = new Failure("No deletion tool configured");
@@ -652,8 +650,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             childVariableManager.put("newLabel", newLabel);
             var convertedNodes = Collections.unmodifiableMap(converterContext.getConvertedNodes());
             childVariableManager.put(CONVERTED_NODES_VARIABLE, convertedNodes);
-            return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), convertedNodes,
-                    this.feedbackMessageService).executeTool(labelEditTool, childVariableManager);
+            return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.labelService, this.editService, this.getDiagramContext(variableManager), convertedNodes, this.feedbackMessageService).executeTool(labelEditTool, childVariableManager);
         }).orElse(null);
     }
 
@@ -668,8 +665,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
             Optional<LabelEditTool> optionalTool = new ToolFinder().findLabelEditTool(edgeDescription, edgeLabelKind);
             if (optionalTool.isPresent()) {
-                result = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager),
-                        convertedNodes, this.feedbackMessageService)
+                result = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.labelService, this.editService, this.getDiagramContext(variableManager), convertedNodes, this.feedbackMessageService)
                         .executeTool(optionalTool.get(), childVariableManager);
             } else {
                 result = new Failure("No label edition tool configured");
@@ -694,8 +690,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             VariableManager child = variableManager.createChild();
             var convertedNodes = Collections.unmodifiableMap(converterContext.getConvertedNodes());
             child.put(CONVERTED_NODES_VARIABLE, convertedNodes);
-            return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), convertedNodes,
-                    this.feedbackMessageService).executeTool(dropNodeTool, child);
+            return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.labelService, this.editService, this.getDiagramContext(variableManager), convertedNodes, this.feedbackMessageService).executeTool(dropNodeTool, child);
         };
     }
 

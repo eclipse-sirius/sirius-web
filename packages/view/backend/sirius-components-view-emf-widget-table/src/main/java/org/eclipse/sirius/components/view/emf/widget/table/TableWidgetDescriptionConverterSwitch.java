@@ -54,7 +54,6 @@ public class TableWidgetDescriptionConverterSwitch extends TableWidgetSwitch<Opt
 
     private final ITableIdProvider tableIdProvider;
 
-
     public TableWidgetDescriptionConverterSwitch(AQLInterpreter interpreter, IObjectService objectService,
             IFormIdProvider widgetIdProvider, ITableIdProvider tableIdProvider) {
         this.interpreter = Objects.requireNonNull(interpreter);

@@ -49,6 +49,11 @@ public class ObjectService implements IObjectService {
     }
 
     @Override
+    public StyledString getStyledLabel(Object object) {
+        return this.labelService.getStyledLabel(object);
+    }
+
+    @Override
     public List<Object> getContents(Object object) {
         return this.contentService.getContents(object);
     }
@@ -61,36 +66,6 @@ public class ObjectService implements IObjectService {
     @Override
     public String getKind(Object object) {
         return this.identityService.getKind(object);
-    }
-
-    @Override
-    public String getLabel(Object object) {
-        return this.labelService.getLabel(object);
-    }
-
-    @Override
-    public StyledString getStyledLabel(Object object) {
-        return this.labelService.getStyledLabel(object);
-    }
-
-    @Override
-    public String getFullLabel(Object object) {
-        return this.labelService.getFullLabel(object);
-    }
-
-    @Override
-    public Optional<String> getLabelField(Object object) {
-        return this.labelService.getLabelField(object);
-    }
-
-    @Override
-    public boolean isLabelEditable(Object object) {
-        return this.labelService.isLabelEditable(object);
-    }
-
-    @Override
-    public List<String> getImagePath(Object object) {
-        return this.labelService.getImagePath(object);
     }
 
     @Override

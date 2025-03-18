@@ -21,6 +21,7 @@ import java.util.Set;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Edge;
@@ -56,46 +57,31 @@ import org.eclipse.sirius.components.view.emf.OperationInterpreterViewSwitch;
  */
 public class DiagramOperationInterpreterViewSwitch extends DiagramSwitch<Optional<VariableManager>> {
 
-    private final Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes;
-
-    private final IDiagramContext diagramContext;
-
-    private final IObjectService objectService;
-
-    private final OperationInterpreterViewSwitch operationInterpreterViewSwitch;
-
-    private final IOperationInterpreter operationInterpreter;
+    private final VariableManager variableManager;
 
     private final AQLInterpreter interpreter;
 
-    private final VariableManager variableManager;
+    private final IObjectService objectService;
 
-    /**
-     * Default constructor.
-     *
-     * @param variableManager
-     *         the current {@link VariableManager}.
-     * @param interpreter
-     *         the {@link AQLInterpreter}.
-     * @param objectService
-     *         the {@link IObjectService}.
-     * @param editService
-     *         the {@link IEditService}.
-     * @param diagramContext
-     *         the {@link IDiagramContext} (optional).
-     * @param operationInterpreter
-     *         the {@link IOperationInterpreter} used for delegating sub operations executions. It is the
-     *         responsibility of the {@link IOperationInterpreter} to delegate each operation execution to the
-     *         appropriate switch according to the concrete representation.
-     */
-    public DiagramOperationInterpreterViewSwitch(VariableManager variableManager, AQLInterpreter interpreter, IObjectService objectService, IEditService editService, IDiagramContext diagramContext,
-            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, IOperationInterpreter operationInterpreter) {
-        this.operationInterpreterViewSwitch = new OperationInterpreterViewSwitch(variableManager, interpreter, editService, operationInterpreter);
+    private final ILabelService labelService;
+
+    private final Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes;
+
+    private final IOperationInterpreter operationInterpreter;
+
+    private final IDiagramContext diagramContext;
+
+    private final OperationInterpreterViewSwitch operationInterpreterViewSwitch;
+
+    public DiagramOperationInterpreterViewSwitch(VariableManager variableManager, AQLInterpreter interpreter, IObjectService objectService, ILabelService labelService, IEditService editService,
+                                                 Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, IOperationInterpreter operationInterpreter, IDiagramContext diagramContext) {
         this.variableManager = Objects.requireNonNull(variableManager);
-        this.convertedNodes = Objects.requireNonNull(convertedNodes);
-        this.objectService = Objects.requireNonNull(objectService);
         this.interpreter = Objects.requireNonNull(interpreter);
+        this.objectService = Objects.requireNonNull(objectService);
+        this.labelService = Objects.requireNonNull(labelService);
+        this.convertedNodes = Objects.requireNonNull(convertedNodes);
         this.operationInterpreter = Objects.requireNonNull(operationInterpreter);
+        this.operationInterpreterViewSwitch = new OperationInterpreterViewSwitch(variableManager, interpreter, editService, operationInterpreter);
         this.diagramContext = diagramContext;
     }
 
@@ -154,7 +140,7 @@ public class DiagramOperationInterpreterViewSwitch extends DiagramSwitch<Optiona
 
         var targetObjectId = this.objectService.getId(semanticElement);
         var targetObjectKind = this.objectService.getKind(semanticElement);
-        var targetObjectLabel = this.objectService.getLabel(semanticElement);
+        var targetObjectLabel = this.labelService.getStyledLabel(semanticElement).toString();
 
         ViewCreationRequest viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
                 .parentElementId(parentElementId)

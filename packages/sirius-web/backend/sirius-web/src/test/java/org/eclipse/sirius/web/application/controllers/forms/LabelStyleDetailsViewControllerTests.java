@@ -75,7 +75,7 @@ public class LabelStyleDetailsViewControllerTests extends AbstractIntegrationTes
         var flux = this.detailsEventSubscriptionRunner.run(input);
 
         Predicate<Form> formPredicate = form -> {
-            var groupNavigator = new FormNavigator(form).page("").group("Core Properties");
+            var groupNavigator = new FormNavigator(form).page("InsideLabelStyle").group("Core Properties");
 
             var borderSizeTextField = groupNavigator.findWidget("Border Size", Textfield.class);
             FormAssertions.assertThat(borderSizeTextField).isNotNull();

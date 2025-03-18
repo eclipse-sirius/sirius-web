@@ -37,8 +37,6 @@ public interface IEditServiceDelegate {
 
     void delete(Object object);
 
-    void editLabel(Object object, String labelField, String newValue);
-
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -78,10 +76,6 @@ public interface IEditServiceDelegate {
 
         @Override
         public void delete(Object object) {
-        }
-
-        @Override
-        public void editLabel(Object object, String labelField, String newValue) {
         }
 
     }

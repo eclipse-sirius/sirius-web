@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
@@ -37,18 +38,30 @@ public class ReferenceWidgetDescriptionConverterProvider implements IWidgetConve
 
     private final ComposedAdapterFactory composedAdapterFactory;
 
+    private final IObjectService objectService;
+
+    private final ILabelService labelService;
+
+    private final IEditService editService;
+
+    private final IFeedbackMessageService feedbackMessageService;
+
     private final IFormIdProvider formIdProvider;
 
     private final IEMFKindService emfKindService;
 
-    public ReferenceWidgetDescriptionConverterProvider(ComposedAdapterFactory composedAdapterFactory, IEMFKindService emfKindService, IFormIdProvider formIdProvider) {
+    public ReferenceWidgetDescriptionConverterProvider(ComposedAdapterFactory composedAdapterFactory, IObjectService objectService, ILabelService labelService, IEditService editService, IFeedbackMessageService feedbackMessageService, IEMFKindService emfKindService, IFormIdProvider formIdProvider) {
         this.composedAdapterFactory = composedAdapterFactory;
+        this.objectService = Objects.requireNonNull(objectService);
+        this.labelService = Objects.requireNonNull(labelService);
+        this.editService = Objects.requireNonNull(editService);
+        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.formIdProvider = Objects.requireNonNull(formIdProvider);
-        this.emfKindService = emfKindService;
+        this.emfKindService = Objects.requireNonNull(emfKindService);
     }
 
     @Override
-    public Switch<Optional<AbstractWidgetDescription>> getWidgetConverter(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, IFeedbackMessageService feedbackMessageService) {
-        return new ReferenceWidgetDescriptionConverterSwitch(interpreter, objectService, editService, this.emfKindService, feedbackMessageService, this.composedAdapterFactory, this.formIdProvider);
+    public Switch<Optional<AbstractWidgetDescription>> getWidgetConverter(AQLInterpreter interpreter) {
+        return new ReferenceWidgetDescriptionConverterSwitch(interpreter, this.objectService, this.labelService, this.editService, this.emfKindService, this.feedbackMessageService, this.composedAdapterFactory, this.formIdProvider);
     }
 }
