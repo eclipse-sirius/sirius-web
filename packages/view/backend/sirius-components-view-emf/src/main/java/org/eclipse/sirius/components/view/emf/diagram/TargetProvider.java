@@ -17,6 +17,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.components.diagrams.elements.EdgeElementProps;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -26,7 +27,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 
 /**
- * Finds the target nodes for an edge. A target node is an already existing graphical node which:
+ * Finds the target elements for an edge. A target element is an already existing graphical element which:
  * <ul>
  * <li>is an instance of one of the the edge's possible target types;</li>
  * <li>represents one of the semantic target elements returned by the
@@ -36,7 +37,7 @@ import org.eclipse.sirius.components.view.diagram.EdgeDescription;
  *
  * @author pcdavid
  */
-public class TargetNodesProvider implements Function<VariableManager, List<Element>> {
+public class TargetProvider implements Function<VariableManager, List<Element>> {
 
     private final IDiagramIdProvider diagramIdProvider;
 
@@ -44,7 +45,7 @@ public class TargetNodesProvider implements Function<VariableManager, List<Eleme
 
     private final AQLInterpreter interpreter;
 
-    public TargetNodesProvider(IDiagramIdProvider diagramIdProvider, EdgeDescription edgeDescription, AQLInterpreter interpreter) {
+    public TargetProvider(IDiagramIdProvider diagramIdProvider, EdgeDescription edgeDescription, AQLInterpreter interpreter) {
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
         this.edgeDescription = Objects.requireNonNull(edgeDescription);
         this.interpreter = Objects.requireNonNull(interpreter);
@@ -59,27 +60,23 @@ public class TargetNodesProvider implements Function<VariableManager, List<Eleme
 
         DiagramRenderingCache cache = optionalCache.get();
 
-        // @formatter:off
         String expression = this.edgeDescription.getTargetExpression();
         List<Object> semanticCandidates = this.interpreter.evaluateExpression(variableManager.getVariables(), expression).asObjects().orElse(List.of());
+
         return semanticCandidates.stream()
                 .flatMap(semanticObject-> cache.getElementsRepresenting(semanticObject).stream())
                 .filter(this::isFromCompatibleTargetMapping)
                 .filter(Objects::nonNull)
                 .toList();
-        // @formatter:on
     }
 
-    private boolean isFromCompatibleTargetMapping(Element nodeElement) {
+    private boolean isFromCompatibleTargetMapping(Element diagramElement) {
         return this.edgeDescription.getTargetDescriptions().stream()
-                .anyMatch(nodeDescription -> this.isFromDescription(nodeElement, nodeDescription));
+                .anyMatch(elementDescription -> this.isFromDescription(diagramElement, elementDescription));
     }
 
-    private boolean isFromDescription(Element nodeElement, DiagramElementDescription description) {
-        if (nodeElement.getProps() instanceof NodeElementProps) {
-            NodeElementProps props = (NodeElementProps) nodeElement.getProps();
-            return Objects.equals(this.diagramIdProvider.getId(description), props.getDescriptionId());
-        }
-        return false;
+    private boolean isFromDescription(Element diagramElement, DiagramElementDescription description) {
+        return diagramElement.getProps() instanceof NodeElementProps nodeElementProps && Objects.equals(this.diagramIdProvider.getId(description), nodeElementProps.getDescriptionId())
+                || diagramElement.getProps() instanceof EdgeElementProps edgeElementProps && Objects.equals(this.diagramIdProvider.getId(description), edgeElementProps.getDescriptionId());
     }
 }

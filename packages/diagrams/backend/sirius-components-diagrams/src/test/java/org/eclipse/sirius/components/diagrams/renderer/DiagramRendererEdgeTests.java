@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,9 +40,11 @@ import org.eclipse.sirius.components.diagrams.components.DiagramComponent;
 import org.eclipse.sirius.components.diagrams.components.DiagramComponentProps;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
+import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.sirius.components.diagrams.elements.EdgeElementProps;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Failure;
@@ -226,28 +228,28 @@ public class DiagramRendererEdgeTests {
     }
 
     private EdgeDescription getEdgeDescription(NodeDescription nodeDescription, String id) {
-        Function<VariableManager, List<Element>> sourceNodesProvider = variableManager -> {
+        Function<VariableManager, List<Element>> sourceProvider = variableManager -> {
             var optionalCache = variableManager.get(DiagramDescription.CACHE, DiagramRenderingCache.class);
-            Map<Object, List<Element>> objectToNodes = optionalCache.map(DiagramRenderingCache::getObjectToNodes).orElse(new HashMap<>());
+            Map<Object, List<Element>> objectToNodes = optionalCache.map(DiagramRenderingCache::getObjectToElements).orElse(new HashMap<>());
 
-            List<Element> sourceNodes = objectToNodes.get(FIRST_OBJECT_ID).stream()
-                    .filter(node -> ((NodeElementProps) node.getProps()).getDescriptionId().equals(nodeDescription.getId()))
+            List<Element> sourceElements = objectToNodes.get(FIRST_OBJECT_ID).stream()
+                    .filter(element -> isFromDescription(element, nodeDescription))
                     .filter(Objects::nonNull)
                     .toList();
 
-            return sourceNodes;
+            return sourceElements;
         };
 
-        Function<VariableManager, List<Element>> targetNodesProvider = variableManager -> {
+        Function<VariableManager, List<Element>> targetProvider = variableManager -> {
             var optionalCache = variableManager.get(DiagramDescription.CACHE, DiagramRenderingCache.class);
-            Map<Object, List<Element>> objectToNodes = optionalCache.map(DiagramRenderingCache::getObjectToNodes).orElse(new HashMap<>());
+            Map<Object, List<Element>> objectToNodes = optionalCache.map(DiagramRenderingCache::getObjectToElements).orElse(new HashMap<>());
 
-            List<Element> targetNodes = objectToNodes.get(SECOND_OBJECT_ID).stream()
-                    .filter(node -> ((NodeElementProps) node.getProps()).getDescriptionId().equals(nodeDescription.getId()))
+            List<Element> targetElements = objectToNodes.get(SECOND_OBJECT_ID).stream()
+                    .filter(element -> isFromDescription(element, nodeDescription))
                     .filter(Objects::nonNull)
                     .toList();
 
-            return targetNodes;
+            return targetElements;
         };
 
         Function<VariableManager, EdgeStyle> edgeStyleProvider = variableManager -> {
@@ -266,10 +268,10 @@ public class DiagramRendererEdgeTests {
 
         return EdgeDescription.newEdgeDescription(id)
                 .semanticElementsProvider(variableManager -> List.of(FIRST_OBJECT_ID))
-                .sourceNodesProvider(sourceNodesProvider)
-                .targetNodesProvider(targetNodesProvider)
-                .sourceNodeDescriptions(List.of(nodeDescription))
-                .targetNodeDescriptions(List.of(nodeDescription))
+                .sourceProvider(sourceProvider)
+                .targetProvider(targetProvider)
+                .sourceDescriptions(List.of(nodeDescription))
+                .targetDescriptions(List.of(nodeDescription))
                 .targetObjectIdProvider(idProvider)
                 .targetObjectKindProvider(variableManager -> "")
                 .targetObjectLabelProvider(variableManager -> "")
@@ -277,5 +279,10 @@ public class DiagramRendererEdgeTests {
                 .deleteHandler(variableManager -> new Failure(""))
                 .labelEditHandler((variableManager, edgeLabelKind, newLabel) -> new Failure(""))
                 .build();
+    }
+
+    private boolean isFromDescription(Element diagramElement, IDiagramElementDescription diagramElementDescription) {
+        return diagramElement.getProps() instanceof NodeElementProps nodeElementProps && Objects.equals(diagramElementDescription.getId(), nodeElementProps.getDescriptionId())
+                || diagramElement.getProps() instanceof EdgeElementProps edgeElementProps && Objects.equals(diagramElementDescription.getId(), edgeElementProps.getDescriptionId());
     }
 }

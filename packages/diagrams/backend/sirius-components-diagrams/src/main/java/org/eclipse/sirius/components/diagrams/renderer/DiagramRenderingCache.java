@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,30 +29,30 @@ import org.eclipse.sirius.components.representations.Element;
  */
 public class DiagramRenderingCache {
 
-    private final Map<String, List<Element>> nodeDescriptionIdToNodes = new LinkedHashMap<>();
+    private final Map<String, List<Element>> diagramElementDescriptionIdToElements = new LinkedHashMap<>();
 
-    private final Map<String, Element> nodeIdToNode = new LinkedHashMap<>();
+    private final Map<String, Element> elementIdToElement = new LinkedHashMap<>();
 
-    private final Map<Element, Object> nodeToObject = new LinkedHashMap<>();
+    private final Map<Element, Object> elementToObject = new LinkedHashMap<>();
 
-    private final Map<Object, List<Element>> objectToNodes = new LinkedHashMap<>();
+    private final Map<Object, List<Element>> objectToElements = new LinkedHashMap<>();
 
     private final Map<Element, String> nodeToParentElementId = new LinkedHashMap<>();
 
     private final Map<String, List<Element>> nodeIdToChildren = new LinkedHashMap<>();
 
     public void put(String nodeDescriptionId, Element nodeElement) {
-        this.nodeDescriptionIdToNodes.computeIfAbsent(nodeDescriptionId, id -> new ArrayList<>()).add(nodeElement);
+        this.diagramElementDescriptionIdToElements.computeIfAbsent(nodeDescriptionId, id -> new ArrayList<>()).add(nodeElement);
     }
 
     public void put(Object object, Element nodeElement) {
-        this.nodeToObject.put(nodeElement, object);
-        this.objectToNodes.computeIfAbsent(object, obj -> new ArrayList<>()).add(nodeElement);
+        this.elementToObject.put(nodeElement, object);
+        this.objectToElements.computeIfAbsent(object, obj -> new ArrayList<>()).add(nodeElement);
     }
 
     public void put(Element node, String parentNodeId) {
         if (node.getProps() instanceof NodeElementProps nodeElementProps) {
-            this.nodeIdToNode.put(nodeElementProps.getId(), node);
+            this.elementIdToElement.put(nodeElementProps.getId(), node);
             this.nodeToParentElementId.put(node, parentNodeId);
 
             var children = this.nodeIdToChildren.getOrDefault(parentNodeId, new ArrayList<>());
@@ -61,27 +61,27 @@ public class DiagramRenderingCache {
         }
     }
 
-    public Map<String, List<Element>> getNodeDescriptionIdToNodes() {
-        return this.nodeDescriptionIdToNodes;
+    public Map<String, List<Element>> getDiagramElementDescriptionIdToElements() {
+        return this.diagramElementDescriptionIdToElements;
     }
 
-    public Map<Element, Object> getNodeToObject() {
-        return this.nodeToObject;
+    public Map<Element, Object> getElementToObject() {
+        return this.elementToObject;
     }
 
-    public Map<Object, List<Element>> getObjectToNodes() {
-        return this.objectToNodes;
+    public Map<Object, List<Element>> getObjectToElements() {
+        return this.objectToElements;
     }
 
     public List<Element> getElementsRepresenting(Object semanticObject) {
-        return this.objectToNodes.getOrDefault(semanticObject, Collections.emptyList());
+        return this.objectToElements.getOrDefault(semanticObject, Collections.emptyList());
     }
 
     public Optional<Element> getParent(String nodeId) {
         // @formatter:off
-        return Optional.ofNullable(this.nodeIdToNode.get(nodeId))
+        return Optional.ofNullable(this.elementIdToElement.get(nodeId))
                 .map(this.nodeToParentElementId::get)
-                .map(this.nodeIdToNode::get);
+                .map(this.elementIdToElement::get);
         // @formatter:on
     }
 

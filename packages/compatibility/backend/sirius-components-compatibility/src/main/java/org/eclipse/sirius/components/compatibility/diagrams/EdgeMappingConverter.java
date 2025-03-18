@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import java.util.function.Function;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.components.compatibility.api.ISemanticCandidatesProviderFactory;
+import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.interpreter.StringValueProvider;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -79,19 +80,26 @@ public class EdgeMappingConverter {
             return variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getLabel).orElse(null);
         };
 
-        List<NodeDescription> sourceNodeDescriptions = this.getNodeDescriptions(edgeMapping.getSourceMapping(), id2NodeDescriptions);
-        List<NodeDescription> targetNodeDescriptions = this.getNodeDescriptions(edgeMapping.getTargetMapping(), id2NodeDescriptions);
+        List<IDiagramElementDescription> sourceDescriptions = this.getNodeDescriptions(edgeMapping.getSourceMapping(), id2NodeDescriptions)
+                .stream()
+                .map(IDiagramElementDescription.class::cast)
+                .toList();
 
-        Function<VariableManager, List<?>> semanticElementsProvider = this.getSemanticElementsProvider(interpreter, edgeMapping, sourceNodeDescriptions);
+        List<IDiagramElementDescription> targetDescriptions = this.getNodeDescriptions(edgeMapping.getTargetMapping(), id2NodeDescriptions)
+                .stream()
+                .map(IDiagramElementDescription.class::cast)
+                .toList();
 
-        Function<VariableManager, List<Element>> sourceNodesProvider = null;
+        Function<VariableManager, List<?>> semanticElementsProvider = this.getSemanticElementsProvider(interpreter, edgeMapping, sourceDescriptions);
+
+        Function<VariableManager, List<Element>> sourceProvider = null;
         if (edgeMapping.isUseDomainElement()) {
-            sourceNodesProvider = new DomainBasedSourceNodesProvider(edgeMapping, interpreter, this.identifierProvider);
+            sourceProvider = new DomainBasedSourceNodesProvider(edgeMapping, interpreter, this.identifierProvider);
         } else {
-            sourceNodesProvider = new RelationBasedSourceNodesProvider(edgeMapping, this.identifierProvider);
+            sourceProvider = new RelationBasedSourceNodesProvider(edgeMapping, this.identifierProvider);
         }
 
-        Function<VariableManager, List<Element>> targetNodesProvider = new TargetNodesProvider(edgeMapping, interpreter, this.identifierProvider);
+        Function<VariableManager, List<Element>> targetProvider = new TargetNodesProvider(edgeMapping, interpreter, this.identifierProvider);
         Function<VariableManager, EdgeStyle> styleProvider = new EdgeMappingStyleProvider(interpreter, edgeMapping);
 
         LabelStyleDescriptionConverter labelStyleDescriptionConverter = new LabelStyleDescriptionConverter(interpreter, this.objectService);
@@ -119,10 +127,10 @@ public class EdgeMappingConverter {
                 .targetObjectKindProvider(targetKindProvider)
                 .targetObjectLabelProvider(targetLabelProvider)
                 .semanticElementsProvider(semanticElementsProvider)
-                .sourceNodeDescriptions(sourceNodeDescriptions)
-                .targetNodeDescriptions(targetNodeDescriptions)
-                .sourceNodesProvider(sourceNodesProvider)
-                .targetNodesProvider(targetNodesProvider)
+                .sourceDescriptions(sourceDescriptions)
+                .targetDescriptions(targetDescriptions)
+                .sourceProvider(sourceProvider)
+                .targetProvider(targetProvider)
                 .styleProvider(styleProvider)
                 .deleteHandler(deleteHandler);
         optionalBeginLabelDescription.ifPresent(builder::beginLabelDescription);
@@ -174,7 +182,7 @@ public class EdgeMappingConverter {
                 .toList();
     }
 
-    private Function<VariableManager, List<?>> getSemanticElementsProvider(AQLInterpreter interpreter, EdgeMapping edgeMapping, List<NodeDescription> sourceNodeDescriptions) {
+    private Function<VariableManager, List<?>> getSemanticElementsProvider(AQLInterpreter interpreter, EdgeMapping edgeMapping, List<IDiagramElementDescription> sourceDescriptions) {
         Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> List.of();
 
         if (edgeMapping.isUseDomainElement()) {
@@ -183,11 +191,11 @@ public class EdgeMappingConverter {
             String domainClass = Optional.ofNullable(edgeMapping.getDomainClass()).orElse("");
             semanticElementsProvider = this.semanticCandidatesProviderFactory.getSemanticCandidatesProvider(interpreter, domainClass, semanticCandidatesExpression, preconditionExpression);
         } else {
-            List<String> sourceNodeDescriptionIds = sourceNodeDescriptions.stream()
-                    .map(NodeDescription::getId)
+            List<String> sourceDescriptionIds = sourceDescriptions.stream()
+                    .map(IDiagramElementDescription::getId)
                     .toList();
 
-            semanticElementsProvider = new RelationBasedSemanticElementsProvider(sourceNodeDescriptionIds);
+            semanticElementsProvider = new RelationBasedSemanticElementsProvider(sourceDescriptionIds);
         }
         return semanticElementsProvider;
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,11 +46,11 @@ public class RelationBasedSemanticElementsProvider implements Function<VariableM
         }
 
         DiagramRenderingCache cache = optionalCache.get();
-        for (Element nodeElement : cache.getNodeToObject().keySet()) {
+        for (Element nodeElement : cache.getElementToObject().keySet()) {
             if (nodeElement.getProps() instanceof NodeElementProps) {
                 NodeElementProps props = (NodeElementProps) nodeElement.getProps();
                 if (this.sourceNodeDescriptionIds.contains(props.getDescriptionId())) {
-                    Object object = cache.getNodeToObject().get(nodeElement);
+                    Object object = cache.getElementToObject().get(nodeElement);
                     objects.add(object);
                 }
             }

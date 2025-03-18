@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,8 +60,8 @@ public class TestDiagramDescriptionBuilder {
     }
 
     public EdgeDescription getEdgeDescription(String edgeDescriptionId, NodeDescription nodeDescription) {
-        Function<VariableManager, List<Element>> sourceNodesProvider = variableManager -> List.of();
-        Function<VariableManager, List<Element>> targetNodesProvider = variableManager -> List.of();
+        Function<VariableManager, List<Element>> sourceProvider = variableManager -> List.of();
+        Function<VariableManager, List<Element>> targetProvider = variableManager -> List.of();
 
         Function<VariableManager, EdgeStyle> edgeStyleProvider = variableManager -> {
             return EdgeStyle.newEdgeStyle()
@@ -79,10 +79,10 @@ public class TestDiagramDescriptionBuilder {
 
         return EdgeDescription.newEdgeDescription(edgeDescriptionId)
                 .semanticElementsProvider(variableManager -> List.of())
-                .sourceNodesProvider(sourceNodesProvider)
-                .targetNodesProvider(targetNodesProvider)
-                .sourceNodeDescriptions(List.of(nodeDescription))
-                .targetNodeDescriptions(List.of(nodeDescription))
+                .sourceProvider(sourceProvider)
+                .targetProvider(targetProvider)
+                .sourceDescriptions(List.of(nodeDescription))
+                .targetDescriptions(List.of(nodeDescription))
                 .targetObjectIdProvider(idProvider)
                 .targetObjectKindProvider(variableManager -> "")
                 .targetObjectLabelProvider(variableManager -> "")

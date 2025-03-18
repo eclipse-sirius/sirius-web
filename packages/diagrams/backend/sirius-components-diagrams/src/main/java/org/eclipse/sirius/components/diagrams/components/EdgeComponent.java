@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,8 +29,8 @@ import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
+import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelDescription;
-import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.elements.EdgeElementProps;
 import org.eclipse.sirius.components.diagrams.elements.EdgeElementProps.Builder;
@@ -55,7 +55,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class EdgeComponent implements IComponent {
 
-    private static final String INVALID_NODE_ID = "INVALID_NODE_ID";
+    private static final String INVALID_ID = "INVALID_ID";
 
     private final EdgeComponentProps props;
 
@@ -72,8 +72,8 @@ public class EdgeComponent implements IComponent {
 
         List<Element> children = new ArrayList<>();
 
-        boolean hasCandidates = this.hasNodeCandidates(edgeDescription.getSourceNodeDescriptions(), cache)
-                && this.hasNodeCandidates(edgeDescription.getTargetNodeDescriptions(), cache);
+        boolean hasCandidates = this.hasCandidates(edgeDescription.getSourceDescriptions(), cache)
+                && this.hasCandidates(edgeDescription.getTargetDescriptions(), cache);
 
         if (hasCandidates) {
             VariableManager semanticElementsVariableManager = new VariableManager();
@@ -102,26 +102,30 @@ public class EdgeComponent implements IComponent {
         edgeVariableManager.put(VariableManager.SELF, semanticElement);
         edgeVariableManager.put(DiagramDescription.CACHE, cache);
 
-        List<Element> sourceNodes = edgeDescription.getSourceNodesProvider().apply(edgeVariableManager);
-        if (!sourceNodes.isEmpty()) {
+        List<Element> sourceElements = edgeDescription.getSourceProvider().apply(edgeVariableManager);
+        if (!sourceElements.isEmpty()) {
 
-            for (Element sourceNode : sourceNodes) {
-                var targetNodeVariableManager = edgeVariableManager.createChild();
-                targetNodeVariableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, this.props.getCache().getNodeToObject().get(sourceNode));
-                targetNodeVariableManager.put(EdgeDescription.GRAPHICAL_EDGE_SOURCE, sourceNode);
-                List<Element> targetNodes = edgeDescription.getTargetNodesProvider().apply(targetNodeVariableManager);
-                for (Element targetNode : targetNodes) {
+            for (Element sourceElement : sourceElements) {
+                var targetVariableManager = edgeVariableManager.createChild();
+                targetVariableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, this.props.getCache().getElementToObject().get(sourceElement));
+                targetVariableManager.put(EdgeDescription.GRAPHICAL_EDGE_SOURCE, sourceElement);
+                List<Element> targetElements = edgeDescription.getTargetProvider().apply(targetVariableManager);
+                for (Element targetElement : targetElements) {
                     var edgeInstanceVariableManager = edgeVariableManager.createChild();
-                    edgeInstanceVariableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, this.props.getCache().getNodeToObject().get(sourceNode));
-                    edgeInstanceVariableManager.put(EdgeDescription.SEMANTIC_EDGE_TARGET, this.props.getCache().getNodeToObject().get(targetNode));
-                    edgeInstanceVariableManager.put(EdgeDescription.GRAPHICAL_EDGE_SOURCE, sourceNode);
-                    edgeInstanceVariableManager.put(EdgeDescription.GRAPHICAL_EDGE_TARGET, targetNode);
+                    edgeInstanceVariableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, this.props.getCache().getElementToObject().get(sourceElement));
+                    edgeInstanceVariableManager.put(EdgeDescription.SEMANTIC_EDGE_TARGET, this.props.getCache().getElementToObject().get(targetElement));
+                    edgeInstanceVariableManager.put(EdgeDescription.GRAPHICAL_EDGE_SOURCE, sourceElement);
+                    edgeInstanceVariableManager.put(EdgeDescription.GRAPHICAL_EDGE_TARGET, targetElement);
 
                     this.props.getOperationValidator().validate("Edge#precondition", edgeInstanceVariableManager.getVariables());
                     var shouldRender = edgeDescription.getShouldRenderPredicate().test(edgeInstanceVariableManager);
                     if (shouldRender) {
-                        this.doRenderEdge(edgeInstanceVariableManager, edgeDescription, sourceNode, targetNode, diagramEvents, edgeIdPrefixToCount, lastPreviousRenderedEdgeIds)
-                                .ifPresent(edgeElements::add);
+                        this.doRenderEdge(edgeInstanceVariableManager, edgeDescription, sourceElement, targetElement, diagramEvents, edgeIdPrefixToCount, lastPreviousRenderedEdgeIds)
+                                .ifPresent((edge) -> {
+                                    edgeElements.add(edge);
+                                    cache.put(edgeDescription.getId(), edge);
+                                    cache.put(semanticElement, edge);
+                                });
                     }
                 }
             }
@@ -129,26 +133,26 @@ public class EdgeComponent implements IComponent {
         return edgeElements;
     }
 
-    private Optional<Element> doRenderEdge(VariableManager edgeVariableManager, EdgeDescription edgeDescription, Element sourceNode, Element targetNode, List<IDiagramEvent> diagramEvents,
+    private Optional<Element> doRenderEdge(VariableManager edgeVariableManager, EdgeDescription edgeDescription, Element sourceElement, Element targetElement, List<IDiagramEvent> diagramEvents,
             Map<String, Integer> edgeIdPrefixToCount, List<String> lastPreviousRenderedEdgeIds) {
         String targetObjectId = edgeDescription.getTargetObjectIdProvider().apply(edgeVariableManager);
         String targetObjectKind = edgeDescription.getTargetObjectKindProvider().apply(edgeVariableManager);
         String targetObjectLabel = edgeDescription.getTargetObjectLabelProvider().apply(edgeVariableManager);
 
-        String edgeIdPrefix = this.computeEdgeIdPrefix(edgeDescription, sourceNode, targetNode);
+        String edgeIdPrefix = this.computeEdgeIdPrefix(edgeDescription, sourceElement, targetElement);
         int count = edgeIdPrefixToCount.getOrDefault(edgeIdPrefix, 0);
 
-        Function<Integer, String> edgeIdProvider = this.getEdgeIdProvider(edgeDescription, sourceNode, targetNode);
+        Function<Integer, String> edgeIdProvider = this.getEdgeIdProvider(edgeDescription, sourceElement, targetElement);
         String id = edgeIdProvider.apply(count);
-        String sourceId = this.getId(sourceNode);
-        String targetId = this.getId(targetNode);
+        String sourceId = this.getId(sourceElement);
+        String targetId = this.getId(targetElement);
 
         Optional<Edge> optionalPreviousEdge = this.props.getEdgesRequestor().getById(id);
         Builder edgeElementPropsBuilder = EdgeElementProps.newEdgeElementProps(id);
 
         Set<ViewModifier> modifiers = this.computeModifiers(diagramEvents, optionalPreviousEdge, id);
         edgeElementPropsBuilder.modifiers(modifiers);
-        ViewModifier state = this.computeState(diagramEvents, sourceNode, sourceId, targetNode, targetId, modifiers);
+        ViewModifier state = this.computeState(diagramEvents, sourceElement, sourceId, targetElement, targetId, modifiers);
         edgeElementPropsBuilder.state(state);
 
         for (IDiagramEvent diagramEvent : diagramEvents) {
@@ -237,29 +241,29 @@ public class EdgeComponent implements IComponent {
     /**
      * Compute the state of the current edge.
      *
-     * This state is computed from the modifier set of the current edge and the states of the source and target nodes.
-     * If the new state of one of these nodes is {@link ViewModifier#Hidden}, the state of this new edge is
-     * {@link ViewModifier#Hidden} too. If these nodes are not hidden, the state of the current edge is the
+     * This state is computed from the modifier set of the current edge and the states of the source and target elements.
+     * If the new state of one of these elements is {@link ViewModifier#Hidden}, the state of this new edge is
+     * {@link ViewModifier#Hidden} too. If these element are not hidden, the state of the current edge is the
      * dominant state of the set or the default modifier if empty.
      *
      * @param diagramEvents
-     *         The diagram events, they are used to know the new state of the source and target nodes
-     * @param sourceNode
-     *         The source node element
+     *         The diagram events, they are used to know the new state of the source and target elements
+     * @param sourceElement
+     *         The source element element
      * @param sourceId
-     *         The source node ID
-     * @param targetNode
-     *         The target node element
+     *         The source element ID
+     * @param targetElement
+     *         The target element element
      * @param targetId
-     *         The target node ID
+     *         The target element ID
      * @param modifiers
      *         The modifier set of the building edge
      */
-    private ViewModifier computeState(List<IDiagramEvent> diagramEvents, Element sourceNode, String sourceId, Element targetNode, String targetId, Set<ViewModifier> modifiers) {
+    private ViewModifier computeState(List<IDiagramEvent> diagramEvents, Element sourceElement, String sourceId, Element targetElement, String targetId, Set<ViewModifier> modifiers) {
         ViewModifier state = new ViewStateProvider().getState(modifiers);
 
-        ViewModifier sourceState = this.getStateFromElement(sourceNode);
-        ViewModifier targetState = this.getStateFromElement(targetNode);
+        ViewModifier sourceState = this.getStateFromElement(sourceElement);
+        ViewModifier targetState = this.getStateFromElement(targetElement);
 
 
         boolean isSourceHidden = diagramEvents.stream()
@@ -333,8 +337,8 @@ public class EdgeComponent implements IComponent {
         return optionalPreviousEdge;
     }
 
-    private Function<Integer, String> getEdgeIdProvider(EdgeDescription edgeDescription, Element sourceNode, Element targetNode) {
-        return (count) -> this.computeEdgeId(edgeDescription, sourceNode, targetNode, count);
+    private Function<Integer, String> getEdgeIdProvider(EdgeDescription edgeDescription, Element sourceElement, Element targetElement) {
+        return (count) -> this.computeEdgeId(edgeDescription, sourceElement, targetElement, count);
     }
 
     /**
@@ -408,19 +412,21 @@ public class EdgeComponent implements IComponent {
         return edgeChildren;
     }
 
-    private String computeEdgeId(EdgeDescription edgeDescription, Element sourceNode, Element targetNode, int count) {
+    private String computeEdgeId(EdgeDescription edgeDescription, Element sourceElement, Element targetElement, int count) {
         var descriptionId = edgeDescription.getId();
-        var sourceId = Optional.of(sourceNode.getProps())
-                .filter(NodeElementProps.class::isInstance)
-                .map(NodeElementProps.class::cast)
-                .map(NodeElementProps::getId)
-                .orElse(INVALID_NODE_ID);
+        var sourceId = INVALID_ID;
+        if (sourceElement.getProps() instanceof EdgeElementProps edgeElementProps) {
+            sourceId = edgeElementProps.getId();
+        } else if (sourceElement.getProps() instanceof NodeElementProps nodeElementProps) {
+            sourceId = nodeElementProps.getId();
+        }
 
-        var targetId = Optional.of(targetNode.getProps())
-                .filter(NodeElementProps.class::isInstance)
-                .map(NodeElementProps.class::cast)
-                .map(NodeElementProps::getId)
-                .orElse(INVALID_NODE_ID);
+        var targetId = INVALID_ID;
+        if (targetElement.getProps() instanceof EdgeElementProps edgeElementProps) {
+            targetId = edgeElementProps.getId();
+        } else if (targetElement.getProps() instanceof NodeElementProps nodeElementProps) {
+            targetId = nodeElementProps.getId();
+        }
         return this.computeEdgeId(descriptionId, sourceId, targetId, count);
     }
 
@@ -429,43 +435,54 @@ public class EdgeComponent implements IComponent {
         return UUID.nameUUIDFromBytes(rawIdentifier.getBytes()).toString();
     }
 
-    private String computeEdgeIdPrefix(EdgeDescription edgeDescription, Element sourceNode, Element targetNode) {
+    private String computeEdgeIdPrefix(EdgeDescription edgeDescription, Element sourceElement, Element targetElement) {
         var descriptionId = edgeDescription.getId();
-        var sourceId = Optional.of(sourceNode.getProps())
-                .filter(NodeElementProps.class::isInstance)
-                .map(NodeElementProps.class::cast)
-                .map(NodeElementProps::getId)
-                .orElse(INVALID_NODE_ID);
+        var sourceId = INVALID_ID;
+        if (sourceElement.getProps() instanceof EdgeElementProps edgeElementProps) {
+            sourceId = edgeElementProps.getId();
+        } else if (sourceElement.getProps() instanceof NodeElementProps nodeElementProps) {
+            sourceId = nodeElementProps.getId();
+        }
 
-        var targetId = Optional.of(targetNode.getProps())
-                .filter(NodeElementProps.class::isInstance)
-                .map(NodeElementProps.class::cast)
-                .map(NodeElementProps::getId)
-                .orElse(INVALID_NODE_ID);
+        var targetId = INVALID_ID;
+        if (targetElement.getProps() instanceof EdgeElementProps edgeElementProps) {
+            targetId = edgeElementProps.getId();
+        } else if (targetElement.getProps() instanceof NodeElementProps nodeElementProps) {
+            targetId = nodeElementProps.getId();
+        }
+
         String rawPrefix = descriptionId + sourceId + targetId;
         return UUID.nameUUIDFromBytes(rawPrefix.getBytes()).toString();
     }
 
-    private boolean hasNodeCandidates(List<NodeDescription> nodeDescriptions, DiagramRenderingCache cache) {
-        return nodeDescriptions.stream()
-                .map(NodeDescription::getId)
-                .map(cache.getNodeDescriptionIdToNodes()::get)
+    private boolean hasCandidates(List<IDiagramElementDescription> diagramElementDescriptions, DiagramRenderingCache cache) {
+        return diagramElementDescriptions.stream()
+                .map(IDiagramElementDescription::getId)
+                .map(cache.getDiagramElementDescriptionIdToElements()::get)
                 .filter(Objects::nonNull)
                 .flatMap(Collection::stream)
                 .findAny()
                 .isPresent();
     }
 
-    private String getId(Element nodeElement) {
-        return Optional.of(nodeElement.getProps())
+    private String getId(Element element) {
+        if (element.getProps() instanceof EdgeElementProps edgeElementProps) {
+            return edgeElementProps.getId();
+        }
+
+        return Optional.of(element.getProps())
                 .filter(NodeElementProps.class::isInstance)
                 .map(NodeElementProps.class::cast)
                 .map(NodeElementProps::getId)
                 .orElse(UUID.randomUUID().toString());
     }
 
-    private ViewModifier getStateFromElement(Element nodeElement) {
-        return Optional.of(nodeElement.getProps())
+    private ViewModifier getStateFromElement(Element element) {
+        if (element.getProps() instanceof EdgeElementProps edgeElementProps) {
+            return edgeElementProps.getState();
+        }
+
+        return Optional.of(element.getProps())
                 .filter(NodeElementProps.class::isInstance)
                 .map(NodeElementProps.class::cast)
                 .map(NodeElementProps::getState)

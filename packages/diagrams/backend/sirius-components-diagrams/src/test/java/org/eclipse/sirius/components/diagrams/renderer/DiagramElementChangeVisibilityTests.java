@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,9 +45,11 @@ import org.eclipse.sirius.components.diagrams.components.DiagramComponent;
 import org.eclipse.sirius.components.diagrams.components.DiagramComponentProps;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
+import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.sirius.components.diagrams.elements.EdgeElementProps;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Failure;
@@ -151,38 +153,32 @@ public class DiagramElementChangeVisibilityTests {
     }
 
     private EdgeDescription createEdgeDescription(NodeDescription sourceDescription, String sourceObjectId, NodeDescription targetDescription, String targetObjectId) {
-        Function<VariableManager, List<Element>> sourceNodesProvider = variableManager -> {
+        Function<VariableManager, List<Element>> sourceProvider = variableManager -> {
             var optionalCache = variableManager.get(DiagramDescription.CACHE, DiagramRenderingCache.class);
-            Map<Object, List<Element>> objectToNodes = optionalCache.map(DiagramRenderingCache::getObjectToNodes).orElse(new HashMap<>());
+            Map<Object, List<Element>> objectToNodes = optionalCache.map(DiagramRenderingCache::getObjectToElements).orElse(new HashMap<>());
 
-            List<Element> sourceNodes = objectToNodes.get(sourceObjectId).stream()
-                    .filter(node -> ((NodeElementProps) node.getProps()).getDescriptionId().equals(sourceDescription.getId()))
-                    .filter(Objects::nonNull)
+            return objectToNodes.get(sourceObjectId).stream()
+                    .filter(node -> isFromDescription(node, sourceDescription))
                     .toList();
-
-            return sourceNodes;
         };
 
-        Function<VariableManager, List<Element>> targetNodesProvider = variableManager -> {
+        Function<VariableManager, List<Element>> targetProvider = variableManager -> {
             var optionalCache = variableManager.get(DiagramDescription.CACHE, DiagramRenderingCache.class);
-            Map<Object, List<Element>> objectToNodes = optionalCache.map(DiagramRenderingCache::getObjectToNodes).orElse(new HashMap<>());
+            Map<Object, List<Element>> objectToNodes = optionalCache.map(DiagramRenderingCache::getObjectToElements).orElse(new HashMap<>());
 
-            List<Element> targetNodes = objectToNodes.get(targetObjectId).stream()
-                    .filter(node -> ((NodeElementProps) node.getProps()).getDescriptionId().equals(targetDescription.getId()))
-                    .filter(Objects::nonNull)
+            return objectToNodes.get(targetObjectId).stream()
+                    .filter(node -> isFromDescription(node, targetDescription))
                     .toList();
-
-            return targetNodes;
         };
 
         EdgeDescription edgeDescription = EdgeDescription.newEdgeDescription(UUID.randomUUID().toString())
                 .styleProvider(STYLE_EDGE_PROVIDER)
-                .sourceNodeDescriptions(List.of(sourceDescription))
-                .targetNodeDescriptions(List.of(targetDescription))
+                .sourceDescriptions(List.of(sourceDescription))
+                .targetDescriptions(List.of(targetDescription))
                 .targetObjectIdProvider(TYPE_PROVIDER)
                 .targetObjectKindProvider(TYPE_PROVIDER)
-                .sourceNodesProvider(sourceNodesProvider)
-                .targetNodesProvider(targetNodesProvider)
+                .sourceProvider(sourceProvider)
+                .targetProvider(targetProvider)
                 .targetObjectLabelProvider(variableManager -> "")
                 .semanticElementsProvider(variableManager -> List.of(new Object()))
                 .labelEditHandler((variableManager, edgeLabelKind, newLabel) -> new Success())
@@ -471,5 +467,10 @@ public class DiagramElementChangeVisibilityTests {
 
         assertThat(newDiagram.getNodes()).extracting(Node::getState).allMatch(state -> state == ViewModifier.Hidden);
         assertThat(newDiagram.getEdges()).extracting(Edge::getState).allMatch(state -> state == ViewModifier.Hidden);
+    }
+
+    private boolean isFromDescription(Element diagramElement, IDiagramElementDescription diagramElementDescription) {
+        return diagramElement.getProps() instanceof NodeElementProps nodeElementProps && Objects.equals(diagramElementDescription.getId(), nodeElementProps.getDescriptionId())
+                || diagramElement.getProps() instanceof EdgeElementProps edgeElementProps && Objects.equals(diagramElementDescription.getId(), edgeElementProps.getDescriptionId());
     }
 }
