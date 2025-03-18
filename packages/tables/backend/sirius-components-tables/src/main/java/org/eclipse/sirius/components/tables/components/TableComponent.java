@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.ColumnFilter;
+import org.eclipse.sirius.components.tables.ColumnSort;
 import org.eclipse.sirius.components.tables.PaginationData;
 import org.eclipse.sirius.components.tables.Table;
 import org.eclipse.sirius.components.tables.descriptions.PaginatedData;
@@ -59,6 +60,7 @@ public class TableComponent implements IComponent {
         ITableElementRequestor tableElementRequestor = new TableElementRequestor();
 
         List<ColumnFilter> columnsFilters = this.props.columnFilters();
+        List<ColumnSort> columnSort = this.props.columnSort();
 
         var childrenColumns = tableDescription.getColumnDescriptions().stream()
                 .map(columnDescription -> {
@@ -79,7 +81,20 @@ public class TableComponent implements IComponent {
                 )
                 .orElse(List.of());
 
+        var columnSortMapped = optionalPreviousTable
+                .map(previousTable -> columnSort.stream()
+                        .map(sort ->
+                                tableElementRequestor.getColumn(previousTable, sort.id())
+                                        .map(column -> new ColumnSort(column.getTargetObjectId(), sort.desc()))
+                        )
+                        .filter(Optional::isPresent)
+                        .map(Optional::get)
+                        .toList()
+                )
+                .orElse(List.of());
+
         variableManager.put(TableRenderer.COLUMN_FILTERS, columnFiltersMapped);
+        variableManager.put(TableRenderer.COLUMN_SORT, columnSortMapped);
 
         PaginatedData paginatedData = tableDescription.getLineDescription().getSemanticElementsProvider().apply(variableManager);
 
@@ -101,6 +116,7 @@ public class TableComponent implements IComponent {
                 .globalFilter(this.props.globalFilter())
                 .columnFilters(columnsFilters)
                 .enableSubRows(tableDescription.isEnableSubRows())
+                .columnSort(columnSort)
                 .build();
 
         return new Element(TableElementProps.TYPE, tableElementProps);

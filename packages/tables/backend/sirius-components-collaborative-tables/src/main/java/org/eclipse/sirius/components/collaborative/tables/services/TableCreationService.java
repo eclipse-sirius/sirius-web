@@ -60,7 +60,7 @@ public class TableCreationService {
         variableManager.put(TableRenderer.PAGINATION_DIRECTION, "NEXT");
         variableManager.put(TableRenderer.EXPANDED_IDS, List.of());
 
-        TableComponentProps tableComponentProps = new TableComponentProps(variableManager, tableDescription, Optional.empty(), List.of(), "", List.of());
+        TableComponentProps tableComponentProps = new TableComponentProps(variableManager, tableDescription, Optional.empty(), List.of(), "", List.of(), List.of());
 
         Element element = new Element(TableComponent.class, tableComponentProps);
         Table newTable = new TableRenderer().render(element);

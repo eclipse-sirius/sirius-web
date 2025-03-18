@@ -82,6 +82,7 @@ public class TableElementFactory implements IElementFactory {
                     .globalFilter(tableElementProps.globalFilter())
                     .columnFilters(tableElementProps.columnFilters())
                     .enableSubRows(tableElementProps.enableSubRows())
+                    .columnSort(tableElementProps.columnSort())
                     .build();
         }
         return null;
@@ -149,6 +150,7 @@ public class TableElementFactory implements IElementFactory {
                     .resizable(columnElementProps.resizable())
                     .hidden(columnElementProps.hidden())
                     .filterVariant(columnElementProps.filterVariant())
+                    .sortable(columnElementProps.sortable())
                     .index(columnElementProps.index())
                     .build();
         }

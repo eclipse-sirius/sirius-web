@@ -137,6 +137,15 @@ public class ColumnDescriptionImpl extends MinimalEObjectImpl.Container implemen
      */
     protected static final String FILTER_WIDGET_EXPRESSION_EDEFAULT = "";
     /**
+     * The default value of the '{@link #getIsSortableExpression() <em>Is Sortable Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getIsSortableExpression()
+     */
+    protected static final String IS_SORTABLE_EXPRESSION_EDEFAULT = "";
+    /**
      * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
@@ -226,6 +235,15 @@ public class ColumnDescriptionImpl extends MinimalEObjectImpl.Container implemen
      * @see #getFilterWidgetExpression()
      */
     protected String filterWidgetExpression = FILTER_WIDGET_EXPRESSION_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getIsSortableExpression() <em>Is Sortable Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getIsSortableExpression()
+     */
+    protected String isSortableExpression = IS_SORTABLE_EXPRESSION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -483,6 +501,29 @@ public class ColumnDescriptionImpl extends MinimalEObjectImpl.Container implemen
      * @generated
      */
     @Override
+    public String getIsSortableExpression() {
+        return this.isSortableExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setIsSortableExpression(String newIsSortableExpression) {
+        String oldIsSortableExpression = this.isSortableExpression;
+        this.isSortableExpression = newIsSortableExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.COLUMN_DESCRIPTION__IS_SORTABLE_EXPRESSION, oldIsSortableExpression, this.isSortableExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case TablePackage.COLUMN_DESCRIPTION__NAME:
@@ -505,6 +546,8 @@ public class ColumnDescriptionImpl extends MinimalEObjectImpl.Container implemen
                 return this.getIsResizableExpression();
             case TablePackage.COLUMN_DESCRIPTION__FILTER_WIDGET_EXPRESSION:
                 return this.getFilterWidgetExpression();
+            case TablePackage.COLUMN_DESCRIPTION__IS_SORTABLE_EXPRESSION:
+                return this.getIsSortableExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -546,6 +589,9 @@ public class ColumnDescriptionImpl extends MinimalEObjectImpl.Container implemen
                 return;
             case TablePackage.COLUMN_DESCRIPTION__FILTER_WIDGET_EXPRESSION:
                 this.setFilterWidgetExpression((String) newValue);
+                return;
+            case TablePackage.COLUMN_DESCRIPTION__IS_SORTABLE_EXPRESSION:
+                this.setIsSortableExpression((String) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -589,6 +635,9 @@ public class ColumnDescriptionImpl extends MinimalEObjectImpl.Container implemen
             case TablePackage.COLUMN_DESCRIPTION__FILTER_WIDGET_EXPRESSION:
                 this.setFilterWidgetExpression(FILTER_WIDGET_EXPRESSION_EDEFAULT);
                 return;
+            case TablePackage.COLUMN_DESCRIPTION__IS_SORTABLE_EXPRESSION:
+                this.setIsSortableExpression(IS_SORTABLE_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -621,6 +670,8 @@ public class ColumnDescriptionImpl extends MinimalEObjectImpl.Container implemen
                 return IS_RESIZABLE_EXPRESSION_EDEFAULT == null ? this.isResizableExpression != null : !IS_RESIZABLE_EXPRESSION_EDEFAULT.equals(this.isResizableExpression);
             case TablePackage.COLUMN_DESCRIPTION__FILTER_WIDGET_EXPRESSION:
                 return FILTER_WIDGET_EXPRESSION_EDEFAULT == null ? this.filterWidgetExpression != null : !FILTER_WIDGET_EXPRESSION_EDEFAULT.equals(this.filterWidgetExpression);
+            case TablePackage.COLUMN_DESCRIPTION__IS_SORTABLE_EXPRESSION:
+                return IS_SORTABLE_EXPRESSION_EDEFAULT == null ? this.isSortableExpression != null : !IS_SORTABLE_EXPRESSION_EDEFAULT.equals(this.isSortableExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -655,6 +706,8 @@ public class ColumnDescriptionImpl extends MinimalEObjectImpl.Container implemen
                 this.isResizableExpression +
                 ", filterWidgetExpression: " +
                 this.filterWidgetExpression +
+                ", isSortableExpression: " +
+                this.isSortableExpression +
                 ')';
         return result;
     }

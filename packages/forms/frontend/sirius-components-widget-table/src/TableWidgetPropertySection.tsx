@@ -58,6 +58,7 @@ const RawTableWidgetPropertySection: PropertySectionComponent<GQLTableWidget> = 
         onGlobalFilterChange={() => {}}
         onColumnFiltersChange={() => {}}
         onExpandedElementChange={() => {}}
+        onSortingChange={() => {}}
         enableColumnVisibility={false}
         enableColumnResizing={false}
         enableColumnFilters={false}
@@ -66,6 +67,7 @@ const RawTableWidgetPropertySection: PropertySectionComponent<GQLTableWidget> = 
         enablePagination={false}
         enableColumnOrdering={false}
         expandedRowIds={[]}
+        enableSorting={false}
       />
     </div>
   );

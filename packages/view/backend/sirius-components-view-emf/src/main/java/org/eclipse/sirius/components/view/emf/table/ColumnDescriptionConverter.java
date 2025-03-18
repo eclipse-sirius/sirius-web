@@ -61,6 +61,7 @@ public class ColumnDescriptionConverter {
                 .isResizablePredicate(variableManager -> interpreter.evaluateExpression(variableManager.getVariables(), columnDescription.getIsResizableExpression()).asBoolean().orElse(false))
                 .initialWidthProvider(variableManager -> interpreter.evaluateExpression(variableManager.getVariables(), columnDescription.getInitialWidthExpression()).asInt().orElse(-1))
                 .filterVariantProvider(variableManager -> this.evaluateString(interpreter, variableManager, columnDescription.getFilterWidgetExpression()))
+                .isSortablePredicate(variableManager -> interpreter.evaluateExpression(variableManager.getVariables(), columnDescription.getIsSortableExpression()).asBoolean().orElse(false))
                 .build();
     }
 

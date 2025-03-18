@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2025 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+
 -- Sample Papaya project
 INSERT INTO project (
   id,
@@ -655,7 +668,8 @@ INSERT INTO representation_content (
                 "id": "eabb569d-f99e-3e6e-86a6-db600b1fa526",
                 "value": "LIC"
             }
-        ]
+        ],
+        "columnSort": []
      }',
      'none',
      '0',
