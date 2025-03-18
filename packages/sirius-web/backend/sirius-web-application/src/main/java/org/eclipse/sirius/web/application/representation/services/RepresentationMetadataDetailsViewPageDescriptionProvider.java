@@ -110,7 +110,8 @@ public class RepresentationMetadataDetailsViewPageDescriptionProvider implements
     private PageDescription createPageDescription(String id, GroupDescription groupDescription, Predicate<VariableManager> canCreatePredicate) {
         Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().toList();
         Function<VariableManager, String> pageLabelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.labelService::getLabel)
+                .map(this.labelService::getStyledLabel)
+                .map(Object::toString)
                 .orElse(null);
 
         return PageDescription.newPageDescription(id)

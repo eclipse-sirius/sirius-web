@@ -36,7 +36,8 @@ public class TableLabelProvider implements Function<VariableManager, String> {
     public String apply(VariableManager variableManager) {
         return variableManager.get(TableDescription.LABEL, String.class)
                 .orElseGet(() -> variableManager.get(VariableManager.SELF, Object.class)
-                        .map(this.labelService::getLabel)
+                        .map(this.labelService::getStyledLabel)
+                        .map(Objects::toString)
                         .orElse(null));
     }
 }

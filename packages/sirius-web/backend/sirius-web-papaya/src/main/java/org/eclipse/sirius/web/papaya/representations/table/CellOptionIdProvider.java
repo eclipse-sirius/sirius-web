@@ -41,7 +41,7 @@ public class CellOptionIdProvider implements Function<VariableManager, String> {
     public String apply(VariableManager variableManager) {
         Object candidate = variableManager.getVariables().get(SelectCellComponent.CANDIDATE_VARIABLE);
         if (candidate instanceof EEnumLiteral) {
-            return this.labelService.getLabel(candidate);
+            return this.labelService.getStyledLabel(candidate).toString();
         }
         return this.identityService.getId(candidate);
     }

@@ -30,7 +30,7 @@ import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.collaborative.selection.dto.SelectionDialogTreeEventInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.graphql.api.URLConstants;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.trees.Tree;
@@ -122,7 +122,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
     private RepresentationIdBuilder representationIdBuilder;
 
     @Autowired
-    private IObjectService objectService;
+    private ILabelService labelService;
 
     @BeforeEach
     public void beforeEach() {
@@ -347,8 +347,10 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
     }
 
     private Predicate<Object> getTreeRefreshedEventPayloadMatcher() {
-        Predicate<Tree> treeMatcher = tree -> tree.getChildren().size() == 1 && tree.getChildren().get(0).getIconURL().get(0).equals("/icons/Resource.svg")
-                && tree.getChildren().get(0).getLabel().toString().equals("Sirius Web Architecture") && tree.getChildren().get(0).getChildren().isEmpty();
+        Predicate<Tree> treeMatcher = tree -> tree.getChildren().size() == 1
+                && tree.getChildren().get(0).getIconURL().get(0).equals("/icons/Resource.svg")
+                && tree.getChildren().get(0).getLabel().toString().equals("Sirius Web Architecture")
+                && tree.getChildren().get(0).getChildren().isEmpty();
 
         return object -> Optional.of(object)
                 .filter(DataFetcherResult.class::isInstance)
@@ -410,15 +412,15 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
     @DisplayName("given a selectionDescription then the image and the label are the expected ones")
     public void givenASelectionDescriptionThenTheImageAndLabelAreTheExpectedOnes() {
         SelectionDialogDescription selectionDRialogDescription = this.selectionDescriptionProvider.getSelectionDialog();
-        String selectionDialogLabel = this.objectService.getLabel(selectionDRialogDescription);
+        String selectionDialogLabel = this.labelService.getStyledLabel(selectionDRialogDescription).toString();
         assertThat(selectionDialogLabel).isEqualTo(selectionDRialogDescription.getSelectionMessage());
-        List<String> imagePath = this.objectService.getImagePath(selectionDRialogDescription);
+        List<String> imagePath = this.labelService.getImagePaths(selectionDRialogDescription);
         assertThat(imagePath).hasSize(1).first().isEqualTo("/icons/full/obj16/SelectionDialogDescription.svg");
 
         SelectionDialogTreeDescription selectionDialogTreeDescription = selectionDRialogDescription.getSelectionDialogTreeDescription();
-        String selectionDialogTreeDescriptionLabel = this.objectService.getLabel(selectionDialogTreeDescription);
+        String selectionDialogTreeDescriptionLabel = this.labelService.getStyledLabel(selectionDialogTreeDescription).toString();
         assertThat(selectionDialogTreeDescriptionLabel).isEqualTo(selectionDialogTreeDescription.getElementsExpression());
-        List<String> selectionDialogTreeDescriptionImagePath = this.objectService.getImagePath(selectionDialogTreeDescription);
+        List<String> selectionDialogTreeDescriptionImagePath = this.labelService.getImagePaths(selectionDialogTreeDescription);
         assertThat(selectionDialogTreeDescriptionImagePath).hasSize(1).first().isEqualTo("/icons/full/obj16/SelectionDialogTreeDescription.svg");
     }
 

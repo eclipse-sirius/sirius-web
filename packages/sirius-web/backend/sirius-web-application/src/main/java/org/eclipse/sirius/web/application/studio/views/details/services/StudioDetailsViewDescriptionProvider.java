@@ -10,9 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.view.emf;
+package org.eclipse.sirius.web.application.studio.views.details.services;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -24,21 +25,16 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
-import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.emf.forms.EBooleanIfDescriptionProvider;
-import org.eclipse.sirius.components.emf.forms.EEnumIfDescriptionProvider;
-import org.eclipse.sirius.components.emf.forms.NonContainmentReferenceIfDescriptionProvider;
-import org.eclipse.sirius.components.emf.forms.NumberIfDescriptionProvider;
+import org.eclipse.sirius.components.emf.forms.EStringIfDescriptionProvider;
+import org.eclipse.sirius.components.emf.forms.api.IEMFFormIfDescriptionProvider;
 import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
-import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
-import org.eclipse.sirius.components.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.ForDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
@@ -47,6 +43,8 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
+import org.eclipse.sirius.components.view.emf.FixedColorPropertiesConfigurer;
+import org.eclipse.sirius.components.view.emf.ITextfieldCustomizer;
 import org.eclipse.sirius.components.view.emf.diagram.NodeStylePropertiesConfigurer;
 import org.springframework.stereotype.Service;
 
@@ -64,7 +62,7 @@ import org.springframework.stereotype.Service;
  * @author pcdavid
  */
 @Service
-public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesDescriptionRegistryConfigurer {
+public class StudioDetailsViewDescriptionProvider implements IPropertiesDescriptionRegistryConfigurer {
 
     public static final String ESTRUCTURAL_FEATURE = "eStructuralFeature";
 
@@ -83,31 +81,24 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
 
     private final IObjectService objectService;
 
+    private final ILabelService labelService;
+
     private final ComposedAdapterFactory composedAdapterFactory;
 
     private final IPropertiesValidationProvider propertiesValidationProvider;
 
-    private final IEMFMessageService emfMessageService;
-
-    private final IEMFKindService emfKindService;
-
     private final List<ITextfieldCustomizer> customizers;
 
-    private final IFeedbackMessageService feedbackMessageService;
+    private final List<IEMFFormIfDescriptionProvider> emfFormIfDescriptionProviders;
 
-    private final Function<VariableManager, String> semanticTargetIdProvider;
-
-
-    public ViewPropertiesDescriptionRegistryConfigurer(IObjectService objectService, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider, IEMFMessageService emfMessageService,
-            IEMFKindService emfKindService, List<ITextfieldCustomizer> customizers, IFeedbackMessageService feedbackMessageService) {
+    public StudioDetailsViewDescriptionProvider(IObjectService objectService, ILabelService labelService, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider,
+                                                List<ITextfieldCustomizer> customizers, List<IEMFFormIfDescriptionProvider> emfFormIfDescriptionProviders) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
-        this.emfMessageService = Objects.requireNonNull(emfMessageService);
-        this.emfKindService = Objects.requireNonNull(emfKindService);
         this.customizers = Objects.requireNonNull(customizers);
-        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
-        this.semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null);
+        this.emfFormIfDescriptionProviders = Objects.requireNonNull(emfFormIfDescriptionProviders);
     }
 
     @Override
@@ -138,7 +129,7 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
             var optionalSelf = variableManager.get(VariableManager.SELF, Object.class);
             if (optionalSelf.isPresent()) {
                 Object self = optionalSelf.get();
-                return this.objectService.getLabel(self);
+                return this.labelService.getStyledLabel(self).toString();
             }
             return UUID.randomUUID().toString();
         };
@@ -191,40 +182,29 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
             return objects;
         };
 
+        Function<VariableManager, String> semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .map(this.objectService::getId)
+                .orElse(null);
+
         List<AbstractControlDescription> ifDescriptions = new ArrayList<>();
         for (ITextfieldCustomizer customizer : this.customizers) {
-            ifDescriptions.add(new CustomizableEStringIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, customizer, this.semanticTargetIdProvider).getIfDescription());
+            ifDescriptions.add(new CustomizableEStringIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, customizer, semanticTargetIdProvider).getIfDescription());
         }
         ITextfieldCustomizer fallbackCustomizer = new ITextfieldCustomizer.NoOp() {
             @Override
             public boolean handles(EAttribute eAttribute, EObject eObject) {
-                return ViewPropertiesDescriptionRegistryConfigurer.this.customizers.stream().noneMatch(customizer -> customizer.handles(eAttribute, eObject));
+                return StudioDetailsViewDescriptionProvider.this.customizers.stream().noneMatch(customizer -> customizer.handles(eAttribute, eObject));
             }
         };
-        ifDescriptions.add(new CustomizableEStringIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, fallbackCustomizer, this.semanticTargetIdProvider).getIfDescription());
-        ifDescriptions.add(new EBooleanIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
-        ifDescriptions.add(new EEnumIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
-
-        ifDescriptions.add(new NonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.emfKindService, this.feedbackMessageService, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
-
-        var numericDataTypes = List.of(
-                EcorePackage.Literals.EINT,
-                EcorePackage.Literals.EINTEGER_OBJECT,
-                EcorePackage.Literals.EDOUBLE,
-                EcorePackage.Literals.EDOUBLE_OBJECT,
-                EcorePackage.Literals.EFLOAT,
-                EcorePackage.Literals.EFLOAT_OBJECT,
-                EcorePackage.Literals.ELONG,
-                EcorePackage.Literals.ELONG_OBJECT,
-                EcorePackage.Literals.ESHORT,
-                EcorePackage.Literals.ESHORT_OBJECT
-        );
-        for (var dataType : numericDataTypes) {
-            ifDescriptions.add(new NumberIfDescriptionProvider(dataType, this.composedAdapterFactory, this.propertiesValidationProvider, this.emfMessageService, this.semanticTargetIdProvider).getIfDescription());
-        }
+        ifDescriptions.add(new CustomizableEStringIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, fallbackCustomizer, semanticTargetIdProvider).getIfDescription());
+        this.emfFormIfDescriptionProviders.stream()
+                .map(IEMFFormIfDescriptionProvider::getIfDescriptions)
+                .flatMap(Collection::stream)
+                .filter(ifDescription -> !ifDescription.getId().equals(EStringIfDescriptionProvider.IF_DESCRIPTION_ID))
+                .forEach(ifDescriptions::add);
 
         ForDescription forDescription = ForDescription.newForDescription("forId")
-                .targetObjectIdProvider(this.semanticTargetIdProvider)
+                .targetObjectIdProvider(semanticTargetIdProvider)
                 .iterator(ESTRUCTURAL_FEATURE)
                 .iterableProvider(iterableProvider)
                 .controlDescriptions(ifDescriptions)

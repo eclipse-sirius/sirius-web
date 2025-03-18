@@ -37,6 +37,6 @@ public class ObjectLabelDataFetcher implements IDataFetcherWithFieldCoordinates<
     @Override
     public String get(DataFetchingEnvironment environment) throws Exception {
         Object object = environment.getSource();
-        return this.labelService.getLabel(object);
+        return this.labelService.getStyledLabel(object).toString();
     }
 }

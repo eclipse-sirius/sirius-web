@@ -33,6 +33,7 @@ import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
@@ -73,6 +74,8 @@ public class ReferenceWidgetDescriptionConverter implements IWidgetDescriptionCo
 
     private final IObjectService objectService;
 
+    private final ILabelService labelService;
+
     private final IOperationExecutor operationExecutor;
 
     private final IFeedbackMessageService feedbackMessageService;
@@ -85,12 +88,13 @@ public class ReferenceWidgetDescriptionConverter implements IWidgetDescriptionCo
 
     private final IEMFKindService emfKindService;
 
-    public ReferenceWidgetDescriptionConverter(IObjectService objectService, IOperationExecutor operationExecutor, IEMFKindService emfKindService, IFeedbackMessageService feedbackMessageService, ComposedAdapterFactory composedAdapterFactory, IFormIdProvider widgetIdProvider) {
+    public ReferenceWidgetDescriptionConverter(IObjectService objectService, ILabelService labelService, IOperationExecutor operationExecutor, IEMFKindService emfKindService, IFeedbackMessageService feedbackMessageService, ComposedAdapterFactory composedAdapterFactory, IFormIdProvider widgetIdProvider) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.widgetIdProvider = Objects.requireNonNull(widgetIdProvider);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
-        this.adapterFactory = composedAdapterFactory;
+        this.adapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(objectService::getId).orElse(null);
         this.emfKindService = Objects.requireNonNull(emfKindService);
     }
@@ -255,11 +259,11 @@ public class ReferenceWidgetDescriptionConverter implements IWidgetDescriptionCo
     }
 
     private String getItemLabel(VariableManager variableManager) {
-        return this.getItem(variableManager).map(this.objectService::getLabel).orElse("");
+        return this.getItem(variableManager).map(this.labelService::getStyledLabel).map(Object::toString).orElse("");
     }
 
     private List<String> getItemIconURL(VariableManager variableManager) {
-        return this.getItem(variableManager).map(this.objectService::getImagePath).orElse(List.of());
+        return this.getItem(variableManager).map(this.labelService::getImagePaths).orElse(List.of());
     }
 
     private String getItemKind(VariableManager variableManager) {

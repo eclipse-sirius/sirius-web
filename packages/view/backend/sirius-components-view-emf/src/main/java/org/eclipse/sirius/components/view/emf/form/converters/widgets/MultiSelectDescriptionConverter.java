@@ -19,6 +19,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.MultiSelectStyle;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
@@ -55,14 +56,17 @@ public class MultiSelectDescriptionConverter implements IWidgetDescriptionConver
 
     private final IObjectService objectService;
 
+    private final ILabelService labelService;
+
     private final IOperationExecutor operationExecutor;
 
     private final IFeedbackMessageService feedbackMessageService;
 
     private final IFormIdProvider widgetIdProvider;
 
-    public MultiSelectDescriptionConverter(IObjectService objectService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
+    public MultiSelectDescriptionConverter(IObjectService objectService, ILabelService labelService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.widgetIdProvider = Objects.requireNonNull(widgetIdProvider);
@@ -103,7 +107,7 @@ public class MultiSelectDescriptionConverter implements IWidgetDescriptionConver
                     .optionsProvider(new MultiValueProvider(interpreter, viewMultiSelectDescription.getCandidatesExpression(), Object.class))
                     .optionIdProvider(new OptionIdProvider(this.objectService))
                     .optionLabelProvider(new StringValueProvider(interpreter, viewMultiSelectDescription.getCandidateLabelExpression()))
-                    .optionIconURLProvider(new OptionIconURLsProvider(this.objectService))
+                    .optionIconURLProvider(new OptionIconURLsProvider(this.labelService))
                     .newValuesHandler(new MultiSelectNewValueHandler(interpreter, this.objectService, this.operationExecutor, this.feedbackMessageService, viewMultiSelectDescription.getBody()))
                     .styleProvider(styleProvider)
                     .diagnosticsProvider(new DiagnosticProvider(interpreter, viewMultiSelectDescription.getDiagnosticsExpression()))

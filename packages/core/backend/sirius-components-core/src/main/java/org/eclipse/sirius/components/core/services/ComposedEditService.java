@@ -93,12 +93,4 @@ public class ComposedEditService implements IEditService {
                 .findFirst()
                 .ifPresentOrElse(delegate -> delegate.delete(object), () -> this.defaultEditService.delete(object));
     }
-
-    @Override
-    public void editLabel(Object object, String labelField, String newValue) {
-        this.editServiceDelegates.stream()
-                .filter(delegate -> delegate.canHandle(object))
-                .findFirst()
-                .ifPresentOrElse(delegate -> delegate.editLabel(object, labelField, newValue), () -> this.defaultEditService.editLabel(object, labelField, newValue));
-    }
 }
