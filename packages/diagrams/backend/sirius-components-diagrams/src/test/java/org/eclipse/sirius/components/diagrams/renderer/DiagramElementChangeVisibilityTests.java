@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -177,12 +177,12 @@ public class DiagramElementChangeVisibilityTests {
 
         EdgeDescription edgeDescription = EdgeDescription.newEdgeDescription(UUID.randomUUID().toString())
                 .styleProvider(STYLE_EDGE_PROVIDER)
-                .sourceNodeDescriptions(List.of(sourceDescription))
-                .targetNodeDescriptions(List.of(targetDescription))
+                .sourceDescriptions(List.of(sourceDescription))
+                .targetDescriptions(List.of(targetDescription))
                 .targetObjectIdProvider(TYPE_PROVIDER)
                 .targetObjectKindProvider(TYPE_PROVIDER)
-                .sourceNodesProvider(sourceNodesProvider)
-                .targetNodesProvider(targetNodesProvider)
+                .sourceProvider(sourceNodesProvider)
+                .targetProvider(targetNodesProvider)
                 .targetObjectLabelProvider(variableManager -> "")
                 .semanticElementsProvider(variableManager -> List.of(new Object()))
                 .labelEditHandler((variableManager, edgeLabelKind, newLabel) -> new Success())

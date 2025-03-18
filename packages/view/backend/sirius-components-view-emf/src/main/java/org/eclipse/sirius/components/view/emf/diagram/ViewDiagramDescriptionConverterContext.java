@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,8 +15,11 @@ package org.eclipse.sirius.components.view.emf.diagram;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
+import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 
@@ -45,6 +48,12 @@ public class ViewDiagramDescriptionConverterContext {
 
     public Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> getConvertedNodes() {
         return this.convertedNodes;
+    }
+
+    public Map<org.eclipse.sirius.components.view.diagram.DiagramElementDescription, IDiagramElementDescription> getConvertedElements() {
+        // in case of key collisions, wich should never happen, we take the value of the node.
+        return Stream.concat(this.convertedEdges.entrySet().stream(), this.convertedNodes.entrySet().stream())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (edges, nodes) -> nodes, LinkedHashMap::new));
     }
 
     public AQLInterpreter getInterpreter() {

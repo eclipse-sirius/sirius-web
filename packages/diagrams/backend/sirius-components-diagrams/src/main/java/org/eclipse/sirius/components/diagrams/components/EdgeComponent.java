@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,8 +29,8 @@ import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
+import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelDescription;
-import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.elements.EdgeElementProps;
 import org.eclipse.sirius.components.diagrams.elements.EdgeElementProps.Builder;
@@ -72,8 +72,8 @@ public class EdgeComponent implements IComponent {
 
         List<Element> children = new ArrayList<>();
 
-        boolean hasCandidates = this.hasNodeCandidates(edgeDescription.getSourceNodeDescriptions(), cache)
-                && this.hasNodeCandidates(edgeDescription.getTargetNodeDescriptions(), cache);
+        boolean hasCandidates = this.hasCandidates(edgeDescription.getSourceDescriptions(), cache)
+                && this.hasCandidates(edgeDescription.getTargetDescriptions(), cache);
 
         if (hasCandidates) {
             VariableManager semanticElementsVariableManager = new VariableManager();
@@ -102,14 +102,14 @@ public class EdgeComponent implements IComponent {
         edgeVariableManager.put(VariableManager.SELF, semanticElement);
         edgeVariableManager.put(DiagramDescription.CACHE, cache);
 
-        List<Element> sourceNodes = edgeDescription.getSourceNodesProvider().apply(edgeVariableManager);
+        List<Element> sourceNodes = edgeDescription.getSourceProvider().apply(edgeVariableManager);
         if (!sourceNodes.isEmpty()) {
 
             for (Element sourceNode : sourceNodes) {
                 var targetNodeVariableManager = edgeVariableManager.createChild();
                 targetNodeVariableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, this.props.getCache().getNodeToObject().get(sourceNode));
                 targetNodeVariableManager.put(EdgeDescription.GRAPHICAL_EDGE_SOURCE, sourceNode);
-                List<Element> targetNodes = edgeDescription.getTargetNodesProvider().apply(targetNodeVariableManager);
+                List<Element> targetNodes = edgeDescription.getTargetProvider().apply(targetNodeVariableManager);
                 for (Element targetNode : targetNodes) {
                     var edgeInstanceVariableManager = edgeVariableManager.createChild();
                     edgeInstanceVariableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, this.props.getCache().getNodeToObject().get(sourceNode));
@@ -121,7 +121,11 @@ public class EdgeComponent implements IComponent {
                     var shouldRender = edgeDescription.getShouldRenderPredicate().test(edgeInstanceVariableManager);
                     if (shouldRender) {
                         this.doRenderEdge(edgeInstanceVariableManager, edgeDescription, sourceNode, targetNode, diagramEvents, edgeIdPrefixToCount, lastPreviousRenderedEdgeIds)
-                                .ifPresent(edgeElements::add);
+                                .ifPresent((edge) -> {
+                                    edgeElements.add(edge);
+                                    cache.put(edgeDescription.getId(), edge);
+                                    cache.put(semanticElement, edge);
+                                });
                     }
                 }
             }
@@ -446,10 +450,10 @@ public class EdgeComponent implements IComponent {
         return UUID.nameUUIDFromBytes(rawPrefix.getBytes()).toString();
     }
 
-    private boolean hasNodeCandidates(List<NodeDescription> nodeDescriptions, DiagramRenderingCache cache) {
+    private boolean hasCandidates(List<IDiagramElementDescription> nodeDescriptions, DiagramRenderingCache cache) {
         return nodeDescriptions.stream()
-                .map(NodeDescription::getId)
-                .map(cache.getNodeDescriptionIdToNodes()::get)
+                .map(IDiagramElementDescription::getId)
+                .map(cache.getNodeDescriptionIdToNodes()::get)//.map(cache.getNodeDescriptionIdToNodes()::get)
                 .filter(Objects::nonNull)
                 .flatMap(Collection::stream)
                 .findAny()
@@ -457,6 +461,10 @@ public class EdgeComponent implements IComponent {
     }
 
     private String getId(Element nodeElement) {
+        if (nodeElement.getProps() instanceof EdgeElementProps edgeElementProps) {
+            return edgeElementProps.getId();
+        }
+
         return Optional.of(nodeElement.getProps())
                 .filter(NodeElementProps.class::isInstance)
                 .map(NodeElementProps.class::cast)

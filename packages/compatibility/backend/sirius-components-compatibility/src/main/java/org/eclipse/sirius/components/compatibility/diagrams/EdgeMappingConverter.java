@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import java.util.function.Function;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.components.compatibility.api.ISemanticCandidatesProviderFactory;
+import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.interpreter.StringValueProvider;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -79,8 +80,14 @@ public class EdgeMappingConverter {
             return variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getLabel).orElse(null);
         };
 
-        List<NodeDescription> sourceNodeDescriptions = this.getNodeDescriptions(edgeMapping.getSourceMapping(), id2NodeDescriptions);
-        List<NodeDescription> targetNodeDescriptions = this.getNodeDescriptions(edgeMapping.getTargetMapping(), id2NodeDescriptions);
+        List<IDiagramElementDescription> sourceNodeDescriptions = this.getNodeDescriptions(edgeMapping.getSourceMapping(), id2NodeDescriptions)
+                .stream().filter(IDiagramElementDescription.class::isInstance)
+                .map(IDiagramElementDescription.class::cast)
+                .toList();
+        List<IDiagramElementDescription> targetNodeDescriptions = this.getNodeDescriptions(edgeMapping.getTargetMapping(), id2NodeDescriptions)
+                .stream().filter(IDiagramElementDescription.class::isInstance)
+                .map(IDiagramElementDescription.class::cast)
+                .toList();
 
         Function<VariableManager, List<?>> semanticElementsProvider = this.getSemanticElementsProvider(interpreter, edgeMapping, sourceNodeDescriptions);
 
@@ -119,10 +126,10 @@ public class EdgeMappingConverter {
                 .targetObjectKindProvider(targetKindProvider)
                 .targetObjectLabelProvider(targetLabelProvider)
                 .semanticElementsProvider(semanticElementsProvider)
-                .sourceNodeDescriptions(sourceNodeDescriptions)
-                .targetNodeDescriptions(targetNodeDescriptions)
-                .sourceNodesProvider(sourceNodesProvider)
-                .targetNodesProvider(targetNodesProvider)
+                .sourceDescriptions(sourceNodeDescriptions)
+                .targetDescriptions(targetNodeDescriptions)
+                .sourceProvider(sourceNodesProvider)
+                .targetProvider(targetNodesProvider)
                 .styleProvider(styleProvider)
                 .deleteHandler(deleteHandler);
         optionalBeginLabelDescription.ifPresent(builder::beginLabelDescription);
@@ -174,7 +181,7 @@ public class EdgeMappingConverter {
                 .toList();
     }
 
-    private Function<VariableManager, List<?>> getSemanticElementsProvider(AQLInterpreter interpreter, EdgeMapping edgeMapping, List<NodeDescription> sourceNodeDescriptions) {
+    private Function<VariableManager, List<?>> getSemanticElementsProvider(AQLInterpreter interpreter, EdgeMapping edgeMapping, List<IDiagramElementDescription> sourceNodeDescriptions) {
         Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> List.of();
 
         if (edgeMapping.isUseDomainElement()) {
@@ -184,7 +191,7 @@ public class EdgeMappingConverter {
             semanticElementsProvider = this.semanticCandidatesProviderFactory.getSemanticCandidatesProvider(interpreter, domainClass, semanticCandidatesExpression, preconditionExpression);
         } else {
             List<String> sourceNodeDescriptionIds = sourceNodeDescriptions.stream()
-                    .map(NodeDescription::getId)
+                    .map(IDiagramElementDescription::getId)
                     .toList();
 
             semanticElementsProvider = new RelationBasedSemanticElementsProvider(sourceNodeDescriptionIds);

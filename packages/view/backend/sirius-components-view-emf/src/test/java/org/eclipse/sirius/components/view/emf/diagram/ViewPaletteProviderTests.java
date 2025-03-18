@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -168,11 +168,11 @@ public class ViewPaletteProviderTests {
                         .deleteHandler(vm -> new Success())
                         .labelEditHandler((vm, edgeKind, newLabel) -> new Success())
                         .semanticElementsProvider(vm -> List.of(new Object()))
-                        .sourceNodeDescriptions(List.of())
-                        .sourceNodesProvider(vm -> List.of())
+                        .sourceDescriptions(List.of())
+                        .sourceProvider(vm -> List.of())
                         .styleProvider(vm -> null)
-                        .targetNodeDescriptions(List.of())
-                        .targetNodesProvider(vm -> List.of())
+                        .targetDescriptions(List.of())
+                        .targetProvider(vm -> List.of())
                         .targetObjectIdProvider(vm -> "")
                         .targetObjectKindProvider(vm -> "")
                         .targetObjectLabelProvider(vm -> "")
