@@ -69,7 +69,7 @@ import WarningIcon from '@mui/icons-material/Warning';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
-import { Link as RouterLink, useMatch } from 'react-router-dom';
+import { Navigate, PathRouteProps, Link as RouterLink, useMatch } from 'react-router-dom';
 import { DiagramFilter } from '../diagrams/DiagramFilter';
 import { ApolloLinkUndoRedoStack } from '../graphql/ApolloLinkUndoRedoStack';
 import { ApolloClientOptionsConfigurer } from '../graphql/useCreateApolloClient.types';
@@ -81,8 +81,11 @@ import { NavigationBarMenuItemProps } from '../navigationBar/NavigationBarMenu.t
 import { navigationBarMenuEntryExtensionPoint } from '../navigationBar/NavigationBarMenuExtensionPoints';
 import { ImportLibraryCommand } from '../omnibox/ImportLibraryCommand';
 import { OnboardArea } from '../onboarding/OnboardArea';
+import { routerExtensionPoint } from '../router/RouterExtensionPoints';
+import { DisplayLibraryView } from '../views/display-library/DisplayLibraryView';
 import { DownloadProjectMenuEntryContribution } from '../views/edit-project/EditProjectNavbar/DownloadProjectMenuEntryContribution';
 import { editProjectNavbarMenuEntryExtensionPoint } from '../views/edit-project/EditProjectNavbar/EditProjectNavbarMenuExtensionPoints';
+import { EditProjectView } from '../views/edit-project/EditProjectView';
 import { DetailsView } from '../views/edit-project/workbench-views/details/DetailsView';
 import { DiagramTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/DiagramTreeItemContextMenuContribution';
 import { DocumentTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/DocumentTreeItemContextMenuContribution';
@@ -92,15 +95,20 @@ import { ExplorerView } from '../views/edit-project/workbench-views/explorer/Exp
 import { QueryView } from '../views/edit-project/workbench-views/query/QueryView';
 import { RelatedElementsView } from '../views/edit-project/workbench-views/related-elements/RelatedElementsView';
 import { RepresentationsView } from '../views/edit-project/workbench-views/representations/RepresentationsView';
+import { LibraryBrowserView } from '../views/library-browser/LibraryBrowserView';
+import { NewProjectView } from '../views/new-project/NewProjectView';
 import { createProjectAreaCardExtensionPoint } from '../views/project-browser/create-projects-area/CreateProjectAreaExtensionPoints';
 import { NewProjectCard } from '../views/project-browser/create-projects-area/NewProjectCard';
 import { ShowAllProjectTemplatesCard } from '../views/project-browser/create-projects-area/ShowAllProjectTemplatesCard';
 import { UploadProjectCard } from '../views/project-browser/create-projects-area/UploadProjectCard';
 import { projectContextMenuEntryExtensionPoint } from '../views/project-browser/list-projects-area/ProjectContextMenuExtensionPoints';
 import { ProjectDownloadMenuItemExtension } from '../views/project-browser/list-projects-area/ProjectDownloadMenuItemExtension';
+import { ProjectBrowserView } from '../views/project-browser/ProjectBrowserView';
 import { ProjectImagesSettings } from '../views/project-settings/images/ProjectImagesSettings';
+import { ProjectSettingsView } from '../views/project-settings/ProjectSettingsView';
 import { ProjectSettingTabContribution } from '../views/project-settings/ProjectSettingsView.types';
 import { projectSettingsTabExtensionPoint } from '../views/project-settings/ProjectSettingsViewExtensionPoints';
+import { UploadProjectView } from '../views/upload-project/UploadProjectView';
 import { ellipseNodeStyleDocumentTransform } from './EllipseNodeDocumentTransform';
 import { referenceWidgetDocumentTransform } from './ReferenceWidgetDocumentTransform';
 import { tableWidgetDocumentTransform } from './TableWidgetDocumentTransform';
@@ -507,5 +515,53 @@ defaultExtensionRegistry.putData<OmniboxCommandOverrideContribution[]>(
     data: omniboxCommandOverrides,
   }
 );
+
+/*******************************************************************************
+ *
+ * Router contributions
+ *
+ * Used to register the route of Sirius Web views
+ *
+ *******************************************************************************/
+
+export const siriusWebRouterContributions: PathRouteProps[] = [
+  {
+    path: '/new/project/*',
+    element: <NewProjectView />,
+  },
+  {
+    path: '/upload/project/*',
+    element: <UploadProjectView />,
+  },
+  {
+    path: '/projects',
+    element: <ProjectBrowserView />,
+  },
+  {
+    path: '/projects/:projectId/edit/:representationId?/*',
+    element: <EditProjectView />,
+  },
+  {
+    path: '/projects/:projectId/settings/*',
+    element: <ProjectSettingsView />,
+  },
+  {
+    path: '/libraries',
+    element: <LibraryBrowserView />,
+  },
+  {
+    path: '/libraries/:namespace/:name/:version',
+    element: <DisplayLibraryView />,
+  },
+  {
+    path: '/',
+    element: <Navigate to="/projects" replace />,
+  },
+];
+
+defaultExtensionRegistry.putData(routerExtensionPoint, {
+  identifier: `siriusweb_${routerExtensionPoint.identifier}`,
+  data: siriusWebRouterContributions,
+});
 
 export { defaultExtensionRegistry };

@@ -57,7 +57,8 @@ Both properties were added to `SelectionEntry` years ago due to a leak in an abs
 In the near future, we will start cleaning up the rest of the code by removing properties like `targetObjectKind` and `targetObjectLabel` which are now unnecessary.
 We will also remove `GQLTreeItem#kind` later.
 - https://github.com/eclipse-sirius/sirius-web/issues/4700[#4700] [view-diagram] The following attributes of `EdgeDescription` have been renamed : `sourceNodesDescriptions to sourceDescriptions`, `targetNodeDescriptions to targetDescriptions`, `sourceNodeExpression to sourceExpression` and `targetNodesExpression to targetExpression`.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4714[#4174] [sirius-web] Default routes are contributed thanks to the router extension point.
+Downstream projects contributing their own route will have to use a `ExtensionRegistryMergeStrategy` to either merge their contribution to the sirius-web one, or to add sirius-web routes to their own contribution.
 
 === Dependency update
 

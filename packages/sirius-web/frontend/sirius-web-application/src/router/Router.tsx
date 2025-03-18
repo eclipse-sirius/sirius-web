@@ -12,14 +12,7 @@
  *******************************************************************************/
 import { useData } from '@eclipse-sirius/sirius-components-core';
 import { Navigate, Route, Routes, useRouteError } from 'react-router-dom';
-import { DisplayLibraryView } from '../views/display-library/DisplayLibraryView';
-import { EditProjectView } from '../views/edit-project/EditProjectView';
 import { ErrorView } from '../views/error/ErrorView';
-import { LibraryBrowser } from '../views/library-browser/LibraryBrowser';
-import { NewProjectView } from '../views/new-project/NewProjectView';
-import { ProjectBrowser } from '../views/project-browser/ProjectBrowser';
-import { ProjectSettingsView } from '../views/project-settings/ProjectSettingsView';
-import { UploadProjectView } from '../views/upload-project/UploadProjectView';
 import { routerExtensionPoint } from './RouterExtensionPoints';
 
 const ErrorBoundary = () => {
@@ -32,26 +25,10 @@ export const Router = () => {
   const { data: routes } = useData(routerExtensionPoint);
   return (
     <Routes>
-      <Route path="/new/project/*" element={<NewProjectView />} ErrorBoundary={ErrorBoundary} />
-      <Route path="/upload/project/*" element={<UploadProjectView />} ErrorBoundary={ErrorBoundary} />
-      <Route path="/projects" element={<ProjectBrowser />} ErrorBoundary={ErrorBoundary} />
-      <Route
-        path="/projects/:projectId/edit/:representationId?/*"
-        element={<EditProjectView />}
-        ErrorBoundary={ErrorBoundary}
-      />
-      <Route path="/projects/:projectId/settings/*" element={<ProjectSettingsView />} ErrorBoundary={ErrorBoundary} />
-      <Route path="/libraries" element={<LibraryBrowser />} ErrorBoundary={ErrorBoundary} />
-      <Route
-        path="/libraries/:namespace/:name/:version"
-        element={<DisplayLibraryView />}
-        ErrorBoundary={ErrorBoundary}
-      />
       <Route path="/errors/:code" element={<ErrorView />} />
       {routes.map((props, index) => (
         <Route key={index} {...props} ErrorBoundary={ErrorBoundary} />
       ))}
-      <Route path="/" element={<Navigate to="/projects" replace />} ErrorBoundary={ErrorBoundary} />
       <Route path="*" element={<Navigate to="/errors/404" />} />
     </Routes>
   );
