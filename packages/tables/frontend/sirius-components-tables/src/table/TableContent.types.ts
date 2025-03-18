@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { GQLColumnFilter } from '../columns/useTableColumnFiltering.types';
+import { GQLColumnSort } from '../columns/useTableColumnSorting.types';
 import { RowFilter } from '../rows/filters/RowFiltersMenu.types';
 
 export interface TableContentProps {
@@ -23,6 +24,7 @@ export interface TableContentProps {
   onColumnFiltersChange: (columnFilters: ColumnFilter[]) => void;
   onExpandedElementChange: (rowId: string) => void;
   onRowFiltersChange: (activeRowFilterIds: string[]) => void;
+  onSortingChange: (columnSort: ColumnSort[]) => void;
   enableColumnVisibility: boolean;
   enableColumnResizing: boolean;
   enableColumnFilters: boolean;
@@ -34,6 +36,7 @@ export interface TableContentProps {
   expandedRowIds: string[];
   rowFilters: RowFilter[] | null;
   activeRowFilterIds: string[];
+  enableSorting: boolean;
 }
 
 export interface TablePaginationState {
@@ -65,6 +68,7 @@ export interface GQLTable {
   lines: GQLLine[];
   paginationData: GQLPaginationData;
   columnFilters: GQLColumnFilter[];
+  columnSort: GQLColumnSort[];
 }
 
 export interface GQLColumn {
@@ -90,6 +94,7 @@ export interface GQLColumn {
     | 'time'
     | 'time-range'
     | undefined;
+  isSortable: boolean;
 }
 
 export interface GQLLine {
@@ -154,4 +159,9 @@ export interface GQLSelectCellOption {
 export interface ColumnFilter {
   id: string;
   value: unknown;
+}
+
+export interface ColumnSort {
+  id: string;
+  desc: boolean;
 }

@@ -363,6 +363,16 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
      * @generated
      */
     @Override
+    public EAttribute getColumnDescription_IsSortableExpression() {
+        return (EAttribute) this.columnDescriptionEClass.getEStructuralFeatures().get(10);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getRowDescription() {
         return this.rowDescriptionEClass;
     }
@@ -738,6 +748,7 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
         this.createEAttribute(this.columnDescriptionEClass, COLUMN_DESCRIPTION__INITIAL_WIDTH_EXPRESSION);
         this.createEAttribute(this.columnDescriptionEClass, COLUMN_DESCRIPTION__IS_RESIZABLE_EXPRESSION);
         this.createEAttribute(this.columnDescriptionEClass, COLUMN_DESCRIPTION__FILTER_WIDGET_EXPRESSION);
+        this.createEAttribute(this.columnDescriptionEClass, COLUMN_DESCRIPTION__IS_SORTABLE_EXPRESSION);
 
         this.rowDescriptionEClass = this.createEClass(ROW_DESCRIPTION);
         this.createEAttribute(this.rowDescriptionEClass, ROW_DESCRIPTION__NAME);
@@ -850,6 +861,8 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
         this.initEAttribute(this.getColumnDescription_IsResizableExpression(), theViewPackage.getInterpretedExpression(), "isResizableExpression", "", 0, 1, ColumnDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getColumnDescription_FilterWidgetExpression(), theViewPackage.getInterpretedExpression(), "filterWidgetExpression", "", 0, 1, ColumnDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getColumnDescription_IsSortableExpression(), theViewPackage.getInterpretedExpression(), "isSortableExpression", "", 0, 1, ColumnDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.rowDescriptionEClass, RowDescription.class, "RowDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

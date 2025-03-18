@@ -56,6 +56,8 @@ public final class ColumnDescription {
 
     private Function<VariableManager, String> filterVariantProvider;
 
+    private Predicate<VariableManager> isSortablePredicate;
+
     private ColumnDescription() {
         // Prevent instantiation
     }
@@ -104,6 +106,10 @@ public final class ColumnDescription {
         return this.filterVariantProvider;
     }
 
+    public Predicate<VariableManager> getIsSortablePredicate() {
+        return this.isSortablePredicate;
+    }
+
     public static Builder newColumnDescription(String id) {
         return new Builder(id);
     }
@@ -143,6 +149,8 @@ public final class ColumnDescription {
         private Predicate<VariableManager> isResizablePredicate;
 
         private Function<VariableManager, String> filterVariantProvider;
+
+        private Predicate<VariableManager> isSortablePredicate;
 
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -198,6 +206,11 @@ public final class ColumnDescription {
             return this;
         }
 
+        public Builder isSortablePredicate(Predicate<VariableManager> isSortablePredicate) {
+            this.isSortablePredicate = Objects.requireNonNull(isSortablePredicate);
+            return this;
+        }
+
         public ColumnDescription build() {
             ColumnDescription columnDescription = new ColumnDescription();
             columnDescription.id = Objects.requireNonNull(this.id);
@@ -211,6 +224,7 @@ public final class ColumnDescription {
             columnDescription.initialWidthProvider = Objects.requireNonNull(this.initialWidthProvider);
             columnDescription.isResizablePredicate = Objects.requireNonNull(this.isResizablePredicate);
             columnDescription.filterVariantProvider = Objects.requireNonNull(this.filterVariantProvider);
+            columnDescription.isSortablePredicate = Objects.requireNonNull(this.isSortablePredicate);
             return columnDescription;
         }
     }

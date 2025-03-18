@@ -40,6 +40,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Conditional(OnStudioTests.class)
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class ViewTableDescriptionProvider implements IEditingContextProcessor {
 
     public static final String HIDE_FAILURE_ROW_FILTER_ID = "hide-failure";
@@ -89,6 +90,7 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
                 .semanticCandidatesExpression("aql:Sequence{'Name', 'Description'}")
                 .headerLabelExpression("aql:self")
                 .headerIndexLabelExpression("aql:columnIndex")
+                .isSortableExpression("aql:true")
                 .build();
 
         var contextMenuEntry = new TableBuilders().newRowContextMenuEntry()
@@ -105,7 +107,7 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
 
         var rowDescription = new TableBuilders().newRowDescription()
                 .semanticCandidatesExpression(
-                        "aql:self.eAllContents()->filter({papaya::Type | papaya::Operation | papaya::Parameter})->select(t | not (activeRowFilterIds->includes('hide-failure') and (t.name = 'Failure')))->toPaginatedData(cursor,direction,size)")
+                        "aql:self.eAllContents()->filter({papaya::Type | papaya::Operation | papaya::Parameter})->select(t | not (activeRowFilterIds->includes('hide-failure') and (t.name = 'Failure')))->sortNamedElement(columnSort)->toPaginatedData(cursor,direction,size)")
                 .headerIndexLabelExpression("aql:rowIndex")
                 .headerLabelExpression("aql:self.name")
                 .contextMenuEntries(contextMenuEntry)

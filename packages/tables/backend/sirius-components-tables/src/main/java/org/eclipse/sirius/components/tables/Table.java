@@ -53,6 +53,8 @@ public final class Table implements IRepresentation {
 
     private boolean enableSubRows;
 
+    private List<ColumnSort> columnSort;
+
     private Table() {
         // Prevent instantiation
     }
@@ -109,10 +111,14 @@ public final class Table implements IRepresentation {
         return this.enableSubRows;
     }
 
+    public List<ColumnSort> getColumnSort() {
+        return this.columnSort;
+    }
+
     public static Builder newTable(String id) {
         return new Builder(id);
     }
-    
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, targetObjectId: {2}, descriptionId: {3}'}'";
@@ -150,6 +156,8 @@ public final class Table implements IRepresentation {
         private List<ColumnFilter> columnFilters;
 
         private boolean enableSubRows;
+
+        private List<ColumnSort> columnSort;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -205,6 +213,11 @@ public final class Table implements IRepresentation {
             return this;
         }
 
+        public Builder columnSort(List<ColumnSort> columnSort) {
+            this.columnSort = Objects.requireNonNull(columnSort);
+            return this;
+        }
+
         public Table build() {
             Table table = new Table();
             table.id = Objects.requireNonNull(this.id);
@@ -219,6 +232,7 @@ public final class Table implements IRepresentation {
             table.globalFilter = Objects.requireNonNull(this.globalFilter);
             table.columnFilters = Objects.requireNonNull(this.columnFilters);
             table.enableSubRows = this.enableSubRows;
+            table.columnSort = Objects.requireNonNull(this.columnSort);
             return table;
         }
     }

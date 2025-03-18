@@ -24,6 +24,7 @@ import {
   GQLTableRefreshedEventPayload,
   UseTableSubscriptionState,
   UseTableSubscriptionValue,
+  GQLTableColumnSortPayload,
 } from './useTableSubscription.types';
 
 export const getTableEventSubscription = `
@@ -37,6 +38,12 @@ export const getTableEventSubscription = `
         columnFilters {
           id
           value
+        }
+      }
+      ... on TableColumnSortPayload {
+        columnSort {
+          id
+          desc
         }
       }
       ... on TableRefreshedEventPayload {
@@ -54,6 +61,10 @@ export const getTableEventSubscription = `
             id
             value
           }
+          columnSort {
+            id
+            desc
+          }
           columns {
             id
             headerLabel
@@ -65,6 +76,7 @@ export const getTableEventSubscription = `
             isResizable
             hidden
             filterVariant
+            isSortable
           }
           lines {
             id
@@ -126,6 +138,9 @@ const isTableGlobalFilterValuePayload = (payload: GQLTableEventPayload): payload
 const isTableColumnFilterPayload = (payload: GQLTableEventPayload): payload is GQLTableColumnFilterPayload =>
   payload.__typename === 'TableColumnFilterPayload';
 
+const isTableColumnSortPayload = (payload: GQLTableEventPayload): payload is GQLTableColumnSortPayload =>
+  payload.__typename === 'TableColumnSortPayload';
+
 export const useTableSubscription = (editingContextId: string, representationId: string): UseTableSubscriptionValue => {
   const [state, setState] = useState<UseTableSubscriptionState>({
     id: crypto.randomUUID(),
@@ -168,6 +183,18 @@ export const useTableSubscription = (editingContextId: string, representationId:
               return {
                 ...prevState,
                 table: { ...prevState.table, columnFilters: columnFilters },
+              };
+            } else {
+              return prevState;
+            }
+          });
+        } else if (isTableColumnSortPayload(payload)) {
+          const { columnSort } = payload;
+          setState((prevState) => {
+            if (prevState.table) {
+              return {
+                ...prevState,
+                table: { ...prevState.table, columnSort: columnSort },
               };
             } else {
               return prevState;

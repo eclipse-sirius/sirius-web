@@ -128,6 +128,7 @@ public class ProjectTableRepresentationDescriptionProvider implements IEditingCo
                 .headerIconURLsProvider(variableManager -> List.of())
                 .headerIndexLabelProvider(variableManager -> "")
                 .isResizablePredicate(variableManager -> false)
+                .isSortablePredicate(variableManager -> false)
                 .initialWidthProvider(variableManager -> -1)
                 .filterVariantProvider(variableManager -> "text")
                 .build();

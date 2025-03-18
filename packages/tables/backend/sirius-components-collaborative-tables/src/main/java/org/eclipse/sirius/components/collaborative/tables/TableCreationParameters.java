@@ -18,6 +18,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.tables.ColumnFilter;
+import org.eclipse.sirius.components.tables.ColumnSort;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 
 /**
@@ -45,6 +46,8 @@ public final class TableCreationParameters {
     private List<String> expanded;
 
     private List<String> activeRowFilterIds;
+
+    private List<ColumnSort> columnSort;
 
     private TableCreationParameters() {
         // Prevent instantiation
@@ -86,6 +89,10 @@ public final class TableCreationParameters {
         return this.activeRowFilterIds;
     }
 
+    public List<ColumnSort> getColumnSort() {
+        return this.columnSort;
+    }
+
     public static Builder newTableCreationParameters(String id) {
         return new Builder(id);
     }
@@ -115,6 +122,8 @@ public final class TableCreationParameters {
         private List<String> expanded;
 
         private List<String> activeRowFilterIds;
+
+        private List<ColumnSort> columnSort;
 
         private Builder(String id) {
             this.id = id;
@@ -160,6 +169,11 @@ public final class TableCreationParameters {
             return this;
         }
 
+        public Builder columnSort(List<ColumnSort> columnSort) {
+            this.columnSort = Objects.requireNonNull(columnSort);
+            return this;
+        }
+
         public TableCreationParameters build() {
             TableCreationParameters tableCreationParameters = new TableCreationParameters();
             tableCreationParameters.id = Objects.requireNonNull(this.id);
@@ -171,6 +185,7 @@ public final class TableCreationParameters {
             tableCreationParameters.columnFilters = Objects.requireNonNull(this.columnFilters);
             tableCreationParameters.expanded = Objects.requireNonNull(this.expanded);
             tableCreationParameters.activeRowFilterIds = Objects.requireNonNull(this.activeRowFilterIds);
+            tableCreationParameters.columnSort = Objects.requireNonNull(this.columnSort);
             return tableCreationParameters;
         }
     }

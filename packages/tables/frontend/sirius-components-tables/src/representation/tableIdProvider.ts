@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { ColumnFilter } from '../table/TableContent.types';
+import { ColumnFilter, ColumnSort } from '../table/TableContent.types';
 
 export const tableIdProvider = (
   tableId: string,
@@ -21,7 +21,8 @@ export const tableIdProvider = (
   globalFilter: string | null,
   columnFilters: ColumnFilter[] | null,
   expanded: string[],
-  activeRowFilters: string[] | null
+  activeRowFilters: string[] | null,
+  columnSort: ColumnSort[] | null
 ) => {
   const globalFilterParam: string = globalFilter !== null ? `&globalFilter=${encodeURIComponent(globalFilter)}` : '';
   const columnFiltersParam: string =
@@ -36,7 +37,16 @@ export const tableIdProvider = (
   const expandIds: string = `&expandedIds=[${expanded.map(encodeURIComponent).join(',')}]`;
   const activeFilterIds =
     activeRowFilters !== null ? `&activeRowFilterIds=[${activeRowFilters.map(encodeURIComponent).join(',')}]` : '';
+  const columnSortParams =
+    columnSort !== null
+      ? `&columnSort=[${columnSort
+          .map((sort) => {
+            return sort.id + ':' + sort.desc;
+          })
+          .map(encodeURIComponent)
+          .join(',')}]`
+      : '';
   return `${tableId}?cursor=${
     cursor ? encodeURIComponent(cursor) : cursor
-  }&direction=${direction}&size=${size}${globalFilterParam}${columnFiltersParam}${activeFilterIds}${expandIds}`;
+  }&direction=${direction}&size=${size}${globalFilterParam}${columnFiltersParam}${activeFilterIds}${expandIds}${columnSortParams}`;
 };

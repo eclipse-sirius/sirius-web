@@ -246,6 +246,7 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
                 .initialWidthProvider(variableManager -> -1)
                 .isResizablePredicate(variableManager -> false)
                 .filterVariantProvider(variableManager -> "text")
+                .isSortablePredicate(variableManager -> false)
                 .build();
         return List.of(columnDescription);
     }

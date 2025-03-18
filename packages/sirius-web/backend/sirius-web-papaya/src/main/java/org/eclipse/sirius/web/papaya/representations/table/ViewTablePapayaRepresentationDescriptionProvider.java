@@ -35,6 +35,7 @@ public class ViewTablePapayaRepresentationDescriptionProvider implements IRepres
                 .headerLabelExpression("Qualified Name")
                 .initialWidthExpression("450")
                 .isResizableExpression("aql:false")
+                .isSortableExpression("aql:true")
                 .build();
 
         var descriptionColumnDescription = this.tableBuilders.newColumnDescription()
@@ -42,6 +43,7 @@ public class ViewTablePapayaRepresentationDescriptionProvider implements IRepres
                 .headerLabelExpression("Description")
                 .initialWidthExpression("250")
                 .isResizableExpression("aql:false")
+                .isSortableExpression("aql:true")
                 .build();
 
         var cellNameDescription = this.tableBuilders.newCellDescription()
@@ -57,10 +59,11 @@ public class ViewTablePapayaRepresentationDescriptionProvider implements IRepres
                 .build();
 
         var rowDescription = this.tableBuilders.newRowDescription()
-                .semanticCandidatesExpression("aql:self.eAllContents()->filter(papaya::Package)->toPaginatedData(cursor,direction,size)")
+                .semanticCandidatesExpression("aql:self.eAllContents()->filter(papaya::Package)->sortNamedElement(columnSort)->toPaginatedData(cursor,direction,size)")
                 .initialHeightExpression("-1")
                 .isResizableExpression("aql:false")
                 .headerLabelExpression("aql:self.name")
+                .depthLevelExpression("0")
                 .build();
 
         return this.tableBuilders.newTableDescription()

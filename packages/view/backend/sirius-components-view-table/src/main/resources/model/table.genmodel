@@ -32,6 +32,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//ColumnDescription/initialWidthExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//ColumnDescription/isResizableExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//ColumnDescription/filterWidgetExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//ColumnDescription/isSortableExpression"/>
     </genClasses>
     <genClasses ecoreClass="table.ecore#//RowDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//RowDescription/name"/>

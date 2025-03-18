@@ -19,6 +19,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.ColumnFilter;
+import org.eclipse.sirius.components.tables.ColumnSort;
 import org.eclipse.sirius.components.tables.Table;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 import org.eclipse.sirius.components.tables.events.ITableEvent;
@@ -34,7 +35,8 @@ public record TableComponentProps(
         Optional<Table> previousTable,
         List<ITableEvent> tableEvents,
         String globalFilter,
-        List<ColumnFilter> columnFilters) implements IProps {
+        List<ColumnFilter> columnFilters,
+        List<ColumnSort> columnSort) implements IProps {
 
     public TableComponentProps {
         Objects.requireNonNull(variableManager);
@@ -43,5 +45,6 @@ public record TableComponentProps(
         Objects.requireNonNull(tableEvents);
         Objects.requireNonNull(globalFilter);
         Objects.requireNonNull(columnFilters);
+        Objects.requireNonNull(columnSort);
     }
 }
