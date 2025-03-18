@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.view.diagram.provider.DiagramItemProviderAd
 import org.eclipse.sirius.components.view.form.provider.FormItemProviderAdapterFactory;
 import org.eclipse.sirius.components.view.gantt.provider.GanttItemProviderAdapterFactory;
 import org.eclipse.sirius.components.view.provider.ViewItemProviderAdapterFactory;
+import org.eclipse.sirius.components.view.table.customcells.provider.CustomcellsItemProviderAdapterFactory;
 import org.eclipse.sirius.components.view.table.provider.TableItemProviderAdapterFactory;
 import org.eclipse.sirius.components.view.tree.provider.TreeItemProviderAdapterFactory;
 import org.eclipse.sirius.components.view.widget.tablewidget.provider.TableWidgetItemProviderAdapterFactory;
@@ -88,5 +89,10 @@ public class EMFAdapterFactoryConfiguration {
     @Bean
     public AdapterFactory tableWidgetAdapterFactory() {
         return new TableWidgetItemProviderAdapterFactory();
+    }
+
+    @Bean
+    public AdapterFactory customCellsAdapterFactory() {
+        return new CustomcellsItemProviderAdapterFactory();
     }
 }

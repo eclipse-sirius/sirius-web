@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.tables.tests.graphql.InvokeRowContextMenuEn
 import org.eclipse.sirius.components.tables.tests.graphql.RowContextMenuQueryRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.TableEventSubscriptionRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.application.views.table.customcells.CheckboxCell;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.services.tables.ViewTableDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
@@ -110,15 +111,19 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
 
         Consumer<Object> tableContentConsumer = this.getTableSubscriptionConsumer(table -> {
             assertThat(table).isNotNull();
-            assertThat(table.getColumns()).hasSize(2);
+            assertThat(table.getColumns()).hasSize(3);
             assertThat(table.getColumns().get(0).getHeaderLabel()).isEqualTo("Name");
             assertThat(table.getColumns().get(0).getHeaderIndexLabel()).isEqualTo("0");
             assertThat(table.getColumns().get(1).getHeaderLabel()).isEqualTo("Description");
             assertThat(table.getColumns().get(1).getHeaderIndexLabel()).isEqualTo("1");
+            assertThat(table.getColumns().get(2).getHeaderLabel()).isEqualTo("Abstract");
+            assertThat(table.getColumns().get(2).getHeaderIndexLabel()).isEqualTo("2");
+
             assertThat(table.getLines()).hasSize(5);
             assertThat(table.getLines().get(0).getHeaderIndexLabel()).isEqualTo("0");
             assertThat(table.getLines().get(0).getCells().get(0)).isInstanceOf(TextfieldCell.class);
             assertThat(table.getLines().get(0).getCells().get(1)).isInstanceOf(TextareaCell.class);
+            assertThat(table.getLines().get(0).getCells().get(2)).isInstanceOf(CheckboxCell.class);
             assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(0)).getValue()).isEqualTo("Success");
             assertThat(table.getLines().get(1).getHeaderIndexLabel()).isEqualTo("1");
             assertThat(table.getLines().get(1).getCells().get(0)).isInstanceOf(TextfieldCell.class);

@@ -122,14 +122,6 @@ type SelectCellOption {
   label: String!
 }
 
-type CheckboxCell implements Cell {
-  id: ID!
-  columnId: ID!
-  targetObjectId: ID!
-  targetObjectKind: String!
-  value: Boolean!
-}
-
 type IconLabelCell implements Cell {
   id: ID!
   columnId: ID!
@@ -159,7 +151,6 @@ type RowFilter {
 }
 
 extend type Mutation {
-  editCheckboxCell(input: EditCheckboxCellInput!): EditCheckboxCellPayload!
   editSelectCell(input: EditSelectCellInput!): EditSelectCellPayload!
   editMultiSelectCell(input: EditMultiSelectCellInput!): EditMultiSelectCellPayload!
   editTextfieldCell(input: EditTextfieldCellInput!): EditTextfieldCellPayload!
@@ -173,17 +164,6 @@ extend type Mutation {
   reorderTableColumns(input: ReorderTableColumnsInput!): ReorderTableColumnsPayload!
   invokeRowContextMenuEntry(input: InvokeRowContextMenuEntryInput!): InvokeRowContextMenuEntryPayload!
 }
-
-input EditCheckboxCellInput {
-  id: ID!
-  editingContextId: ID!
-  representationId: ID!
-  tableId: ID!
-  cellId: ID!
-  newValue: Boolean!
-}
-
-union EditCheckboxCellPayload = ErrorPayload | SuccessPayload
 
 input EditSelectCellInput {
   id: ID!
@@ -202,7 +182,7 @@ input EditMultiSelectCellInput {
   representationId: ID!
   tableId: ID!
   cellId: ID!
-  newValues: [String]!
+  newValue: [String]!
 }
 
 union EditMultiSelectCellPayload = ErrorPayload | SuccessPayload

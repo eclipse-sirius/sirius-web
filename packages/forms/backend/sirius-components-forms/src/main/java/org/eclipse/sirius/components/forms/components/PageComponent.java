@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,7 +31,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class PageComponent implements IComponent {
 
-    private PageComponentProps props;
+    private final PageComponentProps props;
 
     public PageComponent(PageComponentProps props) {
         this.props = Objects.requireNonNull(props);
@@ -61,7 +61,8 @@ public class PageComponent implements IComponent {
                     .forEach(pageChildren::add);
 
             pageDescription.getGroupDescriptions().stream()
-                    .map(groupDescription -> new Element(GroupComponent.class, new GroupComponentProps(childrenVariableManager, groupDescription, this.props.getWidgetDescriptors())))
+                    .map(groupDescription -> new Element(GroupComponent.class,
+                            new GroupComponentProps(childrenVariableManager, groupDescription, this.props.getWidgetDescriptors(), this.props.getCustomCellDescriptors())))
                     .forEach(pageChildren::add);
 
             PageElementProps pageElementProps = PageElementProps.newPageElementProps(id)

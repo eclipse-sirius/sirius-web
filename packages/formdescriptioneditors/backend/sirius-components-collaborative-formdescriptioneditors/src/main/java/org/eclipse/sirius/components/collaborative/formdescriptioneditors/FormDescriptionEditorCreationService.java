@@ -36,6 +36,7 @@ import org.eclipse.sirius.components.formdescriptioneditors.renderer.FormDescrip
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.tables.components.ICustomCellDescriptor;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.MeterRegistry;
@@ -61,8 +62,11 @@ public class FormDescriptionEditorCreationService implements IFormDescriptionEdi
 
     private final Timer timer;
 
+    private final List<ICustomCellDescriptor> customCellDescriptors;
+
     public FormDescriptionEditorCreationService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IIdentityService identityService,
-            IObjectSearchService objectSearchService, List<IWidgetDescriptor> widgetDescriptors, List<IWidgetPreviewConverterProvider> customWidgetConverterProviders, MeterRegistry meterRegistry) {
+            IObjectSearchService objectSearchService, List<IWidgetDescriptor> widgetDescriptors, List<IWidgetPreviewConverterProvider> customWidgetConverterProviders, MeterRegistry meterRegistry,
+            List<ICustomCellDescriptor> customCellDescriptors) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.identityService = Objects.requireNonNull(identityService);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
@@ -72,6 +76,7 @@ public class FormDescriptionEditorCreationService implements IFormDescriptionEdi
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
                 .tag(Monitoring.NAME, "formdescriptioneditor")
                 .register(meterRegistry);
+        this.customCellDescriptors = Objects.requireNonNull(customCellDescriptors);
     }
 
     @Override
@@ -112,10 +117,11 @@ public class FormDescriptionEditorCreationService implements IFormDescriptionEdi
 
         Optional<FormDescriptionEditor> optionalPreviousFormDescriptionEditor = optionalFormDescriptionEditorContext.map(IFormDescriptionEditorContext::getFormDescriptionEditor);
 
-        var formDescriptionEditorComponentProps = new FormDescriptionEditorComponentProps(variableManager, formDescriptionEditorDescription, optionalPreviousFormDescriptionEditor, this.widgetDescriptors, this.customWidgetConverterProviders);
+        var formDescriptionEditorComponentProps = new FormDescriptionEditorComponentProps(variableManager, formDescriptionEditorDescription, optionalPreviousFormDescriptionEditor,
+                this.widgetDescriptors, this.customWidgetConverterProviders, this.customCellDescriptors);
         Element element = new Element(FormDescriptionEditorComponent.class, formDescriptionEditorComponentProps);
 
-        FormDescriptionEditor newFormDescriptionEditor = new FormDescriptionEditorRenderer(this.widgetDescriptors).render(element);
+        FormDescriptionEditor newFormDescriptionEditor = new FormDescriptionEditorRenderer(this.widgetDescriptors, this.customCellDescriptors).render(element);
 
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -103,8 +103,8 @@ public class RenderSplitButtonTest {
 
     @Test
     public void testRenderSplitButtonWithActions() {
-        ButtonDescription buttonDescription = createButtonDescription(BUTTON_DESCRIPTION_ID, BUTTON_DESCRIPTION_ID, LABEL);
-        ButtonDescription buttonDescription2 = createButtonDescription(BUTTON_DESCRIPTION_ID2, BUTTON_DESCRIPTION_ID2, LABEL);
+        ButtonDescription buttonDescription = this.createButtonDescription(BUTTON_DESCRIPTION_ID, BUTTON_DESCRIPTION_ID, LABEL);
+        ButtonDescription buttonDescription2 = this.createButtonDescription(BUTTON_DESCRIPTION_ID2, BUTTON_DESCRIPTION_ID2, LABEL);
 
         SplitButtonDescription splitButtonDescription = SplitButtonDescription.newSplitButtonDescription(SPLITBUTTON_DESCRIPTION_ID)
                 .targetObjectIdProvider(this.constantProvider(SPLITBUTTON_DESCRIPTION_ID))
@@ -147,15 +147,15 @@ public class RenderSplitButtonTest {
                 .imageURLProvider(variableManager -> "")
                 .buttonLabelProvider((variableManager) -> LABEL)
                 .pushButtonHandler((variableManager) -> new Success())
-                .styleProvider((variableManager) -> style)
+                .styleProvider((variableManager) -> this.style)
                 .build();
     }
 
     private Form renderForm(FormDescription formDescription) {
         VariableManager variableManager = new VariableManager();
         variableManager.put(VariableManager.SELF, this.self);
-        FormComponentProps props = new FormComponentProps(variableManager, formDescription, List.of());
-        return new FormRenderer(List.of()).render(new Element(FormComponent.class, props));
+        FormComponentProps props = new FormComponentProps(variableManager, formDescription, List.of(), List.of());
+        return new FormRenderer(List.of(), List.of()).render(new Element(FormComponent.class, props));
     }
 
     private FormDescription createSingleWidgetForm(SplitButtonDescription splitButtonDescription) {

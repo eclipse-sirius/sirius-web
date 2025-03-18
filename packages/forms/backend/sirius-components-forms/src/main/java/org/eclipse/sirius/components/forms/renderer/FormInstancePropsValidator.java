@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -44,6 +44,7 @@ import org.eclipse.sirius.components.forms.elements.TreeElementProps;
 import org.eclipse.sirius.components.forms.validation.DiagnosticElementProps;
 import org.eclipse.sirius.components.representations.IInstancePropsValidator;
 import org.eclipse.sirius.components.representations.IProps;
+import org.eclipse.sirius.components.tables.components.ICustomCellDescriptor;
 import org.eclipse.sirius.components.tables.renderer.TableInstancePropsValidator;
 
 /**
@@ -52,12 +53,14 @@ import org.eclipse.sirius.components.tables.renderer.TableInstancePropsValidator
  * @author sbegaudeau
  */
 public class FormInstancePropsValidator implements IInstancePropsValidator {
-    private final TableInstancePropsValidator tableInstancePropsValidator = new TableInstancePropsValidator();
+
+    private final TableInstancePropsValidator tableInstancePropsValidator;
 
     private final List<IWidgetDescriptor> widgetDescriptors;
 
-    public FormInstancePropsValidator(List<IWidgetDescriptor> widgetDescriptors) {
+    public FormInstancePropsValidator(List<IWidgetDescriptor> widgetDescriptors, List<ICustomCellDescriptor> customCellDescriptors) {
         this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
+        this.tableInstancePropsValidator = new TableInstancePropsValidator(customCellDescriptors);
     }
 
     @Override
@@ -118,7 +121,7 @@ public class FormInstancePropsValidator implements IInstancePropsValidator {
         } else if (TableWidgetElementProps.TYPE.equals(type)) {
             checkValidProps = props instanceof TableWidgetElementProps;
         } else {
-            checkValidProps = tableInstancePropsValidator.validateInstanceProps(type, props);
+            checkValidProps = this.tableInstancePropsValidator.validateInstanceProps(type, props);
             if (!checkValidProps) {
                 checkValidProps = this.widgetDescriptors.stream()
                         .map(widgetDescriptor -> widgetDescriptor.validateInstanceProps(type, props))

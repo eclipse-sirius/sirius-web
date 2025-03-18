@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.forms.renderer.FormInstancePropsValidator;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.components.representations.IInstancePropsValidator;
 import org.eclipse.sirius.components.representations.IProps;
+import org.eclipse.sirius.components.tables.components.ICustomCellDescriptor;
 
 /**
  * Used to validate the instance props.
@@ -31,8 +32,8 @@ public class FormDescriptionEditorInstancePropsValidator implements IInstancePro
 
     private final FormInstancePropsValidator formInstancePropsValidator;
 
-    public FormDescriptionEditorInstancePropsValidator(List<IWidgetDescriptor> widgetDescriptors) {
-        this.formInstancePropsValidator = new FormInstancePropsValidator(widgetDescriptors);
+    public FormDescriptionEditorInstancePropsValidator(List<IWidgetDescriptor> widgetDescriptors, List<ICustomCellDescriptor> customCellDescriptors) {
+        this.formInstancePropsValidator = new FormInstancePropsValidator(widgetDescriptors, customCellDescriptors);
     }
 
     @Override

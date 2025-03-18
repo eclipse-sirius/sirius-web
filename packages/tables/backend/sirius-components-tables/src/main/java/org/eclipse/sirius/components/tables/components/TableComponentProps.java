@@ -32,6 +32,7 @@ public record TableComponentProps(
         VariableManager variableManager,
         TableDescription tableDescription,
         Optional<Table> previousTable,
+        List<ICustomCellDescriptor> customCellDescriptors,
         List<ITableEvent> tableEvents,
         String globalFilter,
         List<ColumnFilter> columnFilters) implements IProps {
@@ -40,6 +41,7 @@ public record TableComponentProps(
         Objects.requireNonNull(variableManager);
         Objects.requireNonNull(tableDescription);
         Objects.requireNonNull(previousTable);
+        Objects.requireNonNull(customCellDescriptors);
         Objects.requireNonNull(tableEvents);
         Objects.requireNonNull(globalFilter);
         Objects.requireNonNull(columnFilters);

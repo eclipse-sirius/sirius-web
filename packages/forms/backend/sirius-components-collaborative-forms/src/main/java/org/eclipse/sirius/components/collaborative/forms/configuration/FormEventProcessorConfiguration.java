@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
+import org.eclipse.sirius.components.tables.components.ICustomCellDescriptor;
 
 /**
  * Bundles the common dependencies that {@link IFormEventProcessor} implementations need into a single object for convenience.
@@ -28,6 +29,6 @@ import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
  * @author frouene
  */
 public record FormEventProcessorConfiguration(IEditingContext editingContext, IObjectService objectService, FormCreationParameters formCreationParameters, List<IWidgetDescriptor> widgetDescriptors,
-        List<IFormEventHandler> formEventHandlers, List<ITableEventHandler> tableEventHandlers) {
+        List<IFormEventHandler> formEventHandlers, List<ITableEventHandler> tableEventHandlers, List<ICustomCellDescriptor> customCellDescriptors) {
 
 }

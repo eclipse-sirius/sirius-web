@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -236,8 +236,8 @@ public class FormRendererTests {
         VariableManager variableManager = new VariableManager();
         variableManager.put(VariableManager.SELF, List.of(EcorePackage.eINSTANCE));
 
-        FormRenderer formRenderer = new FormRenderer(List.of());
-        FormComponentProps props = new FormComponentProps(variableManager, description, List.of());
+        FormRenderer formRenderer = new FormRenderer(List.of(), List.of());
+        FormComponentProps props = new FormComponentProps(variableManager, description, List.of(), List.of());
         Element element = new Element(FormComponent.class, props);
         Form form = formRenderer.render(element);
 
@@ -253,7 +253,7 @@ public class FormRendererTests {
      * Checks that inside a group all widget id are different.
      *
      * @param groups
-     *            The list of groups
+     *         The list of groups
      */
     private void checkIdsInGroups(List<Group> groups) {
         for (Group group : groups) {

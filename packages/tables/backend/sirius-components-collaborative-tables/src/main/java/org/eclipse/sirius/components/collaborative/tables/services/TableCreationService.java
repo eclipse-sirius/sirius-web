@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.collaborative.tables.services;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -21,6 +22,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.Table;
+import org.eclipse.sirius.components.tables.components.ICustomCellDescriptor;
 import org.eclipse.sirius.components.tables.components.TableComponent;
 import org.eclipse.sirius.components.tables.components.TableComponentProps;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
@@ -40,8 +42,11 @@ public class TableCreationService {
 
     private final Timer timer;
 
-    public TableCreationService(MeterRegistry meterRegistry) {
+    private final List<ICustomCellDescriptor> customCellDescriptors;
+
+    public TableCreationService(MeterRegistry meterRegistry, List<ICustomCellDescriptor> customCellDescriptors) {
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH).tag(Monitoring.NAME, "table").register(meterRegistry);
+        this.customCellDescriptors = Objects.requireNonNull(customCellDescriptors);
     }
 
     public Table create(String label, Object targetObject, TableDescription tableDescription, IEditingContext editingContext) {
@@ -61,10 +66,10 @@ public class TableCreationService {
         variableManager.put(TableRenderer.EXPANDED_IDS, List.of());
         variableManager.put(TableRenderer.ACTIVE_ROW_FILTER_IDS, List.of());
 
-        TableComponentProps tableComponentProps = new TableComponentProps(variableManager, tableDescription, Optional.empty(), List.of(), "", List.of());
+        TableComponentProps tableComponentProps = new TableComponentProps(variableManager, tableDescription, Optional.empty(), this.customCellDescriptors, List.of(), "", List.of());
 
         Element element = new Element(TableComponent.class, tableComponentProps);
-        Table newTable = new TableRenderer().render(element);
+        Table newTable = new TableRenderer(this.customCellDescriptors).render(element);
 
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -67,13 +67,14 @@ public class FlexboxContainerComponent implements IComponent {
         childrenVariableManager.put(FormComponent.PARENT_ELEMENT_ID, id);
         flexboxContainerDescription.getChildren().forEach(controlDescription -> {
             if (controlDescription instanceof AbstractWidgetDescription widgetDescription) {
-                WidgetComponentProps widgetComponentProps = new WidgetComponentProps(childrenVariableManager, widgetDescription, this.props.getWidgetDescriptors());
+                WidgetComponentProps widgetComponentProps = new WidgetComponentProps(childrenVariableManager, widgetDescription, this.props.getWidgetDescriptors(),
+                        this.props.getCustomCellDescriptors());
                 childrenWidgets.add(new Element(WidgetComponent.class, widgetComponentProps));
             } else if (controlDescription instanceof ForDescription forDescription) {
-                ForComponentProps forComponentProps = new ForComponentProps(childrenVariableManager, forDescription, this.props.getWidgetDescriptors());
+                ForComponentProps forComponentProps = new ForComponentProps(childrenVariableManager, forDescription, this.props.getWidgetDescriptors(), this.props.getCustomCellDescriptors());
                 childrenWidgets.add(new Element(ForComponent.class, forComponentProps));
             } else if (controlDescription instanceof IfDescription ifDescription) {
-                IfComponentProps ifComponentProps = new IfComponentProps(childrenVariableManager, ifDescription, this.props.getWidgetDescriptors());
+                IfComponentProps ifComponentProps = new IfComponentProps(childrenVariableManager, ifDescription, this.props.getWidgetDescriptors(), this.props.getCustomCellDescriptors());
                 childrenWidgets.add(new Element(IfComponent.class, ifComponentProps));
             }
         });

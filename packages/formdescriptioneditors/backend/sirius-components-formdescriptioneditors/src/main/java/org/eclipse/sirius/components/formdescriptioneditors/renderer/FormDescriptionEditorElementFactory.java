@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.forms.renderer.FormElementFactory;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.components.representations.IElementFactory;
 import org.eclipse.sirius.components.representations.IProps;
+import org.eclipse.sirius.components.tables.components.ICustomCellDescriptor;
 
 /**
  * Used to instantiate the elements of the form description editor.
@@ -36,8 +37,8 @@ public class FormDescriptionEditorElementFactory implements IElementFactory {
 
     private final FormElementFactory formElementFactory;
 
-    public FormDescriptionEditorElementFactory(List<IWidgetDescriptor> widgetDescriptors) {
-        this.formElementFactory = new FormElementFactory(widgetDescriptors);
+    public FormDescriptionEditorElementFactory(List<IWidgetDescriptor> widgetDescriptors, List<ICustomCellDescriptor> customCellDescriptors) {
+        this.formElementFactory = new FormElementFactory(widgetDescriptors, customCellDescriptors);
     }
 
     @Override

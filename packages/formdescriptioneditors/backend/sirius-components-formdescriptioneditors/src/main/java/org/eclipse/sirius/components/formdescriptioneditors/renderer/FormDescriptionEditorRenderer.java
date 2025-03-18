@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEdito
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.components.representations.BaseRenderer;
 import org.eclipse.sirius.components.representations.Element;
+import org.eclipse.sirius.components.tables.components.ICustomCellDescriptor;
 
 /**
  * Renderer used to create the form description editor from its description and some variables.
@@ -32,10 +33,13 @@ import org.eclipse.sirius.components.representations.Element;
  * @author arichard
  */
 public class FormDescriptionEditorRenderer {
+
     private final BaseRenderer baseRenderer;
 
-    public FormDescriptionEditorRenderer(List<IWidgetDescriptor> widgetDescriptors) {
-        this.baseRenderer = new BaseRenderer(new FormDescriptionEditorInstancePropsValidator(widgetDescriptors), new FormDescriptionEditorComponentPropsValidator(widgetDescriptors), new FormDescriptionEditorElementFactory(widgetDescriptors));
+    public FormDescriptionEditorRenderer(List<IWidgetDescriptor> widgetDescriptors, List<ICustomCellDescriptor> customCellDescriptors) {
+        this.baseRenderer = new BaseRenderer(new FormDescriptionEditorInstancePropsValidator(widgetDescriptors, customCellDescriptors),
+                new FormDescriptionEditorComponentPropsValidator(widgetDescriptors, customCellDescriptors),
+                new FormDescriptionEditorElementFactory(widgetDescriptors, customCellDescriptors));
     }
 
     public FormDescriptionEditor render(Element element) {
