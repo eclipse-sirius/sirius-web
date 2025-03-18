@@ -54,12 +54,12 @@ const csvConfig = mkConfig({
 });
 
 export const handleExportData = (table: GQLTable, getCellLabel: (cell: GQLCell) => string) => {
-  const columIdToLabel = {};
-  table.columns.map((column) => (columIdToLabel[column.id] = column.headerLabel));
+  const columnIdToLabel = {};
+  table.columns.forEach((column) => (columnIdToLabel[column.id] = column.headerLabel));
 
   const csvData: CsvData[] = table.lines.map((line) => {
-    const csvDatum: CsvData = {};
-    line.cells.forEach((cell) => (csvDatum[columIdToLabel[cell.columnId]] = getCellLabel(cell)));
+    const csvDatum: CsvData = { ['_row_header_']: `${line.headerIndexLabel} ${line.headerLabel}` };
+    line.cells.forEach((cell) => (csvDatum[columnIdToLabel[cell.columnId]] = getCellLabel(cell)));
     return csvDatum;
   });
 
@@ -73,7 +73,7 @@ export const ExportAllDataButton = ({ table }: ExportAllDataButtonProps) => {
       <ListItemIcon>
         <FileDownloadIcon fontSize="small" />
       </ListItemIcon>
-      <ListItemText>Export All Data</ListItemText>
+      <ListItemText>Export all data in page</ListItemText>
     </MenuItem>
   );
 };
