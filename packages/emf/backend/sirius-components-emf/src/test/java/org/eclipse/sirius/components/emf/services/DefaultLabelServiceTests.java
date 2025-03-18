@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,18 +39,6 @@ import org.junit.jupiter.api.Test;
  * @author pcdavid
  */
 public class DefaultLabelServiceTests {
-    @Test
-    public void testFindImagePathOnCompositeImage() {
-        ComposedAdapterFactory composedAdapterFactory = new ComposedAdapterFactory(List.of(new EcoreItemProviderAdapterFactory()));
-        composedAdapterFactory.addAdapterFactory(new EcoreAdapterFactory());
-        composedAdapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
-        DefaultLabelService labelService = new DefaultLabelService(new LabelFeatureProviderRegistry(), composedAdapterFactory);
-        EAttribute attr = EcoreFactory.eINSTANCE.createEAttribute();
-        List<String> imagePath = labelService.getImagePath(attr);
-        assertThat(imagePath).hasSize(1);
-        assertThat(imagePath.get(0))
-                .endsWith("/icons/full/obj16/EAttribute.gif");
-    }
 
     @Test
     public void testStyledStringConverter() {

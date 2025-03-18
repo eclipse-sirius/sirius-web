@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -105,7 +105,8 @@ public class FixedColorPropertiesConfigurer implements IPropertiesDescriptionReg
         Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().toList();
 
         Function<VariableManager, String> pageLabelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.labelService::getLabel)
+                .map(this.labelService::getStyledLabel)
+                .map(Object::toString)
                 .orElse(null);
 
         return PageDescription.newPageDescription(id)

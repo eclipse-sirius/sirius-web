@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import java.util.function.Function;
 
 import org.eclipse.sirius.components.collaborative.forms.api.IRelatedElementsDescriptionProvider;
 import org.eclipse.sirius.components.collaborative.forms.variables.FormVariableProvider;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.GroupDisplayMode;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
@@ -52,14 +53,17 @@ public class RelatedElementsDescriptionProvider implements IRelatedElementsDescr
 
     private final IObjectService objectService;
 
+    private final ILabelService labelService;
+
     private final IIncomingTreeDescriptionProvider incomingTreeDescriptionProvider;
 
     private final ICurrentTreeDescriptionProvider currentTreeDescriptionProvider;
 
     private final IOutgoingTreeDescriptionProvider outgoingTreeDescriptionProvider;
 
-    public RelatedElementsDescriptionProvider(IObjectService objectService, IIncomingTreeDescriptionProvider incomingTreeDescriptionProvider, ICurrentTreeDescriptionProvider currentTreeDescriptionProvider, IOutgoingTreeDescriptionProvider outgoingTreeDescriptionProvider) {
+    public RelatedElementsDescriptionProvider(IObjectService objectService, ILabelService labelService, IIncomingTreeDescriptionProvider incomingTreeDescriptionProvider, ICurrentTreeDescriptionProvider currentTreeDescriptionProvider, IOutgoingTreeDescriptionProvider outgoingTreeDescriptionProvider) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.incomingTreeDescriptionProvider = Objects.requireNonNull(incomingTreeDescriptionProvider);
         this.currentTreeDescriptionProvider = Objects.requireNonNull(currentTreeDescriptionProvider);
         this.outgoingTreeDescriptionProvider = Objects.requireNonNull(outgoingTreeDescriptionProvider);
@@ -116,7 +120,8 @@ public class RelatedElementsDescriptionProvider implements IRelatedElementsDescr
                 .orElseGet(() -> UUID.randomUUID().toString());
 
         Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.objectService::getLabel)
+                .map(this.labelService::getStyledLabel)
+                .map(Object::toString)
                 .orElse("");
 
         Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().toList();

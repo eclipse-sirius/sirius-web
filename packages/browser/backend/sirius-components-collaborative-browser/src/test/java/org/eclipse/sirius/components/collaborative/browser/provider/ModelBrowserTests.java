@@ -19,6 +19,7 @@ import java.util.List;
 import org.eclipse.sirius.components.collaborative.browser.ModelBrowserDescriptionProvider;
 import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.EMFKindService;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -39,7 +40,7 @@ public class ModelBrowserTests {
         IEditingContext editingContext = () -> "editingContextId";
 
         var urlParser = new URLParser();
-        var provider = new ModelBrowserDescriptionProvider(new IObjectService.NoOp(), urlParser, new EMFKindService(urlParser), List.of());
+        var provider = new ModelBrowserDescriptionProvider(new IObjectService.NoOp(), new ILabelService.NoOp(), urlParser, new EMFKindService(urlParser), List.of());
         var descriptions = provider.getRepresentationDescriptions(editingContext);
         assertThat(descriptions).hasSize(2);
         var treeDescriptions = descriptions.stream().filter(TreeDescription.class::isInstance).map(TreeDescription.class::cast).toList();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo and others.
+ * Copyright (c) 2019, 2025 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,8 +28,6 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IChildCreationExtender;
 import org.eclipse.emf.edit.provider.IChildCreationExtender.Descriptor;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
-import org.eclipse.sirius.components.emf.services.ILabelFeatureProvider;
-import org.eclipse.sirius.components.emf.services.LabelFeatureProviderRegistry;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -76,13 +74,6 @@ public class EMFConfiguration {
         EPackage.Registry ePackageRegistry = new EPackageRegistryImpl();
         ePackages.forEach(ePackage -> ePackageRegistry.put(ePackage.getNsURI(), ePackage));
         return ePackageRegistry;
-    }
-
-    @Bean
-    public LabelFeatureProviderRegistry labelFeatureProviderRegistry(List<ILabelFeatureProvider> providers) {
-        LabelFeatureProviderRegistry providerRegistry = new LabelFeatureProviderRegistry();
-        providers.forEach(provider -> providerRegistry.put(provider.getEPackageNsUri(), provider));
-        return providerRegistry;
     }
 
     @Bean
