@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { GQLTable } from '../table/TableContent.types';
 import { GQLColumnFilter } from '../columns/useTableColumnFiltering.types';
+import { GQLColumnSort } from '../columns/useTableColumnSorting.types';
 
 export interface UseTableSubscriptionValue {
   loading: boolean;
@@ -56,4 +57,9 @@ export interface GQLTableGlobalFilterValuePayload extends GQLTableEventPayload {
 export interface GQLTableColumnFilterPayload extends GQLTableEventPayload {
   id: string;
   columnFilters: GQLColumnFilter[];
+}
+
+export interface GQLTableColumnSortPayload extends GQLTableEventPayload {
+  id: string;
+  columnSort: GQLColumnSort[];
 }

@@ -263,7 +263,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
         Runnable getContextMenuActions = () -> {
             Map<String, Object> variables = Map.of(
                     "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
-                    "representationId", this.representationIdBuilder.buildTableRepresentationId(tableId.get(), null, "NEXT", 10, List.of(), List.of()),
+                    "representationId", this.representationIdBuilder.buildTableRepresentationId(tableId.get(), null, "NEXT", 10, List.of(), List.of(), List.of()),
                     "tableId", tableId.get(),
                     "rowId", rowId.get().toString()
             );
@@ -286,7 +286,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
     @DisplayName("Given a table with pagination in next data, when row context menu entries are queried, then the correct entries are returned")
     public void giveATableWithPaginationInNextDataWhenRowContextMenuEntriesAreQueriedThenTheCorrectEntriesAreReturned() {
         var representationId = this.representationIdBuilder.buildTableRepresentationId(PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString(),
-                PapayaIdentifiers.PAPAYA_SUCCESS_CLASS_OBJECT.toString(), "NEXT", 1, List.of(), List.of());
+                PapayaIdentifiers.PAPAYA_SUCCESS_CLASS_OBJECT.toString(), "NEXT", 1, List.of(), List.of(), List.of());
         var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId);
         var flux = this.tableEventSubscriptionRunner.run(tableEventInput);
 
@@ -315,7 +315,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
             Map<String, Object> variables = Map.of(
                     "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     "representationId",
-                    this.representationIdBuilder.buildTableRepresentationId(tableId.get(), PapayaIdentifiers.PAPAYA_SUCCESS_CLASS_OBJECT.toString(), "NEXT", 1, List.of(), List.of()),
+                    this.representationIdBuilder.buildTableRepresentationId(tableId.get(), PapayaIdentifiers.PAPAYA_SUCCESS_CLASS_OBJECT.toString(), "NEXT", 1, List.of(), List.of(), List.of()),
                     "tableId", tableId.get(),
                     "rowId", rowId.get().toString()
             );
@@ -424,8 +424,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
 
-        String representationId = this.representationIdBuilder.buildTableRepresentationId(tableId.get(), null, "NEXT", 10, List.of(PapayaIdentifiers.PAPAYA_FAILURE_CLASS_OBJECT.toString()),
-                List.of());
+        String representationId = this.representationIdBuilder.buildTableRepresentationId(tableId.get(), null, "NEXT", 10, List.of(PapayaIdentifiers.PAPAYA_FAILURE_CLASS_OBJECT.toString()), List.of(), List.of());
         var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId);
         var expandedFlux = this.tableEventSubscriptionRunner.run(tableEventInput);
 

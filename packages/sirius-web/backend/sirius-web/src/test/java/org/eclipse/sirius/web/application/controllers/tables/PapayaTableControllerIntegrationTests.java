@@ -30,15 +30,19 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProce
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.tables.TableColumnFilterPayload;
+import org.eclipse.sirius.components.collaborative.tables.TableColumnSortPayload;
 import org.eclipse.sirius.components.collaborative.tables.TableEventInput;
 import org.eclipse.sirius.components.collaborative.tables.TableGlobalFilterValuePayload;
 import org.eclipse.sirius.components.collaborative.tables.TableRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.tables.dto.ChangeColumnFilterInput;
+import org.eclipse.sirius.components.collaborative.tables.dto.ChangeColumnSortInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.ChangeGlobalFilterValueInput;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.tables.ColumnFilter;
+import org.eclipse.sirius.components.tables.ColumnSort;
 import org.eclipse.sirius.components.tables.tests.graphql.ChangeColumnFilterMutationRunner;
+import org.eclipse.sirius.components.tables.tests.graphql.ChangeColumnSortMutationRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.ChangeGlobalFilterMutationRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.TableEventSubscriptionRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -66,7 +70,7 @@ import reactor.test.StepVerifier;
  */
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"sirius.web.test.enabled=studio"})
 public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTests {
 
     private static final String MISSING_TABLE = "Missing table";
@@ -85,6 +89,9 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
 
     @Autowired
     private ChangeColumnFilterMutationRunner changeColumnFilterMutationRunner;
+
+    @Autowired
+    private ChangeColumnSortMutationRunner changeColumnSortMutationRunner;
 
     @Autowired
     private IGivenCommittedTransaction givenCommittedTransaction;
@@ -338,6 +345,57 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTableContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a table, when a sorting mutation is triggered, then a payload with the new sorting is received")
+    public void givenTableWhenSortingMutationTriggeredThenPayloadWithNewSortingReceived() {
+        var flux = this.givenSubscriptionToTable();
+
+        var tableId = new AtomicReference<String>();
+        var columnId = new AtomicReference<String>();
+
+        Consumer<Object> initialTableContentConsumer = payload -> Optional.of(payload)
+                .filter(TableRefreshedEventPayload.class::isInstance)
+                .map(TableRefreshedEventPayload.class::cast)
+                .map(TableRefreshedEventPayload::table)
+                .ifPresentOrElse(table -> {
+                    assertThat(table).isNotNull();
+                    assertThat(table.getColumnSort()).hasSize(0);
+                    tableId.set(table.getId());
+                    columnId.set(table.getColumns().get(0).getId().toString());
+                }, () -> fail(MISSING_TABLE));
+
+        Runnable changeColumnSort = () -> {
+            var changeColumnSortInput = new ChangeColumnSortInput(
+                    UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                    tableId.get(), tableId.get(), List.of(new ColumnSort(columnId.get(), true)));
+            var result = this.changeColumnSortMutationRunner.run(changeColumnSortInput);
+
+            String typename = JsonPath.read(result, "$.data.changeColumnSort.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+
+        Consumer<Object> updatedTableContentConsumer = payload -> Optional.of(payload)
+                .filter(TableColumnSortPayload.class::isInstance)
+                .map(TableColumnSortPayload.class::cast)
+                .map(TableColumnSortPayload::columnSort)
+                .ifPresentOrElse(sort -> {
+                    assertThat(sort).isNotNull();
+                    assertThat(sort).hasSize(1);
+                    assertThat(sort.get(0).id()).isEqualTo(columnId.get());
+                    assertThat(sort.get(0).desc()).isEqualTo(true);
+                }, () -> fail("Missing sorting"));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialTableContentConsumer)
+                .then(changeColumnSort)
+                .consumeNextWith(updatedTableContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

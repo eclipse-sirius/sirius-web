@@ -15,7 +15,9 @@ package org.eclipse.sirius.web.tests.services.representation;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.eclipse.sirius.components.tables.ColumnSort;
 import org.springframework.stereotype.Service;
 
 /**
@@ -104,7 +106,7 @@ public class RepresentationIdBuilder {
         return treeId + "?expandedIds=[" + String.join(",", expandedObjectIds) + "]";
     }
 
-    public String buildTableRepresentationId(String tableId, String cursor, String direction, int size, List<String> expanded, List<String> activatedFilters) {
+    public String buildTableRepresentationId(String tableId, String cursor, String direction, int size, List<String> expanded, List<String> activatedFilters, List<ColumnSort> columnSort) {
         var expandedIds = expanded.stream()
                 .map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8))
                 .toList();
@@ -123,6 +125,9 @@ public class RepresentationIdBuilder {
                 "]" +
                 EXPANDED_IDS +
                 String.join(",", expandedIds) +
+                "]" +
+                "&columnSort=[" +
+                columnSort.stream().map(sort -> sort.id() + ":" + sort.desc()).collect(Collectors.joining(",")) +
                 "]";
     }
 }

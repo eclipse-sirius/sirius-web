@@ -8,7 +8,7 @@ input TableEventInput {
   editingContextId: ID!
 }
 
-union TableEventPayload = ErrorPayload | TableRefreshedEventPayload | TableGlobalFilterValuePayload | TableColumnFilterPayload
+union TableEventPayload = ErrorPayload | TableRefreshedEventPayload | TableGlobalFilterValuePayload | TableColumnFilterPayload | TableColumnSortPayload
 
 type TableRefreshedEventPayload {
   id: ID!
@@ -25,9 +25,19 @@ type TableColumnFilterPayload {
   columnFilters: [ColumnFilter!]!
 }
 
+type TableColumnSortPayload {
+  id: ID!
+  columnSort: [ColumnSort!]!
+}
+
 type ColumnFilter {
   id: ID!
   value: String!
+}
+
+type ColumnSort {
+  id: ID!
+  desc: Boolean!
 }
 
 type Table implements Representation {
@@ -42,6 +52,7 @@ type Table implements Representation {
   globalFilter: String
   columnFilters: [ColumnFilter!]!
   enableSubRows: Boolean!
+  columnSort: [ColumnSort!]!
 }
 
 type Column {
@@ -55,6 +66,7 @@ type Column {
   isResizable: Boolean!
   hidden: Boolean!
   filterVariant: String!
+  isSortable: Boolean!
 }
 
 type Line {
@@ -172,6 +184,7 @@ extend type Mutation {
   changeColumnFilter(input: ChangeColumnFilterInput!): ChangeColumnFilterPayload!
   reorderTableColumns(input: ReorderTableColumnsInput!): ReorderTableColumnsPayload!
   invokeRowContextMenuEntry(input: InvokeRowContextMenuEntryInput!): InvokeRowContextMenuEntryPayload!
+  changeColumnSort(input: ChangeColumnSortInput!): ChangeColumnSortPayload!
 }
 
 input EditCheckboxCellInput {
@@ -320,3 +333,18 @@ input InvokeRowContextMenuEntryInput {
 }
 
 union InvokeRowContextMenuEntryPayload = ErrorPayload | SuccessPayload
+
+input ChangeColumnSortInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  tableId: ID!
+  columnSort: [ColumnSortInput!]!
+}
+
+input ColumnSortInput {
+  id: ID!
+  desc: Boolean!
+}
+
+union ChangeColumnSortPayload = ErrorPayload | SuccessPayload

@@ -171,7 +171,7 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
                         });
             }
         } else if (changeDescription.getKind().equals(TableChangeKind.TABLE_COLUMNS_FILTER_CHANGE) && changeDescription.getParameters() != null) {
-            if (this.sink.currentSubscriberCount() > 0) {
+            if (this.sink.currentSubscriberCount() > 0 && changeDescription.getSourceId().startsWith(this.tableCreationParameters.getId())) {
                 Optional.ofNullable(changeDescription.getParameters().get(TableChangeKind.COLUMN_FILTER_LIST_PARAM))
                         .filter(List.class::isInstance)
                         .map(List.class::cast)
@@ -179,6 +179,18 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
                             EmitResult emitResult = this.sink.tryEmitNext(new TableColumnFilterPayload(changeDescription.getInput().id(), newColumnFilters));
                             if (emitResult.isFailure()) {
                                 this.logger.warn("An error has occurred while emitting a TableColumnFilterPayload: {}", emitResult);
+                            }
+                        });
+            }
+        } else if (changeDescription.getKind().equals(TableChangeKind.TABLE_COLUMNS_SORT_CHANGE) && changeDescription.getParameters() != null) {
+            if (this.sink.currentSubscriberCount() > 0 && changeDescription.getSourceId().startsWith(this.tableCreationParameters.getId())) {
+                Optional.ofNullable(changeDescription.getParameters().get(TableChangeKind.COLUMN_SORT_LIST_PARAM))
+                        .filter(List.class::isInstance)
+                        .map(List.class::cast)
+                        .ifPresent(newColumnSort -> {
+                            EmitResult emitResult = this.sink.tryEmitNext(new TableColumnSortPayload(changeDescription.getInput().id(), newColumnSort));
+                            if (emitResult.isFailure()) {
+                                this.logger.warn("An error has occurred while emitting a TableColumnSortPayload: {}", emitResult);
                             }
                         });
             }
@@ -216,7 +228,8 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
                 Optional.ofNullable(this.tableContext.getTable()),
                 this.tableContext.getTableEvents(),
                 this.tableCreationParameters.getGlobalFilter(),
-                this.tableCreationParameters.getColumnFilters()
+                this.tableCreationParameters.getColumnFilters(),
+                this.tableCreationParameters.getColumnSort()
         );
         Element element = new Element(TableComponent.class, props);
 

@@ -120,7 +120,7 @@ The publication of a studio that references elements from imported libraries now
 image:doc/screenshots/duplicationDialog.png[DuplicationDialog, 70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/4383[#4383] [sirius-web] Add support for representation duplication from explorer
 - https://github.com/eclipse-sirius/sirius-web/issues/4700[#4700] [view] It is now possible to set an edge as the source or target of an edge in the view dsl, following work will allow the actual rendering on the back-end and front-end.
-- https://github.com/eclipse-sirius/sirius-web/issues/4493[#4493] [sirius-web] Add an user indicator when a representation is loading 
+- https://github.com/eclipse-sirius/sirius-web/issues/4493[#4493] [sirius-web] Add an user indicator when a representation is loading
 - https://github.com/eclipse-sirius/sirius-web/issues/2807[#2807] [diagram] Add another experimental version of the SVG export.
 + Made in two steps, first it does the svg export of `html-to-image`, then use the result to create our own version.
 + We made this choice to rapidly solve the different css transform that `html-to-image` does for us.
@@ -135,6 +135,7 @@ The implementation of the library update mechanism is generic and works on any p
 - https://github.com/eclipse-sirius/sirius-web/issues/4375[#4375] [diagram] Add support for a first version of impact analysis before tool execution.
 - https://github.com/eclipse-sirius/sirius-web/issues/4706[#4706] [diagram] The back-end now render edges that have for source or target another edge (only if this edge have for source or target a node), an edge won't be rendered if both his source and target are another edge.
 - https://github.com/eclipse-sirius/sirius-web/issues/4483 [#4483] Add row level filters in table
+- https://github.com/eclipse-sirius/sirius-web/issues/4710[#4710] [table] Add support for sorting tables
 
 
 === Improvements

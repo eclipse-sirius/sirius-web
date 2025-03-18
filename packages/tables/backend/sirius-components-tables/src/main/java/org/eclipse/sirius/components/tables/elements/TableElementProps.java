@@ -18,6 +18,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.tables.ColumnFilter;
+import org.eclipse.sirius.components.tables.ColumnSort;
 import org.eclipse.sirius.components.tables.PaginationData;
 
 /**
@@ -26,7 +27,8 @@ import org.eclipse.sirius.components.tables.PaginationData;
  * @author lfasani
  */
 public record TableElementProps(String id, String descriptionId, String targetObjectId, String targetObjectKind,
-        PaginationData paginationData, boolean stripeRow, List<Element> children, String globalFilter, List<ColumnFilter> columnFilters, boolean enableSubRows) implements IProps {
+                                PaginationData paginationData, boolean stripeRow, List<Element> children, String globalFilter, List<ColumnFilter> columnFilters, boolean enableSubRows,
+                                List<ColumnSort> columnSort) implements IProps {
 
     public static final String TYPE = "Table";
 
@@ -39,6 +41,7 @@ public record TableElementProps(String id, String descriptionId, String targetOb
         Objects.requireNonNull(paginationData);
         Objects.requireNonNull(globalFilter);
         Objects.requireNonNull(columnFilters);
+        Objects.requireNonNull(columnSort);
     }
 
     @Override
@@ -77,6 +80,8 @@ public record TableElementProps(String id, String descriptionId, String targetOb
         private List<ColumnFilter> columnFilters;
 
         private boolean enableSubRows;
+
+        private List<ColumnSort> columnSort;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -127,9 +132,14 @@ public record TableElementProps(String id, String descriptionId, String targetOb
             return this;
         }
 
+        public Builder columnSort(List<ColumnSort> columnSort) {
+            this.columnSort = Objects.requireNonNull(columnSort);
+            return this;
+        }
+
         public TableElementProps build() {
             return new TableElementProps(this.id, this.descriptionId, this.targetObjectId, this.targetObjectKind, this.paginationData, this.stripeRow, this.children, this.globalFilter,
-                    this.columnFilters, this.enableSubRows);
+                    this.columnFilters, this.enableSubRows, this.columnSort);
         }
     }
 }

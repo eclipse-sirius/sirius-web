@@ -276,4 +276,27 @@ public interface ColumnDescription extends EObject {
      */
     void setFilterWidgetExpression(String value);
 
+    /**
+     * Returns the value of the '<em><b>Is Sortable Expression</b></em>' attribute. The default value is
+     * <code>""</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Is Sortable Expression</em>' attribute.
+     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     * @see #setIsSortableExpression(String)
+     * @see org.eclipse.sirius.components.view.table.TablePackage#getColumnDescription_IsSortableExpression()
+     */
+    String getIsSortableExpression();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.table.ColumnDescription#getIsSortableExpression
+     * <em>Is Sortable Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>Is Sortable Expression</em>' attribute.
+     * @generated
+     * @see #getIsSortableExpression()
+     */
+    void setIsSortableExpression(String value);
+
 } // ColumnDescription

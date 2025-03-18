@@ -277,13 +277,22 @@ public interface TablePackage extends EPackage {
     int COLUMN_DESCRIPTION__FILTER_WIDGET_EXPRESSION = 9;
 
     /**
+     * The feature id for the '<em><b>Is Sortable Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int COLUMN_DESCRIPTION__IS_SORTABLE_EXPRESSION = 10;
+
+    /**
      * The number of structural features of the '<em>Column Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int COLUMN_DESCRIPTION_FEATURE_COUNT = 10;
+    int COLUMN_DESCRIPTION_FEATURE_COUNT = 11;
 
     /**
      * The number of operations of the '<em>Column Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -959,6 +968,18 @@ public interface TablePackage extends EPackage {
     EAttribute getColumnDescription_FilterWidgetExpression();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.table.ColumnDescription#getIsSortableExpression <em>Is Sortable
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Is Sortable Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.ColumnDescription#getIsSortableExpression()
+     * @see #getColumnDescription()
+     */
+    EAttribute getColumnDescription_IsSortableExpression();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.table.RowDescription <em>Row
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1519,6 +1540,14 @@ public interface TablePackage extends EPackage {
          * @generated
          */
         EAttribute COLUMN_DESCRIPTION__FILTER_WIDGET_EXPRESSION = eINSTANCE.getColumnDescription_FilterWidgetExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Is Sortable Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute COLUMN_DESCRIPTION__IS_SORTABLE_EXPRESSION = eINSTANCE.getColumnDescription_IsSortableExpression();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.table.impl.RowDescriptionImpl

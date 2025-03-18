@@ -61,7 +61,7 @@ public class TableCreationService {
         variableManager.put(TableRenderer.EXPANDED_IDS, List.of());
         variableManager.put(TableRenderer.ACTIVE_ROW_FILTER_IDS, List.of());
 
-        TableComponentProps tableComponentProps = new TableComponentProps(variableManager, tableDescription, Optional.empty(), List.of(), "", List.of());
+        TableComponentProps tableComponentProps = new TableComponentProps(variableManager, tableDescription, Optional.empty(), List.of(), "", List.of(), List.of());
 
         Element element = new Element(TableComponent.class, tableComponentProps);
         Table newTable = new TableRenderer().render(element);

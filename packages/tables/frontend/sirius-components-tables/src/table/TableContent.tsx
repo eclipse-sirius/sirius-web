@@ -28,6 +28,7 @@ import { SettingsButton } from '../actions/SettingsButton';
 import { useTableColumnFiltering } from '../columns/useTableColumnFiltering';
 import { useTableColumnOrdering } from '../columns/useTableColumnOrdering';
 import { useTableColumnSizing } from '../columns/useTableColumnSizing';
+import { useTableColumnSorting } from '../columns/useTableColumnSorting';
 import { useTableColumnVisibility } from '../columns/useTableColumnVisibility';
 import { RowFiltersMenu } from '../rows/filters/RowFiltersMenu';
 import { RowAction } from '../rows/RowAction';
@@ -48,6 +49,7 @@ export const TableContent = memo(
     onColumnFiltersChange,
     onExpandedElementChange,
     onRowFiltersChange,
+    onSortingChange,
     enableColumnVisibility,
     enableColumnResizing,
     enableColumnFilters,
@@ -58,6 +60,7 @@ export const TableContent = memo(
     expandedRowIds,
     rowFilters,
     activeRowFilterIds,
+    enableSorting,
   }: TableContentProps) => {
     const { selection } = useSelection();
     const theme: Theme = useTheme();
@@ -103,6 +106,13 @@ export const TableContent = memo(
       representationId,
       table,
       onColumnFiltersChange,
+      enableColumnFilters
+    );
+    const { sorting, setSorting } = useTableColumnSorting(
+      editingContextId,
+      representationId,
+      table,
+      onSortingChange,
       enableColumnFilters
     );
     const [linesState, setLinesState] = useState<GQLLine[]>(table.lines);
@@ -175,12 +185,16 @@ export const TableContent = memo(
       enableRowActions: true,
       enableColumnFilters,
       enableHiding: enableColumnVisibility,
-      enableSorting: false,
+      enableSorting,
       enableColumnResizing,
       enableGlobalFilter,
       manualFiltering: true,
       onGlobalFilterChange: setGlobalFilter,
       enableColumnPinning: true,
+      manualSorting: true,
+      enableMultiSort: true,
+      isMultiSortEvent: () => true,
+      onSortingChange: setSorting,
       initialState: {
         showGlobalFilter: enableGlobalFilter,
         columnPinning: { left: ['mrt-row-header'], right: ['mrt-row-actions'] },
@@ -190,7 +204,7 @@ export const TableContent = memo(
       enableColumnOrdering,
       enableColumnDragging: enableColumnOrdering,
       onColumnOrderChange: setColumnOrder,
-      state: { columnSizing, columnVisibility, globalFilter, columnFilters, columnOrder },
+      state: { columnSizing, columnVisibility, globalFilter, columnFilters, columnOrder, sorting },
       muiTableBodyRowProps: ({ row }) => {
         return {
           selected: selection.entries.map((entry) => entry.id).includes(row.original.targetObjectId),
