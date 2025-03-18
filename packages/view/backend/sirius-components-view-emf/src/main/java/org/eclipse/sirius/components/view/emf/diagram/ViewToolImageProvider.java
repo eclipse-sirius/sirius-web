@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.emf.EPackageService;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
@@ -43,12 +43,12 @@ public class ViewToolImageProvider implements IViewToolImageProvider {
 
     private static final Pattern SEPARATOR = Pattern.compile("(::?|\\.)");
 
-    private final IObjectService objectService;
+    private final ILabelService labelService;
 
     private final EPackage.Registry ePackageRegistry;
 
-    public ViewToolImageProvider(IObjectService objectService, EPackage.Registry ePackageRegistry) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public ViewToolImageProvider(ILabelService labelService, EPackage.Registry ePackageRegistry) {
+        this.labelService = Objects.requireNonNull(labelService);
         this.ePackageRegistry = Objects.requireNonNull(ePackageRegistry);
     }
 
@@ -66,7 +66,7 @@ public class ViewToolImageProvider implements IViewToolImageProvider {
                 .filter(domainType -> !domainType.isBlank())
                 .flatMap(this::getInstance);
 
-        return optionalInstance.map(this.objectService::getImagePath).orElse(List.of());
+        return optionalInstance.map(this.labelService::getImagePaths).orElse(List.of());
     }
 
     private Optional<EObject> getInstance(String domainClass) {

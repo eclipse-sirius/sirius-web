@@ -114,7 +114,7 @@ public class CreateViewOperationHandler implements IOperationHandler {
 
         var targetObjectId = this.identityService.getId(semanticElement);
         var targetObjectKind = this.identityService.getKind(semanticElement);
-        var targetObjectLabel = this.labelService.getLabel(semanticElement);
+        var targetObjectLabel = this.labelService.getStyledLabel(semanticElement).toString();
 
         ViewCreationRequest viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
                 .parentElementId(parentElementId)

@@ -85,11 +85,12 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
     @Override
     public List<IRepresentationDescription> getRepresentationDescriptions(IEditingContext editingContext) {
         Function<VariableManager, String> headerLabelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.labelService::getLabel)
+                .map(this.labelService::getStyledLabel)
+                .map(Objects::toString)
                 .orElse(null);
 
         Function<VariableManager, List<String>> headerIconURLsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.labelService::getImagePath)
+                .map(this.labelService::getImagePaths)
                 .orElse(List.of());
 
         Function<VariableManager, String> headerIndexLabelProvider = variableManager -> variableManager.get("rowIndex", Integer.class)
@@ -251,7 +252,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .orElse("");
 
         Function<VariableManager, List<String>> headerIconURLsProvider = variableManager -> variableManager.get(VariableManager.SELF, EStructuralFeature.class)
-                .map(this.labelService::getImagePath)
+                .map(this.labelService::getImagePaths)
                 .orElse(List.of());
 
         Function<VariableManager, String> headerIndexLabelProvider = variableManager -> variableManager.get("columnIndex", Integer.class)
@@ -322,7 +323,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .isPresent();
 
         BiFunction<VariableManager, Object, List<String>> iconLabelCellIconURLsProvider = (variableManager, columnTargetObject) -> variableManager.get(VariableManager.SELF, EObject.class)
-                .map(this.labelService::getImagePath)
+                .map(this.labelService::getImagePaths)
                 .orElse(List.of());
 
         cellDescriptions.add(IconLabelCellDescription.newIconLabelCellDescription("iconLabelCells")

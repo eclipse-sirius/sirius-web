@@ -25,19 +25,15 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
-import org.eclipse.sirius.components.core.CoreImageConstants;
 import org.eclipse.sirius.components.core.api.IDefaultObjectSearchService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.core.api.IURLParser;
-import org.eclipse.sirius.components.core.api.SemanticKindConstants;
-import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.object.services.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationIconURL;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.springframework.stereotype.Service;
@@ -52,9 +48,7 @@ public class ExplorerServices implements IExplorerServices {
 
     private final IObjectService objectService;
 
-    private final IURLParser urlParser;
-
-    private final List<IRepresentationImageProvider> representationImageProviders;
+    private final ILabelService labelService;
 
     private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
@@ -62,10 +56,9 @@ public class ExplorerServices implements IExplorerServices {
 
     private final IDefaultObjectSearchService defaultObjectSearchService;
 
-    public ExplorerServices(IObjectService objectService, IURLParser urlParser, List<IRepresentationImageProvider> representationImageProviders, IRepresentationMetadataSearchService representationMetadataSearchService, IReadOnlyObjectPredicate readOnlyObjectPredicate, IDefaultObjectSearchService defaultObjectSearchService) {
+    public ExplorerServices(IObjectService objectService, ILabelService labelService, List<IRepresentationImageProvider> representationImageProviders, IRepresentationMetadataSearchService representationMetadataSearchService, IReadOnlyObjectPredicate readOnlyObjectPredicate, IDefaultObjectSearchService defaultObjectSearchService) {
         this.objectService = Objects.requireNonNull(objectService);
-        this.urlParser = Objects.requireNonNull(urlParser);
-        this.representationImageProviders = Objects.requireNonNull(representationImageProviders);
+        this.labelService = Objects.requireNonNull(labelService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
         this.defaultObjectSearchService = Objects.requireNonNull(defaultObjectSearchService);
@@ -98,43 +91,6 @@ public class ExplorerServices implements IExplorerServices {
     }
 
     @Override
-    public String getLabel(Object self) {
-        String label = "";
-        if (self instanceof RepresentationMetadata representationMetadata) {
-            label = representationMetadata.getLabel();
-        } else if (self instanceof Resource resource) {
-            label = this.getResourceLabel(resource);
-        } else if (self instanceof EObject) {
-            label = this.objectService.getLabel(self);
-            if (label.isBlank()) {
-                var kind = this.objectService.getKind(self);
-                label = this.urlParser.getParameterValues(kind).get(SemanticKindConstants.ENTITY_ARGUMENT).get(0);
-            }
-        }
-        return label;
-    }
-
-    private String getResourceLabel(Resource resource) {
-        return resource.eAdapters().stream().filter(ResourceMetadataAdapter.class::isInstance).map(ResourceMetadataAdapter.class::cast).findFirst().map(ResourceMetadataAdapter::getName)
-                .orElse(resource.getURI().lastSegment());
-    }
-
-    @Override
-    public boolean isEditable(Object self) {
-        boolean editable = false;
-        if (!this.readOnlyObjectPredicate.test(self)) {
-            if (self instanceof RepresentationMetadata) {
-                editable = true;
-            } else if (self instanceof Resource) {
-                editable = true;
-            } else if (self instanceof EObject) {
-                editable = this.objectService.isLabelEditable(self);
-            }
-        }
-        return editable;
-    }
-
-    @Override
     public boolean isDeletable(Object self) {
         return !this.readOnlyObjectPredicate.test(self);
     }
@@ -142,27 +98,6 @@ public class ExplorerServices implements IExplorerServices {
     @Override
     public boolean isSelectable(Object self) {
         return true;
-    }
-
-    @Override
-    public List<String> getImageURL(Object self) {
-        List<String> imageURL = List.of(CoreImageConstants.DEFAULT_SVG);
-        if (self instanceof EObject) {
-            imageURL = this.objectService.getImagePath(self);
-        } else if (self instanceof RepresentationMetadata representationMetadata) {
-            if (!representationMetadata.getIconURLs().isEmpty()) {
-                imageURL = representationMetadata.getIconURLs().stream()
-                        .map(RepresentationIconURL::url)
-                        .toList();
-            } else {
-                imageURL = this.representationImageProviders.stream()
-                        .flatMap(provider -> provider.getImageURL(representationMetadata.getKind()).stream())
-                        .toList();
-            }
-        } else if (self instanceof Resource) {
-            imageURL = List.of("/explorer/Resource.svg");
-        }
-        return imageURL;
     }
 
     @Override
@@ -273,7 +208,7 @@ public class ExplorerServices implements IExplorerServices {
 
         return optionalResourceSet
                 .map(resourceSet -> resourceSet.getResources().stream()
-                        .sorted(Comparator.nullsLast(Comparator.comparing(this::getResourceLabel, String.CASE_INSENSITIVE_ORDER)))
+                        .sorted(Comparator.nullsLast(Comparator.comparing(resource -> this.labelService.getStyledLabel(resource).toString(), String.CASE_INSENSITIVE_ORDER)))
                         .toList())
                 .orElseGet(ArrayList::new);
     }

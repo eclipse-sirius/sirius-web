@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.emf.diagram.ViewToolImageProvider;
 import org.junit.jupiter.api.Test;
@@ -33,9 +33,8 @@ public class ViewToolImageProviderTests {
     public void testNodeDefaultIcon() {
         var nodeDescription = DiagramFactory.eINSTANCE.createNodeDescription();
 
-        IObjectService objectService = new IObjectService.NoOp();
         EPackage.Registry ePackageRegistry = EPackage.Registry.INSTANCE;
-        ViewToolImageProvider viewToolImageProvider = new ViewToolImageProvider(objectService, ePackageRegistry);
+        ViewToolImageProvider viewToolImageProvider = new ViewToolImageProvider(new ILabelService.NoOp(), ePackageRegistry);
 
         List<String> iconURL = viewToolImageProvider.getIcon(nodeDescription);
         assertThat(iconURL).hasSize(1);
@@ -46,9 +45,8 @@ public class ViewToolImageProviderTests {
     public void testEdgeDefaultIcon() {
         var edgeDescription = DiagramFactory.eINSTANCE.createEdgeDescription();
 
-        IObjectService objectService = new IObjectService.NoOp();
         EPackage.Registry ePackageRegistry = EPackage.Registry.INSTANCE;
-        ViewToolImageProvider viewToolImageProvider = new ViewToolImageProvider(objectService, ePackageRegistry);
+        ViewToolImageProvider viewToolImageProvider = new ViewToolImageProvider(new ILabelService.NoOp(), ePackageRegistry);
 
         List<String> iconURL = viewToolImageProvider.getIcon(edgeDescription);
         assertThat(iconURL).hasSize(1);

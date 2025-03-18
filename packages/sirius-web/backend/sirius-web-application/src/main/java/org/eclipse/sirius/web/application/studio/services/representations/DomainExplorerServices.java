@@ -23,10 +23,12 @@ import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.Entity;
 import org.eclipse.sirius.web.application.UUIDParser;
+import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerLabelService;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
@@ -49,12 +51,18 @@ public class DomainExplorerServices {
 
     private final IObjectService objectService;
 
+    private final ILabelService labelService;
+
+    private final IExplorerLabelService explorerLabelService;
+
     private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
     private final IExplorerServices explorerServices;
 
-    public DomainExplorerServices(IObjectService objectService, IRepresentationMetadataSearchService representationMetadataSearchService, IExplorerServices explorerServices) {
+    public DomainExplorerServices(IObjectService objectService, ILabelService labelService, IExplorerLabelService explorerLabelService, IRepresentationMetadataSearchService representationMetadataSearchService, IExplorerServices explorerServices) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.labelService = Objects.requireNonNull(labelService);
+        this.explorerLabelService = Objects.requireNonNull(explorerLabelService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.explorerServices = Objects.requireNonNull(explorerServices);
     }
@@ -142,7 +150,7 @@ public class DomainExplorerServices {
         if (self instanceof SettingWrapper wrapper) {
             label = wrapper.setting.getEStructuralFeature().getName();
         } else {
-            label = this.explorerServices.getLabel(self);
+            label = this.labelService.getStyledLabel(self).toString();
         }
         return label;
     }
@@ -176,8 +184,8 @@ public class DomainExplorerServices {
         return result;
     }
 
-    public List<String> getIconURL(Object self) {
-        return this.explorerServices.getImageURL(self);
+    public List<String> getIconURLs(Object self) {
+        return this.labelService.getImagePaths(self);
     }
 
     public boolean isDeletable(Object self) {
@@ -185,7 +193,7 @@ public class DomainExplorerServices {
     }
 
     public boolean isEditable(Object self) {
-        return !(self instanceof SettingWrapper);
+        return !(self instanceof SettingWrapper) && this.explorerLabelService.isEditable(self);
     }
 
     public boolean isSelectable(Object self) {

@@ -32,7 +32,7 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.forms.components.SelectComponent;
@@ -73,16 +73,19 @@ import org.springframework.stereotype.Component;
 public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegistryConfigurer {
 
     private final ICustomImageMetadataSearchService customImageSearchService;
-    private final IPropertiesConfigurerService propertiesConfigurerService;
-    private final IPropertiesWidgetCreationService propertiesWidgetCreationService;
-    private final IObjectService objectService;
 
-    public NodeStylePropertiesConfigurer(ICustomImageMetadataSearchService customImageSearchService,
-            PropertiesConfigurerService propertiesConfigurerService, IPropertiesWidgetCreationService propertiesWidgetCreationService, IObjectService objectService) {
+    private final IPropertiesConfigurerService propertiesConfigurerService;
+
+    private final IPropertiesWidgetCreationService propertiesWidgetCreationService;
+
+    private final ILabelService labelService;
+
+    public NodeStylePropertiesConfigurer(ICustomImageMetadataSearchService customImageSearchService, PropertiesConfigurerService propertiesConfigurerService,
+                                         IPropertiesWidgetCreationService propertiesWidgetCreationService, ILabelService labelService) {
         this.customImageSearchService = Objects.requireNonNull(customImageSearchService);
         this.propertiesConfigurerService = Objects.requireNonNull(propertiesConfigurerService);
         this.propertiesWidgetCreationService = Objects.requireNonNull(propertiesWidgetCreationService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.labelService = Objects.requireNonNull(labelService);
     }
 
     @Override
@@ -253,7 +256,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .optionsProvider(variableManager -> LineStyle.VALUES.stream().toList())
                 .optionIdProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, LineStyle.class).map(LineStyle::getLiteral).orElse(""))
                 .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, LineStyle.class).map(LineStyle::getName).orElse(""))
-                .optionIconURLProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, Object.class).map(this.objectService::getImagePath)
+                .optionIconURLProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, Object.class).map(this.labelService::getImagePaths)
                         .orElse(List.of()))
                 .newValueHandler((variableManager, newValue) -> {
                     var optionalBorderStyle = variableManager.get(VariableManager.SELF, BorderStyle.class);
@@ -316,7 +319,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, CustomImageMetadata.class)
                         .map(CustomImageMetadata::label)
                         .orElse(""))
-                .optionIconURLProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, Object.class).map(this.objectService::getImagePath)
+                .optionIconURLProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, Object.class).map(this.labelService::getImagePaths)
                         .orElse(List.of()))
                 .newValueHandler(this.getNewShapeValueHandler())
                 .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(DiagramPackage.Literals.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE))

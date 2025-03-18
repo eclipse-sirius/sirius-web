@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
@@ -56,16 +57,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class PropertiesWidgetCreationService implements IPropertiesWidgetCreationService {
 
-    private static final String EMPTY = "";
     private final IPropertiesConfigurerService propertiesConfigurerService;
+
     private final IObjectService objectService;
+
+    private final ILabelService labelService;
+
     private final IEMFKindService emfKindService;
+
     private final IFeedbackMessageService feedbackMessageService;
+
     private final AQLTextfieldCustomizer aqlTextfieldCustomizer;
 
-    public PropertiesWidgetCreationService(IPropertiesConfigurerService propertiesConfigurerService, IObjectService objectService, IEMFKindService emfKindService, IFeedbackMessageService feedbackMessageService, AQLTextfieldCustomizer aqlTextfieldCustomizer) {
+    public PropertiesWidgetCreationService(IPropertiesConfigurerService propertiesConfigurerService, IObjectService objectService, ILabelService labelService, IEMFKindService emfKindService, IFeedbackMessageService feedbackMessageService, AQLTextfieldCustomizer aqlTextfieldCustomizer) {
         this.propertiesConfigurerService = Objects.requireNonNull(propertiesConfigurerService);
         this.objectService = Objects.requireNonNull(objectService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.aqlTextfieldCustomizer = Objects.requireNonNull(aqlTextfieldCustomizer);
@@ -120,7 +127,10 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
 
     @Override
     public TextareaDescription createExpressionField(String id, String title, Function<Object, String> reader, BiConsumer<Object, String> writer, Object feature) {
-        Function<VariableManager, String> valueProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(reader).orElse(EMPTY);
+        Function<VariableManager, String> valueProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .map(reader)
+                .orElse("");
+
         BiFunction<VariableManager, String, IStatus> newValueHandler = (variableManager, newValue) -> {
             var optionalDiagramMapping = variableManager.get(VariableManager.SELF, Object.class);
             if (optionalDiagramMapping.isPresent()) {
@@ -147,7 +157,9 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
 
     @Override
     public TextfieldDescription createTextField(String id, String title, Function<Object, String> reader, BiConsumer<Object, String> writer, Object feature) {
-        Function<VariableManager, String> valueProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(reader).orElse(EMPTY);
+        Function<VariableManager, String> valueProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .map(reader)
+                .orElse("");
         BiFunction<VariableManager, String, IStatus> newValueHandler = (variableManager, newValue) -> {
             var optionalDiagramMapping = variableManager.get(VariableManager.SELF, Object.class);
             if (optionalDiagramMapping.isPresent()) {
@@ -181,8 +193,8 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
                 .itemsProvider(variableManager -> this.getReferenceValue(variableManager, feature))
                 .itemIdProvider(variableManager -> this.getItem(variableManager).map(this.objectService::getId).orElse(""))
                 .itemKindProvider(variableManager -> this.getItem(variableManager).map(this.objectService::getKind).orElse(""))
-                .itemLabelProvider(variableManager -> this.getItem(variableManager).map(this.objectService::getLabel).orElse(""))
-                .itemIconURLProvider(variableManager -> this.getItem(variableManager).map(this.objectService::getImagePath).orElse(List.of()))
+                .itemLabelProvider(variableManager -> this.getItem(variableManager).map(this.labelService::getStyledLabel).map(Object::toString).orElse(""))
+                .itemIconURLProvider(variableManager -> this.getItem(variableManager).map(this.labelService::getImagePaths).orElse(List.of()))
                 .ownerKindProvider(variableManager -> this.getTypeName(variableManager, feature))
                 .referenceKindProvider(variableManager -> this.getReferenceKind(variableManager, feature))
                 .isContainmentProvider(variableManager -> this.isContainment(variableManager, feature))
