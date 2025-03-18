@@ -31,7 +31,7 @@ import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessag
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.Message;
@@ -52,13 +52,13 @@ public class OmniboxSearchEventHandler implements IEditingContextEventHandler {
 
     private final ICollaborativeMessageService messageService;
 
-    private final IObjectService objectService;
+    private final ILabelService labelService;
 
     private final Counter counter;
 
-    public OmniboxSearchEventHandler(ICollaborativeMessageService messageService, IObjectService objectService, MeterRegistry meterRegistry) {
+    public OmniboxSearchEventHandler(ICollaborativeMessageService messageService, ILabelService labelService, MeterRegistry meterRegistry) {
         this.messageService = Objects.requireNonNull(messageService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
@@ -80,7 +80,7 @@ public class OmniboxSearchEventHandler implements IEditingContextEventHandler {
 
         if (input instanceof OmniboxSearchInput omniboxSearchInput) {
             List<Object> objects = this.getAllEditingContextContentByLabel(editingContext, omniboxSearchInput.query()).stream()
-                    .sorted(Comparator.comparingInt(object -> this.objectService.getLabel(object).length()))
+                    .sorted(Comparator.comparingInt(object -> this.labelService.getStyledLabel(object).toString().length()))
                     .toList();
 
             payload = new OmniboxSearchPayload(input.id(), objects);

@@ -18,6 +18,7 @@ import java.util.Optional;
 import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
@@ -39,6 +40,8 @@ public class ReferenceWidgetDescriptionConverterProvider implements IWidgetConve
 
     private final IObjectService objectService;
 
+    private final ILabelService labelService;
+
     private final IOperationExecutor operationExecutor;
 
     private final IFeedbackMessageService feedbackMessageService;
@@ -47,9 +50,10 @@ public class ReferenceWidgetDescriptionConverterProvider implements IWidgetConve
 
     private final IEMFKindService emfKindService;
 
-    public ReferenceWidgetDescriptionConverterProvider(ComposedAdapterFactory composedAdapterFactory, IObjectService objectService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, IEMFKindService emfKindService, IFormIdProvider formIdProvider) {
+    public ReferenceWidgetDescriptionConverterProvider(ComposedAdapterFactory composedAdapterFactory, IObjectService objectService, ILabelService labelService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, IEMFKindService emfKindService, IFormIdProvider formIdProvider) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.objectService = Objects.requireNonNull(objectService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.formIdProvider = Objects.requireNonNull(formIdProvider);
@@ -58,6 +62,6 @@ public class ReferenceWidgetDescriptionConverterProvider implements IWidgetConve
 
     @Override
     public Switch<Optional<AbstractWidgetDescription>> getWidgetConverter(AQLInterpreter interpreter) {
-        return new ReferenceWidgetDescriptionConverterSwitch(interpreter, this.objectService, this.operationExecutor, this.emfKindService, feedbackMessageService, this.composedAdapterFactory, this.formIdProvider);
+        return new ReferenceWidgetDescriptionConverterSwitch(interpreter, this.objectService, this.labelService, this.operationExecutor, this.emfKindService, feedbackMessageService, this.composedAdapterFactory, this.formIdProvider);
     }
 }

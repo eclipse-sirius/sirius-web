@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,14 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.flow.starter.configuration;
 
-import fr.obeo.dsl.designer.sample.flow.FlowPackage;
 import fr.obeo.dsl.designer.sample.flow.provider.FlowItemProviderAdapterFactory;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.sirius.components.emf.services.ILabelFeatureProvider;
-import org.eclipse.sirius.components.emf.services.LabelFeatureProvider;
-import org.eclipse.sirius.components.flow.starter.helper.FlowEditableSwitch;
-import org.eclipse.sirius.components.flow.starter.helper.FlowLabelFeatureSwitch;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -34,11 +29,6 @@ public class FlowEMFConfiguration {
     @Bean
     public AdapterFactory flowAdapterFactory() {
         return new FlowItemProviderAdapterFactory();
-    }
-
-    @Bean
-    public ILabelFeatureProvider flowLabelFeatureProvider() {
-        return new LabelFeatureProvider(FlowPackage.eINSTANCE.getNsURI(), new FlowLabelFeatureSwitch(), new FlowEditableSwitch());
     }
 
 }

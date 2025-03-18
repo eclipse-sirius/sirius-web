@@ -25,7 +25,9 @@ import org.eclipse.sirius.components.compatibility.api.IModelOperationHandlerSwi
 import org.eclipse.sirius.components.compatibility.api.ISemanticCandidatesProviderFactory;
 import org.eclipse.sirius.components.compatibility.services.forms.api.IViewExtensionDescriptionConverter;
 import org.eclipse.sirius.components.compatibility.services.representations.IdentifiedElementLabelProvider;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
@@ -45,6 +47,8 @@ public class ViewExtensionDescriptionConverter implements IViewExtensionDescript
 
     private final IObjectService objectService;
 
+    private final ILabelService labelService;
+
     private final IAQLInterpreterFactory interpreterFactory;
 
     private final IIdentifierProvider identifierProvider;
@@ -55,10 +59,11 @@ public class ViewExtensionDescriptionConverter implements IViewExtensionDescript
 
     private final IdentifiedElementLabelProvider identifiedElementLabelProvider;
 
-    public ViewExtensionDescriptionConverter(IObjectService objectService, IAQLInterpreterFactory interpreterFactory, IIdentifierProvider identifierProvider,
-            ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory, IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider,
-            IdentifiedElementLabelProvider identifiedElementLabelProvider) {
+    public ViewExtensionDescriptionConverter(IObjectService objectService, ILabelService labelService, IAQLInterpreterFactory interpreterFactory, IIdentifierProvider identifierProvider,
+                                             ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory, IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider,
+                                             IdentifiedElementLabelProvider identifiedElementLabelProvider) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.interpreterFactory = Objects.requireNonNull(interpreterFactory);
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
         this.semanticCandidatesProviderFactory = Objects.requireNonNull(semanticCandidatesProviderFactory);
@@ -85,7 +90,8 @@ public class ViewExtensionDescriptionConverter implements IViewExtensionDescript
                 .toList();
 
         Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.objectService::getFullLabel)
+                .map(this.labelService::getStyledLabel)
+                .map(StyledString::toString)
                 .orElse("Properties");
 
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)

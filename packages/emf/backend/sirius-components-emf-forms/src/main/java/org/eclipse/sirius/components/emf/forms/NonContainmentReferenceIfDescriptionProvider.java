@@ -27,6 +27,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
@@ -56,6 +57,8 @@ public class NonContainmentReferenceIfDescriptionProvider {
 
     private final IObjectService objectService;
 
+    private final ILabelService labelService;
+
     private final IPropertiesValidationProvider propertiesValidationProvider;
 
     private final Function<VariableManager, String> semanticTargetIdProvider;
@@ -65,10 +68,11 @@ public class NonContainmentReferenceIfDescriptionProvider {
     private final IFeedbackMessageService feedbackMessageService;
 
 
-    public NonContainmentReferenceIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IObjectService objectService, IEMFKindService emfKindService,
-            IFeedbackMessageService feedbackMessageService, IPropertiesValidationProvider propertiesValidationProvider, Function<VariableManager, String> semanticTargetIdProvider) {
+    public NonContainmentReferenceIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IObjectService objectService, ILabelService labelService, IEMFKindService emfKindService,
+                                                        IFeedbackMessageService feedbackMessageService, IPropertiesValidationProvider propertiesValidationProvider, Function<VariableManager, String> semanticTargetIdProvider) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.objectService = Objects.requireNonNull(objectService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
         this.semanticTargetIdProvider = Objects.requireNonNull(semanticTargetIdProvider);
         this.emfKindService = Objects.requireNonNull(emfKindService);
@@ -162,11 +166,11 @@ public class NonContainmentReferenceIfDescriptionProvider {
     }
 
     private String getItemLabel(VariableManager variableManager) {
-        return this.getItem(variableManager).map(this.objectService::getLabel).orElse("");
+        return this.getItem(variableManager).map(this.labelService::getStyledLabel).map(Object::toString).orElse("");
     }
 
     private List<String> getItemIconURL(VariableManager variableManager) {
-        return this.getItem(variableManager).map(this.objectService::getImagePath).orElse(List.of());
+        return this.getItem(variableManager).map(this.labelService::getImagePaths).orElse(List.of());
     }
 
     private String getItemKind(VariableManager variableManager) {

@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.core.api;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.eclipse.sirius.components.core.api.labels.StyledString;
 
@@ -26,17 +25,9 @@ public interface ILabelServiceDelegate {
 
     boolean canHandle(Object object);
 
-    String getLabel(Object object);
-
     StyledString getStyledLabel(Object object);
 
-    String getFullLabel(Object object);
-
-    Optional<String> getLabelField(Object object);
-
-    boolean isLabelEditable(Object object);
-
-    List<String> getImagePath(Object object);
+    List<String> getImagePaths(Object object);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -49,10 +40,6 @@ public interface ILabelServiceDelegate {
         public boolean canHandle(Object object) {
             return true;
         }
-        @Override
-        public String getLabel(Object object) {
-            return "";
-        }
 
         @Override
         public StyledString getStyledLabel(Object object) {
@@ -60,20 +47,8 @@ public interface ILabelServiceDelegate {
         }
 
         @Override
-        public String getFullLabel(Object object) {
-            return "";
-        }
-        @Override
-        public List<String> getImagePath(Object object) {
+        public List<String> getImagePaths(Object object) {
             return List.of();
-        }
-        @Override
-        public Optional<String> getLabelField(Object object) {
-            return Optional.empty();
-        }
-        @Override
-        public boolean isLabelEditable(Object object) {
-            return false;
         }
 
     }

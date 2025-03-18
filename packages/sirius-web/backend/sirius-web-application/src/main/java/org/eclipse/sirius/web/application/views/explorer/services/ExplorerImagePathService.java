@@ -26,6 +26,6 @@ import org.springframework.stereotype.Service;
 public class ExplorerImagePathService implements IImagePathService {
     @Override
     public List<String> getPaths() {
-        return List.of("/explorer");
+        return List.of("/icons");
     }
 }

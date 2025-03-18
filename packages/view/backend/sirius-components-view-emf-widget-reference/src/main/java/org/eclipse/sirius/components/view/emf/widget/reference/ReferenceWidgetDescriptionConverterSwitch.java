@@ -32,7 +32,9 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
+import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
@@ -72,6 +74,8 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<O
 
     private final IObjectService objectService;
 
+    private final ILabelService labelService;
+
     private final IOperationExecutor operationExecutor;
 
     private final IFeedbackMessageService feedbackMessageService;
@@ -84,10 +88,11 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<O
 
     private final IEMFKindService emfKindService;
 
-    public ReferenceWidgetDescriptionConverterSwitch(AQLInterpreter interpreter, IObjectService objectService, IOperationExecutor operationExecutor,
+    public ReferenceWidgetDescriptionConverterSwitch(AQLInterpreter interpreter, IObjectService objectService, ILabelService labelService, IOperationExecutor operationExecutor,
                                                      IEMFKindService emfKindService, IFeedbackMessageService feedbackMessageService, ComposedAdapterFactory composedAdapterFactory, IFormIdProvider widgetIdProvider) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.objectService = Objects.requireNonNull(objectService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.widgetIdProvider = Objects.requireNonNull(widgetIdProvider);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
@@ -247,11 +252,11 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<O
     }
 
     private String getItemLabel(VariableManager variableManager) {
-        return this.getItem(variableManager).map(this.objectService::getLabel).orElse("");
+        return this.getItem(variableManager).map(this.labelService::getStyledLabel).map(Object::toString).orElse("");
     }
 
     private List<String> getItemIconURL(VariableManager variableManager) {
-        return this.getItem(variableManager).map(this.objectService::getImagePath).orElse(List.of());
+        return this.getItem(variableManager).map(this.labelService::getImagePaths).orElse(List.of());
     }
 
     private String getItemKind(VariableManager variableManager) {

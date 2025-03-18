@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.SelectStyle;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
@@ -44,15 +45,18 @@ public class SelectDescriptionConverter {
 
     private final IObjectService objectService;
 
+    private final ILabelService labelService;
+
     private final IOperationExecutor operationExecutor;
 
     private final IFeedbackMessageService feedbackMessageService;
 
     private final IFormIdProvider widgetIdProvider;
 
-    public SelectDescriptionConverter(AQLInterpreter interpreter, IObjectService objectService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
+    public SelectDescriptionConverter(AQLInterpreter interpreter, IObjectService objectService, ILabelService labelService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.objectService = Objects.requireNonNull(objectService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.widgetIdProvider = Objects.requireNonNull(widgetIdProvider);
@@ -86,7 +90,7 @@ public class SelectDescriptionConverter {
                 .optionsProvider(new MultiValueProvider(this.interpreter, viewSelectDescription.getCandidatesExpression(), Object.class))
                 .optionIdProvider(new OptionIdProvider(this.objectService))
                 .optionLabelProvider(new StringValueProvider(this.interpreter, viewSelectDescription.getCandidateLabelExpression()))
-                .optionIconURLProvider(new OptionIconURLsProvider(this.objectService))
+                .optionIconURLProvider(new OptionIconURLsProvider(this.labelService))
                 .newValueHandler(new SelectNewValueHandler(this.interpreter, this.objectService, this.operationExecutor, this.feedbackMessageService, viewSelectDescription.getBody()))
                 .styleProvider(styleProvider)
                 .diagnosticsProvider(new DiagnosticProvider(this.interpreter, viewSelectDescription.getDiagnosticsExpression()))

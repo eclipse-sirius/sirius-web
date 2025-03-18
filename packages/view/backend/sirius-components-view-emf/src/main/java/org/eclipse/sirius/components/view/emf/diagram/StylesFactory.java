@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
@@ -50,15 +50,15 @@ public final class StylesFactory {
 
     private static final String DEFAULT_TRANSPARENT_COLOR = "transparent";
 
-    private final List<INodeStyleProvider> iNodeStyleProviders;
+    private final List<INodeStyleProvider> nodeStyleProviders;
 
-    private final IObjectService objectService;
+    private final ILabelService labelService;
 
     private final AQLInterpreter interpreter;
 
-    public StylesFactory(List<INodeStyleProvider> iNodeStyleProviders, IObjectService objectService, AQLInterpreter interpreter) {
-        this.iNodeStyleProviders = Objects.requireNonNull(iNodeStyleProviders);
-        this.objectService = Objects.requireNonNull(objectService);
+    public StylesFactory(List<INodeStyleProvider> nodeStyleProviders, ILabelService labelService, AQLInterpreter interpreter) {
+        this.nodeStyleProviders = Objects.requireNonNull(nodeStyleProviders);
+        this.labelService = Objects.requireNonNull(labelService);
         this.interpreter = Objects.requireNonNull(interpreter);
     }
 
@@ -73,7 +73,9 @@ public final class StylesFactory {
                 .iconURLProvider(variableManager -> {
                     List<String> iconURL = List.of();
                     if (edgeStyle.isShowIcon() && edgeStyle.getLabelIcon() == null) {
-                        iconURL = variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse(List.of());
+                        iconURL = variableManager.get(VariableManager.SELF, Object.class)
+                                .map(this.labelService::getImagePaths)
+                                .orElse(List.of());
                     }
                     if (edgeStyle.isShowIcon() && edgeStyle.getLabelIcon() != null) {
                         iconURL = List.of(edgeStyle.getLabelIcon());
@@ -106,7 +108,7 @@ public final class StylesFactory {
         } else if (nodeStyleDescription instanceof IconLabelNodeStyleDescription) {
             type = Optional.of(NodeType.NODE_ICON_LABEL);
         } else {
-            for (INodeStyleProvider iNodeStyleProvider : this.iNodeStyleProviders) {
+            for (INodeStyleProvider iNodeStyleProvider : this.nodeStyleProviders) {
                 Optional<String> nodeType = iNodeStyleProvider.getNodeType(nodeStyleDescription);
                 if (nodeType.isPresent()) {
                     type = nodeType;
@@ -133,7 +135,7 @@ public final class StylesFactory {
                         .build();
                 break;
             default:
-                for (INodeStyleProvider iNodeStyleProvider : this.iNodeStyleProviders) {
+                for (INodeStyleProvider iNodeStyleProvider : this.nodeStyleProviders) {
                     Optional<INodeStyle> nodeStyleOpt = iNodeStyleProvider.createNodeStyle(nodeStyle, optionalEditingContextId);
                     if (nodeStyleOpt.isPresent()) {
                         result = nodeStyleOpt.get();
@@ -170,7 +172,7 @@ public final class StylesFactory {
                         isShowIcon = this.interpreter.evaluateExpression(variableManager.getVariables(), showIconExpression).asBoolean().orElse(false);
                     }
                     if (isShowIcon && labelStyle.getLabelIcon() == null) {
-                        iconURL = variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse(List.of());
+                        iconURL = variableManager.get(VariableManager.SELF, Object.class).map(this.labelService::getImagePaths).orElse(List.of());
                     }
                     if (isShowIcon && labelStyle.getLabelIcon() != null) {
                         iconURL = List.of(labelStyle.getLabelIcon());
@@ -202,7 +204,7 @@ public final class StylesFactory {
                         isShowIcon = this.interpreter.evaluateExpression(variableManager.getVariables(), showIconExpression).asBoolean().orElse(false);
                     }
                     if (isShowIcon && labelStyle.getLabelIcon() == null) {
-                        iconURL = variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse(List.of());
+                        iconURL = variableManager.get(VariableManager.SELF, Object.class).map(this.labelService::getImagePaths).orElse(List.of());
                     }
                     if (isShowIcon && labelStyle.getLabelIcon() != null) {
                         iconURL = List.of(labelStyle.getLabelIcon());

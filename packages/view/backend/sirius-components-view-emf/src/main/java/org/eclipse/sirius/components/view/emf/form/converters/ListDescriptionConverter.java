@@ -23,6 +23,7 @@ import java.util.function.Function;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.ListStyle;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
@@ -57,6 +58,8 @@ public class ListDescriptionConverter {
 
     private final IObjectService objectService;
 
+    private final ILabelService labelService;
+
     private final IEditService editService;
 
     private final IOperationExecutor operationExecutor;
@@ -65,9 +68,10 @@ public class ListDescriptionConverter {
 
     private final IFormIdProvider widgetIdProvider;
 
-    public ListDescriptionConverter(AQLInterpreter interpreter, IObjectService objectService, IEditService editService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
+    public ListDescriptionConverter(AQLInterpreter interpreter, IObjectService objectService, ILabelService labelService, IEditService editService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.objectService = Objects.requireNonNull(objectService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.editService = Objects.requireNonNull(editService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
@@ -106,7 +110,7 @@ public class ListDescriptionConverter {
         };
 
         Function<VariableManager, List<String>> itemIconURLProvider = variableManager -> variableManager.get(ListComponent.CANDIDATE_VARIABLE, Object.class)
-                .map(this.objectService::getImagePath)
+                .map(this.labelService::getImagePaths)
                 .orElse(List.of());
 
         Function<VariableManager, ListStyle> styleProvider = variableManager -> {

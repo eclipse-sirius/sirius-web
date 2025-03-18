@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.forms.components.SelectComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -27,16 +27,16 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class OptionIconURLsProvider implements Function<VariableManager, List<String>> {
 
-    private final IObjectService objectService;
+    private final ILabelService labelService;
 
-    public OptionIconURLsProvider(IObjectService objectService) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public OptionIconURLsProvider(ILabelService labelService) {
+        this.labelService = Objects.requireNonNull(labelService);
     }
 
     @Override
     public List<String> apply(VariableManager variableManager) {
         return variableManager.get(SelectComponent.CANDIDATE_VARIABLE, Object.class)
-                .map(this.objectService::getImagePath)
+                .map(this.labelService::getImagePaths)
                 .orElse(List.of());
     }
 }
