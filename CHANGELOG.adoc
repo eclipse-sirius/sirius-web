@@ -92,8 +92,9 @@ Except for the specific case where `cause === 'refresh'` in `DiagramRenderer` (w
 - https://github.com/eclipse-sirius/sirius-web/issues/4575[#4575] [diagram] Memoize the style of a label to avoid rerendering them all when refreshing the diagram
 - https://github.com/eclipse-sirius/sirius-web/issues/4577[#4577] [diagram] Improve the performance of the diagram by removing useless data from `DiagramContext`
 - https://github.com/eclipse-sirius/sirius-web/issues/4556[#4556] [table] Add the support of row hierarchy in tables
-
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4098[#4098] [core] Cache the AQL services for a given `EPackage`.
+This improves the time needed to open a project.
+The improvement will be proportional to the size/complexity of the metamodels and the number of View-based representations available in the project.
 
 == v2025.2.0
 
