@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.sirius.components.view.diagram.Action;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
@@ -93,6 +94,16 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @ordered
      */
     protected NodePalette palette;
+
+    /**
+     * The cached value of the '{@link #getActions() <em>Actions</em>}' containment reference list. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @see #getActions()
+     * @generated
+     * @ordered
+     */
+    protected EList<Action> actions;
 
     /**
      * The cached value of the '{@link #getChildrenLayoutStrategy() <em>Children Layout Strategy</em>}' containment
@@ -394,6 +405,19 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 msgs.dispatch();
         } else if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_DESCRIPTION__PALETTE, newPalette, newPalette));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EList<Action> getActions() {
+        if (this.actions == null) {
+            this.actions = new EObjectContainmentEList<>(Action.class, this, DiagramPackage.NODE_DESCRIPTION__ACTIONS);
+        }
+        return this.actions;
     }
 
     /**
@@ -811,6 +835,8 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
         switch (featureID) {
             case DiagramPackage.NODE_DESCRIPTION__PALETTE:
                 return this.basicSetPalette(null, msgs);
+            case DiagramPackage.NODE_DESCRIPTION__ACTIONS:
+                return ((InternalEList<?>) this.getActions()).basicRemove(otherEnd, msgs);
             case DiagramPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
                 return this.basicSetChildrenLayoutStrategy(null, msgs);
             case DiagramPackage.NODE_DESCRIPTION__STYLE:
@@ -841,6 +867,8 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return this.isCollapsible();
             case DiagramPackage.NODE_DESCRIPTION__PALETTE:
                 return this.getPalette();
+            case DiagramPackage.NODE_DESCRIPTION__ACTIONS:
+                return this.getActions();
             case DiagramPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
                 return this.getChildrenLayoutStrategy();
             case DiagramPackage.NODE_DESCRIPTION__STYLE:
@@ -891,6 +919,10 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return;
             case DiagramPackage.NODE_DESCRIPTION__PALETTE:
                 this.setPalette((NodePalette) newValue);
+                return;
+            case DiagramPackage.NODE_DESCRIPTION__ACTIONS:
+                this.getActions().clear();
+                this.getActions().addAll((Collection<? extends Action>) newValue);
                 return;
             case DiagramPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
                 this.setChildrenLayoutStrategy((LayoutStrategyDescription) newValue);
@@ -964,6 +996,9 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             case DiagramPackage.NODE_DESCRIPTION__PALETTE:
                 this.setPalette((NodePalette) null);
                 return;
+            case DiagramPackage.NODE_DESCRIPTION__ACTIONS:
+                this.getActions().clear();
+                return;
             case DiagramPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
                 this.setChildrenLayoutStrategy((LayoutStrategyDescription) null);
                 return;
@@ -1028,6 +1063,8 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return this.collapsible != COLLAPSIBLE_EDEFAULT;
             case DiagramPackage.NODE_DESCRIPTION__PALETTE:
                 return this.palette != null;
+            case DiagramPackage.NODE_DESCRIPTION__ACTIONS:
+                return this.actions != null && !this.actions.isEmpty();
             case DiagramPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
                 return this.childrenLayoutStrategy != null;
             case DiagramPackage.NODE_DESCRIPTION__STYLE:

@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.diagram.impl;
 
-import java.util.Objects;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
@@ -44,33 +42,6 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
 public class NodeToolImpl extends ToolImpl implements NodeTool {
 
     /**
-     * The default value of the '{@link #getIconURLsExpression() <em>Icon UR Ls Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getIconURLsExpression()
-     */
-    protected static final String ICON_UR_LS_EXPRESSION_EDEFAULT = null;
-    /**
-     * The default value of the '{@link #getElementsToSelectExpression() <em>Elements To Select Expression</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getElementsToSelectExpression()
-     */
-    protected static final String ELEMENTS_TO_SELECT_EXPRESSION_EDEFAULT = null;
-    /**
-     * The default value of the '{@link #isWithImpactAnalysis() <em>With Impact Analysis</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #isWithImpactAnalysis()
-     */
-    protected static final boolean WITH_IMPACT_ANALYSIS_EDEFAULT = false;
-    /**
      * The cached value of the '{@link #getDialogDescription() <em>Dialog Description</em>}' containment reference. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -79,6 +50,17 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
      * @see #getDialogDescription()
      */
     protected DialogDescription dialogDescription;
+
+    /**
+     * The default value of the '{@link #getIconURLsExpression() <em>Icon UR Ls Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getIconURLsExpression()
+     */
+    protected static final String ICON_UR_LS_EXPRESSION_EDEFAULT = null;
+
     /**
      * The cached value of the '{@link #getIconURLsExpression() <em>Icon UR Ls Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -88,15 +70,37 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
      * @see #getIconURLsExpression()
      */
     protected String iconURLsExpression = ICON_UR_LS_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getElementsToSelectExpression() <em>Elements To Select Expression</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getElementsToSelectExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String ELEMENTS_TO_SELECT_EXPRESSION_EDEFAULT = null;
+
     /**
      * The cached value of the '{@link #getElementsToSelectExpression() <em>Elements To Select Expression</em>}'
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getElementsToSelectExpression()
      * @generated
      * @ordered
-     * @see #getElementsToSelectExpression()
      */
     protected String elementsToSelectExpression = ELEMENTS_TO_SELECT_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isWithImpactAnalysis() <em>With Impact Analysis</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #isWithImpactAnalysis()
+     */
+    protected static final boolean WITH_IMPACT_ANALYSIS_EDEFAULT = false;
+
     /**
      * The cached value of the '{@link #isWithImpactAnalysis() <em>With Impact Analysis</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -310,7 +314,7 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
     public void eUnset(int featureID) {
         switch (featureID) {
             case DiagramPackage.NODE_TOOL__DIALOG_DESCRIPTION:
-                this.setDialogDescription(null);
+                this.setDialogDescription((DialogDescription) null);
                 return;
             case DiagramPackage.NODE_TOOL__ICON_UR_LS_EXPRESSION:
                 this.setIconURLsExpression(ICON_UR_LS_EXPRESSION_EDEFAULT);
@@ -336,9 +340,9 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
             case DiagramPackage.NODE_TOOL__DIALOG_DESCRIPTION:
                 return this.dialogDescription != null;
             case DiagramPackage.NODE_TOOL__ICON_UR_LS_EXPRESSION:
-                return !Objects.equals(ICON_UR_LS_EXPRESSION_EDEFAULT, this.iconURLsExpression);
+                return ICON_UR_LS_EXPRESSION_EDEFAULT == null ? this.iconURLsExpression != null : !ICON_UR_LS_EXPRESSION_EDEFAULT.equals(this.iconURLsExpression);
             case DiagramPackage.NODE_TOOL__ELEMENTS_TO_SELECT_EXPRESSION:
-                return !Objects.equals(ELEMENTS_TO_SELECT_EXPRESSION_EDEFAULT, this.elementsToSelectExpression);
+                return ELEMENTS_TO_SELECT_EXPRESSION_EDEFAULT == null ? this.elementsToSelectExpression != null : !ELEMENTS_TO_SELECT_EXPRESSION_EDEFAULT.equals(this.elementsToSelectExpression);
             case DiagramPackage.NODE_TOOL__WITH_IMPACT_ANALYSIS:
                 return this.withImpactAnalysis != WITH_IMPACT_ANALYSIS_EDEFAULT;
         }
@@ -355,14 +359,15 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
         if (this.eIsProxy())
             return super.toString();
 
-        String result = super.toString() + " (iconURLsExpression: " +
-                this.iconURLsExpression +
-                ", elementsToSelectExpression: " +
-                this.elementsToSelectExpression +
-                ", withImpactAnalysis: " +
-                this.withImpactAnalysis +
-                ')';
-        return result;
+        StringBuilder result = new StringBuilder(super.toString());
+        result.append(" (iconURLsExpression: ");
+        result.append(this.iconURLsExpression);
+        result.append(", elementsToSelectExpression: ");
+        result.append(this.elementsToSelectExpression);
+        result.append(", withImpactAnalysis: ");
+        result.append(this.withImpactAnalysis);
+        result.append(')');
+        return result.toString();
     }
 
 } // NodeToolImpl
