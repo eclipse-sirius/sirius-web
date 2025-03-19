@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,65 +22,65 @@ import org.eclipse.emf.common.util.Enumerator;
  * <!-- begin-user-doc --> A representation of the literals of the enumeration '<em><b>Header Separator Display
  * Mode</b></em>', and utility methods for working with them. <!-- end-user-doc -->
  *
+ * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getHeaderSeparatorDisplayMode()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getHeaderSeparatorDisplayMode()
  */
 public enum HeaderSeparatorDisplayMode implements Enumerator {
     /**
      * The '<em><b>NEVER</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #NEVER_VALUE
      * @generated
      * @ordered
-     * @see #NEVER_VALUE
      */
     NEVER(0, "NEVER", "NEVER"),
 
     /**
      * The '<em><b>ALWAYS</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #ALWAYS_VALUE
      * @generated
      * @ordered
-     * @see #ALWAYS_VALUE
      */
     ALWAYS(1, "ALWAYS", "ALWAYS"),
 
     /**
      * The '<em><b>IF CHILDREN</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #IF_CHILDREN_VALUE
      * @generated
      * @ordered
-     * @see #IF_CHILDREN_VALUE
      */
     IF_CHILDREN(2, "IF_CHILDREN", "IF_CHILDREN");
 
     /**
      * The '<em><b>NEVER</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #NEVER
      * @model
      * @generated
      * @ordered
-     * @see #NEVER
      */
     public static final int NEVER_VALUE = 0;
 
     /**
      * The '<em><b>ALWAYS</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #ALWAYS
      * @model
      * @generated
      * @ordered
-     * @see #ALWAYS
      */
     public static final int ALWAYS_VALUE = 1;
 
     /**
      * The '<em><b>IF CHILDREN</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #IF_CHILDREN
      * @model
      * @generated
      * @ordered
-     * @see #IF_CHILDREN
      */
     public static final int IF_CHILDREN_VALUE = 2;
 
@@ -99,18 +99,21 @@ public enum HeaderSeparatorDisplayMode implements Enumerator {
      * @generated
      */
     public static final List<HeaderSeparatorDisplayMode> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private final int value;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private final String name;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -123,7 +126,7 @@ public enum HeaderSeparatorDisplayMode implements Enumerator {
      *
      * @generated
      */
-    HeaderSeparatorDisplayMode(int value, String name, String literal) {
+    private HeaderSeparatorDisplayMode(int value, String name, String literal) {
         this.value = value;
         this.name = name;
         this.literal = literal;
@@ -134,7 +137,7 @@ public enum HeaderSeparatorDisplayMode implements Enumerator {
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @param literal
-     *         the literal.
+     *            the literal.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
@@ -153,7 +156,7 @@ public enum HeaderSeparatorDisplayMode implements Enumerator {
      * --> <!-- end-user-doc -->
      *
      * @param name
-     *         the name.
+     *            the name.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
@@ -172,7 +175,7 @@ public enum HeaderSeparatorDisplayMode implements Enumerator {
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the integer value.
+     *            the integer value.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */

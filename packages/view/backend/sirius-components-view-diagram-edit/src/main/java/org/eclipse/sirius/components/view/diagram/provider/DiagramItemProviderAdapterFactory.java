@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -930,6 +930,29 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.diagram.Action}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ActionItemProvider actionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.Action}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createActionAdapter() {
+        if (this.actionItemProvider == null) {
+            this.actionItemProvider = new ActionItemProvider(this);
+        }
+
+        return this.actionItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -1128,6 +1151,8 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
             this.dropNodeToolItemProvider.dispose();
         if (this.selectionDialogTreeDescriptionItemProvider != null)
             this.selectionDialogTreeDescriptionItemProvider.dispose();
+        if (this.actionItemProvider != null)
+            this.actionItemProvider.dispose();
     }
 
     /**

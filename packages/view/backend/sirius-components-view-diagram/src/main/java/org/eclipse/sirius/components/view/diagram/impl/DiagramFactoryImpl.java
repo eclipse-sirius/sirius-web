@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+import org.eclipse.sirius.components.view.diagram.Action;
 import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle;
@@ -104,8 +105,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
      * @deprecated
+     * @generated
      */
     @Deprecated
     public static DiagramPackage getPackage() {
@@ -190,6 +191,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.createDropNodeTool();
             case DiagramPackage.SELECTION_DIALOG_TREE_DESCRIPTION:
                 return this.createSelectionDialogTreeDescription();
+            case DiagramPackage.ACTION:
+                return this.createAction();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -652,6 +655,17 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
     public SelectionDialogTreeDescription createSelectionDialogTreeDescription() {
         SelectionDialogTreeDescriptionImpl selectionDialogTreeDescription = new SelectionDialogTreeDescriptionImpl();
         return selectionDialogTreeDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Action createAction() {
+        ActionImpl action = new ActionImpl();
+        return action;
     }
 
     /**

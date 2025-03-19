@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -90,6 +90,17 @@ public interface NodeDescription extends DiagramElementDescription {
      * @generated
      */
     void setPalette(NodePalette value);
+
+    /**
+     * Returns the value of the '<em><b>Actions</b></em>' containment reference list. The list contents are of type
+     * {@link org.eclipse.sirius.components.view.diagram.Action}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Actions</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDescription_Actions()
+     * @model containment="true"
+     * @generated
+     */
+    EList<Action> getActions();
 
     /**
      * Returns the value of the '<em><b>Children Layout Strategy</b></em>' containment reference. <!-- begin-user-doc

@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.diagram.Action;
 import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.BorderStyle;
@@ -421,6 +422,13 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      *
      * @generated
      */
+    private EClass actionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     private EEnum arrowStyleEEnum = null;
 
     /**
@@ -539,10 +547,10 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * not invoke it directly. Instead, they should simply access that field to obtain the package. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
      * @see #eNS_URI
      * @see #createPackageContents()
      * @see #initializePackageContents()
+     * @generated
      */
     public static DiagramPackage init() {
         if (isInited)
@@ -727,7 +735,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getNodeDescription_ChildrenLayoutStrategy() {
+    public EReference getNodeDescription_Actions() {
         return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(2);
     }
 
@@ -737,7 +745,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getNodeDescription_Style() {
+    public EReference getNodeDescription_ChildrenLayoutStrategy() {
         return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(3);
     }
 
@@ -747,7 +755,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getNodeDescription_ConditionalStyles() {
+    public EReference getNodeDescription_Style() {
         return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(4);
     }
 
@@ -757,7 +765,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getNodeDescription_ChildrenDescriptions() {
+    public EReference getNodeDescription_ConditionalStyles() {
         return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(5);
     }
 
@@ -767,7 +775,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getNodeDescription_BorderNodesDescriptions() {
+    public EReference getNodeDescription_ChildrenDescriptions() {
         return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(6);
     }
 
@@ -777,7 +785,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getNodeDescription_ReusedChildNodeDescriptions() {
+    public EReference getNodeDescription_BorderNodesDescriptions() {
         return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(7);
     }
 
@@ -787,7 +795,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getNodeDescription_ReusedBorderNodeDescriptions() {
+    public EReference getNodeDescription_ReusedChildNodeDescriptions() {
         return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(8);
     }
 
@@ -797,8 +805,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EAttribute getNodeDescription_UserResizable() {
-        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(9);
+    public EReference getNodeDescription_ReusedBorderNodeDescriptions() {
+        return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(9);
     }
 
     /**
@@ -807,7 +815,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EAttribute getNodeDescription_DefaultWidthExpression() {
+    public EAttribute getNodeDescription_UserResizable() {
         return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(10);
     }
 
@@ -817,7 +825,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EAttribute getNodeDescription_DefaultHeightExpression() {
+    public EAttribute getNodeDescription_DefaultWidthExpression() {
         return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(11);
     }
 
@@ -827,7 +835,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EAttribute getNodeDescription_KeepAspectRatio() {
+    public EAttribute getNodeDescription_DefaultHeightExpression() {
         return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(12);
     }
 
@@ -837,7 +845,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EAttribute getNodeDescription_IsCollapsedByDefaultExpression() {
+    public EAttribute getNodeDescription_KeepAspectRatio() {
         return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(13);
     }
 
@@ -847,8 +855,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getNodeDescription_InsideLabel() {
-        return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(14);
+    public EAttribute getNodeDescription_IsCollapsedByDefaultExpression() {
+        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(14);
     }
 
     /**
@@ -857,7 +865,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getNodeDescription_OutsideLabels() {
+    public EReference getNodeDescription_InsideLabel() {
         return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(15);
     }
 
@@ -867,8 +875,18 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EReference getNodeDescription_OutsideLabels() {
+        return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(16);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EAttribute getNodeDescription_IsHiddenByDefaultExpression() {
-        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(16);
+        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(17);
     }
 
     /**
@@ -878,7 +896,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      */
     @Override
     public EAttribute getNodeDescription_IsFadedByDefaultExpression() {
-        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(17);
+        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(18);
     }
 
     /**
@@ -2327,6 +2345,66 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EClass getAction() {
+        return this.actionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getAction_Name() {
+        return (EAttribute) this.actionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getAction_TooltipExpression() {
+        return (EAttribute) this.actionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getAction_IconURLsExpression() {
+        return (EAttribute) this.actionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getAction_PreconditionExpression() {
+        return (EAttribute) this.actionEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getAction_Body() {
+        return (EReference) this.actionEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EEnum getArrowStyle() {
         return this.arrowStyleEEnum;
     }
@@ -2480,6 +2558,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.nodeDescriptionEClass = this.createEClass(NODE_DESCRIPTION);
         this.createEAttribute(this.nodeDescriptionEClass, NODE_DESCRIPTION__COLLAPSIBLE);
         this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__PALETTE);
+        this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__ACTIONS);
         this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY);
         this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__STYLE);
         this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__CONDITIONAL_STYLES);
@@ -2684,6 +2763,13 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEAttribute(this.selectionDialogTreeDescriptionEClass, SELECTION_DIALOG_TREE_DESCRIPTION__CHILDREN_EXPRESSION);
         this.createEAttribute(this.selectionDialogTreeDescriptionEClass, SELECTION_DIALOG_TREE_DESCRIPTION__IS_SELECTABLE_EXPRESSION);
 
+        this.actionEClass = this.createEClass(ACTION);
+        this.createEAttribute(this.actionEClass, ACTION__NAME);
+        this.createEAttribute(this.actionEClass, ACTION__TOOLTIP_EXPRESSION);
+        this.createEAttribute(this.actionEClass, ACTION__ICON_UR_LS_EXPRESSION);
+        this.createEAttribute(this.actionEClass, ACTION__PRECONDITION_EXPRESSION);
+        this.createEReference(this.actionEClass, ACTION__BODY);
+
         // Create enums
         this.arrowStyleEEnum = this.createEEnum(ARROW_STYLE);
         this.layoutDirectionEEnum = this.createEEnum(LAYOUT_DIRECTION);
@@ -2793,6 +2879,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.initEAttribute(this.getNodeDescription_Collapsible(), this.ecorePackage.getEBoolean(), "collapsible", null, 0, 1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getNodeDescription_Palette(), this.getNodePalette(), null, "palette", null, 0, 1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getNodeDescription_Actions(), this.getAction(), null, "actions", null, 0, -1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getNodeDescription_ChildrenLayoutStrategy(), this.getLayoutStrategyDescription(), null, "childrenLayoutStrategy", null, 0, 1, NodeDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3132,6 +3220,18 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 SelectionDialogTreeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getSelectionDialogTreeDescription_IsSelectableExpression(), theViewPackage.getInterpretedExpression(), "isSelectableExpression", null, 0, 1,
                 SelectionDialogTreeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.actionEClass, Action.class, "Action", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getAction_Name(), theViewPackage.getIdentifier(), "name", "Action", 1, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+                !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getAction_TooltipExpression(), theViewPackage.getInterpretedExpression(), "tooltipExpression", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getAction_IconURLsExpression(), theViewPackage.getInterpretedExpression(), "iconURLsExpression", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getAction_PreconditionExpression(), theViewPackage.getInterpretedExpression(), "preconditionExpression", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getAction_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize enums and add enum literals
         this.initEEnum(this.arrowStyleEEnum, ArrowStyle.class, "ArrowStyle");
