@@ -16,26 +16,31 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
-import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { RowHeaderProps } from './RowHeader.types';
 
 export const RowHeader = ({ row, isExpanded, onClick, enableSubRows }: RowHeaderProps) => {
-  const theme = useTheme();
   return (
     <Box
-      display="flex"
-      alignItems="center"
-      justifyContent="space-between"
-      gap={theme.spacing(2)}
+      sx={(theme) => ({
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: theme.spacing(1),
+        height: '100%',
+      })}
       data-testid="table-row-header">
       {enableSubRows && (
-        <IconButton onClick={(_) => onClick(row.targetObjectId)} sx={{ marginLeft: theme.spacing(row.depthLevel) }}>
+        <IconButton
+          onClick={(_) => onClick(row.targetObjectId)}
+          sx={(theme) => ({ marginLeft: theme.spacing(row.depthLevel) })}>
           {isExpanded ? <ExpandMoreIcon /> : <ChevronRightIcon />}
         </IconButton>
       )}
-      <Typography noWrap>{row.headerIndexLabel}</Typography>
-      <Box display="flex" alignItems="center" gap={theme.spacing(1)}>
+      <Typography noWrap sx={(theme) => ({ marginRight: theme.spacing(1) })}>
+        {row.headerIndexLabel}
+      </Typography>
+      <Box sx={(theme) => ({ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: theme.spacing(1) })}>
         <IconOverlay iconURL={row.headerIconURLs} alt={row.headerLabel} />
         <Typography noWrap>{row.headerLabel}</Typography>
       </Box>

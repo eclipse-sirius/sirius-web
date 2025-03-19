@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
 import TextField from '@mui/material/TextField';
 import { useEffect, useState } from 'react';
 import { TextfieldCellProps, TextfieldCellState } from './TextfieldCell.types';
@@ -43,33 +42,29 @@ export const TextfieldCell = ({ editingContextId, representationId, tableId, cel
     }
   };
 
-  const { setSelection } = useSelection();
-  const onClick = () => {
-    const newSelection: Selection = { entries: [{ id: cell.targetObjectId }] };
-    setSelection(newSelection);
-  };
-
   return (
     <TextField
       value={state.value}
       onChange={handleChange}
       onBlur={handleBlur}
       onKeyDown={handleEnterKeyDown}
-      onClick={onClick}
       disabled={disabled || loading}
       size="small"
       fullWidth
       variant="standard"
+      sx={{ height: '100%' }}
       InputProps={{
         disableUnderline: true,
         sx: {
           marginBottom: 0,
           padding: '0px',
+          height: '100%',
         },
       }}
       inputProps={{
         sx: {
           padding: '0px',
+          height: '100%',
         },
       }}
     />

@@ -13,12 +13,22 @@
 import { Selection, theme, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { MRT_ColumnDef } from 'material-react-table';
 import { useMemo } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { Cell } from '../cells/Cell';
 import { ColumnHeader } from '../columns/ColumnHeader';
 import { ResizeRowHandler } from '../rows/ResizeRowHandler';
 import { RowHeader } from '../rows/RowHeader';
 import { GQLCell, GQLLine, GQLTable } from './TableContent.types';
 import { UseTableColumnsValue } from './useTableColumns.types';
+
+const useStyles = makeStyles()((theme) => ({
+  cell: {
+    padding: `${theme.spacing(1)} ${theme.spacing(1)}`,
+    flex: '1',
+    height: '100%',
+    cursor: 'pointer',
+  },
+}));
 
 export const useTableColumns = (
   editingContextId: string,
@@ -30,11 +40,13 @@ export const useTableColumns = (
   enableColumnFilters: boolean,
   enableColumnOrdering: boolean,
   enableRowSizing: boolean,
+  enableSelectionSynchronization: boolean,
   handleRowHeightChange: (rowId: string, height: number) => void,
   onExpandedElement: (rowId: string) => void,
   expandedRowIds: string[]
 ): UseTableColumnsValue => {
   const { setSelection } = useSelection();
+  const { classes } = useStyles();
   const columns = useMemo<MRT_ColumnDef<GQLLine, string>[]>(() => {
     const columnDefs: MRT_ColumnDef<GQLLine, string>[] = table.columns.map((column) => {
       return {
@@ -59,6 +71,7 @@ export const useTableColumns = (
               tableId={table.id}
               cell={cell}
               disabled={readOnly}
+              enableSelectionSynchronization={enableSelectionSynchronization}
             />
           );
         },
@@ -82,15 +95,18 @@ export const useTableColumns = (
       },
       Cell: ({ row }) => (
         <div
+          className={classes.cell}
           onClick={() => {
-            const newSelection: Selection = {
-              entries: [
-                {
-                  id: row.original.targetObjectId,
-                },
-              ],
-            };
-            setSelection(newSelection);
+            if (enableSelectionSynchronization) {
+              const newSelection: Selection = {
+                entries: [
+                  {
+                    id: row.original.targetObjectId,
+                  },
+                ],
+              };
+              setSelection(newSelection);
+            }
           }}>
           <RowHeader
             row={row.original}

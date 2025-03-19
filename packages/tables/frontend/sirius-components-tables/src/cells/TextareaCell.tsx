@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
 import TextField from '@mui/material/TextField';
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
@@ -46,12 +45,6 @@ export const TextareaCell = ({ editingContextId, representationId, tableId, cell
     editTextareaCell(state.value);
   };
 
-  const { setSelection } = useSelection();
-  const handleClick = () => {
-    const newSelection: Selection = { entries: [{ id: cell.targetObjectId }] };
-    setSelection(newSelection);
-  };
-
   return (
     <div className={classes.wrapper}>
       <TextField
@@ -59,7 +52,6 @@ export const TextareaCell = ({ editingContextId, representationId, tableId, cell
         value={state.value}
         onChange={handleChange}
         onBlur={handleBlur}
-        onClick={handleClick}
         disabled={disabled || loading}
         size="small"
         fullWidth
