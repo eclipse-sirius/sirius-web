@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -74,7 +74,7 @@ public class ComponentPageDescriptionProvider implements IPageDescriptionProvide
                 .name("New Child Component")
                 .labelExpression("")
                 .helpExpression("Create a new child component")
-                .imageExpression("aql:'/icons/full/obj16/Component.svg'")
+                .imageExpression("aql:'/icons/papaya/full/obj16/Component.svg'")
                 .style(newChildComponentStyle)
                 .body(
                         new ViewBuilders().newChangeContext()
@@ -99,7 +99,7 @@ public class ComponentPageDescriptionProvider implements IPageDescriptionProvide
                 .name("New Package")
                 .labelExpression("")
                 .helpExpression("Create a new package")
-                .imageExpression("aql:'/icons/full/obj16/Package.svg'")
+                .imageExpression("aql:'/icons/papaya/full/obj16/Package.svg'")
                 .style(newPackageStyle)
                 .body(
                         new ViewBuilders().newChangeContext()
@@ -184,7 +184,7 @@ public class ComponentPageDescriptionProvider implements IPageDescriptionProvide
                 .labelExpression("All Dependencies")
                 .childrenExpression("aql:self.dependencies")
                 .treeItemLabelExpression("aql:self.name")
-                .treeItemBeginIconExpression("aql:Sequence{'/icons/full/obj16/Component.svg'}")
+                .treeItemBeginIconExpression("aql:Sequence{'/icons/papaya/full/obj16/Component.svg'}")
                 .isCheckableExpression("aql:false")
                 .isTreeItemSelectableExpression("aql:false")
                 .build();
@@ -196,7 +196,7 @@ public class ComponentPageDescriptionProvider implements IPageDescriptionProvide
                 .labelExpression("All Components")
                 .childrenExpression("aql:self.eContents(papaya::Component)")
                 .treeItemLabelExpression("aql:self.name")
-                .treeItemBeginIconExpression("aql:Sequence{'/icons/full/obj16/Component.svg'}")
+                .treeItemBeginIconExpression("aql:Sequence{'/icons/papaya/full/obj16/Component.svg'}")
                 .isCheckableExpression("aql:false")
                 .isTreeItemSelectableExpression("aql:false")
                 .build();

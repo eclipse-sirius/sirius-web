@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,7 +40,7 @@ public class ImportAllDependenciesNodeToolProvider implements INodeToolProvider 
 
         return new DiagramBuilders().newNodeTool()
                 .name("Import all dependencies")
-                .iconURLsExpression("/icons/full/obj16/Component.svg")
+                .iconURLsExpression("/icons/papaya/full/obj16/Component.svg")
                 .body(
                         new ViewBuilders().newChangeContext()
                                 .expression("aql:self")
