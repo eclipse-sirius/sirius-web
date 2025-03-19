@@ -64,6 +64,8 @@ export {
   navigationBarMenuHelpURLExtensionPoint,
   navigationBarMenuIconExtensionPoint,
 } from './navigationBar/NavigationBarMenuExtensionPoints';
+export { ImportLibraryCommand } from './omnibox/ImportLibraryCommand';
+export { type ImportLibraryCommandState } from './omnibox/ImportLibraryCommand.types';
 export { routerExtensionPoint } from './router/RouterExtensionPoints';
 export type {
   EditProjectNavbarMenuContainerProps,
