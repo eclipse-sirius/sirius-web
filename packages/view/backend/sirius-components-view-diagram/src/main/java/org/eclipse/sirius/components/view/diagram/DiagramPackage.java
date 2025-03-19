@@ -312,13 +312,22 @@ public interface DiagramPackage extends EPackage {
     int NODE_DESCRIPTION__PALETTE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
+     * The feature id for the '<em><b>Actions</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_DESCRIPTION__ACTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
+
+    /**
      * The feature id for the '<em><b>Children Layout Strategy</b></em>' containment reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
+    int NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
      * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
@@ -327,7 +336,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__STYLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
+    int NODE_DESCRIPTION__STYLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
      * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -336,7 +345,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__CONDITIONAL_STYLES = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 4;
+    int NODE_DESCRIPTION__CONDITIONAL_STYLES = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
      * The feature id for the '<em><b>Children Descriptions</b></em>' containment reference list. <!-- begin-user-doc
@@ -345,7 +354,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
+    int NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 6;
 
     /**
      * The feature id for the '<em><b>Border Nodes Descriptions</b></em>' containment reference list. <!--
@@ -354,7 +363,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 6;
+    int NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 7;
 
     /**
      * The feature id for the '<em><b>Reused Child Node Descriptions</b></em>' reference list. <!-- begin-user-doc -->
@@ -363,7 +372,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__REUSED_CHILD_NODE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 7;
+    int NODE_DESCRIPTION__REUSED_CHILD_NODE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 8;
 
     /**
      * The feature id for the '<em><b>Reused Border Node Descriptions</b></em>' reference list. <!-- begin-user-doc -->
@@ -372,7 +381,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 8;
+    int NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 9;
 
     /**
      * The feature id for the '<em><b>User Resizable</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -380,7 +389,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__USER_RESIZABLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 9;
+    int NODE_DESCRIPTION__USER_RESIZABLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 10;
 
     /**
      * The feature id for the '<em><b>Default Width Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -389,7 +398,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 10;
+    int NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 11;
 
     /**
      * The feature id for the '<em><b>Default Height Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -398,7 +407,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 11;
+    int NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 12;
 
     /**
      * The feature id for the '<em><b>Keep Aspect Ratio</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -407,7 +416,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__KEEP_ASPECT_RATIO = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 12;
+    int NODE_DESCRIPTION__KEEP_ASPECT_RATIO = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 13;
 
     /**
      * The feature id for the '<em><b>Is Collapsed By Default Expression</b></em>' attribute. <!-- begin-user-doc -->
@@ -416,7 +425,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__IS_COLLAPSED_BY_DEFAULT_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 13;
+    int NODE_DESCRIPTION__IS_COLLAPSED_BY_DEFAULT_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 14;
 
     /**
      * The feature id for the '<em><b>Inside Label</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -425,7 +434,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__INSIDE_LABEL = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 14;
+    int NODE_DESCRIPTION__INSIDE_LABEL = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 15;
 
     /**
      * The feature id for the '<em><b>Outside Labels</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -434,7 +443,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__OUTSIDE_LABELS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 15;
+    int NODE_DESCRIPTION__OUTSIDE_LABELS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 16;
 
     /**
      * The feature id for the '<em><b>Is Hidden By Default Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -443,7 +452,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__IS_HIDDEN_BY_DEFAULT_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 16;
+    int NODE_DESCRIPTION__IS_HIDDEN_BY_DEFAULT_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 17;
 
     /**
      * The feature id for the '<em><b>Is Faded By Default Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -452,7 +461,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__IS_FADED_BY_DEFAULT_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 17;
+    int NODE_DESCRIPTION__IS_FADED_BY_DEFAULT_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 18;
 
     /**
      * The number of structural features of the '<em>Node Description</em>' class. <!-- begin-user-doc --> <!--
@@ -461,7 +470,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 18;
+    int NODE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 19;
 
     /**
      * The number of operations of the '<em>Node Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3596,6 +3605,76 @@ public interface DiagramPackage extends EPackage {
     int SELECTION_DIALOG_TREE_DESCRIPTION_OPERATION_COUNT = 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.ActionImpl <em>Action</em>}'
+     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.diagram.impl.ActionImpl
+     * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getAction()
+     * @generated
+     */
+    int ACTION = 46;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ACTION__NAME = 0;
+
+    /**
+     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ACTION__LABEL_EXPRESSION = 1;
+
+    /**
+     * The feature id for the '<em><b>Icon UR Ls Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ACTION__ICON_UR_LS_EXPRESSION = 2;
+
+    /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ACTION__PRECONDITION_EXPRESSION = 3;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ACTION__BODY = 4;
+
+    /**
+     * The number of structural features of the '<em>Action</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ACTION_FEATURE_COUNT = 5;
+
+    /**
+     * The number of operations of the '<em>Action</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ACTION_OPERATION_COUNT = 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.ArrowStyle <em>Arrow Style</em>}'
      * enum. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -3603,7 +3682,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getArrowStyle()
      * @generated
      */
-    int ARROW_STYLE = 46;
+    int ARROW_STYLE = 47;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.LayoutDirection <em>Layout
@@ -3613,7 +3692,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLayoutDirection()
      * @generated
      */
-    int LAYOUT_DIRECTION = 47;
+    int LAYOUT_DIRECTION = 48;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.LineStyle <em>Line Style</em>}'
@@ -3623,7 +3702,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLineStyle()
      * @generated
      */
-    int LINE_STYLE = 48;
+    int LINE_STYLE = 49;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.NodeContainmentKind <em>Node
@@ -3633,7 +3712,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getNodeContainmentKind()
      * @generated
      */
-    int NODE_CONTAINMENT_KIND = 49;
+    int NODE_CONTAINMENT_KIND = 50;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.SynchronizationPolicy
@@ -3643,7 +3722,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getSynchronizationPolicy()
      * @generated
      */
-    int SYNCHRONIZATION_POLICY = 50;
+    int SYNCHRONIZATION_POLICY = 51;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.InsideLabelPosition <em>Inside
@@ -3653,7 +3732,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getInsideLabelPosition()
      * @generated
      */
-    int INSIDE_LABEL_POSITION = 51;
+    int INSIDE_LABEL_POSITION = 52;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.OutsideLabelPosition <em>Outside
@@ -3663,7 +3742,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getOutsideLabelPosition()
      * @generated
      */
-    int OUTSIDE_LABEL_POSITION = 52;
+    int OUTSIDE_LABEL_POSITION = 53;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy <em>Label
@@ -3673,7 +3752,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLabelOverflowStrategy()
      * @generated
      */
-    int LABEL_OVERFLOW_STRATEGY = 53;
+    int LABEL_OVERFLOW_STRATEGY = 54;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection <em>Arrange
@@ -3683,7 +3762,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getArrangeLayoutDirection()
      * @generated
      */
-    int ARRANGE_LAYOUT_DIRECTION = 54;
+    int ARRANGE_LAYOUT_DIRECTION = 55;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.LabelTextAlign <em>Label Text
@@ -3693,7 +3772,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLabelTextAlign()
      * @generated
      */
-    int LABEL_TEXT_ALIGN = 55;
+    int LABEL_TEXT_ALIGN = 56;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.UserResizableDirection <em>User
@@ -3703,7 +3782,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getUserResizableDirection()
      * @generated
      */
-    int USER_RESIZABLE_DIRECTION = 56;
+    int USER_RESIZABLE_DIRECTION = 57;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode
@@ -3713,7 +3792,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getHeaderSeparatorDisplayMode()
      * @generated
      */
-    int HEADER_SEPARATOR_DISPLAY_MODE = 57;
+    int HEADER_SEPARATOR_DISPLAY_MODE = 58;
 
     /**
      * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3895,6 +3974,18 @@ public interface DiagramPackage extends EPackage {
      * @see #getNodeDescription()
      */
     EReference getNodeDescription_Palette();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.NodeDescription#getActions <em>Actions</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Actions</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.NodeDescription#getActions()
+     * @see #getNodeDescription()
+     * @generated
+     */
+    EReference getNodeDescription_Actions();
 
     /**
      * Returns the meta object for the containment reference
@@ -5722,6 +5813,75 @@ public interface DiagramPackage extends EPackage {
     EAttribute getSelectionDialogTreeDescription_IsSelectableExpression();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.Action <em>Action</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Action</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.Action
+     * @generated
+     */
+    EClass getAction();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.diagram.Action#getName
+     * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Name</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.Action#getName()
+     * @see #getAction()
+     * @generated
+     */
+    EAttribute getAction_Name();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.Action#getLabelExpression <em>Label Expression</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Label Expression</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.Action#getLabelExpression()
+     * @see #getAction()
+     * @generated
+     */
+    EAttribute getAction_LabelExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.Action#getIconURLsExpression <em>Icon UR Ls Expression</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Icon UR Ls Expression</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.Action#getIconURLsExpression()
+     * @see #getAction()
+     * @generated
+     */
+    EAttribute getAction_IconURLsExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.Action#getPreconditionExpression <em>Precondition
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Precondition Expression</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.Action#getPreconditionExpression()
+     * @see #getAction()
+     * @generated
+     */
+    EAttribute getAction_PreconditionExpression();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.Action#getBody <em>Body</em>}'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Body</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.Action#getBody()
+     * @see #getAction()
+     * @generated
+     */
+    EReference getAction_Body();
+
+    /**
      * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.diagram.ArrowStyle <em>Arrow
      * Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -5991,6 +6151,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EReference NODE_DESCRIPTION__PALETTE = eINSTANCE.getNodeDescription_Palette();
+
+        /**
+         * The meta object literal for the '<em><b>Actions</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference NODE_DESCRIPTION__ACTIONS = eINSTANCE.getNodeDescription_Actions();
 
         /**
          * The meta object literal for the '<em><b>Children Layout Strategy</b></em>' containment reference feature.
@@ -7366,6 +7534,56 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EAttribute SELECTION_DIALOG_TREE_DESCRIPTION__IS_SELECTABLE_EXPRESSION = eINSTANCE.getSelectionDialogTreeDescription_IsSelectableExpression();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.impl.ActionImpl
+         * <em>Action</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.diagram.impl.ActionImpl
+         * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getAction()
+         * @generated
+         */
+        EClass ACTION = eINSTANCE.getAction();
+
+        /**
+         * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute ACTION__NAME = eINSTANCE.getAction_Name();
+
+        /**
+         * The meta object literal for the '<em><b>Label Expression</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute ACTION__LABEL_EXPRESSION = eINSTANCE.getAction_LabelExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Icon UR Ls Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute ACTION__ICON_UR_LS_EXPRESSION = eINSTANCE.getAction_IconURLsExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Precondition Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute ACTION__PRECONDITION_EXPRESSION = eINSTANCE.getAction_PreconditionExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference ACTION__BODY = eINSTANCE.getAction_Body();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.ArrowStyle <em>Arrow

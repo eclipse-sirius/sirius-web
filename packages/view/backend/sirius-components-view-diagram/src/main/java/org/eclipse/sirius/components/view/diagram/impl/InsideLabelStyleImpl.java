@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,8 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.sirius.components.view.diagram.impl;
-
-import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
@@ -60,23 +58,55 @@ import org.eclipse.sirius.components.view.impl.LabelStyleImpl;
 public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelStyle {
 
     /**
+     * The cached value of the '{@link #getBorderColor() <em>Border Color</em>}' reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getBorderColor()
+     * @generated
+     * @ordered
+     */
+    protected UserColor borderColor;
+
+    /**
      * The default value of the '{@link #getBorderRadius() <em>Border Radius</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
+     * @see #getBorderRadius()
      * @generated
      * @ordered
-     * @see #getBorderRadius()
      */
     protected static final int BORDER_RADIUS_EDEFAULT = 3;
+
+    /**
+     * The cached value of the '{@link #getBorderRadius() <em>Border Radius</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #getBorderRadius()
+     * @generated
+     * @ordered
+     */
+    protected int borderRadius = BORDER_RADIUS_EDEFAULT;
+
     /**
      * The default value of the '{@link #getBorderSize() <em>Border Size</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
+     * @see #getBorderSize()
      * @generated
      * @ordered
-     * @see #getBorderSize()
      */
     protected static final int BORDER_SIZE_EDEFAULT = 1;
+
+    /**
+     * The cached value of the '{@link #getBorderSize() <em>Border Size</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getBorderSize()
+     * @generated
+     * @ordered
+     */
+    protected int borderSize = BORDER_SIZE_EDEFAULT;
+
     /**
      * The default value of the '{@link #getBorderLineStyle() <em>Border Line Style</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -86,6 +116,37 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
      * @see #getBorderLineStyle()
      */
     protected static final LineStyle BORDER_LINE_STYLE_EDEFAULT = LineStyle.SOLID;
+
+    /**
+     * The cached value of the '{@link #getBorderLineStyle() <em>Border Line Style</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @see #getBorderLineStyle()
+     * @generated
+     * @ordered
+     */
+    protected LineStyle borderLineStyle = BORDER_LINE_STYLE_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getLabelColor() <em>Label Color</em>}' reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getLabelColor()
+     * @generated
+     * @ordered
+     */
+    protected UserColor labelColor;
+
+    /**
+     * The cached value of the '{@link #getBackground() <em>Background</em>}' reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getBackground()
+     * @generated
+     * @ordered
+     */
+    protected UserColor background;
+
     /**
      * The default value of the '{@link #getShowIconExpression() <em>Show Icon Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -95,96 +156,7 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
      * @see #getShowIconExpression()
      */
     protected static final String SHOW_ICON_EXPRESSION_EDEFAULT = null;
-    /**
-     * The default value of the '{@link #getLabelIcon() <em>Label Icon</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getLabelIcon()
-     */
-    protected static final String LABEL_ICON_EDEFAULT = null;
-    /**
-     * The default value of the '{@link #getMaxWidthExpression() <em>Max Width Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getMaxWidthExpression()
-     */
-    protected static final String MAX_WIDTH_EXPRESSION_EDEFAULT = null;
-    /**
-     * The default value of the '{@link #isWithHeader() <em>With Header</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #isWithHeader()
-     */
-    protected static final boolean WITH_HEADER_EDEFAULT = false;
-    /**
-     * The default value of the '{@link #getHeaderSeparatorDisplayMode() <em>Header Separator Display Mode</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getHeaderSeparatorDisplayMode()
-     */
-    protected static final HeaderSeparatorDisplayMode HEADER_SEPARATOR_DISPLAY_MODE_EDEFAULT = HeaderSeparatorDisplayMode.NEVER;
-    /**
-     * The cached value of the '{@link #getBorderColor() <em>Border Color</em>}' reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getBorderColor()
-     */
-    protected UserColor borderColor;
-    /**
-     * The cached value of the '{@link #getBorderRadius() <em>Border Radius</em>}' attribute. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getBorderRadius()
-     */
-    protected int borderRadius = BORDER_RADIUS_EDEFAULT;
-    /**
-     * The cached value of the '{@link #getBorderSize() <em>Border Size</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getBorderSize()
-     */
-    protected int borderSize = BORDER_SIZE_EDEFAULT;
-    /**
-     * The cached value of the '{@link #getBorderLineStyle() <em>Border Line Style</em>}' attribute. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getBorderLineStyle()
-     */
-    protected LineStyle borderLineStyle = BORDER_LINE_STYLE_EDEFAULT;
-    /**
-     * The cached value of the '{@link #getLabelColor() <em>Label Color</em>}' reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getLabelColor()
-     */
-    protected UserColor labelColor;
-    /**
-     * The cached value of the '{@link #getBackground() <em>Background</em>}' reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getBackground()
-     */
-    protected UserColor background;
+
     /**
      * The cached value of the '{@link #getShowIconExpression() <em>Show Icon Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -194,15 +166,37 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
      * @see #getShowIconExpression()
      */
     protected String showIconExpression = SHOW_ICON_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getLabelIcon() <em>Label Icon</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getLabelIcon()
+     * @generated
+     * @ordered
+     */
+    protected static final String LABEL_ICON_EDEFAULT = null;
+
     /**
      * The cached value of the '{@link #getLabelIcon() <em>Label Icon</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
+     * @see #getLabelIcon()
      * @generated
      * @ordered
-     * @see #getLabelIcon()
      */
     protected String labelIcon = LABEL_ICON_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getMaxWidthExpression() <em>Max Width Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getMaxWidthExpression()
+     */
+    protected static final String MAX_WIDTH_EXPRESSION_EDEFAULT = null;
+
     /**
      * The cached value of the '{@link #getMaxWidthExpression() <em>Max Width Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -212,22 +206,44 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
      * @see #getMaxWidthExpression()
      */
     protected String maxWidthExpression = MAX_WIDTH_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isWithHeader() <em>With Header</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isWithHeader()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean WITH_HEADER_EDEFAULT = false;
+
     /**
      * The cached value of the '{@link #isWithHeader() <em>With Header</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
+     * @see #isWithHeader()
      * @generated
      * @ordered
-     * @see #isWithHeader()
      */
     protected boolean withHeader = WITH_HEADER_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getHeaderSeparatorDisplayMode() <em>Header Separator Display Mode</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getHeaderSeparatorDisplayMode()
+     * @generated
+     * @ordered
+     */
+    protected static final HeaderSeparatorDisplayMode HEADER_SEPARATOR_DISPLAY_MODE_EDEFAULT = HeaderSeparatorDisplayMode.NEVER;
+
     /**
      * The cached value of the '{@link #getHeaderSeparatorDisplayMode() <em>Header Separator Display Mode</em>}'
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getHeaderSeparatorDisplayMode()
      * @generated
      * @ordered
-     * @see #getHeaderSeparatorDisplayMode()
      */
     protected HeaderSeparatorDisplayMode headerSeparatorDisplayMode = HEADER_SEPARATOR_DISPLAY_MODE_EDEFAULT;
 
@@ -649,7 +665,7 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
     public void eUnset(int featureID) {
         switch (featureID) {
             case DiagramPackage.INSIDE_LABEL_STYLE__BORDER_COLOR:
-                this.setBorderColor(null);
+                this.setBorderColor((UserColor) null);
                 return;
             case DiagramPackage.INSIDE_LABEL_STYLE__BORDER_RADIUS:
                 this.setBorderRadius(BORDER_RADIUS_EDEFAULT);
@@ -661,10 +677,10 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
                 this.setBorderLineStyle(BORDER_LINE_STYLE_EDEFAULT);
                 return;
             case DiagramPackage.INSIDE_LABEL_STYLE__LABEL_COLOR:
-                this.setLabelColor(null);
+                this.setLabelColor((UserColor) null);
                 return;
             case DiagramPackage.INSIDE_LABEL_STYLE__BACKGROUND:
-                this.setBackground(null);
+                this.setBackground((UserColor) null);
                 return;
             case DiagramPackage.INSIDE_LABEL_STYLE__SHOW_ICON_EXPRESSION:
                 this.setShowIconExpression(SHOW_ICON_EXPRESSION_EDEFAULT);
@@ -706,11 +722,11 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
             case DiagramPackage.INSIDE_LABEL_STYLE__BACKGROUND:
                 return this.background != null;
             case DiagramPackage.INSIDE_LABEL_STYLE__SHOW_ICON_EXPRESSION:
-                return !Objects.equals(SHOW_ICON_EXPRESSION_EDEFAULT, this.showIconExpression);
+                return SHOW_ICON_EXPRESSION_EDEFAULT == null ? this.showIconExpression != null : !SHOW_ICON_EXPRESSION_EDEFAULT.equals(this.showIconExpression);
             case DiagramPackage.INSIDE_LABEL_STYLE__LABEL_ICON:
-                return !Objects.equals(LABEL_ICON_EDEFAULT, this.labelIcon);
+                return LABEL_ICON_EDEFAULT == null ? this.labelIcon != null : !LABEL_ICON_EDEFAULT.equals(this.labelIcon);
             case DiagramPackage.INSIDE_LABEL_STYLE__MAX_WIDTH_EXPRESSION:
-                return !Objects.equals(MAX_WIDTH_EXPRESSION_EDEFAULT, this.maxWidthExpression);
+                return MAX_WIDTH_EXPRESSION_EDEFAULT == null ? this.maxWidthExpression != null : !MAX_WIDTH_EXPRESSION_EDEFAULT.equals(this.maxWidthExpression);
             case DiagramPackage.INSIDE_LABEL_STYLE__WITH_HEADER:
                 return this.withHeader != WITH_HEADER_EDEFAULT;
             case DiagramPackage.INSIDE_LABEL_STYLE__HEADER_SEPARATOR_DISPLAY_MODE:
@@ -777,24 +793,25 @@ public class InsideLabelStyleImpl extends LabelStyleImpl implements InsideLabelS
         if (this.eIsProxy())
             return super.toString();
 
-        String result = super.toString() + " (borderRadius: " +
-                this.borderRadius +
-                ", borderSize: " +
-                this.borderSize +
-                ", borderLineStyle: " +
-                this.borderLineStyle +
-                ", showIconExpression: " +
-                this.showIconExpression +
-                ", labelIcon: " +
-                this.labelIcon +
-                ", maxWidthExpression: " +
-                this.maxWidthExpression +
-                ", withHeader: " +
-                this.withHeader +
-                ", headerSeparatorDisplayMode: " +
-                this.headerSeparatorDisplayMode +
-                ')';
-        return result;
+        StringBuilder result = new StringBuilder(super.toString());
+        result.append(" (borderRadius: ");
+        result.append(this.borderRadius);
+        result.append(", borderSize: ");
+        result.append(this.borderSize);
+        result.append(", borderLineStyle: ");
+        result.append(this.borderLineStyle);
+        result.append(", showIconExpression: ");
+        result.append(this.showIconExpression);
+        result.append(", labelIcon: ");
+        result.append(this.labelIcon);
+        result.append(", maxWidthExpression: ");
+        result.append(this.maxWidthExpression);
+        result.append(", withHeader: ");
+        result.append(this.withHeader);
+        result.append(", headerSeparatorDisplayMode: ");
+        result.append(this.headerSeparatorDisplayMode);
+        result.append(')');
+        return result.toString();
     }
 
 } // InsideLabelStyleImpl

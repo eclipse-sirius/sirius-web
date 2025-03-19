@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -105,6 +105,18 @@ public class NodeDescriptionBuilder {
         this.getNodeDescription().setPalette(value);
         return this;
     }
+    /**
+     * Setter for Actions.
+     *
+     * @generated
+     */
+    public NodeDescriptionBuilder actions(org.eclipse.sirius.components.view.diagram.Action ... values) {
+        for (org.eclipse.sirius.components.view.diagram.Action value : values) {
+            this.getNodeDescription().getActions().add(value);
+        }
+        return this;
+    }
+
     /**
      * Setter for ChildrenLayoutStrategy.
      *
