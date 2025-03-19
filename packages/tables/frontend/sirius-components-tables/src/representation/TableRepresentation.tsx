@@ -137,6 +137,7 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
           enableGlobalFilter
           enablePagination
           enableColumnOrdering
+          enableSelectionSynchronization
           expandedRowIds={state.expanded}
           rowFilters={rowFilters}
           activeRowFilterIds={state.activeRowFilterIds}

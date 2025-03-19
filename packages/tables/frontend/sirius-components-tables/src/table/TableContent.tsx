@@ -55,6 +55,7 @@ export const TableContent = memo(
     enableGlobalFilter,
     enablePagination,
     enableColumnOrdering,
+    enableSelectionSynchronization,
     expandedRowIds,
     rowFilters,
     activeRowFilterIds,
@@ -76,6 +77,7 @@ export const TableContent = memo(
       enableColumnFilters,
       enableColumnOrdering,
       enableRowSizing,
+      enableSelectionSynchronization,
       handleRowHeightChange,
       onExpandedElementChange,
       expandedRowIds
@@ -210,6 +212,7 @@ export const TableContent = memo(
         return {
           sx: {
             border: !rowSelected && cellSelected ? `2px dashed ${theme.palette.action.selected}` : undefined,
+            padding: '0px',
           },
         };
       },

@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
 import Checkbox from '@mui/material/Checkbox';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -41,12 +40,6 @@ export const MultiSelectCell = ({
     editMultiSelectCell(values);
   };
 
-  const { setSelection } = useSelection();
-  const handleClick = () => {
-    const newSelection: Selection = { entries: [{ id: cell.targetObjectId }] };
-    setSelection(newSelection);
-  };
-
   return (
     <Select
       value={cell.values}
@@ -57,7 +50,6 @@ export const MultiSelectCell = ({
           .join(', ')
       }
       onChange={handleChange}
-      onClick={handleClick}
       disabled={disabled || loading}
       multiple
       size="small"
