@@ -1,0 +1,49 @@
+= User Diagram Appearance View
+
+== Problem
+
+The specifier offers a wide range of styles for the appearance of nodes and edges in a diagram.
+However, when an end-user creates a diagram, they are limited to the styles defined by the specifier.
+
+== Key Result
+
+An end-user must be able to change the style of elements in a diagram.
+
+== Solution
+
+The end-user will have access to a new section in the palette.
+
+image:images/diagram-appearance-palette-entry.png[Palette entry, 70%]
+
+Once the new `appearance` section opened, all the node style options will be available.
+
+image:images/diagram-appearance-palette-details.png[Palette details, 70%]
+
+NOTE: it doesn't have to be a form, but hardcoded component build with MUI.
+
+To change a color, user would have access to color picker or to chose between a color library (see Cutting Backs)
+
+image:images/diagram-appearance-palette-color-picker.png[Palette color picker, 70%]
+
+== Cutting Backs
+
+* In the first version, focus only on nodes.
+The same principle will then be applied to edges.
+
+* Some colors could be defined in a project settings library.
+
+image:images/diagram-appearance-setting-color-library.png[Setting color library, 70%]
+
+These colors are available for quick access in the palette.
+
+image:images/diagram-appearance-setting-color-library-quick-access.png[Setting color library quick access, 70%]
+
+
+== Rabbit Holes
+
+* It must be easy for a downstream application to contribute new entries to this style palette.
+* Style changes should only apply to the selected element and not by default to the type of the selected element.
+In a second phase, it should be possible to directly change the style of all elements of a given type.
+* Style changes must be persistent.
+
+== No-Gos
