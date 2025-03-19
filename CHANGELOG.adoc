@@ -40,6 +40,9 @@
 - [sirius-web] Avoid a database access if not necessary.
 Refactor the test to leverage boolean expression shortcut and avoid an unnecessary call to this.semanticDataSearchService.findById() if we already know we are inside a studio or a papaya project.
 - https://github.com/eclipse-sirius/sirius-web/issues/4827[#4827] [diagram] Add default quick access tool for deletable and editable edges
+- https://github.com/eclipse-sirius/sirius-web/issues/4098[#4098] [interpreter] Cache the AQL services for a given `EPackage`.
+This improves the time needed to open a project and other scenarios where we create new AQL interpreters.
+The improvement on project opening will be proportional to the size/complexity of the metamodels and the number of View-based representations available in the project.
 
 
 
