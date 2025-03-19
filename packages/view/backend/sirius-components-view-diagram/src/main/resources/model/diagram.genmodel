@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel"
-    copyrightText="Copyright (c) 2021, 2024 Obeo.&#xA;This program and the accompanying materials&#xA;are made available under the terms of the Eclipse Public License v2.0&#xA;which accompanies this distribution, and is available at&#xA;https://www.eclipse.org/legal/epl-2.0/&#xA;&#xA;SPDX-License-Identifier: EPL-2.0&#xA;&#xA;Contributors:&#xA;    Obeo - initial API and implementation"
+    copyrightText="Copyright (c) 2021, 2025 Obeo.&#xA;This program and the accompanying materials&#xA;are made available under the terms of the Eclipse Public License v2.0&#xA;which accompanies this distribution, and is available at&#xA;https://www.eclipse.org/legal/epl-2.0/&#xA;&#xA;SPDX-License-Identifier: EPL-2.0&#xA;&#xA;Contributors:&#xA;    Obeo - initial API and implementation"
     modelDirectory="/sirius-components-view-diagram/src/main/java" creationIcons="false"
     editDirectory="/sirius-components-view-diagram-edit/src/main/java" editorDirectory=""
     modelPluginID="sirius-components-view-diagram" modelName="Diagram" editPluginClass="org.eclipse.sirius.components.view.diagram.provider.DiagramEditPlugin"
@@ -109,6 +109,7 @@
     <genClasses ecoreClass="diagram.ecore#//NodeDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeDescription/collapsible"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeDescription/palette"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeDescription/actions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeDescription/childrenLayoutStrategy"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeDescription/style"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeDescription/conditionalStyles"/>
@@ -301,6 +302,13 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogTreeDescription/elementsExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogTreeDescription/childrenExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogTreeDescription/isSelectableExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="diagram.ecore#//Action">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//Action/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//Action/tooltipExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//Action/iconURLsExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//Action/preconditionExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//Action/body"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
+import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription;
@@ -211,6 +212,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__PALETTE);
+            this.childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__ACTIONS);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__CONDITIONAL_STYLES);
@@ -289,6 +291,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case DiagramPackage.NODE_DESCRIPTION__PALETTE:
+            case DiagramPackage.NODE_DESCRIPTION__ACTIONS:
             case DiagramPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
             case DiagramPackage.NODE_DESCRIPTION__STYLE:
             case DiagramPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
@@ -315,6 +318,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         DefaultToolsFactory defaultToolsFactory = new DefaultToolsFactory();
 
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__PALETTE, defaultToolsFactory.createDefaultNodePalette()));
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__ACTIONS, DiagramFactory.eINSTANCE.createAction()));
 
         NodeDescription nodeChild = DiagramFactory.eINSTANCE.createNodeDescription();
         nodeChild.setName("Sub-node");
@@ -322,6 +326,16 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         nodeChild.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
         nodeChild.setPalette(defaultToolsFactory.createDefaultNodePalette());
         nodeChild.setInsideLabel(defaultToolsFactory.createDefaultInsideLabelDescription());
+
+        var defaultAction = DiagramFactory.eINSTANCE.createAction();
+        defaultAction.setName("HideAction");
+        defaultAction.setTooltipExpression("Hide");
+        defaultAction.setIconURLsExpression("aql:'/icons/full/obj16/HideTool.svg'");
+        var defaultActionService = ViewFactory.eINSTANCE.createChangeContext();
+        defaultActionService.setExpression("aql:diagramServices.hide(Sequence{selectedNode})");
+        defaultAction.getBody().add(defaultActionService);
+        nodeChild.getActions().add(defaultAction);
+
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS, nodeChild));
 
         NodeDescription borderNodeChild = DiagramFactory.eINSTANCE.createNodeDescription();

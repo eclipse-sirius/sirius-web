@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.view.Conditional;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.RepresentationDescription;
+import org.eclipse.sirius.components.view.diagram.Action;
 import org.eclipse.sirius.components.view.diagram.BorderStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle;
@@ -318,6 +319,11 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseSelectionDialogTreeDescription(SelectionDialogTreeDescription object) {
             return DiagramAdapterFactory.this.createSelectionDialogTreeDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseAction(Action object) {
+            return DiagramAdapterFactory.this.createActionAdapter();
         }
 
         @Override
@@ -1025,6 +1031,19 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createSelectionDialogTreeDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.diagram.Action
+     * <em>Action</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.diagram.Action
+     * @generated
+     */
+    public Adapter createActionAdapter() {
         return null;
     }
 

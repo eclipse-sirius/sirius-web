@@ -28,9 +28,9 @@ package org.eclipse.sirius.components.view.diagram;
  * Analysis</em>}</li>
  * </ul>
  *
+ * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeTool()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeTool()
  */
 public interface NodeTool extends Tool {
 
@@ -39,10 +39,10 @@ public interface NodeTool extends Tool {
      * end-user-doc -->
      *
      * @return the value of the '<em>Dialog Description</em>' containment reference.
-     * @model containment="true"
-     * @generated
      * @see #setDialogDescription(DialogDescription)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeTool_DialogDescription()
+     * @model containment="true"
+     * @generated
      */
     DialogDescription getDialogDescription();
 
@@ -51,9 +51,9 @@ public interface NodeTool extends Tool {
      * Description</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Dialog Description</em>' containment reference.
-     * @generated
+     *            the new value of the '<em>Dialog Description</em>' containment reference.
      * @see #getDialogDescription()
+     * @generated
      */
     void setDialogDescription(DialogDescription value);
 
@@ -62,10 +62,10 @@ public interface NodeTool extends Tool {
      * end-user-doc -->
      *
      * @return the value of the '<em>Icon UR Ls Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setIconURLsExpression(String)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeTool_IconURLsExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getIconURLsExpression();
 
@@ -74,9 +74,9 @@ public interface NodeTool extends Tool {
      * UR Ls Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Icon UR Ls Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Icon UR Ls Expression</em>' attribute.
      * @see #getIconURLsExpression()
+     * @generated
      */
     void setIconURLsExpression(String value);
 
@@ -85,10 +85,10 @@ public interface NodeTool extends Tool {
      * end-user-doc -->
      *
      * @return the value of the '<em>Elements To Select Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setElementsToSelectExpression(String)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeTool_ElementsToSelectExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getElementsToSelectExpression();
 
@@ -97,9 +97,9 @@ public interface NodeTool extends Tool {
      * <em>Elements To Select Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Elements To Select Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Elements To Select Expression</em>' attribute.
      * @see #getElementsToSelectExpression()
+     * @generated
      */
     void setElementsToSelectExpression(String value);
 
@@ -108,10 +108,10 @@ public interface NodeTool extends Tool {
      * end-user-doc -->
      *
      * @return the value of the '<em>With Impact Analysis</em>' attribute.
-     * @model
-     * @generated
      * @see #setWithImpactAnalysis(boolean)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeTool_WithImpactAnalysis()
+     * @model
+     * @generated
      */
     boolean isWithImpactAnalysis();
 
@@ -120,9 +120,9 @@ public interface NodeTool extends Tool {
      * Impact Analysis</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>With Impact Analysis</em>' attribute.
-     * @generated
+     *            the new value of the '<em>With Impact Analysis</em>' attribute.
      * @see #isWithImpactAnalysis()
+     * @generated
      */
     void setWithImpactAnalysis(boolean value);
 
