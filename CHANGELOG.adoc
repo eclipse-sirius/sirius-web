@@ -9,6 +9,7 @@
 - Make it easier to invoke the same tool multiple times in a row
 - Add support to move edge handle
 - Add visibility tool on diagram nodes
+- Add support to manage the appearance of nodes in the palette
 
 
 === Architectural decision records
