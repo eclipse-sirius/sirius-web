@@ -11,8 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
 import { memo } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import {
   GQLCell,
   GQLCheckboxCell,
@@ -37,68 +39,96 @@ const isTextfieldCell = (cell: GQLCell): cell is GQLTextfieldCell => cell.__type
 const isTextareaCell = (cell: GQLCell): cell is GQLTextareaCell => cell.__typename === 'TextareaCell';
 const isIconLabelCell = (cell: GQLCell): cell is GQLIconLabelCell => cell.__typename === 'IconLabelCell';
 
-export const Cell = memo(({ editingContextId, representationId, tableId, cell, disabled }: CellProps) => {
-  if (cell) {
-    if (isCheckboxCell(cell)) {
+const useStyles = makeStyles()((theme) => ({
+  wrapper: {
+    padding: theme.spacing(2),
+    height: '100%',
+    width: '100%',
+    cursor: 'pointer',
+  },
+}));
+
+export const Cell = memo(
+  ({ editingContextId, representationId, tableId, cell, disabled, enableSelectionSynchronization }: CellProps) => {
+    const { classes } = useStyles();
+
+    const { setSelection } = useSelection();
+    const onClick = (cell: GQLCell) => {
+      if (enableSelectionSynchronization) {
+        const newSelection: Selection = { entries: [{ id: cell.targetObjectId }] };
+        setSelection(newSelection);
+      }
+    };
+
+    let component = <Typography />;
+
+    if (cell) {
+      if (isCheckboxCell(cell)) {
+        component = (
+          <CheckboxCell
+            editingContextId={editingContextId}
+            representationId={representationId}
+            tableId={tableId}
+            cell={cell}
+            disabled={disabled}
+          />
+        );
+      } else if (isTextfieldCell(cell)) {
+        component = (
+          <TextfieldCell
+            editingContextId={editingContextId}
+            representationId={representationId}
+            tableId={tableId}
+            cell={cell}
+            disabled={disabled}
+          />
+        );
+      } else if (isTextareaCell(cell)) {
+        component = (
+          <TextareaCell
+            editingContextId={editingContextId}
+            representationId={representationId}
+            tableId={tableId}
+            cell={cell}
+            disabled={disabled}
+          />
+        );
+      } else if (isSelectCell(cell)) {
+        component = (
+          <SelectCell
+            editingContextId={editingContextId}
+            representationId={representationId}
+            tableId={tableId}
+            cell={cell}
+            disabled={disabled}
+          />
+        );
+      } else if (isMultiSelectCell(cell)) {
+        component = (
+          <MultiSelectCell
+            editingContextId={editingContextId}
+            representationId={representationId}
+            tableId={tableId}
+            cell={cell}
+            disabled={disabled}
+          />
+        );
+      } else if (isIconLabelCell(cell)) {
+        component = (
+          <IconLabelCell
+            editingContextId={editingContextId}
+            representationId={representationId}
+            tableId={tableId}
+            cell={cell}
+          />
+        );
+      }
       return (
-        <CheckboxCell
-          editingContextId={editingContextId}
-          representationId={representationId}
-          tableId={tableId}
-          cell={cell}
-          disabled={disabled}
-        />
-      );
-    } else if (isTextfieldCell(cell)) {
-      return (
-        <TextfieldCell
-          editingContextId={editingContextId}
-          representationId={representationId}
-          tableId={tableId}
-          cell={cell}
-          disabled={disabled}
-        />
-      );
-    } else if (isTextareaCell(cell)) {
-      return (
-        <TextareaCell
-          editingContextId={editingContextId}
-          representationId={representationId}
-          tableId={tableId}
-          cell={cell}
-          disabled={disabled}
-        />
-      );
-    } else if (isSelectCell(cell)) {
-      return (
-        <SelectCell
-          editingContextId={editingContextId}
-          representationId={representationId}
-          tableId={tableId}
-          cell={cell}
-          disabled={disabled}
-        />
-      );
-    } else if (isMultiSelectCell(cell)) {
-      return (
-        <MultiSelectCell
-          editingContextId={editingContextId}
-          representationId={representationId}
-          tableId={tableId}
-          cell={cell}
-          disabled={disabled}
-        />
-      );
-    } else if (isIconLabelCell(cell)) {
-      return (
-        <IconLabelCell
-          editingContextId={editingContextId}
-          representationId={representationId}
-          tableId={tableId}
-          cell={cell}
-        />
+        <div className={classes.wrapper} onClick={() => onClick(cell)}>
+          {component}
+        </div>
       );
     }
+    return component;
   }
-  return <Typography></Typography>;
-});
+);

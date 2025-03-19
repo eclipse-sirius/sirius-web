@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
 import Checkbox from '@mui/material/Checkbox';
 import { CheckboxCellProps } from './CheckboxCell.types';
 import { useEditCheckboxCell } from './useEditCheckboxCell';
@@ -23,13 +22,5 @@ export const CheckboxCell = ({ editingContextId, representationId, tableId, cell
     editCheckboxCell(checked);
   };
 
-  const { setSelection } = useSelection();
-  const onClick = () => {
-    const newSelection: Selection = { entries: [{ id: cell.targetObjectId }] };
-    setSelection(newSelection);
-  };
-
-  return (
-    <Checkbox checked={cell.booleanValue} onChange={handleChange} onClick={onClick} disabled={disabled || loading} />
-  );
+  return <Checkbox checked={cell.booleanValue} onChange={handleChange} disabled={disabled || loading} />;
 };
