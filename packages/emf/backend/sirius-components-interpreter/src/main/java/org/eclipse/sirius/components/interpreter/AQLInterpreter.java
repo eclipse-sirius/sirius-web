@@ -15,6 +15,8 @@ package org.eclipse.sirius.components.interpreter;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+
+import java.time.Duration;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -22,6 +24,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
+
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.ICompletionResult;
@@ -106,7 +109,17 @@ public class AQLInterpreter {
             ServiceUtils.registerServices(this.queryEnvironment, services);
         }
 
-        ePackages.stream().filter(this::isValidEPackage).forEach(this.queryEnvironment::registerEPackage);
+        ePackages.stream().filter(this::isValidEPackage).forEach(ePackage -> {
+            String nsURI = ePackage.getNsURI();
+            long start = System.nanoTime();
+            this.queryEnvironment.registerEPackage(ePackage);
+            Duration duration = Duration.ofNanos(System.nanoTime() - start);
+            this.logger.atDebug()
+                .setMessage("Registered {} in {}ms")
+                .addArgument(nsURI)
+                .addArgument(duration.toMillis())
+                .log();
+        });
 
         this.initExpressionsCache();
     }
