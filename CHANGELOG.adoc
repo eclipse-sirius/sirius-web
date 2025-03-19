@@ -1,6 +1,28 @@
 = Changelog
 
-== v2025.4.0 (work in progress)
+== v2025.6.0 (work in progress)
+
+=== Shapes
+
+=== Architectural decision records
+
+=== Deprecation warning
+
+=== Breaking changes
+
+=== Dependency update
+
+=== Bug fixes
+
+=== New Features
+
+=== Improvements
+
+- https://github.com/eclipse-sirius/sirius-web/issues/4098[#4098] [core] Cache the AQL services for a given `EPackage`.
+This improves the time needed to open a project and other scenarios where we create new AQL interpreters.
+The improvement on project opening will be proportional to the size/complexity of the metamodels and the number of View-based representations available in the project.
+
+== v2025.4.0
 
 === Shapes
 

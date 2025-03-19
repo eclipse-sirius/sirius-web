@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
@@ -37,6 +38,7 @@ import org.eclipse.acceleo.query.runtime.QueryCompletion;
 import org.eclipse.acceleo.query.runtime.QueryEvaluation;
 import org.eclipse.acceleo.query.runtime.QueryParsing;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
+import org.eclipse.acceleo.query.runtime.impl.EPackageProvider;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.common.util.BasicDiagnostic;
@@ -112,12 +114,38 @@ public class AQLInterpreter {
         ePackages.stream().filter(this::isValidEPackage).forEach(ePackage -> {
             String nsURI = ePackage.getNsURI();
             long start = System.nanoTime();
-            this.queryEnvironment.registerEPackage(ePackage);
+            AtomicBoolean cacheHit = new AtomicBoolean();
+
+            EPackage registeredEPackage = ((EPackageProvider) this.queryEnvironment.getEPackageProvider()).registerPackage(ePackage);
+            if (registeredEPackage != null) {
+                var optionalCachedServices = ePackage.eAdapters().stream()
+                        .filter(AQLServicesAdapter.class::isInstance)
+                        .map(AQLServicesAdapter.class::cast)
+                        .map(AQLServicesAdapter::getServices)
+                        .findFirst();
+                if (optionalCachedServices.isPresent()) {
+                    cacheHit.set(true);
+                    ServiceUtils.registerServices(this.queryEnvironment, optionalCachedServices.get());
+                } else {
+                    var services = ServiceUtils.getServices(registeredEPackage);
+                    var cache = new AQLServicesAdapter(services);
+                    registeredEPackage.eAdapters().add(cache);
+                    ServiceUtils.registerServices(this.queryEnvironment, services);
+                }
+            }
+
             Duration duration = Duration.ofNanos(System.nanoTime() - start);
             this.logger.atDebug()
-                .setMessage("Registered {} in {}ms")
+                .setMessage("Registered {} in {}ms ({})")
                 .addArgument(nsURI)
                 .addArgument(duration.toMillis())
+                .addArgument(() -> {
+                    if (cacheHit.get()) {
+                        return "cache hit";
+                    } else {
+                        return "cache miss";
+                    }
+                })
                 .log();
         });
 
@@ -132,7 +160,7 @@ public class AQLInterpreter {
      * Initializes the cache of the expressions.
      */
     private void initExpressionsCache() {
-        IQueryBuilderEngine builder = QueryParsing.newBuilder(this.queryEnvironment);
+        IQueryBuilderEngine builder = QueryParsing.newBuilder();
         int maxCacheSize = 500;
         this.parsedExpressions = CacheBuilder.newBuilder().maximumSize(maxCacheSize).build(CacheLoader.from(builder::build));
     }
