@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { GQLColumnFilter } from '../columns/useTableColumnFiltering.types';
+import { RowFilter } from '../rows/filters/RowFiltersMenu.types';
 
 export interface TableContentProps {
   editingContextId: string;
@@ -21,6 +22,7 @@ export interface TableContentProps {
   onGlobalFilterChange: (globalFilter: string) => void;
   onColumnFiltersChange: (columnFilters: ColumnFilter[]) => void;
   onExpandedElementChange: (rowId: string) => void;
+  onRowFiltersChange: (activeRowFilterIds: string[]) => void;
   enableColumnVisibility: boolean;
   enableColumnResizing: boolean;
   enableColumnFilters: boolean;
@@ -29,6 +31,8 @@ export interface TableContentProps {
   enablePagination: boolean;
   enableColumnOrdering: boolean;
   expandedRowIds: string[];
+  rowFilters: RowFilter[] | null;
+  activeRowFilterIds: string[];
 }
 
 export interface TablePaginationState {
