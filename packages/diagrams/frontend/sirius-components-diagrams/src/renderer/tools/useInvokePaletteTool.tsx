@@ -13,45 +13,31 @@
 
 import { useDeletionConfirmationDialog } from '@eclipse-sirius/sirius-components-core';
 import { Edge, Node, useStoreApi } from '@xyflow/react';
-import { useCallback, useContext } from 'react';
+import { useContext } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { useCollapseExpand } from '../tools/useCollapseExpand';
-import { GQLCollapsingState } from '../tools/useCollapseExpand.types';
-import { useDelete } from '../tools/useDelete';
-import { GQLDeletionPolicy } from '../tools/useDelete.types';
-import { useSingleClickTool } from '../tools/useSingleClickTool';
-import { GQLTool } from './Palette.types';
-import { useDiagramElementPalette } from './useDiagramElementPalette';
-import { useDiagramPalette } from './useDiagramPalette';
-import { UsePaletteProps, UsePaletteValue } from './usePalette.types';
-import { usePaletteContents } from './usePaletteContents';
-import { UsePaletteContentValue } from './usePaletteContents.types';
+import { GQLTool } from '../palette/Palette.types';
+import { useCollapseExpand } from './useCollapseExpand';
+import { GQLCollapsingState } from './useCollapseExpand.types';
+import { useDelete } from './useDelete';
+import { GQLDeletionPolicy } from './useDelete.types';
+import { UseInvokePaletteToolProps, UseInvokePaletteToolValue } from './useInvokePaletteTool.types';
+import { useSingleClickTool } from './useSingleClickTool';
 
-export const usePalette = ({
+export const useInvokePaletteTool = ({
   x,
   y,
   diagramElementId,
   targetObjectId,
   onDirectEditClick,
-}: UsePaletteProps): UsePaletteValue => {
-  const { nodeLookup, edgeLookup, domNode } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
+}: UseInvokePaletteToolProps): UseInvokePaletteToolValue => {
+  const { nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
-  const { palette }: UsePaletteContentValue = usePaletteContents(diagramElementId);
   const { invokeSingleClickTool } = useSingleClickTool();
   const { collapseExpandElement } = useCollapseExpand();
   const { deleteDiagramElements } = useDelete();
-
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
-  const { hideDiagramPalette, setLastToolInvoked } = useDiagramPalette();
-  const { hideDiagramElementPalette } = useDiagramElementPalette();
-
-  const closeAllPalettes = useCallback(() => {
-    hideDiagramPalette();
-    hideDiagramElementPalette();
-    domNode?.focus();
-  }, [hideDiagramPalette, hideDiagramElementPalette]);
 
   const invokeDelete = (diagramElementId: string, deletionPolicy: GQLDeletionPolicy) => {
     if (!!nodeLookup.get(diagramElementId)) {
@@ -61,8 +47,7 @@ export const usePalette = ({
     }
   };
 
-  const handleToolClick = (tool: GQLTool) => {
-    closeAllPalettes();
+  const invokeTool = (tool: GQLTool) => {
     switch (tool.id) {
       case 'edit':
         onDirectEditClick();
@@ -85,9 +70,6 @@ export const usePalette = ({
         invokeSingleClickTool(editingContextId, diagramId, tool, diagramElementId, targetObjectId, x, y);
         break;
     }
-    if (palette) {
-      setLastToolInvoked(palette.id, tool);
-    }
   };
-  return { handleToolClick, palette };
+  return { invokeTool };
 };
