@@ -13,6 +13,7 @@
 
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { ListProjectsAreaProps, ListProjectsAreaState, NoProjectsFoundProps } from './ListProjectsArea.types';
 import { ProjectsTable } from './ProjectsTable';
@@ -42,6 +43,8 @@ export const ListProjectsArea = ({}: ListProjectsAreaProps) => {
   });
 
   const { data, loading, refreshProjects } = useProjects(state.startCursor, state.endCursor, state.pageSize);
+
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.list' });
 
   const onPreviousPage = () => {
     setState((prevState) => ({
@@ -97,7 +100,7 @@ export const ListProjectsArea = ({}: ListProjectsAreaProps) => {
   return (
     <div className={classes.listProjectsArea}>
       <div className={classes.header}>
-        <Typography variant="h4">Existing Projects</Typography>
+        <Typography variant="h4">{t('existingProjects')}</Typography>
       </div>
       <div>{projectsComponent}</div>
     </div>
@@ -114,10 +117,11 @@ const useNoProjectsFoundStyles = makeStyles()(() => ({
 
 const NoProjectsFound = ({}: NoProjectsFoundProps) => {
   const { classes } = useNoProjectsFoundStyles();
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.list' });
   return (
     <div className={classes.noProjectsFound}>
       <Typography variant="h4" align="center">
-        No projects found, start by creating one
+        {t('empty')}
       </Typography>
     </div>
   );

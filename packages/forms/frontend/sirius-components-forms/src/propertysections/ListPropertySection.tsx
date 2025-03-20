@@ -29,6 +29,7 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 import { MouseEvent, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLList, GQLListItem } from '../form/FormEventFragments.types';
@@ -144,6 +145,8 @@ export const ListPropertySection: PropertySectionComponent<GQLList> = ({
   };
   const { classes } = useListPropertySectionStyles(props);
   const theme = useTheme();
+  const { t } = useTranslation('siriusComponentsForms');
+  const { t: coreT } = useTranslation('siriusComponentsCore');
   const { setSelection } = useSelection();
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
 
@@ -152,7 +155,7 @@ export const ListPropertySection: PropertySectionComponent<GQLList> = ({
     items.push({
       id: NONE_WIDGET_ITEM_ID,
       iconURL: [],
-      label: 'None',
+      label: t('none'),
       kind: 'Unknown',
       deletable: false,
     });
@@ -186,7 +189,7 @@ export const ListPropertySection: PropertySectionComponent<GQLList> = ({
   useEffect(() => {
     if (!deleteLoading) {
       if (deleteError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (deleteData) {
         const { deleteListItem } = deleteData;
@@ -195,12 +198,12 @@ export const ListPropertySection: PropertySectionComponent<GQLList> = ({
         }
       }
     }
-  }, [deleteLoading, deleteError, deleteData]);
+  }, [coreT, deleteLoading, deleteError, deleteData]);
 
   useEffect(() => {
     if (!clickLoading) {
       if (clickError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (clickData) {
         const { clickListItem } = clickData;
