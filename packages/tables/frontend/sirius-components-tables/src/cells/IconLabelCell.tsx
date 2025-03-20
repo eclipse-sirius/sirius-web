@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { IconOverlay, Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay } from '@eclipse-sirius/sirius-components-core';
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
 
@@ -19,14 +19,8 @@ import { IconLabelCellProps } from './IconLabelCell.types';
 export const IconLabelCell = ({ cell }: IconLabelCellProps) => {
   const theme = useTheme();
 
-  const { setSelection } = useSelection();
-  const handleClick = () => {
-    const newSelection: Selection = { entries: [{ id: cell.targetObjectId }] };
-    setSelection(newSelection);
-  };
-
   return (
-    <Box display="flex" alignItems="center" gap={theme.spacing(1)} onClick={handleClick}>
+    <Box display="flex" alignItems="center" gap={theme.spacing(1)}>
       <IconOverlay iconURL={cell.iconURLs} alt={cell.label} />
       {cell.label}
     </Box>
