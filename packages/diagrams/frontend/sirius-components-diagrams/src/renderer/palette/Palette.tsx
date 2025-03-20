@@ -19,7 +19,7 @@ import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Tooltip from '@mui/material/Tooltip';
 import { Edge, Node, useStoreApi, useViewport, XYPosition } from '@xyflow/react';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Draggable, { DraggableData } from 'react-draggable';
 import { makeStyles } from 'tss-react/mui';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
@@ -39,7 +39,6 @@ import { PaletteQuickAccessToolBar } from './quick-access-tool/PaletteQuickAcces
 import { PaletteSearchField } from './search/PaletteSearchField';
 import { PaletteSearchResult } from './search/PaletteSearchResult';
 import { PaletteToolList } from './tool-list/PaletteToolList';
-import { useDiagramElementPalette } from './useDiagramElementPalette';
 import { useDiagramPalette } from './useDiagramPalette';
 import { usePaletteContents } from './usePaletteContents';
 import { UsePaletteContentValue } from './usePaletteContents.types';
@@ -133,18 +132,12 @@ export const Palette = ({
   }
 
   const { palette }: UsePaletteContentValue = usePaletteContents(diagramElementId);
-  const { hideDiagramPalette, setLastToolInvoked } = useDiagramPalette();
-  const { hideDiagramElementPalette } = useDiagramElementPalette();
+  const { setLastToolInvoked } = useDiagramPalette();
   const { invokeTool } = useInvokePaletteTool({ x, y, diagramElementId, onDirectEditClick, targetObjectId });
 
-  const closeAllPalettes = useCallback(() => {
-    hideDiagramPalette();
-    hideDiagramElementPalette();
-    domNode?.focus();
-  }, [hideDiagramPalette, hideDiagramElementPalette]);
-
   const handleToolClick = (tool: GQLTool) => {
-    closeAllPalettes();
+    onClose();
+    domNode?.focus();
     invokeTool(tool);
     if (palette) {
       setLastToolInvoked(palette.id, tool);
