@@ -338,6 +338,7 @@ type DiagramDescription implements RepresentationDescription {
   childNodeDescriptionIds: [ID!]!
   edgeDescriptions: [EdgeDescription!]!
   palette(diagramElementId: ID!): Palette!
+  actions(diagramElementId: ID!): [Action!]!
   connectorTools(sourceDiagramElementId: ID!, targetDiagramElementId: ID!): [Tool!]!
   dropNodeCompatibility: [DropNodeCompatibilityEntry!]!
   initialDirectEditElementLabel(labelId: ID!): String!
@@ -373,6 +374,12 @@ type NodeDescription implements DiagramElementDescription {
   keepAspectRatio: Boolean!
 }
 
+type Action {
+  id: ID!
+  tooltip: String!
+  iconURLs: [String!]!
+}
+
 type EdgeDescription implements DiagramElementDescription {
   id: ID!
   synchronizationPolicy: SynchronizationPolicy!
@@ -399,6 +406,7 @@ extend type Mutation {
   updateCollapsingState(input: UpdateCollapsingStateInput!): UpdateCollapsingStatePayload!
   pinDiagramElement(input: PinDiagramElementInput!): PinDiagramElementPayload!
   layoutDiagram(input: LayoutDiagramInput!): LayoutDiagramPayload!
+  invokeAction(input: InvokeActionInput!): InvokeActionPayload!
 }
 
 input DropNodeInput {
@@ -501,6 +509,16 @@ enum ToolVariableType {
   OBJECT_ID
   OBJECT_ID_ARRAY
 }
+
+input InvokeActionInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  diagramElementId: ID!
+  actionId: ID!
+}
+
+union InvokeActionPayload = ErrorPayload | SuccessPayload
 
 union InvokeSingleClickOnDiagramElementToolPayload = ErrorPayload | InvokeSingleClickOnDiagramElementToolSuccessPayload
 

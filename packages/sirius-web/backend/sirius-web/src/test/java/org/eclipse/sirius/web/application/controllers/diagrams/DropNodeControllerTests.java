@@ -18,6 +18,8 @@ import static org.assertj.core.api.Assertions.fail;
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -28,6 +30,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodeInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.tests.graphql.DropNodeMutationRunner;
+import org.eclipse.sirius.components.diagrams.tests.graphql.GetDropNodeCompatibilityQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
@@ -65,6 +68,9 @@ public class DropNodeControllerTests extends AbstractIntegrationTests {
     private DropNodeDiagramDescriptionProvider dropNodeDiagramDescriptionProvider;
 
     @Autowired
+    private GetDropNodeCompatibilityQueryRunner dropNodeCompatibilityQueryRunner;
+
+    @Autowired
     private DropNodeMutationRunner dropNodeMutationRunner;
 
     @BeforeEach
@@ -72,7 +78,7 @@ public class DropNodeControllerTests extends AbstractIntegrationTests {
         this.givenInitialServerState.initialize();
     }
 
-    private Flux<Object> givenSubscriptionToLabelEditableDiagramDiagram() {
+    private Flux<Object> givenSubscriptionToDropNodeDiagram() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
@@ -87,7 +93,7 @@ public class DropNodeControllerTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a diagram with some nodes, when a node is dropped in another one, then the diagram is updated")
     public void givenDiagramWithSomeNodesWhenNodeIsDroppedInAnotherOneThenTheDiagramIsUpdated() {
-        var flux = this.givenSubscriptionToLabelEditableDiagramDiagram();
+        var flux = this.givenSubscriptionToDropNodeDiagram();
 
         var diagramId = new AtomicReference<String>();
         var siriusWebApplicationNodeId = new AtomicReference<String>();
@@ -140,6 +146,39 @@ public class DropNodeControllerTests extends AbstractIntegrationTests {
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(dropNode)
                 .consumeNextWith(updatedDiagramContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a diagram with some nodes, when the compatibility of the drop node tool is requested, then the data is retrieved")
+    public void givenDiagramWithSomeNodesWhenTheCompatibilityOfTheDropNodeToolIsRequestedThenTheDataIsReceived() {
+        var flux = this.givenSubscriptionToDropNodeDiagram();
+
+        var diagramId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
+                .map(DiagramRefreshedEventPayload::diagram)
+                .ifPresentOrElse(diagram -> {
+                    diagramId.set(diagram.getId());
+                }, () -> fail("Missing diagram"));
+
+        Runnable getDropNodeCompatibility = () -> {
+            Map<String, Object> variables = Map.of(
+                    "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                    "representationId", diagramId.get()
+            );
+            var result = this.dropNodeCompatibilityQueryRunner.run(variables);
+            List<String> droppedNodeDescriptionIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.dropNodeCompatibility[*].droppedNodeDescriptionId");
+            assertThat(droppedNodeDescriptionIds).isNotNull();
+        };
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(getDropNodeCompatibility)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

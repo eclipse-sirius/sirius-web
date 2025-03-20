@@ -24,6 +24,8 @@ public interface IViewEMFMessageService {
 
     String unsupportedTableCellWidgetError();
 
+    String invokeActionError(String actionName);
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -38,6 +40,11 @@ public interface IViewEMFMessageService {
 
         @Override
         public String unsupportedTableCellWidgetError() {
+            return "";
+        }
+
+        @Override
+        public String invokeActionError(String actionName) {
             return "";
         }
     }
