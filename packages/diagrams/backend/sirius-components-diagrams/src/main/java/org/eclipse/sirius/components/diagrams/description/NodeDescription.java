@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.UserResizableDirection;
+import org.eclipse.sirius.components.diagrams.actions.Action;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -88,6 +89,8 @@ public final class NodeDescription implements IDiagramElementDescription {
     private Function<VariableManager, Integer> defaultHeightProvider;
 
     private Function<VariableManager, IStatus> dropNodeHandler;
+
+    private Function<VariableManager, List<Action>> actionsProvider;
 
     private NodeDescription() {
         // Prevent instantiation
@@ -210,6 +213,10 @@ public final class NodeDescription implements IDiagramElementDescription {
         return this.defaultHeightProvider;
     }
 
+    public Function<VariableManager, List<Action>> getActionsProvider() {
+        return this.actionsProvider;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, borderNodeDescriptionCount: {2}, childNodeDescriptionCount: {3}'}'";
@@ -278,6 +285,8 @@ public final class NodeDescription implements IDiagramElementDescription {
 
         private Function<VariableManager, IStatus> dropNodeHandler;
 
+        private Function<VariableManager, List<Action>> actionsProvider = variableManager -> new ArrayList<>();
+
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -309,6 +318,7 @@ public final class NodeDescription implements IDiagramElementDescription {
             this.isFadedByDefaultPredicate = nodeDescription.getIsFadedByDefaultPredicate();
             this.defaultWidthProvider = nodeDescription.getDefaultWidthProvider();
             this.defaultHeightProvider = nodeDescription.getDefaultHeightProvider();
+            this.actionsProvider = nodeDescription.getActionsProvider();
         }
 
         public Builder synchronizationPolicy(SynchronizationPolicy synchronizationPolicy) {
@@ -441,6 +451,11 @@ public final class NodeDescription implements IDiagramElementDescription {
             return this;
         }
 
+        public Builder actionsProvider(Function<VariableManager, List<Action>> actionsProvider) {
+            this.actionsProvider = Objects.requireNonNull(actionsProvider);
+            return this;
+        }
+
         public NodeDescription build() {
             NodeDescription nodeDescription = new NodeDescription();
             nodeDescription.id = Objects.requireNonNull(this.id);
@@ -470,6 +485,7 @@ public final class NodeDescription implements IDiagramElementDescription {
             nodeDescription.isFadedByDefaultPredicate = Objects.requireNonNull(this.isFadedByDefaultPredicate);
             nodeDescription.defaultWidthProvider = Objects.requireNonNull(this.defaultWidthProvider);
             nodeDescription.defaultHeightProvider = Objects.requireNonNull(this.defaultHeightProvider);
+            nodeDescription.actionsProvider = Objects.requireNonNull(this.actionsProvider);
             return nodeDescription;
         }
     }
