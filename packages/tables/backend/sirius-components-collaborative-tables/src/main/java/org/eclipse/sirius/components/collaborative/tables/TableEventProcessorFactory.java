@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.tables.ColumnFilter;
+import org.eclipse.sirius.components.tables.ColumnSort;
 import org.eclipse.sirius.components.tables.Table;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 import org.springframework.stereotype.Service;
@@ -50,6 +51,7 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
     private static final String GLOBAL_FILTER = "globalFilter";
     private static final String COLUMN_FILTERS = "columnFilters";
     private static final String EXPANDED_IDS = "expandedIds";
+    private static final String COLUMN_SORT = "columnSort";
 
     private final IRepresentationSearchService representationSearchService;
 
@@ -67,8 +69,6 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
 
     private final IURLParser urlParser;
 
-    private final TableQueryService tableQueryService;
-
     public TableEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, IRepresentationPersistenceService representationPersistenceService,
             IObjectService objectService, List<ITableEventHandler> tableEventHandlers, IURLParser urlParser) {
         this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
@@ -79,7 +79,6 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
         this.subscriptionManagerFactory = Objects.requireNonNull(configuration.getSubscriptionManagerFactory());
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
         this.urlParser = Objects.requireNonNull(urlParser);
-        this.tableQueryService = new TableQueryService();
     }
 
     @Override
@@ -109,6 +108,7 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
                         .globalFilter(this.getGlobalFilter(representationId, table))
                         .columnFilters(this.getColumnFilters(representationId, table))
                         .expanded(this.getExpandedIdsFromRepresentationId(representationId, table))
+                        .columnSort(this.getColumnSort(representationId, table))
                         .build();
 
                 IRepresentationEventProcessor tableEventProcessor = new TableEventProcessor(tableCreationParameters, this.tableEventHandlers, new TableContext(table),
@@ -181,5 +181,18 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
                 .map(expandedIds -> expandedIds.get(0))
                 .map(this.urlParser::getParameterEntries)
                 .orElse(List.of());
+    }
+
+    private List<ColumnSort> getColumnSort(String representationId, Table table) {
+        if (representationId.indexOf(COLUMN_SORT) > 0) {
+            var param = this.urlParser.getParameterValues(representationId);
+            if (param.containsKey(COLUMN_SORT)) {
+                return this.urlParser.getParameterEntries(param.get(COLUMN_SORT).get(0)).stream().map(s -> {
+                    String[] parts = s.split(":");
+                    return new ColumnSort(parts[0], Boolean.parseBoolean(parts[1]));
+                }).toList();
+            }
+        }
+        return table.getColumnSort();
     }
 }

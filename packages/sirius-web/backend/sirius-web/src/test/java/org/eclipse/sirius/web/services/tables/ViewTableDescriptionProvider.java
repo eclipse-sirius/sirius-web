@@ -87,6 +87,7 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
                 .semanticCandidatesExpression("aql:Sequence{'Name', 'Description'}")
                 .headerLabelExpression("aql:self")
                 .headerIndexLabelExpression("aql:columnIndex")
+                .isSortableExpression("aql:true")
                 .build();
 
         var contextMenuEntry = new TableBuilders().newRowContextMenuEntry()
@@ -102,7 +103,7 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
                 .build();
 
         var rowDescription = new TableBuilders().newRowDescription()
-                .semanticCandidatesExpression("aql:self.eAllContents()->filter({papaya::Type | papaya::Operation | papaya::Parameter})->toPaginatedData(cursor,direction,size)")
+                .semanticCandidatesExpression("aql:self.eAllContents()->filter({papaya::Type | papaya::Operation | papaya::Parameter})->sortNamedElement(columnSort)->toPaginatedData(cursor,direction,size)")
                 .headerIndexLabelExpression("aql:rowIndex")
                 .headerLabelExpression("aql:self.name")
                 .contextMenuEntries(contextMenuEntry)

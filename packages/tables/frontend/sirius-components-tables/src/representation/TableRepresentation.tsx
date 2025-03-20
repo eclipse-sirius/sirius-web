@@ -15,7 +15,7 @@ import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { TableContent } from '../table/TableContent';
-import { ColumnFilter } from '../table/TableContent.types';
+import { ColumnFilter, ColumnSort } from '../table/TableContent.types';
 import { tableIdProvider } from './tableIdProvider';
 import { TableRepresentationState, TableRepresentationPagination } from './TableRepresentation.types';
 import { useTableSubscription } from './useTableSubscription';
@@ -45,6 +45,7 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
     globalFilter: null,
     columnFilters: null,
     expanded: [],
+    columnSort: null,
   });
 
   const tableId = tableIdProvider(
@@ -54,7 +55,8 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
     state.size,
     state.globalFilter,
     state.columnFilters,
-    state.expanded
+    state.expanded,
+    state.columnSort
   );
   const { complete, table } = useTableSubscription(editingContextId, tableId);
 
@@ -77,6 +79,15 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
       cursor: defaultPagination.cursor,
       direction: defaultPagination.direction,
       columnFilters,
+    }));
+  };
+
+  const onSortingChange = (columnSort: ColumnSort[]) => {
+    setState((prevState) => ({
+      ...prevState,
+      cursor: defaultPagination.cursor,
+      direction: defaultPagination.direction,
+      columnSort,
     }));
   };
 
@@ -111,6 +122,7 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
           onGlobalFilterChange={onGlobalFilterChange}
           onColumnFiltersChange={onColumnFiltersChange}
           onExpandedElementChange={onExpandedElementChange}
+          onSortingChange={onSortingChange}
           enableColumnVisibility
           enableColumnResizing
           enableColumnFilters
@@ -119,6 +131,7 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
           enablePagination
           enableColumnOrdering
           expandedRowIds={state.expanded}
+          enableSorting
         />
       ) : null}
       {completeMessage}

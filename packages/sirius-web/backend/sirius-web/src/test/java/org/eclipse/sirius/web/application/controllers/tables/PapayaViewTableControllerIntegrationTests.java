@@ -26,27 +26,33 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.collaborative.tables.TableEventInput;
 import org.eclipse.sirius.components.collaborative.tables.TableRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.tables.dto.InvokeRowContextMenuEntryInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.tables.ColumnSort;
 import org.eclipse.sirius.components.tables.Table;
 import org.eclipse.sirius.components.tables.TextareaCell;
 import org.eclipse.sirius.components.tables.TextfieldCell;
 import org.eclipse.sirius.components.tables.tests.graphql.InvokeRowContextMenuEntryMutationRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.RowContextMenuQueryRunner;
+import org.eclipse.sirius.components.tables.tests.graphql.TableEventSubscriptionRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.services.tables.ViewTableDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
+import graphql.execution.DataFetcherResult;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -59,6 +65,8 @@ import reactor.test.StepVerifier;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
 public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrationTests {
+
+    private static final String MISSING_TABLE = "Missing table";
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
@@ -74,6 +82,12 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
 
     @Autowired
     private InvokeRowContextMenuEntryMutationRunner invokeRowContextMenuEntryMutationRunner;
+
+    @Autowired
+    private RepresentationIdBuilder representationIdBuilder;
+
+    @Autowired
+    private TableEventSubscriptionRunner tableEventSubscriptionRunner;
 
     @BeforeEach
     public void beforeEach() {
@@ -220,6 +234,60 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
 
         StepVerifier.create(flux)
                 .consumeNextWith(tableContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a simple view table description, when a subscription is created with a sort, then the table is render with rows in good order")
+    public void givenSimpleViewTableDescriptionWhenSubscriptionIsCreatedWithASortThenTableIsRenderWithRowsInGoodOrder() {
+        var flux = this.givenSubscriptionToViewTableRepresentation();
+
+        var tableId = new AtomicReference<String>();
+        var columnNameId = new AtomicReference<String>();
+        Consumer<Object> tableContentConsumer = this.getTableSubscriptionConsumer(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getColumns()).hasSize(2);
+            assertThat(table.getLines()).hasSize(4);
+            assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(0)).getValue()).isEqualTo("Success");
+            assertThat(((TextfieldCell) table.getLines().get(1).getCells().get(0)).getValue()).isEqualTo("Failure");
+            assertThat(((TextfieldCell) table.getLines().get(2).getCells().get(0)).getValue()).isEqualTo("fooOperation");
+            assertThat(((TextfieldCell) table.getLines().get(3).getCells().get(0)).getValue()).isEqualTo("fooParameter");
+            tableId.set(table.getId());
+            columnNameId.set(table.getColumns().get(0).getId().toString());
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(tableContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+
+        String representationId = this.representationIdBuilder.buildTableRepresentationId(tableId.get(), null, "NEXT", 10, List.of(), List.of(new ColumnSort(columnNameId.get(), true)));
+        var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId);
+        var expandedFlux = this.tableEventSubscriptionRunner.run(tableEventInput);
+
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
+
+        Consumer<Object> sortedTableContentConsumer = payload -> Optional.of(payload)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData)
+                .filter(TableRefreshedEventPayload.class::isInstance)
+                .map(TableRefreshedEventPayload.class::cast)
+                .map(TableRefreshedEventPayload::table)
+                .ifPresentOrElse(table -> {
+                    assertThat(table).isNotNull();
+                    assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(0)).getValue()).isEqualTo("Success");
+                    assertThat(((TextfieldCell) table.getLines().get(1).getCells().get(0)).getValue()).isEqualTo("fooParameter");
+                    assertThat(((TextfieldCell) table.getLines().get(2).getCells().get(0)).getValue()).isEqualTo("fooOperation");
+                    assertThat(((TextfieldCell) table.getLines().get(3).getCells().get(0)).getValue()).isEqualTo("Failure");
+                }, () -> fail(MISSING_TABLE));
+
+        StepVerifier.create(expandedFlux)
+                .consumeNextWith(sortedTableContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
