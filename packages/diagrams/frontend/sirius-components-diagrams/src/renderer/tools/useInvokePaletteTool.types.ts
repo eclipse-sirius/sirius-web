@@ -12,9 +12,9 @@
  *******************************************************************************/
 
 import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
-import { GQLPalette, GQLTool } from './Palette.types';
+import { GQLTool } from '../palette/Palette.types';
 
-export interface UsePaletteProps {
+export interface UseInvokePaletteToolProps {
   x: number;
   y: number;
   diagramElementId: string;
@@ -22,9 +22,8 @@ export interface UsePaletteProps {
   onDirectEditClick: () => void;
 }
 
-export interface UsePaletteValue {
-  handleToolClick: (tool: GQLTool) => void;
-  palette: GQLPalette | null;
+export interface UseInvokePaletteToolValue {
+  invokeTool: (tool: GQLTool) => void;
 }
 
 export interface GQLGetToolSectionsVariables {
