@@ -26,6 +26,7 @@ type EditingContext {
   queryBasedObject(query: String!, variableName: String): Object
   queryBasedObjects(query: String!, variableName: String): [Object]
   actions: EditingContextActionsConnection!
+  object(objectId: ID!): Object
 }
 
 type Domain {

@@ -104,7 +104,7 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
             assertThat(table.getColumns().get(0).getHeaderIndexLabel()).isEqualTo("0");
             assertThat(table.getColumns().get(1).getHeaderLabel()).isEqualTo("Description");
             assertThat(table.getColumns().get(1).getHeaderIndexLabel()).isEqualTo("1");
-            assertThat(table.getLines()).hasSize(4);
+            assertThat(table.getLines()).hasSize(5);
             assertThat(table.getLines().get(0).getHeaderIndexLabel()).isEqualTo("0");
             assertThat(table.getLines().get(0).getCells().get(0)).isInstanceOf(TextfieldCell.class);
             assertThat(table.getLines().get(0).getCells().get(1)).isInstanceOf(TextareaCell.class);
@@ -131,7 +131,7 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
         var rowLabel = new AtomicReference<String>();
         Consumer<Object> tableContentConsumer = this.getTableSubscriptionConsumer(table -> {
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(4);
+            assertThat(table.getLines()).hasSize(5);
             tableId.set(table.getId());
             rowId.set(table.getLines().get(0).getId());
             rowLabel.set(table.getLines().get(0).getHeaderLabel());
@@ -191,7 +191,7 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
 
         Consumer<Object> tableContentConsumer = this.getTableSubscriptionConsumer(table -> {
             assertThat(table).isNotNull();
-            assertThat(table.getLines()).hasSize(4);
+            assertThat(table.getLines()).hasSize(5);
             assertThat(table.getLines().get(0).getCells().get(0).getTargetObjectId()).isEqualTo(PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString());
             assertThat(table.getLines().get(0).getCells().get(0).getTargetObjectKind()).isEqualTo("siriusComponents://semantic?domain=papaya&entity=Package");
         });
@@ -211,11 +211,12 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
         Consumer<Object> tableContentConsumer = this.getTableSubscriptionConsumer(table -> {
             assertThat(table).isNotNull();
             assertThat(table.isEnableSubRows()).isTrue();
-            assertThat(table.getLines()).hasSize(4);
+            assertThat(table.getLines()).hasSize(5);
             assertThat(table.getLines().get(0).getDepthLevel()).isEqualTo(0);
             assertThat(table.getLines().get(1).getDepthLevel()).isEqualTo(0);
             assertThat(table.getLines().get(2).getDepthLevel()).isEqualTo(1);
             assertThat(table.getLines().get(3).getDepthLevel()).isEqualTo(2);
+            assertThat(table.getLines().get(4).getDepthLevel()).isEqualTo(0);
         });
 
         StepVerifier.create(flux)

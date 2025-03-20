@@ -383,3 +383,193 @@ INSERT INTO library (
   '2025-03-12 10:25:11.524',
   '2025-03-12 10:25:11.524'
 );
+
+INSERT INTO semantic_data (
+  id,
+  created_on,
+  last_modified_on
+) VALUES (
+  '6f24a044-1605-484d-96c3-553ff6bc184d', 
+  '2025-03-14 10:58:52.703625+00', 
+  '2025-03-14 10:59:22.361539+00'
+);
+
+INSERT INTO semantic_data_domain (
+  semantic_data_id,
+  uri
+) VALUES (
+  '6f24a044-1605-484d-96c3-553ff6bc184d',
+  'https://www.eclipse.org/sirius-web/papaya'
+);
+
+INSERT INTO document (
+  id,
+  semantic_data_id,
+  name,
+  content,
+  created_on,
+  last_modified_on
+) VALUES (
+  '27d8bea1-c595-4616-9208-a97218ad2316', 
+  '6f24a044-1605-484d-96c3-553ff6bc184d', 
+  'Sirius Web Tests Data', 
+  '{
+    "json":{
+      "version":"1.0",
+      "encoding":"utf-8"
+    },
+    "ns":{
+      "papaya":"https://www.eclipse.org/sirius-web/papaya"
+    },"content":[
+      {
+        "id": "fd766e2d-dfdf-41b4-b3df-89066ecd975d",
+        "eClass": "papaya:Project",
+        "data": {
+          "name": "backend",
+          "components": [
+            {
+              "id": "429fb025-f429-4f78-a314-a8502024997a",
+              "eClass": "papaya:Component",
+              "data": {
+                "name": "sirius-web-tests-data",
+                "packages": [
+                  {
+                    "id": "f7804002-16b6-4bac-935a-e2eda2e0a753",
+                    "eClass": "papaya:Package",
+                    "data": {
+                      "name": "org.eclipse.sirius.web.tests.data",
+                      "types": [
+                        {
+                          "id": "c5c48959-793b-4264-97d2-890d21dcb940",
+                          "eClass": "papaya:Annotation",
+                          "data": { "name": "GivenSiriusWebServer" }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }',
+  '2025-03-14 10:58:52.703625+00', 
+  '2025-03-14 10:59:22.361539+00'
+);
+
+INSERT INTO library (
+  id,
+  namespace,
+  name,
+  version,
+  semantic_data_id,
+  description,
+  created_on,
+  last_modified_on
+) VALUES (
+  '040bcff4-fe92-40d3-8180-41403ffc08bf',
+  'papaya',
+  'sirius-web-tests-data',
+  '1.0.0',
+  '6f24a044-1605-484d-96c3-553ff6bc184d',
+  'The Sirius Web Tests Data library',
+  '2025-03-14 11:25:11.524',
+  '2025-03-14 11:25:11.524'
+);
+
+INSERT INTO semantic_data (
+  id,
+  created_on,
+  last_modified_on
+) VALUES (
+  '1c981f51-cb6b-4470-b2fb-c3d474aff651', 
+  '2025-03-14 12:58:52.703625+00', 
+  '2025-03-14 12:59:22.361539+00'
+);
+
+INSERT INTO semantic_data_domain (
+  semantic_data_id,
+  uri
+) VALUES (
+  '1c981f51-cb6b-4470-b2fb-c3d474aff651',
+  'https://www.eclipse.org/sirius-web/papaya'
+);
+
+INSERT INTO document (
+  id,
+  semantic_data_id,
+  name,
+  content,
+  created_on,
+  last_modified_on
+) VALUES (
+  '27d8bea1-c595-4616-9208-a97218ad2316', 
+  '1c981f51-cb6b-4470-b2fb-c3d474aff651', 
+  'Sirius Web Tests Data', 
+  '{
+    "json":{
+      "version":"1.0",
+      "encoding":"utf-8"
+    },
+    "ns":{
+      "papaya":"https://www.eclipse.org/sirius-web/papaya"
+    },"content":[
+      {
+        "id": "fd766e2d-dfdf-41b4-b3df-89066ecd975d",
+        "eClass": "papaya:Project",
+        "data": {
+          "name": "backend",
+          "components": [
+            {
+              "id": "429fb025-f429-4f78-a314-a8502024997a",
+              "eClass": "papaya:Component",
+              "data": {
+                "name": "sirius-web-tests-data",
+                "packages": [
+                  {
+                    "id": "f7804002-16b6-4bac-935a-e2eda2e0a753",
+                    "eClass": "papaya:Package",
+                    "data": {
+                      "name": "org.eclipse.sirius.web.tests.data",
+                      "types": [
+                        {
+                          "id": "c5c48959-793b-4264-97d2-890d21dcb940",
+                          "eClass": "papaya:Annotation",
+                          "data": { "name": "GivenSiriusWebServer" }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }',
+  '2025-03-14 12:58:52.703625+00', 
+  '2025-03-14 12:59:22.361539+00'
+);
+
+INSERT INTO library (
+  id,
+  namespace,
+  name,
+  version,
+  semantic_data_id,
+  description,
+  created_on,
+  last_modified_on
+) VALUES (
+  '96721905-d5e1-40fe-ae71-8c44123661f8',
+  'papaya',
+  'sirius-web-tests-data',
+  '2.0.0',
+  '1c981f51-cb6b-4470-b2fb-c3d474aff651',
+  'The Sirius Web Tests Data library',
+  '2025-03-14 12:25:11.524',
+  '2025-03-14 12:25:11.524'
+);

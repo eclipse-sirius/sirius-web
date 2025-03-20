@@ -43,7 +43,13 @@ import {
 import { PortalRepresentation } from '@eclipse-sirius/sirius-components-portals';
 import { SelectionDialog } from '@eclipse-sirius/sirius-components-selection';
 import { TableRepresentation } from '@eclipse-sirius/sirius-components-tables';
-import { TreeRepresentation, treeItemContextMenuEntryExtensionPoint } from '@eclipse-sirius/sirius-components-trees';
+import {
+  TreeItemContextMenuEntry,
+  TreeItemContextMenuOverrideContribution,
+  TreeRepresentation,
+  treeItemContextMenuEntryExtensionPoint,
+  treeItemContextMenuEntryOverrideExtensionPoint,
+} from '@eclipse-sirius/sirius-components-trees';
 import { ValidationView } from '@eclipse-sirius/sirius-components-validation';
 import {
   GQLReferenceWidget,
@@ -91,6 +97,7 @@ import { DiagramTreeItemContextMenuContribution } from '../views/edit-project/wo
 import { DocumentTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/DocumentTreeItemContextMenuContribution';
 import { ObjectTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/ObjectTreeItemContextMenuContribution';
 import { RepresentationTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/RepresentationTreeItemContextMenuContribution';
+import { UpdateLibraryTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/UpdateLibraryTreeItemContextMenuContribution';
 import { ExplorerView } from '../views/edit-project/workbench-views/explorer/ExplorerView';
 import { QueryView } from '../views/edit-project/workbench-views/query/QueryView';
 import { RelatedElementsView } from '../views/edit-project/workbench-views/related-elements/RelatedElementsView';
@@ -348,6 +355,31 @@ defaultExtensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
   identifier: `siriusweb_${treeItemContextMenuEntryExtensionPoint.identifier}_representation`,
   Component: RepresentationTreeItemContextMenuContribution,
 });
+
+/*******************************************************************************
+ *
+ * Tree item context menu overrides
+ *
+ * Used to register components in the tree item context menu that override
+ * the default rendering of context menu items.
+ *
+ *******************************************************************************/
+const treeItemContextMenuOverrideContributions: TreeItemContextMenuOverrideContribution[] = [
+  {
+    canHandle: (entry: TreeItemContextMenuEntry) => {
+      return entry.id.includes('updateLibrary');
+    },
+    component: UpdateLibraryTreeItemContextMenuContribution,
+  },
+];
+
+defaultExtensionRegistry.putData<TreeItemContextMenuOverrideContribution[]>(
+  treeItemContextMenuEntryOverrideExtensionPoint,
+  {
+    identifier: `siriusweb_${treeItemContextMenuEntryOverrideExtensionPoint.identifier}`,
+    data: treeItemContextMenuOverrideContributions,
+  }
+);
 
 /*******************************************************************************
  *

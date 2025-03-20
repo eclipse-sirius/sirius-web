@@ -117,6 +117,11 @@ image:doc/screenshots/duplicationDialog.png[DuplicationDialog, 70%]
 + It requires that downstream projects contributing custom nodes add the `data-svg="${rect|image|svg|text|defs}"` attribute on each dom element that will represent a part of the node in svg.
 + If any of the default value match the need, it is possible to contribute a `IElementSVGExportHandler` thanks to the `svgExportIElementSVGExportHandlerExtensionPoint` extension point.
 + The value of `data-svg` attribute should match the value from the contributed `IElementSVGExportHandler#canHandle`
+- https://github.com/eclipse-sirius/sirius-web/issues/4694[#4694] [sirius-web] Add a contextual menu action to update imported libraries
+The action is visible on libraries that are first-level dependencies of the project (it is not visible on transitive dependencies).
+Update operations producing dependencies to different versions of the same library are handled by the `EditingContextDependencyLoader`, which loads one of the versions and do not load the other ones.
+The existing update implementation assumes that the identifiers of documents contained in libraries are stable across versions of the library.
+The implementation of the library update mechanism is generic and works on any project containing EMF resources.
 
 
 === Improvements

@@ -84,6 +84,9 @@ export type { UseCurrentProjectValue } from './views/edit-project/useCurrentProj
 export type { GQLProject } from './views/edit-project/useProjectAndRepresentationMetadata.types';
 export { DetailsView } from './views/edit-project/workbench-views/details/DetailsView';
 export type { GQLDetailsEventPayload } from './views/edit-project/workbench-views/details/useDetailsViewSubscription.types';
+export { UpdateLibraryModal } from './views/edit-project/workbench-views/explorer/context-menu-contributions/update-library/UpdateLibraryModal';
+export * from './views/edit-project/workbench-views/explorer/context-menu-contributions/update-library/UpdateLibraryModal.types';
+export { UpdateLibraryTreeItemContextMenuContribution } from './views/edit-project/workbench-views/explorer/context-menu-contributions/UpdateLibraryTreeItemContextMenuContribution';
 export { useExplorerSubscription } from './views/edit-project/workbench-views/explorer/useExplorerSubscription';
 export {
   type GQLTreeEventPayload,

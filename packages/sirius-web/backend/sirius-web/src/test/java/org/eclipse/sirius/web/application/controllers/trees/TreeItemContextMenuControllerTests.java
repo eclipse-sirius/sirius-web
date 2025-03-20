@@ -21,6 +21,7 @@ import com.jayway.jsonpath.JsonPath;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -33,6 +34,7 @@ import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
+import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.ExplorerDescriptionsQueryRunner;
@@ -182,6 +184,45 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
             .thenCancel()
             .verify(Duration.ofSeconds(30));
     }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a project with dependencies, when the context menu actions are requested on an imported resource, then the update action is returned")
+    public void givenProjectWithDependenciesWhenContextMenuActionsAreRequestedOnImportedResourceThenUpdateActionIsReturned() {
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of());
+        var input = new ExplorerEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
+        var flux = this.explorerEventSubscriptionRunner.run(input);
+
+        var treeId = new AtomicReference<String>();
+
+        Consumer<Object> initialTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+            assertThat(tree).isNotNull();
+            treeId.set(tree.getId());
+        });
+
+        Runnable getContextMenuActions = () -> {
+            Map<String, Object> variables = Map.of(
+                    "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                    "representationId", treeId.get(),
+                    "treeItemId", PapayaIdentifiers.PAPAYA_SIRIUS_WEB_TESTS_DATA_DOCUMENT.toString()
+            );
+            var result = this.treeItemContextMenuQueryRunner.run(variables);
+
+            Object document = Configuration.defaultConfiguration().jsonProvider().parse(result);
+
+            List<String> actionIds = JsonPath.read(document, "$.data.viewer.editingContext.representation.description.contextMenu[*].id");
+            assertThat(actionIds).isNotEmpty();
+            assertThat(actionIds).anyMatch(id -> Objects.equals(id, "updateLibrary"));
+        };
+
+        StepVerifier.create(flux)
+            .consumeNextWith(initialTreeContentConsumer)
+            .then(getContextMenuActions)
+            .thenCancel()
+            .verify(Duration.ofSeconds(5));
+    }
+
+
 
     private Consumer<Object> getTreeSubscriptionConsumer(Consumer<Tree> treeConsumer) {
         return object -> Optional.of(object)
