@@ -12,10 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.diagram;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -46,6 +48,7 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.OutsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.UserResizableDirection;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
+import org.eclipse.sirius.components.diagrams.actions.Action;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeLabelKind;
@@ -293,6 +296,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
         var insideLabel = this.getInsideLabelDescription(viewNodeDescription, interpreter, stylesFactory);
 
+        var actions = this.convertActions(viewNodeDescription.getActions(), interpreter);
+
         NodeDescription.Builder builder = NodeDescription.newNodeDescription(this.diagramIdProvider.getId(viewNodeDescription))
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .targetObjectKindProvider(this.semanticTargetKindProvider)
@@ -316,7 +321,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .isFadedByDefaultPredicate(isFadedByDefaultPredicate)
                 .defaultWidthProvider(defaultWidthProvider)
                 .defaultHeightProvider(defaultHeightProvider)
-                .keepAspectRatio(viewNodeDescription.isKeepAspectRatio());
+                .keepAspectRatio(viewNodeDescription.isKeepAspectRatio())
+                .actions(actions);
         if (insideLabel != null) {
             builder.insideLabelDescription(insideLabel);
         }
@@ -720,5 +726,23 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private IDiagramContext getDiagramContext(VariableManager variableManager) {
         return variableManager.get(IDiagramContext.DIAGRAM_CONTEXT, IDiagramContext.class).orElse(null);
+    }
+
+    //TODO
+    private List<Action> convertActions(List<org.eclipse.sirius.components.view.diagram.Action> viewActions, AQLInterpreter interpreter) {
+        List<Action> actions = new ArrayList<>();
+        viewActions.forEach(viewAction -> {
+            var id = UUID.nameUUIDFromBytes(viewAction.getName().getBytes()).toString();
+            String iconURLsExpression = viewAction.getIconURLsExpression();
+            Optional<List<Object>> iconURL = interpreter.evaluateExpression(null, iconURLsExpression).asObjects();
+            var action = Action.newAction(id)
+                    .handler(null)
+                    .iconURL(iconURL.get())
+                    .label("")
+                    .targetDescriptions(null)
+                    .build();
+            actions.add(action);
+        });
+        return actions;
     }
 }

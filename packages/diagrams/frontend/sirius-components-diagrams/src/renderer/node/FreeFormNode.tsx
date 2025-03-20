@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,12 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { ServerContext, ServerContextValue, getCSSColor } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay, ServerContext, ServerContextValue, getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@mui/material/styles';
 import { Node, NodeProps } from '@xyflow/react';
 import React, { memo, useContext, useMemo } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { BorderNodePosition } from '../DiagramRenderer.types';
 import { Label } from '../Label';
+import { useActions } from '../actions/useActions';
+import { GQLAction } from '../actions/useActions.types';
 import { useConnectorNodeStyle } from '../connector/useConnectorNodeStyle';
 import { useDrop } from '../drop/useDrop';
 import { useDropNodeStyle } from '../dropNode/useDropNodeStyle';
@@ -74,6 +77,21 @@ const backgroundNodeStyle = (
   return freeFormNodeStyle;
 };
 
+const useStyles = makeStyles()((theme) => ({
+  labelAndAction: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  label: {
+    flexGrow: 1,
+  },
+  actionIcon: {
+    padding: theme.spacing(1),
+  },
+}));
+
 const computeBorderRotation = (data: FreeFormNodeData): string | undefined => {
   if (data?.isBorderNode && data.positionDependentRotation) {
     switch (data.borderNodePosition) {
@@ -93,9 +111,16 @@ const computeBorderRotation = (data: FreeFormNodeData): string | undefined => {
 export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
   ({ data, id, selected, dragging }: NodeProps<Node<FreeFormNodeData>>) => {
     const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+    const { classes } = useStyles();
 
     const theme = useTheme();
     const { onDrop, onDragOver } = useDrop();
+
+    const { invokeAction, actions } = useActions({
+      diagramElementId: id,
+      targetElementId: data.targetObjectId,
+      nodeDescriptionId: data.descriptionId,
+    });
 
     const rotation = useMemo(
       () => computeBorderRotation(data),
@@ -133,6 +158,32 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
       return labelId;
     };
 
+    let actionsSection: JSX.Element | null = null;
+    if (data.isHovered && actions) {
+      actionsSection = (
+        <>
+          {actions.map((action: GQLAction) => {
+            return (
+              <div
+                className={classes.actionIcon}
+                onClick={(event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+                  event.stopPropagation();
+                  invokeAction(action);
+                }}>
+                <IconOverlay
+                  iconURL={action.iconURL}
+                  title={action.label}
+                  alt={action.label}
+                  customIconHeight={16}
+                  customIconWidth={16}
+                />
+              </div>
+            );
+          })}
+        </>
+      );
+    }
+
     return (
       <>
         <Resizer data={data} selected={!!selected} />
@@ -146,7 +197,12 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
           onDrop={handleOnDrop}
           data-testid={`FreeForm - ${data?.targetObjectLabel}`}>
           <div style={{ ...backgroundStyle }} />
-          {data.insideLabel && <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} />}
+          <div className={classes.labelAndAction}>
+            <div className={classes.label}>
+              {data.insideLabel && <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} />}
+            </div>
+            {actionsSection}
+          </div>
           {selected ? (
             <DiagramElementPalette
               diagramElementId={id}

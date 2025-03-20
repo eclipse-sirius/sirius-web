@@ -356,6 +356,13 @@ type NodeDescription implements DiagramElementDescription {
   borderNodeDescriptionIds: [ID!]!
   userResizable: UserResizableDirection!
   keepAspectRatio: Boolean!
+  actions(diagramElementId: ID!): [Action!]!
+}
+
+type Action {
+  id: ID!
+  label: String!
+  iconURL: [String!]!
 }
 
 type EdgeDescription implements DiagramElementDescription {
@@ -384,6 +391,7 @@ extend type Mutation {
   updateCollapsingState(input: UpdateCollapsingStateInput!): UpdateCollapsingStatePayload!
   pinDiagramElement(input: PinDiagramElementInput!): PinDiagramElementPayload!
   layoutDiagram(input: LayoutDiagramInput!): LayoutDiagramPayload!
+  invokeAction(input: InvokeActionInput!): InvokeActionPayload!
 }
 
 input DropNodeInput {
@@ -485,6 +493,22 @@ enum ToolVariableType {
   STRING
   OBJECT_ID
   OBJECT_ID_ARRAY
+}
+
+input InvokeActionInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  diagramElementId: ID!
+  targetElementId: ID!
+  actionId: ID!
+}
+
+union InvokeActionPayload = ErrorPayload | InvokeActionSuccessPayload
+
+type InvokeActionSuccessPayload {
+  id: ID!
+  messages: [Message]!
 }
 
 union InvokeSingleClickOnDiagramElementToolPayload = ErrorPayload | InvokeSingleClickOnDiagramElementToolSuccessPayload
