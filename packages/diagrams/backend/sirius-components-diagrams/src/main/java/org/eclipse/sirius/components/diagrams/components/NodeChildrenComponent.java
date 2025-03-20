@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.diagrams.components;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -91,6 +92,8 @@ public class NodeChildrenComponent implements IComponent {
                 .flatMap(Optional::stream)
                 .forEach(borderNodeDescriptions::add);
 
+        Map<String, BorderNodePosition> initialBorderNodePositions = nodeDescription.getInitialChildBorderNodePositions();
+
         return borderNodeDescriptions.stream().map(borderNodeDescription -> {
             List<Node> previousBorderNodes = optionalPreviousNode.map(previousNode -> new DiagramElementRequestor().getBorderNodes(previousNode, borderNodeDescription))
                     .orElse(List.of());
@@ -110,6 +113,7 @@ public class NodeChildrenComponent implements IComponent {
                     .diagramEvents(this.props.getNodeComponentProps().getDiagramEvents())
                     .parentElementState(this.props.getState())
                     .operationValidator(this.props.getNodeComponentProps().getOperationValidator())
+                    .initialBorderNodePositions(initialBorderNodePositions)
                     .build();
             return new Element(NodeComponent.class, nodeComponentProps);
         }).toList();

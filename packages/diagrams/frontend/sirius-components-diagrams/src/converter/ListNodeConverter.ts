@@ -27,6 +27,7 @@ import { defaultHeight, defaultWidth } from '../renderer/layout/layoutParams';
 import { ListNodeData } from '../renderer/node/ListNode.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
+import { convertBorderNodePosition } from './convertBorderNodes';
 import { convertLineStyle, isListLayoutStrategy } from './convertDiagram';
 import { convertHandles } from './convertHandles';
 import { convertInsideLabel, convertOutsideLabels } from './convertLabel';
@@ -80,7 +81,9 @@ const toListNode = (
     insideLabel: null,
     outsideLabels: convertOutsideLabels(outsideLabels),
     isBorderNode: isBorderNode,
-    borderNodePosition: isBorderNode ? BorderNodePosition.WEST : null,
+    borderNodePosition: isBorderNode
+      ? convertBorderNodePosition(gqlNode.initialBorderNodePosition, BorderNodePosition.WEST)
+      : null,
     faded: state === GQLViewModifier.Faded,
     pinned,
     labelEditable,
