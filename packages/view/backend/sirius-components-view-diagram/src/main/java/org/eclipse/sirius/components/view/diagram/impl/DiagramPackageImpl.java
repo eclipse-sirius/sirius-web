@@ -539,10 +539,10 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * not invoke it directly. Instead, they should simply access that field to obtain the package. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
+     * @generated
      * @see #eNS_URI
      * @see #createPackageContents()
      * @see #initializePackageContents()
-     * @generated
      */
     public static DiagramPackage init() {
         if (isInited)
@@ -2017,6 +2017,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EAttribute getNodeTool_WithImpactAnalysis() {
+        return (EAttribute) this.nodeToolEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getSourceEdgeEndReconnectionTool() {
         return this.sourceEdgeEndReconnectionToolEClass;
     }
@@ -2630,6 +2640,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEReference(this.nodeToolEClass, NODE_TOOL__DIALOG_DESCRIPTION);
         this.createEAttribute(this.nodeToolEClass, NODE_TOOL__ICON_UR_LS_EXPRESSION);
         this.createEAttribute(this.nodeToolEClass, NODE_TOOL__ELEMENTS_TO_SELECT_EXPRESSION);
+        this.createEAttribute(this.nodeToolEClass, NODE_TOOL__WITH_IMPACT_ANALYSIS);
 
         this.sourceEdgeEndReconnectionToolEClass = this.createEClass(SOURCE_EDGE_END_RECONNECTION_TOOL);
 
@@ -3055,6 +3066,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getNodeTool_ElementsToSelectExpression(), theViewPackage.getInterpretedExpression(), "elementsToSelectExpression", null, 0, 1, NodeTool.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getNodeTool_WithImpactAnalysis(), this.ecorePackage.getEBoolean(), "withImpactAnalysis", null, 0, 1, NodeTool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.sourceEdgeEndReconnectionToolEClass, SourceEdgeEndReconnectionTool.class, "SourceEdgeEndReconnectionTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
