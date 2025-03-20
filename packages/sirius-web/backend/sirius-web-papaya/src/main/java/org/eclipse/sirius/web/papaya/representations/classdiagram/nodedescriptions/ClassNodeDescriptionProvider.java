@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
+import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -94,6 +95,36 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 )
                 .build();
 
+        var newAttributeAction = new DiagramBuilders().newAction()
+                    .body(new ViewBuilders().newChangeContext()
+                            .expression("aql:self")
+                            .children(
+                                    new ViewBuilders().newCreateInstance()
+                                            .typeName("papaya:Attribute")
+                                            .referenceName("attributes")
+                                            .build()
+                            )
+                            .build())
+                    .iconURLsExpression("aql:'/icons/papaya/full/obj16/Attribute.svg'")
+                    .tooltipExpression("New attribute")
+                    .name("New Attribute Action")
+                    .build();
+
+        var newOperationAction = new DiagramBuilders().newAction()
+                .body(new ViewBuilders().newChangeContext()
+                        .expression("aql:self")
+                        .children(
+                                new ViewBuilders().newCreateInstance()
+                                        .typeName("papaya:Operation")
+                                        .referenceName("operations")
+                                        .build()
+                        )
+                        .build())
+                .iconURLsExpression("aql:'/icons/papaya/full/obj16/Operation.svg'")
+                .tooltipExpression("New operation")
+                .name("New Operation Action")
+                .build();
+
         return new DiagramBuilders().newNodeDescription()
                 .name(NAME)
                 .domainType("papaya::Class")
@@ -109,6 +140,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 )
                 .userResizable(UserResizableDirection.BOTH)
                 .collapsible(true)
+                .actions(newAttributeAction, newOperationAction)
                 .build();
     }
 

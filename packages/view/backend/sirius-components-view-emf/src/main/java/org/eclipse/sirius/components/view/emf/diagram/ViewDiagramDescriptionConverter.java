@@ -728,8 +728,4 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
     private String evaluateString(AQLInterpreter interpreter, VariableManager variableManager, String expression) {
         return interpreter.evaluateExpression(variableManager.getVariables(), expression).asString().orElse("");
     }
-
-    private IDiagramContext getDiagramContext(VariableManager variableManager) {
-        return variableManager.get(IDiagramContext.DIAGRAM_CONTEXT, IDiagramContext.class).orElse(null);
-    }
 }

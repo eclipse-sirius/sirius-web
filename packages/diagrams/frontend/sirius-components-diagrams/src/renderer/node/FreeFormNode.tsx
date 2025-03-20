@@ -15,8 +15,10 @@ import { ServerContext, ServerContextValue, getCSSColor } from '@eclipse-sirius/
 import { Theme, useTheme } from '@mui/material/styles';
 import { Node, NodeProps } from '@xyflow/react';
 import React, { memo, useContext, useMemo } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { BorderNodePosition } from '../DiagramRenderer.types';
 import { Label } from '../Label';
+import { ActionsContainer } from '../actions/ActionsContainer';
 import { useConnectorNodeStyle } from '../connector/useConnectorNodeStyle';
 import { useDrop } from '../drop/useDrop';
 import { useDropNodeStyle } from '../dropNode/useDropNodeStyle';
@@ -74,6 +76,18 @@ const backgroundNodeStyle = (
   return freeFormNodeStyle;
 };
 
+const useStyles = makeStyles()((_) => ({
+  labelAndAction: {
+    display: 'grid',
+    gridTemplateRows: '1fr',
+    gridTemplateColumns: '1fr',
+  },
+  label: {
+    gridRow: 1,
+    gridColumn: 1,
+  },
+}));
+
 const computeBorderRotation = (data: FreeFormNodeData): string | undefined => {
   if (data?.isBorderNode && data.positionDependentRotation) {
     switch (data.borderNodePosition) {
@@ -93,6 +107,7 @@ const computeBorderRotation = (data: FreeFormNodeData): string | undefined => {
 export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
   ({ data, id, selected, dragging }: NodeProps<Node<FreeFormNodeData>>) => {
     const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+    const { classes } = useStyles();
 
     const theme = useTheme();
     const { onDrop, onDragOver } = useDrop();
@@ -133,6 +148,11 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
       return labelId;
     };
 
+    let actionsSection: JSX.Element | null = null;
+    if (data.isHovered) {
+      actionsSection = <ActionsContainer diagramElementId={id} />;
+    }
+
     return (
       <>
         <Resizer data={data} selected={!!selected} />
@@ -147,7 +167,12 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
           onDrop={handleOnDrop}
           data-testid={`FreeForm - ${data?.targetObjectLabel}`}>
           <div data-svg="image" style={{ ...backgroundStyle }} />
-          {data.insideLabel && <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} />}
+          <div className={classes.labelAndAction}>
+            <div className={classes.label}>
+              {data.insideLabel && <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} />}
+            </div>
+            {actionsSection}
+          </div>
           {selected ? (
             <DiagramElementPalette
               diagramElementId={id}

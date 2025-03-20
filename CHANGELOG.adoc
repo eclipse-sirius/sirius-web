@@ -149,7 +149,10 @@ The implementation of the library update mechanism is generic and works on any p
 + One can add a map of filter operation to the `useProjects` hook.
 + Add the `useProjectsProjectFilterExtensionPoint` to contribute filter that will always be given to the `getProjects` query.
 - https://github.com/eclipse-sirius/sirius-web/issues/4669[#4669] [diagram] Allow manual positioning of edge's handles by reconnecting an edge on the same node
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4720[#4720] [diagrams] It is now possible to declare actions on diagram node descriptions in the View DSL.
+An action is composed with a label, an icon, a precondition and a body.
+The body contains the operations available in the View DSL as they already exists for the tools for example.
+Actions are visible on nodes on diagrams, on the top right corner of the nodes, and represented by their icon set in the Action declaration in the View DSL.
 
 === Improvements
 

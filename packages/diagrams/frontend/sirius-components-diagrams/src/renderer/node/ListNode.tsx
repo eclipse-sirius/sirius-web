@@ -15,7 +15,10 @@ import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@mui/material/styles';
 import { Node, NodeProps } from '@xyflow/react';
 import { memo, useMemo } from 'react';
+import { makeStyles } from 'tss-react/mui';
+
 import { Label } from '../Label';
+import { ActionsContainer } from '../actions/ActionsContainer';
 import { useConnectorNodeStyle } from '../connector/useConnectorNodeStyle';
 import { useDrop } from '../drop/useDrop';
 import { useDropNodeStyle } from '../dropNode/useDropNodeStyle';
@@ -53,9 +56,22 @@ const listNodeStyle = (
   return listNodeStyle;
 };
 
+const useStyles = makeStyles()((_) => ({
+  labelAndAction: {
+    display: 'grid',
+    gridTemplateRows: '1fr',
+    gridTemplateColumns: '1fr',
+  },
+  label: {
+    gridRow: 1,
+    gridColumn: 1,
+  },
+}));
+
 export const ListNode: NodeComponentsMap['listNode'] = memo(
   ({ data, id, selected, dragging }: NodeProps<Node<ListNodeData>>) => {
     const theme = useTheme();
+    const { classes } = useStyles();
     const { onDrop, onDragOver } = useDrop();
     const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
     const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
@@ -69,6 +85,12 @@ export const ListNode: NodeComponentsMap['listNode'] = memo(
     };
 
     useRefreshConnectionHandles(id, data.connectionHandles);
+
+    let actionsSection: JSX.Element | null = null;
+    if (data.isHovered) {
+      actionsSection = <ActionsContainer diagramElementId={id} />;
+    }
+
     return (
       <>
         <Resizer data={data} selected={!!selected} />
@@ -82,7 +104,12 @@ export const ListNode: NodeComponentsMap['listNode'] = memo(
           onDragOver={onDragOver}
           onDrop={handleOnDrop}
           data-testid={`List - ${data?.insideLabel?.text}`}>
-          {data.insideLabel ? <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} /> : null}
+          <div className={classes.labelAndAction}>
+            <div className={classes.label}>
+              {data.insideLabel && <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} />}
+            </div>
+            {actionsSection}
+          </div>
           {selected ? (
             <DiagramElementPalette
               diagramElementId={id}

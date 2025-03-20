@@ -42,4 +42,9 @@ public class ViewEMFMessageService implements IViewEMFMessageService {
     public String unsupportedTableCellWidgetError() {
         return this.messageSourceAccessor.getMessage("UNSUPPORTED_TABLE_CELL_WIDGET_ERROR");
     }
+
+    @Override
+    public String invokeActionError(String actionName) {
+        return this.messageSourceAccessor.getMessage("INVOKE_ACTION_ERROR", new Object[] { actionName });
+    }
 }
