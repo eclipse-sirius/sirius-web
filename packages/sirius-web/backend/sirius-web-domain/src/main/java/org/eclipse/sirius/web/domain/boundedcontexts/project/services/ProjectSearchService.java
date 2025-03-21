@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.domain.boundedcontexts.project.services;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -47,26 +48,26 @@ public class ProjectSearchService implements IProjectSearchService {
     }
 
     @Override
-    public Window<Project> findAll(KeysetScrollPosition position, int limit) {
+    public Window<Project> findAll(KeysetScrollPosition position, int limit, Map<String, Object> filter) {
         Window<Project> window = new Window<>(List.of(), index -> position, false, false);
         if (limit > 0) {
             var cursorProjectKey = position.getKeys().get("id");
             if (cursorProjectKey instanceof String cursorProjectId) {
                 if (this.existsById(cursorProjectId)) {
                     if (position.scrollsForward()) {
-                        var projects = this.projectRepository.findAllAfter(cursorProjectId, limit + 1);
+                        var projects = this.projectRepository.findAllAfter(cursorProjectId, limit + 1, filter);
                         boolean hasNext = projects.size() > limit;
-                        boolean hasPrevious = !this.projectRepository.findAllBefore(cursorProjectId, 1).isEmpty();
+                        boolean hasPrevious = !this.projectRepository.findAllBefore(cursorProjectId, 1, filter).isEmpty();
                         window = new Window<>(projects.subList(0, Math.min(projects.size(), limit)), index -> position, hasNext, hasPrevious);
                     } else if (position.scrollsBackward()) {
-                        var projects = this.projectRepository.findAllBefore(cursorProjectId, limit + 1);
+                        var projects = this.projectRepository.findAllBefore(cursorProjectId, limit + 1, filter);
                         boolean hasPrevious = projects.size() > limit;
-                        boolean hasNext = !this.projectRepository.findAllAfter(cursorProjectId, 1).isEmpty();
+                        boolean hasNext = !this.projectRepository.findAllAfter(cursorProjectId, 1, filter).isEmpty();
                         window = new Window<>(projects.subList(0, Math.min(projects.size(), limit)), index -> position, hasNext, hasPrevious);
                     }
                 }
             } else {
-                var projects = this.projectRepository.findAllAfter(null, limit + 1);
+                var projects = this.projectRepository.findAllAfter(null, limit + 1, filter);
                 boolean hasNext = projects.size() > limit;
                 boolean hasPrevious = false;
                 window = new Window<>(projects.subList(0, Math.min(projects.size(), limit)), index -> position, hasNext, hasPrevious);

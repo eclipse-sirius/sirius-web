@@ -12,31 +12,53 @@
  *******************************************************************************/
 
 import { gql, useQuery } from '@apollo/client';
-import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { useData, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useEffect } from 'react';
-import { GQLGetProjectsQueryData, GQLGetProjectsQueryVariables, UseProjectsValue } from './useProjects.types';
+import {
+  GQLGetProjectsQueryData,
+  GQLGetProjectsQueryVariables,
+  GQLProjectFilter,
+  UseProjectsValue,
+} from './useProjects.types';
+import { projectFilterCustomizersExtensionPoint } from './useProjectsExtensionPoints';
 
 const getProjectsQuery = gql`
-  query getProjects($after: String, $before: String, $first: Int, $last: Int) {
+  query getProjects($after: String, $before: String, $first: Int, $last: Int, $filter: ProjectFilter) {
     viewer {
       ...ViewerProjects
     }
   }
 `;
 
-export const useProjects = (after: string | null, before: string | null, pageSize: number): UseProjectsValue => {
+export const useProjects = (
+  after: string | null,
+  before: string | null,
+  pageSize: number,
+  projectFilter: GQLProjectFilter | null
+): UseProjectsValue => {
+  let filter: GQLProjectFilter = projectFilter ? { ...projectFilter } : {};
+
+  const { data: projectFilterCustomizers } = useData(projectFilterCustomizersExtensionPoint);
+
+  projectFilterCustomizers.forEach((customizer) => {
+    filter = customizer.customize(filter);
+  });
+
   const variables: GQLGetProjectsQueryVariables = {
     after,
     before,
     first: after ? pageSize : before ? null : pageSize,
     last: before ? pageSize : null,
+    filter,
   };
-  const { data, loading, error, refetch } = useQuery<GQLGetProjectsQueryData, GQLGetProjectsQueryVariables>(
-    getProjectsQuery,
-    {
-      variables,
-    }
-  );
+  const {
+    data: projectData,
+    loading,
+    error,
+    refetch,
+  } = useQuery<GQLGetProjectsQueryData, GQLGetProjectsQueryVariables>(getProjectsQuery, {
+    variables,
+  });
   const { addErrorMessage } = useMultiToast();
   useEffect(() => {
     if (error) {
@@ -46,5 +68,5 @@ export const useProjects = (after: string | null, before: string | null, pageSiz
 
   const refreshProjects = () => refetch(variables);
 
-  return { data, loading, refreshProjects };
+  return { data: projectData, loading, refreshProjects };
 };

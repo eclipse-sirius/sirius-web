@@ -56,6 +56,8 @@ public class ViewerProjectsDataFetcher implements IDataFetcherWithFieldCoordinat
 
     private static final String BEFORE_ARGUMENT = "before";
 
+    private static final String FILTER_ARGUMENT = "filter";
+
     private final IProjectApplicationService projectApplicationService;
 
     public ViewerProjectsDataFetcher(IProjectApplicationService projectApplicationService) {
@@ -64,15 +66,16 @@ public class ViewerProjectsDataFetcher implements IDataFetcherWithFieldCoordinat
 
     @Override
     public Connection<ProjectDTO> get(DataFetchingEnvironment environment) throws Exception {
-        Optional<Integer> first = Optional.<Integer> ofNullable(environment.getArgument(FIRST_ARGUMENT));
-        Optional<Integer> last = Optional.<Integer> ofNullable(environment.getArgument(LAST_ARGUMENT));
-        Optional<String> after = Optional.<String> ofNullable(environment.getArgument(AFTER_ARGUMENT));
-        Optional<String> before = Optional.<String> ofNullable(environment.getArgument(BEFORE_ARGUMENT));
+        Optional<Integer> first = Optional.ofNullable(environment.getArgument(FIRST_ARGUMENT));
+        Optional<Integer> last = Optional.ofNullable(environment.getArgument(LAST_ARGUMENT));
+        Optional<String> after = Optional.ofNullable(environment.getArgument(AFTER_ARGUMENT));
+        Optional<String> before = Optional.ofNullable(environment.getArgument(BEFORE_ARGUMENT));
+        Map<String, Object> filter = Optional.ofNullable(environment.<Map<String, Object>>getArgument(FILTER_ARGUMENT)).orElseGet(Map::of);
 
         KeysetScrollPosition position = this.getPosition(after, before);
         int limit = this.getLimit(first, last, after, before);
 
-        var projectPage = this.projectApplicationService.findAll(position, limit);
+        var projectPage = this.projectApplicationService.findAll(position, limit, filter);
         return this.toConnection(projectPage, position);
     }
 
@@ -124,7 +127,7 @@ public class ViewerProjectsDataFetcher implements IDataFetcherWithFieldCoordinat
 
     private Connection<ProjectDTO> toConnection(Window<ProjectDTO> projectPage, KeysetScrollPosition position) {
         List<Edge<ProjectDTO>> edges = projectPage.stream().map(projectDTO -> {
-            var globalId = new Relay().toGlobalId("Project", projectDTO.id().toString());
+            var globalId = new Relay().toGlobalId("Project", projectDTO.id());
             var cursor = new DefaultConnectionCursor(globalId);
             return (Edge<ProjectDTO>) new DefaultEdge<>(projectDTO, cursor);
         }).collect(Collectors.toCollection(ArrayList::new));

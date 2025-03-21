@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.application.controllers.projects;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
@@ -43,7 +44,7 @@ public class ProjectSearchControllerConfiguration {
             }
 
             @Override
-            public List<Project> findAllBefore(String cursorProjectId, int limit) {
+            public List<Project> findAllBefore(String cursorProjectId, int limit, Map<String, Object> filter) {
                 var query = """
                         SELECT project.* FROM project
                         JOIN nature ON project.id = nature.project_id
@@ -55,7 +56,7 @@ public class ProjectSearchControllerConfiguration {
             }
 
             @Override
-            public List<Project> findAllAfter(String cursorProjectId, int limit) {
+            public List<Project> findAllAfter(String cursorProjectId, int limit, Map<String, Object> filter) {
                 var query = """
                         SELECT project.* FROM project
                         JOIN nature ON project.id = nature.project_id

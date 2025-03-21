@@ -64,7 +64,8 @@ We will also remove `GQLTreeItem#kind` later.
 - https://github.com/eclipse-sirius/sirius-web/issues/4714[#4174] [sirius-web] Default routes are contributed thanks to the router extension point.
 Downstream projects contributing their own route will have to use a `ExtensionRegistryMergeStrategy` to either merge their contribution to the sirius-web one, or to add sirius-web routes to their own contribution.
 - https://github.com/eclipse-sirius/sirius-web/issues/4706[#4706] [diagram] The following attributes of `org.eclipse.sirius.components.diagrams.description.EdgeDescription` have been renamed : `sourceNodeDescriptions to sourceDescriptions`, `targetNodeDescriptions to targetDescriptions`, `sourceNodesProvider to sourceProvider` and `targetNodesProvider to targetProvider`.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4727[#4727] [domain] [sirius-web] a new parameter has been added to `Viewer#getProjects` in the graphql API, and thus, the `IProjectApplicationService` and the `IProjectSearchService` API have been updated accordingly.
++ Queries of `ProjectSearchRepositoryDelegate` has been updated so any downstream project providing their own `IProjectSearchRepositoryDelegate` may have to change on their queries if they want the filter on project to work.
 
 === Dependency update
 
@@ -135,7 +136,9 @@ The implementation of the library update mechanism is generic and works on any p
 - https://github.com/eclipse-sirius/sirius-web/issues/4375[#4375] [diagram] Add support for a first version of impact analysis before tool execution.
 - https://github.com/eclipse-sirius/sirius-web/issues/4706[#4706] [diagram] The back-end now render edges that have for source or target another edge (only if this edge have for source or target a node), an edge won't be rendered if both his source and target are another edge.
 - https://github.com/eclipse-sirius/sirius-web/issues/4483 [#4483] Add row level filters in table
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4727[#4727] [domain] [sirius-web] Add the support for projects filter.
++ One can add a map of filter operation to the `useProjects` hook.
++ Add the `useProjectsProjectFilterExtensionPoint` to contribute filter that will always be given to the `getProjects` query.
 
 
 === Improvements
