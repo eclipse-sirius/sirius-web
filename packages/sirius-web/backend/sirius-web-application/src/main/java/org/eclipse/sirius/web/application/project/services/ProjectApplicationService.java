@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.services;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -71,8 +72,8 @@ public class ProjectApplicationService implements IProjectApplicationService {
 
     @Override
     @Transactional(readOnly = true)
-    public Window<ProjectDTO> findAll(KeysetScrollPosition position, int limit) {
-        var window = this.projectSearchService.findAll(position, limit);
+    public Window<ProjectDTO> findAll(KeysetScrollPosition position, int limit, Map<String, Object> filter) {
+        var window = this.projectSearchService.findAll(position, limit, filter);
         return new Window<>(window.map(this.projectMapper::toDTO), window.hasPrevious());
     }
 

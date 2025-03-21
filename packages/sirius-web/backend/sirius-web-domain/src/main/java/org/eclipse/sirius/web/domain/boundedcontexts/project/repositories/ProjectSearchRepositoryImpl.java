@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.domain.boundedcontexts.project.repositories;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -45,12 +46,12 @@ public class ProjectSearchRepositoryImpl implements ProjectSearchRepository<Proj
     }
 
     @Override
-    public List<Project> findAllAfter(String cursorProjectId, int limit) {
-        return this.projectSearchRepositoryDelegate.findAllAfter(cursorProjectId, limit);
+    public List<Project> findAllAfter(String cursorProjectId, int limit, Map<String, Object> filter) {
+        return this.projectSearchRepositoryDelegate.findAllAfter(cursorProjectId, limit, filter);
     }
 
     @Override
-    public List<Project> findAllBefore(String cursorProjectId, int limit) {
-        return this.projectSearchRepositoryDelegate.findAllBefore(cursorProjectId, limit);
+    public List<Project> findAllBefore(String cursorProjectId, int limit, Map<String, Object> filter) {
+        return this.projectSearchRepositoryDelegate.findAllBefore(cursorProjectId, limit, filter);
     }
 }

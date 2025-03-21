@@ -22,6 +22,16 @@ export interface GQLGetProjectsQueryVariables {
   before: string | null;
   first: number | null;
   last: number | null;
+  filter: GQLProjectFilter | null;
+}
+
+export interface GQLProjectFilter {
+  name?: GQLFilterOperations;
+}
+
+export interface GQLFilterOperations {
+  contains?: string;
+  equals?: string;
 }
 
 export interface GQLGetProjectsQueryData {

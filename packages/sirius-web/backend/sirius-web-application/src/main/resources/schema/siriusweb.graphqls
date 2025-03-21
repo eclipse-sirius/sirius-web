@@ -1,7 +1,17 @@
 extend type Viewer {
+  # TODO: also add project filter here?
   project(projectId: ID!): Project
-  projects(after: String, before: String, first: Int, last: Int): ViewerProjectsConnection!
+  projects(after: String, before: String, first: Int, last: Int, filter: ProjectFilterInput): ViewerProjectsConnection!
   projectTemplates(page: Int!, limit: Int!): ViewerProjectTemplatesConnection!
+}
+
+input ProjectFilterInput {
+  name: FilterOperationsInput
+}
+
+input FilterOperationsInput {
+  contains: String
+  equals: String
 }
 
 type ViewerProjectsConnection {

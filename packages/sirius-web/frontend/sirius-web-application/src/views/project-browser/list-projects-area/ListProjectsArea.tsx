@@ -41,7 +41,8 @@ export const ListProjectsArea = ({}: ListProjectsAreaProps) => {
     endCursor: null,
   });
 
-  const { data, loading, refreshProjects } = useProjects(state.startCursor, state.endCursor, state.pageSize);
+  // TODO: Add extension point somewhere to contribute new filters
+  const { data, loading, refreshProjects } = useProjects(state.startCursor, state.endCursor, state.pageSize, null);
 
   const onPreviousPage = () => {
     setState((prevState) => ({
