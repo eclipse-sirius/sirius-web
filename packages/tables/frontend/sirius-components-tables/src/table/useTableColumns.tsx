@@ -68,6 +68,7 @@ export const useTableColumns = (
     const rowHeaderColumn: MRT_ColumnDef<GQLLine, string> = {
       id: 'mrt-row-header',
       header: '',
+      enableResizing: enableColumnSizing,
       columnDefType: 'display',
       Cell: ({ row }) => (
         <div
