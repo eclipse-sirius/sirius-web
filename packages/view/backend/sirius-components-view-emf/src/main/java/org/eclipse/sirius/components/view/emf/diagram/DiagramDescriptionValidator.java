@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,6 +43,7 @@ import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
+import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
@@ -246,7 +247,12 @@ public class DiagramDescriptionValidator implements EValidator {
         List<EPackage> ePackages = this.getEPackagesFromRegistry(resourceSet.getPackageRegistry());
 
         String domainType = Optional.ofNullable(diagramElementDescription.getDomainType()).orElse("");
-        isValid = entities.stream().anyMatch(entity -> this.describesEntity(domainType, entity));
+        if (diagramElementDescription instanceof EdgeDescription edgeDescription && !edgeDescription.isIsDomainBasedEdge()) {
+            // Relation-based edges do not need a domain type (and do not use if if specified).
+            isValid = true;
+        } else {
+            isValid = entities.stream().anyMatch(entity -> this.describesEntity(domainType, entity));
+        }
 
         if (!isValid && !domainType.isBlank()) {
             isValid = ePackages.stream()
