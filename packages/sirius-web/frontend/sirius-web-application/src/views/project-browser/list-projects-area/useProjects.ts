@@ -14,22 +14,33 @@
 import { gql, useQuery } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useEffect } from 'react';
-import { GQLGetProjectsQueryData, GQLGetProjectsQueryVariables, UseProjectsValue } from './useProjects.types';
+import {
+  GQLGetProjectsQueryData,
+  GQLGetProjectsQueryVariables,
+  GQLProjectFilter,
+  UseProjectsValue,
+} from './useProjects.types';
 
 const getProjectsQuery = gql`
-  query getProjects($after: String, $before: String, $first: Int, $last: Int) {
+  query getProjects($after: String, $before: String, $first: Int, $last: Int, $filter: ProjectFilterInput) {
     viewer {
       ...ViewerProjects
     }
   }
 `;
 
-export const useProjects = (after: string | null, before: string | null, pageSize: number): UseProjectsValue => {
+export const useProjects = (
+  after: string | null,
+  before: string | null,
+  pageSize: number,
+  filter: GQLProjectFilter | null
+): UseProjectsValue => {
   const variables: GQLGetProjectsQueryVariables = {
     after,
     before,
     first: after ? pageSize : before ? null : pageSize,
     last: before ? pageSize : null,
+    filter: filter,
   };
   const { data, loading, error, refetch } = useQuery<GQLGetProjectsQueryData, GQLGetProjectsQueryVariables>(
     getProjectsQuery,

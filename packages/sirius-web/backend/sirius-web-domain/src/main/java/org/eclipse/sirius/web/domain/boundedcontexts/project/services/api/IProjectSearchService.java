@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.project.services.api;
 
+import java.util.Map;
 import java.util.Optional;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
@@ -29,5 +30,5 @@ public interface IProjectSearchService {
 
     Optional<Project> findById(String projectId);
 
-    Window<Project> findAll(KeysetScrollPosition position, int limit);
+    Window<Project> findAll(KeysetScrollPosition position, int limit, Map<String, Object> filter);
 }

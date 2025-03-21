@@ -113,11 +113,11 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @GivenSiriusWebServer
     @DisplayName("Given a project, when a query is performed, then the project is returned")
     public void givenProjectWhenQueryIsPerformedThenTheProjectIsReturned() {
-        Map<String, Object> variables = Map.of("projectId", TestIdentifiers.SYSML_SAMPLE_PROJECT.toString());
+        Map<String, Object> variables = Map.of("projectId", TestIdentifiers.SYSML_SAMPLE_PROJECT);
         var result = this.projectQueryRunner.run(variables);
 
         String projectId = JsonPath.read(result, "$.data.viewer.project.id");
-        assertThat(projectId).isEqualTo(TestIdentifiers.SYSML_SAMPLE_PROJECT.toString());
+        assertThat(projectId).isEqualTo(TestIdentifiers.SYSML_SAMPLE_PROJECT);
 
         String projectName = JsonPath.read(result, "$.data.viewer.project.name");
         assertThat(projectName).isEqualTo("SysML Sample");
@@ -127,7 +127,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @GivenSiriusWebServer
     @DisplayName("Given an invalid project, when a query is performed, then null is returned")
     public void givenAnInvalidProjectWhenQueryIsPerformedThenNullIsReturned() {
-        Map<String, Object> variables = Map.of("projectId", TestIdentifiers.INVALID_PROJECT.toString());
+        Map<String, Object> variables = Map.of("projectId", TestIdentifiers.INVALID_PROJECT);
         var result = this.projectQueryRunner.run(variables);
 
         Object value = JsonPath.read(result, "$.data.viewer.project");
@@ -236,7 +236,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @GivenSiriusWebServer
     @DisplayName("Given a set of projects, when a valid after query is performed, then the projects are returned")
     public void givenSetOfProjectsWhenValidAfterQueryIsPerformedThenTheProjectsAreReturned() {
-        var cursorProjectId = new Relay().toGlobalId("Project", TestIdentifiers.UML_SAMPLE_PROJECT.toString());
+        var cursorProjectId = new Relay().toGlobalId("Project", TestIdentifiers.UML_SAMPLE_PROJECT);
         Map<String, Object> variables = Map.of("after", cursorProjectId);
         var result = this.projectsQueryRunner.run(variables);
 
@@ -263,7 +263,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @GivenSiriusWebServer
     @DisplayName("Given a set of projects, when a valid before query is performed, then the projects are returned")
     public void givenSetOfProjectsWhenValidBeforeQueryIsPerformedThenTheProjectsAreReturned() {
-        var cursorProjectId = new Relay().toGlobalId("Project", TestIdentifiers.UML_SAMPLE_PROJECT.toString());
+        var cursorProjectId = new Relay().toGlobalId("Project", TestIdentifiers.UML_SAMPLE_PROJECT);
         Map<String, Object> variables = Map.of("before", cursorProjectId);
         var result = this.projectsQueryRunner.run(variables);
 
@@ -284,6 +284,32 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
 
         List<String> projectIds = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.id");
         assertThat(projectIds.size()).isGreaterThan(0);
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a set of projects, when a project filter is applied then only wanted projects are returned")
+    public void givenSetOfProjectsWhenAProjectFilterIsAppliedThenOnlyWantedProjectsAreReturned() {
+        Map<String, Object> variables = Map.of("filter", Map.of("name", Map.of("equals", "UML Sample")));
+        var result = this.projectsQueryRunner.run(variables);
+
+        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasPreviousPage");
+        assertThat(hasPreviousPage).isFalse();
+
+        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasNextPage");
+        assertThat(hasNextPage).isFalse();
+
+        String startCursor = JsonPath.read(result, "$.data.viewer.projects.pageInfo.startCursor");
+        assertThat(startCursor).isNotBlank();
+
+        String endCursor = JsonPath.read(result, "$.data.viewer.projects.pageInfo.endCursor");
+        assertThat(endCursor).isNotBlank();
+
+        int count = JsonPath.read(result, "$.data.viewer.projects.pageInfo.count");
+        assertThat(count).isEqualTo(1);
+
+        List<String> projectIds = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.id");
+        assertThat(projectIds.size()).isEqualTo(1);
     }
 
     @Test
@@ -315,8 +341,8 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @GivenSiriusWebServer
     @DisplayName("Given a valid input, when a forward findAll is performed, then the returned window contains the projects after the input project")
     public void givenAValidInputWhenAForwardFindallIsPerformedThenTheReturnedWindowContainsTheProjectsAfterTheInputProject() {
-        var keyset = ScrollPosition.forward(Map.of("id", TestIdentifiers.UML_SAMPLE_PROJECT.toString()));
-        var window = this.projectSearchService.findAll(keyset, 1);
+        var keyset = ScrollPosition.forward(Map.of("id", TestIdentifiers.UML_SAMPLE_PROJECT));
+        var window = this.projectSearchService.findAll(keyset, 1, Map.of());
         assertThat(window).isNotNull();
         assertThat(window.size()).isOne();
         assertThat(window.getContent().get(0).getId()).isEqualTo(TestIdentifiers.ECORE_SAMPLE_PROJECT);
@@ -326,8 +352,8 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @GivenSiriusWebServer
     @DisplayName("Given a valid input, when a forward findAll is performed, then the returned window contains the projects after the input project")
     public void givenAValidInputWhenABackwardFindallIsPerformedThenTheReturnedWindowContainsTheProjectsAfterTheInputProject() {
-        var keyset = ScrollPosition.backward(Map.of("id", TestIdentifiers.UML_SAMPLE_PROJECT.toString()));
-        var window = this.projectSearchService.findAll(keyset, 1);
+        var keyset = ScrollPosition.backward(Map.of("id", TestIdentifiers.UML_SAMPLE_PROJECT));
+        var window = this.projectSearchService.findAll(keyset, 1, Map.of());
         assertThat(window).isNotNull();
         assertThat(window.size()).isOne();
         assertThat(window.getContent().get(0).getId()).isEqualTo(TestIdentifiers.ECORE_SAMPLE_PROJECT);
@@ -338,7 +364,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @DisplayName("Given an invalid project id, when findAll is performed, then the returned window is empty")
     public void givenAnInvalidProjectIdWhenFindallIsPerformedThenTheReturnedWindowIsNull() {
         var keyset = ScrollPosition.forward(Map.of("id", "invalid-id"));
-        var window = this.projectSearchService.findAll(keyset, 1);
+        var window = this.projectSearchService.findAll(keyset, 1, Map.of());
         assertThat(window).isNotNull();
         assertThat(window.size()).isZero();
     }
@@ -347,7 +373,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @GivenSiriusWebServer
     @DisplayName("Given an invalid limit, when findAll is performed, then the returned window is empty")
     public void givenAnInvalidLimitWhenFindallIsPerformedThenTheReturnedWindowIsNull() {
-        var window = this.projectSearchService.findAll(ScrollPosition.keyset(), 0);
+        var window = this.projectSearchService.findAll(ScrollPosition.keyset(), 0, Map.of());
         assertThat(window).isNotNull();
         assertThat(window.size()).isZero();
     }

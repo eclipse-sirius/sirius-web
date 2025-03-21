@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.services.api;
 
+import java.util.Map;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -30,7 +31,7 @@ import org.springframework.data.domain.KeysetScrollPosition;
 public interface IProjectApplicationService {
     Optional<ProjectDTO> findById(String id);
 
-    Window<ProjectDTO> findAll(KeysetScrollPosition position, int limit);
+    Window<ProjectDTO> findAll(KeysetScrollPosition position, int limit, Map<String, Object> filter);
 
     IPayload createProject(CreateProjectInput input);
 

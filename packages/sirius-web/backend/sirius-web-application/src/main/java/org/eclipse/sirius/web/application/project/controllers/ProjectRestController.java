@@ -82,6 +82,7 @@ public class ProjectRestController {
         })
     })
     @GetMapping
+    // TODO: Should filter be supported here?
     public ResponseEntity<List<RestProject>> getProjects(@RequestParam(name = "page[size]") Optional<Integer> pageSize, @RequestParam(name = "page[after]") Optional<String> pageAfter, @RequestParam(name = "page[before]") Optional<String> pageBefore) {
         final KeysetScrollPosition position;
         if (pageAfter.isPresent() && pageBefore.isEmpty()) {
@@ -96,7 +97,7 @@ public class ProjectRestController {
             position = ScrollPosition.keyset();
         }
         int limit = pageSize.orElse(DEFAULT_PAGE_SIZE);
-        var window = this.projectApplicationService.findAll(position, limit);
+        var window = this.projectApplicationService.findAll(position, limit, Map.of());
         var restProjects = window
                 .map(project -> new RestProject(project.id(), DEFAULT_CREATED, new Identified(project.id()), null, project.name()))
                 .toList();

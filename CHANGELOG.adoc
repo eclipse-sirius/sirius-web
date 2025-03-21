@@ -59,6 +59,8 @@ We will also remove `GQLTreeItem#kind` later.
 - https://github.com/eclipse-sirius/sirius-web/issues/4700[#4700] [view-diagram] The following attributes of `EdgeDescription` have been renamed : `sourceNodesDescriptions to sourceDescriptions`, `targetNodeDescriptions to targetDescriptions`, `sourceNodeExpression to sourceExpression` and `targetNodesExpression to targetExpression`.
 - https://github.com/eclipse-sirius/sirius-web/issues/4714[#4174] [sirius-web] Default routes are contributed thanks to the router extension point.
 Downstream projects contributing their own route will have to use a `ExtensionRegistryMergeStrategy` to either merge their contribution to the sirius-web one, or to add sirius-web routes to their own contribution.
+- https://github.com/eclipse-sirius/sirius-web/issues/4727[#4727] [domain] [sirius-web] a new parameter has been added to `Viewer#getProjects` and `Viewer#getProject` in the graphql API, and thus, the `IProjectApplicationService` and the `IProjectSearchService`
++ Queries of `ProjectSearchRepositoryDelegate` has been updated so any downstream project providing their own `IProjectSearchRepositoryDelegate` may have to change on their queries if they want the filter on project to work.
 
 === Dependency update
 
@@ -117,6 +119,7 @@ image:doc/screenshots/duplicationDialog.png[DuplicationDialog, 70%]
 + It requires that downstream projects contributing custom nodes add the `data-svg="${rect|image|svg|text|defs}"` attribute on each dom element that will represent a part of the node in svg.
 + If any of the default value match the need, it is possible to contribute a `IElementSVGExportHandler` thanks to the `svgExportIElementSVGExportHandlerExtensionPoint` extension point.
 + The value of `data-svg` attribute should match the value from the contributed `IElementSVGExportHandler#canHandle`
+- https://github.com/eclipse-sirius/sirius-web/issues/4727[#4727] [domain] [sirius-web] Add the support for projects filter.
 
 
 === Improvements

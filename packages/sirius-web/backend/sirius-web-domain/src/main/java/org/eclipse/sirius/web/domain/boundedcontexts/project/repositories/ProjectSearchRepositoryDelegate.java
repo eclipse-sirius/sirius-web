@@ -16,11 +16,13 @@ import static org.springframework.data.relational.core.query.Criteria.where;
 import static org.springframework.data.relational.core.query.Query.query;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.api.IProjectSearchRepositoryDelegate;
+import org.eclipse.sirius.web.domain.services.api.IQueryFilter;
 import org.springframework.data.jdbc.core.JdbcAggregateOperations;
 import org.springframework.data.relational.core.query.Query;
 import org.springframework.jdbc.core.simple.JdbcClient;
@@ -51,6 +53,7 @@ public class ProjectSearchRepositoryDelegate implements IProjectSearchRepository
                         FROM project
                         WHERE project.id = :cursorProjectId))
             )
+            #[name]
             ORDER BY p.created_on desc, p.name
             LIMIT :limit;
             """;
@@ -66,15 +69,19 @@ public class ProjectSearchRepositoryDelegate implements IProjectSearchRepository
                         FROM project
                         WHERE project.id = :cursorProjectId))
             )
+            #[name]
             ORDER BY p.created_on asc, p.name
             LIMIT :limit;
             """;
+
+    private final IQueryFilter queryFilter;
 
     private final JdbcAggregateOperations jdbcAggregateOperations;
 
     private final JdbcClient jdbcClient;
 
-    public ProjectSearchRepositoryDelegate(JdbcAggregateOperations jdbcAggregateOperations, JdbcClient jdbcClient) {
+    public ProjectSearchRepositoryDelegate(IQueryFilter queryFilter, JdbcAggregateOperations jdbcAggregateOperations, JdbcClient jdbcClient) {
+        this.queryFilter = Objects.requireNonNull(queryFilter);
         this.jdbcAggregateOperations = Objects.requireNonNull(jdbcAggregateOperations);
         this.jdbcClient = Objects.requireNonNull(jdbcClient);
     }
@@ -92,20 +99,22 @@ public class ProjectSearchRepositoryDelegate implements IProjectSearchRepository
     }
 
     @Override
-    public List<Project> findAllBefore(String cursorProjectId, int limit) {
+    public List<Project> findAllBefore(String cursorProjectId, int limit, Map<String, Object> filter) {
         List<Project> projectsBefore = null;
         if (limit > 0) {
-            var projects = this.getAllProjectsQuery(FIND_ALL_BEFORE, cursorProjectId, limit + 1);
+            String query = this.queryFilter.filterQuery(FIND_ALL_BEFORE, "p", List.of("name"), filter);
+            var projects = this.getAllProjectsQuery(query, cursorProjectId, limit + 1);
             projectsBefore = projects.subList(0, Math.min(projects.size(), limit));
         }
         return projectsBefore;
     }
 
     @Override
-    public List<Project> findAllAfter(String cursorProjectId, int limit) {
+    public List<Project> findAllAfter(String cursorProjectId, int limit, Map<String, Object> filter) {
         List<Project> projectsAfter = null;
         if (limit > 0) {
-            var projects = this.getAllProjectsQuery(FIND_ALL_AFTER, cursorProjectId, limit + 1);
+            String query = this.queryFilter.filterQuery(FIND_ALL_AFTER, "p", List.of("name"), filter);
+            var projects = this.getAllProjectsQuery(query, cursorProjectId, limit + 1);
             projectsAfter = projects.subList(0, Math.min(projects.size(), limit));
         }
         return projectsAfter;
