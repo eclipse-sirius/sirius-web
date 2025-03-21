@@ -15,7 +15,8 @@ export interface DiagramElementPaletteContextValue {
   x: number | null;
   y: number | null;
   isOpened: boolean;
-  showDiagramElementPalette: (x: number, y: number) => void;
+  paletteTargetElementId: string | null;
+  showDiagramElementPalette: (x: number, y: number, elementId: string) => void;
   hideDiagramElementPalette: () => void;
 }
 
@@ -27,4 +28,5 @@ export interface DiagramElementPaletteContextProviderState {
   x: number | null;
   y: number | null;
   isOpened: boolean;
+  elementId: string | null;
 }

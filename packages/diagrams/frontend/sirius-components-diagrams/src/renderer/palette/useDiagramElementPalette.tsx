@@ -27,7 +27,7 @@ const computePalettePosition = (event: MouseEvent | React.MouseEvent, bounds: DO
 };
 
 export const useDiagramElementPalette = (): UseDiagramElementPaletteValue => {
-  const { x, y, isOpened, hideDiagramElementPalette, showDiagramElementPalette } =
+  const { x, y, isOpened, paletteTargetElementId, hideDiagramElementPalette, showDiagramElementPalette } =
     useContext<DiagramElementPaletteContextValue>(DiagramElementPaletteContext);
   const store = useStoreApi();
 
@@ -47,7 +47,7 @@ export const useDiagramElementPalette = (): UseDiagramElementPaletteValue => {
         )
       ) {
         event.preventDefault();
-        showDiagramElementPalette(palettePosition.x, palettePosition.y);
+        showDiagramElementPalette(palettePosition.x, palettePosition.y, elementClicked.id);
       } else {
         hideDiagramElementPalette();
       }
@@ -59,6 +59,7 @@ export const useDiagramElementPalette = (): UseDiagramElementPaletteValue => {
     x,
     y,
     isOpened,
+    paletteTargetElementId,
     hideDiagramElementPalette,
     showDiagramElementPalette,
     onDiagramElementContextMenu,

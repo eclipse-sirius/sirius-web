@@ -22,6 +22,7 @@ const defaultValue: DiagramElementPaletteContextValue = {
   x: null,
   y: null,
   isOpened: false,
+  paletteTargetElementId: null,
   hideDiagramElementPalette: () => {},
   showDiagramElementPalette: () => {},
 };
@@ -33,15 +34,16 @@ export const DiagramElementPaletteContextProvider = ({ children }: DiagramElemen
     x: null,
     y: null,
     isOpened: false,
+    elementId: null,
   });
 
-  const showPalette = useCallback((x: number, y: number) => {
-    setState((prevState) => ({ ...prevState, x, y, isOpened: true }));
+  const showPalette = useCallback((x: number, y: number, elementId: string) => {
+    setState((prevState) => ({ ...prevState, x, y, isOpened: true, elementId: elementId }));
   }, []);
 
   const hidePalette = useCallback(() => {
     if (state.isOpened) {
-      setState((prevState) => ({ ...prevState, x: null, y: null, isOpened: false }));
+      setState((prevState) => ({ ...prevState, x: null, y: null, isOpened: false, elementId: null }));
     }
   }, [state.isOpened]);
 
@@ -51,6 +53,7 @@ export const DiagramElementPaletteContextProvider = ({ children }: DiagramElemen
         x: state.x,
         y: state.y,
         isOpened: state.isOpened,
+        paletteTargetElementId: state.elementId,
         showDiagramElementPalette: showPalette,
         hideDiagramElementPalette: hidePalette,
       }}>
