@@ -96,7 +96,7 @@ public class ProjectRestController {
             position = ScrollPosition.keyset();
         }
         int limit = pageSize.orElse(DEFAULT_PAGE_SIZE);
-        var window = this.projectApplicationService.findAll(position, limit);
+        var window = this.projectApplicationService.findAll(position, limit, Map.of());
         var restProjects = window
                 .map(project -> new RestProject(project.id(), DEFAULT_CREATED, new Identified(project.id()), null, project.name()))
                 .toList();

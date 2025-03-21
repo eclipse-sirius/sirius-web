@@ -15,7 +15,7 @@ import { gql } from '@apollo/client';
 
 export const ViewerProjectsFragment = gql`
   fragment ViewerProjects on Viewer {
-    projects(after: $after, before: $before, first: $first, last: $last) {
+    projects(after: $after, before: $before, first: $first, last: $last, filter: $filter) {
       edges {
         node {
           ...Project

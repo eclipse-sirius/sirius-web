@@ -28,9 +28,9 @@ import org.springframework.stereotype.Service;
 public class ProjectsQueryRunner implements IQueryRunner {
 
     private static final String PROJECTS_QUERY = """
-            query getProjects($after: String, $before: String, $first: Int, $last: Int) {
+            query getProjects($after: String, $before: String, $first: Int, $last: Int, $filter: ProjectFilter) {
               viewer {
-                projects(after: $after, before: $before, first: $first, last: $last) {
+                projects(after: $after, before: $before, first: $first, last: $last, filter: $filter) {
                   edges {
                     node {
                       id
