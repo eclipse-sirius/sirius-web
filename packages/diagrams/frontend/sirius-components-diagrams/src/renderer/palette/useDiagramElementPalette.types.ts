@@ -17,8 +17,9 @@ export interface UseDiagramElementPaletteValue {
   x: number | null;
   y: number | null;
   isOpened: boolean;
+  paletteTargetElementId: string | null;
   hideDiagramElementPalette: () => void;
-  showDiagramElementPalette: (x: number, y: number) => void;
+  showDiagramElementPalette: (x: number, y: number, elementId: string) => void;
   onDiagramElementContextMenu: (
     event: React.MouseEvent<Element, MouseEvent>,
     elementClicked: Node<NodeData> | Edge<EdgeData>
