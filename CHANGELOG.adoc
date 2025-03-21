@@ -192,6 +192,8 @@ The code used to evaluate model operations has been entirely rewritten in order 
 See the ADR 190 for additional details on the goal of this refactoring.
 - https://github.com/eclipse-sirius/sirius-web/issues/4733[#4733] [view] The variable `__NEW_INSTANCES_COLLECTOR__` has been removed in favor of a proper API in the result of the evaluation of an expression
 - https://github.com/eclipse-sirius/sirius-web/issues/4762[#4762] [diagram] Enhance papaya lifecycle diagram with new concepts
+- https://github.com/eclipse-sirius/sirius-web/issues/4687[#4687] [table] Make table line header resizable
+
 
 == v2025.2.0
 

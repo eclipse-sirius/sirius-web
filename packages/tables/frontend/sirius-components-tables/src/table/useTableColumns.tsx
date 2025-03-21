@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { Selection, theme, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { MRT_ColumnDef } from 'material-react-table';
 import { useMemo } from 'react';
 import { Cell } from '../cells/Cell';
@@ -68,7 +68,18 @@ export const useTableColumns = (
     const rowHeaderColumn: MRT_ColumnDef<GQLLine, string> = {
       id: 'mrt-row-header',
       header: '',
+      enableResizing: enableColumnSizing,
       columnDefType: 'display',
+      muiTableHeadCellProps: {
+        sx: {
+          '.Mui-TableHeadCell-ResizeHandle-Wrapper': {
+            position: 'static',
+            paddingLeft: '0px',
+            paddingRight: '0px',
+            marginRight: theme.spacing(-1),
+          },
+        },
+      },
       Cell: ({ row }) => (
         <div
           onClick={() => {
