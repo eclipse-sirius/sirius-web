@@ -1,0 +1,255 @@
+= ADR-190 - Update the template used to convert elements of the DSL
+
+== Context
+
+Over the past few years the classes used to convert view based descriptions into programmatic ones have massively grown in complexity. 
+
+This could be easily explained by the addition of new features in both the view DSL and the programmatic API but it is not a real factor given that this has not affected other parts of the codebase.
+When this part of the code has first been developed, it did not embrace that much a service based architecture leveraging spring beans.
+Since no one has ever challenged this status quo, the code only grew bigger and bigger while using basic Java concepts.
+It is especially relevant in the main service classes that connect all the parts of the view transformation.
+
+Those service class have reached a critical state in terms of responsibilities and coupling.
+Recently the `ViewFormDescriptionConverter` has been separated in several dozen of independent classes showing how much responsibility and coupling it had accumulated over the years.
+The same situation is visible in other services used to transform view based descriptions.
+
+While the state of the `ViewFormDescriptionConverter` is better now, given that it does not hold as many responsibilities as before, it still has a critical flaw.
+With the current pattern, it is still responsible for the retrieval of every single Java service that may be used by one of the downstream classes it uses.
+For example, it is has to depend on `IEditService` just like countless of other services just because deep down someone may execute a delete model operation and this feature needs it.
+
+As a result, we have arrived to a situation where the root service like `ViewFormDescriptionConverter` and even downstream services are just reinventing programmatically the behavior of the spring dependency injection mechanism.
+This cannot continue any longer given that a lot of those services are maxing out the number of dependencies that can be required.
+As a result, the pattern used must changed and be aligned with the rest of the code by leveraging spring dependency injection mechanism.
+
+This part of the code needs to fall back in line with the law of demeter urgently.
+
+
+== Decision
+
+To improve the current situation, we need to break the current pattern used where the root service is requiring all the relevant services for all the operations to transform the view DSL.
+
+```
+@Service
+public class ViewXxxDescriptionConverter {
+
+  private final IFirstService firstService;
+  private final ISecondService secondService;
+  private final IThirdService thirdService;
+  private final IFourthService fourthService;
+  private final IFifthService fifthService;
+  private final ISixthService sixthService;
+  private final ISeventhService seventhService;
+
+  public XxxDescription(org.eclipse.sirius.web.view.xxx.XxxDescription viewXxxDescription) {
+    return XxxDescription.newXxxDescription()
+        .firstConcern(variableManager -> ... do something with the first service ...)
+        .secondConcern(variableManager -> ... do something with the second service ...)
+        .thirdConcern(variableManager -> ... do something with the third service ...)
+        .fourthConcern(variableManager -> ... do something with the fourth service ...)
+        .fifthConcern(variableManager -> ... do something with the fifth service ...)
+        .sixthConcern(variableManager -> ... do something with the sixth service ...)
+        .seventhConcern(variableManager -> ... do something with the seventh service ...)
+        .build();
+  }
+}
+```
+
+In the `ViewFormDescriptionConverter`, things are a bit better since we now have reusable classes encapsulating the various concerns like this:
+
+```
+@Service
+public class ViewXxxDescriptionConverter {
+
+  private final IFirstService firstService;
+  private final ISecondService secondService;
+  private final IThirdService thirdService;
+  private final IFourthService fourthService;
+  private final IFifthService fifthService;
+  private final ISixthService sixthService;
+  private final ISeventhService seventhService;
+
+  public XxxDescription(org.eclipse.sirius.web.view.xxx.XxxDescription viewXxxDescription) {
+    return XxxDescription.newXxxDescription()
+        .firstConcern(new FirstConcernHandler(this.firstService))
+        .secondConcern(new SecondConcernHandler(this.secondService))
+        .thirdConcern(new ThirdConcernHandler(this.thirdService))
+        .fourthConcern(new FourthConcernHandler(this.fourthService))
+        .fifthConcern(new FifthConcernHandler(this.fifthService))
+        .sixthConcern(new SixthConcernHandler(this.sixthService))
+        .seventhConcern(new SeventhServiceHandler(this.seventhService))
+        .build();
+  }
+}
+```
+
+Yet the root service still has to accumulate all the dependencies of those reusable classes.
+While we could transform them as is into services, it would not solve the issue at all and would make it even worse since multiple handlers may share the same services.
+This would not fix in any way our issue:
+
+```
+@Service
+public class ViewXxxDescriptionConverter {
+
+  private final IFirstConcernHandler firstConcernHandler;
+  private final ISecondConcernHandler secondConcernHandler;
+  private final IThirdConcernHandler thirdConcernHandler;
+  private final IFourthConcernHandler fourthConcernHandler;
+  private final IFifthConcernHandler fifthConcernHandler;
+  private final ISixthConcernHandler sixthConcernHandler;
+  private final ISeventhConcernHandler seventhConcernHandler;
+
+  public XxxDescription(org.eclipse.sirius.web.view.xxx.XxxDescription viewXxxDescription) {
+    return XxxDescription.newXxxDescription()
+        .firstConcern(this.firstConcernHandler)
+        .secondConcern(this.secondConcernHandler)
+        .thirdConcern(this.thirdConcernHandler)
+        .fourthConcern(this.fourthConcernHandler)
+        .fifthConcern(this.fifthConcernHandler)
+        .sixthConcern(this.sixthConcernHandler)
+        .seventhConcern(this.seventhConcernHandler)
+        .build();
+  }
+}
+```
+
+We need to be able to scale regardless of the complexity of the objects of the view DSL supported.
+This is where the builder pattern can be leveraged.
+All the services involve need to do one thing and one thing only, contribute new information to a builder.
+We could thus change those classes to the following structure:
+
+```
+@Service
+public class ViewXxxDescriptionConverter {
+
+  private final List<IXxxDescriptionBuilderContributor> xxxDescriptionBuilderContributors;
+
+  public XxxDescription(org.eclipse.sirius.web.view.xxx.XxxDescription viewXxxDescription) {
+    var builder = XxxDescription.newXxxDescription()
+
+    for (var xxxDescriptionBuilderContributor: this.xxxDescriptionBuilderContributors) {
+      builder = xxxDescriptionBuilderContributor.contribute(builder);
+    }
+
+    return builder.build();
+  }
+}
+```
+
+Using an interface like:
+
+```
+public interface IXxxDescriptionBuilderContributor {
+  XxxDescription.Builder contribute(XxxDescription.Builder builder);
+}
+```
+
+We could thus has many implementation that we would like with the following pattern:
+
+```
+@Service
+public class XxxDescriptionBuilderFirstConcernContributor implements IXxxDescriptionBuilderContributor {
+
+  private final IFirstService firstService;
+
+  public XxxDescription.Builder contribute(XxxDescription.Builder builder) {
+    builder.firstConcern(variableManager -> ... do something with the first service ...)
+    return builder;
+  }
+}
+```
+
+We would thus finish trading massive classes with tons of concerns and dependencies in favor of a large set of very simple services that are responsible for one specific concern.
+
+
+Yet unfortunately, this would not be enough since it will not be sufficient to achieve our objective.
+For example, tons of these services will need to execute model operations to support the transformation of various diagram tools or form widgets.
+This can only be done properly if we can get rid of all these useless dependencies to `IEditService` for example.
+
+For that, we will need to do something about `org.eclipse.sirius.components.view.emf.OperationInterpreterViewSwitch`.
+This class is the root issue of most of our useless chain of dependencies in the view DSL.
+The main issue with it is the accumulation of responsibilities it has and thus dependencies that it requires.
+Like the infamous `IEditService`, which is useless for ~80% of the code depending on it but required mostly because of `OperationInterpreterViewSwitch`.
+
+```
+public class OperationInterpreterViewSwitch extends ViewSwitch<Optional<VariableManager>> {
+
+  private final IServiceForXxx serviceForXxx;
+
+  private final IServiceForYyy serviceForYyy;
+  
+  private final IServiceForZzz serviceForZzz;
+
+  private final IEditService editService;
+
+  public ... caseXxx(...) {
+    ... do something with serviceForXxx ...
+  }
+
+  public ... caseYyy(...) {
+    ... do something with serviceForYyy ...
+  }
+
+  public ... caseZzz(...) {
+    ... do something with serviceForZzz ...
+  }
+
+  public ... caseDeleteElement(...) {
+    this.editService.delete(...); // The most visible root of the problem
+  }
+}
+```
+
+The issue with `OperationInterpreterViewSwitch` is quite similar to the issue we have in our other classes.
+We have one classes that is accumulating more than half a dozen of responsibilities and all the dependencies of said responsibilities.
+On top of that it forces everyone who need it to suffer the same fate.
+
+At the end of the day, EMF switches are a bad pattern because they strongly encourage a large number of responsibilities in a single class.
+We need to get rid of those starting with `OperationInterpreterViewSwitch` to reverse the entire dependency chain.
+
+- `ViewDiagramDescriptionConverter` depends on `IEditService` for nothing to give it to...
+- `ToolConverter` only to give it to...
+- `DiagramOperationInterpreter` which is not using it either but gives it to...
+- `DiagramOperationInterpreterViewSwitch` which does nothing with it but gives it to...
+- `OperationInterpreterViewSwitch`
+
+In a similar fashion
+
+- `ViewFormDescriptionConverter` depends on `IEditService` for nothing too, just like pretty much all the classes below
+- `ViewFormDescriptionConverterSwitch` (and every single `IWidgetConverterProvider`)
+- `TextfieldDescriptionConverter`, `CheckboxDescriptionConverter`, `SelectDescriptionConverter`, `TextareaDescriptionConverter`, `RichTextDescriptionConverter`, `MultiSelectDescriptionConverter`, `RadioDescriptionConverter` and more...
+- `NewValueHandler`, `SelectNewValueHandler, `ButtonPushHandler`
+- `OperationInterpreter`
+- `OperationInterpreterViewSwitch`
+
+To give a magnitude of the issue, 74 files are importing `IEditService` but only 17 are really using it.
+Almost 60 classes are asking for dependencies that they do not use just to end up to give them mostly to `OperationInterpreterViewSwitch` because of a lack of dependency injection.
+
+The patterns encouraged by EMF switches are one of the most important source of technical debt in the entire codebase.
+
+
+== Status
+
+Accepted
+
+
+== Consequences
+
+We will first introduce a service based alternatives to:
+
+- `OperationInterpreterViewSwitch`
+- `OperationInterpreter`
+- `DiagramOperationInterpreterViewSwitch`
+- `DiagramOperationInterpreter`
+
+These alternatives will share the exact same behavior with the original.
+
+After that, we will reject any contribution using directly or not the problematic classes, this will force the propagation of the new pattern in the codebase.
+Then we will convert existing code to the new pattern little by little.
+
+Once this work will be done, we will be able to use way more services then what is currently possible to support the view DSL.
+On top of that, any downstream application will be able to change one of those very small service to customize a very specific part of the transformation of the view DSL.
+Given that downstream applications love new customization capabilities, this would quickly be useful for some use cases.
+It will also make the coupling fall dramatically in this part of the codebase.
+
+We will also have a strong hard look at the relevance of the 4 or 5 other EMF switches we have in the codebase.
+In the meantime, no new EMF switch shall be added to the codebase.

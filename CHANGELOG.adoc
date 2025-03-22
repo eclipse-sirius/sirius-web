@@ -19,6 +19,8 @@
 - [ADR-187] Add support of row sorting in tables
 - [ADR-188] Add Support for edges on edges
 - [ADR-189] Add actions on diagram nodes
+- [ADR-190] Update the template used to convert elements of the DSL
+
 
 === Deprecation warning
 
