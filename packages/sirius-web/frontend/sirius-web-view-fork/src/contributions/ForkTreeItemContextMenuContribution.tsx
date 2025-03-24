@@ -29,11 +29,11 @@ import { useRepresentationMetadata } from '../representationmetadata/useRepresen
 import {
   CreateForkedStudioPayload,
   CreateProjectSuccessPayload,
-  ForkViewMenuActionStates,
+  ForkTreeItemContextMenuContributionState,
   GQLCreateForkedStudioInput,
   GQLCreateForkedStudioMutationData,
   GQLErrorPayload,
-} from './ForkViewMenuAction.types';
+} from './ForkTreeItemContextMenuContribution.types';
 
 const forkViewMutation = gql`
   mutation createForkedStudio($input: CreateForkedStudioInput!) {
@@ -63,7 +63,7 @@ export const ForkTreeItemContextMenuContribution = forwardRef(
     const { addErrorMessage } = useMultiToast();
     const navigate = useNavigate();
 
-    const [state, setState] = useState<ForkViewMenuActionStates>({
+    const [state, setState] = useState<ForkTreeItemContextMenuContributionState>({
       isOpen: false,
     });
 
