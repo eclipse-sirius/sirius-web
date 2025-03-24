@@ -28,6 +28,7 @@ export interface TableContentProps {
   enableGlobalFilter: boolean;
   enablePagination: boolean;
   enableColumnOrdering: boolean;
+  enableSelectionSynchronization: boolean;
   expandedRowIds: string[];
 }
 
