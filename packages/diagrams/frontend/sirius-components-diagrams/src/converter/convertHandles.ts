@@ -13,11 +13,11 @@
 import { Position } from '@xyflow/react';
 import { GQLHandleLayoutData } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
-import { GQLNode, GQLNodeStyle, GQLViewModifier } from '../graphql/subscription/nodeFragment.types';
+import { GQLViewModifier } from '../graphql/subscription/nodeFragment.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 
 export const convertHandles = (
-  gqlNode: GQLNode<GQLNodeStyle>,
+  elementId: string,
   gqlEdges: GQLEdge[],
   handleLayoutData: GQLHandleLayoutData[]
 ): ConnectionHandle[] => {
@@ -30,12 +30,12 @@ export const convertHandles = (
       (handleLayoutData) => handleLayoutData.edgeId === edge.id && handleLayoutData.type === 'source'
     );
 
-    if (edge.sourceId === gqlNode.id) {
+    if (edge.sourceId === elementId) {
       connectionHandles.push({
-        id: `handle--source--${gqlNode.id}--${sourceHandlesCounter}`,
+        id: `handle--source--${elementId}--${sourceHandlesCounter}`,
         edgeId: edge.id,
         index: 0,
-        nodeId: gqlNode.id,
+        nodeId: elementId,
         position: alreadyLaidOutSourceHandle ? <Position>alreadyLaidOutSourceHandle.handlePosition : Position.Left,
         XYPosition: alreadyLaidOutSourceHandle ? alreadyLaidOutSourceHandle.position : undefined,
         type: 'source',
@@ -48,12 +48,12 @@ export const convertHandles = (
       (handleLayoutData) => handleLayoutData.edgeId === edge.id && handleLayoutData.type === 'target'
     );
 
-    if (edge.targetId === gqlNode.id) {
+    if (edge.targetId === elementId) {
       connectionHandles.push({
-        id: `handle--target--${gqlNode.id}--${targetHandlesCounter}`,
+        id: `handle--target--${elementId}--${targetHandlesCounter}`,
         edgeId: edge.id,
         index: 0,
-        nodeId: gqlNode.id,
+        nodeId: elementId,
         position: alreadyLaidOutTargetHandle ? <Position>alreadyLaidOutTargetHandle.handlePosition : Position.Left,
         XYPosition: alreadyLaidOutTargetHandle ? alreadyLaidOutTargetHandle.position : undefined,
         type: 'target',
@@ -62,21 +62,22 @@ export const convertHandles = (
       targetHandlesCounter += 1;
     }
   });
+
   connectionHandles.push({
-    id: `handle--source--${gqlNode.id}--${sourceHandlesCounter}`,
+    id: `handle--source--${elementId}--${sourceHandlesCounter}`,
     edgeId: '',
     index: 0,
-    nodeId: gqlNode.id,
+    nodeId: elementId,
     position: Position.Right,
     type: 'source',
     hidden: true,
   });
 
   connectionHandles.push({
-    id: `handle--target--${gqlNode.id}--${targetHandlesCounter}`,
+    id: `handle--target--${elementId}--${targetHandlesCounter}`,
     edgeId: '',
     index: 0,
-    nodeId: gqlNode.id,
+    nodeId: elementId,
     position: Position.Left,
     type: 'target',
     hidden: true,

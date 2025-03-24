@@ -129,8 +129,13 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
   useEffect(() => {
     const { diagram, cause } = diagramRefreshedEventPayload;
-    const convertedDiagram: Diagram = convertDiagram(diagram, nodeConverters, diagramDescription, edgeType);
-
+    const convertedDiagram: Diagram = convertDiagram(
+      diagram,
+      nodeConverters,
+      diagramDescription,
+      edgeType,
+      store.getState()
+    );
     convertedDiagram.nodes = convertedDiagram.nodes.map((convertedNode) => {
       const currentNode = getNode(convertedNode.id);
       if (

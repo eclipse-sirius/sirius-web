@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,9 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Edge, Node } from '@xyflow/react';
+import { Edge, HandleType, Node, ReactFlowState } from '@xyflow/react';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagram } from '../graphql/subscription/diagramFragment.types';
+import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
 import { GQLLabel } from '../graphql/subscription/labelFragment.types';
 import {
   GQLNode,
@@ -28,6 +29,7 @@ import { MultiLabelEdgeData } from '../renderer/edge/MultiLabelEdge.types';
 import { RawDiagram } from '../renderer/layout/layout.types';
 import { computeBorderNodeExtents, computeBorderNodePositions } from '../renderer/layout/layoutBorderNodes';
 import { layoutHandles } from '../renderer/layout/layoutHandles';
+import { GQLEdgeLayoutData } from '../renderer/layout/useSynchronizeLayoutData.types';
 import { DiagramNodeType } from '../renderer/node/NodeTypes.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
@@ -36,7 +38,7 @@ import { ImageNodeConverter } from './ImageNodeConverter';
 import { ListNodeConverter } from './ListNodeConverter';
 import { RectangleNodeConverter } from './RectangleNodeConverter';
 import { convertContentStyle, convertLabelStyle } from './convertLabel';
-import { GQLEdgeLayoutData } from '../renderer/layout/useSynchronizeLayoutData.types';
+import { createEdgeAnchorNode } from './edgeAnchorNodeFactory';
 
 const nodeDepth = (nodeId2node: Map<string, Node>, nodeId: string): number => {
   const node = nodeId2node.get(nodeId);
@@ -79,6 +81,22 @@ export const convertLineStyle = (lineStyle: string): string => {
 export const isListLayoutStrategy = (strategy: ILayoutStrategy | undefined): strategy is ListLayoutStrategy =>
   strategy?.kind === 'List';
 
+const getOrCreateAnchorNodeEdge = (
+  state: ReactFlowState<Node<NodeData>, Edge<EdgeData>>,
+  type: HandleType,
+  gqlEdge: GQLEdge,
+  edges: GQLEdge[]
+): Node<NodeData> | undefined => {
+  // We need to use the already rendered node in order to preserve its position and avoid flickering after a refresh
+  const id = type === 'source' ? gqlEdge.sourceId : gqlEdge.targetId;
+  const alreadyExistingNode = state.nodeLookup.get(id);
+  if (!alreadyExistingNode) {
+    return createEdgeAnchorNode(gqlEdge, type, edges);
+  } else {
+    return state.nodeLookup.get(id);
+  }
+};
+
 const defaultNodeConverters: INodeConverter[] = [
   new RectangleNodeConverter(),
   new ImageNodeConverter(),
@@ -90,7 +108,8 @@ export const convertDiagram = (
   gqlDiagram: GQLDiagram,
   nodeConverterContributions: INodeConverter[],
   diagramDescription: GQLDiagramDescription,
-  edgeType: DiagramEdgeType
+  edgeType: DiagramEdgeType,
+  state: ReactFlowState<Node<NodeData>, Edge<EdgeData>>
 ): Diagram => {
   const nodes: Node<NodeData, DiagramNodeType>[] = [];
   const convertEngine: IConvertEngine = {
@@ -140,10 +159,36 @@ export const convertDiagram = (
 
   const nodeId2Depth = new Map<string, number>();
   nodes.forEach((node) => nodeId2Depth.set(node.id, nodeDepth(nodeId2node, node.id)));
+
   let usedHandles: string[] = [];
-  const edges: Edge<EdgeData>[] = gqlDiagram.edges.map((gqlEdge) => {
-    const sourceNode: Node<NodeData> | undefined = nodeId2node.get(gqlEdge.sourceId);
-    const targetNode: Node<NodeData> | undefined = nodeId2node.get(gqlEdge.targetId);
+
+  let edges: Edge<EdgeData>[] = gqlDiagram.edges.map((gqlEdge) => {
+    let sourceNode: Node<NodeData> | undefined = nodeId2node.get(gqlEdge.sourceId);
+    let targetNode: Node<NodeData> | undefined = nodeId2node.get(gqlEdge.targetId);
+    const edgePath = state.edgeLookup.get(gqlEdge.id) ? state.edgeLookup.get(gqlEdge.id)?.data?.edgePath : '';
+
+    //If the node have not been converted, then the source or target is an edge
+    if (!sourceNode) {
+      //If the node used as an anchor was not converted already
+      if (!nodeId2node.get(gqlEdge.sourceId)) {
+        sourceNode = getOrCreateAnchorNodeEdge(state, 'source', gqlEdge, gqlDiagram.edges);
+        if (sourceNode) {
+          nodeId2node.set(sourceNode.id, sourceNode);
+          nodes.push(sourceNode);
+        }
+      }
+    }
+
+    if (!targetNode) {
+      if (!nodeId2node.get(gqlEdge.targetId)) {
+        targetNode = getOrCreateAnchorNodeEdge(state, 'target', gqlEdge, gqlDiagram.edges);
+        if (targetNode) {
+          nodeId2node.set(targetNode.id, targetNode);
+          nodes.push(targetNode);
+        }
+      }
+    }
+
     const edgeLayoutData: GQLEdgeLayoutData | undefined = gqlDiagram.layoutData.edgeLayoutData.find(
       (layoutData) => layoutData.id === gqlEdge.id
     );
@@ -155,6 +200,7 @@ export const convertDiagram = (
       faded: gqlEdge.state === GQLViewModifier.Faded,
       centerLabelEditable: gqlEdge.centerLabelEditable,
       bendingPoints: edgeLayoutData?.bendingPoints ?? null,
+      edgePath,
     };
 
     if (gqlEdge.beginLabel) {
@@ -191,8 +237,8 @@ export const convertDiagram = (
     return {
       id: gqlEdge.id,
       type: edgeType,
-      source: gqlEdge.sourceId,
-      target: gqlEdge.targetId,
+      source: sourceNode ? sourceNode.id : '',
+      target: targetNode ? targetNode.id : '',
       markerEnd: `${gqlEdge.style.targetArrow}--${gqlEdge.id}--markerEnd`,
       markerStart: `${gqlEdge.style.sourceArrow}--${gqlEdge.id}--markerStart`,
       zIndex: 2000,
