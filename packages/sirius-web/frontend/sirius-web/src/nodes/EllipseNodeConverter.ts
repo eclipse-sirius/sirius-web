@@ -63,7 +63,7 @@ const toEllipseNode = (
     .filter((nodeLayoutData) => nodeLayoutData.id === id)
     .flatMap((nodeLayoutData) => nodeLayoutData.handleLayoutData);
 
-  const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges, handleLayoutData);
+  const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode.id, gqlEdges, handleLayoutData);
 
   const gqlNodeLayoutData: GQLNodeLayoutData | undefined = gqlDiagram.layoutData.nodeLayoutData.find(
     (nodeLayoutData) => nodeLayoutData.id === id
