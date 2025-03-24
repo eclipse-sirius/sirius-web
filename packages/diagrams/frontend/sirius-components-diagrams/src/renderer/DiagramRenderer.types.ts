@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -71,6 +71,7 @@ export interface EdgeData extends Record<string, unknown> {
   faded: boolean;
   centerLabelEditable: boolean;
   bendingPoints: XYPosition[] | null;
+  edgePath?: string;
 }
 
 export interface InsideLabel {

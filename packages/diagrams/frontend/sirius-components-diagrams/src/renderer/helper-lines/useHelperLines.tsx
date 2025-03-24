@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,7 @@ import {
 } from '@xyflow/react';
 import { NodeLookup } from '@xyflow/system';
 import { useCallback, useState } from 'react';
-import { EdgeData, NodeData, BorderNodePosition } from '../DiagramRenderer.types';
+import { BorderNodePosition, EdgeData, NodeData } from '../DiagramRenderer.types';
 import { getPositionAbsoluteFromNodeChange, isDescendantOf } from '../layout/layoutNode';
 import { horizontalHelperLinesSnapGap, verticalHelperLinesSnapGap } from '../layout/layoutParams';
 import { HelperLines, UseHelperLinesState, UseHelperLinesValue } from './useHelperLines.types';
@@ -82,6 +82,7 @@ const getHelperLinesForMove = (
   const movingNodesWidth: number = movingNodesBounds.x2 - movingNodesBounds.x1;
   const movingNodesHeight: number = movingNodesBounds.y2 - movingNodesBounds.y1;
   return nodes
+    .filter((node) => node.type != 'edgeAnchorNode')
     .filter((node) => !movingNodes.some((n) => n.id === node.id))
     .filter((node) => !movingNodes.some((n) => isDescendantOf(n, node, nodeLookUp)))
     .reduce<HelperLines>((helperLines, otherNode) => {
@@ -188,6 +189,7 @@ const getHelperLinesForResize = (
       y2: resizingNode.internals.positionAbsolute.y + (change.dimensions.height ?? 0),
     };
     return nodes
+      .filter((node) => node.type != 'edgeAnchorNode')
       .filter((node) => node.id != resizingNode.id)
       .filter((node) => !isDescendantOf(resizingNode, node, nodeLookup))
       .reduce<HelperLines>((helperLines, otherNode) => {
@@ -260,6 +262,7 @@ const getHelperLinesForResizeAndMove = (
         (resizingChange.dimensions.height ?? 0),
     };
     return nodes
+      .filter((node) => node.type != 'edgeAnchorNode')
       .filter((node) => node.id != resizingNode.id)
       .filter((node) => !isDescendantOf(resizingNode, node, nodeLookup))
       .reduce<HelperLines>((helperLines, otherNode) => {
