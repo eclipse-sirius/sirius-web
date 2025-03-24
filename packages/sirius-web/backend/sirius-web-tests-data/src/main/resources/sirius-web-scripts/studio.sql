@@ -517,6 +517,30 @@ INSERT INTO document (
                        }
                      }
                    }
+                 ],
+                 "edgeDescriptions":[
+                   {
+                     "id":"3aa78047-dd0e-43b1-9628-a638b2fe7a2b",
+                     "eClass":"diagram:EdgeDescription",
+                     "data":{
+                       "name":"Siblings",
+                       "sourceExpression":"aql:self",
+                       "sourceDescriptions":[
+                         "//@descriptions.0/@nodeDescriptions.0"
+                       ],
+                       "targetExpression":"aql:self",
+                       "targetDescriptions":[
+                         "//@descriptions.0/@nodeDescriptions.1"
+                       ],
+                       "style":{
+                         "id":"a2a3713f-57bc-422b-92e8-b22ed69e94a8",
+                         "eClass":"diagram:EdgeStyle",
+                         "data":{
+                           "edgeWidth":"5"
+                         }
+                       }
+                     }
+                   }
                  ]
                }
              }

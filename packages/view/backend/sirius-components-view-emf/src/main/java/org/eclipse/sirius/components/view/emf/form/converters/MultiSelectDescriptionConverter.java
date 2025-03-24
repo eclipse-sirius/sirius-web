@@ -17,7 +17,6 @@ import static org.eclipse.sirius.components.view.emf.form.ViewFormDescriptionCon
 import java.util.Objects;
 import java.util.function.Function;
 
-import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.MultiSelectStyle;
@@ -31,6 +30,7 @@ import org.eclipse.sirius.components.view.emf.form.MultiSelectStyleProvider;
 import org.eclipse.sirius.components.view.emf.form.converters.validation.DiagnosticKindProvider;
 import org.eclipse.sirius.components.view.emf.form.converters.validation.DiagnosticMessageProvider;
 import org.eclipse.sirius.components.view.emf.form.converters.validation.DiagnosticProvider;
+import org.eclipse.sirius.components.view.emf.operations.api.IOperationExecutor;
 import org.eclipse.sirius.components.view.form.MultiSelectDescriptionStyle;
 
 /**
@@ -44,16 +44,16 @@ public class MultiSelectDescriptionConverter {
 
     private final IObjectService objectService;
 
-    private final IEditService editService;
+    private final IOperationExecutor operationExecutor;
 
     private final IFeedbackMessageService feedbackMessageService;
 
     private final IFormIdProvider widgetIdProvider;
 
-    public MultiSelectDescriptionConverter(AQLInterpreter interpreter, IObjectService objectService, IEditService editService, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
+    public MultiSelectDescriptionConverter(AQLInterpreter interpreter, IObjectService objectService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.objectService = Objects.requireNonNull(objectService);
-        this.editService = Objects.requireNonNull(editService);
+        this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.widgetIdProvider = Objects.requireNonNull(widgetIdProvider);
     }
@@ -87,7 +87,7 @@ public class MultiSelectDescriptionConverter {
                 .optionIdProvider(new OptionIdProvider(this.objectService))
                 .optionLabelProvider(new StringValueProvider(this.interpreter, viewMultiSelectDescription.getCandidateLabelExpression()))
                 .optionIconURLProvider(new OptionIconURLsProvider(this.objectService))
-                .newValuesHandler(new MultiSelectNewValueHandler(this.interpreter, this.objectService, this.editService, this.feedbackMessageService, viewMultiSelectDescription.getBody()))
+                .newValuesHandler(new MultiSelectNewValueHandler(this.interpreter, this.objectService, this.operationExecutor, this.feedbackMessageService, viewMultiSelectDescription.getBody()))
                 .styleProvider(styleProvider)
                 .diagnosticsProvider(new DiagnosticProvider(this.interpreter, viewMultiSelectDescription.getDiagnosticsExpression()))
                 .kindProvider(new DiagnosticKindProvider())

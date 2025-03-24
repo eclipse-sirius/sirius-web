@@ -67,6 +67,12 @@ Downstream projects contributing their own route will have to use a `ExtensionRe
 - https://github.com/eclipse-sirius/sirius-web/issues/4727[#4727] [domain] [sirius-web] a new parameter has been added to `Viewer#getProjects` in the graphql API, and thus, the `IProjectApplicationService` and the `IProjectSearchService` API have been updated accordingly.
 + Queries of `ProjectSearchRepositoryDelegate` has been updated so any downstream project providing their own `IProjectSearchRepositoryDelegate` may have to change on their queries if they want the filter on project to work.
 - [tree] The type `TreeItemContextMenuEntry` which was exported by `sirius-components-trees` has been replaced with the raw GraphQL type `GQLTreeItemContextMenuEntry`
+- https://github.com/eclipse-sirius/sirius-web/issues/4750[#4750] [view] Classes used to evaluate model operations based on the EMF Switch pattern such as `OperationInterpreter`, `OperationInterpreterViewSwitch`, `DiagramOperationInterpreter` and `DiagramOperationInterpreterViewSwitch` have been removed in favor of a service based approach used in most of our code.
+The use of these classes can be replaced by the new Spring service `IOperationExecutor`.
+This new approach offer a better API with an explicit status as a result (instead of an `Optional<VariableManager>`).
+It also offers some additional customization capabilities for those who may want to change the behavior of the evaluation of the model operations.
+On top of that, the API of `IWidgetConverterProvider` has been simplified and useless dependencies have been removed.
+Given that implementations of this interface should be Spring services, they can retrieve their relevant dependencies by themselves.
 
 
 === Dependency update
@@ -176,6 +182,10 @@ Except for the specific case where `cause === 'refresh'` in `DiagramRenderer` (w
 - https://github.com/eclipse-sirius/sirius-web/issues/4376[#4376] [sirius-web] Synchronize the selection with the URL
 - https://github.com/eclipse-sirius/sirius-web/issues/3993[#3993] [sirius-web] Leverage material-react-table for the project browser
 - [tree] Improve the organization of the code of the tree item context menu
+- https://github.com/eclipse-sirius/sirius-web/issues/4750[#4750] [view] Use a service based approach to evaluate model operations.
+The code used to evaluate model operations has been entirely rewritten in order to lower the coupling between various concepts and remove irrelevant dependencies like `IEditService`.
+See the ADR 190 for additional details on the goal of this refactoring.
+- https://github.com/eclipse-sirius/sirius-web/issues/4733[#4733] [view] The variable `__NEW_INSTANCES_COLLECTOR__` has been removed in favor of a proper API in the result of the evaluation of an expression
 
 
 == v2025.2.0

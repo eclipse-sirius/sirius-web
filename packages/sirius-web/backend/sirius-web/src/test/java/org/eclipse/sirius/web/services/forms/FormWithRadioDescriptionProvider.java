@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -87,7 +87,21 @@ public class FormWithRadioDescriptionProvider implements IEditingContextProcesso
     }
 
     private FormDescription createFormDescription() {
+        var conditionalStyle = new FormBuilders().newConditionalRadioDescriptionStyle()
+                .condition("aql:self.superTypes->first().name = 'Human'")
+                .bold(true)
+                .italic(true)
+                .strikeThrough(true)
+                .underline(true)
+                .fontSize(24)
+                .build();
+
         var defaultStyle = new FormBuilders().newRadioDescriptionStyle()
+                .bold(false)
+                .italic(false)
+                .strikeThrough(false)
+                .underline(false)
+                .fontSize(16)
                 .build();
 
         var editRadio = new ChangeContextBuilder()
@@ -112,6 +126,7 @@ public class FormWithRadioDescriptionProvider implements IEditingContextProcesso
                 .candidatesExpression("aql:self.eContainer(domain::Domain).types")
                 .candidateLabelExpression("aql:candidate.name")
                 .style(defaultStyle)
+                .conditionalStyles(conditionalStyle)
                 .body(editRadio)
                 .build();
 

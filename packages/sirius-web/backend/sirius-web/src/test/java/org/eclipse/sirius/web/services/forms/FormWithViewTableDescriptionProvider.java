@@ -87,7 +87,6 @@ public class FormWithViewTableDescriptionProvider implements IEditingContextProc
     }
 
     private FormDescription createFormDescription() {
-
         var groupDescription = new GroupDescriptionBuilder()
                 .name("Group")
                 .labelExpression("Group")

@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -38,12 +37,13 @@ import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.view.emf.OperationInterpreter;
 import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
 import org.eclipse.sirius.components.view.emf.form.ListStyleProvider;
 import org.eclipse.sirius.components.view.emf.form.converters.validation.DiagnosticKindProvider;
 import org.eclipse.sirius.components.view.emf.form.converters.validation.DiagnosticMessageProvider;
 import org.eclipse.sirius.components.view.emf.form.converters.validation.DiagnosticProvider;
+import org.eclipse.sirius.components.view.emf.operations.api.IOperationExecutor;
+import org.eclipse.sirius.components.view.emf.operations.api.OperationExecutionStatus;
 import org.eclipse.sirius.components.view.form.ListDescriptionStyle;
 
 /**
@@ -59,13 +59,16 @@ public class ListDescriptionConverter {
 
     private final IEditService editService;
 
+    private final IOperationExecutor operationExecutor;
+
     private final IFeedbackMessageService feedbackMessageService;
 
     private final IFormIdProvider widgetIdProvider;
 
-    public ListDescriptionConverter(AQLInterpreter interpreter, IObjectService objectService, IEditService editService, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
+    public ListDescriptionConverter(AQLInterpreter interpreter, IObjectService objectService, IEditService editService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.objectService = Objects.requireNonNull(objectService);
+        this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.editService = Objects.requireNonNull(editService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.widgetIdProvider = Objects.requireNonNull(widgetIdProvider);
@@ -89,11 +92,11 @@ public class ListDescriptionConverter {
         };
 
         Function<VariableManager, IStatus> itemClickHandlerProvider = variableManager -> {
-            OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
             VariableManager childVariableManager = variableManager.createChild();
             childVariableManager.put(VARIABLE_MANAGER, variableManager);
-            Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(viewListDescription.getBody(), childVariableManager);
-            if (optionalVariableManager.isEmpty()) {
+
+            var result = this.operationExecutor.execute(interpreter, childVariableManager, viewListDescription.getBody());
+            if (result.status() == OperationExecutionStatus.FAILURE) {
                 List<Message> errorMessages = new ArrayList<>();
                 errorMessages.add(new Message("Something went wrong while handling the item click.", MessageLevel.ERROR));
                 errorMessages.addAll(this.feedbackMessageService.getFeedbackMessages());

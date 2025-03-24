@@ -23,7 +23,6 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import org.assertj.core.api.Assertions;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditCheckboxInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
@@ -139,7 +138,7 @@ public class CheckboxControllerTests extends AbstractIntegrationTests {
             var result = this.editCheckboxMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editCheckbox.__typename");
-            Assertions.assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
         Consumer<Object> updatedFormContentConsumer = payload -> Optional.of(payload)

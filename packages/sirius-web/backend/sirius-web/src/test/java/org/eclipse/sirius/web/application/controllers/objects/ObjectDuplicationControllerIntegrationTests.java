@@ -185,7 +185,7 @@ public class ObjectDuplicationControllerIntegrationTests extends AbstractIntegra
         var input = new DuplicateObjectInput(
                 UUID.randomUUID(),
                 StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
-                StudioIdentifiers.RECTANGULAR_NODE_STYLE_OBJECT,
+                StudioIdentifiers.RECTANGULAR_NODE_STYLE_OBJECT.toString(),
                 StudioIdentifiers.HUMAN_NODE_DESCRIPTION_OBJECT.toString(),
                 "style",
                 false,

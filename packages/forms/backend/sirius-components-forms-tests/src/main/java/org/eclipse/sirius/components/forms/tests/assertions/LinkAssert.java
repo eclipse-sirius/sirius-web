@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -89,6 +89,38 @@ public class LinkAssert extends AbstractAssert<LinkAssert, Link> {
     public LinkAssert isNotItalic() {
         assertThat(this.actual.getStyle().isItalic())
                 .withFailMessage("Expecting the link not to be italic but was italic instead")
+                .isFalse();
+
+        return this;
+    }
+
+    public LinkAssert isStrikeThrough() {
+        assertThat(this.actual.getStyle().isStrikeThrough())
+                .withFailMessage("Expecting the link to be strike through but was not strike through instead")
+                .isTrue();
+
+        return this;
+    }
+
+    public LinkAssert isNotStrikeThrough() {
+        assertThat(this.actual.getStyle().isStrikeThrough())
+                .withFailMessage("Expecting the link not to be strike through but was strike through instead")
+                .isFalse();
+
+        return this;
+    }
+
+    public LinkAssert isUnderline() {
+        assertThat(this.actual.getStyle().isUnderline())
+                .withFailMessage("Expecting the link to be underline but was not underline instead")
+                .isTrue();
+
+        return this;
+    }
+
+    public LinkAssert isNotUnderline() {
+        assertThat(this.actual.getStyle().isUnderline())
+                .withFailMessage("Expecting the link not to be underline but was underline instead")
                 .isFalse();
 
         return this;

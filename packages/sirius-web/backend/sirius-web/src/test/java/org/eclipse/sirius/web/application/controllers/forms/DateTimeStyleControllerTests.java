@@ -20,7 +20,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import org.assertj.core.api.Assertions;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.DateTime;
@@ -90,10 +89,10 @@ public class DateTimeStyleControllerTests extends AbstractIntegrationTests {
                     var groupNavigator = new FormNavigator(form).page("Page").group("Group");
                     var dateTime = groupNavigator.findWidget("Start Date", DateTime.class);
 
-                    Assertions.assertThat(dateTime.getStyle().getBackgroundColor()).isEqualTo("#7FFFD4");
-                    Assertions.assertThat(dateTime.getStyle().getForegroundColor()).isEqualTo("#7FFFD4");
-                    Assertions.assertThat(dateTime.getStyle().isItalic()).isFalse();
-                    Assertions.assertThat(dateTime.getStyle().isBold()).isFalse();
+                    assertThat(dateTime.getStyle().getBackgroundColor()).isEqualTo("#7FFFD4");
+                    assertThat(dateTime.getStyle().getForegroundColor()).isEqualTo("#7FFFD4");
+                    assertThat(dateTime.getStyle().isItalic()).isFalse();
+                    assertThat(dateTime.getStyle().isBold()).isFalse();
                     assertThat(dateTime.getStyle().getWidgetGridLayout())
                             .hasGridTemplateColumns("none")
                             .hasGridTemplateRows("none")
@@ -124,10 +123,10 @@ public class DateTimeStyleControllerTests extends AbstractIntegrationTests {
                     var groupNavigator = new FormNavigator(form).page("Page").group("Group");
                     var dateTime = groupNavigator.findWidget("Start Date", DateTime.class);
 
-                    Assertions.assertThat(dateTime.getStyle().getBackgroundColor()).isEqualTo("#A52A2A");
-                    Assertions.assertThat(dateTime.getStyle().getForegroundColor()).isEqualTo("#A52A2A");
-                    Assertions.assertThat(dateTime.getStyle().isItalic()).isTrue();
-                    Assertions.assertThat(dateTime.getStyle().isBold()).isTrue();
+                    assertThat(dateTime.getStyle().getBackgroundColor()).isEqualTo("#A52A2A");
+                    assertThat(dateTime.getStyle().getForegroundColor()).isEqualTo("#A52A2A");
+                    assertThat(dateTime.getStyle().isItalic()).isTrue();
+                    assertThat(dateTime.getStyle().isBold()).isTrue();
                     assertThat(dateTime.getStyle().getWidgetGridLayout())
                             .hasGridTemplateColumns("max-content")
                             .hasGridTemplateRows("max-content")

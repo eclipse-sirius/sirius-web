@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,7 +32,6 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
-import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
@@ -48,8 +47,9 @@ import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.Operation;
-import org.eclipse.sirius.components.view.emf.OperationInterpreter;
 import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
+import org.eclipse.sirius.components.view.emf.operations.api.IOperationExecutor;
+import org.eclipse.sirius.components.view.emf.operations.api.OperationExecutionStatus;
 import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
@@ -72,7 +72,7 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<O
 
     private final IObjectService objectService;
 
-    private final IEditService editService;
+    private final IOperationExecutor operationExecutor;
 
     private final IFeedbackMessageService feedbackMessageService;
 
@@ -84,12 +84,12 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<O
 
     private final IEMFKindService emfKindService;
 
-    public ReferenceWidgetDescriptionConverterSwitch(AQLInterpreter interpreter, IObjectService objectService, IEditService editService,
-            IEMFKindService emfKindService, IFeedbackMessageService feedbackMessageService, ComposedAdapterFactory composedAdapterFactory, IFormIdProvider widgetIdProvider) {
+    public ReferenceWidgetDescriptionConverterSwitch(AQLInterpreter interpreter, IObjectService objectService, IOperationExecutor operationExecutor,
+                                                     IEMFKindService emfKindService, IFeedbackMessageService feedbackMessageService, ComposedAdapterFactory composedAdapterFactory, IFormIdProvider widgetIdProvider) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.objectService = Objects.requireNonNull(objectService);
+        this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.widgetIdProvider = Objects.requireNonNull(widgetIdProvider);
-        this.editService = Objects.requireNonNull(editService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.adapterFactory = composedAdapterFactory;
         this.semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(objectService::getId).orElse(null);
@@ -267,16 +267,14 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<O
     }
 
     private IStatus newValueHandler(VariableManager variableManager, List<Operation> operations) {
-        OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
-        Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, variableManager);
-        if (optionalVariableManager.isEmpty()) {
+        var result = this.operationExecutor.execute(this.interpreter, variableManager, operations);
+        if (result.status() == OperationExecutionStatus.FAILURE) {
             List<Message> errorMessages = new ArrayList<>();
             errorMessages.add(new Message("Something went wrong while setting the reference value.", MessageLevel.ERROR));
             errorMessages.addAll(this.feedbackMessageService.getFeedbackMessages());
             return new Failure(errorMessages);
-        } else {
-            return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
         }
+        return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
     }
 
     private boolean matches(String condition, VariableManager variableManager) {

@@ -24,10 +24,7 @@ import java.util.function.Function;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
-import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
 import org.eclipse.sirius.components.diagrams.tools.ITool;
@@ -48,9 +45,8 @@ import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
-import org.eclipse.sirius.components.view.diagram.Tool;
-import org.eclipse.sirius.components.view.emf.OperationInterpreterViewSwitch;
-import org.eclipse.sirius.components.view.emf.diagram.providers.api.IViewToolImageProvider;
+import org.eclipse.sirius.components.view.emf.diagram.tools.ToolExecutor;
+import org.eclipse.sirius.components.view.emf.diagram.tools.api.IToolExecutor;
 
 /**
  * Convert View-based tool definitions into ITools.
@@ -59,25 +55,20 @@ import org.eclipse.sirius.components.view.emf.diagram.providers.api.IViewToolIma
  */
 public class ToolConverter {
 
-    private static final String CONVERTED_NODES_VARIABLE = "convertedNodes";
-
     private final IObjectService objectService;
 
-    private final IEditService editService;
+    private final IToolExecutor toolExecutor;
 
-    private final IFeedbackMessageService feedbackMessageService;
+    private final IDiagramIdProvider diagramIdProvider;
 
     private final Function<EObject, UUID> idProvider = (eObject) -> {
         // DiagramElementDescription should have a proper id.
         return UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes());
     };
 
-    private final IDiagramIdProvider diagramIdProvider;
-
-    public ToolConverter(IObjectService objectService, IEditService editService, IViewToolImageProvider viewToolImageProvider, IFeedbackMessageService feedbackMessageService, IDiagramIdProvider diagramIdProvider) {
+    public ToolConverter(IObjectService objectService, IToolExecutor toolExecutor, IDiagramIdProvider diagramIdProvider) {
         this.objectService = Objects.requireNonNull(objectService);
-        this.editService = Objects.requireNonNull(editService);
-        this.feedbackMessageService = feedbackMessageService;
+        this.toolExecutor = Objects.requireNonNull(toolExecutor);
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
     }
 
@@ -205,10 +196,10 @@ public class ToolConverter {
                 .label(nodeTool.getName())
                 .iconURL(this.toolIconURLProvider(nodeTool.getIconURLsExpression(), ViewToolImageProvider.NODE_CREATION_TOOL_ICON, converterContext.getInterpreter()))
                 .handler(variableManager -> {
-                    VariableManager child = variableManager.createChild();
-                    child.put(CONVERTED_NODES_VARIABLE, convertedNodes);
-                    var result = this.execute(converterContext, convertedNodes, nodeTool, child);
-                    this.applyElementsToSelectExpression(result, converterContext, child, nodeTool.getElementsToSelectExpression());
+                    VariableManager childVariableManager = variableManager.createChild();
+                    childVariableManager.put(ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE, convertedNodes);
+                    var result = this.toolExecutor.executeTool(nodeTool, converterContext.getInterpreter(), childVariableManager);
+                    this.applyElementsToSelectExpression(result, converterContext, childVariableManager, nodeTool.getElementsToSelectExpression());
                     return result;
                 })
                 .targetDescriptions(List.of())
@@ -229,11 +220,12 @@ public class ToolConverter {
                         .targets(edgeTool.getTargetElementDescriptions().stream().map(convertedNodes::get).toList())
                         .build()))
                 .handler(variableManager -> {
-                    VariableManager child = variableManager.createChild();
-                    child.put(CONVERTED_NODES_VARIABLE, convertedNodes);
-                    child.put("nodeDescription", nodeDescription);
-                    var result = this.execute(converterContext, convertedNodes, edgeTool, child);
-                    this.applyElementsToSelectExpression(result, converterContext, child, edgeTool.getElementsToSelectExpression());
+                    VariableManager childVariableManager = variableManager.createChild();
+                    childVariableManager.put(ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE, convertedNodes);
+                    childVariableManager.put("nodeDescription", nodeDescription);
+
+                    var result = this.toolExecutor.executeTool(edgeTool, converterContext.getInterpreter(), childVariableManager);
+                    this.applyElementsToSelectExpression(result, converterContext, childVariableManager, edgeTool.getElementsToSelectExpression());
                     return result;
                 })
                 .dialogDescriptionId(this.diagramIdProvider.getId(edgeTool.getDialogDescription()))
@@ -254,14 +246,17 @@ public class ToolConverter {
                             .toList();
                 }
             }
-            @SuppressWarnings("unchecked")
-            var collectedNewInstances = (Map<String, Object>) success.getParameters().getOrDefault(OperationInterpreterViewSwitch.NEW_INSTANCES_COLLECTOR, Map.of());
+
             // Evaluate the expression
             Map<String, Object> variables = new HashMap<>(variableManager.getVariables());
             variables.put(Success.NEW_SELECTION, newSelection);
-            for (var entry : collectedNewInstances.entrySet()) {
-                variables.put(entry.getKey(), entry.getValue());
+
+            Map<String, Object> newInstances = Map.of();
+            if (success.getParameters().get(ToolExecutor.NAMED_INSTANCES) instanceof Map<?, ?>) {
+                newInstances = (Map<String, Object>) success.getParameters().get(ToolExecutor.NAMED_INSTANCES);
             }
+            variables.putAll(newInstances);
+
             var optionalComputedNewSelection = converterContext.getInterpreter().evaluateExpression(variables, elementsToSelectExpression).asObjects();
             if (optionalComputedNewSelection.isPresent()) {
                 // Convert back the result into a WorkbenchSelection
@@ -271,14 +266,6 @@ public class ToolConverter {
                 success.getParameters().put(Success.NEW_SELECTION, new WorkbenchSelection(entries));
             }
         }
-    }
-
-    private IStatus execute(ViewDiagramDescriptionConverterContext converterContext, Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes, Tool tool,
-            VariableManager variableManager) {
-        IDiagramContext diagramContext = variableManager.get(IDiagramContext.DIAGRAM_CONTEXT, IDiagramContext.class).orElse(null);
-        var operationInterpreter = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, diagramContext, convertedNodes,
-                this.feedbackMessageService);
-        return operationInterpreter.executeTool(tool, variableManager);
     }
 
     private List<String> toolIconURLProvider(String iconURLsExpression, String defaultIconURL, AQLInterpreter interpreter) {

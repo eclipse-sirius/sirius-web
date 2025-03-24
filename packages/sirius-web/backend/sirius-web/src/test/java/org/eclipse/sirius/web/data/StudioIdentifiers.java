@@ -70,7 +70,9 @@ public final class StudioIdentifiers {
     public static final String TABLE_DESCRIPTION_ID = "siriusComponents://representationDescription?kind=tableDescription&sourceKind=view&sourceId=" +
             StudioIdentifiers.VIEW_DOCUMENT + "&sourceElementId=" + StudioIdentifiers.TABLE_ID;
 
-    public static final String RECTANGULAR_NODE_STYLE_OBJECT = "d8f8f5f4-5044-45ec-860a-aa1122e192e7";
+    public static final UUID RECTANGULAR_NODE_STYLE_OBJECT = UUID.fromString("d8f8f5f4-5044-45ec-860a-aa1122e192e7");
+
+    public static final UUID EDGE_STYLE_OBJECT = UUID.fromString("a2a3713f-57bc-422b-92e8-b22ed69e94a8");
 
     private StudioIdentifiers() {
         // Prevent instantiation

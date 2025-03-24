@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,15 +13,11 @@
 package org.eclipse.sirius.components.view.emf.diagram;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IReconnectionToolsExecutor;
 import org.eclipse.sirius.components.collaborative.diagrams.api.ReconnectionToolInterpreterData;
-import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
@@ -35,6 +31,8 @@ import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionPredicate;
 import org.eclipse.sirius.components.view.emf.api.IViewAQLInterpreterFactory;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
+import org.eclipse.sirius.components.view.emf.operations.api.IOperationExecutor;
+import org.eclipse.sirius.components.view.emf.operations.api.OperationExecutionStatus;
 import org.springframework.stereotype.Service;
 
 /**
@@ -45,9 +43,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor {
 
-    private final IObjectService objectService;
-
-    private final IEditService editService;
+    private final IOperationExecutor operationExecutor;
 
     private final IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService;
 
@@ -55,15 +51,11 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
 
     private final IViewAQLInterpreterFactory aqlInterpreterFactory;
 
-    private final IFeedbackMessageService feedbackMessageService;
-
-    public ViewReconnectionToolsExecutor(IObjectService objectService, IEditService editService, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IViewAQLInterpreterFactory aqlInterpreterFactory, IFeedbackMessageService feedbackMessageService) {
-        this.objectService = Objects.requireNonNull(objectService);
-        this.editService = Objects.requireNonNull(editService);
+    public ViewReconnectionToolsExecutor(IOperationExecutor operationExecutor, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IViewAQLInterpreterFactory aqlInterpreterFactory) {
+        this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
         this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(viewRepresentationDescriptionPredicate);
         this.aqlInterpreterFactory = Objects.requireNonNull(aqlInterpreterFactory);
-        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
     }
 
     @Override
@@ -89,12 +81,11 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
                     VariableManager variableManager = this.createVariableManager(toolInterpreterData, editingContext);
 
                     AQLInterpreter interpreter = this.aqlInterpreterFactory.createInterpreter(editingContext, (View) viewDiagramDescription.eContainer());
-                    var diagramOperationInterpreter = new DiagramOperationInterpreter(interpreter, this.objectService, this.editService, toolInterpreterData.getDiagramContext(),
-                            Map.of(), this.feedbackMessageService);
-                    diagramOperationInterpreter.executeOperations(edgeReconnectionTool.getBody(), variableManager);
+                    var result = this.operationExecutor.execute(interpreter, variableManager, edgeReconnectionTool.getBody());
+                    if (result.status() == OperationExecutionStatus.SUCCESS) {
+                        status = new Success();
+                    }
                 }
-
-                status = new Success();
             }
         }
         return status;

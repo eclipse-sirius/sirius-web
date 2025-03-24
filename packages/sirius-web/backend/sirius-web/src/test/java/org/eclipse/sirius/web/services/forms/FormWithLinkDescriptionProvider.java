@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -85,8 +85,21 @@ public class FormWithLinkDescriptionProvider implements IEditingContextProcessor
     }
 
     private FormDescription createFormDescription() {
-        var defaultTextStyle = new FormBuilders().newLinkDescriptionStyle()
+        var conditionalStyle = new FormBuilders().newConditionalLinkDescriptionStyle()
+                .condition("aql:self.name = 'buck'")
                 .bold(true)
+                .italic(true)
+                .strikeThrough(true)
+                .underline(true)
+                .fontSize(24)
+                .build();
+
+        var style = new FormBuilders().newLinkDescriptionStyle()
+                .bold(false)
+                .italic(false)
+                .strikeThrough(false)
+                .underline(false)
+                .fontSize(16)
                 .build();
 
         var linkDescription = new FormBuilders().newLinkDescription()
@@ -94,7 +107,8 @@ public class FormWithLinkDescriptionProvider implements IEditingContextProcessor
                 .labelExpression("aql:'Link'")
                 .helpExpression("Links to outside documentation")
                 .valueExpression("aql:'https://www.google.com'")
-                .style(defaultTextStyle)
+                .style(style)
+                .conditionalStyles(conditionalStyle)
                 .build();
 
         var groupDescription = new GroupDescriptionBuilder()

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -79,14 +79,12 @@ public class PushButtonEventHandler implements IFormEventHandler {
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.representationId(), formInput);
 
         if (formInput instanceof PushButtonInput input) {
-
             var optionalButton = this.formQueryService.findWidget(form, input.buttonId());
 
             IStatus status;
             if (optionalButton.map(AbstractWidget::isReadOnly).filter(Boolean::booleanValue).isPresent()) {
                 status = new Failure(this.messageService.readOnlyWidgetCannotBeEdited());
             } else {
-
                 var handler = optionalButton.filter(Button.class::isInstance)
                         .map(Button.class::cast)
                         .map(Button::getPushButtonHandler);

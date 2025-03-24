@@ -68,7 +68,6 @@ public class ToolDiagramExecutor implements IToolDiagramExecutor {
 
     @Override
     public IStatus execute(IEditingContext editingContext, Diagram diagram, String toolId, String diagramElementId, List<ToolVariable> variables) {
-
         DiagramContext diagramContext = new DiagramContext(diagram);
 
         var optionalTool = this.toolService.findToolById(editingContext, diagram, toolId)

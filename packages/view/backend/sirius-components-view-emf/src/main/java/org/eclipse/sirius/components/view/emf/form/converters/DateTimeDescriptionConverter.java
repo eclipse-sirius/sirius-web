@@ -17,11 +17,9 @@ import static org.eclipse.sirius.components.view.emf.form.ViewFormDescriptionCon
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.DateTimeStyle;
@@ -36,13 +34,14 @@ import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.view.emf.OperationInterpreter;
 import org.eclipse.sirius.components.view.emf.form.DateTimeStyleProvider;
 import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
 import org.eclipse.sirius.components.view.emf.form.ViewFormDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.form.converters.validation.DiagnosticKindProvider;
 import org.eclipse.sirius.components.view.emf.form.converters.validation.DiagnosticMessageProvider;
 import org.eclipse.sirius.components.view.emf.form.converters.validation.DiagnosticProvider;
+import org.eclipse.sirius.components.view.emf.operations.api.IOperationExecutor;
+import org.eclipse.sirius.components.view.emf.operations.api.OperationExecutionStatus;
 import org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle;
 
 /**
@@ -56,16 +55,16 @@ public class DateTimeDescriptionConverter {
 
     private final IObjectService objectService;
 
-    private final IEditService editService;
+    private final IOperationExecutor operationExecutor;
 
     private final IFeedbackMessageService feedbackMessageService;
 
     private final IFormIdProvider widgetIdProvider;
 
-    public DateTimeDescriptionConverter(AQLInterpreter interpreter, IObjectService objectService, IEditService editService, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
+    public DateTimeDescriptionConverter(AQLInterpreter interpreter, IObjectService objectService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.objectService = Objects.requireNonNull(objectService);
-        this.editService = Objects.requireNonNull(editService);
+        this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.widgetIdProvider = Objects.requireNonNull(widgetIdProvider);
     }
@@ -77,9 +76,9 @@ public class DateTimeDescriptionConverter {
             VariableManager childVariableManager = variableManager.createChild();
             childVariableManager.put(ViewFormDescriptionConverter.NEW_VALUE, newValue);
             childVariableManager.put(VARIABLE_MANAGER, variableManager);
-            OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
-            Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(viewDateTimeDescription.getBody(), childVariableManager);
-            if (optionalVariableManager.isEmpty()) {
+
+            var result = this.operationExecutor.execute(interpreter, childVariableManager, viewDateTimeDescription.getBody());
+            if (result.status() == OperationExecutionStatus.FAILURE) {
                 List<Message> errorMessages = new ArrayList<>();
                 errorMessages.add(new Message("Something went wrong while handling the widget operations execution.", MessageLevel.ERROR));
                 errorMessages.addAll(this.feedbackMessageService.getFeedbackMessages());

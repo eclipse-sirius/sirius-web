@@ -24,7 +24,6 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import org.assertj.core.api.Assertions;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditRadioInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
@@ -139,7 +138,7 @@ public class UndoRedoSemanticChangeTests extends AbstractIntegrationTests {
             var result = this.editRadioMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editRadio.__typename");
-            Assertions.assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
         Consumer<Object> updatedFormContentConsumer = payload -> Optional.of(payload)
@@ -162,7 +161,7 @@ public class UndoRedoSemanticChangeTests extends AbstractIntegrationTests {
             var result = this.undoMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.undo.__typename");
-            Assertions.assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
         Runnable redoMutation = () -> {
@@ -170,7 +169,7 @@ public class UndoRedoSemanticChangeTests extends AbstractIntegrationTests {
             var result = this.redoMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.redo.__typename");
-            Assertions.assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
         StepVerifier.create(flux)

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -24,7 +23,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.trees.api.ISingleClickTreeItemContextMenuEntryExecutor;
-import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -40,9 +38,10 @@ import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
-import org.eclipse.sirius.components.view.emf.OperationInterpreter;
 import org.eclipse.sirius.components.view.emf.ViewRepresentationDescriptionPredicate;
 import org.eclipse.sirius.components.view.emf.api.IViewAQLInterpreterFactory;
+import org.eclipse.sirius.components.view.emf.operations.api.IOperationExecutor;
+import org.eclipse.sirius.components.view.emf.operations.api.OperationExecutionStatus;
 import org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry;
 import org.springframework.stereotype.Service;
 
@@ -56,7 +55,7 @@ public class ViewSingleClickTreeItemContextMenuEntryExecutor implements ISingleC
 
     private final IFeedbackMessageService feedbackMessageService;
 
-    private final IEditService editService;
+    private final IOperationExecutor operationExecutor;
 
     private final ViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate;
 
@@ -66,9 +65,9 @@ public class ViewSingleClickTreeItemContextMenuEntryExecutor implements ISingleC
 
     private final Function<EObject, UUID> idProvider = (eObject) -> UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes());
 
-    public ViewSingleClickTreeItemContextMenuEntryExecutor(IFeedbackMessageService feedbackMessageService, IEditService editService, ViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IViewAQLInterpreterFactory aqlInterpreterFactory) {
+    public ViewSingleClickTreeItemContextMenuEntryExecutor(IFeedbackMessageService feedbackMessageService, IOperationExecutor operationExecutor, ViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IViewAQLInterpreterFactory aqlInterpreterFactory) {
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
-        this.editService = Objects.requireNonNull(editService);
+        this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(viewRepresentationDescriptionPredicate);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
         this.aqlInterpreterFactory = Objects.requireNonNull(aqlInterpreterFactory);
@@ -111,13 +110,11 @@ public class ViewSingleClickTreeItemContextMenuEntryExecutor implements ISingleC
     }
 
     private IStatus executeOperations(VariableManager variableManager, AQLInterpreter interpreter, List<Operation> operations) {
-        OperationInterpreter operationInterpreter = new OperationInterpreter(interpreter, this.editService);
-        Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, variableManager);
-        if (optionalVariableManager.isEmpty()) {
+        var result = this.operationExecutor.execute(interpreter, variableManager, operations);
+        if (result.status() == OperationExecutionStatus.FAILURE) {
             return this.buildFailureWithFeedbackMessages("Something went wrong while handling the context menu action");
-        } else {
-            return this.buildSuccessWithSemanticChangeAndFeedbackMessages();
         }
+        return this.buildSuccessWithSemanticChangeAndFeedbackMessages();
     }
 
     private Failure buildFailureWithFeedbackMessages(String technicalMessage) {

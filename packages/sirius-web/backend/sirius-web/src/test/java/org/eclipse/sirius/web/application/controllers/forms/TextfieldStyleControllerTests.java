@@ -20,7 +20,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import org.assertj.core.api.Assertions;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.Textfield;
@@ -90,13 +89,14 @@ public class TextfieldStyleControllerTests extends AbstractIntegrationTests {
                     var groupNavigator = new FormNavigator(form).page("Page").group("Group");
                     var textfield = groupNavigator.findWidget("Name", Textfield.class);
 
-                    Assertions.assertThat(textfield.getStyle().getBackgroundColor()).isEqualTo("#7FFFD4");
-                    Assertions.assertThat(textfield.getStyle().getForegroundColor()).isEqualTo("#7FFFD4");
-                    Assertions.assertThat(textfield.getStyle().isItalic()).isFalse();
-                    Assertions.assertThat(textfield.getStyle().isBold()).isFalse();
-                    Assertions.assertThat(textfield.getStyle().isStrikeThrough()).isFalse();
-                    Assertions.assertThat(textfield.getStyle().isUnderline()).isFalse();
-                    Assertions.assertThat(textfield.getStyle().getFontSize()).isEqualTo(8);
+                    assertThat(textfield.getStyle().getBackgroundColor()).isEqualTo("#7FFFD4");
+                    assertThat(textfield.getStyle().getForegroundColor()).isEqualTo("#7FFFD4");
+                    assertThat(textfield.getStyle().isItalic()).isFalse();
+                    assertThat(textfield.getStyle().isBold()).isFalse();
+                    assertThat(textfield.getStyle().isStrikeThrough()).isFalse();
+                    assertThat(textfield.getStyle().isUnderline()).isFalse();
+                    assertThat(textfield.getStyle().getFontSize()).isEqualTo(8);
+
                     assertThat(textfield.getStyle().getWidgetGridLayout())
                             .hasGridTemplateColumns("none")
                             .hasGridTemplateRows("none")
@@ -127,13 +127,14 @@ public class TextfieldStyleControllerTests extends AbstractIntegrationTests {
                     var groupNavigator = new FormNavigator(form).page("Page").group("Group");
                     var textfield = groupNavigator.findWidget("Name", Textfield.class);
 
-                    Assertions.assertThat(textfield.getStyle().getBackgroundColor()).isEqualTo("#A52A2A");
-                    Assertions.assertThat(textfield.getStyle().getForegroundColor()).isEqualTo("#A52A2A");
-                    Assertions.assertThat(textfield.getStyle().isItalic()).isTrue();
-                    Assertions.assertThat(textfield.getStyle().isBold()).isTrue();
-                    Assertions.assertThat(textfield.getStyle().isUnderline()).isTrue();
-                    Assertions.assertThat(textfield.getStyle().isStrikeThrough()).isTrue();
-                    Assertions.assertThat(textfield.getStyle().getFontSize()).isEqualTo(10);
+                    assertThat(textfield.getStyle().getBackgroundColor()).isEqualTo("#A52A2A");
+                    assertThat(textfield.getStyle().getForegroundColor()).isEqualTo("#A52A2A");
+                    assertThat(textfield.getStyle().isItalic()).isTrue();
+                    assertThat(textfield.getStyle().isBold()).isTrue();
+                    assertThat(textfield.getStyle().isUnderline()).isTrue();
+                    assertThat(textfield.getStyle().isStrikeThrough()).isTrue();
+                    assertThat(textfield.getStyle().getFontSize()).isEqualTo(10);
+
                     assertThat(textfield.getStyle().getWidgetGridLayout())
                             .hasGridTemplateColumns("max-content")
                             .hasGridTemplateRows("max-content")

@@ -20,7 +20,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import org.assertj.core.api.Assertions;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.Textarea;
@@ -90,13 +89,14 @@ public class TextareaStyleControllerTests extends AbstractIntegrationTests {
                     var groupNavigator = new FormNavigator(form).page("Page").group("Group");
                     var textarea = groupNavigator.findWidget("Name", Textarea.class);
 
-                    Assertions.assertThat(textarea.getStyle().getBackgroundColor()).isEqualTo("#7FFFD4");
-                    Assertions.assertThat(textarea.getStyle().getForegroundColor()).isEqualTo("#7FFFD4");
-                    Assertions.assertThat(textarea.getStyle().isItalic()).isFalse();
-                    Assertions.assertThat(textarea.getStyle().isBold()).isFalse();
-                    Assertions.assertThat(textarea.getStyle().isStrikeThrough()).isFalse();
-                    Assertions.assertThat(textarea.getStyle().isUnderline()).isFalse();
-                    Assertions.assertThat(textarea.getStyle().getFontSize()).isEqualTo(8);
+                    assertThat(textarea.getStyle().getBackgroundColor()).isEqualTo("#7FFFD4");
+                    assertThat(textarea.getStyle().getForegroundColor()).isEqualTo("#7FFFD4");
+                    assertThat(textarea.getStyle().isItalic()).isFalse();
+                    assertThat(textarea.getStyle().isBold()).isFalse();
+                    assertThat(textarea.getStyle().isStrikeThrough()).isFalse();
+                    assertThat(textarea.getStyle().isUnderline()).isFalse();
+                    assertThat(textarea.getStyle().getFontSize()).isEqualTo(8);
+
                     assertThat(textarea.getStyle().getWidgetGridLayout())
                             .hasGridTemplateColumns("none")
                             .hasGridTemplateRows("none")
@@ -127,13 +127,14 @@ public class TextareaStyleControllerTests extends AbstractIntegrationTests {
                     var groupNavigator = new FormNavigator(form).page("Page").group("Group");
                     var textarea = groupNavigator.findWidget("Name", Textarea.class);
 
-                    Assertions.assertThat(textarea.getStyle().getBackgroundColor()).isEqualTo("#A52A2A");
-                    Assertions.assertThat(textarea.getStyle().getForegroundColor()).isEqualTo("#A52A2A");
-                    Assertions.assertThat(textarea.getStyle().isItalic()).isTrue();
-                    Assertions.assertThat(textarea.getStyle().isBold()).isTrue();
-                    Assertions.assertThat(textarea.getStyle().isUnderline()).isTrue();
-                    Assertions.assertThat(textarea.getStyle().isStrikeThrough()).isTrue();
-                    Assertions.assertThat(textarea.getStyle().getFontSize()).isEqualTo(10);
+                    assertThat(textarea.getStyle().getBackgroundColor()).isEqualTo("#A52A2A");
+                    assertThat(textarea.getStyle().getForegroundColor()).isEqualTo("#A52A2A");
+                    assertThat(textarea.getStyle().isItalic()).isTrue();
+                    assertThat(textarea.getStyle().isBold()).isTrue();
+                    assertThat(textarea.getStyle().isUnderline()).isTrue();
+                    assertThat(textarea.getStyle().isStrikeThrough()).isTrue();
+                    assertThat(textarea.getStyle().getFontSize()).isEqualTo(10);
+
                     assertThat(textarea.getStyle().getWidgetGridLayout())
                             .hasGridTemplateColumns("max-content")
                             .hasGridTemplateRows("max-content")

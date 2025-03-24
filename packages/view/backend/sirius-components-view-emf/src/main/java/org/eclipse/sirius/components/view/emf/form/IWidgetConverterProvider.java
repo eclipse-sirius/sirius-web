@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,14 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.form;
 
+import java.util.Optional;
+
 import org.eclipse.emf.ecore.util.Switch;
-import org.eclipse.sirius.components.core.api.IEditService;
-import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
-
-import java.util.Optional;
 
 /**
  * Provides a switch to convert View-based custom widget descriptions into their API equivalent given an execution context.
@@ -28,5 +25,5 @@ import java.util.Optional;
  */
 public interface IWidgetConverterProvider {
 
-    Switch<Optional<AbstractWidgetDescription>> getWidgetConverter(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, IFeedbackMessageService feedbackMessageService);
+    Switch<Optional<AbstractWidgetDescription>> getWidgetConverter(AQLInterpreter interpreter);
 }

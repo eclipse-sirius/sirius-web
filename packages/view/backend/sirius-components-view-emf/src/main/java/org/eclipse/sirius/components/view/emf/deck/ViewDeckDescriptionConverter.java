@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,6 @@ import java.util.function.Predicate;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.deck.DeckElementStyle;
 import org.eclipse.sirius.components.deck.DeckStyle;
@@ -38,8 +37,8 @@ import org.eclipse.sirius.components.view.deck.DeckDescription;
 import org.eclipse.sirius.components.view.deck.DeckDescriptionStyle;
 import org.eclipse.sirius.components.view.deck.DeckElementDescriptionStyle;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
-import org.eclipse.sirius.components.view.emf.OperationInterpreter;
 import org.eclipse.sirius.components.view.emf.ViewIconURLsProvider;
+import org.eclipse.sirius.components.view.emf.operations.api.IOperationExecutor;
 import org.springframework.stereotype.Service;
 
 /**
@@ -56,7 +55,7 @@ public class ViewDeckDescriptionConverter implements IRepresentationDescriptionC
 
     private final IObjectService objectService;
 
-    private final IEditService editService;
+    private final IOperationExecutor operationExecutor;
 
     private final Function<VariableManager, String> semanticTargetIdProvider;
 
@@ -66,9 +65,9 @@ public class ViewDeckDescriptionConverter implements IRepresentationDescriptionC
 
     private final DeckIdProvider deckIdProvider;
 
-    public ViewDeckDescriptionConverter(IObjectService objectService, IEditService editService, DeckIdProvider deckIdProvider) {
+    public ViewDeckDescriptionConverter(IObjectService objectService, IOperationExecutor operationExecutor, DeckIdProvider deckIdProvider) {
         this.objectService = Objects.requireNonNull(objectService);
-        this.editService = Objects.requireNonNull(editService);
+        this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.deckIdProvider = Objects.requireNonNull(deckIdProvider);
         this.semanticTargetIdProvider = variableManager -> this.self(variableManager).map(this.objectService::getId).orElse(null);
         this.semanticTargetKindProvider = variableManager -> this.self(variableManager).map(this.objectService::getKind).orElse(null);
@@ -123,10 +122,7 @@ public class ViewDeckDescriptionConverter implements IRepresentationDescriptionC
     }
 
     private Consumer<VariableManager> getOperationsHandler(List<Operation> operations, AQLInterpreter interpreter) {
-        return variableManager -> {
-            OperationInterpreter operationInterpreter = new OperationInterpreter(interpreter, this.editService);
-            operationInterpreter.executeOperations(operations, variableManager);
-        };
+        return variableManager -> this.operationExecutor.execute(interpreter, variableManager, operations);
     }
 
     private LaneDescription convert(org.eclipse.sirius.components.view.deck.LaneDescription viewLaneDescription, AQLInterpreter interpreter) {
