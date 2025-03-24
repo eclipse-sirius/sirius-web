@@ -12,16 +12,9 @@
  *******************************************************************************/
 
 import { ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
-import { settingButtonMenuEntryExtensionPoint } from '@eclipse-sirius/sirius-components-tables';
 import { treeItemContextMenuEntryExtensionPoint } from '@eclipse-sirius/sirius-components-trees';
 import { ForkTreeItemContextMenuContribution } from './contributions/ForkTreeItemContextMenuContribution';
-import { ForkViewMenuAction } from './contributions/ForkViewMenuAction';
 const forkRegistry = new ExtensionRegistry();
-
-forkRegistry.addComponent(settingButtonMenuEntryExtensionPoint, {
-  identifier: `siriusWebViewFork_${settingButtonMenuEntryExtensionPoint.identifier}_fork`,
-  Component: ForkViewMenuAction,
-});
 
 forkRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
   identifier: `siriusWebViewFork_${treeItemContextMenuEntryExtensionPoint.identifier}_fork`,

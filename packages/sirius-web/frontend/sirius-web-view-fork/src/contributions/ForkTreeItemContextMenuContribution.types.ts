@@ -11,6 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+export interface ForkTreeItemContextMenuContributionState {
+  isOpen: boolean;
+}
+
 export interface GQLCreateForkedStudioMutationData {
   createForkedStudio: CreateForkedStudioPayload;
 }
@@ -37,13 +41,3 @@ export interface GQLCreateForkedStudioInput {
   representationId: string;
   tableId: string;
 }
-
-export interface ForkViewMenuActionStates {
-  isOpen: boolean;
-}
-
-export type ForkViewMenuActionProps = {
-  editingContextId: string;
-  representationId: string;
-  tableId: string;
-};
