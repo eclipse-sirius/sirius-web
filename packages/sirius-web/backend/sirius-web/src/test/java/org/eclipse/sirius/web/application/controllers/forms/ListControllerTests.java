@@ -23,7 +23,6 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import org.assertj.core.api.Assertions;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.DeleteListItemInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
@@ -106,6 +105,8 @@ public class ListControllerTests extends AbstractIntegrationTests {
                     var list = groupNavigator.findWidget("Entities", List.class);
 
                     assertThat(list.getItems()).hasSize(3);
+                    assertThat(list.getStyle().isUnderline()).isTrue();
+                    assertThat(list.getStyle().isBold()).isTrue();
 
                     listId.set(list.getId());
                     listItemId.set(list.getItems().get(0).getId());
@@ -116,7 +117,7 @@ public class ListControllerTests extends AbstractIntegrationTests {
             var result = this.deleteListItemMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.deleteListItem.__typename");
-            Assertions.assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
         Consumer<Object> updatedFormContentConsumer = payload -> Optional.of(payload)

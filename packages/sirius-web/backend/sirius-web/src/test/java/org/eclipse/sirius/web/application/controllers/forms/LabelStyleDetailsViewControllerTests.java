@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.forms;
 
+import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
+
 import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +23,6 @@ import java.util.function.Predicate;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Textfield;
-import org.eclipse.sirius.components.forms.tests.assertions.FormAssertions;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -78,13 +79,13 @@ public class LabelStyleDetailsViewControllerTests extends AbstractIntegrationTes
             var groupNavigator = new FormNavigator(form).page("").group("Core Properties");
 
             var borderSizeTextField = groupNavigator.findWidget("Border Size", Textfield.class);
-            FormAssertions.assertThat(borderSizeTextField).isNotNull();
+            assertThat(borderSizeTextField).isNotNull();
 
             var backgroundReferenceWidget = groupNavigator.findWidget("Background", ReferenceWidget.class);
-            FormAssertions.assertThat(backgroundReferenceWidget).isNotNull();
+            assertThat(backgroundReferenceWidget).isNotNull();
 
             var borderColorReferenceWidget = groupNavigator.findWidget("Border Color", ReferenceWidget.class);
-            FormAssertions.assertThat(borderColorReferenceWidget).isNotNull();
+            assertThat(borderColorReferenceWidget).isNotNull();
 
             return true;
         };

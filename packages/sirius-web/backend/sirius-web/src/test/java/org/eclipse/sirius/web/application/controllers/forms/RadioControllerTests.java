@@ -23,7 +23,6 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import org.assertj.core.api.Assertions;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditRadioInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
@@ -140,6 +139,12 @@ public class RadioControllerTests extends AbstractIntegrationTests {
                             .hasValueWithLabel("NamedElement")
                             .isNotReadOnly();
 
+                    assertThat(radio.getStyle().isBold()).isFalse();
+                    assertThat(radio.getStyle().isItalic()).isFalse();
+                    assertThat(radio.getStyle().isStrikeThrough()).isFalse();
+                    assertThat(radio.getStyle().isUnderline()).isFalse();
+                    assertThat(radio.getStyle().getFontSize()).isEqualTo(16);
+
                     var newValue = radio.getOptions().stream()
                             .filter(radioOption -> radioOption.getLabel().equals("Human"))
                             .findFirst()
@@ -153,7 +158,7 @@ public class RadioControllerTests extends AbstractIntegrationTests {
             var result = this.editRadioMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editRadio.__typename");
-            Assertions.assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
         Consumer<Object> updatedFormContentConsumer = payload -> Optional.of(payload)
@@ -163,6 +168,12 @@ public class RadioControllerTests extends AbstractIntegrationTests {
                 .ifPresentOrElse(form -> {
                     var groupNavigator = new FormNavigator(form).page("Page").group("Group");
                     var radio = groupNavigator.findWidget("SuperType", Radio.class);
+
+                    assertThat(radio.getStyle().isBold()).isTrue();
+                    assertThat(radio.getStyle().isItalic()).isTrue();
+                    assertThat(radio.getStyle().isStrikeThrough()).isTrue();
+                    assertThat(radio.getStyle().isUnderline()).isTrue();
+                    assertThat(radio.getStyle().getFontSize()).isEqualTo(24);
 
                     assertThat(radio)
                             .hasLabel("SuperType")

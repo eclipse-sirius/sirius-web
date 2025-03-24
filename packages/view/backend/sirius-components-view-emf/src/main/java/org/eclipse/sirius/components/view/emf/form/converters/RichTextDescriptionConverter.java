@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.view.emf.form.converters;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
@@ -25,6 +24,7 @@ import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
 import org.eclipse.sirius.components.view.emf.form.converters.validation.DiagnosticKindProvider;
 import org.eclipse.sirius.components.view.emf.form.converters.validation.DiagnosticMessageProvider;
 import org.eclipse.sirius.components.view.emf.form.converters.validation.DiagnosticProvider;
+import org.eclipse.sirius.components.view.emf.operations.api.IOperationExecutor;
 
 /**
  * Used to convert rich text widgets.
@@ -37,16 +37,16 @@ public class RichTextDescriptionConverter {
 
     private final IObjectService objectService;
 
-    private final IEditService editService;
+    private final IOperationExecutor operationExecutor;
 
     private final IFeedbackMessageService feedbackMessageService;
 
     private final IFormIdProvider widgetIdProvider;
 
-    public RichTextDescriptionConverter(AQLInterpreter interpreter, IObjectService objectService, IEditService editService, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
+    public RichTextDescriptionConverter(AQLInterpreter interpreter, IObjectService objectService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.objectService = Objects.requireNonNull(objectService);
-        this.editService = Objects.requireNonNull(editService);
+        this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.widgetIdProvider = Objects.requireNonNull(widgetIdProvider);
     }
@@ -60,7 +60,7 @@ public class RichTextDescriptionConverter {
                 .labelProvider(new StringValueProvider(this.interpreter, viewRichTextDescription.getLabelExpression()))
                 .isReadOnlyProvider(new ReadOnlyValueProvider(this.interpreter, viewRichTextDescription.getIsEnabledExpression()))
                 .valueProvider(new StringValueProvider(this.interpreter, viewRichTextDescription.getValueExpression()))
-                .newValueHandler(new NewValueHandler<>(this.interpreter, this.editService, this.feedbackMessageService, viewRichTextDescription.getBody()))
+                .newValueHandler(new NewValueHandler<>(this.interpreter, this.operationExecutor, this.feedbackMessageService, viewRichTextDescription.getBody()))
                 .diagnosticsProvider(new DiagnosticProvider(this.interpreter, viewRichTextDescription.getDiagnosticsExpression()))
                 .kindProvider(new DiagnosticKindProvider())
                 .messageProvider(new DiagnosticMessageProvider())

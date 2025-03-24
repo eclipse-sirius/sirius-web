@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,7 +29,6 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
 import org.eclipse.emf.ecore.util.EcoreAdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
-import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
@@ -37,6 +36,7 @@ import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
+import org.eclipse.sirius.components.view.emf.operations.api.IOperationExecutor;
 import org.eclipse.sirius.components.view.emf.widget.reference.ReferenceWidgetDescriptionConverterSwitch;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceFactory;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
@@ -53,14 +53,13 @@ public class ReferenceWidgetDescriptionConverterSwitchTest {
     public void testReferenceOptions() {
         var interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
         var objectService = new IObjectService.NoOp();
-        var editService = new IEditService.NoOp();
         var emfKindService = new IEMFKindService.NoOp();
         var feedbackMessageService = new IFeedbackMessageService.NoOp();
         var composedAdapterFactory = new ComposedAdapterFactory();
         composedAdapterFactory.addAdapterFactory(new EcoreAdapterFactory());
         composedAdapterFactory.addAdapterFactory(new EcoreItemProviderAdapterFactory());
         var widgetIdProvider = new IFormIdProvider.NoOp();
-        var converterSwitch = new ReferenceWidgetDescriptionConverterSwitch(interpreter, objectService, editService, emfKindService, feedbackMessageService, composedAdapterFactory, widgetIdProvider);
+        var converterSwitch = new ReferenceWidgetDescriptionConverterSwitch(interpreter, objectService, new IOperationExecutor.NoOp(), emfKindService, feedbackMessageService, composedAdapterFactory, widgetIdProvider);
 
         EPackage ePackage = EcoreFactory.eINSTANCE.createEPackage();
         EClass eClass = EcoreFactory.eINSTANCE.createEClass();

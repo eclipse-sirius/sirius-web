@@ -20,7 +20,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiFunction;
 
-import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -32,8 +31,9 @@ import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.Operation;
-import org.eclipse.sirius.components.view.emf.OperationInterpreter;
 import org.eclipse.sirius.components.view.emf.form.ViewFormDescriptionConverter;
+import org.eclipse.sirius.components.view.emf.operations.api.IOperationExecutor;
+import org.eclipse.sirius.components.view.emf.operations.api.OperationExecutionStatus;
 
 /**
  * Used to update the value of a select.
@@ -46,16 +46,16 @@ public class MultiSelectNewValueHandler implements BiFunction<VariableManager, L
 
     private final IObjectService objectService;
 
-    private final IEditService editService;
+    private final IOperationExecutor operationExecutor;
 
     private final IFeedbackMessageService feedbackMessageService;
 
     private final List<Operation> operations;
 
-    public MultiSelectNewValueHandler(AQLInterpreter interpreter, IObjectService objectService, IEditService editService, IFeedbackMessageService feedbackMessageService, List<Operation> operations) {
+    public MultiSelectNewValueHandler(AQLInterpreter interpreter, IObjectService objectService, IOperationExecutor operationExecutor, IFeedbackMessageService feedbackMessageService, List<Operation> operations) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.objectService = Objects.requireNonNull(objectService);
-        this.editService = Objects.requireNonNull(editService);
+        this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.operations = Objects.requireNonNull(operations);
     }
@@ -75,9 +75,9 @@ public class MultiSelectNewValueHandler implements BiFunction<VariableManager, L
             VariableManager childVariableManager = variableManager.createChild();
             childVariableManager.put(VARIABLE_MANAGER, variableManager);
             childVariableManager.put(ViewFormDescriptionConverter.NEW_VALUE, newValuesObjects);
-            OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
-            Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, childVariableManager);
-            if (optionalVariableManager.isEmpty()) {
+
+            var result = this.operationExecutor.execute(interpreter, childVariableManager, operations);
+            if (result.status() == OperationExecutionStatus.FAILURE) {
                 status = this.buildFailureWithFeedbackMessages("Something went wrong while handling the MultiSelect widget new values.");
             } else {
                 status = new Success(this.feedbackMessageService.getFeedbackMessages());

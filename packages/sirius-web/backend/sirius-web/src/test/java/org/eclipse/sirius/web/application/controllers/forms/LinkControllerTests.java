@@ -95,7 +95,8 @@ public class LinkControllerTests extends AbstractIntegrationTests {
                             .hasHelp("Links to outside documentation")
                             .isReadOnly()
                             .isBold()
-                            .isNotItalic();
+                            .isItalic()
+                            .isUnderline();
                 }, () -> fail("Missing form"));
 
         StepVerifier.create(flux)

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,6 +43,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.ViewIconURLsProvider;
+import org.eclipse.sirius.components.view.emf.operations.api.IOperationExecutor;
 import org.eclipse.sirius.components.view.form.FormVariable;
 import org.springframework.stereotype.Service;
 
@@ -64,6 +65,8 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
 
     private final IObjectService objectService;
 
+    private final IOperationExecutor operationExecutor;
+
     private final IEditService editService;
 
     private final IFormIdProvider formIdProvider;
@@ -72,8 +75,9 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
 
     private final IFeedbackMessageService feedbackMessageService;
 
-    public ViewFormDescriptionConverter(IObjectService objectService, IEditService editService, IFormIdProvider formIdProvider, List<IWidgetConverterProvider> customWidgetConverterProviders, IFeedbackMessageService feedbackMessageService) {
+    public ViewFormDescriptionConverter(IObjectService objectService, IOperationExecutor operationExecutor, IEditService editService, IFormIdProvider formIdProvider, List<IWidgetConverterProvider> customWidgetConverterProviders, IFeedbackMessageService feedbackMessageService) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.editService = Objects.requireNonNull(editService);
         this.formIdProvider = Objects.requireNonNull(formIdProvider);
         this.customWidgetConverterProviders = Objects.requireNonNull(customWidgetConverterProviders);
@@ -89,9 +93,8 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
     public IRepresentationDescription convert(RepresentationDescription representationDescription, List<RepresentationDescription> allRepresentationDescriptions, AQLInterpreter interpreter) {
         org.eclipse.sirius.components.view.form.FormDescription viewFormDescription = (org.eclipse.sirius.components.view.form.FormDescription) representationDescription;
 
-        List<Switch<Optional<AbstractWidgetDescription>>> widgetConverters = this.customWidgetConverterProviders.stream().map(provider -> provider.getWidgetConverter(interpreter,
-                this.editService, this.objectService, this.feedbackMessageService)).toList();
-        Switch<Optional<AbstractControlDescription>> dispatcher = new ViewFormDescriptionConverterSwitch(interpreter, this.editService, this.objectService, new ComposedSwitch<>(widgetConverters),
+        List<Switch<Optional<AbstractWidgetDescription>>> widgetConverters = this.customWidgetConverterProviders.stream().map(provider -> provider.getWidgetConverter(interpreter)).toList();
+        Switch<Optional<AbstractControlDescription>> dispatcher = new ViewFormDescriptionConverterSwitch(interpreter, this.operationExecutor, this.editService, this.objectService, new ComposedSwitch<>(widgetConverters),
                 this.feedbackMessageService, this.formIdProvider);
 
         List<PageDescription> pageDescriptions = viewFormDescription.getPages()

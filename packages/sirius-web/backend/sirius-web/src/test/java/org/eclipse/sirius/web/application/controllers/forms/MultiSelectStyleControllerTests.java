@@ -20,7 +20,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import org.assertj.core.api.Assertions;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.MultiSelect;
@@ -90,12 +89,12 @@ public class MultiSelectStyleControllerTests extends AbstractIntegrationTests {
                     var groupNavigator = new FormNavigator(form).page("Page").group("Group");
                     var multiselect = groupNavigator.findWidget("Super types", MultiSelect.class);
 
-                    Assertions.assertThat(multiselect.getStyle().getBackgroundColor()).isEqualTo("#7FFFD4");
-                    Assertions.assertThat(multiselect.getStyle().getForegroundColor()).isEqualTo("#7FFFD4");
-                    Assertions.assertThat(multiselect.getStyle().isShowIcon()).isFalse();
-                    Assertions.assertThat(multiselect.getStyle().isItalic()).isFalse();
-                    Assertions.assertThat(multiselect.getStyle().isBold()).isFalse();
-                    Assertions.assertThat(multiselect.getStyle().getFontSize()).isEqualTo(8);
+                    assertThat(multiselect.getStyle().getBackgroundColor()).isEqualTo("#7FFFD4");
+                    assertThat(multiselect.getStyle().getForegroundColor()).isEqualTo("#7FFFD4");
+                    assertThat(multiselect.getStyle().isShowIcon()).isFalse();
+                    assertThat(multiselect.getStyle().isItalic()).isFalse();
+                    assertThat(multiselect.getStyle().isBold()).isFalse();
+                    assertThat(multiselect.getStyle().getFontSize()).isEqualTo(8);
                     assertThat(multiselect.getStyle().getWidgetGridLayout())
                             .hasGridTemplateColumns("none")
                             .hasGridTemplateRows("none")
@@ -126,12 +125,12 @@ public class MultiSelectStyleControllerTests extends AbstractIntegrationTests {
                     var groupNavigator = new FormNavigator(form).page("Page").group("Group");
                     var multiselect = groupNavigator.findWidget("Super types", MultiSelect.class);
 
-                    Assertions.assertThat(multiselect.getStyle().getBackgroundColor()).isEqualTo("#A52A2A");
-                    Assertions.assertThat(multiselect.getStyle().getForegroundColor()).isEqualTo("#A52A2A");
-                    Assertions.assertThat(multiselect.getStyle().isShowIcon()).isTrue();
-                    Assertions.assertThat(multiselect.getStyle().isItalic()).isTrue();
-                    Assertions.assertThat(multiselect.getStyle().isBold()).isTrue();
-                    Assertions.assertThat(multiselect.getStyle().getFontSize()).isEqualTo(10);
+                    assertThat(multiselect.getStyle().getBackgroundColor()).isEqualTo("#A52A2A");
+                    assertThat(multiselect.getStyle().getForegroundColor()).isEqualTo("#A52A2A");
+                    assertThat(multiselect.getStyle().isShowIcon()).isTrue();
+                    assertThat(multiselect.getStyle().isItalic()).isTrue();
+                    assertThat(multiselect.getStyle().isBold()).isTrue();
+                    assertThat(multiselect.getStyle().getFontSize()).isEqualTo(10);
                     assertThat(multiselect.getStyle().getWidgetGridLayout())
                             .hasGridTemplateColumns("max-content")
                             .hasGridTemplateRows("max-content")

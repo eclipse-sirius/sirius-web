@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,6 @@ import java.util.function.Function;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.gantt.description.GanttDescription;
@@ -39,8 +38,8 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
-import org.eclipse.sirius.components.view.emf.OperationInterpreter;
 import org.eclipse.sirius.components.view.emf.ViewIconURLsProvider;
+import org.eclipse.sirius.components.view.emf.operations.api.IOperationExecutor;
 import org.springframework.stereotype.Service;
 
 /**
@@ -57,7 +56,7 @@ public class ViewGanttDescriptionConverter implements IRepresentationDescription
 
     private final IObjectService objectService;
 
-    private final IEditService editService;
+    private final IOperationExecutor operationExecutor;
 
     private final Function<VariableManager, String> semanticTargetIdProvider;
 
@@ -67,9 +66,9 @@ public class ViewGanttDescriptionConverter implements IRepresentationDescription
 
     private final GanttIdProvider ganttIdProvider;
 
-    public ViewGanttDescriptionConverter(IObjectService objectService, IEditService editService, GanttIdProvider ganttIdProvider) {
+    public ViewGanttDescriptionConverter(IObjectService objectService, IOperationExecutor operationExecutor, GanttIdProvider ganttIdProvider) {
         this.objectService = Objects.requireNonNull(objectService);
-        this.editService = Objects.requireNonNull(editService);
+        this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.ganttIdProvider = Objects.requireNonNull(ganttIdProvider);
         this.semanticTargetIdProvider = variableManager -> this.self(variableManager).map(this.objectService::getId).orElse(null);
         this.semanticTargetKindProvider = variableManager -> this.self(variableManager).map(this.objectService::getKind).orElse(null);
@@ -131,10 +130,7 @@ public class ViewGanttDescriptionConverter implements IRepresentationDescription
     }
 
     private Consumer<VariableManager> getOperationsHandler(List<Operation> operations, AQLInterpreter interpreter) {
-        return variableManager -> {
-            OperationInterpreter operationInterpreter = new OperationInterpreter(interpreter, this.editService);
-            operationInterpreter.executeOperations(operations, variableManager);
-        };
+        return variableManager -> this.operationExecutor.execute(interpreter, variableManager, operations);
     }
 
     private TaskDescription convert(org.eclipse.sirius.components.view.gantt.TaskDescription viewTaskDescription, AQLInterpreter interpreter, Map<org.eclipse.sirius.components.view.gantt.TaskDescription, String> taskDescription2Ids) {

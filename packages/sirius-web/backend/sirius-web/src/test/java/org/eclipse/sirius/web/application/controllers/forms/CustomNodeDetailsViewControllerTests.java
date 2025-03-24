@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.forms;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 import com.jayway.jsonpath.JsonPath;
@@ -30,7 +30,6 @@ import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventP
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Textfield;
-import org.eclipse.sirius.components.forms.tests.assertions.FormAssertions;
 import org.eclipse.sirius.components.forms.tests.graphql.EditTextfieldMutationRunner;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -90,8 +89,7 @@ public class CustomNodeDetailsViewControllerTests extends AbstractIntegrationTes
             var groupNavigator = new FormNavigator(form).page("").group("Core Properties");
 
             var borderSizeTextField = groupNavigator.findWidget("Border Size", Textfield.class);
-            FormAssertions.assertThat(borderSizeTextField)
-                    .hasValue("1");
+            assertThat(borderSizeTextField).hasValue("1");
 
             return true;
         };
@@ -153,8 +151,7 @@ public class CustomNodeDetailsViewControllerTests extends AbstractIntegrationTes
                     var groupNavigator = new FormNavigator(form).page("").group("Core Properties");
                     var textfield = groupNavigator.findWidget("Border Size", Textfield.class);
 
-                    FormAssertions.assertThat(textfield)
-                            .hasValue("3");
+                    assertThat(textfield).hasValue("3");
                 }, () -> fail("Missing form"));
 
         StepVerifier.create(flux)

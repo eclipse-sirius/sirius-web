@@ -20,7 +20,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import org.assertj.core.api.Assertions;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.Select;
@@ -90,12 +89,13 @@ public class SelectStyleControllerTests extends AbstractIntegrationTests {
                     var groupNavigator = new FormNavigator(form).page("Page").group("Group");
                     var select = groupNavigator.findWidget("Super types", Select.class);
 
-                    Assertions.assertThat(select.getStyle().getBackgroundColor()).isEqualTo("#7FFFD4");
-                    Assertions.assertThat(select.getStyle().getForegroundColor()).isEqualTo("#7FFFD4");
-                    Assertions.assertThat(select.getStyle().isShowIcon()).isFalse();
-                    Assertions.assertThat(select.getStyle().isItalic()).isFalse();
-                    Assertions.assertThat(select.getStyle().isBold()).isFalse();
-                    Assertions.assertThat(select.getStyle().getFontSize()).isEqualTo(8);
+                    assertThat(select.getStyle().getBackgroundColor()).isEqualTo("#7FFFD4");
+                    assertThat(select.getStyle().getForegroundColor()).isEqualTo("#7FFFD4");
+                    assertThat(select.getStyle().isShowIcon()).isFalse();
+                    assertThat(select.getStyle().isItalic()).isFalse();
+                    assertThat(select.getStyle().isBold()).isFalse();
+                    assertThat(select.getStyle().getFontSize()).isEqualTo(8);
+
                     assertThat(select.getStyle().getWidgetGridLayout())
                             .hasGridTemplateColumns("none")
                             .hasGridTemplateRows("none")
@@ -126,12 +126,13 @@ public class SelectStyleControllerTests extends AbstractIntegrationTests {
                     var groupNavigator = new FormNavigator(form).page("Page").group("Group");
                     var select = groupNavigator.findWidget("Super types", Select.class);
 
-                    Assertions.assertThat(select.getStyle().getBackgroundColor()).isEqualTo("#A52A2A");
-                    Assertions.assertThat(select.getStyle().getForegroundColor()).isEqualTo("#A52A2A");
-                    Assertions.assertThat(select.getStyle().isShowIcon()).isTrue();
-                    Assertions.assertThat(select.getStyle().isItalic()).isTrue();
-                    Assertions.assertThat(select.getStyle().isBold()).isTrue();
-                    Assertions.assertThat(select.getStyle().getFontSize()).isEqualTo(10);
+                    assertThat(select.getStyle().getBackgroundColor()).isEqualTo("#A52A2A");
+                    assertThat(select.getStyle().getForegroundColor()).isEqualTo("#A52A2A");
+                    assertThat(select.getStyle().isShowIcon()).isTrue();
+                    assertThat(select.getStyle().isItalic()).isTrue();
+                    assertThat(select.getStyle().isBold()).isTrue();
+                    assertThat(select.getStyle().getFontSize()).isEqualTo(10);
+
                     assertThat(select.getStyle().getWidgetGridLayout())
                             .hasGridTemplateColumns("max-content")
                             .hasGridTemplateRows("max-content")

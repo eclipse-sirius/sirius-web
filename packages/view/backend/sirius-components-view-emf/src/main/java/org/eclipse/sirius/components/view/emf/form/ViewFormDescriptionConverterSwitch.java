@@ -43,6 +43,7 @@ import org.eclipse.sirius.components.view.emf.form.converters.SplitButtonDescrip
 import org.eclipse.sirius.components.view.emf.form.converters.TextareaDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.form.converters.TextfieldDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.form.converters.TreeDescriptionConverter;
+import org.eclipse.sirius.components.view.emf.operations.api.IOperationExecutor;
 import org.eclipse.sirius.components.view.form.FormElementFor;
 import org.eclipse.sirius.components.view.form.FormElementIf;
 import org.eclipse.sirius.components.view.form.RichTextDescription;
@@ -61,6 +62,8 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
 
     private final AQLInterpreter interpreter;
 
+    private final IOperationExecutor operationExecutor;
+
     private final IEditService editService;
 
     private final IObjectService objectService;
@@ -71,9 +74,10 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
 
     private final IFormIdProvider widgetIdProvider;
 
-    public ViewFormDescriptionConverterSwitch(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, Switch<Optional<AbstractWidgetDescription>> customWidgetConverters,
-            IFeedbackMessageService feedbackMessageService, IFormIdProvider idProvider) {
+    public ViewFormDescriptionConverterSwitch(AQLInterpreter interpreter, IOperationExecutor operationExecutor, IEditService editService, IObjectService objectService, Switch<Optional<AbstractWidgetDescription>> customWidgetConverters,
+                                              IFeedbackMessageService feedbackMessageService, IFormIdProvider idProvider) {
         this.interpreter = Objects.requireNonNull(interpreter);
+        this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.editService = Objects.requireNonNull(editService);
         this.objectService = Objects.requireNonNull(objectService);
         this.customWidgetConverters = Objects.requireNonNull(customWidgetConverters);
@@ -83,37 +87,37 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
 
     @Override
     public Optional<AbstractControlDescription> caseTextfieldDescription(org.eclipse.sirius.components.view.form.TextfieldDescription viewTextfieldDescription) {
-        return Optional.of(new TextfieldDescriptionConverter(this.interpreter, this.objectService, this.editService, this.feedbackMessageService, this.widgetIdProvider).convert(viewTextfieldDescription));
+        return Optional.of(new TextfieldDescriptionConverter(this.interpreter, this.objectService, this.operationExecutor, this.feedbackMessageService, this.widgetIdProvider).convert(viewTextfieldDescription));
     }
 
     @Override
     public Optional<AbstractControlDescription> caseCheckboxDescription(org.eclipse.sirius.components.view.form.CheckboxDescription viewCheckboxDescription) {
-        return Optional.of(new CheckboxDescriptionConverter(this.interpreter, this.objectService, this.editService, this.feedbackMessageService, this.widgetIdProvider).convert(viewCheckboxDescription));
+        return Optional.of(new CheckboxDescriptionConverter(this.interpreter, this.objectService, this.operationExecutor, this.feedbackMessageService, this.widgetIdProvider).convert(viewCheckboxDescription));
     }
 
     @Override
     public Optional<AbstractControlDescription> caseSelectDescription(org.eclipse.sirius.components.view.form.SelectDescription viewSelectDescription) {
-        return Optional.of(new SelectDescriptionConverter(this.interpreter, this.objectService, this.editService, this.feedbackMessageService, this.widgetIdProvider).convert(viewSelectDescription));
+        return Optional.of(new SelectDescriptionConverter(this.interpreter, this.objectService, this.operationExecutor, this.feedbackMessageService, this.widgetIdProvider).convert(viewSelectDescription));
     }
 
     @Override
     public Optional<AbstractControlDescription> caseTextAreaDescription(TextAreaDescription viewTextAreaDescription) {
-        return Optional.of(new TextareaDescriptionConverter(this.interpreter, this.objectService, this.editService, this.feedbackMessageService, this.widgetIdProvider).convert(viewTextAreaDescription));
+        return Optional.of(new TextareaDescriptionConverter(this.interpreter, this.objectService, this.operationExecutor, this.feedbackMessageService, this.widgetIdProvider).convert(viewTextAreaDescription));
     }
 
     @Override
     public Optional<AbstractControlDescription> caseRichTextDescription(RichTextDescription viewRichTextDescription) {
-        return Optional.of(new RichTextDescriptionConverter(this.interpreter, this.objectService, this.editService, this.feedbackMessageService, this.widgetIdProvider).convert(viewRichTextDescription));
+        return Optional.of(new RichTextDescriptionConverter(this.interpreter, this.objectService, this.operationExecutor, this.feedbackMessageService, this.widgetIdProvider).convert(viewRichTextDescription));
     }
 
     @Override
     public Optional<AbstractControlDescription> caseMultiSelectDescription(org.eclipse.sirius.components.view.form.MultiSelectDescription viewMultiSelectDescription) {
-        return Optional.of(new MultiSelectDescriptionConverter(this.interpreter, this.objectService, this.editService, this.feedbackMessageService, this.widgetIdProvider).convert(viewMultiSelectDescription));
+        return Optional.of(new MultiSelectDescriptionConverter(this.interpreter, this.objectService, this.operationExecutor, this.feedbackMessageService, this.widgetIdProvider).convert(viewMultiSelectDescription));
     }
 
     @Override
     public Optional<AbstractControlDescription> caseRadioDescription(org.eclipse.sirius.components.view.form.RadioDescription viewRadioDescription) {
-        return Optional.of(new RadioDescriptionConverter(this.interpreter, this.objectService, this.editService, this.feedbackMessageService, this.widgetIdProvider).convert(viewRadioDescription));
+        return Optional.of(new RadioDescriptionConverter(this.interpreter, this.objectService, this.operationExecutor, this.feedbackMessageService, this.widgetIdProvider).convert(viewRadioDescription));
     }
 
     @Override
@@ -133,7 +137,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
 
     @Override
     public Optional<AbstractControlDescription> caseButtonDescription(org.eclipse.sirius.components.view.form.ButtonDescription viewButtonDescription) {
-        return Optional.of(new ButtonDescriptionConverter(this.interpreter, this.objectService, this.editService, this.feedbackMessageService, this.widgetIdProvider).convert(viewButtonDescription));
+        return Optional.of(new ButtonDescriptionConverter(this.interpreter, this.objectService, this.operationExecutor, this.feedbackMessageService, this.widgetIdProvider).convert(viewButtonDescription));
     }
 
     @Override
@@ -153,7 +157,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
 
     @Override
     public Optional<AbstractControlDescription> caseListDescription(org.eclipse.sirius.components.view.form.ListDescription viewListDescription) {
-        return Optional.of(new ListDescriptionConverter(this.interpreter, this.objectService, this.editService, this.feedbackMessageService, this.widgetIdProvider).convert(viewListDescription));
+        return Optional.of(new ListDescriptionConverter(this.interpreter, this.objectService, this.editService, this.operationExecutor, this.feedbackMessageService, this.widgetIdProvider).convert(viewListDescription));
     }
 
     @Override
@@ -173,7 +177,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
 
     @Override
     public Optional<AbstractControlDescription> caseTreeDescription(org.eclipse.sirius.components.view.form.TreeDescription viewTreeDescription) {
-        return Optional.of(new TreeDescriptionConverter(this.interpreter, this.objectService, this.editService, this.feedbackMessageService, this.widgetIdProvider).convert(viewTreeDescription));
+        return Optional.of(new TreeDescriptionConverter(this.interpreter, this.objectService, this.operationExecutor, this.feedbackMessageService, this.widgetIdProvider).convert(viewTreeDescription));
     }
 
     @Override
@@ -183,11 +187,11 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
 
     @Override
     public Optional<AbstractControlDescription> caseDateTimeDescription(org.eclipse.sirius.components.view.form.DateTimeDescription viewDateTimeDescription) {
-        return Optional.of(new DateTimeDescriptionConverter(this.interpreter, this.objectService, this.editService, this.feedbackMessageService, this.widgetIdProvider).convert(viewDateTimeDescription));
+        return Optional.of(new DateTimeDescriptionConverter(this.interpreter, this.objectService, this.operationExecutor, this.feedbackMessageService, this.widgetIdProvider).convert(viewDateTimeDescription));
     }
 
     @Override
     public Optional<AbstractControlDescription> caseSliderDescription(org.eclipse.sirius.components.view.form.SliderDescription viewSliderDescription) {
-        return Optional.of(new SliderDescriptionConverter(this.interpreter, this.objectService, this.editService, this.feedbackMessageService, this.widgetIdProvider).convert(viewSliderDescription));
+        return Optional.of(new SliderDescriptionConverter(this.interpreter, this.objectService, this.operationExecutor, this.feedbackMessageService, this.widgetIdProvider).convert(viewSliderDescription));
     }
 }
