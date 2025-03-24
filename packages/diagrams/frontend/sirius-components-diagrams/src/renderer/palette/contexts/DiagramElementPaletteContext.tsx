@@ -23,8 +23,8 @@ const defaultValue: DiagramElementPaletteContextValue = {
   y: null,
   isOpened: false,
   paletteTargetElementId: null,
-  hideDiagramElementPalette: () => { },
-  showDiagramElementPalette: () => { },
+  hideDiagramElementPalette: () => {},
+  showDiagramElementPalette: () => {},
 };
 
 export const DiagramElementPaletteContext = React.createContext<DiagramElementPaletteContextValue>(defaultValue);
