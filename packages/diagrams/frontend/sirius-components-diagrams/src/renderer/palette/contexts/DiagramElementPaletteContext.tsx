@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,8 +23,8 @@ const defaultValue: DiagramElementPaletteContextValue = {
   y: null,
   isOpened: false,
   paletteTargetElementId: null,
-  hideDiagramElementPalette: () => {},
-  showDiagramElementPalette: () => {},
+  hideDiagramElementPalette: () => { },
+  showDiagramElementPalette: () => { },
 };
 
 export const DiagramElementPaletteContext = React.createContext<DiagramElementPaletteContextValue>(defaultValue);
