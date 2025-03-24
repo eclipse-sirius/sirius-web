@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,7 +37,10 @@ export const getBorderNodeExtent = (
   if (parentNode.width && parentNode.height && borderNode.height && borderNode.width) {
     coordinateExtent = [
       [0 - borderNode.width + borderNodeOffset, 0 - borderNode.height + borderNodeOffset],
-      [parentNode.width - borderNodeOffset, parentNode.height - borderNodeOffset],
+      [
+        parentNode.width - borderNodeOffset + borderNode.width,
+        parentNode.height - borderNodeOffset + borderNode.height,
+      ],
     ];
   }
   return coordinateExtent;

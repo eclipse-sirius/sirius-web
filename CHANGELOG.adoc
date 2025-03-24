@@ -92,6 +92,7 @@ Downstream projects contributing their own route will have to use a `ExtensionRe
 - https://github.com/eclipse-sirius/sirius-web/issues/4691[#4691] [diagram] Fixed a bug where diagrams could appear empty when opened in a read-only context
 - https://github.com/eclipse-sirius/sirius-web/issues/4725[#4725] [view] Do not report a validation error when a relation-based edge does not specify a domain type
 - https://github.com/eclipse-sirius/sirius-web/issues/4708[#4708] [table] Fix Export All in Page action to export row header column
+- https://github.com/eclipse-sirius/sirius-web/issues/4736[#4736] [diagram] Restore correct border node positioning
 
 
 === New Features
