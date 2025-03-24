@@ -98,8 +98,12 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     onDiagramElementContextMenu: diagramPaletteOnDiagramElementContextMenu,
     hideDiagramPalette,
   } = useDiagramPalette();
-  const { onDiagramElementContextMenu: elementPaletteOnDiagramElementContextMenu, hideDiagramElementPalette } =
-    useDiagramElementPalette();
+  const {
+    onDiagramElementContextMenu: elementPaletteOnDiagramElementContextMenu,
+    hideDiagramElementPalette,
+    isOpened: diagramElementContextMenuIsOpened,
+    paletteTargetElementId,
+  } = useDiagramElementPalette();
 
   const {
     onDiagramElementContextMenu: groupPaletteOnDiagramElementContextMenu,
@@ -219,8 +223,11 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
       };
       layout(previousDiagram, convertedDiagram, diagramRefreshedEventPayload.referencePosition, (laidOutDiagram) => {
         const { nodeLookup, edgeLookup } = store.getState();
+        const newNodeLookupMap: Map<String, Node<NodeData, string>> = new Map();
+        const newEdgeLookupMap: Map<String, Edge<EdgeData>> = new Map();
 
         laidOutDiagram.nodes = laidOutDiagram.nodes.map((node) => {
+          newNodeLookupMap.set(node.id, node);
           if (nodeLookup.get(node.id)) {
             return {
               ...node,
@@ -231,6 +238,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         });
 
         laidOutDiagram.edges = laidOutDiagram.edges.map((edge) => {
+          newEdgeLookupMap.set(edge.id, edge);
           if (edgeLookup.get(edge.id)) {
             return {
               ...edge,
@@ -242,7 +250,23 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
         setEdges(laidOutDiagram.edges);
         setNodes(laidOutDiagram.nodes);
-        hideAllPalettes();
+
+        hideGroupPalette();
+        if (diagramElementContextMenuIsOpened && paletteTargetElementId) {
+          const contextMenuTargetAsNode = newNodeLookupMap.get(paletteTargetElementId);
+          const contextMenuTargetAsEdge = newEdgeLookupMap.get(paletteTargetElementId);
+          if (contextMenuTargetAsNode) {
+            if (contextMenuTargetAsNode.hidden) {
+              hideDiagramElementPalette();
+            }
+          } else if (contextMenuTargetAsEdge) {
+            if (contextMenuTargetAsEdge.hidden) {
+              hideDiagramElementPalette();
+            }
+          } else {
+            hideDiagramElementPalette();
+          }
+        }
 
         if (!readOnly) {
           synchronizeLayoutData(diagramRefreshedEventPayload.id, 'refresh', laidOutDiagram);

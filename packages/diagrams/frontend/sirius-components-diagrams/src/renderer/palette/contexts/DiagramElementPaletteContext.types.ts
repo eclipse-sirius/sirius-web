@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,8 @@ export interface DiagramElementPaletteContextValue {
   x: number | null;
   y: number | null;
   isOpened: boolean;
-  showDiagramElementPalette: (x: number, y: number) => void;
+  paletteTargetElementId: string | null;
+  showDiagramElementPalette: (x: number, y: number, elementId: string) => void;
   hideDiagramElementPalette: () => void;
 }
 
@@ -27,4 +28,5 @@ export interface DiagramElementPaletteContextProviderState {
   x: number | null;
   y: number | null;
   isOpened: boolean;
+  elementId: string | null;
 }
