@@ -29,6 +29,9 @@ export class ImageElementSVGExportHandler implements IElementSVGExportHandler {
       image.setAttribute('height', String(bounds.height));
       image.setAttribute('x', String(bounds.left));
       image.setAttribute('y', String(bounds.top));
+      if (style.opacity) {
+        image.setAttribute('opacity', style.opacity);
+      }
       if (this.canHandleUrlBackgroundImage(style)) {
         // It removes {url("} at start and {")} at the end
         const imageContent = style.backgroundImage.substring(5, style.backgroundImage.length - 2);

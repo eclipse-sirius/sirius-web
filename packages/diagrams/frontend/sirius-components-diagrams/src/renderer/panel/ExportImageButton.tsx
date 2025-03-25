@@ -107,7 +107,7 @@ export const ExportImageButton = () => {
             data-testid="experimental-export-diagram-to-svg"
             onClick={() =>
               protoExportToSvg((dataUrl: string) => {
-                downloadImage(dataUrl, 'diagram-proto.svg');
+                downloadImage(dataUrl, 'diagram.svg');
                 onCloseExportImageMenu();
               })
             }>

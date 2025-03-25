@@ -35,6 +35,11 @@ export class TextElementSVGExportHandler implements IElementSVGExportHandler {
   private handleTextElement(textElement: Text, parentElement: HTMLElement, svgDocument: XMLDocument): SVGTextElement {
     const svgTextElement: SVGTextElement = svgDocument.createElementNS(svgNamespace, 'text');
     const styles = parentElement.style;
+
+    if (parentElement.parentElement?.parentElement?.style.opacity) {
+      // The opacity is put on the parent of both the label and the label icon, thus, we have to get opacity from the great-grandparent
+      svgTextElement.setAttribute('opacity', parentElement.parentElement?.parentElement?.style.opacity);
+    }
     // Copy text styles
     // https://css-tricks.com/svg-properties-and-css
     this.copyTextStyles(styles, svgTextElement);

@@ -38,17 +38,19 @@ export class SVGExportEngine implements ISVGExportEngine {
     width: number,
     height: number,
     transform: string,
-    style: SVGStyleElement,
+    style: SVGStyleElement | null | undefined,
     private readonly htmlToImageTransform: string
   ) {
     this.svgDocument = document.implementation.createDocument(svgNamespace, 'svg', null);
-    const clonedStyle = this.svgDocument.importNode(style, true);
     this.svg = this.svgDocument.documentElement as unknown as SVGSVGElement;
     this.svg.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
     this.svg.style.transform = transform;
     this.svg.style.width = width.toString();
     this.svg.style.height = height.toString();
-    this.svg.appendChild(clonedStyle);
+    if (style) {
+      const clonedStyle = this.svgDocument.importNode(style, true);
+      this.svg.appendChild(clonedStyle);
+    }
   }
 
   svgExport(element: HTMLElement[], edgeContainer: HTMLElement | null): SvgExportResult {
