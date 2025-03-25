@@ -50,6 +50,8 @@ public final class Column {
 
     private String filterVariant;
 
+    private boolean sortable;
+
     private int index;
 
     private Column() {
@@ -100,6 +102,10 @@ public final class Column {
         return this.filterVariant;
     }
 
+    public boolean isSortable() {
+        return this.sortable;
+    }
+
     public int getIndex() {
         return this.index;
     }
@@ -143,6 +149,8 @@ public final class Column {
         private boolean hidden;
 
         private String filterVariant;
+
+        private boolean sortable;
 
         private int index;
 
@@ -200,6 +208,11 @@ public final class Column {
             return this;
         }
 
+        public Builder sortable(boolean sortable) {
+            this.sortable = sortable;
+            return this;
+        }
+
         public Builder index(int index) {
             this.index = index;
             return this;
@@ -218,6 +231,7 @@ public final class Column {
             column.resizable = this.resizable;
             column.hidden = this.hidden;
             column.filterVariant = Objects.requireNonNull(this.filterVariant);
+            column.sortable = this.sortable;
             column.index = this.index;
             return column;
         }

@@ -111,6 +111,7 @@ export const tableWidgetDocumentTransform = new DocumentTransform((document) => 
                 fieldBuilder('enableSubRows'),
                 fieldBuilder('globalFilter'),
                 structuredFieldBuilder('columnFilters', [fieldBuilder('id'), fieldBuilder('value')]),
+                structuredFieldBuilder('columnSort', [fieldBuilder('id'), fieldBuilder('desc')]),
                 structuredFieldBuilder('columns', [
                   fieldBuilder('id'),
                   fieldBuilder('headerLabel'),
@@ -122,6 +123,7 @@ export const tableWidgetDocumentTransform = new DocumentTransform((document) => 
                   fieldBuilder('isResizable'),
                   fieldBuilder('hidden'),
                   fieldBuilder('filterVariant'),
+                  fieldBuilder('isSortable'),
                 ]),
                 structuredFieldBuilder('lines', [
                   fieldBuilder('id'),
