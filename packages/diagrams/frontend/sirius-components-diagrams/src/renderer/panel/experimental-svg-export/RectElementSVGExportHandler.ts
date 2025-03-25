@@ -89,6 +89,21 @@ export class RectElementSVGExportHandler implements IElementSVGExportHandler {
         rect.setAttribute('stroke-width', style.borderWidth);
       }
 
+      switch (style.borderStyle) {
+        case 'dotted':
+          rect.setAttribute('stroke-dasharray', '0.5');
+          break;
+        case 'dashed':
+          rect.setAttribute('stroke-dasharray', '2, 1');
+          break;
+        default:
+          break;
+      }
+
+      if (style.opacity) {
+        rect.setAttribute('opacity', style.opacity);
+      }
+
       parentSvgElement.appendChild(rect);
     }
     return elementToAddAtTheEnd;

@@ -13,15 +13,7 @@
 
 import { useData } from '@eclipse-sirius/sirius-components-core';
 import { EdgeData, NodeData } from '@eclipse-sirius/sirius-components-diagrams';
-import {
-  Edge,
-  getNodesBounds,
-  getViewportForBounds,
-  Node as ReactFlowNode,
-  Rect,
-  useReactFlow,
-  Viewport,
-} from '@xyflow/react';
+import { Edge, getViewportForBounds, Node as ReactFlowNode, Rect, useReactFlow, Viewport } from '@xyflow/react';
 import { toSvg } from 'html-to-image';
 import { useCallback, useEffect, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -50,7 +42,7 @@ export const useExperimentalSvgExport = (): UseExperimentalSvgExport => {
   const { data: elementSvgExportHandlerContributions } = useData(svgExportIElementSVGExportHandlerExtensionPoint);
 
   const exportSvg = useCallback((callback: (dataUrl: string) => void) => {
-    const nodesBounds: Rect = getNodesBounds(reactFlow.getNodes());
+    const nodesBounds: Rect = reactFlow.getNodesBounds(reactFlow.getNodes());
     const imageWidth: number = nodesBounds.width;
     const imageHeight: number = nodesBounds.height;
 
@@ -80,7 +72,7 @@ export const useExperimentalSvgExport = (): UseExperimentalSvgExport => {
           const doc = parser.parseFromString(textSvg, 'image/svg+xml');
           const otherViewport = doc.querySelector<HTMLElement>('.react-flow__viewport');
           const style = otherViewport?.querySelector<SVGStyleElement>('style');
-          if (otherViewport && style) {
+          if (otherViewport) {
             const hiddenContainer: HTMLDivElement = document.createElement('div');
             hiddenContainer.id = 'hidden-svg-export-container';
             hiddenContainer.style.display = 'inline-block';
@@ -125,7 +117,7 @@ export const useExperimentalSvgExport = (): UseExperimentalSvgExport => {
     height: number,
     transform: string,
     element: SVGSVGElement,
-    style: SVGStyleElement,
+    style: SVGStyleElement | null | undefined,
     htmlToImageViewport: HTMLElement
   ): string => {
     const elementsToExport = element?.querySelectorAll<HTMLElement>('[data-svg]');
