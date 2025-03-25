@@ -16,7 +16,7 @@ import { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { getString } from './TreeItem';
 import { TreeItemActionProps, TreeItemActionState } from './TreeItemAction.types';
-import { TreeItemContextMenu } from './TreeItemContextMenu';
+import { TreeItemContextMenu } from './context-menu/TreeItemContextMenu';
 
 const useTreeItemActionStyle = makeStyles()((theme) => ({
   more: {

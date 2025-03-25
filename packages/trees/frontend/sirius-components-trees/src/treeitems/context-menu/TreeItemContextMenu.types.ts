@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLTreeItem } from '../views/TreeView.types';
+import { GQLTreeItem } from '../../views/TreeView.types';
 
 export interface TreeItemContextMenuProps {
   menuAnchor: Element;
@@ -23,32 +23,6 @@ export interface TreeItemContextMenuProps {
   onExpandAll: (treeItem: GQLTreeItem) => void;
   enterEditingMode: () => void;
   onClose: () => void;
-}
-
-export interface GQLDeleteTreeItemData {
-  deleteTreeItem: GQLDeleteTreeItemPayload;
-}
-
-export interface GQLDeleteTreeItemPayload {
-  __typename: string;
-}
-
-export interface GQLDeleteTreeItemVariables {
-  input: GQLDeleteTreeItemInput;
-}
-
-export interface GQLDeleteTreeItemInput {
-  id: string;
-  editingContextId: string;
-  representationId: string;
-  treeItemId: string;
-}
-
-export interface TreeItemContextMenuEntry {
-  __typename: string;
-  id: string;
-  label: string;
-  iconURL: string[];
 }
 
 export interface FetchTreeItemContextMenuEntry {
@@ -76,13 +50,11 @@ export interface GQLInvokeSingleClickTreeItemContextMenuEntryPayload {
   __typename: string;
 }
 
-export interface GQLSuccessPayload
-  extends GQLDeleteTreeItemPayload,
-    GQLInvokeSingleClickTreeItemContextMenuEntryPayload {
+export interface GQLSuccessPayload extends GQLInvokeSingleClickTreeItemContextMenuEntryPayload {
   id: string;
 }
 
-export interface GQLErrorPayload extends GQLDeleteTreeItemPayload, GQLInvokeSingleClickTreeItemContextMenuEntryPayload {
+export interface GQLErrorPayload extends GQLInvokeSingleClickTreeItemContextMenuEntryPayload {
   message: string;
 }
 
