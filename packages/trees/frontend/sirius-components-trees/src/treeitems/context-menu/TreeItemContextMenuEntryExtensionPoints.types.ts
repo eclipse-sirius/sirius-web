@@ -10,10 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { TreeItemContextMenuEntry } from './TreeItemContextMenu.types';
 import { TreeItemContextMenuComponentProps } from './TreeItemContextMenuEntry.types';
+import { GQLTreeItemContextMenuEntry } from './useContextMenuEntries.types';
 
 export interface TreeItemContextMenuOverrideContribution {
-  canHandle: (entry: TreeItemContextMenuEntry) => boolean;
+  canHandle: (entry: GQLTreeItemContextMenuEntry) => boolean;
   component: React.ComponentType<TreeItemContextMenuComponentProps>;
 }

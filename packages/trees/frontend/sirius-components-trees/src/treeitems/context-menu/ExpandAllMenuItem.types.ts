@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLTreeItem } from '../views/TreeView.types';
 
-export interface TreeItemContextMenuComponentProps {
-  editingContextId: string;
-  treeId: string;
+import { GQLTreeItem } from '../../views/TreeView.types';
+
+export interface ExpandAllMenuItemProps {
   item: GQLTreeItem;
-  readOnly: boolean;
-  expandItem: () => void;
-  onClose: () => void;
-  key: string;
+  onExpandAll: (item: GQLTreeItem) => void;
+  onClick: () => void;
 }

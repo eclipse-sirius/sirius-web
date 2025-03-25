@@ -44,7 +44,7 @@ import { PortalRepresentation } from '@eclipse-sirius/sirius-components-portals'
 import { SelectionDialog } from '@eclipse-sirius/sirius-components-selection';
 import { TableRepresentation } from '@eclipse-sirius/sirius-components-tables';
 import {
-  TreeItemContextMenuEntry,
+  GQLTreeItemContextMenuEntry,
   TreeItemContextMenuOverrideContribution,
   TreeRepresentation,
   treeItemContextMenuEntryExtensionPoint,
@@ -366,7 +366,7 @@ defaultExtensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
  *******************************************************************************/
 const treeItemContextMenuOverrideContributions: TreeItemContextMenuOverrideContribution[] = [
   {
-    canHandle: (entry: TreeItemContextMenuEntry) => {
+    canHandle: (entry: GQLTreeItemContextMenuEntry) => {
       return entry.id.includes('updateLibrary');
     },
     component: UpdateLibraryTreeItemContextMenuContribution,

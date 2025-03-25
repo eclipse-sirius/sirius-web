@@ -66,6 +66,8 @@ Downstream projects contributing their own route will have to use a `ExtensionRe
 - https://github.com/eclipse-sirius/sirius-web/issues/4706[#4706] [diagram] The following attributes of `org.eclipse.sirius.components.diagrams.description.EdgeDescription` have been renamed : `sourceNodeDescriptions to sourceDescriptions`, `targetNodeDescriptions to targetDescriptions`, `sourceNodesProvider to sourceProvider` and `targetNodesProvider to targetProvider`.
 - https://github.com/eclipse-sirius/sirius-web/issues/4727[#4727] [domain] [sirius-web] a new parameter has been added to `Viewer#getProjects` in the graphql API, and thus, the `IProjectApplicationService` and the `IProjectSearchService` API have been updated accordingly.
 + Queries of `ProjectSearchRepositoryDelegate` has been updated so any downstream project providing their own `IProjectSearchRepositoryDelegate` may have to change on their queries if they want the filter on project to work.
+- [tree] The type `TreeItemContextMenuEntry` which was exported by `sirius-components-trees` has been replaced with the raw GraphQL type `GQLTreeItemContextMenuEntry`
+
 
 === Dependency update
 
@@ -173,6 +175,7 @@ Except for the specific case where `cause === 'refresh'` in `DiagramRenderer` (w
 - https://github.com/eclipse-sirius/sirius-web/issues/4376[#4376] [sirius-web] Keep URL search params while using the project workbench
 - https://github.com/eclipse-sirius/sirius-web/issues/4376[#4376] [sirius-web] Synchronize the selection with the URL
 - https://github.com/eclipse-sirius/sirius-web/issues/3993[#3993] [sirius-web] Leverage material-react-table for the project browser
+- [tree] Improve the organization of the code of the tree item context menu
 
 
 == v2025.2.0

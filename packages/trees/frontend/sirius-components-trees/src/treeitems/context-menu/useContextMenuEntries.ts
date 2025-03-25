@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,8 +13,7 @@
 
 import { gql, useQuery } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { useEffect, useState } from 'react';
-import { TreeItemContextMenuEntry } from './TreeItemContextMenu.types';
+import { useEffect } from 'react';
 import {
   GQLGetAllContextMenuEntriesData,
   GQLGetAllContextMenuEntriesVariables,
@@ -48,8 +47,6 @@ export const useContextMenuEntries = (
   treeId: string,
   treeItemId: string
 ): UseContextMenuEntriesValue => {
-  const [contextMenuEntries, setContextMenuEntries] = useState<TreeItemContextMenuEntry[]>([]);
-
   const { loading, data, error } = useQuery<GQLGetAllContextMenuEntriesData, GQLGetAllContextMenuEntriesVariables>(
     getAllContextMenuEntriesQuery,
     {
@@ -70,24 +67,8 @@ export const useContextMenuEntries = (
     }
   }, [error]);
 
-  const contextEntries: GQLTreeItemContextMenuEntry[] =
+  const contextMenuEntries: GQLTreeItemContextMenuEntry[] =
     data?.viewer.editingContext.representation?.description.contextMenu || [];
-
-  const convertMetadata = (menuEntry: GQLTreeItemContextMenuEntry): TreeItemContextMenuEntry => {
-    return {
-      __typename: menuEntry.__typename,
-      id: menuEntry.id,
-      label: menuEntry.label,
-      iconURL: menuEntry.iconURL,
-    };
-  };
-
-  useEffect(() => {
-    if (!loading) {
-      const allContextEntries: TreeItemContextMenuEntry[] = contextEntries.map(convertMetadata);
-      setContextMenuEntries(allContextEntries);
-    }
-  }, [loading, contextEntries]);
 
   return {
     contextMenuEntries,
