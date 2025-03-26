@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 CEA LIST and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,19 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLProject } from './useProjects.types';
-
-export interface ProjectsTableProps {
-  loading: boolean;
-  projects: GQLProject[];
-  rowCount: number;
+export interface CursorBasedPaginationProps {
   hasPreviousPage: boolean;
   hasNextPage: boolean;
   onPreviousPage: () => void;
   onNextPage: () => void;
   pageSize: number;
-  onChange: () => void;
-  onPageSizeChange: (page: number) => void;
-  globalFilter: string;
-  onGlobalFilterChange: (globalFilter: string) => void;
+  onPageSizeChange: (pageSize: number) => void;
 }

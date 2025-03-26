@@ -17,6 +17,7 @@ export interface ListProjectsAreaState {
   pageSize: number;
   startCursor: string | null;
   endCursor: string | null;
+  globalFilter: string;
 }
 
 export interface NoProjectsFoundProps {}

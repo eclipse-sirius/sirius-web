@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,19 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { MRT_ColumnDef } from 'material-react-table';
 import { GQLProject } from './useProjects.types';
 
-export interface ProjectsTableProps {
-  loading: boolean;
-  projects: GQLProject[];
-  rowCount: number;
-  hasPreviousPage: boolean;
-  hasNextPage: boolean;
-  onPreviousPage: () => void;
-  onNextPage: () => void;
-  pageSize: number;
-  onChange: () => void;
-  onPageSizeChange: (page: number) => void;
-  globalFilter: string;
-  onGlobalFilterChange: (globalFilter: string) => void;
+export interface ProjectsTableColumnCustomizer {
+  customize(columnDefinitions: MRT_ColumnDef<GQLProject>[]): MRT_ColumnDef<GQLProject>[];
 }
