@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,7 @@ import { MultiLabelEdgeData } from '../renderer/edge/MultiLabelEdge.types';
 import { RawDiagram } from '../renderer/layout/layout.types';
 import { computeBorderNodeExtents, computeBorderNodePositions } from '../renderer/layout/layoutBorderNodes';
 import { layoutHandles } from '../renderer/layout/layoutHandles';
+import { GQLEdgeLayoutData } from '../renderer/layout/useSynchronizeLayoutData.types';
 import { DiagramNodeType } from '../renderer/node/NodeTypes.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
@@ -36,7 +37,6 @@ import { ImageNodeConverter } from './ImageNodeConverter';
 import { ListNodeConverter } from './ListNodeConverter';
 import { RectangleNodeConverter } from './RectangleNodeConverter';
 import { convertContentStyle, convertLabelStyle } from './convertLabel';
-import { GQLEdgeLayoutData } from '../renderer/layout/useSynchronizeLayoutData.types';
 
 const nodeDepth = (nodeId2node: Map<string, Node>, nodeId: string): number => {
   const node = nodeId2node.get(nodeId);
@@ -151,10 +151,12 @@ export const convertDiagram = (
       targetObjectId: gqlEdge.targetObjectId,
       targetObjectKind: gqlEdge.targetObjectKind,
       targetObjectLabel: gqlEdge.targetObjectLabel,
+      descriptionId: gqlEdge.descriptionId,
       label: null,
       faded: gqlEdge.state === GQLViewModifier.Faded,
       centerLabelEditable: gqlEdge.centerLabelEditable,
       bendingPoints: edgeLayoutData?.bendingPoints ?? null,
+      isHovered: false,
     };
 
     if (gqlEdge.beginLabel) {

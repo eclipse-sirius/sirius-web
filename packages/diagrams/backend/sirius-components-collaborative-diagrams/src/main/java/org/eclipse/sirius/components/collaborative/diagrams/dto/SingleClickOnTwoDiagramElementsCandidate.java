@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,14 +15,14 @@ package org.eclipse.sirius.components.collaborative.diagrams.dto;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 
 /**
  * An candidate containing a valid couple of sources/targets.
  *
  * @author mcharfadi
  */
-public record SingleClickOnTwoDiagramElementsCandidate(List<NodeDescription> sources, List<NodeDescription> targets) {
+public record SingleClickOnTwoDiagramElementsCandidate(List<IDiagramElementDescription> sources, List<IDiagramElementDescription> targets) {
 
     public SingleClickOnTwoDiagramElementsCandidate {
         Objects.requireNonNull(sources);
@@ -41,19 +41,19 @@ public record SingleClickOnTwoDiagramElementsCandidate(List<NodeDescription> sou
     @SuppressWarnings("checkstyle:HiddenField")
     @org.eclipse.sirius.components.annotations.Builder
     public static final class Builder {
-        private List<NodeDescription> sources;
+        private List<IDiagramElementDescription> sources;
 
-        private List<NodeDescription> targets;
+        private List<IDiagramElementDescription> targets;
 
         private Builder() {
         }
 
-        public SingleClickOnTwoDiagramElementsCandidate.Builder sources(List<NodeDescription> sources) {
+        public SingleClickOnTwoDiagramElementsCandidate.Builder sources(List<IDiagramElementDescription> sources) {
             this.sources = sources;
             return this;
         }
 
-        public SingleClickOnTwoDiagramElementsCandidate.Builder targets(List<NodeDescription> targets) {
+        public SingleClickOnTwoDiagramElementsCandidate.Builder targets(List<IDiagramElementDescription> targets) {
             this.targets = targets;
             return this;
         }

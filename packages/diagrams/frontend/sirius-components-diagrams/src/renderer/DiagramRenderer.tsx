@@ -58,6 +58,7 @@ import { useInitialFitToScreen } from './fit-to-screen/useInitialFitToScreen';
 import { useHandleChange } from './handles/useHandleChange';
 import { HelperLines } from './helper-lines/HelperLines';
 import { useHelperLines } from './helper-lines/useHelperLines';
+import { useEdgeHover } from './hover/useEdgeHover';
 import { useNodeHover } from './hover/useNodeHover';
 import { useFilterReadOnlyChanges } from './layout-events/useFilterReadOnlyChanges';
 import { useLayoutOnBoundsChange } from './layout-events/useLayoutOnBoundsChange';
@@ -418,6 +419,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   );
 
   const { onNodeMouseEnter, onNodeMouseLeave } = useNodeHover();
+  const { onEdgeMouseEnter, onEdgeMouseLeave } = useEdgeHover();
 
   const handleNodeDrag = useCallback(
     (event: ReactMouseEvent, node: Node<NodeData>, nodes: Node<NodeData>[]) => {
@@ -457,6 +459,8 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     onNodeDragStop: onNodeDragStop,
     onNodeMouseEnter: onNodeMouseEnter,
     onNodeMouseLeave: onNodeMouseLeave,
+    onEdgeMouseEnter: onEdgeMouseEnter,
+    onEdgeMouseLeave: onEdgeMouseLeave,
     onSelectionStart: handleSelectionStart,
     onSelectionEnd: handleSelectionEnd,
     onSelectionContextMenu: handleSelectionContextMenu,
