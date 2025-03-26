@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import java.util.function.Predicate;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
+import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +55,18 @@ public class DiagramDescriptionService implements IDiagramDescriptionService {
     @Override
     public Optional<EdgeDescription> findEdgeDescriptionById(DiagramDescription diagramDescription, String edgeDescriptionId) {
         return this.findEdgeDescription(edgeDesc -> Objects.equals(edgeDesc.getId(), edgeDescriptionId), diagramDescription.getEdgeDescriptions());
+    }
+
+    @Override
+    public Optional<IDiagramElementDescription> findDiagramElementDescriptionById(DiagramDescription diagramDescription, String elementDescriptionId) {
+        var optionalDiagramElementDescription = this.findNodeDescriptionById(diagramDescription, elementDescriptionId)
+                .map(IDiagramElementDescription.class::cast);
+
+        if (optionalDiagramElementDescription.isEmpty()) {
+            optionalDiagramElementDescription = this.findEdgeDescriptionById(diagramDescription, elementDescriptionId)
+                    .map(IDiagramElementDescription.class::cast);
+        }
+        return optionalDiagramElementDescription;
     }
 
     private Optional<EdgeDescription> findEdgeDescription(Predicate<EdgeDescription> condition, List<EdgeDescription> candidates) {

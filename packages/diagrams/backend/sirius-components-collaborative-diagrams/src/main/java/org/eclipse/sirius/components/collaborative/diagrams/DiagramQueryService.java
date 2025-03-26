@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import java.util.function.Predicate;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.springframework.stereotype.Service;
 
@@ -74,6 +75,18 @@ public class DiagramQueryService implements IDiagramQueryService {
             isValid = isValid || (edge.getEndLabel() != null && Objects.equals(edge.getEndLabel().getId(), labelId));
             return isValid;
         }).findFirst();
+    }
+
+    @Override
+    public Optional<IDiagramElement> findDiagramElementById(Diagram diagram, String diagramElementId) {
+        Optional<IDiagramElement> optionalDiagramElement = this.findNodeById(diagram, diagramElementId)
+                .map(IDiagramElement.class::cast);
+
+        if (optionalDiagramElement.isEmpty()) {
+            optionalDiagramElement = this.findEdgeById(diagram, diagramElementId)
+                    .map(IDiagramElement.class::cast);
+        }
+        return optionalDiagramElement;
     }
 
 }

@@ -282,10 +282,8 @@ public class ViewPaletteProvider implements IPaletteProvider {
         List<SingleClickOnTwoDiagramElementsCandidate> candidates = List.of(SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
                 .sources(List.of(nodeDescription))
                 .targets(viewEdgeTool.getTargetElementDescriptions().stream()
-                        .filter(org.eclipse.sirius.components.view.diagram.NodeDescription.class::isInstance)
-                        .map(viewDiagramElementDescription -> this.diagramDescriptionService.findNodeDescriptionById(diagramDescription, this.diagramIdProvider.getId(viewDiagramElementDescription)))
-                        .filter(Optional::isPresent)
-                        .map(Optional::get)
+                        .map(viewDiagramElementDescription -> this.diagramDescriptionService.findDiagramElementDescriptionById(diagramDescription, this.diagramIdProvider.getId(viewDiagramElementDescription)))
+                        .flatMap(Optional::stream)
                         .toList())
                 .build());
 

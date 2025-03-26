@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -44,6 +44,16 @@ public class EdgeNavigator {
     public NodeNavigator targetNode() {
         Node node = this.cache.getIdToNode().get(this.edge.getTargetId());
         return new NodeNavigator(node, this.cache);
+    }
+
+    public EdgeNavigator sourceEdge() {
+        Edge edgeSource = this.cache.getIdToEdge().get(this.edge.getSourceId());
+        return new EdgeNavigator(edgeSource, this.cache);
+    }
+
+    public EdgeNavigator targetEdge() {
+        Edge edgeTarget = this.cache.getIdToEdge().get(this.edge.getTargetId());
+        return new EdgeNavigator(edgeTarget, this.cache);
     }
 
     public Label findCenterLabel() {

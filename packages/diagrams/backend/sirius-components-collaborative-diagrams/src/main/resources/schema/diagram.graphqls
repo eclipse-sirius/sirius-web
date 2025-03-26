@@ -325,8 +325,8 @@ type SingleClickOnTwoDiagramElementsTool implements Tool {
 }
 
 type SingleClickOnTwoDiagramElementsCandidate {
-  sources: [NodeDescription!]!
-  targets: [NodeDescription!]!
+  sources: [DiagramElementDescription!]!
+  targets: [DiagramElementDescription!]!
 }
 
 type DiagramDescription implements RepresentationDescription {
