@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-papaya</artifactId>
-	<version>2025.2.6</version>
+	<version>2025.2.7</version>
 	<name>sirius-components-papaya</name>
 	<description>Sirius Components Papaya Definition DSL</description>
 
