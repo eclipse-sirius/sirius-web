@@ -9,7 +9,7 @@ input ProjectFilter {
 }
 
 input StringFilterOperation {
-  equals: String
+  contains: String
 }
 
 type ViewerProjectsConnection {

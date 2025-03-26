@@ -53,7 +53,7 @@ public class ProjectSearchRepositoryDelegate implements IProjectSearchRepository
                         FROM project
                         WHERE project.id = :cursorProjectId))
             )
-            AND CASE WHEN :name <> '' THEN p.name = :name ELSE true END
+            AND CASE WHEN :name <> '' THEN LOWER(p.name) LIKE CONCAT('%', CONCAT(LOWER(:name), '%')) ELSE true END
             ORDER BY p.created_on desc, p.name
             LIMIT :limit;
             """;
@@ -69,7 +69,7 @@ public class ProjectSearchRepositoryDelegate implements IProjectSearchRepository
                         FROM project
                         WHERE project.id = :cursorProjectId))
             )
-            AND CASE WHEN :name <> '' THEN p.name = :name ELSE true END
+            AND CASE WHEN :name <> '' THEN LOWER(p.name) LIKE CONCAT('%', CONCAT(LOWER(:name), '%')) ELSE true END
             ORDER BY p.created_on asc, p.name
             LIMIT :limit;
             """;
@@ -102,7 +102,7 @@ public class ProjectSearchRepositoryDelegate implements IProjectSearchRepository
             Map<String, Object>  parameters = new HashMap<>();
             parameters.put(CURSOR_PROJECT_ID, cursorProjectId);
             parameters.put(LIMIT, limit + 1);
-            this.handleFilter(parameters, filter, "name", "equals");
+            this.handleFilter(parameters, filter, "name", "contains");
             var projects = this.getAllProjectsQuery(FIND_ALL_BEFORE, parameters);
             projectsBefore = projects.subList(0, Math.min(projects.size(), limit));
         }
@@ -116,7 +116,7 @@ public class ProjectSearchRepositoryDelegate implements IProjectSearchRepository
             Map<String, Object>  parameters = new HashMap<>();
             parameters.put(CURSOR_PROJECT_ID, cursorProjectId);
             parameters.put(LIMIT, limit + 1);
-            this.handleFilter(parameters, filter, "name", "equals");
+            this.handleFilter(parameters, filter, "name", "contains");
             var projects = this.getAllProjectsQuery(FIND_ALL_AFTER, parameters);
             projectsAfter = projects.subList(0, Math.min(projects.size(), limit));
         }

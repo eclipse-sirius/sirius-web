@@ -32,7 +32,7 @@ export interface GQLProjectFilter {
 }
 
 export interface GQLStringFilterOperation {
-  equals?: string;
+  contains?: string;
 }
 
 export interface GQLGetProjectsQueryData {
