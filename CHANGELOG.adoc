@@ -135,8 +135,8 @@ The existing update implementation assumes that the identifiers of documents con
 The implementation of the library update mechanism is generic and works on any project containing EMF resources.
 - https://github.com/eclipse-sirius/sirius-web/issues/4375[#4375] [diagram] Add support for a first version of impact analysis before tool execution.
 - https://github.com/eclipse-sirius/sirius-web/issues/4706[#4706] [diagram] The back-end now render edges that have for source or target another edge (only if this edge have for source or target a node), an edge won't be rendered if both his source and target are another edge.
-- https://github.com/eclipse-sirius/sirius-web/issues/4483 [#4483] Add row level filters in table
-- https://github.com/eclipse-sirius/sirius-web/issues/4727[#4727] [domain] [sirius-web] Add the support for projects filter.
+- https://github.com/eclipse-sirius/sirius-web/issues/4483[#4483] Add row level filters in table
+- https://github.com/eclipse-sirius/sirius-web/issues/4727[#4727] [sirius-web] Add the support for projects filter.
 + One can add a map of filter operation to the `useProjects` hook.
 + Add the `useProjectsProjectFilterExtensionPoint` to contribute filter that will always be given to the `getProjects` query.
 

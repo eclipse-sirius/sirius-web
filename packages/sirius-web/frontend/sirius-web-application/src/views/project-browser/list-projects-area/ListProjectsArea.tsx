@@ -44,7 +44,7 @@ export const ListProjectsArea = ({}: ListProjectsAreaProps) => {
   });
 
   const { data, loading, refreshProjects } = useProjects(state.startCursor, state.endCursor, state.pageSize, {
-    name: { equals: state.globalFilter },
+    name: { contains: state.globalFilter },
   });
 
   const onPreviousPage = () => {

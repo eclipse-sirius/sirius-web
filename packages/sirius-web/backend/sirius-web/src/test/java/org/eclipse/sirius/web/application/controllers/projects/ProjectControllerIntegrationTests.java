@@ -290,7 +290,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @GivenSiriusWebServer
     @DisplayName("Given a set of projects, when a project filter is applied then only wanted projects are returned")
     public void givenSetOfProjectsWhenAProjectFilterIsAppliedThenOnlyWantedProjectsAreReturned() {
-        Map<String, Object> variables = Map.of("filter", Map.of("name", Map.of("equals", "UML Sample")));
+        Map<String, Object> variables = Map.of("filter", Map.of("name", Map.of("contains", "UML Sample")));
         var result = this.projectsQueryRunner.run(variables);
 
         boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasPreviousPage");
