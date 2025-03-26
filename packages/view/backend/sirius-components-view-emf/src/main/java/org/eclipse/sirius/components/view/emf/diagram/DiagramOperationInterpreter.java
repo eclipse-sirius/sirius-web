@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -56,15 +56,15 @@ public class DiagramOperationInterpreter implements IOperationInterpreter {
 
     private final IFeedbackMessageService feedbackMessageService;
 
-    private final Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes;
+    private final Map<org.eclipse.sirius.components.view.diagram.DiagramElementDescription, IDiagramElementDescription> convertedElements;
 
     public DiagramOperationInterpreter(AQLInterpreter interpreter, IObjectService objectService, IEditService editService, IDiagramContext diagramContext,
-            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, IFeedbackMessageService feedbackMessageService) {
+            Map<org.eclipse.sirius.components.view.diagram.DiagramElementDescription, IDiagramElementDescription> convertedElements, IFeedbackMessageService feedbackMessageService) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
         this.diagramContext = diagramContext;
-        this.convertedNodes = Objects.requireNonNull(convertedNodes);
+        this.convertedElements = Objects.requireNonNull(convertedElements);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
     }
 
@@ -110,7 +110,7 @@ public class DiagramOperationInterpreter implements IOperationInterpreter {
 
     private Optional<VariableManager> executeOperation(Operation operation, VariableManager variableManager) {
         DiagramSwitch<Optional<VariableManager>> dispatcher = new DiagramOperationInterpreterViewSwitch(variableManager, this.interpreter, this.objectService, this.editService, this.diagramContext,
-                this.convertedNodes, this);
+                this.convertedElements, this);
         return dispatcher.doSwitch(operation);
     }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import { Theme, useTheme } from '@mui/material/styles';
 import {
   Connection,
   Edge,
+  FinalConnectionState,
   Node,
   OnConnect,
   OnConnectEnd,
@@ -53,7 +54,7 @@ export const useConnector = (): UseConnectorValue => {
   } = useContext<ConnectorContextValue>(ConnectorContext);
 
   const reactFlowInstance = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
-  const { setEdges } = reactFlowInstance;
+  const { setEdges, getEdges } = reactFlowInstance;
 
   const theme = useTheme();
   const { hideDiagramElementPalette } = useDiagramElementPalette();
@@ -95,15 +96,27 @@ export const useConnector = (): UseConnectorValue => {
     }
   }, []);
 
-  const onConnectEnd: OnConnectEnd = useCallback((event: MouseEvent | TouchEvent) => {
-    if ('clientX' in event && 'clientY' in event) {
-      setPosition({ x: event.clientX || 0, y: event.clientY });
-    } else if ('touches' in event) {
-      const touchEvent = event as TouchEvent;
-      setPosition({ x: touchEvent.touches[0]?.clientX || 0, y: touchEvent.touches[0]?.clientY || 0 });
-    }
-    setIsNewConnection(false);
-  }, []);
+  const onConnectEnd: OnConnectEnd = useCallback(
+    (event: MouseEvent | TouchEvent, connectionState: FinalConnectionState) => {
+      if ('clientX' in event && 'clientY' in event) {
+        setPosition({ x: event.clientX || 0, y: event.clientY });
+      } else if ('touches' in event) {
+        const touchEvent = event as TouchEvent;
+        setPosition({ x: touchEvent.touches[0]?.clientX || 0, y: touchEvent.touches[0]?.clientY || 0 });
+      }
+      const hoveredEdge = getEdges().find((edge) => edge.data && edge.data.isHovered);
+      if (hoveredEdge && connectionState.fromNode) {
+        setConnection({
+          source: connectionState.fromNode.id,
+          target: hoveredEdge.id,
+          sourceHandle: null,
+          targetHandle: null,
+        });
+      }
+      setIsNewConnection(false);
+    },
+    []
+  );
 
   const addTempConnectionLine = () => {
     const sourceNode = nodeLookup.get(connection?.source ?? '');

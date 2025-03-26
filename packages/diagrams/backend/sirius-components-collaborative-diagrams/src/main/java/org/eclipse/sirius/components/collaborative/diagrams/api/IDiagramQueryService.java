@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo and others.
+ * Copyright (c) 2021, 2025 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
 
 /**
@@ -32,6 +33,8 @@ public interface IDiagramQueryService {
     Optional<Edge> findEdgeById(Diagram diagram, String edgeId);
 
     Optional<Edge> findEdgeByLabelId(Diagram diagram, String labelId);
+
+    Optional<IDiagramElement> findDiagramElementById(Diagram diagram, String diagramElementId);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -57,6 +60,11 @@ public interface IDiagramQueryService {
 
         @Override
         public Optional<Edge> findEdgeByLabelId(Diagram diagram, String labelId) {
+            return Optional.empty();
+        }
+
+        @Override
+        public Optional<IDiagramElement> findDiagramElementById(Diagram diagram, String edgeId) {
             return Optional.empty();
         }
 

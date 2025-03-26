@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -376,19 +376,21 @@ public class ToolProvider implements IToolProvider {
 
         List<SingleClickOnTwoDiagramElementsCandidate> edgeCandidates = new ArrayList<>();
         for (EdgeMapping edgeMapping : edgeCreationDescription.getEdgeMappings()) {
-            List<NodeDescription> sources = edgeMapping.getSourceMapping().stream()
+            List<IDiagramElementDescription> sources = edgeMapping.getSourceMapping().stream()
                     .filter(AbstractNodeMapping.class::isInstance)
                     .map(this.identifierProvider::getIdentifier)
                     .map(UUID::fromString)
                     .map(UUID::toString)
                     .map(id2NodeDescriptions::get)
+                    .map(IDiagramElementDescription.class::cast)
                     .toList();
-            List<NodeDescription> targets = edgeMapping.getTargetMapping().stream()
+            List<IDiagramElementDescription> targets = edgeMapping.getTargetMapping().stream()
                     .filter(AbstractNodeMapping.class::isInstance)
                     .map(this.identifierProvider::getIdentifier)
                     .map(UUID::fromString)
                     .map(UUID::toString)
                     .map(id2NodeDescriptions::get)
+                    .map(IDiagramElementDescription.class::cast)
                     .toList();
             SingleClickOnTwoDiagramElementsCandidate edgeCandidate = SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
                     .sources(sources)

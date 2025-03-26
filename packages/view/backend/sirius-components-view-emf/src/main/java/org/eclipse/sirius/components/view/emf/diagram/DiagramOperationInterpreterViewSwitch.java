@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
+import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -56,7 +57,7 @@ import org.eclipse.sirius.components.view.emf.OperationInterpreterViewSwitch;
  */
 public class DiagramOperationInterpreterViewSwitch extends DiagramSwitch<Optional<VariableManager>> {
 
-    private final Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes;
+    private final Map<org.eclipse.sirius.components.view.diagram.DiagramElementDescription, IDiagramElementDescription> convertedElements;
 
     private final IDiagramContext diagramContext;
 
@@ -89,10 +90,10 @@ public class DiagramOperationInterpreterViewSwitch extends DiagramSwitch<Optiona
      *         appropriate switch according to the concrete representation.
      */
     public DiagramOperationInterpreterViewSwitch(VariableManager variableManager, AQLInterpreter interpreter, IObjectService objectService, IEditService editService, IDiagramContext diagramContext,
-            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, IOperationInterpreter operationInterpreter) {
+        Map<org.eclipse.sirius.components.view.diagram.DiagramElementDescription, IDiagramElementDescription> convertedElements, IOperationInterpreter operationInterpreter) {
         this.operationInterpreterViewSwitch = new OperationInterpreterViewSwitch(variableManager, interpreter, editService, operationInterpreter);
         this.variableManager = Objects.requireNonNull(variableManager);
-        this.convertedNodes = Objects.requireNonNull(convertedNodes);
+        this.convertedElements = Objects.requireNonNull(convertedElements);
         this.objectService = Objects.requireNonNull(objectService);
         this.interpreter = Objects.requireNonNull(interpreter);
         this.operationInterpreter = Objects.requireNonNull(operationInterpreter);
@@ -115,8 +116,9 @@ public class DiagramOperationInterpreterViewSwitch extends DiagramSwitch<Optiona
                 .map(EObject.class::cast);
 
         Optional<VariableManager> optionalVariableManager = Optional.empty();
-        if (optionalSemanticElement.isPresent()) {
-            var newNode = this.createView(optionalParentNode, this.convertedNodes.get(createViewOperation.getElementDescription()), optionalSemanticElement.get(), createViewOperation.getContainmentKind());
+        var convertedElement = this.convertedElements.get(createViewOperation.getElementDescription());
+        if (optionalSemanticElement.isPresent() && convertedElement instanceof NodeDescription nodeDescription) {
+            var newNode = this.createView(optionalParentNode, nodeDescription, optionalSemanticElement.get(), createViewOperation.getContainmentKind());
 
             var childVariableManager = this.variableManager;
             if (createViewOperation.getVariableName() != null && createViewOperation.getVariableName().trim().length() > 0) {
