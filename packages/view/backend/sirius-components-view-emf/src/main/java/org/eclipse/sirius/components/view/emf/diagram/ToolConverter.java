@@ -39,10 +39,10 @@ import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.representations.WorkbenchSelection;
 import org.eclipse.sirius.components.representations.WorkbenchSelectionEntry;
+import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
-import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.emf.diagram.tools.ToolExecutor;
@@ -164,13 +164,13 @@ public class ToolConverter {
                 .build();
     }
 
-    private ToolSection createToolSection(NodeToolSection toolSection, NodeDescription nodeDescription, ViewDiagramDescriptionConverterContext converterContext) {
+    private ToolSection createToolSection(NodeToolSection toolSection, DiagramElementDescription elementDescription, ViewDiagramDescriptionConverterContext converterContext) {
         var tools = new ArrayList<ITool>();
         tools.addAll(toolSection.getNodeTools().stream()
                 .map(nodeTool -> this.createNodeTool(nodeTool, converterContext, false))
                 .toList());
         tools.addAll(toolSection.getEdgeTools().stream()
-                .map(edgeTool -> this.createEdgeTool(edgeTool, nodeDescription, converterContext))
+                .map(edgeTool -> this.createEdgeTool(edgeTool, elementDescription, converterContext))
                 .toList());
         String toolSectionId = this.idProvider.apply(toolSection).toString();
         return ToolSection.newToolSection(toolSectionId)
@@ -209,20 +209,20 @@ public class ToolConverter {
                 .build();
     }
 
-    private ITool createEdgeTool(EdgeTool edgeTool, NodeDescription nodeDescription, ViewDiagramDescriptionConverterContext converterContext) {
-        var convertedNodes = Collections.unmodifiableMap(converterContext.getConvertedNodes());
+    private ITool createEdgeTool(EdgeTool edgeTool, DiagramElementDescription elementDescription, ViewDiagramDescriptionConverterContext converterContext) {
+        var convertedElements = Collections.unmodifiableMap(converterContext.getConvertedElements());
         String toolId = this.idProvider.apply(edgeTool).toString();
         return SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(toolId)
                 .label(edgeTool.getName())
                 .iconURL(this.toolIconURLProvider(edgeTool.getIconURLsExpression(), ViewToolImageProvider.EDGE_CREATION_TOOL_ICON, converterContext.getInterpreter()))
                 .candidates(List.of(SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
-                        .sources(List.of(convertedNodes.get(nodeDescription)))
-                        .targets(edgeTool.getTargetElementDescriptions().stream().map(convertedNodes::get).toList())
+                        .sources(List.of(convertedElements.get(elementDescription)))
+                        .targets(edgeTool.getTargetElementDescriptions().stream().map(convertedElements::get).toList())
                         .build()))
                 .handler(variableManager -> {
                     VariableManager childVariableManager = variableManager.createChild();
-                    childVariableManager.put(ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE, convertedNodes);
-                    childVariableManager.put("nodeDescription", nodeDescription);
+                    childVariableManager.put(ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE, convertedElements);
+                    childVariableManager.put("diagramElementDescription", elementDescription);
 
                     var result = this.toolExecutor.executeTool(edgeTool, converterContext.getInterpreter(), childVariableManager);
                     this.applyElementsToSelectExpression(result, converterContext, childVariableManager, edgeTool.getElementsToSelectExpression());

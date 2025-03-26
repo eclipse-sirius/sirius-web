@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,8 @@ public class NavigatorCache {
 
     private Map<String, Node> idToNode = new HashMap<>();
 
+    private Map<String, Edge> idToEdge = new HashMap<>();
+
     private Map<String, List<Node>> labelToNodes = new HashMap<>();
 
     private Map<String, List<Node>> targetObjectLabelToNodes = new HashMap<>();
@@ -61,6 +63,10 @@ public class NavigatorCache {
 
     public Map<String, Node> getIdToNode() {
         return this.idToNode;
+    }
+
+    public Map<String, Edge> getIdToEdge() {
+        return this.idToEdge;
     }
 
     public Map<String, List<Node>> getLabelToNodes() {
@@ -113,9 +119,9 @@ public class NavigatorCache {
 
     private void cacheDiagram(Diagram diagram) {
         diagram.getNodes().stream()
-            .forEach(node -> this.cacheNode(node, List.of()));
+                .forEach(node -> this.cacheNode(node, List.of()));
         diagram.getEdges().stream()
-            .forEach(edge -> this.cacheEdge(edge));
+                .forEach(edge -> this.cacheEdge(edge));
     }
 
     private void cacheNode(Node node, List<Node> ancestors) {
@@ -141,11 +147,12 @@ public class NavigatorCache {
         List<Node> childAncestors = new ArrayList<>(ancestors);
         childAncestors.add(node);
         Stream.concat(node.getChildNodes().stream(), node.getBorderNodes().stream())
-            .forEach(childNode -> this.cacheNode(childNode, childAncestors));
+                .forEach(childNode -> this.cacheNode(childNode, childAncestors));
     }
 
     private void cacheEdge(Edge edge) {
         this.diagramEdgeCount++;
+        this.idToEdge.put(edge.getId(), edge);
         List<Edge> edgesWithDescription = this.edgeDescriptionIdToEdges.computeIfAbsent(edge.getDescriptionId(), k -> new ArrayList<>());
         edgesWithDescription.add(edge);
         List<Edge> edgesConnectedToSourceNode = this.nodeIdToEdges.computeIfAbsent(edge.getSourceId(), k -> new ArrayList<>());

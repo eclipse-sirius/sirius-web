@@ -17,6 +17,7 @@ import { BaseEdge, Edge, EdgeLabelRenderer, Position, XYPosition } from '@xyflow
 import { memo, useEffect, useMemo, useState } from 'react';
 import { DraggableData } from 'react-draggable';
 import { useStore } from '../../representation/useStore';
+import { useConnectorEdgeStyle } from '../connector/useConnectorEdgeStyle';
 import { Label } from '../Label';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { BendPoint, TemporaryBendPoint } from './BendPoint';
@@ -107,6 +108,8 @@ export const MultiLabelEditableEdge = memo(
     }, [bendingPoints.map((point) => point.x + point.y).join()]);
 
     const edgeStyle = useMemo(() => multiLabelEdgeStyle(theme, style, selected, faded), [style, selected, faded]);
+    const { style: connectionFeedbackStyle } = useConnectorEdgeStyle(data ? data.descriptionId : '', !!data?.isHovered);
+
     const sourceLabelTranslation = useMemo(() => getTranslateFromHandlePositon(sourcePosition), [sourcePosition]);
     const targetLabelTranslation = useMemo(() => getTranslateFromHandlePositon(targetPosition), [targetPosition]);
 
@@ -257,7 +260,10 @@ export const MultiLabelEditableEdge = memo(
         <BaseEdge
           id={id}
           path={edgePath}
-          style={edgeStyle}
+          style={{
+            ...edgeStyle,
+            ...connectionFeedbackStyle,
+          }}
           markerEnd={selected ? `${markerEnd?.slice(0, markerEnd.length - 2)}--selected')` : markerEnd}
           markerStart={selected ? `${markerStart?.slice(0, markerStart.length - 2)}--selected')` : markerStart}
         />

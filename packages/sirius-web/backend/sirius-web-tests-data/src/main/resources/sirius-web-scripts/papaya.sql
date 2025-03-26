@@ -190,6 +190,102 @@ INSERT INTO document (
   created_on,
   last_modified_on
 ) VALUES (
+  '8139fdb7-bb71-4bca-b50b-9170870bbc0d',
+  'cc89c500-c27e-4968-9c67-15cf767c6ef0',
+  'Sirius Web Architecture',
+  '{
+  "json": { "version": "1.0", "encoding": "utf-8" },
+  "ns": { "papaya": "https://www.eclipse.org/sirius-web/papaya" },
+  "content": [
+   {
+    "id": "41dcf367-1e71-4548-a309-bc5277fea177",
+    "eClass": "papaya:Project",
+    "data": {
+      "name": "Sirius Web",
+      "applicationConcerns": [
+        {
+          "id": "df75f516-eb20-4844-b94d-cdff0ad0b2ac",
+          "eClass": "papaya:ApplicationConcern",
+          "data": {
+            "name": "Project Creation",
+            "controllers": [
+              {
+                "id": "9966a703-72c9-4029-80c2-31ad73e719b9",
+                "eClass": "papaya:Controller",
+                "data": {
+                  "name": "Controller1",
+                  "publications": [
+                    {
+                      "id": "2e91f8ff-1d09-4ce9-b221-9a52b8237b4e",
+                      "eClass": "papaya:Publication",
+                      "data": {
+                        "channel": "//@channels.0",
+                        "message": "//@applicationConcerns.0/@commands.0"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "66b09642-f962-4174-8f61-3a43dafead51",
+                "eClass": "papaya:Controller",
+                "data": {
+                  "name": "Controller2",
+                  "subscriptions": [
+                    {
+                      "id": "94612afc-33c9-41c8-aa9e-f439aea6cfe7",
+                      "eClass": "papaya:Subscription",
+                      "data": {
+                        "message": "//@applicationConcerns.0/@commands.1"
+                      }
+                    }
+                  ]
+                }
+              }
+            ],
+            "commands": [
+              {
+                "id": "1fa2194c-0fb2-4e34-9dd6-66b2f42d4e56",
+                "eClass": "papaya:Command",
+                "data": { "name": "Command1" }
+              },
+              {
+                "id": "9a8c3df5-de15-4d3c-b369-d7c87c8be032",
+                "eClass": "papaya:Command",
+                "data": { "name": "Command2" }
+              }
+            ]
+          }
+         }
+        ],
+        "channels": [
+          {
+            "id": "e7fc138e-1b76-414d-86ca-a7980af6b88a",
+            "eClass": "papaya:Channel",
+            "data": { "name": "HTTP" }
+          },
+          {
+            "id": "988e3b7e-8361-43d6-bf31-2564e4b2351f",
+            "eClass": "papaya:Channel",
+            "data": { "name": "HTTPS" }
+          }
+        ]
+      }
+     }
+    ]
+   }',
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000'
+);
+
+INSERT INTO document (
+  id,
+  semantic_data_id,
+  name,
+  content,
+  created_on,
+  last_modified_on
+) VALUES (
   'a0473b31-912f-4d99-8b41-3d44a8a1b238',
   'cc89c500-c27e-4968-9c67-15cf767c6ef0',
   'Sirius Web Project',

@@ -67,11 +67,13 @@ export interface EdgeData extends Record<string, unknown> {
   targetObjectId: string;
   targetObjectKind: string;
   targetObjectLabel: string;
+  descriptionId: string;
   label: EdgeLabel | null;
   faded: boolean;
   centerLabelEditable: boolean;
   bendingPoints: XYPosition[] | null;
   edgePath?: string;
+  isHovered: boolean;
 }
 
 export interface InsideLabel {

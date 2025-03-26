@@ -196,11 +196,13 @@ export const convertDiagram = (
       targetObjectId: gqlEdge.targetObjectId,
       targetObjectKind: gqlEdge.targetObjectKind,
       targetObjectLabel: gqlEdge.targetObjectLabel,
+      descriptionId: gqlEdge.descriptionId,
       label: null,
       faded: gqlEdge.state === GQLViewModifier.Faded,
       centerLabelEditable: gqlEdge.centerLabelEditable,
       bendingPoints: edgeLayoutData?.bendingPoints ?? null,
       edgePath,
+      isHovered: false,
     };
 
     if (gqlEdge.beginLabel) {

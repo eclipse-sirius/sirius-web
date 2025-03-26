@@ -74,6 +74,8 @@ It also offers some additional customization capabilities for those who may want
 On top of that, the API of `IWidgetConverterProvider` has been simplified and useless dependencies have been removed.
 Given that implementations of this interface should be Spring services, they can retrieve their relevant dependencies by themselves.
 - https://github.com/eclipse-sirius/sirius-web/issues/4707[#4707] [diagram] The function `convertHandles = (gqlNode: GQLNode<GQLNodeStyle>, gqlEdges: GQLEdge[], handleLayoutData: GQLHandleLayoutData[]): ConnectionHandle[] ` is now `convertHandles = (elementId: string, gqlEdges: GQLEdge[], handleLayoutData: GQLHandleLayoutData[] ): ConnectionHandle[]`
+- https://github.com/eclipse-sirius/sirius-web/issues/4744[#4744] [diagram] `SingleClickOnTwoDiagramElementsCandidate` `sources and targets` variables are now of type `IDiagramElementDescription`
+- [view] The variable `nodeDescription` available in edge tools has been renamed to `diagramElementDescription` and will be soon removed.
 
 
 === Dependency update
@@ -157,6 +159,7 @@ The body contains the operations available in the View DSL as they already exist
 Actions are visible on nodes on diagrams, on the top right corner of the nodes, and represented by their icon set in the Action declaration in the View DSL.
 - https://github.com/eclipse-sirius/sirius-web/issues/4707[#4707] [diagram] Enable frontend rendering of edges that have another edge as source or target.
 - https://github.com/eclipse-sirius/sirius-web/issues/4710[#4710] [table] Add support for sorting tables
+- https://github.com/eclipse-sirius/sirius-web/issues/4744[#4744] [diagram] Allow execution of SingleClickOnTwoDiagramElements with edge as target
 
 
 === Improvements

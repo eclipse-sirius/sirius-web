@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions;
 
+import java.util.Objects;
+
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
@@ -21,9 +23,8 @@ import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.tools.ChannelNodePaletteProvider;
 import org.eclipse.sirius.web.papaya.services.PapayaColorPaletteProvider;
-
-import java.util.Objects;
 
 /**
  * Used to create the channel node description.
@@ -76,5 +77,8 @@ public class ChannelNodeDescriptionProvider implements INodeDescriptionProvider 
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         var channelNodeDescription = cache.getNodeDescription(NAME).orElse(null);
         diagramDescription.getNodeDescriptions().add(channelNodeDescription);
+
+        var palette = new ChannelNodePaletteProvider().getNodePalette(cache);
+        channelNodeDescription.setPalette(palette);
     }
 }
