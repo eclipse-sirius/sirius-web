@@ -14,9 +14,10 @@
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { ListProjectsAreaProps, ListProjectsAreaState, NoProjectsFoundProps } from './ListProjectsArea.types';
+import { ListProjectsAreaProps, ListProjectsAreaState } from './ListProjectsArea.types';
 import { ProjectsTable } from './ProjectsTable';
 import { useProjects } from './useProjects';
+import { GQLProject } from './useProjects.types';
 
 const useListProjectsAreaStyles = makeStyles()((theme) => ({
   listProjectsArea: {
@@ -39,9 +40,12 @@ export const ListProjectsArea = ({}: ListProjectsAreaProps) => {
     pageSize: 20,
     startCursor: null,
     endCursor: null,
+    globalFilter: '',
   });
 
-  const { data, loading, refreshProjects } = useProjects(state.startCursor, state.endCursor, state.pageSize, null);
+  const { data, loading, refreshProjects } = useProjects(state.startCursor, state.endCursor, state.pageSize, {
+    name: { equals: state.globalFilter },
+  });
 
   const onPreviousPage = () => {
     setState((prevState) => ({
@@ -71,54 +75,36 @@ export const ListProjectsArea = ({}: ListProjectsAreaProps) => {
     refreshProjects();
   };
 
-  let projectsComponent: JSX.Element | null;
-  if (loading) {
-    projectsComponent = null;
-  } else if (data) {
-    if (data.viewer.projects.edges.length === 0) {
-      projectsComponent = <NoProjectsFound />;
-    } else {
-      const hasPrev = data.viewer.projects.pageInfo.hasPreviousPage;
-      const hasNext = data.viewer.projects.pageInfo.hasNextPage;
-      projectsComponent = (
-        <ProjectsTable
-          projects={data.viewer.projects.edges.map((edge) => edge.node)}
-          hasPrev={hasPrev}
-          hasNext={hasNext}
-          onPrev={onPreviousPage}
-          onNext={onNextPage}
-          pageSize={state.pageSize}
-          onChange={onRefreshProjects}
-          onPageSizeChange={onPageSizeChange}
-        />
-      );
-    }
-  }
+  const onGlobalFilterChange = (globalFilter: string) => {
+    setState((prevState) => ({ ...prevState, globalFilter, startCursor: null, endCursor: null }));
+  };
+
+  const hasPreviousPage = data?.viewer.projects.pageInfo.hasPreviousPage ?? false;
+  const hasNextPage = data?.viewer.projects.pageInfo.hasNextPage ?? false;
+  const count = data?.viewer.projects.pageInfo.count ?? 0;
+  const projects: GQLProject[] = data?.viewer.projects.edges.map((edge) => edge.node) ?? [];
+
   return (
     <div className={classes.listProjectsArea}>
       <div className={classes.header}>
         <Typography variant="h4">Existing Projects</Typography>
       </div>
-      <div>{projectsComponent}</div>
-    </div>
-  );
-};
-
-const useNoProjectsFoundStyles = makeStyles()(() => ({
-  noProjectsFound: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-}));
-
-const NoProjectsFound = ({}: NoProjectsFoundProps) => {
-  const { classes } = useNoProjectsFoundStyles();
-  return (
-    <div className={classes.noProjectsFound}>
-      <Typography variant="h4" align="center">
-        No projects found, start by creating one
-      </Typography>
+      <div>
+        <ProjectsTable
+          loading={loading}
+          projects={projects}
+          rowCount={count}
+          hasPreviousPage={hasPreviousPage}
+          hasNextPage={hasNextPage}
+          onPreviousPage={onPreviousPage}
+          onNextPage={onNextPage}
+          pageSize={state.pageSize}
+          onChange={onRefreshProjects}
+          onPageSizeChange={onPageSizeChange}
+          globalFilter={state.globalFilter}
+          onGlobalFilterChange={onGlobalFilterChange}
+        />
+      </div>
     </div>
   );
 };

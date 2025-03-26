@@ -172,6 +172,7 @@ Except for the specific case where `cause === 'refresh'` in `DiagramRenderer` (w
 - [table] Remove the old "Fork Table View Model" from the settings of the table since this menu existed even on non view based tables and a more generic menu is now available in the explorer
 - https://github.com/eclipse-sirius/sirius-web/issues/4376[#4376] [sirius-web] Keep URL search params while using the project workbench
 - https://github.com/eclipse-sirius/sirius-web/issues/4376[#4376] [sirius-web] Synchronize the selection with the URL
+- https://github.com/eclipse-sirius/sirius-web/issues/3993[#3993] [sirius-web] Leverage material-react-table for the project browser
 
 
 == v2025.2.0

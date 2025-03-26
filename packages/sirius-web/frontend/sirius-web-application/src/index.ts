@@ -112,10 +112,10 @@ export {
   projectContextMenuContainerExtensionPoint,
   projectContextMenuEntryExtensionPoint,
 } from './views/project-browser/list-projects-area/ProjectContextMenuExtensionPoints';
-export { type ProjectRowProps } from './views/project-browser/list-projects-area/ProjectRow.types';
-export { projectsTableRowExtensionPoint } from './views/project-browser/list-projects-area/ProjectsTableExtensionPoints';
 export { projectFilterCustomizersExtensionPoint } from './views/project-browser/list-projects-area/useProjectsExtensionPoints';
 export { type ProjectFilterCustomizer } from './views/project-browser/list-projects-area/useProjectsExtensionPoints.types';
+export { projectsTableColumnCustomizersExtensionPoint } from './views/project-browser/list-projects-area/useProjectsTableColumnsExtensionPoints';
+export { type ProjectsTableColumnCustomizer } from './views/project-browser/list-projects-area/useProjectsTableColumnsExtensionPoints.types';
 export { ProjectBrowserView } from './views/project-browser/ProjectBrowserView';
 export { type ProjectImagesSettingsModal } from './views/project-settings/images/ProjectImagesSettings.types';
 export { UploadImageModal } from './views/project-settings/images/upload-image/UploadImageModal';
