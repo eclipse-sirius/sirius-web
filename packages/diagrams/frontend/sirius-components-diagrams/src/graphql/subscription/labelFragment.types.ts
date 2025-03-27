@@ -71,3 +71,8 @@ export interface GQLLabelStyle {
   borderRadius: number;
   maxWidth: string;
 }
+
+export interface GQLLabelAppearanceData {
+  id: string;
+  customizedLabelStyle: GQLLabelStyle | null;
+}

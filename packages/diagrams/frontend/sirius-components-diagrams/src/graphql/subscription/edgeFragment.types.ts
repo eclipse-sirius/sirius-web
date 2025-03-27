@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLLabel } from './labelFragment.types';
+import { GQLLabel, GQLLabelAppearanceData } from './labelFragment.types';
 
 export interface GQLEdge {
   id: string;
@@ -29,6 +29,13 @@ export interface GQLEdge {
   style: GQLEdgeStyle;
   routingPoints: GQLRoutingPoint[];
   centerLabelEditable: boolean;
+  appearanceData: GQLEdgeAppearanceData | undefined;
+}
+
+export interface GQLEdgeAppearanceData {
+  id: string;
+  customizedEdgeStyle: GQLEdgeStyle | null;
+  labelsAppearanceData: GQLLabelAppearanceData[];
 }
 
 export interface GQLEdgeStyle {

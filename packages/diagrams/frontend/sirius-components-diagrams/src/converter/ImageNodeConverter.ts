@@ -47,6 +47,7 @@ const toImageNode = (
     pinned,
     style,
     labelEditable,
+    appearanceData,
   } = gqlNode;
 
   const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
@@ -62,7 +63,7 @@ const toImageNode = (
     targetObjectKind,
     descriptionId,
     insideLabel: null,
-    outsideLabels: convertOutsideLabels(outsideLabels),
+    outsideLabels: convertOutsideLabels(outsideLabels, appearanceData),
     imageURL: style.imageURL,
     style: {
       borderColor: style.borderColor,
@@ -86,12 +87,18 @@ const toImageNode = (
     isDropNodeTarget: false,
     isDropNodeCandidate: false,
     isHovered: false,
+    nodeAppearanceData: {
+      styleType: gqlNode.style.__typename,
+      effectiveNodeStyle: style,
+      customizedNodeStyle: appearanceData ? appearanceData.customizedNodeStyle : null,
+    },
   };
 
   data.insideLabel = convertInsideLabel(
     insideLabel,
     data,
     `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`,
+    appearanceData,
     gqlNode.childNodes?.some((child) => child.state !== GQLViewModifier.Hidden)
   );
 

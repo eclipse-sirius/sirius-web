@@ -27,9 +27,9 @@ import {
   convertInsideLabel,
   convertLineStyle,
   convertOutsideLabels,
-  isListLayoutStrategy,
   defaultHeight,
   defaultWidth,
+  isListLayoutStrategy,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Node, XYPosition } from '@xyflow/react';
 import { EllipseNodeData, GQLEllipseNodeStyle } from './EllipseNode.types';
@@ -56,6 +56,7 @@ const toEllipseNode = (
     pinned,
     style,
     labelEditable,
+    appearanceData,
   } = gqlNode;
 
   const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
@@ -78,7 +79,7 @@ const toEllipseNode = (
       borderStyle: convertLineStyle(style.borderStyle),
     },
     insideLabel: null,
-    outsideLabels: convertOutsideLabels(outsideLabels),
+    outsideLabels: convertOutsideLabels(outsideLabels, appearanceData),
     faded: state === GQLViewModifier.Faded,
     pinned,
     isBorderNode: isBorderNode,
@@ -94,12 +95,18 @@ const toEllipseNode = (
     isDropNodeTarget: false,
     isDropNodeCandidate: false,
     isHovered: false,
+    nodeAppearanceData: {
+      styleType: gqlNode.style.__typename,
+      effectiveNodeStyle: style,
+      customizedNodeStyle: appearanceData ? appearanceData.customizedNodeStyle : null,
+    },
   };
 
   data.insideLabel = convertInsideLabel(
     insideLabel,
     data,
-    `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`
+    `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`,
+    appearanceData
   );
 
   const node: Node<EllipseNodeData> = {

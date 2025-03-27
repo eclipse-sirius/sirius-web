@@ -53,6 +53,70 @@ type EdgeLayoutData {
   bendingPoints: [Position!]!
 }
 
+type RectangularNodeCustomizedStyle {
+  borderColor: String
+  borderRadius: Int
+  borderSize: Int
+  borderStyle: LineStyle
+  background: String
+}
+
+type ImageNodeCustomizedStyle {
+  imageURL: String
+  borderColor: String
+  borderRadius: Int
+  borderSize: Int
+  borderStyle: LineStyle
+  positionDependentRotation: Boolean
+}
+
+type IconLabelNodeCustomizedStyle {
+  background: String
+}
+
+union INodeCustomizedStyle = RectangularNodeCustomizedStyle | ImageNodeCustomizedStyle | IconLabelNodeCustomizedStyle
+
+type LabelCustomizedStyle {
+  bold: Boolean
+  color: String
+  fontSize: Int
+  iconURL: [String!]
+  italic: Boolean
+  strikeThrough: Boolean
+  underline: Boolean
+  borderColor: String
+  borderRadius: Int
+  borderSize: Int
+  borderStyle: LineStyle
+  background: String
+  maxWidth: String
+}
+
+type LabelAppearanceData {
+  id: ID!
+  customizedLabelStyle: LabelCustomizedStyle
+}
+
+type NodeAppearanceData {
+  id: ID!
+  customizedNodeStyle: INodeCustomizedStyle
+  labelsAppearanceData: [LabelAppearanceData!]
+}
+
+type EdgeCustomizedStyle {
+  color: String
+  lineStyle: LineStyle
+  size: Int
+  sourceArrow: ArrowStyle
+  targetArrow: ArrowStyle
+}
+
+type EdgeAppearanceData {
+  id: ID!
+  customizedEdgeStyle: EdgeCustomizedStyle
+  labelsAppearanceData: [LabelAppearanceData!]
+}
+
 enum ViewModifier {
   Normal
   Faded
@@ -84,6 +148,7 @@ type Node {
   defaultWidth: Int
   defaultHeight: Int
   labelEditable: Boolean!
+  appearanceData: NodeAppearanceData
 }
 
 type FreeFormLayoutStrategy {
@@ -225,6 +290,7 @@ type Edge {
   state: ViewModifier!
   style: EdgeStyle!
   centerLabelEditable: Boolean!
+  appearanceData: EdgeAppearanceData
 }
 
 type EdgeStyle {
@@ -386,6 +452,8 @@ extend type Mutation {
   updateCollapsingState(input: UpdateCollapsingStateInput!): UpdateCollapsingStatePayload!
   pinDiagramElement(input: PinDiagramElementInput!): PinDiagramElementPayload!
   layoutDiagram(input: LayoutDiagramInput!): LayoutDiagramPayload!
+  editRectangularNodeAppearance(input: EditRectangularNodeAppearanceInput!): EditRectangularNodeAppearancePayload!
+  resetRectangularNodeAppearance(input: ResetRectangularNodeAppearanceInput!): ResetRectangularNodeAppearancePayload!
 }
 
 input DropNodeInput {
@@ -621,3 +689,33 @@ type DiagramImpactAnalysisReport {
   nbElementCreated: Int!
   additionalReports: [String!]!
 }
+
+input EditRectangularNodeAppearanceInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  nodeId: ID!
+  appearance: RectangularNodeAppearanceInput!
+}
+
+input RectangularNodeAppearanceInput {
+  background: String
+  insideLabel: LabelAppearanceInput
+}
+
+input LabelAppearanceInput {
+  labelId: String!
+  bold: Boolean
+}
+
+union EditRectangularNodeAppearancePayload = ErrorPayload | SuccessPayload
+
+input ResetRectangularNodeAppearanceInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  nodeId: ID!
+  appearance: RectangularNodeAppearanceInput!
+}
+
+union ResetRectangularNodeAppearancePayload = ErrorPayload | SuccessPayload
