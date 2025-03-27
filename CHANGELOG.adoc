@@ -112,7 +112,8 @@ Note that the improvements will only be visible for projects created or modified
 - https://github.com/eclipse-sirius/sirius-web/issues/4099[#4099] [sirius-web] Move proxy validation into `DocumentSanitizedJsonContentProvider`.
 We need the actual Resource to perform the validation, so do this inside `DocumentSanitizedJsonContentProvider` so that we can cleanup after ourself and remove the resource used to obtain the initial JSON content from the resource set.
 This is a first step to ensure that we do not have unintended side-effects on the ResourceSet used, so that later on we can perform all the upload-related operations inside the already existing EditingContext's ResourceSet and avoid creating a new only (at great cost).
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4099[#4099] [sirius-web] Cleanup temporary resources in `DocumentSanitizedJsonContentProvider`.
+This has a non-trivial cost for medium to large models as removing the resources triggers `oes.components.emf.services.EditingContextCrossReferenceAdapter.clearReferencesTo(EObject)`, which can be quite costly. But it is required to avoid unintended side-effects if we want to be able to perform the whole upload operation directly inside the already active EditingContext's ResourceSet.
 
 
 == v2025.4.0
