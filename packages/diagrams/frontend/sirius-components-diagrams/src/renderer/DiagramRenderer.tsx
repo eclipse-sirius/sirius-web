@@ -29,9 +29,19 @@ import {
   applyNodeChanges,
   useReactFlow,
   useStoreApi,
+  useViewport,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import React, { MouseEvent as ReactMouseEvent, memo, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
+import React, {
+  MouseEvent as ReactMouseEvent,
+  memo,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramContextValue } from '../contexts/DiagramContext.types';
 import { NodeTypeContext } from '../contexts/NodeContext';
@@ -67,6 +77,7 @@ import { useSynchronizeLayoutData } from './layout/useSynchronizeLayoutData';
 import { useMoveChange } from './move/useMoveChange';
 import { useNodeType } from './node/useNodeType';
 import { DiagramPalette } from './palette/DiagramPalette';
+import { GQLTool } from './palette/Palette.types';
 import { GroupPalette } from './palette/group-tool/GroupPalette';
 import { useGroupPalette } from './palette/group-tool/useGroupPalette';
 import { useDiagramElementPalette } from './palette/useDiagramElementPalette';
@@ -77,8 +88,37 @@ import { useResizeChange } from './resize/useResizeChange';
 import { useDiagramSelection } from './selection/useDiagramSelection';
 import { useShiftSelection } from './selection/useShiftSelection';
 import { useSnapToGrid } from './snap-to-grid/useSnapToGrid';
+import { useInvokePaletteTool } from './tools/useInvokePaletteTool';
 
 const GRID_STEP: number = 10;
+
+const useAltKeyPressedStatus = (refDomNode: React.MutableRefObject<HTMLElement | null>) => {
+  const [isKeyPressed, setKeyPressed] = useState<boolean>(false);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.altKey) {
+        setKeyPressed(true);
+      }
+    };
+
+    const onKeyUp = (event: KeyboardEvent) => {
+      if (!event.altKey) {
+        setKeyPressed(false);
+      }
+    };
+
+    refDomNode.current?.addEventListener('keydown', onKeyDown);
+    refDomNode.current?.addEventListener('keyup', onKeyUp);
+
+    return () => {
+      refDomNode.current?.removeEventListener('keydown', onKeyDown);
+      refDomNode.current?.removeEventListener('keyup', onKeyUp);
+    };
+  }, [refDomNode]);
+
+  return isKeyPressed;
+};
 
 export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRendererProps) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
@@ -91,15 +131,18 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { onDelete } = useDiagramDelete();
 
   const ref = useRef<HTMLDivElement | null>(null);
+  const isAltKeyDown = useAltKeyPressedStatus(ref);
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
   const {
     onDiagramBackgroundContextMenu,
     onDiagramElementContextMenu: diagramPaletteOnDiagramElementContextMenu,
     hideDiagramPalette,
+    getLastToolInvoked,
   } = useDiagramPalette();
   const { onDiagramElementContextMenu: elementPaletteOnDiagramElementContextMenu, hideDiagramElementPalette } =
     useDiagramElementPalette();
+  const { invokeTool } = useInvokePaletteTool();
 
   const {
     onDiagramElementContextMenu: groupPaletteOnDiagramElementContextMenu,
@@ -410,11 +453,40 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     [groupPaletteOnDiagramElementContextMenu]
   );
 
-  const onClick = useCallback(
-    (_: React.MouseEvent<Element, MouseEvent>) => {
-      hideAllPalettes();
+  const { x: viewportX, y: viewportY, zoom: viewportZoom } = useViewport();
+  const repeatLastTool = useCallback(
+    (event: React.MouseEvent<Element, MouseEvent>) => {
+      const fullId = diagramDescription.id;
+      const diagramDescriptionUUID = fullId.substring(fullId.lastIndexOf('=') + 1);
+      const paletteId = `siriusComponents://diagramPalette?diagramId=${diagramDescriptionUUID}`;
+      const lastToolInvoked: GQLTool | null = getLastToolInvoked(paletteId);
+
+      if (lastToolInvoked) {
+        const { domNode } = store.getState();
+        const bounds = domNode?.getBoundingClientRect();
+        let x = event.clientX - (bounds?.left ?? 0);
+        let y = event.clientY - (bounds?.top ?? 0);
+        if (viewportZoom !== 0) {
+          x = (x - viewportX) / viewportZoom;
+          y = (y - viewportY) / viewportZoom;
+        }
+
+        const diagramElementId = diagramRefreshedEventPayload.diagram.id;
+        const targetObjectId = diagramRefreshedEventPayload.diagram.targetObjectId;
+        invokeTool(lastToolInvoked, diagramElementId, targetObjectId, x, y, () => {});
+      }
     },
-    [hideAllPalettes]
+    [getLastToolInvoked, store, invokeTool]
+  );
+
+  const onClick = useCallback(
+    (event: React.MouseEvent<Element, MouseEvent>) => {
+      hideAllPalettes();
+      if (isAltKeyDown) {
+        repeatLastTool(event);
+      }
+    },
+    [hideAllPalettes, isAltKeyDown, repeatLastTool]
   );
 
   const { onNodeMouseEnter, onNodeMouseLeave } = useNodeHover();
@@ -430,6 +502,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { nodesDraggable } = useNodesDraggable();
 
   let reactFlowProps: ReactFlowProps<Node<NodeData>, Edge<EdgeData>> = {
+    className: isAltKeyDown ? 'cursor-crosshair' : '',
     nodes: nodes,
     nodeTypes: nodeTypes,
     onNodesChange: handleNodesChange,
