@@ -1,0 +1,27 @@
+= ADR-191 - Add the capability of customizing the appearance of diagram elements
+
+== Context
+
+The appearance of diagram elements is not customizable outside of what is defined in the specifier.
+
+== Decision
+
+End-users will be able to customize the appearance of diagram elements through the palette, these customizations will be persisted but can be erased to fall back to the specified appearance.
+
+== Backend
+
+A new field in nodes and edges will store their customized appearance, the field may be null when there is no customization.
+
+A new type of diagram events will enable the renderer to update the customized appearance of nodes and edges as they render.
+As a node renders the customized appearance will be retrieved from the previous rendered node or from these events.
+The computed node style will be then merged with the customized appearance so that the rendered diagram will have a customized style with no further intervention.
+
+A customized node appearance consists of a customized node style and customized label styles, the customized styles are mirrors of the actual styles but with nullable fields.
+When a customized style's field is null it means that that property is not customized, when it is not null it means that property is customized and it will override the computed style when merged with it.
+
+== Frontend
+
+A new hardcoded appearance section is added to the diagram elements palette.
+The content of that section depends on the type of the node's style.
+A new field is added to the NodeTypeContext to allow the contribution of content to this section.
+When no contribution correspond to the node style type is made the appearance section is empty.
