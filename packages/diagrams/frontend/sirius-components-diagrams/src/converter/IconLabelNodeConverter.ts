@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -50,6 +50,7 @@ const toIconLabelNode = (
     pinned,
     style,
     labelEditable,
+    appearanceData,
   } = gqlNode;
 
   const connectionHandles: ConnectionHandle[] = [];
@@ -69,7 +70,7 @@ const toIconLabelNode = (
       background: style.background,
     },
     insideLabel: null,
-    outsideLabels: convertOutsideLabels(outsideLabels),
+    outsideLabels: convertOutsideLabels(outsideLabels, appearanceData),
     isBorderNode: isBorderNode,
     borderNodePosition: isBorderNode ? BorderNodePosition.WEST : null,
     faded: state === GQLViewModifier.Faded,
@@ -85,9 +86,14 @@ const toIconLabelNode = (
     isDropNodeTarget: false,
     isDropNodeCandidate: false,
     isHovered: false,
+    nodeAppearanceData: {
+      styleType: gqlNode.style.__typename,
+      effectiveNodeStyle: style,
+      customizedNodeStyle: appearanceData ? appearanceData.customizedNodeStyle : null,
+    },
   };
 
-  data.insideLabel = convertInsideLabel(insideLabel, data, '', false, '0 8px 0 8px');
+  data.insideLabel = convertInsideLabel(insideLabel, data, '', appearanceData, false, '0 8px 0 8px');
 
   const node: Node<IconLabelNodeData> = {
     id,

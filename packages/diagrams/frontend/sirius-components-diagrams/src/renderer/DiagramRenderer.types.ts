@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,8 @@
 import { Edge, Node, ReactFlowProps, XYPosition } from '@xyflow/react';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagramRefreshedEventPayload } from '../graphql/subscription/diagramEventSubscription.types';
+import { GQLLabelStyle } from '../graphql/subscription/labelFragment.types';
+import { GQLNodeStyle } from '../graphql/subscription/nodeFragment.types';
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
 import { ConnectionHandle } from './handles/ConnectionHandles.types';
 import { DiagramNodeType } from './node/NodeTypes.types';
@@ -54,6 +56,18 @@ export interface NodeData extends Record<string, unknown> {
   isDropNodeTarget: boolean;
   isDropNodeCandidate: boolean;
   isHovered: boolean;
+  nodeAppearanceData: NodeAppearanceData;
+}
+
+export interface NodeAppearanceData {
+  styleType: string;
+  effectiveNodeStyle: GQLNodeStyle;
+  customizedNodeStyle: GQLNodeStyle | null;
+}
+
+export interface LabelAppearanceData {
+  effectiveLabelStyle: GQLLabelStyle;
+  customizedLabelStyle: GQLLabelStyle | null;
 }
 
 export enum BorderNodePosition {
@@ -84,6 +98,7 @@ export interface InsideLabel {
   overflowStrategy: LabelOverflowStrategy;
   headerSeparatorStyle: React.CSSProperties;
   headerPosition: HeaderPosition | undefined;
+  appearanceData: LabelAppearanceData;
 }
 
 export type HeaderPosition = 'TOP' | 'BOTTOM';
@@ -105,6 +120,7 @@ export interface OutsideLabel {
   style: React.CSSProperties;
   contentStyle: React.CSSProperties;
   overflowStrategy: LabelOverflowStrategy;
+  appearanceData: LabelAppearanceData;
 }
 
 export type ReactFlowPropsCustomizer = (

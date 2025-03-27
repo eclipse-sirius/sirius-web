@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,19 +11,21 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
-  GQLLabelStyle,
-  GQLOutsideLabel,
   GQLInsideLabel,
+  GQLLabelStyle,
   GQLLabelTextAlign,
+  GQLOutsideLabel,
 } from '../graphql/subscription/labelFragment.types';
-import { OutsideLabels, InsideLabel, NodeData } from '../renderer/DiagramRenderer.types';
-import { AlignmentMap } from './convertDiagram.types';
+import { GQLNodeAppearanceData } from '../graphql/subscription/nodeFragment.types';
+import { InsideLabel, NodeData, OutsideLabels } from '../renderer/DiagramRenderer.types';
 import { convertLineStyle } from './convertDiagram';
+import { AlignmentMap } from './convertDiagram.types';
 
 export const convertInsideLabel = (
   gqlInsideLabel: GQLInsideLabel | undefined,
   data: NodeData,
   borderStyle: string,
+  gqlNodeAppearanceData: GQLNodeAppearanceData | undefined,
   hasVisibleChild: boolean = true,
   padding: string = '8px 16px'
 ): InsideLabel | null => {
@@ -31,6 +33,11 @@ export const convertInsideLabel = (
     return null;
   }
   const labelStyle = gqlInsideLabel.style;
+  const labelAppearanceData = gqlNodeAppearanceData
+    ? gqlNodeAppearanceData.labelsAppearanceData.find(
+        (labelAppearanceData) => labelAppearanceData.id === gqlInsideLabel.id
+      )
+    : null;
   const insideLabel: InsideLabel = {
     id: gqlInsideLabel.id,
     text: gqlInsideLabel.text,
@@ -55,6 +62,10 @@ export const convertInsideLabel = (
       width: '100%',
     },
     headerPosition: undefined,
+    appearanceData: {
+      effectiveLabelStyle: gqlInsideLabel.style,
+      customizedLabelStyle: labelAppearanceData ? labelAppearanceData.customizedLabelStyle : null,
+    },
   };
 
   const alignement = AlignmentMap[gqlInsideLabel.insideLabelLocation];
@@ -106,7 +117,10 @@ export const convertInsideLabel = (
   return insideLabel;
 };
 
-export const convertOutsideLabels = (gqlOutsideLabels: GQLOutsideLabel[]): OutsideLabels => {
+export const convertOutsideLabels = (
+  gqlOutsideLabels: GQLOutsideLabel[],
+  gqlNodeAppearanceData: GQLNodeAppearanceData | undefined
+): OutsideLabels => {
   const outsideLabels: OutsideLabels = {};
   const reducer = (allOutsideLabels: OutsideLabels, gqlOutsideLabel: GQLOutsideLabel): OutsideLabels => {
     const {
@@ -116,6 +130,9 @@ export const convertOutsideLabels = (gqlOutsideLabels: GQLOutsideLabel[]): Outsi
       style: { iconURL },
       overflowStrategy,
     } = gqlOutsideLabel;
+    const labelAppearanceData = gqlNodeAppearanceData
+      ? gqlNodeAppearanceData.labelsAppearanceData.find((labelAppearanceData) => labelAppearanceData.id === id)
+      : null;
     allOutsideLabels[gqlOutsideLabel.outsideLabelLocation] = {
       id,
       text,
@@ -130,6 +147,10 @@ export const convertOutsideLabels = (gqlOutsideLabels: GQLOutsideLabel[]): Outsi
         ...convertContentStyle(labelStyle),
       },
       overflowStrategy,
+      appearanceData: {
+        effectiveLabelStyle: labelStyle,
+        customizedLabelStyle: labelAppearanceData ? labelAppearanceData.customizedLabelStyle : null,
+      },
     };
 
     return allOutsideLabels;

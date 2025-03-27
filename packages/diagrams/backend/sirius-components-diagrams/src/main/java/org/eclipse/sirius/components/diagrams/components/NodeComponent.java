@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,10 +25,12 @@ import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
+import org.eclipse.sirius.components.diagrams.appearancedata.NodeAppearanceData;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps.Builder;
+import org.eclipse.sirius.components.diagrams.events.EditNodeAppearanceEvent;
 import org.eclipse.sirius.components.diagrams.events.FadeDiagramElementEvent;
 import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
@@ -150,6 +152,16 @@ public class NodeComponent implements IComponent {
 
         String nodeId = optionalPreviousNode.map(Node::getId).orElseGet(() -> this.computeNodeId(targetObjectId));
 
+        Optional<NodeAppearanceData> optionalNodeAppearanceData = Optional.ofNullable(
+                diagramEvents.stream()
+                        .filter(EditNodeAppearanceEvent.class::isInstance)
+                        .map(EditNodeAppearanceEvent.class::cast)
+                        .filter(editNodeAppearanceEvent -> Objects.equals(editNodeAppearanceEvent.getNodeId(), nodeId))
+                        .findFirst()
+                        .map(EditNodeAppearanceEvent::getNodeAppearanceData).orElse(optionalPreviousNode.map(Node::getAppearanceData).orElse(null))
+        );
+        optionalNodeAppearanceData.ifPresent(nodeAppearanceData -> nodeVariableManager.put(NodeAppearanceData.NODE_APPEARANCE_DATA, nodeAppearanceData));
+
         Set<ViewModifier> defaultModifiers = this.computeDefaultModifiers(nodeDescription, nodeVariableManager);
         Set<ViewModifier> modifiers = this.computeModifiers(diagramEvents, optionalPreviousNode, nodeId, defaultModifiers);
         ViewModifier state = this.computeState(modifiers);
@@ -166,6 +178,9 @@ public class NodeComponent implements IComponent {
         String targetObjectLabel = nodeDescription.getTargetObjectLabelProvider().apply(nodeVariableManager);
 
         INodeStyle style = nodeDescription.getStyleProvider().apply(nodeVariableManager);
+        if (optionalNodeAppearanceData.isPresent() && optionalNodeAppearanceData.get().customizedNodeStyle() != null) {
+            style = optionalNodeAppearanceData.get().customizedNodeStyle().mergeInto(style);
+        }
 
         ILayoutStrategy layoutStrategy = nodeDescription.getChildrenLayoutStrategyProvider().apply(nodeVariableManager);
 
@@ -202,6 +217,8 @@ public class NodeComponent implements IComponent {
                 .defaultWidth(defaultWidth)
                 .defaultHeight(defaultHeight)
                 .labelEditable(nodeDescription.getLabelEditHandler() != null);
+
+        optionalNodeAppearanceData.ifPresent(nodeElementPropsBuilder::appearanceData);
 
         if (layoutStrategy != null) {
             nodeElementPropsBuilder.childrenLayoutStrategy(layoutStrategy);

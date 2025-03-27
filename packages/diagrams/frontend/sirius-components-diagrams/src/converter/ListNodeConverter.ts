@@ -53,6 +53,7 @@ const toListNode = (
     pinned,
     style,
     labelEditable,
+    appearanceData,
   } = gqlNode;
 
   const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
@@ -78,7 +79,7 @@ const toListNode = (
       borderStyle: convertLineStyle(style.borderStyle),
     },
     insideLabel: null,
-    outsideLabels: convertOutsideLabels(outsideLabels),
+    outsideLabels: convertOutsideLabels(outsideLabels, appearanceData),
     isBorderNode: isBorderNode,
     borderNodePosition: isBorderNode ? BorderNodePosition.WEST : null,
     faded: state === GQLViewModifier.Faded,
@@ -102,12 +103,18 @@ const toListNode = (
     isDropNodeTarget: false,
     isDropNodeCandidate: false,
     isHovered: false,
+    nodeAppearanceData: {
+      styleType: gqlNode.style.__typename,
+      effectiveNodeStyle: style,
+      customizedNodeStyle: appearanceData ? appearanceData.customizedNodeStyle : null,
+    },
   };
 
   data.insideLabel = convertInsideLabel(
     insideLabel,
     data,
     `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`,
+    appearanceData,
     gqlNode.childNodes?.some((child) => child.state !== GQLViewModifier.Hidden)
   );
 
