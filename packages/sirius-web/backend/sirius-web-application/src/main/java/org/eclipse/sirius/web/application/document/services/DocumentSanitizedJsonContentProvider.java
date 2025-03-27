@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -107,9 +107,10 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
         } catch (IOException exception) {
             this.logger.warn(exception.getMessage(), exception);
         }
+        byte[] bytes = baos.toByteArray();
         return this.externalResourceLoaderServices.stream()
-                .filter(loader -> loader.canHandle(new ByteArrayInputStream(baos.toByteArray()), resourceURI, resourceSet))
+                .filter(loader -> loader.canHandle(new ByteArrayInputStream(bytes), resourceURI, resourceSet))
                 .findFirst()
-                .flatMap(loader -> loader.getResource(new ByteArrayInputStream(baos.toByteArray()), resourceURI, resourceSet, applyMigrationParticipants));
+                .flatMap(loader -> loader.getResource(new ByteArrayInputStream(bytes), resourceURI, resourceSet, applyMigrationParticipants));
     }
 }
