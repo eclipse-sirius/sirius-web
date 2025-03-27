@@ -108,6 +108,7 @@ This is mostly visible when cold-opening projects with large documents (load per
 Note that the improvements will only be visible for projects created or modified after the update; existing semantic data which has not been modified will continue to be "slow" to load/read until it is modified at least once and saved in the new, improved format.
 - [releng] Switch to Sirius EMF JSON 2.5.1 and thus add the ability for a migration participant to change the URI used by a proxy during a migration.
 - https://github.com/eclipse-sirius/sirius-web/issues/4866[#4866] [diagram] Disable the last executed tool when opening the palette, if it is not available in the current state, it is still displayed for information.
+- https://github.com/eclipse-sirius/sirius-web/issues/4099[#4099] [sirius-web] Create the bytes array for the original contents only once
 
 
 
