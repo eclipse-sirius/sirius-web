@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.diagrams.components.BorderNodePosition;
 
 /**
  * A node.
@@ -43,6 +44,8 @@ public final class Node implements IDiagramElement {
     private String descriptionId;
 
     private boolean borderNode;
+
+    private BorderNodePosition initialBorderNodePosition;
 
     private Set<ViewModifier> modifiers;
 
@@ -110,6 +113,10 @@ public final class Node implements IDiagramElement {
 
     public boolean isBorderNode() {
         return this.borderNode;
+    }
+
+    public BorderNodePosition getInitialBorderNodePosition() {
+        return this.initialBorderNodePosition;
     }
 
     public Set<ViewModifier> getModifiers() {
@@ -197,6 +204,8 @@ public final class Node implements IDiagramElement {
 
         private boolean borderNode;
 
+        private BorderNodePosition initialBorderNodePosition = BorderNodePosition.NONE;
+
         private Set<ViewModifier> modifiers;
 
         private ViewModifier state;
@@ -235,6 +244,7 @@ public final class Node implements IDiagramElement {
             this.targetObjectLabel = node.getTargetObjectLabel();
             this.descriptionId = node.getDescriptionId();
             this.borderNode = node.isBorderNode();
+            this.initialBorderNodePosition = node.getInitialBorderNodePosition();
             this.modifiers = node.getModifiers();
             this.state = node.getState();
             this.collapsingState = node.getCollapsingState();
@@ -277,6 +287,11 @@ public final class Node implements IDiagramElement {
 
         public Builder borderNode(boolean borderNode) {
             this.borderNode = borderNode;
+            return this;
+        }
+
+        public Builder initialBorderNodePosition(BorderNodePosition initialBorderNodePosition) {
+            this.initialBorderNodePosition = Objects.requireNonNull(initialBorderNodePosition);
             return this;
         }
 
@@ -354,6 +369,7 @@ public final class Node implements IDiagramElement {
             node.targetObjectLabel = Objects.requireNonNull(this.targetObjectLabel);
             node.descriptionId = Objects.requireNonNull(this.descriptionId);
             node.borderNode = this.borderNode;
+            node.initialBorderNodePosition = Objects.requireNonNull(this.initialBorderNodePosition);
             node.modifiers = Objects.requireNonNull(this.modifiers);
             node.state = Objects.requireNonNull(this.state);
             node.collapsingState = Objects.requireNonNull(this.collapsingState);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
+import org.eclipse.sirius.components.diagrams.components.BorderNodePosition;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
@@ -90,6 +91,7 @@ public class DomainBasedSourceNodesProviderTests {
                 .state(ViewModifier.Normal)
                 .modifiers(Set.of())
                 .collapsingState(CollapsingState.EXPANDED)
+                .initialBorderNodePosition(BorderNodePosition.NONE)
                 .build();
         return new Element(NodeElementProps.TYPE, nodeElementProps);
     }
