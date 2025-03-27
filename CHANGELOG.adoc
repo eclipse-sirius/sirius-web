@@ -109,6 +109,9 @@ Note that the improvements will only be visible for projects created or modified
 - [releng] Switch to Sirius EMF JSON 2.5.1 and thus add the ability for a migration participant to change the URI used by a proxy during a migration.
 - https://github.com/eclipse-sirius/sirius-web/issues/4866[#4866] [diagram] Disable the last executed tool when opening the palette, if it is not available in the current state, it is still displayed for information.
 - https://github.com/eclipse-sirius/sirius-web/issues/4099[#4099] [sirius-web] Create the bytes array for the original contents only once
+- https://github.com/eclipse-sirius/sirius-web/issues/4099[#4099] [sirius-web] Move proxy validation into `DocumentSanitizedJsonContentProvider`.
+We need the actual Resource to perform the validation, so do this inside `DocumentSanitizedJsonContentProvider` so that we can cleanup after ourself and remove the resource used to obtain the initial JSON content from the resource set.
+This is a first step to ensure that we do not have unintended side-effects on the ResourceSet used, so that later on we can perform all the upload-related operations inside the already existing EditingContext's ResourceSet and avoid creating a new only (at great cost).
 
 
 
