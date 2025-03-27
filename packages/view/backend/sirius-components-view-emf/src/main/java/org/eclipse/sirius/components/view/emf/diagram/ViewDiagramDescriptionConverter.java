@@ -222,10 +222,10 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             Optional<DropTool> optionalDropTool = new ToolFinder().findDropTool(viewDiagramDescription);
             if (optionalDropTool.isPresent()) {
                 var augmentedVariableManager = variableManager.createChild();
-                var convertedNodes = Collections.unmodifiableMap(converterContext.getConvertedNodes());
-                augmentedVariableManager.put(CONVERTED_NODES_VARIABLE, convertedNodes);
+                var convertedElements = Collections.unmodifiableMap(converterContext.getConvertedElements());
+                augmentedVariableManager.put(CONVERTED_NODES_VARIABLE, convertedElements);
                 return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager),
-                        convertedNodes, this.feedbackMessageService)
+                        convertedElements, this.feedbackMessageService)
                         .executeTool(optionalDropTool.get(), augmentedVariableManager);
             } else {
                 return new Failure("No drop handler configured");
@@ -625,13 +625,13 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 result = new Success();
             } else {
                 VariableManager child = variableManager.createChild();
-                var convertedNodes = Collections.unmodifiableMap(converterContext.getConvertedNodes());
-                child.put(CONVERTED_NODES_VARIABLE, convertedNodes);
+                var convertedElements = Collections.unmodifiableMap(converterContext.getConvertedElements());
+                child.put(CONVERTED_NODES_VARIABLE, convertedElements);
 
                 var optionalTooltool = new ToolFinder().findDeleteTool(diagramElementDescription);
                 if (optionalTooltool.isPresent()) {
                     result = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager),
-                            convertedNodes, this.feedbackMessageService)
+                            convertedElements, this.feedbackMessageService)
                             .executeTool(optionalTooltool.get(), child);
                 } else {
                     result = new Failure("No deletion tool configured");
@@ -676,9 +676,9 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             VariableManager childVariableManager = variableManager.createChild();
             childVariableManager.put("arg0", newLabel);
             childVariableManager.put("newLabel", newLabel);
-            var convertedNodes = Collections.unmodifiableMap(converterContext.getConvertedNodes());
-            childVariableManager.put(CONVERTED_NODES_VARIABLE, convertedNodes);
-            return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), convertedNodes,
+            var convertedElements = Collections.unmodifiableMap(converterContext.getConvertedElements());
+            childVariableManager.put(CONVERTED_NODES_VARIABLE, convertedElements);
+            return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), convertedElements,
                     this.feedbackMessageService).executeTool(labelEditTool, childVariableManager);
         }).orElse(null);
     }
@@ -689,13 +689,13 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             VariableManager childVariableManager = variableManager.createChild();
             childVariableManager.put("arg0", newLabel);
             childVariableManager.put("newLabel", newLabel);
-            var convertedNodes = Collections.unmodifiableMap(converterContext.getConvertedNodes());
-            childVariableManager.put(CONVERTED_NODES_VARIABLE, convertedNodes);
+            var convertedElements = Collections.unmodifiableMap(converterContext.getConvertedElements());
+            childVariableManager.put(CONVERTED_NODES_VARIABLE, convertedElements);
 
             Optional<LabelEditTool> optionalTool = new ToolFinder().findLabelEditTool(edgeDescription, edgeLabelKind);
             if (optionalTool.isPresent()) {
                 result = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager),
-                        convertedNodes, this.feedbackMessageService)
+                        convertedElements, this.feedbackMessageService)
                         .executeTool(optionalTool.get(), childVariableManager);
             } else {
                 result = new Failure("No label edition tool configured");
@@ -718,9 +718,9 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
     private Function<VariableManager, IStatus> createDropNodeHandler(DropNodeTool dropNodeTool, ViewDiagramDescriptionConverterContext converterContext) {
         return variableManager -> {
             VariableManager child = variableManager.createChild();
-            var convertedNodes = Collections.unmodifiableMap(converterContext.getConvertedNodes());
-            child.put(CONVERTED_NODES_VARIABLE, convertedNodes);
-            return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), convertedNodes,
+            var convertedElements = Collections.unmodifiableMap(converterContext.getConvertedElements());
+            child.put(CONVERTED_NODES_VARIABLE, convertedElements);
+            return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), convertedElements,
                     this.feedbackMessageService).executeTool(dropNodeTool, child);
         };
     }
