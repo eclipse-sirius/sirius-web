@@ -36,6 +36,8 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/4308[#4308] [diagram] Handles now take bending points into account
 - https://github.com/eclipse-sirius/sirius-web/issues/4826[#4826] [diagram] Allow source and target handle position changes during edge customisation
 - https://github.com/eclipse-sirius/sirius-web/issues/4830[#4830] [view] Add `Edge Width` property in `edgeStyle` details view
+- [sirius-web] Avoid a database access if not necessary.
+Refactor the test to leverage boolean expression shortcut and avoid an unnecessary call to this.semanticDataSearchService.findById() if we already know we are inside a studio or a papaya project.
 
 
 
