@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -72,13 +72,14 @@ public class GroupComponent implements IComponent {
             List<AbstractControlDescription> controlDescriptions = groupDescription.getControlDescriptions();
             for (AbstractControlDescription controlDescription : controlDescriptions) {
                 if (controlDescription instanceof AbstractWidgetDescription widgetDescription) {
-                    WidgetComponentProps widgetComponentProps = new WidgetComponentProps(childrenVariableManager, widgetDescription, this.props.getWidgetDescriptors());
+                    WidgetComponentProps widgetComponentProps = new WidgetComponentProps(childrenVariableManager, widgetDescription, this.props.getWidgetDescriptors(),
+                            this.props.getCustomCellDescriptors());
                     groupChildren.add(new Element(WidgetComponent.class, widgetComponentProps));
                 } else if (controlDescription instanceof ForDescription forDescription) {
-                    ForComponentProps forComponentProps = new ForComponentProps(childrenVariableManager, forDescription, this.props.getWidgetDescriptors());
+                    ForComponentProps forComponentProps = new ForComponentProps(childrenVariableManager, forDescription, this.props.getWidgetDescriptors(), this.props.getCustomCellDescriptors());
                     groupChildren.add(new Element(ForComponent.class, forComponentProps));
                 } else if (controlDescription instanceof IfDescription ifDescription) {
-                    IfComponentProps ifComponentProps = new IfComponentProps(childrenVariableManager, ifDescription, this.props.getWidgetDescriptors());
+                    IfComponentProps ifComponentProps = new IfComponentProps(childrenVariableManager, ifDescription, this.props.getWidgetDescriptors(), this.props.getCustomCellDescriptors());
                     groupChildren.add(new Element(IfComponent.class, ifComponentProps));
                 }
             }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -53,6 +53,7 @@ import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.Table;
+import org.eclipse.sirius.components.tables.components.ICustomCellDescriptor;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,6 +103,8 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     private final VariableManager variableManager;
 
+    private final List<ICustomCellDescriptor> customCellDescriptors;
+
     public FormEventProcessor(FormEventProcessorConfiguration configuration,
             ISubscriptionManager subscriptionManager,
             IRepresentationSearchService representationSearchService,
@@ -119,6 +122,7 @@ public class FormEventProcessor implements IFormEventProcessor {
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
         this.formPostProcessor = Objects.requireNonNull(formPostProcessor);
         this.tableEventHandlers = Objects.requireNonNull(configuration.tableEventHandlers());
+        this.customCellDescriptors = Objects.requireNonNull(configuration.customCellDescriptors());
 
         this.variableManager = this.initializeVariableManager(this.formCreationParameters);
 
@@ -256,9 +260,9 @@ public class FormEventProcessor implements IFormEventProcessor {
         }
         this.variableManager.put(VariableManager.SELF, self);
 
-        FormComponentProps formComponentProps = new FormComponentProps(this.variableManager, this.formCreationParameters.getFormDescription(), this.widgetDescriptors);
+        FormComponentProps formComponentProps = new FormComponentProps(this.variableManager, this.formCreationParameters.getFormDescription(), this.widgetDescriptors, this.customCellDescriptors);
         Element element = new Element(FormComponent.class, formComponentProps);
-        Form form = new FormRenderer(this.widgetDescriptors).render(element);
+        Form form = new FormRenderer(this.widgetDescriptors, this.customCellDescriptors).render(element);
 
         form = this.formPostProcessor.postProcess(form, this.variableManager);
 

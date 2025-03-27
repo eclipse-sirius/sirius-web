@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.formdescriptioneditors.description.FormDesc
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.tables.components.ICustomCellDescriptor;
 
 /**
  * * The properties of the form description editor group component.
@@ -27,14 +28,15 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * @author arichard
  */
 public record FormDescriptionEditorGroupComponentProps(VariableManager variableManager, FormDescriptionEditorDescription formDescriptionEditorDescription, List<IWidgetDescriptor> widgetDescriptors,
-        List<IWidgetPreviewConverterProvider> customWidgetConverterProviders) implements IProps {
+        List<IWidgetPreviewConverterProvider> customWidgetConverterProviders, List<ICustomCellDescriptor> customCellDescriptors) implements IProps {
 
     public FormDescriptionEditorGroupComponentProps(VariableManager variableManager, FormDescriptionEditorDescription formDescriptionEditorDescription, List<IWidgetDescriptor> widgetDescriptors,
-            List<IWidgetPreviewConverterProvider> customWidgetConverterProviders) {
+            List<IWidgetPreviewConverterProvider> customWidgetConverterProviders, List<ICustomCellDescriptor> customCellDescriptors) {
         this.variableManager = Objects.requireNonNull(variableManager);
         this.formDescriptionEditorDescription = Objects.requireNonNull(formDescriptionEditorDescription);
         this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
         this.customWidgetConverterProviders = Objects.requireNonNull(customWidgetConverterProviders);
+        this.customCellDescriptors = Objects.requireNonNull(customCellDescriptors);
     }
 
 }

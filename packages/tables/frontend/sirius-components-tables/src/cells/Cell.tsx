@@ -11,11 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { DataExtension, useData } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
 import { memo } from 'react';
 import {
   GQLCell,
-  GQLCheckboxCell,
   GQLIconLabelCell,
   GQLMultiSelectCell,
   GQLSelectCell,
@@ -23,14 +23,14 @@ import {
   GQLTextfieldCell,
 } from '../table/TableContent.types';
 import { CellProps } from './Cell.types';
-import { CheckboxCell } from './CheckboxCell';
 import { IconLabelCell } from './IconLabelCell';
 import { MultiSelectCell } from './MultiSelectCell';
 import { SelectCell } from './SelectCell';
+import { TableCellContribution } from './TableCellContribution.types';
+import { tableCellExtensionPoint } from './TableCellExtensionPoints';
 import { TextareaCell } from './TextareaCell';
 import { TextfieldCell } from './TextfieldCell';
 
-const isCheckboxCell = (cell: GQLCell): cell is GQLCheckboxCell => cell.__typename === 'CheckboxCell';
 const isSelectCell = (cell: GQLCell): cell is GQLSelectCell => cell.__typename === 'SelectCell';
 const isMultiSelectCell = (cell: GQLCell): cell is GQLMultiSelectCell => cell.__typename === 'MultiSelectCell';
 const isTextfieldCell = (cell: GQLCell): cell is GQLTextfieldCell => cell.__typename === 'TextfieldCell';
@@ -38,18 +38,9 @@ const isTextareaCell = (cell: GQLCell): cell is GQLTextareaCell => cell.__typena
 const isIconLabelCell = (cell: GQLCell): cell is GQLIconLabelCell => cell.__typename === 'IconLabelCell';
 
 export const Cell = memo(({ editingContextId, representationId, tableId, cell, disabled }: CellProps) => {
+  const customCells: DataExtension<TableCellContribution[]> = useData(tableCellExtensionPoint);
   if (cell) {
-    if (isCheckboxCell(cell)) {
-      return (
-        <CheckboxCell
-          editingContextId={editingContextId}
-          representationId={representationId}
-          tableId={tableId}
-          cell={cell}
-          disabled={disabled}
-        />
-      );
-    } else if (isTextfieldCell(cell)) {
+    if (isTextfieldCell(cell)) {
       return (
         <TextfieldCell
           editingContextId={editingContextId}
@@ -98,6 +89,20 @@ export const Cell = memo(({ editingContextId, representationId, tableId, cell, d
           cell={cell}
         />
       );
+    } else {
+      const customCell = customCells.data.find((data) => data.canHandle(cell));
+      if (customCell) {
+        const CustomCellComponent = customCell.component;
+        return (
+          <CustomCellComponent
+            editingContextId={editingContextId}
+            representationId={representationId}
+            tableId={tableId}
+            cell={cell}
+            disabled={disabled}
+          />
+        );
+      }
     }
   }
   return <Typography></Typography>;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -76,6 +76,7 @@ import org.eclipse.sirius.components.forms.validation.DiagnosticElementProps;
 import org.eclipse.sirius.components.representations.IElementFactory;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.tables.Table;
+import org.eclipse.sirius.components.tables.components.ICustomCellDescriptor;
 import org.eclipse.sirius.components.tables.renderer.TableElementFactory;
 
 /**
@@ -87,10 +88,11 @@ public class FormElementFactory implements IElementFactory {
 
     private final List<IWidgetDescriptor> widgetDescriptors;
 
-    private final TableElementFactory tableElementFactory = new TableElementFactory();
+    private final TableElementFactory tableElementFactory;
 
-    public FormElementFactory(List<IWidgetDescriptor> widgetDescriptors) {
+    public FormElementFactory(List<IWidgetDescriptor> widgetDescriptors, List<ICustomCellDescriptor> customCellDescriptors) {
         this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
+        this.tableElementFactory = new TableElementFactory(customCellDescriptors);
     }
 
     @Override

@@ -95,6 +95,7 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
                       "metamodels":[
                         "domain://buck",
                         "http://www.eclipse.org/emf/2002/Ecore",
+                        "http://www.eclipse.org/sirius-web/customcells",
                         "http://www.eclipse.org/sirius-web/customnodes",
                         "http://www.eclipse.org/sirius-web/deck",
                         "http://www.eclipse.org/sirius-web/diagram",

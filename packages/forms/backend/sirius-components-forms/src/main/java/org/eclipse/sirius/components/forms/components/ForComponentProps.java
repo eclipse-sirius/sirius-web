@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.forms.description.ForDescription;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.tables.components.ICustomCellDescriptor;
 
 /**
  * The properties of the for component.
@@ -27,17 +28,19 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class ForComponentProps implements IProps {
 
-    private VariableManager variableManager;
+    private final VariableManager variableManager;
 
-    private ForDescription forDescription;
+    private final ForDescription forDescription;
 
     private final List<IWidgetDescriptor> widgetDescriptors;
 
-    public ForComponentProps(VariableManager variableManager, ForDescription forDescription, List<IWidgetDescriptor> widgetDescriptors) {
+    private final List<ICustomCellDescriptor> customCellDescriptors;
+
+    public ForComponentProps(VariableManager variableManager, ForDescription forDescription, List<IWidgetDescriptor> widgetDescriptors, List<ICustomCellDescriptor> customCellDescriptors) {
         this.variableManager = Objects.requireNonNull(variableManager);
         this.forDescription = Objects.requireNonNull(forDescription);
         this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
-
+        this.customCellDescriptors = Objects.requireNonNull(customCellDescriptors);
     }
 
     public VariableManager getVariableManager() {
@@ -50,5 +53,9 @@ public class ForComponentProps implements IProps {
 
     public List<IWidgetDescriptor> getWidgetDescriptors() {
         return this.widgetDescriptors;
+    }
+
+    public List<ICustomCellDescriptor> getCustomCellDescriptors() {
+        return this.customCellDescriptors;
     }
 }

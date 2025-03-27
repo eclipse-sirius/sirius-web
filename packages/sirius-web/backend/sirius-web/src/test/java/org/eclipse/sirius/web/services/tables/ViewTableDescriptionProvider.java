@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.builder.generated.customcells.CustomcellsBuilders;
 import org.eclipse.sirius.components.view.builder.generated.table.TableBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
@@ -86,7 +87,7 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
     private TableDescription createTableDescription() {
 
         var columnDescription = new TableBuilders().newColumnDescription()
-                .semanticCandidatesExpression("aql:Sequence{'Name', 'Description'}")
+                .semanticCandidatesExpression("aql:Sequence{'Name', 'Description', 'Abstract'}")
                 .headerLabelExpression("aql:self")
                 .headerIndexLabelExpression("aql:columnIndex")
                 .build();
@@ -118,6 +119,7 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
                 .valueExpression("aql:newValue");
 
         var nameCellDescription = new TableBuilders().newCellDescription()
+                .name("cell-name")
                 .preconditionExpression("aql:columnTargetObject.equals('Name')")
                 .valueExpression("aql:self.name")
                 .cellWidgetDescription(new TableBuilders().newCellTextfieldWidgetDescription()
@@ -127,9 +129,23 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
                 .build();
 
         var descriptionCellDescription = new TableBuilders().newCellDescription()
+                .name("cell-description")
                 .preconditionExpression("aql:columnTargetObject.equals('Description')")
                 .valueExpression("aql:self.description")
                 .cellWidgetDescription(new TableBuilders().newCellTextareaWidgetDescription().build())
+                .build();
+
+        var setAbstractOperation = new ViewBuilders().newSetValue()
+                .featureName("abstract")
+                .valueExpression("aql:newValue");
+
+        var abstractCellDescription = new TableBuilders().newCellDescription()
+                .name("cell-abstract")
+                .preconditionExpression("aql:columnTargetObject.equals('Abstract')")
+                .valueExpression("aql:self.abstract")
+                .cellWidgetDescription(new CustomcellsBuilders().newCellCheckboxWidgetDescription()
+                        .body(setAbstractOperation.build())
+                        .build())
                 .build();
 
         var hideFailureFilter = new TableBuilders().newRowFilterDescription()
@@ -143,7 +159,7 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
                 .titleExpression("View Package Table")
                 .columnDescriptions(columnDescription)
                 .rowDescription(rowDescription)
-                .cellDescriptions(nameCellDescription, descriptionCellDescription)
+                .cellDescriptions(nameCellDescription, descriptionCellDescription, abstractCellDescription)
                 .useStripedRowsExpression("aql:false")
                 .enableSubRows(true)
                 .rowFilters(hideFailureFilter)

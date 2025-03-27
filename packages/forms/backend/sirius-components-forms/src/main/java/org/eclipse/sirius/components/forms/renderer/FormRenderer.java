@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.representations.BaseRenderer;
 import org.eclipse.sirius.components.representations.Element;
+import org.eclipse.sirius.components.tables.components.ICustomCellDescriptor;
 
 /**
  * Renderer used to create the form from its description and some variables.
@@ -34,8 +35,10 @@ public class FormRenderer {
 
     private final BaseRenderer baseRenderer;
 
-    public FormRenderer(List<IWidgetDescriptor> widgetDescriptors) {
-        this.baseRenderer = new BaseRenderer(new FormInstancePropsValidator(widgetDescriptors), new FormComponentPropsValidator(widgetDescriptors), new FormElementFactory(widgetDescriptors));
+    public FormRenderer(List<IWidgetDescriptor> widgetDescriptors, List<ICustomCellDescriptor> customCellDescriptors) {
+        this.baseRenderer = new BaseRenderer(new FormInstancePropsValidator(widgetDescriptors, customCellDescriptors),
+                new FormComponentPropsValidator(widgetDescriptors, customCellDescriptors),
+                new FormElementFactory(widgetDescriptors, customCellDescriptors));
     }
 
     public Form render(Element element) {

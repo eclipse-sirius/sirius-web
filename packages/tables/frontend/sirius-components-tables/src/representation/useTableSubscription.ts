@@ -82,9 +82,6 @@ export const getTableEventSubscription = `
               targetObjectId
               targetObjectKind
               columnId
-              ... on CheckboxCell {
-                booleanValue: value
-              }
               ... on SelectCell {
                 value
                 options {

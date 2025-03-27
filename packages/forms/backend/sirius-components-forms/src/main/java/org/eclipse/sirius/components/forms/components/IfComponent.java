@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,7 +31,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class IfComponent implements IComponent {
 
-    private IfComponentProps props;
+    private final IfComponentProps props;
 
     public IfComponent(IfComponentProps props) {
         this.props = props;
@@ -49,13 +49,14 @@ public class IfComponent implements IComponent {
             childrenVariableManager.put(FormComponent.PARENT_ELEMENT_ID, ifDescription.getId());
             for (var controlDescription : ifDescription.getControlDescriptions()) {
                 if (controlDescription instanceof AbstractWidgetDescription widgetDescription) {
-                    WidgetComponentProps widgetComponentProps = new WidgetComponentProps(childrenVariableManager, widgetDescription, this.props.getWidgetDescriptors());
+                    WidgetComponentProps widgetComponentProps = new WidgetComponentProps(childrenVariableManager, widgetDescription, this.props.getWidgetDescriptors(),
+                            this.props.getCustomCellDescriptors());
                     children.add(new Element(WidgetComponent.class, widgetComponentProps));
                 } else if (controlDescription instanceof ForDescription forDescription) {
-                    ForComponentProps forComponentProps = new ForComponentProps(childrenVariableManager, forDescription, this.props.getWidgetDescriptors());
+                    ForComponentProps forComponentProps = new ForComponentProps(childrenVariableManager, forDescription, this.props.getWidgetDescriptors(), this.props.getCustomCellDescriptors());
                     children.add(new Element(ForComponent.class, forComponentProps));
                 } else if (controlDescription instanceof IfDescription subIfDescription) {
-                    IfComponentProps ifComponentProps = new IfComponentProps(childrenVariableManager, subIfDescription, this.props.getWidgetDescriptors());
+                    IfComponentProps ifComponentProps = new IfComponentProps(childrenVariableManager, subIfDescription, this.props.getWidgetDescriptors(), this.props.getCustomCellDescriptors());
                     children.add(new Element(IfComponent.class, ifComponentProps));
                 }
             }

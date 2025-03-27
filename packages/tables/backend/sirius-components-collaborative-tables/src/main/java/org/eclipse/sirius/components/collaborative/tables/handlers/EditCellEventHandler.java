@@ -25,10 +25,6 @@ import org.eclipse.sirius.components.collaborative.tables.api.ITableContext;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableInput;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableQueryService;
-import org.eclipse.sirius.components.collaborative.tables.dto.EditCheckboxCellInput;
-import org.eclipse.sirius.components.collaborative.tables.dto.EditMultiSelectCellInput;
-import org.eclipse.sirius.components.collaborative.tables.dto.EditSelectCellInput;
-import org.eclipse.sirius.components.collaborative.tables.dto.EditTextareaCellInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.EditTextfieldCellInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.IEditCellInput;
 import org.eclipse.sirius.components.collaborative.tables.messages.ICollaborativeTableMessageService;
@@ -93,7 +89,7 @@ public class EditCellEventHandler implements ITableEventHandler {
         this.counter.increment();
 
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, tableInput.representationId(), tableInput);
-        String message = this.messageService.invalidInput(tableInput.getClass().getSimpleName(), EditCheckboxCellInput.class.getSimpleName());
+        String message = this.messageService.invalidInput(tableInput.getClass().getSimpleName(), EditTextfieldCellInput.class.getSimpleName());
         IPayload payload = new ErrorPayload(tableInput.id(), message);
 
         if (tableInput instanceof IEditCellInput editCellInput) {
@@ -105,7 +101,7 @@ public class EditCellEventHandler implements ITableEventHandler {
                 var optCol = this.tableQueryService.findColumnById(tableContext.getTable(), cell.getColumnId());
 
                 if (optLine.isPresent() && optCol.isPresent()) {
-                    Object newValue = this.getNewValue(editCellInput);
+                    Object newValue = editCellInput.newValue();
                     var status = this.editCellHandlers.stream()
                             .filter(handler -> handler.canHandle(tableDescription))
                             .findFirst()
@@ -120,27 +116,6 @@ public class EditCellEventHandler implements ITableEventHandler {
 
         payloadSink.tryEmitValue(payload);
         changeDescriptionSink.tryEmitNext(changeDescription);
-    }
-
-    private Object getNewValue(IEditCellInput editCellInput) {
-        Object newValue = null;
-        if (editCellInput instanceof EditTextfieldCellInput editTextfieldCellInput) {
-            newValue = editTextfieldCellInput.newValue();
-        }
-        if (editCellInput instanceof EditTextareaCellInput editTextareaCellInput) {
-            newValue = editTextareaCellInput.newValue();
-        }
-        if (editCellInput instanceof EditCheckboxCellInput editCheckboxCellInput) {
-            newValue = editCheckboxCellInput.newValue();
-        }
-        if (editCellInput instanceof EditSelectCellInput editSelectCellInput) {
-            newValue = editSelectCellInput.newValue();
-        }
-        if (editCellInput instanceof EditMultiSelectCellInput editMultiSelectCellInput) {
-            newValue = editMultiSelectCellInput.newValues();
-        }
-
-        return newValue;
     }
 
     private IPayload getPayload(UUID payloadId, IStatus status) {

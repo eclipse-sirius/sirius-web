@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.components.view.form.adapters.FormColorAdapter;
 import org.eclipse.sirius.components.view.gantt.GanttPackage;
 import org.eclipse.sirius.components.view.table.TablePackage;
+import org.eclipse.sirius.components.view.table.customcells.CustomcellsPackage;
 import org.eclipse.sirius.components.view.tree.TreePackage;
 import org.eclipse.sirius.components.view.widget.reference.ReferencePackage;
 import org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetPackage;
@@ -66,6 +67,7 @@ public class StudioEditingContextInitializer implements IEditingContextProcessor
             packageRegistry.put(GanttPackage.eNS_URI, GanttPackage.eINSTANCE);
             packageRegistry.put(TreePackage.eNS_URI, TreePackage.eINSTANCE);
             packageRegistry.put(TablePackage.eNS_URI, TablePackage.eINSTANCE);
+            packageRegistry.put(CustomcellsPackage.eNS_URI, CustomcellsPackage.eINSTANCE);
             packageRegistry.put(ReferencePackage.eNS_URI, ReferencePackage.eINSTANCE);
             packageRegistry.put(TableWidgetPackage.eNS_URI, TableWidgetPackage.eINSTANCE);
 

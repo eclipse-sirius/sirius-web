@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchSe
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
+import org.eclipse.sirius.components.tables.components.ICustomCellDescriptor;
 import org.springframework.stereotype.Service;
 
 /**
@@ -63,7 +64,11 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
 
     private final IFormPostProcessor formPostProcessor;
 
-    public FormEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, List<IWidgetDescriptor> widgetDescriptors, FormEventProcessorFactoryConfiguration formConfiguration) {
+    private final List<ICustomCellDescriptor> customCellDescriptors;
+
+    public FormEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, List<IWidgetDescriptor> widgetDescriptors,
+            FormEventProcessorFactoryConfiguration formConfiguration,
+            List<ICustomCellDescriptor> customCellDescriptors) {
         this.representationDescriptionSearchService = Objects.requireNonNull(configuration.getRepresentationDescriptionSearchService());
         this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
         this.subscriptionManagerFactory = Objects.requireNonNull(configuration.getSubscriptionManagerFactory());
@@ -73,6 +78,7 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
         this.tableEventHandlers = Objects.requireNonNull(formConfiguration.getTableEventHandlers());
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
         this.formPostProcessor = Objects.requireNonNull(formConfiguration.getFormPostProcessor());
+        this.customCellDescriptors = Objects.requireNonNull(customCellDescriptors);
     }
 
     @Override
@@ -101,7 +107,8 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
                         .build();
 
                 IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(
-                        new FormEventProcessorConfiguration(editingContext, this.objectService, formCreationParameters, this.widgetDescriptors, this.formEventHandlers, this.tableEventHandlers),
+                        new FormEventProcessorConfiguration(editingContext, this.objectService, formCreationParameters, this.widgetDescriptors, this.formEventHandlers, this.tableEventHandlers,
+                                this.customCellDescriptors),
                         this.subscriptionManagerFactory.create(),
                         this.representationSearchService,
                         this.representationDescriptionSearchService,

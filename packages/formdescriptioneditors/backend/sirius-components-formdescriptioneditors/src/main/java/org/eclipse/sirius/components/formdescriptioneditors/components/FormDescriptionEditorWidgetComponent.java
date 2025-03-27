@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,20 +42,24 @@ public class FormDescriptionEditorWidgetComponent implements IComponent {
 
         Element element = null;
         if (widgetDescription instanceof FormDescriptionEditorForDescription formDescriptionEditorForDescription) {
-            var formDescriptionEditorForComponentProps = new FormDescriptionEditorForComponentProps(variableManager, formDescriptionEditorForDescription, this.props.widgetDescriptors());
+            var formDescriptionEditorForComponentProps = new FormDescriptionEditorForComponentProps(variableManager, formDescriptionEditorForDescription, this.props.widgetDescriptors(),
+                    this.props.customCellDescriptors());
             element = new Element(FormDescriptionEditorForComponent.class, formDescriptionEditorForComponentProps);
         } else if (widgetDescription instanceof FormDescriptionEditorIfDescription formDescriptionEditorIfDescription) {
-            var formDescriptionEditorIfComponentProps = new FormDescriptionEditorIfComponentProps(variableManager, formDescriptionEditorIfDescription, this.props.widgetDescriptors());
+            var formDescriptionEditorIfComponentProps = new FormDescriptionEditorIfComponentProps(variableManager, formDescriptionEditorIfDescription, this.props.widgetDescriptors(),
+                    this.props.customCellDescriptors());
             element = new Element(FormDescriptionEditorIfComponent.class, formDescriptionEditorIfComponentProps);
         } else if (widgetDescription instanceof FlexboxContainerDescription flexboxContainerDescription) {
-            var formDescriptionEditorFlexboxContainerComponentProps = new FormDescriptionEditorFlexboxContainerComponentProps(variableManager, flexboxContainerDescription, this.props.widgetDescriptors());
+            var formDescriptionEditorFlexboxContainerComponentProps = new FormDescriptionEditorFlexboxContainerComponentProps(variableManager, flexboxContainerDescription,
+                    this.props.widgetDescriptors(), this.props.customCellDescriptors());
             element = new Element(FormDescriptionEditorFlexboxContainerComponent.class, formDescriptionEditorFlexboxContainerComponentProps);
         }
 
         if (element != null) {
             return element;
         } else {
-            var widgetComponentProps = new WidgetComponentProps(this.props.variableManager(), this.props.abstractWidgetDescription(), this.props.widgetDescriptors());
+            var widgetComponentProps = new WidgetComponentProps(this.props.variableManager(), this.props.abstractWidgetDescription(), this.props.widgetDescriptors(),
+                    this.props.customCellDescriptors());
             var widgetComponent = new WidgetComponent(widgetComponentProps);
             return widgetComponent.render();
         }

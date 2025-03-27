@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -204,8 +204,8 @@ public class RenderTextfieldTest {
     private Form renderForm(FormDescription formDescription) {
         VariableManager variableManager = new VariableManager();
         variableManager.put(VariableManager.SELF, this.self);
-        FormComponentProps props = new FormComponentProps(variableManager, formDescription, List.of());
-        Form form = new FormRenderer(List.of()).render(new Element(FormComponent.class, props));
+        FormComponentProps props = new FormComponentProps(variableManager, formDescription, List.of(), List.of());
+        Form form = new FormRenderer(List.of(), List.of()).render(new Element(FormComponent.class, props));
         return form;
     }
 

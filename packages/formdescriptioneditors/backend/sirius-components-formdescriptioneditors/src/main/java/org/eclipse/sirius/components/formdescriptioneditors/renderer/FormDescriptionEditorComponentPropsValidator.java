@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.forms.renderer.FormComponentPropsValidator;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.components.representations.IComponentPropsValidator;
 import org.eclipse.sirius.components.representations.IProps;
+import org.eclipse.sirius.components.tables.components.ICustomCellDescriptor;
 
 /**
  * Used to validate the properties of a component.
@@ -42,8 +43,8 @@ public class FormDescriptionEditorComponentPropsValidator implements IComponentP
 
     private final FormComponentPropsValidator formComponentPropsValidator;
 
-    public FormDescriptionEditorComponentPropsValidator(List<IWidgetDescriptor> widgetDescriptors) {
-        this.formComponentPropsValidator = new FormComponentPropsValidator(widgetDescriptors);
+    public FormDescriptionEditorComponentPropsValidator(List<IWidgetDescriptor> widgetDescriptors, List<ICustomCellDescriptor> customCellDescriptors) {
+        this.formComponentPropsValidator = new FormComponentPropsValidator(widgetDescriptors, customCellDescriptors);
     }
 
     @Override

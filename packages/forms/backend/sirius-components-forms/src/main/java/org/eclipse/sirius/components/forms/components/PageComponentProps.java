@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.tables.components.ICustomCellDescriptor;
 
 /**
  * The properties of the page component.
@@ -26,16 +27,20 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * @author sbegaudeau
  */
 public class PageComponentProps implements IProps {
-    private VariableManager variableManager;
 
-    private PageDescription pageDescription;
+    private final VariableManager variableManager;
+
+    private final PageDescription pageDescription;
 
     private final List<IWidgetDescriptor> widgetDescriptors;
 
-    public PageComponentProps(VariableManager variableManager, PageDescription pageDescription, List<IWidgetDescriptor> widgetDescriptors) {
+    private final List<ICustomCellDescriptor> customCellDescriptors;
+
+    public PageComponentProps(VariableManager variableManager, PageDescription pageDescription, List<IWidgetDescriptor> widgetDescriptors, List<ICustomCellDescriptor> customCellDescriptors) {
         this.variableManager = Objects.requireNonNull(variableManager);
         this.pageDescription = Objects.requireNonNull(pageDescription);
         this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
+        this.customCellDescriptors = Objects.requireNonNull(customCellDescriptors);
     }
 
     public VariableManager getVariableManager() {
@@ -48,5 +53,9 @@ public class PageComponentProps implements IProps {
 
     public List<IWidgetDescriptor> getWidgetDescriptors() {
         return this.widgetDescriptors;
+    }
+
+    public List<ICustomCellDescriptor> getCustomCellDescriptors() {
+        return this.customCellDescriptors;
     }
 }

@@ -25,7 +25,6 @@ import org.eclipse.sirius.components.representations.FragmentProps;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.Line;
-import org.eclipse.sirius.components.tables.descriptions.CheckboxCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
 import org.eclipse.sirius.components.tables.descriptions.ICellDescription;
 import org.eclipse.sirius.components.tables.descriptions.IconLabelCellDescription;
@@ -149,9 +148,6 @@ public class LineComponent implements IComponent {
             } else if (cellDescription instanceof MultiSelectCellDescription multiSelectCellDescription) {
                 var cellComponentProps = new MultiSelectCellComponentProps(variableManager, multiSelectCellDescription, cellId, columnId, columnTargetObject);
                 cellElement = new Element(MultiSelectCellComponent.class, cellComponentProps);
-            } else if (cellDescription instanceof CheckboxCellDescription checkboxCellDescription) {
-                var cellComponentProps = new CheckboxCellComponentProps(variableManager, checkboxCellDescription, cellId, columnId, columnTargetObject);
-                cellElement = new Element(CheckboxCellComponent.class, cellComponentProps);
             } else if (cellDescription instanceof TextfieldCellDescription textfieldCellDescription) {
                 var cellComponentProps = new TextfieldCellComponentProps(variableManager, textfieldCellDescription, cellId, columnId, columnTargetObject);
                 cellElement = new Element(TextfieldCellComponent.class, cellComponentProps);
@@ -161,6 +157,13 @@ public class LineComponent implements IComponent {
             } else if (cellDescription instanceof IconLabelCellDescription iconLabelCellDescription) {
                 var cellComponentProps = new IconLabelCellComponentProps(variableManager, iconLabelCellDescription, cellId, columnId, columnTargetObject);
                 cellElement = new Element(IconLabelCellComponent.class, cellComponentProps);
+            } else {
+                cellElement = this.props.customCellDescriptors().stream()
+                        .map(widgetDescriptor -> widgetDescriptor.createElement(variableManager, cellDescription, cellId, columnId, columnTargetObject))
+                        .filter(Optional::isPresent)
+                        .findFirst()
+                        .map(Optional::get)
+                        .orElse(null);
             }
             if (cellElement != null) {
                 elements.add(cellElement);

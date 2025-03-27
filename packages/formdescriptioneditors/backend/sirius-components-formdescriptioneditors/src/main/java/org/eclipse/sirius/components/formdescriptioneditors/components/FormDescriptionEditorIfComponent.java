@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -57,7 +57,8 @@ public class FormDescriptionEditorIfComponent implements IComponent {
         childrenVariableManager.put(FormComponent.PARENT_ELEMENT_ID, id);
         ifDescription.getChildren().forEach(controlDescription -> {
             if (controlDescription instanceof AbstractWidgetDescription widgetDescription) {
-                var widgetComponentProps = new FormDescriptionEditorWidgetComponentProps(childrenVariableManager, widgetDescription, this.props.widgetDescriptors());
+                var widgetComponentProps = new FormDescriptionEditorWidgetComponentProps(childrenVariableManager, widgetDescription, this.props.widgetDescriptors(),
+                        this.props.customCellDescriptors());
                 childrenWidgets.add(new Element(FormDescriptionEditorWidgetComponent.class, widgetComponentProps));
             }
         });

@@ -42,7 +42,12 @@ import {
 } from '@eclipse-sirius/sirius-components-omnibox';
 import { PortalRepresentation } from '@eclipse-sirius/sirius-components-portals';
 import { SelectionDialog } from '@eclipse-sirius/sirius-components-selection';
-import { TableRepresentation } from '@eclipse-sirius/sirius-components-tables';
+import {
+  GQLCell,
+  TableCellContribution,
+  TableRepresentation,
+  tableCellExtensionPoint,
+} from '@eclipse-sirius/sirius-components-tables';
 import {
   GQLTreeItemContextMenuEntry,
   TreeItemContextMenuOverrideContribution,
@@ -88,6 +93,7 @@ import { navigationBarMenuEntryExtensionPoint } from '../navigationBar/Navigatio
 import { ImportLibraryCommand } from '../omnibox/ImportLibraryCommand';
 import { OnboardArea } from '../onboarding/OnboardArea';
 import { routerExtensionPoint } from '../router/RouterExtensionPoints';
+import { CheckboxCell } from '../table/CheckboxCell';
 import { DisplayLibraryView } from '../views/display-library/DisplayLibraryView';
 import { DownloadProjectMenuEntryContribution } from '../views/edit-project/EditProjectNavbar/DownloadProjectMenuEntryContribution';
 import { editProjectNavbarMenuEntryExtensionPoint } from '../views/edit-project/EditProjectNavbar/EditProjectNavbarMenuExtensionPoints';
@@ -116,6 +122,7 @@ import { ProjectSettingsView } from '../views/project-settings/ProjectSettingsVi
 import { ProjectSettingTabContribution } from '../views/project-settings/ProjectSettingsView.types';
 import { projectSettingsTabExtensionPoint } from '../views/project-settings/ProjectSettingsViewExtensionPoints';
 import { UploadProjectView } from '../views/upload-project/UploadProjectView';
+import { checkboxCellDocumentTransform } from './CheckboxCelllDocumentTransform';
 import { ellipseNodeStyleDocumentTransform } from './EllipseNodeDocumentTransform';
 import { referenceWidgetDocumentTransform } from './ReferenceWidgetDocumentTransform';
 import { tableWidgetDocumentTransform } from './TableWidgetDocumentTransform';
@@ -383,6 +390,27 @@ defaultExtensionRegistry.putData<TreeItemContextMenuOverrideContribution[]>(
 
 /*******************************************************************************
  *
+ * Table custom cell contributions
+ *
+ * Used to register new cell in the tables
+ *
+ *******************************************************************************/
+const tableCellContributions: TableCellContribution[] = [
+  {
+    canHandle: (cell: GQLCell) => {
+      return cell.__typename === 'CheckboxCell';
+    },
+    component: CheckboxCell,
+  },
+];
+
+defaultExtensionRegistry.putData<TableCellContribution[]>(tableCellExtensionPoint, {
+  identifier: `siriusweb_${tableCellExtensionPoint.identifier}`,
+  data: tableCellContributions,
+});
+
+/*******************************************************************************
+ *
  * Apollo client options configurer
  *
  * Used to register new options configurer in the apollo client
@@ -413,6 +441,18 @@ const widgetsApolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (cur
   };
 };
 
+const tableCustomCellClientOptionsConfigurer: ApolloClientOptionsConfigurer = (currentOptions) => {
+  const { documentTransform } = currentOptions;
+
+  const newDocumentTransform = documentTransform
+    ? documentTransform.concat(checkboxCellDocumentTransform)
+    : checkboxCellDocumentTransform;
+  return {
+    ...currentOptions,
+    documentTransform: newDocumentTransform,
+  };
+};
+
 const undoRedoApolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (currentOptions) => {
   return {
     ...currentOptions,
@@ -425,6 +465,7 @@ defaultExtensionRegistry.putData(apolloClientOptionsConfigurersExtensionPoint, {
   data: [
     nodesApolloClientOptionsConfigurer,
     widgetsApolloClientOptionsConfigurer,
+    tableCustomCellClientOptionsConfigurer,
     undoRedoApolloClientOptionsConfigurer,
   ],
 });

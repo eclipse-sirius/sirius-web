@@ -173,11 +173,11 @@ public class RowContextMenuEntryItemProvider extends ItemProviderAdapter impleme
      * This returns RowContextMenuEntry.gif. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/RowContextMenuEntry"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/RowContextMenuEntry.svg"));
     }
 
     /**

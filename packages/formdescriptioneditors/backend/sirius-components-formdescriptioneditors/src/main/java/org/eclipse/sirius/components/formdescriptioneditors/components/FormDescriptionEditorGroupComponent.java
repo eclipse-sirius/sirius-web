@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -75,7 +75,8 @@ public class FormDescriptionEditorGroupComponent implements IComponent {
             VariableManager childVariableManager = variableManager.createChild();
             childVariableManager.put(VariableManager.SELF, formElementDescription);
             AbstractWidgetDescription widgetDescription = this.converter.doSwitch(formElementDescription);
-            FormDescriptionEditorWidgetComponentProps widgetComponentProps = new FormDescriptionEditorWidgetComponentProps(childVariableManager, widgetDescription, this.props.widgetDescriptors());
+            FormDescriptionEditorWidgetComponentProps widgetComponentProps = new FormDescriptionEditorWidgetComponentProps(childVariableManager, widgetDescription, this.props.widgetDescriptors(),
+                    this.props.customCellDescriptors());
             childrenWidgets.add(new Element(FormDescriptionEditorWidgetComponent.class, widgetComponentProps));
         });
 

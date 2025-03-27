@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -100,7 +100,8 @@ public class WidgetComponent implements IComponent {
             ChartWidgetComponentProps chartComponentProps = new ChartWidgetComponentProps(variableManager, (ChartWidgetDescription) widgetDescription);
             element = new Element(ChartWidgetComponent.class, chartComponentProps);
         } else if (widgetDescription instanceof FlexboxContainerDescription) {
-            FlexboxContainerComponentProps flexboxContainerProps = new FlexboxContainerComponentProps(variableManager, (FlexboxContainerDescription) widgetDescription, this.props.getWidgetDescriptors());
+            FlexboxContainerComponentProps flexboxContainerProps = new FlexboxContainerComponentProps(variableManager, (FlexboxContainerDescription) widgetDescription,
+                    this.props.getWidgetDescriptors(), this.props.getCustomCellDescriptors());
             element = new Element(FlexboxContainerComponent.class, flexboxContainerProps);
         } else if (widgetDescription instanceof TreeDescription) {
             TreeComponentProps treeComponentProps = new TreeComponentProps(variableManager, (TreeDescription) widgetDescription);
@@ -118,7 +119,7 @@ public class WidgetComponent implements IComponent {
             DateTimeComponentProps dateTimeComponentProps = new DateTimeComponentProps(variableManager, (DateTimeDescription) widgetDescription);
             element = new Element(DateTimeComponent.class, dateTimeComponentProps);
         } else if (widgetDescription instanceof TableWidgetDescription) {
-            TableWidgetComponentProps tableWidgetComponentProps = new TableWidgetComponentProps(variableManager, (TableWidgetDescription) widgetDescription);
+            TableWidgetComponentProps tableWidgetComponentProps = new TableWidgetComponentProps(variableManager, (TableWidgetDescription) widgetDescription, this.props.getCustomCellDescriptors());
             element = new Element(TableWidgetComponent.class, tableWidgetComponentProps);
         } else {
             element = this.props.getWidgetDescriptors().stream()

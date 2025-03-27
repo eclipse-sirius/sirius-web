@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -58,7 +58,8 @@ public class FormDescriptionEditorComponent implements IComponent {
             var formDescriptionEditorPageComponentProps = new FormDescriptionEditorPageComponentProps(childVariableManager,
                     this.props.formDescriptionEditorDescription(),
                     this.props.widgetDescriptors(),
-                    this.props.customWidgetConverterProviders());
+                    this.props.customWidgetConverterProviders(),
+                    this.props.customCellDescriptors());
             childrenWidgets.add(new Element(FormDescriptionEditorPageComponent.class, formDescriptionEditorPageComponentProps));
         });
 
