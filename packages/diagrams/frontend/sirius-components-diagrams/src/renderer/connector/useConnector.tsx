@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import { Theme, useTheme } from '@mui/material/styles';
 import {
   Connection,
   Edge,
+  FinalConnectionState,
   Node,
   OnConnect,
   OnConnectEnd,
@@ -28,6 +29,7 @@ import { useCallback, useContext } from 'react';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { getEdgeParameters } from '../edge/EdgeLayout';
+import { EdgeAnchorNodeCreationHandlesData } from '../node/EdgeAnchorNodeCreationHandles.types';
 import { useDiagramElementPalette } from '../palette/useDiagramElementPalette';
 import { ConnectorContext } from './ConnectorContext';
 import { ConnectorContextValue } from './ConnectorContext.types';
@@ -39,6 +41,9 @@ const tempConnectionLineStyle = (theme: Theme): React.CSSProperties => {
     strokeWidth: theme.spacing(0.2),
   };
 };
+
+const isEdgeAnchorNodeCreationHandles = (node: Node<NodeData>): node is Node<EdgeAnchorNodeCreationHandlesData> =>
+  node.type === 'edgeAnchorNodeCreationHandles';
 
 export const useConnector = (): UseConnectorValue => {
   const {
@@ -53,7 +58,7 @@ export const useConnector = (): UseConnectorValue => {
   } = useContext<ConnectorContextValue>(ConnectorContext);
 
   const reactFlowInstance = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
-  const { setEdges } = reactFlowInstance;
+  const { setEdges, getEdges } = reactFlowInstance;
 
   const theme = useTheme();
   const { hideDiagramElementPalette } = useDiagramElementPalette();
@@ -73,6 +78,10 @@ export const useConnector = (): UseConnectorValue => {
   };
 
   const onConnect: OnConnect = useCallback((connection: Connection) => {
+    const nodeSource = nodeLookup.get(connection.source);
+    if (nodeSource && isEdgeAnchorNodeCreationHandles(nodeSource)) {
+      connection.source = nodeSource.data.edgeId;
+    }
     setConnection(connection);
   }, []);
 
@@ -95,15 +104,27 @@ export const useConnector = (): UseConnectorValue => {
     }
   }, []);
 
-  const onConnectEnd: OnConnectEnd = useCallback((event: MouseEvent | TouchEvent) => {
-    if ('clientX' in event && 'clientY' in event) {
-      setPosition({ x: event.clientX || 0, y: event.clientY });
-    } else if ('touches' in event) {
-      const touchEvent = event as TouchEvent;
-      setPosition({ x: touchEvent.touches[0]?.clientX || 0, y: touchEvent.touches[0]?.clientY || 0 });
-    }
-    setIsNewConnection(false);
-  }, []);
+  const onConnectEnd: OnConnectEnd = useCallback(
+    (event: MouseEvent | TouchEvent, connectionState: FinalConnectionState) => {
+      if ('clientX' in event && 'clientY' in event) {
+        setPosition({ x: event.clientX || 0, y: event.clientY });
+      } else if ('touches' in event) {
+        const touchEvent = event as TouchEvent;
+        setPosition({ x: touchEvent.touches[0]?.clientX || 0, y: touchEvent.touches[0]?.clientY || 0 });
+      }
+      const hoveredEdge = getEdges().find((edge) => edge.data && edge.data.isHovered);
+      if (hoveredEdge && connectionState.fromNode) {
+        setConnection({
+          source: connectionState.fromNode.id,
+          target: hoveredEdge.id,
+          sourceHandle: null,
+          targetHandle: null,
+        });
+      }
+      setIsNewConnection(false);
+    },
+    []
+  );
 
   const addTempConnectionLine = () => {
     const sourceNode = nodeLookup.get(connection?.source ?? '');

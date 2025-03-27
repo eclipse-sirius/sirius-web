@@ -539,10 +539,10 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * not invoke it directly. Instead, they should simply access that field to obtain the package. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
      * @see #eNS_URI
      * @see #createPackageContents()
      * @see #initializePackageContents()
+     * @generated
      */
     public static DiagramPackage init() {
         if (isInited)
@@ -1827,8 +1827,18 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getEdgePalette_ToolSections() {
+    public EReference getEdgePalette_EdgeTools() {
         return (EReference) this.edgePaletteEClass.getEStructuralFeatures().get(7);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getEdgePalette_ToolSections() {
+        return (EReference) this.edgePaletteEClass.getEStructuralFeatures().get(8);
     }
 
     /**
@@ -2614,6 +2624,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEReference(this.edgePaletteEClass, EDGE_PALETTE__NODE_TOOLS);
         this.createEReference(this.edgePaletteEClass, EDGE_PALETTE__QUICK_ACCESS_TOOLS);
         this.createEReference(this.edgePaletteEClass, EDGE_PALETTE__EDGE_RECONNECTION_TOOLS);
+        this.createEReference(this.edgePaletteEClass, EDGE_PALETTE__EDGE_TOOLS);
         this.createEReference(this.edgePaletteEClass, EDGE_PALETTE__TOOL_SECTIONS);
 
         this.toolEClass = this.createEClass(TOOL);
@@ -3027,6 +3038,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.initEReference(this.getEdgePalette_EdgeReconnectionTools(), this.getEdgeReconnectionTool(), null, "edgeReconnectionTools", null, 0, -1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.getEdgePalette_EdgeReconnectionTools().getEKeys().add(this.getTool_Name());
+        this.initEReference(this.getEdgePalette_EdgeTools(), this.getEdgeTool(), null, "edgeTools", null, 0, -1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getEdgePalette_ToolSections(), this.getEdgeToolSection(), null, "toolSections", null, 0, -1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.getEdgePalette_ToolSections().getEKeys().add(this.getToolSection_Name());

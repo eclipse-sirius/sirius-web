@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 
 /**
  * An candidate containing a valid couple of sources/targets.
@@ -27,19 +27,19 @@ import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 @Immutable
 public final class SingleClickOnTwoDiagramElementsCandidate {
 
-    private List<NodeDescription> sources;
+    private List<IDiagramElementDescription> sources;
 
-    private List<NodeDescription> targets;
+    private List<IDiagramElementDescription> targets;
 
     private SingleClickOnTwoDiagramElementsCandidate() {
         // Prevent instantiation
     }
 
-    public List<NodeDescription> getSources() {
+    public List<IDiagramElementDescription> getSources() {
         return this.sources;
     }
 
-    public List<NodeDescription> getTargets() {
+    public List<IDiagramElementDescription> getTargets() {
         return this.targets;
     }
 
@@ -60,19 +60,19 @@ public final class SingleClickOnTwoDiagramElementsCandidate {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private List<NodeDescription> sources;
+        private List<IDiagramElementDescription> sources;
 
-        private List<NodeDescription> targets;
+        private List<IDiagramElementDescription> targets;
 
         private Builder() {
         }
 
-        public Builder sources(List<NodeDescription> sources) {
+        public Builder sources(List<IDiagramElementDescription> sources) {
             this.sources = sources;
             return this;
         }
 
-        public Builder targets(List<NodeDescription> targets) {
+        public Builder targets(List<IDiagramElementDescription> targets) {
             this.targets = targets;
             return this;
         }

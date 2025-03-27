@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,14 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Position } from '@xyflow/react';
+import { Edge, EdgeMouseHandler } from '@xyflow/react';
+import { EdgeData } from '../DiagramRenderer.types';
 
-export interface ConnectionCreationHandlesProps {
-  nodeId: string;
-  diagramElementId?: string;
-}
-
-export interface ConnectionCreationHandlesState {
-  isHovered: Position | null;
-  isMouseDown: Position | null;
+export interface UseEdgeHoverValue {
+  onEdgeMouseEnter: EdgeMouseHandler<Edge<EdgeData>>;
+  onEdgeMouseLeave: EdgeMouseHandler;
 }

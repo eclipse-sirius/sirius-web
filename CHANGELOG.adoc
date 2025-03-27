@@ -67,7 +67,7 @@ Downstream projects contributing their own route will have to use a `ExtensionRe
 - https://github.com/eclipse-sirius/sirius-web/issues/4727[#4727] [domain] [sirius-web] a new parameter has been added to `Viewer#getProjects` in the graphql API, and thus, the `IProjectApplicationService` and the `IProjectSearchService` API have been updated accordingly.
 + Queries of `ProjectSearchRepositoryDelegate` has been updated so any downstream project providing their own `IProjectSearchRepositoryDelegate` may have to change on their queries if they want the filter on project to work.
 - [tree] The type `TreeItemContextMenuEntry` which was exported by `sirius-components-trees` has been replaced with the raw GraphQL type `GQLTreeItemContextMenuEntry`
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4744[#4744] [diagram] `SingleClickOnTwoDiagramElementsCandidate` `sources and targets` variables are now of type `IDiagramElementDescription`
 
 === Dependency update
 
@@ -141,7 +141,8 @@ The implementation of the library update mechanism is generic and works on any p
 - https://github.com/eclipse-sirius/sirius-web/issues/4727[#4727] [sirius-web] Add the support for projects filter.
 + One can add a map of filter operation to the `useProjects` hook.
 + Add the `useProjectsProjectFilterExtensionPoint` to contribute filter that will always be given to the `getProjects` query.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4744[#4744] [diagram] Allow execution of SingleClickOnTwoDiagramElements with edge as target
+- https://github.com/eclipse-sirius/sirius-web/issues/4748[#4748] [diagram] Allow execution of SingleClickOnTwoDiagramElements with edge as source
 
 === Improvements
 

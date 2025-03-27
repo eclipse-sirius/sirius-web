@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,9 +17,11 @@ import { BaseEdge, Edge, EdgeLabelRenderer, Position, XYPosition } from '@xyflow
 import { memo, useEffect, useMemo, useState } from 'react';
 import { DraggableData } from 'react-draggable';
 import { useStore } from '../../representation/useStore';
+import { useConnectorEdgeStyle } from '../connector/useConnectorEdgeStyle';
 import { Label } from '../Label';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { BendPoint, TemporaryBendPoint } from './BendPoint';
+import { EdgeCreationHandle } from './EdgeCreationHandle';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
 import { MultiLabelEditableEdgeProps, MultiLabelEditableEdgeState } from './MultiLabelEditableEdge.types';
 import { useEditableEdgePath } from './useEditableEdgePath';
@@ -107,6 +109,8 @@ export const MultiLabelEditableEdge = memo(
     }, [bendingPoints.map((point) => point.x + point.y).join()]);
 
     const edgeStyle = useMemo(() => multiLabelEdgeStyle(theme, style, selected, faded), [style, selected, faded]);
+    const { style: connectionFeedbackStyle } = useConnectorEdgeStyle(data ? data.descriptionId : '', !!data?.isHovered);
+
     const sourceLabelTranslation = useMemo(() => getTranslateFromHandlePositon(sourcePosition), [sourcePosition]);
     const targetLabelTranslation = useMemo(() => getTranslateFromHandlePositon(targetPosition), [targetPosition]);
 
@@ -240,16 +244,22 @@ export const MultiLabelEditableEdge = memo(
         <BaseEdge
           id={id}
           path={edgePath}
-          style={edgeStyle}
+          style={{
+            ...edgeStyle,
+            ...connectionFeedbackStyle,
+          }}
           markerEnd={selected ? `${markerEnd?.slice(0, markerEnd.length - 2)}--selected')` : markerEnd}
           markerStart={selected ? `${markerStart?.slice(0, markerStart.length - 2)}--selected')` : markerStart}
         />
         {selected ? (
-          <DiagramElementPalette
-            diagramElementId={id}
-            targetObjectId={data?.targetObjectId ?? ''}
-            labelId={label ? label.id : null}
-          />
+          <>
+            <DiagramElementPalette
+              diagramElementId={id}
+              targetObjectId={data?.targetObjectId ?? ''}
+              labelId={label ? label.id : null}
+            />
+            <EdgeCreationHandle edgeId={id} edgePath={edgePath}></EdgeCreationHandle>
+          </>
         ) : null}
         {selected &&
           state.localBendingPoints &&

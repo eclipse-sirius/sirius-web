@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
@@ -137,33 +138,42 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
         String targetNodeId = input.diagramTargetElementId();
         IStatus result = new Failure("");
         Diagram diagram = diagramContext.getDiagram();
-        Optional<Node> sourceNode = this.diagramQueryService.findNodeById(diagram, sourceNodeId);
-        Optional<Node> targetNode = this.diagramQueryService.findNodeById(diagram, targetNodeId);
+
+        var sourceDiagramElement = this.diagramQueryService.findDiagramElementById(diagram, sourceNodeId);
+        var targetDiagramElement = this.diagramQueryService.findDiagramElementById(diagram, targetNodeId);
         Optional<Object> source = Optional.empty();
         Optional<Object> target = Optional.empty();
-        Node sourceView = null;
-        Node targetView = null;
-        if (sourceNode.isPresent() && targetNode.isPresent()) {
-            sourceView = sourceNode.get();
-            targetView = targetNode.get();
-            source = this.objectSearchService.getObject(editingContext, sourceNode.get().getTargetObjectId());
-            target = this.objectSearchService.getObject(editingContext, targetNode.get().getTargetObjectId());
-        }
 
-        if (source.isPresent() && target.isPresent()) {
-            VariableManager variableManager = new VariableManager();
-            variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
-            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
-            variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
-            variableManager.put(IDiagramService.DIAGRAM_SERVICES, new DiagramService(diagramContext));
-            variableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, source.get());
-            variableManager.put(EdgeDescription.SEMANTIC_EDGE_TARGET, target.get());
-            variableManager.put(EdgeDescription.EDGE_SOURCE, sourceView);
-            variableManager.put(EdgeDescription.EDGE_TARGET, targetView);
+        if (sourceDiagramElement.isPresent() && targetDiagramElement.isPresent()) {
+            if (sourceDiagramElement.get() instanceof Node node) {
+                source = this.objectSearchService.getObject(editingContext, node.getTargetObjectId());
+            }
+            if (sourceDiagramElement.get() instanceof Edge edge) {
+                source = this.objectSearchService.getObject(editingContext, edge.getTargetObjectId());
+            }
 
-            input.variables().forEach(toolVariable -> this.addToolVariablesInVariableManager(toolVariable, editingContext, variableManager));
+            if (targetDiagramElement.get() instanceof Node node) {
+                target = this.objectSearchService.getObject(editingContext, node.getTargetObjectId());
+            }
+            if (targetDiagramElement.get() instanceof Edge edge) {
+                target = this.objectSearchService.getObject(editingContext, edge.getTargetObjectId());
+            }
 
-            result = tool.getHandler().apply(variableManager);
+            if (source.isPresent() && target.isPresent()) {
+                VariableManager variableManager = new VariableManager();
+                variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
+                variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+                variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
+                variableManager.put(IDiagramService.DIAGRAM_SERVICES, new DiagramService(diagramContext));
+                variableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, source.get());
+                variableManager.put(EdgeDescription.SEMANTIC_EDGE_TARGET, target.get());
+                variableManager.put(EdgeDescription.EDGE_SOURCE, sourceDiagramElement.get());
+                variableManager.put(EdgeDescription.EDGE_TARGET, targetDiagramElement.get());
+
+                input.variables().forEach(toolVariable -> this.addToolVariablesInVariableManager(toolVariable, editingContext, variableManager));
+
+                result = tool.getHandler().apply(variableManager);
+            }
         }
         return result;
     }
@@ -192,23 +202,19 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
 
     private Supplier<Optional<SingleClickOnTwoDiagramElementsTool>> findConnectorToolById(String diagramSourceElementId, String diagramTargetElementId, IEditingContext editingContext, Diagram diagram,
             String searchedToolId) {
-        //@formatter:off
         var diagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
                 .filter(DiagramDescription.class::isInstance)
                 .map(DiagramDescription.class::cast);
-        //@formatter:on
 
         if (diagramDescription.isPresent()) {
-            //@formatter:off
             List<IConnectorToolsProvider> compatibleConnectorToolsProviders = this.connectorToolsProviders.stream()
                     .filter(provider -> provider.canHandle(diagramDescription.get()))
                     .toList();
-            //@formatter:on
+
             if (!compatibleConnectorToolsProviders.isEmpty()) {
                 var diagramSourceElement = this.diagramQueryService.findNodeById(diagram, diagramSourceElementId);
                 var diagramTargetElement = this.diagramQueryService.findNodeById(diagram, diagramTargetElementId);
                 if (diagramSourceElement.isPresent() && diagramTargetElement.isPresent()) {
-                    //@formatter:off
                     return () -> compatibleConnectorToolsProviders.stream()
                             .map(provider -> provider.getConnectorTools(diagramSourceElement.get(), diagramTargetElement.get(), diagram, editingContext))
                             .flatMap(List::stream)
@@ -216,7 +222,6 @@ public class InvokeSingleClickOnTwoDiagramElementsToolEventHandler implements ID
                             .filter(SingleClickOnTwoDiagramElementsTool.class::isInstance)
                             .map(SingleClickOnTwoDiagramElementsTool.class::cast)
                             .findFirst();
-                    //@formatter:on
                 }
             }
         }
