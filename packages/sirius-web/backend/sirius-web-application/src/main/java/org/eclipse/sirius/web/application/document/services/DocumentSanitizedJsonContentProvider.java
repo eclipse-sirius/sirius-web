@@ -71,9 +71,14 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
                 if (hasProxies) {
                     this.logger.warn("The resource {} contains unresolvable proxies and will not be uploaded.", name);
                 } else {
-                    JsonResource ouputResource = new JSONResourceFactory().createResourceFromPath(name);
-                    resourceSet.getResources().add(ouputResource);
-                    ouputResource.getContents().addAll(inputResource.getContents());
+                    JsonResource ouputResource;
+                    if (Objects.equals(inputResource.getURI(), resourceURI) && inputResource instanceof JsonResource jsonInputResource) {
+                        ouputResource = jsonInputResource;
+                    } else {
+                        ouputResource = new JSONResourceFactory().createResource(resourceURI);
+                        resourceSet.getResources().add(ouputResource);
+                        ouputResource.getContents().addAll(inputResource.getContents());
+                    }
 
                     try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
                         Map<String, Object> saveOptions = new HashMap<>();
@@ -94,7 +99,9 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
                     }
                 }
             } finally {
+                // Remove any temporary resource we may have added to the ResourceSet
                 resourceSet.getResources().remove(inputResource);
+                resourceSet.getResources().removeIf(res -> Objects.equals(res.getURI(), resourceURI));
             }
         }
 
