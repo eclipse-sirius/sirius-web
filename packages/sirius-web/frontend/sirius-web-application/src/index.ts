@@ -34,6 +34,8 @@ export {
 } from './graphql/useCreateApolloClientExtensionPoints';
 export { PublishLibraryDialog } from './libraries/PublishLibraryDialog';
 export { type PublishLibraryDialogProps } from './libraries/PublishLibraryDialog.types';
+export { DuplicateObjectModal } from './modals/duplicate-object/DuplicateObjectModal';
+export { type DuplicateObjectModalProps } from './modals/duplicate-object/DuplicateObjectModal.types';
 export { NewObjectModal } from './modals/new-object/NewObjectModal';
 export { type NewObjectModalProps } from './modals/new-object/NewObjectModal.types';
 export { NewRepresentationModal } from './modals/new-representation/NewRepresentationModal';
