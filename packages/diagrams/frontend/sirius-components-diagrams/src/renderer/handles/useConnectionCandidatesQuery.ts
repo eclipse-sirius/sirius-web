@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { gql, useQuery } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { Node, useNodes } from '@xyflow/react';
+import { Edge, Node, useReactFlow } from '@xyflow/react';
 import { useEffect, useMemo } from 'react';
 import {
   GQLDiagramDescription,
@@ -24,7 +24,7 @@ import {
   GQLSingleClickOnTwoDiagramElementsTool,
   GQLToolSection,
 } from '../connector/useConnector.types';
-import { NodeData } from '../DiagramRenderer.types';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
 
 const getToolSectionsQuery = gql`
   query getToolSections($editingContextId: ID!, $diagramId: ID!, $diagramElementId: ID!) {
@@ -73,13 +73,17 @@ const isSingleClickOnTwoDiagramElementsTool = (
   entry: GQLPaletteEntry
 ): entry is GQLSingleClickOnTwoDiagramElementsTool => entry.__typename === 'SingleClickOnTwoDiagramElementsTool';
 const isToolSection = (entry: GQLPaletteEntry): entry is GQLToolSection => entry.__typename === 'ToolSection';
+
 export const useConnectionCandidatesQuery = (
   editingContextId: string,
   diagramId: string,
   nodeId: string
 ): GQLNodeDescription[] | null => {
   const { addErrorMessage } = useMultiToast();
-  const nodes = useNodes<Node<NodeData>>();
+  const { getNodes, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+
+  const shouldSkip =
+    getNodes().filter((node) => node.selected).length + getEdges().filter((edge) => edge.selected).length > 1;
 
   const { data, error } = useQuery<GQLGetToolSectionsData, GQLGetToolSectionsVariables>(getToolSectionsQuery, {
     variables: {
@@ -87,8 +91,9 @@ export const useConnectionCandidatesQuery = (
       diagramId,
       diagramElementId: nodeId,
     },
-    skip: nodes.filter((node) => node.selected).length > 1,
+    skip: shouldSkip,
   });
+
   const diagramDescription: GQLRepresentationDescription | null =
     data?.viewer.editingContext.representation.description ?? null;
 

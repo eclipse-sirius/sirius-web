@@ -46,7 +46,6 @@ import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
-import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.Tool;
@@ -150,6 +149,10 @@ public class ToolConverter {
                     .forEach(edgeNodeTools::add);
             toolFinder.findQuickAccessEdgeTools(edgeDescription).stream()
                     .map(nodeTool -> this.createNodeTool(nodeTool, converterContext, false))
+                    .forEach(edgeNodeTools::add);
+
+            toolFinder.findEdgeTools(edgeDescription).stream()
+                    .map(edgeTool -> this.createEdgeTool(edgeTool, edgeDescription, converterContext))
                     .forEach(edgeNodeTools::add);
 
             var edgePalette = Palette.newPalette(edgePaletteId)

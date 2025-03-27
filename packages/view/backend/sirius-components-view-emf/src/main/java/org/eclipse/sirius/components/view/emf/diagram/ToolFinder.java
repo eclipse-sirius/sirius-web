@@ -130,7 +130,11 @@ public class ToolFinder {
         return Optional.of(elementDescription)
                 .filter(NodeDescription.class::isInstance)
                 .map(NodeDescription.class::cast)
-                .map(NodeDescription::getPalette).map(NodePalette::getEdgeTools).orElse(new BasicEList<>());
+                .map(NodeDescription::getPalette).map(NodePalette::getEdgeTools)
+                .orElse(Optional.of(elementDescription)
+                        .filter(EdgeDescription.class::isInstance)
+                        .map(EdgeDescription.class::cast)
+                        .map(EdgeDescription::getPalette).map(EdgePalette::getEdgeTools).orElse(new BasicEList<>()));
     }
 
     public List<NodeTool> findQuickAccessEdgeTools(EdgeDescription edgeDescription) {

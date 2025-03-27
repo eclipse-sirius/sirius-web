@@ -29,6 +29,7 @@ import { useCallback, useContext } from 'react';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { getEdgeParameters } from '../edge/EdgeLayout';
+import { EdgeAnchorNodeCreationHandlesData } from '../node/EdgeAnchorNodeCreationHandles.types';
 import { useDiagramElementPalette } from '../palette/useDiagramElementPalette';
 import { ConnectorContext } from './ConnectorContext';
 import { ConnectorContextValue } from './ConnectorContext.types';
@@ -40,6 +41,9 @@ const tempConnectionLineStyle = (theme: Theme): React.CSSProperties => {
     strokeWidth: theme.spacing(0.2),
   };
 };
+
+const isEdgeAnchorNodeCreationHandles = (node: Node<NodeData>): node is Node<EdgeAnchorNodeCreationHandlesData> =>
+  node.type === 'edgeAnchorNodeCreationHandles';
 
 export const useConnector = (): UseConnectorValue => {
   const {
@@ -74,6 +78,10 @@ export const useConnector = (): UseConnectorValue => {
   };
 
   const onConnect: OnConnect = useCallback((connection: Connection) => {
+    const nodeSource = nodeLookup.get(connection.source);
+    if (nodeSource && isEdgeAnchorNodeCreationHandles(nodeSource)) {
+      connection.source = nodeSource.data.edgeId;
+    }
     setConnection(connection);
   }, []);
 

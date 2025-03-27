@@ -38,6 +38,7 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
+import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
@@ -125,7 +126,7 @@ public class ViewPaletteProvider implements IPaletteProvider {
                 palette = this.getNodePalette(editingContext, diagramDescription, diagramElement, nodeDescription, variableManager, interpreter);
             } else if (diagramElement instanceof Edge && diagramElementDescription instanceof EdgeDescription edgeDescription) {
                 variableManager.put(Edge.SELECTED_EDGE, diagramElement);
-                palette = this.getEdgePalette(editingContext, edgeDescription, diagramElement, variableManager, interpreter);
+                palette = this.getEdgePalette(editingContext, diagramDescription, edgeDescription, diagramElement, variableManager, interpreter);
             }
         }
         return palette;
@@ -271,7 +272,7 @@ public class ViewPaletteProvider implements IPaletteProvider {
                 .build();
     }
 
-    private ITool createEdgeTool(EdgeTool viewEdgeTool, DiagramDescription diagramDescription, NodeDescription nodeDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+    private ITool createEdgeTool(EdgeTool viewEdgeTool, DiagramDescription diagramDescription, IDiagramElementDescription diagramElementDescription, VariableManager variableManager, AQLInterpreter interpreter) {
         String toolId = this.idProvider.apply(viewEdgeTool).toString();
         List<String> iconURLProvider = this.edgeToolIconURLProvider(viewEdgeTool, interpreter, variableManager);
         String dialogDescriptionId = "";
@@ -280,7 +281,7 @@ public class ViewPaletteProvider implements IPaletteProvider {
         }
 
         List<SingleClickOnTwoDiagramElementsCandidate> candidates = List.of(SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
-                .sources(List.of(nodeDescription))
+                .sources(List.of(diagramElementDescription))
                 .targets(viewEdgeTool.getTargetElementDescriptions().stream()
                         .map(viewDiagramElementDescription -> this.diagramDescriptionService.findDiagramElementDescriptionById(diagramDescription, this.diagramIdProvider.getId(viewDiagramElementDescription)))
                         .flatMap(Optional::stream)
@@ -295,7 +296,7 @@ public class ViewPaletteProvider implements IPaletteProvider {
                 .build();
     }
 
-    private Palette getEdgePalette(IEditingContext editingContext, EdgeDescription edgeDescription, Object diagramElement, VariableManager variableManager, AQLInterpreter interpreter) {
+    private Palette getEdgePalette(IEditingContext editingContext, DiagramDescription diagramDescription, EdgeDescription edgeDescription, Object diagramElement, VariableManager variableManager, AQLInterpreter interpreter) {
         List<ToolSection> extraToolSections = new PaletteDefaultToolsProvider().createExtraToolSections(edgeDescription, diagramElement);
         Palette edgePalette = null;
         var toolFinder = new ToolFinder();
@@ -321,6 +322,11 @@ public class ViewPaletteProvider implements IPaletteProvider {
                 toolFinder.findNodeTools(viewEdgeDescription).stream()
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
                         .map(tool -> this.createNodeTool(tool, variableManager, interpreter))
+                        .forEach(paletteEntries::add);
+
+                toolFinder.findEdgeTools(viewEdgeDescription).stream()
+                        .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
+                        .map(viewEdgeTools -> this.createEdgeTool(viewEdgeTools, diagramDescription, edgeDescription, variableManager, interpreter))
                         .forEach(paletteEntries::add);
 
                 paletteEntries.addAll(extraToolSections);
