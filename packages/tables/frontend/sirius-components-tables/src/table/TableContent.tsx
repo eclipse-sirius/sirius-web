@@ -165,7 +165,6 @@ export const TableContent = memo(
     const tableOptions: MRT_TableOptions<GQLLine> = {
       columns,
       data: linesState,
-      editDisplayMode: 'cell',
       enableEditing: !readOnly,
       onColumnFiltersChange: setColumnFilters,
       enableStickyHeader: true,

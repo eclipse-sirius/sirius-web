@@ -102,6 +102,7 @@ Given that implementations of this interface should be Spring services, they can
 - https://github.com/eclipse-sirius/sirius-web/issues/4725[#4725] [view] Do not report a validation error when a relation-based edge does not specify a domain type
 - https://github.com/eclipse-sirius/sirius-web/issues/4708[#4708] [table] Fix Export All in Page action to export row header column
 - https://github.com/eclipse-sirius/sirius-web/issues/4736[#4736] [diagram] Restore correct border node positioning
+- https://github.com/eclipse-sirius/sirius-web/issues/4753[#4753] [table] Double click inside a table cells creates a fake text field
 
 
 === New Features
