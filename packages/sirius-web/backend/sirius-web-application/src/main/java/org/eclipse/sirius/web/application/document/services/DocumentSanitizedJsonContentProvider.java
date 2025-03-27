@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.document.services.api.IDocumentSanitizedJsonContentProvider;
 import org.eclipse.sirius.web.application.document.services.api.IExternalResourceLoaderService;
+import org.eclipse.sirius.web.application.document.services.api.IProxyValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -49,8 +50,11 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
 
     private final List<IMigrationParticipant> migrationParticipants;
 
-    public DocumentSanitizedJsonContentProvider(List<IExternalResourceLoaderService> externalResourceLoaderServices, List<IMigrationParticipant> migrationParticipants) {
+    private final IProxyValidator proxyValidator;
+
+    public DocumentSanitizedJsonContentProvider(List<IExternalResourceLoaderService> externalResourceLoaderServices, IProxyValidator proxyValidator, List<IMigrationParticipant> migrationParticipants) {
         this.externalResourceLoaderServices = Objects.requireNonNull(externalResourceLoaderServices);
+        this.proxyValidator = Objects.requireNonNull(proxyValidator);
         this.migrationParticipants = migrationParticipants;
     }
 
@@ -62,27 +66,35 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
         Optional<Resource> optionalInputResource = this.getResource(resourceSet, resourceURI, inputStream, applyMigrationParticipants);
         if (optionalInputResource.isPresent()) {
             Resource inputResource = optionalInputResource.get();
+            try {
+                var hasProxies = this.proxyValidator.hasProxies(inputResource);
+                if (hasProxies) {
+                    this.logger.warn("The resource {} contains unresolvable proxies and will not be uploaded.", name);
+                } else {
+                    JsonResource ouputResource = new JSONResourceFactory().createResourceFromPath(name);
+                    resourceSet.getResources().add(ouputResource);
+                    ouputResource.getContents().addAll(inputResource.getContents());
 
-            JsonResource ouputResource = new JSONResourceFactory().createResourceFromPath(name);
-            resourceSet.getResources().add(ouputResource);
-            ouputResource.getContents().addAll(inputResource.getContents());
+                    try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+                        Map<String, Object> saveOptions = new HashMap<>();
+                        saveOptions.put(JsonResource.OPTION_ENCODING, JsonResource.ENCODING_UTF_8);
+                        saveOptions.put(JsonResource.OPTION_SCHEMA_LOCATION, Boolean.TRUE);
+                        saveOptions.put(JsonResource.OPTION_ID_MANAGER, new EObjectRandomIDManager());
+                        if (applyMigrationParticipants) {
+                            var migrationExtendedMetaData = new MigrationService(this.migrationParticipants);
+                            saveOptions.put(JsonResource.OPTION_EXTENDED_META_DATA, migrationExtendedMetaData);
+                            saveOptions.put(JsonResource.OPTION_JSON_RESSOURCE_PROCESSOR, migrationExtendedMetaData);
+                        }
 
-            try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-                Map<String, Object> saveOptions = new HashMap<>();
-                saveOptions.put(JsonResource.OPTION_ENCODING, JsonResource.ENCODING_UTF_8);
-                saveOptions.put(JsonResource.OPTION_SCHEMA_LOCATION, Boolean.TRUE);
-                saveOptions.put(JsonResource.OPTION_ID_MANAGER, new EObjectRandomIDManager());
-                if (applyMigrationParticipants) {
-                    var migrationExtendedMetaData = new MigrationService(this.migrationParticipants);
-                    saveOptions.put(JsonResource.OPTION_EXTENDED_META_DATA, migrationExtendedMetaData);
-                    saveOptions.put(JsonResource.OPTION_JSON_RESSOURCE_PROCESSOR, migrationExtendedMetaData);
+                        ouputResource.save(outputStream, saveOptions);
+
+                        optionalContent = Optional.of(outputStream.toString());
+                    } catch (IOException exception) {
+                        this.logger.warn(exception.getMessage(), exception);
+                    }
                 }
-
-                ouputResource.save(outputStream, saveOptions);
-
-                optionalContent = Optional.of(outputStream.toString());
-            } catch (IOException exception) {
-                this.logger.warn(exception.getMessage(), exception);
+            } finally {
+                resourceSet.getResources().remove(inputResource);
             }
         }
 
