@@ -196,4 +196,83 @@ public class EdgeOnEdgeControllerTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a diagram with some edges, when the creation of an edge from another edge is requested, then the edge is created")
+    public void givenDiagramWithSomeNodesWhenTheCreationOfAnEdgeonEdgeFromAnEdgeIsRequestedThenTheEdgeIsCreated() {
+        var flux = this.givenSubscriptionToLifeCycleDiagram();
+
+        var diagramId = new AtomicReference<String>();
+        var channelNodeId = new AtomicReference<String>();
+        var subscriptionEdgeId = new AtomicReference<String>();
+        var connectorToolId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
+                .map(DiagramRefreshedEventPayload::diagram)
+                .ifPresentOrElse(diagram -> {
+                    diagramId.set(diagram.getId());
+
+                    var channelNode = new DiagramNavigator(diagram).nodeWithLabel("HTTPS").getNode();
+                    channelNodeId.set(channelNode.getId());
+
+                    var subscriptionEdge = new DiagramNavigator(diagram).edgeWithLabel("listened by").getEdge();
+                    subscriptionEdgeId.set(subscriptionEdge.getId());
+
+                    var edgeCount = new DiagramNavigator(diagram).findDiagramEdgeCount();
+                    assertThat(edgeCount).isEqualTo(3);
+                }, () -> fail("Missing diagram"));
+
+        Runnable requestConnectorTools = () -> {
+            Map<String, Object> variables = Map.of(
+                    "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                    "representationId", diagramId.get(),
+                    "sourceDiagramElementId", subscriptionEdgeId,
+                    "targetDiagramElementId", channelNodeId
+            );
+            var connectorToolsResult = this.connectorToolsQueryRunner.run(variables);
+            List<String> connectorToolsId = JsonPath.read(connectorToolsResult, "$.data.viewer.editingContext.representation.description.connectorTools[*].id");
+            assertThat(connectorToolsId).hasSize(1);
+            connectorToolId.set(connectorToolsId.get(0));
+        };
+
+        Runnable createEdge = () -> {
+            var input = new InvokeSingleClickOnTwoDiagramElementsToolInput(
+                    UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                    diagramId.get(),
+                    subscriptionEdgeId.get(),
+                    channelNodeId.get(),
+                    0,
+                    0,
+                    0,
+                    0,
+                    connectorToolId.get(),
+                    List.of()
+            );
+            var result = this.invokeSingleClickOnTwoDiagramElementsToolMutationRunner.run(input);
+            String payloadTypeName = JsonPath.read(result, "$.data.invokeSingleClickOnTwoDiagramElementsTool.__typename");
+            assertThat(payloadTypeName).isEqualTo(InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> updatedDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
+                .map(DiagramRefreshedEventPayload::diagram)
+                .ifPresentOrElse(diagram -> {
+                    var edgeCount = new DiagramNavigator(diagram).findDiagramEdgeCount();
+                    assertThat(edgeCount).isEqualTo(4);
+
+                }, () -> fail("Missing diagram"));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(requestConnectorTools)
+                .then(createEdge)
+                .consumeNextWith(updatedDiagramContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
 }

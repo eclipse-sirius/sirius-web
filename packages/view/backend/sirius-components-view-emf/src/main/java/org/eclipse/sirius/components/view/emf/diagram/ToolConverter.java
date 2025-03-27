@@ -142,6 +142,10 @@ public class ToolConverter {
                     .map(nodeTool -> this.createNodeTool(nodeTool, converterContext, false))
                     .forEach(edgeNodeTools::add);
 
+            toolFinder.findEdgeTools(edgeDescription).stream()
+                    .map(edgeTool -> this.createEdgeTool(edgeTool, edgeDescription, converterContext))
+                    .forEach(edgeNodeTools::add);
+
             var edgePalette = Palette.newPalette(edgePaletteId)
                     .tools(edgeNodeTools)
                     .toolSections(toolFinder.findToolSections(edgeDescription).stream()

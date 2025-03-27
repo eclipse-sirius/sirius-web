@@ -28,6 +28,7 @@ import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescri
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.ApplicationServiceNodeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.EventNodeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.DomainServiceNodeDescriptionProvider;
+import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.tools.PublicationEdgePaletteProvider;
 import org.eclipse.sirius.web.papaya.services.PapayaColorPaletteProvider;
 
 /**
@@ -82,5 +83,8 @@ public class PublicationEdgeDescriptionProvider implements IEdgeDescriptionProvi
         publicationEdgeDescription.getSourceDescriptions().addAll(List.of(controllerNodeDescription, applicationServiceNodeDescription, domainServiceNodeDescription));
         publicationEdgeDescription.getTargetDescriptions().addAll(List.of(commandNodeDescription, eventNodeDescription));
         diagramDescription.getEdgeDescriptions().add(publicationEdgeDescription);
+
+        var palette = new PublicationEdgePaletteProvider().getEdgePalette(cache);
+        publicationEdgeDescription.setPalette(palette);
     }
 }
