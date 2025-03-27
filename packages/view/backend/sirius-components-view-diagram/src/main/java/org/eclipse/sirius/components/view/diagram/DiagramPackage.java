@@ -2533,13 +2533,22 @@ public interface DiagramPackage extends EPackage {
     int EDGE_PALETTE__EDGE_RECONNECTION_TOOLS = 6;
 
     /**
+     * The feature id for the '<em><b>Edge Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_PALETTE__EDGE_TOOLS = 7;
+
+    /**
      * The feature id for the '<em><b>Tool Sections</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int EDGE_PALETTE__TOOL_SECTIONS = 7;
+    int EDGE_PALETTE__TOOL_SECTIONS = 8;
 
     /**
      * The number of structural features of the '<em>Edge Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -2548,7 +2557,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EDGE_PALETTE_FEATURE_COUNT = 8;
+    int EDGE_PALETTE_FEATURE_COUNT = 9;
 
     /**
      * The number of operations of the '<em>Edge Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3801,15 +3810,6 @@ public interface DiagramPackage extends EPackage {
     int USER_RESIZABLE_DIRECTION = 57;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.ArrowStyle <em>Arrow Style</em>}'
-     * enum. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @see org.eclipse.sirius.components.view.diagram.ArrowStyle
-     * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getArrowStyle()
-     */
-
-    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode
      * <em>Header Separator Display Mode</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -3834,6 +3834,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#isAutoLayout <em>Auto Layout</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the attribute '<em>Auto Layout</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.DiagramDescription#isAutoLayout()
@@ -3846,6 +3847,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getPalette <em>Palette</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the containment reference '<em>Palette</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.DiagramDescription#getPalette()
@@ -3904,6 +3906,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.DiagramElementDescription#getName <em>Name</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the attribute '<em>Name</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.DiagramElementDescription#getName()
@@ -3974,6 +3977,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.NodeDescription#isCollapsible <em>Collapsible</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the attribute '<em>Collapsible</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.NodeDescription#isCollapsible()
@@ -3986,6 +3990,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.NodeDescription#getPalette <em>Palette</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the containment reference '<em>Palette</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.NodeDescription#getPalette()
@@ -4154,6 +4159,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.NodeDescription#getInsideLabel <em>Inside Label</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the containment reference '<em>Inside Label</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.NodeDescription#getInsideLabel()
@@ -4260,6 +4266,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.EdgeDescription#getPalette <em>Palette</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the containment reference '<em>Palette</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.EdgeDescription#getPalette()
@@ -4458,6 +4465,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.LabelDescription#getTextAlign <em>Text Align</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the attribute '<em>Text Align</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.LabelDescription#getTextAlign()
@@ -4480,6 +4488,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.InsideLabelDescription#getPosition <em>Position</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the attribute '<em>Position</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.InsideLabelDescription#getPosition()
@@ -4492,6 +4501,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.InsideLabelDescription#getStyle <em>Style</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the containment reference '<em>Style</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.InsideLabelDescription#getStyle()
@@ -4526,6 +4536,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.OutsideLabelDescription#getPosition <em>Position</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the attribute '<em>Position</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.OutsideLabelDescription#getPosition()
@@ -4538,6 +4549,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.OutsideLabelDescription#getStyle <em>Style</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the containment reference '<em>Style</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.OutsideLabelDescription#getStyle()
@@ -4561,6 +4573,7 @@ public interface DiagramPackage extends EPackage {
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.Style <em>Style</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for class '<em>Style</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.Style
@@ -4593,6 +4606,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.BorderStyle#getBorderColor <em>Border Color</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the reference '<em>Border Color</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.BorderStyle#getBorderColor()
@@ -4605,6 +4619,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.BorderStyle#getBorderRadius <em>Border Radius</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the attribute '<em>Border Radius</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.BorderStyle#getBorderRadius()
@@ -4617,6 +4632,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.BorderStyle#getBorderSize <em>Border Size</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the attribute '<em>Border Size</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.BorderStyle#getBorderSize()
@@ -4651,6 +4667,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.InsideLabelStyle#isWithHeader <em>With Header</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the attribute '<em>With Header</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.InsideLabelStyle#isWithHeader()
@@ -4695,6 +4712,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.NodeLabelStyle#getLabelColor <em>Label Color</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the reference '<em>Label Color</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.NodeLabelStyle#getLabelColor()
@@ -4707,6 +4725,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.NodeLabelStyle#getBackground <em>Background</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the reference '<em>Background</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.NodeLabelStyle#getBackground()
@@ -4731,6 +4750,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.NodeLabelStyle#getLabelIcon <em>Label Icon</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the attribute '<em>Label Icon</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.NodeLabelStyle#getLabelIcon()
@@ -4775,6 +4795,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle#getStyle <em>Style</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the containment reference '<em>Style</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle#getStyle()
@@ -4797,6 +4818,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle#getStyle <em>Style</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the containment reference '<em>Style</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle#getStyle()
@@ -4819,6 +4841,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.ConditionalOutsideLabelStyle#getStyle <em>Style</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the containment reference '<em>Style</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.ConditionalOutsideLabelStyle#getStyle()
@@ -4864,6 +4887,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription#getShape <em>Shape</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the attribute '<em>Shape</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription#getShape()
@@ -4921,6 +4945,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getLineStyle <em>Line Style</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the attribute '<em>Line Style</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.EdgeStyle#getLineStyle()
@@ -4957,6 +4982,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getEdgeWidth <em>Edge Width</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the attribute '<em>Edge Width</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.EdgeStyle#getEdgeWidth()
@@ -4980,6 +5006,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getLabelIcon <em>Label Icon</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the attribute '<em>Label Icon</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.EdgeStyle#getLabelIcon()
@@ -4992,6 +5019,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getBackground <em>Background</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the reference '<em>Background</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.EdgeStyle#getBackground()
@@ -5036,6 +5064,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.DiagramPalette#getDropTool <em>Drop Tool</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the containment reference '<em>Drop Tool</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.DiagramPalette#getDropTool()
@@ -5048,6 +5077,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.DiagramPalette#getDropNodeTool <em>Drop Node Tool</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the reference list '<em>Drop Node Tool</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.DiagramPalette#getDropNodeTool()
@@ -5060,6 +5090,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.DiagramPalette#getNodeTools <em>Node Tools</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the containment reference list '<em>Node Tools</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.DiagramPalette#getNodeTools()
@@ -5084,6 +5115,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.DiagramPalette#getToolSections <em>Tool Sections</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the containment reference list '<em>Tool Sections</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.DiagramPalette#getToolSections()
@@ -5106,6 +5138,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.NodePalette#getDeleteTool <em>Delete Tool</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the containment reference '<em>Delete Tool</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.NodePalette#getDeleteTool()
@@ -5118,6 +5151,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.NodePalette#getLabelEditTool <em>Label Edit Tool</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the containment reference '<em>Label Edit Tool</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.NodePalette#getLabelEditTool()
@@ -5130,6 +5164,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.NodePalette#getDropNodeTool <em>Drop Node Tool</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the reference list '<em>Drop Node Tool</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.NodePalette#getDropNodeTool()
@@ -5142,6 +5177,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.NodePalette#getNodeTools <em>Node Tools</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the containment reference list '<em>Node Tools</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.NodePalette#getNodeTools()
@@ -5166,6 +5202,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.NodePalette#getEdgeTools <em>Edge Tools</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the containment reference list '<em>Edge Tools</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.NodePalette#getEdgeTools()
@@ -5178,6 +5215,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.NodePalette#getToolSections <em>Tool Sections</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the containment reference list '<em>Tool Sections</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.NodePalette#getToolSections()
@@ -5200,6 +5238,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.EdgePalette#getDeleteTool <em>Delete Tool</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the containment reference '<em>Delete Tool</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.EdgePalette#getDeleteTool()
@@ -5248,6 +5287,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.EdgePalette#getNodeTools <em>Node Tools</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the containment reference list '<em>Node Tools</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.EdgePalette#getNodeTools()
@@ -5281,9 +5321,23 @@ public interface DiagramPackage extends EPackage {
 
     /**
      * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.EdgePalette#getEdgeTools <em>Edge Tools</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @return the meta object for the containment reference list '<em>Edge Tools</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.EdgePalette#getEdgeTools()
+     * @see #getEdgePalette()
+     * @generated
+     */
+    EReference getEdgePalette_EdgeTools();
+
+    /**
+     * Returns the meta object for the containment reference list
      * '{@link org.eclipse.sirius.components.view.diagram.EdgePalette#getToolSections <em>Tool Sections</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the containment reference list '<em>Tool Sections</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.EdgePalette#getToolSections()
@@ -5295,6 +5349,7 @@ public interface DiagramPackage extends EPackage {
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.Tool <em>Tool</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for class '<em>Tool</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.Tool
@@ -5577,6 +5632,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.CreateView#getVariableName <em>Variable Name</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the attribute '<em>Variable Name</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.CreateView#getVariableName()
@@ -5611,6 +5667,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.DeleteView#getViewExpression <em>View Expression</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the attribute '<em>View Expression</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.DeleteView#getViewExpression()
@@ -5700,6 +5757,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.DiagramToolSection#getNodeTools <em>Node Tools</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the containment reference list '<em>Node Tools</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.DiagramToolSection#getNodeTools()
@@ -5722,6 +5780,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.NodeToolSection#getNodeTools <em>Node Tools</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the containment reference list '<em>Node Tools</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.NodeToolSection#getNodeTools()
@@ -5734,6 +5793,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.NodeToolSection#getEdgeTools <em>Edge Tools</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the containment reference list '<em>Edge Tools</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.NodeToolSection#getEdgeTools()
@@ -5756,6 +5816,7 @@ public interface DiagramPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.diagram.EdgeToolSection#getNodeTools <em>Node Tools</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @return the meta object for the containment reference list '<em>Node Tools</em>'.
      * @generated
      * @see org.eclipse.sirius.components.view.diagram.EdgeToolSection#getNodeTools()
@@ -7128,6 +7189,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EReference EDGE_PALETTE__EDGE_RECONNECTION_TOOLS = eINSTANCE.getEdgePalette_EdgeReconnectionTools();
+
+        /**
+         * The meta object literal for the '<em><b>Edge Tools</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference EDGE_PALETTE__EDGE_TOOLS = eINSTANCE.getEdgePalette_EdgeTools();
 
         /**
          * The meta object literal for the '<em><b>Tool Sections</b></em>' containment reference list feature. <!--

@@ -162,7 +162,7 @@ Actions are visible on nodes on diagrams, on the top right corner of the nodes, 
 - https://github.com/eclipse-sirius/sirius-web/issues/4707[#4707] [diagram] Enable frontend rendering of edges that have another edge as source or target.
 - https://github.com/eclipse-sirius/sirius-web/issues/4710[#4710] [table] Add support for sorting tables
 - https://github.com/eclipse-sirius/sirius-web/issues/4744[#4744] [diagram] Allow execution of SingleClickOnTwoDiagramElements with edge as target
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4748[#4748] [diagram] Allow execution of SingleClickOnTwoDiagramElements with edge as source
 
 === Improvements
 

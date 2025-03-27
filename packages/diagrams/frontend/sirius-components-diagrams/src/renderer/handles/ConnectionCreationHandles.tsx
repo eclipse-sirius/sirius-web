@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -66,18 +66,21 @@ const connectionCreationHandleStyle = (
   return style;
 };
 
-export const ConnectionCreationHandles = memo(({ nodeId }: ConnectionCreationHandlesProps) => {
+export const ConnectionCreationHandles = memo(({ nodeId, diagramElementId }: ConnectionCreationHandlesProps) => {
   const theme = useTheme();
   const { editingContextId, diagramId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { onConnectionStartElementClick, isConnectionInProgress } = useConnector();
   const { setCandidates } = useContext<ConnectorContextValue>(ConnectorContext);
+
+  // If diagramElementId is set then we use it for the request otherwise we use the id of the node used to place the handle
+  diagramElementId = diagramElementId || nodeId;
 
   const [state, setState] = useState<ConnectionCreationHandlesState>({
     isHovered: null,
     isMouseDown: null,
   });
 
-  const candidates = useConnectionCandidatesQuery(editingContextId, diagramId, nodeId);
+  const candidates = useConnectionCandidatesQuery(editingContextId, diagramId, diagramElementId);
   const shouldRender = candidates !== null && candidates.length > 0 && !readOnly;
 
   useRefreshTargetHandles(nodeId, shouldRender);

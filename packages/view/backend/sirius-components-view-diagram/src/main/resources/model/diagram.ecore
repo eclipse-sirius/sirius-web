@@ -316,6 +316,8 @@
         eType="#//NodeTool" containment="true" eKeys="#//Tool/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="edgeReconnectionTools"
         upperBound="-1" eType="#//EdgeReconnectionTool" containment="true" eKeys="#//Tool/name"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="edgeTools" upperBound="-1"
+        eType="#//EdgeTool" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="toolSections" upperBound="-1"
         eType="#//EdgeToolSection" containment="true" eKeys="#//ToolSection/name"/>
   </eClassifiers>

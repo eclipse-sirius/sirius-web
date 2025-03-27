@@ -83,6 +83,7 @@ public class EdgePaletteItemProvider extends ItemProviderAdapter
             this.childrenFeatures.add(DiagramPackage.Literals.EDGE_PALETTE__NODE_TOOLS);
             this.childrenFeatures.add(DiagramPackage.Literals.EDGE_PALETTE__QUICK_ACCESS_TOOLS);
             this.childrenFeatures.add(DiagramPackage.Literals.EDGE_PALETTE__EDGE_RECONNECTION_TOOLS);
+            this.childrenFeatures.add(DiagramPackage.Literals.EDGE_PALETTE__EDGE_TOOLS);
             this.childrenFeatures.add(DiagramPackage.Literals.EDGE_PALETTE__TOOL_SECTIONS);
         }
         return this.childrenFeatures;
@@ -150,6 +151,7 @@ public class EdgePaletteItemProvider extends ItemProviderAdapter
             case DiagramPackage.EDGE_PALETTE__NODE_TOOLS:
             case DiagramPackage.EDGE_PALETTE__QUICK_ACCESS_TOOLS:
             case DiagramPackage.EDGE_PALETTE__EDGE_RECONNECTION_TOOLS:
+            case DiagramPackage.EDGE_PALETTE__EDGE_TOOLS:
             case DiagramPackage.EDGE_PALETTE__TOOL_SECTIONS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
@@ -182,6 +184,8 @@ public class EdgePaletteItemProvider extends ItemProviderAdapter
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_PALETTE__EDGE_RECONNECTION_TOOLS, DiagramFactory.eINSTANCE.createSourceEdgeEndReconnectionTool()));
 
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_PALETTE__EDGE_RECONNECTION_TOOLS, DiagramFactory.eINSTANCE.createTargetEdgeEndReconnectionTool()));
+
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_PALETTE__EDGE_TOOLS, DiagramFactory.eINSTANCE.createEdgeTool()));
 
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_PALETTE__TOOL_SECTIONS, DiagramFactory.eINSTANCE.createEdgeToolSection()));
     }

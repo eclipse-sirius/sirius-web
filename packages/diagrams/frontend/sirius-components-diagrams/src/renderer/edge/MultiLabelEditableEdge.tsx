@@ -21,6 +21,7 @@ import { useConnectorEdgeStyle } from '../connector/useConnectorEdgeStyle';
 import { Label } from '../Label';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { BendPoint, TemporaryBendPoint } from './BendPoint';
+import { EdgeCreationHandle } from './EdgeCreationHandle';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
 import { MultiLabelEditableEdgeProps, MultiLabelEditableEdgeState } from './MultiLabelEditableEdge.types';
 import { useEditableEdgePath } from './useEditableEdgePath';
@@ -268,11 +269,14 @@ export const MultiLabelEditableEdge = memo(
           markerStart={selected ? `${markerStart?.slice(0, markerStart.length - 2)}--selected')` : markerStart}
         />
         {selected ? (
-          <DiagramElementPalette
-            diagramElementId={id}
-            targetObjectId={data?.targetObjectId ?? ''}
-            labelId={label ? label.id : null}
-          />
+          <>
+            <DiagramElementPalette
+              diagramElementId={id}
+              targetObjectId={data?.targetObjectId ?? ''}
+              labelId={label ? label.id : null}
+            />
+            <EdgeCreationHandle edgeId={id} edgePath={edgePath}></EdgeCreationHandle>
+          </>
         ) : null}
         {selected &&
           state.localBendingPoints &&

@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.diagram;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -127,12 +128,13 @@ public class ToolFinder {
     }
 
     public List<EdgeTool> findEdgeTools(DiagramElementDescription elementDescription) {
-        return Optional.of(elementDescription)
-                .filter(NodeDescription.class::isInstance)
-                .map(NodeDescription.class::cast)
-                .map(NodeDescription::getPalette)
-                .map(NodePalette::getEdgeTools)
-                .orElse(new BasicEList<>());
+        List<EdgeTool> edgeTools = new ArrayList<>();
+        if (elementDescription instanceof NodeDescription nodeDescription && nodeDescription.getPalette() != null) {
+            edgeTools = nodeDescription.getPalette().getEdgeTools();
+        } else if (elementDescription instanceof EdgeDescription edgeDescription && edgeDescription.getPalette() != null) {
+            edgeTools = edgeDescription.getPalette().getEdgeTools();
+        }
+        return edgeTools;
     }
 
     public List<NodeTool> findQuickAccessEdgeTools(EdgeDescription edgeDescription) {
