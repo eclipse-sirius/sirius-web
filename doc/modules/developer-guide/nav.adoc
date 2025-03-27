@@ -1,0 +1,19 @@
+* xref:developer-guide:index.adoc[]
+** xref:developer-guide:setup.adoc[]
++
+--
+include::partial$setup/nav.adoc[]
+--
+** xref:developer-guide:introduction.adoc[]
+** xref:developer-guide:application-development.adoc[]
+** xref:developer-guide:studio-development.adoc[]
++
+--
+include::partial$studio-development/nav.adoc[]
+--
+** xref:developer-guide:studio-runtime.adoc[Studio Runtime]
+** xref:developer-guide:tutorials.adoc[]
++
+--
+include::partial$tutorials/nav.adoc[]
+--

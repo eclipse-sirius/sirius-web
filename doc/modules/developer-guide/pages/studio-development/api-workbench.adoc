@@ -1,0 +1,5 @@
+= Workbench APIs
+
+include::partial$studio-development/api-workbench/project-template.adoc[leveloffset=+1]
+
+include::partial$studio-development/api-workbench/stereotype-description.adoc[leveloffset=+1]

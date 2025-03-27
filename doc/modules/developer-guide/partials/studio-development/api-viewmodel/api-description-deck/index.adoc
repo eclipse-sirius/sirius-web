@@ -1,0 +1,5 @@
+= Deck Representation Description APIs
+
+A `xref:maker-manual:studio-definitions.adoc#_deck_description[Deck Representation Description]` defines how the `xref:user-manual:studio-runtime.adoc#_deck[Deck Representations]` are created at runtime.
+
+#TODO: Add APIs used to create/edit Deck Representation Descriptions.#
