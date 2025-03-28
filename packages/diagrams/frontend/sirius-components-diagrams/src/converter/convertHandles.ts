@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,15 +16,23 @@ import { GQLNode, GQLNodeStyle, GQLViewModifier } from '../graphql/subscription/
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 
 export const convertHandles = (gqlNode: GQLNode<GQLNodeStyle>, gqlEdges: GQLEdge[]): ConnectionHandle[] => {
+  return convertHandle(gqlNode.id, gqlEdges);
+};
+
+export const convertEdgeAnchorNodeHandles = (id: string, gqlEdges: GQLEdge[]): ConnectionHandle[] => {
+  return convertHandle(id, gqlEdges);
+};
+
+export const convertHandle = (id: string, gqlEdges: GQLEdge[]): ConnectionHandle[] => {
   const connectionHandles: ConnectionHandle[] = [];
   let sourceHandlesCounter = 0;
   let targetHandlesCounter = 0;
   gqlEdges.forEach((edge) => {
-    if (edge.sourceId === gqlNode.id) {
+    if (edge.sourceId === id) {
       connectionHandles.push({
-        id: `handle--source--${gqlNode.id}--${sourceHandlesCounter}`,
+        id: `handle--source--${id}--${sourceHandlesCounter}`,
         index: 0,
-        nodeId: gqlNode.id,
+        nodeId: id,
         position: Position.Right,
         type: 'source',
         hidden: edge.state === GQLViewModifier.Hidden,
@@ -32,11 +40,11 @@ export const convertHandles = (gqlNode: GQLNode<GQLNodeStyle>, gqlEdges: GQLEdge
       sourceHandlesCounter += 1;
     }
 
-    if (edge.targetId === gqlNode.id) {
+    if (edge.targetId === id) {
       connectionHandles.push({
-        id: `handle--target--${gqlNode.id}--${targetHandlesCounter}`,
+        id: `handle--target--${id}--${targetHandlesCounter}`,
         index: 0,
-        nodeId: gqlNode.id,
+        nodeId: id,
         position: Position.Left,
         type: 'target',
         hidden: edge.state === GQLViewModifier.Hidden,
@@ -44,19 +52,20 @@ export const convertHandles = (gqlNode: GQLNode<GQLNodeStyle>, gqlEdges: GQLEdge
       targetHandlesCounter += 1;
     }
   });
+
   connectionHandles.push({
-    id: `handle--source--${gqlNode.id}--${sourceHandlesCounter}`,
+    id: `handle--source--${id}--${sourceHandlesCounter}`,
     index: 0,
-    nodeId: gqlNode.id,
+    nodeId: id,
     position: Position.Right,
     type: 'source',
     hidden: true,
   });
 
   connectionHandles.push({
-    id: `handle--target--${gqlNode.id}--${targetHandlesCounter}`,
+    id: `handle--target--${id}--${targetHandlesCounter}`,
     index: 0,
-    nodeId: gqlNode.id,
+    nodeId: id,
     position: Position.Left,
     type: 'target',
     hidden: true,
