@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
+import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -94,6 +95,15 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 )
                 .build();
 
+        var action = new DiagramBuilders().newAction()
+                    .body(new ViewBuilders().newChangeContext()
+                            .expression("aql:diagramServices.hide(Sequence{selectedNode})")
+                            .build())
+                    .iconURLsExpression("aql:'/icons/full/obj16/HideTool.svg'")
+                    .labelExpression("Hide")
+                    .name("HideAction")
+                    .build();
+
         return new DiagramBuilders().newNodeDescription()
                 .name(NAME)
                 .domainType("papaya::Class")
@@ -109,6 +119,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 )
                 .userResizable(UserResizableDirection.BOTH)
                 .collapsible(true)
+                .actions(action)
                 .build();
     }
 

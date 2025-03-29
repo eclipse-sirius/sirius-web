@@ -45,6 +45,7 @@ import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.emf.ViewConverter;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
+import org.eclipse.sirius.components.view.emf.diagram.actions.api.IActionExecutor;
 import org.eclipse.sirius.components.view.emf.diagram.tools.api.IToolExecutor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -148,7 +149,7 @@ public class DynamicDiagramsTests {
         res.getContents().add(view);
         new ResourceSetImpl().getResources().add(res);
 
-        ViewDiagramDescriptionConverter diagramDescriptionConverter = new ViewDiagramDescriptionConverter(new IObjectService.NoOp(), new IToolExecutor.NoOp(), List.of(),
+        ViewDiagramDescriptionConverter diagramDescriptionConverter = new ViewDiagramDescriptionConverter(new IObjectService.NoOp(), new IToolExecutor.NoOp(), new IActionExecutor.NoOp(), List.of(),
                 new IDiagramIdProvider.NoOp());
         var viewConverter = new ViewConverter(List.of(), List.of(diagramDescriptionConverter), new StaticApplicationContext(), List.of());
         List<IRepresentationDescription> conversionResult = viewConverter.convert(List.of(view), List.of(EcorePackage.eINSTANCE));

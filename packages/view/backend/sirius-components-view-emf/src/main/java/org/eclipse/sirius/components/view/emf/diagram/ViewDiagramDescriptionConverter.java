@@ -12,10 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.diagram;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -45,6 +47,7 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.OutsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.UserResizableDirection;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
+import org.eclipse.sirius.components.diagrams.actions.Action;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeLabelKind;
@@ -84,6 +87,7 @@ import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.ViewIconURLsProvider;
+import org.eclipse.sirius.components.view.emf.diagram.actions.api.IActionExecutor;
 import org.eclipse.sirius.components.view.emf.diagram.tools.api.IToolExecutor;
 import org.springframework.stereotype.Service;
 
@@ -103,6 +107,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private final IToolExecutor toolExecutor;
 
+    private final IActionExecutor actionExecutor;
+
     private final IDiagramIdProvider diagramIdProvider;
 
     private final Function<VariableManager, String> semanticTargetIdProvider;
@@ -113,9 +119,10 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private final List<INodeStyleProvider> nodeStyleProviders;
 
-    public ViewDiagramDescriptionConverter(IObjectService objectService, IToolExecutor toolExecutor, List<INodeStyleProvider> nodeStyleProviders, IDiagramIdProvider diagramIdProvider) {
+    public ViewDiagramDescriptionConverter(IObjectService objectService, IToolExecutor toolExecutor, IActionExecutor actionExecutor, List<INodeStyleProvider> nodeStyleProviders, IDiagramIdProvider diagramIdProvider) {
         this.objectService = Objects.requireNonNull(objectService);
         this.toolExecutor = Objects.requireNonNull(toolExecutor);
+        this.actionExecutor = Objects.requireNonNull(actionExecutor);
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
         this.nodeStyleProviders = Objects.requireNonNull(nodeStyleProviders);
         this.semanticTargetIdProvider = variableManager -> this.self(variableManager).map(this.objectService::getId).orElse(null);
@@ -310,6 +317,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
         var insideLabel = this.getInsideLabelDescription(viewNodeDescription, interpreter, stylesFactory);
 
+        var actionsProvider = this.convertActions(viewNodeDescription, interpreter, converterContext);
+
         NodeDescription.Builder builder = NodeDescription.newNodeDescription(this.diagramIdProvider.getId(viewNodeDescription))
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .targetObjectKindProvider(this.semanticTargetKindProvider)
@@ -333,7 +342,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .isFadedByDefaultPredicate(isFadedByDefaultPredicate)
                 .defaultWidthProvider(defaultWidthProvider)
                 .defaultHeightProvider(defaultHeightProvider)
-                .keepAspectRatio(viewNodeDescription.isKeepAspectRatio());
+                .keepAspectRatio(viewNodeDescription.isKeepAspectRatio())
+                .actionsProvider(actionsProvider);
         if (insideLabel != null) {
             builder.insideLabelDescription(insideLabel);
         }
@@ -731,5 +741,44 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private IDiagramContext getDiagramContext(VariableManager variableManager) {
         return variableManager.get(IDiagramContext.DIAGRAM_CONTEXT, IDiagramContext.class).orElse(null);
+    }
+
+    private Function<VariableManager, List<Action>> convertActions(org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription, AQLInterpreter interpreter, ViewDiagramDescriptionConverterContext converterContext) {
+        var viewActions = viewNodeDescription.getActions();
+
+        return variableManager -> {
+            List<Action> actions = new ArrayList<>();
+            viewActions.forEach(viewAction -> {
+                var id = UUID.nameUUIDFromBytes(viewAction.getName().getBytes()).toString();
+
+                var actionHandler = this.actionHandler(viewAction, interpreter, converterContext);
+
+                var iconURLs = interpreter.evaluateExpression(variableManager.getVariables(), viewAction.getIconURLsExpression())
+                        .asObjects()
+                        .orElseGet(List::of).stream()
+                        .filter(String.class::isInstance)
+                        .map(String.class::cast)
+                        .toList();
+
+                var label = interpreter.evaluateExpression(variableManager.getVariables(), viewAction.getLabelExpression()).asString().orElseGet(() -> "");
+                var action = Action.newAction(id)
+                        .handler(actionHandler)
+                        .iconURL(iconURLs)
+                        .label(label)
+                        .build();
+                actions.add(action);
+            });
+            return actions;
+        };
+    }
+
+    private Function<VariableManager, IStatus> actionHandler(org.eclipse.sirius.components.view.diagram.Action viewAction, AQLInterpreter interpreter, ViewDiagramDescriptionConverterContext converterContext) {
+        return variableManager -> {
+            var childVariableManager = variableManager.createChild();
+            var convertedNodes = Collections.unmodifiableMap(converterContext.getConvertedNodes());
+            childVariableManager.put(CONVERTED_NODES_VARIABLE, convertedNodes);
+
+            return this.actionExecutor.executeAction(viewAction, converterContext.getInterpreter(), childVariableManager);
+        };
     }
 }

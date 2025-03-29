@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
+import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
@@ -195,6 +196,16 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
         nodeChild.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
         nodeChild.setPalette(defaultToolsFactory.createDefaultNodePalette());
         nodeChild.setInsideLabel(defaultToolsFactory.createDefaultInsideLabelDescription());
+
+        var defaultAction = DiagramFactory.eINSTANCE.createAction();
+        defaultAction.setName("HideAction");
+        defaultAction.setLabelExpression("Hide");
+        defaultAction.setIconURLsExpression("aql:'/icons/full/obj16/HideTool.svg'");
+        var defaultActionService = ViewFactory.eINSTANCE.createChangeContext();
+        defaultActionService.setExpression("aql:diagramServices.hide(Sequence{selectedNode})");
+        defaultAction.getBody().add(defaultActionService);
+        nodeChild.getActions().add(defaultAction);
+
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS, nodeChild));
 
         EdgeDescription edgeChild = DiagramFactory.eINSTANCE.createEdgeDescription();
