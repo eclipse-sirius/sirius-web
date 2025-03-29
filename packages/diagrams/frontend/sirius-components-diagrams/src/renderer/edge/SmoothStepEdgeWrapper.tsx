@@ -166,6 +166,7 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
       targetX={targetX}
       targetY={targetY}
       bendingPoints={bendingPoints}
+      customEdge={!!data?.bendingPoints}
     />
   );
 });

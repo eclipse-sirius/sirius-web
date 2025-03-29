@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,7 +43,7 @@ export const useHandleChange = (): UseHandleChangeValue => {
             const sourceNode = nodeLookup.get(edge.source);
             const targetNode = nodeLookup.get(edge.target);
 
-            if (sourceNode && targetNode && sourceHandle && targetHandle) {
+            if (sourceNode && targetNode && sourceHandle && targetHandle && !edge.data?.bendingPoints) {
               const { sourcePosition, targetPosition } = getEdgeParametersWhileMoving(
                 nodeDraggingChange,
                 sourceNode,
