@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { HandleType, Position } from '@xyflow/react';
 import { GQLEdge } from './edgeFragment.types';
 import { GQLNode, GQLNodeStyle, GQLPosition, GQLSize } from './nodeFragment.types';
 
@@ -33,6 +34,14 @@ export interface GQLNodeLayoutData {
   position: GQLPosition;
   size: GQLSize;
   resizedByUser: boolean;
+  handleLayoutData: GQLHandleLayoutData[];
+}
+
+export interface GQLHandleLayoutData {
+  edgeId: string;
+  position: GQLPosition;
+  handlePosition: Position;
+  type: HandleType;
 }
 
 export interface GQLEdgeLayoutData {
