@@ -14,11 +14,12 @@ package org.eclipse.sirius.components.tables.renderer;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.representations.IElementFactory;
 import org.eclipse.sirius.components.representations.IProps;
-import org.eclipse.sirius.components.tables.CheckboxCell;
 import org.eclipse.sirius.components.tables.Column;
 import org.eclipse.sirius.components.tables.ICell;
 import org.eclipse.sirius.components.tables.IconLabelCell;
@@ -28,7 +29,7 @@ import org.eclipse.sirius.components.tables.SelectCell;
 import org.eclipse.sirius.components.tables.Table;
 import org.eclipse.sirius.components.tables.TextareaCell;
 import org.eclipse.sirius.components.tables.TextfieldCell;
-import org.eclipse.sirius.components.tables.elements.CheckboxCellElementProps;
+import org.eclipse.sirius.components.tables.components.ICustomCellDescriptor;
 import org.eclipse.sirius.components.tables.elements.ColumnElementProps;
 import org.eclipse.sirius.components.tables.elements.IconLabelCellElementProps;
 import org.eclipse.sirius.components.tables.elements.LineElementProps;
@@ -45,6 +46,12 @@ import org.eclipse.sirius.components.tables.elements.TextfieldCellElementProps;
  */
 public class TableElementFactory implements IElementFactory {
 
+    private final List<ICustomCellDescriptor> customCellDescriptors;
+
+    public TableElementFactory(List<ICustomCellDescriptor> customCellDescriptors) {
+        this.customCellDescriptors = Objects.requireNonNull(customCellDescriptors);
+    }
+
     @Override
     @SuppressWarnings("checkstyle:JavaNCSS")
     public Object instantiateElement(String type, IProps props, List<Object> children) {
@@ -52,9 +59,14 @@ public class TableElementFactory implements IElementFactory {
             case TableElementProps.TYPE -> this.instantiateTable(props, children);
             case LineElementProps.TYPE -> this.instantiateLine(props, children);
             case ColumnElementProps.TYPE -> this.instantiateColumn(props);
-            case TextfieldCellElementProps.TYPE, TextareaCellElementProps.TYPE, CheckboxCellElementProps.TYPE, SelectCellElementProps.TYPE, MultiSelectCellElementProps.TYPE,
+            case TextfieldCellElementProps.TYPE, TextareaCellElementProps.TYPE, SelectCellElementProps.TYPE, MultiSelectCellElementProps.TYPE,
                  IconLabelCellElementProps.TYPE -> this.instantiateCell(props);
-            default -> null;
+            default -> this.customCellDescriptors.stream()
+                    .map(customCellDescriptor -> customCellDescriptor.instantiate(type, props, children))
+                    .filter(Optional::isPresent)
+                    .findFirst()
+                    .map(Optional::get)
+                    .orElse(null);
         };
     }
 
@@ -93,34 +105,9 @@ public class TableElementFactory implements IElementFactory {
     private Line instantiateLine(IProps props, List<Object> children) {
         if (props instanceof LineElementProps lineElementProps) {
             List<ICell> cells = children.stream()
-                    .filter(TextfieldCell.class::isInstance)
-                    .map(TextfieldCell.class::cast)
+                    .filter(ICell.class::isInstance)
+                    .map(ICell.class::cast)
                     .collect(Collectors.toList());
-
-            cells.addAll(children.stream()
-                    .filter(TextareaCell.class::isInstance)
-                    .map(TextareaCell.class::cast)
-                    .toList());
-
-            cells.addAll(children.stream()
-                    .filter(CheckboxCell.class::isInstance)
-                    .map(CheckboxCell.class::cast)
-                    .toList());
-
-            cells.addAll(children.stream()
-                    .filter(SelectCell.class::isInstance)
-                    .map(SelectCell.class::cast)
-                    .toList());
-
-            cells.addAll(children.stream()
-                    .filter(MultiSelectCell.class::isInstance)
-                    .map(MultiSelectCell.class::cast)
-                    .toList());
-
-            cells.addAll(children.stream()
-                    .filter(IconLabelCell.class::isInstance)
-                    .map(IconLabelCell.class::cast)
-                    .toList());
 
             return Line.newLine(lineElementProps.id())
                     .targetObjectId(lineElementProps.targetObjectId())
@@ -176,14 +163,6 @@ public class TableElementFactory implements IElementFactory {
                     .targetObjectId(textareaCellElementProps.targetObjectId())
                     .targetObjectKind(textareaCellElementProps.targetObjectKind())
                     .value(textareaCellElementProps.value())
-                    .build();
-        } else if (props instanceof CheckboxCellElementProps checkboxCellElementProps) {
-            cell = CheckboxCell.newCheckboxCell(checkboxCellElementProps.id())
-                    .descriptionId(checkboxCellElementProps.descriptionId())
-                    .columnId(checkboxCellElementProps.columnId())
-                    .targetObjectId(checkboxCellElementProps.targetObjectId())
-                    .targetObjectKind(checkboxCellElementProps.targetObjectKind())
-                    .value(checkboxCellElementProps.value())
                     .build();
         } else if (props instanceof SelectCellElementProps selectCellElementProps) {
             cell = SelectCell.newSelectCell(selectCellElementProps.id())

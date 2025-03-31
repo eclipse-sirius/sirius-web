@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -54,6 +54,7 @@ import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.Table;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
+import org.eclipse.sirius.components.tables.renderer.TableRenderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -138,6 +139,7 @@ public class FormEventProcessor implements IFormEventProcessor {
         initialVariableManager.put(FormVariableProvider.SELECTION.name(), this.formCreationParameters.getSelection());
         initialVariableManager.put(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, this.formCreationParameters.getId());
         initialVariableManager.put(IEditingContext.EDITING_CONTEXT, this.formCreationParameters.getEditingContext());
+        initialVariableManager.put(TableRenderer.CUSTOM_CELL_DESCRIPTORS, formDescriptionParameters.getCustomCellDescriptors());
 
         var initializer = formDescription.getVariableManagerInitializer();
         return initializer.apply(initialVariableManager);

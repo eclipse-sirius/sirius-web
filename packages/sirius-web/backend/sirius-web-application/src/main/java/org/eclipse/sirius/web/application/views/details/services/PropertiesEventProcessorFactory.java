@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,14 +32,15 @@ import org.eclipse.sirius.components.collaborative.forms.api.IPropertiesDefaultD
 import org.eclipse.sirius.components.collaborative.forms.api.IPropertiesDescriptionService;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorFactoryConfiguration;
+import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.core.api.IURLParser;
-import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
+import org.eclipse.sirius.components.tables.components.ICustomCellDescriptor;
 import org.springframework.stereotype.Service;
 
 /**
@@ -76,8 +77,11 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
-    public PropertiesEventProcessorFactory(IPropertiesDescriptionService propertiesDescriptionService, IPropertiesDefaultDescriptionProvider propertiesDefaultDescriptionProvider, List<IWidgetDescriptor> widgetDescriptors,
-            RepresentationEventProcessorFactoryConfiguration configuration, FormEventProcessorFactoryConfiguration formConfiguration, IURLParser urlParser) {
+    private final List<ICustomCellDescriptor> customCellDescriptors;
+
+    public PropertiesEventProcessorFactory(IPropertiesDescriptionService propertiesDescriptionService, IPropertiesDefaultDescriptionProvider propertiesDefaultDescriptionProvider,
+            List<IWidgetDescriptor> widgetDescriptors,
+            RepresentationEventProcessorFactoryConfiguration configuration, FormEventProcessorFactoryConfiguration formConfiguration, IURLParser urlParser, List<ICustomCellDescriptor> customCellDescriptors) {
         this.propertiesDescriptionService = Objects.requireNonNull(propertiesDescriptionService);
         this.propertiesDefaultDescriptionProvider = Objects.requireNonNull(propertiesDefaultDescriptionProvider);
         this.objectService = Objects.requireNonNull(formConfiguration.getObjectService());
@@ -90,6 +94,7 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
         this.formPostProcessor = Objects.requireNonNull(formConfiguration.getFormPostProcessor());
         this.urlParser = Objects.requireNonNull(urlParser);
+        this.customCellDescriptors = Objects.requireNonNull(customCellDescriptors);
     }
 
     @Override
@@ -122,6 +127,7 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
                     .formDescription(formDescription)
                     .object(objects.get(0))
                     .selection(objects)
+                    .customCellDescriptors(this.customCellDescriptors)
                     .build();
 
             IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(

@@ -94,10 +94,9 @@ public class PapayaTableCellControllerIntegrationTests extends AbstractIntegrati
             assertThat(table).isNotNull();
             assertThat(table.getLines()).hasSize(3);
             assertThat(table.getLines().get(0).getCells()).hasSize(6);
-            assertThat(table.getLines().get(0).getCells().get(1)).isInstanceOf(TextareaCell.class);
-            assertThat(table.getLines().get(0).getCells().get(1)).isInstanceOf(TextareaCell.class);
-            assertThat(((TextareaCell) table.getLines().get(0).getCells().get(1)).getValue()).isEqualTo("");
-            cellRef.set(table.getLines().get(0).getCells().get(1));
+            assertThat(table.getLines().get(0).getCells().get(2)).isInstanceOf(TextareaCell.class);
+            assertThat(((TextareaCell) table.getLines().get(0).getCells().get(2)).getValue()).isEqualTo("");
+            cellRef.set(table.getLines().get(0).getCells().get(2));
             tableId.set(table.getId());
         });
 
@@ -120,8 +119,8 @@ public class PapayaTableCellControllerIntegrationTests extends AbstractIntegrati
             assertThat(table).isNotNull();
             assertThat(table.getLines()).hasSize(3);
             assertThat(table.getLines().get(0).getCells()).hasSize(6);
-            assertThat(table.getLines().get(0).getCells().get(1)).isInstanceOf(TextareaCell.class);
-            assertThat(((TextareaCell) table.getLines().get(0).getCells().get(1)).getValue()).isEqualTo("new description");
+            assertThat(table.getLines().get(0).getCells().get(2)).isInstanceOf(TextareaCell.class);
+            assertThat(((TextareaCell) table.getLines().get(0).getCells().get(2)).getValue()).isEqualTo("new description");
         });
 
         StepVerifier.create(flux)

@@ -221,6 +221,7 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
         variableManager.put(TableRenderer.GLOBAL_FILTER_DATA, this.tableCreationParameters.getGlobalFilter());
         variableManager.put(TableRenderer.EXPANDED_IDS, this.tableCreationParameters.getExpanded());
         variableManager.put(TableRenderer.ACTIVE_ROW_FILTER_IDS, this.tableCreationParameters.getActiveRowFilterIds());
+        variableManager.put(TableRenderer.CUSTOM_CELL_DESCRIPTORS, this.tableCreationParameters.getCustomCellDescriptors());
 
         TableComponentProps props = new TableComponentProps(
                 variableManager,
@@ -233,7 +234,7 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
         );
         Element element = new Element(TableComponent.class, props);
 
-        Table table = new TableRenderer().render(element);
+        Table table = new TableRenderer(this.tableCreationParameters.getCustomCellDescriptors()).render(element);
         this.logger.trace("Table refreshed: {}", this.tableCreationParameters.getEditingContext().getId());
         return table;
     }

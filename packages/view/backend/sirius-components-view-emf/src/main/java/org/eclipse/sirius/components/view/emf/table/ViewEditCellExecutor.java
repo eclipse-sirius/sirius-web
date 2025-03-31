@@ -38,6 +38,7 @@ import org.eclipse.sirius.components.view.emf.api.IViewAQLInterpreterFactory;
 import org.eclipse.sirius.components.view.emf.messages.IViewEMFMessageService;
 import org.eclipse.sirius.components.view.emf.operations.api.IOperationExecutor;
 import org.eclipse.sirius.components.view.emf.operations.api.OperationExecutionStatus;
+import org.eclipse.sirius.components.view.emf.table.api.ICustomViewEditCellExecutor;
 import org.eclipse.sirius.components.view.emf.table.api.IViewEditCellExecutor;
 import org.eclipse.sirius.components.view.table.CellLabelWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription;
@@ -66,14 +67,18 @@ public class ViewEditCellExecutor implements IViewEditCellExecutor {
 
     private final IViewEMFMessageService viewEMFMessageService;
 
-    public ViewEditCellExecutor(IFeedbackMessageService feedbackMessageService, IOperationExecutor operationExecutor, IObjectSearchService objectSearchService, IViewAQLInterpreterFactory aqlInterpreterFactory,
-                                ITableIdProvider tableIdProvider, IViewEMFMessageService viewEMFMessageService) {
+    private final List<ICustomViewEditCellExecutor> customViewEditCellExecutors;
+
+    public ViewEditCellExecutor(IFeedbackMessageService feedbackMessageService, IOperationExecutor operationExecutor, IObjectSearchService objectSearchService,
+            IViewAQLInterpreterFactory aqlInterpreterFactory,
+            ITableIdProvider tableIdProvider, IViewEMFMessageService viewEMFMessageService, List<ICustomViewEditCellExecutor> customViewEditCellExecutors) {
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.operationExecutor = Objects.requireNonNull(operationExecutor);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.aqlInterpreterFactory = Objects.requireNonNull(aqlInterpreterFactory);
         this.tableIdProvider = Objects.requireNonNull(tableIdProvider);
         this.viewEMFMessageService = Objects.requireNonNull(viewEMFMessageService);
+        this.customViewEditCellExecutors = Objects.requireNonNull(customViewEditCellExecutors);
     }
 
     @Override
@@ -104,7 +109,7 @@ public class ViewEditCellExecutor implements IViewEditCellExecutor {
     }
 
     private IStatus executeCellWidgetDescription(VariableManager variableManager, AQLInterpreter interpreter, CellWidgetDescription cellWidgetDescription) {
-        IStatus status = this.buildFailureWithFeedbackMessages(this.viewEMFMessageService.unsupportedTableCellWidgetError());
+        IStatus status;
 
         if (cellWidgetDescription instanceof CellTextfieldWidgetDescription textfieldDescription) {
             status = this.executeOperations(variableManager, interpreter, textfieldDescription.getBody());
@@ -112,6 +117,12 @@ public class ViewEditCellExecutor implements IViewEditCellExecutor {
             status = this.executeOperations(variableManager, interpreter, textareaWidgetDescription.getBody());
         } else if (cellWidgetDescription instanceof CellLabelWidgetDescription) {
             status = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
+        } else {
+            status = this.customViewEditCellExecutors.stream()
+                    .filter(executor -> executor.canExecute(cellWidgetDescription))
+                    .findFirst()
+                    .map(executor -> executor.execute(variableManager, interpreter, cellWidgetDescription))
+                    .orElse(this.buildFailureWithFeedbackMessages(this.viewEMFMessageService.unsupportedTableCellWidgetError()));
         }
 
         return status;

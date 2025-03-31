@@ -24,12 +24,12 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
-import org.eclipse.sirius.components.tables.elements.CheckboxCellElementProps;
 import org.eclipse.sirius.components.tables.elements.IconLabelCellElementProps;
 import org.eclipse.sirius.components.tables.elements.MultiSelectCellElementProps;
 import org.eclipse.sirius.components.tables.elements.SelectCellElementProps;
 import org.eclipse.sirius.components.tables.elements.TextareaCellElementProps;
 import org.eclipse.sirius.components.tables.elements.TextfieldCellElementProps;
+import org.eclipse.sirius.web.application.table.customcells.CheckboxCellElementProps;
 
 /**
  * Used to compute the type of the cell.

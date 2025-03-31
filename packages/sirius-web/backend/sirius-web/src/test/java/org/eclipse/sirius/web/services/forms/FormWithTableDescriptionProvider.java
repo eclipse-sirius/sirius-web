@@ -53,7 +53,6 @@ import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.components.SelectCellComponent;
-import org.eclipse.sirius.components.tables.descriptions.CheckboxCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
 import org.eclipse.sirius.components.tables.descriptions.ICellDescription;
 import org.eclipse.sirius.components.tables.descriptions.LineDescription;
@@ -63,6 +62,7 @@ import org.eclipse.sirius.components.tables.descriptions.SelectCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 import org.eclipse.sirius.components.tables.descriptions.TextareaCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.TextfieldCellDescription;
+import org.eclipse.sirius.web.application.table.customcells.CheckboxCellDescription;
 import org.eclipse.sirius.web.papaya.representations.table.CellTypePredicate;
 import org.eclipse.sirius.web.papaya.representations.table.ColumnTargetObjectIdProvider;
 import org.springframework.stereotype.Service;

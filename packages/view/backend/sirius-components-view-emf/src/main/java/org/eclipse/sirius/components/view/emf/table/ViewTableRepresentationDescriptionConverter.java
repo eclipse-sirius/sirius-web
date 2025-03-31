@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.ViewIconURLsProvider;
+import org.eclipse.sirius.components.view.emf.table.api.ICustomCellConverter;
 import org.springframework.stereotype.Service;
 
 /**
@@ -49,9 +50,12 @@ public class ViewTableRepresentationDescriptionConverter implements IRepresentat
 
     private final Function<VariableManager, String> semanticTargetKindProvider;
 
-    public ViewTableRepresentationDescriptionConverter(ITableIdProvider tableIdProvider, IObjectService objectService) {
+    private final List<ICustomCellConverter> customCellConverters;
+
+    public ViewTableRepresentationDescriptionConverter(ITableIdProvider tableIdProvider, IObjectService objectService, List<ICustomCellConverter> customCellConverters) {
         this.tableIdProvider = Objects.requireNonNull(tableIdProvider);
         this.objectService = Objects.requireNonNull(objectService);
+        this.customCellConverters = Objects.requireNonNull(customCellConverters);
 
         this.semanticTargetIdProvider = variableManager -> {
             Optional<Object> optionalSelf = this.self(variableManager);
@@ -104,9 +108,12 @@ public class ViewTableRepresentationDescriptionConverter implements IRepresentat
                 .canCreatePredicate(variableManager -> this.canCreate(viewTableDescription.getDomainType(), viewTableDescription.getPreconditionExpression(), variableManager, interpreter))
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .targetObjectKindProvider(this.semanticTargetKindProvider)
-                .columnDescriptions(new ColumnDescriptionConverter(this.tableIdProvider, this.semanticTargetIdProvider, this.semanticTargetKindProvider).convert(viewTableDescription.getColumnDescriptions(), interpreter))
-                .lineDescription(new RowDescriptionConverter(this.tableIdProvider, this.semanticTargetIdProvider, this.semanticTargetKindProvider).convert(viewTableDescription.getRowDescription(), interpreter))
-                .cellDescriptions(new CellDescriptionConverter(this.tableIdProvider, this.objectService).convert(viewTableDescription.getCellDescriptions(), interpreter))
+                .columnDescriptions(
+                        new ColumnDescriptionConverter(this.tableIdProvider, this.semanticTargetIdProvider, this.semanticTargetKindProvider).convert(viewTableDescription.getColumnDescriptions(),
+                                interpreter))
+                .lineDescription(new RowDescriptionConverter(this.tableIdProvider, this.semanticTargetIdProvider, this.semanticTargetKindProvider).convert(viewTableDescription.getRowDescription(),
+                        interpreter))
+                .cellDescriptions(new CellDescriptionConverter(this.tableIdProvider, this.objectService, this.customCellConverters).convert(viewTableDescription.getCellDescriptions(), interpreter))
                 .isStripeRowPredicate(isStripeRowPredicate)
                 .iconURLsProvider(new ViewIconURLsProvider(interpreter, viewTableDescription.getIconExpression()))
                 .enableSubRows(viewTableDescription.isEnableSubRows())

@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.tables.ColumnFilter;
 import org.eclipse.sirius.components.tables.ColumnSort;
 import org.eclipse.sirius.components.tables.Table;
+import org.eclipse.sirius.components.tables.components.ICustomCellDescriptor;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 import org.springframework.stereotype.Service;
 
@@ -70,8 +71,10 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
 
     private final IURLParser urlParser;
 
+    private final List<ICustomCellDescriptor> customCellDescriptors;
+
     public TableEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, IRepresentationPersistenceService representationPersistenceService,
-            IObjectService objectService, List<ITableEventHandler> tableEventHandlers, IURLParser urlParser) {
+            IObjectService objectService, List<ITableEventHandler> tableEventHandlers, IURLParser urlParser, List<ICustomCellDescriptor> customCellDescriptors) {
         this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
         this.representationDescriptionSearchService = Objects.requireNonNull(configuration.getRepresentationDescriptionSearchService());
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
@@ -80,6 +83,7 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
         this.subscriptionManagerFactory = Objects.requireNonNull(configuration.getSubscriptionManagerFactory());
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
         this.urlParser = Objects.requireNonNull(urlParser);
+        this.customCellDescriptors = Objects.requireNonNull(customCellDescriptors);
     }
 
     @Override
@@ -111,6 +115,7 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
                         .expanded(this.getExpandedIdsFromRepresentationId(representationId, table))
                         .activeRowFilterIds(this.getActiveRowFilterIds(representationId))
                         .columnSort(this.getColumnSort(representationId, table))
+                        .customCellDescriptors(this.customCellDescriptors)
                         .build();
 
                 IRepresentationEventProcessor tableEventProcessor = new TableEventProcessor(tableCreationParameters, this.tableEventHandlers, new TableContext(table),

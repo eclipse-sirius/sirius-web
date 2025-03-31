@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.widget.table;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -22,6 +23,7 @@ import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
 import org.eclipse.sirius.components.view.emf.form.IWidgetConverterProvider;
 import org.eclipse.sirius.components.view.emf.table.ITableIdProvider;
+import org.eclipse.sirius.components.view.emf.table.api.ICustomCellConverter;
 import org.springframework.stereotype.Service;
 
 /**
@@ -38,14 +40,17 @@ public class TableWidgetDescriptionConverterProvider implements IWidgetConverter
 
     private final ITableIdProvider tableIdProvider;
 
-    public TableWidgetDescriptionConverterProvider(IFormIdProvider formIdProvider, IObjectService objectService, ITableIdProvider tableIdProvider) {
+    private final List<ICustomCellConverter> customCellConverters;
+
+    public TableWidgetDescriptionConverterProvider(IFormIdProvider formIdProvider, IObjectService objectService, ITableIdProvider tableIdProvider, List<ICustomCellConverter> customCellConverters) {
         this.formIdProvider = Objects.requireNonNull(formIdProvider);
         this.objectService = Objects.requireNonNull(objectService);
         this.tableIdProvider = Objects.requireNonNull(tableIdProvider);
+        this.customCellConverters = Objects.requireNonNull(customCellConverters);
     }
 
     @Override
     public Switch<Optional<AbstractWidgetDescription>> getWidgetConverter(AQLInterpreter interpreter) {
-        return new TableWidgetDescriptionConverterSwitch(interpreter, this.objectService, this.formIdProvider, this.tableIdProvider);
+        return new TableWidgetDescriptionConverterSwitch(interpreter, this.objectService, this.formIdProvider, this.tableIdProvider, this.customCellConverters);
     }
 }

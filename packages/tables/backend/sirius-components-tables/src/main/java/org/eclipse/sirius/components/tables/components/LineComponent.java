@@ -25,7 +25,6 @@ import org.eclipse.sirius.components.representations.FragmentProps;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.Line;
-import org.eclipse.sirius.components.tables.descriptions.CheckboxCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
 import org.eclipse.sirius.components.tables.descriptions.ICellDescription;
 import org.eclipse.sirius.components.tables.descriptions.IconLabelCellDescription;
@@ -37,6 +36,7 @@ import org.eclipse.sirius.components.tables.descriptions.TextfieldCellDescriptio
 import org.eclipse.sirius.components.tables.elements.LineElementProps;
 import org.eclipse.sirius.components.tables.events.ResetTableRowsHeightEvent;
 import org.eclipse.sirius.components.tables.events.ResizeTableRowEvent;
+import org.eclipse.sirius.components.tables.renderer.TableRenderer;
 
 /**
  * The component used to render lines.
@@ -129,6 +129,7 @@ public class LineComponent implements IComponent {
     private List<Element> getCells(VariableManager lineVariableManager, UUID parentLineId) {
         List<Element> elements = new ArrayList<>();
         Map<UUID, Object> columnIdToObject = this.props.cache().getColumnIdToObject();
+        List<ICustomCellDescriptor> customCellDescriptors = lineVariableManager.get(TableRenderer.CUSTOM_CELL_DESCRIPTORS, List.class).orElse(List.of());
 
         columnIdToObject.forEach((columnId, columnTargetObject) -> {
             VariableManager variableManager = lineVariableManager.createChild();
@@ -149,9 +150,6 @@ public class LineComponent implements IComponent {
             } else if (cellDescription instanceof MultiSelectCellDescription multiSelectCellDescription) {
                 var cellComponentProps = new MultiSelectCellComponentProps(variableManager, multiSelectCellDescription, cellId, columnId, columnTargetObject);
                 cellElement = new Element(MultiSelectCellComponent.class, cellComponentProps);
-            } else if (cellDescription instanceof CheckboxCellDescription checkboxCellDescription) {
-                var cellComponentProps = new CheckboxCellComponentProps(variableManager, checkboxCellDescription, cellId, columnId, columnTargetObject);
-                cellElement = new Element(CheckboxCellComponent.class, cellComponentProps);
             } else if (cellDescription instanceof TextfieldCellDescription textfieldCellDescription) {
                 var cellComponentProps = new TextfieldCellComponentProps(variableManager, textfieldCellDescription, cellId, columnId, columnTargetObject);
                 cellElement = new Element(TextfieldCellComponent.class, cellComponentProps);
@@ -161,6 +159,13 @@ public class LineComponent implements IComponent {
             } else if (cellDescription instanceof IconLabelCellDescription iconLabelCellDescription) {
                 var cellComponentProps = new IconLabelCellComponentProps(variableManager, iconLabelCellDescription, cellId, columnId, columnTargetObject);
                 cellElement = new Element(IconLabelCellComponent.class, cellComponentProps);
+            } else {
+                cellElement = customCellDescriptors.stream()
+                        .map(widgetDescriptor -> widgetDescriptor.createElement(variableManager, cellDescription, cellId, columnId, columnTargetObject))
+                        .filter(Optional::isPresent)
+                        .findFirst()
+                        .map(Optional::get)
+                        .orElse(null);
             }
             if (cellElement != null) {
                 elements.add(cellElement);
