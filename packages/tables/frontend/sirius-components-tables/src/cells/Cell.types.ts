@@ -21,3 +21,11 @@ export interface CellProps {
   disabled: boolean;
   enableSelectionSynchronization: boolean;
 }
+
+export interface CustomCellProps {
+  editingContextId: string;
+  representationId: string;
+  tableId: string;
+  cell: GQLCell | null;
+  disabled: boolean;
+}

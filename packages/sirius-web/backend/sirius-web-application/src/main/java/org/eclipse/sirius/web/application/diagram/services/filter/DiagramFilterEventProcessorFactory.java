@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,6 +36,7 @@ import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchSe
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
+import org.eclipse.sirius.components.tables.components.ICustomCellDescriptor;
 import org.eclipse.sirius.web.application.diagram.services.filter.api.IDiagramFilterDescriptionProvider;
 import org.springframework.stereotype.Service;
 
@@ -69,8 +70,10 @@ public class DiagramFilterEventProcessorFactory implements IRepresentationEventP
 
     private final IURLParser urlParser;
 
+    private final List<ICustomCellDescriptor> customCellDescriptors;
+
     public DiagramFilterEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, IDiagramFilterDescriptionProvider diagramFilterDescriptionProvider,
-                                              List<IWidgetDescriptor> widgetDescriptors, FormEventProcessorFactoryConfiguration formConfiguration, IURLParser urlParser) {
+            List<IWidgetDescriptor> widgetDescriptors, FormEventProcessorFactoryConfiguration formConfiguration, IURLParser urlParser, List<ICustomCellDescriptor> customCellDescriptors) {
         this.diagramFilterDescriptionProvider = Objects.requireNonNull(diagramFilterDescriptionProvider);
         this.objectService = Objects.requireNonNull(formConfiguration.getObjectService());
         this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
@@ -82,6 +85,7 @@ public class DiagramFilterEventProcessorFactory implements IRepresentationEventP
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
         this.formPostProcessor = Objects.requireNonNull(formConfiguration.getFormPostProcessor());
         this.urlParser = Objects.requireNonNull(urlParser);
+        this.customCellDescriptors = Objects.requireNonNull(customCellDescriptors);
     }
 
     @Override
@@ -99,7 +103,6 @@ public class DiagramFilterEventProcessorFactory implements IRepresentationEventP
             var objects = objectIds.stream()
                     .map(objectId -> this.objectService.getObject(editingContext, objectId))
                     .flatMap(Optional::stream)
-                    .map(Object.class::cast)
                     .toList();
 
             if (!objects.isEmpty()) {
@@ -109,9 +112,11 @@ public class DiagramFilterEventProcessorFactory implements IRepresentationEventP
                         .formDescription(formDescription)
                         .object(objects.get(0))
                         .selection(objects)
+                        .customCellDescriptors(this.customCellDescriptors)
                         .build();
 
-                var formEventProcessorConfiguration = new FormEventProcessorConfiguration(editingContext, this.objectService, formCreationParameters, this.widgetDescriptors, this.formEventHandlers, this.tableEventHandlers);
+                var formEventProcessorConfiguration = new FormEventProcessorConfiguration(editingContext, this.objectService, formCreationParameters, this.widgetDescriptors, this.formEventHandlers,
+                        this.tableEventHandlers);
                 IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(formEventProcessorConfiguration, this.subscriptionManagerFactory.create(), this.representationSearchService,
                         this.representationDescriptionSearchService, this.representationRefreshPolicyRegistry, this.formPostProcessor);
 

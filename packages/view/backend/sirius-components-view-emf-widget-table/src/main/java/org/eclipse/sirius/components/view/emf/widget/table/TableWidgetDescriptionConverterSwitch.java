@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.view.emf.table.CellDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.table.ColumnDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.table.ITableIdProvider;
 import org.eclipse.sirius.components.view.emf.table.RowDescriptionConverter;
+import org.eclipse.sirius.components.view.emf.table.api.ICustomCellConverter;
 import org.eclipse.sirius.components.view.widget.tablewidget.util.TableWidgetSwitch;
 
 /**
@@ -54,13 +55,15 @@ public class TableWidgetDescriptionConverterSwitch extends TableWidgetSwitch<Opt
 
     private final ITableIdProvider tableIdProvider;
 
+    private final List<ICustomCellConverter> customCellConverters;
 
     public TableWidgetDescriptionConverterSwitch(AQLInterpreter interpreter, IObjectService objectService,
-            IFormIdProvider widgetIdProvider, ITableIdProvider tableIdProvider) {
+            IFormIdProvider widgetIdProvider, ITableIdProvider tableIdProvider, List<ICustomCellConverter> customCellConverters) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.objectService = Objects.requireNonNull(objectService);
         this.widgetIdProvider = Objects.requireNonNull(widgetIdProvider);
         this.tableIdProvider = Objects.requireNonNull(tableIdProvider);
+        this.customCellConverters = Objects.requireNonNull(customCellConverters);
         this.semanticTargetIdProvider = variableManager -> {
             Optional<Object> optionalSelf = variableManager.get(VariableManager.SELF, Object.class);
             return optionalSelf
@@ -88,9 +91,11 @@ public class TableWidgetDescriptionConverterSwitch extends TableWidgetSwitch<Opt
                 .targetObjectKindProvider(variableManager -> "")
                 .isStripeRowPredicate(isStripeRowPredicate)
                 .iconURLsProvider(variableManager -> List.of())
-                .columnDescriptions(new ColumnDescriptionConverter(this.tableIdProvider, this.semanticTargetIdProvider,
-                        variableManager -> "").convert(viewTableWidgetDescription.getColumnDescriptions(), this.interpreter))
-                .cellDescriptions(new CellDescriptionConverter(this.tableIdProvider, this.objectService).convert(viewTableWidgetDescription.getCellDescriptions(), this.interpreter))
+                .columnDescriptions(
+                        new ColumnDescriptionConverter(this.tableIdProvider, this.semanticTargetIdProvider, variableManager -> "").convert(viewTableWidgetDescription.getColumnDescriptions(),
+                                this.interpreter))
+                .cellDescriptions(
+                        new CellDescriptionConverter(this.tableIdProvider, this.objectService, this.customCellConverters).convert(viewTableWidgetDescription.getCellDescriptions(), this.interpreter))
                 .lineDescription(new RowDescriptionConverter(this.tableIdProvider, this.semanticTargetIdProvider, variableManager -> "").convert(viewTableWidgetDescription.getRowDescription(),
                         this.interpreter))
                 .enableSubRows(false)

@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.tables.descriptions.IconLabelCellDescriptio
 import org.eclipse.sirius.components.tables.descriptions.TextareaCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.TextfieldCellDescription;
 import org.eclipse.sirius.components.view.emf.ViewIconURLsProvider;
+import org.eclipse.sirius.components.view.emf.table.api.ICustomCellConverter;
 import org.eclipse.sirius.components.view.table.CellLabelWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellTextfieldWidgetDescription;
@@ -42,9 +43,12 @@ public class CellDescriptionConverter {
 
     private final IObjectService objectService;
 
-    public CellDescriptionConverter(ITableIdProvider tableIdProvider, IObjectService objectService) {
+    private final List<ICustomCellConverter> customCellConverters;
+
+    public CellDescriptionConverter(ITableIdProvider tableIdProvider, IObjectService objectService, List<ICustomCellConverter> customCellConverters) {
         this.tableIdProvider = Objects.requireNonNull(tableIdProvider);
         this.objectService = Objects.requireNonNull(objectService);
+        this.customCellConverters = Objects.requireNonNull(customCellConverters);
     }
 
     public List<ICellDescription> convert(List<org.eclipse.sirius.components.view.table.CellDescription> cellDescriptions, AQLInterpreter interpreter) {
@@ -115,6 +119,12 @@ public class CellDescriptionConverter {
                     .canCreatePredicate(canCreatePredicate)
                     .cellValueProvider(cellValueProvider)
                     .build());
+        } else {
+            optionalICellDescription = this.customCellConverters.stream()
+                    .map(converter -> converter.convert(viewCellDescription, interpreter, this.tableIdProvider, this.objectService))
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .findFirst();
         }
         return optionalICellDescription;
     }

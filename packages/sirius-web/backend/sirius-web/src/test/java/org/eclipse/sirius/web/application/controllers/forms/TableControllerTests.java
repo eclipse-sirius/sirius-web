@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.application.controllers.forms;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.eclipse.sirius.components.tables.tests.assertions.TablesAssertions.assertThat;
+import static org.eclipse.sirius.web.tests.services.tables.assertions.TableCheckboxCellAssertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
@@ -27,7 +28,6 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
-import org.eclipse.sirius.components.collaborative.tables.dto.EditCheckboxCellInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.EditMultiSelectCellInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.EditSelectCellInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.EditTextfieldCellInput;
@@ -37,19 +37,21 @@ import org.eclipse.sirius.components.forms.TableWidget;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.components.tables.Line;
 import org.eclipse.sirius.components.tables.Table;
-import org.eclipse.sirius.components.tables.tests.graphql.EditCheckboxCellMutationRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.EditMultiSelectCellMutationRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.EditSelectCellMutationRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.EditTextfieldCellMutationRunner;
 import org.eclipse.sirius.components.tables.tests.navigation.LineNavigator;
 import org.eclipse.sirius.components.tables.tests.navigation.TableNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.application.table.customcells.EditCheckboxCellInput;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.services.forms.FormWithTableDescriptionProvider;
 import org.eclipse.sirius.web.services.forms.FormWithViewTableDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
+import org.eclipse.sirius.web.tests.graphql.EditCheckboxCellMutationRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedFormSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.eclipse.sirius.web.tests.services.tables.navigation.LineCheckboxCellNavigator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -67,7 +69,7 @@ import reactor.test.StepVerifier;
  */
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"sirius.web.test.enabled=studio"})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
 public class TableControllerTests extends AbstractIntegrationTests {
 
     @Autowired
@@ -116,10 +118,11 @@ public class TableControllerTests extends AbstractIntegrationTests {
                     assertThat(tableWidget.getTable().getLines().stream().flatMap(line -> line.getCells().stream()).toList()).hasSize(9 * 3);
                     Line line = tableWidget.getTable().getLines().get(0);
                     LineNavigator lineNavigator = new LineNavigator(line);
+                    LineCheckboxCellNavigator checkboxCellNavigator = new LineCheckboxCellNavigator(line);
 
                     TableNavigator tableNavigator = new TableNavigator(tableWidget.getTable());
                     assertThat(lineNavigator.textfieldCellByColumnId(tableNavigator.column("Name").getId())).hasValue("Improve some features of the deck");
-                    assertThat(lineNavigator.checkboxCellByColumnId(tableNavigator.column("Done").getId())).hasValue(false);
+                    assertThat(checkboxCellNavigator.checkboxCellByColumnId(tableNavigator.column("Done").getId())).hasValue(false);
                     assertThat(lineNavigator.selectCellByColumnId(tableNavigator.column("Priority").getId())).hasValue("P1");
                     assertThat(lineNavigator.multiSelectCellByColumnId(tableNavigator.column("Dependencies").getId())).hasValues(List.of());
 
@@ -136,7 +139,6 @@ public class TableControllerTests extends AbstractIntegrationTests {
 
         var formId = new AtomicReference<String>();
         var tableId = new AtomicReference<String>();
-        var lineId = new AtomicReference<UUID>();
         var textfieldCellId = new AtomicReference<UUID>();
         var checkboxCellId = new AtomicReference<UUID>();
         var selectCellId = new AtomicReference<UUID>();
@@ -150,7 +152,6 @@ public class TableControllerTests extends AbstractIntegrationTests {
                     tableId.set(table.getId());
                     Line line = table.getLines().get(0);
                     LineNavigator lineNavigator = new LineNavigator(line);
-                    lineId.set(line.getId());
 
                     TableNavigator tableNavigator = new TableNavigator(table);
                     textfieldCellId.set(lineNavigator.textfieldCellByColumnId(tableNavigator.column("Name").getId()).getId());
@@ -178,7 +179,8 @@ public class TableControllerTests extends AbstractIntegrationTests {
         Consumer<Object> editPriorityConsumer = this.getEditPriorityConsumer(tableId, multiSelectCellId);
 
         Runnable editDependenciesMultiSelectCell = () -> {
-            var input = new EditMultiSelectCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), tableId.get(), multiSelectCellId.get(), List.of("e6e8f081-27f5-40e3-a8ab-1e6f0f13df12", "e1c5bd66-54c2-45f1-ae3a-99d3f039affd"));
+            var input = new EditMultiSelectCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), tableId.get(), multiSelectCellId.get(),
+                    List.of("e6e8f081-27f5-40e3-a8ab-1e6f0f13df12", "e1c5bd66-54c2-45f1-ae3a-99d3f039affd"));
             var result = this.editMultiSelectCellMutationRunner.run(input);
 
             String typename = JsonPath.read(result, "$.data.editMultiSelectCell.__typename");
@@ -252,9 +254,9 @@ public class TableControllerTests extends AbstractIntegrationTests {
                     var table = this.getTable(form);
                     TableNavigator tableNavigator = new TableNavigator(table);
                     Line line = table.getLines().get(0);
-                    LineNavigator lineNavigator = new LineNavigator(line);
+                    LineCheckboxCellNavigator lineCheckboxCellNavigator = new LineCheckboxCellNavigator(line);
 
-                    assertThat(lineNavigator.checkboxCellByColumnId(tableNavigator.column("Done").getId())).hasValue(true);
+                    assertThat(lineCheckboxCellNavigator.checkboxCellByColumnId(tableNavigator.column("Done").getId())).hasValue(true);
 
                 }, () -> fail("Missing form"));
     }
@@ -270,7 +272,8 @@ public class TableControllerTests extends AbstractIntegrationTests {
                     TableNavigator tableNavigator = new TableNavigator(table);
                     Line line = table.getLines().get(0);
                     LineNavigator lineNavigator = new LineNavigator(line);
-                    checkboxCellId.set(lineNavigator.checkboxCellByColumnId(tableNavigator.column("Done").getId()).getId());
+                    LineCheckboxCellNavigator lineCheckboxCellNavigator = new LineCheckboxCellNavigator(line);
+                    checkboxCellId.set(lineCheckboxCellNavigator.checkboxCellByColumnId(tableNavigator.column("Done").getId()).getId());
 
                     assertThat(lineNavigator.multiSelectCellByColumnId(tableNavigator.column("Dependencies")
                             .getId())).hasValues(List.of("e6e8f081-27f5-40e3-a8ab-1e6f0f13df12", "e1c5bd66-54c2-45f1-ae3a-99d3f039affd"));

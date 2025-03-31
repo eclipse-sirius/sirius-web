@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.tables.tests.assertions;
 
 import org.assertj.core.api.Assertions;
-import org.eclipse.sirius.components.tables.CheckboxCell;
 import org.eclipse.sirius.components.tables.MultiSelectCell;
 import org.eclipse.sirius.components.tables.SelectCell;
 import org.eclipse.sirius.components.tables.TextfieldCell;
@@ -31,10 +30,6 @@ public class TablesAssertions extends Assertions {
 
     public static SelectCellAssert assertThat(SelectCell selectCell) {
         return new SelectCellAssert(selectCell);
-    }
-
-    public static CheckboxCellAssert assertThat(CheckboxCell checkboxCell) {
-        return new CheckboxCellAssert(checkboxCell);
     }
 
     public static TextfieldCellAssert assertThat(TextfieldCell textfieldCell) {

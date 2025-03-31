@@ -21,6 +21,8 @@ import org.eclipse.sirius.components.view.diagram.provider.DiagramItemProviderAd
 import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.components.view.form.provider.FormItemProviderAdapterFactory;
 import org.eclipse.sirius.components.view.gantt.provider.GanttItemProviderAdapterFactory;
+import org.eclipse.sirius.components.view.table.TablePackage;
+import org.eclipse.sirius.components.view.table.customcells.provider.CustomcellsItemProviderAdapterFactory;
 import org.eclipse.sirius.components.view.table.provider.TableItemProviderAdapterFactory;
 import org.eclipse.sirius.components.view.tree.provider.TreeItemProviderAdapterFactory;
 import org.eclipse.sirius.components.view.widget.tablewidget.provider.TableWidgetItemProviderAdapterFactory;
@@ -79,5 +81,10 @@ public class EMFChildExtenderProviderConfiguration {
     @Bean
     public ChildExtenderProvider tableWidgetChildExtenderProvider() {
         return new ChildExtenderProvider(FormPackage.eNS_URI, TableWidgetItemProviderAdapterFactory.FormChildCreationExtender::new);
+    }
+
+    @Bean
+    public ChildExtenderProvider customCellsChildExtenderProvider() {
+        return new ChildExtenderProvider(TablePackage.eNS_URI, CustomcellsItemProviderAdapterFactory.TableChildCreationExtender::new);
     }
 }

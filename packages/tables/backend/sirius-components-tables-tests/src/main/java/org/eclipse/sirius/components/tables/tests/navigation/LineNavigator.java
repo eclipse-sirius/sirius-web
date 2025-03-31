@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,6 @@ import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.tables.CheckboxCell;
 import org.eclipse.sirius.components.tables.Line;
 import org.eclipse.sirius.components.tables.MultiSelectCell;
 import org.eclipse.sirius.components.tables.SelectCell;
@@ -41,7 +40,7 @@ public class LineNavigator {
         return this.line.getCells().stream()
                 .filter(TextfieldCell.class::isInstance)
                 .map(TextfieldCell.class::cast)
-                .filter(cell ->  cell.getColumnId().equals(columnId))
+                .filter(cell -> cell.getColumnId().equals(columnId))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(MessageFormat.format(CELL_NOT_FOUND, columnId)));
     }
@@ -50,25 +49,16 @@ public class LineNavigator {
         return this.line.getCells().stream()
                 .filter(TextfieldCell.class::isInstance)
                 .map(TextfieldCell.class::cast)
-                .filter(cell ->  cell.getId().equals(cellId))
+                .filter(cell -> cell.getId().equals(cellId))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(MessageFormat.format(CELL_NOT_FOUND, cellId)));
-    }
-
-    public CheckboxCell checkboxCellByColumnId(UUID columnId) {
-        return this.line.getCells().stream()
-                .filter(CheckboxCell.class::isInstance)
-                .map(CheckboxCell.class::cast)
-                .filter(cell ->  cell.getColumnId().equals(columnId))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(MessageFormat.format(CELL_NOT_FOUND, columnId)));
     }
 
     public SelectCell selectCellByColumnId(UUID columnId) {
         return this.line.getCells().stream()
                 .filter(SelectCell.class::isInstance)
                 .map(SelectCell.class::cast)
-                .filter(cell ->  cell.getColumnId().equals(columnId))
+                .filter(cell -> cell.getColumnId().equals(columnId))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(MessageFormat.format(CELL_NOT_FOUND, columnId)));
     }
@@ -77,7 +67,7 @@ public class LineNavigator {
         return this.line.getCells().stream()
                 .filter(MultiSelectCell.class::isInstance)
                 .map(MultiSelectCell.class::cast)
-                .filter(cell ->  cell.getColumnId().equals(columnId))
+                .filter(cell -> cell.getColumnId().equals(columnId))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(MessageFormat.format(CELL_NOT_FOUND, columnId)));
     }

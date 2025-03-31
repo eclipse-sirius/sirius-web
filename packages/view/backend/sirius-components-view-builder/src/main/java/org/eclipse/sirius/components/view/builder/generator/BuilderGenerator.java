@@ -125,6 +125,10 @@ public class BuilderGenerator {
         Resource customNodesResource = resourceSet.getResource(customNodesURI, true);
         allViewContent.addAll(customNodesResource.getContents());
 
+        URI customCellsURI = URI.createFileURI(args[1] + "/../sirius-components-view-table-customcells/src/main/resources/model/customcells.genmodel");
+        Resource customCellsResource = resourceSet.getResource(customCellsURI, true);
+        allViewContent.addAll(customCellsResource.getContents());
+
         var gen = new BuilderGenerator(args[0], args[2], args[3]);
 
         StreamSupport.stream(Spliterators.spliterator(allViewContent, Spliterator.ORDERED), false).filter(GenModel.class::isInstance).map(GenModel.class::cast).forEach(model -> {

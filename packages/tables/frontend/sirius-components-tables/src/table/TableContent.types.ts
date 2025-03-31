@@ -140,10 +140,6 @@ export interface GQLIconLabelCell extends GQLCell {
   iconURLs: string[];
 }
 
-export interface GQLCheckboxCell extends GQLCell {
-  booleanValue: boolean;
-}
-
 export interface GQLSelectCell extends GQLCell {
   value: string;
   options: GQLSelectCellOption[];

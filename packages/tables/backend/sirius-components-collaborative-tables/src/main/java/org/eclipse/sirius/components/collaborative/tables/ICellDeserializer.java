@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 
-import org.eclipse.sirius.components.tables.CheckboxCell;
 import org.eclipse.sirius.components.tables.ICell;
 import org.eclipse.sirius.components.tables.MultiSelectCell;
 import org.eclipse.sirius.components.tables.SelectCell;
@@ -50,7 +49,6 @@ public class ICellDeserializer extends StdDeserializer<ICell> {
             ObjectNode root = mapper.readTree(jsonParser);
             cell = switch (root.get("type").asText()) {
                 case TextfieldCell.TYPE -> mapper.readValue(root.toString(), TextfieldCell.class);
-                case CheckboxCell.TYPE -> mapper.readValue(root.toString(), CheckboxCell.class);
                 case MultiSelectCell.TYPE -> mapper.readValue(root.toString(), MultiSelectCell.class);
                 case SelectCell.TYPE -> mapper.readValue(root.toString(), SelectCell.class);
                 default -> mapper.readValue(root.toString(), TextfieldCell.class);

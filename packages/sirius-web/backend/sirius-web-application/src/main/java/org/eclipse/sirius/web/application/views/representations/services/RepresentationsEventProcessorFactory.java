@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,13 +30,14 @@ import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
 import org.eclipse.sirius.components.collaborative.forms.api.IRepresentationsDescriptionProvider;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorFactoryConfiguration;
+import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.core.api.IURLParser;
-import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
+import org.eclipse.sirius.components.tables.components.ICustomCellDescriptor;
 import org.springframework.stereotype.Service;
 
 /**
@@ -69,9 +70,10 @@ public class RepresentationsEventProcessorFactory implements IRepresentationEven
 
     private final IURLParser urlParser;
 
-    public RepresentationsEventProcessorFactory(IRepresentationsDescriptionProvider representationsDescriptionProvider, ISubscriptionManagerFactory subscriptionManagerFactory,
-            RepresentationEventProcessorFactoryConfiguration configuration, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry, List<IWidgetDescriptor> widgetDescriptors,
-            FormEventProcessorFactoryConfiguration formConfiguration, IURLParser urlParser) {
+    private final List<ICustomCellDescriptor> customCellDescriptors;
+
+    public RepresentationsEventProcessorFactory(IRepresentationsDescriptionProvider representationsDescriptionProvider, RepresentationEventProcessorFactoryConfiguration configuration,
+            List<IWidgetDescriptor> widgetDescriptors, FormEventProcessorFactoryConfiguration formConfiguration, IURLParser urlParser, List<ICustomCellDescriptor> customCellDescriptors) {
         this.representationsDescriptionProvider = Objects.requireNonNull(representationsDescriptionProvider);
         this.objectService = Objects.requireNonNull(formConfiguration.getObjectService());
         this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
@@ -79,10 +81,11 @@ public class RepresentationsEventProcessorFactory implements IRepresentationEven
         this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
         this.formEventHandlers = Objects.requireNonNull(formConfiguration.getFormEventHandlers());
         this.tableEventHandlers = Objects.requireNonNull(formConfiguration.getTableEventHandlers());
-        this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
-        this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
+        this.subscriptionManagerFactory = Objects.requireNonNull(configuration.getSubscriptionManagerFactory());
+        this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
         this.formPostProcessor = Objects.requireNonNull(formConfiguration.getFormPostProcessor());
         this.urlParser = Objects.requireNonNull(urlParser);
+        this.customCellDescriptors = Objects.requireNonNull(customCellDescriptors);
     }
 
     @Override
@@ -97,9 +100,9 @@ public class RepresentationsEventProcessorFactory implements IRepresentationEven
 
         var objectIds = this.urlParser.getParameterEntries(objectIdsParam);
         var objects = objectIds.stream()
-            .map(objectId -> this.objectService.getObject(editingContext, objectId))
-            .flatMap(Optional::stream)
-            .toList();
+                .map(objectId -> this.objectService.getObject(editingContext, objectId))
+                .flatMap(Optional::stream)
+                .toList();
 
         if (!objects.isEmpty()) {
             FormDescription formDescription = this.representationsDescriptionProvider.getRepresentationsDescription();
@@ -108,6 +111,7 @@ public class RepresentationsEventProcessorFactory implements IRepresentationEven
                     .formDescription(formDescription)
                     .object(objects.get(0))
                     .selection(objects)
+                    .customCellDescriptors(this.customCellDescriptors)
                     .build();
 
             IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(

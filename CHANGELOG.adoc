@@ -77,7 +77,17 @@ Given that implementations of this interface should be Spring services, they can
 - https://github.com/eclipse-sirius/sirius-web/issues/4707[#4707] [diagram] The function `convertHandles = (gqlNode: GQLNode<GQLNodeStyle>, gqlEdges: GQLEdge[], handleLayoutData: GQLHandleLayoutData[]): ConnectionHandle[] ` is now `convertHandles = (elementId: string, gqlEdges: GQLEdge[], handleLayoutData: GQLHandleLayoutData[] ): ConnectionHandle[]`
 - https://github.com/eclipse-sirius/sirius-web/issues/4744[#4744] [diagram] `SingleClickOnTwoDiagramElementsCandidate` `sources and targets` variables are now of type `IDiagramElementDescription`
 - [view] The variable `nodeDescription` available in edge tools has been renamed to `diagramElementDescription` and will be soon removed.
+- https://github.com/eclipse-sirius/sirius-web/issues/4745[#4745] [table] Add table cell extension point.
+To illustrate this new extension point, it has been decided that the checkbox cell widget would become such an extension.
+This means that all checkbox cell classes have been moved into sirius-web-application module:
+* CheckboxCell
+* CheckboxCellComponent
+* CheckboxCellComponentProps
+* CheckboxCellDescription
+* CheckboxCellElementProps
+* EditCheckboxCellInput
 
+They are now in `org.eclipse.sirius.web.application.views.table.customcells` package.
 
 === Dependency update
 
@@ -168,6 +178,7 @@ Actions are visible on nodes on diagrams, on the top right corner of the nodes, 
 - https://github.com/eclipse-sirius/sirius-web/issues/4761[#4761] [table] Add support for custom page size options
 - https://github.com/eclipse-sirius/sirius-web/issues/4626[#4626] [diagram] Conserve rectilinearity of custom edges
 - https://github.com/eclipse-sirius/sirius-web/issues/4770[#4770] [diagram] Allow reconnecting an edge on another edge
+- https://github.com/eclipse-sirius/sirius-web/issues/4745[#4745] Add table cell extension point
 
 
 === Improvements

@@ -11,13 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { DataExtension, Selection, useData, useSelection } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
 import { memo } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import {
   GQLCell,
-  GQLCheckboxCell,
   GQLIconLabelCell,
   GQLMultiSelectCell,
   GQLSelectCell,
@@ -25,14 +24,14 @@ import {
   GQLTextfieldCell,
 } from '../table/TableContent.types';
 import { CellProps } from './Cell.types';
-import { CheckboxCell } from './CheckboxCell';
 import { IconLabelCell } from './IconLabelCell';
 import { MultiSelectCell } from './MultiSelectCell';
 import { SelectCell } from './SelectCell';
+import { TableCellContribution } from './TableCellExtensionPoints.types';
+import { tableCellExtensionPoint } from './TableCellExtensionPoints';
 import { TextareaCell } from './TextareaCell';
 import { TextfieldCell } from './TextfieldCell';
 
-const isCheckboxCell = (cell: GQLCell): cell is GQLCheckboxCell => cell.__typename === 'CheckboxCell';
 const isSelectCell = (cell: GQLCell): cell is GQLSelectCell => cell.__typename === 'SelectCell';
 const isMultiSelectCell = (cell: GQLCell): cell is GQLMultiSelectCell => cell.__typename === 'MultiSelectCell';
 const isTextfieldCell = (cell: GQLCell): cell is GQLTextfieldCell => cell.__typename === 'TextfieldCell';
@@ -51,6 +50,7 @@ const useStyles = makeStyles()((theme) => ({
 export const Cell = memo(
   ({ editingContextId, representationId, tableId, cell, disabled, enableSelectionSynchronization }: CellProps) => {
     const { classes } = useStyles();
+    const customCells: DataExtension<TableCellContribution[]> = useData(tableCellExtensionPoint);
 
     const { setSelection } = useSelection();
     const onClick = (cell: GQLCell) => {
@@ -63,17 +63,7 @@ export const Cell = memo(
     let component = <Typography />;
 
     if (cell) {
-      if (isCheckboxCell(cell)) {
-        component = (
-          <CheckboxCell
-            editingContextId={editingContextId}
-            representationId={representationId}
-            tableId={tableId}
-            cell={cell}
-            disabled={disabled}
-          />
-        );
-      } else if (isTextfieldCell(cell)) {
+      if (isTextfieldCell(cell)) {
         component = (
           <TextfieldCell
             editingContextId={editingContextId}
@@ -122,6 +112,20 @@ export const Cell = memo(
             cell={cell}
           />
         );
+      } else {
+        const customCell = customCells.data.find((data) => data.canHandle(cell));
+        if (customCell) {
+          const CustomCellComponent = customCell.component;
+          component = (
+            <CustomCellComponent
+              editingContextId={editingContextId}
+              representationId={representationId}
+              tableId={tableId}
+              cell={cell}
+              disabled={disabled}
+            />
+          );
+        }
       }
       return (
         <div className={classes.wrapper} onClick={() => onClick(cell)}>

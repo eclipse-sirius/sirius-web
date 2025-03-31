@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.forms.description.FormDescription;
+import org.eclipse.sirius.components.tables.components.ICustomCellDescriptor;
 
 /**
  * This class is used because creating a form requires sending at once multiple parameters. Since this list of parameter
@@ -40,6 +41,8 @@ public final class FormCreationParameters {
     private FormDescription formDescription;
 
     private IEditingContext editingContext;
+
+    private List<ICustomCellDescriptor> customCellDescriptors;
 
     private FormCreationParameters() {
         // Prevent instantiation
@@ -77,6 +80,10 @@ public final class FormCreationParameters {
         return this.selection;
     }
 
+    public List<ICustomCellDescriptor> getCustomCellDescriptors() {
+        return this.customCellDescriptors;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, formDescriptionId: {2}'}'";
@@ -91,7 +98,7 @@ public final class FormCreationParameters {
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
-        private String id;
+        private final String id;
 
         private Object object;
 
@@ -100,6 +107,8 @@ public final class FormCreationParameters {
         private FormDescription formDescription;
 
         private IEditingContext editingContext;
+
+        private List<ICustomCellDescriptor> customCellDescriptors;
 
         private Builder(String id) {
             this.id = id;
@@ -125,6 +134,11 @@ public final class FormCreationParameters {
             return this;
         }
 
+        public Builder customCellDescriptors(List<ICustomCellDescriptor> customCellDescriptors) {
+            this.customCellDescriptors = Objects.requireNonNull(customCellDescriptors);
+            return this;
+        }
+
         public FormCreationParameters build() {
             FormCreationParameters formCreationParameters = new FormCreationParameters();
             formCreationParameters.id = this.id;
@@ -132,6 +146,7 @@ public final class FormCreationParameters {
             formCreationParameters.selection = Objects.requireNonNull(this.selection);
             formCreationParameters.formDescription = Objects.requireNonNull(this.formDescription);
             formCreationParameters.editingContext = Objects.requireNonNull(this.editingContext);
+            formCreationParameters.customCellDescriptors = Objects.requireNonNull(this.customCellDescriptors);
             return formCreationParameters;
         }
     }

@@ -31,9 +31,12 @@ import org.eclipse.sirius.components.tables.Table;
 import org.eclipse.sirius.components.tables.TextfieldCell;
 import org.eclipse.sirius.components.tables.tests.graphql.EditTextfieldCellMutationRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.application.table.customcells.CheckboxCell;
+import org.eclipse.sirius.web.application.table.customcells.EditCheckboxCellInput;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.services.tables.ViewTableDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
+import org.eclipse.sirius.web.tests.graphql.EditCheckboxCellMutationRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,6 +71,9 @@ public class PapayaViewCellControllerIntegrationTests extends AbstractIntegratio
     @Autowired
     private EditTextfieldCellMutationRunner editTextfieldCellMutationRunner;
 
+    @Autowired
+    private EditCheckboxCellMutationRunner editCheckboxCellMutationRunner;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -97,7 +103,7 @@ public class PapayaViewCellControllerIntegrationTests extends AbstractIntegratio
             tableId.set(table.getId());
             assertThat(table).isNotNull();
             assertThat(table.getLines()).hasSize(5);
-            assertThat(table.getLines().get(0).getCells()).hasSize(2);
+            assertThat(table.getLines().get(0).getCells()).hasSize(3);
             assertThat(table.getLines().get(0).getCells().get(0)).isInstanceOf(TextfieldCell.class);
             assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(0)).getValue()).isEqualTo("Success");
             cellId.set(table.getLines().get(0).getCells().get(0).getId());
@@ -115,6 +121,47 @@ public class PapayaViewCellControllerIntegrationTests extends AbstractIntegratio
             assertThat(table).isNotNull();
             assertThat(table.getLines()).hasSize(5);
             assertThat(((TextfieldCell) table.getLines().get(0).getCells().get(0)).getValue()).isEqualTo("newName");
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialTableContentConsumer)
+                .then(editName)
+                .consumeNextWith(updatedTableContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a table, when an custom cell edit mutation is triggered, then the representation is refreshed with the new cell value")
+    public void givenTableWhenCustomCellEditMutationTriggeredThenTheRepresentationIsRefreshedWithNewCellValue() {
+        var flux = this.givenSubscriptionToViewTableRepresentation();
+
+        var cellId = new AtomicReference<UUID>();
+        var tableId = new AtomicReference<String>();
+
+        Consumer<Object> initialTableContentConsumer = this.getTableSubscriptionConsumer(table -> {
+            tableId.set(table.getId());
+            assertThat(table).isNotNull();
+            assertThat(table.getLines()).hasSize(5);
+            assertThat(table.getLines().get(0).getCells()).hasSize(3);
+            assertThat(table.getLines().get(0).getCells().get(2)).isInstanceOf(CheckboxCell.class);
+            assertThat(((CheckboxCell) table.getLines().get(0).getCells().get(2)).isValue()).isEqualTo(false);
+            cellId.set(table.getLines().get(0).getCells().get(2).getId());
+        });
+
+        Runnable editName = () -> {
+            var input = new EditCheckboxCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), tableId.get(), tableId.get(), cellId.get(), true);
+            var result = this.editCheckboxCellMutationRunner.run(input);
+
+            String typename = JsonPath.read(result, "$.data.editCheckboxCell.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> updatedTableContentConsumer = this.getTableSubscriptionConsumer(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getLines()).hasSize(5);
+            assertThat(((CheckboxCell) table.getLines().get(0).getCells().get(2)).isValue()).isEqualTo(true);
         });
 
         StepVerifier.create(flux)

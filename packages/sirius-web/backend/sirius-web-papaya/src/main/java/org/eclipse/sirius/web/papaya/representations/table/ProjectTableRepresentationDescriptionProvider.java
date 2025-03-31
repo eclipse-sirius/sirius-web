@@ -32,7 +32,6 @@ import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.spec.ProjectSpec;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.tables.descriptions.CheckboxCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
 import org.eclipse.sirius.components.tables.descriptions.ICellDescription;
 import org.eclipse.sirius.components.tables.descriptions.LineDescription;
@@ -43,6 +42,7 @@ import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 import org.eclipse.sirius.components.tables.descriptions.TextareaCellDescription;
 import org.eclipse.sirius.components.tables.descriptions.TextfieldCellDescription;
 import org.eclipse.sirius.components.tables.renderer.TableRenderer;
+import org.eclipse.sirius.web.application.table.customcells.CheckboxCellDescription;
 import org.springframework.stereotype.Service;
 
 /**
