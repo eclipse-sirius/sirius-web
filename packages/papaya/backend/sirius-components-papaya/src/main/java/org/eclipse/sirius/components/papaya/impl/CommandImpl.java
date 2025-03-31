@@ -21,9 +21,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.papaya.Command;
-import org.eclipse.sirius.components.papaya.MessageEmitter;
-import org.eclipse.sirius.components.papaya.MessageListener;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
+import org.eclipse.sirius.components.papaya.Publication;
+import org.eclipse.sirius.components.papaya.Subscription;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Command</b></em>'. <!-- end-user-doc -->
@@ -46,7 +46,7 @@ public class CommandImpl extends NamedElementImpl implements Command {
      * @generated
      * @ordered
      */
-    protected EList<MessageEmitter> emittedBy;
+    protected EList<Publication> emittedBy;
 
     /**
      * The cached value of the '{@link #getListenedBy() <em>Listened By</em>}' reference list. <!-- begin-user-doc -->
@@ -56,7 +56,7 @@ public class CommandImpl extends NamedElementImpl implements Command {
      * @generated
      * @ordered
      */
-    protected EList<MessageListener> listenedBy;
+    protected EList<Subscription> listenedBy;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -83,9 +83,9 @@ public class CommandImpl extends NamedElementImpl implements Command {
      * @generated
      */
     @Override
-    public EList<MessageEmitter> getEmittedBy() {
+    public EList<Publication> getEmittedBy() {
         if (this.emittedBy == null) {
-            this.emittedBy = new EObjectWithInverseResolvingEList.ManyInverse<>(MessageEmitter.class, this, PapayaPackage.COMMAND__EMITTED_BY, PapayaPackage.MESSAGE_EMITTER__EMITTED_MESSAGES);
+            this.emittedBy = new EObjectWithInverseResolvingEList<>(Publication.class, this, PapayaPackage.COMMAND__EMITTED_BY, PapayaPackage.PUBLICATION__MESSAGE);
         }
         return this.emittedBy;
     }
@@ -96,9 +96,9 @@ public class CommandImpl extends NamedElementImpl implements Command {
      * @generated
      */
     @Override
-    public EList<MessageListener> getListenedBy() {
+    public EList<Subscription> getListenedBy() {
         if (this.listenedBy == null) {
-            this.listenedBy = new EObjectWithInverseResolvingEList.ManyInverse<>(MessageListener.class, this, PapayaPackage.COMMAND__LISTENED_BY, PapayaPackage.MESSAGE_LISTENER__LISTENED_MESSAGES);
+            this.listenedBy = new EObjectWithInverseResolvingEList<>(Subscription.class, this, PapayaPackage.COMMAND__LISTENED_BY, PapayaPackage.SUBSCRIPTION__MESSAGE);
         }
         return this.listenedBy;
     }
@@ -163,11 +163,11 @@ public class CommandImpl extends NamedElementImpl implements Command {
         switch (featureID) {
             case PapayaPackage.COMMAND__EMITTED_BY:
                 this.getEmittedBy().clear();
-                this.getEmittedBy().addAll((Collection<? extends MessageEmitter>) newValue);
+                this.getEmittedBy().addAll((Collection<? extends Publication>) newValue);
                 return;
             case PapayaPackage.COMMAND__LISTENED_BY:
                 this.getListenedBy().clear();
-                this.getListenedBy().addAll((Collection<? extends MessageListener>) newValue);
+                this.getListenedBy().addAll((Collection<? extends Subscription>) newValue);
                 return;
         }
         super.eSet(featureID, newValue);

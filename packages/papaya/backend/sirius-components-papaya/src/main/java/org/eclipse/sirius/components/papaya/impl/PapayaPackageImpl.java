@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.papaya.Annotation;
 import org.eclipse.sirius.components.papaya.AnnotationField;
 import org.eclipse.sirius.components.papaya.ApplicationConcern;
 import org.eclipse.sirius.components.papaya.Attribute;
+import org.eclipse.sirius.components.papaya.Channel;
 import org.eclipse.sirius.components.papaya.Classifier;
 import org.eclipse.sirius.components.papaya.Command;
 import org.eclipse.sirius.components.papaya.Component;
@@ -56,11 +57,13 @@ import org.eclipse.sirius.components.papaya.Parameter;
 import org.eclipse.sirius.components.papaya.Priority;
 import org.eclipse.sirius.components.papaya.Project;
 import org.eclipse.sirius.components.papaya.ProvidedService;
+import org.eclipse.sirius.components.papaya.Publication;
 import org.eclipse.sirius.components.papaya.Query;
 import org.eclipse.sirius.components.papaya.RecordComponent;
 import org.eclipse.sirius.components.papaya.Repository;
 import org.eclipse.sirius.components.papaya.RequiredService;
 import org.eclipse.sirius.components.papaya.Service;
+import org.eclipse.sirius.components.papaya.Subscription;
 import org.eclipse.sirius.components.papaya.Tag;
 import org.eclipse.sirius.components.papaya.Task;
 import org.eclipse.sirius.components.papaya.Type;
@@ -387,6 +390,27 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      *
      * @generated
      */
+    private EClass channelEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass subscriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass publicationEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     private EEnum priorityEEnum = null;
 
     /**
@@ -642,6 +666,16 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
     @Override
     public EReference getProject_Domains() {
         return (EReference) this.projectEClass.getEStructuralFeatures().get(8);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getProject_Channels() {
+        return (EReference) this.projectEClass.getEStructuralFeatures().get(9);
     }
 
     /**
@@ -1820,7 +1854,7 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
-    public EReference getMessageListener_ListenedMessages() {
+    public EReference getMessageListener_Subscriptions() {
         return (EReference) this.messageListenerEClass.getEStructuralFeatures().get(0);
     }
 
@@ -1840,7 +1874,7 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
-    public EReference getMessageEmitter_EmittedMessages() {
+    public EReference getMessageEmitter_Publications() {
         return (EReference) this.messageEmitterEClass.getEStructuralFeatures().get(0);
     }
 
@@ -1930,6 +1964,76 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
+    public EClass getChannel() {
+        return this.channelEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getSubscription() {
+        return this.subscriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getSubscription_Channel() {
+        return (EReference) this.subscriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getSubscription_Message() {
+        return (EReference) this.subscriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getPublication() {
+        return this.publicationEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getPublication_Channel() {
+        return (EReference) this.publicationEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getPublication_Message() {
+        return (EReference) this.publicationEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EEnum getPriority() {
         return this.priorityEEnum;
     }
@@ -2004,6 +2108,7 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
         this.createEReference(this.projectEClass, PROJECT__CONTRIBUTIONS);
         this.createEReference(this.projectEClass, PROJECT__APPLICATION_CONCERNS);
         this.createEReference(this.projectEClass, PROJECT__DOMAINS);
+        this.createEReference(this.projectEClass, PROJECT__CHANNELS);
 
         this.iterationEClass = this.createEClass(ITERATION);
         this.createEAttribute(this.iterationEClass, ITERATION__START_DATE);
@@ -2155,10 +2260,10 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
         this.createEReference(this.serviceEClass, SERVICE__CALLS);
 
         this.messageListenerEClass = this.createEClass(MESSAGE_LISTENER);
-        this.createEReference(this.messageListenerEClass, MESSAGE_LISTENER__LISTENED_MESSAGES);
+        this.createEReference(this.messageListenerEClass, MESSAGE_LISTENER__SUBSCRIPTIONS);
 
         this.messageEmitterEClass = this.createEClass(MESSAGE_EMITTER);
-        this.createEReference(this.messageEmitterEClass, MESSAGE_EMITTER__EMITTED_MESSAGES);
+        this.createEReference(this.messageEmitterEClass, MESSAGE_EMITTER__PUBLICATIONS);
 
         this.messageEClass = this.createEClass(MESSAGE);
         this.createEReference(this.messageEClass, MESSAGE__EMITTED_BY);
@@ -2172,6 +2277,16 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
         this.queryEClass = this.createEClass(QUERY);
 
         this.repositoryEClass = this.createEClass(REPOSITORY);
+
+        this.channelEClass = this.createEClass(CHANNEL);
+
+        this.subscriptionEClass = this.createEClass(SUBSCRIPTION);
+        this.createEReference(this.subscriptionEClass, SUBSCRIPTION__CHANNEL);
+        this.createEReference(this.subscriptionEClass, SUBSCRIPTION__MESSAGE);
+
+        this.publicationEClass = this.createEClass(PUBLICATION);
+        this.createEReference(this.publicationEClass, PUBLICATION__CHANNEL);
+        this.createEReference(this.publicationEClass, PUBLICATION__MESSAGE);
 
         // Create enums
         this.priorityEEnum = this.createEEnum(PRIORITY);
@@ -2258,6 +2373,7 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
         this.commandEClass.getESuperTypes().add(this.getMessage());
         this.queryEClass.getESuperTypes().add(this.getMessage());
         this.repositoryEClass.getESuperTypes().add(this.getNamedElement());
+        this.channelEClass.getESuperTypes().add(this.getNamedElement());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.modelElementEClass, ModelElement.class, "ModelElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2294,6 +2410,8 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
         this.initEReference(this.getProject_ApplicationConcerns(), this.getApplicationConcern(), null, "applicationConcerns", null, 0, -1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getProject_Domains(), this.getDomain(), null, "domains", null, 0, -1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getProject_Channels(), this.getChannel(), null, "channels", null, 0, -1, Project.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.iterationEClass, Iteration.class, "Iteration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2529,18 +2647,18 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.messageListenerEClass, MessageListener.class, "MessageListener", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getMessageListener_ListenedMessages(), this.getMessage(), this.getMessage_ListenedBy(), "listenedMessages", null, 0, -1, MessageListener.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getMessageListener_Subscriptions(), this.getSubscription(), null, "subscriptions", null, 0, -1, MessageListener.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.messageEmitterEClass, MessageEmitter.class, "MessageEmitter", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getMessageEmitter_EmittedMessages(), this.getMessage(), this.getMessage_EmittedBy(), "emittedMessages", null, 0, -1, MessageEmitter.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getMessageEmitter_Publications(), this.getPublication(), null, "publications", null, 0, -1, MessageEmitter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.messageEClass, Message.class, "Message", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getMessage_EmittedBy(), this.getMessageEmitter(), this.getMessageEmitter_EmittedMessages(), "emittedBy", null, 0, -1, Message.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getMessage_ListenedBy(), this.getMessageListener(), this.getMessageListener_ListenedMessages(), "listenedBy", null, 0, -1, Message.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getMessage_EmittedBy(), this.getPublication(), this.getPublication_Message(), "emittedBy", null, 0, -1, Message.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getMessage_ListenedBy(), this.getSubscription(), this.getSubscription_Message(), "listenedBy", null, 0, -1, Message.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.eventEClass, Event.class, "Event", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getEvent_CausedBy(), this.getMessage(), null, "causedBy", null, 0, -1, Event.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
@@ -2551,6 +2669,20 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
         this.initEClass(this.queryEClass, Query.class, "Query", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         this.initEClass(this.repositoryEClass, Repository.class, "Repository", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        this.initEClass(this.channelEClass, Channel.class, "Channel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        this.initEClass(this.subscriptionEClass, Subscription.class, "Subscription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getSubscription_Channel(), this.getChannel(), null, "channel", null, 0, 1, Subscription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+                IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getSubscription_Message(), this.getMessage(), this.getMessage_ListenedBy(), "message", null, 0, 1, Subscription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.publicationEClass, Publication.class, "Publication", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getPublication_Channel(), this.getChannel(), null, "channel", null, 0, 1, Publication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+                IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getPublication_Message(), this.getMessage(), this.getMessage_EmittedBy(), "message", null, 0, 1, Publication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize enums and add enum literals
         this.initEEnum(this.priorityEEnum, Priority.class, "Priority");

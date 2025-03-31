@@ -18,14 +18,15 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
-import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.sirius.components.papaya.Message;
 import org.eclipse.sirius.components.papaya.MessageEmitter;
 import org.eclipse.sirius.components.papaya.MessageListener;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
+import org.eclipse.sirius.components.papaya.Publication;
 import org.eclipse.sirius.components.papaya.Service;
+import org.eclipse.sirius.components.papaya.Subscription;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Service</b></em>'. <!-- end-user-doc -->
@@ -33,8 +34,8 @@ import org.eclipse.sirius.components.papaya.Service;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.ServiceImpl#getListenedMessages <em>Listened Messages</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.ServiceImpl#getEmittedMessages <em>Emitted Messages</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.impl.ServiceImpl#getSubscriptions <em>Subscriptions</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.impl.ServiceImpl#getPublications <em>Publications</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.ServiceImpl#getCalls <em>Calls</em>}</li>
  * </ul>
  *
@@ -42,24 +43,24 @@ import org.eclipse.sirius.components.papaya.Service;
  */
 public class ServiceImpl extends NamedElementImpl implements Service {
     /**
-     * The cached value of the '{@link #getListenedMessages() <em>Listened Messages</em>}' reference list. <!--
+     * The cached value of the '{@link #getSubscriptions() <em>Subscriptions</em>}' containment reference list. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getListenedMessages()
+     * @see #getSubscriptions()
      * @generated
      * @ordered
      */
-    protected EList<Message> listenedMessages;
+    protected EList<Subscription> subscriptions;
 
     /**
-     * The cached value of the '{@link #getEmittedMessages() <em>Emitted Messages</em>}' reference list. <!--
+     * The cached value of the '{@link #getPublications() <em>Publications</em>}' containment reference. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getEmittedMessages()
+     * @see #getPublications()
      * @generated
      * @ordered
      */
-    protected EList<Message> emittedMessages;
+    protected EList<Publication> publications;
 
     /**
      * The cached value of the '{@link #getCalls() <em>Calls</em>}' reference list. <!-- begin-user-doc --> <!--
@@ -96,11 +97,11 @@ public class ServiceImpl extends NamedElementImpl implements Service {
      * @generated
      */
     @Override
-    public EList<Message> getEmittedMessages() {
-        if (this.emittedMessages == null) {
-            this.emittedMessages = new EObjectWithInverseResolvingEList.ManyInverse<>(Message.class, this, PapayaPackage.SERVICE__EMITTED_MESSAGES, PapayaPackage.MESSAGE__EMITTED_BY);
+    public EList<Publication> getPublications() {
+        if (this.publications == null) {
+            this.publications = new EObjectContainmentEList<>(Publication.class, this, PapayaPackage.SERVICE__PUBLICATIONS);
         }
-        return this.emittedMessages;
+        return this.publications;
     }
 
     /**
@@ -109,11 +110,11 @@ public class ServiceImpl extends NamedElementImpl implements Service {
      * @generated
      */
     @Override
-    public EList<Message> getListenedMessages() {
-        if (this.listenedMessages == null) {
-            this.listenedMessages = new EObjectWithInverseResolvingEList.ManyInverse<>(Message.class, this, PapayaPackage.SERVICE__LISTENED_MESSAGES, PapayaPackage.MESSAGE__LISTENED_BY);
+    public EList<Subscription> getSubscriptions() {
+        if (this.subscriptions == null) {
+            this.subscriptions = new EObjectContainmentEList<>(Subscription.class, this, PapayaPackage.SERVICE__SUBSCRIPTIONS);
         }
-        return this.listenedMessages;
+        return this.subscriptions;
     }
 
     /**
@@ -134,30 +135,13 @@ public class ServiceImpl extends NamedElementImpl implements Service {
      *
      * @generated
      */
-    @SuppressWarnings("unchecked")
-    @Override
-    public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case PapayaPackage.SERVICE__LISTENED_MESSAGES:
-                return ((InternalEList<InternalEObject>) (InternalEList<?>) this.getListenedMessages()).basicAdd(otherEnd, msgs);
-            case PapayaPackage.SERVICE__EMITTED_MESSAGES:
-                return ((InternalEList<InternalEObject>) (InternalEList<?>) this.getEmittedMessages()).basicAdd(otherEnd, msgs);
-        }
-        return super.eInverseAdd(otherEnd, featureID, msgs);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
-            case PapayaPackage.SERVICE__LISTENED_MESSAGES:
-                return ((InternalEList<?>) this.getListenedMessages()).basicRemove(otherEnd, msgs);
-            case PapayaPackage.SERVICE__EMITTED_MESSAGES:
-                return ((InternalEList<?>) this.getEmittedMessages()).basicRemove(otherEnd, msgs);
+            case PapayaPackage.SERVICE__SUBSCRIPTIONS:
+                return ((InternalEList<?>) this.getSubscriptions()).basicRemove(otherEnd, msgs);
+            case PapayaPackage.SERVICE__PUBLICATIONS:
+                return ((InternalEList<?>) this.getPublications()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -170,10 +154,10 @@ public class ServiceImpl extends NamedElementImpl implements Service {
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case PapayaPackage.SERVICE__LISTENED_MESSAGES:
-                return this.getListenedMessages();
-            case PapayaPackage.SERVICE__EMITTED_MESSAGES:
-                return this.getEmittedMessages();
+            case PapayaPackage.SERVICE__SUBSCRIPTIONS:
+                return this.getSubscriptions();
+            case PapayaPackage.SERVICE__PUBLICATIONS:
+                return this.getPublications();
             case PapayaPackage.SERVICE__CALLS:
                 return this.getCalls();
         }
@@ -189,13 +173,13 @@ public class ServiceImpl extends NamedElementImpl implements Service {
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case PapayaPackage.SERVICE__LISTENED_MESSAGES:
-                this.getListenedMessages().clear();
-                this.getListenedMessages().addAll((Collection<? extends Message>) newValue);
+            case PapayaPackage.SERVICE__SUBSCRIPTIONS:
+                this.getSubscriptions().clear();
+                this.getSubscriptions().addAll((Collection<? extends Subscription>) newValue);
                 return;
-            case PapayaPackage.SERVICE__EMITTED_MESSAGES:
-                this.getEmittedMessages().clear();
-                this.getEmittedMessages().addAll((Collection<? extends Message>) newValue);
+            case PapayaPackage.SERVICE__PUBLICATIONS:
+                this.getPublications().clear();
+                this.getPublications().addAll((Collection<? extends Publication>) newValue);
                 return;
             case PapayaPackage.SERVICE__CALLS:
                 this.getCalls().clear();
@@ -213,11 +197,11 @@ public class ServiceImpl extends NamedElementImpl implements Service {
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case PapayaPackage.SERVICE__LISTENED_MESSAGES:
-                this.getListenedMessages().clear();
+            case PapayaPackage.SERVICE__SUBSCRIPTIONS:
+                this.getSubscriptions().clear();
                 return;
-            case PapayaPackage.SERVICE__EMITTED_MESSAGES:
-                this.getEmittedMessages().clear();
+            case PapayaPackage.SERVICE__PUBLICATIONS:
+                this.getPublications().clear();
                 return;
             case PapayaPackage.SERVICE__CALLS:
                 this.getCalls().clear();
@@ -234,10 +218,10 @@ public class ServiceImpl extends NamedElementImpl implements Service {
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case PapayaPackage.SERVICE__LISTENED_MESSAGES:
-                return this.listenedMessages != null && !this.listenedMessages.isEmpty();
-            case PapayaPackage.SERVICE__EMITTED_MESSAGES:
-                return this.emittedMessages != null && !this.emittedMessages.isEmpty();
+            case PapayaPackage.SERVICE__SUBSCRIPTIONS:
+                return this.subscriptions != null && !this.subscriptions.isEmpty();
+            case PapayaPackage.SERVICE__PUBLICATIONS:
+                return this.publications != null && !this.publications.isEmpty();
             case PapayaPackage.SERVICE__CALLS:
                 return this.calls != null && !this.calls.isEmpty();
         }
@@ -253,16 +237,16 @@ public class ServiceImpl extends NamedElementImpl implements Service {
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
         if (baseClass == MessageListener.class) {
             switch (derivedFeatureID) {
-                case PapayaPackage.SERVICE__LISTENED_MESSAGES:
-                    return PapayaPackage.MESSAGE_LISTENER__LISTENED_MESSAGES;
+                case PapayaPackage.SERVICE__SUBSCRIPTIONS:
+                    return PapayaPackage.MESSAGE_LISTENER__SUBSCRIPTIONS;
                 default:
                     return -1;
             }
         }
         if (baseClass == MessageEmitter.class) {
             switch (derivedFeatureID) {
-                case PapayaPackage.SERVICE__EMITTED_MESSAGES:
-                    return PapayaPackage.MESSAGE_EMITTER__EMITTED_MESSAGES;
+                case PapayaPackage.SERVICE__PUBLICATIONS:
+                    return PapayaPackage.MESSAGE_EMITTER__PUBLICATIONS;
                 default:
                     return -1;
             }
@@ -279,16 +263,16 @@ public class ServiceImpl extends NamedElementImpl implements Service {
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
         if (baseClass == MessageListener.class) {
             switch (baseFeatureID) {
-                case PapayaPackage.MESSAGE_LISTENER__LISTENED_MESSAGES:
-                    return PapayaPackage.SERVICE__LISTENED_MESSAGES;
+                case PapayaPackage.MESSAGE_LISTENER__SUBSCRIPTIONS:
+                    return PapayaPackage.SERVICE__SUBSCRIPTIONS;
                 default:
                     return -1;
             }
         }
         if (baseClass == MessageEmitter.class) {
             switch (baseFeatureID) {
-                case PapayaPackage.MESSAGE_EMITTER__EMITTED_MESSAGES:
-                    return PapayaPackage.SERVICE__EMITTED_MESSAGES;
+                case PapayaPackage.MESSAGE_EMITTER__PUBLICATIONS:
+                    return PapayaPackage.SERVICE__PUBLICATIONS;
                 default:
                     return -1;
             }

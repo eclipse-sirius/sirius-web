@@ -302,6 +302,30 @@ public interface PapayaFactory extends EFactory {
     Repository createRepository();
 
     /**
+     * Returns a new object of class '<em>Channel</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Channel</em>'.
+     * @generated
+     */
+    Channel createChannel();
+
+    /**
+     * Returns a new object of class '<em>Subscription</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Subscription</em>'.
+     * @generated
+     */
+    Subscription createSubscription();
+
+    /**
+     * Returns a new object of class '<em>Publication</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Publication</em>'.
+     * @generated
+     */
+    Publication createPublication();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.

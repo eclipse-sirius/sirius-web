@@ -88,6 +88,7 @@ public class ProjectItemProvider extends NamedElementItemProvider {
             this.childrenFeatures.add(PapayaPackage.Literals.PROJECT__CONTRIBUTIONS);
             this.childrenFeatures.add(PapayaPackage.Literals.PROJECT__APPLICATION_CONCERNS);
             this.childrenFeatures.add(PapayaPackage.Literals.PROJECT__DOMAINS);
+            this.childrenFeatures.add(PapayaPackage.Literals.PROJECT__CHANNELS);
         }
         return this.childrenFeatures;
     }
@@ -172,6 +173,7 @@ public class ProjectItemProvider extends NamedElementItemProvider {
             case PapayaPackage.PROJECT__CONTRIBUTIONS:
             case PapayaPackage.PROJECT__APPLICATION_CONCERNS:
             case PapayaPackage.PROJECT__DOMAINS:
+            case PapayaPackage.PROJECT__CHANNELS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -203,6 +205,8 @@ public class ProjectItemProvider extends NamedElementItemProvider {
         newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.PROJECT__APPLICATION_CONCERNS, PapayaFactory.eINSTANCE.createApplicationConcern()));
 
         newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.PROJECT__DOMAINS, PapayaFactory.eINSTANCE.createDomain()));
+
+        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.PROJECT__CHANNELS, PapayaFactory.eINSTANCE.createChannel()));
     }
 
 }

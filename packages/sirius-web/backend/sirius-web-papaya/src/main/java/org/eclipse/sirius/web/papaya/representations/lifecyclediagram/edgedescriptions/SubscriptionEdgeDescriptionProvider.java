@@ -31,17 +31,17 @@ import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescri
 import org.eclipse.sirius.web.papaya.services.PapayaColorPaletteProvider;
 
 /**
- * Used to create the message emitter emitted messages edge description.
+ * Used to create the subscription edge description.
  *
  * @author sbegaudeau
  */
-public class MessageEmitterEmittedMessagesEdgeDescriptionProvider implements IEdgeDescriptionProvider {
+public class SubscriptionEdgeDescriptionProvider implements IEdgeDescriptionProvider {
 
-    public static final String NAME = "MessageEmitter#emittedMessages";
+    public static final String NAME = "Subscription";
 
     private final IColorProvider colorProvider;
 
-    public MessageEmitterEmittedMessagesEdgeDescriptionProvider(IColorProvider colorProvider) {
+    public SubscriptionEdgeDescriptionProvider(IColorProvider colorProvider) {
         this.colorProvider = Objects.requireNonNull(colorProvider);
     }
 
@@ -49,8 +49,8 @@ public class MessageEmitterEmittedMessagesEdgeDescriptionProvider implements IEd
     public EdgeDescription create() {
         var extendsEdgeStyle = new DiagramBuilders().newEdgeStyle()
                 .color(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
-                .sourceArrowStyle(ArrowStyle.NONE)
-                .targetArrowStyle(ArrowStyle.INPUT_ARROW)
+                .sourceArrowStyle(ArrowStyle.INPUT_ARROW)
+                .targetArrowStyle(ArrowStyle.NONE)
                 .lineStyle(LineStyle.SOLID)
                 .edgeWidth(1)
                 .borderSize(0)
@@ -58,27 +58,29 @@ public class MessageEmitterEmittedMessagesEdgeDescriptionProvider implements IEd
 
         return new DiagramBuilders().newEdgeDescription()
                 .name(NAME)
-                .centerLabelExpression("emits")
-                .sourceExpression("aql:self")
-                .targetExpression("aql:self.emittedMessages")
-                .isDomainBasedEdge(false)
+                .centerLabelExpression("listened by")
+                .sourceExpression("aql:self.eContainer()")
+                .targetExpression("aql:self.message")
+                .isDomainBasedEdge(true)
+                .domainType("papaya::Subscription")
+                .semanticCandidatesExpression("aql:self.eContainer().eAllContents()")
                 .style(extendsEdgeStyle)
                 .build();
     }
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var messageEmitterEmittedMessagesEdgeDescription = cache.getEdgeDescription(NAME).orElse(null);
+        var subscriptionEdgeDescription = cache.getEdgeDescription(NAME).orElse(null);
 
         var controllerNodeDescription = cache.getNodeDescription(ControllerNodeDescriptionProvider.NAME).orElse(null);
         var applicationServiceNodeDescription = cache.getNodeDescription(ApplicationServiceNodeDescriptionProvider.NAME).orElse(null);
         var domainServiceNodeDescription = cache.getNodeDescription(DomainServiceNodeDescriptionProvider.NAME).orElse(null);
 
-        var commandNodeDescription = cache.getNodeDescription(CommandNodeDescriptionProvider.NAME).orElse(null);
         var eventNodeDescription = cache.getNodeDescription(EventNodeDescriptionProvider.NAME).orElse(null);
+        var commandNodeDescription = cache.getNodeDescription(CommandNodeDescriptionProvider.NAME).orElse(null);
 
-        messageEmitterEmittedMessagesEdgeDescription.getSourceDescriptions().addAll(List.of(controllerNodeDescription, applicationServiceNodeDescription, domainServiceNodeDescription));
-        messageEmitterEmittedMessagesEdgeDescription.getTargetDescriptions().addAll(List.of(commandNodeDescription, eventNodeDescription));
-        diagramDescription.getEdgeDescriptions().add(messageEmitterEmittedMessagesEdgeDescription);
+        subscriptionEdgeDescription.getSourceDescriptions().addAll(List.of(controllerNodeDescription, applicationServiceNodeDescription, domainServiceNodeDescription));
+        subscriptionEdgeDescription.getTargetDescriptions().addAll(List.of(commandNodeDescription, eventNodeDescription));
+        diagramDescription.getEdgeDescriptions().add(subscriptionEdgeDescription);
     }
 }

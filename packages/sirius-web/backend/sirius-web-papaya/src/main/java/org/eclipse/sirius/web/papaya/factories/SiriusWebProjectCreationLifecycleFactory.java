@@ -21,13 +21,16 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.papaya.ApplicationConcern;
+import org.eclipse.sirius.components.papaya.Channel;
 import org.eclipse.sirius.components.papaya.Command;
 import org.eclipse.sirius.components.papaya.Controller;
 import org.eclipse.sirius.components.papaya.Domain;
 import org.eclipse.sirius.components.papaya.Event;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.Project;
+import org.eclipse.sirius.components.papaya.Publication;
 import org.eclipse.sirius.components.papaya.Service;
+import org.eclipse.sirius.components.papaya.Subscription;
 import org.eclipse.sirius.web.papaya.factories.services.api.IEObjectIndexer;
 import org.eclipse.sirius.web.papaya.factories.services.api.IObjectFactory;
 
@@ -68,6 +71,20 @@ public class SiriusWebProjectCreationLifecycleFactory implements IObjectFactory 
 
     private Event projectSemanticDataCreatedEvent;
 
+    private Subscription createProjectSubscription;
+
+    private Subscription projectCreatedEventSubscription;
+
+    private Subscription semanticDataCreatedEventSubscription;
+
+    private Publication projectCreatedEventPublication;
+
+    private Publication semanticDataCreatedEventPublication;
+
+    private Publication projectSemanticDataCreatedEventPublication;
+
+    private Channel projectHttpChannel;
+
     @Override
     public void create(IEMFEditingContext editingContext) {
         Supplier<Resource> createResource = () -> {
@@ -99,6 +116,10 @@ public class SiriusWebProjectCreationLifecycleFactory implements IObjectFactory 
                     return siriusWebProject;
                 });
 
+        this.projectHttpChannel = PapayaFactory.eINSTANCE.createChannel();
+        projectHttpChannel.setName("HTTP");
+        project.getChannels().add(projectHttpChannel);
+
         project.getApplicationConcerns().add(this.projectCreationApplicationConcern());
         project.getDomains().add(this.projectDomain());
         project.getDomains().add(this.semanticDataDomain());
@@ -112,6 +133,10 @@ public class SiriusWebProjectCreationLifecycleFactory implements IObjectFactory 
         this.createProjectInput = PapayaFactory.eINSTANCE.createCommand();
         createProjectInput.setName("CreateProjectInput");
         projectCreationApplicationConcern.getCommands().add(createProjectInput);
+
+        this.createProjectSubscription = PapayaFactory.eINSTANCE.createSubscription();
+        createProjectSubscription.setMessage(this.createProjectInput);
+        createProjectSubscription.setChannel(this.projectHttpChannel);
 
         this.mutationCreateProjectDataFetcher = PapayaFactory.eINSTANCE.createController();
         mutationCreateProjectDataFetcher.setName("MutationCreateProjectDataFetcher");
@@ -143,6 +168,12 @@ public class SiriusWebProjectCreationLifecycleFactory implements IObjectFactory 
         projectCreatedEvent.setName("ProjectCreatedEvent");
         projectDomain.getEvents().add(projectCreatedEvent);
 
+        this.projectCreatedEventPublication = PapayaFactory.eINSTANCE.createPublication();
+        projectCreatedEventPublication.setMessage(this.projectCreatedEvent);
+
+        this.projectCreatedEventSubscription = PapayaFactory.eINSTANCE.createSubscription();
+        projectCreatedEventSubscription.setMessage(this.projectCreatedEvent);
+
         return projectDomain;
     }
 
@@ -157,6 +188,12 @@ public class SiriusWebProjectCreationLifecycleFactory implements IObjectFactory 
         this.semanticDataCreatedEvent = PapayaFactory.eINSTANCE.createEvent();
         semanticDataCreatedEvent.setName("SemanticDataCreatedEvent");
         semanticDataDomain.getEvents().add(semanticDataCreatedEvent);
+
+        this.semanticDataCreatedEventSubscription = PapayaFactory.eINSTANCE.createSubscription();
+        semanticDataCreatedEventSubscription.setMessage(this.semanticDataCreatedEvent);
+
+        this.semanticDataCreatedEventPublication = PapayaFactory.eINSTANCE.createPublication();
+        semanticDataCreatedEventPublication.setMessage(this.semanticDataCreatedEvent);
 
         return semanticDataDomain;
     }
@@ -173,26 +210,29 @@ public class SiriusWebProjectCreationLifecycleFactory implements IObjectFactory 
         projectSemanticDataCreatedEvent.setName("ProjectSemanticDataCreatedEvent");
         projectSemanticDataDomain.getEvents().add(projectSemanticDataCreatedEvent);
 
+        this.projectSemanticDataCreatedEventPublication = PapayaFactory.eINSTANCE.createPublication();
+        projectSemanticDataCreatedEventPublication.setMessage(this.projectSemanticDataCreatedEvent);
+
         return projectSemanticDataDomain;
     }
 
     @Override
     public void link(IEObjectIndexer eObjectIndexer) {
         this.projectCreationApplicationConcern.getDomains().addAll(List.of(this.projectDomain, this.semanticDataDomain, this.projectSemanticDataDomain));
-        this.mutationCreateProjectDataFetcher.getListenedMessages().add(this.createProjectInput);
+        this.mutationCreateProjectDataFetcher.getSubscriptions().add(this.createProjectSubscription);
         this.mutationCreateProjectDataFetcher.getCalls().add(this.iProjectApplicationService);
         this.iProjectApplicationService.getCalls().add(this.iProjectCreationService);
-        this.iProjectCreationService.getEmittedMessages().add(this.projectCreatedEvent);
+        this.iProjectCreationService.getPublications().add(this.projectCreatedEventPublication);
         this.projectCreatedEvent.getCausedBy().add(this.createProjectInput);
 
-        this.semanticDataInitializer.getListenedMessages().add(this.projectCreatedEvent);
+        this.semanticDataInitializer.getSubscriptions().add(this.projectCreatedEventSubscription);
         this.semanticDataInitializer.getCalls().add(this.iSemanticDataCreationService);
-        this.iSemanticDataCreationService.getEmittedMessages().add(this.semanticDataCreatedEvent);
+        this.iSemanticDataCreationService.getPublications().add(this.semanticDataCreatedEventPublication);
         this.semanticDataCreatedEvent.getCausedBy().add(this.projectCreatedEvent);
 
-        this.projectSemanticDataInitializer.getListenedMessages().add(this.semanticDataCreatedEvent);
+        this.projectSemanticDataInitializer.getSubscriptions().add(this.semanticDataCreatedEventSubscription);
         this.projectSemanticDataInitializer.getCalls().add(this.iProjectSemanticDataCreationService);
-        this.iProjectSemanticDataCreationService.getEmittedMessages().add(this.projectSemanticDataCreatedEvent);
+        this.iProjectSemanticDataCreationService.getPublications().add(this.projectSemanticDataCreatedEventPublication);
         this.projectSemanticDataCreatedEvent.getCausedBy().add(this.semanticDataCreatedEvent);
     }
 }

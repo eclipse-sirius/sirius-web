@@ -40,6 +40,7 @@ import org.eclipse.sirius.components.papaya.provider.spec.AnnotationFieldItemPro
 import org.eclipse.sirius.components.papaya.provider.spec.AnnotationItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ApplicationConcernItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.AttributeItemProviderSpec;
+import org.eclipse.sirius.components.papaya.provider.spec.ChannelItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ClassItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.CommandItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ComponentExchangeItemProviderSpec;
@@ -61,12 +62,14 @@ import org.eclipse.sirius.components.papaya.provider.spec.PackageItemProviderSpe
 import org.eclipse.sirius.components.papaya.provider.spec.ParameterItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ProjectItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ProvidedServiceItemProviderSpec;
+import org.eclipse.sirius.components.papaya.provider.spec.PublicationItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.QueryItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.RecordComponentItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.RecordItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.RepositoryItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.RequiredServiceItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ServiceItemProviderSpec;
+import org.eclipse.sirius.components.papaya.provider.spec.SubscriptionItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.TagItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.TaskItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.TypeParameterItemProviderSpec;
@@ -909,6 +912,75 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Channel} instances.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ChannelItemProvider channelItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.Channel}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Adapter createChannelAdapter() {
+        if (this.channelItemProvider == null) {
+            this.channelItemProvider = new ChannelItemProviderSpec(this);
+        }
+
+        return this.channelItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Subscription}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected SubscriptionItemProvider subscriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.Subscription}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Adapter createSubscriptionAdapter() {
+        if (this.subscriptionItemProvider == null) {
+            this.subscriptionItemProvider = new SubscriptionItemProviderSpec(this);
+        }
+
+        return this.subscriptionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Publication}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected PublicationItemProvider publicationItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.Publication}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Adapter createPublicationAdapter() {
+        if (this.publicationItemProvider == null) {
+            this.publicationItemProvider = new PublicationItemProviderSpec(this);
+        }
+
+        return this.publicationItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -1105,6 +1177,12 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
             this.queryItemProvider.dispose();
         if (this.repositoryItemProvider != null)
             this.repositoryItemProvider.dispose();
+        if (this.channelItemProvider != null)
+            this.channelItemProvider.dispose();
+        if (this.subscriptionItemProvider != null)
+            this.subscriptionItemProvider.dispose();
+        if (this.publicationItemProvider != null)
+            this.publicationItemProvider.dispose();
     }
 
 }

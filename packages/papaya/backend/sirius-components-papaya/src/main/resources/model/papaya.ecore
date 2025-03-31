@@ -32,6 +32,8 @@
         eType="#//ApplicationConcern" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="domains" upperBound="-1"
         eType="#//Domain" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="channels" upperBound="-1"
+        eType="#//Channel" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="Instant" instanceClassName="java.time.Instant"/>
   <eClassifiers xsi:type="ecore:EClass" name="Iteration" eSuperTypes="#//NamedElement">
@@ -262,19 +264,19 @@
         eType="#//Service"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MessageListener" abstract="true" interface="true">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="listenedMessages" upperBound="-1"
-        eType="#//Message" eOpposite="#//Message/listenedBy"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="subscriptions" upperBound="-1"
+        eType="#//Subscription" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MessageEmitter" abstract="true" interface="true">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="emittedMessages" upperBound="-1"
-        eType="#//Message" eOpposite="#//Message/emittedBy"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="publications" upperBound="-1"
+        eType="#//Publication" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Message" abstract="true" interface="true"
       eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="emittedBy" upperBound="-1"
-        eType="#//MessageEmitter" eOpposite="#//MessageEmitter/emittedMessages"/>
+        eType="#//Publication" eOpposite="#//Publication/message"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="listenedBy" upperBound="-1"
-        eType="#//MessageListener" eOpposite="#//MessageListener/listenedMessages"/>
+        eType="#//Subscription" eOpposite="#//Subscription/message"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Event" eSuperTypes="#//Message">
     <eStructuralFeatures xsi:type="ecore:EReference" name="causedBy" upperBound="-1"
@@ -283,4 +285,15 @@
   <eClassifiers xsi:type="ecore:EClass" name="Command" eSuperTypes="#//Message"/>
   <eClassifiers xsi:type="ecore:EClass" name="Query" eSuperTypes="#//Message"/>
   <eClassifiers xsi:type="ecore:EClass" name="Repository" eSuperTypes="#//NamedElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Channel" eSuperTypes="#//NamedElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Subscription">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="channel" eType="#//Channel"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="message" eType="#//Message"
+        eOpposite="#//Message/listenedBy"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Publication">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="channel" eType="#//Channel"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="message" eType="#//Message"
+        eOpposite="#//Message/emittedBy"/>
+  </eClassifiers>
 </ecore:EPackage>

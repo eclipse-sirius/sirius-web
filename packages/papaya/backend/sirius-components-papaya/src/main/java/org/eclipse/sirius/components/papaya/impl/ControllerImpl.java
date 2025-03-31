@@ -18,15 +18,16 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
-import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.papaya.Controller;
-import org.eclipse.sirius.components.papaya.Message;
 import org.eclipse.sirius.components.papaya.MessageEmitter;
 import org.eclipse.sirius.components.papaya.MessageListener;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
+import org.eclipse.sirius.components.papaya.Publication;
 import org.eclipse.sirius.components.papaya.Service;
+import org.eclipse.sirius.components.papaya.Subscription;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Controller</b></em>'. <!-- end-user-doc -->
@@ -34,10 +35,8 @@ import org.eclipse.sirius.components.papaya.Service;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.ControllerImpl#getEmittedMessages <em>Emitted
- * Messages</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.ControllerImpl#getListenedMessages <em>Listened
- * Messages</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.impl.ControllerImpl#getPublications <em>Publications</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.impl.ControllerImpl#getSubscriptions <em>Subscriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.ControllerImpl#getCalls <em>Calls</em>}</li>
  * </ul>
  *
@@ -45,24 +44,24 @@ import org.eclipse.sirius.components.papaya.Service;
  */
 public class ControllerImpl extends NamedElementImpl implements Controller {
     /**
-     * The cached value of the '{@link #getEmittedMessages() <em>Emitted Messages</em>}' reference list. <!--
+     * The cached value of the '{@link #getPublications() <em>Publications</em>}' containment reference. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getEmittedMessages()
+     * @see #getPublications()
      * @generated
      * @ordered
      */
-    protected EList<Message> emittedMessages;
+    protected EList<Publication> publications;
 
     /**
-     * The cached value of the '{@link #getListenedMessages() <em>Listened Messages</em>}' reference list. <!--
+     * The cached value of the '{@link #getSubscriptions() <em>Subscriptions</em>}' containment reference list. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getListenedMessages()
+     * @see #getSubscriptions()
      * @generated
      * @ordered
      */
-    protected EList<Message> listenedMessages;
+    protected EList<Subscription> subscriptions;
 
     /**
      * The cached value of the '{@link #getCalls() <em>Calls</em>}' reference list. <!-- begin-user-doc --> <!--
@@ -99,11 +98,11 @@ public class ControllerImpl extends NamedElementImpl implements Controller {
      * @generated
      */
     @Override
-    public EList<Message> getEmittedMessages() {
-        if (this.emittedMessages == null) {
-            this.emittedMessages = new EObjectWithInverseResolvingEList.ManyInverse<>(Message.class, this, PapayaPackage.CONTROLLER__EMITTED_MESSAGES, PapayaPackage.MESSAGE__EMITTED_BY);
+    public EList<Publication> getPublications() {
+        if (this.publications == null) {
+            this.publications = new EObjectContainmentEList<>(Publication.class, this, PapayaPackage.CONTROLLER__PUBLICATIONS);
         }
-        return this.emittedMessages;
+        return this.publications;
     }
 
     /**
@@ -112,11 +111,11 @@ public class ControllerImpl extends NamedElementImpl implements Controller {
      * @generated
      */
     @Override
-    public EList<Message> getListenedMessages() {
-        if (this.listenedMessages == null) {
-            this.listenedMessages = new EObjectWithInverseResolvingEList.ManyInverse<>(Message.class, this, PapayaPackage.CONTROLLER__LISTENED_MESSAGES, PapayaPackage.MESSAGE__LISTENED_BY);
+    public EList<Subscription> getSubscriptions() {
+        if (this.subscriptions == null) {
+            this.subscriptions = new EObjectContainmentEList<>(Subscription.class, this, PapayaPackage.CONTROLLER__SUBSCRIPTIONS);
         }
-        return this.listenedMessages;
+        return this.subscriptions;
     }
 
     /**
@@ -137,30 +136,13 @@ public class ControllerImpl extends NamedElementImpl implements Controller {
      *
      * @generated
      */
-    @SuppressWarnings("unchecked")
-    @Override
-    public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case PapayaPackage.CONTROLLER__EMITTED_MESSAGES:
-                return ((InternalEList<InternalEObject>) (InternalEList<?>) this.getEmittedMessages()).basicAdd(otherEnd, msgs);
-            case PapayaPackage.CONTROLLER__LISTENED_MESSAGES:
-                return ((InternalEList<InternalEObject>) (InternalEList<?>) this.getListenedMessages()).basicAdd(otherEnd, msgs);
-        }
-        return super.eInverseAdd(otherEnd, featureID, msgs);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
-            case PapayaPackage.CONTROLLER__EMITTED_MESSAGES:
-                return ((InternalEList<?>) this.getEmittedMessages()).basicRemove(otherEnd, msgs);
-            case PapayaPackage.CONTROLLER__LISTENED_MESSAGES:
-                return ((InternalEList<?>) this.getListenedMessages()).basicRemove(otherEnd, msgs);
+            case PapayaPackage.CONTROLLER__PUBLICATIONS:
+                return ((InternalEList<?>) this.getPublications()).basicRemove(otherEnd, msgs);
+            case PapayaPackage.CONTROLLER__SUBSCRIPTIONS:
+                return ((InternalEList<?>) this.getSubscriptions()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -173,10 +155,10 @@ public class ControllerImpl extends NamedElementImpl implements Controller {
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case PapayaPackage.CONTROLLER__EMITTED_MESSAGES:
-                return this.getEmittedMessages();
-            case PapayaPackage.CONTROLLER__LISTENED_MESSAGES:
-                return this.getListenedMessages();
+            case PapayaPackage.CONTROLLER__PUBLICATIONS:
+                return this.getPublications();
+            case PapayaPackage.CONTROLLER__SUBSCRIPTIONS:
+                return this.getSubscriptions();
             case PapayaPackage.CONTROLLER__CALLS:
                 return this.getCalls();
         }
@@ -192,13 +174,13 @@ public class ControllerImpl extends NamedElementImpl implements Controller {
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case PapayaPackage.CONTROLLER__EMITTED_MESSAGES:
-                this.getEmittedMessages().clear();
-                this.getEmittedMessages().addAll((Collection<? extends Message>) newValue);
+            case PapayaPackage.CONTROLLER__PUBLICATIONS:
+                this.getPublications().clear();
+                this.getPublications().addAll((Collection<? extends Publication>) newValue);
                 return;
-            case PapayaPackage.CONTROLLER__LISTENED_MESSAGES:
-                this.getListenedMessages().clear();
-                this.getListenedMessages().addAll((Collection<? extends Message>) newValue);
+            case PapayaPackage.CONTROLLER__SUBSCRIPTIONS:
+                this.getSubscriptions().clear();
+                this.getSubscriptions().addAll((Collection<? extends Subscription>) newValue);
                 return;
             case PapayaPackage.CONTROLLER__CALLS:
                 this.getCalls().clear();
@@ -216,11 +198,11 @@ public class ControllerImpl extends NamedElementImpl implements Controller {
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case PapayaPackage.CONTROLLER__EMITTED_MESSAGES:
-                this.getEmittedMessages().clear();
+            case PapayaPackage.CONTROLLER__PUBLICATIONS:
+                this.getPublications().clear();
                 return;
-            case PapayaPackage.CONTROLLER__LISTENED_MESSAGES:
-                this.getListenedMessages().clear();
+            case PapayaPackage.CONTROLLER__SUBSCRIPTIONS:
+                this.getSubscriptions().clear();
                 return;
             case PapayaPackage.CONTROLLER__CALLS:
                 this.getCalls().clear();
@@ -237,10 +219,10 @@ public class ControllerImpl extends NamedElementImpl implements Controller {
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case PapayaPackage.CONTROLLER__EMITTED_MESSAGES:
-                return this.emittedMessages != null && !this.emittedMessages.isEmpty();
-            case PapayaPackage.CONTROLLER__LISTENED_MESSAGES:
-                return this.listenedMessages != null && !this.listenedMessages.isEmpty();
+            case PapayaPackage.CONTROLLER__PUBLICATIONS:
+                return this.publications != null && !this.publications.isEmpty();
+            case PapayaPackage.CONTROLLER__SUBSCRIPTIONS:
+                return this.subscriptions != null && !this.subscriptions.isEmpty();
             case PapayaPackage.CONTROLLER__CALLS:
                 return this.calls != null && !this.calls.isEmpty();
         }
@@ -256,16 +238,16 @@ public class ControllerImpl extends NamedElementImpl implements Controller {
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
         if (baseClass == MessageEmitter.class) {
             switch (derivedFeatureID) {
-                case PapayaPackage.CONTROLLER__EMITTED_MESSAGES:
-                    return PapayaPackage.MESSAGE_EMITTER__EMITTED_MESSAGES;
+                case PapayaPackage.CONTROLLER__PUBLICATIONS:
+                    return PapayaPackage.MESSAGE_EMITTER__PUBLICATIONS;
                 default:
                     return -1;
             }
         }
         if (baseClass == MessageListener.class) {
             switch (derivedFeatureID) {
-                case PapayaPackage.CONTROLLER__LISTENED_MESSAGES:
-                    return PapayaPackage.MESSAGE_LISTENER__LISTENED_MESSAGES;
+                case PapayaPackage.CONTROLLER__SUBSCRIPTIONS:
+                    return PapayaPackage.MESSAGE_LISTENER__SUBSCRIPTIONS;
                 default:
                     return -1;
             }
@@ -282,16 +264,16 @@ public class ControllerImpl extends NamedElementImpl implements Controller {
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
         if (baseClass == MessageEmitter.class) {
             switch (baseFeatureID) {
-                case PapayaPackage.MESSAGE_EMITTER__EMITTED_MESSAGES:
-                    return PapayaPackage.CONTROLLER__EMITTED_MESSAGES;
+                case PapayaPackage.MESSAGE_EMITTER__PUBLICATIONS:
+                    return PapayaPackage.CONTROLLER__PUBLICATIONS;
                 default:
                     return -1;
             }
         }
         if (baseClass == MessageListener.class) {
             switch (baseFeatureID) {
-                case PapayaPackage.MESSAGE_LISTENER__LISTENED_MESSAGES:
-                    return PapayaPackage.CONTROLLER__LISTENED_MESSAGES;
+                case PapayaPackage.MESSAGE_LISTENER__SUBSCRIPTIONS:
+                    return PapayaPackage.CONTROLLER__SUBSCRIPTIONS;
                 default:
                     return -1;
             }

@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.papaya.Annotation;
 import org.eclipse.sirius.components.papaya.AnnotationField;
 import org.eclipse.sirius.components.papaya.ApplicationConcern;
 import org.eclipse.sirius.components.papaya.Attribute;
+import org.eclipse.sirius.components.papaya.Channel;
 import org.eclipse.sirius.components.papaya.Classifier;
 import org.eclipse.sirius.components.papaya.Command;
 import org.eclipse.sirius.components.papaya.Component;
@@ -46,11 +47,13 @@ import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.components.papaya.Parameter;
 import org.eclipse.sirius.components.papaya.Project;
 import org.eclipse.sirius.components.papaya.ProvidedService;
+import org.eclipse.sirius.components.papaya.Publication;
 import org.eclipse.sirius.components.papaya.Query;
 import org.eclipse.sirius.components.papaya.RecordComponent;
 import org.eclipse.sirius.components.papaya.Repository;
 import org.eclipse.sirius.components.papaya.RequiredService;
 import org.eclipse.sirius.components.papaya.Service;
+import org.eclipse.sirius.components.papaya.Subscription;
 import org.eclipse.sirius.components.papaya.Tag;
 import org.eclipse.sirius.components.papaya.Task;
 import org.eclipse.sirius.components.papaya.Type;
@@ -640,6 +643,31 @@ public class PapayaSwitch<T> extends Switch<T> {
                     result = this.caseNamedElement(repository);
                 if (result == null)
                     result = this.caseModelElement(repository);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapayaPackage.CHANNEL: {
+                Channel channel = (Channel) theEObject;
+                T result = this.caseChannel(channel);
+                if (result == null)
+                    result = this.caseNamedElement(channel);
+                if (result == null)
+                    result = this.caseModelElement(channel);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapayaPackage.SUBSCRIPTION: {
+                Subscription subscription = (Subscription) theEObject;
+                T result = this.caseSubscription(subscription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapayaPackage.PUBLICATION: {
+                Publication publication = (Publication) theEObject;
+                T result = this.casePublication(publication);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1274,6 +1302,48 @@ public class PapayaSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseRepository(Repository object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Channel</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Channel</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseChannel(Channel object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Subscription</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Subscription</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseSubscription(Subscription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Publication</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Publication</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T casePublication(Publication object) {
         return null;
     }
 

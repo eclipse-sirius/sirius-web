@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.papaya.ApplicationConcern;
+import org.eclipse.sirius.components.papaya.Channel;
 import org.eclipse.sirius.components.papaya.Component;
 import org.eclipse.sirius.components.papaya.ComponentExchange;
 import org.eclipse.sirius.components.papaya.Contribution;
@@ -47,6 +48,7 @@ import org.eclipse.sirius.components.papaya.Task;
  * <li>{@link org.eclipse.sirius.components.papaya.impl.ProjectImpl#getApplicationConcerns <em>Application
  * Concerns</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.ProjectImpl#getDomains <em>Domains</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.impl.ProjectImpl#getChannels <em>Channels</em>}</li>
  * </ul>
  *
  * @generated
@@ -131,6 +133,16 @@ public class ProjectImpl extends NamedElementImpl implements Project {
      * @ordered
      */
     protected EList<Domain> domains;
+
+    /**
+     * The cached value of the '{@link #getChannels() <em>Channels</em>}' containment reference list. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getChannels()
+     * @generated
+     * @ordered
+     */
+    protected EList<Channel> channels;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -276,6 +288,19 @@ public class ProjectImpl extends NamedElementImpl implements Project {
      * @generated
      */
     @Override
+    public EList<Channel> getChannels() {
+        if (this.channels == null) {
+            this.channels = new EObjectContainmentEList<>(Channel.class, this, PapayaPackage.PROJECT__CHANNELS);
+        }
+        return this.channels;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case PapayaPackage.PROJECT__PROJECTS:
@@ -294,6 +319,8 @@ public class ProjectImpl extends NamedElementImpl implements Project {
                 return ((InternalEList<?>) this.getApplicationConcerns()).basicRemove(otherEnd, msgs);
             case PapayaPackage.PROJECT__DOMAINS:
                 return ((InternalEList<?>) this.getDomains()).basicRemove(otherEnd, msgs);
+            case PapayaPackage.PROJECT__CHANNELS:
+                return ((InternalEList<?>) this.getChannels()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -324,6 +351,8 @@ public class ProjectImpl extends NamedElementImpl implements Project {
                 return this.getApplicationConcerns();
             case PapayaPackage.PROJECT__DOMAINS:
                 return this.getDomains();
+            case PapayaPackage.PROJECT__CHANNELS:
+                return this.getChannels();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -369,6 +398,10 @@ public class ProjectImpl extends NamedElementImpl implements Project {
                 this.getDomains().clear();
                 this.getDomains().addAll((Collection<? extends Domain>) newValue);
                 return;
+            case PapayaPackage.PROJECT__CHANNELS:
+                this.getChannels().clear();
+                this.getChannels().addAll((Collection<? extends Channel>) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -405,6 +438,9 @@ public class ProjectImpl extends NamedElementImpl implements Project {
             case PapayaPackage.PROJECT__DOMAINS:
                 this.getDomains().clear();
                 return;
+            case PapayaPackage.PROJECT__CHANNELS:
+                this.getChannels().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -435,6 +471,8 @@ public class ProjectImpl extends NamedElementImpl implements Project {
                 return this.applicationConcerns != null && !this.applicationConcerns.isEmpty();
             case PapayaPackage.PROJECT__DOMAINS:
                 return this.domains != null && !this.domains.isEmpty();
+            case PapayaPackage.PROJECT__CHANNELS:
+                return this.channels != null && !this.channels.isEmpty();
         }
         return super.eIsSet(featureID);
     }

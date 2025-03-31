@@ -32,17 +32,14 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface MessageListener extends EObject {
     /**
-     * Returns the value of the '<em><b>Listened Messages</b></em>' reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.papaya.Message}. It is bidirectional and its opposite is
-     * '{@link org.eclipse.sirius.components.papaya.Message#getListenedBy <em>Listened By</em>}'. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
+     * Returns the value of the '<em><b>Subscriptions</b></em>' containment reference list. The list contents are of
+     * type {@link org.eclipse.sirius.components.papaya.Subscription}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the value of the '<em>Listened Messages</em>' reference list.
-     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getMessageListener_ListenedMessages()
-     * @see org.eclipse.sirius.components.papaya.Message#getListenedBy
-     * @model opposite="listenedBy"
+     * @return the value of the '<em>Subscriptions</em>' containment reference list.
+     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getMessageListener_Subscriptions()
+     * @model containment="true"
      * @generated
      */
-    EList<Message> getListenedMessages();
+    EList<Subscription> getSubscriptions();
 
 } // MessageListener

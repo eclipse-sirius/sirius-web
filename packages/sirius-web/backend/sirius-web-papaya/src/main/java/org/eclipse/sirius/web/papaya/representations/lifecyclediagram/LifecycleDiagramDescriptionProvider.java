@@ -23,9 +23,12 @@ import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.edgedescriptions.ControllerCallsEdgeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.edgedescriptions.EventCausedByEdgeDescriptionProvider;
+import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.edgedescriptions.PublicationChannelEdgeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.edgedescriptions.ServiceCallsEdgeDescriptionProvider;
-import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.edgedescriptions.MessageEmitterEmittedMessagesEdgeDescriptionProvider;
-import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.edgedescriptions.MessageListenerListenedMessagesEdgeDescriptionProvider;
+import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.edgedescriptions.PublicationEdgeDescriptionProvider;
+import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.edgedescriptions.SubscriptionEdgeDescriptionProvider;
+import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.edgedescriptions.SubscriptionChannelEdgeDescriptionProvider;
+import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.ChannelNodeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.CommandNodeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.ControllerNodeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.ApplicationLayerNodeDescriptionProvider;
@@ -67,11 +70,14 @@ public class LifecycleDiagramDescriptionProvider implements IRepresentationDescr
                 new DomainNodeDescriptionProvider(colorProvider),
                 new DomainServiceNodeDescriptionProvider(colorProvider),
                 new EventNodeDescriptionProvider(colorProvider),
+                new ChannelNodeDescriptionProvider(colorProvider),
                 new ControllerCallsEdgeDescriptionProvider(colorProvider),
                 new EventCausedByEdgeDescriptionProvider(colorProvider),
                 new ServiceCallsEdgeDescriptionProvider(colorProvider),
-                new MessageEmitterEmittedMessagesEdgeDescriptionProvider(colorProvider),
-                new MessageListenerListenedMessagesEdgeDescriptionProvider(colorProvider)
+                new PublicationEdgeDescriptionProvider(colorProvider),
+                new SubscriptionEdgeDescriptionProvider(colorProvider),
+                new PublicationChannelEdgeDescriptionProvider(colorProvider),
+                new SubscriptionChannelEdgeDescriptionProvider(colorProvider)
         );
 
         diagramElementDescriptionProviders.forEach(diagramElementDescriptionProvider -> {

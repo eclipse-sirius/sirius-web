@@ -30,6 +30,7 @@ import org.eclipse.emf.common.util.EList;
  * <li>{@link org.eclipse.sirius.components.papaya.Project#getContributions <em>Contributions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Project#getApplicationConcerns <em>Application Concerns</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Project#getDomains <em>Domains</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.Project#getChannels <em>Channels</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.papaya.PapayaPackage#getProject()
@@ -137,5 +138,16 @@ public interface Project extends NamedElement {
      * @generated
      */
     EList<Domain> getDomains();
+
+    /**
+     * Returns the value of the '<em><b>Channels</b></em>' containment reference list. The list contents are of type
+     * {@link org.eclipse.sirius.components.papaya.Channel}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Channels</em>' containment reference list.
+     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getProject_Channels()
+     * @model containment="true"
+     * @generated
+     */
+    EList<Channel> getChannels();
 
 } // Project

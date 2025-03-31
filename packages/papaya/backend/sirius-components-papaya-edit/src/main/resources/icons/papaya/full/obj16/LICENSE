@@ -13,6 +13,7 @@
   - ApplicationConcern.svg
   - ApplicationService.svg
   - Class.svg
+  - Channel.svg
   - Command.svg
   - ComponentExchange.svg
   - Controller.svg
@@ -48,3 +49,5 @@
   - Visibility_PACKAGE.svg
 - https://github.com/material-icons/material-icons (Apache License)
   - Constructor.svg
+  - Publication.svg
+  - Subscription.svg

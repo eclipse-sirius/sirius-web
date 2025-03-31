@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.papaya.Annotation;
 import org.eclipse.sirius.components.papaya.AnnotationField;
 import org.eclipse.sirius.components.papaya.ApplicationConcern;
 import org.eclipse.sirius.components.papaya.Attribute;
+import org.eclipse.sirius.components.papaya.Channel;
 import org.eclipse.sirius.components.papaya.Command;
 import org.eclipse.sirius.components.papaya.Component;
 import org.eclipse.sirius.components.papaya.ComponentExchange;
@@ -46,11 +47,13 @@ import org.eclipse.sirius.components.papaya.Parameter;
 import org.eclipse.sirius.components.papaya.Priority;
 import org.eclipse.sirius.components.papaya.Project;
 import org.eclipse.sirius.components.papaya.ProvidedService;
+import org.eclipse.sirius.components.papaya.Publication;
 import org.eclipse.sirius.components.papaya.Query;
 import org.eclipse.sirius.components.papaya.RecordComponent;
 import org.eclipse.sirius.components.papaya.Repository;
 import org.eclipse.sirius.components.papaya.RequiredService;
 import org.eclipse.sirius.components.papaya.Service;
+import org.eclipse.sirius.components.papaya.Subscription;
 import org.eclipse.sirius.components.papaya.Tag;
 import org.eclipse.sirius.components.papaya.Task;
 import org.eclipse.sirius.components.papaya.TypeParameter;
@@ -173,6 +176,12 @@ public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
                 return this.createQuery();
             case PapayaPackage.REPOSITORY:
                 return this.createRepository();
+            case PapayaPackage.CHANNEL:
+                return this.createChannel();
+            case PapayaPackage.SUBSCRIPTION:
+                return this.createSubscription();
+            case PapayaPackage.PUBLICATION:
+                return this.createPublication();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -588,6 +597,39 @@ public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
     public Repository createRepository() {
         RepositoryImpl repository = new RepositoryImpl();
         return repository;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Channel createChannel() {
+        ChannelImpl channel = new ChannelImpl();
+        return channel;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Subscription createSubscription() {
+        SubscriptionImpl subscription = new SubscriptionImpl();
+        return subscription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Publication createPublication() {
+        PublicationImpl publication = new PublicationImpl();
+        return publication;
     }
 
     /**
