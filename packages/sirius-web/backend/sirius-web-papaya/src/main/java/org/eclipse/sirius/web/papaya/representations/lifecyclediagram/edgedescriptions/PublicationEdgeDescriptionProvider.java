@@ -31,17 +31,17 @@ import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescri
 import org.eclipse.sirius.web.papaya.services.PapayaColorPaletteProvider;
 
 /**
- * Used to create the message listener listened messages edge description.
+ * Used to create the publication edge description.
  *
  * @author sbegaudeau
  */
-public class MessageListenerListenedMessagesEdgeDescriptionProvider implements IEdgeDescriptionProvider {
+public class PublicationEdgeDescriptionProvider implements IEdgeDescriptionProvider {
 
-    public static final String NAME = "MessageListener#listenedMessages";
+    public static final String NAME = "Publication";
 
     private final IColorProvider colorProvider;
 
-    public MessageListenerListenedMessagesEdgeDescriptionProvider(IColorProvider colorProvider) {
+    public PublicationEdgeDescriptionProvider(IColorProvider colorProvider) {
         this.colorProvider = Objects.requireNonNull(colorProvider);
     }
 
@@ -49,8 +49,8 @@ public class MessageListenerListenedMessagesEdgeDescriptionProvider implements I
     public EdgeDescription create() {
         var extendsEdgeStyle = new DiagramBuilders().newEdgeStyle()
                 .color(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
-                .sourceArrowStyle(ArrowStyle.INPUT_ARROW)
-                .targetArrowStyle(ArrowStyle.NONE)
+                .sourceArrowStyle(ArrowStyle.NONE)
+                .targetArrowStyle(ArrowStyle.INPUT_ARROW)
                 .lineStyle(LineStyle.SOLID)
                 .edgeWidth(1)
                 .borderSize(0)
@@ -58,27 +58,29 @@ public class MessageListenerListenedMessagesEdgeDescriptionProvider implements I
 
         return new DiagramBuilders().newEdgeDescription()
                 .name(NAME)
-                .centerLabelExpression("listened by")
-                .sourceExpression("aql:self")
-                .targetExpression("aql:self.listenedMessages")
-                .isDomainBasedEdge(false)
+                .centerLabelExpression("emits")
+                .sourceExpression("aql:self.eContainer()")
+                .targetExpression("aql:self.message")
+                .isDomainBasedEdge(true)
+                .domainType("papaya::Publication")
+                .semanticCandidatesExpression("aql:self.eContainer().eAllContents()")
                 .style(extendsEdgeStyle)
                 .build();
     }
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var messageListenerListenedMessagesEdgeDescription = cache.getEdgeDescription(NAME).orElse(null);
+        var publicationEdgeDescription = cache.getEdgeDescription(NAME).orElse(null);
 
         var controllerNodeDescription = cache.getNodeDescription(ControllerNodeDescriptionProvider.NAME).orElse(null);
         var applicationServiceNodeDescription = cache.getNodeDescription(ApplicationServiceNodeDescriptionProvider.NAME).orElse(null);
         var domainServiceNodeDescription = cache.getNodeDescription(DomainServiceNodeDescriptionProvider.NAME).orElse(null);
 
-        var eventNodeDescription = cache.getNodeDescription(EventNodeDescriptionProvider.NAME).orElse(null);
         var commandNodeDescription = cache.getNodeDescription(CommandNodeDescriptionProvider.NAME).orElse(null);
+        var eventNodeDescription = cache.getNodeDescription(EventNodeDescriptionProvider.NAME).orElse(null);
 
-        messageListenerListenedMessagesEdgeDescription.getSourceDescriptions().addAll(List.of(controllerNodeDescription, applicationServiceNodeDescription, domainServiceNodeDescription));
-        messageListenerListenedMessagesEdgeDescription.getTargetDescriptions().addAll(List.of(commandNodeDescription, eventNodeDescription));
-        diagramDescription.getEdgeDescriptions().add(messageListenerListenedMessagesEdgeDescription);
+        publicationEdgeDescription.getSourceDescriptions().addAll(List.of(controllerNodeDescription, applicationServiceNodeDescription, domainServiceNodeDescription));
+        publicationEdgeDescription.getTargetDescriptions().addAll(List.of(commandNodeDescription, eventNodeDescription));
+        diagramDescription.getEdgeDescriptions().add(publicationEdgeDescription);
     }
 }

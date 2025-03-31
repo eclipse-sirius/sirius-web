@@ -187,7 +187,7 @@ Except for the specific case where `cause === 'refresh'` in `DiagramRenderer` (w
 The code used to evaluate model operations has been entirely rewritten in order to lower the coupling between various concepts and remove irrelevant dependencies like `IEditService`.
 See the ADR 190 for additional details on the goal of this refactoring.
 - https://github.com/eclipse-sirius/sirius-web/issues/4733[#4733] [view] The variable `__NEW_INSTANCES_COLLECTOR__` has been removed in favor of a proper API in the result of the evaluation of an expression
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4762[#4762] [diagram] Enhance papaya lifecycle diagram with new concepts
 
 == v2025.2.0
 

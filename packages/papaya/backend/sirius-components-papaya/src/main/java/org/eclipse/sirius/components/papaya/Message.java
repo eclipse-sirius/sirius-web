@@ -42,7 +42,7 @@ public interface Message extends NamedElement {
      * @model opposite="emittedMessages"
      * @generated
      */
-    EList<MessageEmitter> getEmittedBy();
+    EList<Publication> getEmittedBy();
 
     /**
      * Returns the value of the '<em><b>Listened By</b></em>' reference list. The list contents are of type
@@ -56,6 +56,6 @@ public interface Message extends NamedElement {
      * @model opposite="listenedMessages"
      * @generated
      */
-    EList<MessageListener> getListenedBy();
+    EList<Subscription> getListenedBy();
 
 } // Message

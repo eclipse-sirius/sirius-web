@@ -12,9 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.papaya.representations.lifecyclediagram.edgedescriptions;
 
-import java.util.List;
-import java.util.Objects;
-
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
@@ -23,31 +20,32 @@ import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
-import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.CommandNodeDescriptionProvider;
-import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.EventNodeDescriptionProvider;
+import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.ChannelNodeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.services.PapayaColorPaletteProvider;
 
-/**
- * Used to create the event caused by edge description.
- *
- * @author sbegaudeau
- */
-public class EventCausedByEdgeDescriptionProvider implements IEdgeDescriptionProvider {
+import java.util.Objects;
 
-    public static final String NAME = "Event#causedBy";
+/**
+ * Used to create the publication channel edge description.
+ *
+ * @author mcharfadi
+ */
+public class PublicationChannelEdgeDescriptionProvider implements IEdgeDescriptionProvider {
+
+    public static final String NAME = "Publication#channel";
 
     private final IColorProvider colorProvider;
 
-    public EventCausedByEdgeDescriptionProvider(IColorProvider colorProvider) {
+    public PublicationChannelEdgeDescriptionProvider(IColorProvider colorProvider) {
         this.colorProvider = Objects.requireNonNull(colorProvider);
     }
 
     @Override
     public EdgeDescription create() {
         var extendsEdgeStyle = new DiagramBuilders().newEdgeStyle()
-                .color(this.colorProvider.getColor(PapayaColorPaletteProvider.EVENT_DARK))
-                .sourceArrowStyle(ArrowStyle.NONE)
-                .targetArrowStyle(ArrowStyle.INPUT_ARROW)
+                .color(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
+                .sourceArrowStyle(ArrowStyle.INPUT_ARROW)
+                .targetArrowStyle(ArrowStyle.NONE)
                 .lineStyle(LineStyle.SOLID)
                 .edgeWidth(1)
                 .borderSize(0)
@@ -55,22 +53,26 @@ public class EventCausedByEdgeDescriptionProvider implements IEdgeDescriptionPro
 
         return new DiagramBuilders().newEdgeDescription()
                 .name(NAME)
-                .centerLabelExpression("caused by")
-                .sourceExpression("aql:self")
-                .targetExpression("aql:self.causedBy")
-                .isDomainBasedEdge(false)
+                .centerLabelExpression("channel")
+                .sourceExpression("aql:self.channel")
+                .targetExpression("aql:self")
+                .domainType("papaya::Publication")
+                .isDomainBasedEdge(true)
+                .semanticCandidatesExpression("aql:self.eContainer().eAllContents()")
                 .style(extendsEdgeStyle)
                 .build();
     }
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var eventCausedByEdgeDescription = cache.getEdgeDescription(NAME).orElse(null);
-        var commandNodeDescription = cache.getNodeDescription(CommandNodeDescriptionProvider.NAME).orElse(null);
-        var eventNodeDescription = cache.getNodeDescription(EventNodeDescriptionProvider.NAME).orElse(null);
+        var publicationsChannelEdgeDescriptionProvider = cache.getEdgeDescription(NAME).orElse(null);
 
-        eventCausedByEdgeDescription.getSourceDescriptions().addAll(List.of(eventNodeDescription));
-        eventCausedByEdgeDescription.getTargetDescriptions().addAll(List.of(eventNodeDescription, commandNodeDescription));
-        diagramDescription.getEdgeDescriptions().add(eventCausedByEdgeDescription);
+        var publicationsEdgeDescriptionProvider = cache.getEdgeDescription(PublicationEdgeDescriptionProvider.NAME).orElse(null);
+
+        var channelNodeDescription = cache.getNodeDescription(ChannelNodeDescriptionProvider.NAME).orElse(null);
+
+        publicationsChannelEdgeDescriptionProvider.getSourceDescriptions().add(channelNodeDescription);
+        publicationsChannelEdgeDescriptionProvider.getTargetDescriptions().add(publicationsEdgeDescriptionProvider);
+        diagramDescription.getEdgeDescriptions().add(publicationsChannelEdgeDescriptionProvider);
     }
 }

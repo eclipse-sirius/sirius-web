@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,28 +17,34 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
+import org.eclipse.emf.edit.provider.IChildCreationExtender;
+import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
+import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.IItemPropertySource;
+import org.eclipse.emf.edit.provider.IItemStyledLabelProvider;
+import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
+import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.StyledString;
-import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.eclipse.sirius.components.papaya.Controller;
-import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.sirius.components.papaya.Controller} object. <!--
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.papaya.Subscription} object. <!--
  * begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
  */
-public class ControllerItemProvider extends NamedElementItemProvider {
+public class SubscriptionItemProvider extends ItemProviderAdapter
+        implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, IItemStyledLabelProvider {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    public ControllerItemProvider(AdapterFactory adapterFactory) {
+    public SubscriptionItemProvider(AdapterFactory adapterFactory) {
         super(adapterFactory);
     }
 
@@ -52,61 +58,42 @@ public class ControllerItemProvider extends NamedElementItemProvider {
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            this.addCallsPropertyDescriptor(object);
+            this.addChannelPropertyDescriptor(object);
+            this.addMessagePropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
 
     /**
-     * This adds a property descriptor for the Calls feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Channel feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    protected void addCallsPropertyDescriptor(Object object) {
+    protected void addChannelPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_Controller_calls_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Controller_calls_feature", "_UI_Controller_type"),
-                PapayaPackage.Literals.CONTROLLER__CALLS, true, false, true, null, null, null));
+                this.getString("_UI_Subscription_channel_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Subscription_channel_feature", "_UI_Subscription_type"),
+                PapayaPackage.Literals.SUBSCRIPTION__CHANNEL, true, false, true, null, null, null));
     }
 
     /**
-     * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
-     * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
-     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * This adds a property descriptor for the Message feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    @Override
-    public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-        if (this.childrenFeatures == null) {
-            super.getChildrenFeatures(object);
-            this.childrenFeatures.add(PapayaPackage.Literals.MESSAGE_EMITTER__PUBLICATIONS);
-            this.childrenFeatures.add(PapayaPackage.Literals.MESSAGE_LISTENER__SUBSCRIPTIONS);
-        }
-        return this.childrenFeatures;
+    protected void addMessagePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_Subscription_message_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Subscription_message_feature", "_UI_Subscription_type"),
+                PapayaPackage.Literals.SUBSCRIPTION__MESSAGE, true, false, true, null, null, null));
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    protected EStructuralFeature getChildFeature(Object object, Object child) {
-        // Check the type of the specified child object and return the proper feature to use for
-        // adding (see {@link AddCommand}) it as a child.
-
-        return super.getChildFeature(object, child);
-    }
-
-    /**
-     * This returns Controller.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This returns Subscription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Controller"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Subscription"));
     }
 
     /**
@@ -136,14 +123,7 @@ public class ControllerItemProvider extends NamedElementItemProvider {
      */
     @Override
     public Object getStyledText(Object object) {
-        String label = ((Controller) object).getName();
-        StyledString styledLabel = new StyledString();
-        if (label == null || label.length() == 0) {
-            styledLabel.append(this.getString("_UI_Controller_type"), StyledString.Style.QUALIFIER_STYLER);
-        } else {
-            styledLabel.append(this.getString("_UI_Controller_type"), StyledString.Style.QUALIFIER_STYLER).append(" " + label);
-        }
-        return styledLabel;
+        return new StyledString(this.getString("_UI_Subscription_type"));
     }
 
     /**
@@ -156,13 +136,6 @@ public class ControllerItemProvider extends NamedElementItemProvider {
     @Override
     public void notifyChanged(Notification notification) {
         this.updateChildren(notification);
-
-        switch (notification.getFeatureID(Controller.class)) {
-            case PapayaPackage.CONTROLLER__PUBLICATIONS:
-            case PapayaPackage.CONTROLLER__SUBSCRIPTIONS:
-                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-                return;
-        }
         super.notifyChanged(notification);
     }
 
@@ -175,10 +148,16 @@ public class ControllerItemProvider extends NamedElementItemProvider {
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
+    }
 
-        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.MESSAGE_EMITTER__PUBLICATIONS, PapayaFactory.eINSTANCE.createPublication()));
-
-        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.MESSAGE_LISTENER__SUBSCRIPTIONS, PapayaFactory.eINSTANCE.createSubscription()));
+    /**
+     * Return the resource locator for this item provider's resources. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ResourceLocator getResourceLocator() {
+        return ((IChildCreationExtender) this.adapterFactory).getResourceLocator();
     }
 
 }

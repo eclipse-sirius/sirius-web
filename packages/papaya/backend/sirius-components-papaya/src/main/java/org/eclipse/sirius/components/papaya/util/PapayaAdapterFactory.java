@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.papaya.Annotation;
 import org.eclipse.sirius.components.papaya.AnnotationField;
 import org.eclipse.sirius.components.papaya.ApplicationConcern;
 import org.eclipse.sirius.components.papaya.Attribute;
+import org.eclipse.sirius.components.papaya.Channel;
 import org.eclipse.sirius.components.papaya.Classifier;
 import org.eclipse.sirius.components.papaya.Command;
 import org.eclipse.sirius.components.papaya.Component;
@@ -47,11 +48,13 @@ import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.components.papaya.Parameter;
 import org.eclipse.sirius.components.papaya.Project;
 import org.eclipse.sirius.components.papaya.ProvidedService;
+import org.eclipse.sirius.components.papaya.Publication;
 import org.eclipse.sirius.components.papaya.Query;
 import org.eclipse.sirius.components.papaya.RecordComponent;
 import org.eclipse.sirius.components.papaya.Repository;
 import org.eclipse.sirius.components.papaya.RequiredService;
 import org.eclipse.sirius.components.papaya.Service;
+import org.eclipse.sirius.components.papaya.Subscription;
 import org.eclipse.sirius.components.papaya.Tag;
 import org.eclipse.sirius.components.papaya.Task;
 import org.eclipse.sirius.components.papaya.Type;
@@ -327,6 +330,21 @@ public class PapayaAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseRepository(Repository object) {
             return PapayaAdapterFactory.this.createRepositoryAdapter();
+        }
+
+        @Override
+        public Adapter caseChannel(Channel object) {
+            return PapayaAdapterFactory.this.createChannelAdapter();
+        }
+
+        @Override
+        public Adapter caseSubscription(Subscription object) {
+            return PapayaAdapterFactory.this.createSubscriptionAdapter();
+        }
+
+        @Override
+        public Adapter casePublication(Publication object) {
+            return PapayaAdapterFactory.this.createPublicationAdapter();
         }
 
         @Override
@@ -940,6 +958,47 @@ public class PapayaAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createRepositoryAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.papaya.Channel
+     * <em>Channel</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.papaya.Channel
+     * @generated
+     */
+    public Adapter createChannelAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.papaya.Subscription
+     * <em>Subscription</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.papaya.Subscription
+     * @generated
+     */
+    public Adapter createSubscriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.papaya.Publication
+     * <em>Publication</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.papaya.Publication
+     * @generated
+     */
+    public Adapter createPublicationAdapter() {
         return null;
     }
 

@@ -73,8 +73,8 @@ public class CursorBasedNavigationServicesTests {
                 "ApplicationConcern",
                 "domains : Domain",
                 "Domain",
-                "NamedElement",
-                "Iteration -> NamedElement [org.eclipse.sirius.components.papaya.Iteration]"
+                "channels : Channel",
+                "Channel"
         );
 
         assertThat(names)

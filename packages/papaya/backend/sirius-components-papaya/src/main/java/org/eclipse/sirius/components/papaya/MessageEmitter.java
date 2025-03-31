@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.papaya.MessageEmitter#getEmittedMessages <em>Emitted Messages</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.MessageEmitter#getPublications <em>Publications</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.papaya.PapayaPackage#getMessageEmitter()
@@ -31,17 +31,14 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface MessageEmitter extends EObject {
     /**
-     * Returns the value of the '<em><b>Emitted Messages</b></em>' reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.papaya.Message}. It is bidirectional and its opposite is
-     * '{@link org.eclipse.sirius.components.papaya.Message#getEmittedBy <em>Emitted By</em>}'. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * Returns the value of the '<em><b>Publications</b></em>' containment reference list. The list contents are of type
+     * {@link org.eclipse.sirius.components.papaya.Publication}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the value of the '<em>Emitted Messages</em>' reference list.
-     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getMessageEmitter_EmittedMessages()
-     * @see org.eclipse.sirius.components.papaya.Message#getEmittedBy
-     * @model opposite="emittedBy"
+     * @return the value of the '<em>Publications</em>' containment reference list.
+     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getMessageEmitter_Publications()
+     * @model containment="true"
      * @generated
      */
-    EList<Message> getEmittedMessages();
+    EList<Publication> getPublications();
 
 } // MessageEmitter

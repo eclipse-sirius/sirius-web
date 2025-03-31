@@ -310,12 +310,21 @@ public interface PapayaPackage extends EPackage {
     int PROJECT__DOMAINS = NAMED_ELEMENT_FEATURE_COUNT + 8;
 
     /**
+     * The feature id for the '<em><b>Channels</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PROJECT__CHANNELS = NAMED_ELEMENT_FEATURE_COUNT + 9;
+
+    /**
      * The number of structural features of the '<em>Project</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int PROJECT_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 9;
+    int PROJECT_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 10;
 
     /**
      * The number of operations of the '<em>Project</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2892,22 +2901,22 @@ public interface PapayaPackage extends EPackage {
     int CONTROLLER__DESCRIPTION = NAMED_ELEMENT__DESCRIPTION;
 
     /**
-     * The feature id for the '<em><b>Emitted Messages</b></em>' reference list. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Publications</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int CONTROLLER__EMITTED_MESSAGES = NAMED_ELEMENT_FEATURE_COUNT + 0;
+    int CONTROLLER__PUBLICATIONS = NAMED_ELEMENT_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Listened Messages</b></em>' reference list. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Subscriptions</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int CONTROLLER__LISTENED_MESSAGES = NAMED_ELEMENT_FEATURE_COUNT + 1;
+    int CONTROLLER__SUBSCRIPTIONS = NAMED_ELEMENT_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Calls</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3075,22 +3084,22 @@ public interface PapayaPackage extends EPackage {
     int SERVICE__DESCRIPTION = NAMED_ELEMENT__DESCRIPTION;
 
     /**
-     * The feature id for the '<em><b>Listened Messages</b></em>' reference list. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Subscriptions</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int SERVICE__LISTENED_MESSAGES = NAMED_ELEMENT_FEATURE_COUNT + 0;
+    int SERVICE__SUBSCRIPTIONS = NAMED_ELEMENT_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Emitted Messages</b></em>' reference list. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Publications</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int SERVICE__EMITTED_MESSAGES = NAMED_ELEMENT_FEATURE_COUNT + 1;
+    int SERVICE__PUBLICATIONS = NAMED_ELEMENT_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Calls</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3127,13 +3136,13 @@ public interface PapayaPackage extends EPackage {
     int MESSAGE_LISTENER = 37;
 
     /**
-     * The feature id for the '<em><b>Listened Messages</b></em>' reference list. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Subscriptions</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int MESSAGE_LISTENER__LISTENED_MESSAGES = 0;
+    int MESSAGE_LISTENER__SUBSCRIPTIONS = 0;
 
     /**
      * The number of structural features of the '<em>Message Listener</em>' class. <!-- begin-user-doc --> <!--
@@ -3163,13 +3172,13 @@ public interface PapayaPackage extends EPackage {
     int MESSAGE_EMITTER = 38;
 
     /**
-     * The feature id for the '<em><b>Emitted Messages</b></em>' reference list. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Publications</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int MESSAGE_EMITTER__EMITTED_MESSAGES = 0;
+    int MESSAGE_EMITTER__PUBLICATIONS = 0;
 
     /**
      * The number of structural features of the '<em>Message Emitter</em>' class. <!-- begin-user-doc --> <!--
@@ -3521,6 +3530,143 @@ public interface PapayaPackage extends EPackage {
     int REPOSITORY_OPERATION_COUNT = NAMED_ELEMENT_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.papaya.impl.ChannelImpl <em>Channel</em>}'
+     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.papaya.impl.ChannelImpl
+     * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getChannel()
+     * @generated
+     */
+    int CHANNEL = 44;
+
+    /**
+     * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CHANNEL__TAGS = NAMED_ELEMENT__TAGS;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CHANNEL__NAME = NAMED_ELEMENT__NAME;
+
+    /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CHANNEL__DESCRIPTION = NAMED_ELEMENT__DESCRIPTION;
+
+    /**
+     * The number of structural features of the '<em>Channel</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CHANNEL_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Channel</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CHANNEL_OPERATION_COUNT = NAMED_ELEMENT_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.papaya.impl.SubscriptionImpl
+     * <em>Subscription</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.papaya.impl.SubscriptionImpl
+     * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getSubscription()
+     * @generated
+     */
+    int SUBSCRIPTION = 45;
+
+    /**
+     * The feature id for the '<em><b>Channel</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SUBSCRIPTION__CHANNEL = 0;
+
+    /**
+     * The feature id for the '<em><b>Message</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SUBSCRIPTION__MESSAGE = 1;
+
+    /**
+     * The number of structural features of the '<em>Subscription</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SUBSCRIPTION_FEATURE_COUNT = 2;
+
+    /**
+     * The number of operations of the '<em>Subscription</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SUBSCRIPTION_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.papaya.impl.PublicationImpl
+     * <em>Publication</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.papaya.impl.PublicationImpl
+     * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getPublication()
+     * @generated
+     */
+    int PUBLICATION = 46;
+
+    /**
+     * The feature id for the '<em><b>Channel</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PUBLICATION__CHANNEL = 0;
+
+    /**
+     * The feature id for the '<em><b>Message</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PUBLICATION__MESSAGE = 1;
+
+    /**
+     * The number of structural features of the '<em>Publication</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PUBLICATION_FEATURE_COUNT = 2;
+
+    /**
+     * The number of operations of the '<em>Publication</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PUBLICATION_OPERATION_COUNT = 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.papaya.Priority <em>Priority</em>}' enum. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -3528,7 +3674,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getPriority()
      * @generated
      */
-    int PRIORITY = 44;
+    int PRIORITY = 47;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.papaya.Visibility <em>Visibility</em>}' enum.
@@ -3538,7 +3684,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getVisibility()
      * @generated
      */
-    int VISIBILITY = 45;
+    int VISIBILITY = 48;
 
     /**
      * The meta object id for the '<em>Instant</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3547,7 +3693,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getInstant()
      * @generated
      */
-    int INSTANT = 46;
+    int INSTANT = 49;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.ModelElement <em>Model
@@ -3753,6 +3899,18 @@ public interface PapayaPackage extends EPackage {
      * @generated
      */
     EReference getProject_Domains();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.papaya.Project#getChannels <em>Channels</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Channels</em>'.
+     * @see org.eclipse.sirius.components.papaya.Project#getChannels()
+     * @see #getProject()
+     * @generated
+     */
+    EReference getProject_Channels();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.Iteration <em>Iteration</em>}'.
@@ -5058,16 +5216,16 @@ public interface PapayaPackage extends EPackage {
     EClass getMessageListener();
 
     /**
-     * Returns the meta object for the reference list
-     * '{@link org.eclipse.sirius.components.papaya.MessageListener#getListenedMessages <em>Listened Messages</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.papaya.MessageListener#getSubscriptions <em>Subscriptions</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the reference list '<em>Listened Messages</em>'.
-     * @see org.eclipse.sirius.components.papaya.MessageListener#getListenedMessages()
+     * @return the meta object for the containment reference list '<em>Subscriptions</em>'.
+     * @see org.eclipse.sirius.components.papaya.MessageListener#getSubscriptions()
      * @see #getMessageListener()
      * @generated
      */
-    EReference getMessageListener_ListenedMessages();
+    EReference getMessageListener_Subscriptions();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.MessageEmitter <em>Message
@@ -5080,16 +5238,16 @@ public interface PapayaPackage extends EPackage {
     EClass getMessageEmitter();
 
     /**
-     * Returns the meta object for the reference list
-     * '{@link org.eclipse.sirius.components.papaya.MessageEmitter#getEmittedMessages <em>Emitted Messages</em>}'. <!--
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.papaya.MessageEmitter#getPublications <em>Publications</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the reference list '<em>Emitted Messages</em>'.
-     * @see org.eclipse.sirius.components.papaya.MessageEmitter#getEmittedMessages()
+     * @return the meta object for the containment reference '<em>Publications</em>'.
+     * @see org.eclipse.sirius.components.papaya.MessageEmitter#getPublications()
      * @see #getMessageEmitter()
      * @generated
      */
-    EReference getMessageEmitter_EmittedMessages();
+    EReference getMessageEmitter_Publications();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.Message <em>Message</em>}'. <!--
@@ -5173,6 +5331,80 @@ public interface PapayaPackage extends EPackage {
      * @generated
      */
     EClass getRepository();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.Channel <em>Channel</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Channel</em>'.
+     * @see org.eclipse.sirius.components.papaya.Channel
+     * @generated
+     */
+    EClass getChannel();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.Subscription
+     * <em>Subscription</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Subscription</em>'.
+     * @see org.eclipse.sirius.components.papaya.Subscription
+     * @generated
+     */
+    EClass getSubscription();
+
+    /**
+     * Returns the meta object for the reference '{@link org.eclipse.sirius.components.papaya.Subscription#getChannel
+     * <em>Channel</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference '<em>Channel</em>'.
+     * @see org.eclipse.sirius.components.papaya.Subscription#getChannel()
+     * @see #getSubscription()
+     * @generated
+     */
+    EReference getSubscription_Channel();
+
+    /**
+     * Returns the meta object for the reference '{@link org.eclipse.sirius.components.papaya.Subscription#getMessage
+     * <em>Message</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference '<em>Message</em>'.
+     * @see org.eclipse.sirius.components.papaya.Subscription#getMessage()
+     * @see #getSubscription()
+     * @generated
+     */
+    EReference getSubscription_Message();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.Publication
+     * <em>Publication</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Publication</em>'.
+     * @see org.eclipse.sirius.components.papaya.Publication
+     * @generated
+     */
+    EClass getPublication();
+
+    /**
+     * Returns the meta object for the reference '{@link org.eclipse.sirius.components.papaya.Publication#getChannel
+     * <em>Channel</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference '<em>Channel</em>'.
+     * @see org.eclipse.sirius.components.papaya.Publication#getChannel()
+     * @see #getPublication()
+     * @generated
+     */
+    EReference getPublication_Channel();
+
+    /**
+     * Returns the meta object for the reference '{@link org.eclipse.sirius.components.papaya.Publication#getMessage
+     * <em>Message</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference '<em>Message</em>'.
+     * @see org.eclipse.sirius.components.papaya.Publication#getMessage()
+     * @see #getPublication()
+     * @generated
+     */
+    EReference getPublication_Message();
 
     /**
      * Returns the meta object for enum '{@link org.eclipse.sirius.components.papaya.Priority <em>Priority</em>}'. <!--
@@ -5378,6 +5610,14 @@ public interface PapayaPackage extends EPackage {
          * @generated
          */
         EReference PROJECT__DOMAINS = eINSTANCE.getProject_Domains();
+
+        /**
+         * The meta object literal for the '<em><b>Channels</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference PROJECT__CHANNELS = eINSTANCE.getProject_Channels();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.impl.IterationImpl
@@ -6384,12 +6624,12 @@ public interface PapayaPackage extends EPackage {
         EClass MESSAGE_LISTENER = eINSTANCE.getMessageListener();
 
         /**
-         * The meta object literal for the '<em><b>Listened Messages</b></em>' reference list feature. <!--
+         * The meta object literal for the '<em><b>Subscriptions</b></em>' containment reference list feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
          */
-        EReference MESSAGE_LISTENER__LISTENED_MESSAGES = eINSTANCE.getMessageListener_ListenedMessages();
+        EReference MESSAGE_LISTENER__SUBSCRIPTIONS = eINSTANCE.getMessageListener_Subscriptions();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.MessageEmitter <em>Message
@@ -6402,12 +6642,12 @@ public interface PapayaPackage extends EPackage {
         EClass MESSAGE_EMITTER = eINSTANCE.getMessageEmitter();
 
         /**
-         * The meta object literal for the '<em><b>Emitted Messages</b></em>' reference list feature. <!--
+         * The meta object literal for the '<em><b>Publications</b></em>' containment reference feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
          */
-        EReference MESSAGE_EMITTER__EMITTED_MESSAGES = eINSTANCE.getMessageEmitter_EmittedMessages();
+        EReference MESSAGE_EMITTER__PUBLICATIONS = eINSTANCE.getMessageEmitter_Publications();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.Message <em>Message</em>}'
@@ -6482,6 +6722,68 @@ public interface PapayaPackage extends EPackage {
          * @generated
          */
         EClass REPOSITORY = eINSTANCE.getRepository();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.impl.ChannelImpl
+         * <em>Channel</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.papaya.impl.ChannelImpl
+         * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getChannel()
+         * @generated
+         */
+        EClass CHANNEL = eINSTANCE.getChannel();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.impl.SubscriptionImpl
+         * <em>Subscription</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.papaya.impl.SubscriptionImpl
+         * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getSubscription()
+         * @generated
+         */
+        EClass SUBSCRIPTION = eINSTANCE.getSubscription();
+
+        /**
+         * The meta object literal for the '<em><b>Channel</b></em>' reference feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EReference SUBSCRIPTION__CHANNEL = eINSTANCE.getSubscription_Channel();
+
+        /**
+         * The meta object literal for the '<em><b>Message</b></em>' reference feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EReference SUBSCRIPTION__MESSAGE = eINSTANCE.getSubscription_Message();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.impl.PublicationImpl
+         * <em>Publication</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.papaya.impl.PublicationImpl
+         * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getPublication()
+         * @generated
+         */
+        EClass PUBLICATION = eINSTANCE.getPublication();
+
+        /**
+         * The meta object literal for the '<em><b>Channel</b></em>' reference feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EReference PUBLICATION__CHANNEL = eINSTANCE.getPublication_Channel();
+
+        /**
+         * The meta object literal for the '<em><b>Message</b></em>' reference feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EReference PUBLICATION__MESSAGE = eINSTANCE.getPublication_Message();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.Priority <em>Priority</em>}'

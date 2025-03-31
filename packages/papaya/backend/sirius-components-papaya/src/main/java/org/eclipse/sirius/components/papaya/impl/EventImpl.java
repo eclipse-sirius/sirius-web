@@ -23,9 +23,9 @@ import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.papaya.Event;
 import org.eclipse.sirius.components.papaya.Message;
-import org.eclipse.sirius.components.papaya.MessageEmitter;
-import org.eclipse.sirius.components.papaya.MessageListener;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
+import org.eclipse.sirius.components.papaya.Publication;
+import org.eclipse.sirius.components.papaya.Subscription;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Event</b></em>'. <!-- end-user-doc -->
@@ -49,7 +49,7 @@ public class EventImpl extends NamedElementImpl implements Event {
      * @generated
      * @ordered
      */
-    protected EList<MessageEmitter> emittedBy;
+    protected EList<Publication> emittedBy;
 
     /**
      * The cached value of the '{@link #getListenedBy() <em>Listened By</em>}' reference list. <!-- begin-user-doc -->
@@ -59,7 +59,7 @@ public class EventImpl extends NamedElementImpl implements Event {
      * @generated
      * @ordered
      */
-    protected EList<MessageListener> listenedBy;
+    protected EList<Subscription> listenedBy;
 
     /**
      * The cached value of the '{@link #getCausedBy() <em>Caused By</em>}' reference list. <!-- begin-user-doc --> <!--
@@ -96,9 +96,9 @@ public class EventImpl extends NamedElementImpl implements Event {
      * @generated
      */
     @Override
-    public EList<MessageEmitter> getEmittedBy() {
+    public EList<Publication> getEmittedBy() {
         if (this.emittedBy == null) {
-            this.emittedBy = new EObjectWithInverseResolvingEList.ManyInverse<>(MessageEmitter.class, this, PapayaPackage.EVENT__EMITTED_BY, PapayaPackage.MESSAGE_EMITTER__EMITTED_MESSAGES);
+            this.emittedBy = new EObjectWithInverseResolvingEList<>(Publication.class, this, PapayaPackage.EVENT__EMITTED_BY, PapayaPackage.PUBLICATION__MESSAGE);
         }
         return this.emittedBy;
     }
@@ -109,9 +109,9 @@ public class EventImpl extends NamedElementImpl implements Event {
      * @generated
      */
     @Override
-    public EList<MessageListener> getListenedBy() {
+    public EList<Subscription> getListenedBy() {
         if (this.listenedBy == null) {
-            this.listenedBy = new EObjectWithInverseResolvingEList.ManyInverse<>(MessageListener.class, this, PapayaPackage.EVENT__LISTENED_BY, PapayaPackage.MESSAGE_LISTENER__LISTENED_MESSAGES);
+            this.listenedBy = new EObjectWithInverseResolvingEList<>(Subscription.class, this, PapayaPackage.EVENT__LISTENED_BY, PapayaPackage.SUBSCRIPTION__MESSAGE);
         }
         return this.listenedBy;
     }
@@ -191,11 +191,11 @@ public class EventImpl extends NamedElementImpl implements Event {
         switch (featureID) {
             case PapayaPackage.EVENT__EMITTED_BY:
                 this.getEmittedBy().clear();
-                this.getEmittedBy().addAll((Collection<? extends MessageEmitter>) newValue);
+                this.getEmittedBy().addAll((Collection<? extends Publication>) newValue);
                 return;
             case PapayaPackage.EVENT__LISTENED_BY:
                 this.getListenedBy().clear();
-                this.getListenedBy().addAll((Collection<? extends MessageListener>) newValue);
+                this.getListenedBy().addAll((Collection<? extends Subscription>) newValue);
                 return;
             case PapayaPackage.EVENT__CAUSED_BY:
                 this.getCausedBy().clear();

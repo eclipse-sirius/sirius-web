@@ -17,9 +17,12 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.StyledString;
+import org.eclipse.emf.edit.provider.ViewerNotification;
+import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.components.papaya.Service;
 
@@ -49,35 +52,9 @@ public class ServiceItemProvider extends NamedElementItemProvider {
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            this.addListenedMessagesPropertyDescriptor(object);
-            this.addEmittedMessagesPropertyDescriptor(object);
             this.addCallsPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
-    }
-
-    /**
-     * This adds a property descriptor for the Emitted Messages feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addEmittedMessagesPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_MessageEmitter_emittedMessages_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_MessageEmitter_emittedMessages_feature", "_UI_MessageEmitter_type"), PapayaPackage.Literals.MESSAGE_EMITTER__EMITTED_MESSAGES,
-                true, false, true, null, null, null));
-    }
-
-    /**
-     * This adds a property descriptor for the Listened Messages feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addListenedMessagesPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_MessageListener_listenedMessages_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_MessageListener_listenedMessages_feature", "_UI_MessageListener_type"),
-                PapayaPackage.Literals.MESSAGE_LISTENER__LISTENED_MESSAGES, true, false, true, null, null, null));
     }
 
     /**
@@ -89,6 +66,37 @@ public class ServiceItemProvider extends NamedElementItemProvider {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_Service_calls_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Service_calls_feature", "_UI_Service_type"),
                 PapayaPackage.Literals.SERVICE__CALLS, true, false, true, null, null, null));
+    }
+
+    /**
+     * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+     * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
+        if (this.childrenFeatures == null) {
+            super.getChildrenFeatures(object);
+            this.childrenFeatures.add(PapayaPackage.Literals.MESSAGE_LISTENER__SUBSCRIPTIONS);
+            this.childrenFeatures.add(PapayaPackage.Literals.MESSAGE_EMITTER__PUBLICATIONS);
+        }
+        return this.childrenFeatures;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    protected EStructuralFeature getChildFeature(Object object, Object child) {
+        // Check the type of the specified child object and return the proper feature to use for
+        // adding (see {@link AddCommand}) it as a child.
+
+        return super.getChildFeature(object, child);
     }
 
     /**
@@ -148,6 +156,13 @@ public class ServiceItemProvider extends NamedElementItemProvider {
     @Override
     public void notifyChanged(Notification notification) {
         this.updateChildren(notification);
+
+        switch (notification.getFeatureID(Service.class)) {
+            case PapayaPackage.SERVICE__SUBSCRIPTIONS:
+            case PapayaPackage.SERVICE__PUBLICATIONS:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+                return;
+        }
         super.notifyChanged(notification);
     }
 
@@ -160,6 +175,10 @@ public class ServiceItemProvider extends NamedElementItemProvider {
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
+
+        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.MESSAGE_LISTENER__SUBSCRIPTIONS, PapayaFactory.eINSTANCE.createSubscription()));
+
+        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.MESSAGE_EMITTER__PUBLICATIONS, PapayaFactory.eINSTANCE.createPublication()));
     }
 
 }
