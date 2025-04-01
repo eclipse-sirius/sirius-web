@@ -64,7 +64,7 @@
     "react-grid-layout": "1.4.4",
     "tss-react": "4.9.7",
     "typescript": "5.4.5",
-    "vite": "5.2.11",
+    "vite": "5.4.16",
     "vitest": "1.6.0"
   }
 }
