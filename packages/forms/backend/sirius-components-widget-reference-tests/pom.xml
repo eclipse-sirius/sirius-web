@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-widget-reference-tests</artifactId>
-	<version>2025.2.7</version>
+	<version>2025.2.8</version>
 	<name>sirius-components-widget-reference-tests</name>
 	<description>Sirius Components Widget Reference Tests</description>
 
@@ -43,7 +43,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-widget-reference</artifactId>
-			<version>2025.2.7</version>
+			<version>2025.2.8</version>
 		</dependency>
 		<dependency>
 			<groupId>org.assertj</groupId>
@@ -52,12 +52,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-graphql-tests</artifactId>
-			<version>2025.2.7</version>
+			<version>2025.2.8</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-widget-reference</artifactId>
-			<version>2025.2.7</version>
+			<version>2025.2.8</version>
 		</dependency>
 	</dependencies>
 
