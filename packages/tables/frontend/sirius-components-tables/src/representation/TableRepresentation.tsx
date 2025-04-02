@@ -64,7 +64,7 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
 
   const { complete, table } = useTableSubscription(editingContextId, representationFullId);
 
-  const { rowFilters, activeRowFilterIds } = useTableRowFilters(editingContextId, representationId);
+  const { rowFilters, activeRowFilterIds } = useTableRowFilters(editingContextId, representationFullId);
 
   useEffect(() => {
     setState((prevState) => ({ ...prevState, activeRowFilterIds }));

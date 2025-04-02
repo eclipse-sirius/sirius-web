@@ -107,7 +107,7 @@ Given that implementations of this interface should be Spring services, they can
 - https://github.com/eclipse-sirius/sirius-web/issues/4736[#4736] [diagram] Restore correct border node positioning
 - https://github.com/eclipse-sirius/sirius-web/issues/4753[#4753] [table] Double click inside a table cells creates a fake text field
 - https://github.com/eclipse-sirius/sirius-web/issues/4709[#4709] [table] Unable to trigger selection change when clicking an empty cell
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4771[#4771] [table] Fix an issue that prevent table representation to be forked
 
 === New Features
 
