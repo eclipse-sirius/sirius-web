@@ -1,0 +1,143 @@
+= ADR-191 - Add the capability of customizing the appearance of diagram elements
+
+== Context
+
+The appearance of diagram elements is not customizable outside of what is defined in the specifier.
+
+== Decision
+
+End-users will be able to customize the appearance of diagram elements through the palette, these customizations will be persisted but can be erased to fall back to the specified appearance.
+
+== Backend
+
+A new field in nodes, edges and labels will store a list of the names of the customized properties.
+
+A new type of `IDiagramEvent` will enable the renderer to update the customized appearance of nodes and edges as they render :
+
+[code,java]
+----
+public record EditAppearanceEvent(List<IAppearanceChange> changes) {
+
+}
+
+public interface IAppearanceChange {}
+
+public interface INodeAppearanceChange extends IAppearanceChange {
+  String nodeId();
+}
+
+public interface ILabelAppearanceChange extends IAppearanceChange {
+  String labelId();
+}
+----
+
+Instances of `INodeAppearanceChange`and `ILabelAppearanceChange` would enable the renderer to identify how the node or label style should be altered and update the list of names of customized properties.
+
+For example to set a custom bold style on a label :
+
+[code,java]
+----
+public record LabelBoldAppearanceChange (UUID labelId, boolean bold) implements ILabelAppearanceChange {
+
+}
+----
+
+and to reset any appearance change on a label :
+
+[code,java]
+----
+public record ResetLabelAppearanceChange (UUID labelId, String propertyName) implements ILabelAppearanceChange {
+
+}
+----
+
+As a node, edge or label renders, when a property is identified a customized its associated style value will be retrieved from the previously rendered node, edge or label.
+The events of type `EditAppearanceEvent` will also be processed at this point.
+To do so for a node or an edge we need to introduce handlers that are capable of taking a `INodeStyle`/`EdgeStyle`, restoring customized style properties from the previous node and applying the instances of `INodeAppearanceChange`/`IEdgeAppearanceChange` to produce the final rendered style.
+
+It could look like this :
+
+[code,java]
+----
+public interface INodeAppearanceHandler {
+  boolean canHandleNodeStyle defaultNodeStyle);
+  NodeStyle handle(NodeStyle defaultNodeStyle, List<INodeAppareanceChange> changes, Optional<Node> previousNode);
+}
+----
+
+In the end the rendered nodes and labels will have their style customized and the information of which style properties are customized stored.
+
+== Frontend
+
+The customized properties will reach the frontend through the diagram subscription, for example:
+
+[code,java]
+----
+type Label {
+  ...
+  customizedStyleProperties: [String!]!
+}
+
+type Node {
+  ...
+  customizedStyleProperties: [String!]!
+}
+----
+
+A new hardcoded appearance section is added to the diagram elements palette.
+The content of that section depends on the type of the node's style.
+A new field is added to the `NodeTypeContext` to allow the contribution of content to this section.
+When no contribution correspond to the node style type is made the appearance section is empty.
+
+Mutations specific to the node type would be used to update the customized appearance but generic mutations can be used to reset it, for example:
+
+[code,java]
+----
+extend type Mutation {
+  ...
+  editRectangularNodeAppearance(input: EditRectangularNodeAppearanceInput!): EditRectangularNodeAppearancePayload!
+  resetNodeAppearance(input: ResetNodeAppearanceInput!): ResetNodeAppearancePayload!
+  resetLabelAppearance(input: ResetLabelAppearanceInput!): ResetLabelAppearancePayload!
+}
+
+input EditRectangularNodeAppearanceInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  nodeId: ID!
+  appearance: RectangularNodeAppearanceInput!
+}
+
+input RectangularNodeAppearanceInput {
+  background: String
+  insideLabel: LabelAppearanceInput
+}
+
+input LabelAppearanceInput {
+  labelId: String!
+  bold: Boolean
+}
+
+union EditRectangularNodeAppearancePayload = ErrorPayload | SuccessPayload
+
+input ResetLabelAppearanceInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  labelId: ID!
+  propertiesToReset: [String!]!
+}
+
+input ResetNodeAppearanceInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  nodeId: ID!
+  propertiesToReset: [String!]!
+}
+
+union ResetLabelAppearancePayload = ErrorPayload | SuccessPayload
+
+union ResetNodeAppearancePayload = ErrorPayload | SuccessPayload
+----
+

@@ -20,6 +20,7 @@
 - [ADR-188] Add Support for edges on edges
 - [ADR-189] Add actions on diagram nodes
 - [ADR-190] Update the template used to convert elements of the DSL
+- [ADR-191] Add the capability of customizing the appearance of diagram elements
 
 
 === Deprecation warning
