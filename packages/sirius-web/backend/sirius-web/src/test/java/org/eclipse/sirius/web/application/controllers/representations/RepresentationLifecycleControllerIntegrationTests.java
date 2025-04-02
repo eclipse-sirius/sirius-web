@@ -16,9 +16,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
+import java.time.Duration;
 import java.util.Map;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSuccessPayload;
 import org.eclipse.sirius.components.collaborative.dto.DeleteRepresentationInput;
@@ -69,6 +71,9 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
 
     @Autowired
     private IGivenCommittedTransaction givenCommittedTransaction;
+
+    @Autowired
+    private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
     @Autowired
     private RepresentationMetadataQueryRunner representationMetadataQueryRunner;
@@ -191,5 +196,25 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
         assertThat(this.domainEventCollector.getDomainEvents()).hasSize(1);
         var event = this.domainEventCollector.getDomainEvents().get(0);
         assertThat(event).isInstanceOf(RepresentationMetadataDeletedEvent.class);
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a loaded representation, when we don't subscribe to the representation, then the representation is disposed")
+    public void givenLoadedRepresentationWhenWeDontSubscribeToTheRepresentationThenTheRepresentationIsDisposed() {
+        assertThat(this.editingContextEventProcessorRegistry.getEditingContextEventProcessors()).isEmpty();
+
+        var portalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
+        var flux = this.portalEventSubscriptionRunner.run(portalEventInput);
+
+        assertThat(this.editingContextEventProcessorRegistry.getEditingContextEventProcessors()).hasSize(1);
+        var editingContextEventProcessor = this.editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID).orElse(null);
+
+        assertThat(editingContextEventProcessor.getRepresentationEventProcessors()).hasSize(1);
+
+        StepVerifier.create(flux.delaySubscription(Duration.ofSeconds(6)))
+                .expectNextCount(1)
+                .expectComplete()
+                .verify(Duration.ofSeconds(10));
     }
 }
