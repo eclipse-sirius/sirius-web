@@ -28,7 +28,7 @@ import org.eclipse.sirius.components.tables.PaginationData;
  */
 public record TableElementProps(String id, String descriptionId, String targetObjectId, String targetObjectKind,
                                 PaginationData paginationData, boolean stripeRow, List<Element> children, String globalFilter, List<ColumnFilter> columnFilters, boolean enableSubRows,
-                                List<ColumnSort> columnSort) implements IProps {
+                                List<ColumnSort> columnSort, List<Integer> pageSizeOptions, int defaultPageSize) implements IProps {
 
     public static final String TYPE = "Table";
 
@@ -42,6 +42,7 @@ public record TableElementProps(String id, String descriptionId, String targetOb
         Objects.requireNonNull(globalFilter);
         Objects.requireNonNull(columnFilters);
         Objects.requireNonNull(columnSort);
+        Objects.requireNonNull(pageSizeOptions);
     }
 
     @Override
@@ -82,6 +83,10 @@ public record TableElementProps(String id, String descriptionId, String targetOb
         private boolean enableSubRows;
 
         private List<ColumnSort> columnSort;
+
+        private List<Integer> pageSizeOptions;
+
+        private int defaultPageSize;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -137,9 +142,19 @@ public record TableElementProps(String id, String descriptionId, String targetOb
             return this;
         }
 
+        public Builder pageSizeOptions(List<Integer> pageSizeOptions) {
+            this.pageSizeOptions = Objects.requireNonNull(pageSizeOptions);
+            return this;
+        }
+
+        public Builder defaultPageSize(int defaultPageSize) {
+            this.defaultPageSize = defaultPageSize;
+            return this;
+        }
+
         public TableElementProps build() {
             return new TableElementProps(this.id, this.descriptionId, this.targetObjectId, this.targetObjectKind, this.paginationData, this.stripeRow, this.children, this.globalFilter,
-                    this.columnFilters, this.enableSubRows, this.columnSort);
+                    this.columnFilters, this.enableSubRows, this.columnSort, this.pageSizeOptions, this.defaultPageSize);
         }
     }
 }

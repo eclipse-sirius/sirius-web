@@ -71,6 +71,8 @@ public class TableWidgetPreviewConverterProvider implements IWidgetPreviewConver
                 .columnDescriptions(List.of())
                 .cellDescriptions(List.of())
                 .lineDescription(lineDescription)
+                .pageSizeOptionsProvider(variableManager -> List.of())
+                .defaultPageSizeIndexProvider(variableManager -> 0)
                 .build();
         return TableWidgetDescription.newTableWidgetDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)

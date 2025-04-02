@@ -29,8 +29,7 @@ import org.eclipse.sirius.components.view.table.TableFactory;
 import org.eclipse.sirius.components.view.table.TablePackage;
 
 /**
- * This is the item provider adapter for a
- * {@link org.eclipse.sirius.components.view.table.TableDescription} object.
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.table.TableDescription} object.
  * <!-- begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
@@ -38,8 +37,7 @@ import org.eclipse.sirius.components.view.table.TablePackage;
 public class TableDescriptionItemProvider extends RepresentationDescriptionItemProvider {
 
     /**
-     * This constructs an instance from a factory and a notifier. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -48,8 +46,7 @@ public class TableDescriptionItemProvider extends RepresentationDescriptionItemP
     }
 
     /**
-     * This returns the property descriptors for the adapted class. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -61,39 +58,34 @@ public class TableDescriptionItemProvider extends RepresentationDescriptionItemP
             this.addUseStripedRowsExpressionPropertyDescriptor(object);
             this.addRowDescriptionPropertyDescriptor(object);
             this.addEnableSubRowsPropertyDescriptor(object);
+            this.addPageSizeOptionsExpressionPropertyDescriptor(object);
+            this.addDefaultPageSizeIndexExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
 
     /**
-     * This adds a property descriptor for the Use Striped Rows Expression feature.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Use Striped Rows Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      */
     protected void addUseStripedRowsExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors
-                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                        this.getResourceLocator(), this.getString("_UI_TableDescription_useStripedRowsExpression_feature"),
-                        this.getString("_UI_PropertyDescriptor_description",
-                                "_UI_TableDescription_useStripedRowsExpression_feature", "_UI_TableDescription_type"),
-                        TablePackage.Literals.TABLE_DESCRIPTION__USE_STRIPED_ROWS_EXPRESSION, true, false, false,
-                        ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_TableDescription_useStripedRowsExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_TableDescription_useStripedRowsExpression_feature", "_UI_TableDescription_type"),
+                TablePackage.Literals.TABLE_DESCRIPTION__USE_STRIPED_ROWS_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This adds a property descriptor for the Row Description feature. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Row Description feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     protected void addRowDescriptionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors
-                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                        this.getResourceLocator(), this.getString("_UI_TableDescription_rowDescription_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_TableDescription_rowDescription_feature",
-                                "_UI_TableDescription_type"),
-                        TablePackage.Literals.TABLE_DESCRIPTION__ROW_DESCRIPTION, true, false, true, null, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_TableDescription_rowDescription_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_TableDescription_rowDescription_feature", "_UI_TableDescription_type"),
+                TablePackage.Literals.TABLE_DESCRIPTION__ROW_DESCRIPTION, true, false, true, null, null, null));
     }
 
     /**
@@ -103,9 +95,34 @@ public class TableDescriptionItemProvider extends RepresentationDescriptionItemP
      */
     protected void addEnableSubRowsPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_TableDescription_enableSubRows_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_TableDescription_enableSubRows_feature", "_UI_TableDescription_type"),
+                this.getString("_UI_TableDescription_enableSubRows_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_TableDescription_enableSubRows_feature", "_UI_TableDescription_type"),
                 TablePackage.Literals.TABLE_DESCRIPTION__ENABLE_SUB_ROWS, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Page Size Options Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addPageSizeOptionsExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_TableDescription_pageSizeOptionsExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_TableDescription_pageSizeOptionsExpression_feature", "_UI_TableDescription_type"),
+                TablePackage.Literals.TABLE_DESCRIPTION__PAGE_SIZE_OPTIONS_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Default Page Size Index Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addDefaultPageSizeIndexExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_TableDescription_defaultPageSizeIndexExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_TableDescription_defaultPageSizeIndexExpression_feature", "_UI_TableDescription_type"),
+                TablePackage.Literals.TABLE_DESCRIPTION__DEFAULT_PAGE_SIZE_INDEX_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -135,16 +152,14 @@ public class TableDescriptionItemProvider extends RepresentationDescriptionItemP
      */
     @Override
     protected EStructuralFeature getChildFeature(Object object, Object child) {
-        // Check the type of the specified child object and return the proper feature to
-        // use for
+        // Check the type of the specified child object and return the proper feature to use for
         // adding (see {@link AddCommand}) it as a child.
 
         return super.getChildFeature(object, child);
     }
 
     /**
-     * This returns TableDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * This returns TableDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
      */
@@ -164,22 +179,20 @@ public class TableDescriptionItemProvider extends RepresentationDescriptionItemP
     }
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     @Override
     public String getText(Object object) {
         String label = ((TableDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_TableDescription_type")
-                : this.getString("_UI_TableDescription_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_TableDescription_type") : this.getString("_UI_TableDescription_type") + " " + label;
     }
 
     /**
-     * This handles model notifications by calling {@link #updateChildren} to update
-     * any cached children and by creating a viewer notification, which it passes to
-     * {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
+     * a viewer notification, which it passes to {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
      * @generated
      */
@@ -190,6 +203,8 @@ public class TableDescriptionItemProvider extends RepresentationDescriptionItemP
         switch (notification.getFeatureID(TableDescription.class)) {
             case TablePackage.TABLE_DESCRIPTION__USE_STRIPED_ROWS_EXPRESSION:
             case TablePackage.TABLE_DESCRIPTION__ENABLE_SUB_ROWS:
+            case TablePackage.TABLE_DESCRIPTION__PAGE_SIZE_OPTIONS_EXPRESSION:
+            case TablePackage.TABLE_DESCRIPTION__DEFAULT_PAGE_SIZE_INDEX_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case TablePackage.TABLE_DESCRIPTION__COLUMN_DESCRIPTIONS:
@@ -203,9 +218,8 @@ public class TableDescriptionItemProvider extends RepresentationDescriptionItemP
     }
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing
-     * the children that can be created under this object. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
+     * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
      */
@@ -213,19 +227,15 @@ public class TableDescriptionItemProvider extends RepresentationDescriptionItemP
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.TABLE_DESCRIPTION__COLUMN_DESCRIPTIONS,
-                TableFactory.eINSTANCE.createColumnDescription()));
+        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.TABLE_DESCRIPTION__COLUMN_DESCRIPTIONS, TableFactory.eINSTANCE.createColumnDescription()));
 
-        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.TABLE_DESCRIPTION__ROW_DESCRIPTION,
-                TableFactory.eINSTANCE.createRowDescription()));
+        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.TABLE_DESCRIPTION__ROW_DESCRIPTION, TableFactory.eINSTANCE.createRowDescription()));
 
         CellDescription cellDescription = TableFactory.eINSTANCE.createCellDescription();
         cellDescription.setCellWidgetDescription(TableFactory.eINSTANCE.createCellTextfieldWidgetDescription());
-        newChildDescriptors.add(
-                this.createChildParameter(TablePackage.Literals.TABLE_DESCRIPTION__CELL_DESCRIPTIONS, cellDescription));
+        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.TABLE_DESCRIPTION__CELL_DESCRIPTIONS, cellDescription));
 
-        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.TABLE_DESCRIPTION__ROW_FILTERS,
-                TableFactory.eINSTANCE.createRowFilterDescription()));
+        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.TABLE_DESCRIPTION__ROW_FILTERS, TableFactory.eINSTANCE.createRowFilterDescription()));
     }
 
 }

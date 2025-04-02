@@ -26,6 +26,7 @@ export const CursorBasedPagination = ({
   onNext,
   pageSize,
   onPageSizeChange,
+  pageSizeOptions,
 }: CursorBasedPaginationProps) => {
   return (
     <Box display="flex" justifyContent="flex-end" alignItems="center" width="100%">
@@ -38,7 +39,7 @@ export const CursorBasedPagination = ({
           onChange={(e) => onPageSizeChange(Number(e.target.value))}
           inputProps={{ 'aria-label': 'Rows per page' }}
           data-testid="cursor-based-pagination-size">
-          {[5, 10, 20, 50].map((option) => (
+          {pageSizeOptions.map((option) => (
             <MenuItem key={option} value={option}>
               {option}
             </MenuItem>

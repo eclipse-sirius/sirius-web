@@ -34,7 +34,7 @@ import { RowFiltersMenu } from '../rows/filters/RowFiltersMenu';
 import { RowAction } from '../rows/RowAction';
 import { useResetRowsMutation } from '../rows/useResetRows';
 import { CursorBasedPagination } from './CursorBasedPagination';
-import { GQLLine, TableContentProps, TablePaginationState } from './TableContent.types';
+import { GQLLine, TableContentProps } from './TableContent.types';
 import { useGlobalFilter } from './useGlobalFilter';
 import { useTableColumns } from './useTableColumns';
 
@@ -58,6 +58,7 @@ export const TableContent = memo(
     enablePagination,
     enableColumnOrdering,
     enableSelectionSynchronization,
+    pageSize,
     expandedRowIds,
     rowFilters,
     activeRowFilterIds,
@@ -121,41 +122,18 @@ export const TableContent = memo(
 
     const { resetRowsHeight } = useResetRowsMutation(editingContextId, representationId, table.id, enableRowSizing);
 
-    const [pagination, setPagination] = useState<TablePaginationState>({
-      size: 10,
-      cursor: null,
-      direction: 'NEXT',
-    });
-
     const handlePreviousPage = () => {
-      setPagination((prevState) => {
-        const cursorRow = table.lines[0];
-        return {
-          ...prevState,
-          cursor: cursorRow?.targetObjectId ?? null,
-          direction: 'PREV',
-        };
-      });
+      const cursorRow = table.lines[0];
+      onPaginationChange(cursorRow?.targetObjectId ?? null, 'PREV', null);
     };
 
     const handleNextPage = () => {
-      setPagination((prevState) => {
-        const cursorRow = table.lines[table.lines.length - 1];
-        return {
-          ...prevState,
-          cursor: cursorRow?.targetObjectId ?? null,
-          direction: 'NEXT',
-        };
-      });
+      const cursorRow = table.lines[table.lines.length - 1];
+      onPaginationChange(cursorRow?.targetObjectId ?? null, 'NEXT', null);
     };
 
     const handlePageSize = (pageSize: number) => {
-      setPagination((prevState) => ({
-        ...prevState,
-        size: pageSize,
-        cursor: null,
-        direction: 'NEXT',
-      }));
+      onPaginationChange(null, 'NEXT', pageSize);
     };
 
     const { globalFilter, setGlobalFilter } = useGlobalFilter(
@@ -165,10 +143,6 @@ export const TableContent = memo(
       onGlobalFilterChange,
       enableGlobalFilter
     );
-
-    useEffect(() => {
-      onPaginationChange(pagination.cursor, pagination.direction, pagination.size);
-    }, [pagination.cursor, pagination.size, pagination.direction]);
 
     useEffect(() => {
       setLinesState([...table.lines]);
@@ -242,8 +216,9 @@ export const TableContent = memo(
           hasNext={table.paginationData.hasNextPage}
           onPrev={handlePreviousPage}
           onNext={handleNextPage}
-          pageSize={pagination.size}
+          pageSize={pageSize}
           onPageSizeChange={handlePageSize}
+          pageSizeOptions={table.pageSizeOptions}
         />
       ),
       renderRowActions: ({ row }) => (

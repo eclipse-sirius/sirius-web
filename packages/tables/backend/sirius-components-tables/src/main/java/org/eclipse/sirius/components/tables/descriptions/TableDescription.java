@@ -62,6 +62,10 @@ public final class TableDescription implements IRepresentationDescription {
 
     private boolean enableSubRows;
 
+    private Function<VariableManager, List<Integer>> pageSizeOptionsProvider;
+
+    private Function<VariableManager, Integer> defaultPageSizeIndexProvider;
+
     private TableDescription() {
         // Prevent instantiation
     }
@@ -116,6 +120,14 @@ public final class TableDescription implements IRepresentationDescription {
         return this.enableSubRows;
     }
 
+    public Function<VariableManager, List<Integer>> getPageSizeOptionsProvider() {
+        return this.pageSizeOptionsProvider;
+    }
+
+    public Function<VariableManager, Integer> getDefaultPageSizeIndexProvider() {
+        return this.defaultPageSizeIndexProvider;
+    }
+
     public static Builder newTableDescription(String id) {
         return new Builder(id);
     }
@@ -157,6 +169,10 @@ public final class TableDescription implements IRepresentationDescription {
         private Function<VariableManager, List<String>> iconURLsProvider;
 
         private boolean enableSubRows;
+
+        private Function<VariableManager, List<Integer>> pageSizeOptionsProvider;
+
+        private Function<VariableManager, Integer> defaultPageSizeIndexProvider;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -217,6 +233,16 @@ public final class TableDescription implements IRepresentationDescription {
             return this;
         }
 
+        public Builder pageSizeOptionsProvider(Function<VariableManager, List<Integer>> pageSizeOptionsProvider) {
+            this.pageSizeOptionsProvider = Objects.requireNonNull(pageSizeOptionsProvider);
+            return this;
+        }
+
+        public Builder defaultPageSizeIndexProvider(Function<VariableManager, Integer> defaultPageSizeIndexProvider) {
+            this.defaultPageSizeIndexProvider = Objects.requireNonNull(defaultPageSizeIndexProvider);
+            return this;
+        }
+
         public TableDescription build() {
             TableDescription tableDescription = new TableDescription();
             tableDescription.id = Objects.requireNonNull(this.id);
@@ -231,6 +257,8 @@ public final class TableDescription implements IRepresentationDescription {
             tableDescription.cellDescriptions = Objects.requireNonNull(this.cellDescriptions);
             tableDescription.iconURLsProvider = Objects.requireNonNull(this.iconURLsProvider);
             tableDescription.enableSubRows = this.enableSubRows;
+            tableDescription.pageSizeOptionsProvider = Objects.requireNonNull(this.pageSizeOptionsProvider);
+            tableDescription.defaultPageSizeIndexProvider = Objects.requireNonNull(this.defaultPageSizeIndexProvider);
             return tableDescription;
         }
     }

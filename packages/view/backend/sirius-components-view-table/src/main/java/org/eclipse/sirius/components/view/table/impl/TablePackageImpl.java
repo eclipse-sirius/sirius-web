@@ -44,48 +44,56 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
      * @generated
      */
     private static boolean isInited = false;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private EClass tableDescriptionEClass = null;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private EClass columnDescriptionEClass = null;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private EClass rowDescriptionEClass = null;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private EClass cellDescriptionEClass = null;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private EClass cellWidgetDescriptionEClass = null;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private EClass cellTextfieldWidgetDescriptionEClass = null;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private EClass cellLabelWidgetDescriptionEClass = null;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -106,6 +114,7 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
      * @generated
      */
     private EClass rowContextMenuEntryEClass = null;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -245,6 +254,26 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
     @Override
     public EReference getTableDescription_RowFilters() {
         return (EReference) this.tableDescriptionEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getTableDescription_PageSizeOptionsExpression() {
+        return (EAttribute) this.tableDescriptionEClass.getEStructuralFeatures().get(6);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getTableDescription_DefaultPageSizeIndexExpression() {
+        return (EAttribute) this.tableDescriptionEClass.getEStructuralFeatures().get(7);
     }
 
     /**
@@ -736,6 +765,8 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
         this.createEReference(this.tableDescriptionEClass, TABLE_DESCRIPTION__CELL_DESCRIPTIONS);
         this.createEAttribute(this.tableDescriptionEClass, TABLE_DESCRIPTION__ENABLE_SUB_ROWS);
         this.createEReference(this.tableDescriptionEClass, TABLE_DESCRIPTION__ROW_FILTERS);
+        this.createEAttribute(this.tableDescriptionEClass, TABLE_DESCRIPTION__PAGE_SIZE_OPTIONS_EXPRESSION);
+        this.createEAttribute(this.tableDescriptionEClass, TABLE_DESCRIPTION__DEFAULT_PAGE_SIZE_INDEX_EXPRESSION);
 
         this.columnDescriptionEClass = this.createEClass(COLUMN_DESCRIPTION);
         this.createEAttribute(this.columnDescriptionEClass, COLUMN_DESCRIPTION__NAME);
@@ -840,6 +871,10 @@ public class TablePackageImpl extends EPackageImpl implements TablePackage {
         this.initEReference(this.getTableDescription_RowFilters(), this.getRowFilterDescription(), null, "rowFilters", null, 0, -1, TableDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.getTableDescription_RowFilters().getEKeys().add(this.getRowFilterDescription_Id());
+        this.initEAttribute(this.getTableDescription_PageSizeOptionsExpression(), theViewPackage.getInterpretedExpression(), "pageSizeOptionsExpression", null, 0, 1, TableDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTableDescription_DefaultPageSizeIndexExpression(), theViewPackage.getInterpretedExpression(), "defaultPageSizeIndexExpression", null, 0, 1, TableDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.columnDescriptionEClass, ColumnDescription.class, "ColumnDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getColumnDescription_Name(), theViewPackage.getIdentifier(), "name", null, 0, 1, ColumnDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,

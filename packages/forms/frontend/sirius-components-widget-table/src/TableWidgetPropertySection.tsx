@@ -69,6 +69,7 @@ const RawTableWidgetPropertySection: PropertySectionComponent<GQLTableWidget> = 
         enableColumnOrdering={false}
         enableSelectionSynchronization={false}
         expandedRowIds={[]}
+        pageSize={0}
         rowFilters={[]}
         activeRowFilterIds={[]}
         enableSorting={false}

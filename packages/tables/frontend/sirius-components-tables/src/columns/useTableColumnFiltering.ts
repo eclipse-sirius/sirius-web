@@ -42,7 +42,7 @@ const changeColumnFilterMutation = gql`
   }
 `;
 
-const getColumnFilters = (table: GQLTable) => {
+export const getColumnFilters = (table: GQLTable) => {
   return table.columnFilters.map((filter) => ({
     id: filter.id,
     value: JSON.parse(filter.value as string),

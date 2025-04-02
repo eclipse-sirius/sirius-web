@@ -77,6 +77,27 @@ public class ViewTableRepresentationDescriptionConverter implements IRepresentat
             }
             return false;
         };
+
+        Function<VariableManager, List<Integer>> pageSizeOptionsProvider = variableManager -> {
+            if (viewTableDescription.getPageSizeOptionsExpression() != null && !viewTableDescription.getPageSizeOptionsExpression().isBlank()) {
+                return interpreter.evaluateExpression(variableManager.getVariables(), viewTableDescription.getPageSizeOptionsExpression())
+                        .asObjects()
+                        .orElse(List.of(5, 10, 20, 50))
+                        .stream()
+                        .filter(Integer.class::isInstance)
+                        .map(Integer.class::cast)
+                        .toList();
+            }
+            return List.of(5, 10, 20, 50);
+        };
+
+        Function<VariableManager, Integer> defaultPageSizeIndexProvider = variableManager -> {
+            if (viewTableDescription.getDefaultPageSizeIndexExpression() != null) {
+                return interpreter.evaluateExpression(variableManager.getVariables(), viewTableDescription.getDefaultPageSizeIndexExpression()).asInt().orElse(0);
+            }
+            return 0;
+        };
+
         return TableDescription.newTableDescription(this.tableIdProvider.getId(viewTableDescription))
                 .label(Optional.ofNullable(viewTableDescription.getName()).orElse(DEFAULT_TABLE_LABEL))
                 .labelProvider(variableManager -> this.computeTableLabel(viewTableDescription, variableManager, interpreter))
@@ -89,6 +110,8 @@ public class ViewTableRepresentationDescriptionConverter implements IRepresentat
                 .isStripeRowPredicate(isStripeRowPredicate)
                 .iconURLsProvider(new ViewIconURLsProvider(interpreter, viewTableDescription.getIconExpression()))
                 .enableSubRows(viewTableDescription.isEnableSubRows())
+                .pageSizeOptionsProvider(pageSizeOptionsProvider)
+                .defaultPageSizeIndexProvider(defaultPageSizeIndexProvider)
                 .build();
     }
 

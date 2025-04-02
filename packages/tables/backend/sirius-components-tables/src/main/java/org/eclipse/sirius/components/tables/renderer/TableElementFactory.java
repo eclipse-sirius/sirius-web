@@ -83,6 +83,8 @@ public class TableElementFactory implements IElementFactory {
                     .columnFilters(tableElementProps.columnFilters())
                     .enableSubRows(tableElementProps.enableSubRows())
                     .columnSort(tableElementProps.columnSort())
+                    .pageSizeOptions(tableElementProps.pageSizeOptions())
+                    .defaultPageSize(tableElementProps.defaultPageSize())
                     .build();
         }
         return null;

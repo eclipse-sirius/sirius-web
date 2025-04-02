@@ -162,13 +162,31 @@ public interface TablePackage extends EPackage {
     int TABLE_DESCRIPTION__ROW_FILTERS = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
+     * The feature id for the '<em><b>Page Size Options Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TABLE_DESCRIPTION__PAGE_SIZE_OPTIONS_EXPRESSION = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 6;
+
+    /**
+     * The feature id for the '<em><b>Default Page Size Index Expression</b></em>' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TABLE_DESCRIPTION__DEFAULT_PAGE_SIZE_INDEX_EXPRESSION = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 7;
+
+    /**
      * The number of structural features of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int TABLE_DESCRIPTION_FEATURE_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 6;
+    int TABLE_DESCRIPTION_FEATURE_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 8;
 
     /**
      * The number of operations of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -684,6 +702,12 @@ public interface TablePackage extends EPackage {
      */
     int CELL_TEXTAREA_WIDGET_DESCRIPTION__BODY = CELL_WIDGET_DESCRIPTION_FEATURE_COUNT;
     /**
+     * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    TablePackage eINSTANCE = org.eclipse.sirius.components.view.table.impl.TablePackageImpl.init();
+    /**
      * The number of structural features of the '<em>Cell Textarea Widget Description</em>' class. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
@@ -731,12 +755,6 @@ public interface TablePackage extends EPackage {
      * @ordered
      */
     int ROW_FILTER_DESCRIPTION__INITIAL_STATE_EXPRESSION = 2;
-    /**
-     * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    TablePackage eINSTANCE = org.eclipse.sirius.components.view.table.impl.TablePackageImpl.init();
     /**
      * The number of structural features of the '<em>Row Filter Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -836,6 +854,30 @@ public interface TablePackage extends EPackage {
      * @see #getTableDescription()
      */
     EReference getTableDescription_RowFilters();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.table.TableDescription#getPageSizeOptionsExpression <em>Page Size
+     * Options Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Page Size Options Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.TableDescription#getPageSizeOptionsExpression()
+     * @see #getTableDescription()
+     */
+    EAttribute getTableDescription_PageSizeOptionsExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.table.TableDescription#getDefaultPageSizeIndexExpression <em>Default
+     * Page Size Index Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Default Page Size Index Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.table.TableDescription#getDefaultPageSizeIndexExpression()
+     * @see #getTableDescription()
+     */
+    EAttribute getTableDescription_DefaultPageSizeIndexExpression();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.table.ColumnDescription <em>Column
@@ -1444,12 +1486,28 @@ public interface TablePackage extends EPackage {
         EAttribute TABLE_DESCRIPTION__ENABLE_SUB_ROWS = eINSTANCE.getTableDescription_EnableSubRows();
 
         /**
-         * The meta object literal for the '<em><b>Row Filters</b></em>' reference list feature. <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
+         * The meta object literal for the '<em><b>Row Filters</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
          */
         EReference TABLE_DESCRIPTION__ROW_FILTERS = eINSTANCE.getTableDescription_RowFilters();
+
+        /**
+         * The meta object literal for the '<em><b>Page Size Options Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute TABLE_DESCRIPTION__PAGE_SIZE_OPTIONS_EXPRESSION = eINSTANCE.getTableDescription_PageSizeOptionsExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Default Page Size Index Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute TABLE_DESCRIPTION__DEFAULT_PAGE_SIZE_INDEX_EXPRESSION = eINSTANCE.getTableDescription_DefaultPageSizeIndexExpression();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.table.impl.ColumnDescriptionImpl

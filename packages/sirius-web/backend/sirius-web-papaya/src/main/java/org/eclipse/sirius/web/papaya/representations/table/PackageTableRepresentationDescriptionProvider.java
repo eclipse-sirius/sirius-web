@@ -120,6 +120,8 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .iconURLsProvider(variableManager -> List.of("/papaya-representations/package-table.svg"))
                 .isStripeRowPredicate(variableManager -> true)
                 .enableSubRows(true)
+                .pageSizeOptionsProvider(variableManager -> List.of(5, 10, 20, 50))
+                .defaultPageSizeIndexProvider(variableManager -> 1)
                 .build();
 
         return List.of(tableDescription);

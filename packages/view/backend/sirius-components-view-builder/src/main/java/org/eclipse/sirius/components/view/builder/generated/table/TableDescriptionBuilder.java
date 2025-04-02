@@ -151,6 +151,26 @@ public class TableDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for PageSizeOptionsExpression.
+     *
+     * @generated
+     */
+    public TableDescriptionBuilder pageSizeOptionsExpression(java.lang.String value) {
+        this.getTableDescription().setPageSizeOptionsExpression(value);
+        return this;
+    }
+
+    /**
+     * Setter for DefaultPageSizeIndexExpression.
+     *
+     * @generated
+     */
+    public TableDescriptionBuilder defaultPageSizeIndexExpression(java.lang.String value) {
+        this.getTableDescription().setDefaultPageSizeIndexExpression(value);
+        return this;
+    }
+
 
 }
 

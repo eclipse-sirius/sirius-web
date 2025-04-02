@@ -55,6 +55,14 @@ public class TableComponent implements IComponent {
         String targetObjectId = tableDescription.getTargetObjectIdProvider().apply(variableManager);
         String targetObjectKind = tableDescription.getTargetObjectKindProvider().apply(variableManager);
         boolean stripeRow = tableDescription.getIsStripeRowPredicate().test(variableManager);
+        List<Integer> pageSizeOptions = tableDescription.getPageSizeOptionsProvider().apply(variableManager);
+        int pageSizeIndex = tableDescription.getDefaultPageSizeIndexProvider().apply(variableManager);
+        int pageSize = 0;
+        if (pageSizeIndex < pageSizeOptions.size()) {
+            pageSize = pageSizeOptions.get(pageSizeIndex);
+        } else if (!pageSizeOptions.isEmpty()) {
+            pageSize = pageSizeOptions.get(0);
+        }
 
         TableRenderingCache cache = new TableRenderingCache();
         ITableElementRequestor tableElementRequestor = new TableElementRequestor();
@@ -117,6 +125,8 @@ public class TableComponent implements IComponent {
                 .columnFilters(columnsFilters)
                 .enableSubRows(tableDescription.isEnableSubRows())
                 .columnSort(columnSort)
+                .pageSizeOptions(pageSizeOptions)
+                .defaultPageSize(pageSize)
                 .build();
 
         return new Element(TableElementProps.TYPE, tableElementProps);
