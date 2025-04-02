@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,6 @@ import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.generated.table.TableBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
-import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.emf.table.TableIdProvider;
 import org.eclipse.sirius.components.view.table.TableDescription;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -34,16 +33,14 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to provide a simple view based table description to tests.
+ * Used to provide a minimal view based table description to tests.
  *
  * @author frouene
  */
 @Service
 @Conditional(OnStudioTests.class)
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-public class ViewTableDescriptionProvider implements IEditingContextProcessor {
-
-    public static final String HIDE_FAILURE_ROW_FILTER_ID = "hide-failure";
+public class MinimalViewTableDescriptionProvider implements IEditingContextProcessor {
 
     private final TableIdProvider tableIdProvider;
 
@@ -51,7 +48,7 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
 
     private TableDescription tableDescription;
 
-    public ViewTableDescriptionProvider(TableIdProvider tableIdProvider) {
+    public MinimalViewTableDescriptionProvider(TableIdProvider tableIdProvider) {
         this.tableIdProvider = Objects.requireNonNull(tableIdProvider);
         this.view = this.createView();
     }
@@ -76,9 +73,9 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
             eObject.eAdapters().add(new IDAdapter(UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes())));
         });
 
-        String resourcePath = UUID.nameUUIDFromBytes("ViewTableDescription".getBytes()).toString();
+        String resourcePath = UUID.nameUUIDFromBytes("MinimalViewTableDescription".getBytes()).toString();
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(resourcePath);
-        resource.eAdapters().add(new ResourceMetadataAdapter("ViewTableDescription"));
+        resource.eAdapters().add(new ResourceMetadataAdapter("MinimalViewTableDescription"));
         resource.getContents().add(newView);
 
         return newView;
@@ -87,70 +84,31 @@ public class ViewTableDescriptionProvider implements IEditingContextProcessor {
     private TableDescription createTableDescription() {
 
         var columnDescription = new TableBuilders().newColumnDescription()
-                .semanticCandidatesExpression("aql:Sequence{'Name', 'Description'}")
+                .semanticCandidatesExpression("aql:Sequence{'Name'}")
                 .headerLabelExpression("aql:self")
-                .headerIndexLabelExpression("aql:columnIndex")
-                .isSortableExpression("aql:true")
-                .build();
-
-        var contextMenuEntry = new TableBuilders().newRowContextMenuEntry()
-                .name("change-name")
-                .labelExpression("Change name")
-                .preconditionExpression("aql:true")
-                .body(
-                        new ViewBuilders().newSetValue()
-                                .featureName("name")
-                                .valueExpression("aql:self.name + 'Updated'")
-                                .build()
-                )
                 .build();
 
         var rowDescription = new TableBuilders().newRowDescription()
                 .semanticCandidatesExpression(
-                        "aql:self.eAllContents()->filter({papaya::Type | papaya::Operation | papaya::Parameter})->select(t | not (activeRowFilterIds->includes('hide-failure') and (t.name = 'Failure')))->sortNamedElement(columnSort)->toPaginatedData(cursor,direction,size)")
-                .headerIndexLabelExpression("aql:rowIndex")
-                .headerLabelExpression("aql:self.name")
-                .contextMenuEntries(contextMenuEntry)
-                .depthLevelExpression(
-                        "aql:if self.oclIsKindOf(papaya::Type) then 0 else if self.oclIsKindOf(papaya::Operation) then 1 else if self.oclIsKindOf(papaya::Parameter) then 2 else endif endif endif")
+                        "aql:self.eAllContents()->toPaginatedData(cursor,direction,size)")
+                .depthLevelExpression("0")
                 .build();
 
-        var setNameOperation = new ViewBuilders().newSetValue()
-                .featureName("name")
-                .valueExpression("aql:newValue");
 
         var nameCellDescription = new TableBuilders().newCellDescription()
-                .preconditionExpression("aql:columnTargetObject.equals('Name')")
+                .preconditionExpression("aql:true")
                 .valueExpression("aql:self.name")
                 .cellWidgetDescription(new TableBuilders().newCellTextfieldWidgetDescription()
-                        .body(setNameOperation.build())
                         .build())
-                .selectedTargetObjectExpression("aql:self.eContainer()")
                 .build();
 
-        var descriptionCellDescription = new TableBuilders().newCellDescription()
-                .preconditionExpression("aql:columnTargetObject.equals('Description')")
-                .valueExpression("aql:self.description")
-                .cellWidgetDescription(new TableBuilders().newCellTextareaWidgetDescription().build())
-                .build();
-
-        var hideFailureFilter = new TableBuilders().newRowFilterDescription()
-                .id(HIDE_FAILURE_ROW_FILTER_ID)
-                .labelExpression("aql:'Hide Failure elements'")
-                .initialStateExpression("aql:true")
-                .build();
 
         this.tableDescription = new TableBuilders().newTableDescription()
                 .domainType("papaya::Package")
-                .titleExpression("View Package Table")
+                .titleExpression("Minimal View Package Table")
                 .columnDescriptions(columnDescription)
                 .rowDescription(rowDescription)
-                .cellDescriptions(nameCellDescription, descriptionCellDescription)
-                .useStripedRowsExpression("aql:false")
-                .enableSubRows(true)
-                .rowFilters(hideFailureFilter)
-                .pageSizeOptionsExpression("aql:Sequence{5,20,50}")
-                .defaultPageSizeIndexExpression("aql:2")
+                .cellDescriptions(nameCellDescription)
                 .build();
 
         return this.tableDescription;

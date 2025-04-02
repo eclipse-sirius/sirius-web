@@ -20,6 +20,8 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference table.ecore#//TableDescription/cellDescriptions"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//TableDescription/enableSubRows"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference table.ecore#//TableDescription/rowFilters"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//TableDescription/pageSizeOptionsExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//TableDescription/defaultPageSizeIndexExpression"/>
     </genClasses>
     <genClasses ecoreClass="table.ecore#//ColumnDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute table.ecore#//ColumnDescription/name"/>

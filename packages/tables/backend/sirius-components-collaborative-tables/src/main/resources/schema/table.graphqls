@@ -53,6 +53,8 @@ type Table implements Representation {
   columnFilters: [ColumnFilter!]!
   enableSubRows: Boolean!
   columnSort: [ColumnSort!]!
+  pageSizeOptions: [Int!]!
+  defaultPageSize: Int!
 }
 
 type Column {

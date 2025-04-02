@@ -19,7 +19,7 @@ export interface TableContentProps {
   representationId: string;
   table: GQLTable;
   readOnly: boolean;
-  onPaginationChange: (cursor: string | null, direction: 'PREV' | 'NEXT', size: number) => void;
+  onPaginationChange: (cursor: string | null, direction: 'PREV' | 'NEXT', size: number | null) => void;
   onGlobalFilterChange: (globalFilter: string) => void;
   onColumnFiltersChange: (columnFilters: ColumnFilter[]) => void;
   onExpandedElementChange: (rowId: string) => void;
@@ -33,6 +33,7 @@ export interface TableContentProps {
   enablePagination: boolean;
   enableColumnOrdering: boolean;
   enableSelectionSynchronization: boolean;
+  pageSize: number;
   expandedRowIds: string[];
   rowFilters: RowFilter[] | null;
   activeRowFilterIds: string[];
@@ -63,6 +64,8 @@ export interface GQLTable {
   targetObjectId: string;
   stripeRow: boolean;
   enableSubRows: boolean;
+  pageSizeOptions: number[];
+  defaultPageSize: number;
   globalFilter: string | null;
   columns: GQLColumn[];
   lines: GQLLine[];

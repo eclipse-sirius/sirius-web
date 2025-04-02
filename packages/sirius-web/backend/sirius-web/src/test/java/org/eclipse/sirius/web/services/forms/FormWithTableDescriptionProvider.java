@@ -157,6 +157,8 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
                 .iconURLsProvider(variableManager -> List.of())
                 .isStripeRowPredicate(variableManager -> false)
                 .enableSubRows(false)
+                .pageSizeOptionsProvider(variableManager -> List.of(5, 10, 20, 50))
+                .defaultPageSizeIndexProvider(variableManager -> 1)
                 .build();
 
         return TableWidgetDescription.newTableWidgetDescription("tasksTableWidgetId")

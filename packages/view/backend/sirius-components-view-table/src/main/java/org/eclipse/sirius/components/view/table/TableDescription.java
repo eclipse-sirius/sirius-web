@@ -31,6 +31,10 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
  * Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.table.TableDescription#isEnableSubRows <em>Enable Sub Rows</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.table.TableDescription#getRowFilters <em>Row Filters</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.table.TableDescription#getPageSizeOptionsExpression <em>Page Size
+ * Options Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.table.TableDescription#getDefaultPageSizeIndexExpression <em>Default
+ * Page Size Index Expression</em>}</li>
  * </ul>
  *
  * @model
@@ -144,5 +148,53 @@ public interface TableDescription extends RepresentationDescription {
      * @see org.eclipse.sirius.components.view.table.TablePackage#getTableDescription_RowFilters()
      */
     EList<RowFilterDescription> getRowFilters();
+
+    /**
+     * Returns the value of the '<em><b>Page Size Options Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Page Size Options Expression</em>' attribute.
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     * @see #setPageSizeOptionsExpression(String)
+     * @see org.eclipse.sirius.components.view.table.TablePackage#getTableDescription_PageSizeOptionsExpression()
+     */
+    String getPageSizeOptionsExpression();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.table.TableDescription#getPageSizeOptionsExpression <em>Page Size
+     * Options Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>Page Size Options Expression</em>' attribute.
+     * @generated
+     * @see #getPageSizeOptionsExpression()
+     */
+    void setPageSizeOptionsExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Default Page Size Index Expression</b></em>' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Default Page Size Index Expression</em>' attribute.
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     * @see #setDefaultPageSizeIndexExpression(String)
+     * @see org.eclipse.sirius.components.view.table.TablePackage#getTableDescription_DefaultPageSizeIndexExpression()
+     */
+    String getDefaultPageSizeIndexExpression();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.table.TableDescription#getDefaultPageSizeIndexExpression <em>Default
+     * Page Size Index Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>Default Page Size Index Expression</em>' attribute.
+     * @generated
+     * @see #getDefaultPageSizeIndexExpression()
+     */
+    void setDefaultPageSizeIndexExpression(String value);
 
 } // TableDescription

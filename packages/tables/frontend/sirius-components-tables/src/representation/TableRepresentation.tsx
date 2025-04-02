@@ -14,6 +14,7 @@ import { RepresentationComponentProps, RepresentationLoadingIndicator } from '@e
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
+import { getColumnFilters } from '../columns/useTableColumnFiltering';
 import { useTableRowFilters } from '../rows/filters/useTableRowFilters';
 import { TableContent } from '../table/TableContent';
 import { ColumnFilter, ColumnSort } from '../table/TableContent.types';
@@ -36,7 +37,7 @@ const useTableRepresentationStyles = makeStyles()((theme) => ({
 const defaultPagination: TableRepresentationPagination = {
   cursor: null,
   direction: 'NEXT',
-  size: 10,
+  size: 0,
 };
 
 export const TableRepresentation = ({ editingContextId, representationId, readOnly }: RepresentationComponentProps) => {
@@ -70,8 +71,29 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
     setState((prevState) => ({ ...prevState, activeRowFilterIds }));
   }, [activeRowFilterIds.join('')]);
 
-  const onPaginationChange = (cursor: string | null, direction: 'PREV' | 'NEXT', size: number) => {
-    setState((prevState) => ({ ...prevState, cursor, direction, size }));
+  useEffect(() => {
+    if (table) {
+      setState((prevState) => ({
+        ...prevState,
+        size: prevState.size === 0 ? table.defaultPageSize : prevState.size,
+        globalFilter: table.globalFilter,
+        columnFilters: getColumnFilters(table),
+        columnSort: table.columnSort,
+      }));
+    }
+  }, [
+    table?.defaultPageSize,
+    table?.globalFilter,
+    table?.columnFilters.map((filter) => filter.id + filter.value).join(),
+    table?.columnSort.map((sort) => sort.id + sort.desc).join(),
+  ]);
+
+  const onPaginationChange = (cursor: string | null, direction: 'PREV' | 'NEXT', size: number | null) => {
+    if (size) {
+      setState((prevState) => ({ ...prevState, cursor, direction, size }));
+    } else {
+      setState((prevState) => ({ ...prevState, cursor, direction }));
+    }
   };
 
   const onGlobalFilterChange = (globalFilter: string) => {
@@ -151,6 +173,7 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
           enableColumnOrdering
           enableSelectionSynchronization
           expandedRowIds={state.expanded}
+          pageSize={state.size}
           rowFilters={rowFilters}
           activeRowFilterIds={state.activeRowFilterIds}
           enableSorting

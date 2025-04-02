@@ -55,6 +55,10 @@ public final class Table implements IRepresentation {
 
     private List<ColumnSort> columnSort;
 
+    private List<Integer> pageSizeOptions;
+
+    private int defaultPageSize;
+
     private Table() {
         // Prevent instantiation
     }
@@ -115,6 +119,14 @@ public final class Table implements IRepresentation {
         return this.columnSort;
     }
 
+    public List<Integer> getPageSizeOptions() {
+        return this.pageSizeOptions;
+    }
+
+    public int getDefaultPageSize() {
+        return this.defaultPageSize;
+    }
+
     public static Builder newTable(String id) {
         return new Builder(id);
     }
@@ -158,6 +170,10 @@ public final class Table implements IRepresentation {
         private boolean enableSubRows;
 
         private List<ColumnSort> columnSort;
+
+        private List<Integer> pageSizeOptions;
+
+        private int defaultPageSize;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -218,6 +234,16 @@ public final class Table implements IRepresentation {
             return this;
         }
 
+        public Builder pageSizeOptions(List<Integer> pageSizeOptions) {
+            this.pageSizeOptions = Objects.requireNonNull(pageSizeOptions);
+            return this;
+        }
+
+        public Builder defaultPageSize(int defaultPageSize) {
+            this.defaultPageSize = defaultPageSize;
+            return this;
+        }
+
         public Table build() {
             Table table = new Table();
             table.id = Objects.requireNonNull(this.id);
@@ -233,6 +259,8 @@ public final class Table implements IRepresentation {
             table.columnFilters = Objects.requireNonNull(this.columnFilters);
             table.enableSubRows = this.enableSubRows;
             table.columnSort = Objects.requireNonNull(this.columnSort);
+            table.pageSizeOptions = Objects.requireNonNull(this.pageSizeOptions);
+            table.defaultPageSize = this.defaultPageSize;
             return table;
         }
     }

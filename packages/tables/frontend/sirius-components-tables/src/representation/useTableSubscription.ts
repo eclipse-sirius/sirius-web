@@ -56,6 +56,8 @@ export const getTableEventSubscription = `
           }
           stripeRow
           enableSubRows
+          pageSizeOptions
+          defaultPageSize
           globalFilter
           columnFilters {
             id

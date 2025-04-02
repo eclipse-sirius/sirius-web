@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.tables.tests.graphql.RowContextMenuQueryRun
 import org.eclipse.sirius.components.tables.tests.graphql.TableEventSubscriptionRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
+import org.eclipse.sirius.web.services.tables.MinimalViewTableDescriptionProvider;
 import org.eclipse.sirius.web.services.tables.ViewTableDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
@@ -78,6 +79,9 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
     private ViewTableDescriptionProvider viewTableDescriptionProvider;
 
     @Autowired
+    private MinimalViewTableDescriptionProvider minimalViewTableDescriptionProvider;
+
+    @Autowired
     private RowContextMenuQueryRunner rowContextMenuQueryRunner;
 
     @Autowired
@@ -101,6 +105,17 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
                 this.viewTableDescriptionProvider.getRepresentationDescriptionId(),
                 PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString(),
                 "ViewTableDescription"
+        );
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+    }
+
+    private Flux<Object> givenSubscriptionToMinimalViewTableRepresentation() {
+        var input = new CreateRepresentationInput(
+                UUID.randomUUID(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                this.minimalViewTableDescriptionProvider.getRepresentationDescriptionId(),
+                PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString(),
+                "MinimalViewTableDescription"
         );
         return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
     }
@@ -338,6 +353,49 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
 
         StepVerifier.create(expandedFlux)
                 .consumeNextWith(sortedTableContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a view table description with page size options, when a subscription is created, then the page size options are correct")
+    public void givenViewTableWithPageSizeOptionsWhenSubscriptionIsCreatedThenThePageSizeOptionsAreCorrect() {
+        var flux = this.givenSubscriptionToViewTableRepresentation();
+
+        Consumer<Object> tableContentConsumer = this.getTableSubscriptionConsumer(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getPageSizeOptions()).hasSize(3);
+            assertThat(table.getPageSizeOptions().get(0)).isEqualTo(5);
+            assertThat(table.getPageSizeOptions().get(1)).isEqualTo(20);
+            assertThat(table.getPageSizeOptions().get(2)).isEqualTo(50);
+            assertThat(table.getDefaultPageSize()).isEqualTo(50);
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(tableContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a view table description without page size options, when a subscription is created, then the page size options are set to fallback values")
+    public void givenViewTableWithoutPageSizeOptionsWhenSubscriptionIsCreatedThenThePageSizeOptionsAreSetToFallbackValues() {
+        var flux = this.givenSubscriptionToMinimalViewTableRepresentation();
+
+        Consumer<Object> tableContentConsumer = this.getTableSubscriptionConsumer(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getPageSizeOptions()).hasSize(4);
+            assertThat(table.getPageSizeOptions().get(0)).isEqualTo(5);
+            assertThat(table.getPageSizeOptions().get(1)).isEqualTo(10);
+            assertThat(table.getPageSizeOptions().get(2)).isEqualTo(20);
+            assertThat(table.getPageSizeOptions().get(3)).isEqualTo(50);
+            assertThat(table.getDefaultPageSize()).isEqualTo(5);
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(tableContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

@@ -94,6 +94,8 @@ public class TableWidgetDescriptionConverterSwitch extends TableWidgetSwitch<Opt
                 .lineDescription(new RowDescriptionConverter(this.tableIdProvider, this.semanticTargetIdProvider, variableManager -> "").convert(viewTableWidgetDescription.getRowDescription(),
                         this.interpreter))
                 .enableSubRows(false)
+                .pageSizeOptionsProvider(variableManager -> List.of(5, 10, 20, 50))
+                .defaultPageSizeIndexProvider(variableManager -> 1)
                 .build();
         var tableWidgetDescription = TableWidgetDescription.newTableWidgetDescription(descriptionId)
                 .targetObjectIdProvider(this.semanticTargetIdProvider)

@@ -49,6 +49,10 @@ import org.eclipse.sirius.components.view.table.TablePackage;
  * Rows</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.table.impl.TableDescriptionImpl#getRowFilters <em>Row
  * Filters</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.table.impl.TableDescriptionImpl#getPageSizeOptionsExpression <em>Page
+ * Size Options Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.table.impl.TableDescriptionImpl#getDefaultPageSizeIndexExpression
+ * <em>Default Page Size Index Expression</em>}</li>
  * </ul>
  *
  * @generated
@@ -74,6 +78,24 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
      */
     protected static final boolean ENABLE_SUB_ROWS_EDEFAULT = false;
     /**
+     * The default value of the '{@link #getPageSizeOptionsExpression() <em>Page Size Options Expression</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getPageSizeOptionsExpression()
+     */
+    protected static final String PAGE_SIZE_OPTIONS_EXPRESSION_EDEFAULT = null;
+    /**
+     * The default value of the '{@link #getDefaultPageSizeIndexExpression() <em>Default Page Size Index
+     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getDefaultPageSizeIndexExpression()
+     */
+    protected static final String DEFAULT_PAGE_SIZE_INDEX_EXPRESSION_EDEFAULT = null;
+    /**
      * The cached value of the '{@link #getUseStripedRowsExpression() <em>Use Striped Rows Expression</em>}' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -82,7 +104,6 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
      * @see #getUseStripedRowsExpression()
      */
     protected String useStripedRowsExpression = USE_STRIPED_ROWS_EXPRESSION_EDEFAULT;
-
     /**
      * The cached value of the '{@link #getColumnDescriptions() <em>Column Descriptions</em>}' containment reference
      * list. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -92,7 +113,6 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
      * @see #getColumnDescriptions()
      */
     protected EList<ColumnDescription> columnDescriptions;
-
     /**
      * The cached value of the '{@link #getRowDescription() <em>Row Description</em>}' containment reference. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -102,7 +122,6 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
      * @see #getRowDescription()
      */
     protected RowDescription rowDescription;
-
     /**
      * The cached value of the '{@link #getCellDescriptions() <em>Cell Descriptions</em>}' containment reference list.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -112,7 +131,6 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
      * @see #getCellDescriptions()
      */
     protected EList<CellDescription> cellDescriptions;
-
     /**
      * The cached value of the '{@link #isEnableSubRows() <em>Enable Sub Rows</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -122,16 +140,33 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
      * @see #isEnableSubRows()
      */
     protected boolean enableSubRows = ENABLE_SUB_ROWS_EDEFAULT;
-
     /**
-     * The cached value of the '{@link #getRowFilters() <em>Row Filters</em>}' reference list. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getRowFilters() <em>Row Filters</em>}' containment reference list. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      * @see #getRowFilters()
      */
     protected EList<RowFilterDescription> rowFilters;
+    /**
+     * The cached value of the '{@link #getPageSizeOptionsExpression() <em>Page Size Options Expression</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getPageSizeOptionsExpression()
+     */
+    protected String pageSizeOptionsExpression = PAGE_SIZE_OPTIONS_EXPRESSION_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getDefaultPageSizeIndexExpression() <em>Default Page Size Index
+     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getDefaultPageSizeIndexExpression()
+     */
+    protected String defaultPageSizeIndexExpression = DEFAULT_PAGE_SIZE_INDEX_EXPRESSION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -291,6 +326,53 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
      * @generated
      */
     @Override
+    public String getPageSizeOptionsExpression() {
+        return this.pageSizeOptionsExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setPageSizeOptionsExpression(String newPageSizeOptionsExpression) {
+        String oldPageSizeOptionsExpression = this.pageSizeOptionsExpression;
+        this.pageSizeOptionsExpression = newPageSizeOptionsExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.TABLE_DESCRIPTION__PAGE_SIZE_OPTIONS_EXPRESSION, oldPageSizeOptionsExpression, this.pageSizeOptionsExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getDefaultPageSizeIndexExpression() {
+        return this.defaultPageSizeIndexExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDefaultPageSizeIndexExpression(String newDefaultPageSizeIndexExpression) {
+        String oldDefaultPageSizeIndexExpression = this.defaultPageSizeIndexExpression;
+        this.defaultPageSizeIndexExpression = newDefaultPageSizeIndexExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.TABLE_DESCRIPTION__DEFAULT_PAGE_SIZE_INDEX_EXPRESSION, oldDefaultPageSizeIndexExpression,
+                    this.defaultPageSizeIndexExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case TablePackage.TABLE_DESCRIPTION__COLUMN_DESCRIPTIONS:
@@ -325,6 +407,10 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
                 return this.isEnableSubRows();
             case TablePackage.TABLE_DESCRIPTION__ROW_FILTERS:
                 return this.getRowFilters();
+            case TablePackage.TABLE_DESCRIPTION__PAGE_SIZE_OPTIONS_EXPRESSION:
+                return this.getPageSizeOptionsExpression();
+            case TablePackage.TABLE_DESCRIPTION__DEFAULT_PAGE_SIZE_INDEX_EXPRESSION:
+                return this.getDefaultPageSizeIndexExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -359,6 +445,12 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
                 this.getRowFilters().clear();
                 this.getRowFilters().addAll((Collection<? extends RowFilterDescription>) newValue);
                 return;
+            case TablePackage.TABLE_DESCRIPTION__PAGE_SIZE_OPTIONS_EXPRESSION:
+                this.setPageSizeOptionsExpression((String) newValue);
+                return;
+            case TablePackage.TABLE_DESCRIPTION__DEFAULT_PAGE_SIZE_INDEX_EXPRESSION:
+                this.setDefaultPageSizeIndexExpression((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -389,6 +481,12 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
             case TablePackage.TABLE_DESCRIPTION__ROW_FILTERS:
                 this.getRowFilters().clear();
                 return;
+            case TablePackage.TABLE_DESCRIPTION__PAGE_SIZE_OPTIONS_EXPRESSION:
+                this.setPageSizeOptionsExpression(PAGE_SIZE_OPTIONS_EXPRESSION_EDEFAULT);
+                return;
+            case TablePackage.TABLE_DESCRIPTION__DEFAULT_PAGE_SIZE_INDEX_EXPRESSION:
+                this.setDefaultPageSizeIndexExpression(DEFAULT_PAGE_SIZE_INDEX_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -413,6 +511,10 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
                 return this.enableSubRows != ENABLE_SUB_ROWS_EDEFAULT;
             case TablePackage.TABLE_DESCRIPTION__ROW_FILTERS:
                 return this.rowFilters != null && !this.rowFilters.isEmpty();
+            case TablePackage.TABLE_DESCRIPTION__PAGE_SIZE_OPTIONS_EXPRESSION:
+                return !Objects.equals(PAGE_SIZE_OPTIONS_EXPRESSION_EDEFAULT, this.pageSizeOptionsExpression);
+            case TablePackage.TABLE_DESCRIPTION__DEFAULT_PAGE_SIZE_INDEX_EXPRESSION:
+                return !Objects.equals(DEFAULT_PAGE_SIZE_INDEX_EXPRESSION_EDEFAULT, this.defaultPageSizeIndexExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -431,6 +533,10 @@ public class TableDescriptionImpl extends RepresentationDescriptionImpl implemen
                 this.useStripedRowsExpression +
                 ", enableSubRows: " +
                 this.enableSubRows +
+                ", pageSizeOptionsExpression: " +
+                this.pageSizeOptionsExpression +
+                ", defaultPageSizeIndexExpression: " +
+                this.defaultPageSizeIndexExpression +
                 ')';
         return result;
     }
