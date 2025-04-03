@@ -110,6 +110,8 @@ Given that implementations of this interface should be Spring services, they can
 - https://github.com/eclipse-sirius/sirius-web/issues/4709[#4709] [table] Unable to trigger selection change when clicking an empty cell
 - https://github.com/eclipse-sirius/sirius-web/issues/4771[#4771] [table] Fix an issue that prevent table representation to be forked
 - https://github.com/eclipse-sirius/sirius-web/issues/4772[#4772] [core] Dispose representation event processor even if there is no subscription
+- [diagram] Fix an issue where an edge was not reconnectable after a refresh
+
 
 === New Features
 

@@ -255,7 +255,7 @@ export const convertDiagram = (
       targetHandle: targetHandle?.id,
       sourceNode: sourceNode,
       targetNode: targetNode,
-      reconnectable: false,
+      reconnectable: !!state.edgeLookup.get(gqlEdge.id)?.reconnectable,
     };
   });
 
