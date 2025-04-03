@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.ChannelNodeDescriptionProvider;
+import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.tools.PublicationChannelEdgePaletteProvider;
 import org.eclipse.sirius.web.papaya.services.PapayaColorPaletteProvider;
 
 import java.util.Objects;
@@ -74,5 +75,8 @@ public class PublicationChannelEdgeDescriptionProvider implements IEdgeDescripti
         publicationsChannelEdgeDescriptionProvider.getSourceDescriptions().add(channelNodeDescription);
         publicationsChannelEdgeDescriptionProvider.getTargetDescriptions().add(publicationsEdgeDescriptionProvider);
         diagramDescription.getEdgeDescriptions().add(publicationsChannelEdgeDescriptionProvider);
+
+        var palette = new PublicationChannelEdgePaletteProvider().getEdgePalette(cache);
+        publicationsChannelEdgeDescriptionProvider.setPalette(palette);
     }
 }

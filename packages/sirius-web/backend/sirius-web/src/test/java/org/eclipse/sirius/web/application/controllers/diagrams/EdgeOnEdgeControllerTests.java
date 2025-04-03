@@ -28,9 +28,13 @@ import java.util.function.Consumer;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnTwoDiagramElementsToolInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ReconnectEdgeInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeKind;
 import org.eclipse.sirius.components.diagrams.tests.graphql.ConnectorToolsQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnTwoDiagramElementsToolMutationRunner;
+import org.eclipse.sirius.components.diagrams.tests.graphql.ReconnectEdgeMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
@@ -70,6 +74,9 @@ public class EdgeOnEdgeControllerTests extends AbstractIntegrationTests {
 
     @Autowired
     private InvokeSingleClickOnTwoDiagramElementsToolMutationRunner invokeSingleClickOnTwoDiagramElementsToolMutationRunner;
+
+    @Autowired
+    private ReconnectEdgeMutationRunner reconnectEdgeMutationRunner;
 
     @BeforeEach
     public void beforeEach() {
@@ -270,6 +277,70 @@ public class EdgeOnEdgeControllerTests extends AbstractIntegrationTests {
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(requestConnectorTools)
                 .then(createEdge)
+                .consumeNextWith(updatedDiagramContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a diagram with some nodes and edges, when the source of an edge is reconnected, then the diagram is updated")
+    public void givenDiagramWithSomeNodesAndEdgesWhenTheTargetOfAnEdgeIsReconnectedThenTheDiagramIsUpdated() {
+        var flux = this.givenSubscriptionToLifeCycleDiagram();
+
+        var diagramId = new AtomicReference<String>();
+        var edgeToReconnectId = new AtomicReference<String>();
+        var newEdgeTargetId  = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
+                .map(DiagramRefreshedEventPayload::diagram)
+                .ifPresentOrElse(diagram -> {
+                    diagramId.set(diagram.getId());
+
+                    var edgeToReconnect = new DiagramNavigator(diagram).edgeWithLabel("channel").getEdge();
+                    edgeToReconnectId.set(edgeToReconnect.getId());
+
+                    var newEdgeTarget = new DiagramNavigator(diagram).edgeWithLabel("listened by").getEdge();
+                    newEdgeTargetId.set(newEdgeTarget.getId());
+                }, () -> fail("Missing diagram"));
+
+        Runnable reconnectSource = () -> {
+            var input = new ReconnectEdgeInput(
+                    UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                    diagramId.get(),
+                    edgeToReconnectId.get(),
+                    newEdgeTargetId.get(),
+                    ReconnectEdgeKind.SOURCE
+            );
+            var result = this.reconnectEdgeMutationRunner.run(input);
+            String typename = JsonPath.read(result, "$.data.reconnectEdge.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> updatedDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
+                .map(DiagramRefreshedEventPayload::diagram)
+                .ifPresentOrElse(diagram -> {
+                    var nodeCount = new DiagramNavigator(diagram).findDiagramNodeCount();
+                    assertThat(nodeCount).isEqualTo(9);
+                    var edgeCount = new DiagramNavigator(diagram).findDiagramEdgeCount();
+                    assertThat(edgeCount).isEqualTo(3);
+                    var edgeOnEdgeSource = new DiagramNavigator(diagram).edgeWithLabel("channel").sourceNode().getNode();
+                    var edgeOnEdgeTarget = new DiagramNavigator(diagram).edgeWithLabel("channel").targetEdge();
+                    var edgeSource = edgeOnEdgeTarget.sourceNode().getNode();
+                    var targetEdge = edgeOnEdgeTarget.targetNode().getNode();
+                    assertThat(edgeOnEdgeSource.getTargetObjectLabel()).isEqualTo("Channel HTTP");
+                    assertThat(edgeSource.getTargetObjectLabel()).isEqualTo("Controller Controller2");
+                    assertThat(targetEdge.getTargetObjectLabel()).isEqualTo("Command Command2");
+                }, () -> fail("Missing diagram"));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(reconnectSource)
                 .consumeNextWith(updatedDiagramContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));

@@ -39,7 +39,9 @@ import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeEvent;
@@ -111,7 +113,7 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
     }
 
     private void handleReconnect(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext,
-            ReconnectEdgeInput reconnectEdgeInput) {
+                                 ReconnectEdgeInput reconnectEdgeInput) {
         String message = this.messageService.edgeNotFound(String.valueOf(reconnectEdgeInput.edgeId()));
         IPayload payload = new ErrorPayload(reconnectEdgeInput.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, reconnectEdgeInput.representationId(), reconnectEdgeInput);
@@ -155,22 +157,22 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
             String edgeSourceId = edge.getSourceId();
             String edgeTargetId = edge.getTargetId();
 
-            var optionalEdgeSource = this.getNode(diagram.getNodes(), edgeSourceId);
-            var optionalEdgeTarget = this.getNode(diagram.getNodes(), edgeTargetId);
+            var optionalEdgeSource = this.getDiagramElement(diagram, edgeSourceId);
+            var optionalEdgeTarget = this.getDiagramElement(diagram, edgeTargetId);
 
-            Optional<Node> optionalPreviousEdgeEnd = optionalEdgeSource;
-            Optional<Node> optionalOtherEdgeEnd = optionalEdgeTarget;
+            Optional<IDiagramElement> optionalPreviousEdgeEnd = optionalEdgeSource;
+            Optional<IDiagramElement> optionalOtherEdgeEnd = optionalEdgeTarget;
 
             if (ReconnectEdgeKind.TARGET.equals(reconnectEdgeKind)) {
                 optionalPreviousEdgeEnd = optionalEdgeTarget;
                 optionalOtherEdgeEnd = optionalEdgeSource;
             }
 
-            var optionalPreviousSemanticEdgeEnd = optionalPreviousEdgeEnd.map(Node::getTargetObjectId).flatMap(targetObjectId -> this.objectSearchService.getObject(editingContext, targetObjectId));
+            var optionalPreviousSemanticEdgeEnd = optionalPreviousEdgeEnd.map(this::getTargetObjectId).flatMap(targetObjectId -> this.objectSearchService.getObject(editingContext, targetObjectId));
 
-            var optionalNewEdgeEnd = this.getNode(diagram.getNodes(), reconnectEdgeInput.newEdgeEndId());
-            var optionalNewSemanticEdgeEnd = optionalNewEdgeEnd.map(Node::getTargetObjectId).flatMap(targetObjectId -> this.objectSearchService.getObject(editingContext, targetObjectId));
-            var optionalSemanticOtherEdgeEnd = optionalOtherEdgeEnd.map(Node::getTargetObjectId).flatMap(otherEndEdgeId -> this.objectSearchService.getObject(editingContext, otherEndEdgeId));
+            var optionalNewEdgeEnd = this.getDiagramElement(diagram, reconnectEdgeInput.newEdgeEndId());
+            var optionalNewSemanticEdgeEnd = optionalNewEdgeEnd.map(this::getTargetObjectId).flatMap(targetObjectId -> this.objectSearchService.getObject(editingContext, targetObjectId));
+            var optionalSemanticOtherEdgeEnd = optionalOtherEdgeEnd.map(this::getTargetObjectId).flatMap(otherEndEdgeId -> this.objectSearchService.getObject(editingContext, otherEndEdgeId));
 
             boolean canExecuteReconnectTool = optionalReconnectionToolExecutor.isPresent();
             canExecuteReconnectTool = canExecuteReconnectTool && optionalSemanticTargetElement.isPresent();
@@ -190,22 +192,34 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
                 IReconnectionToolsExecutor reconnectionToolsExecutor = optionalReconnectionToolExecutor.get();
 
                 ReconnectionToolInterpreterData reconnectionToolInterpreterData = ReconnectionToolInterpreterData.newReconnectionToolInterpreterData()
-                    .diagramContext(diagramContext)
-                    .semanticReconnectionSource(optionalPreviousSemanticEdgeEnd.get())
-                    .reconnectionSourceView(optionalPreviousEdgeEnd.get())
-                    .semanticReconnectionTarget(optionalNewSemanticEdgeEnd.get())
-                    .reconnectionTargetView(optionalNewEdgeEnd.get())
-                    .semanticElement(optionalSemanticTargetElement.get())
-                    .otherEdgeEnd(optionalOtherEdgeEnd.get())
-                    .semanticOtherEdgeEnd(optionalSemanticOtherEdgeEnd.get())
-                    .edgeView(edge)
-                    .kind(reconnectEdgeKind)
-                    .build();
+                        .diagramContext(diagramContext)
+                        .semanticReconnectionSource(optionalPreviousSemanticEdgeEnd.get())
+                        .reconnectionSourceView(optionalPreviousEdgeEnd.get())
+                        .semanticReconnectionTarget(optionalNewSemanticEdgeEnd.get())
+                        .reconnectionTargetView(optionalNewEdgeEnd.get())
+                        .semanticElement(optionalSemanticTargetElement.get())
+                        .otherEdgeEnd(optionalOtherEdgeEnd.get())
+                        .semanticOtherEdgeEnd(optionalSemanticOtherEdgeEnd.get())
+                        .edgeView(edge)
+                        .kind(reconnectEdgeKind)
+                        .build();
 
                 status = reconnectionToolsExecutor.execute(editingContext, reconnectionToolInterpreterData, edge, optionalEdgeDescription.get(), reconnectEdgeKind, diagramDescription);
             }
         }
         return status;
+    }
+
+    private Optional<IDiagramElement> getDiagramElement(Diagram diagram, String diagramElementId) {
+        Optional<IDiagramElement> optionalDiagramElement = diagram.getEdges().stream()
+                .filter(edge -> edge.getId().equals(diagramElementId))
+                .map(IDiagramElement.class::cast)
+                .findFirst();
+
+        if (optionalDiagramElement.isEmpty()) {
+            optionalDiagramElement = getNode(diagram.getNodes(), diagramElementId).map(IDiagramElement.class::cast);
+        }
+        return optionalDiagramElement;
     }
 
     private Optional<Node> getNode(List<Node> nodes, String nodeId) {
@@ -228,6 +242,17 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
         }
 
         return optionalNode;
+    }
+
+    private String getTargetObjectId(IDiagramElement diagramElement) {
+        String targetId = "";
+        if (diagramElement instanceof Edge edge) {
+            targetId = edge.getTargetObjectId();
+        }
+        if (diagramElement instanceof  Node node) {
+            targetId = node.getTargetObjectId();
+        }
+        return targetId;
     }
 
 }
