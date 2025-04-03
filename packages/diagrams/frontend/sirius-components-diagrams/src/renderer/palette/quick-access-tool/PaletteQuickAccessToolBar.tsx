@@ -61,7 +61,7 @@ export const PaletteQuickAccessToolBar = ({
   const { classes } = useStyle();
 
   const { nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
-  const diagramElement = nodeLookup.get(diagramElementId) || edgeLookup.get(diagramElementId);
+  let diagramElement = edgeLookup.get(diagramElementId) || nodeLookup.get(diagramElementId);
 
   const quickAccessToolComponents: JSX.Element[] = [];
   quickAccessTools.forEach((tool) =>
