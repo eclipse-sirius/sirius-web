@@ -56,16 +56,15 @@ export const useConnector = (): UseConnectorValue => {
     isNewConnection,
     setIsNewConnection,
   } = useContext<ConnectorContextValue>(ConnectorContext);
-
-  const reactFlowInstance = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
-  const { setEdges, getEdges } = reactFlowInstance;
-
   const theme = useTheme();
+
   const { hideDiagramElementPalette } = useDiagramElementPalette();
-  const updateNodeInternals = useUpdateNodeInternals();
   const { diagramDescription } = useDiagramDescription();
+
+  const { setEdges, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { nodeLookup } = store.getState();
+  const updateNodeInternals = useUpdateNodeInternals();
 
   const isConnectionInProgress = () => {
     const connectionNodeId = store.getState().connection.fromNode?.id;
@@ -112,8 +111,9 @@ export const useConnector = (): UseConnectorValue => {
         const touchEvent = event as TouchEvent;
         setPosition({ x: touchEvent.touches[0]?.clientX || 0, y: touchEvent.touches[0]?.clientY || 0 });
       }
+
       const hoveredEdge = getEdges().find((edge) => edge.data && edge.data.isHovered);
-      if (hoveredEdge && connectionState.fromNode) {
+      if (hoveredEdge && connectionState.fromNode && isNewConnection) {
         setConnection({
           source: connectionState.fromNode.id,
           target: hoveredEdge.id,

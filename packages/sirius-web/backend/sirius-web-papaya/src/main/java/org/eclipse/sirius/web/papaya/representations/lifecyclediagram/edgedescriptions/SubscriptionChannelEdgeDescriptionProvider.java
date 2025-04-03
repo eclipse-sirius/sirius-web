@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.ChannelNodeDescriptionProvider;
+import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.tools.SubscriptionChannelEdgePaletteProvider;
 import org.eclipse.sirius.web.papaya.services.PapayaColorPaletteProvider;
 
 import java.util.Objects;
@@ -65,14 +66,17 @@ public class SubscriptionChannelEdgeDescriptionProvider implements IEdgeDescript
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var publicationsChannelEdgeDescriptionProvider = cache.getEdgeDescription(NAME).orElse(null);
+        var subscriptionsChannelEdgeDescriptionProvider = cache.getEdgeDescription(NAME).orElse(null);
 
         var subscriptionsEdgeDescriptionProvider = cache.getEdgeDescription(SubscriptionEdgeDescriptionProvider.NAME).orElse(null);
 
         var channelNodeDescription = cache.getNodeDescription(ChannelNodeDescriptionProvider.NAME).orElse(null);
 
-        publicationsChannelEdgeDescriptionProvider.getSourceDescriptions().add(channelNodeDescription);
-        publicationsChannelEdgeDescriptionProvider.getTargetDescriptions().add(subscriptionsEdgeDescriptionProvider);
-        diagramDescription.getEdgeDescriptions().add(publicationsChannelEdgeDescriptionProvider);
+        subscriptionsChannelEdgeDescriptionProvider.getSourceDescriptions().add(channelNodeDescription);
+        subscriptionsChannelEdgeDescriptionProvider.getTargetDescriptions().add(subscriptionsEdgeDescriptionProvider);
+        diagramDescription.getEdgeDescriptions().add(subscriptionsChannelEdgeDescriptionProvider);
+
+        var palette = new SubscriptionChannelEdgePaletteProvider().getEdgePalette(cache);
+        subscriptionsChannelEdgeDescriptionProvider.setPalette(palette);
     }
 }

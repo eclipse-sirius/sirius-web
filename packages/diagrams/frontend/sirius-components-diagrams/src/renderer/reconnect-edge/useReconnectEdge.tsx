@@ -126,9 +126,11 @@ export const useReconnectEdge = (): UseReconnectEdge => {
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
 
   const updateNodeInternals = useUpdateNodeInternals();
+
   const onReconnectEdgeEnd = useCallback(
     (event: MouseEvent | TouchEvent, edge: Edge, handleType: HandleType) => {
       const targetNodeHovered = getNodes().find((node) => node.data.isHovered);
+      const targetEdgeHovered = getEdges().find((edge) => edge.data?.isHovered);
       const targetInternalNode = store.getState().nodeLookup.get(targetNodeHovered?.id ?? '');
 
       const handle = handleType === 'source' ? edge.targetHandle : edge.sourceHandle;
@@ -169,6 +171,15 @@ export const useReconnectEdge = (): UseReconnectEdge => {
         };
         updateNodeInternals(targetInternalNode.id);
         synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+      }
+
+      if (targetEdgeHovered) {
+        const connectionState = store.getState().connection;
+        let reconnectEdgeKind = GQLReconnectKind.TARGET;
+        if (edge.source === connectionState.fromNode?.id) {
+          reconnectEdgeKind = GQLReconnectKind.SOURCE;
+        }
+        handleReconnectEdge(edge.id, targetEdgeHovered.id, reconnectEdgeKind);
       }
     },
     [getNodes, getEdges]
