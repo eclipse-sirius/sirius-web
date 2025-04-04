@@ -20,11 +20,19 @@ import Slide from '@mui/material/Slide';
 import Tooltip from '@mui/material/Tooltip';
 import React, { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
+import { PaletteAppearanceSection } from '../appearance/PaletteAppearanceSection';
+import { isPaletteDivider, isSingleClickOnDiagramElementTool, isToolSection } from '../Palette';
+import { GQLPaletteEntry, GQLToolSection } from '../Palette.types';
 import { isPaletteDivider, isSingleClickOnDiagramElementTool, isTool, isToolSection } from '../Palette';
 import { GQLPalette, GQLPaletteEntry, GQLTool, GQLToolSection } from '../Palette.types';
 import { ToolListItem } from '../tool-list-item/ToolListItem';
 import { useDiagramPalette } from '../useDiagramPalette';
-import { PaletteToolListProps, PaletteToolListStateValue } from './PaletteToolList.types';
+import {
+  AppearanceSection,
+  AppearanceSectionValue,
+  PaletteToolListProps,
+  PaletteToolListStateValue,
+} from './PaletteToolList.types';
 import { PaletteToolSectionList } from './PaletteToolSectionList';
 
 const useStyle = makeStyles()((theme) => ({
@@ -76,7 +84,7 @@ const paletteContainsTool = (palette: GQLPalette, toolId: string) => {
   );
 };
 
-export const PaletteToolList = ({ palette, onToolClick, onBackToMainList }: PaletteToolListProps) => {
+export const PaletteToolList = ({ palette, onToolClick, onBackToMainList, diagramElement }: PaletteToolListProps) => {
   const [state, setState] = useState<PaletteToolListStateValue>(defaultStateValue);
 
   const { getLastToolInvoked } = useDiagramPalette();
@@ -84,7 +92,10 @@ export const PaletteToolList = ({ palette, onToolClick, onBackToMainList }: Pale
 
   const { classes } = useStyle();
 
-  const handleToolSectionClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, toolSection: GQLToolSection) => {
+  const handleToolSectionClick = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    toolSection: GQLToolSection | AppearanceSection
+  ) => {
     event.stopPropagation();
     setState((prevState) => ({ ...prevState, toolSection }));
   };
@@ -124,6 +135,22 @@ export const PaletteToolList = ({ palette, onToolClick, onBackToMainList }: Pale
   });
 
   const lastToolAvailable = lastToolInvoked && paletteContainsTool(palette, lastToolInvoked.id);
+  const appearanceSection = AppearanceSectionValue;
+
+  if (!!diagramElement) {
+    listItemsRendered.push(
+      <Tooltip key={'tooltip_' + appearanceSection.id} title={appearanceSection.label} placement="right">
+        <ListItemButton
+          className={classes.listItemButton}
+          onClick={(event) => handleToolSectionClick(event, appearanceSection)}
+          data-testid={`toolSection-${appearanceSection.label}`}>
+          <ListItemText primary={appearanceSection.label} className={classes.listItemText} />
+          <NavigateNextIcon />
+        </ListItemButton>
+      </Tooltip>
+    );
+  }
+
   const lastUsedTool: JSX.Element | null = lastToolInvoked ? (
     <>
       <ToolListItem onToolClick={onToolClick} tool={lastToolInvoked} disabled={!lastToolAvailable} />
@@ -153,6 +180,26 @@ export const PaletteToolList = ({ palette, onToolClick, onBackToMainList }: Pale
             </div>
           </Slide>
         ))}
+
+        {!!diagramElement ? (
+          <Slide
+            direction={'left'}
+            in={state.toolSection?.id === appearanceSection.id}
+            container={containerRef.current}
+            unmountOnExit
+            mountOnEnter>
+            <div className={classes.toolList}>
+              <PaletteAppearanceSection
+                onBackToMainList={handleBackToMainList}
+                elementId={diagramElement.id}
+                elementType={diagramElement.type}
+                elementData={diagramElement.data}
+              />
+            </div>
+          </Slide>
+        ) : (
+          <></>
+        )}
         <Slide
           direction={'right'}
           in={state.toolSection === null}

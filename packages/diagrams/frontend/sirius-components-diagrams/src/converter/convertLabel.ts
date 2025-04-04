@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,14 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
-  GQLLabelStyle,
-  GQLOutsideLabel,
   GQLInsideLabel,
+  GQLLabelStyle,
   GQLLabelTextAlign,
+  GQLOutsideLabel,
 } from '../graphql/subscription/labelFragment.types';
-import { OutsideLabels, InsideLabel, NodeData } from '../renderer/DiagramRenderer.types';
-import { AlignmentMap } from './convertDiagram.types';
+import { InsideLabel, NodeData, OutsideLabels } from '../renderer/DiagramRenderer.types';
 import { convertLineStyle } from './convertDiagram';
+import { AlignmentMap } from './convertDiagram.types';
 
 export const convertInsideLabel = (
   gqlInsideLabel: GQLInsideLabel | undefined,
@@ -55,6 +55,10 @@ export const convertInsideLabel = (
       width: '100%',
     },
     headerPosition: undefined,
+    appearanceData: {
+      customizedStyleProperties: gqlInsideLabel.customizedStyleProperties,
+      gqlStyle: gqlInsideLabel.style,
+    },
   };
 
   const alignement = AlignmentMap[gqlInsideLabel.insideLabelLocation];
@@ -116,6 +120,7 @@ export const convertOutsideLabels = (gqlOutsideLabels: GQLOutsideLabel[]): Outsi
       style: { iconURL },
       overflowStrategy,
     } = gqlOutsideLabel;
+
     allOutsideLabels[gqlOutsideLabel.outsideLabelLocation] = {
       id,
       text,

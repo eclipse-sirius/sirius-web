@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.diagrams.components;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -35,7 +36,10 @@ import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.PinDiagramElementEvent;
 import org.eclipse.sirius.components.diagrams.events.ResetViewModifiersEvent;
 import org.eclipse.sirius.components.diagrams.events.UpdateCollapsingStateEvent;
+import org.eclipse.sirius.components.diagrams.events.appearance.EditAppearanceEvent;
+import org.eclipse.sirius.components.diagrams.events.appearance.INodeAppearanceChange;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
+import org.eclipse.sirius.components.diagrams.renderer.INodeAppearanceHandler;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Fragment;
 import org.eclipse.sirius.components.representations.FragmentProps;
@@ -143,6 +147,18 @@ public class NodeComponent implements IComponent {
                 .anyMatch(viewDeletionRequest -> Objects.equals(viewDeletionRequest.getElementId(), elementId));
     }
 
+    private List<INodeAppearanceHandler> getNodeAppearanceHandlers(VariableManager variableManager) {
+        return variableManager.get(INodeAppearanceHandler.NODE_APPEARANCE_HANDLERS, List.class).map(list -> {
+            List<INodeAppearanceHandler> handlers = new ArrayList<>();
+            for (Object element : list) {
+                if (element instanceof INodeAppearanceHandler handler) {
+                    handlers.add(handler);
+                }
+            }
+            return handlers;
+        }).orElse(Collections.emptyList());
+    }
+
     private Element doRender(VariableManager nodeVariableManager, String targetObjectId, Optional<Node> optionalPreviousNode, List<IDiagramEvent> diagramEvents) {
         NodeDescription nodeDescription = this.props.getNodeDescription();
         NodeContainmentKind containmentKind = this.props.getContainmentKind();
@@ -165,10 +181,39 @@ public class NodeComponent implements IComponent {
         String targetObjectKind = nodeDescription.getTargetObjectKindProvider().apply(nodeVariableManager);
         String targetObjectLabel = nodeDescription.getTargetObjectLabelProvider().apply(nodeVariableManager);
 
-        INodeStyle style = nodeDescription.getStyleProvider().apply(nodeVariableManager);
+        Optional<NodeAppearance> optPreviousAppearance = optionalPreviousNode.map(previousNode ->
+                new NodeAppearance(previousNode.getStyle(), previousNode.getCustomizedStyleProperties())
+        );
+
+        optPreviousAppearance.ifPresent(previousAppearance ->
+                nodeVariableManager.put(NodeAppearance.PREVIOUS_NODE_APPEARANCE, previousAppearance)
+        );
+
+        INodeStyle providedStyle = nodeDescription.getStyleProvider().apply(nodeVariableManager);
+
+        List<INodeAppearanceChange> appearanceChanges =
+                diagramEvents.stream()
+                        .filter(EditAppearanceEvent.class::isInstance)
+                        .map(EditAppearanceEvent.class::cast)
+                        .flatMap(appearanceEvent -> appearanceEvent.changes().stream())
+                        .filter(INodeAppearanceChange.class::isInstance)
+                        .map(INodeAppearanceChange.class::cast)
+                        .filter(appearanceChange -> Objects.equals(nodeId,
+                                appearanceChange.nodeId())).toList();
+
+        NodeAppearance appearance = getNodeAppearanceHandlers(nodeVariableManager)
+                .stream()
+                .filter(handler -> handler.canHandle(providedStyle))
+                .findFirst()
+                .map(handler -> handler.handle(providedStyle,
+                        appearanceChanges,
+                        optPreviousAppearance))
+                .orElse(new NodeAppearance(providedStyle, Collections.emptySet()));
+
+        nodeVariableManager.put(NodeAppearance.NODE_APPEARANCE, appearance);
+
 
         ILayoutStrategy layoutStrategy = nodeDescription.getChildrenLayoutStrategyProvider().apply(nodeVariableManager);
-
 
         var parentState = state;
         if (collapsingState == CollapsingState.COLLAPSED) {
@@ -180,6 +225,8 @@ public class NodeComponent implements IComponent {
                 .variableManager(nodeVariableManager)
                 .parentState(parentState)
                 .state(state)
+                .previousParentNode(optionalPreviousNode.orElse(null))
+                .diagramEvents(diagramEvents)
                 .build();
         Element nodeChildren = new Element(NodeChildrenComponent.class, nodeChildrenComponentProps);
 
@@ -193,7 +240,7 @@ public class NodeComponent implements IComponent {
                 .targetObjectLabel(targetObjectLabel)
                 .descriptionId(nodeDescription.getId())
                 .borderNode(isBorderNode)
-                .style(style)
+                .style(appearance.style())
                 .children(List.of(nodeChildren))
                 .modifiers(modifiers)
                 .state(state)
@@ -201,7 +248,8 @@ public class NodeComponent implements IComponent {
                 .collapsingState(collapsingState)
                 .defaultWidth(defaultWidth)
                 .defaultHeight(defaultHeight)
-                .labelEditable(nodeDescription.getLabelEditHandler() != null);
+                .labelEditable(nodeDescription.getLabelEditHandler() != null)
+                .customizedStyleProperties(appearance.customizedStyleProperties());
 
         if (layoutStrategy != null) {
             nodeElementPropsBuilder.childrenLayoutStrategy(layoutStrategy);
