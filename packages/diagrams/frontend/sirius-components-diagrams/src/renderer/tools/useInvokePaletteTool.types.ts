@@ -12,19 +12,17 @@
  *******************************************************************************/
 
 import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
-import { GQLPalette, GQLTool } from './Palette.types';
+import { GQLTool } from '../palette/Palette.types';
 
-export interface UsePaletteProps {
-  x: number;
-  y: number;
-  diagramElementId: string;
-  targetObjectId: string;
-  onDirectEditClick: () => void;
-}
-
-export interface UsePaletteValue {
-  handleToolClick: (tool: GQLTool) => void;
-  palette: GQLPalette | null;
+export interface UseInvokePaletteToolValue {
+  invokeTool: (
+    tool: GQLTool,
+    diagramElementId: string,
+    targetObjectId: string,
+    x: number,
+    y: number,
+    onDirectEditClick: () => void
+  ) => void;
 }
 
 export interface GQLGetToolSectionsVariables {
