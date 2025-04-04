@@ -52,6 +52,7 @@ const toListNode = (
     pinned,
     style,
     labelEditable,
+    customizedStyleProperties,
   } = gqlNode;
 
   const handleLayoutData: GQLHandleLayoutData[] = gqlDiagram.layoutData.nodeLayoutData
@@ -106,6 +107,10 @@ const toListNode = (
     isDropNodeTarget: false,
     isDropNodeCandidate: false,
     isHovered: false,
+    nodeAppearanceData: {
+      gqlStyle: style,
+      customizedStyleProperties,
+    },
   };
 
   data.insideLabel = convertInsideLabel(

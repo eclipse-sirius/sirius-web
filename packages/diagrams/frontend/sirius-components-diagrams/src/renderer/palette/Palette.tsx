@@ -114,6 +114,7 @@ export const Palette = ({
   targetObjectId,
   onDirectEditClick,
   onClose,
+  children,
 }: PaletteProps) => {
   const { domNode, nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
   const { x: viewportWidth, y: viewportHeight } = computeDraggableBounds(domNode?.getBoundingClientRect());
@@ -219,7 +220,13 @@ export const Palette = ({
             onToolClick={handleToolClick}
           />
         ) : (
-          <PaletteToolList palette={palette} onToolClick={handleToolClick} onBackToMainList={handleBackToMainList} />
+          <PaletteToolList
+            palette={palette}
+            onToolClick={handleToolClick}
+            onBackToMainList={handleBackToMainList}
+            diagramElementId={diagramElementId}>
+            {children}
+          </PaletteToolList>
         )}
       </Paper>
     </Draggable>

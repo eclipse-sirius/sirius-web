@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.diagrams.components;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -33,6 +34,8 @@ import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.PinDiagramElementEvent;
 import org.eclipse.sirius.components.diagrams.events.ResetViewModifiersEvent;
 import org.eclipse.sirius.components.diagrams.events.UpdateCollapsingStateEvent;
+import org.eclipse.sirius.components.diagrams.events.appearance.EditAppearanceEvent;
+import org.eclipse.sirius.components.diagrams.events.appearance.INodeAppearanceChange;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Fragment;
@@ -163,7 +166,26 @@ public class NodeComponent implements IComponent {
         String targetObjectKind = nodeDescription.getTargetObjectKindProvider().apply(nodeVariableManager);
         String targetObjectLabel = nodeDescription.getTargetObjectLabelProvider().apply(nodeVariableManager);
 
-        INodeStyle style = nodeDescription.getStyleProvider().apply(nodeVariableManager);
+        Optional<NodeAppearance> optionalPreviousAppearance = optionalPreviousNode.map(previousNode ->
+                new NodeAppearance(previousNode.getStyle(), previousNode.getCustomizedStyleProperties())
+        );
+
+        INodeStyle providedStyle = nodeDescription.getStyleProvider().apply(nodeVariableManager);
+
+        List<INodeAppearanceChange> appearanceChanges = diagramEvents.stream()
+                .filter(EditAppearanceEvent.class::isInstance)
+                .map(EditAppearanceEvent.class::cast)
+                .flatMap(appearanceEvent -> appearanceEvent.changes().stream())
+                .filter(INodeAppearanceChange.class::isInstance)
+                .map(INodeAppearanceChange.class::cast)
+                .filter(appearanceChange -> Objects.equals(nodeId, appearanceChange.nodeId()))
+                .toList();
+
+        NodeAppearance appearance = this.props.getNodeAppearanceHandlers().stream()
+                .filter(handler -> handler.canHandle(providedStyle))
+                .findFirst()
+                .map(handler -> handler.handle(providedStyle, appearanceChanges, optionalPreviousAppearance))
+                .orElse(new NodeAppearance(providedStyle, new LinkedHashSet<>()));
 
         var parentState = state;
         if (collapsingState == CollapsingState.COLLAPSED) {
@@ -175,6 +197,8 @@ public class NodeComponent implements IComponent {
                 .variableManager(nodeVariableManager)
                 .parentState(parentState)
                 .state(state)
+                .previousParentNode(optionalPreviousNode.orElse(null))
+                .diagramEvents(diagramEvents)
                 .build();
         Element nodeChildren = new Element(NodeChildrenComponent.class, nodeChildrenComponentProps);
 
@@ -188,7 +212,7 @@ public class NodeComponent implements IComponent {
                 .targetObjectLabel(targetObjectLabel)
                 .descriptionId(nodeDescription.getId())
                 .borderNode(isBorderNode)
-                .style(style)
+                .style(appearance.style())
                 .children(List.of(nodeChildren))
                 .modifiers(modifiers)
                 .state(state)
@@ -197,6 +221,7 @@ public class NodeComponent implements IComponent {
                 .defaultWidth(defaultWidth)
                 .defaultHeight(defaultHeight)
                 .labelEditable(nodeDescription.getLabelEditHandler() != null)
+                .customizedStyleProperties(appearance.customizedStyleProperties())
                 .build();
 
         return new Element(NodeElementProps.TYPE, nodeElementProps);

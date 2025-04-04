@@ -98,7 +98,8 @@ public class TestDiagramBuilder {
                 .modifiers(Set.of())
                 .state(ViewModifier.Normal)
                 .collapsingState(CollapsingState.EXPANDED)
-                .outsideLabels(outsideLabels);
+                .outsideLabels(outsideLabels)
+                .customizedStyleProperties(Set.of());
 
         if (withInsideLabel) {
             LabelStyle labelStyle = LabelStyle.newLabelStyle()
@@ -118,6 +119,7 @@ public class TestDiagramBuilder {
                     .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.NEVER)
                     .overflowStrategy(LabelOverflowStrategy.NONE)
                     .textAlign(LabelTextAlign.CENTER)
+                    .customizedStyleProperties(Set.of())
                     .build();
             nodeBuilder.insideLabel(insideLabel);
         }

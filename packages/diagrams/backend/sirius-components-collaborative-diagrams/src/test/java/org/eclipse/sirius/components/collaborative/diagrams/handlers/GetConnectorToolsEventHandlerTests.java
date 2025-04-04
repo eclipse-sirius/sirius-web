@@ -109,6 +109,7 @@ public class GetConnectorToolsEventHandlerTests {
                 .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.NEVER)
                 .overflowStrategy(LabelOverflowStrategy.NONE)
                 .textAlign(LabelTextAlign.CENTER)
+                .customizedStyleProperties(Set.of())
                 .build();
 
         return Node.newNode(id)
@@ -124,6 +125,7 @@ public class GetConnectorToolsEventHandlerTests {
                 .modifiers(Set.of())
                 .state(ViewModifier.Normal)
                 .collapsingState(CollapsingState.EXPANDED)
+                .customizedStyleProperties(Set.of())
                 .build();
     }
 

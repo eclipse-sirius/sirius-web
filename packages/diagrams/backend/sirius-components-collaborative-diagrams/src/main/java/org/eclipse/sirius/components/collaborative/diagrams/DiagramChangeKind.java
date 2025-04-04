@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2025 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,8 @@ package org.eclipse.sirius.components.collaborative.diagrams;
  * @author fbarbin
  */
 public final class DiagramChangeKind {
+
+    public static final String DIAGRAM_APPEARANCE_CHANGE = "DIAGRAM_APPEARANCE_CHANGE";
 
     public static final String DIAGRAM_LAYOUT_CHANGE = "DIAGRAM_LAYOUT_CHANGE";
 

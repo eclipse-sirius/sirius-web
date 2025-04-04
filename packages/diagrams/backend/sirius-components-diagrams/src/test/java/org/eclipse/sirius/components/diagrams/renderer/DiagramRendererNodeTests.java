@@ -260,6 +260,7 @@ public class DiagramRendererNodeTests {
                 .previousDiagram(previousDiagram)
                 .operationValidator(new IOperationValidator.NoOp())
                 .diagramEvents(List.of())
+                .nodeAppearanceHandlers(List.of())
                 .build();
         Element element = new Element(DiagramComponent.class, props);
         return new DiagramRenderer().render(element);

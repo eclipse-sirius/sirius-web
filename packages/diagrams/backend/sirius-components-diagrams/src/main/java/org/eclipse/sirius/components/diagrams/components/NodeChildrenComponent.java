@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
@@ -63,7 +64,9 @@ public class NodeChildrenComponent implements IComponent {
         if (labelDescription != null) {
             this.props.getVariableManager().put(InsideLabelDescription.OWNER_ID, nodeId);
 
-            InsideLabelComponentProps insideLabelComponentProps = new InsideLabelComponentProps(this.props.getVariableManager(), labelDescription);
+            Optional<InsideLabel> optionalPreviousLabel = Optional.ofNullable(this.props.getPreviousParentNode()).map(Node::getInsideLabel);
+            InsideLabelComponentProps insideLabelComponentProps = new InsideLabelComponentProps(this.props.getVariableManager(), labelDescription, optionalPreviousLabel,
+                    this.props.getNodeComponentProps().getDiagramEvents());
             Element insideLabelElement = new Element(InsideLabelComponent.class, insideLabelComponentProps);
             nodeChildren.add(insideLabelElement);
         }
@@ -110,6 +113,7 @@ public class NodeChildrenComponent implements IComponent {
                     .diagramEvents(this.props.getNodeComponentProps().getDiagramEvents())
                     .parentElementState(this.props.getState())
                     .operationValidator(this.props.getNodeComponentProps().getOperationValidator())
+                    .nodeAppearanceHandlers(this.props.getNodeComponentProps().getNodeAppearanceHandlers())
                     .build();
             return new Element(NodeComponent.class, nodeComponentProps);
         }).toList();
@@ -144,6 +148,7 @@ public class NodeChildrenComponent implements IComponent {
                     .diagramEvents(this.props.getNodeComponentProps().getDiagramEvents())
                     .parentElementState(this.props.getParentState())
                     .operationValidator(this.props.getNodeComponentProps().getOperationValidator())
+                    .nodeAppearanceHandlers(this.props.getNodeComponentProps().getNodeAppearanceHandlers())
                     .build();
 
             return new Element(NodeComponent.class, nodeComponentProps);

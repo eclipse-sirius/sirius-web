@@ -120,7 +120,8 @@ public class DiagramElementFactory implements IElementFactory {
                     .modifiers(nodeElementProps.getModifiers())
                     .collapsingState(nodeElementProps.getCollapsingState())
                     .outsideLabels(outsideLabels)
-                    .labelEditable(nodeElementProps.isLabelEditable());
+                    .labelEditable(nodeElementProps.isLabelEditable())
+                    .customizedStyleProperties(nodeElementProps.getCustomizedStyleProperties());
 
             if (insideLabel != null) {
                 nodeBuilder.insideLabel(insideLabel);
@@ -195,6 +196,7 @@ public class DiagramElementFactory implements IElementFactory {
                     .headerSeparatorDisplayMode(insideLabelElementProps.getHeaderSeparatorDisplayMode())
                     .overflowStrategy(insideLabelElementProps.getOverflowStrategy())
                     .textAlign(insideLabelElementProps.getTextAlign())
+                    .customizedStyleProperties(insideLabelElementProps.getCustomizedStyleProperties())
                     .build();
         }
         return null;

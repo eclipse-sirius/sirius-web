@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.diagrams.tests.builder.label;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
@@ -76,6 +77,7 @@ public final class LabelBuilder {
                 .style(labelStyle)
                 .isHeader(isHeader)
                 .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.IF_CHILDREN)
+                .customizedStyleProperties(Set.of())
                 .build();
     }
 
