@@ -45,6 +45,10 @@ public final class RectangularNodeStyle implements INodeStyle {
         return new Builder();
     }
 
+    public static Builder newRectangularNodeStyle(RectangularNodeStyle sourceRectangularNodeStyle) {
+        return new Builder(sourceRectangularNodeStyle);
+    }
+
     public String getBackground() {
         return this.background;
     }
@@ -98,6 +102,15 @@ public final class RectangularNodeStyle implements INodeStyle {
 
         private Builder() {
             // Prevent instantiation
+        }
+
+        private Builder(RectangularNodeStyle sourceRectangularNodeStyle) {
+            this.background = sourceRectangularNodeStyle.getBackground();
+            this.borderColor = sourceRectangularNodeStyle.getBorderColor();
+            this.borderSize = sourceRectangularNodeStyle.getBorderSize();
+            this.borderRadius = sourceRectangularNodeStyle.getBorderRadius();
+            this.borderStyle = sourceRectangularNodeStyle.getBorderStyle();
+            this.childrenLayoutStrategy = sourceRectangularNodeStyle.getChildrenLayoutStrategy();
         }
 
         public Builder background(String background) {

@@ -66,6 +66,8 @@ public final class NodeElementProps implements IProps {
 
     private boolean pinned;
 
+    private Set<String> customizedStyleProperties;
+
     private NodeElementProps() {
         // Prevent instantiation
     }
@@ -139,6 +141,10 @@ public final class NodeElementProps implements IProps {
         return this.pinned;
     }
 
+    public Set<String> getCustomizedStyleProperties() {
+        return this.customizedStyleProperties;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, targetObjectId: {2}, targetObjectKind: {3}, targetObjectLabel: {4}, descriptionId: {5}'}'";
@@ -184,6 +190,8 @@ public final class NodeElementProps implements IProps {
         private boolean labelEditable;
 
         private boolean pinned;
+
+        private Set<String> customizedStyleProperties;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -264,6 +272,11 @@ public final class NodeElementProps implements IProps {
             return this;
         }
 
+        public Builder customizedStyleProperties(Set<String> customizedStyleProperties) {
+            this.customizedStyleProperties = Objects.requireNonNull(customizedStyleProperties);
+            return this;
+        }
+
         public NodeElementProps build() {
             NodeElementProps nodeElementProps = new NodeElementProps();
             nodeElementProps.id = Objects.requireNonNull(this.id);
@@ -282,6 +295,7 @@ public final class NodeElementProps implements IProps {
             nodeElementProps.defaultWidth = this.defaultWidth; // Optional on purpose
             nodeElementProps.defaultHeight = this.defaultHeight; // Optional on purpose
             nodeElementProps.pinned = this.pinned;
+            nodeElementProps.customizedStyleProperties = Objects.requireNonNull(this.customizedStyleProperties);
             return nodeElementProps;
         }
     }

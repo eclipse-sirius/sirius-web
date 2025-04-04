@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,10 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.components;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
+import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -34,6 +37,10 @@ public final class NodeChildrenComponentProps implements IProps {
     private ViewModifier parentState;
 
     private NodeComponentProps nodeComponentProps;
+
+    private Node previousParentNode;
+
+    private List<IDiagramEvent> diagramEvents;
 
     private NodeChildrenComponentProps() {
         // Prevent initialisation
@@ -59,6 +66,14 @@ public final class NodeChildrenComponentProps implements IProps {
         return this.nodeComponentProps;
     }
 
+    public Node getPreviousParentNode() {
+        return previousParentNode;
+    }
+
+    public List<IDiagramEvent> getDiagramEvents() {
+        return diagramEvents;
+    }
+
     /**
      * The builder of the node children component props.
      *
@@ -74,6 +89,10 @@ public final class NodeChildrenComponentProps implements IProps {
         private ViewModifier parentState;
 
         private NodeComponentProps nodeComponentProps;
+
+        private Node previousParentNode;
+
+        private List<IDiagramEvent> diagramEvents;
 
         public Builder variableManager(VariableManager variableManager) {
             this.variableManager = Objects.requireNonNull(variableManager);
@@ -95,12 +114,24 @@ public final class NodeChildrenComponentProps implements IProps {
             return this;
         }
 
+        public Builder previousParentNode(Node previousParentNode) {
+            this.previousParentNode = previousParentNode;
+            return this;
+        }
+
+        public Builder diagramEvents(List<IDiagramEvent> diagramEvents) {
+            this.diagramEvents = Objects.requireNonNull(diagramEvents);
+            return this;
+        }
+
         public NodeChildrenComponentProps build() {
             NodeChildrenComponentProps nodeChildrenComponentProps = new NodeChildrenComponentProps();
             nodeChildrenComponentProps.variableManager = Objects.requireNonNull(this.variableManager);
             nodeChildrenComponentProps.state = Objects.requireNonNull(this.state);
             nodeChildrenComponentProps.parentState = Objects.requireNonNull(this.parentState);
             nodeChildrenComponentProps.nodeComponentProps = Objects.requireNonNull(this.nodeComponentProps);
+            nodeChildrenComponentProps.previousParentNode = previousParentNode;
+            nodeChildrenComponentProps.diagramEvents = Objects.requireNonNull(diagramEvents);
             return nodeChildrenComponentProps;
         }
 

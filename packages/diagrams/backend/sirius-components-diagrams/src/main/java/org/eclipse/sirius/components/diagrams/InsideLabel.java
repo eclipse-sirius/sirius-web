@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.diagrams;
 
 import java.text.MessageFormat;
 import java.util.Objects;
+import java.util.Set;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 
@@ -40,6 +41,8 @@ public final class InsideLabel {
     private LabelOverflowStrategy overflowStrategy;
 
     private LabelTextAlign textAlign;
+
+    private Set<String> customizedStyleProperties;
 
     private InsideLabel() {
         // Prevent instantiation
@@ -85,6 +88,10 @@ public final class InsideLabel {
         return this.textAlign;
     }
 
+    public Set<String> getCustomizedStyleProperties() {
+        return this.customizedStyleProperties;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, text: {2}'}'";
@@ -115,6 +122,8 @@ public final class InsideLabel {
 
         private LabelTextAlign textAlign;
 
+        private Set<String> customizedStyleProperties;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -128,6 +137,7 @@ public final class InsideLabel {
             this.headerSeparatorDisplayMode = insideLabel.getHeaderSeparatorDisplayMode();
             this.overflowStrategy = insideLabel.getOverflowStrategy();
             this.textAlign = insideLabel.getTextAlign();
+            this.customizedStyleProperties = insideLabel.getCustomizedStyleProperties();
         }
 
         public Builder text(String text) {
@@ -165,6 +175,11 @@ public final class InsideLabel {
             return this;
         }
 
+        public Builder customizedStyleProperties(Set<String> customizedStyleProperties) {
+            this.customizedStyleProperties = Objects.requireNonNull(customizedStyleProperties);
+            return this;
+        }
+
         public InsideLabel build() {
             InsideLabel label = new InsideLabel();
             label.id = Objects.requireNonNull(this.id);
@@ -175,6 +190,7 @@ public final class InsideLabel {
             label.headerSeparatorDisplayMode = Objects.requireNonNull(this.headerSeparatorDisplayMode);
             label.overflowStrategy = Objects.requireNonNull(this.overflowStrategy);
             label.textAlign = Objects.requireNonNull(this.textAlign);
+            label.customizedStyleProperties = Objects.requireNonNull(this.customizedStyleProperties);
             return label;
         }
     }

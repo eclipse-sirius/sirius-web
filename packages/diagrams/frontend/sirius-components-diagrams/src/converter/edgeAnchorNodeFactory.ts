@@ -45,6 +45,10 @@ export const createEdgeAnchorNode = (edge: GQLEdge, type: HandleType, gqlEdges: 
         userResizable: 'NONE',
         keepAspectRatio: false,
       },
+      nodeAppearanceData: {
+        customizedStyleProperties: [],
+        gqlStyle: { __typename: '', childrenLayoutStrategy: { __typename: '', kind: '' } },
+      },
       defaultWidth: null,
       defaultHeight: null,
       isBorderNode: false,

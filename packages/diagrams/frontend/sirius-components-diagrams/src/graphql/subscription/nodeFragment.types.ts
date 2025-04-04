@@ -31,6 +31,7 @@ export interface GQLNode<T extends GQLNodeStyle> {
   defaultWidth: number | null;
   defaultHeight: number | null;
   labelEditable: boolean;
+  customizedStyleProperties: string[];
 }
 
 export interface ILayoutStrategy {

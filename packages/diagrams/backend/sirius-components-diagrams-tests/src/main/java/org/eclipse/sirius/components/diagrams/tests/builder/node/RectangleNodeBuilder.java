@@ -122,6 +122,7 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
                 .modifiers(Set.of())
                 .state(ViewModifier.Normal)
                 .collapsingState(this.collapsingState)
+                .customizedStyleProperties(Set.of())
                 .build();
     }
 

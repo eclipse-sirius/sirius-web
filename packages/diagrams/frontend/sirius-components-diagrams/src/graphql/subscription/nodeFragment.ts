@@ -60,6 +60,7 @@ fragment nodeFragment on Node {
   defaultWidth
   defaultHeight
   labelEditable
+  customizedStyleProperties
 }
 
 fragment childrenLayoutStrategyFragment on ILayoutStrategy {

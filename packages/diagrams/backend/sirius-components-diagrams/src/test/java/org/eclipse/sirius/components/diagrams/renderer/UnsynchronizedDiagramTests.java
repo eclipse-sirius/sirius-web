@@ -262,6 +262,7 @@ public class UnsynchronizedDiagramTests {
                 .previousDiagram(optionalPreviousDiagram)
                 .operationValidator(new IOperationValidator.NoOp())
                 .diagramEvents(List.of())
+                .nodeAppearanceHandlers(List.of())
                 .build();
         Element element = new Element(DiagramComponent.class, props);
         Diagram diagram = new DiagramRenderer().render(element);

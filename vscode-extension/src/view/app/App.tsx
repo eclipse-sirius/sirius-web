@@ -115,7 +115,7 @@ export const App = ({
             return { ...prevState, authenticate: true };
           });
         })
-        .catch(() => {});
+        .catch(() => { });
     } else {
       setState((prevState) => {
         return { ...prevState, authenticate: true };

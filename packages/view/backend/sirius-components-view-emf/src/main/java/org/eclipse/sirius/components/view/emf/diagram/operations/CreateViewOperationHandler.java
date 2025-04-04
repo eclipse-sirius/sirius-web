@@ -148,6 +148,7 @@ public class CreateViewOperationHandler implements IOperationHandler {
                 .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.NEVER)
                 .overflowStrategy(LabelOverflowStrategy.NONE)
                 .textAlign(LabelTextAlign.CENTER)
+                .customizedStyleProperties(Set.of())
                 .build();
 
         var nodeStyle = RectangularNodeStyle.newRectangularNodeStyle()
@@ -171,6 +172,7 @@ public class CreateViewOperationHandler implements IOperationHandler {
                 .style(nodeStyle)
                 .borderNodes(List.of())
                 .childNodes(List.of())
+                .customizedStyleProperties(Set.of())
                 .build();
     }
 }

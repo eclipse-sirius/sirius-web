@@ -492,6 +492,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.NEVER)
                 .overflowStrategy(LabelOverflowStrategy.NONE)
                 .textAlign(LabelTextAlign.CENTER)
+                .customizedStyleProperties(Set.of())
                 .build();
 
         return Node.newNode(nodeId)
@@ -507,6 +508,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .modifiers(Set.of())
                 .state(ViewModifier.Normal)
                 .collapsingState(CollapsingState.EXPANDED)
+                .customizedStyleProperties(Set.of())
                 .build();
     }
 

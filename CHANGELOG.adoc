@@ -117,6 +117,7 @@ In particular it can be used to add new variables which are costly to compute so
 This mechanism is currently provisional and only available for `TreeDescription` but will probably be generalized (maybe in an updated form) for other representations in the future.
 - https://github.com/eclipse-sirius/sirius-web/issues/4927[#4927] [diagram] Add `IManageVisibilityMenuActionsHandler` and `IManageVisibilityMenuActionsProvider` to add menu items to the manage visibility modal
 - https://github.com/eclipse-sirius/sirius-web/issues/4968[#4968] [diagram] Remove auto-generated tool `Delete from diagram` for unsynchronized nodes to let specifiers provide one with their desired behavior
+- https://github.com/eclipse-sirius/sirius-web/issues/4756[#4756] [diagram] Add first implementation of customized appearance on rectangular nodes
 
 
 === Improvements
@@ -378,7 +379,6 @@ Actions are visible on nodes on diagrams, on the top right corner of the nodes, 
 - https://github.com/eclipse-sirius/sirius-web/issues/4626[#4626] [diagram] Conserve rectilinearity of custom edges
 - https://github.com/eclipse-sirius/sirius-web/issues/4770[#4770] [diagram] Allow reconnecting an edge on another edge
 - https://github.com/eclipse-sirius/sirius-web/issues/4745[#4745] Add table cell extension point
-
 
 === Improvements
 

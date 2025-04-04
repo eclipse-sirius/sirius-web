@@ -50,6 +50,7 @@ const toIconLabelNode = (
     pinned,
     style,
     labelEditable,
+    customizedStyleProperties,
   } = gqlNode;
 
   const connectionHandles: ConnectionHandle[] = [];
@@ -85,6 +86,10 @@ const toIconLabelNode = (
     isDropNodeTarget: false,
     isDropNodeCandidate: false,
     isHovered: false,
+    nodeAppearanceData: {
+      gqlStyle: style,
+      customizedStyleProperties,
+    },
   };
 
   data.insideLabel = convertInsideLabel(insideLabel, data, '', false, '0 8px 0 8px');

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,8 +34,7 @@ import org.eclipse.sirius.components.diagrams.tests.builder.label.LabelBuilder;
  * Used to build list item nodes.
  *
  * @param <T>
- *            The parent builder type
- *
+ *         The parent builder type
  * @author sbegaudeau
  */
 @SuppressWarnings("checkstyle:HiddenField")
@@ -103,6 +102,7 @@ public class IconlabelNodeBuilder<T> implements NodeBuilder<T> {
                 .modifiers(Set.of())
                 .state(ViewModifier.Normal)
                 .collapsingState(CollapsingState.EXPANDED)
+                .customizedStyleProperties(Set.of())
                 .build();
     }
 
