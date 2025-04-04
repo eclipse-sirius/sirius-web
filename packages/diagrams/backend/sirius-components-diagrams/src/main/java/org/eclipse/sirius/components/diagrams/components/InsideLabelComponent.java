@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,17 +12,25 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.components;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
+import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.elements.InsideLabelElementProps;
+import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
+import org.eclipse.sirius.components.diagrams.events.appearance.EditAppearanceEvent;
+import org.eclipse.sirius.components.diagrams.events.appearance.ILabelAppearanceChange;
+import org.eclipse.sirius.components.diagrams.renderer.LabelAppearanceHandler;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -56,9 +64,24 @@ public class InsideLabelComponent implements IComponent {
 
         LabelStyleDescription labelStyleDescription = insideLabelDescription.getStyleDescriptionProvider().apply(variableManager);
 
+        List<IDiagramEvent> diagramEvents = this.props.getDiagramEvents();
+        Optional<InsideLabel> optPreviousLabel = Optional.ofNullable(this.props.getPreviousLabel());
+        Optional<LabelStyle> optPreviousLabelStyle = optPreviousLabel.map(InsideLabel::getStyle);
+        Set<String> customizedStyleProperties = optPreviousLabel.map(InsideLabel::getCustomizedStyleProperties).orElse(new HashSet<>());
+        List<ILabelAppearanceChange> appearanceChanges =
+                diagramEvents.stream()
+                        .filter(EditAppearanceEvent.class::isInstance)
+                        .map(EditAppearanceEvent.class::cast)
+                        .flatMap(appearanceEvent -> appearanceEvent.changes().stream())
+                        .filter(ILabelAppearanceChange.class::isInstance)
+                        .map(ILabelAppearanceChange.class::cast)
+                        .filter(appearanceChange -> Objects.equals(id,
+                                appearanceChange.labelId())).toList();
+
         String color = labelStyleDescription.getColorProvider().apply(variableManager);
         Integer fontSize = labelStyleDescription.getFontSizeProvider().apply(variableManager);
-        Boolean bold = labelStyleDescription.getBoldProvider().apply(variableManager);
+        Boolean bold = LabelAppearanceHandler.INSTANCE.isBold(() -> labelStyleDescription.getBoldProvider().apply(variableManager), appearanceChanges, optPreviousLabelStyle,
+                customizedStyleProperties);
         Boolean italic = labelStyleDescription.getItalicProvider().apply(variableManager);
         Boolean strikeThrough = labelStyleDescription.getStrikeThroughProvider().apply(variableManager);
         Boolean underline = labelStyleDescription.getUnderlineProvider().apply(variableManager);
@@ -96,6 +119,7 @@ public class InsideLabelComponent implements IComponent {
                 .headerSeparatorDisplayMode(headerSeparatorDisplayMode)
                 .overflowStrategy(insideLabelDescription.getOverflowStrategy())
                 .textAlign(insideLabelDescription.getTextAlign())
+                .customizedStyleProperties(customizedStyleProperties)
                 .build();
         return new Element(InsideLabelElementProps.TYPE, insideLabelElementProps);
     }

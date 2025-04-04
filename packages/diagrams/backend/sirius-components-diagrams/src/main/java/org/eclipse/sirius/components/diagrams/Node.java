@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -69,6 +69,8 @@ public final class Node implements IDiagramElement {
     private boolean labelEditable;
 
     private boolean pinned;
+
+    private Set<String> customizedStyleProperties;
 
     private Node() {
         // Prevent instantiation
@@ -164,6 +166,10 @@ public final class Node implements IDiagramElement {
         return this.pinned;
     }
 
+    public Set<String> getCustomizedStyleProperties() {
+        return customizedStyleProperties;
+    }
+
     @Override
     public String toString() {
         String insideLabelText = "";
@@ -223,6 +229,8 @@ public final class Node implements IDiagramElement {
 
         private boolean pinned;
 
+        private Set<String> customizedStyleProperties;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -248,6 +256,7 @@ public final class Node implements IDiagramElement {
             this.defaultHeight = node.getDefaultHeight();
             this.labelEditable = node.isLabelEditable();
             this.pinned = node.isPinned();
+            this.customizedStyleProperties = node.getCustomizedStyleProperties();
         }
 
         public Builder type(String type) {
@@ -345,6 +354,11 @@ public final class Node implements IDiagramElement {
             return this;
         }
 
+        public Builder customizedStyleProperties(Set<String> customizedStyleProperties) {
+            this.customizedStyleProperties = Objects.requireNonNull(customizedStyleProperties);
+            return this;
+        }
+
         public Node build() {
             Node node = new Node();
             node.id = Objects.requireNonNull(this.id);
@@ -367,6 +381,7 @@ public final class Node implements IDiagramElement {
             node.defaultHeight = this.defaultHeight; // Optional on purpose
             node.labelEditable = this.labelEditable;
             node.pinned = this.pinned;
+            node.customizedStyleProperties = Objects.requireNonNull(this.customizedStyleProperties);
             return node;
         }
     }
