@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramCreationService;
+import org.eclipse.sirius.components.collaborative.diagrams.NodeAppearanceHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -165,7 +166,9 @@ public class DynamicDiagramsTests {
         };
 
         MeterRegistry meterRegistry = new SimpleMeterRegistry();
-        var diagramCreationService = new DiagramCreationService(representationDescriptionSearchService, new IObjectSearchService.NoOp(), new IOperationValidator.NoOp(), meterRegistry);
+        var diagramCreationService = new DiagramCreationService(representationDescriptionSearchService, new IObjectSearchService.NoOp(), new IOperationValidator.NoOp(),
+                List.of(new NodeAppearanceHandler()),
+                meterRegistry);
 
         IEditingContext editinContext = new IEditingContext.NoOp();
 

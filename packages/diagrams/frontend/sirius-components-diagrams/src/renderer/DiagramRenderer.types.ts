@@ -14,6 +14,8 @@
 import { Edge, Node, ReactFlowProps, XYPosition } from '@xyflow/react';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagramRefreshedEventPayload } from '../graphql/subscription/diagramEventSubscription.types';
+import { GQLLabelStyle } from '../graphql/subscription/labelFragment.types';
+import { GQLNodeStyle } from '../graphql/subscription/nodeFragment.types';
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
 import { ConnectionHandle } from './handles/ConnectionHandles.types';
 import { DiagramNodeType } from './node/NodeTypes.types';
@@ -54,6 +56,17 @@ export interface NodeData extends Record<string, unknown> {
   isDropNodeTarget: boolean;
   isDropNodeCandidate: boolean;
   isHovered: boolean;
+  nodeAppearanceData: NodeAppearanceData;
+}
+
+export interface NodeAppearanceData {
+  customizedStyleProperties: string[];
+  gqlStyle: GQLNodeStyle;
+}
+
+export interface LabelAppearanceData {
+  customizedStyleProperties: string[];
+  gqlStyle: GQLLabelStyle;
 }
 
 export enum BorderNodePosition {
@@ -87,6 +100,7 @@ export interface InsideLabel {
   overflowStrategy: LabelOverflowStrategy;
   headerSeparatorStyle: React.CSSProperties;
   headerPosition: HeaderPosition | undefined;
+  appearanceData: LabelAppearanceData;
 }
 
 export type HeaderPosition = 'TOP' | 'BOTTOM';
