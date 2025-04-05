@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,7 +40,6 @@ export type SchemaValue = {
 
 export interface RenameImageModalContext {
   name: string;
-  nameMessage: string;
   nameIsInvalid: boolean;
   initialName: string;
   message: string;
@@ -68,7 +67,6 @@ export const renameImageModalMachine = Machine<
     type: 'parallel',
     context: {
       name: null,
-      nameMessage: 'The name must contain at least 3 characters',
       nameIsInvalid: false,
       initialName: null,
       message: null,
