@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -51,6 +51,8 @@ import io.micrometer.core.instrument.MeterRegistry;
 @Service
 public class FlowProjectTemplatesInitializer implements IProjectTemplateInitializer {
 
+    private static final String TOPOGRAPHY_VIEW_DESCRIPTION_ID = "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=bce2748b-a1e5-39e6-ad86-a29323589b38";
+
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
     private final IDiagramCreationService diagramCreationService;
@@ -92,7 +94,10 @@ public class FlowProjectTemplatesInitializer implements IProjectTemplateInitiali
 
             resource.getContents().add(this.getRobotFlowContent());
 
-            var optionalTopographyDiagram = this.findDiagramDescription(editingContext, "Topography");
+            var optionalTopographyDiagram = this.representationDescriptionSearchService.findById(editingContext, TOPOGRAPHY_VIEW_DESCRIPTION_ID)
+                    .filter(DiagramDescription.class::isInstance)
+                    .map(DiagramDescription.class::cast);
+
             if (optionalTopographyDiagram.isPresent()) {
                 DiagramDescription topographyDiagram = optionalTopographyDiagram.get();
                 Object semanticTarget = resource.getContents().get(0);
@@ -152,13 +157,4 @@ public class FlowProjectTemplatesInitializer implements IProjectTemplateInitiali
 
         return system;
     }
-
-    private Optional<DiagramDescription> findDiagramDescription(IEditingContext editingContext, String label) {
-        return this.representationDescriptionSearchService.findAll(editingContext).values().stream()
-                .filter(DiagramDescription.class::isInstance)
-                .map(DiagramDescription.class::cast)
-                .filter(diagramDescription -> Objects.equals(label, diagramDescription.getLabel()))
-                .findFirst();
-    }
-
 }
