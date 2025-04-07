@@ -17,6 +17,7 @@ import { memo, useMemo } from 'react';
 import { Label } from '../Label';
 import { useDrop } from '../drop/useDrop';
 import { useDropNodeStyle } from '../dropNode/useDropNodeStyle';
+import { ConnectionTargetHandle } from '../handles/ConnectionTargetHandle';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { IconLabelNodeData } from './IconsLabelNode.types';
 import { NodeComponentsMap } from './NodeTypes';
@@ -65,6 +66,7 @@ export const IconLabelNode: NodeComponentsMap['iconLabelNode'] = memo(
         onDrop={handleOnDrop}
         data-testid={`IconLabel - ${data?.insideLabel?.text}`}>
         {data.insideLabel ? <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} /> : null}
+        <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
         {selected ? (
           <DiagramElementPalette
             diagramElementId={id}
