@@ -61,7 +61,7 @@ public class SubscriptionManager implements ISubscriptionManager {
 
     @Override
     public Flux<Boolean> canBeDisposed() {
-        return Flux.concat(Flux.just(true), this.canBeDisposedSink.asFlux());
+        return this.canBeDisposedSink.asFlux();
     }
 
     @Override
