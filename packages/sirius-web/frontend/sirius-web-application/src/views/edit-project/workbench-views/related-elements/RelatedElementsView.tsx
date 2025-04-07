@@ -94,7 +94,7 @@ export const RelatedElementsView = ({ editingContextId, readOnly }: WorkbenchVie
     }
   };
 
-  if (complete) {
+  if (complete || skip) {
     return (
       <div className={classes.idle}>
         <Typography variant="subtitle2">No object selected</Typography>

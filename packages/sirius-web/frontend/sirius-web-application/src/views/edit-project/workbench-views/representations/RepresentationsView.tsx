@@ -116,14 +116,18 @@ export const RepresentationsView = ({ editingContextId, readOnly }: WorkbenchVie
     }
   };
 
-  if (complete) {
+  if (complete || skip) {
     return (
       <div className={classes.idle}>
         <Typography variant="subtitle2">No object selected</Typography>
       </div>
     );
   } else if (!state.form) {
-    return <RepresentationLoadingIndicator />;
+    return (
+      <div className={classes.idle}>
+        <RepresentationLoadingIndicator />
+      </div>
+    );
   } else {
     return (
       <div data-representation-kind="form-representation-list">
