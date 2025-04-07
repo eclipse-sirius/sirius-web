@@ -119,11 +119,10 @@ They are now in `org.eclipse.sirius.web.application.views.table.customcells` pac
 - https://github.com/eclipse-sirius/sirius-web/issues/4753[#4753] [table] Double click inside a table cells creates a fake text field
 - https://github.com/eclipse-sirius/sirius-web/issues/4709[#4709] [table] Unable to trigger selection change when clicking an empty cell
 - https://github.com/eclipse-sirius/sirius-web/issues/4771[#4771] [table] Fix an issue that prevent table representation to be forked
-- https://github.com/eclipse-sirius/sirius-web/issues/4772[#4772] [core] Dispose representation event processor even if there is no subscription
 - [diagram] Fix an issue where an edge was not reconnectable after a refresh
 - https://github.com/eclipse-sirius/sirius-web/issues/4528[#4528] [sirius-web] Fix an issue where FlowProjectTemplatesInitializer could use the wrong view description
 - https://github.com/eclipse-sirius/sirius-web/issues/4791[#4791] [sirius-web] Fix an issue where loading representation indicator could be broken whith an empty selection
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4795[#4795] [table] Prevent table representation to be disposed after few seconds
 
 === New Features
 
