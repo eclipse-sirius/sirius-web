@@ -121,6 +121,7 @@ They are now in `org.eclipse.sirius.web.application.views.table.customcells` pac
 - https://github.com/eclipse-sirius/sirius-web/issues/4771[#4771] [table] Fix an issue that prevent table representation to be forked
 - https://github.com/eclipse-sirius/sirius-web/issues/4772[#4772] [core] Dispose representation event processor even if there is no subscription
 - [diagram] Fix an issue where an edge was not reconnectable after a refresh
+- https://github.com/eclipse-sirius/sirius-web/issues/4779[#4779] [diagram] Fix an issue where the connection line cannot not be made if a node label is hovered
 
 
 === New Features
@@ -220,6 +221,7 @@ See the ADR 190 for additional details on the goal of this refactoring.
 - https://github.com/eclipse-sirius/sirius-web/issues/4733[#4733] [view] The variable `__NEW_INSTANCES_COLLECTOR__` has been removed in favor of a proper API in the result of the evaluation of an expression
 - https://github.com/eclipse-sirius/sirius-web/issues/4762[#4762] [diagram] Enhance papaya lifecycle diagram with new concepts
 - https://github.com/eclipse-sirius/sirius-web/issues/4687[#4687] [table] Make table line header resizable
+- https://github.com/eclipse-sirius/sirius-web/issues/4779[#4779] [diagram] The connection line now snap to the parent element if an icon label node is hovered
 
 
 == v2025.2.0
