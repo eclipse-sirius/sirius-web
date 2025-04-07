@@ -121,6 +121,7 @@ They are now in `org.eclipse.sirius.web.application.views.table.customcells` pac
 - https://github.com/eclipse-sirius/sirius-web/issues/4771[#4771] [table] Fix an issue that prevent table representation to be forked
 - https://github.com/eclipse-sirius/sirius-web/issues/4772[#4772] [core] Dispose representation event processor even if there is no subscription
 - [diagram] Fix an issue where an edge was not reconnectable after a refresh
+- https://github.com/eclipse-sirius/sirius-web/issues/4528[#4528] [sirius-web] Fix an issue where FlowProjectTemplatesInitializer could use the wrong view description
 
 
 === New Features
