@@ -101,6 +101,10 @@ export const EditProjectView = () => {
     value !== 'loaded'
   );
 
+  const { data: readOnlyPredicate } = useData(editProjectViewReadOnlyPredicateExtensionPoint);
+
+  const [urlSearchParams] = useSearchParams();
+
   let content: React.ReactNode = null;
   if (value === 'loading') {
     content = <NavigationBar />;
@@ -110,9 +114,6 @@ export const EditProjectView = () => {
     return <Navigate to="/errors/404" replace />;
   }
 
-  const { data: readOnlyPredicate } = useData(editProjectViewReadOnlyPredicateExtensionPoint);
-
-  const [urlSearchParams] = useSearchParams();
   if (value === 'loaded' && context.project && context.project.currentEditingContext) {
     const urlSelectionValue: string = urlSearchParams.get('selection') ?? '';
     const entries: SelectionEntry[] =
