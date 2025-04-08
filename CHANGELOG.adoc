@@ -119,6 +119,7 @@ In the case of UML for example, which includes *many* derived references, this c
 It is safe to only look for proxies in "plain" (non-derived) references: if none is found there, there is no (sane) way for a derived reference to produce one.
 In all strictness, it *is* possible for the Java code inside a derived reference to produce a proxy object, but that is highly non-standard behavior, and given the performance benefit of ignoring these references it seems a good default.
 If we really want to support "pathological" metamodels maybe we could introduce some flags and/or other mechanism as a possible but non-default behavior.
+- https://github.com/eclipse-sirius/sirius-web/issues/4099[#4099] [sirius-web] Use low-level code for performance-critical ProxyValidator
 
 
 
