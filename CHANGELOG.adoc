@@ -121,11 +121,12 @@ They are now in `org.eclipse.sirius.web.application.views.table.customcells` pac
 - https://github.com/eclipse-sirius/sirius-web/issues/4771[#4771] [table] Fix an issue that prevent table representation to be forked
 - [diagram] Fix an issue where an edge was not reconnectable after a refresh
 - https://github.com/eclipse-sirius/sirius-web/issues/4528[#4528] [sirius-web] Fix an issue where FlowProjectTemplatesInitializer could use the wrong view description
-- https://github.com/eclipse-sirius/sirius-web/issues/4791[#4791] [sirius-web] Fix an issue where loading representation indicator could be broken whith an empty selection
+- https://github.com/eclipse-sirius/sirius-web/issues/4791[#4791] [sirius-web] Fix an issue where loading representation indicator could be broken with an empty selection
 - https://github.com/eclipse-sirius/sirius-web/issues/4795[#4795] [table] Prevent table representation to be disposed after few seconds
 - https://github.com/eclipse-sirius/sirius-web/issues/4802[#4802] [sirius-web] Make sure all hooks are always rendered in EditProjectView
 - https://github.com/eclipse-sirius/sirius-web/issues/4786[#4786] [sirius-web] Fix an issue that prevent to navigate between library pages during import libraries action
 - https://github.com/eclipse-sirius/sirius-web/issues/4793[#4793] [diagram] Handle 'transparent' background color in SVG Export
+- https://github.com/eclipse-sirius/sirius-web/issues/4783[#4783] [diagram] Fix an issue where the labels of graphical nodes were not wrapped or had ellipsis anymore.
 
 === New Features
 
