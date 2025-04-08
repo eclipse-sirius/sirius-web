@@ -16,6 +16,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,7 +68,10 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
         if (optionalInputResource.isPresent()) {
             Resource inputResource = optionalInputResource.get();
             try {
+                long start = System.nanoTime();
                 var hasProxies = this.proxyValidator.hasProxies(inputResource);
+                Duration timeToTestProxies = Duration.ofNanos(System.nanoTime() - start);
+                this.logger.info("Checked for proxies in {}ms", timeToTestProxies.toMillis());
                 if (hasProxies) {
                     this.logger.warn("The resource {} contains unresolvable proxies and will not be uploaded.", name);
                 } else {

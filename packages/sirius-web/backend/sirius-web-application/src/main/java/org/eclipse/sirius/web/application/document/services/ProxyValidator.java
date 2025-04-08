@@ -13,8 +13,8 @@
 package org.eclipse.sirius.web.application.document.services;
 
 import java.util.List;
-import java.util.stream.StreamSupport;
 
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -29,31 +29,40 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ProxyValidator implements IProxyValidator {
+
     @Override
     public boolean hasProxies(Resource resource) {
-        Iterable<EObject> iterable = () -> EcoreUtil.getAllProperContents(resource, false);
-        return StreamSupport.stream(iterable.spliterator(), false)
-                .anyMatch(this::hasProxies);
+        TreeIterator<EObject> iter = EcoreUtil.getAllProperContents(resource, false);
+        while (iter.hasNext()) {
+            EObject eObject = iter.next();
+            for (var eReference : eObject.eClass().getEAllReferences()) {
+                if (!eReference.isDerived() && eObject.eIsSet(eReference)) {
+                    Object value = eObject.eGet(eReference);
+                    if (this.hasProxies(eReference, value)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
-    private boolean hasProxies(EObject eObject) {
-        return eObject.eClass().getEAllReferences().stream()
-                .filter(eReference -> !eReference.isContainment() && !eReference.isDerived() && eObject.eIsSet(eReference))
-                .anyMatch(eReference -> this.hasProxies(eObject, eReference));
-    }
-
-    private boolean hasProxies(EObject eObject, EReference eReference) {
+    private boolean hasProxies(EReference eReference, Object value) {
         boolean containsProxy = false;
-        Object value = eObject.eGet(eReference);
         if (eReference.isMany()) {
-            List<?> list = (List<?>) value;
-            containsProxy = list.stream()
-                    .filter(EObject.class::isInstance)
-                    .map(EObject.class::cast)
-                    .anyMatch(EObject::eIsProxy);
-        } else if (value instanceof EObject eObjectValue) {
-            containsProxy = eObjectValue.eIsProxy();
+            for (var obj : (List<?>) value) {
+                containsProxy = this.isProxyEObject(obj);
+                if (containsProxy) {
+                    break;
+                }
+            }
+        } else {
+            return this.isProxyEObject(value);
         }
         return containsProxy;
+    }
+
+    private boolean isProxyEObject(Object value) {
+        return value instanceof EObject eObject && eObject.eIsProxy();
     }
 }
