@@ -124,6 +124,7 @@ They are now in `org.eclipse.sirius.web.application.views.table.customcells` pac
 - https://github.com/eclipse-sirius/sirius-web/issues/4791[#4791] [sirius-web] Fix an issue where loading representation indicator could be broken whith an empty selection
 - https://github.com/eclipse-sirius/sirius-web/issues/4795[#4795] [table] Prevent table representation to be disposed after few seconds
 - https://github.com/eclipse-sirius/sirius-web/issues/4802[#4802] [sirius-web] Make sure all hooks are always rendered in EditProjectView
+- https://github.com/eclipse-sirius/sirius-web/issues/4786[#4786] [sirius-web] Fix an issue that prevent to navigate between library pages during import libraries action
 
 === New Features
 

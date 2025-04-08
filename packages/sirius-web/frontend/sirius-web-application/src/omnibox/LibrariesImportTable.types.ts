@@ -10,7 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLGetLibrariesQueryData } from '../views/library-browser/useLibraries.types';
 
 export interface LibrariesImportTableProps {
   onSelectionChange(selection: string[]);
+}
+
+export interface LibrariesImportTableState {
+  data: GQLGetLibrariesQueryData | null;
 }
