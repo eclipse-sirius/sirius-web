@@ -35,6 +35,7 @@ import org.eclipse.sirius.web.application.document.services.api.IExternalResourc
 import org.eclipse.sirius.web.application.document.services.api.IProxyValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -53,10 +54,13 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
 
     private final IProxyValidator proxyValidator;
 
-    public DocumentSanitizedJsonContentProvider(List<IExternalResourceLoaderService> externalResourceLoaderServices, IProxyValidator proxyValidator, List<IMigrationParticipant> migrationParticipants) {
+    private final boolean reuseActiveResourceSet;
+
+    public DocumentSanitizedJsonContentProvider(List<IExternalResourceLoaderService> externalResourceLoaderServices, IProxyValidator proxyValidator, List<IMigrationParticipant> migrationParticipants, @Value("${sirius.web.upload.reuseActiveResourceSet:true}") boolean reuseActiveResourceSet) {
         this.externalResourceLoaderServices = Objects.requireNonNull(externalResourceLoaderServices);
         this.proxyValidator = Objects.requireNonNull(proxyValidator);
         this.migrationParticipants = migrationParticipants;
+        this.reuseActiveResourceSet = reuseActiveResourceSet;
     }
 
     @Override
@@ -71,17 +75,18 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
                 long start = System.nanoTime();
                 var hasProxies = this.proxyValidator.hasProxies(inputResource);
                 Duration timeToTestProxies = Duration.ofNanos(System.nanoTime() - start);
-                this.logger.info("Checked for proxies in {}ms", timeToTestProxies.toMillis());
+                this.logger.trace("Checked for proxies in {}ms", timeToTestProxies.toMillis());
+                
                 if (hasProxies) {
                     this.logger.warn("The resource {} contains unresolvable proxies and will not be uploaded.", name);
                 } else {
-                    JsonResource ouputResource;
+                    JsonResource outputResource;
                     if (Objects.equals(inputResource.getURI(), resourceURI) && inputResource instanceof JsonResource jsonInputResource) {
-                        ouputResource = jsonInputResource;
+                        outputResource = jsonInputResource;
                     } else {
-                        ouputResource = new JSONResourceFactory().createResource(resourceURI);
-                        resourceSet.getResources().add(ouputResource);
-                        ouputResource.getContents().addAll(inputResource.getContents());
+                        outputResource = new JSONResourceFactory().createResource(resourceURI);
+                        resourceSet.getResources().add(outputResource);
+                        outputResource.getContents().addAll(inputResource.getContents());
                     }
 
                     try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
@@ -95,7 +100,7 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
                             saveOptions.put(JsonResource.OPTION_JSON_RESSOURCE_PROCESSOR, migrationExtendedMetaData);
                         }
 
-                        ouputResource.save(outputStream, saveOptions);
+                        outputResource.save(outputStream, saveOptions);
 
                         optionalContent = Optional.of(outputStream.toString());
                     } catch (IOException exception) {
@@ -103,9 +108,12 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
                     }
                 }
             } finally {
-                // Remove any temporary resource we may have added to the ResourceSet
-                resourceSet.getResources().remove(inputResource);
-                resourceSet.getResources().removeIf(res -> Objects.equals(res.getURI(), resourceURI));
+                if (this.reuseActiveResourceSet) {
+                    // Remove any temporary resource we may have added to the ResourceSet if we are working in the active ResourceSet.
+                    // No need to cleanup otherwise if we are inside a temporary ResourceSet.
+                    resourceSet.getResources().remove(inputResource);
+                    resourceSet.getResources().removeIf(res -> Objects.equals(res.getURI(), resourceURI));
+                }
             }
         }
 
