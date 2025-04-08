@@ -35,6 +35,15 @@ export class RectElementSVGExportHandler implements IElementSVGExportHandler {
       rect.setAttribute('rx', String(style.borderRadius));
       rect.setAttribute('fill', style.backgroundColor);
 
+      if (style.backgroundColor === 'rgba(0, 0, 0, 0)') {
+        /*
+         * When the background is 'transparent', backgroundColor=rgba(0, 0, 0, 0) which is not supported by all svg reader.
+         * In that case add fill opacity.
+         * See: https://www.w3.org/TR/css-color-3/#transparent
+         */
+        rect.setAttribute('fill-opacity', '0');
+      }
+
       if (style.borderWidth.includes('0px')) {
         if (style.borderTopWidth !== '0px') {
           const topBorder: SVGRectElement = svgDocument.createElementNS(svgNamespace, 'rect');
