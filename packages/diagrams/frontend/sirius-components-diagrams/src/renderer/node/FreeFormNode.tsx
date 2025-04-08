@@ -80,7 +80,7 @@ const useStyles = makeStyles()((_) => ({
   labelAndAction: {
     display: 'grid',
     gridTemplateRows: '1fr',
-    gridTemplateColumns: '1fr',
+    gridTemplateColumns: 'minmax(0, 1fr)',
   },
   label: {
     gridRow: 1,
