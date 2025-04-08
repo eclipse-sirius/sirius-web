@@ -114,6 +114,12 @@ We need the actual Resource to perform the validation, so do this inside `Docume
 This is a first step to ensure that we do not have unintended side-effects on the ResourceSet used, so that later on we can perform all the upload-related operations inside the already existing EditingContext's ResourceSet and avoid creating a new only (at great cost).
 - https://github.com/eclipse-sirius/sirius-web/issues/4099[#4099] [sirius-web] Cleanup temporary resources in `DocumentSanitizedJsonContentProvider`.
 This has a non-trivial cost for medium to large models as removing the resources triggers `oes.components.emf.services.EditingContextCrossReferenceAdapter.clearReferencesTo(EObject)`, which can be quite costly. But it is required to avoid unintended side-effects if we want to be able to perform the whole upload operation directly inside the already active EditingContext's ResourceSet.
+- https://github.com/eclipse-sirius/sirius-web/issues/4099[#4099] [sirius-web] Consider only non-derived refrences when testing for proxies.
+In the case of UML for example, which includes *many* derived references, this can have a significant impact.
+It is safe to only look for proxies in "plain" (non-derived) references: if none is found there, there is no (sane) way for a derived reference to produce one.
+In all strictness, it *is* possible for the Java code inside a derived reference to produce a proxy object, but that is highly non-standard behavior, and given the performance benefit of ignoring these references it seems a good default.
+If we really want to support "pathological" metamodels maybe we could introduce some flags and/or other mechanism as a possible but non-default behavior.
+
 
 
 == v2025.4.0
