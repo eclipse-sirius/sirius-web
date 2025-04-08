@@ -21,19 +21,28 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 import { useLibraries } from '../views/library-browser/useLibraries';
 import { GQLLibrary } from '../views/library-browser/useLibraries.types';
-import { LibrariesImportTableProps } from './LibrariesImportTable.types';
+import { LibrariesImportTableProps, LibrariesImportTableState } from './LibrariesImportTable.types';
 
 export const LibrariesImportTable = ({ onSelectionChange }: LibrariesImportTableProps) => {
+  const [state, setState] = useState<LibrariesImportTableState>({
+    data: null,
+  });
   const [pagination, setPagination] = useState<MRT_PaginationState>({
     pageIndex: 0,
     pageSize: 20,
   });
 
   const { data } = useLibraries(pagination.pageIndex, pagination.pageSize);
-  const rows: GQLLibrary[] = data?.viewer.libraries.edges.map((edge) => edge.node) || [];
-  const count: number = data?.viewer.libraries.pageInfo.count ?? 0;
+  const rows: GQLLibrary[] = state.data?.viewer.libraries.edges.map((edge) => edge.node) || [];
+  const count: number = state.data?.viewer.libraries.pageInfo.count ?? 0;
 
   const [rowSelection, setRowSelection] = useState<MRT_RowSelectionState>({});
+
+  useEffect(() => {
+    if (data) {
+      setState((prevState) => ({ ...prevState, data }));
+    }
+  }, [data]);
 
   useEffect(() => {
     onSelectionChange(Object.keys(rowSelection));
