@@ -227,7 +227,7 @@ See the ADR 190 for additional details on the goal of this refactoring.
 - https://github.com/eclipse-sirius/sirius-web/issues/4733[#4733] [view] The variable `__NEW_INSTANCES_COLLECTOR__` has been removed in favor of a proper API in the result of the evaluation of an expression
 - https://github.com/eclipse-sirius/sirius-web/issues/4762[#4762] [diagram] Enhance papaya lifecycle diagram with new concepts
 - https://github.com/eclipse-sirius/sirius-web/issues/4687[#4687] [table] Make table line header resizable
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4804[#4804] [table] Avoid to reset the header column width when another column is resized
 
 == v2025.2.0
 
