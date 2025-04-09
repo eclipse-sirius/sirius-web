@@ -76,8 +76,10 @@ export const useConnector = (): UseConnectorValue => {
     return !!connectionNodeId && !isNewConnection;
   };
 
+  //  Set the new connection if we're connecting to a node
   const onConnect: OnConnect = useCallback((connection: Connection) => {
     const nodeSource = nodeLookup.get(connection.source);
+    //  Set the edge as source when we're connecting from an EdgeAnchorNode
     if (nodeSource && isEdgeAnchorNodeCreationHandles(nodeSource)) {
       connection.source = nodeSource.data.edgeId;
     }
@@ -112,8 +114,10 @@ export const useConnector = (): UseConnectorValue => {
         setPosition({ x: touchEvent.touches[0]?.clientX || 0, y: touchEvent.touches[0]?.clientY || 0 });
       }
 
+      //  Set the new connection if we're connecting to an edge
       const hoveredEdge = getEdges().find((edge) => edge.data && edge.data.isHovered);
-      if (hoveredEdge && connectionState.fromNode && isNewConnection) {
+      const shouldConnectToAnEdge = hoveredEdge && connectionState.fromHandle?.id?.startsWith('creationhandle');
+      if (connectionState.fromNode && shouldConnectToAnEdge) {
         setConnection({
           source: connectionState.fromNode.id,
           target: hoveredEdge.id,
@@ -121,6 +125,7 @@ export const useConnector = (): UseConnectorValue => {
           targetHandle: null,
         });
       }
+
       setIsNewConnection(false);
     },
     []
