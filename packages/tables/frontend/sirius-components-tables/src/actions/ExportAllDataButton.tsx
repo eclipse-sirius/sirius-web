@@ -17,6 +17,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { download, generateCsv, mkConfig } from 'export-to-csv';
 import {
   GQLCell,
+  GQLIconLabelCell,
   GQLMultiSelectCell,
   GQLSelectCell,
   GQLTable,
@@ -26,6 +27,7 @@ import {
 import { CsvData, ExportAllDataButtonProps } from './ExportAllDataButton.types';
 
 const isSelectCell = (cell: GQLCell): cell is GQLSelectCell => cell.__typename === 'SelectCell';
+const isIconLabelCell = (cell: GQLCell): cell is GQLIconLabelCell => cell.__typename === 'IconLabelCell';
 const isMultiSelectCell = (cell: GQLCell): cell is GQLMultiSelectCell => cell.__typename === 'MultiSelectCell';
 const isTextfieldCell = (cell: GQLCell): cell is GQLTextfieldCell => cell.__typename === 'TextfieldCell';
 const isTextareaCell = (cell: GQLCell): cell is GQLTextareaCell => cell.__typename === 'TextareaCell';
@@ -35,6 +37,8 @@ const getCellLabel = (cell: GQLCell | undefined): string => {
   if (cell) {
     if (isTextfieldCell(cell) || isTextareaCell(cell)) {
       value = cell.stringValue;
+    } else if (isIconLabelCell(cell)) {
+      value = cell.label;
     } else if (isMultiSelectCell(cell)) {
       value = cell.options
         .filter((option) => cell.values.includes(option.id))
