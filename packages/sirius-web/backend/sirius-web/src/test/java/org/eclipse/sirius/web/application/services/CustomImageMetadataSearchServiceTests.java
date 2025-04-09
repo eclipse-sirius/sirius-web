@@ -74,7 +74,7 @@ public class CustomImageMetadataSearchServiceTests extends AbstractIntegrationTe
     @GivenSiriusWebServer
     @DisplayName("Given project images and global images in the database, when custom image metadata are requested, both can be retrieved")
     public void givenProjectImagesAndGlobalImagesInTheDatabaseWhenCustomImageMetadataAreRequestedThenBothCanBeRetrieved() {
-        var images = this.customImageMetadataSearchService.getAvailableImages(StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString());
+        var images = this.customImageMetadataSearchService.getAvailableImages(StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID);
         assertThat(images)
                 .isNotEmpty()
                 .anySatisfy(image -> assertThat(image.id()).isEqualTo(StudioIdentifiers.PLACEHOLDER_IMAGE_OBJECT))
@@ -85,7 +85,7 @@ public class CustomImageMetadataSearchServiceTests extends AbstractIntegrationTe
     @GivenSiriusWebServer
     @DisplayName("Given project images and global images in the database, when a global image is deleted, then it does not exist")
     public void givenProjectImagesAndGlobalImagesInTheDatabaseWhenGlobalImageIsDeletedThenItDoesNotExist() {
-        var images = this.customImageMetadataSearchService.getAvailableImages(StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString());
+        var images = this.customImageMetadataSearchService.getAvailableImages(StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID);
         assertThat(images)
                 .isNotEmpty()
                 .anySatisfy(image -> assertThat(image.id()).isEqualTo(StudioIdentifiers.PLACEHOLDER_IMAGE_OBJECT))
@@ -102,7 +102,7 @@ public class CustomImageMetadataSearchServiceTests extends AbstractIntegrationTe
         TestTransaction.end();
         TestTransaction.start();
 
-        images = this.customImageMetadataSearchService.getAvailableImages(StudioIdentifiers.SAMPLE_STUDIO_PROJECT.toString());
+        images = this.customImageMetadataSearchService.getAvailableImages(StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID);
         assertThat(images)
                 .isNotEmpty()
                 .anySatisfy(image -> assertThat(image.id()).isEqualTo(StudioIdentifiers.PLACEHOLDER_IMAGE_OBJECT))
