@@ -53,7 +53,7 @@ export const EdgeAnchorNode: NodeComponentsMap['edgeAnchorNode'] = memo(
 
     // Update the node position if the path of the edge changed
     useEffect(() => {
-      if (edgePath) {
+      if (edgePath || (!positionAbsoluteX && !positionAbsoluteY)) {
         setNodes((prevNodes) =>
           prevNodes.map((prevNode) => {
             if (prevNode.id === id && edgePath) {
@@ -72,7 +72,7 @@ export const EdgeAnchorNode: NodeComponentsMap['edgeAnchorNode'] = memo(
           })
         );
       }
-    }, [edgePath]);
+    }, [edgePath, !positionAbsoluteX && !positionAbsoluteY]);
 
     if (!positionAbsoluteX && !positionAbsoluteY) {
       return null;
