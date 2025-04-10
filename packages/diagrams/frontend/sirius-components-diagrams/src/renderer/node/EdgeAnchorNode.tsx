@@ -44,7 +44,8 @@ const handleStyle = (position: Position): React.CSSProperties => {
 export const EdgeAnchorNode: NodeComponentsMap['edgeAnchorNode'] = memo(
   ({ data, id, positionAbsoluteX, positionAbsoluteY }: NodeProps<Node<EdgeAnchorNodeData>>) => {
     const { setNodes } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
-
+    console.log('Rerender edgeAnchorNode');
+    console.log(positionAbsoluteX, positionAbsoluteY);
     // Subscribe to the path of the edge used to position the node
     const edgePath = useStore((state) => edgePathSelector(state, id)) as string;
 
@@ -53,6 +54,7 @@ export const EdgeAnchorNode: NodeComponentsMap['edgeAnchorNode'] = memo(
 
     // Update the node position if the path of the edge changed
     useEffect(() => {
+      console.log('useEffect edgeAnchorNode');
       if (edgePath) {
         setNodes((prevNodes) =>
           prevNodes.map((prevNode) => {
