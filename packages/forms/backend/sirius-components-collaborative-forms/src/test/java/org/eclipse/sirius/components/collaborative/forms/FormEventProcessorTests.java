@@ -111,10 +111,8 @@ public class FormEventProcessorTests {
 
         FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(FORM_ID)
                 .formDescription(this.getFormDescription())
-                .editingContext(editingContext)
                 .object(new Object())
                 .selection(List.of())
-                .customCellDescriptors(List.of())
                 .build();
 
         FormEventProcessor formEventProcessor = new FormEventProcessor(

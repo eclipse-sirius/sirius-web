@@ -17,9 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.forms.description.FormDescription;
-import org.eclipse.sirius.components.tables.components.ICustomCellDescriptor;
 
 /**
  * This class is used because creating a form requires sending at once multiple parameters. Since this list of parameter
@@ -40,24 +38,12 @@ public final class FormCreationParameters {
 
     private FormDescription formDescription;
 
-    private IEditingContext editingContext;
-
-    private List<ICustomCellDescriptor> customCellDescriptors;
-
     private FormCreationParameters() {
         // Prevent instantiation
     }
 
     public String getId() {
         return this.id;
-    }
-
-    public static Builder newFormCreationParameters(FormCreationParameters formCreationParameters) {
-        return new Builder(formCreationParameters.getId())
-                .formDescription(formCreationParameters.getFormDescription())
-                .editingContext(formCreationParameters.getEditingContext())
-                .object(formCreationParameters.getObject())
-                .selection(formCreationParameters.getSelection());
     }
 
     public Object getObject() {
@@ -68,20 +54,12 @@ public final class FormCreationParameters {
         return this.formDescription;
     }
 
-    public IEditingContext getEditingContext() {
-        return this.editingContext;
-    }
-
     public static Builder newFormCreationParameters(String id) {
         return new Builder(id);
     }
 
     public List<Object> getSelection() {
         return this.selection;
-    }
-
-    public List<ICustomCellDescriptor> getCustomCellDescriptors() {
-        return this.customCellDescriptors;
     }
 
     @Override
@@ -106,10 +84,6 @@ public final class FormCreationParameters {
 
         private FormDescription formDescription;
 
-        private IEditingContext editingContext;
-
-        private List<ICustomCellDescriptor> customCellDescriptors;
-
         private Builder(String id) {
             this.id = id;
         }
@@ -129,24 +103,12 @@ public final class FormCreationParameters {
             return this;
         }
 
-        public Builder editingContext(IEditingContext editingContext) {
-            this.editingContext = Objects.requireNonNull(editingContext);
-            return this;
-        }
-
-        public Builder customCellDescriptors(List<ICustomCellDescriptor> customCellDescriptors) {
-            this.customCellDescriptors = Objects.requireNonNull(customCellDescriptors);
-            return this;
-        }
-
         public FormCreationParameters build() {
             FormCreationParameters formCreationParameters = new FormCreationParameters();
             formCreationParameters.id = this.id;
             formCreationParameters.object = Objects.requireNonNull(this.object);
             formCreationParameters.selection = Objects.requireNonNull(this.selection);
             formCreationParameters.formDescription = Objects.requireNonNull(this.formDescription);
-            formCreationParameters.editingContext = Objects.requireNonNull(this.editingContext);
-            formCreationParameters.customCellDescriptors = Objects.requireNonNull(this.customCellDescriptors);
             return formCreationParameters;
         }
     }

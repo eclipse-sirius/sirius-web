@@ -33,7 +33,6 @@ import org.eclipse.sirius.components.collaborative.tables.dto.EditSelectCellInpu
 import org.eclipse.sirius.components.collaborative.tables.dto.EditTextfieldCellInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.Form;
-import org.eclipse.sirius.components.forms.TableWidget;
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.components.tables.Line;
 import org.eclipse.sirius.components.tables.Table;
@@ -42,6 +41,7 @@ import org.eclipse.sirius.components.tables.tests.graphql.EditSelectCellMutation
 import org.eclipse.sirius.components.tables.tests.graphql.EditTextfieldCellMutationRunner;
 import org.eclipse.sirius.components.tables.tests.navigation.LineNavigator;
 import org.eclipse.sirius.components.tables.tests.navigation.TableNavigator;
+import org.eclipse.sirius.components.widget.table.TableWidget;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.table.customcells.EditCheckboxCellInput;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
