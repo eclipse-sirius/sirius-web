@@ -60,8 +60,6 @@ import org.eclipse.sirius.components.forms.components.SliderComponent;
 import org.eclipse.sirius.components.forms.components.SliderComponentProps;
 import org.eclipse.sirius.components.forms.components.SplitButtonComponent;
 import org.eclipse.sirius.components.forms.components.SplitButtonComponentProps;
-import org.eclipse.sirius.components.forms.components.TableWidgetComponent;
-import org.eclipse.sirius.components.forms.components.TableWidgetComponentProps;
 import org.eclipse.sirius.components.forms.components.TextareaComponent;
 import org.eclipse.sirius.components.forms.components.TextareaComponentProps;
 import org.eclipse.sirius.components.forms.components.TextfieldComponent;
@@ -76,7 +74,6 @@ import org.eclipse.sirius.components.forms.validation.DiagnosticComponent;
 import org.eclipse.sirius.components.forms.validation.DiagnosticComponentProps;
 import org.eclipse.sirius.components.representations.IComponentPropsValidator;
 import org.eclipse.sirius.components.representations.IProps;
-import org.eclipse.sirius.components.tables.renderer.TableComponentPropsValidator;
 
 /**
  * Used to validate the properties of a component.
@@ -86,8 +83,6 @@ import org.eclipse.sirius.components.tables.renderer.TableComponentPropsValidato
 public class FormComponentPropsValidator implements IComponentPropsValidator {
 
     private final List<IWidgetDescriptor> widgetDescriptors;
-
-    private final TableComponentPropsValidator tableComponentPropsValidator = new TableComponentPropsValidator(List.of());
 
     public FormComponentPropsValidator(List<IWidgetDescriptor> widgetDescriptors) {
         this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
@@ -154,18 +149,13 @@ public class FormComponentPropsValidator implements IComponentPropsValidator {
             checkValidProps = props instanceof SliderComponentProps;
         } else if (DateTimeComponent.class.equals(componentType)) {
             checkValidProps = props instanceof DateTimeComponentProps;
-        } else if (TableWidgetComponent.class.equals(componentType)) {
-            checkValidProps = props instanceof TableWidgetComponentProps;
         } else {
-            checkValidProps = this.tableComponentPropsValidator.validateComponentProps(componentType, props);
-            if (!checkValidProps) {
-                checkValidProps = this.widgetDescriptors.stream()
-                        .map(widgetDescriptor -> widgetDescriptor.validateComponentProps(componentType, props))
-                        .filter(Optional::isPresent)
-                        .findFirst()
-                        .map(Optional::get)
-                        .orElse(false);
-            }
+            checkValidProps = this.widgetDescriptors.stream()
+                    .map(widgetDescriptor -> widgetDescriptor.validateComponentProps(componentType, props))
+                    .filter(Optional::isPresent)
+                    .findFirst()
+                    .map(Optional::get)
+                    .orElse(false);
         }
         return checkValidProps;
     }

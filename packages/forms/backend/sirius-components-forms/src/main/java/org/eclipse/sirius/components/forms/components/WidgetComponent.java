@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,7 +31,6 @@ import org.eclipse.sirius.components.forms.description.RichTextDescription;
 import org.eclipse.sirius.components.forms.description.SelectDescription;
 import org.eclipse.sirius.components.forms.description.SliderDescription;
 import org.eclipse.sirius.components.forms.description.SplitButtonDescription;
-import org.eclipse.sirius.components.forms.description.TableWidgetDescription;
 import org.eclipse.sirius.components.forms.description.TextareaDescription;
 import org.eclipse.sirius.components.forms.description.TextfieldDescription;
 import org.eclipse.sirius.components.forms.description.TreeDescription;
@@ -117,9 +116,6 @@ public class WidgetComponent implements IComponent {
         } else if (widgetDescription instanceof DateTimeDescription) {
             DateTimeComponentProps dateTimeComponentProps = new DateTimeComponentProps(variableManager, (DateTimeDescription) widgetDescription);
             element = new Element(DateTimeComponent.class, dateTimeComponentProps);
-        } else if (widgetDescription instanceof TableWidgetDescription) {
-            TableWidgetComponentProps tableWidgetComponentProps = new TableWidgetComponentProps(variableManager, (TableWidgetDescription) widgetDescription);
-            element = new Element(TableWidgetComponent.class, tableWidgetComponentProps);
         } else {
             element = this.props.getWidgetDescriptors().stream()
                     .map(widgetDescriptor -> widgetDescriptor.createElement(variableManager, widgetDescription))

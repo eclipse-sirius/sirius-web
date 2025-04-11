@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.forms;
+package org.eclipse.sirius.components.widget.table;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.components.forms.validation.Diagnostic;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.tables.Table;
@@ -51,7 +52,7 @@ public final class TableWidget extends AbstractWidget {
         String pattern = "{0} '{'id: {1}, label: {2}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.getId(), this.label);
     }
-    
+
     /**
      * The builder used to create the table widget.
      *

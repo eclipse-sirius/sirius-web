@@ -86,6 +86,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-collaborative-widget-table</artifactId>
+			<version>2025.4.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-formdescriptioneditors-widget-table</artifactId>
 			<version>2025.4.3</version>
 		</dependency>

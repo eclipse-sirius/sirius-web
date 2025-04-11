@@ -41,11 +41,9 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationInput;
 import org.eclipse.sirius.components.forms.Form;
-import org.eclipse.sirius.components.forms.TableWidget;
 import org.eclipse.sirius.components.forms.components.FormComponent;
 import org.eclipse.sirius.components.forms.components.FormComponentProps;
 import org.eclipse.sirius.components.forms.description.FormDescription;
-import org.eclipse.sirius.components.forms.description.TableWidgetDescription;
 import org.eclipse.sirius.components.forms.renderer.FormRenderer;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.components.representations.Element;
@@ -54,7 +52,8 @@ import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.Table;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
-import org.eclipse.sirius.components.tables.renderer.TableRenderer;
+import org.eclipse.sirius.components.widget.table.TableWidget;
+import org.eclipse.sirius.components.widget.table.TableWidgetDescription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -121,14 +120,14 @@ public class FormEventProcessor implements IFormEventProcessor {
         this.formPostProcessor = Objects.requireNonNull(formPostProcessor);
         this.tableEventHandlers = Objects.requireNonNull(configuration.tableEventHandlers());
 
-        this.variableManager = this.initializeVariableManager(this.formCreationParameters);
+        this.variableManager = this.initializeVariableManager();
 
         Form form = this.refreshForm();
         this.currentForm.set(form);
     }
 
-    private VariableManager initializeVariableManager(FormCreationParameters formDescriptionParameters) {
-        var formDescription = formDescriptionParameters.getFormDescription();
+    private VariableManager initializeVariableManager() {
+        var formDescription = this.formCreationParameters.getFormDescription();
         var self = this.formCreationParameters.getObject();
         if (this.currentForm.get() != null) {
             self = this.objectService.getObject(this.editingContext, this.currentForm.get().getTargetObjectId()).orElse(self);
@@ -138,8 +137,7 @@ public class FormEventProcessor implements IFormEventProcessor {
         initialVariableManager.put(VariableManager.SELF, self);
         initialVariableManager.put(FormVariableProvider.SELECTION.name(), this.formCreationParameters.getSelection());
         initialVariableManager.put(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, this.formCreationParameters.getId());
-        initialVariableManager.put(IEditingContext.EDITING_CONTEXT, this.formCreationParameters.getEditingContext());
-        initialVariableManager.put(TableRenderer.CUSTOM_CELL_DESCRIPTORS, formDescriptionParameters.getCustomCellDescriptors());
+        initialVariableManager.put(IEditingContext.EDITING_CONTEXT, this.editingContext);
 
         var initializer = formDescription.getVariableManagerInitializer();
         return initializer.apply(initialVariableManager);

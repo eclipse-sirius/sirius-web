@@ -21,7 +21,6 @@ import java.util.function.Predicate;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
-import org.eclipse.sirius.components.forms.description.TableWidgetDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.StringValueProvider;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -38,6 +37,7 @@ import org.eclipse.sirius.components.view.emf.table.ITableIdProvider;
 import org.eclipse.sirius.components.view.emf.table.RowDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.table.api.ICustomCellConverter;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
+import org.eclipse.sirius.components.widget.table.TableWidgetDescription;
 import org.springframework.stereotype.Service;
 
 /**
