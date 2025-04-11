@@ -1,0 +1,17 @@
+= Representation Editors
+
+The _Representation Editors_ are used to open _xref:user-manual:core-concepts.adoc#_representations[Representations]_ as part of the _xref:user-manual:workbench-ui/project-homepage.adoc[]_.
+
+These editors are used to both *visualize* and *edit* sub-sets of the _{usr-models}_ of a project.
+The editor used for a representation depends on its type (also known as its _description_).
+
+{sw} provides 6 different types of _xref:maker-manual:studio-definitions/view-models/representation-descriptions[Representation Descriptions]_, each with its own dedicated editor. The documentation below details each editor and the functionalities it provides for *all* representations of the matching type:
+
+* xref:user-manual:studio-runtime/representation-editors/deck.adoc[]
+* xref:user-manual:studio-runtime/representation-editors/diagram.adoc[]
+* xref:user-manual:studio-runtime/representation-editors/form.adoc[]
+* xref:user-manual:studio-runtime/representation-editors/gantt.adoc[]
+* xref:user-manual:studio-runtime/representation-editors/portal.adoc[]
+* xref:user-manual:studio-runtime/representation-editors/tree.adoc[]
+
+IMPORTANT: It is also possible for the most advanced custom applications to provide their own _xref:developer-guide:studio-development.adoc#_custom_representation_description_apis[Custom Representation Descriptions]_. Most of the time, this means the _{stdrt}_ is also extended with a matching additional dedicated editor (although this is not always the case, for instance if the custom description is a variation of an existing one). In that case, the corresponding editors should be documented in the application documentation.

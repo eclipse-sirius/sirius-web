@@ -1,0 +1,19 @@
+= Deck Element Description Style
+
+`DeckElementDescriptionStyle` is a `LabelStyle` used for a `DeckElementDescription`.
+
+== Background Color
+
+* Technical name: `backgroundColor`
+* Type: `xref:maker-manual:studio-definitions/view-models/colors.adoc#_user_color[UserColor]`
+* Multiplicity: single
+* Necessity: optional
+* Semantics: The `UserColor` used as background of the `DeckElement` to which this `DeckElementDescriptionStyle` is attached.
+
+== Color
+
+* Technical name: `color`
+* Type: `xref:maker-manual:studio-definitions/view-models/colors.adoc#_user_color[UserColor]`
+* Multiplicity: single
+* Necessity: optional
+* Semantics: The `UserColor` used as foreground of the `DeckElement` to which this `DeckElementDescriptionStyle` is attached.
