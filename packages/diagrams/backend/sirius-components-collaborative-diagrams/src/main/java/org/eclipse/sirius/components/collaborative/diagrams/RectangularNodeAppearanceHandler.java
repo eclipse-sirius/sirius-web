@@ -28,12 +28,12 @@ import org.eclipse.sirius.components.diagrams.renderer.INodeAppearanceHandler;
 import org.springframework.stereotype.Service;
 
 /**
- * Default implementation of a service used to handle the customization of a node's appearance.
+ * Default implementation of a service used to handle the customization of a rectangular node's appearance.
  *
  * @author nvannier
  */
 @Service
-public class NodeAppearanceHandler implements INodeAppearanceHandler {
+public class RectangularNodeAppearanceHandler implements INodeAppearanceHandler {
 
     public static final String BACKGROUND = "background";
 
@@ -48,7 +48,7 @@ public class NodeAppearanceHandler implements INodeAppearanceHandler {
         Optional<INodeStyle> optPreviousNodeStyle = previousNodeAppearance.map(NodeAppearance::style);
         if (providedStyle instanceof RectangularNodeStyle providedRectangularNodeStyle) {
             RectangularNodeStyle.Builder styleBuilder = RectangularNodeStyle.newRectangularNodeStyle(providedRectangularNodeStyle);
-            handleBackground(styleBuilder, changes, optPreviousNodeStyle, customizedStyleProperties);
+            this.handleBackground(styleBuilder, changes, optPreviousNodeStyle, customizedStyleProperties);
             return new NodeAppearance(styleBuilder.build(), customizedStyleProperties);
         } else {
             return new NodeAppearance(providedStyle, customizedStyleProperties);
@@ -58,7 +58,9 @@ public class NodeAppearanceHandler implements INodeAppearanceHandler {
     private void handleBackground(RectangularNodeStyle.Builder styleBuilder, List<INodeAppearanceChange> changes, Optional<INodeStyle> optPreviousNodeStyle, Set<String> customizedStyleProperties) {
         boolean backgroundReset =
                 changes.stream().filter(ResetNodeAppearanceChange.class::isInstance).map(ResetNodeAppearanceChange.class::cast).anyMatch(reset -> Objects.equals(reset.propertyName(), BACKGROUND));
-        if (!backgroundReset) {
+        if (backgroundReset) {
+            customizedStyleProperties.remove(BACKGROUND);
+        } else {
             Optional<NodeBackgroundAppearanceChange> optBackgroundChange = changes.stream().filter(NodeBackgroundAppearanceChange.class::isInstance)
                     .map(NodeBackgroundAppearanceChange.class::cast).findAny();
 
@@ -72,8 +74,6 @@ public class NodeAppearanceHandler implements INodeAppearanceHandler {
             } else {
                 customizedStyleProperties.remove(BACKGROUND);
             }
-        } else {
-            customizedStyleProperties.remove(BACKGROUND);
         }
     }
 }

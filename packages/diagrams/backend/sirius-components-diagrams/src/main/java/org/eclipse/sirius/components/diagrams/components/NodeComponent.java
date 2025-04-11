@@ -185,10 +185,8 @@ public class NodeComponent implements IComponent {
                 new NodeAppearance(previousNode.getStyle(), previousNode.getCustomizedStyleProperties())
         );
 
-        optPreviousAppearance.ifPresent(previousAppearance ->
-                nodeVariableManager.put(NodeAppearance.PREVIOUS_NODE_APPEARANCE, previousAppearance)
-        );
-
+        nodeVariableManager.put(NodeAppearance.PREVIOUS_NODE_APPEARANCE, optPreviousAppearance.orElse(null));
+        
         INodeStyle providedStyle = nodeDescription.getStyleProvider().apply(nodeVariableManager);
 
         List<INodeAppearanceChange> appearanceChanges =

@@ -67,7 +67,7 @@ public class InsideLabelComponent implements IComponent {
         List<IDiagramEvent> diagramEvents = this.props.getDiagramEvents();
         Optional<InsideLabel> optPreviousLabel = Optional.ofNullable(this.props.getPreviousLabel());
         Optional<LabelStyle> optPreviousLabelStyle = optPreviousLabel.map(InsideLabel::getStyle);
-        Set<String> customizedStyleProperties = optPreviousLabel.map(InsideLabel::getCustomizedStyleProperties).orElse(new HashSet<>());
+        Set<String> previousCustomizedStyleProperties = optPreviousLabel.map(InsideLabel::getCustomizedStyleProperties).orElse(new HashSet<>());
         List<ILabelAppearanceChange> appearanceChanges =
                 diagramEvents.stream()
                         .filter(EditAppearanceEvent.class::isInstance)
@@ -76,12 +76,13 @@ public class InsideLabelComponent implements IComponent {
                         .filter(ILabelAppearanceChange.class::isInstance)
                         .map(ILabelAppearanceChange.class::cast)
                         .filter(appearanceChange -> Objects.equals(id,
-                                appearanceChange.labelId())).toList();
+                                appearanceChange.labelId()))
+                        .toList();
+        LabelAppearanceHandler labelAppearanceHandler = new LabelAppearanceHandler(appearanceChanges, previousCustomizedStyleProperties, optPreviousLabelStyle.orElse(null));
 
         String color = labelStyleDescription.getColorProvider().apply(variableManager);
         Integer fontSize = labelStyleDescription.getFontSizeProvider().apply(variableManager);
-        Boolean bold = LabelAppearanceHandler.INSTANCE.isBold(() -> labelStyleDescription.getBoldProvider().apply(variableManager), appearanceChanges, optPreviousLabelStyle,
-                customizedStyleProperties);
+        Boolean bold = labelAppearanceHandler.isBold(() -> labelStyleDescription.getBoldProvider().apply(variableManager));
         Boolean italic = labelStyleDescription.getItalicProvider().apply(variableManager);
         Boolean strikeThrough = labelStyleDescription.getStrikeThroughProvider().apply(variableManager);
         Boolean underline = labelStyleDescription.getUnderlineProvider().apply(variableManager);
@@ -119,7 +120,7 @@ public class InsideLabelComponent implements IComponent {
                 .headerSeparatorDisplayMode(headerSeparatorDisplayMode)
                 .overflowStrategy(insideLabelDescription.getOverflowStrategy())
                 .textAlign(insideLabelDescription.getTextAlign())
-                .customizedStyleProperties(customizedStyleProperties)
+                .customizedStyleProperties(labelAppearanceHandler.getCustomizedStyleProperties())
                 .build();
         return new Element(InsideLabelElementProps.TYPE, insideLabelElementProps);
     }

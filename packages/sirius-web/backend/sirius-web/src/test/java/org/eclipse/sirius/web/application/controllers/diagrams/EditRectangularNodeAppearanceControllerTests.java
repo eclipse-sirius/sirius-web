@@ -101,7 +101,7 @@ public class EditRectangularNodeAppearanceControllerTests extends AbstractIntegr
             then the same node's background to be red,
             and then resetting the label back to not being bold
             and then the node's background to not being red, back to the default style""")
-    public void setNodeLabelBoldAndReset() {
+    public void setNodeBackgroundRedLabelBoldAndReset() {
         var flux = givenDiagramSubscription();
         var diagramId = new AtomicReference<String>();
         var siriusWebApplicationNodeId = new AtomicReference<String>();
