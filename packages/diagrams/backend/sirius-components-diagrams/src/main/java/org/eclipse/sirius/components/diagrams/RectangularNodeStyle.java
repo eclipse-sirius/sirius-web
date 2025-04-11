@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,6 +41,10 @@ public final class RectangularNodeStyle implements INodeStyle {
 
     public static Builder newRectangularNodeStyle() {
         return new Builder();
+    }
+
+    public static Builder newRectangularNodeStyle(RectangularNodeStyle sourceRectangularNodeStyle) {
+        return new Builder(sourceRectangularNodeStyle);
     }
 
     public String getBackground() {
@@ -89,6 +93,14 @@ public final class RectangularNodeStyle implements INodeStyle {
 
         private Builder() {
             // Prevent instantiation
+        }
+
+        private Builder(RectangularNodeStyle sourceRectangularNodeStyle) {
+            this.background = sourceRectangularNodeStyle.getBackground();
+            this.borderColor = sourceRectangularNodeStyle.getBorderColor();
+            this.borderSize = sourceRectangularNodeStyle.getBorderSize();
+            this.borderRadius = sourceRectangularNodeStyle.getBorderRadius();
+            this.borderStyle = sourceRectangularNodeStyle.getBorderStyle();
         }
 
         public Builder background(String background) {
