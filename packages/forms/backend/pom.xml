@@ -40,5 +40,7 @@
 		<module>sirius-components-widget-reference-graphql</module>
 		<module>sirius-components-widget-reference-tests</module>
 		<module>sirius-components-collaborative-widget-reference</module>
+		<module>sirius-components-collaborative-widget-table</module>
+		<module>sirius-components-widget-table</module>
 	</modules>
 </project>

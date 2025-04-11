@@ -125,6 +125,7 @@ If we really want to support "pathological" metamodels maybe we could introduce 
 This can be disabled with a system property for easy testing/comparison and if some applications decide that it is too risky in their context and accept the additional cost of re-creating a whole temporary editing context for the upload operation.
 - https://github.com/eclipse-sirius/sirius-web/issues/4875[#4875] [table] Improve table representation lifecycle
 - https://github.com/eclipse-sirius/sirius-web/issues/4825[#4825] [table] Add support for tooltip on table cells
+- https://github.com/eclipse-sirius/sirius-web/issues/4332[#4332] [table] Remove table dependency in `sirius-components-form`
 
 
 
@@ -358,7 +359,6 @@ See the ADR 190 for additional details on the goal of this refactoring.
 - https://github.com/eclipse-sirius/sirius-web/issues/4762[#4762] [diagram] Enhance papaya lifecycle diagram with new concepts
 - https://github.com/eclipse-sirius/sirius-web/issues/4687[#4687] [table] Make table line header resizable
 - https://github.com/eclipse-sirius/sirius-web/issues/4804[#4804] [table] Avoid to reset the header column width when another column is resized
-
 
 
 
