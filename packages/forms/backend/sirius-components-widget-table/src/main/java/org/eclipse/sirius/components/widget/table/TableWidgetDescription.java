@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.forms.description;
+package org.eclipse.sirius.components.widget.table;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 
@@ -28,6 +29,7 @@ import org.eclipse.sirius.components.tables.descriptions.TableDescription;
  */
 @Immutable
 public final class TableWidgetDescription extends AbstractWidgetDescription {
+
     private Function<VariableManager, String> idProvider;
 
     private Function<VariableManager, String> labelProvider;
@@ -81,7 +83,7 @@ public final class TableWidgetDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> labelProvider;
 
-        private Function<VariableManager, List<String>> iconURLProvider = variableManager -> List.of();;
+        private Function<VariableManager, List<String>> iconURLProvider = variableManager -> List.of();
 
         private Function<VariableManager, String> targetObjectIdProvider;
 

@@ -16,8 +16,8 @@ import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.formdescriptioneditors.IWidgetDescriptionProvider;
-import org.eclipse.sirius.components.forms.elements.TableWidgetElementProps;
 import org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetPackage;
+import org.eclipse.sirius.components.widget.table.TableWidgetElementProps;
 import org.springframework.stereotype.Service;
 
 /**

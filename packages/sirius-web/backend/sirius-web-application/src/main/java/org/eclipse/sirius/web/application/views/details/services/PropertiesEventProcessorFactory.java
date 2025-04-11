@@ -40,7 +40,6 @@ import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
-import org.eclipse.sirius.components.tables.components.ICustomCellDescriptor;
 import org.springframework.stereotype.Service;
 
 /**
@@ -77,11 +76,9 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
-    private final List<ICustomCellDescriptor> customCellDescriptors;
-
     public PropertiesEventProcessorFactory(IPropertiesDescriptionService propertiesDescriptionService, IPropertiesDefaultDescriptionProvider propertiesDefaultDescriptionProvider,
             List<IWidgetDescriptor> widgetDescriptors,
-            RepresentationEventProcessorFactoryConfiguration configuration, FormEventProcessorFactoryConfiguration formConfiguration, IURLParser urlParser, List<ICustomCellDescriptor> customCellDescriptors) {
+            RepresentationEventProcessorFactoryConfiguration configuration, FormEventProcessorFactoryConfiguration formConfiguration, IURLParser urlParser) {
         this.propertiesDescriptionService = Objects.requireNonNull(propertiesDescriptionService);
         this.propertiesDefaultDescriptionProvider = Objects.requireNonNull(propertiesDefaultDescriptionProvider);
         this.objectService = Objects.requireNonNull(formConfiguration.getObjectService());
@@ -94,7 +91,6 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
         this.formPostProcessor = Objects.requireNonNull(formConfiguration.getFormPostProcessor());
         this.urlParser = Objects.requireNonNull(urlParser);
-        this.customCellDescriptors = Objects.requireNonNull(customCellDescriptors);
     }
 
     @Override
@@ -123,11 +119,9 @@ public class PropertiesEventProcessorFactory implements IRepresentationEventProc
             FormDescription formDescription = optionalFormDescription.orElse(this.propertiesDefaultDescriptionProvider.getFormDescription());
 
             FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(representationId)
-                    .editingContext(editingContext)
                     .formDescription(formDescription)
                     .object(objects.get(0))
                     .selection(objects)
-                    .customCellDescriptors(this.customCellDescriptors)
                     .build();
 
             IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(

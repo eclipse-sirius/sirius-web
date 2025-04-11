@@ -34,7 +34,6 @@ import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchSe
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
-import org.eclipse.sirius.components.tables.components.ICustomCellDescriptor;
 import org.springframework.stereotype.Service;
 
 /**
@@ -64,11 +63,8 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
 
     private final IFormPostProcessor formPostProcessor;
 
-    private final List<ICustomCellDescriptor> customCellDescriptors;
-
     public FormEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, List<IWidgetDescriptor> widgetDescriptors,
-            FormEventProcessorFactoryConfiguration formConfiguration,
-            List<ICustomCellDescriptor> customCellDescriptors) {
+            FormEventProcessorFactoryConfiguration formConfiguration) {
         this.representationDescriptionSearchService = Objects.requireNonNull(configuration.getRepresentationDescriptionSearchService());
         this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
         this.subscriptionManagerFactory = Objects.requireNonNull(configuration.getSubscriptionManagerFactory());
@@ -78,7 +74,6 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
         this.tableEventHandlers = Objects.requireNonNull(formConfiguration.getTableEventHandlers());
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
         this.formPostProcessor = Objects.requireNonNull(formConfiguration.getFormPostProcessor());
-        this.customCellDescriptors = Objects.requireNonNull(customCellDescriptors);
     }
 
     @Override
@@ -100,11 +95,9 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
                 Object object = optionalObject.get();
 
                 FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(representationId)
-                        .editingContext(editingContext)
                         .formDescription(formDescription)
                         .object(object)
                         .selection(List.of())
-                        .customCellDescriptors(this.customCellDescriptors)
                         .build();
 
                 IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(

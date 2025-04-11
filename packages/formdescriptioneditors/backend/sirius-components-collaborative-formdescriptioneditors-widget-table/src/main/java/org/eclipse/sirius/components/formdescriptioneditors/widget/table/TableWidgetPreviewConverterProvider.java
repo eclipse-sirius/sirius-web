@@ -19,12 +19,12 @@ import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.formdescriptioneditors.IWidgetPreviewConverterProvider;
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorDescription;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
-import org.eclipse.sirius.components.forms.description.TableWidgetDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.descriptions.LineDescription;
 import org.eclipse.sirius.components.tables.descriptions.PaginatedData;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 import org.eclipse.sirius.components.view.widget.tablewidget.util.TableWidgetSwitch;
+import org.eclipse.sirius.components.widget.table.TableWidgetDescription;
 import org.springframework.stereotype.Service;
 
 /**
