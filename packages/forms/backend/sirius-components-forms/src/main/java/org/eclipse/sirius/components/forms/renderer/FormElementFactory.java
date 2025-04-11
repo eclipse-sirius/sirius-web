@@ -43,7 +43,6 @@ import org.eclipse.sirius.components.forms.RichText;
 import org.eclipse.sirius.components.forms.Select;
 import org.eclipse.sirius.components.forms.Slider;
 import org.eclipse.sirius.components.forms.SplitButton;
-import org.eclipse.sirius.components.forms.TableWidget;
 import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.forms.ToolbarAction;
@@ -66,7 +65,6 @@ import org.eclipse.sirius.components.forms.elements.RichTextElementProps;
 import org.eclipse.sirius.components.forms.elements.SelectElementProps;
 import org.eclipse.sirius.components.forms.elements.SliderElementProps;
 import org.eclipse.sirius.components.forms.elements.SplitButtonElementProps;
-import org.eclipse.sirius.components.forms.elements.TableWidgetElementProps;
 import org.eclipse.sirius.components.forms.elements.TextareaElementProps;
 import org.eclipse.sirius.components.forms.elements.TextfieldElementProps;
 import org.eclipse.sirius.components.forms.elements.ToolbarActionElementProps;
@@ -75,8 +73,6 @@ import org.eclipse.sirius.components.forms.validation.Diagnostic;
 import org.eclipse.sirius.components.forms.validation.DiagnosticElementProps;
 import org.eclipse.sirius.components.representations.IElementFactory;
 import org.eclipse.sirius.components.representations.IProps;
-import org.eclipse.sirius.components.tables.Table;
-import org.eclipse.sirius.components.tables.renderer.TableElementFactory;
 
 /**
  * Used to instantiate the elements of the form.
@@ -86,8 +82,6 @@ import org.eclipse.sirius.components.tables.renderer.TableElementFactory;
 public class FormElementFactory implements IElementFactory {
 
     private final List<IWidgetDescriptor> widgetDescriptors;
-
-    private final TableElementFactory tableElementFactory = new TableElementFactory(List.of());
 
     public FormElementFactory(List<IWidgetDescriptor> widgetDescriptors) {
         this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
@@ -147,18 +141,13 @@ public class FormElementFactory implements IElementFactory {
             object = this.instantiateSlider((SliderElementProps) props, children);
         } else if (DateTimeElementProps.TYPE.equals(type) && props instanceof DateTimeElementProps) {
             object = this.instantiateDateTime((DateTimeElementProps) props, children);
-        } else if (TableWidgetElementProps.TYPE.equals(type) && props instanceof TableWidgetElementProps) {
-            object = this.instantiateTableWidget((TableWidgetElementProps) props, children);
         } else {
-            object = this.tableElementFactory.instantiateElement(type, props, children);
-            if (object == null) {
-                object = this.widgetDescriptors.stream()
-                        .map(widgetDescriptor -> widgetDescriptor.instanciate(type, props, children))
-                        .filter(Optional::isPresent)
-                        .findFirst()
-                        .map(Optional::get)
-                        .orElse(null);
-            }
+            object = this.widgetDescriptors.stream()
+                    .map(widgetDescriptor -> widgetDescriptor.instanciate(type, props, children))
+                    .filter(Optional::isPresent)
+                    .findFirst()
+                    .map(Optional::get)
+                    .orElse(null);
         }
 
         return object;
@@ -702,25 +691,4 @@ public class FormElementFactory implements IElementFactory {
                 .toList();
     }
 
-    private TableWidget instantiateTableWidget(TableWidgetElementProps props, List<Object> children) {
-        Optional<Table> table = children.stream()
-                .filter(Table.class::isInstance)
-                .map(Table.class::cast)
-                .findFirst();
-
-        List<Diagnostic> diagnostics = this.getDiagnosticsFromChildren(children);
-
-        TableWidget.Builder tableBuilder = TableWidget.newTableWidget(props.getId())
-                .label(props.getLabel())
-                .iconURL(props.getIconURL())
-                .diagnostics(diagnostics)
-                .readOnly(props.isReadOnly())
-                .table(table.get());
-
-        if (props.getHelpTextProvider() != null) {
-            tableBuilder.helpTextProvider(props.getHelpTextProvider());
-        }
-
-        return tableBuilder.build();
-    }
 }
