@@ -30,6 +30,7 @@ import { RawDiagram } from '../renderer/layout/layout.types';
 import { computeBorderNodeExtents, computeBorderNodePositions } from '../renderer/layout/layoutBorderNodes';
 import { layoutHandles } from '../renderer/layout/layoutHandles';
 import { GQLEdgeLayoutData } from '../renderer/layout/useSynchronizeLayoutData.types';
+import { isIconLabelNode } from '../renderer/node/IconsLabelNode.types';
 import { DiagramNodeType } from '../renderer/node/NodeTypes.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
@@ -39,6 +40,15 @@ import { ListNodeConverter } from './ListNodeConverter';
 import { RectangleNodeConverter } from './RectangleNodeConverter';
 import { convertContentStyle, convertLabelStyle } from './convertLabel';
 import { createEdgeAnchorNode } from './edgeAnchorNodeFactory';
+
+const isEdgeCandidate = (nodeId2node: Map<string, Node<NodeData>>, edge: GQLEdge): boolean => {
+  const sourceNode = nodeId2node.get(edge.sourceId);
+  const targetNode = nodeId2node.get(edge.targetId);
+  if (sourceNode && targetNode && (isIconLabelNode(sourceNode) || isIconLabelNode(targetNode))) {
+    return false;
+  }
+  return true;
+};
 
 const nodeDepth = (nodeId2node: Map<string, Node>, nodeId: string): number => {
   const node = nodeId2node.get(nodeId);
@@ -162,102 +172,104 @@ export const convertDiagram = (
 
   let usedHandles: string[] = [];
 
-  let edges: Edge<EdgeData>[] = gqlDiagram.edges.map((gqlEdge) => {
-    let sourceNode: Node<NodeData> | undefined = nodeId2node.get(gqlEdge.sourceId);
-    let targetNode: Node<NodeData> | undefined = nodeId2node.get(gqlEdge.targetId);
-    const edgePath = state.edgeLookup.get(gqlEdge.id) ? state.edgeLookup.get(gqlEdge.id)?.data?.edgePath : '';
+  let edges: Edge<EdgeData>[] = gqlDiagram.edges
+    .filter((gqlEdge) => isEdgeCandidate(nodeId2node, gqlEdge))
+    .map((gqlEdge) => {
+      let sourceNode: Node<NodeData> | undefined = nodeId2node.get(gqlEdge.sourceId);
+      let targetNode: Node<NodeData> | undefined = nodeId2node.get(gqlEdge.targetId);
+      const edgePath = state.edgeLookup.get(gqlEdge.id) ? state.edgeLookup.get(gqlEdge.id)?.data?.edgePath : '';
 
-    //If the node have not been converted, then the source or target is an edge
-    if (!sourceNode) {
-      //If the node used as an anchor was not converted already
-      if (!nodeId2node.get(gqlEdge.sourceId)) {
-        sourceNode = getOrCreateAnchorNodeEdge(state, 'source', gqlEdge, gqlDiagram.edges);
-        if (sourceNode) {
-          nodeId2node.set(sourceNode.id, sourceNode);
-          nodes.push(sourceNode);
+      //If the node have not been converted, then the source or target is an edge
+      if (!sourceNode) {
+        //If the node used as an anchor was not converted already
+        if (!nodeId2node.get(gqlEdge.sourceId)) {
+          sourceNode = getOrCreateAnchorNodeEdge(state, 'source', gqlEdge, gqlDiagram.edges);
+          if (sourceNode) {
+            nodeId2node.set(sourceNode.id, sourceNode);
+            nodes.push(sourceNode);
+          }
         }
       }
-    }
 
-    if (!targetNode) {
-      if (!nodeId2node.get(gqlEdge.targetId)) {
-        targetNode = getOrCreateAnchorNodeEdge(state, 'target', gqlEdge, gqlDiagram.edges);
-        if (targetNode) {
-          nodeId2node.set(targetNode.id, targetNode);
-          nodes.push(targetNode);
+      if (!targetNode) {
+        if (!nodeId2node.get(gqlEdge.targetId)) {
+          targetNode = getOrCreateAnchorNodeEdge(state, 'target', gqlEdge, gqlDiagram.edges);
+          if (targetNode) {
+            nodeId2node.set(targetNode.id, targetNode);
+            nodes.push(targetNode);
+          }
         }
       }
-    }
 
-    const edgeLayoutData: GQLEdgeLayoutData | undefined = gqlDiagram.layoutData.edgeLayoutData.find(
-      (layoutData) => layoutData.id === gqlEdge.id
-    );
-    const data: MultiLabelEdgeData = {
-      targetObjectId: gqlEdge.targetObjectId,
-      targetObjectKind: gqlEdge.targetObjectKind,
-      targetObjectLabel: gqlEdge.targetObjectLabel,
-      descriptionId: gqlEdge.descriptionId,
-      label: null,
-      faded: gqlEdge.state === GQLViewModifier.Faded,
-      centerLabelEditable: gqlEdge.centerLabelEditable,
-      bendingPoints: edgeLayoutData?.bendingPoints ?? null,
-      edgePath,
-      isHovered: false,
-    };
+      const edgeLayoutData: GQLEdgeLayoutData | undefined = gqlDiagram.layoutData.edgeLayoutData.find(
+        (layoutData) => layoutData.id === gqlEdge.id
+      );
+      const data: MultiLabelEdgeData = {
+        targetObjectId: gqlEdge.targetObjectId,
+        targetObjectKind: gqlEdge.targetObjectKind,
+        targetObjectLabel: gqlEdge.targetObjectLabel,
+        descriptionId: gqlEdge.descriptionId,
+        label: null,
+        faded: gqlEdge.state === GQLViewModifier.Faded,
+        centerLabelEditable: gqlEdge.centerLabelEditable,
+        bendingPoints: edgeLayoutData?.bendingPoints ?? null,
+        edgePath,
+        isHovered: false,
+      };
 
-    if (gqlEdge.beginLabel) {
-      data.beginLabel = convertEdgeLabel(gqlEdge.beginLabel);
-    }
-    if (gqlEdge.centerLabel) {
-      data.label = convertEdgeLabel(gqlEdge.centerLabel);
-    }
-    if (gqlEdge.endLabel) {
-      data.endLabel = convertEdgeLabel(gqlEdge.endLabel);
-    }
+      if (gqlEdge.beginLabel) {
+        data.beginLabel = convertEdgeLabel(gqlEdge.beginLabel);
+      }
+      if (gqlEdge.centerLabel) {
+        data.label = convertEdgeLabel(gqlEdge.centerLabel);
+      }
+      if (gqlEdge.endLabel) {
+        data.endLabel = convertEdgeLabel(gqlEdge.endLabel);
+      }
 
-    const sourceHandle = sourceNode?.data.connectionHandles
-      .filter((connectionHandle) => connectionHandle.type === 'source')
-      .find((connectionHandle) => !usedHandles.find((usedHandle) => usedHandle === connectionHandle.id));
+      const sourceHandle = sourceNode?.data.connectionHandles
+        .filter((connectionHandle) => connectionHandle.type === 'source')
+        .find((connectionHandle) => !usedHandles.find((usedHandle) => usedHandle === connectionHandle.id));
 
-    const targetHandle = targetNode?.data.connectionHandles
-      .filter((connectionHandle) => connectionHandle.type === 'target')
-      .find((connectionHandle) => !usedHandles.find((usedHandle) => usedHandle === connectionHandle.id));
+      const targetHandle = targetNode?.data.connectionHandles
+        .filter((connectionHandle) => connectionHandle.type === 'target')
+        .find((connectionHandle) => !usedHandles.find((usedHandle) => usedHandle === connectionHandle.id));
 
-    if (sourceHandle?.id && targetHandle?.id) {
-      usedHandles.push(sourceHandle?.id, targetHandle.id);
-    }
+      if (sourceHandle?.id && targetHandle?.id) {
+        usedHandles.push(sourceHandle?.id, targetHandle.id);
+      }
 
-    let strokeDasharray: string | undefined = undefined;
-    if (gqlEdge.style.lineStyle === 'Dash') {
-      strokeDasharray = '5,5';
-    } else if (gqlEdge.style.lineStyle === 'Dot') {
-      strokeDasharray = '2,2';
-    } else if (gqlEdge.style.lineStyle === 'Dash_Dot') {
-      strokeDasharray = '10,5,2,2,2,5';
-    }
+      let strokeDasharray: string | undefined = undefined;
+      if (gqlEdge.style.lineStyle === 'Dash') {
+        strokeDasharray = '5,5';
+      } else if (gqlEdge.style.lineStyle === 'Dot') {
+        strokeDasharray = '2,2';
+      } else if (gqlEdge.style.lineStyle === 'Dash_Dot') {
+        strokeDasharray = '10,5,2,2,2,5';
+      }
 
-    return {
-      id: gqlEdge.id,
-      type: edgeType,
-      source: sourceNode ? sourceNode.id : '',
-      target: targetNode ? targetNode.id : '',
-      markerEnd: `${gqlEdge.style.targetArrow}--${gqlEdge.id}--markerEnd`,
-      markerStart: `${gqlEdge.style.sourceArrow}--${gqlEdge.id}--markerStart`,
-      zIndex: 2000,
-      style: {
-        stroke: gqlEdge.style.color,
-        strokeWidth: gqlEdge.style.size,
-        strokeDasharray,
-      },
-      data,
-      hidden: gqlEdge.state === GQLViewModifier.Hidden,
-      sourceHandle: sourceHandle?.id,
-      targetHandle: targetHandle?.id,
-      sourceNode: sourceNode,
-      targetNode: targetNode,
-      reconnectable: !!state.edgeLookup.get(gqlEdge.id)?.reconnectable,
-    };
-  });
+      return {
+        id: gqlEdge.id,
+        type: edgeType,
+        source: sourceNode ? sourceNode.id : '',
+        target: targetNode ? targetNode.id : '',
+        markerEnd: `${gqlEdge.style.targetArrow}--${gqlEdge.id}--markerEnd`,
+        markerStart: `${gqlEdge.style.sourceArrow}--${gqlEdge.id}--markerStart`,
+        zIndex: 2000,
+        style: {
+          stroke: gqlEdge.style.color,
+          strokeWidth: gqlEdge.style.size,
+          strokeDasharray,
+        },
+        data,
+        hidden: gqlEdge.state === GQLViewModifier.Hidden,
+        sourceHandle: sourceHandle?.id,
+        targetHandle: targetHandle?.id,
+        sourceNode: sourceNode,
+        targetNode: targetNode,
+        reconnectable: !!state.edgeLookup.get(gqlEdge.id)?.reconnectable,
+      };
+    });
 
   const rawDiagram: RawDiagram = {
     nodes,

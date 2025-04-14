@@ -29,6 +29,7 @@ import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { getNearestPointInPerimeter, getNodesUpdatedWithHandles } from '../edge/EdgeLayout';
 import { RawDiagram } from '../layout/layout.types';
 import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
+import { isIconLabelNode } from '../node/IconsLabelNode.types';
 import {
   GQLErrorPayload,
   GQLReconnectEdgeData,
@@ -113,7 +114,8 @@ export const useReconnectEdge = (): UseReconnectEdge => {
           reconnectEdgeKind = GQLReconnectKind.SOURCE;
           newEdgeTargetId = newConnection.source;
         }
-        if (newEdgeTargetId) {
+        const newTargetNode = store.getState().nodeLookup.get(newEdgeTargetId);
+        if (newEdgeTargetId && newTargetNode && !isIconLabelNode(newTargetNode)) {
           handleReconnectEdge(edgeId, newEdgeTargetId, reconnectEdgeKind);
         }
       }
