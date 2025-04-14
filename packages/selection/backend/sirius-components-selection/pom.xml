@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-selection</artifactId>
-	<version>2025.2.11</version>
+	<version>2025.2.12</version>
 	<name>sirius-components-selection</name>
 	<description>Sirius Components Selection</description>
 
@@ -43,18 +43,18 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-representations</artifactId>
-			<version>2025.2.11</version>
+			<version>2025.2.12</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2025.2.11</version>
+			<version>2025.2.12</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-trees</artifactId>
-			<version>2025.2.11</version>
+			<version>2025.2.12</version>
 		</dependency>
 	</dependencies>
 
