@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,9 @@
 package org.eclipse.sirius.components.diagrams.elements;
 
 import java.text.MessageFormat;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
@@ -48,6 +50,8 @@ public final class InsideLabelElementProps implements IProps {
     private LabelOverflowStrategy overflowStrategy;
 
     private LabelTextAlign textAlign;
+
+    private Set<String> customizedStyleProperties;
 
     private InsideLabelElementProps() {
         // Prevent instantiation
@@ -89,6 +93,10 @@ public final class InsideLabelElementProps implements IProps {
         return this.textAlign;
     }
 
+    public Set<String> getCustomizedStyleProperties() {
+        return customizedStyleProperties;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, text: {2}'}'";
@@ -118,6 +126,8 @@ public final class InsideLabelElementProps implements IProps {
         private LabelOverflowStrategy overflowStrategy;
 
         private LabelTextAlign textAlign;
+
+        private Set<String> customizedStyleProperties = new HashSet<>();
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -158,6 +168,11 @@ public final class InsideLabelElementProps implements IProps {
             return this;
         }
 
+        public Builder customizedStyleProperties(Set<String> customizedStyleProperties) {
+            this.customizedStyleProperties = Objects.requireNonNull(customizedStyleProperties);
+            return this;
+        }
+
         public InsideLabelElementProps build() {
             InsideLabelElementProps insideLabelElementProps = new InsideLabelElementProps();
             insideLabelElementProps.id = Objects.requireNonNull(this.id);
@@ -168,6 +183,7 @@ public final class InsideLabelElementProps implements IProps {
             insideLabelElementProps.headerSeparatorDisplayMode = Objects.requireNonNull(this.headerSeparatorDisplayMode);
             insideLabelElementProps.overflowStrategy = Objects.requireNonNull(this.overflowStrategy);
             insideLabelElementProps.textAlign = Objects.requireNonNull(this.textAlign);
+            insideLabelElementProps.customizedStyleProperties = customizedStyleProperties;
             return insideLabelElementProps;
         }
     }

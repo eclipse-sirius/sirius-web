@@ -12,7 +12,11 @@
  *******************************************************************************/
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import { ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
-import { NodeTypeContribution } from '@eclipse-sirius/sirius-components-diagrams';
+import {
+  NodeTypeAppearanceSectionContribution,
+  NodeTypeContribution,
+  RectangularNodeAppearanceSection,
+} from '@eclipse-sirius/sirius-components-diagrams';
 import {
   DiagramRepresentationConfiguration,
   NodeTypeRegistry,
@@ -46,6 +50,9 @@ const nodeTypeRegistry: NodeTypeRegistry = {
   nodeLayoutHandlers: [new EllipseNodeLayoutHandler()],
   nodeConverters: [new EllipseNodeConverter()],
   nodeTypeContributions: [<NodeTypeContribution component={EllipseNode} type={'ellipseNode'} />],
+  nodeTypeAppearanceSectionContributions: [
+    <NodeTypeAppearanceSectionContribution component={RectangularNodeAppearanceSection} type="RectangularNodeStyle" />,
+  ],
 };
 
 const container = document.getElementById('root');
