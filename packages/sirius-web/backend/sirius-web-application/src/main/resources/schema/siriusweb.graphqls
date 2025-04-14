@@ -48,6 +48,19 @@ type ProjectTemplate {
   imageURL: String!
 }
 
+extend type EditingContext {
+  representations(representationIds: [ID!]): EditingContextRepresentationsConnection!
+}
+
+type EditingContextRepresentationsConnection {
+  edges: [EditingContextRepresentationsEdge!]!
+  pageInfo: PageInfo!
+}
+
+type EditingContextRepresentationsEdge {
+  node: RepresentationMetadata!
+}
+
 extend type Mutation {
   createProject(input: CreateProjectInput!): CreateProjectPayload!
   createProjectFromTemplate(input: CreateProjectFromTemplateInput!): CreateProjectFromTemplatePayload!
