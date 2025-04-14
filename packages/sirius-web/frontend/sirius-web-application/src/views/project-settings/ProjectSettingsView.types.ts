@@ -17,6 +17,7 @@ export interface ProjectSettingTabContribution {
   id: string;
   title: string;
   icon: React.ReactElement;
+  feature: string;
   component: (props: ProjectSettingTabProps) => JSX.Element | null;
 }
 
@@ -41,4 +42,9 @@ export interface GQLViewer {
 export interface GQLProject {
   id: string;
   name: string;
+  projectSettings: GQLProjectSettings;
+}
+
+export interface GQLProjectSettings {
+  featureFlags: string[];
 }
