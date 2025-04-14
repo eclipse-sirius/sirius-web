@@ -82,7 +82,9 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
                     .ifPresent(semanticDataUUID -> {
                         AggregateReference<SemanticData, UUID> semanticDataId = AggregateReference.to(semanticDataUUID);
 
-                        var documentData = emfEditingContext.getDomain().getResourceSet().getResources().stream()
+                        // Iterate on a copy of the resources as both persistence filters and actual document saving may
+                        // trigger loading of new resources inside the ResourceSet due to proxy resolution.
+                        var documentData = List.copyOf(emfEditingContext.getDomain().getResourceSet().getResources()).stream()
                                 .filter(resource -> IEMFEditingContext.RESOURCE_SCHEME.equals(resource.getURI().scheme()))
                                 .filter(resource -> this.persistenceFilters.stream().allMatch(filter -> filter.shouldPersist(resource)))
                                 .map(resource -> this.resourceToDocumentService.toDocument(resource, applyMigrationParticipants))
