@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,7 @@ import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher
 import org.eclipse.sirius.components.core.graphql.dto.PageInfoWithCount;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
-import org.eclipse.sirius.web.application.representation.dto.RepresentationMetadataDTO;
+import org.eclipse.sirius.components.core.graphql.dto.RepresentationMetadataDTO;
 import org.eclipse.sirius.web.application.representation.services.api.IRepresentationApplicationService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
