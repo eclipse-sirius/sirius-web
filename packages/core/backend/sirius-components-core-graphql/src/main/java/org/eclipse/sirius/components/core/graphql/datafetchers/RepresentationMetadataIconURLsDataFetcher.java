@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.representation.controllers;
+package org.eclipse.sirius.components.core.graphql.datafetchers;
 
 import java.util.List;
 import java.util.Objects;
@@ -19,7 +19,7 @@ import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher
 import org.eclipse.sirius.components.core.api.IImageURLSanitizer;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.URLConstants;
-import org.eclipse.sirius.web.application.representation.dto.RepresentationMetadataDTO;
+import org.eclipse.sirius.components.core.graphql.dto.RepresentationMetadataDTO;
 
 import graphql.schema.DataFetchingEnvironment;
 
