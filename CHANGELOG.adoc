@@ -24,6 +24,16 @@ During this refactoring some concepts have been moved and their package have bee
 
 === Dependency update
 
+- https://github.com/eclipse-sirius/sirius-web/issues/4820[#4820] [releng] Switch to EMFJson 2.4.1.
+The following dependencies have been updated:
+* `org.eclipse.emf.ecore.xmi` from `2.16.0` to `2.38.0`
+* `org.eclipse.emf.common` from `2.21.0` to `2.31.0`
+* `org.eclipse.emf.ecore` from `2.23.0` to `2.37.0`
+* `org.eclipse.emf.edit` from `2.16.0` to `2.22.0`
+* `org.eclipse.emf.ecore.edit` from `2.13.0` to `2.15.0`
+* `org.eclipse.emf.codegen` from `2.23.0` to `2.24.0`
+* `org.eclipse.emf.codegen.ecore` from `2.25.0` to `2.39.0`
+* `guava` from `32.0.0-jre` to `33.4.8-jre` 
 
 
 === Bug fixes
