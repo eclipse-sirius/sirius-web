@@ -74,7 +74,7 @@ public class PaletteControllerTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a domain diagram, when the palette is requested for the diagram, then the relevant tools are available")
     public void givenDomainDiagramOnStudioWhenItIsOpenedThenEntitiesAreVisible() {
-        var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), this.domainDiagramDescriptionProvider.getDescriptionId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), "Domain");
+        var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, this.domainDiagramDescriptionProvider.getDescriptionId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), "Domain");
         var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input);
 
         var diagramId = new AtomicReference<String>();
@@ -89,7 +89,7 @@ public class PaletteControllerTests extends AbstractIntegrationTests {
 
         Runnable requestDiagramPalette = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                     "representationId", diagramId.get(),
                     "diagramElementId", diagramId.get()
             );
@@ -99,6 +99,48 @@ public class PaletteControllerTests extends AbstractIntegrationTests {
             assertThat(topLevelToolsLabel)
                     .isNotEmpty()
                     .anySatisfy(toolLabel -> assertThat(toolLabel).isEqualTo("New entity"));
+        };
+
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(requestDiagramPalette)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a domain diagram, when the palette is requested for an edge element, then the relevant quick access tools are available")
+    public void givenDomainDiagramWhenPaletteIsRequestedOnEdgeElementThenQuickAccessToolsAreAvailable() {
+        var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, this.domainDiagramDescriptionProvider.getDescriptionId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), "Domain");
+        var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+
+        var diagramId = new AtomicReference<String>();
+        var edgeId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
+                .map(DiagramRefreshedEventPayload::diagram)
+                .ifPresentOrElse(diagram -> {
+                    diagramId.set(diagram.getId());
+                    edgeId.set(diagram.getEdges().get(0).getId());
+                }, () -> fail("Missing diagram"));
+
+        Runnable requestDiagramPalette = () -> {
+            Map<String, Object> variables = Map.of(
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
+                    "representationId", diagramId.get(),
+                    "diagramElementId", edgeId.get()
+            );
+            var result = this.paletteQueryRunner.run(variables);
+
+            List<String> quickAccessToolsLabel = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.quickAccessTools[*].label");
+            assertThat(quickAccessToolsLabel)
+                    .isNotEmpty()
+                    .anySatisfy(toolLabel -> assertThat(toolLabel).isEqualTo("Edit"))
+                    .anySatisfy(toolLabel -> assertThat(toolLabel).isEqualTo("Delete from model"));
         };
 
 

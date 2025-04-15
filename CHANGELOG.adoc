@@ -39,6 +39,7 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/4830[#4830] [view] Add `Edge Width` property in `edgeStyle` details view
 - [sirius-web] Avoid a database access if not necessary.
 Refactor the test to leverage boolean expression shortcut and avoid an unnecessary call to this.semanticDataSearchService.findById() if we already know we are inside a studio or a papaya project.
+- https://github.com/eclipse-sirius/sirius-web/issues/4827[#4827] [diagram] Add default quick access tool for deletable and editable edges
 
 
 
