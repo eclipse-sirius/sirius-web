@@ -88,7 +88,7 @@ public class RelationEdgeDescriptionProvider implements IEdgeDescriptionProvider
 
     private DeleteTool deleteTool() {
         return new DeleteToolBuilder()
-                .name("Edit Label")
+                .name("Delete")
                 .body(
                         new ViewBuilders().newChangeContext()
                                 .expression("aql:self.defaultDelete()")
