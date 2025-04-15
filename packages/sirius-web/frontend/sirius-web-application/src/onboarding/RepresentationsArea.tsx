@@ -11,15 +11,23 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { IconOverlay, useSelection } from '@eclipse-sirius/sirius-components-core';
+import ArrowBack from '@mui/icons-material/ArrowBack';
+import ArrowForward from '@mui/icons-material/ArrowForward';
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
+import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
+import { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { RepresentationAreaProps } from './RepresentationsArea.types';
+import { RepresentationAreaProps, RepresentationAreaState } from './RepresentationsArea.types';
+import { useRepresentationMetadata } from './useRepresentationMetadata';
+import { GQLRepresentationMetadata } from './useRepresentationMetadata.types';
 
 const useRepresentationAreaStyles = makeStyles()((theme) => ({
   cardContent: {
@@ -31,10 +39,35 @@ const useRepresentationAreaStyles = makeStyles()((theme) => ({
   },
 }));
 
-export const RepresentationsArea = ({ representations }: RepresentationAreaProps) => {
-  const { setSelection } = useSelection();
+export const RepresentationsArea = ({ editingContextId }: RepresentationAreaProps) => {
+  const [state, setState] = useState<RepresentationAreaState>({
+    pageSize: 10,
+    startCursor: null,
+    endCursor: null,
+  });
 
   const { classes } = useRepresentationAreaStyles();
+  const { setSelection } = useSelection();
+
+  const { data } = useRepresentationMetadata(editingContextId, state.startCursor, state.endCursor, state.pageSize);
+  const representations: GQLRepresentationMetadata[] =
+    data?.viewer.editingContext?.representations.edges.map((edge) => edge.node) ?? [];
+  const hasPreviousPage = data?.viewer.editingContext?.representations.pageInfo.hasPreviousPage ?? false;
+  const hasNextPage = data?.viewer.editingContext?.representations.pageInfo.hasNextPage ?? false;
+
+  const onPrevious = () => {
+    if (data.viewer.editingContext) {
+      const endCursor = data.viewer.editingContext.representations.pageInfo.startCursor;
+      setState((prevState) => ({ ...prevState, startCursor: null, endCursor }));
+    }
+  };
+
+  const onNext = () => {
+    if (data.viewer.editingContext) {
+      const startCursor = data.viewer.editingContext.representations.pageInfo.endCursor;
+      setState((prevState) => ({ ...prevState, startCursor, endCursor: null }));
+    }
+  };
 
   return (
     <Card>
@@ -42,30 +75,38 @@ export const RepresentationsArea = ({ representations }: RepresentationAreaProps
         <Typography variant="h6">Open an existing Representation</Typography>
         <Typography color="textSecondary">Select the representation to open</Typography>
         <List dense={true}>
-          {representations
-            .sort((a, b) => a.label.localeCompare(b.label))
-            .map((representation) => {
-              return (
-                <ListItemButton
-                  className={classes.item}
-                  dense
-                  disableGutters
-                  key={representation.id}
-                  data-testid={`onboard-open-${representation.label}`}
-                  onClick={() =>
-                    setSelection({
-                      entries: [{ id: representation.id }],
-                    })
-                  }>
-                  <ListItemIcon>
-                    <IconOverlay iconURL={representation.iconURLs} alt="representation icon" />
-                  </ListItemIcon>
-                  <ListItemText primary={representation.label} />
-                </ListItemButton>
-              );
-            })}
+          {representations.map((representation) => {
+            return (
+              <ListItemButton
+                className={classes.item}
+                dense
+                disableGutters
+                key={representation.id}
+                data-testid={`onboard-open-${representation.label}`}
+                onClick={() =>
+                  setSelection({
+                    entries: [{ id: representation.id }],
+                  })
+                }>
+                <ListItemIcon>
+                  <IconOverlay iconURL={representation.iconURLs} alt="representation icon" />
+                </ListItemIcon>
+                <ListItemText primary={representation.label} />
+              </ListItemButton>
+            );
+          })}
         </List>
       </CardContent>
+      <CardActions>
+        <Box sx={(theme) => ({ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: theme.spacing(1) })}>
+          <IconButton onClick={onPrevious} disabled={!hasPreviousPage} data-testid="pagination-prev">
+            <ArrowBack />
+          </IconButton>
+          <IconButton onClick={onNext} disabled={!hasNextPage} data-testid="pagination-next">
+            <ArrowForward />
+          </IconButton>
+        </Box>
+      </CardActions>
     </Card>
   );
 };

@@ -76,7 +76,7 @@ public class ProjectSearchService implements IProjectSearchService {
         boolean hasNext = projects.size() > limit;
         boolean hasPrevious = false;
 
-        if (projects.size() > 0) {
+        if (!projects.isEmpty()) {
             var firstProjectId = projects.get(0).getId();
             hasPrevious = !this.projectRepository.findAllBefore(firstProjectId, 1, filter).isEmpty();
         }
@@ -89,7 +89,7 @@ public class ProjectSearchService implements IProjectSearchService {
         boolean hasPrevious = projects.size() > limit;
         boolean hasNext = false;
 
-        if (projects.size() > 0) {
+        if (!projects.isEmpty()) {
             var lastProjectId = projects.get(projects.size() - 1).getId();
             hasNext = !this.projectRepository.findAllAfter(lastProjectId, 1, filter).isEmpty();
         }

@@ -12,20 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.representations;
 
-import static org.assertj.core.api.Assertions.fail;
-import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
-
 import com.jayway.jsonpath.JsonPath;
-
-import java.time.Duration;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-
+import graphql.execution.DataFetcherResult;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditTextfieldInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
@@ -53,9 +41,19 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import graphql.execution.DataFetcherResult;
 import reactor.test.StepVerifier;
+
+import java.time.Duration;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+
+import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.forms.tests.assertions.FormAssertions.assertThat;
 
 /**
  * Integration tests of the representation controllers.
@@ -117,7 +115,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         assertThat(kind).isEqualTo("siriusComponents://representation?type=Portal");
 
         String label = JsonPath.read(result, "$.data.viewer.editingContext.representation.label");
-        assertThat(label).isEqualTo("Portal");
+        assertThat(label).isEqualTo("EPackage Portal");
 
         List<String> iconURLs = JsonPath.read(result, "$.data.viewer.editingContext.representation.iconURLs");
         assertThat(iconURLs)
@@ -153,8 +151,8 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given an editing context id, when a query is performed, then all the representation metadata are returned")
-    public void givenEditingContextIdWhenQueryIsPerformedThenAllTheRepresentationMetadataAreReturned() {
+    @DisplayName("Given an editing context, when the representation metadata are requested, then the first ones are returned")
+    public void givenEditingContextWhenTheRepresentationMetadataAreRequestedThenTheFirstOnesAreReturned() {
         Map<String, Object> variables = Map.of(
                 "editingContextId", TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID
         );
@@ -177,8 +175,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
 
         List<String> representationIds = JsonPath.read(result, "$.data.viewer.editingContext.representations.edges[*].node.id");
         assertThat(representationIds)
-                .contains(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString())
-                .contains(TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString());
+                .contains(TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString(), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
 
         List<List<String>> allIconURLs = JsonPath.read(result, "$.data.viewer.editingContext.representations.edges[*].node.iconURLs");
         assertThat(allIconURLs)
@@ -201,7 +198,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         List<String> representationIds = JsonPath.read(result, "$.data.viewer.editingContext.representations.edges[*].node.label");
         assertThat(representationIds)
                 .isNotEmpty()
-                .allMatch("Portal"::equals);
+                .containsSequence("EPackage Portal", "Portal");
 
         List<List<String>> allIconURLs = JsonPath.read(result, "$.data.viewer.editingContext.representations.edges[*].node.iconURLs");
         assertThat(allIconURLs)
@@ -249,11 +246,11 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         var flux = this.detailsEventSubscriptionRunner.run(input);
 
         Predicate<Form> formPredicate = form -> {
-            var groupNavigator = new FormNavigator(form).page("Portal").group("Core Properties");
+            var groupNavigator = new FormNavigator(form).page("EPackage Portal").group("Core Properties");
 
             var labelTextField = groupNavigator.findWidget("Label", Textfield.class);
             assertThat(labelTextField).isNotNull();
-            assertThat(labelTextField.getValue()).isEqualTo("Portal");
+            assertThat(labelTextField.getValue()).isEqualTo("EPackage Portal");
 
             var documentationTextArea = groupNavigator.findWidget("Documentation", Textarea.class);
             assertThat(documentationTextArea).isNotNull();
@@ -326,9 +323,6 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
     @GivenSiriusWebServer
     @DisplayName("Given a Portal representation, when we edit its documentation in the Details view, then the documentation is changed.")
     public void givenPortalRepresentationWhenWeEditItsDocumentationInTheDetailsViewThenTheDocumentationIsChanged() {
-
-        this.givenCommittedTransaction.commit();
-
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
         var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, detailsRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(detailsEventInput);
@@ -348,7 +342,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         };
 
         Consumer<Object> updateFormDocumentation = this.getFormConsumer(form -> {
-            var groupNavigator = new FormNavigator(form).page("Portal").group("Core Properties");
+            var groupNavigator = new FormNavigator(form).page("EPackage Portal").group("Core Properties");
 
             var documentationTextArea = groupNavigator.findWidget("Documentation", Textarea.class);
             assertThat(documentationTextArea).isNotNull();

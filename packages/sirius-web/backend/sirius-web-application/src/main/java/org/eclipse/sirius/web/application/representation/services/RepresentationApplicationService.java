@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.representation.services;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -22,12 +21,10 @@ import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.components.core.graphql.dto.RepresentationMetadataDTO;
 import org.eclipse.sirius.web.application.representation.services.api.IRepresentationApplicationService;
 import org.eclipse.sirius.web.application.representation.services.api.IRepresentationMetadataMapper;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.eclipse.sirius.web.domain.pagination.Window;
+import org.springframework.data.domain.KeysetScrollPosition;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,21 +48,15 @@ public class RepresentationApplicationService implements IRepresentationApplicat
 
     @Override
     @Transactional(readOnly = true)
-    public Page<RepresentationMetadataDTO> findAllByEditingContextId(String editingContextId, Pageable pageable) {
-        var representationMetadata = new UUIDParser().parse(editingContextId)
-                .map(AggregateReference::<SemanticData, UUID>to)
-                .map(this.representationMetadataSearchService::findAllRepresentationMetadataBySemanticData)
-                .orElse(List.of())
-                .stream()
-                .sorted(Comparator.comparing(RepresentationMetadata::getLabel))
-                .toList();
-
-        int startIndex = (int) pageable.getOffset() * pageable.getPageSize();
-        int endIndex = Math.min(((int) pageable.getOffset() + 1) * pageable.getPageSize(), representationMetadata.size());
-        var representationMetadataDTO = representationMetadata.subList(startIndex, endIndex).stream()
-                .map(this.representationMetadataMapper::toDTO)
-                .toList();
-        return new PageImpl<>(representationMetadataDTO, pageable, representationMetadataDTO.size());
+    public Window<RepresentationMetadataDTO> findAllByEditingContextId(String editingContextId, KeysetScrollPosition position, int limit) {
+        var optionalSemanticData = new UUIDParser().parse(editingContextId)
+                .map(AggregateReference::<SemanticData, UUID>to);
+        if (optionalSemanticData.isPresent()) {
+            var semanticData = optionalSemanticData.get();
+            var window = this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticData(semanticData, position, limit);
+            return new Window<>(window.map(this.representationMetadataMapper::toDTO), window.hasPrevious());
+        }
+        return new Window<>(List.of(), index -> position, false, false);
     }
 
     @Override

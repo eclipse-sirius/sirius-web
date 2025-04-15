@@ -210,10 +210,10 @@ INSERT INTO representation_metadata (
   'cb133bf0-d7aa-4a83-a277-0972919dd46a',
   '3237b215-ae23-48d7-861e-f542a4b9a4b8',
   '69030a1b-0b5f-3c1d-8399-8ca260e4a672',
-  'Portal',
+  'EPackage Portal',
   'documentation',
   'siriusComponents://representation?type=Portal',
-  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
 INSERT INTO representation_metadata_icon_url (
@@ -279,7 +279,7 @@ INSERT INTO representation_metadata (
   '',
   'siriusComponents://representation?type=Portal',
   '2024-01-01 9:42:0.000',
-  '2024-01-02 9:42:0.000'
+  '2024-01-03 9:42:0.000'
 );
 INSERT INTO representation_content (
   id,
