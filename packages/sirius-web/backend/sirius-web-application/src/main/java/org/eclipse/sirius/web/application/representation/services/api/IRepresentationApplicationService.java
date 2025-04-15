@@ -15,8 +15,8 @@ package org.eclipse.sirius.web.application.representation.services.api;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.graphql.dto.RepresentationMetadataDTO;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.eclipse.sirius.web.domain.pagination.Window;
+import org.springframework.data.domain.KeysetScrollPosition;
 
 /**
  * Used to interact with representations.
@@ -25,7 +25,7 @@ import org.springframework.data.domain.Pageable;
  */
 public interface IRepresentationApplicationService {
 
-    Page<RepresentationMetadataDTO> findAllByEditingContextId(String editingContextId, Pageable pageable);
+    Window<RepresentationMetadataDTO> findAllByEditingContextId(String editingContextId, KeysetScrollPosition position, int limit);
 
     Optional<String> findEditingContextIdFromRepresentationId(String representationId);
 

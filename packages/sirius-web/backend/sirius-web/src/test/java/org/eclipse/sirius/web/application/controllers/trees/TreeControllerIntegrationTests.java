@@ -12,19 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.trees;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.jayway.jsonpath.JsonPath;
-
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.function.Function;
-import java.util.function.Predicate;
-
+import graphql.execution.DataFetcherResult;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalEventInput;
@@ -57,10 +46,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
-
-import graphql.execution.DataFetcherResult;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
+
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Integration tests of the tree controllers.
@@ -101,7 +99,7 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
 
     private final TreeItemMatcher representationIsAPortal = new TreeItemMatcher(
             tree -> tree.getChildren().get(0).getChildren().get(0).getChildren().get(0),
-            treeItem -> treeItem.getLabel().toString().equals("Portal")
+            treeItem -> treeItem.getLabel().toString().equals("EPackage Portal")
     );
 
     private final TreeItemMatcher ePackageHasNoRepresentation = new TreeItemMatcher(

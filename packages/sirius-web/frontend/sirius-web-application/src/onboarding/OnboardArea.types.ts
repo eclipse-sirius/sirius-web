@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@
 export interface OnboardAreaState {
   editingContextActions: GQLEditingContextAction[];
   representationDescriptions: GQLRepresentationDescriptionMetadata[];
-  representations: GQLRepresentationMetadata[];
 }
 
 export interface GQLData {
@@ -24,16 +23,7 @@ export interface GQLViewer {
   editingContext: GQLEditingContext;
 }
 
-export interface GQLEditingContext {
-  representation: GQLRepresentationMetadata;
-}
-
-export interface GQLRepresentationMetadata {
-  id: string;
-  label: string;
-  kind: string;
-  iconURLs: string[];
-}
+export interface GQLEditingContext {}
 
 export interface GQLRepresentationDescription {
   id: string;
