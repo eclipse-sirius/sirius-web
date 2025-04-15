@@ -101,10 +101,57 @@ public class PaletteControllerTests extends AbstractIntegrationTests {
                     .anySatisfy(toolLabel -> assertThat(toolLabel).isEqualTo("New entity"));
         };
 
-
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(requestDiagramPalette)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a domain diagram, when the palette is requested for an edge element, then the relevant tools are available")
+    public void givenDomainDiagramWhenPaletteIsRequestedOnEdgeElementThenToolsAreAvailable() {
+        var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, this.domainDiagramDescriptionProvider.getDescriptionId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), "Domain");
+        var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+
+        var diagramId = new AtomicReference<String>();
+        var edgeId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
+                .map(DiagramRefreshedEventPayload::diagram)
+                .ifPresentOrElse(diagram -> {
+                    diagramId.set(diagram.getId());
+                    edgeId.set(diagram.getEdges().get(0).getId());
+                }, () -> fail("Missing diagram"));
+
+        Runnable requestEdgePalette = () -> {
+            Map<String, Object> variables = Map.of(
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
+                    "representationId", diagramId.get(),
+                    "diagramElementId", edgeId.get()
+            );
+            var result = this.paletteQueryRunner.run(variables);
+
+            List<String> topLevelToolsLabel = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].label");
+            assertThat(topLevelToolsLabel)
+                    .hasSize(3);
+            assertThat(topLevelToolsLabel)
+                    .element(0)
+                    .isEqualTo("Simple Edge Tool");
+            assertThat(topLevelToolsLabel)
+                    .element(1)
+                    .isEqualTo("Show/Hide");
+            assertThat(topLevelToolsLabel)
+                    .element(2)
+                    .isEqualTo("Edit");
+        };
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(requestEdgePalette)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

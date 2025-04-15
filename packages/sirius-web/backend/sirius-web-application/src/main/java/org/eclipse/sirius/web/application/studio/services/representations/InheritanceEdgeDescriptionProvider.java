@@ -17,6 +17,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DeleteToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
+import org.eclipse.sirius.components.view.builder.generated.diagram.EdgeToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.LabelEditToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
@@ -27,6 +28,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgePalette;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 
@@ -60,10 +62,12 @@ public class InheritanceEdgeDescriptionProvider implements IEdgeDescriptionProvi
     private EdgePalette inheritanceEdgePalette() {
         var labelEditTool = this.labelEditTool();
         var deleteTool = this.deleteTool();
+        var simpleToolWithoutToolSection = this.simpleTool();
 
         return new DiagramBuilders().newEdgePalette()
                 .centerLabelEditTool(labelEditTool)
                 .deleteTool(deleteTool)
+                .edgeTools(simpleToolWithoutToolSection)
                 .toolSections(new DefaultToolsFactory().createDefaultHideRevealEdgeToolSection())
                 .build();
     }
@@ -81,12 +85,21 @@ public class InheritanceEdgeDescriptionProvider implements IEdgeDescriptionProvi
 
     private DeleteTool deleteTool() {
         return new DeleteToolBuilder()
-                .name("Edit Label")
+                .name("Delete")
                 .body(
                         new ViewBuilders().newChangeContext()
                                 .expression("aql:self.defaultDelete()")
                                 .build()
                 )
+                .build();
+    }
+
+    private EdgeTool simpleTool() {
+        return new EdgeToolBuilder()
+                .name("Simple Edge Tool")
+                .body(new ViewBuilders().newChangeContext()
+                                .expression("aql:self")
+                                .build())
                 .build();
     }
 
