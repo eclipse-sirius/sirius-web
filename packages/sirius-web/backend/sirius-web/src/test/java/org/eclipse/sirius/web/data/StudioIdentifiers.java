@@ -21,6 +21,8 @@ import java.util.UUID;
  */
 public final class StudioIdentifiers {
 
+    public static final String EMPTY_STUDIO_PROJECT = "250cabc0-a211-438c-8015-2d2aa136eb81";
+
     public static final UUID EMPTY_STUDIO_EDITING_CONTEXT_ID = UUID.fromString("bd3017e3-d95f-4535-8701-af6ba982619f");
 
     public static final String SAMPLE_STUDIO_EDITING_CONTEXT_ID = "e344d967-a639-4f6c-9c00-a466d51063c6";

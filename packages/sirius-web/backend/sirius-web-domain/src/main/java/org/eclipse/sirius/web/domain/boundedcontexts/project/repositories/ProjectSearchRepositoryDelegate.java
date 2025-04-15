@@ -12,8 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.project.repositories;
 
-import static org.springframework.data.relational.core.query.Criteria.where;
-import static org.springframework.data.relational.core.query.Query.query;
+import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
+import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.api.IProjectSearchRepositoryDelegate;
+import org.springframework.data.jdbc.core.JdbcAggregateOperations;
+import org.springframework.data.relational.core.query.Query;
+import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,12 +25,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.api.IProjectSearchRepositoryDelegate;
-import org.springframework.data.jdbc.core.JdbcAggregateOperations;
-import org.springframework.data.relational.core.query.Query;
-import org.springframework.jdbc.core.simple.JdbcClient;
-import org.springframework.stereotype.Service;
+import static org.springframework.data.relational.core.query.Criteria.where;
+import static org.springframework.data.relational.core.query.Query.query;
 
 /**
  * Used to execute the queries for the project search repository.
@@ -43,35 +43,60 @@ public class ProjectSearchRepositoryDelegate implements IProjectSearchRepository
     private static final String LIMIT = "limit";
 
     private static final String FIND_ALL_BEFORE = """
-            SELECT p.*
-            FROM project p
-            WHERE
-                (cast(:cursorProjectId as uuid) IS NULL
-                    OR (p.id <> :cursorProjectId
-                        AND p.created_on <= (
-                        SELECT created_on
-                        FROM project
-                        WHERE project.id = :cursorProjectId))
+            WITH
+            filtered_projects as (
+                SELECT row_number() over( ORDER BY p.created_on desc, p.name asc, p.id asc ), p.*
+                FROM project p
+                WHERE CASE WHEN :name <> '' THEN LOWER(p.name) LIKE CONCAT('%', CONCAT(LOWER(:name), '%')) ELSE true END
+                ORDER BY p.created_on desc, p.name asc, p.id asc
+            ),
+            cursor_index as (
+                SELECT coalesce(
+                    (
+                        SELECT p.row_number
+                        FROM filtered_projects p
+                        WHERE p.id = :cursorProjectId
+                        LIMIT 1
+                    ),
+                    (
+                        SELECT max(p.row_number) + 1
+                        FROM filtered_projects p
+                    )
+                ) as row_number
             )
-            AND CASE WHEN :name <> '' THEN LOWER(p.name) LIKE CONCAT('%', CONCAT(LOWER(:name), '%')) ELSE true END
-            ORDER BY p.created_on desc, p.name
-            LIMIT :limit;
+            SELECT p.id, p.name, p.created_on, p.last_modified_on
+            FROM filtered_projects p, cursor_index c
+            WHERE p.row_number >= greatest(0, c.row_number - :limit)
+            AND p.row_number < c.row_number
             """;
 
     private static final String FIND_ALL_AFTER = """
-            SELECT p.*
-            FROM project p
-            WHERE
-                (cast(:cursorProjectId as uuid) IS NULL
-                    OR (p.id <> :cursorProjectId
-                        AND p.created_on >= (
-                        SELECT created_on
-                        FROM project
-                        WHERE project.id = :cursorProjectId))
+            WITH
+            filtered_projects as (
+                SELECT row_number() over( ORDER BY p.created_on desc, p.name asc, p.id asc ), p.*
+                FROM project p
+                WHERE CASE WHEN :name <> '' THEN LOWER(p.name) LIKE CONCAT('%', CONCAT(LOWER(:name), '%')) ELSE true END
+                ORDER BY p.created_on desc, p.name asc, p.id asc
+            ),
+            cursor_index as (
+                SELECT coalesce(
+                    (
+                        SELECT p.row_number
+                        FROM filtered_projects p
+                        WHERE p.id = :cursorProjectId
+                        LIMIT 1
+                    ),
+                    0
+                ) as row_number
             )
-            AND CASE WHEN :name <> '' THEN LOWER(p.name) LIKE CONCAT('%', CONCAT(LOWER(:name), '%')) ELSE true END
-            ORDER BY p.created_on asc, p.name
-            LIMIT :limit;
+            SELECT p.id, p.name, p.created_on, p.last_modified_on
+            FROM filtered_projects p, cursor_index c
+            WHERE
+            CASE WHEN :cursorProjectId <> '' THEN
+                p.row_number <= c.row_number + :limit AND p.row_number > c.row_number
+            ELSE
+                p.row_number <= :limit
+            END
             """;
 
     private final JdbcAggregateOperations jdbcAggregateOperations;
@@ -97,30 +122,26 @@ public class ProjectSearchRepositoryDelegate implements IProjectSearchRepository
 
     @Override
     public List<Project> findAllBefore(String cursorProjectId, int limit, Map<String, Object> filter) {
-        List<Project> projectsBefore = List.of();
         if (limit > 0) {
             Map<String, Object>  parameters = new HashMap<>();
             parameters.put(CURSOR_PROJECT_ID, cursorProjectId);
-            parameters.put(LIMIT, limit + 1);
+            parameters.put(LIMIT, limit);
             this.handleFilter(parameters, filter, "name", "contains");
-            var projects = this.getAllProjectsQuery(FIND_ALL_BEFORE, parameters);
-            projectsBefore = projects.subList(0, Math.min(projects.size(), limit));
+            return this.getAllProjectsQuery(FIND_ALL_BEFORE, parameters);
         }
-        return projectsBefore;
+        return List.of();
     }
 
     @Override
     public List<Project> findAllAfter(String cursorProjectId, int limit, Map<String, Object> filter) {
-        List<Project> projectsAfter = List.of();
         if (limit > 0) {
             Map<String, Object>  parameters = new HashMap<>();
             parameters.put(CURSOR_PROJECT_ID, cursorProjectId);
-            parameters.put(LIMIT, limit + 1);
+            parameters.put(LIMIT, limit);
             this.handleFilter(parameters, filter, "name", "contains");
-            var projects = this.getAllProjectsQuery(FIND_ALL_AFTER, parameters);
-            projectsAfter = projects.subList(0, Math.min(projects.size(), limit));
+            return this.getAllProjectsQuery(FIND_ALL_AFTER, parameters);
         }
-        return projectsAfter;
+        return List.of();
     }
 
     private List<Project> getAllProjectsQuery(String sqlQuery, Map<String, ?>  parameters) {
