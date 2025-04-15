@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.project.dto.RestProject;
+import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -140,7 +141,7 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
                 .baseUrl(this.getHTTPBaseUrl())
                 .build();
 
-        var link = new Relay().toGlobalId("Project", TestIdentifiers.UML_SAMPLE_PROJECT.toString());
+        var link = new Relay().toGlobalId("Project", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString());
         var uri = String.format("/api/rest/projects?page[after]=%s", link);
         webTestClient
                 .get()
@@ -153,8 +154,7 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
                     var restProjects = result.getResponseBody();
                     assertThat(restProjects)
                             .isNotEmpty()
-                            .anySatisfy(restProject -> assertThat(restProject.id()).isEqualTo(TestIdentifiers.ECORE_SAMPLE_PROJECT))
-                            .anySatisfy(restProject -> assertThat(restProject.id()).isEqualTo(TestIdentifiers.SYSML_SAMPLE_PROJECT));
+                            .anySatisfy(restProject -> assertThat(restProject.id()).isEqualTo(StudioIdentifiers.EMPTY_STUDIO_PROJECT));
                 });
     }
 
@@ -166,7 +166,7 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
                 .baseUrl(this.getHTTPBaseUrl())
                 .build();
 
-        var link = new Relay().toGlobalId("Project", TestIdentifiers.UML_SAMPLE_PROJECT.toString());
+        var link = new Relay().toGlobalId("Project", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString());
         var uri = String.format("/api/rest/projects?page[after]=%s&page[size]=1", link);
         webTestClient
                 .get()
@@ -178,7 +178,7 @@ public class ProjectRestControllerIntegrationTests extends AbstractIntegrationTe
                 .hasSize(1)
                 .consumeWith(result -> {
                     var restProjects = result.getResponseBody();
-                    assertEquals(TestIdentifiers.ECORE_SAMPLE_PROJECT, restProjects.get(0).id());
+                    assertEquals(StudioIdentifiers.EMPTY_STUDIO_PROJECT, restProjects.get(0).id());
                 });
     }
 
