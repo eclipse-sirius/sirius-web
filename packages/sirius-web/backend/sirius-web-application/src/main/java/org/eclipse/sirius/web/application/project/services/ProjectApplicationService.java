@@ -28,7 +28,7 @@ import org.eclipse.sirius.web.application.project.dto.RenameProjectSuccessPayloa
 import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
 import org.eclipse.sirius.web.application.project.services.api.IProjectMapper;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.services.Window;
+import org.eclipse.sirius.web.domain.pagination.Window;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectCreationService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectDeletionService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;

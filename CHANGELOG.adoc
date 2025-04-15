@@ -284,6 +284,8 @@ They are now in `org.eclipse.sirius.web.application.views.table.customcells` pac
 - https://github.com/eclipse-sirius/sirius-web/issues/4783[#4783] [diagram] Fix an issue where the labels of graphical nodes were not wrapped or had ellipsis anymore.
 - https://github.com/eclipse-sirius/sirius-web/issues/4660[#4660] [sirius-web] Fix the use of project image as a shape of image node style
 - https://github.com/eclipse-sirius/sirius-web/issues/4807[#4807] [table] Table CSV export does not export the content of a LabelCell
+- https://github.com/eclipse-sirius/sirius-web/issues/4831[#4831] [sirius-web] Fix the computation of the previous / next page and the ordering of the projects in the project browser
+
 
 
 === New Features
