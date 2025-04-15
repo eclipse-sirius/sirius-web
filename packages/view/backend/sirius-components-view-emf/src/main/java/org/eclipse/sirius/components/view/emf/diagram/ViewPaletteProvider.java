@@ -297,7 +297,6 @@ public class ViewPaletteProvider implements IPaletteProvider {
     }
 
     private Palette getEdgePalette(IEditingContext editingContext, DiagramDescription diagramDescription, EdgeDescription edgeDescription, Object diagramElement, VariableManager variableManager, AQLInterpreter interpreter) {
-        List<ToolSection> extraToolSections = new PaletteDefaultToolsProvider().createExtraToolSections(edgeDescription, diagramElement);
         Palette edgePalette = null;
         var toolFinder = new ToolFinder();
         Optional<String> optionalSourceElementId = this.getSourceElementId(edgeDescription.getId());
@@ -306,9 +305,15 @@ public class ViewPaletteProvider implements IPaletteProvider {
 
             var optionalEdgeDescription = this.viewDiagramDescriptionSearchService.findViewEdgeDescriptionById(editingContext, edgeDescription.getId());
             if (optionalEdgeDescription.isPresent()) {
-                org.eclipse.sirius.components.view.diagram.EdgeDescription viewEdgeDescription = optionalEdgeDescription.get();
+                List<ToolSection> extraToolSections = new ArrayList<>();
+                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createExtraToolSections(edgeDescription, diagramElement)).flatMap(List::stream)
+                        .forEach(extraToolSections::add);
 
                 List<ITool> quickAccessTools = new ArrayList<>();
+                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createQuickAccessTools(edgeDescription, diagramElement)).flatMap(List::stream)
+                        .forEach(quickAccessTools::add);
+                org.eclipse.sirius.components.view.diagram.EdgeDescription viewEdgeDescription = optionalEdgeDescription.get();
+
                 toolFinder.findQuickAccessNodeTools(viewEdgeDescription).stream()
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
                         .map(tool -> this.createNodeTool(tool, variableManager, interpreter))
