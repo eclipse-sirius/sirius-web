@@ -70,7 +70,6 @@ public class StudioEditingContextActionProvider implements IEditingContextAction
             if (containsView) {
                 actions.add(new EditingContextAction(EMPTY_VIEW_ID, "View"));
             }
-            actions.add(new EditingContextAction(EMPTY_ACTION_ID, "Others..."));
         }
 
         return actions;
