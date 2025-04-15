@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
-import org.eclipse.sirius.web.application.representation.dto.RepresentationMetadataDTO;
+import org.eclipse.sirius.components.core.graphql.dto.RepresentationMetadataDTO;
 import org.eclipse.sirius.web.application.representation.services.api.IRepresentationMetadataMapper;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationIconURL;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;

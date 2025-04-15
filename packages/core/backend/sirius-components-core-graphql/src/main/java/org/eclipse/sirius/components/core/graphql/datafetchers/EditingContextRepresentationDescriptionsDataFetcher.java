@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.representation.controllers;
+package org.eclipse.sirius.components.core.graphql.datafetchers;
 
 import java.util.List;
 import java.util.Objects;
