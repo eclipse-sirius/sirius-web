@@ -320,20 +320,19 @@ public class ViewPaletteProvider implements IPaletteProvider {
                         .forEach(quickAccessTools::add);
 
                 List<IPaletteEntry> paletteEntries = new ArrayList<>();
-                toolFinder.findToolSections(viewEdgeDescription).stream()
-                        .map(edgeToolSection -> this.createToolSection(edgeToolSection, variableManager, interpreter))
-                        .forEach(paletteEntries::add);
-
                 toolFinder.findNodeTools(viewEdgeDescription).stream()
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
                         .map(tool -> this.createNodeTool(tool, variableManager, interpreter))
                         .forEach(paletteEntries::add);
-
                 toolFinder.findEdgeTools(viewEdgeDescription).stream()
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
                         .map(viewEdgeTools -> this.createEdgeTool(viewEdgeTools, diagramDescription, edgeDescription, variableManager, interpreter))
                         .forEach(paletteEntries::add);
+                toolFinder.findToolSections(viewEdgeDescription).stream()
+                        .map(edgeToolSection -> this.createToolSection(edgeToolSection, variableManager, interpreter))
+                        .forEach(paletteEntries::add);
 
+                paletteEntries.add(new PaletteDivider(UUID.randomUUID().toString()));
                 paletteEntries.addAll(extraToolSections);
 
                 String edgePaletteId = "siriusComponents://edgePalette?edgeId=" + sourceElementId;

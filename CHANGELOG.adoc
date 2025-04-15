@@ -48,6 +48,7 @@ Refactor the test to leverage boolean expression shortcut and avoid an unnecessa
 This improves the time needed to open a project and other scenarios where we create new AQL interpreters.
 The improvement on project opening will be proportional to the size/complexity of the metamodels and the number of View-based representations available in the project.
 - https://github.com/eclipse-sirius/sirius-web/issues/4858[#4858] [view] Switch to a service based approach to convert forms
+- https://github.com/eclipse-sirius/sirius-web/issues/4835[#4835] [view] Order Node/Edge palette's tools/tools sections the same way.
 
 
 
