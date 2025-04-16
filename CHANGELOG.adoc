@@ -30,6 +30,7 @@
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4308[#4308] [diagram] Handles now take bending points into account
 - https://github.com/eclipse-sirius/sirius-web/issues/4826[#4826] [diagram] Allow source and target handle position changes during edge customisation
+- https://github.com/eclipse-sirius/sirius-web/issues/4830[#4830] [view] Add `Edge Width` property in `edgeStyle` details view
 
 
 
