@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Edge, EdgeProps, Node, Position, getSmoothStepPath, useInternalNode, XYPosition } from '@xyflow/react';
+import { Edge, EdgeProps, getSmoothStepPath, Node, Position, useInternalNode, XYPosition } from '@xyflow/react';
 import { memo, useContext } from 'react';
 import parse from 'svg-path-parser';
 import { NodeTypeContext } from '../../contexts/NodeContext';
@@ -102,7 +102,7 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
   }
 
   let bendingPoints: XYPosition[] = [];
-  if (data?.bendingPoints) {
+  if (data && data.bendingPoints && data.bendingPoints.length > 0) {
     bendingPoints = data.bendingPoints;
   } else {
     const [smoothEdgePath] = getSmoothStepPath({

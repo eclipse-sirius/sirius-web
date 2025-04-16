@@ -144,7 +144,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
                 var edgeLayoutData = layoutDiagramInput.diagramLayoutData().edgeLayoutData().stream()
                         .collect(Collectors.toMap(
                                 EdgeLayoutDataInput::id,
-                                edgeLayoutDataInput -> new EdgeLayoutData(edgeLayoutDataInput.id(), edgeLayoutDataInput.bendingPoints()),
+                                edgeLayoutDataInput -> new EdgeLayoutData(edgeLayoutDataInput.id(), edgeLayoutDataInput.bendingPoints(), edgeLayoutDataInput.edgeAnchorLayoutData()),
                                 (oldValue, newValue) -> newValue
                         ));
 
