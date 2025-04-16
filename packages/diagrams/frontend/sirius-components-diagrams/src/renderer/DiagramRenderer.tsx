@@ -112,7 +112,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   } = useGroupPalette();
 
   const { onConnect, onConnectStart, onConnectEnd } = useConnector();
-  const { reconnectEdge, onReconnectEdgeEnd } = useReconnectEdge();
+  const { onReconnectEdgeStart, reconnectEdge, onReconnectEdgeEnd } = useReconnectEdge();
   const { onDrop, onDragOver } = useDrop();
   const { onNodeDragStart, onNodeDrag, onNodeDragStop } = useDropNode();
   const { backgroundColor, largeGridColor, smallGridColor } = useDropDiagramStyle();
@@ -454,10 +454,11 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     onConnectStart: onConnectStart,
     onConnectEnd: onConnectEnd,
     connectionLineComponent: ConnectionLine,
+    onReconnectStart: onReconnectEdgeStart,
+    onReconnect: reconnectEdge,
     onReconnectEnd: onReconnectEdgeEnd,
     connectionRadius: 0,
     onEdgesChange: handleEdgesChange,
-    onReconnect: reconnectEdge,
     onPaneContextMenu: handlePaneContextMenu,
     onEdgeContextMenu: handleEdgeContextMenu,
     onNodeContextMenu: handleNodeContextMenu,

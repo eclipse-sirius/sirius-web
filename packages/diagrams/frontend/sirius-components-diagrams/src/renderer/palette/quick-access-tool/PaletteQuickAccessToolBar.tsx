@@ -85,7 +85,11 @@ export const PaletteQuickAccessToolBar = ({
           key={'tool_fadeElementTool'}></FadeElementTool>
       );
     }
-    if (isBendable(diagramElement)) {
+    if (
+      isBendable(diagramElement) &&
+      diagramElement.data?.bendingPoints &&
+      diagramElement.data.bendingPoints.length > 0
+    ) {
       quickAccessToolComponents.push(
         <ResetEditedEdgePathTool
           diagramElementId={diagramElementId}

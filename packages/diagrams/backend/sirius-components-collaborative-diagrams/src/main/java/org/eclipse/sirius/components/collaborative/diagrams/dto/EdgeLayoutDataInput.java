@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
 import java.util.List;
 
+import org.eclipse.sirius.components.diagrams.layoutdata.EdgeAnchorLayoutData;
 import org.eclipse.sirius.components.diagrams.layoutdata.Position;
 
 /**
@@ -21,6 +22,6 @@ import org.eclipse.sirius.components.diagrams.layoutdata.Position;
  *
  * @author frouene
  */
-public record EdgeLayoutDataInput(String id, List<Position> bendingPoints) {
+public record EdgeLayoutDataInput(String id, List<Position> bendingPoints, List<EdgeAnchorLayoutData> edgeAnchorLayoutData) {
 
 }

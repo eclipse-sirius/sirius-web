@@ -147,6 +147,8 @@ By itself, it will not be enough, one would also have to update the content of t
 Thanks to this mechanism one can trigger some behavior after the entire loading of the editing context and before the creation of the `IEditingContextEventProcessor` or just after the creation of the `IEditingContextEventProcessor`.
 - https://github.com/eclipse-sirius/sirius-web/issues/4935[#4935] [sirius-web] Add loading indicator when uploading a project or document.
 - https://github.com/eclipse-sirius/sirius-web/issues/4946[#4946] [sirius-web] Add loading indicator in dialogs used to publish, import or update a library.
+- https://github.com/eclipse-sirius/sirius-web/issues/4841[#4841] [diagram] Allow moving the handle of an edge targeting another edge
+
 
 
 == v2025.4.0

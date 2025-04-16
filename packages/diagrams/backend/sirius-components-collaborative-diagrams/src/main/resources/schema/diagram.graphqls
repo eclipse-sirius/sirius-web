@@ -57,9 +57,17 @@ type HandleLayoutData {
   type: HandleType!
 }
 
+type EdgeAnchorLayoutData {
+  edgeId: ID!
+  positionRatio: Float!
+  handlePosition : String!
+  type : HandleType!
+}
+
 type EdgeLayoutData {
   id: ID!
   bendingPoints: [Position!]!
+  edgeAnchorLayoutData: [EdgeAnchorLayoutData!]!
 }
 
 enum HandleType {
@@ -638,9 +646,17 @@ input HandleLayoutDataInput {
   type : HandleType!
 }
 
+input EdgeAnchorLayoutDataInput {
+  edgeId: ID!
+  positionRatio: Float!
+  handlePosition : String!
+  type : HandleType!
+}
+
 input EdgeLayoutDataInput {
   id: ID!
   bendingPoints: [PositionInput!]!
+  edgeAnchorLayoutData: [EdgeAnchorLayoutDataInput!]!
 }
 
 input PositionInput {
