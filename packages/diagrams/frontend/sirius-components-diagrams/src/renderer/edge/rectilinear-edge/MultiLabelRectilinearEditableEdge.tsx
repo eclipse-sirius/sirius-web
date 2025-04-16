@@ -14,7 +14,7 @@
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@mui/material/styles';
 import { BaseEdge, Edge, EdgeLabelRenderer, Position, XYPosition } from '@xyflow/react';
-import { memo, useEffect, useMemo } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 import { useStore } from '../../../representation/useStore';
 import { useConnectorEdgeStyle } from '../../connector/useConnectorEdgeStyle';
 import { Label } from '../../Label';
@@ -88,29 +88,51 @@ export const MultiLabelRectilinearEditableEdge = memo(
     targetY,
     bendingPoints,
     customEdge,
+    sourceNode,
+    sourceHandleId,
+    targetNode,
+    targetHandleId,
   }: MultiLabelEditableEdgeProps<Edge<MultiLabelEdgeData>>) => {
     const { beginLabel, endLabel, label, faded } = data || {};
     const { setEdges } = useStore();
     const theme = useTheme();
 
+    const [source, setSource] = useState<XYPosition>({ x: sourceX, y: sourceY });
+    const [target, setTarget] = useState<XYPosition>({ x: targetX, y: targetY });
+
+    useEffect(() => {
+      setSource({ x: sourceX, y: sourceY });
+    }, [sourceX, sourceY]);
+
+    useEffect(() => {
+      setTarget({ x: targetX, y: targetY });
+    }, [targetX, targetY]);
+
     const { localBendingPoints, setLocalBendingPoints, onBendingPointDragStop, onBendingPointDrag } = useBendingPoints(
       id,
       bendingPoints,
-      sourceX,
-      sourceY,
-      targetX,
-      targetY,
+      source.x,
+      source.y,
+      target.x,
+      target.y,
       customEdge
     );
 
     const { middleBendingPoints, onTemporaryLineDragStop, onTemporaryLineDrag } = useTemporaryLines(
       id,
+      bendingPoints,
       localBendingPoints,
       setLocalBendingPoints,
-      sourceX,
-      sourceY,
-      targetX,
-      targetY
+      sourceNode,
+      sourceHandleId ?? '',
+      sourcePosition,
+      source,
+      setSource,
+      targetNode,
+      targetHandleId ?? '',
+      targetPosition,
+      target,
+      setTarget
     );
 
     const edgeStyle = useMemo(() => multiLabelEdgeStyle(theme, style, selected, faded), [style, selected, faded]);
@@ -131,25 +153,25 @@ export const MultiLabelRectilinearEditableEdge = memo(
     ]);
 
     const edgePath: string = useMemo(() => {
-      let edgePath = `M ${sourceX} ${sourceY}`;
+      let edgePath = `M ${source.x} ${source.y}`;
       const reorderBendPoint = [...localBendingPoints].sort((a, b) => a.pathOrder - b.pathOrder);
       for (let i = 0; i < reorderBendPoint.length; i++) {
         const currentPoint = reorderBendPoint[i];
         if (currentPoint) {
           if (i === 0) {
-            if (determineSegmentAxis({ x: sourceX, y: sourceY }, currentPoint) === 'x') {
-              edgePath += ` L ${currentPoint.x} ${sourceY}`;
+            if (determineSegmentAxis({ x: source.x, y: source.y }, currentPoint) !== 'x') {
+              edgePath += ` L ${source.x} ${currentPoint.y}`;
             } else {
-              edgePath += ` L ${sourceX} ${currentPoint.y}`;
+              edgePath += ` L ${currentPoint.x} ${source.y}`;
             }
           } else {
             edgePath += ` L ${currentPoint.x} ${currentPoint.y}`;
           }
         }
       }
-      edgePath += ` L ${targetX} ${targetY}`;
+      edgePath += ` L ${target.x} ${target.y}`;
       return edgePath;
-    }, [localBendingPoints.map((point) => point.x + point.y).join(), sourceX, sourceY, targetX, targetY]);
+    }, [localBendingPoints.map((point) => point.x + point.y).join(), source.x, source.y, target.x, target.y]);
 
     useEffect(() => {
       setEdges((prevEdges) =>
@@ -167,7 +189,6 @@ export const MultiLabelRectilinearEditableEdge = memo(
         })
       );
     }, [edgePath]);
-
     return (
       <>
         <BaseEdge
@@ -204,23 +225,21 @@ export const MultiLabelRectilinearEditableEdge = memo(
           ))}
         {selected &&
           middleBendingPoints &&
-          middleBendingPoints
-            .slice(1, -1)
-            .map((point, index) => (
-              <TemporaryMovingLine
-                key={index}
-                x={point.x}
-                y={point.y}
-                direction={point.direction}
-                segmentLength={point.segmentLength}
-                index={index + 1}
-                onDrag={onTemporaryLineDrag}
-                onDragStop={onTemporaryLineDragStop}
-              />
-            ))}
+          middleBendingPoints.map((point, index) => (
+            <TemporaryMovingLine
+              key={index}
+              x={point.x}
+              y={point.y}
+              direction={point.direction}
+              segmentLength={point.segmentLength}
+              index={index}
+              onDrag={onTemporaryLineDrag}
+              onDragStop={onTemporaryLineDragStop}
+            />
+          ))}
         <EdgeLabelRenderer>
           {beginLabel && (
-            <div style={labelContainerStyle(`${sourceLabelTranslation} translate(${sourceX}px,${sourceY}px)`)}>
+            <div style={labelContainerStyle(`${sourceLabelTranslation} translate(${source.x}px,${source.y}px)`)}>
               <Label diagramElementId={id} label={beginLabel} faded={!!faded} />
             </div>
           )}
@@ -230,7 +249,7 @@ export const MultiLabelRectilinearEditableEdge = memo(
             </div>
           )}
           {endLabel && (
-            <div style={labelContainerStyle(`${targetLabelTranslation} translate(${targetX}px,${targetY}px)`)}>
+            <div style={labelContainerStyle(`${targetLabelTranslation} translate(${target.x}px,${target.y}px)`)}>
               <Label diagramElementId={id} label={endLabel} faded={!!faded} />
             </div>
           )}
