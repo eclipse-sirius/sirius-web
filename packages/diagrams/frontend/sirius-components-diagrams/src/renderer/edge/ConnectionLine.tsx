@@ -25,7 +25,7 @@ import React, { memo, useContext, useEffect } from 'react';
 import { ConnectorContext } from '../connector/ConnectorContext';
 import { ConnectorContextValue } from '../connector/ConnectorContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { getNearestPointInPerimeter, getNodesUpdatedWithHandles } from './EdgeLayout';
+import { getNearestPointInPath, getNearestPointInPerimeter, getNodesUpdatedWithHandles } from './EdgeLayout';
 
 const connectionLineStyle = (theme: Theme): React.CSSProperties => {
   return {
@@ -47,9 +47,9 @@ export const ConnectionLine = memo(
     fromHandle,
   }: ConnectionLineComponentProps<Node<NodeData>>) => {
     const theme = useTheme();
-    const { getNodes, setNodes, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
     const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
     const { candidates } = useContext<ConnectorContextValue>(ConnectorContext);
+    const { getNodes, setNodes, getEdges, getEdge } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
     const updateNodeInternals = useUpdateNodeInternals();
 
     const edgeId = fromNode.data.connectionHandles.find((handle) => handle.id === fromHandle?.id)?.edgeId;
@@ -58,6 +58,19 @@ export const ConnectionLine = memo(
     const handleToUpdate = targetHandle === fromHandle.id ? sourceHandle : targetHandle;
 
     // When reconnecting an edge
+    if (edgeId) {
+      const edge = getEdge(edgeId);
+      if (edge) {
+        const edgeBase = getEdge(edge.target);
+        // Snap the ConnectionLine to the border of the targetted edge
+        if (edgeBase && edgeBase.data && edgeBase.data.edgePath && edgeBase.data.isHovered) {
+          const { position } = getNearestPointInPath(toX, toY, edgeBase.data.edgePath);
+          toX = position.x;
+          toY = position.y;
+        }
+      }
+    }
+
     if (handleToUpdate) {
       if (edgeId && toNode && toNode.width && toNode.height) {
         // Snap the ConnectionLine to the border of the targetted node
@@ -121,6 +134,32 @@ export const ConnectionLine = memo(
         );
         setNodes(nodes);
         updateNodeInternals(toNode.id);
+      }
+
+      if (edgeId) {
+        const edge = getEdge(edgeId);
+        if (edge) {
+          const edgeBase = getEdge(edge.target);
+          if (edgeBase && edgeBase.data && edgeBase.data.edgePath && edgeBase.data.isHovered) {
+            const { position, positionRatio } = getNearestPointInPath(toX, toY, edgeBase.data.edgePath);
+            setNodes((prevNodes) =>
+              prevNodes.map((prevNode) => {
+                if (prevNode.id === edgeBase.id) {
+                  return {
+                    ...prevNode,
+                    position: position,
+                    data: {
+                      ...prevNode.data,
+                      isLayouted: true,
+                      positionRatio: positionRatio,
+                    },
+                  };
+                }
+                return prevNode;
+              })
+            );
+          }
+        }
       }
     }, [toX, toY]);
 
