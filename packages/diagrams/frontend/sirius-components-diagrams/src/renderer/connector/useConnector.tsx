@@ -139,7 +139,8 @@ export const useConnector = (): UseConnectorValue => {
         sourceNode,
         targetNode,
         store.getState().nodeLookup,
-        diagramDescription.arrangeLayoutDirection
+        diagramDescription.arrangeLayoutDirection,
+        null
       );
 
       const edge: Edge<EdgeData> = {
