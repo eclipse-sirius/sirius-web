@@ -61,7 +61,10 @@ export const EdgeAnchorNode: NodeComponentsMap['edgeAnchorNode'] = memo(
               var svgPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
               svgPath.setAttribute('d', edgePath);
               const pathLength = svgPath.getTotalLength();
-              const points = svgPath.getPointAtLength(pathLength * 0.5);
+              let points = svgPath.getPointAtLength(pathLength * 0.5);
+              if (data.isLayouted && data.positionRatio) {
+                points = svgPath.getPointAtLength(pathLength * data.positionRatio);
+              }
 
               return {
                 ...prevNode,
@@ -72,7 +75,7 @@ export const EdgeAnchorNode: NodeComponentsMap['edgeAnchorNode'] = memo(
           })
         );
       }
-    }, [edgePath, !positionAbsoluteX && !positionAbsoluteY]);
+    }, [edgePath, data.positionRatio, !positionAbsoluteX && !positionAbsoluteY]);
 
     if (!positionAbsoluteX && !positionAbsoluteY) {
       return null;
