@@ -1,0 +1,3 @@
+= sirius-components-widget-table
+
+This project provides a custom widget to use table inside a Form.
