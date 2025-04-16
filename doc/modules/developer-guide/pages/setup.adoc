@@ -1,0 +1,5 @@
+= Setup
+
+If you wish to start developing against the APIs provided by {sw}, we recommend you meet the requirements and follow the setup instructions detailed below.
+
+include::partial$setup/nav.adoc[]

@@ -1,0 +1,53 @@
+= Requirements
+
+== System Requirements
+
+Developing for {sw} can be done on any modern OS.
+
+While developing, you might need to run both the backend and frontend of {sw} on your machine, so a good amount of available RAM is recommended.
+
+#TODO: is there anything specific about network requirements we should detail here?#
+
+== Tool Requirements
+
+* Git: #TODO: not sure we need Git with the framework approach to custom application#
+* *Github account*: to access the {sw} Maven and npm packages https://github.com/orgs/eclipse-sirius/packages?repo_name=sirius-web[hosted on Github Packages]
+* *Docker*: to run the https://www.postgresql.org/[PostgreSQL v12] instance used as database
+* Apache *Maven* v3.6.3: to build the backend
+* *Java* v17: to run the backend
+* *NPM* v8.15.0 & TurboRepo: to build the frontend
+* *Node.js* v18.7.0: to run the frontend
+
+NOTE: You can also run your own PostgreSQL 12 instance without Docker. In that case, make sure the database user has admin rights on the database.
+
+== Know-how 
+
+=== Backend
+
+The {sw} backend relies on the following technologies:
+
+* Implementation:
+** https://docs.oracle.com/en/java/javase/17/[Java 17]
+** https://spring.io/projects/spring-boot[Spring Boot framework]
+** (Optional) Modelization with the https://projects.eclipse.org/projects/modeling.emf.emf[Eclipse Modeling Framework (EMF)]
+** (Optional) https://graphql.org[GraphQL]
+** Nice-to-have: knowledge of https://eclipse.dev/sirius[Sirius Desktop], because many {sw} concepts in _{stddefs}_ are similar to concepts found in https://eclipse.dev/sirius/doc/specifier/Sirius%20Specifier%20Manual.html[Sirius Desktop Specifications].
+
+* Build & Artifacts: https://maven.apache.org[Apache Maven v3.6.3]
+* Runtime: any Java Runtime Environment (JRE) v17
++
+--
+TIP: If you do not already have a JRE installed on your system, we recommend getting started with one of the builds made available by https://adoptium.net/[Eclipse Adoptium].
+--
++
+
+
+=== Frontend
+
+The {sw} frontend relies on the following technologies:
+
+* Implementation: https://react.dev[React]
+* Build & Artifacts: https://www.npmjs.com[npm] v8.15.0
+* Runtime: https://nodejs.org[Node.js] v18.7.0
+
+NOTE: Most {sw} APIs are on the backend, so for most _{stddevs}_, only the frontend runtime is necessary.

@@ -1,0 +1,4 @@
+* xref:support:index.adoc[]
+** xref:support:best-practices.adoc[]
+** xref:support:faq.adoc[FAQ]
+** xref:support:community.adoc[]

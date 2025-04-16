@@ -1,0 +1,7 @@
+= Frequently-Asked Questions (FAQ)
+
+include::partial$faq/studio-users.adoc[leveloffset=+1]
+
+include::partial$faq/studio-makers.adoc[leveloffset=+1]
+
+include::partial$faq/studio-developers.adoc[leveloffset=+1]
