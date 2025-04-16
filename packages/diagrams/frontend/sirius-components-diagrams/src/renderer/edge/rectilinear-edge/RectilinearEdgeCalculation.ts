@@ -96,3 +96,73 @@ export const generateNewBendPointToPreserveRectilinearSegment = (
   }
   return newPoints;
 };
+
+export const generateNewBendPointOnSourceSegment = (
+  existingBendPoint: XYPosition[],
+  newX: number,
+  newY: number,
+  direction: 'x' | 'y',
+  sourceNodeRelativePosition: XYPosition,
+  adjacentPointIndex: number
+): BendPointData[] => {
+  const newPoints = [...existingBendPoint.map((bendingPoint, index) => ({ ...bendingPoint, pathOrder: index }))];
+  const adjacentPoint = newPoints[adjacentPointIndex];
+  newPoints.forEach((point) => {
+    point.pathOrder += 2;
+  });
+  newPoints.push({
+    x: direction === 'x' ? newX : sourceNodeRelativePosition.x,
+    y: direction === 'y' ? newY : sourceNodeRelativePosition.y,
+    pathOrder: 0,
+  });
+  newPoints.push({
+    x: newX,
+    y: newY,
+    pathOrder: 1,
+  });
+  if (direction === 'x') {
+    if (adjacentPoint) {
+      adjacentPoint.y = newY;
+    }
+  } else if (direction === 'y') {
+    if (adjacentPoint) {
+      adjacentPoint.x = newX;
+    }
+  }
+
+  return newPoints;
+};
+
+export const generateNewBendPointOnTargetSegment = (
+  existingBendPoint: XYPosition[],
+  newX: number,
+  newY: number,
+  direction: 'x' | 'y',
+  targetNodeRelativePosition: XYPosition,
+  adjacentPointIndex: number
+): BendPointData[] => {
+  const newPoints = [...existingBendPoint.map((bendingPoint, index) => ({ ...bendingPoint, pathOrder: index }))];
+  const adjacentPoint = newPoints[adjacentPointIndex - 1];
+
+  newPoints.push({
+    x: newX,
+    y: newY,
+    pathOrder: adjacentPointIndex + 1,
+  });
+  newPoints.push({
+    x: direction === 'x' ? newX : targetNodeRelativePosition.x,
+    y: direction === 'y' ? newY : targetNodeRelativePosition.y,
+    pathOrder: adjacentPointIndex + 2,
+  });
+  if (direction === 'x') {
+    if (adjacentPoint) {
+      adjacentPoint.y = newY;
+    }
+  } else if (direction === 'y') {
+    if (adjacentPoint) {
+      adjacentPoint.x = newX;
+    }
+  }
+
+  return newPoints;
+};
