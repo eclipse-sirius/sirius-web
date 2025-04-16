@@ -29,6 +29,7 @@ import {
 } from './EdgeLayout.types';
 
 export const DEFAULT_HANDLE_SIZE = 6;
+export const HANDLE_OFFSET = 4;
 
 export const getNodesUpdatedWithHandles = (
   nodes: Node<NodeData>[],
@@ -45,17 +46,31 @@ export const getNodesUpdatedWithHandles = (
       y: XYPosition.y - node.internals.positionAbsolute.y,
     };
 
-    if (position === Position.Bottom) {
+    if (position === Position.Top) {
       XYPosition = {
         ...XYPosition,
+        x: XYPosition.x - HANDLE_OFFSET,
+      };
+    }
+
+    if (position === Position.Bottom) {
+      XYPosition = {
+        x: XYPosition.x - HANDLE_OFFSET,
         y: XYPosition.y - node.height - DEFAULT_HANDLE_SIZE,
       };
     }
 
     if (position === Position.Right) {
       XYPosition = {
-        ...XYPosition,
+        y: XYPosition.y - HANDLE_OFFSET,
         x: XYPosition.x - node.width - DEFAULT_HANDLE_SIZE,
+      };
+    }
+
+    if (position === Position.Left) {
+      XYPosition = {
+        ...XYPosition,
+        y: XYPosition.y - HANDLE_OFFSET,
       };
     }
   }

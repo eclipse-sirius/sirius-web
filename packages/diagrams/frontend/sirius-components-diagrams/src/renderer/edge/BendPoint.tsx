@@ -44,25 +44,24 @@ export const TemporaryMovingLine = ({
   const nodeRef = useRef<SVGRectElement>(null);
   const segmentLengthWithoutBoundaries = segmentLength - 2;
 
-  const width = direction !== 'x' ? segmentLengthWithoutBoundaries : 4;
-  const height = direction !== 'y' ? segmentLengthWithoutBoundaries : 4;
+  const width = direction === 'x' ? segmentLengthWithoutBoundaries : 4;
+  const height = direction === 'y' ? segmentLengthWithoutBoundaries : 4;
 
-  const offsetX = direction !== 'x' ? -width / 2 : -2;
-  const offsetY = direction !== 'y' ? -height / 2 : -2;
-
+  const offsetX = direction === 'x' ? -width / 2 : -2;
+  const offsetY = direction === 'y' ? -height / 2 : -2;
   return (
     <Draggable
       position={{ x: x, y: y }}
       positionOffset={{ x: offsetX, y: offsetY }}
       scale={zoom}
-      axis={direction}
+      axis={direction === 'x' ? 'y' : 'x'}
       onDrag={(_e, eventData: DraggableData) => onDrag(eventData, index, direction)}
       onStop={(_e, eventData: DraggableData) => onDragStop(eventData, index)}
       nodeRef={nodeRef as unknown as RefObject<HTMLElement>}>
       <rect
         style={{
           pointerEvents: 'all',
-          cursor: `${direction === 'y' ? 'ns-resize' : 'ew-resize'}`,
+          cursor: `${direction === 'x' ? 'ns-resize' : 'ew-resize'}`,
         }}
         width={width}
         height={height}
