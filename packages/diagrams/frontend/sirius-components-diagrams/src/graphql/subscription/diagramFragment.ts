@@ -39,6 +39,12 @@ fragment diagramFragment on Diagram {
     edgeLayoutData {
       id
       bendingPoints { x y }
+      edgeAnchorLayoutData { 
+        edgeId
+        positionRatio
+        handlePosition
+        type
+      }
     }
   }
   nodes {

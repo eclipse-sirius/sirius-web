@@ -43,7 +43,15 @@ export const useHandleChange = (): UseHandleChangeValue => {
             const sourceNode = nodeLookup.get(edge.source);
             const targetNode = nodeLookup.get(edge.target);
 
-            if (sourceNode && targetNode && sourceHandle && targetHandle && !edge.data?.bendingPoints) {
+            if (
+              sourceNode &&
+              targetNode &&
+              sourceHandle &&
+              targetHandle &&
+              edge.data &&
+              edge.data.bendingPoints &&
+              edge.data.bendingPoints.length === 0
+            ) {
               const { sourcePosition, targetPosition } = getEdgeParametersWhileMoving(
                 nodeDraggingChange,
                 sourceNode,
