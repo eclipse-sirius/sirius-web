@@ -24,14 +24,14 @@ export const useEditableEdgePath = (): UseEditableEdgePathValue => {
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
 
   const synchronizeEdgeLayoutData = useCallback(
-    (edges: Edge<EdgeData>[]): void => {
+    (edges: Edge<EdgeData>[], nodes: Node<NodeData>[]): void => {
       const finalDiagram: RawDiagram = {
-        nodes: [...getNodes()] as Node<NodeData, DiagramNodeType>[],
+        nodes: nodes,
         edges: edges,
       };
       synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
     },
-    [getNodes, synchronizeLayoutData]
+    [synchronizeLayoutData]
   );
 
   const removeEdgeLayoutData = useCallback(
@@ -42,7 +42,7 @@ export const useEditableEdgePath = (): UseEditableEdgePathValue => {
         edge.data.bendingPoints = null;
       }
       setEdges(edges);
-      synchronizeEdgeLayoutData(edges);
+      synchronizeEdgeLayoutData(edges, [...getNodes()] as Node<NodeData, DiagramNodeType>[]);
     },
     [setEdges, getEdges]
   );
