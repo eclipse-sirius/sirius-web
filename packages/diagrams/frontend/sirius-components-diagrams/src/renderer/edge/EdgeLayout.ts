@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { InternalNode, Node, Position, XYPosition } from '@xyflow/react';
-import { Handle } from '@xyflow/system';
+import { Handle, NodeLookup } from '@xyflow/system';
 import { BorderNodePosition, NodeData } from '../DiagramRenderer.types';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
 import { getPositionAbsoluteFromNodeChange, isDescendantOf, isSiblingOrDescendantOf } from '../layout/layoutNode';
@@ -25,6 +25,7 @@ import {
   GetParameters,
   GetUpdatedConnectionHandlesParameters,
   NodeCenter,
+  Parameters,
 } from './EdgeLayout.types';
 
 export const DEFAULT_HANDLE_SIZE = 6;
@@ -175,13 +176,69 @@ export const getEdgeParametersWhileMoving: GetEdgeParametersWhileMoving = (
   };
 };
 
-export const getEdgeParameters: GetEdgeParameters = (source, target, nodeLookup, layoutDirection) => {
+export const getEdgeParameters: GetEdgeParameters = (source, target, nodeLookup, layoutDirection, bendingPoints) => {
+  const firstBendingPoint = bendingPoints.length > 0 ? bendingPoints[0] : null;
+  const lastBendingPoint = bendingPoints.length > 0 ? bendingPoints[bendingPoints.length - 1] : null;
+  if (firstBendingPoint && lastBendingPoint) {
+    const { position: sourcePosition } = getHandlePositionFromBendingPoint(
+      source,
+      nodeLookup,
+      layoutDirection,
+      firstBendingPoint
+    );
+    const { position: targetPosition } = getHandlePositionFromBendingPoint(
+      target,
+      nodeLookup,
+      layoutDirection,
+      lastBendingPoint
+    );
+    return {
+      sourcePosition,
+      targetPosition,
+    };
+  }
+
   const { position: sourcePosition } = getParameters(null, source, target, nodeLookup, layoutDirection);
   const { position: targetPosition } = getParameters(null, target, source, nodeLookup, layoutDirection);
-
   return {
     sourcePosition,
     targetPosition,
+  };
+};
+
+const getHandlePositionFromBendingPoint = (
+  node: InternalNode<Node<NodeData>>,
+  nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>,
+  layoutDirection: string,
+  bendingPointToUse: XYPosition
+): Parameters => {
+  const centerA = getNodeCenter(node, nodeLookup);
+  const centerB = bendingPointToUse;
+
+  const horizontalDifference = Math.abs(centerA.x - centerB.x);
+  const verticalDifference = Math.abs(centerA.y - centerB.y);
+  let position: Position;
+  if (isVerticalLayoutDirection(layoutDirection)) {
+    if (Math.abs(centerA.y - centerB.y) < verticalLayoutDirectionGap) {
+      position = centerA.x <= centerB.x ? Position.Right : Position.Left;
+    } else {
+      position = centerA.y > centerB.y ? Position.Top : Position.Bottom;
+    }
+  } else if (isHorizontalLayoutDirection(layoutDirection)) {
+    if (Math.abs(centerA.x - centerB.x) < horizontalLayoutDirectionGap) {
+      position = centerA.y <= centerB.y ? Position.Bottom : Position.Top;
+    } else {
+      position = centerA.x > centerB.x ? Position.Left : Position.Right;
+    }
+  } else {
+    if (horizontalDifference > verticalDifference) {
+      position = centerA.x > centerB.x ? Position.Left : Position.Right;
+    } else {
+      position = centerA.y > centerB.y ? Position.Top : Position.Bottom;
+    }
+  }
+  return {
+    position,
   };
 };
 

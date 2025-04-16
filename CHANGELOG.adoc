@@ -28,7 +28,7 @@
 
 === Improvements
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4308[#4308] [diagram] Handles now take bending points into account
 
 
 == v2025.4.0
