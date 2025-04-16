@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -144,6 +144,17 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
         controls.add(this.createIconSelectionField());
         controls.add(this.createLineStyleSelectionField());
+        var edgeWidth = this.propertiesWidgetCreationService.createTextField("edgestyle.EdgeWidth", "Edge Width",
+                style -> String.valueOf(((EdgeStyle) style).getEdgeWidth()),
+                (style, newValue) -> {
+                    try {
+                        ((EdgeStyle) style).setEdgeWidth(Integer.parseInt(newValue));
+                    } catch (NumberFormatException nfe) {
+                        // Ignore.
+                    }
+                },
+                DiagramPackage.Literals.EDGE_STYLE__EDGE_WIDTH);
+        controls.add(edgeWidth);
         controls.add(this.createSourceArrowStyleSelectionField());
         controls.add(this.createTargetArrowStyleSelectionField());
 
