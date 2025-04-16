@@ -104,6 +104,41 @@ export const getNodesUpdatedWithHandles = (
 
 const clamp = (n: number, lower: number, upper: number) => Math.max(lower, Math.min(upper, n));
 
+export const getNearestPointInPath = (
+  x: number,
+  y: number,
+  edgePath: string
+): { position: XYPosition; positionRatio: number } => {
+  var svgPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  svgPath.setAttribute('d', edgePath);
+  const pathLength = svgPath.getTotalLength();
+  let closestPoint: XYPosition = { x: 0, y: 0 };
+  let minDistance = Infinity;
+  let positionRatio = 0.5;
+  let pointAtLength = 0;
+
+  for (let i = 0; i <= pathLength; i += 5) {
+    const testPoint = svgPath.getPointAtLength(i);
+
+    const dx = testPoint.x - x;
+    const dy = testPoint.y - y;
+    const distance = Math.hypot(dx, dy);
+
+    if (distance < minDistance) {
+      minDistance = distance;
+      closestPoint = testPoint;
+      pointAtLength = i;
+    }
+  }
+
+  positionRatio = pointAtLength / pathLength;
+
+  return {
+    position: closestPoint,
+    positionRatio: positionRatio,
+  };
+};
+
 export const getNearestPointInPerimeter = (
   rectX: number,
   rectY: number,
