@@ -1,0 +1,18 @@
+= Add the ability to give users an obvious visual cue as to whether the diagram is editable or read-only
+
+== Problem
+
+There is a lack of visual cues as to whether a diagram is in read-only or is editable.
+The grid background conditionned to the "snap to grid" state would be a good visual cue but it is hardcoded to be disabled by default.
+
+== Key Result
+
+Give the ability to applications to choose the default "snap to grid" state and how it can be changed depending on whether the diagram is read-only or editable.
+
+== Solution
+
+== Cutting Backs
+
+== Rabbit Holes
+
+== No-Gos
