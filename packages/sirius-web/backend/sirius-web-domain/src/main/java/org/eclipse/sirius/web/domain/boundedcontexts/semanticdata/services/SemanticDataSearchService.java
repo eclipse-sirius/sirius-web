@@ -18,6 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticDataDomain;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.repositories.ISemanticDataRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -45,6 +46,11 @@ public class SemanticDataSearchService implements ISemanticDataSearchService {
     @Override
     public Optional<SemanticData> findById(UUID id) {
         return this.semanticDataRepository.findById(id);
+    }
+
+    @Override
+    public List<SemanticDataDomain> findDomainsById(UUID id) {
+        return this.semanticDataRepository.findDomainsById(id);
     }
 
     @Override
