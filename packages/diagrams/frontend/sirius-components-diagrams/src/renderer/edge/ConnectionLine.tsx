@@ -21,6 +21,7 @@ import {
 } from '@xyflow/react';
 import React, { memo, useEffect } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { ConnectionHandle } from '../handles/ConnectionHandles.types';
 import { getNearestPointInPath, getNearestPointInPerimeter, getNodesUpdatedWithHandles } from './EdgeLayout';
 
 const connectionLineStyle = (theme: Theme): React.CSSProperties => {
@@ -57,9 +58,10 @@ export const ConnectionLine = memo(
         const edgeBase = getEdge(edge.target);
         // Snap the ConnectionLine to the border of the targetted edge
         if (edgeBase && edgeBase.data && edgeBase.data.edgePath && edgeBase.data.isHovered) {
-          const { position } = getNearestPointInPath(toX, toY, edgeBase.data.edgePath);
+          const { position, handlePosition } = getNearestPointInPath(toX, toY, edgeBase.data.edgePath, fromNode);
           toX = position.x;
           toY = position.y;
+          toPosition = handlePosition;
         }
       }
     }
@@ -102,10 +104,22 @@ export const ConnectionLine = memo(
         if (edge) {
           const edgeBase = getEdge(edge.target);
           if (edgeBase && edgeBase.data && edgeBase.data.edgePath && edgeBase.data.isHovered) {
-            const { position, positionRatio } = getNearestPointInPath(toX, toY, edgeBase.data.edgePath);
+            const { position, positionRatio, handlePosition } = getNearestPointInPath(
+              toX,
+              toY,
+              edgeBase.data.edgePath,
+              fromNode
+            );
             setNodes((prevNodes) =>
               prevNodes.map((prevNode) => {
                 if (prevNode.id === edgeBase.id) {
+                  const handles: ConnectionHandle[] = prevNode.data.connectionHandles.map((connectionHandle) => {
+                    return {
+                      ...connectionHandle,
+                      position: handlePosition,
+                    };
+                  });
+
                   return {
                     ...prevNode,
                     position: position,
@@ -113,6 +127,7 @@ export const ConnectionLine = memo(
                       ...prevNode.data,
                       isLayouted: true,
                       positionRatio: positionRatio,
+                      connectionHandles: handles,
                     },
                   };
                 }
