@@ -251,6 +251,69 @@ public class TableControllerTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a form with a view based table widget, when an cell is edited, then its cell body is properly executed")
+    public void givenFormWithViewBasedTableWidgetWhenAnCellIsEditedThenItsCellBodyIsProperlyExecuted() {
+        var input = new CreateRepresentationInput(
+                UUID.randomUUID(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                this.formWithViewTableDescriptionProvider.getRepresentationDescriptionId(),
+                PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString(),
+                "FormWithViewTable");
+        var flux = this.givenCreatedFormSubscription.createAndSubscribe(input);
+
+        var formId = new AtomicReference<String>();
+        var tableId = new AtomicReference<String>();
+        var textfieldCellId = new AtomicReference<UUID>();
+
+        Consumer<Object> initialFormContentConsumer = payload -> Optional.of(payload).filter(FormRefreshedEventPayload.class::isInstance).map(FormRefreshedEventPayload.class::cast)
+                .map(FormRefreshedEventPayload::form).ifPresentOrElse(form -> {
+                    formId.set(form.getId());
+                    var tableWidget = new FormNavigator(form).page("Page").group("Group").findWidget("Types", TableWidget.class);
+                    assertThat(tableWidget.getTable().getColumns()).hasSize(1);
+                    assertThat(tableWidget.getTable().getLines()).hasSize(3);
+                    assertThat(tableWidget.getTable().getLines().stream().flatMap(line -> line.getCells().stream()).toList()).hasSize(3);
+                    Line line = tableWidget.getTable().getLines().get(0);
+                    LineNavigator lineNavigator = new LineNavigator(line);
+
+                    TableNavigator tableNavigator = new TableNavigator(tableWidget.getTable());
+                    assertThat(lineNavigator.textfieldCellByColumnId(tableNavigator.column("Name").getId())).hasValue("Success");
+
+                    tableId.set(tableWidget.getTable().getId());
+                    textfieldCellId.set(lineNavigator.textfieldCellByColumnId(tableNavigator.column("Name").getId()).getId());
+
+                }, () -> fail("Missing form"));
+
+        Runnable editNameTextfieldCell = () -> {
+            var editNameTextfieldCellInput = new EditTextfieldCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), tableId.get(), textfieldCellId.get(),
+                    "newName");
+            var result = this.editTextfieldCellMutationRunner.run(editNameTextfieldCellInput);
+
+            String typename = JsonPath.read(result, "$.data.editTextfieldCell.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> editNameConsumer = payload -> Optional.of(payload).filter(FormRefreshedEventPayload.class::isInstance).map(FormRefreshedEventPayload.class::cast)
+                .map(FormRefreshedEventPayload::form).ifPresentOrElse(form -> {
+                    var tableWidget = new FormNavigator(form).page("Page").group("Group").findWidget("Types", TableWidget.class);
+                    Line line = tableWidget.getTable().getLines().get(0);
+                    LineNavigator lineNavigator = new LineNavigator(line);
+
+                    TableNavigator tableNavigator = new TableNavigator(tableWidget.getTable());
+                    assertThat(lineNavigator.textfieldCellByColumnId(tableNavigator.column("Name").getId())).hasValue("newName");
+
+                }, () -> fail("Missing form"));
+
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialFormContentConsumer)
+                .then(editNameTextfieldCell)
+                .consumeNextWith(editNameConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
     private Consumer<Object> getEditIsDoneConsumer() {
         return payload -> Optional.of(payload)
                 .filter(FormRefreshedEventPayload.class::isInstance)

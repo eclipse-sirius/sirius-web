@@ -183,7 +183,14 @@ public class ClassPageDescriptionProvider implements IPageDescriptionProvider {
         var cellDescriptions = new TableBuilders().newCellDescription()
                 .name("AttributesCell")
                 .preconditionExpression("true")
-                .cellWidgetDescription(new TableBuilders().newCellTextfieldWidgetDescription().build())
+                .cellWidgetDescription(new TableBuilders().newCellTextfieldWidgetDescription()
+                        .body(
+                                new ViewBuilders().newSetValue()
+                                        .featureName("name")
+                                        .valueExpression("aql:newValue")
+                                        .build()
+                        )
+                        .build())
                 .valueExpression("aql:self.name")
                 .build();
         return new TableWidgetBuilders().newTableWidgetDescription()
