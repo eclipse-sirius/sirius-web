@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.application.studio.services;
 
 import java.util.Objects;
+import java.util.UUID;
 
 import org.eclipse.sirius.components.domain.DomainPackage;
 import org.eclipse.sirius.components.view.ViewPackage;
@@ -54,8 +55,8 @@ public class StudioCapableEditingContextPredicate implements IStudioCapableEditi
 
     private boolean isStudioSemanticData(String editingContextId) {
         return new UUIDParser().parse(editingContextId)
-                .flatMap(this.semanticDataSearchService::findById)
-                .filter(semanticData -> semanticData.getDomains().stream()
+                .map((UUID id) -> this.semanticDataSearchService.findDomainsById(id))
+                .filter(domains -> domains.stream()
                         .anyMatch(semanticDataDomain -> semanticDataDomain.uri().equals(ViewPackage.eNS_URI) || semanticDataDomain.uri().equals(DomainPackage.eNS_URI)))
                 .isPresent();
     }

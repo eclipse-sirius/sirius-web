@@ -17,6 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticDataDomain;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 /**
@@ -29,6 +30,8 @@ public interface ISemanticDataSearchService {
     List<SemanticData> findAllByDomains(List<String> domainUris);
 
     Optional<SemanticData> findById(UUID id);
+
+    List<SemanticDataDomain> findDomainsById(UUID id);
 
     boolean existsById(UUID id);
 

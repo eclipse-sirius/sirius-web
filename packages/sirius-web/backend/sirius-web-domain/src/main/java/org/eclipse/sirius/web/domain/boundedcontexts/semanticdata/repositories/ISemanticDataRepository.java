@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticDataDomain;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.ListPagingAndSortingRepository;
@@ -60,4 +61,13 @@ public interface ISemanticDataRepository extends ListPagingAndSortingRepository<
         SELECT dependency_semantic_data_id FROM dependencies
         """)
     List<UUID> findAllDependenciesRecursivelyById(UUID id);
+
+    @Query("""
+            SELECT semanticDataDomain.*
+            FROM semantic_data semanticData
+            JOIN semantic_data_domain semanticDataDomain
+            ON semanticData.id = semanticDataDomain.semantic_data_id
+            WHERE semanticData.id = :id
+            """)
+    List<SemanticDataDomain> findDomainsById(UUID id);
 }
