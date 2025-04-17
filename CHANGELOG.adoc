@@ -21,6 +21,7 @@
 - [ADR-189] Add actions on diagram nodes
 - [ADR-190] Update the template used to convert elements of the DSL
 - [ADR-191] Add the capability of customizing the appearance of diagram elements
+- [ADR-192] Add the ability for diagram nodes actions to execute something on the browser
 
 
 === Deprecation warning
@@ -186,7 +187,7 @@ Actions are visible on nodes on diagrams, on the top right corner of the nodes, 
 - https://github.com/eclipse-sirius/sirius-web/issues/4626[#4626] [diagram] Conserve rectilinearity of custom edges
 - https://github.com/eclipse-sirius/sirius-web/issues/4770[#4770] [diagram] Allow reconnecting an edge on another edge
 - https://github.com/eclipse-sirius/sirius-web/issues/4745[#4745] Add table cell extension point
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4849[#4849] [diagram] Node actions can have a browser behavior through an extension point's contributions
 
 === Improvements
 
