@@ -40,11 +40,11 @@ import org.eclipse.sirius.components.view.emf.operations.api.IOperationExecutor;
 import org.eclipse.sirius.components.view.emf.operations.api.OperationExecutionStatus;
 import org.eclipse.sirius.components.view.emf.table.api.ICustomViewEditCellExecutor;
 import org.eclipse.sirius.components.view.emf.table.api.IViewEditCellExecutor;
+import org.eclipse.sirius.components.view.table.CellDescription;
 import org.eclipse.sirius.components.view.table.CellLabelWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellTextfieldWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellWidgetDescription;
-import org.eclipse.sirius.components.view.table.TableDescription;
 import org.springframework.stereotype.Service;
 
 /**
@@ -82,28 +82,26 @@ public class ViewEditCellExecutor implements IViewEditCellExecutor {
     }
 
     @Override
-    public IStatus execute(IEditingContext editingContext, TableDescription viewTableDescription, ICell cell, Line row, Column column, Object newValue) {
-        if (viewTableDescription.eContainer() instanceof View view) {
-            AQLInterpreter interpreter = this.aqlInterpreterFactory.createInterpreter(editingContext, view);
+    public IStatus execute(IEditingContext editingContext, View view, List<CellDescription> viewTableCellDescriptions, ICell cell, Line row, Column column, Object newValue) {
+        AQLInterpreter interpreter = this.aqlInterpreterFactory.createInterpreter(editingContext, view);
 
-            var optionalViewCellDescription = viewTableDescription.getCellDescriptions().stream()
-                    .filter(cellDescription -> cell.getDescriptionId().equals(this.tableIdProvider.getId(cellDescription)))
-                    .findFirst();
+        var optionalViewCellDescription = viewTableCellDescriptions.stream()
+                .filter(cellDescription -> cell.getDescriptionId().equals(this.tableIdProvider.getId(cellDescription)))
+                .findFirst();
 
-            var optionalRowSemanticObject = this.objectSearchService.getObject(editingContext, row.getTargetObjectId());
-            if (optionalViewCellDescription.isPresent() && optionalRowSemanticObject.isPresent()) {
-                var viewCellDescription = optionalViewCellDescription.get();
-                var self = optionalRowSemanticObject.get();
+        var optionalRowSemanticObject = this.objectSearchService.getObject(editingContext, row.getTargetObjectId());
+        if (optionalViewCellDescription.isPresent() && optionalRowSemanticObject.isPresent()) {
+            var viewCellDescription = optionalViewCellDescription.get();
+            var self = optionalRowSemanticObject.get();
 
-                VariableManager variableManager = new VariableManager();
-                variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
-                variableManager.put("cell", cell);
-                variableManager.put("row", row);
-                variableManager.put("column", column);
-                variableManager.put("newValue", newValue);
-                variableManager.put(VariableManager.SELF, self);
-                return this.executeCellWidgetDescription(variableManager, interpreter, viewCellDescription.getCellWidgetDescription());
-            }
+            VariableManager variableManager = new VariableManager();
+            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+            variableManager.put("cell", cell);
+            variableManager.put("row", row);
+            variableManager.put("column", column);
+            variableManager.put("newValue", newValue);
+            variableManager.put(VariableManager.SELF, self);
+            return this.executeCellWidgetDescription(variableManager, interpreter, viewCellDescription.getCellWidgetDescription());
         }
         return this.buildFailureWithFeedbackMessages(this.viewEMFMessageService.tableCellEditError());
     }
