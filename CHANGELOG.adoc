@@ -126,6 +126,7 @@ This can be disabled with a system property for easy testing/comparison and if s
 - https://github.com/eclipse-sirius/sirius-web/issues/4875[#4875] [table] Improve table representation lifecycle
 - https://github.com/eclipse-sirius/sirius-web/issues/4825[#4825] [table] Add support for tooltip on table cells
 - https://github.com/eclipse-sirius/sirius-web/issues/4841[#4841] [diagram] Allow moving the handle of an edge targeting another edge
+- https://github.com/eclipse-sirius/sirius-web/issues/4850[#4850] [diagram] Impove handles placement on edges during connection or when the EdgeAnchorNode is rerendered
 
 
 
