@@ -1,0 +1,99 @@
+= ADR-192 - Add the ability for diagram nodes actions to execute something on the browser
+
+== Context
+
+Actions on diagram nodes send a `invokeAction` mutation to the backend and this leads to something being executed through an implementation of `IActionHandler`.
+As such there is no mechanism that would allow an action to execute something on the browser-side, for example a click on an action leading to opening a website on the browser.
+Additionnally, actions are always visible on the nodes whether the diagram is in read-only or not.
+
+== Decision
+
+Using the current mechanism to provide actions, we can extend it for it to be able to provide actions that in the front-end will look up a matching contribution by extension point in order to have a specific browser behavior.
+
+The graphql schema of an action currently is :
+
+[code,graphql]
+----
+type Action {
+  id: ID!
+  tooltip: String!
+  iconURLs: [String!]!
+}
+----
+
+We could add some new fields to end up with something like :
+
+[code,graphql]
+----
+type Action {
+  id: ID!
+  name: String!
+  tooltip: String!
+  iconURLs: [String!]!
+  readOnlyVisible: Boolean!
+  remoteExecution: Boolean!
+  localExecution: Boolean!
+}
+----
+
+The new fields being :
+
+- `name` : Used to look up a extension point contribution matching the action.
+- `readOnlyVisible` : Used to specify if the action should be visible when a diagram is read-only.
+- `remoteExecution` : Used to indicate if there is something on the backend to execute for the action.
+- `localExecution` : Used to indicate if a extension point contribution matching the action should be searched for and applied.
+
+This will allow 3 different behaviors for actions :
+
+- The current behavior, which is sending a mutation to the backend.
+- A behavior that allows a contribution by extension point to do something on the browser side.
+- A combination of both behaviors, the contribution by extension point would be given the possibility to invoke a mutation.
+
+=== Backend
+
+Excluding the schema changes there would be no significant changes on the backend.
+For the view DSL a new type of Action would make it possible to provide actions that cover the new behaviors.
+
+=== Frontend
+
+A new extension point like this would be added :
+
+[code,typescript]
+----
+export interface ActionContributionProps {
+  name: string;
+  component: React.ComponentType<ActionContributionComponentProps>;
+}
+
+export interface ActionContributionComponentProps {
+  diagramElementId: string;
+  invokeRemoteAction: (() => void) | null;
+  children: React.ReactNode;
+}
+
+export const actionsExtensionPoint: DataExtensionPoint<Array<ActionContributionProps>> = {
+  identifier: 'node#actions',
+  fallback: [],
+};
+----
+
+And the current useActions hook, and ActionContainer/Action components would be modified to accomodate the new behaviors.
+The current Action component returns :
+
+[code,react]
+----
+<IconButton className={classes.actionIcon} size="small" onClick={() => invokeAction(action)}>
+  <IconOverlay iconURL={action.iconURLs} title={action.tooltip} alt={action.tooltip} />
+</IconButton>
+----
+
+When there is a contribution by extension point we would make it so that it returns :
+
+[code,react]
+----
+<ActionContributionComponent diagramElementId={diagramElementId} invokeRemoteAction={invokeRemoteAction}>
+  <IconButton className={classes.actionIcon} size="small">
+    <IconOverlay iconURL={action.iconURLs} title={action.tooltip} alt={action.tooltip} />
+  </IconButton>
+</ActionContributionComponent>
+----
