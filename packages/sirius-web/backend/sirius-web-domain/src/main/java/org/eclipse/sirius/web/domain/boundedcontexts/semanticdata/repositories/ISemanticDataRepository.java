@@ -40,6 +40,16 @@ public interface ISemanticDataRepository extends ListPagingAndSortingRepository<
     List<SemanticData> findAllByDomains(List<String> domainUris);
 
     @Query("""
+            SELECT CASE WHEN COUNT(semanticDataDomain.*) > 0 THEN true ELSE false END
+            FROM semantic_data semanticData
+            JOIN semantic_data_domain semanticDataDomain
+            ON semanticData.id = semanticDataDomain.semantic_data_id
+            WHERE semanticData.id = :id
+            AND semanticDataDomain.uri IN (:domainUris)
+            """)
+    boolean isUsingDomains(UUID id, List<String> domainUris);
+
+    @Query("""
         SELECT dependency_semantic_data_id FROM semantic_data_dependency semanticDataDependency
         WHERE semanticDataDependency.semantic_data_id = :id
         """)

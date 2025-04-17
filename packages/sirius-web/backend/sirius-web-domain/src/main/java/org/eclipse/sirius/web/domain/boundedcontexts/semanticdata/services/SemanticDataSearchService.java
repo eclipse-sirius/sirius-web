@@ -43,6 +43,11 @@ public class SemanticDataSearchService implements ISemanticDataSearchService {
     }
 
     @Override
+    public boolean isUsingDomains(UUID id, List<String> domainUris) {
+        return this.semanticDataRepository.isUsingDomains(id, domainUris);
+    }
+
+    @Override
     public Optional<SemanticData> findById(UUID id) {
         return this.semanticDataRepository.findById(id);
     }
@@ -64,4 +69,5 @@ public class SemanticDataSearchService implements ISemanticDataSearchService {
         var semanticDataIds = this.semanticDataRepository.findAllDependenciesRecursivelyById(id);
         return this.semanticDataRepository.findAllById(semanticDataIds);
     }
+
 }

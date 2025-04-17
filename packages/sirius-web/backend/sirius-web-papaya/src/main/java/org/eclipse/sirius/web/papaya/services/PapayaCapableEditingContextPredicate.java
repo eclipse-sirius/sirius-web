@@ -12,7 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.papaya.services;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.web.application.UUIDParser;
@@ -69,8 +71,8 @@ public class PapayaCapableEditingContextPredicate implements IPapayaCapableEditi
 
     private boolean isPapayaSemanticData(String editingContextId) {
         return new UUIDParser().parse(editingContextId)
-                .flatMap(this.semanticDataSearchService::findById)
-                .filter(semanticData -> semanticData.getDomains().stream().anyMatch(semanticDataDomain -> semanticDataDomain.uri().equals(PapayaPackage.eNS_URI)))
-                .isPresent();
+                .map((UUID id) -> this.semanticDataSearchService.isUsingDomains(id, List.of(PapayaPackage.eNS_URI)))
+                .orElse(Boolean.FALSE)
+                .booleanValue();
     }
 }

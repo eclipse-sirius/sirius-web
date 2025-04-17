@@ -84,6 +84,9 @@ The improvement on project opening will be proportional to the size/complexity o
 - https://github.com/eclipse-sirius/sirius-web/issues/4877[#4877] [diagram] Change handle position after dragging first/last segment on node borders
 - https://github.com/eclipse-sirius/sirius-web/issues/4879[#4879] [diagram] Prevents an edge segment from being parallel to node borders
 - https://github.com/eclipse-sirius/sirius-web/issues/4867[#4867] [diagram] When creating a new connection, use the parent as candidate if possible
+- https://github.com/eclipse-sirius/sirius-web/issues/4840[#4850] [sirius-web] Reduce the amount of data fetched from the DB on project opening.
+`StudioCapableEditingContextPredicate` (called several times on projet open) now avoids fetching the documents content, which it does not need.
+On large projects this can significantly reduce the amount of data fetched from the DB and not actually used.
 
 
 
