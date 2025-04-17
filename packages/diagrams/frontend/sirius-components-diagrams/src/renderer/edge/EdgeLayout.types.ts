@@ -92,3 +92,5 @@ export interface HandleCoordinates {
   x: number;
   y: number;
 }
+
+export type SegmentDirection = 'x' | 'y';
