@@ -21,7 +21,8 @@ import {
 } from '@xyflow/react';
 import React, { memo, useEffect } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { getNearestPointInPerimeter, getNodesUpdatedWithHandles } from './EdgeLayout';
+import { ConnectionHandle } from '../handles/ConnectionHandles.types';
+import { getNearestPointInPath, getNearestPointInPerimeter, getNodesUpdatedWithHandles } from './EdgeLayout';
 
 const connectionLineStyle = (theme: Theme): React.CSSProperties => {
   return {
@@ -43,13 +44,27 @@ export const ConnectionLine = memo(
     fromHandle,
   }: ConnectionLineComponentProps<Node<NodeData>>) => {
     const theme = useTheme();
-    const { getNodes, setNodes, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+    const { getNodes, setNodes, getEdges, getEdge } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
     const updateNodeInternals = useUpdateNodeInternals();
 
     const edgeId = fromNode.data.connectionHandles.find((handle) => handle.id === fromHandle?.id)?.edgeId;
     const targetHandle = getEdges().find((e) => e.id === edgeId)?.targetHandle;
     const sourceHandle = getEdges().find((e) => e.id === edgeId)?.sourceHandle;
     const handleToUpdate = targetHandle === fromHandle.id ? sourceHandle : targetHandle;
+
+    if (edgeId) {
+      const edge = getEdge(edgeId);
+      if (edge) {
+        const edgeBase = getEdge(edge.target);
+        // Snap the ConnectionLine to the border of the targetted edge
+        if (edgeBase && edgeBase.data && edgeBase.data.edgePath && edgeBase.data.isHovered) {
+          const { position, handlePosition } = getNearestPointInPath(toX, toY, edgeBase.data.edgePath, fromNode);
+          toX = position.x;
+          toY = position.y;
+          toPosition = handlePosition;
+        }
+      }
+    }
 
     if (handleToUpdate) {
       if (edgeId && toNode && toNode.width && toNode.height) {
@@ -82,6 +97,45 @@ export const ConnectionLine = memo(
         );
         setNodes(nodes);
         updateNodeInternals(toNode.id);
+      }
+
+      if (edgeId) {
+        const edge = getEdge(edgeId);
+        if (edge) {
+          const edgeBase = getEdge(edge.target);
+          if (edgeBase && edgeBase.data && edgeBase.data.edgePath && edgeBase.data.isHovered) {
+            const { position, positionRatio, handlePosition } = getNearestPointInPath(
+              toX,
+              toY,
+              edgeBase.data.edgePath,
+              fromNode
+            );
+            setNodes((prevNodes) =>
+              prevNodes.map((prevNode) => {
+                if (prevNode.id === edgeBase.id) {
+                  const handles: ConnectionHandle[] = prevNode.data.connectionHandles.map((connectionHandle) => {
+                    return {
+                      ...connectionHandle,
+                      position: handlePosition,
+                    };
+                  });
+
+                  return {
+                    ...prevNode,
+                    position: position,
+                    data: {
+                      ...prevNode.data,
+                      isLayouted: true,
+                      positionRatio: positionRatio,
+                      connectionHandles: handles,
+                    },
+                  };
+                }
+                return prevNode;
+              })
+            );
+          }
+        }
       }
     }, [toX, toY]);
 

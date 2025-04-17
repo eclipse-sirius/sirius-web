@@ -21,6 +21,7 @@ import { Label } from '../../Label';
 import { DiagramElementPalette } from '../../palette/DiagramElementPalette';
 import { BendPoint, TemporaryMovingLine } from '../BendPoint';
 import { EdgeCreationHandle } from '../EdgeCreationHandle';
+import { SegmentDirection } from '../EdgeLayout.types';
 import { MultiLabelEdgeData } from '../MultiLabelEdge.types';
 import { MultiLabelEditableEdgeProps } from './MultiLabelRectilinearEditableEdge.types';
 import { determineSegmentAxis } from './RectilinearEdgeCalculation';
@@ -137,7 +138,7 @@ export const MultiLabelRectilinearEditableEdge = memo(
         const currentPoint = reorderBendPoint[i];
         if (currentPoint) {
           if (i === 0) {
-            if (determineSegmentAxis({ x: sourceX, y: sourceY }, currentPoint) === 'x') {
+            if (determineSegmentAxis({ x: sourceX, y: sourceY }, currentPoint) === SegmentDirection.HORIZONTAL) {
               edgePath += ` L ${currentPoint.x} ${sourceY}`;
             } else {
               edgePath += ` L ${sourceX} ${currentPoint.y}`;

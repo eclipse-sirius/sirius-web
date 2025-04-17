@@ -12,16 +12,17 @@
  *******************************************************************************/
 
 import { XYPosition } from '@xyflow/react';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { DraggableData } from 'react-draggable';
 import { useStore } from '../../../representation/useStore';
+import { SegmentDirection } from '../EdgeLayout.types';
+import { useEditableEdgePath } from '../useEditableEdgePath';
 import {
-  getMiddlePoint,
-  generateNewBendPointToPreserveRectilinearSegment,
   cleanBendPoint,
   determineSegmentAxis,
+  generateNewBendPointToPreserveRectilinearSegment,
+  getMiddlePoint,
 } from './RectilinearEdgeCalculation';
-import { useEditableEdgePath } from '../useEditableEdgePath';
 import { BendPointData, UseBendingPointsValue } from './useBendingPoints.types';
 
 export const useBendingPoints = (
@@ -106,7 +107,7 @@ export const useBendingPoints = (
       const firstPoint = newPoints[0];
       const secondPoint = newPoints[1];
       if (firstPoint && secondPoint) {
-        if (determineSegmentAxis(firstPoint, secondPoint) === 'x') {
+        if (determineSegmentAxis(firstPoint, secondPoint) === SegmentDirection.HORIZONTAL) {
           firstPoint.x = sourceX;
         } else {
           firstPoint.y = sourceY;
@@ -122,7 +123,7 @@ export const useBendingPoints = (
       const lastPoint = newPoints[newPoints.length - 1];
       const penultimatePoint = newPoints[newPoints.length - 2];
       if (lastPoint && penultimatePoint) {
-        if (determineSegmentAxis(penultimatePoint, lastPoint) === 'x') {
+        if (determineSegmentAxis(penultimatePoint, lastPoint) === SegmentDirection.HORIZONTAL) {
           lastPoint.x = targetX;
         } else {
           lastPoint.y = targetY;

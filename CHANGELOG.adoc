@@ -186,6 +186,7 @@ Actions are visible on nodes on diagrams, on the top right corner of the nodes, 
 - https://github.com/eclipse-sirius/sirius-web/issues/4626[#4626] [diagram] Conserve rectilinearity of custom edges
 - https://github.com/eclipse-sirius/sirius-web/issues/4770[#4770] [diagram] Allow reconnecting an edge on another edge
 - https://github.com/eclipse-sirius/sirius-web/issues/4745[#4745] Add table cell extension point
+- https://github.com/eclipse-sirius/sirius-web/issues/4841[#4841] [diagram] Allow moving the handle of an edge targeting another edge
 
 
 === Improvements
@@ -228,6 +229,7 @@ See the ADR 190 for additional details on the goal of this refactoring.
 - https://github.com/eclipse-sirius/sirius-web/issues/4762[#4762] [diagram] Enhance papaya lifecycle diagram with new concepts
 - https://github.com/eclipse-sirius/sirius-web/issues/4687[#4687] [table] Make table line header resizable
 - https://github.com/eclipse-sirius/sirius-web/issues/4804[#4804] [table] Avoid to reset the header column width when another column is resized
+- https://github.com/eclipse-sirius/sirius-web/issues/4850[#4850] [diagram] Impove handles placement on edges during connection or when the EdgeAnchorNode is rerendered
 
 == v2025.2.0
 
