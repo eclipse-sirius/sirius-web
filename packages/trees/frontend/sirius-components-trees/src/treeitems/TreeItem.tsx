@@ -137,7 +137,7 @@ export const TreeItem = ({
 
   const onTreeItemAction = () => {
     setState((prevState) => {
-      return { ...prevState, isHovered: false };
+      return { ...prevState, partHovered: null };
     });
   };
 
