@@ -11,20 +11,21 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { XYPosition } from '@xyflow/react';
+import { SegmentDirection } from '../EdgeLayout.types';
 import { BendPointData } from './useBendingPoints.types';
 
 export const getMiddlePoint = (p1: XYPosition, p2: XYPosition): XYPosition => {
   return { x: (p1.x + p2.x) / 2, y: (p1.y + p2.y) / 2 };
 };
 
-export const determineSegmentAxis = (p1: XYPosition, p2: XYPosition): 'x' | 'y' => {
+export const determineSegmentAxis = (p1: XYPosition, p2: XYPosition): SegmentDirection => {
   const deltaX = Math.abs(p2.x - p1.x);
   const deltaY = Math.abs(p2.y - p1.y);
 
   if (deltaX > deltaY) {
-    return 'x';
+    return SegmentDirection.HORIZONTAL;
   }
-  return 'y';
+  return SegmentDirection.VERTICAL;
 };
 
 export const cleanBendPoint = (bendPoints: XYPosition[]): XYPosition[] => {
@@ -72,14 +73,15 @@ export const generateNewBendPointToPreserveRectilinearSegment = (
         point.pathOrder += 4;
       }
     });
-    const axis: 'x' | 'y' = determineSegmentAxis(prevMiddlePoint, currentPoint);
+
+    const segmentDirection: SegmentDirection = determineSegmentAxis(prevMiddlePoint, currentPoint);
     newPoints.push({
       ...prevMiddlePoint,
       pathOrder: bendPointIndex,
     });
     newPoints.push({
-      x: axis === 'x' ? prevMiddlePoint.x : newX,
-      y: axis === 'x' ? newY : prevMiddlePoint.y,
+      x: segmentDirection === SegmentDirection.HORIZONTAL ? prevMiddlePoint.x : newX,
+      y: segmentDirection === SegmentDirection.HORIZONTAL ? newY : prevMiddlePoint.y,
       pathOrder: bendPointIndex + 1,
     });
     newPoints[bendPointIndex] = {
@@ -88,8 +90,8 @@ export const generateNewBendPointToPreserveRectilinearSegment = (
       pathOrder: bendPointIndex + 2,
     };
     newPoints.push({
-      x: axis === 'x' ? newX : nextMiddlePoint.x,
-      y: axis === 'x' ? nextMiddlePoint.y : newY,
+      x: segmentDirection === SegmentDirection.HORIZONTAL ? newX : nextMiddlePoint.x,
+      y: segmentDirection === SegmentDirection.HORIZONTAL ? nextMiddlePoint.y : newY,
       pathOrder: bendPointIndex + 3,
     });
     newPoints.push({ ...nextMiddlePoint, pathOrder: bendPointIndex + 4 });
@@ -101,7 +103,7 @@ export const generateNewBendPointOnSourceSegment = (
   existingBendPoint: XYPosition[],
   newX: number,
   newY: number,
-  direction: 'x' | 'y',
+  direction: SegmentDirection,
   sourceNodeRelativePosition: XYPosition,
   adjacentPointIndex: number
 ): BendPointData[] => {
@@ -111,8 +113,8 @@ export const generateNewBendPointOnSourceSegment = (
     point.pathOrder += 2;
   });
   newPoints.push({
-    x: direction === 'x' ? newX : sourceNodeRelativePosition.x,
-    y: direction === 'y' ? newY : sourceNodeRelativePosition.y,
+    x: direction === SegmentDirection.HORIZONTAL ? newX : sourceNodeRelativePosition.x,
+    y: direction === SegmentDirection.VERTICAL ? newY : sourceNodeRelativePosition.y,
     pathOrder: 0,
   });
   newPoints.push({
@@ -120,11 +122,11 @@ export const generateNewBendPointOnSourceSegment = (
     y: newY,
     pathOrder: 1,
   });
-  if (direction === 'x') {
+  if (direction === SegmentDirection.HORIZONTAL) {
     if (adjacentPoint) {
       adjacentPoint.y = newY;
     }
-  } else if (direction === 'y') {
+  } else if (direction === SegmentDirection.VERTICAL) {
     if (adjacentPoint) {
       adjacentPoint.x = newX;
     }
@@ -137,7 +139,7 @@ export const generateNewBendPointOnTargetSegment = (
   existingBendPoint: XYPosition[],
   newX: number,
   newY: number,
-  direction: 'x' | 'y',
+  direction: SegmentDirection,
   targetNodeRelativePosition: XYPosition,
   adjacentPointIndex: number
 ): BendPointData[] => {
@@ -150,15 +152,15 @@ export const generateNewBendPointOnTargetSegment = (
     pathOrder: adjacentPointIndex + 1,
   });
   newPoints.push({
-    x: direction === 'x' ? newX : targetNodeRelativePosition.x,
-    y: direction === 'y' ? newY : targetNodeRelativePosition.y,
+    x: direction === SegmentDirection.HORIZONTAL ? newX : targetNodeRelativePosition.x,
+    y: direction === SegmentDirection.VERTICAL ? newY : targetNodeRelativePosition.y,
     pathOrder: adjacentPointIndex + 2,
   });
-  if (direction === 'x') {
+  if (direction === SegmentDirection.HORIZONTAL) {
     if (adjacentPoint) {
       adjacentPoint.y = newY;
     }
-  } else if (direction === 'y') {
+  } else if (direction === SegmentDirection.VERTICAL) {
     if (adjacentPoint) {
       adjacentPoint.x = newX;
     }

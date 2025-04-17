@@ -13,6 +13,7 @@
 
 import { InternalNode, Node, Position, XYPosition } from '@xyflow/react';
 import { Handle, NodeLookup } from '@xyflow/system';
+import parse from 'svg-path-parser';
 import { BorderNodePosition, NodeData } from '../DiagramRenderer.types';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
 import { getPositionAbsoluteFromNodeChange, isDescendantOf, isSiblingOrDescendantOf } from '../layout/layoutNode';
@@ -26,6 +27,7 @@ import {
   GetUpdatedConnectionHandlesParameters,
   NodeCenter,
   Parameters,
+  SegmentDirection,
 } from './EdgeLayout.types';
 
 export const DEFAULT_HANDLE_SIZE = 6;
@@ -104,11 +106,62 @@ export const getNodesUpdatedWithHandles = (
 
 const clamp = (n: number, lower: number, upper: number) => Math.max(lower, Math.min(upper, n));
 
+export const getHandlePositionFromNodeAndPath = (
+  edgePath: string,
+  xyPosition: XYPosition,
+  fromNode: InternalNode<Node<NodeData>> | Node<NodeData>
+): Position => {
+  let position = Position.Right;
+
+  if (getSegmentDirection(edgePath, xyPosition) === SegmentDirection.HORIZONTAL) {
+    if (fromNode.position.y > xyPosition.y) {
+      position = Position.Bottom;
+    } else {
+      position = Position.Top;
+    }
+  } else {
+    if (fromNode.position.x > xyPosition.x) {
+      position = Position.Right;
+    } else {
+      position = Position.Left;
+    }
+  }
+
+  return position;
+};
+
+const getSegmentDirection = (edgePath: string, xyPosition: XYPosition): SegmentDirection => {
+  const pathPoints = parse(edgePath);
+  let segmentDirection = SegmentDirection.HORIZONTAL;
+  const { x, y } = xyPosition;
+  for (let i = 1; i < pathPoints.length; i++) {
+    const p1 = pathPoints[i - 1];
+    const p2 = pathPoints[i];
+    if (p1 && p2) {
+      const isHorizontal: boolean = p1.y === p2.y;
+      const isVertical: boolean = p1.x === p2.x;
+
+      const onSegment =
+        (isHorizontal &&
+          Math.round(y) === Math.round(p1.y) &&
+          x >= Math.min(p1.x, p2.x) &&
+          x <= Math.max(p1.x, p2.x)) ||
+        (isVertical && Math.round(x) === Math.round(p1.x) && y >= Math.min(p1.y, p2.y) && y <= Math.max(p1.y, p2.y));
+
+      if (onSegment) {
+        return isHorizontal ? SegmentDirection.HORIZONTAL : SegmentDirection.VERTICAL;
+      }
+    }
+  }
+
+  return segmentDirection;
+};
 export const getNearestPointInPath = (
   x: number,
   y: number,
-  edgePath: string
-): { position: XYPosition; positionRatio: number } => {
+  edgePath: string,
+  fromNode: InternalNode<Node<NodeData>>
+): { position: XYPosition; handlePosition: Position; positionRatio: number } => {
   var svgPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
   svgPath.setAttribute('d', edgePath);
   const pathLength = svgPath.getTotalLength();
@@ -133,9 +186,12 @@ export const getNearestPointInPath = (
 
   positionRatio = pointAtLength / pathLength;
 
+  const handlePosition = getHandlePositionFromNodeAndPath(edgePath, closestPoint, fromNode);
+
   return {
     position: closestPoint,
     positionRatio: positionRatio,
+    handlePosition: handlePosition,
   };
 };
 

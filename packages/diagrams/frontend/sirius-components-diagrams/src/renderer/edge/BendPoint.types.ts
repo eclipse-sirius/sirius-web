@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { DraggableData } from 'react-draggable';
+import { SegmentDirection } from './EdgeLayout.types';
 
 export interface BendPointProps {
   x: number;
@@ -23,9 +24,9 @@ export interface BendPointProps {
 export interface TemporaryMovingLineProps {
   x: number;
   y: number;
-  direction: 'x' | 'y';
+  direction: SegmentDirection;
   segmentLength: number;
   index: number;
-  onDrag: (eventData: DraggableData, index: number, direction: 'x' | 'y') => void;
+  onDrag: (eventData: DraggableData, index: number, direction: SegmentDirection) => void;
   onDragStop: (eventData: DraggableData, index: number) => void;
 }

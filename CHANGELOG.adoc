@@ -32,6 +32,7 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/4826[#4826] [diagram] Allow source and target handle position changes during edge customisation
 - https://github.com/eclipse-sirius/sirius-web/issues/4830[#4830] [view] Add `Edge Width` property in `edgeStyle` details view
 - https://github.com/eclipse-sirius/sirius-web/issues/4841[#4841] [diagram] Allow moving the handle of an edge targeting another edge
+- https://github.com/eclipse-sirius/sirius-web/issues/4850[#4850] [diagram] Impove handles placement on edges during connection or when the EdgeAnchorNode is rerendered
 
 
 
