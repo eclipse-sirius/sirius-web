@@ -20,9 +20,11 @@ import java.util.Objects;
  *
  * @author arichard
  */
-public record Action(String id, List<String> iconURLs, String tooltip) {
+public record Action(String id, String name, List<String> iconURLs, String tooltip, boolean readOnlyVisible, boolean remoteExecution, boolean localExecution) {
+
     public Action {
         Objects.requireNonNull(id);
+        Objects.requireNonNull(name);
         Objects.requireNonNull(iconURLs);
         Objects.requireNonNull(tooltip);
     }

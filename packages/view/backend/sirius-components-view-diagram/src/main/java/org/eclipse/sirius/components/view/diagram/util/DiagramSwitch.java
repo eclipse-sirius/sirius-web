@@ -51,6 +51,7 @@ import org.eclipse.sirius.components.view.diagram.LabelDescription;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
+import org.eclipse.sirius.components.view.diagram.LocalAction;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeLabelStyle;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
@@ -545,6 +546,15 @@ public class DiagramSwitch<T> extends Switch<T> {
             case DiagramPackage.ACTION: {
                 Action action = (Action) theEObject;
                 T result = this.caseAction(action);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case DiagramPackage.LOCAL_ACTION: {
+                LocalAction localAction = (LocalAction) theEObject;
+                T result = this.caseLocalAction(localAction);
+                if (result == null)
+                    result = this.caseAction(localAction);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1239,6 +1249,20 @@ public class DiagramSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseAction(Action object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Local Action</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Local Action</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseLocalAction(LocalAction object) {
         return null;
     }
 

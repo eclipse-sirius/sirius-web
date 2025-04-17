@@ -96,19 +96,19 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .build();
 
         var newAttributeAction = new DiagramBuilders().newAction()
-                    .body(new ViewBuilders().newChangeContext()
-                            .expression("aql:self")
-                            .children(
-                                    new ViewBuilders().newCreateInstance()
-                                            .typeName("papaya:Attribute")
-                                            .referenceName("attributes")
-                                            .build()
-                            )
-                            .build())
-                    .iconURLsExpression("aql:'/icons/papaya/full/obj16/Attribute.svg'")
-                    .tooltipExpression("New attribute")
-                    .name("New Attribute Action")
-                    .build();
+                .body(new ViewBuilders().newChangeContext()
+                        .expression("aql:self")
+                        .children(
+                                new ViewBuilders().newCreateInstance()
+                                        .typeName("papaya:Attribute")
+                                        .referenceName("attributes")
+                                        .build()
+                        )
+                        .build())
+                .iconURLsExpression("aql:'/icons/papaya/full/obj16/Attribute.svg'")
+                .tooltipExpression("New attribute")
+                .name("New Attribute Action")
+                .build();
 
         var newOperationAction = new DiagramBuilders().newAction()
                 .body(new ViewBuilders().newChangeContext()
@@ -123,6 +123,13 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .iconURLsExpression("aql:'/icons/papaya/full/obj16/Operation.svg'")
                 .tooltipExpression("New operation")
                 .name("New Operation Action")
+                .build();
+
+        var newVisitUMLSpecAction = new DiagramBuilders().newLocalAction()
+                .iconURLsExpression("aql:'/icons/papaya/full/obj16/Query.svg'")
+                .tooltipExpression("Visit UML Specification")
+                .name("VISIT_UML_SPEC")
+                .readOnlyVisible(true)
                 .build();
 
         return new DiagramBuilders().newNodeDescription()
@@ -140,7 +147,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 )
                 .userResizable(UserResizableDirection.BOTH)
                 .collapsible(true)
-                .actions(newAttributeAction, newOperationAction)
+                .actions(newAttributeAction, newOperationAction, newVisitUMLSpecAction)
                 .build();
     }
 

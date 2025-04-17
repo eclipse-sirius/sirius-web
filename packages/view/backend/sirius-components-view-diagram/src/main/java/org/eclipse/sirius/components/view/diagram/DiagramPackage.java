@@ -3684,12 +3684,21 @@ public interface DiagramPackage extends EPackage {
     int ACTION__BODY = 4;
 
     /**
+     * The feature id for the '<em><b>Read Only Visible</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ACTION__READ_ONLY_VISIBLE = 5;
+
+    /**
      * The number of structural features of the '<em>Action</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int ACTION_FEATURE_COUNT = 5;
+    int ACTION_FEATURE_COUNT = 6;
 
     /**
      * The number of operations of the '<em>Action</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3700,6 +3709,86 @@ public interface DiagramPackage extends EPackage {
     int ACTION_OPERATION_COUNT = 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.LocalActionImpl <em>Local
+     * Action</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.diagram.impl.LocalActionImpl
+     * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLocalAction()
+     * @generated
+     */
+    int LOCAL_ACTION = 47;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LOCAL_ACTION__NAME = ACTION__NAME;
+
+    /**
+     * The feature id for the '<em><b>Tooltip Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LOCAL_ACTION__TOOLTIP_EXPRESSION = ACTION__TOOLTIP_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Icon UR Ls Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LOCAL_ACTION__ICON_UR_LS_EXPRESSION = ACTION__ICON_UR_LS_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LOCAL_ACTION__PRECONDITION_EXPRESSION = ACTION__PRECONDITION_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LOCAL_ACTION__BODY = ACTION__BODY;
+
+    /**
+     * The feature id for the '<em><b>Read Only Visible</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LOCAL_ACTION__READ_ONLY_VISIBLE = ACTION__READ_ONLY_VISIBLE;
+
+    /**
+     * The number of structural features of the '<em>Local Action</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LOCAL_ACTION_FEATURE_COUNT = ACTION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Local Action</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LOCAL_ACTION_OPERATION_COUNT = ACTION_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.ArrowStyle <em>Arrow Style</em>}'
      * enum. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -3707,7 +3796,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getArrowStyle()
      * @generated
      */
-    int ARROW_STYLE = 47;
+    int ARROW_STYLE = 48;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.LayoutDirection <em>Layout
@@ -3717,7 +3806,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLayoutDirection()
      * @generated
      */
-    int LAYOUT_DIRECTION = 48;
+    int LAYOUT_DIRECTION = 49;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.LineStyle <em>Line Style</em>}'
@@ -3727,7 +3816,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLineStyle()
      * @generated
      */
-    int LINE_STYLE = 49;
+    int LINE_STYLE = 50;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.NodeContainmentKind <em>Node
@@ -3737,7 +3826,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getNodeContainmentKind()
      * @generated
      */
-    int NODE_CONTAINMENT_KIND = 50;
+    int NODE_CONTAINMENT_KIND = 51;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.SynchronizationPolicy
@@ -3747,7 +3836,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getSynchronizationPolicy()
      * @generated
      */
-    int SYNCHRONIZATION_POLICY = 51;
+    int SYNCHRONIZATION_POLICY = 52;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.InsideLabelPosition <em>Inside
@@ -3757,7 +3846,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getInsideLabelPosition()
      * @generated
      */
-    int INSIDE_LABEL_POSITION = 52;
+    int INSIDE_LABEL_POSITION = 53;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.OutsideLabelPosition <em>Outside
@@ -3767,7 +3856,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getOutsideLabelPosition()
      * @generated
      */
-    int OUTSIDE_LABEL_POSITION = 53;
+    int OUTSIDE_LABEL_POSITION = 54;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy <em>Label
@@ -3777,7 +3866,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLabelOverflowStrategy()
      * @generated
      */
-    int LABEL_OVERFLOW_STRATEGY = 54;
+    int LABEL_OVERFLOW_STRATEGY = 55;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection <em>Arrange
@@ -3787,7 +3876,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getArrangeLayoutDirection()
      * @generated
      */
-    int ARRANGE_LAYOUT_DIRECTION = 55;
+    int ARRANGE_LAYOUT_DIRECTION = 56;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.LabelTextAlign <em>Label Text
@@ -3797,7 +3886,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLabelTextAlign()
      * @generated
      */
-    int LABEL_TEXT_ALIGN = 56;
+    int LABEL_TEXT_ALIGN = 57;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.UserResizableDirection <em>User
@@ -3807,7 +3896,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getUserResizableDirection()
      * @generated
      */
-    int USER_RESIZABLE_DIRECTION = 57;
+    int USER_RESIZABLE_DIRECTION = 58;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode
@@ -3817,7 +3906,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getHeaderSeparatorDisplayMode()
      * @generated
      */
-    int HEADER_SEPARATOR_DISPLAY_MODE = 58;
+    int HEADER_SEPARATOR_DISPLAY_MODE = 59;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription
@@ -5973,6 +6062,28 @@ public interface DiagramPackage extends EPackage {
     EReference getAction_Body();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.Action#isReadOnlyVisible <em>Read Only Visible</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Read Only Visible</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.Action#isReadOnlyVisible()
+     * @see #getAction()
+     * @generated
+     */
+    EAttribute getAction_ReadOnlyVisible();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.LocalAction <em>Local
+     * Action</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Local Action</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.LocalAction
+     * @generated
+     */
+    EClass getLocalAction();
+
+    /**
      * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.diagram.ArrowStyle <em>Arrow
      * Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -7691,6 +7802,24 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EReference ACTION__BODY = eINSTANCE.getAction_Body();
+
+        /**
+         * The meta object literal for the '<em><b>Read Only Visible</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute ACTION__READ_ONLY_VISIBLE = eINSTANCE.getAction_ReadOnlyVisible();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.impl.LocalActionImpl
+         * <em>Local Action</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.diagram.impl.LocalActionImpl
+         * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLocalAction()
+         * @generated
+         */
+        EClass LOCAL_ACTION = eINSTANCE.getLocalAction();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.ArrowStyle <em>Arrow

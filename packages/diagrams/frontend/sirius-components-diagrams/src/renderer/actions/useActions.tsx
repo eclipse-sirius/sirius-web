@@ -11,11 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useQuery } from '@apollo/client';
-import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { useContext, useEffect } from 'react';
+import { useData, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { useContext, useEffect, useMemo } from 'react';
 
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { ActionContributionProps } from './ActionsContribution.types';
+import { actionsExtensionPoint } from './ActionsExtensionPoints';
 import {
   GQLAction,
   GQLDiagramDescription,
@@ -34,8 +36,12 @@ export const getActionsQuery = gql`
             ... on DiagramDescription {
               actions(diagramElementId: $diagramElementId) {
                 id
+                name
                 tooltip
                 iconURLs
+                readOnlyVisible
+                remoteExecution
+                localExecution
               }
             }
           }
@@ -51,7 +57,14 @@ const isDiagramDescription = (
 
 export const useActions = (diagramElementId: string): UseActionsValue => {
   const { addErrorMessage } = useMultiToast();
-  const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
+  const { readOnly, diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
+
+  const { data: actionsContribution } = useData(actionsExtensionPoint);
+  const actionsContributionMap = useMemo(() => {
+    const map: Map<string, ActionContributionProps> = new Map();
+    actionsContribution.forEach((contribution) => map.set(contribution.name, contribution));
+    return map;
+  }, []);
 
   const { data, error } = useQuery<GQLGetActionsData, GQLGetActionsVariables>(getActionsQuery, {
     variables: {
@@ -69,6 +82,7 @@ export const useActions = (diagramElementId: string): UseActionsValue => {
 
   const description: GQLRepresentationDescription | undefined = data?.viewer.editingContext.representation.description;
   const actions: GQLAction[] = description && isDiagramDescription(description) ? description.actions : [];
+  const filteredActions: GQLAction[] = readOnly ? actions.filter((action) => action.readOnlyVisible) : actions;
 
-  return { actions };
+  return { actions: filteredActions, contributions: actionsContributionMap };
 };

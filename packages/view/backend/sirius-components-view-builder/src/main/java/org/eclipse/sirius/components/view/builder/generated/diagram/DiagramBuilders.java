@@ -381,5 +381,15 @@ public class DiagramBuilders {
         return new ActionBuilder();
     }
 
+    /**
+     * Instantiate a LocalActionBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public LocalActionBuilder newLocalAction() {
+        return new LocalActionBuilder();
+    }
+
 
 }

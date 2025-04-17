@@ -53,6 +53,7 @@ import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
 import org.eclipse.sirius.components.view.diagram.LayoutDirection;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
+import org.eclipse.sirius.components.view.diagram.LocalAction;
 import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
@@ -193,6 +194,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.createSelectionDialogTreeDescription();
             case DiagramPackage.ACTION:
                 return this.createAction();
+            case DiagramPackage.LOCAL_ACTION:
+                return this.createLocalAction();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -666,6 +669,17 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
     public Action createAction() {
         ActionImpl action = new ActionImpl();
         return action;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public LocalAction createLocalAction() {
+        LocalActionImpl localAction = new LocalActionImpl();
+        return localAction;
     }
 
     /**

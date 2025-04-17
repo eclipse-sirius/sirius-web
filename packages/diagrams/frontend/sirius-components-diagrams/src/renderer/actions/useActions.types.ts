@@ -11,12 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { ActionContributionProps } from './ActionsContribution.types';
+
 export interface UseActionsProps {
   diagramElementId: string;
 }
 
 export interface UseActionsValue {
   actions: GQLAction[];
+  contributions: Map<string, ActionContributionProps>;
 }
 
 export interface GQLGetActionsVariables {
@@ -55,6 +58,10 @@ export interface GQLDiagramDescription extends GQLRepresentationDescription {
 
 export interface GQLAction {
   id: string;
+  name: string;
   tooltip: string;
   iconURLs: string[];
+  readOnlyVisible: boolean;
+  remoteExecution: boolean;
+  localExecution: boolean;
 }

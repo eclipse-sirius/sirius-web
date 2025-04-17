@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.Operation;
  * <li>{@link org.eclipse.sirius.components.view.diagram.Action#getPreconditionExpression <em>Precondition
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.Action#getBody <em>Body</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.Action#isReadOnlyVisible <em>Read Only Visible</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getAction()
@@ -139,5 +140,28 @@ public interface Action extends EObject {
      * @generated
      */
     EList<Operation> getBody();
+
+    /**
+     * Returns the value of the '<em><b>Read Only Visible</b></em>' attribute. The default value is
+     * <code>"false"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Read Only Visible</em>' attribute.
+     * @see #setReadOnlyVisible(boolean)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getAction_ReadOnlyVisible()
+     * @model default="false"
+     * @generated
+     */
+    boolean isReadOnlyVisible();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.Action#isReadOnlyVisible <em>Read Only
+     * Visible</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Read Only Visible</em>' attribute.
+     * @see #isReadOnlyVisible()
+     * @generated
+     */
+    void setReadOnlyVisible(boolean value);
 
 } // Action

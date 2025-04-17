@@ -10,11 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ActionContributionProps } from './ActionsContribution.types';
-import { GQLAction } from './useActions.types';
 
-export interface ActionProps {
-  action: GQLAction;
-  diagramElementId: string;
-  contribution: ActionContributionProps | undefined;
-}
+import { DataExtensionPoint } from '@eclipse-sirius/sirius-components-core';
+import { ActionContributionProps } from './ActionsContribution.types';
+
+export const actionsExtensionPoint: DataExtensionPoint<Array<ActionContributionProps>> = {
+  identifier: 'node#actions',
+  fallback: [],
+};

@@ -65,6 +65,7 @@ public class ActionItemProvider extends ItemProviderAdapter implements IEditingD
             this.addTooltipExpressionPropertyDescriptor(object);
             this.addIconURLsExpressionPropertyDescriptor(object);
             this.addPreconditionExpressionPropertyDescriptor(object);
+            this.addReadOnlyVisiblePropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -113,6 +114,17 @@ public class ActionItemProvider extends ItemProviderAdapter implements IEditingD
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_Action_preconditionExpression_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Action_preconditionExpression_feature", "_UI_Action_type"),
                 DiagramPackage.Literals.ACTION__PRECONDITION_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Read Only Visible feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addReadOnlyVisiblePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_Action_readOnlyVisible_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Action_readOnlyVisible_feature", "_UI_Action_type"),
+                DiagramPackage.Literals.ACTION__READ_ONLY_VISIBLE, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -192,6 +204,7 @@ public class ActionItemProvider extends ItemProviderAdapter implements IEditingD
             case DiagramPackage.ACTION__TOOLTIP_EXPRESSION:
             case DiagramPackage.ACTION__ICON_UR_LS_EXPRESSION:
             case DiagramPackage.ACTION__PRECONDITION_EXPRESSION:
+            case DiagramPackage.ACTION__READ_ONLY_VISIBLE:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case DiagramPackage.ACTION__BODY:

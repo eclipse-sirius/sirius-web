@@ -33,6 +33,11 @@ export type { GQLDiagram, GQLHandleLayoutData, GQLNodeLayoutData } from './graph
 export type { GQLEdge } from './graphql/subscription/edgeFragment.types';
 export { GQLViewModifier } from './graphql/subscription/nodeFragment.types';
 export type { GQLNode, GQLNodeStyle } from './graphql/subscription/nodeFragment.types';
+export type {
+  ActionContributionComponentProps,
+  ActionContributionProps,
+} from './renderer/actions/ActionsContribution.types';
+export { actionsExtensionPoint } from './renderer/actions/ActionsExtensionPoints';
 export { useConnectorNodeStyle } from './renderer/connector/useConnectorNodeStyle';
 export { BorderNodePosition as BorderNodePosition } from './renderer/DiagramRenderer.types';
 export type { Diagram, EdgeData, NodeData, ReactFlowPropsCustomizer } from './renderer/DiagramRenderer.types';

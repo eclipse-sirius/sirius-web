@@ -330,6 +330,14 @@ public interface DiagramFactory extends EFactory {
     Action createAction();
 
     /**
+     * Returns a new object of class '<em>Local Action</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Local Action</em>'.
+     * @generated
+     */
+    LocalAction createLocalAction();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.

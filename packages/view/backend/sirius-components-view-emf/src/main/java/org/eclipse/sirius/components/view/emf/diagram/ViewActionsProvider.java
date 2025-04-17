@@ -19,11 +19,11 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IActionsProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.Action;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.Action;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -74,7 +74,6 @@ public class ViewActionsProvider implements IActionsProvider {
         List<Action> actions = null;
 
 
-
         if (diagramElement instanceof Node node) {
             var optionalTargetElement = this.objectSearchService.getObject(editingContext, node.getTargetObjectId());
             var optionalDiagramDescription = this.viewDiagramDescriptionSearchService.findById(editingContext, diagramDescription.getId());
@@ -115,11 +114,15 @@ public class ViewActionsProvider implements IActionsProvider {
     }
 
     private Action createAction(org.eclipse.sirius.components.view.diagram.Action viewAction, VariableManager variableManager, AQLInterpreter interpreter) {
-        var id = UUID.nameUUIDFromBytes(viewAction.getName().getBytes()).toString();
+        var name = viewAction.getName();
+        var id = UUID.nameUUIDFromBytes(name.getBytes()).toString();
         var iconURLs = this.getActionIconURLs(viewAction, interpreter, variableManager);
         var tooltip = interpreter.evaluateExpression(variableManager.getVariables(), viewAction.getTooltipExpression()).asString().orElse("");
+        var readOnlyVisible = viewAction.isReadOnlyVisible();
+        var executedRemotely = !viewAction.getBody().isEmpty();
+        var executedLocally = viewAction instanceof org.eclipse.sirius.components.view.diagram.LocalAction;
 
-        return new Action(id, iconURLs, tooltip);
+        return new Action(id, name, iconURLs, tooltip, readOnlyVisible, executedRemotely, executedLocally);
     }
 
     private List<String> getActionIconURLs(org.eclipse.sirius.components.view.diagram.Action viewAction, AQLInterpreter interpreter, VariableManager variableManager) {

@@ -10,11 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ActionContributionProps } from './ActionsContribution.types';
-import { GQLAction } from './useActions.types';
+package org.eclipse.sirius.components.view.diagram;
 
-export interface ActionProps {
-  action: GQLAction;
-  diagramElementId: string;
-  contribution: ActionContributionProps | undefined;
-}
+/**
+ * <!-- begin-user-doc --> A representation of the model object '<em><b>Local Action</b></em>'. <!-- end-user-doc -->
+ *
+ * @model
+ * @generated
+ * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getLocalAction()
+ */
+public interface LocalAction extends Action {
+
+} // LocalAction

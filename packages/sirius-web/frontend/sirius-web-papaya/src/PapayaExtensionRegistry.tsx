@@ -18,10 +18,12 @@ import {
   IconOverlay,
 } from '@eclipse-sirius/sirius-components-core';
 import {
+  ActionContributionProps,
   DiagramPaletteToolContributionProps,
   EdgeData,
   NodeData,
   ReactFlowPropsCustomizer,
+  actionsExtensionPoint,
   diagramPaletteToolExtensionPoint,
   diagramRendererReactFlowPropsCustomizerExtensionPoint,
 } from '@eclipse-sirius/sirius-components-diagrams';
@@ -41,6 +43,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import { Edge, Node, ReactFlowProps } from '@xyflow/react';
+import { VisitUMLSpecAction } from './actions/VisitUMLSpecAction';
 import { PapayaDiagramInformationPanel } from './diagrams/PapayaDiagramInformationPanel';
 import { PapayaComponentDiagramToolContribution } from './tools/PapayaComponentDiagramToolContribution';
 import { PapayaComponentLabelDetailToolContribution } from './tools/PapayaComponentLabelDetailToolContribution';
@@ -151,5 +154,15 @@ papayaExtensionRegistry.putData<OmniboxCommandOverrideContribution[]>(
     data: omniboxCommandOverrides,
   }
 );
+
+papayaExtensionRegistry.putData<ActionContributionProps[]>(actionsExtensionPoint, {
+  identifier: `papaya_${actionsExtensionPoint.identifier}`,
+  data: [
+    {
+      component: VisitUMLSpecAction,
+      name: 'VISIT_UML_SPEC',
+    },
+  ],
+});
 
 export { papayaExtensionRegistry };

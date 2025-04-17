@@ -33,12 +33,20 @@ const useStyles = makeStyles()((theme) => ({
 export const ActionsContainer = ({ diagramElementId }: ActionsContainerProps) => {
   const { classes } = useStyles();
 
-  const { actions } = useActions(diagramElementId);
+  const { actions, contributions } = useActions(diagramElementId);
 
   return (
     <div className={classes.actionsContainer}>
       {actions.map((action: GQLAction) => {
-        return <Action key={`action_${action.tooltip}`} action={action} diagramElementId={diagramElementId} />;
+        const contribution = action.localExecution ? contributions.get(action.name) : undefined;
+        return (
+          <Action
+            key={`action_${action.tooltip}`}
+            action={action}
+            diagramElementId={diagramElementId}
+            contribution={contribution}
+          />
+        );
       })}
     </div>
   );

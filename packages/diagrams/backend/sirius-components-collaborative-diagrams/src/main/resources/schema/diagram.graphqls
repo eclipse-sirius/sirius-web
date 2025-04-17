@@ -376,8 +376,12 @@ type NodeDescription implements DiagramElementDescription {
 
 type Action {
   id: ID!
+  name: String!
   tooltip: String!
   iconURLs: [String!]!
+  readOnlyVisible: Boolean!
+  remoteExecution: Boolean!
+  localExecution: Boolean!
 }
 
 type EdgeDescription implements DiagramElementDescription {

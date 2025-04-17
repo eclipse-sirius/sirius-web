@@ -25,14 +25,26 @@ const useStyles = makeStyles()((theme) => ({
   },
 }));
 
-export const Action = ({ action, diagramElementId }: ActionProps) => {
+export const Action = ({ action, diagramElementId, contribution }: ActionProps) => {
   const { classes } = useStyles();
 
   const { invokeAction } = useInvokeAction(diagramElementId);
 
-  return (
-    <IconButton className={classes.actionIcon} size="small" onClick={() => invokeAction(action)}>
-      <IconOverlay iconURL={action.iconURLs} title={action.tooltip} alt={action.tooltip} />
-    </IconButton>
-  );
+  if (contribution) {
+    const ActionContributionComponent = contribution.component;
+    const invokeRemoteAction = action.remoteExecution ? () => invokeAction(action) : null;
+    return (
+      <ActionContributionComponent diagramElementId={diagramElementId} invokeRemoteAction={invokeRemoteAction}>
+        <IconButton className={classes.actionIcon} size="small">
+          <IconOverlay iconURL={action.iconURLs} title={action.tooltip} alt={action.tooltip} />
+        </IconButton>
+      </ActionContributionComponent>
+    );
+  } else {
+    return (
+      <IconButton className={classes.actionIcon} size="small" onClick={() => invokeAction(action)}>
+        <IconOverlay iconURL={action.iconURLs} title={action.tooltip} alt={action.tooltip} />
+      </IconButton>
+    );
+  }
 };

@@ -10,11 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ActionContributionProps } from './ActionsContribution.types';
-import { GQLAction } from './useActions.types';
 
-export interface ActionProps {
-  action: GQLAction;
+export interface ActionContributionProps {
+  name: string;
+  component: React.ComponentType<ActionContributionComponentProps>;
+}
+
+export interface ActionContributionComponentProps {
   diagramElementId: string;
-  contribution: ActionContributionProps | undefined;
+  invokeRemoteAction: (() => void) | null;
+  children: React.ReactNode;
 }

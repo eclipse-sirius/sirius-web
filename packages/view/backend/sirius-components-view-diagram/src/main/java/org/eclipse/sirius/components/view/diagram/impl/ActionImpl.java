@@ -41,6 +41,8 @@ import org.eclipse.sirius.components.view.diagram.DiagramPackage;
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ActionImpl#getPreconditionExpression <em>Precondition
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ActionImpl#getBody <em>Body</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ActionImpl#isReadOnlyVisible <em>Read Only
+ * Visible</em>}</li>
  * </ul>
  *
  * @generated
@@ -135,6 +137,26 @@ public class ActionImpl extends MinimalEObjectImpl.Container implements Action {
      * @ordered
      */
     protected EList<Operation> body;
+
+    /**
+     * The default value of the '{@link #isReadOnlyVisible() <em>Read Only Visible</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @see #isReadOnlyVisible()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean READ_ONLY_VISIBLE_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isReadOnlyVisible() <em>Read Only Visible</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @see #isReadOnlyVisible()
+     * @generated
+     * @ordered
+     */
+    protected boolean readOnlyVisible = READ_ONLY_VISIBLE_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -266,6 +288,29 @@ public class ActionImpl extends MinimalEObjectImpl.Container implements Action {
      * @generated
      */
     @Override
+    public boolean isReadOnlyVisible() {
+        return this.readOnlyVisible;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setReadOnlyVisible(boolean newReadOnlyVisible) {
+        boolean oldReadOnlyVisible = this.readOnlyVisible;
+        this.readOnlyVisible = newReadOnlyVisible;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.ACTION__READ_ONLY_VISIBLE, oldReadOnlyVisible, this.readOnlyVisible));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case DiagramPackage.ACTION__BODY:
@@ -292,6 +337,8 @@ public class ActionImpl extends MinimalEObjectImpl.Container implements Action {
                 return this.getPreconditionExpression();
             case DiagramPackage.ACTION__BODY:
                 return this.getBody();
+            case DiagramPackage.ACTION__READ_ONLY_VISIBLE:
+                return this.isReadOnlyVisible();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -321,6 +368,9 @@ public class ActionImpl extends MinimalEObjectImpl.Container implements Action {
                 this.getBody().clear();
                 this.getBody().addAll((Collection<? extends Operation>) newValue);
                 return;
+            case DiagramPackage.ACTION__READ_ONLY_VISIBLE:
+                this.setReadOnlyVisible((Boolean) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -348,6 +398,9 @@ public class ActionImpl extends MinimalEObjectImpl.Container implements Action {
             case DiagramPackage.ACTION__BODY:
                 this.getBody().clear();
                 return;
+            case DiagramPackage.ACTION__READ_ONLY_VISIBLE:
+                this.setReadOnlyVisible(READ_ONLY_VISIBLE_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -370,6 +423,8 @@ public class ActionImpl extends MinimalEObjectImpl.Container implements Action {
                 return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
             case DiagramPackage.ACTION__BODY:
                 return this.body != null && !this.body.isEmpty();
+            case DiagramPackage.ACTION__READ_ONLY_VISIBLE:
+                return this.readOnlyVisible != READ_ONLY_VISIBLE_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -393,6 +448,8 @@ public class ActionImpl extends MinimalEObjectImpl.Container implements Action {
         result.append(this.iconURLsExpression);
         result.append(", preconditionExpression: ");
         result.append(this.preconditionExpression);
+        result.append(", readOnlyVisible: ");
+        result.append(this.readOnlyVisible);
         result.append(')');
         return result.toString();
     }

@@ -22,12 +22,14 @@ public class ActionBuilder {
 
     /**
      * Create instance org.eclipse.sirius.components.view.diagram.Action.
+     *
      * @generated
      */
     private org.eclipse.sirius.components.view.diagram.Action action = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createAction();
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.Action.
+     *
      * @generated
      */
     protected org.eclipse.sirius.components.view.diagram.Action getAction() {
@@ -36,6 +38,7 @@ public class ActionBuilder {
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.Action.
+     *
      * @generated
      */
     public org.eclipse.sirius.components.view.diagram.Action build() {
@@ -51,6 +54,7 @@ public class ActionBuilder {
         this.getAction().setName(value);
         return this;
     }
+
     /**
      * Setter for TooltipExpression.
      *
@@ -70,6 +74,7 @@ public class ActionBuilder {
         this.getAction().setIconURLsExpression(value);
         return this;
     }
+
     /**
      * Setter for PreconditionExpression.
      *
@@ -89,6 +94,16 @@ public class ActionBuilder {
         for (org.eclipse.sirius.components.view.Operation value : values) {
             this.getAction().getBody().add(value);
         }
+        return this;
+    }
+
+    /**
+     * Setter for ReadOnlyVisible.
+     *
+     * @generated
+     */
+    public ActionBuilder readOnlyVisible(java.lang.Boolean value) {
+        this.getAction().setReadOnlyVisible(value);
         return this;
     }
 

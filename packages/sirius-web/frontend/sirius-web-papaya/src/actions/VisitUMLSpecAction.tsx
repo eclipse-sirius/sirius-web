@@ -10,11 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ActionContributionProps } from './ActionsContribution.types';
-import { GQLAction } from './useActions.types';
+import { ActionContributionComponentProps } from '@eclipse-sirius/sirius-components-diagrams';
+import Box from '@mui/material/Box';
 
-export interface ActionProps {
-  action: GQLAction;
-  diagramElementId: string;
-  contribution: ActionContributionProps | undefined;
-}
+const umlSpecUrl = 'https://www.omg.org/spec/UML/';
+
+export const VisitUMLSpecAction = ({ children }: ActionContributionComponentProps) => {
+  const visitUmlSpec = () => {
+    window.open(umlSpecUrl, '_blank');
+  };
+
+  return <Box onClick={visitUmlSpec}>{children}</Box>;
+};
