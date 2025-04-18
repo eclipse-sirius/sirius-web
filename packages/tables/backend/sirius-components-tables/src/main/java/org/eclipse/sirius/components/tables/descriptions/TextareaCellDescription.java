@@ -39,6 +39,8 @@ public final class TextareaCellDescription implements ICellDescription {
 
     private BiFunction<VariableManager, Object, String> cellValueProvider;
 
+    private BiFunction<VariableManager, Object, String> cellTooltipValueProvider;
+
     private TextareaCellDescription() {
         // Prevent instantiation
     }
@@ -67,6 +69,9 @@ public final class TextareaCellDescription implements ICellDescription {
         return this.cellValueProvider;
     }
 
+    public BiFunction<VariableManager, Object, String> getCellTooltipValueProvider() {
+        return this.cellTooltipValueProvider;
+    }
 
     public static Builder newTextareaCellDescription(String id) {
         return new Builder(id);
@@ -96,6 +101,7 @@ public final class TextareaCellDescription implements ICellDescription {
 
         private BiFunction<VariableManager, Object, String> cellValueProvider;
 
+        private BiFunction<VariableManager, Object, String> cellTooltipValueProvider;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -121,6 +127,11 @@ public final class TextareaCellDescription implements ICellDescription {
             return this;
         }
 
+        public Builder cellTooltipValueProvider(BiFunction<VariableManager, Object, String> cellTooltipValueProvider) {
+            this.cellTooltipValueProvider = Objects.requireNonNull(cellTooltipValueProvider);
+            return this;
+        }
+
 
         public TextareaCellDescription build() {
             TextareaCellDescription textareaCellDescription = new TextareaCellDescription();
@@ -129,6 +140,7 @@ public final class TextareaCellDescription implements ICellDescription {
             textareaCellDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             textareaCellDescription.targetObjectKindProvider = Objects.requireNonNull(this.targetObjectKindProvider);
             textareaCellDescription.cellValueProvider = Objects.requireNonNull(this.cellValueProvider);
+            textareaCellDescription.cellTooltipValueProvider = Objects.requireNonNull(this.cellTooltipValueProvider);
             return textareaCellDescription;
         }
     }

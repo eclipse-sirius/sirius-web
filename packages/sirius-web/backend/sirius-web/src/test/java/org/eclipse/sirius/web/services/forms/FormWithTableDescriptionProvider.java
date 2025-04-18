@@ -179,18 +179,21 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
                 .targetObjectIdProvider(variableManager -> "")
                 .targetObjectKindProvider(variableManager -> "")
                 .cellValueProvider(this.getCellStringValueProvider())
+                .cellTooltipValueProvider(this.getCellStringValueProvider())
                 .build());
         cellDescriptions.add(TextareaCellDescription.newTextareaCellDescription("textareaCells")
                 .canCreatePredicate(new CellTypePredicate().isTextareaCell())
                 .targetObjectIdProvider(variableManager -> "")
                 .targetObjectKindProvider(variableManager -> "")
                 .cellValueProvider(this.getCellStringValueProvider())
+                .cellTooltipValueProvider(this.getCellStringValueProvider())
                 .build());
         cellDescriptions.add(CheckboxCellDescription.newCheckboxCellDescription("checkboxCells")
                 .canCreatePredicate(new CellTypePredicate().isCheckboxCell())
                 .targetObjectIdProvider(vm -> "")
                 .targetObjectKindProvider(vm -> "")
                 .cellValueProvider(this.getCellBooleanValueProvider())
+                .cellTooltipValueProvider((vm, o) -> "")
                 .build());
         cellDescriptions.add(SelectCellDescription.newSelectCellDescription("selectCells")
                 .canCreatePredicate(new CellTypePredicate().isSelectCell())
@@ -200,6 +203,7 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
                 .cellOptionsIdProvider(this.getCellOptionsIdProvider())
                 .cellOptionsLabelProvider(this.getCellOptionsLabelProvider())
                 .cellOptionsProvider(this.getCellOptionsProvider())
+                .cellTooltipValueProvider((vm, o) -> "")
                 .build());
         cellDescriptions.add(MultiSelectCellDescription.newMultiSelectCellDescription("multiselectCells")
                 .canCreatePredicate(new CellTypePredicate().isMultiselectCell())
@@ -209,6 +213,7 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
                 .cellOptionsIdProvider(this.getCellOptionsIdProvider())
                 .cellOptionsLabelProvider(this.getCellOptionsLabelProvider())
                 .cellOptionsProvider(this.getCellOptionsProvider())
+                .cellTooltipValueProvider((vm, o) -> "")
                 .build());
         return cellDescriptions;
     }

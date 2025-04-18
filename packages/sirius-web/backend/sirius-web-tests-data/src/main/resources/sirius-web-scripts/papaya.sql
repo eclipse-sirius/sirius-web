@@ -1,3 +1,27 @@
+/*******************************************************************************
+ * Copyright (c) 2025 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2025 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
 -- Sample Papaya project
 INSERT INTO project (
   id,
@@ -494,6 +518,7 @@ INSERT INTO representation_content (
                          "targetObjectKind": "siriusComponents://semantic?domain=papaya&entity=Class",
                          "columnId": "d0fd98f3-dfae-3a2d-9cbe-f9a1d6ebee56",
                          "value": "Success",
+                         "tooltipValue": "",
                          "type": "TEXTFIELD"
                      },
                      {
@@ -502,6 +527,7 @@ INSERT INTO representation_content (
                          "targetObjectKind": "siriusComponents://semantic?domain=papaya&entity=Class",
                          "columnId": "b6e82202-fe33-3b19-bf2c-5c9648cb96ce",
                          "value": "",
+                         "tooltipValue": "",
                          "type": "TEXTFIELD"
                      },
                      {
@@ -528,6 +554,7 @@ INSERT INTO representation_content (
                              }
                          ],
                          "value": "PUBLIC",
+                         "tooltipValue": "",
                          "type": "SELECT"
                      },
                      {
@@ -537,6 +564,7 @@ INSERT INTO representation_content (
                          "columnId": "94277463-12c8-34bc-b69b-99bb5bfb0fc4",
                          "options": [],
                          "values": [],
+                         "tooltipValue": "",
                          "type": "MULTI_SELECT"
                      }
                  ],
@@ -555,6 +583,7 @@ INSERT INTO representation_content (
                          "targetObjectKind": "siriusComponents://semantic?domain=papaya&entity=Class",
                          "columnId": "d0fd98f3-dfae-3a2d-9cbe-f9a1d6ebee56",
                          "value": "Failure",
+                         "tooltipValue": "",
                          "type": "TEXTFIELD"
                      },
                      {
@@ -563,6 +592,7 @@ INSERT INTO representation_content (
                          "targetObjectKind": "siriusComponents://semantic?domain=papaya&entity=Class",
                          "columnId": "b6e82202-fe33-3b19-bf2c-5c9648cb96ce",
                          "value": "",
+                         "tooltipValue": "",
                          "type": "TEXTFIELD"
                      },
                      {
@@ -589,6 +619,7 @@ INSERT INTO representation_content (
                              }
                          ],
                          "value": "PUBLIC",
+                         "tooltipValue": "",
                          "type": "SELECT"
                      },
                      {
@@ -598,6 +629,7 @@ INSERT INTO representation_content (
                          "columnId": "94277463-12c8-34bc-b69b-99bb5bfb0fc4",
                          "options": [],
                          "values": [],
+                         "tooltipValue": "",
                          "type": "MULTI_SELECT"
                      }
                  ],
@@ -613,7 +645,8 @@ INSERT INTO representation_content (
                         "targetObjectId": "6f531172-8314-4145-8b36-d8fa45bf3b20",
                         "targetObjectKind": "siriusComponents://semantic?domain=papaya&entity=Operation",
                         "type": "TEXTFIELD",
-                        "value": "barOperation"
+                        "value": "barOperation",
+                        "tooltipValue": ""
                     },
                     {
                         "columnId": "b6e82202-fe33-3b19-bf2c-5c9648cb96ce",
@@ -621,7 +654,8 @@ INSERT INTO representation_content (
                         "targetObjectId": "6f531172-8314-4145-8b36-d8fa45bf3b20",
                         "targetObjectKind": "siriusComponents://semantic?domain=papaya&entity=Operation",
                         "type": "TEXTAREA",
-                        "value": ""
+                        "value": "",
+                        "tooltipValue": ""
                     },
                     {
                         "columnId": "eabb569d-f99e-3e6e-86a6-db600b1fa526",
@@ -647,7 +681,8 @@ INSERT INTO representation_content (
                         "targetObjectId": "6f531172-8314-4145-8b36-d8fa45bf3b20",
                         "targetObjectKind": "siriusComponents://semantic?domain=papaya&entity=Operation",
                         "type": "SELECT",
-                        "value": ""
+                        "value": "",
+                        "tooltipValue": ""
                     },
                     {
                       "columnId": "94277463-12c8-34bc-b69b-99bb5bfb0fc4",
@@ -658,7 +693,8 @@ INSERT INTO representation_content (
                       "targetObjectKind": "siriusComponents://semantic?domain=papaya&entity=Operation",
                       "type": "MULTI_SELECT",
                       "values": [
-                      ]
+                      ],
+                      "tooltipValue": ""
                     }
                 ],
                  "id": "40ffe0b3-3fb4-35f1-b2bd-3634679398ad",
@@ -681,7 +717,8 @@ INSERT INTO representation_content (
                          "targetObjectId": "69ead9da-9302-45a7-86d8-c4ad54056e39",
                          "targetObjectKind": "siriusComponents://semantic?domain=papaya&entity=Parameter",
                          "type": "TEXTFIELD",
-                         "value": "fooParameter"
+                         "value": "fooParameter",
+                         "tooltipValue": ""
                      },
                      {
                          "columnId": "b6e82202-fe33-3b19-bf2c-5c9648cb96ce",
@@ -689,7 +726,8 @@ INSERT INTO representation_content (
                          "targetObjectId": "69ead9da-9302-45a7-86d8-c4ad54056e39",
                          "targetObjectKind": "siriusComponents://semantic?domain=papaya&entity=Parameter",
                          "type": "TEXTAREA",
-                         "value": ""
+                         "value": "",
+                         "tooltipValue": ""
                      },
                      {
                          "columnId": "eabb569d-f99e-3e6e-86a6-db600b1fa526",
@@ -715,7 +753,8 @@ INSERT INTO representation_content (
                          "targetObjectId": "69ead9da-9302-45a7-86d8-c4ad54056e39",
                          "targetObjectKind": "siriusComponents://semantic?domain=papaya&entity=Parameter",
                          "type": "SELECT",
-                         "value": ""
+                         "value": "",
+                         "tooltipValue": ""
                      },
                      {
                          "columnId": "94277463-12c8-34bc-b69b-99bb5bfb0fc4",
@@ -724,7 +763,8 @@ INSERT INTO representation_content (
                          "targetObjectId": "69ead9da-9302-45a7-86d8-c4ad54056e39",
                          "targetObjectKind": "siriusComponents://semantic?domain=papaya&entity=Parameter",
                          "type": "MULTI_SELECT",
-                         "values": []
+                         "values": [],
+                         "tooltipValue": ""
                      }
                  ],
                  "depthLevel": 2,

@@ -281,6 +281,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
                 .cellValueProvider(new CellStringValueProvider(this.identityService))
+                .cellTooltipValueProvider(new CellStringValueProvider(this.identityService))
                 .build());
 
         cellDescriptions.add(TextareaCellDescription.newTextareaCellDescription("textareaCells")
@@ -288,6 +289,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
                 .cellValueProvider(new CellStringValueProvider(this.identityService))
+                .cellTooltipValueProvider(new CellStringValueProvider(this.identityService))
                 .build());
 
         cellDescriptions.add(SelectCellDescription.newSelectCellDescription("selectCells")
@@ -298,6 +300,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .cellOptionsIdProvider(new CellOptionIdProvider(this.identityService, this.labelService))
                 .cellOptionsLabelProvider(new CellOptionLabelProvider(this.labelService))
                 .cellOptionsProvider(new CellOptionsProvider(this.composedAdapterFactory))
+                .cellTooltipValueProvider(new CellStringValueProvider(this.identityService))
                 .build());
 
         cellDescriptions.add(MultiSelectCellDescription.newMultiSelectCellDescription("multiselectCells")
@@ -308,6 +311,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .cellOptionsIdProvider(new CellOptionIdProvider(this.identityService, this.labelService))
                 .cellOptionsLabelProvider(new CellOptionLabelProvider(this.labelService))
                 .cellOptionsProvider(new CellOptionsProvider(this.composedAdapterFactory))
+                .cellTooltipValueProvider((variableManager, o) -> "")
                 .build());
 
 
@@ -327,6 +331,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
                 .cellValueProvider((variableManager, columnTargetObject) -> "")
                 .cellIconURLsProvider(iconLabelCellIconURLsProvider)
+                .cellTooltipValueProvider((variableManager, o) -> "")
                 .build());
 
         Predicate<VariableManager> nbAnnotationCellPredicate = variableManager -> variableManager.get(ColumnDescription.COLUMN_TARGET_OBJECT, Object.class)
@@ -346,6 +351,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                         .map(String::valueOf)
                         .orElse("NA"))
                 .cellIconURLsProvider((variableManager, object) -> List.of())
+                .cellTooltipValueProvider((variableManager, o) -> "")
                 .build());
         return cellDescriptions;
     }

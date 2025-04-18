@@ -24,7 +24,8 @@ import org.eclipse.sirius.components.tables.SelectCellOption;
  *
  * @author lfasani
  */
-public record MultiSelectCellElementProps(UUID id, String descriptionId, String targetObjectId, String targetObjectKind, UUID columnId, List<SelectCellOption> options, List<String> values)
+public record MultiSelectCellElementProps(UUID id, String descriptionId, String targetObjectId, String targetObjectKind, UUID columnId, List<SelectCellOption> options, List<String> values,
+                                          String tooltipValue)
         implements IProps {
 
     public static final String TYPE = "MultiSelectCell";
@@ -37,5 +38,6 @@ public record MultiSelectCellElementProps(UUID id, String descriptionId, String 
         Objects.requireNonNull(columnId);
         Objects.requireNonNull(options);
         Objects.requireNonNull(values);
+        Objects.requireNonNull(tooltipValue);
     }
 }

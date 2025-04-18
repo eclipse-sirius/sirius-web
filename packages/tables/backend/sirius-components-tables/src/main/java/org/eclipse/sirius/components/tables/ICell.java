@@ -33,4 +33,6 @@ public interface ICell {
     String getTargetObjectKind();
 
     UUID getColumnId();
+
+    String getTooltipValue();
 }

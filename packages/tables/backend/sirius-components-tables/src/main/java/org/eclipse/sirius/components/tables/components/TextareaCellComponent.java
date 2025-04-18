@@ -42,8 +42,10 @@ public class TextareaCellComponent implements IComponent {
         String targetObjectKind = cellDescription.getTargetObjectKindProvider().apply(variableManager);
 
         String value = cellDescription.getCellValueProvider().apply(variableManager, this.props.columnTargetObject());
+        String tooltipValue = cellDescription.getCellTooltipValueProvider().apply(variableManager, this.props.columnTargetObject());
 
-        TextareaCellElementProps cellElementProps = new TextareaCellElementProps(this.props.cellId(), this.props.textareaCellDescription().getId(), targetObjectId, targetObjectKind, this.props.columnId(), value);
+        TextareaCellElementProps cellElementProps = new TextareaCellElementProps(this.props.cellId(), this.props.textareaCellDescription().getId(), targetObjectId, targetObjectKind,
+                this.props.columnId(), value, tooltipValue);
         return new Element(TextareaCellElementProps.TYPE, cellElementProps);
     }
 }

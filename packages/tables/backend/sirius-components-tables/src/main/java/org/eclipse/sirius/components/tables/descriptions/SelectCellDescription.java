@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,6 +46,8 @@ public final class SelectCellDescription implements ICellDescription {
 
     private BiFunction<VariableManager, Object, List<Object>> cellOptionsProvider;
 
+    private BiFunction<VariableManager, Object, String> cellTooltipValueProvider;
+
     private SelectCellDescription() {
         // Prevent instantiation
     }
@@ -86,6 +88,9 @@ public final class SelectCellDescription implements ICellDescription {
         return this.cellOptionsProvider;
     }
 
+    public BiFunction<VariableManager, Object, String> getCellTooltipValueProvider() {
+        return this.cellTooltipValueProvider;
+    }
 
     public static Builder newSelectCellDescription(String id) {
         return new Builder(id);
@@ -120,6 +125,8 @@ public final class SelectCellDescription implements ICellDescription {
         private Function<VariableManager, String> cellOptionsLabelProvider;
 
         private BiFunction<VariableManager, Object, List<Object>> cellOptionsProvider;
+
+        private BiFunction<VariableManager, Object, String> cellTooltipValueProvider;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -160,6 +167,11 @@ public final class SelectCellDescription implements ICellDescription {
             return this;
         }
 
+        public Builder cellTooltipValueProvider(BiFunction<VariableManager, Object, String> cellTooltipValueProvider) {
+            this.cellTooltipValueProvider = Objects.requireNonNull(cellTooltipValueProvider);
+            return this;
+        }
+
 
         public SelectCellDescription build() {
             SelectCellDescription selectCellDescription = new SelectCellDescription();
@@ -171,6 +183,7 @@ public final class SelectCellDescription implements ICellDescription {
             selectCellDescription.cellOptionsIdProvider = Objects.requireNonNull(this.cellOptionsIdProvider);
             selectCellDescription.cellOptionsLabelProvider = Objects.requireNonNull(this.cellOptionsLabelProvider);
             selectCellDescription.cellOptionsProvider = Objects.requireNonNull(this.cellOptionsProvider);
+            selectCellDescription.cellTooltipValueProvider = Objects.requireNonNull(this.cellTooltipValueProvider);
             return selectCellDescription;
         }
     }
