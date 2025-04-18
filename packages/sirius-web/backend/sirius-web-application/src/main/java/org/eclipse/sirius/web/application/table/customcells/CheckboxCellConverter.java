@@ -39,17 +39,13 @@ public class CheckboxCellConverter implements ICustomCellConverter {
     @Override
     public Optional<ICellDescription> convert(CellDescription viewCellDescription, AQLInterpreter interpreter, ITableIdProvider tableIdProvider, IObjectService objectService) {
         if (viewCellDescription.getCellWidgetDescription() instanceof CellCheckboxWidgetDescription) {
-            Function<VariableManager, String> targetObjectIdProvider = variableManager -> {
-                return this.getSelf(viewCellDescription, interpreter, variableManager)
-                        .map(objectService::getId)
-                        .orElse("");
-            };
+            Function<VariableManager, String> targetObjectIdProvider = variableManager -> this.getSelf(viewCellDescription, interpreter, variableManager)
+                    .map(objectService::getId)
+                    .orElse("");
 
-            Function<VariableManager, String> targetObjectKindProvider = variableManager -> {
-                return this.getSelf(viewCellDescription, interpreter, variableManager)
-                        .map(objectService::getKind)
-                        .orElse("");
-            };
+            Function<VariableManager, String> targetObjectKindProvider = variableManager -> this.getSelf(viewCellDescription, interpreter, variableManager)
+                    .map(objectService::getKind)
+                    .orElse("");
 
             Predicate<VariableManager> canCreatePredicate =
                     variableManager -> interpreter.evaluateExpression(variableManager.getVariables(), viewCellDescription.getPreconditionExpression()).asBoolean().orElse(false);
@@ -62,11 +58,18 @@ public class CheckboxCellConverter implements ICustomCellConverter {
                         .orElse(false);
             };
 
+            BiFunction<VariableManager, Object, String> cellTooltipValueProvider = (variableManager, columnTargetObject) -> {
+                var child = variableManager.createChild();
+                child.put("columnTargetObject", columnTargetObject);
+                return interpreter.evaluateExpression(variableManager.getVariables(), viewCellDescription.getTooltipExpression()).asString().orElse("");
+            };
+
             return Optional.of(CheckboxCellDescription.newCheckboxCellDescription(tableIdProvider.getId(viewCellDescription))
                     .targetObjectIdProvider(targetObjectIdProvider)
                     .targetObjectKindProvider(targetObjectKindProvider)
                     .canCreatePredicate(canCreatePredicate)
                     .cellValueProvider(cellValueProvider)
+                    .cellTooltipValueProvider(cellTooltipValueProvider)
                     .build());
         }
         return Optional.empty();

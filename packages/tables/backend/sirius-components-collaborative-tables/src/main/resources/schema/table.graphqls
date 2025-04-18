@@ -95,6 +95,7 @@ interface Cell {
   columnId: ID!
   targetObjectId: ID!
   targetObjectKind: String!
+  tooltipValue: String!
 }
 
 type TextfieldCell implements Cell {
@@ -103,6 +104,7 @@ type TextfieldCell implements Cell {
   targetObjectId: ID!
   targetObjectKind: String!
   value: String!
+  tooltipValue: String!
 }
 
 type TextareaCell implements Cell {
@@ -111,6 +113,7 @@ type TextareaCell implements Cell {
   targetObjectId: ID!
   targetObjectKind: String!
   value: String!
+  tooltipValue: String!
 }
 
 type SelectCell implements Cell {
@@ -120,6 +123,7 @@ type SelectCell implements Cell {
   targetObjectKind: String!
   options: [SelectCellOption!]!
   value: String!
+  tooltipValue: String!
 }
 
 type MultiSelectCell implements Cell {
@@ -129,6 +133,7 @@ type MultiSelectCell implements Cell {
   targetObjectKind: String!
   options: [SelectCellOption!]!
   values: [String]!
+  tooltipValue: String!
 }
 
 type SelectCellOption {
@@ -143,6 +148,7 @@ type IconLabelCell implements Cell {
   targetObjectKind: String!
   value: String!
   iconURLs: [String!]!
+  tooltipValue: String!
 }
 
 type TableDescription implements RepresentationDescription {

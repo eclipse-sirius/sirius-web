@@ -62,7 +62,7 @@ public class CellDescriptionConverter {
 
     @SuppressWarnings("checkstyle:MultipleStringLiterals")
     private Optional<ICellDescription> convert(org.eclipse.sirius.components.view.table.CellDescription viewCellDescription, AQLInterpreter interpreter) {
-        Optional<ICellDescription> optionalICellDescription = Optional.empty();
+        Optional<ICellDescription> optionalICellDescription;
 
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> {
             Optional<Object> optionalSelf = variableManager.get(VariableManager.SELF, Object.class);
@@ -93,12 +93,19 @@ public class CellDescriptionConverter {
             return this.evaluateString(interpreter, child, viewCellDescription.getValueExpression());
         };
 
+        BiFunction<VariableManager, Object, String> cellTooltipValueProvider = (variableManager, columnTargetObject) -> {
+            var child = variableManager.createChild();
+            child.put("columnTargetObject", columnTargetObject);
+            return this.evaluateString(interpreter, child, viewCellDescription.getTooltipExpression());
+        };
+
         if (viewCellDescription.getCellWidgetDescription() instanceof CellTextfieldWidgetDescription cellTextfieldWidgetDescription) {
             optionalICellDescription = Optional.of(TextfieldCellDescription.newTextfieldCellDescription(this.tableIdProvider.getId(viewCellDescription))
                     .targetObjectIdProvider(targetObjectIdProvider)
                     .targetObjectKindProvider(targetObjectKindProvider)
                     .canCreatePredicate(canCreatePredicate)
                     .cellValueProvider(cellValueProvider)
+                    .cellTooltipValueProvider(cellTooltipValueProvider)
                     .build());
         } else if (viewCellDescription.getCellWidgetDescription() instanceof CellLabelWidgetDescription cellLabelWidgetDescription) {
             optionalICellDescription = Optional.of(IconLabelCellDescription.newIconLabelCellDescription(this.tableIdProvider.getId(viewCellDescription))
@@ -111,6 +118,7 @@ public class CellDescriptionConverter {
                         child.put("columnTargetObject", columnTargetObject);
                         return new ViewIconURLsProvider(interpreter, cellLabelWidgetDescription.getIconExpression()).apply(child);
                     })
+                    .cellTooltipValueProvider(cellTooltipValueProvider)
                     .build());
         } else if (viewCellDescription.getCellWidgetDescription() instanceof CellTextareaWidgetDescription) {
             optionalICellDescription = Optional.of(TextareaCellDescription.newTextareaCellDescription(this.tableIdProvider.getId(viewCellDescription))
@@ -118,6 +126,7 @@ public class CellDescriptionConverter {
                     .targetObjectKindProvider(targetObjectKindProvider)
                     .canCreatePredicate(canCreatePredicate)
                     .cellValueProvider(cellValueProvider)
+                    .cellTooltipValueProvider(cellTooltipValueProvider)
                     .build());
         } else {
             optionalICellDescription = this.customCellConverters.stream()
