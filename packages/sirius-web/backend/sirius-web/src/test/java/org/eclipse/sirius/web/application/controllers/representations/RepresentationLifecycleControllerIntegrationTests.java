@@ -17,17 +17,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.jayway.jsonpath.JsonPath;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSuccessPayload;
 import org.eclipse.sirius.components.collaborative.dto.DeleteRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.DeleteRepresentationSuccessPayload;
+import org.eclipse.sirius.components.collaborative.dto.EditingContextEventInput;
 import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationInput;
+import org.eclipse.sirius.components.collaborative.dto.RepresentationRenamedEventPayload;
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalEventInput;
+import org.eclipse.sirius.components.collaborative.portals.dto.PortalRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.graphql.tests.CreateRepresentationMutationRunner;
 import org.eclipse.sirius.components.graphql.tests.DeleteRepresentationMutationRunner;
+import org.eclipse.sirius.components.graphql.tests.EditingContextEventSubscriptionRunner;
 import org.eclipse.sirius.components.graphql.tests.RenameRepresentationMutationRunner;
 import org.eclipse.sirius.components.portals.tests.graphql.PortalEventSubscriptionRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -52,6 +58,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
+import graphql.execution.DataFetcherResult;
+import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 /**
@@ -90,6 +98,9 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
 
     @Autowired
     private PortalEventSubscriptionRunner portalEventSubscriptionRunner;
+
+    @Autowired
+    private EditingContextEventSubscriptionRunner editingContextEventSubscriptionRunner;
 
     @Autowired
     private IDomainEventCollector domainEventCollector;
@@ -134,14 +145,15 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a representation to rename, when the mutation is performed, then the representation has been rename")
+    @DisplayName("Given a representation to rename, when the mutation is performed, then the representation has been renamed")
     public void givenRepresentationToRenameWhenMutationIsPerformedThenTheRepresentationHasBeenRenamed() {
         this.givenCommittedTransaction.commit();
 
-        var flux = this.portalEventSubscriptionRunner.run(new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
+        var editingContextFlux = this.editingContextEventSubscriptionRunner.run(new EditingContextEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID));
+        var flux = this.portalEventSubscriptionRunner.run(new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
 
         Runnable renameRepresentation = () -> {
-            var input = new RenameRepresentationInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString(), "new name");
+            var input = new RenameRepresentationInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString(), "new name");
             var result = this.renameRepresentationMutationRunner.run(input);
 
             TestTransaction.flagForCommit();
@@ -154,7 +166,7 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
             assertThat(this.domainEventCollector.getDomainEvents()).hasSize(1);
             assertThat(this.domainEventCollector.getDomainEvents()).anyMatch(RepresentationMetadataUpdatedEvent.class::isInstance);
 
-            result = this.representationMetadataQueryRunner.run(Map.of("editingContextId", TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), "representationId", TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
+            result = this.representationMetadataQueryRunner.run(Map.of("editingContextId", TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, "representationId", TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
             String label = JsonPath.read(result, "$.data.viewer.editingContext.representation.label");
             assertThat(label).isEqualTo("new name");
 
@@ -163,8 +175,24 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
             TestTransaction.start();
         };
 
-        StepVerifier.create(flux)
+        Predicate<Object> portalRefreshedEventPayloadConsumer = payload -> Optional.of(payload)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData)
+                .filter(PortalRefreshedEventPayload.class::isInstance)
+                .isPresent();
+
+        Predicate<Object> renamedRepresentationEventPayloadConsumer = payload -> Optional.of(payload)
+                .filter(DataFetcherResult.class::isInstance)
+                .map(DataFetcherResult.class::cast)
+                .map(DataFetcherResult::getData)
+                .filter(RepresentationRenamedEventPayload.class::isInstance)
+                .isPresent();
+
+        StepVerifier.create(Flux.merge(editingContextFlux, flux))
                 .then(renameRepresentation)
+                .expectNextMatches(portalRefreshedEventPayloadConsumer)
+                .expectNextMatches(renamedRepresentationEventPayloadConsumer)
                 .thenCancel()
                 .verify();
     }

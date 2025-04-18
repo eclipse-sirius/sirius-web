@@ -35,9 +35,9 @@ import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
+import org.eclipse.sirius.components.view.emf.form.api.IFormIdProvider;
 import org.eclipse.sirius.components.view.emf.operations.api.IOperationExecutor;
-import org.eclipse.sirius.components.view.emf.widget.reference.ReferenceWidgetDescriptionConverterSwitch;
+import org.eclipse.sirius.components.view.emf.widget.reference.ReferenceWidgetDescriptionConverter;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceFactory;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 import org.junit.jupiter.api.Test;
@@ -47,7 +47,7 @@ import org.junit.jupiter.api.Test;
  *
  * @author pcdavid
  */
-public class ReferenceWidgetDescriptionConverterSwitchTest {
+public class ReferenceWidgetDescriptionConverterTest {
 
     @Test
     public void testReferenceOptions() {
@@ -58,8 +58,9 @@ public class ReferenceWidgetDescriptionConverterSwitchTest {
         var composedAdapterFactory = new ComposedAdapterFactory();
         composedAdapterFactory.addAdapterFactory(new EcoreAdapterFactory());
         composedAdapterFactory.addAdapterFactory(new EcoreItemProviderAdapterFactory());
+
         var widgetIdProvider = new IFormIdProvider.NoOp();
-        var converterSwitch = new ReferenceWidgetDescriptionConverterSwitch(interpreter, objectService, new IOperationExecutor.NoOp(), emfKindService, feedbackMessageService, composedAdapterFactory, widgetIdProvider);
+        var converter = new ReferenceWidgetDescriptionConverter(objectService, new IOperationExecutor.NoOp(), emfKindService, feedbackMessageService, composedAdapterFactory, widgetIdProvider);
 
         EPackage ePackage = EcoreFactory.eINSTANCE.createEPackage();
         EClass eClass = EcoreFactory.eINSTANCE.createEClass();
@@ -75,10 +76,13 @@ public class ReferenceWidgetDescriptionConverterSwitchTest {
         referenceWidgetDescription.setLabelExpression("TEST");
         referenceWidgetDescription.setReferenceNameExpression("eOperations");
         referenceWidgetDescription.setReferenceOwnerExpression("aql:self.eClassifiers->first()");
-        Optional<AbstractWidgetDescription> widgetDescription = converterSwitch.caseReferenceWidgetDescription(referenceWidgetDescription);
+
+        Optional<AbstractWidgetDescription> widgetDescription = converter.convert(referenceWidgetDescription, interpreter);
         assertTrue(widgetDescription.isPresent());
+
         AbstractWidgetDescription abstractWidgetDescription = widgetDescription.get();
         assertInstanceOf(org.eclipse.sirius.components.widget.reference.ReferenceWidgetDescription.class, abstractWidgetDescription);
+
         List<?> options = ((org.eclipse.sirius.components.widget.reference.ReferenceWidgetDescription) abstractWidgetDescription).getOptionsProvider().apply(variableManager);
         assertNotNull(options);
         assertFalse(options.isEmpty());

@@ -46,4 +46,68 @@ public class ReferenceWidgetAssert extends AbstractAssert<ReferenceWidgetAssert,
                 .isEmpty();
         return this;
     }
+
+    public ReferenceWidgetAssert isBold() {
+        assertThat(this.actual.getStyle().isBold())
+                .withFailMessage("Expecting the reference widget to be bold but was not bold instead")
+                .isTrue();
+
+        return this;
+    }
+
+    public ReferenceWidgetAssert isNotBold() {
+        assertThat(this.actual.getStyle().isBold())
+                .withFailMessage("Expecting the reference widget not to be bold but was bold instead")
+                .isFalse();
+
+        return this;
+    }
+
+    public ReferenceWidgetAssert isItalic() {
+        assertThat(this.actual.getStyle().isItalic())
+                .withFailMessage("Expecting the reference widget to be italic but was not italic instead")
+                .isTrue();
+
+        return this;
+    }
+
+    public ReferenceWidgetAssert isNotItalic() {
+        assertThat(this.actual.getStyle().isItalic())
+                .withFailMessage("Expecting the reference widget not to be italic but was italic instead")
+                .isFalse();
+
+        return this;
+    }
+
+    public ReferenceWidgetAssert isStrikeThrough() {
+        assertThat(this.actual.getStyle().isStrikeThrough())
+                .withFailMessage("Expecting the reference widget to be strikethrough but was not strikethrough instead")
+                .isTrue();
+
+        return this;
+    }
+
+    public ReferenceWidgetAssert isNotStrikeThrough() {
+        assertThat(this.actual.getStyle().isStrikeThrough())
+                .withFailMessage("Expecting the reference widget not to be strikethrough but was strikethrough instead")
+                .isFalse();
+
+        return this;
+    }
+
+    public ReferenceWidgetAssert isUnderline() {
+        assertThat(this.actual.getStyle().isUnderline())
+                .withFailMessage("Expecting the reference widget to be underlined but was not underlined instead")
+                .isTrue();
+
+        return this;
+    }
+
+    public ReferenceWidgetAssert isNotUnderline() {
+        assertThat(this.actual.getStyle().isUnderline())
+                .withFailMessage("Expecting the reference widget not to be underlined but was underlined instead")
+                .isFalse();
+
+        return this;
+    }
 }
