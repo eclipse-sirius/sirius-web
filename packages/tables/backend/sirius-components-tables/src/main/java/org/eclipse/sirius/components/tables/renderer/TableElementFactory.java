@@ -155,6 +155,7 @@ public class TableElementFactory implements IElementFactory {
                     .targetObjectId(textfieldCellElementProps.targetObjectId())
                     .targetObjectKind(textfieldCellElementProps.targetObjectKind())
                     .value(textfieldCellElementProps.value())
+                    .tooltipValue(textfieldCellElementProps.tooltipValue())
                     .build();
         } else if (props instanceof TextareaCellElementProps textareaCellElementProps) {
             cell = TextareaCell.newTextareaCell(textareaCellElementProps.id())
@@ -163,6 +164,7 @@ public class TableElementFactory implements IElementFactory {
                     .targetObjectId(textareaCellElementProps.targetObjectId())
                     .targetObjectKind(textareaCellElementProps.targetObjectKind())
                     .value(textareaCellElementProps.value())
+                    .tooltipValue(textareaCellElementProps.tooltipValue())
                     .build();
         } else if (props instanceof SelectCellElementProps selectCellElementProps) {
             cell = SelectCell.newSelectCell(selectCellElementProps.id())
@@ -172,6 +174,7 @@ public class TableElementFactory implements IElementFactory {
                     .targetObjectKind(selectCellElementProps.targetObjectKind())
                     .options(selectCellElementProps.options())
                     .value(selectCellElementProps.value())
+                    .tooltipValue(selectCellElementProps.tooltipValue())
                     .build();
         } else if (props instanceof MultiSelectCellElementProps multiSelectCellElementProps) {
             cell = MultiSelectCell.newMultiSelectCell(multiSelectCellElementProps.id())
@@ -181,6 +184,7 @@ public class TableElementFactory implements IElementFactory {
                     .targetObjectKind(multiSelectCellElementProps.targetObjectKind())
                     .options(multiSelectCellElementProps.options())
                     .values(multiSelectCellElementProps.values())
+                    .tooltipValue(multiSelectCellElementProps.tooltipValue())
                     .build();
         } else if (props instanceof IconLabelCellElementProps iconLabelCellElementProps) {
             cell = IconLabelCell.newIconLabelCell(iconLabelCellElementProps.id())
@@ -190,6 +194,7 @@ public class TableElementFactory implements IElementFactory {
                     .targetObjectKind(iconLabelCellElementProps.targetObjectKind())
                     .value(iconLabelCellElementProps.value())
                     .iconURLs(iconLabelCellElementProps.iconURLs())
+                    .tooltipValue(iconLabelCellElementProps.tooltipValue())
                     .build();
         }
         return cell;

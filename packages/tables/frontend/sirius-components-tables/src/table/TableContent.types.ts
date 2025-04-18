@@ -125,6 +125,7 @@ export interface GQLCell {
   columnId: string;
   targetObjectId: string;
   targetObjectKind: string;
+  tooltipValue: string;
 }
 
 export interface GQLTextfieldCell extends GQLCell {

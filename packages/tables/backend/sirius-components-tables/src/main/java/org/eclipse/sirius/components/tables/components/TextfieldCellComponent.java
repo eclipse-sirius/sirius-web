@@ -42,8 +42,10 @@ public class TextfieldCellComponent implements IComponent {
         String targetObjectKind = cellDescription.getTargetObjectKindProvider().apply(variableManager);
 
         String value = cellDescription.getCellValueProvider().apply(variableManager, this.props.columnTargetObject());
+        String tooltipValue = cellDescription.getCellTooltipValueProvider().apply(variableManager, this.props.columnTargetObject());
 
-        TextfieldCellElementProps cellElementProps = new TextfieldCellElementProps(this.props.cellId(), this.props.textfieldCellDescription().getId(), targetObjectId, targetObjectKind, this.props.columnId(), value);
+        TextfieldCellElementProps cellElementProps = new TextfieldCellElementProps(this.props.cellId(), this.props.textfieldCellDescription().getId(), targetObjectId, targetObjectKind,
+                this.props.columnId(), value, tooltipValue);
         return new Element(TextfieldCellElementProps.TYPE, cellElementProps);
     }
 }

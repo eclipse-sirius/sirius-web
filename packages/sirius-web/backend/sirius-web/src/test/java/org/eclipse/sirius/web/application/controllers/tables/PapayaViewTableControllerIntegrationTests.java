@@ -405,6 +405,25 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
                 .verify(Duration.ofSeconds(10));
     }
 
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a view table description, when a subscription is created, then the tooltip values are returned")
+    public void givenViewTableWhenSubscriptionIsCreatedThenTheTooltipValuesAreReturned() {
+        var flux = this.givenSubscriptionToViewTableRepresentation();
+
+        Consumer<Object> tableContentConsumer = this.getTableSubscriptionConsumer(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getLines()).hasSize(5);
+            assertThat((table.getLines().get(0).getCells().get(0)).getTooltipValue()).isEqualTo("SuccessTooltip");
+            assertThat(table.getLines().get(0).getCells().get(1).getTooltipValue()).isEqualTo("");
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(tableContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
     private Consumer<Object> getTableSubscriptionConsumer(Consumer<Table> tableConsumer) {
         return payload -> Optional.of(payload)
                 .filter(TableRefreshedEventPayload.class::isInstance)

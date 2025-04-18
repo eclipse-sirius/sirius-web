@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { DataExtension, Selection, useData, useSelection } from '@eclipse-sirius/sirius-components-core';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { memo } from 'react';
 import { makeStyles } from 'tss-react/mui';
@@ -128,9 +129,11 @@ export const Cell = memo(
         }
       }
       return (
-        <div className={classes.wrapper} onClick={() => onClick(cell)}>
-          {component}
-        </div>
+        <Tooltip title={cell.tooltipValue}>
+          <div className={classes.wrapper} onClick={() => onClick(cell)}>
+            {component}
+          </div>
+        </Tooltip>
       );
     }
     return component;

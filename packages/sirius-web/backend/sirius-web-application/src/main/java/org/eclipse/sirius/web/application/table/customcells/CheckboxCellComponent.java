@@ -40,7 +40,9 @@ public class CheckboxCellComponent implements IComponent {
         String targetObjectKind = cellDescription.getTargetObjectKindProvider().apply(variableManager);
 
         Boolean value = cellDescription.getCellValueProvider().apply(variableManager, this.props.columnTargetObject());
-        CheckboxCellElementProps cellElementProps = new CheckboxCellElementProps(this.props.cellId(), this.props.checkboxCellDescription().getId(), targetObjectId, targetObjectKind, this.props.columnId(), value);
+        String tooltipValue = cellDescription.getCellTooltipValueProvider().apply(variableManager, this.props.columnTargetObject());
+        CheckboxCellElementProps cellElementProps = new CheckboxCellElementProps(this.props.cellId(), this.props.checkboxCellDescription().getId(), targetObjectId, targetObjectKind,
+                this.props.columnId(), value, tooltipValue);
         return new Element(CheckboxCellElementProps.TYPE, cellElementProps);
     }
 }

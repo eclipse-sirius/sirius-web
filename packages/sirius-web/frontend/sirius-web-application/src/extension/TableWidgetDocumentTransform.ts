@@ -140,6 +140,7 @@ export const tableWidgetDocumentTransform = new DocumentTransform((document) => 
                     fieldBuilder('targetObjectId'),
                     fieldBuilder('targetObjectKind'),
                     fieldBuilder('columnId'),
+                    fieldBuilder('tooltipValue'),
                     inlineFragmentBuilder('CheckboxCell', [fieldWithAliasBuilder('value', 'booleanValue')]),
                     inlineFragmentBuilder('SelectCell', [
                       fieldBuilder('value'),

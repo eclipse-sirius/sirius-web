@@ -58,6 +58,7 @@ public class CellCheckboxWidgetDescriptor implements ICustomCellDescriptor {
                     .targetObjectId(checkboxCellElementProps.targetObjectId())
                     .targetObjectKind(checkboxCellElementProps.targetObjectKind())
                     .value(checkboxCellElementProps.value())
+                    .tooltipValue(checkboxCellElementProps.tooltipValue())
                     .build();
             return Optional.of(cell);
         }

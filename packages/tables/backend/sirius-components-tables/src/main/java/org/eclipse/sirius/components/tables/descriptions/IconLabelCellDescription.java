@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,6 +42,8 @@ public final class IconLabelCellDescription implements ICellDescription {
 
     private BiFunction<VariableManager, Object, List<String>> cellIconURLsProvider;
 
+    private BiFunction<VariableManager, Object, String> cellTooltipValueProvider;
+
     private IconLabelCellDescription() {
         // Prevent instantiation
     }
@@ -74,6 +76,10 @@ public final class IconLabelCellDescription implements ICellDescription {
         return this.cellIconURLsProvider;
     }
 
+    public BiFunction<VariableManager, Object, String> getCellTooltipValueProvider() {
+        return this.cellTooltipValueProvider;
+    }
+
     public static Builder newIconLabelCellDescription(String id) {
         return new Builder(id);
     }
@@ -104,6 +110,7 @@ public final class IconLabelCellDescription implements ICellDescription {
 
         private BiFunction<VariableManager, Object, List<String>> cellIconURLsProvider;
 
+        private BiFunction<VariableManager, Object, String> cellTooltipValueProvider;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -134,6 +141,10 @@ public final class IconLabelCellDescription implements ICellDescription {
             return this;
         }
 
+        public Builder cellTooltipValueProvider(BiFunction<VariableManager, Object, String> cellTooltipValueProvider) {
+            this.cellTooltipValueProvider = Objects.requireNonNull(cellTooltipValueProvider);
+            return this;
+        }
 
         public IconLabelCellDescription build() {
             IconLabelCellDescription iconLabelCellDescription = new IconLabelCellDescription();
@@ -143,6 +154,7 @@ public final class IconLabelCellDescription implements ICellDescription {
             iconLabelCellDescription.targetObjectKindProvider = Objects.requireNonNull(this.targetObjectKindProvider);
             iconLabelCellDescription.cellValueProvider = Objects.requireNonNull(this.cellValueProvider);
             iconLabelCellDescription.cellIconURLsProvider = Objects.requireNonNull(this.cellIconURLsProvider);
+            iconLabelCellDescription.cellTooltipValueProvider = Objects.requireNonNull(this.cellTooltipValueProvider);
             return iconLabelCellDescription;
         }
     }
