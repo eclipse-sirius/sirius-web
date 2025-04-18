@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.form.converters;
 
-import static org.eclipse.sirius.components.view.emf.form.ViewFormDescriptionConverterSwitch.VARIABLE_MANAGER;
+import static org.eclipse.sirius.components.view.emf.form.ViewFormDescriptionConverter.VARIABLE_MANAGER;
 
 import java.util.List;
 import java.util.Objects;

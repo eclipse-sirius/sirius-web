@@ -105,7 +105,11 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
 
                     assertThat(referenceWidget)
                             .hasLabel("Super types")
-                            .hasValueWithLabel("NamedElement");
+                            .hasValueWithLabel("NamedElement")
+                            .isBold()
+                            .isItalic()
+                            .isStrikeThrough()
+                            .isUnderline();
                 }, () -> fail("Missing form"));
 
         StepVerifier.create(flux)
