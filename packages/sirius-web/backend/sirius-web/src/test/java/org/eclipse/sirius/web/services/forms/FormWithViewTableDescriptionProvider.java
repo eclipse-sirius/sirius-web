@@ -28,7 +28,7 @@ import org.eclipse.sirius.components.view.builder.generated.form.PageDescription
 import org.eclipse.sirius.components.view.builder.generated.table.TableBuilders;
 import org.eclipse.sirius.components.view.builder.generated.tablewidget.TableWidgetBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
-import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
+import org.eclipse.sirius.components.view.emf.form.api.IFormIdProvider;
 import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription;
 import org.eclipse.sirius.emfjson.resource.JsonResource;

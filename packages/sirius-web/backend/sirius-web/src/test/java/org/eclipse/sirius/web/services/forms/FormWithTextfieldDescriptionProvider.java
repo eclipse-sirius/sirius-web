@@ -31,7 +31,7 @@ import org.eclipse.sirius.components.view.builder.generated.form.TextfieldDescri
 import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.SetValueBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
-import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
+import org.eclipse.sirius.components.view.emf.form.api.IFormIdProvider;
 import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;

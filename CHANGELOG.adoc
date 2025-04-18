@@ -86,8 +86,11 @@ This means that all checkbox cell classes have been moved into sirius-web-applic
 * CheckboxCellDescription
 * CheckboxCellElementProps
 * EditCheckboxCellInput
-
 They are now in `org.eclipse.sirius.web.application.views.table.customcells` package.
+- https://github.com/eclipse-sirius/sirius-web/issues/4858[#4858] [view] The API used to provide custom form widgets for the view DLS has been updated to use a service based approach instead of an EMF based switch.
+Implementations of the interface `org.eclipse.sirius.components.view.emf.form.IWidgetConverterProvider` should now switch to `org.eclipse.sirius.components.view.emf.form.converters.widgets.api.IWidgetDescriptionConverter`.
+During this refactoring some concepts have been moved and their package have been updated such as `IFormIdProvider`.
+
 
 === Dependency update
 
@@ -228,6 +231,8 @@ See the ADR 190 for additional details on the goal of this refactoring.
 - https://github.com/eclipse-sirius/sirius-web/issues/4762[#4762] [diagram] Enhance papaya lifecycle diagram with new concepts
 - https://github.com/eclipse-sirius/sirius-web/issues/4687[#4687] [table] Make table line header resizable
 - https://github.com/eclipse-sirius/sirius-web/issues/4804[#4804] [table] Avoid to reset the header column width when another column is resized
+- https://github.com/eclipse-sirius/sirius-web/issues/4858[#4858] [view] Switch to a service based approach to convert forms
+
 
 == v2025.2.0
 
