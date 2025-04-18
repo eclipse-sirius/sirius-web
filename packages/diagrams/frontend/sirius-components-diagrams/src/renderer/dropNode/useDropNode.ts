@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { Edge, InternalNode, Node, OnNodeDrag, XYPosition, useReactFlow, useStoreApi } from '@xyflow/react';
 import { NodeLookup, Rect } from '@xyflow/system';
 import { useCallback, useContext, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';
@@ -88,6 +89,7 @@ const evaluateAbsolutePosition = (node: Node, nodeLookup: NodeLookup<InternalNod
 };
 
 const useDropNodeMutation = () => {
+  const { t: coreT } = useTranslation('siriusComponentsCore');
   const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { addErrorMessage, addMessages } = useMultiToast();
   const [dropMutation, { data: dropNodeData, error: dropNodeError }] = useMutation<
@@ -97,7 +99,7 @@ const useDropNodeMutation = () => {
 
   useEffect(() => {
     if (dropNodeError) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
+      addErrorMessage(coreT('errors.unexpected'));
     }
     if (dropNodeData) {
       const { dropNode } = dropNodeData;
@@ -108,7 +110,7 @@ const useDropNodeMutation = () => {
         addMessages(dropNode.messages);
       }
     }
-  }, [dropNodeData, dropNodeError]);
+  }, [coreT, dropNodeData, dropNodeError]);
 
   const invokeMutation = useCallback(
     (

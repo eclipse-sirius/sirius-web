@@ -24,6 +24,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { StateMachine } from 'xstate';
 import {
@@ -110,6 +111,8 @@ const isSuccessPayload = (payload: GQLCreateChildPayload): payload is GQLCreateC
 
 export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClose }: NewObjectModalProps) => {
   const { classes } = useNewObjectModalStyles();
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'object.create' });
+  const { t: coreT } = useTranslation('siriusComponentsCore');
   const { addErrorMessage, addMessages } = useMultiToast();
   const [{ value, context }, dispatch] =
     useMachine<StateMachine<NewObjectModalContext, NewObjectModalStateSchema, NewObjectModalEvent>>(
@@ -129,7 +132,7 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
   useEffect(() => {
     if (!childCreationDescriptionsLoading) {
       if (childCreationDescriptionsError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (childCreationDescriptionsData) {
         const fetchChildCreationDescriptionsEvent: FetchedChildCreationDescriptionsEvent = {
@@ -139,7 +142,7 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
         dispatch(fetchChildCreationDescriptionsEvent);
       }
     }
-  }, [childCreationDescriptionsLoading, childCreationDescriptionsData, childCreationDescriptionsError]);
+  }, [childCreationDescriptionsLoading, childCreationDescriptionsData, childCreationDescriptionsError, coreT]);
 
   const onChildCreationDescriptionChange = (event) => {
     const value = event.target.value;
@@ -155,7 +158,7 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
   useEffect(() => {
     if (!createChildLoading) {
       if (createChildError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(coreT('errors.unexpected'));
       }
       if (createChildData) {
         const handleResponseEvent: HandleResponseEvent = { type: 'HANDLE_RESPONSE', data: createChildData };
@@ -168,7 +171,7 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
         }
       }
     }
-  }, [createChildLoading, createChildData, createChildError]);
+  }, [coreT, createChildLoading, createChildData, createChildError]);
 
   const onCreateObject = () => {
     dispatch({ type: 'CREATE_CHILD' } as CreateChildEvent);
@@ -195,10 +198,10 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
         maxWidth="xs"
         fullWidth
         data-testid={'new-object-modal'}>
-        <DialogTitle id="dialog-title">Create a new object</DialogTitle>
+        <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
         <DialogContent>
           <div className={classes.form}>
-            <InputLabel id="newObjectModalChildCreationDescriptionLabel">Object type</InputLabel>
+            <InputLabel id="newObjectModalChildCreationDescriptionLabel">{t('type.label')}</InputLabel>
             <Select
               variant="standard"
               classes={{ select: classes.select }}
@@ -228,7 +231,7 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
             data-testid="create-object"
             color="primary"
             onClick={onCreateObject}>
-            Create
+            {t('submit')}
           </Button>
         </DialogActions>
       </Dialog>

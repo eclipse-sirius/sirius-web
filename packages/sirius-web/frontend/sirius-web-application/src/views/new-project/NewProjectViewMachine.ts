@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Obeo.
+ * Copyright (c) 2020, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -44,7 +44,6 @@ export type SchemaValue = {
 
 export interface NewProjectViewContext {
   name: string;
-  nameMessage: string;
   nameIsInvalid: boolean;
   message: string | null;
   newProjectId: string | null;
@@ -72,7 +71,6 @@ export const newProjectViewMachine = Machine<NewProjectViewContext, NewProjectVi
     type: 'parallel',
     context: {
       name: '',
-      nameMessage: 'The name must contain between 3 and 1024 characters',
       nameIsInvalid: false,
       message: null,
       newProjectId: null,

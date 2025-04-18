@@ -15,9 +15,11 @@ import UnfoldMore from '@mui/icons-material/UnfoldMore';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
+import { useTranslation } from 'react-i18next';
 import { ExpandAllMenuItemProps } from './ExpandAllMenuItem.types';
 
 export const ExpandAllMenuItem = ({ item, onExpandAll, onClick }: ExpandAllMenuItemProps) => {
+  const { t } = useTranslation('siriusComponentsTrees');
   if (!item.hasChildren) {
     return null;
   }
@@ -33,7 +35,7 @@ export const ExpandAllMenuItem = ({ item, onExpandAll, onClick }: ExpandAllMenuI
       <ListItemIcon>
         <UnfoldMore fontSize="small" />
       </ListItemIcon>
-      <ListItemText primary="Expand all" />
+      <ListItemText primary={t('expandAll')} />
     </MenuItem>
   );
 };

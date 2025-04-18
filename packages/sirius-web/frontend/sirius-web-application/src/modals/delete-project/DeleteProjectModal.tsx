@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,10 +17,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DeleteProjectModalProps } from './DeleteProjectModal.types';
 import { useDeleteProject } from './useDeleteProject';
 
 export const DeleteProjectModal = ({ project, onCancel, onSuccess }: DeleteProjectModalProps) => {
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.delete' });
+
   const { deleteProject, loading, projectDeleted } = useDeleteProject();
 
   const onDeleteProject = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -36,12 +39,9 @@ export const DeleteProjectModal = ({ project, onCancel, onSuccess }: DeleteProje
 
   return (
     <Dialog open onClose={onCancel} aria-labelledby="dialog-title" maxWidth="xs" fullWidth>
-      <DialogTitle id="dialog-title">Delete the project "{project.name}"</DialogTitle>
+      <DialogTitle id="dialog-title">{t('title', { name: project.name })}</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          This action will delete everything in the project. All data and all representations will be lost. It cannot be
-          reversed.
-        </DialogContentText>
+        <DialogContentText>{t('content')}</DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button
@@ -50,7 +50,7 @@ export const DeleteProjectModal = ({ project, onCancel, onSuccess }: DeleteProje
           onClick={onDeleteProject}
           color="primary"
           data-testid="delete-project">
-          Delete
+          {t('submit')}
         </Button>
       </DialogActions>
     </Dialog>

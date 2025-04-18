@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import Pagination from '@mui/material/Pagination';
 import Typography from '@mui/material/Typography';
 import gql from 'graphql-tag';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Navigate } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { NewProjectCard } from './NewProjectCard';
@@ -69,6 +70,8 @@ const useProjectTemplatesModalStyles = makeStyles()((theme) => ({
 
 export const ProjectTemplatesModal = ({ onClose }: ProjectTemplatesModalProps) => {
   const { classes: styles } = useProjectTemplatesModalStyles();
+  const { t } = useTranslation('siriusWebApplication', { keyPrefix: 'project.list' });
+  const { t: coreT } = useTranslation('siriusComponentsCore');
 
   const [state, setState] = useState<ProjectTemplatesModalState>({
     page: 0,
@@ -136,7 +139,7 @@ export const ProjectTemplatesModal = ({ onClose }: ProjectTemplatesModalProps) =
 
   let content: JSX.Element;
   if (loading) {
-    content = <Typography>Loading...</Typography>;
+    content = <Typography>{coreT('messages.loading')}</Typography>;
   } else {
     content = (
       <>
@@ -168,7 +171,7 @@ export const ProjectTemplatesModal = ({ onClose }: ProjectTemplatesModalProps) =
       data-testid="project-templates-modal"
       maxWidth="md"
       fullWidth>
-      <DialogTitle id="dialog-title">Select a project template</DialogTitle>
+      <DialogTitle id="dialog-title">{t('selectProjectTemplate')}</DialogTitle>
       <DialogContent className={styles.content}>{content}</DialogContent>
     </Dialog>
   );

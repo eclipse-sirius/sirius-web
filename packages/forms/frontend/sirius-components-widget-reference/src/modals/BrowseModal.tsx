@@ -19,6 +19,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { BrowseModalProps } from './BrowseModal.types';
 
@@ -33,6 +34,7 @@ export const BrowseModal = ({ editingContextId, widget, onClose }: BrowseModalPr
   const [selectedTreeItemIds, setSelectedTreeItemIds] = useState<string[]>(
     widget.referenceValues.map((value) => value.id)
   );
+  const { t } = useTranslation('siriusComponentsWidgetReference', { keyPrefix: 'select' });
 
   const onTreeItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem) => {
     if (widget.reference.manyValued) {
@@ -58,7 +60,7 @@ export const BrowseModal = ({ editingContextId, widget, onClose }: BrowseModalPr
       aria-labelledby="dialog-title"
       fullWidth
       data-testid="browse-modal">
-      <DialogTitle id="dialog-title">Select an object</DialogTitle>
+      <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
       <DialogContent className={styles.content}>
         <ModelBrowserTreeView
           editingContextId={editingContextId}
@@ -67,7 +69,7 @@ export const BrowseModal = ({ editingContextId, widget, onClose }: BrowseModalPr
           descriptionId={widget.descriptionId}
           isContainment={widget.reference.containment}
           markedItemIds={[]}
-          title={'Choices'}
+          title={t('choices')}
           leafType={'reference'}
           ownerKind={widget.reference.ownerKind}
           onTreeItemClick={onTreeItemClick}
@@ -86,7 +88,7 @@ export const BrowseModal = ({ editingContextId, widget, onClose }: BrowseModalPr
               onClose(selectedElementId);
             }
           }}>
-          Select
+          {t('submit')}
         </Button>
       </DialogActions>
     </Dialog>
