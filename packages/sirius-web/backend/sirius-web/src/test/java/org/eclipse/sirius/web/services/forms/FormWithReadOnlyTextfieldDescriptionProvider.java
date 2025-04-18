@@ -28,7 +28,7 @@ import org.eclipse.sirius.components.view.builder.generated.form.PageDescription
 import org.eclipse.sirius.components.view.builder.generated.form.TextfieldDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.form.TextfieldDescriptionStyleBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
-import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
+import org.eclipse.sirius.components.view.emf.form.api.IFormIdProvider;
 import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;

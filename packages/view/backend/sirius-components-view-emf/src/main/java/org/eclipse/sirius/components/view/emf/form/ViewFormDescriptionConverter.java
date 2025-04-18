@@ -15,25 +15,14 @@ package org.eclipse.sirius.components.view.emf.form;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.ComposedSwitch;
-import org.eclipse.emf.ecore.util.Switch;
-import org.eclipse.sirius.components.core.api.IEditService;
-import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.DomainClassPredicate;
-import org.eclipse.sirius.components.forms.ContainerBorderStyle;
-import org.eclipse.sirius.components.forms.GroupDisplayMode;
-import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
-import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
-import org.eclipse.sirius.components.forms.description.ButtonDescription;
 import org.eclipse.sirius.components.forms.description.FormDescription;
-import org.eclipse.sirius.components.forms.description.GroupDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
@@ -43,7 +32,8 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.ViewIconURLsProvider;
-import org.eclipse.sirius.components.view.emf.operations.api.IOperationExecutor;
+import org.eclipse.sirius.components.view.emf.form.api.IFormIdProvider;
+import org.eclipse.sirius.components.view.emf.form.converters.api.IPageDescriptionConverter;
 import org.eclipse.sirius.components.view.form.FormVariable;
 import org.springframework.stereotype.Service;
 
@@ -55,33 +45,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class ViewFormDescriptionConverter implements IRepresentationDescriptionConverter {
 
+    public static final String VARIABLE_MANAGER = "variableManager";
+
     public static final String NEW_VALUE = "newValue";
 
     private static final String DEFAULT_FORM_LABEL = "Form";
 
-    private static final String DEFAULT_GROUP_LABEL = "";
-
-    private static final String DEFAULT_PAGE_LABEL = "";
-
     private final IObjectService objectService;
-
-    private final IOperationExecutor operationExecutor;
-
-    private final IEditService editService;
 
     private final IFormIdProvider formIdProvider;
 
-    private final List<IWidgetConverterProvider> customWidgetConverterProviders;
+    private final IPageDescriptionConverter pageDescriptionConverter;
 
-    private final IFeedbackMessageService feedbackMessageService;
-
-    public ViewFormDescriptionConverter(IObjectService objectService, IOperationExecutor operationExecutor, IEditService editService, IFormIdProvider formIdProvider, List<IWidgetConverterProvider> customWidgetConverterProviders, IFeedbackMessageService feedbackMessageService) {
+    public ViewFormDescriptionConverter(IObjectService objectService, IFormIdProvider formIdProvider, IPageDescriptionConverter pageDescriptionConverter) {
         this.objectService = Objects.requireNonNull(objectService);
-        this.operationExecutor = Objects.requireNonNull(operationExecutor);
-        this.editService = Objects.requireNonNull(editService);
         this.formIdProvider = Objects.requireNonNull(formIdProvider);
-        this.customWidgetConverterProviders = Objects.requireNonNull(customWidgetConverterProviders);
-        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
+        this.pageDescriptionConverter = Objects.requireNonNull(pageDescriptionConverter);
     }
 
     @Override
@@ -93,16 +72,12 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
     public IRepresentationDescription convert(RepresentationDescription representationDescription, List<RepresentationDescription> allRepresentationDescriptions, AQLInterpreter interpreter) {
         org.eclipse.sirius.components.view.form.FormDescription viewFormDescription = (org.eclipse.sirius.components.view.form.FormDescription) representationDescription;
 
-        List<Switch<Optional<AbstractWidgetDescription>>> widgetConverters = this.customWidgetConverterProviders.stream().map(provider -> provider.getWidgetConverter(interpreter)).toList();
-        Switch<Optional<AbstractControlDescription>> dispatcher = new ViewFormDescriptionConverterSwitch(interpreter, this.operationExecutor, this.editService, this.objectService, new ComposedSwitch<>(widgetConverters),
-                this.feedbackMessageService, this.formIdProvider);
-
         List<PageDescription> pageDescriptions = viewFormDescription.getPages()
                 .stream()
-                .map(p -> this.instantiatePage(p, dispatcher, interpreter))
+                .map(page -> this.pageDescriptionConverter.convert(page, interpreter))
                 .toList();
 
-        Function<VariableManager, String> targetObjectIdProvider = variableManager -> this.self(variableManager)
+        Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
                 .map(this.objectService::getId)
                 .orElse(null);
 
@@ -128,114 +103,10 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
                 .build();
     }
 
-    private PageDescription instantiatePage(org.eclipse.sirius.components.view.form.PageDescription viewPageDescription, Switch<Optional<AbstractControlDescription>> dispatcher,
-            AQLInterpreter interpreter) {
-
-        List<GroupDescription> groupDescriptions = viewPageDescription.getGroups().stream()
-                .map(g -> this.instantiateGroup(g, dispatcher, interpreter))
-                .toList();
-
-        List<ButtonDescription> toolbarActionDescriptions = viewPageDescription.getToolbarActions().stream()
-                .map(dispatcher::doSwitch)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .filter(ButtonDescription.class::isInstance)
-                .map(ButtonDescription.class::cast)
-                .toList();
-
-        String descriptionId = this.getDescriptionId(viewPageDescription);
-        return PageDescription.newPageDescription(descriptionId)
-                .idProvider(this.getIdProvider(descriptionId))
-                .labelProvider(variableManager -> this.computePageLabel(viewPageDescription, variableManager, interpreter))
-                .semanticElementsProvider(variableManager -> this.getSemanticElementsProvider(viewPageDescription, variableManager, interpreter))
-                .canCreatePredicate(variableManager -> this.canCreate(viewPageDescription.getDomainType(), viewPageDescription.getPreconditionExpression(), variableManager, interpreter))
-                .groupDescriptions(groupDescriptions)
-                .toolbarActionDescriptions(toolbarActionDescriptions)
-                .build();
-    }
-
-    private GroupDescription instantiateGroup(org.eclipse.sirius.components.view.form.GroupDescription viewGroupDescription, Switch<Optional<AbstractControlDescription>> dispatcher, AQLInterpreter interpreter) {
-        List<AbstractControlDescription> controlDescriptions = viewGroupDescription.getChildren().stream()
-                .map(dispatcher::doSwitch)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .map(AbstractControlDescription.class::cast)
-                .toList();
-
-        List<ButtonDescription> toolbarActionDescriptions = viewGroupDescription.getToolbarActions().stream()
-                .map(dispatcher::doSwitch)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .filter(ButtonDescription.class::isInstance)
-                .map(ButtonDescription.class::cast)
-                .toList();
-
-        String descriptionId = this.getDescriptionId(viewGroupDescription);
-
-        Function<VariableManager, ContainerBorderStyle> borderStyleProvider = variableManager -> {
-            var effectiveStyle = viewGroupDescription.getConditionalBorderStyles().stream()
-                    .filter(style -> this.matches(style.getCondition(), variableManager, interpreter))
-                    .map(org.eclipse.sirius.components.view.form.ContainerBorderStyle.class::cast)
-                    .findFirst()
-                    .orElseGet(viewGroupDescription::getBorderStyle);
-            if (effectiveStyle == null) {
-                return null;
-            }
-            return new ContainerBorderStyleProvider(effectiveStyle).apply(variableManager);
-        };
-
-        return GroupDescription.newGroupDescription(descriptionId)
-                .idProvider(this.getIdProvider(descriptionId))
-                .labelProvider(variableManager -> this.computeGroupLabel(viewGroupDescription, variableManager, interpreter))
-                .semanticElementsProvider(variableManager -> this.getSemanticElementsProvider(viewGroupDescription, variableManager, interpreter))
-                .controlDescriptions(controlDescriptions)
-                .toolbarActionDescriptions(toolbarActionDescriptions)
-                .displayModeProvider(variableManager -> this.getGroupDisplayMode(viewGroupDescription))
-                .borderStyleProvider(borderStyleProvider)
-                .build();
-    }
-
-    private Function<VariableManager, String> getIdProvider(String descriptionId) {
-        return variableManager -> {
-            String selfId = variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse("");
-            return UUID.nameUUIDFromBytes((selfId + descriptionId).getBytes()).toString();
-        };
-    }
-
     private String computeFormLabel(org.eclipse.sirius.components.view.form.FormDescription viewFormDescription, VariableManager variableManager, AQLInterpreter interpreter) {
         return variableManager.get(FormDescription.LABEL, String.class)
-                .or(() -> this.evaluateString(interpreter, variableManager, viewFormDescription.getTitleExpression()))
+                .or(() -> interpreter.evaluateExpression(variableManager.getVariables(), viewFormDescription.getTitleExpression()).asString())
                 .orElse(DEFAULT_FORM_LABEL);
-    }
-
-    private String computePageLabel(org.eclipse.sirius.components.view.form.PageDescription viewPageDescription, VariableManager variableManager, AQLInterpreter interpreter) {
-        return this.evaluateString(interpreter, variableManager, viewPageDescription.getLabelExpression()).orElse(DEFAULT_PAGE_LABEL);
-    }
-
-    private String computeGroupLabel(org.eclipse.sirius.components.view.form.GroupDescription viewGroupDescription, VariableManager variableManager, AQLInterpreter interpreter) {
-        return this.evaluateString(interpreter, variableManager, viewGroupDescription.getLabelExpression()).orElse(DEFAULT_GROUP_LABEL);
-    }
-
-    private List<?> getSemanticElementsProvider(org.eclipse.sirius.components.view.form.GroupDescription viewGroupDescription, VariableManager variableManager, AQLInterpreter interpreter) {
-        Result result = interpreter.evaluateExpression(variableManager.getVariables(), viewGroupDescription.getSemanticCandidatesExpression());
-        List<Object> candidates = result.asObjects().orElse(List.of());
-        return candidates.stream()
-                .filter(EObject.class::isInstance)
-                .map(EObject.class::cast)
-                .toList();
-    }
-
-    private List<?> getSemanticElementsProvider(org.eclipse.sirius.components.view.form.PageDescription viewPageDescription, VariableManager variableManager, AQLInterpreter interpreter) {
-        Result result = interpreter.evaluateExpression(variableManager.getVariables(), viewPageDescription.getSemanticCandidatesExpression());
-        List<Object> candidates = result.asObjects().orElse(List.of());
-        return candidates.stream()
-                .filter(EObject.class::isInstance)
-                .map(EObject.class::cast)
-                .toList();
-    }
-
-    private Optional<String> evaluateString(AQLInterpreter interpreter, VariableManager variableManager, String expression) {
-        return interpreter.evaluateExpression(variableManager.getVariables(), expression).asString();
     }
 
     private boolean canCreate(String domainType, String preconditionExpression, VariableManager variableManager, AQLInterpreter interpreter) {
@@ -251,22 +122,5 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
             }
         }
         return result;
-    }
-
-    private Optional<Object> self(VariableManager variableManager) {
-        return variableManager.get(VariableManager.SELF, Object.class);
-    }
-
-    private String getDescriptionId(EObject description) {
-        return this.formIdProvider.getFormElementDescriptionId(description);
-    }
-
-    private GroupDisplayMode getGroupDisplayMode(org.eclipse.sirius.components.view.form.GroupDescription viewGroupDescription) {
-        org.eclipse.sirius.components.view.form.GroupDisplayMode viewDisplayMode = viewGroupDescription.getDisplayMode();
-        return GroupDisplayMode.valueOf(viewDisplayMode.getLiteral());
-    }
-
-    private boolean matches(String condition, VariableManager variableManager, AQLInterpreter interpreter) {
-        return interpreter.evaluateExpression(variableManager.getVariables(), condition).asBoolean().orElse(Boolean.FALSE);
     }
 }
