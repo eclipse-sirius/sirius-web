@@ -4,6 +4,7 @@ type CheckboxCell implements Cell {
   targetObjectId: ID!
   targetObjectKind: String!
   value: Boolean!
+  tooltipValue: String!
 }
 
 extend type Mutation {
