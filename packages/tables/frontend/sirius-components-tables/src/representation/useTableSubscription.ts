@@ -96,6 +96,7 @@ export const getTableEventSubscription = `
               targetObjectId
               targetObjectKind
               columnId
+              tooltipValue
               ... on SelectCell {
                 value
                 options {

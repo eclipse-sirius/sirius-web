@@ -45,7 +45,10 @@ public class IconLabelCellComponent implements IComponent {
         String value = cellDescription.getCellValueProvider().apply(variableManager, this.props.columnTargetObject());
         List<String> iconURLs = cellDescription.getCellIconURLsProvider().apply(variableManager, this.props.columnTargetObject());
 
-        IconLabelCellElementProps cellElementProps = new IconLabelCellElementProps(this.props.cellId(), this.props.iconLabelCellDescription().getId(), targetObjectId, targetObjectKind, this.props.columnId(), value, iconURLs);
+        String tooltipValue = cellDescription.getCellTooltipValueProvider().apply(variableManager, this.props.columnTargetObject());
+
+        IconLabelCellElementProps cellElementProps = new IconLabelCellElementProps(this.props.cellId(), this.props.iconLabelCellDescription().getId(), targetObjectId, targetObjectKind,
+                this.props.columnId(), value, iconURLs, tooltipValue);
         return new Element(IconLabelCellElementProps.TYPE, cellElementProps);
     }
 }

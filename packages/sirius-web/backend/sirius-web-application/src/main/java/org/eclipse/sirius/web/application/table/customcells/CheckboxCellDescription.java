@@ -40,6 +40,8 @@ public final class CheckboxCellDescription implements ICellDescription {
 
     private BiFunction<VariableManager, Object, Boolean> cellValueProvider;
 
+    private BiFunction<VariableManager, Object, String> cellTooltipValueProvider;
+
     private CheckboxCellDescription() {
         // Prevent instantiation
     }
@@ -68,6 +70,9 @@ public final class CheckboxCellDescription implements ICellDescription {
         return this.cellValueProvider;
     }
 
+    public BiFunction<VariableManager, Object, String> getCellTooltipValueProvider() {
+        return this.cellTooltipValueProvider;
+    }
 
     public static Builder newCheckboxCellDescription(String id) {
         return new Builder(id);
@@ -97,6 +102,8 @@ public final class CheckboxCellDescription implements ICellDescription {
 
         private BiFunction<VariableManager, Object, Boolean> cellValueProvider;
 
+        private BiFunction<VariableManager, Object, String> cellTooltipValueProvider;
+
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -122,6 +129,11 @@ public final class CheckboxCellDescription implements ICellDescription {
             return this;
         }
 
+        public Builder cellTooltipValueProvider(BiFunction<VariableManager, Object, String> cellTooltipValueProvider) {
+            this.cellTooltipValueProvider = Objects.requireNonNull(cellTooltipValueProvider);
+            return this;
+        }
+
 
         public CheckboxCellDescription build() {
             CheckboxCellDescription checkboxCellDescription = new CheckboxCellDescription();
@@ -130,6 +142,7 @@ public final class CheckboxCellDescription implements ICellDescription {
             checkboxCellDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             checkboxCellDescription.targetObjectKindProvider = Objects.requireNonNull(this.targetObjectKindProvider);
             checkboxCellDescription.cellValueProvider = Objects.requireNonNull(this.cellValueProvider);
+            checkboxCellDescription.cellTooltipValueProvider = Objects.requireNonNull(this.cellTooltipValueProvider);
             return checkboxCellDescription;
         }
     }

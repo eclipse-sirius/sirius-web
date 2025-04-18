@@ -24,7 +24,15 @@ import org.eclipse.sirius.components.tables.SelectCellOption;
  *
  * @author lfasani
  */
-public record SelectCellElementProps(UUID id, String descriptionId, String targetObjectId, String targetObjectKind, UUID columnId, List<SelectCellOption> options, String value) implements IProps {
+public record SelectCellElementProps(
+        UUID id,
+        String descriptionId,
+        String targetObjectId,
+        String targetObjectKind,
+        UUID columnId,
+        List<SelectCellOption> options,
+        String value,
+        String tooltipValue) implements IProps {
 
     public static final String TYPE = "SelectCell";
 
@@ -36,5 +44,6 @@ public record SelectCellElementProps(UUID id, String descriptionId, String targe
         Objects.requireNonNull(columnId);
         Objects.requireNonNull(options);
         Objects.requireNonNull(value);
+        Objects.requireNonNull(tooltipValue);
     }
 }

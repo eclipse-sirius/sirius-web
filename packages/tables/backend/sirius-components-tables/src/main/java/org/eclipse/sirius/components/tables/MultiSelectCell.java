@@ -20,7 +20,7 @@ import java.util.UUID;
 import org.eclipse.sirius.components.annotations.Immutable;
 
 /**
- * Mult-Select-based Cell concept of the table representation.
+ * Multi-Select-based Cell concept of the table representation.
  *
  * @author arichard
  */
@@ -42,6 +42,8 @@ public final class MultiSelectCell implements ICell {
     private List<SelectCellOption> options;
 
     private List<String> values;
+
+    private String tooltipValue;
 
     private MultiSelectCell() {
         // Prevent instantiation
@@ -85,6 +87,10 @@ public final class MultiSelectCell implements ICell {
         return this.values;
     }
 
+    public String getTooltipValue() {
+        return this.tooltipValue;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, columnId: {2}, values: {3}', options: {4}}'";
@@ -116,6 +122,8 @@ public final class MultiSelectCell implements ICell {
         private List<SelectCellOption> options;
 
         private List<String> values;
+
+        private String tooltipValue;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -151,6 +159,11 @@ public final class MultiSelectCell implements ICell {
             return this;
         }
 
+        public Builder tooltipValue(String tooltipValue) {
+            this.tooltipValue = Objects.requireNonNull(tooltipValue);
+            return this;
+        }
+
         public MultiSelectCell build() {
             MultiSelectCell cell = new MultiSelectCell();
             cell.id = Objects.requireNonNull(this.id);
@@ -160,6 +173,7 @@ public final class MultiSelectCell implements ICell {
             cell.columnId = Objects.requireNonNull(this.columnId);
             cell.options = Objects.requireNonNull(this.options);
             cell.values = Objects.requireNonNull(this.values);
+            cell.tooltipValue = Objects.requireNonNull(this.tooltipValue);
             return cell;
         }
     }

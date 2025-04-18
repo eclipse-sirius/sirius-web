@@ -181,6 +181,7 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
                 .targetObjectIdProvider(variableManager -> "")
                 .targetObjectKindProvider(variableManager -> "")
                 .cellValueProvider(this.getCellStringValueProvider())
+                .cellTooltipValueProvider(this.getCellStringValueProvider())
                 .build());
 
         cellDescriptions.add(TextareaCellDescription.newTextareaCellDescription("textareaCells")
@@ -188,6 +189,7 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
                 .targetObjectIdProvider(variableManager -> "")
                 .targetObjectKindProvider(variableManager -> "")
                 .cellValueProvider(this.getCellStringValueProvider())
+                .cellTooltipValueProvider(this.getCellStringValueProvider())
                 .build());
 
         cellDescriptions.add(CheckboxCellDescription.newCheckboxCellDescription("checkboxCells")
@@ -195,6 +197,7 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
                 .targetObjectIdProvider(vm -> "")
                 .targetObjectKindProvider(vm -> "")
                 .cellValueProvider(this.getCellBooleanValueProvider())
+                .cellTooltipValueProvider((vm, o) -> "")
                 .build());
 
         cellDescriptions.add(SelectCellDescription.newSelectCellDescription("selectCells")
@@ -205,6 +208,7 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
                 .cellOptionsIdProvider(this.getCellOptionsIdProvider())
                 .cellOptionsLabelProvider(this.getCellOptionsLabelProvider())
                 .cellOptionsProvider(this.getCellOptionsProvider())
+                .cellTooltipValueProvider((vm, o) -> "")
                 .build());
 
         cellDescriptions.add(MultiSelectCellDescription.newMultiSelectCellDescription("multiselectCells")
@@ -215,6 +219,7 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
                 .cellOptionsIdProvider(this.getCellOptionsIdProvider())
                 .cellOptionsLabelProvider(this.getCellOptionsLabelProvider())
                 .cellOptionsProvider(this.getCellOptionsProvider())
+                .cellTooltipValueProvider((vm, o) -> "")
                 .build());
 
         return cellDescriptions;

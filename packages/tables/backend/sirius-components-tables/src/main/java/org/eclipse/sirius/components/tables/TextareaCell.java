@@ -40,6 +40,8 @@ public final class TextareaCell implements ICell {
 
     private String value;
 
+    private String tooltipValue;
+
     private TextareaCell() {
         // Prevent instantiation
     }
@@ -79,6 +81,11 @@ public final class TextareaCell implements ICell {
     }
 
     @Override
+    public String getTooltipValue() {
+        return this.tooltipValue;
+    }
+
+    @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, columnId: {2}, value: {3}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.getId(), this.columnId, this.value);
@@ -107,6 +114,8 @@ public final class TextareaCell implements ICell {
         private UUID columnId;
 
         private String value;
+
+        private String tooltipValue;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -137,6 +146,11 @@ public final class TextareaCell implements ICell {
             return this;
         }
 
+        public Builder tooltipValue(String tooltipValue) {
+            this.tooltipValue = Objects.requireNonNull(tooltipValue);
+            return this;
+        }
+
         public TextareaCell build() {
             TextareaCell cell = new TextareaCell();
             cell.id = Objects.requireNonNull(this.id);
@@ -145,6 +159,7 @@ public final class TextareaCell implements ICell {
             cell.targetObjectKind = Objects.requireNonNull(this.targetObjectKind);
             cell.columnId = Objects.requireNonNull(this.columnId);
             cell.value = Objects.requireNonNull(this.value);
+            cell.tooltipValue = Objects.requireNonNull(this.tooltipValue);
             return cell;
         }
     }

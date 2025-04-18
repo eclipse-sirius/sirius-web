@@ -64,6 +64,7 @@ public class CellCheckboxFormWidgetDescriptor implements IWidgetDescriptor {
                     .targetObjectId(checkboxCellElementProps.targetObjectId())
                     .targetObjectKind(checkboxCellElementProps.targetObjectKind())
                     .value(checkboxCellElementProps.value())
+                    .tooltipValue(checkboxCellElementProps.tooltipValue())
                     .build();
             return Optional.of(cell);
         }

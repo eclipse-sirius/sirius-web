@@ -64,7 +64,11 @@ public class SelectCellComponent implements IComponent {
 
             options.add(option);
         }
-        SelectCellElementProps cellElementProps = new SelectCellElementProps(this.props.cellId(), this.props.selectCellDescription().getId(), targetObjectId, targetObjectKind, this.props.columnId(), options, value);
+
+        String tooltipValue = cellDescription.getCellTooltipValueProvider().apply(variableManager, this.props.columnTargetObject());
+
+        SelectCellElementProps cellElementProps = new SelectCellElementProps(this.props.cellId(), this.props.selectCellDescription().getId(), targetObjectId, targetObjectKind, this.props.columnId()
+                , options, value, tooltipValue);
         return new Element(SelectCellElementProps.TYPE, cellElementProps);
     }
 }
