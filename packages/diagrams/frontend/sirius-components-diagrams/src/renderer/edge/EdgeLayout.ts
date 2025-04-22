@@ -136,6 +136,7 @@ export const getNearestPointInPerimeter = (
 };
 
 export const getUpdatedConnectionHandles: GetUpdatedConnectionHandlesParameters = (
+  isNodeChange,
   sourceNode,
   targetNode,
   sourcePosition,
@@ -148,8 +149,10 @@ export const getUpdatedConnectionHandles: GetUpdatedConnectionHandlesParameters 
       if (
         nodeConnectionHandle.id === sourceHandle &&
         nodeConnectionHandle.type === 'source' &&
-        !nodeConnectionHandle.XYPosition
+        !nodeConnectionHandle.XYPosition &&
+        (isNodeChange || (!isNodeChange && !nodeConnectionHandle.isFixedHandlePosition))
       ) {
+        nodeConnectionHandle.isFixedHandlePosition = false;
         nodeConnectionHandle.position = sourcePosition;
       }
       return nodeConnectionHandle;
@@ -161,8 +164,10 @@ export const getUpdatedConnectionHandles: GetUpdatedConnectionHandlesParameters 
       if (
         nodeConnectionHandle.id === targetHandle &&
         nodeConnectionHandle.type === 'target' &&
-        !nodeConnectionHandle.XYPosition
+        !nodeConnectionHandle.XYPosition &&
+        (isNodeChange || (!isNodeChange && !nodeConnectionHandle.isFixedHandlePosition))
       ) {
+        nodeConnectionHandle.isFixedHandlePosition = false;
         nodeConnectionHandle.position = targetPosition;
       }
       return nodeConnectionHandle;

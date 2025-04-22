@@ -22,6 +22,7 @@ export interface EdgeParameters {
 }
 
 export type GetUpdatedConnectionHandlesParameters = (
+  isNodeChange: boolean,
   sourceNode: Node<NodeData>,
   targetNode: Node<NodeData>,
   sourcePosition: Position,

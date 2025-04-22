@@ -91,12 +91,19 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
       } = node;
       const { resizedByUser } = node.data;
       if (height && width) {
-        const handles: GQLHandleLayoutData[] = [];
+        const handleLayoutDatas: GQLHandleLayoutData[] = [];
         node.data.connectionHandles.forEach((handle) => {
-          if (handle.XYPosition) {
-            handles.push({
+          if (handle.XYPosition && (handle.XYPosition.x || handle.XYPosition.y)) {
+            handleLayoutDatas.push({
               edgeId: handle.edgeId,
               position: { x: handle.XYPosition.x, y: handle.XYPosition.y },
+              handlePosition: handle.position,
+              type: handle.type,
+            });
+          } else if (handle.isFixedHandlePosition) {
+            handleLayoutDatas.push({
+              edgeId: handle.edgeId,
+              position: { x: 0, y: 0 },
               handlePosition: handle.position,
               type: handle.type,
             });
@@ -114,7 +121,7 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
             width,
           },
           resizedByUser,
-          handleLayoutData: handles,
+          handleLayoutData: handleLayoutDatas,
         });
       }
     });

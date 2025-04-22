@@ -129,9 +129,10 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
 
   useEffect(() => {
-    const { diagram, cause } = diagramRefreshedEventPayload;
+    const { diagram, cause, referencePosition } = diagramRefreshedEventPayload;
     const convertedDiagram: Diagram = convertDiagram(
       diagram,
+      referencePosition,
       nodeConverters,
       diagramDescription,
       edgeType,

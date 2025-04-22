@@ -53,9 +53,9 @@ const borderHandlesStyle = (position: Position): React.CSSProperties => {
 const handleStyle = (
   position: Position,
   isVirtualHandle: boolean,
-  XYPosition: XYPosition | undefined
+  XYPosition: XYPosition | null
 ): React.CSSProperties => {
-  if (!!XYPosition) {
+  if (XYPosition) {
     const style: React.CSSProperties = {
       position: 'absolute',
       transform: 'none',

@@ -22,7 +22,8 @@ export interface ConnectionHandle extends HandleProps {
   edgeId: string;
   index: number;
   hidden: boolean;
-  XYPosition?: XYPosition;
+  isFixedHandlePosition: boolean;
+  XYPosition: XYPosition | null;
 }
 export interface ConnectionHandlesState {
   selectedHandles: string[];
