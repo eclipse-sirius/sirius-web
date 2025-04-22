@@ -1,6 +1,6 @@
 = Changelog
 
-== v2025.4.0 (work in progress)
+== v2025.4.0
 
 === Shapes
 
@@ -88,6 +88,7 @@ This means that all checkbox cell classes have been moved into sirius-web-applic
 * EditCheckboxCellInput
 
 They are now in `org.eclipse.sirius.web.application.views.table.customcells` package.
+
 
 === Dependency update
 
@@ -228,6 +229,7 @@ See the ADR 190 for additional details on the goal of this refactoring.
 - https://github.com/eclipse-sirius/sirius-web/issues/4762[#4762] [diagram] Enhance papaya lifecycle diagram with new concepts
 - https://github.com/eclipse-sirius/sirius-web/issues/4687[#4687] [table] Make table line header resizable
 - https://github.com/eclipse-sirius/sirius-web/issues/4804[#4804] [table] Avoid to reset the header column width when another column is resized
+
 
 == v2025.2.0
 
