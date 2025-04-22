@@ -73,6 +73,8 @@ export const isToolSection = (entry: GQLPaletteEntry): entry is GQLToolSection =
 export const isPaletteDivider = (entry: GQLPaletteDivider): entry is GQLToolSection =>
   entry.__typename === 'PaletteDivider';
 
+export const isTool = (entry: GQLPaletteEntry): entry is GQLTool => !isPaletteDivider(entry) && !isToolSection(entry);
+
 const computeDraggableBounds = (bounds?: DOMRect): XYPosition => {
   return {
     x: bounds?.width ?? 0,
