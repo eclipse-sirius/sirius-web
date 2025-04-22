@@ -43,7 +43,7 @@ export const useHandlesLayout = (): UseHandlesLayoutValue => {
             if (edgeId === handle.edgeId) {
               return {
                 ...handle,
-                XYPosition: undefined,
+                XYPosition: null,
               };
             } else {
               return handle;

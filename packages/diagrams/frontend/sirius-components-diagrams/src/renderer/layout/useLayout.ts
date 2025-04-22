@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,6 +33,8 @@ const initialState: UseLayoutState = {
   onLaidoutDiagram: () => {},
 };
 
+const isHandleReferencePosition = (causedBy: string) => causedBy === 'InvokeSingleClickOnTwoDiagramElementsToolInput';
+
 export const useLayout = (): UseLayoutValue => {
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
@@ -53,7 +55,7 @@ export const useLayout = (): UseLayoutValue => {
   ) => {
     if (state.currentStep === 'INITIAL_STEP') {
       let processedReferencePosition: GQLReferencePosition | null = referencePosition;
-      if (processedReferencePosition) {
+      if (processedReferencePosition && !isHandleReferencePosition(processedReferencePosition.causedBy)) {
         let parentNode = reactFlowInstance.getNode(processedReferencePosition.parentId ?? '');
         while (parentNode) {
           processedReferencePosition.position.x -= parentNode.position.x;

@@ -17,7 +17,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
-import { Edge, Node, useReactFlow } from '@xyflow/react';
+import { Edge, Node, useReactFlow, XYPosition } from '@xyflow/react';
 import { memo, useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
@@ -26,6 +26,8 @@ import { useDialog } from '../../dialog/useDialog';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import {
   ConnectorContextualMenuProps,
+  GetConnectorToolsData,
+  GetConnectorToolsVariables,
   GQLDiagramDescription,
   GQLErrorPayload,
   GQLInvokeSingleClickOnTwoDiagramElementsToolData,
@@ -36,8 +38,6 @@ import {
   GQLRepresentationDescription,
   GQLTool,
   GQLToolVariable,
-  GetConnectorToolsData,
-  GetConnectorToolsVariables,
 } from './ConnectorContextualMenu.types';
 import { useConnector } from './useConnector';
 import { GQLSingleClickOnTwoDiagramElementsTool } from './useConnector.types';
@@ -121,7 +121,7 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
 
   const { showDialog, isOpened } = useDialog();
 
-  const { getNodes } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const { getNodes, screenToFlowPosition } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
   const connectionSource: HTMLElement | null = connection
     ? document.querySelector(`[data-id="${connection.source}"]`)
@@ -198,6 +198,11 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
   };
 
   const invokeToolMutation = (tool: GQLTool, variables: GQLToolVariable[]) => {
+    let targetHandlePosition: XYPosition = { x: 0, y: 0 };
+    if (position) {
+      targetHandlePosition = screenToFlowPosition({ x: position.x, y: position.y });
+    }
+
     const input: GQLInvokeSingleClickOnTwoDiagramElementsToolInput = {
       id: crypto.randomUUID(),
       editingContextId,
@@ -207,8 +212,8 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
       toolId: tool.id,
       sourcePositionX: 0,
       sourcePositionY: 0,
-      targetPositionX: 0,
-      targetPositionY: 0,
+      targetPositionX: targetHandlePosition.x,
+      targetPositionY: targetHandlePosition.y,
       variables,
     };
     invokeSingleClickOnTwoDiagramElementsTool({ variables: { input } });

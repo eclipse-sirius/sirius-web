@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,7 @@ import org.eclipse.sirius.components.diagrams.layoutdata.Position;
  *
  * @author sbegaudeau
  */
-public record ReferencePosition(String parentId, Position position) {
+public record ReferencePosition(String parentId, Position position, String causedBy) {
     public ReferencePosition {
         Objects.requireNonNull(position);
     }

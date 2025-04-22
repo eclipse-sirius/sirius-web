@@ -25,6 +25,7 @@ enum RefreshCause {
 type ReferencePosition {
   parentId: ID
   position: Position!
+  causedBy : String!
 }
 
 type Diagram implements Representation {

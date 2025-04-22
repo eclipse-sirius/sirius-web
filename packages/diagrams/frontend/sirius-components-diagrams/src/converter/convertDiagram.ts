@@ -13,6 +13,7 @@
 
 import { Edge, HandleType, Node, ReactFlowState } from '@xyflow/react';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
+import { GQLReferencePosition } from '../graphql/subscription/diagramEventSubscription.types';
 import { GQLDiagram } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
 import { GQLLabel } from '../graphql/subscription/labelFragment.types';
@@ -26,6 +27,7 @@ import {
 import { Diagram, EdgeData, EdgeLabel, NodeData } from '../renderer/DiagramRenderer.types';
 import { DiagramEdgeType } from '../renderer/edge/EdgeTypes.types';
 import { MultiLabelEdgeData } from '../renderer/edge/MultiLabelEdge.types';
+import { updateHandleFromReferencePosition } from '../renderer/layout/UpdateHandleFromReferencePosition';
 import { RawDiagram } from '../renderer/layout/layout.types';
 import { computeBorderNodeExtents, computeBorderNodePositions } from '../renderer/layout/layoutBorderNodes';
 import { layoutHandles } from '../renderer/layout/layoutHandles';
@@ -106,6 +108,7 @@ const defaultNodeConverters: INodeConverter[] = [
 
 export const convertDiagram = (
   gqlDiagram: GQLDiagram,
+  referencePosition: GQLReferencePosition | null,
   nodeConverterContributions: INodeConverter[],
   diagramDescription: GQLDiagramDescription,
   edgeType: DiagramEdgeType,
@@ -272,6 +275,7 @@ export const convertDiagram = (
   computeBorderNodeExtents(rawDiagram.nodes);
   computeBorderNodePositions(rawDiagram.nodes);
   layoutHandles(rawDiagram, diagramDescription, nodeLookUp);
+  updateHandleFromReferencePosition(rawDiagram, state, referencePosition);
 
   return {
     nodes: rawDiagram.nodes,
