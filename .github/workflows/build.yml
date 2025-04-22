@@ -87,6 +87,7 @@ jobs:
         run: node scripts/check-gitdiff.js
 
       - name: Build the vscode extension
+        if: ${{ false }}
         run: |
           echo "//npm.pkg.github.com/:_authToken=${{ github.token }}" >> .npmrc
           npm install -g vsce
@@ -114,6 +115,7 @@ jobs:
 
       - name: Store the vscode extension
         uses: actions/upload-artifact@v4
+        if: ${{ false }}
         with:
           name: vscode
           path: vscode-extension/sirius-web-*.vsix
