@@ -71,7 +71,7 @@ export const PaletteToolSectionList = ({ toolSection, onToolClick, onBackToMainL
         </ListItemButton>
       </Tooltip>
       {toolSection.tools.filter(isSingleClickOnDiagramElementTool).map((tool) => (
-        <ToolListItem onToolClick={onToolClick} tool={tool} key={tool.id} />
+        <ToolListItem onToolClick={onToolClick} tool={tool} disabled={false} key={tool.id} />
       ))}
     </List>
   );
