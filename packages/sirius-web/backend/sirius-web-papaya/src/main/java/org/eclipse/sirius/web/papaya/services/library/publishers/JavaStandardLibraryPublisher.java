@@ -96,7 +96,7 @@ public class JavaStandardLibraryPublisher implements IPapayaLibraryPublisher {
 
         var javaProject = PapayaFactory.eINSTANCE.createProject();
         javaProject.setName("Java Standard Library");
-        javaProject.getComponents().add(javaBaseComponent);
+        javaProject.getElements().add(javaBaseComponent);
 
         javaProject.eAllContents().forEachRemaining(eObject -> {
             String stableIdentifier = command.namespace() + command.name() + EcoreUtil.getURI(eObject).toString();
@@ -129,7 +129,7 @@ public class JavaStandardLibraryPublisher implements IPapayaLibraryPublisher {
 
         var javaProject = PapayaFactory.eINSTANCE.createProject();
         javaProject.setName("Java Standard Library");
-        javaProject.getComponents().add(javaBaseComponent);
+        javaProject.getElements().add(javaBaseComponent);
 
         javaProject.eAllContents().forEachRemaining(eObject -> {
             String stableIdentifier = command.namespace() + command.name() + EcoreUtil.getURI(eObject).toString();
@@ -168,7 +168,7 @@ public class JavaStandardLibraryPublisher implements IPapayaLibraryPublisher {
 
         var javaProject = PapayaFactory.eINSTANCE.createProject();
         javaProject.setName("Java Standard Library");
-        javaProject.getComponents().add(javaBaseComponent);
+        javaProject.getElements().add(javaBaseComponent);
 
         javaProject.eAllContents().forEachRemaining(eObject -> {
             String stableIdentifier = command.namespace() + command.name() + EcoreUtil.getURI(eObject).toString();

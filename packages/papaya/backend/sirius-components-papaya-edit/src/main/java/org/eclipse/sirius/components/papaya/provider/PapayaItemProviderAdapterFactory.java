@@ -54,6 +54,7 @@ import org.eclipse.sirius.components.papaya.provider.spec.DomainItemProviderSpec
 import org.eclipse.sirius.components.papaya.provider.spec.EnumItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.EnumLiteralItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.EventItemProviderSpec;
+import org.eclipse.sirius.components.papaya.provider.spec.FolderItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.GenericTypeItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.InterfaceItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.IterationItemProviderSpec;
@@ -150,6 +151,29 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
         }
 
         return this.tagItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Folder} instances.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected FolderItemProvider folderItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.Folder}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Adapter createFolderAdapter() {
+        if (this.folderItemProvider == null) {
+            this.folderItemProvider = new FolderItemProviderSpec(this);
+        }
+
+        return this.folderItemProvider;
     }
 
     /**
@@ -1111,6 +1135,8 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     public void dispose() {
         if (this.tagItemProvider != null)
             this.tagItemProvider.dispose();
+        if (this.folderItemProvider != null)
+            this.folderItemProvider.dispose();
         if (this.projectItemProvider != null)
             this.projectItemProvider.dispose();
         if (this.iterationItemProvider != null)

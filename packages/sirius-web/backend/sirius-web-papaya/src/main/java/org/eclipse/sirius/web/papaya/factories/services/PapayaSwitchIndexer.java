@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.papaya.factories.services;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.papaya.Component;
+import org.eclipse.sirius.components.papaya.Folder;
 import org.eclipse.sirius.components.papaya.Package;
 import org.eclipse.sirius.components.papaya.Project;
 import org.eclipse.sirius.components.papaya.Type;
@@ -35,9 +36,16 @@ public class PapayaSwitchIndexer extends PapayaSwitch<Void> {
 
     @Override
     public Void caseProject(Project project) {
-        project.getComponents().forEach(this::caseComponent);
-        project.getProjects().forEach(this::caseProject);
+        project.getFolders().forEach(this::caseFolder);
+        project.getElements().forEach(this::doSwitch);
         return super.caseProject(project);
+    }
+
+    @Override
+    public Void caseFolder(Folder folder) {
+        folder.getFolders().forEach(this::caseFolder);
+        folder.getElements().forEach(this::doSwitch);
+        return super.caseFolder(folder);
     }
 
     @Override

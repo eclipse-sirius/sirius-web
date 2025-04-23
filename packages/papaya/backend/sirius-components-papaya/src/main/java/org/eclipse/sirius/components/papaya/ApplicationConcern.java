@@ -33,7 +33,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface ApplicationConcern extends NamedElement {
+public interface ApplicationConcern extends NamedElement, FolderElement {
     /**
      * Returns the value of the '<em><b>Controllers</b></em>' containment reference list. The list contents are of type
      * {@link org.eclipse.sirius.components.papaya.Controller}. <!-- begin-user-doc --> <!-- end-user-doc -->

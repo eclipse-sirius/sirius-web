@@ -33,7 +33,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface Domain extends NamedElement {
+public interface Domain extends NamedElement, FolderElement {
     /**
      * Returns the value of the '<em><b>Services</b></em>' containment reference list. The list contents are of type
      * {@link org.eclipse.sirius.components.papaya.Service}. <!-- begin-user-doc --> <!-- end-user-doc -->

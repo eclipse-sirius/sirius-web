@@ -38,6 +38,14 @@ public interface PapayaFactory extends EFactory {
     Tag createTag();
 
     /**
+     * Returns a new object of class '<em>Folder</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Folder</em>'.
+     * @generated
+     */
+    Folder createFolder();
+
+    /**
      * Returns a new object of class '<em>Project</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Project</em>'.

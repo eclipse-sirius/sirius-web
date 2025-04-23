@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -48,7 +48,7 @@ public class ApacheProjectFactory implements IObjectFactory {
 
         var apacheCommonsCollections4Component = new ComponentInitializer().initialize("commons-collections4", "org.apache.commons.collections4", packageName -> packageName.startsWith("org.apache.commons.collections4"));
 
-        apacheCommons.getComponents().addAll(List.of(apacheCommonsCollections4Component));
+        apacheCommons.getElements().addAll(List.of(apacheCommonsCollections4Component));
         return apacheCommons;
     }
 

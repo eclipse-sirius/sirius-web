@@ -45,7 +45,7 @@ public class ReactorProjectFactory implements IObjectFactory {
     private Project projectReactor() {
         var projectReactor = PapayaFactory.eINSTANCE.createProject();
         projectReactor.setName("Project Reactor");
-        projectReactor.getComponents().add(this.reactorCore());
+        projectReactor.getElements().add(this.reactorCore());
 
         return projectReactor;
     }

@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.papaya;
 
-import org.eclipse.emf.common.util.EList;
-
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Project</b></em>'. <!-- end-user-doc -->
  *
@@ -21,133 +19,34 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.papaya.Project#getProjects <em>Projects</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.Project#getComponents <em>Components</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.Project#getAllComponents <em>All Components</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.Project#getComponentExchanges <em>Component Exchanges</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.Project#getIterations <em>Iterations</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.Project#getTasks <em>Tasks</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.Project#getContributions <em>Contributions</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.Project#getApplicationConcerns <em>Application Concerns</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.Project#getDomains <em>Domains</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.Project#getChannels <em>Channels</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.Project#getHomepage <em>Homepage</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.papaya.PapayaPackage#getProject()
  * @model
  * @generated
  */
-public interface Project extends NamedElement {
+public interface Project extends NamedElement, Container {
     /**
-     * Returns the value of the '<em><b>Projects</b></em>' containment reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.papaya.Project}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the value of the '<em><b>Homepage</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the value of the '<em>Projects</em>' containment reference list.
-     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getProject_Projects()
-     * @model containment="true"
+     * @return the value of the '<em>Homepage</em>' attribute.
+     * @see #setHomepage(String)
+     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getProject_Homepage()
+     * @model
      * @generated
      */
-    EList<Project> getProjects();
+    String getHomepage();
 
     /**
-     * Returns the value of the '<em><b>Components</b></em>' containment reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.papaya.Component}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.papaya.Project#getHomepage <em>Homepage</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the value of the '<em>Components</em>' containment reference list.
-     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getProject_Components()
-     * @model containment="true"
+     * @param value
+     *            the new value of the '<em>Homepage</em>' attribute.
+     * @see #getHomepage()
      * @generated
      */
-    EList<Component> getComponents();
-
-    /**
-     * Returns the value of the '<em><b>All Components</b></em>' reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.papaya.Component}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>All Components</em>' reference list.
-     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getProject_AllComponents()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
-     * @generated
-     */
-    EList<Component> getAllComponents();
-
-    /**
-     * Returns the value of the '<em><b>Component Exchanges</b></em>' containment reference list. The list contents are
-     * of type {@link org.eclipse.sirius.components.papaya.ComponentExchange}. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @return the value of the '<em>Component Exchanges</em>' containment reference list.
-     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getProject_ComponentExchanges()
-     * @model containment="true"
-     * @generated
-     */
-    EList<ComponentExchange> getComponentExchanges();
-
-    /**
-     * Returns the value of the '<em><b>Iterations</b></em>' containment reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.papaya.Iteration}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Iterations</em>' containment reference list.
-     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getProject_Iterations()
-     * @model containment="true"
-     * @generated
-     */
-    EList<Iteration> getIterations();
-
-    /**
-     * Returns the value of the '<em><b>Tasks</b></em>' containment reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.papaya.Task}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Tasks</em>' containment reference list.
-     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getProject_Tasks()
-     * @model containment="true"
-     * @generated
-     */
-    EList<Task> getTasks();
-
-    /**
-     * Returns the value of the '<em><b>Contributions</b></em>' containment reference list. The list contents are of
-     * type {@link org.eclipse.sirius.components.papaya.Contribution}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Contributions</em>' containment reference list.
-     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getProject_Contributions()
-     * @model containment="true"
-     * @generated
-     */
-    EList<Contribution> getContributions();
-
-    /**
-     * Returns the value of the '<em><b>Application Concerns</b></em>' containment reference list. The list contents are
-     * of type {@link org.eclipse.sirius.components.papaya.ApplicationConcern}. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @return the value of the '<em>Application Concerns</em>' containment reference list.
-     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getProject_ApplicationConcerns()
-     * @model containment="true"
-     * @generated
-     */
-    EList<ApplicationConcern> getApplicationConcerns();
-
-    /**
-     * Returns the value of the '<em><b>Domains</b></em>' containment reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.papaya.Domain}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Domains</em>' containment reference list.
-     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getProject_Domains()
-     * @model containment="true"
-     * @generated
-     */
-    EList<Domain> getDomains();
-
-    /**
-     * Returns the value of the '<em><b>Channels</b></em>' containment reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.papaya.Channel}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Channels</em>' containment reference list.
-     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getProject_Channels()
-     * @model containment="true"
-     * @generated
-     */
-    EList<Channel> getChannels();
+    void setHomepage(String value);
 
 } // Project

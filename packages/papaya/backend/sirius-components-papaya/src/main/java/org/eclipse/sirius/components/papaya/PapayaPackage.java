@@ -194,6 +194,147 @@ public interface PapayaPackage extends EPackage {
     int NAMED_ELEMENT_OPERATION_COUNT = MODEL_ELEMENT_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.papaya.Container <em>Container</em>}' class.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.papaya.Container
+     * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getContainer()
+     * @generated
+     */
+    int CONTAINER = 3;
+
+    /**
+     * The feature id for the '<em><b>Folders</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONTAINER__FOLDERS = 0;
+
+    /**
+     * The feature id for the '<em><b>Elements</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONTAINER__ELEMENTS = 1;
+
+    /**
+     * The number of structural features of the '<em>Container</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONTAINER_FEATURE_COUNT = 2;
+
+    /**
+     * The number of operations of the '<em>Container</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONTAINER_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.papaya.impl.FolderImpl <em>Folder</em>}' class.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.papaya.impl.FolderImpl
+     * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getFolder()
+     * @generated
+     */
+    int FOLDER = 4;
+
+    /**
+     * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FOLDER__TAGS = NAMED_ELEMENT__TAGS;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FOLDER__NAME = NAMED_ELEMENT__NAME;
+
+    /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FOLDER__DESCRIPTION = NAMED_ELEMENT__DESCRIPTION;
+
+    /**
+     * The feature id for the '<em><b>Folders</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FOLDER__FOLDERS = NAMED_ELEMENT_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Elements</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FOLDER__ELEMENTS = NAMED_ELEMENT_FEATURE_COUNT + 1;
+
+    /**
+     * The number of structural features of the '<em>Folder</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FOLDER_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 2;
+
+    /**
+     * The number of operations of the '<em>Folder</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FOLDER_OPERATION_COUNT = NAMED_ELEMENT_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.papaya.FolderElement <em>Folder Element</em>}'
+     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.papaya.FolderElement
+     * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getFolderElement()
+     * @generated
+     */
+    int FOLDER_ELEMENT = 5;
+
+    /**
+     * The number of structural features of the '<em>Folder Element</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FOLDER_ELEMENT_FEATURE_COUNT = 0;
+
+    /**
+     * The number of operations of the '<em>Folder Element</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FOLDER_ELEMENT_OPERATION_COUNT = 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.papaya.impl.ProjectImpl <em>Project</em>}'
      * class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -201,7 +342,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getProject()
      * @generated
      */
-    int PROJECT = 3;
+    int PROJECT = 6;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -229,94 +370,30 @@ public interface PapayaPackage extends EPackage {
     int PROJECT__DESCRIPTION = NAMED_ELEMENT__DESCRIPTION;
 
     /**
-     * The feature id for the '<em><b>Projects</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Folders</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int PROJECT__PROJECTS = NAMED_ELEMENT_FEATURE_COUNT + 0;
+    int PROJECT__FOLDERS = NAMED_ELEMENT_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Components</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Elements</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int PROJECT__COMPONENTS = NAMED_ELEMENT_FEATURE_COUNT + 1;
+    int PROJECT__ELEMENTS = NAMED_ELEMENT_FEATURE_COUNT + 1;
 
     /**
-     * The feature id for the '<em><b>All Components</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * The feature id for the '<em><b>Homepage</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int PROJECT__ALL_COMPONENTS = NAMED_ELEMENT_FEATURE_COUNT + 2;
-
-    /**
-     * The feature id for the '<em><b>Component Exchanges</b></em>' containment reference list. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int PROJECT__COMPONENT_EXCHANGES = NAMED_ELEMENT_FEATURE_COUNT + 3;
-
-    /**
-     * The feature id for the '<em><b>Iterations</b></em>' containment reference list. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int PROJECT__ITERATIONS = NAMED_ELEMENT_FEATURE_COUNT + 4;
-
-    /**
-     * The feature id for the '<em><b>Tasks</b></em>' containment reference list. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int PROJECT__TASKS = NAMED_ELEMENT_FEATURE_COUNT + 5;
-
-    /**
-     * The feature id for the '<em><b>Contributions</b></em>' containment reference list. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int PROJECT__CONTRIBUTIONS = NAMED_ELEMENT_FEATURE_COUNT + 6;
-
-    /**
-     * The feature id for the '<em><b>Application Concerns</b></em>' containment reference list. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int PROJECT__APPLICATION_CONCERNS = NAMED_ELEMENT_FEATURE_COUNT + 7;
-
-    /**
-     * The feature id for the '<em><b>Domains</b></em>' containment reference list. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int PROJECT__DOMAINS = NAMED_ELEMENT_FEATURE_COUNT + 8;
-
-    /**
-     * The feature id for the '<em><b>Channels</b></em>' containment reference list. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int PROJECT__CHANNELS = NAMED_ELEMENT_FEATURE_COUNT + 9;
+    int PROJECT__HOMEPAGE = NAMED_ELEMENT_FEATURE_COUNT + 2;
 
     /**
      * The number of structural features of the '<em>Project</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -324,7 +401,7 @@ public interface PapayaPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PROJECT_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 10;
+    int PROJECT_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 3;
 
     /**
      * The number of operations of the '<em>Project</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -342,7 +419,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getIteration()
      * @generated
      */
-    int ITERATION = 4;
+    int ITERATION = 7;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -427,7 +504,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getTask()
      * @generated
      */
-    int TASK = 5;
+    int TASK = 8;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -544,7 +621,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getContribution()
      * @generated
      */
-    int CONTRIBUTION = 6;
+    int CONTRIBUTION = 9;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -621,7 +698,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getComponent()
      * @generated
      */
-    int COMPONENT = 7;
+    int COMPONENT = 10;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -754,7 +831,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getComponentPort()
      * @generated
      */
-    int COMPONENT_PORT = 8;
+    int COMPONENT_PORT = 11;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -814,7 +891,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getComponentExchange()
      * @generated
      */
-    int COMPONENT_EXCHANGE = 9;
+    int COMPONENT_EXCHANGE = 12;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -875,7 +952,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getProvidedService()
      * @generated
      */
-    int PROVIDED_SERVICE = 10;
+    int PROVIDED_SERVICE = 13;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -935,7 +1012,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getRequiredService()
      * @generated
      */
-    int REQUIRED_SERVICE = 11;
+    int REQUIRED_SERVICE = 14;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -995,7 +1072,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getAnnotableElement()
      * @generated
      */
-    int ANNOTABLE_ELEMENT = 12;
+    int ANNOTABLE_ELEMENT = 15;
 
     /**
      * The feature id for the '<em><b>Annotations</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1031,7 +1108,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getPackage()
      * @generated
      */
-    int PACKAGE = 13;
+    int PACKAGE = 16;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1117,7 +1194,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getType()
      * @generated
      */
-    int TYPE = 14;
+    int TYPE = 17;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1202,7 +1279,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getTypedElement()
      * @generated
      */
-    int TYPED_ELEMENT = 15;
+    int TYPED_ELEMENT = 18;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1272,7 +1349,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getGenericType()
      * @generated
      */
-    int GENERIC_TYPE = 16;
+    int GENERIC_TYPE = 19;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1334,7 +1411,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getAnnotation()
      * @generated
      */
-    int ANNOTATION = 17;
+    int ANNOTATION = 20;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1429,7 +1506,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getAnnotationField()
      * @generated
      */
-    int ANNOTATION_FIELD = 18;
+    int ANNOTATION_FIELD = 21;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1499,7 +1576,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getClassifier()
      * @generated
      */
-    int CLASSIFIER = 19;
+    int CLASSIFIER = 22;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1594,7 +1671,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getTypeParameter()
      * @generated
      */
-    int TYPE_PARAMETER = 20;
+    int TYPE_PARAMETER = 23;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1646,7 +1723,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getInterface()
      * @generated
      */
-    int INTERFACE = 21;
+    int INTERFACE = 24;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1793,7 +1870,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getInterfaceImplementation()
      * @generated
      */
-    int INTERFACE_IMPLEMENTATION = 22;
+    int INTERFACE_IMPLEMENTATION = 25;
 
     /**
      * The feature id for the '<em><b>Implements</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1829,7 +1906,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getClass_()
      * @generated
      */
-    int CLASS = 23;
+    int CLASS = 26;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2008,7 +2085,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getConstructor()
      * @generated
      */
-    int CONSTRUCTOR = 24;
+    int CONSTRUCTOR = 27;
 
     /**
      * The feature id for the '<em><b>Annotations</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
@@ -2061,7 +2138,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getAttribute()
      * @generated
      */
-    int ATTRIBUTE = 25;
+    int ATTRIBUTE = 28;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2155,7 +2232,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getOperation()
      * @generated
      */
-    int OPERATION = 26;
+    int OPERATION = 29;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2266,7 +2343,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getParameter()
      * @generated
      */
-    int PARAMETER = 27;
+    int PARAMETER = 30;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2336,7 +2413,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getRecord()
      * @generated
      */
-    int RECORD = 28;
+    int RECORD = 31;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2456,7 +2533,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getRecordComponent()
      * @generated
      */
-    int RECORD_COMPONENT = 29;
+    int RECORD_COMPONENT = 32;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2526,7 +2603,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getDataType()
      * @generated
      */
-    int DATA_TYPE = 30;
+    int DATA_TYPE = 33;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2612,7 +2689,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getEnum()
      * @generated
      */
-    int ENUM = 31;
+    int ENUM = 34;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2706,7 +2783,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getEnumLiteral()
      * @generated
      */
-    int ENUM_LITERAL = 32;
+    int ENUM_LITERAL = 35;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2767,7 +2844,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getApplicationConcern()
      * @generated
      */
-    int APPLICATION_CONCERN = 33;
+    int APPLICATION_CONCERN = 36;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2873,7 +2950,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getController()
      * @generated
      */
-    int CONTROLLER = 34;
+    int CONTROLLER = 37;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2951,7 +3028,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getDomain()
      * @generated
      */
-    int DOMAIN = 35;
+    int DOMAIN = 38;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -3056,7 +3133,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getService()
      * @generated
      */
-    int SERVICE = 36;
+    int SERVICE = 39;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -3133,7 +3210,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getMessageListener()
      * @generated
      */
-    int MESSAGE_LISTENER = 37;
+    int MESSAGE_LISTENER = 40;
 
     /**
      * The feature id for the '<em><b>Subscriptions</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -3169,7 +3246,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getMessageEmitter()
      * @generated
      */
-    int MESSAGE_EMITTER = 38;
+    int MESSAGE_EMITTER = 41;
 
     /**
      * The feature id for the '<em><b>Publications</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -3205,7 +3282,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getMessage()
      * @generated
      */
-    int MESSAGE = 39;
+    int MESSAGE = 42;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -3273,7 +3350,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getEvent()
      * @generated
      */
-    int EVENT = 40;
+    int EVENT = 43;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -3349,7 +3426,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getCommand()
      * @generated
      */
-    int COMMAND = 41;
+    int COMMAND = 44;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -3417,7 +3494,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getQuery()
      * @generated
      */
-    int QUERY = 42;
+    int QUERY = 45;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -3485,7 +3562,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getRepository()
      * @generated
      */
-    int REPOSITORY = 43;
+    int REPOSITORY = 46;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -3537,7 +3614,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getChannel()
      * @generated
      */
-    int CHANNEL = 44;
+    int CHANNEL = 47;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -3588,7 +3665,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getSubscription()
      * @generated
      */
-    int SUBSCRIPTION = 45;
+    int SUBSCRIPTION = 48;
 
     /**
      * The feature id for the '<em><b>Channel</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3631,7 +3708,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getPublication()
      * @generated
      */
-    int PUBLICATION = 46;
+    int PUBLICATION = 49;
 
     /**
      * The feature id for the '<em><b>Channel</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3674,7 +3751,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getPriority()
      * @generated
      */
-    int PRIORITY = 47;
+    int PRIORITY = 50;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.papaya.Visibility <em>Visibility</em>}' enum.
@@ -3684,7 +3761,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getVisibility()
      * @generated
      */
-    int VISIBILITY = 48;
+    int VISIBILITY = 51;
 
     /**
      * The meta object id for the '<em>Instant</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3693,7 +3770,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getInstant()
      * @generated
      */
-    int INSTANT = 49;
+    int INSTANT = 52;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.ModelElement <em>Model
@@ -3783,6 +3860,60 @@ public interface PapayaPackage extends EPackage {
     EAttribute getNamedElement_Description();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.Container <em>Container</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Container</em>'.
+     * @see org.eclipse.sirius.components.papaya.Container
+     * @generated
+     */
+    EClass getContainer();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.papaya.Container#getFolders <em>Folders</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Folders</em>'.
+     * @see org.eclipse.sirius.components.papaya.Container#getFolders()
+     * @see #getContainer()
+     * @generated
+     */
+    EReference getContainer_Folders();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.papaya.Container#getElements <em>Elements</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Elements</em>'.
+     * @see org.eclipse.sirius.components.papaya.Container#getElements()
+     * @see #getContainer()
+     * @generated
+     */
+    EReference getContainer_Elements();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.Folder <em>Folder</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Folder</em>'.
+     * @see org.eclipse.sirius.components.papaya.Folder
+     * @generated
+     */
+    EClass getFolder();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.FolderElement <em>Folder
+     * Element</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Folder Element</em>'.
+     * @see org.eclipse.sirius.components.papaya.FolderElement
+     * @generated
+     */
+    EClass getFolderElement();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.Project <em>Project</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -3793,124 +3924,15 @@ public interface PapayaPackage extends EPackage {
     EClass getProject();
 
     /**
-     * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.papaya.Project#getProjects <em>Projects</em>}'. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.papaya.Project#getHomepage
+     * <em>Homepage</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the containment reference list '<em>Projects</em>'.
-     * @see org.eclipse.sirius.components.papaya.Project#getProjects()
+     * @return the meta object for the attribute '<em>Homepage</em>'.
+     * @see org.eclipse.sirius.components.papaya.Project#getHomepage()
      * @see #getProject()
      * @generated
      */
-    EReference getProject_Projects();
-
-    /**
-     * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.papaya.Project#getComponents <em>Components</em>}'. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference list '<em>Components</em>'.
-     * @see org.eclipse.sirius.components.papaya.Project#getComponents()
-     * @see #getProject()
-     * @generated
-     */
-    EReference getProject_Components();
-
-    /**
-     * Returns the meta object for the reference list
-     * '{@link org.eclipse.sirius.components.papaya.Project#getAllComponents <em>All Components</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the reference list '<em>All Components</em>'.
-     * @see org.eclipse.sirius.components.papaya.Project#getAllComponents()
-     * @see #getProject()
-     * @generated
-     */
-    EReference getProject_AllComponents();
-
-    /**
-     * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.papaya.Project#getComponentExchanges <em>Component Exchanges</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference list '<em>Component Exchanges</em>'.
-     * @see org.eclipse.sirius.components.papaya.Project#getComponentExchanges()
-     * @see #getProject()
-     * @generated
-     */
-    EReference getProject_ComponentExchanges();
-
-    /**
-     * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.papaya.Project#getIterations <em>Iterations</em>}'. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference list '<em>Iterations</em>'.
-     * @see org.eclipse.sirius.components.papaya.Project#getIterations()
-     * @see #getProject()
-     * @generated
-     */
-    EReference getProject_Iterations();
-
-    /**
-     * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.papaya.Project#getTasks <em>Tasks</em>}'. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @return the meta object for the containment reference list '<em>Tasks</em>'.
-     * @see org.eclipse.sirius.components.papaya.Project#getTasks()
-     * @see #getProject()
-     * @generated
-     */
-    EReference getProject_Tasks();
-
-    /**
-     * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.papaya.Project#getContributions <em>Contributions</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference list '<em>Contributions</em>'.
-     * @see org.eclipse.sirius.components.papaya.Project#getContributions()
-     * @see #getProject()
-     * @generated
-     */
-    EReference getProject_Contributions();
-
-    /**
-     * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.papaya.Project#getApplicationConcerns <em>Application Concerns</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference list '<em>Application Concerns</em>'.
-     * @see org.eclipse.sirius.components.papaya.Project#getApplicationConcerns()
-     * @see #getProject()
-     * @generated
-     */
-    EReference getProject_ApplicationConcerns();
-
-    /**
-     * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.papaya.Project#getDomains <em>Domains</em>}'. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @return the meta object for the containment reference list '<em>Domains</em>'.
-     * @see org.eclipse.sirius.components.papaya.Project#getDomains()
-     * @see #getProject()
-     * @generated
-     */
-    EReference getProject_Domains();
-
-    /**
-     * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.papaya.Project#getChannels <em>Channels</em>}'. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference list '<em>Channels</em>'.
-     * @see org.eclipse.sirius.components.papaya.Project#getChannels()
-     * @see #getProject()
-     * @generated
-     */
-    EReference getProject_Channels();
+    EAttribute getProject_Homepage();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.Iteration <em>Iteration</em>}'.
@@ -5530,6 +5552,52 @@ public interface PapayaPackage extends EPackage {
         EAttribute NAMED_ELEMENT__DESCRIPTION = eINSTANCE.getNamedElement_Description();
 
         /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.Container <em>Container</em>}'
+         * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.papaya.Container
+         * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getContainer()
+         * @generated
+         */
+        EClass CONTAINER = eINSTANCE.getContainer();
+
+        /**
+         * The meta object literal for the '<em><b>Folders</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference CONTAINER__FOLDERS = eINSTANCE.getContainer_Folders();
+
+        /**
+         * The meta object literal for the '<em><b>Elements</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference CONTAINER__ELEMENTS = eINSTANCE.getContainer_Elements();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.impl.FolderImpl
+         * <em>Folder</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.papaya.impl.FolderImpl
+         * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getFolder()
+         * @generated
+         */
+        EClass FOLDER = eINSTANCE.getFolder();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.FolderElement <em>Folder
+         * Element</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.papaya.FolderElement
+         * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getFolderElement()
+         * @generated
+         */
+        EClass FOLDER_ELEMENT = eINSTANCE.getFolderElement();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.impl.ProjectImpl
          * <em>Project</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -5540,84 +5608,12 @@ public interface PapayaPackage extends EPackage {
         EClass PROJECT = eINSTANCE.getProject();
 
         /**
-         * The meta object literal for the '<em><b>Projects</b></em>' containment reference list feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the '<em><b>Homepage</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
          *
          * @generated
          */
-        EReference PROJECT__PROJECTS = eINSTANCE.getProject_Projects();
-
-        /**
-         * The meta object literal for the '<em><b>Components</b></em>' containment reference list feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference PROJECT__COMPONENTS = eINSTANCE.getProject_Components();
-
-        /**
-         * The meta object literal for the '<em><b>All Components</b></em>' reference list feature. <!-- begin-user-doc
-         * --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference PROJECT__ALL_COMPONENTS = eINSTANCE.getProject_AllComponents();
-
-        /**
-         * The meta object literal for the '<em><b>Component Exchanges</b></em>' containment reference list feature.
-         * <!-- begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference PROJECT__COMPONENT_EXCHANGES = eINSTANCE.getProject_ComponentExchanges();
-
-        /**
-         * The meta object literal for the '<em><b>Iterations</b></em>' containment reference list feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference PROJECT__ITERATIONS = eINSTANCE.getProject_Iterations();
-
-        /**
-         * The meta object literal for the '<em><b>Tasks</b></em>' containment reference list feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference PROJECT__TASKS = eINSTANCE.getProject_Tasks();
-
-        /**
-         * The meta object literal for the '<em><b>Contributions</b></em>' containment reference list feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference PROJECT__CONTRIBUTIONS = eINSTANCE.getProject_Contributions();
-
-        /**
-         * The meta object literal for the '<em><b>Application Concerns</b></em>' containment reference list feature.
-         * <!-- begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference PROJECT__APPLICATION_CONCERNS = eINSTANCE.getProject_ApplicationConcerns();
-
-        /**
-         * The meta object literal for the '<em><b>Domains</b></em>' containment reference list feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference PROJECT__DOMAINS = eINSTANCE.getProject_Domains();
-
-        /**
-         * The meta object literal for the '<em><b>Channels</b></em>' containment reference list feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference PROJECT__CHANNELS = eINSTANCE.getProject_Channels();
+        EAttribute PROJECT__HOMEPAGE = eINSTANCE.getProject_Homepage();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.impl.IterationImpl

@@ -46,7 +46,7 @@ public class JavaProjectFactory implements IObjectFactory {
     private Project java() {
         var java = PapayaFactory.eINSTANCE.createProject();
         java.setName("Java Standard Library");
-        java.getComponents().add(this.javaBase());
+        java.getElements().add(this.javaBase());
 
         return java;
     }
