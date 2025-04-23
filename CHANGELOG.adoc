@@ -9,6 +9,7 @@
 === Architectural decision records
 
 - [ADR-192] Improve table representation lifecycle
+- [ADR-193] Leverage React router for nested routes
 
 === Deprecation warning
 
