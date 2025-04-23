@@ -118,12 +118,12 @@ public class SiriusWebProjectCreationLifecycleFactory implements IObjectFactory 
 
         this.projectHttpChannel = PapayaFactory.eINSTANCE.createChannel();
         projectHttpChannel.setName("HTTP");
-        project.getChannels().add(projectHttpChannel);
+        project.getElements().add(projectHttpChannel);
 
-        project.getApplicationConcerns().add(this.projectCreationApplicationConcern());
-        project.getDomains().add(this.projectDomain());
-        project.getDomains().add(this.semanticDataDomain());
-        project.getDomains().add(this.projectSemanticDataDomain());
+        project.getElements().add(this.projectCreationApplicationConcern());
+        project.getElements().add(this.projectDomain());
+        project.getElements().add(this.semanticDataDomain());
+        project.getElements().add(this.projectSemanticDataDomain());
     }
 
     private ApplicationConcern projectCreationApplicationConcern() {

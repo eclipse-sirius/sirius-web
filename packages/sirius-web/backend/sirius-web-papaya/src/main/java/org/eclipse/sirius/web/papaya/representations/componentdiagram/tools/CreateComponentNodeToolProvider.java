@@ -33,20 +33,14 @@ public class CreateComponentNodeToolProvider implements INodeToolProvider {
 
         var createNewComponent = new ViewBuilders().newCreateInstance()
                 .typeName("papaya:Component")
-                .referenceName("components")
+                .referenceName("elements")
                 .variableName("newComponent")
                 .children(
-                        new ViewBuilders().newSetValue()
-                                .featureName("components")
-                                .valueExpression("aql:newComponent")
-                                .children(
-                                        new DiagramBuilders().newCreateView()
-                                                .elementDescription(componentNodeDescription)
-                                                .semanticElementExpression("aql:newComponent")
-                                                .parentViewExpression("aql:selectedNode")
-                                                .containmentKind(NodeContainmentKind.CHILD_NODE)
-                                                .build()
-                                )
+                        new DiagramBuilders().newCreateView()
+                                .elementDescription(componentNodeDescription)
+                                .semanticElementExpression("aql:newComponent")
+                                .parentViewExpression("aql:selectedNode")
+                                .containmentKind(NodeContainmentKind.CHILD_NODE)
                                 .build()
                 )
                 .build();

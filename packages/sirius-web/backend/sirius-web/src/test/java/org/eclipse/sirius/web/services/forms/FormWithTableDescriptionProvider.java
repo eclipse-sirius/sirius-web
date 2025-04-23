@@ -76,6 +76,7 @@ import org.springframework.stereotype.Service;
 public class FormWithTableDescriptionProvider implements IEditingContextRepresentationDescriptionProvider {
 
     public static final String TASK_FORM_ID = "taskFormDescription";
+
     public static final String FORM_WITH_TABLE_ID = "tasksTableId";
 
     private final ComposedAdapterFactory composedAdapterFactory;
@@ -174,24 +175,28 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
 
     private List<ICellDescription> getCellDescriptions() {
         List<ICellDescription> cellDescriptions = new ArrayList<>();
+
         cellDescriptions.add(TextfieldCellDescription.newTextfieldCellDescription("textfieldCells")
                 .canCreatePredicate(new CellTypePredicate().isTextfieldCell())
                 .targetObjectIdProvider(variableManager -> "")
                 .targetObjectKindProvider(variableManager -> "")
                 .cellValueProvider(this.getCellStringValueProvider())
                 .build());
+
         cellDescriptions.add(TextareaCellDescription.newTextareaCellDescription("textareaCells")
                 .canCreatePredicate(new CellTypePredicate().isTextareaCell())
                 .targetObjectIdProvider(variableManager -> "")
                 .targetObjectKindProvider(variableManager -> "")
                 .cellValueProvider(this.getCellStringValueProvider())
                 .build());
+
         cellDescriptions.add(CheckboxCellDescription.newCheckboxCellDescription("checkboxCells")
                 .canCreatePredicate(new CellTypePredicate().isCheckboxCell())
                 .targetObjectIdProvider(vm -> "")
                 .targetObjectKindProvider(vm -> "")
                 .cellValueProvider(this.getCellBooleanValueProvider())
                 .build());
+
         cellDescriptions.add(SelectCellDescription.newSelectCellDescription("selectCells")
                 .canCreatePredicate(new CellTypePredicate().isSelectCell())
                 .targetObjectIdProvider(vm -> "")
@@ -201,6 +206,7 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
                 .cellOptionsLabelProvider(this.getCellOptionsLabelProvider())
                 .cellOptionsProvider(this.getCellOptionsProvider())
                 .build());
+
         cellDescriptions.add(MultiSelectCellDescription.newMultiSelectCellDescription("multiselectCells")
                 .canCreatePredicate(new CellTypePredicate().isMultiselectCell())
                 .targetObjectIdProvider(vm -> "")
@@ -210,6 +216,7 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
                 .cellOptionsLabelProvider(this.getCellOptionsLabelProvider())
                 .cellOptionsProvider(this.getCellOptionsProvider())
                 .build());
+
         return cellDescriptions;
     }
 

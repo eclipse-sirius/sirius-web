@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -123,7 +123,7 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
         return new GanttBuilders().newTaskDescription()
                 .name("Iterations In Project")
                 .domainType("papaya::Iteration")
-                .semanticCandidatesExpression("aql:self.iterations")
+                .semanticCandidatesExpression("aql:self.elements")
                 .nameExpression("aql:self.name")
                 .startTimeExpression("aql:self.startDate")
                 .endTimeExpression("aql:self.endDate")
@@ -175,7 +175,7 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
                 .name("Create Task")
                 .body(new CreateInstanceBuilder()
                         .typeName("papaya::Task")
-                        .referenceName("tasks")
+                        .referenceName("elements")
                         .children(newInstanceChangeContext)
                         .build())
                 .build();

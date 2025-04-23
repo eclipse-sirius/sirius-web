@@ -324,7 +324,6 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
     @GivenSiriusWebServer
     @DisplayName("Given a gantt representation, when the change column mutation is performed, then it succeeds")
     public void givenGanttRepresentationWhenChangeColumnMutationIsPerformedThenItSucceeds() {
-
         var flux = this.givenSubscriptionToGantt();
 
         var ganttRef = new AtomicReference<Gantt>();
@@ -378,7 +377,6 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
     @GivenSiriusWebServer
     @DisplayName("Given a gantt representation, when the task dependency creation and deletion mutations are invoked, then it succeeds")
     public void givenGanttWhenCreateAndDeleteTaskDependencyMutationArePerformedThenItSucceeds() {
-
         var flux = this.givenSubscriptionToGantt();
 
         var ganttRef = new AtomicReference<Gantt>();

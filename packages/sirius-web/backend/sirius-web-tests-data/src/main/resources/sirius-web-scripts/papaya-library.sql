@@ -426,7 +426,7 @@ INSERT INTO document (
         "eClass": "papaya:Project",
         "data": {
           "name": "backend",
-          "components": [
+          "elements": [
             {
               "id": "429fb025-f429-4f78-a314-a8502024997a",
               "eClass": "papaya:Component",
@@ -521,7 +521,7 @@ INSERT INTO document (
         "eClass": "papaya:Project",
         "data": {
           "name": "backend",
-          "components": [
+          "elements": [
             {
               "id": "429fb025-f429-4f78-a314-a8502024997a",
               "eClass": "papaya:Component",

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.papaya.AnnotableElement;
 import org.eclipse.sirius.components.papaya.Annotation;
+import org.eclipse.sirius.components.papaya.FolderElement;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.components.papaya.Type;
 
@@ -280,6 +281,12 @@ public class PackageImpl extends NamedElementImpl implements org.eclipse.sirius.
                     return -1;
             }
         }
+        if (baseClass == FolderElement.class) {
+            switch (derivedFeatureID) {
+                default:
+                    return -1;
+            }
+        }
         return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
     }
 
@@ -294,6 +301,12 @@ public class PackageImpl extends NamedElementImpl implements org.eclipse.sirius.
             switch (baseFeatureID) {
                 case PapayaPackage.ANNOTABLE_ELEMENT__ANNOTATIONS:
                     return PapayaPackage.PACKAGE__ANNOTATIONS;
+                default:
+                    return -1;
+            }
+        }
+        if (baseClass == FolderElement.class) {
+            switch (baseFeatureID) {
                 default:
                     return -1;
             }
