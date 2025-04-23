@@ -106,7 +106,7 @@ public class ReactiveStreamsLibraryPublisher implements IPapayaLibraryPublisher 
 
         var reactiveStreamsProject = PapayaFactory.eINSTANCE.createProject();
         reactiveStreamsProject.setName("Reactive Streams");
-        reactiveStreamsProject.getComponents().add(reactiveStreamsComponent);
+        reactiveStreamsProject.getElements().add(reactiveStreamsComponent);
 
         reactiveStreamsProject.eAllContents().forEachRemaining(eObject -> {
             String stableIdentifier = command.namespace() + command.name() + EcoreUtil.getURI(eObject).toString();

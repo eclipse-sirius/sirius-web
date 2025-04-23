@@ -107,12 +107,15 @@ public class EdgeOnEdgeControllerTests extends AbstractIntegrationTests {
                 .ifPresentOrElse(diagram -> {
                     var nodeCount = new DiagramNavigator(diagram).findDiagramNodeCount();
                     assertThat(nodeCount).isEqualTo(9);
+
                     var edgeCount = new DiagramNavigator(diagram).findDiagramEdgeCount();
                     assertThat(edgeCount).isEqualTo(3);
+
                     var edgeOnEdgeSource = new DiagramNavigator(diagram).edgeWithLabel("channel").sourceNode().getNode();
                     var edgeOnEdgeTarget = new DiagramNavigator(diagram).edgeWithLabel("channel").targetEdge();
                     var edgeSource = edgeOnEdgeTarget.sourceNode().getNode();
                     var targetEdge = edgeOnEdgeTarget.targetNode().getNode();
+
                     assertThat(edgeOnEdgeSource.getTargetObjectLabel()).isEqualTo("Channel HTTP");
                     assertThat(edgeSource.getTargetObjectLabel()).isEqualTo("Controller Controller1");
                     assertThat(targetEdge.getTargetObjectLabel()).isEqualTo("Command Command1");

@@ -106,7 +106,7 @@ public class ReactorLibraryPublisher implements IPapayaLibraryPublisher {
 
         var reactorProject = PapayaFactory.eINSTANCE.createProject();
         reactorProject.setName("Reactor");
-        reactorProject.getComponents().add(reactorComponent);
+        reactorProject.getElements().add(reactorComponent);
 
         reactorProject.eAllContents().forEachRemaining(eObject -> {
             String stableIdentifier = command.namespace() + command.name() + EcoreUtil.getURI(eObject).toString();

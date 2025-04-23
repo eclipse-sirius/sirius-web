@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,13 +12,15 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.papaya;
 
+import org.eclipse.emf.ecore.EObject;
+
 /**
- * <!-- begin-user-doc --> A representation of the model object '<em><b>Channel</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc --> A representation of the model object '<em><b>Folder Element</b></em>'. <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.sirius.components.papaya.PapayaPackage#getChannel()
- * @model
+ * @see org.eclipse.sirius.components.papaya.PapayaPackage#getFolderElement()
+ * @model interface="true" abstract="true"
  * @generated
  */
-public interface Channel extends NamedElement, FolderElement {
-} // Channel
+public interface FolderElement extends EObject {
+} // FolderElement

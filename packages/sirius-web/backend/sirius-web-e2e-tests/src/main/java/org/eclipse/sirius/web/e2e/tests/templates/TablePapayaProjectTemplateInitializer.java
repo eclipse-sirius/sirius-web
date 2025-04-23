@@ -54,7 +54,7 @@ public class TablePapayaProjectTemplateInitializer implements IProjectTemplateIn
 
             var component = PapayaFactory.eINSTANCE.createComponent();
             component.setName("Component");
-            project.getComponents().add(component);
+            project.getElements().add(component);
 
             var firstPackage = PapayaFactory.eINSTANCE.createPackage();
             firstPackage.setName("Package");

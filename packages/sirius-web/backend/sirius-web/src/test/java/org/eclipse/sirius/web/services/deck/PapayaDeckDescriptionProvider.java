@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -106,7 +106,7 @@ public class PapayaDeckDescriptionProvider implements IEditingContextProcessor {
         var toDoCardDescription = new DeckBuilders().newCardDescription()
                 .name("To do Card")
                 .titleExpression("aql:self.name")
-                .semanticCandidatesExpression("aql:self.tasks->select(task | not task.done)")
+                .semanticCandidatesExpression("aql:self.elements->filter(papaya::Task)->select(task | not task.done)")
                 .deleteTool(deleteCardTool)
                 .build();
 
@@ -118,7 +118,7 @@ public class PapayaDeckDescriptionProvider implements IEditingContextProcessor {
                                 .expression("aql:self")
                                 .children(
                                         new ViewBuilders().newCreateInstance()
-                                                .referenceName("tasks")
+                                                .referenceName("elements")
                                                 .typeName("papaya::Task")
                                                 .variableName("newTask")
                                                 .build()
@@ -138,7 +138,7 @@ public class PapayaDeckDescriptionProvider implements IEditingContextProcessor {
         var doneCardDescription = new DeckBuilders().newCardDescription()
                 .name("Done Card")
                 .titleExpression("aql:self.name")
-                .semanticCandidatesExpression("aql:self.tasks->select(task | task.done)")
+                .semanticCandidatesExpression("aql:self.elements->filter(papaya::Task)->select(task | task.done)")
                 .build();
 
         var doneLaneDescription = new DeckBuilders().newLaneDescription()

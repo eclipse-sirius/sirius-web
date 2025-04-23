@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -189,9 +189,9 @@ public class ModelOperationDiagramDescriptionProvider implements IEditingContext
     }
 
     private CreateInstance createCreateNewComponentOperation(String variableName, String componentNameExpression) {
-        var createNewComponent = new CreateInstanceBuilder()
+        return new CreateInstanceBuilder()
                 .typeName("papaya:Component")
-                .referenceName("components")
+                .referenceName("elements")
                 .variableName(variableName)
                 .children(
                         new ViewBuilders().newChangeContext()
@@ -205,7 +205,6 @@ public class ModelOperationDiagramDescriptionProvider implements IEditingContext
                                 .build()
                 )
                 .build();
-        return createNewComponent;
     }
 
     private void createCreateNodeToolWithComputedNewSelection() {

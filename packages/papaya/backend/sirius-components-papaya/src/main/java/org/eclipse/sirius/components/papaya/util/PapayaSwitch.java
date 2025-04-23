@@ -27,12 +27,15 @@ import org.eclipse.sirius.components.papaya.Component;
 import org.eclipse.sirius.components.papaya.ComponentExchange;
 import org.eclipse.sirius.components.papaya.ComponentPort;
 import org.eclipse.sirius.components.papaya.Constructor;
+import org.eclipse.sirius.components.papaya.Container;
 import org.eclipse.sirius.components.papaya.Contribution;
 import org.eclipse.sirius.components.papaya.Controller;
 import org.eclipse.sirius.components.papaya.DataType;
 import org.eclipse.sirius.components.papaya.Domain;
 import org.eclipse.sirius.components.papaya.EnumLiteral;
 import org.eclipse.sirius.components.papaya.Event;
+import org.eclipse.sirius.components.papaya.Folder;
+import org.eclipse.sirius.components.papaya.FolderElement;
 import org.eclipse.sirius.components.papaya.GenericType;
 import org.eclipse.sirius.components.papaya.Interface;
 import org.eclipse.sirius.components.papaya.InterfaceImplementation;
@@ -134,11 +137,40 @@ public class PapayaSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
+            case PapayaPackage.CONTAINER: {
+                Container container = (Container) theEObject;
+                T result = this.caseContainer(container);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapayaPackage.FOLDER: {
+                Folder folder = (Folder) theEObject;
+                T result = this.caseFolder(folder);
+                if (result == null)
+                    result = this.caseNamedElement(folder);
+                if (result == null)
+                    result = this.caseContainer(folder);
+                if (result == null)
+                    result = this.caseModelElement(folder);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapayaPackage.FOLDER_ELEMENT: {
+                FolderElement folderElement = (FolderElement) theEObject;
+                T result = this.caseFolderElement(folderElement);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
             case PapayaPackage.PROJECT: {
                 Project project = (Project) theEObject;
                 T result = this.caseProject(project);
                 if (result == null)
                     result = this.caseNamedElement(project);
+                if (result == null)
+                    result = this.caseContainer(project);
                 if (result == null)
                     result = this.caseModelElement(project);
                 if (result == null)
@@ -151,6 +183,8 @@ public class PapayaSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseNamedElement(iteration);
                 if (result == null)
+                    result = this.caseFolderElement(iteration);
+                if (result == null)
                     result = this.caseModelElement(iteration);
                 if (result == null)
                     result = this.defaultCase(theEObject);
@@ -161,6 +195,8 @@ public class PapayaSwitch<T> extends Switch<T> {
                 T result = this.caseTask(task);
                 if (result == null)
                     result = this.caseNamedElement(task);
+                if (result == null)
+                    result = this.caseFolderElement(task);
                 if (result == null)
                     result = this.caseModelElement(task);
                 if (result == null)
@@ -173,6 +209,8 @@ public class PapayaSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseNamedElement(contribution);
                 if (result == null)
+                    result = this.caseFolderElement(contribution);
+                if (result == null)
                     result = this.caseModelElement(contribution);
                 if (result == null)
                     result = this.defaultCase(theEObject);
@@ -183,6 +221,8 @@ public class PapayaSwitch<T> extends Switch<T> {
                 T result = this.caseComponent(component);
                 if (result == null)
                     result = this.caseNamedElement(component);
+                if (result == null)
+                    result = this.caseFolderElement(component);
                 if (result == null)
                     result = this.caseModelElement(component);
                 if (result == null)
@@ -247,6 +287,8 @@ public class PapayaSwitch<T> extends Switch<T> {
                     result = this.caseNamedElement(package_);
                 if (result == null)
                     result = this.caseAnnotableElement(package_);
+                if (result == null)
+                    result = this.caseFolderElement(package_);
                 if (result == null)
                     result = this.caseModelElement(package_);
                 if (result == null)
@@ -526,6 +568,8 @@ public class PapayaSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseNamedElement(applicationConcern);
                 if (result == null)
+                    result = this.caseFolderElement(applicationConcern);
+                if (result == null)
                     result = this.caseModelElement(applicationConcern);
                 if (result == null)
                     result = this.defaultCase(theEObject);
@@ -551,6 +595,8 @@ public class PapayaSwitch<T> extends Switch<T> {
                 T result = this.caseDomain(domain);
                 if (result == null)
                     result = this.caseNamedElement(domain);
+                if (result == null)
+                    result = this.caseFolderElement(domain);
                 if (result == null)
                     result = this.caseModelElement(domain);
                 if (result == null)
@@ -653,6 +699,8 @@ public class PapayaSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseNamedElement(channel);
                 if (result == null)
+                    result = this.caseFolderElement(channel);
+                if (result == null)
                     result = this.caseModelElement(channel);
                 if (result == null)
                     result = this.defaultCase(theEObject);
@@ -716,6 +764,49 @@ public class PapayaSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseNamedElement(NamedElement object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Container</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Container</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseContainer(Container object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Folder</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Folder</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseFolder(Folder object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Folder Element</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Folder Element</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseFolderElement(FolderElement object) {
         return null;
     }
 

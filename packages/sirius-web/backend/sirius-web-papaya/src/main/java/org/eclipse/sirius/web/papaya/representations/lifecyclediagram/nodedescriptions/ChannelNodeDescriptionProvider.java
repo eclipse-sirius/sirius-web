@@ -66,7 +66,7 @@ public class ChannelNodeDescriptionProvider implements INodeDescriptionProvider 
         return new DiagramBuilders().newNodeDescription()
                 .name(NAME)
                 .domainType("papaya::Channel")
-                .semanticCandidatesExpression("aql:self.eContainer().channels")
+                .semanticCandidatesExpression("aql:self.eContainer().elements")
                 .insideLabel(insideLabel)
                 .style(nodeStyle)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)

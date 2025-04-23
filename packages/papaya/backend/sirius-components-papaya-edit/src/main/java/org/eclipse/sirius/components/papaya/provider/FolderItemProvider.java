@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,28 +18,26 @@ import java.util.List;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
-import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.StyledString;
 import org.eclipse.emf.edit.provider.ViewerNotification;
+import org.eclipse.sirius.components.papaya.Folder;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
-import org.eclipse.sirius.components.papaya.Project;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.sirius.components.papaya.Project} object. <!--
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.papaya.Folder} object. <!--
  * begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
  */
-public class ProjectItemProvider extends NamedElementItemProvider {
+public class FolderItemProvider extends NamedElementItemProvider {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    public ProjectItemProvider(AdapterFactory adapterFactory) {
+    public FolderItemProvider(AdapterFactory adapterFactory) {
         super(adapterFactory);
     }
 
@@ -53,20 +51,8 @@ public class ProjectItemProvider extends NamedElementItemProvider {
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            this.addHomepagePropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
-    }
-
-    /**
-     * This adds a property descriptor for the Homepage feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addHomepagePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_Project_homepage_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Project_homepage_feature", "_UI_Project_type"),
-                PapayaPackage.Literals.PROJECT__HOMEPAGE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -101,13 +87,13 @@ public class ProjectItemProvider extends NamedElementItemProvider {
     }
 
     /**
-     * This returns Project.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This returns Folder.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Project"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Folder"));
     }
 
     /**
@@ -137,12 +123,12 @@ public class ProjectItemProvider extends NamedElementItemProvider {
      */
     @Override
     public Object getStyledText(Object object) {
-        String label = ((Project) object).getName();
+        String label = ((Folder) object).getName();
         StyledString styledLabel = new StyledString();
         if (label == null || label.length() == 0) {
-            styledLabel.append(this.getString("_UI_Project_type"), StyledString.Style.QUALIFIER_STYLER);
+            styledLabel.append(this.getString("_UI_Folder_type"), StyledString.Style.QUALIFIER_STYLER);
         } else {
-            styledLabel.append(this.getString("_UI_Project_type"), StyledString.Style.QUALIFIER_STYLER).append(" " + label);
+            styledLabel.append(this.getString("_UI_Folder_type"), StyledString.Style.QUALIFIER_STYLER).append(" " + label);
         }
         return styledLabel;
     }
@@ -158,12 +144,9 @@ public class ProjectItemProvider extends NamedElementItemProvider {
     public void notifyChanged(Notification notification) {
         this.updateChildren(notification);
 
-        switch (notification.getFeatureID(Project.class)) {
-            case PapayaPackage.PROJECT__HOMEPAGE:
-                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-                return;
-            case PapayaPackage.PROJECT__FOLDERS:
-            case PapayaPackage.PROJECT__ELEMENTS:
+        switch (notification.getFeatureID(Folder.class)) {
+            case PapayaPackage.FOLDER__FOLDERS:
+            case PapayaPackage.FOLDER__ELEMENTS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }

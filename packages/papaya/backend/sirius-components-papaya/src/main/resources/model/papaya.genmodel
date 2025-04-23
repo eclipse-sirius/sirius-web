@@ -36,17 +36,14 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//NamedElement/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//NamedElement/description"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="papaya.ecore#//Container">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Container/folders"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Container/elements"/>
+    </genClasses>
+    <genClasses ecoreClass="papaya.ecore#//Folder"/>
+    <genClasses image="false" ecoreClass="papaya.ecore#//FolderElement"/>
     <genClasses ecoreClass="papaya.ecore#//Project">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Project/projects"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Project/components"/>
-      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference papaya.ecore#//Project/allComponents"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Project/componentExchanges"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Project/iterations"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Project/tasks"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Project/contributions"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Project/applicationConcerns"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Project/domains"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papaya.ecore#//Project/channels"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Project/homepage"/>
     </genClasses>
     <genClasses ecoreClass="papaya.ecore#//Iteration">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papaya.ecore#//Iteration/startDate"/>

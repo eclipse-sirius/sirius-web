@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,7 +32,6 @@ import org.eclipse.sirius.components.view.builder.generated.diagram.NodeToolBuil
 import org.eclipse.sirius.components.view.builder.generated.diagram.RectangularNodeStyleDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.CreateInstanceBuilder;
-import org.eclipse.sirius.components.view.builder.generated.view.SetValueBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
@@ -130,20 +129,14 @@ public class UnsynchronizedDiagramDescriptionProvider implements IEditingContext
 
         var createNewComponent = new CreateInstanceBuilder()
                 .typeName("papaya:Component")
-                .referenceName("components")
+                .referenceName("elements")
                 .variableName("newInstance")
                 .children(
-                        new SetValueBuilder()
-                                .featureName("components")
-                                .valueExpression("aql:newInstance")
-                                .children(
-                                        new CreateViewBuilder()
-                                                .elementDescription(nodeDescription)
-                                                .semanticElementExpression("aql:newInstance")
-                                                .parentViewExpression("aql:selectedNode")
-                                                .containmentKind(NodeContainmentKind.CHILD_NODE)
-                                                .build()
-                                )
+                        new CreateViewBuilder()
+                                .elementDescription(nodeDescription)
+                                .semanticElementExpression("aql:newInstance")
+                                .parentViewExpression("aql:selectedNode")
+                                .containmentKind(NodeContainmentKind.CHILD_NODE)
                                 .build()
                 )
                 .build();

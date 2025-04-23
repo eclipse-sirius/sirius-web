@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,7 +35,7 @@ public class SpringDataCommonsProjectFactory {
     public Project create() {
         var springDataCommons = PapayaFactory.eINSTANCE.createProject();
         springDataCommons.setName("Spring Data Commons");
-        springDataCommons.getComponents().add(this.springDataCommons());
+        springDataCommons.getElements().add(this.springDataCommons());
 
         return springDataCommons;
     }

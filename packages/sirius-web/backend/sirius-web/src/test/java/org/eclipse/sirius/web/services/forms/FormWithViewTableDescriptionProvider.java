@@ -120,18 +120,21 @@ public class FormWithViewTableDescriptionProvider implements IEditingContextProc
                 .isResizableExpression("false")
                 .initialWidthExpression("-1")
                 .build();
+
         var rowDescription = new TableBuilders().newRowDescription()
                 .name("TypesRow")
                 .semanticCandidatesExpression("aql:self.types->toPaginatedData()")
                 .isResizableExpression("false")
                 .initialHeightExpression("-1")
                 .build();
+
         var cellDescriptions = new TableBuilders().newCellDescription()
                 .name("TypeCell")
                 .preconditionExpression("true")
                 .cellWidgetDescription(new TableBuilders().newCellTextfieldWidgetDescription().build())
                 .valueExpression("aql:self.name")
                 .build();
+
         return new TableWidgetBuilders().newTableWidgetDescription()
                 .name("Types")
                 .labelExpression("Types")
