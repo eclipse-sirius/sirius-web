@@ -15,11 +15,15 @@ import {
   ConnectionLineComponentProps,
   Edge,
   getSmoothStepPath,
+  InternalNode,
   Node,
   useReactFlow,
+  useStoreApi,
   useUpdateNodeInternals,
 } from '@xyflow/react';
-import React, { memo, useEffect } from 'react';
+import React, { memo, useContext, useEffect } from 'react';
+import { ConnectorContext } from '../connector/ConnectorContext';
+import { ConnectorContextValue } from '../connector/ConnectorContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { getNearestPointInPerimeter, getNodesUpdatedWithHandles } from './EdgeLayout';
 
@@ -44,6 +48,8 @@ export const ConnectionLine = memo(
   }: ConnectionLineComponentProps<Node<NodeData>>) => {
     const theme = useTheme();
     const { getNodes, setNodes, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+    const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+    const { candidates } = useContext<ConnectorContextValue>(ConnectorContext);
     const updateNodeInternals = useUpdateNodeInternals();
 
     const edgeId = fromNode.data.connectionHandles.find((handle) => handle.id === fromHandle?.id)?.edgeId;
@@ -51,6 +57,7 @@ export const ConnectionLine = memo(
     const sourceHandle = getEdges().find((e) => e.id === edgeId)?.sourceHandle;
     const handleToUpdate = targetHandle === fromHandle.id ? sourceHandle : targetHandle;
 
+    // When reconnecting an edge
     if (handleToUpdate) {
       if (edgeId && toNode && toNode.width && toNode.height) {
         // Snap the ConnectionLine to the border of the targetted node
@@ -66,6 +73,38 @@ export const ConnectionLine = memo(
         toX = pointToSnap.XYPosition.x;
         toY = pointToSnap.XYPosition.y;
         toPosition = pointToSnap.position;
+      }
+    }
+
+    // When creating an edge
+    if (
+      fromHandle &&
+      fromHandle.id &&
+      fromHandle.id.startsWith('creationhandle') &&
+      toNode &&
+      toNode.width &&
+      toNode.height
+    ) {
+      let isNodeCandidate = false;
+      let candidate: InternalNode<Node<NodeData>> | undefined = toNode;
+
+      while (!isNodeCandidate && !!candidate) {
+        isNodeCandidate = candidates.map((candidate) => candidate.id).includes(candidate.data.descriptionId);
+        if (isNodeCandidate && candidate && candidate.width && candidate.height) {
+          const pointToSnap = getNearestPointInPerimeter(
+            candidate.internals.positionAbsolute.x,
+            candidate.internals.positionAbsolute.y,
+            candidate.width,
+            candidate.height,
+            toX,
+            toY
+          );
+          toX = pointToSnap.XYPosition.x;
+          toY = pointToSnap.XYPosition.y;
+          toPosition = pointToSnap.position;
+        } else {
+          candidate = store.getState().nodeLookup.get(candidate.parentId || '');
+        }
       }
     }
 
