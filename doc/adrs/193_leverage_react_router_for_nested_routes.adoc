@@ -1,0 +1,73 @@
+= ADR-193 - Leverage react router for nested routes
+
+== Context
+
+A lot of our frontend views are starting declaring the `<NavigationBar />` component, and the same _CSS_ properties:
+
+[source,javascript]
+----
+{
+  display: 'grid',
+  gridTemplateColumns: '1fr',
+  gridTemplateRows: 'min-content 1fr min-content',
+  minHeight: '100vh',
+}
+----
+
+== What could be done
+
+We could use what is called a _shell_ component to encapsulate all Sirius Web views.
+The _shell_ component will only handle the `<NavigationBar />` and the declaration of _CSS_ properties.
+
+[source,jsx]
+----
+const SiriusWebShell = ({ children }: SiriusWebShellProps) => {
+  return (
+    <Box
+      sx={{
+        display: 'grid',
+        minHeight: '100vh',
+        gridTemplateColumns: '1fr',
+        gridTemplateRows: 'min-content 1fr min-content',
+      }}>
+      <NavigationBar />
+      {children}
+    </Box>
+  )
+};
+----
+
+Which could be used in the router:
+
+[source,jsx]
+----
+const Router = () => {
+  return (
+    <SiriusWebShell>
+      <Routes>
+        {/* All route here will leverage on the NavigationBar. */}
+      </Routes>
+    </SiriusWebShell>
+  )
+}
+----
+
+[NOTE]
+====
+
+A _shell_ component could also be used to query the backend and provide the retrieved data to all nested routes.
+We could then have many nested router.
+
+We would need to solve the fact that multiple routes are not using the same props for the navigation bar.
+For example, The settings page, the new project page, the edit project page have three different sets of properties and sometime advanced configuration in the case of the edit project page.
+
+====
+
+== Consequences
+
+The current `routerExtensionPoint` may have to be adapted, or maybe add more router extension points, one per router.
+The purpose of this changed will make downstream project contribute their own router with their own provider if they need to do specific things to existing views.
+
+== Status
+
+WIP
