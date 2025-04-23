@@ -16,6 +16,7 @@ import {
   Connection,
   Edge,
   FinalConnectionState,
+  InternalNode,
   Node,
   OnConnect,
   OnConnectEnd,
@@ -77,14 +78,32 @@ export const useConnector = (): UseConnectorValue => {
   };
 
   //  Set the new connection if we're connecting to a node
-  const onConnect: OnConnect = useCallback((connection: Connection) => {
-    const nodeSource = nodeLookup.get(connection.source);
-    //  Set the edge as source when we're connecting from an EdgeAnchorNode
-    if (nodeSource && isEdgeAnchorNodeCreationHandles(nodeSource)) {
-      connection.source = nodeSource.data.edgeId;
-    }
-    setConnection(connection);
-  }, []);
+  const onConnect: OnConnect = useCallback(
+    (connection: Connection) => {
+      const nodeSource = nodeLookup.get(connection.source);
+      //  Set the edge as source when we're connecting from an EdgeAnchorNode
+      if (nodeSource && isEdgeAnchorNodeCreationHandles(nodeSource)) {
+        connection.source = nodeSource.data.edgeId;
+      }
+
+      // Use one of the parent as target if it's candidate
+      let isNodeCandidate = false;
+      let candidate: InternalNode<Node<NodeData>> | undefined = store.getState().nodeLookup.get(connection.target);
+
+      while (!isNodeCandidate && !!candidate) {
+        isNodeCandidate = candidates.map((candidate) => candidate.id).includes(candidate.data.descriptionId);
+
+        if (isNodeCandidate && candidate) {
+          connection.target = candidate.id;
+        } else {
+          candidate = store.getState().nodeLookup.get(candidate.parentId || '');
+        }
+      }
+
+      setConnection(connection);
+    },
+    [candidates.join('-')]
+  );
 
   const onConnectStart: OnConnectStart = useCallback(
     (_event: MouseEvent | TouchEvent, params: OnConnectStartParams) => {
