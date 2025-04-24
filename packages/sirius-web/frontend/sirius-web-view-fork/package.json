@@ -71,7 +71,7 @@
     "react-dom": "18.3.1",
     "react-router-dom": "6.26.0",
     "react-window": "1.8.11",
-    "@xyflow/react": "12.4.4",
+    "@xyflow/react": "12.6.0",
     "tss-react": "4.9.16",
     "xstate": "4.32.1"
   },
@@ -103,7 +103,7 @@
     "pathfinding": "0.4.18",
     "svg-path-parser": "1.1.0",
     "react-draggable": "4.4.6",
-    "@xyflow/react": "12.4.4",
+    "@xyflow/react": "12.6.0",
     "d3": "7.0.0",
     "@lexical/react": "0.8.1",
     "lexical": "0.8.1",
