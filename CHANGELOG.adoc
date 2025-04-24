@@ -50,7 +50,19 @@ The following dependencies have been updated:
 
 === New Features
 
-
+- [releng] The integration tests from the main `sirius-web` module are now exported in a https://maven.apache.org/plugins/maven-jar-plugin/examples/create-test-jar.html[test JAR].
+Downstream projects can get access to them in their own test code by adding the following dependency:
+[source,xml]
+----
+<dependency>
+  <groupId>org.eclipse.sirius</groupId>
+  <artifactId>sirius-web</artifactId>
+  <classifier>tests</classifier>
+  <type>test-jar</type>
+  <version>${sirius-web.version}</version>
+  <scope>test</scope>
+</dependency>
+----
 
 === Improvements
 
