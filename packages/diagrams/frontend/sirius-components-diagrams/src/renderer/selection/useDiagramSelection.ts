@@ -88,12 +88,15 @@ export const useDiagramSelection = (onShiftSelection: boolean): void => {
       setEdges(newEdges);
       setNodes(newNodes);
       const zoom = store.getState().transform[2];
-      fitView({
-        nodes: getNodes().filter((node) => nodesToReveal.has(node.id)),
-        minZoom: zoom,
-        maxZoom: zoom,
-        duration: 1000,
-      });
+
+      if (nodesToReveal.size > 0) {
+        fitView({
+          nodes: getNodes().filter((node) => nodesToReveal.has(node.id)),
+          minZoom: zoom,
+          maxZoom: zoom,
+          duration: 1000,
+        });
+      }
     }
   }, [selection]);
 

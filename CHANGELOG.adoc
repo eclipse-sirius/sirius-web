@@ -63,6 +63,7 @@ The following dependencies have been updated:
 - [releng] Switch `tss-react` to `4.9.16`
 - [releng] Switch to Sirius EMF JSON 2.5.1
 - [releng] Switch to `@mui/x-tree-view` to `7.29.1`
+- [releng] Switch to xyflow 12.6.0
 
 
 === Bug fixes
