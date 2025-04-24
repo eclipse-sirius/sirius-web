@@ -11,16 +11,17 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { DraggableData } from 'react-draggable';
+import { SegmentDirection } from '../EdgeLayout.types';
 
 export interface UseTemporaryLinesValue {
   middleBendingPoints: MiddlePoint[];
   onTemporaryLineDragStop: (eventData: DraggableData, index: number) => void;
-  onTemporaryLineDrag: (eventData: DraggableData, index: number, direction: 'x' | 'y') => void;
+  onTemporaryLineDrag: (eventData: DraggableData, index: number, direction: SegmentDirection) => void;
 }
 
 export type MiddlePoint = {
   x: number;
   y: number;
-  direction: 'x' | 'y';
+  direction: SegmentDirection;
   segmentLength: number;
 };

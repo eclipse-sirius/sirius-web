@@ -11,22 +11,23 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Edge, InternalNode, Node, Position, XYPosition } from '@xyflow/react';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { DraggableData } from 'react-draggable';
 import { useStore } from '../../../representation/useStore';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
+import { getNodesUpdatedWithHandles } from '../EdgeLayout';
+import { SegmentDirection } from '../EdgeLayout.types';
 import { useEditableEdgePath } from '../useEditableEdgePath';
+import { XYPositionSetter } from './MultiLabelRectilinearEditableEdge.types';
 import {
   cleanBendPoint,
-  getMiddlePoint,
   determineSegmentAxis,
   generateNewBendPointOnSourceSegment,
   generateNewBendPointOnTargetSegment,
+  getMiddlePoint,
 } from './RectilinearEdgeCalculation';
-import { MiddlePoint, UseTemporaryLinesValue } from './useTemporaryLines.types';
 import { BendPointData, LocalBendingPointsSetter } from './useBendingPoints.types';
-import { XYPositionSetter } from './MultiLabelRectilinearEditableEdge.types';
-import { getNodesUpdatedWithHandles } from '../EdgeLayout';
+import { MiddlePoint, UseTemporaryLinesValue } from './useTemporaryLines.types';
 
 export const useTemporaryLines = (
   edgeId: string,
@@ -74,12 +75,12 @@ export const useTemporaryLines = (
     }
   };
 
-  const onTemporaryLineDrag = (eventData: DraggableData, temporaryPointIndex: number, direction: 'x' | 'y') => {
+  const onTemporaryLineDrag = (eventData: DraggableData, temporaryPointIndex: number, direction: SegmentDirection) => {
     let newPoints = [...originalBendingPoints.map((bendingPoint, index) => ({ ...bendingPoint, pathOrder: index }))];
     if (temporaryPointIndex === 0) {
       if (
-        (direction === 'x' && sourceNode.internals.positionAbsolute.y > eventData.y) ||
-        (direction === 'y' && sourceNode.internals.positionAbsolute.x > eventData.x)
+        (direction === SegmentDirection.HORIZONTAL && sourceNode.internals.positionAbsolute.y > eventData.y) ||
+        (direction === SegmentDirection.VERTICAL && sourceNode.internals.positionAbsolute.x > eventData.x)
       ) {
         newPoints = generateNewBendPointOnSourceSegment(
           originalBendingPoints,
@@ -90,8 +91,10 @@ export const useTemporaryLines = (
           temporaryPointIndex
         );
       } else if (
-        (direction === 'x' && sourceNode.internals.positionAbsolute.y + (sourceNode.height ?? 0) < eventData.y) ||
-        (direction === 'y' && sourceNode.internals.positionAbsolute.x + (sourceNode.width ?? 0) < eventData.x)
+        (direction === SegmentDirection.HORIZONTAL &&
+          sourceNode.internals.positionAbsolute.y + (sourceNode.height ?? 0) < eventData.y) ||
+        (direction === SegmentDirection.VERTICAL &&
+          sourceNode.internals.positionAbsolute.x + (sourceNode.width ?? 0) < eventData.x)
       ) {
         newPoints = generateNewBendPointOnSourceSegment(
           originalBendingPoints,
@@ -107,12 +110,12 @@ export const useTemporaryLines = (
       } else {
         const currentPoint = newPoints[temporaryPointIndex];
         const newSource: XYPosition = { ...source };
-        if (direction === 'x') {
+        if (direction === SegmentDirection.HORIZONTAL) {
           newSource.y = eventData.y;
           if (currentPoint) {
             currentPoint.y = eventData.y;
           }
-        } else if (direction === 'y') {
+        } else if (direction === SegmentDirection.VERTICAL) {
           newSource.x = eventData.x;
           if (currentPoint) {
             currentPoint.x = eventData.x;
@@ -124,8 +127,8 @@ export const useTemporaryLines = (
     }
     if (temporaryPointIndex === originalBendingPoints.length) {
       if (
-        (direction === 'x' && targetNode.internals.positionAbsolute.y > eventData.y) ||
-        (direction === 'y' && targetNode.internals.positionAbsolute.x > eventData.x)
+        (direction === SegmentDirection.HORIZONTAL && targetNode.internals.positionAbsolute.y > eventData.y) ||
+        (direction === SegmentDirection.VERTICAL && targetNode.internals.positionAbsolute.x > eventData.x)
       ) {
         newPoints = generateNewBendPointOnTargetSegment(
           originalBendingPoints,
@@ -136,8 +139,10 @@ export const useTemporaryLines = (
           temporaryPointIndex
         );
       } else if (
-        (direction === 'x' && targetNode.internals.positionAbsolute.y + (targetNode.height ?? 0) < eventData.y) ||
-        (direction === 'y' && targetNode.internals.positionAbsolute.x + (targetNode.width ?? 0) < eventData.x)
+        (direction === SegmentDirection.HORIZONTAL &&
+          targetNode.internals.positionAbsolute.y + (targetNode.height ?? 0) < eventData.y) ||
+        (direction === SegmentDirection.VERTICAL &&
+          targetNode.internals.positionAbsolute.x + (targetNode.width ?? 0) < eventData.x)
       ) {
         newPoints = generateNewBendPointOnTargetSegment(
           originalBendingPoints,
@@ -153,12 +158,12 @@ export const useTemporaryLines = (
       } else {
         const prevPoint = newPoints[temporaryPointIndex - 1];
         const newTarget = { ...target };
-        if (direction === 'x') {
+        if (direction === SegmentDirection.HORIZONTAL) {
           if (prevPoint) {
             prevPoint.y = eventData.y;
           }
           newTarget.y = eventData.y;
-        } else if (direction === 'y') {
+        } else if (direction === SegmentDirection.VERTICAL) {
           if (prevPoint) {
             prevPoint.x = eventData.x;
           }
@@ -171,10 +176,10 @@ export const useTemporaryLines = (
     if (temporaryPointIndex > 0 && temporaryPointIndex < originalBendingPoints.length) {
       const prevPoint = newPoints[temporaryPointIndex - 1];
       const currentPoint = newPoints[temporaryPointIndex];
-      if (direction === 'x' && prevPoint && currentPoint) {
+      if (direction === SegmentDirection.HORIZONTAL && prevPoint && currentPoint) {
         prevPoint.y = eventData.y;
         currentPoint.y = eventData.y;
-      } else if (direction === 'y' && prevPoint && currentPoint) {
+      } else if (direction === SegmentDirection.VERTICAL && prevPoint && currentPoint) {
         prevPoint.x = eventData.x;
         currentPoint.x = eventData.x;
       }
@@ -195,7 +200,7 @@ export const useTemporaryLines = (
           middlePoints.push({
             ...getMiddlePoint(p1, p2),
             direction: direction,
-            segmentLength: direction === 'x' ? Math.abs(p1.x - p2.x) : Math.abs(p1.y - p2.y),
+            segmentLength: direction === SegmentDirection.HORIZONTAL ? Math.abs(p1.x - p2.x) : Math.abs(p1.y - p2.y),
           });
         }
       }
@@ -205,7 +210,10 @@ export const useTemporaryLines = (
         middlePoints.push({
           ...getMiddlePoint(lastPoint, { x: target.x, y: target.y }),
           direction: direction,
-          segmentLength: direction === 'x' ? Math.abs(lastPoint.x - target.x) : Math.abs(lastPoint.y - target.y),
+          segmentLength:
+            direction === SegmentDirection.HORIZONTAL
+              ? Math.abs(lastPoint.x - target.x)
+              : Math.abs(lastPoint.y - target.y),
         });
       }
     } else {
@@ -213,7 +221,8 @@ export const useTemporaryLines = (
       middlePoints.push({
         ...getMiddlePoint({ x: source.x, y: source.y }, { x: target.x, y: target.y }),
         direction: direction,
-        segmentLength: direction === 'x' ? Math.abs(source.x - target.x) : Math.abs(source.y - target.y),
+        segmentLength:
+          direction === SegmentDirection.HORIZONTAL ? Math.abs(source.x - target.x) : Math.abs(source.y - target.y),
       });
     }
     return middlePoints;

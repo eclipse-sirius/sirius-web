@@ -68,10 +68,32 @@ const isSuccessPayload = (payload: GQLReconnectEdgePayload): payload is GQLSucce
 export const useReconnectEdge = (): UseReconnectEdge => {
   const { addErrorMessage, addMessages } = useMultiToast();
   const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
+  const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+  const { screenToFlowPosition, getNodes, getEdges, setEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const { synchronizeLayoutData } = useSynchronizeLayoutData();
+  const updateNodeInternals = useUpdateNodeInternals();
+
   const [updateEdgeEnd, { data: reconnectEdgeData, error: reconnectEdgeError }] = useMutation<
     GQLReconnectEdgeData,
     GQLReconnectEdgeVariables
   >(reconnectEdgeMutation);
+
+  const onReconnectEdgeStart = useCallback(
+    (_event: React.MouseEvent<Element, MouseEvent>, edge: Edge<EdgeData>, _handleType: HandleType) => {
+      setEdges((prevEdges) =>
+        prevEdges.map((prevEdge) => {
+          if (prevEdge.id === edge.id) {
+            return {
+              ...prevEdge,
+              reconnectable: false,
+            };
+          }
+          return prevEdge;
+        })
+      );
+    },
+    []
+  );
 
   const handleReconnectEdge = useCallback(
     (edgeId: string, newEdgeEndId: string, reconnectEdgeKind: GQLReconnectKind): void => {
@@ -104,6 +126,7 @@ export const useReconnectEdge = (): UseReconnectEdge => {
 
   const reconnectEdge = useCallback(
     (oldEdge: Edge, newConnection: Connection) => {
+      // Reconnect an edge on another node
       if (oldEdge.target !== newConnection.target || oldEdge.source !== newConnection.source) {
         const edgeId = oldEdge.id;
         let reconnectEdgeKind = GQLReconnectKind.TARGET;
@@ -121,12 +144,6 @@ export const useReconnectEdge = (): UseReconnectEdge => {
     [handleReconnectEdge]
   );
 
-  const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
-  const { screenToFlowPosition, getNodes, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
-  const { synchronizeLayoutData } = useSynchronizeLayoutData();
-
-  const updateNodeInternals = useUpdateNodeInternals();
-
   const onReconnectEdgeEnd = useCallback(
     (event: MouseEvent | TouchEvent, edge: Edge, handleType: HandleType) => {
       const targetNodeHovered = getNodes().find((node) => node.data.isHovered);
@@ -134,6 +151,8 @@ export const useReconnectEdge = (): UseReconnectEdge => {
       const targetInternalNode = store.getState().nodeLookup.get(targetNodeHovered?.id ?? '');
 
       const handle = handleType === 'source' ? edge.targetHandle : edge.sourceHandle;
+
+      // Reconnect an edge on the same node to update handle position
       if (
         'clientX' in event &&
         'clientY' in event &&
@@ -173,17 +192,49 @@ export const useReconnectEdge = (): UseReconnectEdge => {
         synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
       }
 
+      // Reconnect an edge on another edge
       if (targetEdgeHovered) {
-        const connectionState = store.getState().connection;
-        let reconnectEdgeKind = GQLReconnectKind.TARGET;
-        if (edge.source === connectionState.fromNode?.id) {
-          reconnectEdgeKind = GQLReconnectKind.SOURCE;
+        let reconnectEdgeKind = handleType === 'source' ? GQLReconnectKind.TARGET : GQLReconnectKind.SOURCE;
+        if (
+          targetEdgeHovered.id !== edge.id &&
+          ((reconnectEdgeKind === GQLReconnectKind.TARGET && targetEdgeHovered.id !== edge.target) ||
+            (reconnectEdgeKind === GQLReconnectKind.SOURCE && targetEdgeHovered.id !== edge.source))
+        ) {
+          handleReconnectEdge(edge.id, targetEdgeHovered.id, reconnectEdgeKind);
         }
-        handleReconnectEdge(edge.id, targetEdgeHovered.id, reconnectEdgeKind);
       }
+      // Reconnect an edge on the same edge to update handle position
+      if (targetEdgeHovered && targetEdgeHovered.data && targetEdgeHovered.data.edgePath) {
+        let reconnectEdgeKind = handleType === 'source' ? GQLReconnectKind.TARGET : GQLReconnectKind.SOURCE;
+        if (
+          'clientX' in event &&
+          'clientY' in event &&
+          ((reconnectEdgeKind === GQLReconnectKind.TARGET && targetEdgeHovered.id === edge.target) ||
+            (reconnectEdgeKind === GQLReconnectKind.SOURCE && targetEdgeHovered.id === edge.source))
+        ) {
+          const finalDiagram: RawDiagram = {
+            nodes: getNodes(),
+            edges: getEdges(),
+          };
+          updateNodeInternals(targetEdgeHovered.id);
+          synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+        }
+      }
+
+      setEdges((prevEdges) =>
+        prevEdges.map((prevEdge) => {
+          if (prevEdge.id === edge.id) {
+            return {
+              ...prevEdge,
+              reconnectable: true,
+            };
+          }
+          return prevEdge;
+        })
+      );
     },
     [getNodes, getEdges]
   );
 
-  return { reconnectEdge, onReconnectEdgeEnd };
+  return { onReconnectEdgeStart, reconnectEdge, onReconnectEdgeEnd };
 };

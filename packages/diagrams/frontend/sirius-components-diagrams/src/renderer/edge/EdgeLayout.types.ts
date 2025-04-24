@@ -91,3 +91,8 @@ export interface HandleCoordinates {
   x: number;
   y: number;
 }
+
+export enum SegmentDirection {
+  VERTICAL = 'vertical',
+  HORIZONTAL = 'horizontal',
+}

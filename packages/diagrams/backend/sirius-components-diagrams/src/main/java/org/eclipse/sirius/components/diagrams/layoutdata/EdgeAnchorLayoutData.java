@@ -10,13 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node } from '@xyflow/react';
-import { NodeData } from '../DiagramRenderer.types';
-export interface EdgeAnchorNodeData extends NodeData {
-  edgeId: string;
-  positionRatio: number;
-  isLayouted: boolean;
-}
+package org.eclipse.sirius.components.diagrams.layoutdata;
 
-export const isEdgeAnchorNode = (node: Node<NodeData>): node is Node<EdgeAnchorNodeData> =>
-  node.type === 'edgeAnchorNode';
+/**
+ * The layout data of an anchor node used to place the target or source of an edge on another edge.
+ *
+ * @author mcharfadi
+ */
+public record EdgeAnchorLayoutData(String edgeId, Float positionRatio, String handlePosition, HandleType type) {
+}

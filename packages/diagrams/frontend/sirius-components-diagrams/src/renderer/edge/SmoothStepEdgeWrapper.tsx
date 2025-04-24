@@ -13,10 +13,10 @@
 import {
   Edge,
   EdgeProps,
+  getSmoothStepPath,
   InternalNode,
   Node,
   Position,
-  getSmoothStepPath,
   useInternalNode,
   XYPosition,
 } from '@xyflow/react';
@@ -111,7 +111,7 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
   }
 
   let bendingPoints: XYPosition[] = [];
-  if (data?.bendingPoints) {
+  if (data && data.bendingPoints && data.bendingPoints.length > 0) {
     bendingPoints = data.bendingPoints;
   } else {
     const [smoothEdgePath] = getSmoothStepPath({
