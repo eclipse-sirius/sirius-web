@@ -7,7 +7,7 @@ exports[`should change the selection when a selectable node is clicked 1`] = `
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
       >
         Tree
       </h6>
@@ -34,7 +34,7 @@ exports[`should change the selection when a selectable node is clicked 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
               data-testid="ExpandMoreIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -51,7 +51,7 @@ exports[`should change the selection when a selectable node is clicked 1`] = `
               class="css-1ldt8rl-label"
             >
               <p
-                class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
               >
                 Node-1
               </p>
@@ -88,7 +88,7 @@ exports[`should change the selection when a selectable node is clicked 1`] = `
                       class="css-1ldt8rl-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                        class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
                       >
                         Node-1.1
                       </p>
@@ -115,7 +115,7 @@ exports[`should change the selection when a selectable node is clicked 1`] = `
                       class="css-1ldt8rl-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                        class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
                       >
                         Node-1.2
                       </p>
@@ -146,7 +146,7 @@ exports[`should change the selection when a selectable node is clicked 1`] = `
               class="css-1ldt8rl-label"
             >
               <p
-                class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
               >
                 Node-2
               </p>
@@ -179,7 +179,7 @@ exports[`should collapse/expand a non-selectable node when clicked 1`] = `
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
       >
         Tree
       </h6>
@@ -206,7 +206,7 @@ exports[`should collapse/expand a non-selectable node when clicked 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
               data-testid="ExpandMoreIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -223,7 +223,7 @@ exports[`should collapse/expand a non-selectable node when clicked 1`] = `
               class="css-1ldt8rl-label"
             >
               <p
-                class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
               >
                 Node-1
               </p>
@@ -256,7 +256,7 @@ exports[`should collapse/expand a non-selectable node when clicked 1`] = `
                   >
                     <svg
                       aria-hidden="true"
-                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                       data-testid="ExpandMoreIcon"
                       focusable="false"
                       viewBox="0 0 24 24"
@@ -273,7 +273,7 @@ exports[`should collapse/expand a non-selectable node when clicked 1`] = `
                       class="css-1ldt8rl-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                        class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
                       >
                         Node-1.1
                       </p>
@@ -310,7 +310,7 @@ exports[`should collapse/expand a non-selectable node when clicked 1`] = `
                               class="css-1ldt8rl-label"
                             >
                               <p
-                                class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                                class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
                               >
                                 Node-1.1.1
                               </p>
@@ -338,7 +338,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
       >
         Deep Tree
       </h6>
@@ -365,7 +365,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
               data-testid="ExpandMoreIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -382,7 +382,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
               class="css-1ldt8rl-label"
             >
               <p
-                class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
               >
                 Node-2
               </p>
@@ -419,7 +419,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                       class="css-1ldt8rl-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                        class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
                       >
                         Node-2.1
                       </p>
@@ -446,7 +446,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
               data-testid="ExpandMoreIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -463,7 +463,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
               class="css-1ldt8rl-label"
             >
               <p
-                class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
               >
                 Node-1
               </p>
@@ -496,7 +496,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                   >
                     <svg
                       aria-hidden="true"
-                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                       data-testid="ExpandMoreIcon"
                       focusable="false"
                       viewBox="0 0 24 24"
@@ -513,7 +513,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                       class="css-1ldt8rl-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                        class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
                       >
                         Node-1.1
                       </p>
@@ -550,7 +550,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                               class="css-1ldt8rl-label"
                             >
                               <p
-                                class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                                class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
                               >
                                 Node-1.1.2
                               </p>
@@ -577,7 +577,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                               class="css-1ldt8rl-label"
                             >
                               <p
-                                class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                                class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
                               >
                                 Node-1.1.1
                               </p>
@@ -604,7 +604,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                   >
                     <svg
                       aria-hidden="true"
-                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                       data-testid="ExpandMoreIcon"
                       focusable="false"
                       viewBox="0 0 24 24"
@@ -621,7 +621,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                       class="css-1ldt8rl-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                        class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
                       >
                         Node-1.3
                       </p>
@@ -654,7 +654,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                           >
                             <svg
                               aria-hidden="true"
-                              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                               data-testid="ExpandMoreIcon"
                               focusable="false"
                               viewBox="0 0 24 24"
@@ -671,7 +671,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                               class="css-1ldt8rl-label"
                             >
                               <p
-                                class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                                class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
                               >
                                 Node-1.3.1
                               </p>
@@ -708,7 +708,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                                       class="css-1ldt8rl-label"
                                     >
                                       <p
-                                        class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                                        class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
                                       >
                                         Node-1.3.1.1
                                       </p>
@@ -735,7 +735,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                                       class="css-1ldt8rl-label"
                                     >
                                       <p
-                                        class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                                        class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
                                       >
                                         Node-1.3.1.2
                                       </p>
@@ -770,7 +770,7 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                       class="css-1ldt8rl-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                        class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
                       >
                         Node-1.2
                       </p>
@@ -794,7 +794,7 @@ exports[`should only expand the specified nodes on initial render 1`] = `
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
       >
         Deep Tree
       </h6>
@@ -821,7 +821,7 @@ exports[`should only expand the specified nodes on initial render 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
               data-testid="ExpandMoreIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -838,7 +838,7 @@ exports[`should only expand the specified nodes on initial render 1`] = `
               class="css-1ldt8rl-label"
             >
               <p
-                class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
               >
                 Node-1
               </p>
@@ -871,7 +871,7 @@ exports[`should only expand the specified nodes on initial render 1`] = `
                   >
                     <svg
                       aria-hidden="true"
-                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                       data-testid="ChevronRightIcon"
                       focusable="false"
                       viewBox="0 0 24 24"
@@ -888,7 +888,7 @@ exports[`should only expand the specified nodes on initial render 1`] = `
                       class="css-1ldt8rl-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                        class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
                       >
                         Node-1.1
                       </p>
@@ -915,7 +915,7 @@ exports[`should only expand the specified nodes on initial render 1`] = `
                       class="css-1ldt8rl-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                        class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
                       >
                         Node-1.2
                       </p>
@@ -938,7 +938,7 @@ exports[`should only expand the specified nodes on initial render 1`] = `
                   >
                     <svg
                       aria-hidden="true"
-                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                       data-testid="ChevronRightIcon"
                       focusable="false"
                       viewBox="0 0 24 24"
@@ -955,7 +955,7 @@ exports[`should only expand the specified nodes on initial render 1`] = `
                       class="css-1ldt8rl-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                        class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
                       >
                         Node-1.3
                       </p>
@@ -982,7 +982,7 @@ exports[`should only expand the specified nodes on initial render 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
               data-testid="ExpandMoreIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -999,7 +999,7 @@ exports[`should only expand the specified nodes on initial render 1`] = `
               class="css-1ldt8rl-label"
             >
               <p
-                class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
               >
                 Node-2
               </p>
@@ -1036,7 +1036,7 @@ exports[`should only expand the specified nodes on initial render 1`] = `
                       class="css-1ldt8rl-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                        class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
                       >
                         Node-2.1
                       </p>
@@ -1060,7 +1060,7 @@ exports[`should render a multi-level tree correctly 1`] = `
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
       >
         Deep Tree
       </h6>
@@ -1087,7 +1087,7 @@ exports[`should render a multi-level tree correctly 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
               data-testid="ExpandMoreIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -1104,7 +1104,7 @@ exports[`should render a multi-level tree correctly 1`] = `
               class="css-1ldt8rl-label"
             >
               <p
-                class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
               >
                 Node-1
               </p>
@@ -1137,7 +1137,7 @@ exports[`should render a multi-level tree correctly 1`] = `
                   >
                     <svg
                       aria-hidden="true"
-                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                       data-testid="ExpandMoreIcon"
                       focusable="false"
                       viewBox="0 0 24 24"
@@ -1154,7 +1154,7 @@ exports[`should render a multi-level tree correctly 1`] = `
                       class="css-1ldt8rl-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                        class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
                       >
                         Node-1.1
                       </p>
@@ -1191,7 +1191,7 @@ exports[`should render a multi-level tree correctly 1`] = `
                               class="css-1ldt8rl-label"
                             >
                               <p
-                                class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                                class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
                               >
                                 Node-1.1.1
                               </p>
@@ -1218,7 +1218,7 @@ exports[`should render a multi-level tree correctly 1`] = `
                               class="css-1ldt8rl-label"
                             >
                               <p
-                                class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                                class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
                               >
                                 Node-1.1.2
                               </p>
@@ -1249,7 +1249,7 @@ exports[`should render a multi-level tree correctly 1`] = `
                       class="css-1ldt8rl-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                        class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
                       >
                         Node-1.2
                       </p>
@@ -1272,7 +1272,7 @@ exports[`should render a multi-level tree correctly 1`] = `
                   >
                     <svg
                       aria-hidden="true"
-                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                       data-testid="ExpandMoreIcon"
                       focusable="false"
                       viewBox="0 0 24 24"
@@ -1289,7 +1289,7 @@ exports[`should render a multi-level tree correctly 1`] = `
                       class="css-1ldt8rl-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                        class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
                       >
                         Node-1.3
                       </p>
@@ -1322,7 +1322,7 @@ exports[`should render a multi-level tree correctly 1`] = `
                           >
                             <svg
                               aria-hidden="true"
-                              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                               data-testid="ExpandMoreIcon"
                               focusable="false"
                               viewBox="0 0 24 24"
@@ -1339,7 +1339,7 @@ exports[`should render a multi-level tree correctly 1`] = `
                               class="css-1ldt8rl-label"
                             >
                               <p
-                                class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                                class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
                               >
                                 Node-1.3.1
                               </p>
@@ -1376,7 +1376,7 @@ exports[`should render a multi-level tree correctly 1`] = `
                                       class="css-1ldt8rl-label"
                                     >
                                       <p
-                                        class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                                        class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
                                       >
                                         Node-1.3.1.1
                                       </p>
@@ -1403,7 +1403,7 @@ exports[`should render a multi-level tree correctly 1`] = `
                                       class="css-1ldt8rl-label"
                                     >
                                       <p
-                                        class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                                        class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
                                       >
                                         Node-1.3.1.2
                                       </p>
@@ -1438,7 +1438,7 @@ exports[`should render a multi-level tree correctly 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
               data-testid="ExpandMoreIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -1455,7 +1455,7 @@ exports[`should render a multi-level tree correctly 1`] = `
               class="css-1ldt8rl-label"
             >
               <p
-                class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
               >
                 Node-2
               </p>
@@ -1492,7 +1492,7 @@ exports[`should render a multi-level tree correctly 1`] = `
                       class="css-1ldt8rl-label"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                        class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
                       >
                         Node-2.1
                       </p>
@@ -1516,7 +1516,7 @@ exports[`should render the tree 1`] = `
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
       >
         Default Tree
       </h6>
@@ -1547,7 +1547,7 @@ exports[`should render the tree 1`] = `
               class="css-1ldt8rl-label"
             >
               <p
-                class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
               >
                 Node-root1
               </p>
@@ -1567,7 +1567,7 @@ exports[`should render the tree with a help hint 1`] = `
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
       >
         Default Tree
       </h6>
@@ -1577,7 +1577,7 @@ exports[`should render the tree with a help hint 1`] = `
         <svg
           aria-hidden="true"
           aria-label=""
-          class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeMedium css-kw0y8f-MuiSvgIcon-root"
+          class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeMedium css-25to7p-MuiSvgIcon-root"
           data-mui-internal-clone-element="true"
           data-testid="HelpOutlineOutlinedIcon"
           focusable="false"
@@ -1616,7 +1616,7 @@ exports[`should render the tree with a help hint 1`] = `
               class="css-1ldt8rl-label"
             >
               <p
-                class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-body1 css-rizt0-MuiTypography-root"
               >
                 Node-root1
               </p>

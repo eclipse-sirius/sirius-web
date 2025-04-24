@@ -4,7 +4,7 @@ exports[`should display the error received 1`] = `
 <body>
   <div>
     <div
-      class="MuiFormControl-root css-1lq62oj-propertySection css-1nrlq1o-MuiFormControl-root"
+      class="MuiFormControl-root css-1lq62oj-propertySection css-1iw3t7y-MuiFormControl-root"
     >
       <div
         class="css-6pxhee-propertySectionLabel"
@@ -13,7 +13,7 @@ exports[`should display the error received 1`] = `
           class="css-1ccipwk-propertySectionLabel"
         >
           <h6
-            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
           >
             CheckboxLabel
           </h6>
@@ -23,18 +23,18 @@ exports[`should display the error received 1`] = `
         class="css-pxfk4e-propertySectionWidget"
       >
         <span
-          class="MuiButtonBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium css-dk24d0-MuiButtonBase-root-MuiCheckbox-root"
+          class="MuiButtonBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium css-roq9hy-MuiButtonBase-root-MuiCheckbox-root"
           data-testid="CheckboxLabel"
         >
           <input
-            class="PrivateSwitchBase-input css-1m9pwf3"
+            class="PrivateSwitchBase-input css-j8yymo"
             data-indeterminate="false"
             name="CheckboxLabel"
             type="checkbox"
           />
           <svg
             aria-hidden="true"
-            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
             data-testid="CheckBoxOutlineBlankIcon"
             focusable="false"
             viewBox="0 0 24 24"
@@ -43,9 +43,6 @@ exports[`should display the error received 1`] = `
               d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
             />
           </svg>
-          <span
-            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-          />
         </span>
       </div>
     </div>
@@ -57,7 +54,7 @@ exports[`should display the error received 2`] = `
 <body>
   <div>
     <div
-      class="MuiFormControl-root css-1lq62oj-propertySection css-1nrlq1o-MuiFormControl-root"
+      class="MuiFormControl-root css-1lq62oj-propertySection css-1iw3t7y-MuiFormControl-root"
     >
       <div
         class="css-6pxhee-propertySectionLabel"
@@ -66,7 +63,7 @@ exports[`should display the error received 2`] = `
           class="css-1ccipwk-propertySectionLabel"
         >
           <h6
-            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
           >
             CheckboxLabel
           </h6>
@@ -76,18 +73,18 @@ exports[`should display the error received 2`] = `
         class="css-pxfk4e-propertySectionWidget"
       >
         <span
-          class="MuiButtonBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium css-dk24d0-MuiButtonBase-root-MuiCheckbox-root"
+          class="MuiButtonBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium css-roq9hy-MuiButtonBase-root-MuiCheckbox-root"
           data-testid="CheckboxLabel"
         >
           <input
-            class="PrivateSwitchBase-input css-1m9pwf3"
+            class="PrivateSwitchBase-input css-j8yymo"
             data-indeterminate="false"
             name="CheckboxLabel"
             type="checkbox"
           />
           <svg
             aria-hidden="true"
-            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
             data-testid="CheckBoxOutlineBlankIcon"
             focusable="false"
             viewBox="0 0 24 24"
@@ -97,8 +94,17 @@ exports[`should display the error received 2`] = `
             />
           </svg>
           <span
-            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-          />
+            class="MuiTouchRipple-root css-r3djoj-MuiTouchRipple-root"
+          >
+            <span
+              class="css-y4cjyz-MuiTouchRipple-ripple MuiTouchRipple-ripple MuiTouchRipple-rippleVisible"
+              style="width: 1px; height: 1px; top: -0.5px; left: -0.5px;"
+            >
+              <span
+                class="MuiTouchRipple-child MuiTouchRipple-childLeaving"
+              />
+            </span>
+          </span>
         </span>
       </div>
     </div>
@@ -109,7 +115,7 @@ exports[`should display the error received 2`] = `
 exports[`should render a checkbox with help hint 1`] = `
 <div>
   <div
-    class="MuiFormControl-root css-1lq62oj-propertySection css-1nrlq1o-MuiFormControl-root"
+    class="MuiFormControl-root css-1lq62oj-propertySection css-1iw3t7y-MuiFormControl-root"
   >
     <div
       class="css-6pxhee-propertySectionLabel"
@@ -118,7 +124,7 @@ exports[`should render a checkbox with help hint 1`] = `
         class="css-1ccipwk-propertySectionLabel"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
         >
           CheckboxLabel
         </h6>
@@ -128,7 +134,7 @@ exports[`should render a checkbox with help hint 1`] = `
           <svg
             aria-hidden="true"
             aria-label=""
-            class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeMedium css-kw0y8f-MuiSvgIcon-root"
+            class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeMedium css-25to7p-MuiSvgIcon-root"
             data-mui-internal-clone-element="true"
             data-testid="HelpOutlineOutlinedIcon"
             focusable="false"
@@ -147,12 +153,12 @@ exports[`should render a checkbox with help hint 1`] = `
     >
       <span
         aria-disabled="true"
-        class="MuiButtonBase-root MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium Mui-disabled css-1978p17-disabled PrivateSwitchBase-root MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium Mui-disabled css-1978p17-disabled MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium css-dk24d0-MuiButtonBase-root-MuiCheckbox-root"
+        class="MuiButtonBase-root MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium Mui-disabled css-1978p17-disabled PrivateSwitchBase-root MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium Mui-disabled css-1978p17-disabled MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium css-roq9hy-MuiButtonBase-root-MuiCheckbox-root"
         data-testid="CheckboxLabel"
         tabindex="-1"
       >
         <input
-          class="PrivateSwitchBase-input css-1m9pwf3"
+          class="PrivateSwitchBase-input css-j8yymo"
           data-indeterminate="false"
           disabled=""
           name="CheckboxLabel"
@@ -160,7 +166,7 @@ exports[`should render a checkbox with help hint 1`] = `
         />
         <svg
           aria-hidden="true"
-          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
           data-testid="CheckBoxOutlineBlankIcon"
           focusable="false"
           viewBox="0 0 24 24"
@@ -178,7 +184,7 @@ exports[`should render a checkbox with help hint 1`] = `
 exports[`should render a readOnly checkbox 1`] = `
 <div>
   <div
-    class="MuiFormControl-root css-1lq62oj-propertySection css-1nrlq1o-MuiFormControl-root"
+    class="MuiFormControl-root css-1lq62oj-propertySection css-1iw3t7y-MuiFormControl-root"
   >
     <div
       class="css-6pxhee-propertySectionLabel"
@@ -187,7 +193,7 @@ exports[`should render a readOnly checkbox 1`] = `
         class="css-1ccipwk-propertySectionLabel"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
         >
           CheckboxLabel
         </h6>
@@ -198,12 +204,12 @@ exports[`should render a readOnly checkbox 1`] = `
     >
       <span
         aria-disabled="true"
-        class="MuiButtonBase-root MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium Mui-disabled css-1978p17-disabled PrivateSwitchBase-root MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium Mui-disabled css-1978p17-disabled MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium css-dk24d0-MuiButtonBase-root-MuiCheckbox-root"
+        class="MuiButtonBase-root MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium Mui-disabled css-1978p17-disabled PrivateSwitchBase-root MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium Mui-disabled css-1978p17-disabled MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium css-roq9hy-MuiButtonBase-root-MuiCheckbox-root"
         data-testid="CheckboxLabel"
         tabindex="-1"
       >
         <input
-          class="PrivateSwitchBase-input css-1m9pwf3"
+          class="PrivateSwitchBase-input css-j8yymo"
           data-indeterminate="false"
           disabled=""
           name="CheckboxLabel"
@@ -211,7 +217,7 @@ exports[`should render a readOnly checkbox 1`] = `
         />
         <svg
           aria-hidden="true"
-          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
           data-testid="CheckBoxOutlineBlankIcon"
           focusable="false"
           viewBox="0 0 24 24"
@@ -229,7 +235,7 @@ exports[`should render a readOnly checkbox 1`] = `
 exports[`should render a readOnly checkbox from widget properties 1`] = `
 <div>
   <div
-    class="MuiFormControl-root css-1lq62oj-propertySection css-1nrlq1o-MuiFormControl-root"
+    class="MuiFormControl-root css-1lq62oj-propertySection css-1iw3t7y-MuiFormControl-root"
   >
     <div
       class="css-6pxhee-propertySectionLabel"
@@ -238,7 +244,7 @@ exports[`should render a readOnly checkbox from widget properties 1`] = `
         class="css-1ccipwk-propertySectionLabel"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
         >
           CheckboxLabel
         </h6>
@@ -249,12 +255,12 @@ exports[`should render a readOnly checkbox from widget properties 1`] = `
     >
       <span
         aria-disabled="true"
-        class="MuiButtonBase-root MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium Mui-disabled css-1978p17-disabled PrivateSwitchBase-root MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium Mui-disabled css-1978p17-disabled MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium css-dk24d0-MuiButtonBase-root-MuiCheckbox-root"
+        class="MuiButtonBase-root MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium Mui-disabled css-1978p17-disabled PrivateSwitchBase-root MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium Mui-disabled css-1978p17-disabled MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium css-roq9hy-MuiButtonBase-root-MuiCheckbox-root"
         data-testid="CheckboxLabel"
         tabindex="-1"
       >
         <input
-          class="PrivateSwitchBase-input css-1m9pwf3"
+          class="PrivateSwitchBase-input css-j8yymo"
           data-indeterminate="false"
           disabled=""
           name="CheckboxLabel"
@@ -262,7 +268,7 @@ exports[`should render a readOnly checkbox from widget properties 1`] = `
         />
         <svg
           aria-hidden="true"
-          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
           data-testid="CheckBoxOutlineBlankIcon"
           focusable="false"
           viewBox="0 0 24 24"
@@ -280,7 +286,7 @@ exports[`should render a readOnly checkbox from widget properties 1`] = `
 exports[`should render the checkbox 1`] = `
 <div>
   <div
-    class="MuiFormControl-root css-1lq62oj-propertySection css-1nrlq1o-MuiFormControl-root"
+    class="MuiFormControl-root css-1lq62oj-propertySection css-1iw3t7y-MuiFormControl-root"
   >
     <div
       class="css-6pxhee-propertySectionLabel"
@@ -289,7 +295,7 @@ exports[`should render the checkbox 1`] = `
         class="css-1ccipwk-propertySectionLabel"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
         >
           CheckboxLabel
         </h6>
@@ -299,18 +305,18 @@ exports[`should render the checkbox 1`] = `
       class="css-pxfk4e-propertySectionWidget"
     >
       <span
-        class="MuiButtonBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium css-dk24d0-MuiButtonBase-root-MuiCheckbox-root"
+        class="MuiButtonBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium css-roq9hy-MuiButtonBase-root-MuiCheckbox-root"
         data-testid="CheckboxLabel"
       >
         <input
-          class="PrivateSwitchBase-input css-1m9pwf3"
+          class="PrivateSwitchBase-input css-j8yymo"
           data-indeterminate="false"
           name="CheckboxLabel"
           type="checkbox"
         />
         <svg
           aria-hidden="true"
-          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
           data-testid="CheckBoxOutlineBlankIcon"
           focusable="false"
           viewBox="0 0 24 24"
@@ -319,9 +325,6 @@ exports[`should render the checkbox 1`] = `
             d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
           />
         </svg>
-        <span
-          class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-        />
       </span>
     </div>
   </div>
@@ -332,7 +335,7 @@ exports[`should render the checkbox with empty style 1`] = `
 <body>
   <div>
     <div
-      class="MuiFormControl-root css-1lq62oj-propertySection css-1nrlq1o-MuiFormControl-root"
+      class="MuiFormControl-root css-1lq62oj-propertySection css-1iw3t7y-MuiFormControl-root"
     >
       <div
         class="css-6pxhee-propertySectionLabel"
@@ -341,7 +344,7 @@ exports[`should render the checkbox with empty style 1`] = `
           class="css-1ccipwk-propertySectionLabel"
         >
           <h6
-            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
           >
             CheckboxLabel
           </h6>
@@ -351,18 +354,18 @@ exports[`should render the checkbox with empty style 1`] = `
         class="css-pxfk4e-propertySectionWidget"
       >
         <span
-          class="MuiButtonBase-root MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium css-dk24d0-MuiButtonBase-root-MuiCheckbox-root"
+          class="MuiButtonBase-root MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium css-roq9hy-MuiButtonBase-root-MuiCheckbox-root"
           data-testid="CheckboxLabel"
         >
           <input
-            class="PrivateSwitchBase-input css-1m9pwf3"
+            class="PrivateSwitchBase-input css-j8yymo"
             data-indeterminate="false"
             name="CheckboxLabel"
             type="checkbox"
           />
           <svg
             aria-hidden="true"
-            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
             data-testid="CheckBoxOutlineBlankIcon"
             focusable="false"
             viewBox="0 0 24 24"
@@ -371,9 +374,6 @@ exports[`should render the checkbox with empty style 1`] = `
               d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
             />
           </svg>
-          <span
-            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-          />
         </span>
       </div>
     </div>
@@ -385,7 +385,7 @@ exports[`should render the checkbox with style 1`] = `
 <body>
   <div>
     <div
-      class="MuiFormControl-root css-1lq62oj-propertySection css-1nrlq1o-MuiFormControl-root"
+      class="MuiFormControl-root css-1lq62oj-propertySection css-1iw3t7y-MuiFormControl-root"
     >
       <div
         class="css-6pxhee-propertySectionLabel"
@@ -394,7 +394,7 @@ exports[`should render the checkbox with style 1`] = `
           class="css-1ccipwk-propertySectionLabel"
         >
           <h6
-            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
           >
             CheckboxLabel
           </h6>
@@ -404,18 +404,18 @@ exports[`should render the checkbox with style 1`] = `
         class="css-pxfk4e-propertySectionWidget"
       >
         <span
-          class="MuiButtonBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium css-dk24d0-MuiButtonBase-root-MuiCheckbox-root"
+          class="MuiButtonBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium css-roq9hy-MuiButtonBase-root-MuiCheckbox-root"
           data-testid="CheckboxLabel"
         >
           <input
-            class="PrivateSwitchBase-input css-1m9pwf3"
+            class="PrivateSwitchBase-input css-j8yymo"
             data-indeterminate="false"
             name="CheckboxLabel"
             type="checkbox"
           />
           <svg
             aria-hidden="true"
-            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
             data-testid="CheckBoxOutlineBlankIcon"
             focusable="false"
             viewBox="0 0 24 24"
@@ -424,9 +424,6 @@ exports[`should render the checkbox with style 1`] = `
               d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
             />
           </svg>
-          <span
-            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-          />
         </span>
       </div>
     </div>
@@ -438,7 +435,7 @@ exports[`should render the checkbox without style 1`] = `
 <body>
   <div>
     <div
-      class="MuiFormControl-root css-1lq62oj-propertySection css-1nrlq1o-MuiFormControl-root"
+      class="MuiFormControl-root css-1lq62oj-propertySection css-1iw3t7y-MuiFormControl-root"
     >
       <div
         class="css-6pxhee-propertySectionLabel"
@@ -447,7 +444,7 @@ exports[`should render the checkbox without style 1`] = `
           class="css-1ccipwk-propertySectionLabel"
         >
           <h6
-            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
           >
             CheckboxLabel
           </h6>
@@ -457,18 +454,18 @@ exports[`should render the checkbox without style 1`] = `
         class="css-pxfk4e-propertySectionWidget"
       >
         <span
-          class="MuiButtonBase-root MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium css-dk24d0-MuiButtonBase-root-MuiCheckbox-root"
+          class="MuiButtonBase-root MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium MuiCheckbox-root css-zeq96h-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium css-roq9hy-MuiButtonBase-root-MuiCheckbox-root"
           data-testid="CheckboxLabel"
         >
           <input
-            class="PrivateSwitchBase-input css-1m9pwf3"
+            class="PrivateSwitchBase-input css-j8yymo"
             data-indeterminate="false"
             name="CheckboxLabel"
             type="checkbox"
           />
           <svg
             aria-hidden="true"
-            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
             data-testid="CheckBoxOutlineBlankIcon"
             focusable="false"
             viewBox="0 0 24 24"
@@ -477,9 +474,6 @@ exports[`should render the checkbox without style 1`] = `
               d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
             />
           </svg>
-          <span
-            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-          />
         </span>
       </div>
     </div>
@@ -490,7 +484,7 @@ exports[`should render the checkbox without style 1`] = `
 exports[`should send mutation when clicked 1`] = `
 <div>
   <div
-    class="MuiFormControl-root css-1lq62oj-propertySection css-1nrlq1o-MuiFormControl-root"
+    class="MuiFormControl-root css-1lq62oj-propertySection css-1iw3t7y-MuiFormControl-root"
   >
     <div
       class="css-6pxhee-propertySectionLabel"
@@ -499,7 +493,7 @@ exports[`should send mutation when clicked 1`] = `
         class="css-1ccipwk-propertySectionLabel"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
         >
           CheckboxLabel
         </h6>
@@ -509,18 +503,18 @@ exports[`should send mutation when clicked 1`] = `
       class="css-pxfk4e-propertySectionWidget"
     >
       <span
-        class="MuiButtonBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium css-dk24d0-MuiButtonBase-root-MuiCheckbox-root"
+        class="MuiButtonBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium css-roq9hy-MuiButtonBase-root-MuiCheckbox-root"
         data-testid="CheckboxLabel"
       >
         <input
-          class="PrivateSwitchBase-input css-1m9pwf3"
+          class="PrivateSwitchBase-input css-j8yymo"
           data-indeterminate="false"
           name="CheckboxLabel"
           type="checkbox"
         />
         <svg
           aria-hidden="true"
-          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
           data-testid="CheckBoxOutlineBlankIcon"
           focusable="false"
           viewBox="0 0 24 24"
@@ -529,9 +523,6 @@ exports[`should send mutation when clicked 1`] = `
             d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
           />
         </svg>
-        <span
-          class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-        />
       </span>
     </div>
   </div>
@@ -541,7 +532,7 @@ exports[`should send mutation when clicked 1`] = `
 exports[`should send mutation when clicked 2`] = `
 <div>
   <div
-    class="MuiFormControl-root css-1lq62oj-propertySection css-1nrlq1o-MuiFormControl-root"
+    class="MuiFormControl-root css-1lq62oj-propertySection css-1iw3t7y-MuiFormControl-root"
   >
     <div
       class="css-6pxhee-propertySectionLabel"
@@ -550,7 +541,7 @@ exports[`should send mutation when clicked 2`] = `
         class="css-1ccipwk-propertySectionLabel"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
         >
           CheckboxLabel
         </h6>
@@ -560,18 +551,18 @@ exports[`should send mutation when clicked 2`] = `
       class="css-pxfk4e-propertySectionWidget"
     >
       <span
-        class="MuiButtonBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium css-dk24d0-MuiButtonBase-root-MuiCheckbox-root"
+        class="MuiButtonBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium css-roq9hy-MuiButtonBase-root-MuiCheckbox-root"
         data-testid="CheckboxLabel"
       >
         <input
-          class="PrivateSwitchBase-input css-1m9pwf3"
+          class="PrivateSwitchBase-input css-j8yymo"
           data-indeterminate="false"
           name="CheckboxLabel"
           type="checkbox"
         />
         <svg
           aria-hidden="true"
-          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
           data-testid="CheckBoxOutlineBlankIcon"
           focusable="false"
           viewBox="0 0 24 24"
@@ -581,8 +572,17 @@ exports[`should send mutation when clicked 2`] = `
           />
         </svg>
         <span
-          class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-        />
+          class="MuiTouchRipple-root css-r3djoj-MuiTouchRipple-root"
+        >
+          <span
+            class="css-y4cjyz-MuiTouchRipple-ripple MuiTouchRipple-ripple MuiTouchRipple-rippleVisible"
+            style="width: 1px; height: 1px; top: -0.5px; left: -0.5px;"
+          >
+            <span
+              class="MuiTouchRipple-child MuiTouchRipple-childLeaving"
+            />
+          </span>
+        </span>
       </span>
     </div>
   </div>

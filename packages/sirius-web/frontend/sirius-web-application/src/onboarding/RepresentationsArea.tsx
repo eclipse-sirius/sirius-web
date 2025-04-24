@@ -14,7 +14,7 @@ import { IconOverlay, useSelection } from '@eclipse-sirius/sirius-components-cor
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
@@ -46,11 +46,10 @@ export const RepresentationsArea = ({ representations }: RepresentationAreaProps
             .sort((a, b) => a.label.localeCompare(b.label))
             .map((representation) => {
               return (
-                <ListItem
+                <ListItemButton
                   className={classes.item}
                   dense
                   disableGutters
-                  button
                   key={representation.id}
                   data-testid={`onboard-open-${representation.label}`}
                   onClick={() =>
@@ -62,7 +61,7 @@ export const RepresentationsArea = ({ representations }: RepresentationAreaProps
                     <IconOverlay iconURL={representation.iconURLs} alt="representation icon" />
                   </ListItemIcon>
                   <ListItemText primary={representation.label} />
-                </ListItem>
+                </ListItemButton>
               );
             })}
         </List>

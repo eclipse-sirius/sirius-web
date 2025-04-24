@@ -16,7 +16,7 @@ import Collections from '@mui/icons-material/Collections';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
@@ -135,21 +135,20 @@ export const NewRepresentationArea = ({
                   .sort((a, b) => a.defaultName.localeCompare(b.defaultName))
                   .map((representationDescription) => {
                     return (
-                      <ListItem
+                      <ListItemButton
                         className={classes.item}
                         dense
                         disableGutters
-                        button
                         key={representationDescription.id}
                         data-testid={representationDescription.id}
                         onClick={() => {
                           onCreateRepresentation(representationDescription.id);
                         }}>
                         <ListItemIcon>
-                          <Collections htmlColor="primary" fontSize="small" />
+                          <Collections fontSize="small" />
                         </ListItemIcon>
                         <ListItemText primary={representationDescription.defaultName} />
-                      </ListItem>
+                      </ListItemButton>
                     );
                   })}
           </List>

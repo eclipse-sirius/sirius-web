@@ -28,6 +28,7 @@ export const useProjectsTableColumns = (): UseProjectsTableColumnsValue => {
       Cell: ({ row }) => (
         <Link
           component={RouterLink}
+          underline="hover"
           to={`/projects/${row.original.id}/edit`}
           sx={{
             whiteSpace: 'nowrap',

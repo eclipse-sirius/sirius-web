@@ -3,7 +3,7 @@
 exports[`render list widget 1`] = `
 <div>
   <div
-    class="MuiFormControl-root MuiFormControl-fullWidth css-q8hpuo-MuiFormControl-root"
+    class="MuiFormControl-root MuiFormControl-fullWidth css-ytlejw-MuiFormControl-root"
   >
     <div
       class="css-2huy39-propertySectionLabel"
@@ -12,41 +12,41 @@ exports[`render list widget 1`] = `
         class="css-1ccipwk-propertySectionLabel"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
         >
           myList
         </h6>
       </div>
     </div>
     <table
-      class="MuiTable-root css-rqglhn-MuiTable-root"
+      class="MuiTable-root css-1xwxv7r-MuiTable-root"
       data-testid="table-myList"
     >
       <tbody
-        class="MuiTableBody-root css-apqrd9-MuiTableBody-root"
+        class="MuiTableBody-root css-gmh7jj-MuiTableBody-root"
       >
         <tr
-          class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
+          class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-dsuxgy-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1gqyz35-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
               data-testid="representation-item1Label"
             >
               item1Label
             </p>
             <button
               aria-label="deleteListItem"
-              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root"
+              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-155wbr6-MuiButtonBase-root-MuiIconButton-root"
               data-testid="delete-representation-item1Label"
               tabindex="0"
               type="button"
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                 data-testid="DeleteIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -55,34 +55,31 @@ exports[`render list widget 1`] = `
                   d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"
                 />
               </svg>
-              <span
-                class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-              />
             </button>
           </td>
         </tr>
         <tr
-          class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
+          class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-dsuxgy-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1gqyz35-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
               data-testid="representation-item2Label"
             >
               item2Label
             </p>
             <button
               aria-label="deleteListItem"
-              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root"
+              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-155wbr6-MuiButtonBase-root-MuiIconButton-root"
               data-testid="delete-representation-item2Label"
               tabindex="0"
               type="button"
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                 data-testid="DeleteIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -91,34 +88,31 @@ exports[`render list widget 1`] = `
                   d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"
                 />
               </svg>
-              <span
-                class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-              />
             </button>
           </td>
         </tr>
         <tr
-          class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
+          class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-dsuxgy-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1gqyz35-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
               data-testid="representation-item3Label"
             >
               item3Label
             </p>
             <button
               aria-label="deleteListItem"
-              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root"
+              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-155wbr6-MuiButtonBase-root-MuiIconButton-root"
               data-testid="delete-representation-item3Label"
               tabindex="0"
               type="button"
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                 data-testid="DeleteIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -127,16 +121,13 @@ exports[`render list widget 1`] = `
                   d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"
                 />
               </svg>
-              <span
-                class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-              />
             </button>
           </td>
         </tr>
       </tbody>
     </table>
     <p
-      class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-1wc848c-MuiFormHelperText-root"
+      class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-er619e-MuiFormHelperText-root"
     />
   </div>
 </div>
@@ -145,7 +136,7 @@ exports[`render list widget 1`] = `
 exports[`render list widget with help hint 1`] = `
 <div>
   <div
-    class="MuiFormControl-root MuiFormControl-fullWidth css-q8hpuo-MuiFormControl-root"
+    class="MuiFormControl-root MuiFormControl-fullWidth css-ytlejw-MuiFormControl-root"
   >
     <div
       class="css-2huy39-propertySectionLabel"
@@ -154,7 +145,7 @@ exports[`render list widget with help hint 1`] = `
         class="css-1ccipwk-propertySectionLabel"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
         >
           myList
         </h6>
@@ -164,7 +155,7 @@ exports[`render list widget with help hint 1`] = `
           <svg
             aria-hidden="true"
             aria-label=""
-            class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeMedium css-kw0y8f-MuiSvgIcon-root"
+            class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeMedium css-25to7p-MuiSvgIcon-root"
             data-mui-internal-clone-element="true"
             data-testid="HelpOutlineOutlinedIcon"
             focusable="false"
@@ -179,34 +170,34 @@ exports[`render list widget with help hint 1`] = `
       </div>
     </div>
     <table
-      class="MuiTable-root css-rqglhn-MuiTable-root"
+      class="MuiTable-root css-1xwxv7r-MuiTable-root"
       data-testid="table-myList"
     >
       <tbody
-        class="MuiTableBody-root css-apqrd9-MuiTableBody-root"
+        class="MuiTableBody-root css-gmh7jj-MuiTableBody-root"
       >
         <tr
-          class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
+          class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-dsuxgy-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1gqyz35-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
               data-testid="representation-item1Label"
             >
               item1Label
             </p>
             <button
               aria-label="deleteListItem"
-              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root"
+              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-155wbr6-MuiButtonBase-root-MuiIconButton-root"
               data-testid="delete-representation-item1Label"
               tabindex="0"
               type="button"
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                 data-testid="DeleteIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -215,34 +206,31 @@ exports[`render list widget with help hint 1`] = `
                   d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"
                 />
               </svg>
-              <span
-                class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-              />
             </button>
           </td>
         </tr>
         <tr
-          class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
+          class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-dsuxgy-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1gqyz35-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
               data-testid="representation-item2Label"
             >
               item2Label
             </p>
             <button
               aria-label="deleteListItem"
-              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root"
+              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-155wbr6-MuiButtonBase-root-MuiIconButton-root"
               data-testid="delete-representation-item2Label"
               tabindex="0"
               type="button"
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                 data-testid="DeleteIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -251,34 +239,31 @@ exports[`render list widget with help hint 1`] = `
                   d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"
                 />
               </svg>
-              <span
-                class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-              />
             </button>
           </td>
         </tr>
         <tr
-          class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
+          class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-dsuxgy-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1gqyz35-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
               data-testid="representation-item3Label"
             >
               item3Label
             </p>
             <button
               aria-label="deleteListItem"
-              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root"
+              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-155wbr6-MuiButtonBase-root-MuiIconButton-root"
               data-testid="delete-representation-item3Label"
               tabindex="0"
               type="button"
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                 data-testid="DeleteIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -287,16 +272,13 @@ exports[`render list widget with help hint 1`] = `
                   d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"
                 />
               </svg>
-              <span
-                class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-              />
             </button>
           </td>
         </tr>
       </tbody>
     </table>
     <p
-      class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-1wc848c-MuiFormHelperText-root"
+      class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-er619e-MuiFormHelperText-root"
     />
   </div>
 </div>
@@ -305,7 +287,7 @@ exports[`render list widget with help hint 1`] = `
 exports[`render list widget with style 1`] = `
 <div>
   <div
-    class="MuiFormControl-root MuiFormControl-fullWidth css-q8hpuo-MuiFormControl-root"
+    class="MuiFormControl-root MuiFormControl-fullWidth css-ytlejw-MuiFormControl-root"
   >
     <div
       class="css-2huy39-propertySectionLabel"
@@ -314,41 +296,41 @@ exports[`render list widget with style 1`] = `
         class="css-1ccipwk-propertySectionLabel"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
         >
           myList
         </h6>
       </div>
     </div>
     <table
-      class="MuiTable-root css-rqglhn-MuiTable-root"
+      class="MuiTable-root css-1xwxv7r-MuiTable-root"
       data-testid="table-myList"
     >
       <tbody
-        class="MuiTableBody-root css-apqrd9-MuiTableBody-root"
+        class="MuiTableBody-root css-gmh7jj-MuiTableBody-root"
       >
         <tr
-          class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
+          class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-dsuxgy-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1gqyz35-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
               data-testid="representation-item1Label"
             >
               item1Label
             </p>
             <button
               aria-label="deleteListItem"
-              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root"
+              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-155wbr6-MuiButtonBase-root-MuiIconButton-root"
               data-testid="delete-representation-item1Label"
               tabindex="0"
               type="button"
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                 data-testid="DeleteIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -357,34 +339,31 @@ exports[`render list widget with style 1`] = `
                   d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"
                 />
               </svg>
-              <span
-                class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-              />
             </button>
           </td>
         </tr>
         <tr
-          class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
+          class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-dsuxgy-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1gqyz35-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
               data-testid="representation-item2Label"
             >
               item2Label
             </p>
             <button
               aria-label="deleteListItem"
-              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root"
+              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-155wbr6-MuiButtonBase-root-MuiIconButton-root"
               data-testid="delete-representation-item2Label"
               tabindex="0"
               type="button"
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                 data-testid="DeleteIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -393,34 +372,31 @@ exports[`render list widget with style 1`] = `
                   d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"
                 />
               </svg>
-              <span
-                class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-              />
             </button>
           </td>
         </tr>
         <tr
-          class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
+          class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-dsuxgy-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1gqyz35-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
               data-testid="representation-item3Label"
             >
               item3Label
             </p>
             <button
               aria-label="deleteListItem"
-              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root"
+              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-155wbr6-MuiButtonBase-root-MuiIconButton-root"
               data-testid="delete-representation-item3Label"
               tabindex="0"
               type="button"
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                 data-testid="DeleteIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -429,16 +405,13 @@ exports[`render list widget with style 1`] = `
                   d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"
                 />
               </svg>
-              <span
-                class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-              />
             </button>
           </td>
         </tr>
       </tbody>
     </table>
     <p
-      class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-1wc848c-MuiFormHelperText-root"
+      class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-er619e-MuiFormHelperText-root"
     />
   </div>
 </div>
@@ -447,7 +420,7 @@ exports[`render list widget with style 1`] = `
 exports[`should the click event sent on item click 1`] = `
 <div>
   <div
-    class="MuiFormControl-root MuiFormControl-fullWidth css-q8hpuo-MuiFormControl-root"
+    class="MuiFormControl-root MuiFormControl-fullWidth css-ytlejw-MuiFormControl-root"
   >
     <div
       class="css-2huy39-propertySectionLabel"
@@ -456,41 +429,41 @@ exports[`should the click event sent on item click 1`] = `
         class="css-1ccipwk-propertySectionLabel"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
         >
           myList
         </h6>
       </div>
     </div>
     <table
-      class="MuiTable-root css-rqglhn-MuiTable-root"
+      class="MuiTable-root css-1xwxv7r-MuiTable-root"
       data-testid="table-myList"
     >
       <tbody
-        class="MuiTableBody-root css-apqrd9-MuiTableBody-root"
+        class="MuiTableBody-root css-gmh7jj-MuiTableBody-root"
       >
         <tr
-          class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
+          class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-dsuxgy-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1gqyz35-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
               data-testid="representation-item1Label"
             >
               item1Label
             </p>
             <button
               aria-label="deleteListItem"
-              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root"
+              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-155wbr6-MuiButtonBase-root-MuiIconButton-root"
               data-testid="delete-representation-item1Label"
               tabindex="0"
               type="button"
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                 data-testid="DeleteIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -499,34 +472,31 @@ exports[`should the click event sent on item click 1`] = `
                   d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"
                 />
               </svg>
-              <span
-                class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-              />
             </button>
           </td>
         </tr>
         <tr
-          class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
+          class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-dsuxgy-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1gqyz35-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
               data-testid="representation-item2Label"
             >
               item2Label
             </p>
             <button
               aria-label="deleteListItem"
-              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root"
+              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-155wbr6-MuiButtonBase-root-MuiIconButton-root"
               data-testid="delete-representation-item2Label"
               tabindex="0"
               type="button"
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                 data-testid="DeleteIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -535,34 +505,31 @@ exports[`should the click event sent on item click 1`] = `
                   d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"
                 />
               </svg>
-              <span
-                class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-              />
             </button>
           </td>
         </tr>
         <tr
-          class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
+          class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-dsuxgy-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1gqyz35-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
               data-testid="representation-item3Label"
             >
               item3Label
             </p>
             <button
               aria-label="deleteListItem"
-              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root"
+              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-155wbr6-MuiButtonBase-root-MuiIconButton-root"
               data-testid="delete-representation-item3Label"
               tabindex="0"
               type="button"
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                 data-testid="DeleteIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -571,16 +538,13 @@ exports[`should the click event sent on item click 1`] = `
                   d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"
                 />
               </svg>
-              <span
-                class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-              />
             </button>
           </td>
         </tr>
       </tbody>
     </table>
     <p
-      class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-1wc848c-MuiFormHelperText-root"
+      class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-er619e-MuiFormHelperText-root"
     />
   </div>
 </div>
@@ -589,7 +553,7 @@ exports[`should the click event sent on item click 1`] = `
 exports[`should the click event sent on item click 2`] = `
 <div>
   <div
-    class="MuiFormControl-root MuiFormControl-fullWidth css-q8hpuo-MuiFormControl-root"
+    class="MuiFormControl-root MuiFormControl-fullWidth css-ytlejw-MuiFormControl-root"
   >
     <div
       class="css-2huy39-propertySectionLabel"
@@ -598,41 +562,41 @@ exports[`should the click event sent on item click 2`] = `
         class="css-1ccipwk-propertySectionLabel"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
         >
           myList
         </h6>
       </div>
     </div>
     <table
-      class="MuiTable-root css-rqglhn-MuiTable-root"
+      class="MuiTable-root css-1xwxv7r-MuiTable-root"
       data-testid="table-myList"
     >
       <tbody
-        class="MuiTableBody-root css-apqrd9-MuiTableBody-root"
+        class="MuiTableBody-root css-gmh7jj-MuiTableBody-root"
       >
         <tr
-          class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
+          class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-dsuxgy-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1gqyz35-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
               data-testid="representation-item1Label"
             >
               item1Label
             </p>
             <button
               aria-label="deleteListItem"
-              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root"
+              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-155wbr6-MuiButtonBase-root-MuiIconButton-root"
               data-testid="delete-representation-item1Label"
               tabindex="0"
               type="button"
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                 data-testid="DeleteIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -641,34 +605,31 @@ exports[`should the click event sent on item click 2`] = `
                   d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"
                 />
               </svg>
-              <span
-                class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-              />
             </button>
           </td>
         </tr>
         <tr
-          class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
+          class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-dsuxgy-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1gqyz35-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
               data-testid="representation-item2Label"
             >
               item2Label
             </p>
             <button
               aria-label="deleteListItem"
-              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root"
+              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-155wbr6-MuiButtonBase-root-MuiIconButton-root"
               data-testid="delete-representation-item2Label"
               tabindex="0"
               type="button"
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                 data-testid="DeleteIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -677,34 +638,31 @@ exports[`should the click event sent on item click 2`] = `
                   d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"
                 />
               </svg>
-              <span
-                class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-              />
             </button>
           </td>
         </tr>
         <tr
-          class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
+          class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-dsuxgy-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1gqyz35-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
               data-testid="representation-item3Label"
             >
               item3Label
             </p>
             <button
               aria-label="deleteListItem"
-              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root"
+              class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-155wbr6-MuiButtonBase-root-MuiIconButton-root"
               data-testid="delete-representation-item3Label"
               tabindex="0"
               type="button"
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                 data-testid="DeleteIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -713,16 +671,13 @@ exports[`should the click event sent on item click 2`] = `
                   d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"
                 />
               </svg>
-              <span
-                class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-              />
             </button>
           </td>
         </tr>
       </tbody>
     </table>
     <p
-      class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-1wc848c-MuiFormHelperText-root"
+      class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-er619e-MuiFormHelperText-root"
     />
   </div>
 </div>
@@ -731,7 +686,7 @@ exports[`should the click event sent on item click 2`] = `
 exports[`when in read-only mode, list items can still be selected but handlers are not invoked 1`] = `
 <div>
   <div
-    class="MuiFormControl-root MuiFormControl-fullWidth css-q8hpuo-MuiFormControl-root"
+    class="MuiFormControl-root MuiFormControl-fullWidth css-ytlejw-MuiFormControl-root"
   >
     <div
       class="css-2huy39-propertySectionLabel"
@@ -740,34 +695,34 @@ exports[`when in read-only mode, list items can still be selected but handlers a
         class="css-1ccipwk-propertySectionLabel"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
         >
           myList
         </h6>
       </div>
     </div>
     <table
-      class="MuiTable-root css-rqglhn-MuiTable-root"
+      class="MuiTable-root css-1xwxv7r-MuiTable-root"
       data-testid="table-myList"
     >
       <tbody
-        class="MuiTableBody-root css-apqrd9-MuiTableBody-root"
+        class="MuiTableBody-root css-gmh7jj-MuiTableBody-root"
       >
         <tr
-          class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
+          class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-dsuxgy-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1gqyz35-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
               data-testid="representation-item1Label"
             >
               item1Label
             </p>
             <button
               aria-label="deleteListItem"
-              class="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-sizeSmall css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root"
+              class="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-sizeSmall css-155wbr6-MuiButtonBase-root-MuiIconButton-root"
               data-testid="delete-representation-item1Label"
               disabled=""
               tabindex="-1"
@@ -775,7 +730,7 @@ exports[`when in read-only mode, list items can still be selected but handlers a
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                 data-testid="DeleteIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -788,20 +743,20 @@ exports[`when in read-only mode, list items can still be selected but handlers a
           </td>
         </tr>
         <tr
-          class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
+          class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-dsuxgy-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1gqyz35-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
               data-testid="representation-item2Label"
             >
               item2Label
             </p>
             <button
               aria-label="deleteListItem"
-              class="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-sizeSmall css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root"
+              class="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-sizeSmall css-155wbr6-MuiButtonBase-root-MuiIconButton-root"
               data-testid="delete-representation-item2Label"
               disabled=""
               tabindex="-1"
@@ -809,7 +764,7 @@ exports[`when in read-only mode, list items can still be selected but handlers a
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                 data-testid="DeleteIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -822,20 +777,20 @@ exports[`when in read-only mode, list items can still be selected but handlers a
           </td>
         </tr>
         <tr
-          class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
+          class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-dsuxgy-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1gqyz35-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
               data-testid="representation-item3Label"
             >
               item3Label
             </p>
             <button
               aria-label="deleteListItem"
-              class="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-sizeSmall css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root"
+              class="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-sizeSmall css-155wbr6-MuiButtonBase-root-MuiIconButton-root"
               data-testid="delete-representation-item3Label"
               disabled=""
               tabindex="-1"
@@ -843,7 +798,7 @@ exports[`when in read-only mode, list items can still be selected but handlers a
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                 data-testid="DeleteIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -858,7 +813,7 @@ exports[`when in read-only mode, list items can still be selected but handlers a
       </tbody>
     </table>
     <p
-      class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-1wc848c-MuiFormHelperText-root"
+      class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-er619e-MuiFormHelperText-root"
     />
   </div>
 </div>
@@ -867,7 +822,7 @@ exports[`when in read-only mode, list items can still be selected but handlers a
 exports[`when in read-only mode, list items can still be selected but handlers are not invoked 2`] = `
 <div>
   <div
-    class="MuiFormControl-root MuiFormControl-fullWidth css-q8hpuo-MuiFormControl-root"
+    class="MuiFormControl-root MuiFormControl-fullWidth css-ytlejw-MuiFormControl-root"
   >
     <div
       class="css-2huy39-propertySectionLabel"
@@ -876,34 +831,34 @@ exports[`when in read-only mode, list items can still be selected but handlers a
         class="css-1ccipwk-propertySectionLabel"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
         >
           myList
         </h6>
       </div>
     </div>
     <table
-      class="MuiTable-root css-rqglhn-MuiTable-root"
+      class="MuiTable-root css-1xwxv7r-MuiTable-root"
       data-testid="table-myList"
     >
       <tbody
-        class="MuiTableBody-root css-apqrd9-MuiTableBody-root"
+        class="MuiTableBody-root css-gmh7jj-MuiTableBody-root"
       >
         <tr
-          class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
+          class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-dsuxgy-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1gqyz35-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
               data-testid="representation-item1Label"
             >
               item1Label
             </p>
             <button
               aria-label="deleteListItem"
-              class="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-sizeSmall css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root"
+              class="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-sizeSmall css-155wbr6-MuiButtonBase-root-MuiIconButton-root"
               data-testid="delete-representation-item1Label"
               disabled=""
               tabindex="-1"
@@ -911,7 +866,7 @@ exports[`when in read-only mode, list items can still be selected but handlers a
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                 data-testid="DeleteIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -924,20 +879,20 @@ exports[`when in read-only mode, list items can still be selected but handlers a
           </td>
         </tr>
         <tr
-          class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
+          class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-dsuxgy-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1gqyz35-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
               data-testid="representation-item2Label"
             >
               item2Label
             </p>
             <button
               aria-label="deleteListItem"
-              class="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-sizeSmall css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root"
+              class="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-sizeSmall css-155wbr6-MuiButtonBase-root-MuiIconButton-root"
               data-testid="delete-representation-item2Label"
               disabled=""
               tabindex="-1"
@@ -945,7 +900,7 @@ exports[`when in read-only mode, list items can still be selected but handlers a
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                 data-testid="DeleteIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -958,20 +913,20 @@ exports[`when in read-only mode, list items can still be selected but handlers a
           </td>
         </tr>
         <tr
-          class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
+          class="MuiTableRow-root css-1xtozoh-MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-dsuxgy-MuiTableCell-root"
+            class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-18jhh0s-cell css-jiabcu-MuiTableCell-root"
           >
             <p
-              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1gqyz35-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 css-1vx8wi4-canBeSelectedItem css-qh6f2j-style css-1bgbmvw-MuiTypography-root"
               data-testid="representation-item3Label"
             >
               item3Label
             </p>
             <button
               aria-label="deleteListItem"
-              class="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-sizeSmall css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root"
+              class="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-sizeSmall css-155wbr6-MuiButtonBase-root-MuiIconButton-root"
               data-testid="delete-representation-item3Label"
               disabled=""
               tabindex="-1"
@@ -979,7 +934,7 @@ exports[`when in read-only mode, list items can still be selected but handlers a
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                 data-testid="DeleteIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -994,7 +949,7 @@ exports[`when in read-only mode, list items can still be selected but handlers a
       </tbody>
     </table>
     <p
-      class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-1wc848c-MuiFormHelperText-root"
+      class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-er619e-MuiFormHelperText-root"
     />
   </div>
 </div>

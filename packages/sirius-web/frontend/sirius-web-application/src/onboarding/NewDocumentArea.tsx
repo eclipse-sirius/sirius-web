@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,12 +16,12 @@ import NoteAdd from '@mui/icons-material/NoteAdd';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
-import { makeStyles } from 'tss-react/mui';
 import { useEffect, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import {
   GQLErrorPayload,
   GQLInvokeEditingContextActionData,
@@ -107,21 +107,20 @@ export const NewDocumentArea = ({ editingContextId, editingContextActions, readO
               ? null
               : editingContextActions.map((editingContextAction) => {
                   return (
-                    <ListItem
+                    <ListItemButton
                       className={classes.item}
                       dense
                       disableGutters
-                      button
                       key={editingContextAction.id}
                       data-testid={editingContextAction.id}
                       onClick={() => {
                         onInvokeEditingContextAction(editingContextAction.id);
                       }}>
                       <ListItemIcon>
-                        <NoteAdd htmlColor="primary" fontSize="small" />
+                        <NoteAdd fontSize="small" />
                       </ListItemIcon>
                       <ListItemText primary={editingContextAction.label} />
-                    </ListItem>
+                    </ListItemButton>
                   );
                 })}
           </List>

@@ -7,7 +7,7 @@ exports[`render image widget with help hint 1`] = `
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
       >
         myImage
       </h6>
@@ -17,7 +17,7 @@ exports[`render image widget with help hint 1`] = `
         <svg
           aria-hidden="true"
           aria-label=""
-          class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeMedium css-kw0y8f-MuiSvgIcon-root"
+          class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeMedium css-25to7p-MuiSvgIcon-root"
           data-mui-internal-clone-element="true"
           data-testid="HelpOutlineOutlinedIcon"
           focusable="false"
@@ -50,7 +50,7 @@ exports[`render image widget with maxWidth 1`] = `
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
       >
         myImage
       </h6>
@@ -75,7 +75,7 @@ exports[`render image widget without maxWidth 1`] = `
       class="css-1ccipwk-propertySectionLabel"
     >
       <h6
-        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
       >
         myImage
       </h6>

@@ -6,7 +6,7 @@ exports[`render label widget 1`] = `
     class="css-1vrv3vk-propertySectionLabel"
   >
     <a
-      class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-17g5t60-style css-1xylxj1-MuiTypography-root-MuiLink-root"
+      class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-17g5t60-style css-1orsvah-MuiTypography-root-MuiLink-root"
       href="the/url/value"
       id="labelId"
       rel="noopener noreferrer"
@@ -24,7 +24,7 @@ exports[`render label widget with help hint 1`] = `
     class="css-1vrv3vk-propertySectionLabel"
   >
     <a
-      class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-17g5t60-style css-1xylxj1-MuiTypography-root-MuiLink-root"
+      class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-17g5t60-style css-1orsvah-MuiTypography-root-MuiLink-root"
       href="the/url/value"
       id="labelId"
       rel="noopener noreferrer"
@@ -35,7 +35,7 @@ exports[`render label widget with help hint 1`] = `
     <svg
       aria-hidden="true"
       aria-label=""
-      class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeMedium css-kw0y8f-MuiSvgIcon-root"
+      class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeMedium css-25to7p-MuiSvgIcon-root"
       data-mui-internal-clone-element="true"
       data-testid="HelpOutlineOutlinedIcon"
       focusable="false"
@@ -56,7 +56,7 @@ exports[`render label widget with style 1`] = `
     class="css-1vrv3vk-propertySectionLabel"
   >
     <a
-      class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-1mwjg0n-style css-1xylxj1-MuiTypography-root-MuiLink-root"
+      class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-1mwjg0n-style css-1orsvah-MuiTypography-root-MuiLink-root"
       href="the/url/value"
       id="labelId"
       rel="noopener noreferrer"
