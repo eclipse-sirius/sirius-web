@@ -4,7 +4,7 @@ exports[`should display the error received 1`] = `
 <body>
   <div>
     <div
-      class="MuiFormControl-root css-1nrlq1o-MuiFormControl-root"
+      class="MuiFormControl-root css-1iw3t7y-MuiFormControl-root"
     >
       <div
         class="css-2huy39-propertySectionLabel"
@@ -13,7 +13,7 @@ exports[`should display the error received 1`] = `
           class="css-1ccipwk-propertySectionLabel"
         >
           <h6
-            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
           >
             Status:
           </h6>
@@ -21,29 +21,29 @@ exports[`should display the error received 1`] = `
       </div>
       <div
         aria-label="Status:"
-        class="MuiFormGroup-root css-m4jxmk-radioGroupRoot MuiRadioGroup-root css-m4jxmk-radioGroupRoot css-dmmspl-MuiFormGroup-root"
+        class="MuiFormGroup-root css-m4jxmk-radioGroupRoot MuiRadioGroup-root css-m4jxmk-radioGroupRoot css-1mac7pt-MuiFormGroup-root"
         role="radiogroup"
       >
         <label
-          class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-j204z7-MuiFormControlLabel-root"
+          class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-19opgx6-MuiFormControlLabel-root"
         >
           <span
-            class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary Mui-checked MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-vqmohf-MuiButtonBase-root-MuiRadio-root"
+            class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary Mui-checked MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-13lvt8g-MuiButtonBase-root-MuiRadio-root"
             data-testid="inactive"
           >
             <input
               checked=""
-              class="PrivateSwitchBase-input css-1m9pwf3"
+              class="PrivateSwitchBase-input css-j8yymo"
               name="Status:"
               type="radio"
               value="0"
             />
             <span
-              class="css-hyxlzm"
+              class="css-1qiat4j"
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hbvpl3-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bz1rr0-MuiSvgIcon-root"
                 data-testid="RadioButtonUncheckedIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -54,7 +54,7 @@ exports[`should display the error received 1`] = `
               </svg>
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-11zohuh-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-z8nmqa-MuiSvgIcon-root"
                 data-testid="RadioButtonCheckedIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -64,35 +64,32 @@ exports[`should display the error received 1`] = `
                 />
               </svg>
             </span>
-            <span
-              class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-            />
           </span>
           <p
-            class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+            class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-rizt0-MuiTypography-root"
           >
             inactive
           </p>
         </label>
         <label
-          class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-j204z7-MuiFormControlLabel-root"
+          class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-19opgx6-MuiFormControlLabel-root"
         >
           <span
-            class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-vqmohf-MuiButtonBase-root-MuiRadio-root"
+            class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-13lvt8g-MuiButtonBase-root-MuiRadio-root"
             data-testid="active"
           >
             <input
-              class="PrivateSwitchBase-input css-1m9pwf3"
+              class="PrivateSwitchBase-input css-j8yymo"
               name="Status:"
               type="radio"
               value="1"
             />
             <span
-              class="css-hyxlzm"
+              class="css-1qiat4j"
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hbvpl3-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bz1rr0-MuiSvgIcon-root"
                 data-testid="RadioButtonUncheckedIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -103,7 +100,7 @@ exports[`should display the error received 1`] = `
               </svg>
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hhw7if-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-o8rdeq-MuiSvgIcon-root"
                 data-testid="RadioButtonCheckedIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -113,19 +110,16 @@ exports[`should display the error received 1`] = `
                 />
               </svg>
             </span>
-            <span
-              class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-            />
           </span>
           <p
-            class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+            class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-rizt0-MuiTypography-root"
           >
             active
           </p>
         </label>
       </div>
       <p
-        class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-1wc848c-MuiFormHelperText-root"
+        class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-er619e-MuiFormHelperText-root"
       />
     </div>
   </div>
@@ -136,7 +130,7 @@ exports[`should display the error received 2`] = `
 <body>
   <div>
     <div
-      class="MuiFormControl-root css-1nrlq1o-MuiFormControl-root"
+      class="MuiFormControl-root css-1iw3t7y-MuiFormControl-root"
     >
       <div
         class="css-2huy39-propertySectionLabel"
@@ -145,7 +139,7 @@ exports[`should display the error received 2`] = `
           class="css-1ccipwk-propertySectionLabel"
         >
           <h6
-            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
           >
             Status:
           </h6>
@@ -153,29 +147,29 @@ exports[`should display the error received 2`] = `
       </div>
       <div
         aria-label="Status:"
-        class="MuiFormGroup-root css-m4jxmk-radioGroupRoot MuiRadioGroup-root css-m4jxmk-radioGroupRoot css-dmmspl-MuiFormGroup-root"
+        class="MuiFormGroup-root css-m4jxmk-radioGroupRoot MuiRadioGroup-root css-m4jxmk-radioGroupRoot css-1mac7pt-MuiFormGroup-root"
         role="radiogroup"
       >
         <label
-          class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-j204z7-MuiFormControlLabel-root"
+          class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-19opgx6-MuiFormControlLabel-root"
         >
           <span
-            class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary Mui-checked MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-vqmohf-MuiButtonBase-root-MuiRadio-root"
+            class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary Mui-checked MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-13lvt8g-MuiButtonBase-root-MuiRadio-root"
             data-testid="inactive"
           >
             <input
               checked=""
-              class="PrivateSwitchBase-input css-1m9pwf3"
+              class="PrivateSwitchBase-input css-j8yymo"
               name="Status:"
               type="radio"
               value="0"
             />
             <span
-              class="css-hyxlzm"
+              class="css-1qiat4j"
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hbvpl3-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bz1rr0-MuiSvgIcon-root"
                 data-testid="RadioButtonUncheckedIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -186,7 +180,7 @@ exports[`should display the error received 2`] = `
               </svg>
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-11zohuh-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-z8nmqa-MuiSvgIcon-root"
                 data-testid="RadioButtonCheckedIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -196,35 +190,32 @@ exports[`should display the error received 2`] = `
                 />
               </svg>
             </span>
-            <span
-              class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-            />
           </span>
           <p
-            class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+            class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-rizt0-MuiTypography-root"
           >
             inactive
           </p>
         </label>
         <label
-          class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-j204z7-MuiFormControlLabel-root"
+          class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-19opgx6-MuiFormControlLabel-root"
         >
           <span
-            class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-vqmohf-MuiButtonBase-root-MuiRadio-root"
+            class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-13lvt8g-MuiButtonBase-root-MuiRadio-root"
             data-testid="active"
           >
             <input
-              class="PrivateSwitchBase-input css-1m9pwf3"
+              class="PrivateSwitchBase-input css-j8yymo"
               name="Status:"
               type="radio"
               value="1"
             />
             <span
-              class="css-hyxlzm"
+              class="css-1qiat4j"
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hbvpl3-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bz1rr0-MuiSvgIcon-root"
                 data-testid="RadioButtonUncheckedIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -235,7 +226,7 @@ exports[`should display the error received 2`] = `
               </svg>
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hhw7if-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-o8rdeq-MuiSvgIcon-root"
                 data-testid="RadioButtonCheckedIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -246,18 +237,27 @@ exports[`should display the error received 2`] = `
               </svg>
             </span>
             <span
-              class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-            />
+              class="MuiTouchRipple-root css-r3djoj-MuiTouchRipple-root"
+            >
+              <span
+                class="css-y4cjyz-MuiTouchRipple-ripple MuiTouchRipple-ripple MuiTouchRipple-rippleVisible"
+                style="width: 1px; height: 1px; top: -0.5px; left: -0.5px;"
+              >
+                <span
+                  class="MuiTouchRipple-child MuiTouchRipple-childLeaving"
+                />
+              </span>
+            </span>
           </span>
           <p
-            class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+            class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-rizt0-MuiTypography-root"
           >
             active
           </p>
         </label>
       </div>
       <p
-        class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained Mui-focused css-1wc848c-MuiFormHelperText-root"
+        class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained Mui-focused css-er619e-MuiFormHelperText-root"
       />
     </div>
   </div>
@@ -267,7 +267,7 @@ exports[`should display the error received 2`] = `
 exports[`should render a readOnly radio 1`] = `
 <div>
   <div
-    class="MuiFormControl-root css-1nrlq1o-MuiFormControl-root"
+    class="MuiFormControl-root css-1iw3t7y-MuiFormControl-root"
   >
     <div
       class="css-2huy39-propertySectionLabel"
@@ -276,7 +276,7 @@ exports[`should render a readOnly radio 1`] = `
         class="css-1ccipwk-propertySectionLabel"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
         >
           Status:
         </h6>
@@ -284,32 +284,32 @@ exports[`should render a readOnly radio 1`] = `
     </div>
     <div
       aria-label="Status:"
-      class="MuiFormGroup-root css-m4jxmk-radioGroupRoot MuiRadioGroup-root css-m4jxmk-radioGroupRoot css-dmmspl-MuiFormGroup-root"
+      class="MuiFormGroup-root css-m4jxmk-radioGroupRoot MuiRadioGroup-root css-m4jxmk-radioGroupRoot css-1mac7pt-MuiFormGroup-root"
       role="radiogroup"
     >
       <label
-        class="MuiFormControlLabel-root Mui-disabled MuiFormControlLabel-labelPlacementEnd css-j204z7-MuiFormControlLabel-root"
+        class="MuiFormControlLabel-root Mui-disabled MuiFormControlLabel-labelPlacementEnd css-19opgx6-MuiFormControlLabel-root"
       >
         <span
           aria-disabled="true"
-          class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary Mui-disabled PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary Mui-checked Mui-disabled MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-vqmohf-MuiButtonBase-root-MuiRadio-root"
+          class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary Mui-disabled PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary Mui-checked Mui-disabled MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-1v7jmtj-MuiButtonBase-root-MuiRadio-root"
           data-testid="inactive"
           tabindex="-1"
         >
           <input
             checked=""
-            class="PrivateSwitchBase-input css-1m9pwf3"
+            class="PrivateSwitchBase-input css-j8yymo"
             disabled=""
             name="Status:"
             type="radio"
             value="0"
           />
           <span
-            class="css-hyxlzm"
+            class="css-1qiat4j"
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hbvpl3-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bz1rr0-MuiSvgIcon-root"
               data-testid="RadioButtonUncheckedIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -320,7 +320,7 @@ exports[`should render a readOnly radio 1`] = `
             </svg>
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-11zohuh-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-z8nmqa-MuiSvgIcon-root"
               data-testid="RadioButtonCheckedIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -332,33 +332,33 @@ exports[`should render a readOnly radio 1`] = `
           </span>
         </span>
         <p
-          class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+          class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-rizt0-MuiTypography-root"
         >
           inactive
         </p>
       </label>
       <label
-        class="MuiFormControlLabel-root Mui-disabled MuiFormControlLabel-labelPlacementEnd css-j204z7-MuiFormControlLabel-root"
+        class="MuiFormControlLabel-root Mui-disabled MuiFormControlLabel-labelPlacementEnd css-19opgx6-MuiFormControlLabel-root"
       >
         <span
           aria-disabled="true"
-          class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary Mui-disabled PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary Mui-disabled MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-vqmohf-MuiButtonBase-root-MuiRadio-root"
+          class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary Mui-disabled PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary Mui-disabled MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-1v7jmtj-MuiButtonBase-root-MuiRadio-root"
           data-testid="active"
           tabindex="-1"
         >
           <input
-            class="PrivateSwitchBase-input css-1m9pwf3"
+            class="PrivateSwitchBase-input css-j8yymo"
             disabled=""
             name="Status:"
             type="radio"
             value="1"
           />
           <span
-            class="css-hyxlzm"
+            class="css-1qiat4j"
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hbvpl3-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bz1rr0-MuiSvgIcon-root"
               data-testid="RadioButtonUncheckedIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -369,7 +369,7 @@ exports[`should render a readOnly radio 1`] = `
             </svg>
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hhw7if-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-o8rdeq-MuiSvgIcon-root"
               data-testid="RadioButtonCheckedIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -381,14 +381,14 @@ exports[`should render a readOnly radio 1`] = `
           </span>
         </span>
         <p
-          class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+          class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-rizt0-MuiTypography-root"
         >
           active
         </p>
       </label>
     </div>
     <p
-      class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-1wc848c-MuiFormHelperText-root"
+      class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-er619e-MuiFormHelperText-root"
     />
   </div>
 </div>
@@ -397,7 +397,7 @@ exports[`should render a readOnly radio 1`] = `
 exports[`should render a readOnly radio from widget properties 1`] = `
 <div>
   <div
-    class="MuiFormControl-root css-1nrlq1o-MuiFormControl-root"
+    class="MuiFormControl-root css-1iw3t7y-MuiFormControl-root"
   >
     <div
       class="css-2huy39-propertySectionLabel"
@@ -406,7 +406,7 @@ exports[`should render a readOnly radio from widget properties 1`] = `
         class="css-1ccipwk-propertySectionLabel"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
         >
           Status:
         </h6>
@@ -414,32 +414,32 @@ exports[`should render a readOnly radio from widget properties 1`] = `
     </div>
     <div
       aria-label="Status:"
-      class="MuiFormGroup-root css-m4jxmk-radioGroupRoot MuiRadioGroup-root css-m4jxmk-radioGroupRoot css-dmmspl-MuiFormGroup-root"
+      class="MuiFormGroup-root css-m4jxmk-radioGroupRoot MuiRadioGroup-root css-m4jxmk-radioGroupRoot css-1mac7pt-MuiFormGroup-root"
       role="radiogroup"
     >
       <label
-        class="MuiFormControlLabel-root Mui-disabled MuiFormControlLabel-labelPlacementEnd css-j204z7-MuiFormControlLabel-root"
+        class="MuiFormControlLabel-root Mui-disabled MuiFormControlLabel-labelPlacementEnd css-19opgx6-MuiFormControlLabel-root"
       >
         <span
           aria-disabled="true"
-          class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary Mui-disabled PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary Mui-checked Mui-disabled MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-vqmohf-MuiButtonBase-root-MuiRadio-root"
+          class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary Mui-disabled PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary Mui-checked Mui-disabled MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-1v7jmtj-MuiButtonBase-root-MuiRadio-root"
           data-testid="inactive"
           tabindex="-1"
         >
           <input
             checked=""
-            class="PrivateSwitchBase-input css-1m9pwf3"
+            class="PrivateSwitchBase-input css-j8yymo"
             disabled=""
             name="Status:"
             type="radio"
             value="0"
           />
           <span
-            class="css-hyxlzm"
+            class="css-1qiat4j"
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hbvpl3-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bz1rr0-MuiSvgIcon-root"
               data-testid="RadioButtonUncheckedIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -450,7 +450,7 @@ exports[`should render a readOnly radio from widget properties 1`] = `
             </svg>
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-11zohuh-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-z8nmqa-MuiSvgIcon-root"
               data-testid="RadioButtonCheckedIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -462,33 +462,33 @@ exports[`should render a readOnly radio from widget properties 1`] = `
           </span>
         </span>
         <p
-          class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+          class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-rizt0-MuiTypography-root"
         >
           inactive
         </p>
       </label>
       <label
-        class="MuiFormControlLabel-root Mui-disabled MuiFormControlLabel-labelPlacementEnd css-j204z7-MuiFormControlLabel-root"
+        class="MuiFormControlLabel-root Mui-disabled MuiFormControlLabel-labelPlacementEnd css-19opgx6-MuiFormControlLabel-root"
       >
         <span
           aria-disabled="true"
-          class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary Mui-disabled PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary Mui-disabled MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-vqmohf-MuiButtonBase-root-MuiRadio-root"
+          class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary Mui-disabled PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary Mui-disabled MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-1v7jmtj-MuiButtonBase-root-MuiRadio-root"
           data-testid="active"
           tabindex="-1"
         >
           <input
-            class="PrivateSwitchBase-input css-1m9pwf3"
+            class="PrivateSwitchBase-input css-j8yymo"
             disabled=""
             name="Status:"
             type="radio"
             value="1"
           />
           <span
-            class="css-hyxlzm"
+            class="css-1qiat4j"
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hbvpl3-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bz1rr0-MuiSvgIcon-root"
               data-testid="RadioButtonUncheckedIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -499,7 +499,7 @@ exports[`should render a readOnly radio from widget properties 1`] = `
             </svg>
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hhw7if-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-o8rdeq-MuiSvgIcon-root"
               data-testid="RadioButtonCheckedIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -511,14 +511,14 @@ exports[`should render a readOnly radio from widget properties 1`] = `
           </span>
         </span>
         <p
-          class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+          class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-rizt0-MuiTypography-root"
         >
           active
         </p>
       </label>
     </div>
     <p
-      class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-1wc848c-MuiFormHelperText-root"
+      class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-er619e-MuiFormHelperText-root"
     />
   </div>
 </div>
@@ -527,7 +527,7 @@ exports[`should render a readOnly radio from widget properties 1`] = `
 exports[`should render the radio 1`] = `
 <div>
   <div
-    class="MuiFormControl-root css-1nrlq1o-MuiFormControl-root"
+    class="MuiFormControl-root css-1iw3t7y-MuiFormControl-root"
   >
     <div
       class="css-2huy39-propertySectionLabel"
@@ -536,7 +536,7 @@ exports[`should render the radio 1`] = `
         class="css-1ccipwk-propertySectionLabel"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
         >
           Status:
         </h6>
@@ -544,29 +544,29 @@ exports[`should render the radio 1`] = `
     </div>
     <div
       aria-label="Status:"
-      class="MuiFormGroup-root css-m4jxmk-radioGroupRoot MuiRadioGroup-root css-m4jxmk-radioGroupRoot css-dmmspl-MuiFormGroup-root"
+      class="MuiFormGroup-root css-m4jxmk-radioGroupRoot MuiRadioGroup-root css-m4jxmk-radioGroupRoot css-1mac7pt-MuiFormGroup-root"
       role="radiogroup"
     >
       <label
-        class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-j204z7-MuiFormControlLabel-root"
+        class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-19opgx6-MuiFormControlLabel-root"
       >
         <span
-          class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary Mui-checked MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-vqmohf-MuiButtonBase-root-MuiRadio-root"
+          class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary Mui-checked MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-13lvt8g-MuiButtonBase-root-MuiRadio-root"
           data-testid="inactive"
         >
           <input
             checked=""
-            class="PrivateSwitchBase-input css-1m9pwf3"
+            class="PrivateSwitchBase-input css-j8yymo"
             name="Status:"
             type="radio"
             value="0"
           />
           <span
-            class="css-hyxlzm"
+            class="css-1qiat4j"
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hbvpl3-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bz1rr0-MuiSvgIcon-root"
               data-testid="RadioButtonUncheckedIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -577,7 +577,7 @@ exports[`should render the radio 1`] = `
             </svg>
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-11zohuh-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-z8nmqa-MuiSvgIcon-root"
               data-testid="RadioButtonCheckedIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -587,35 +587,32 @@ exports[`should render the radio 1`] = `
               />
             </svg>
           </span>
-          <span
-            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-          />
         </span>
         <p
-          class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+          class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-rizt0-MuiTypography-root"
         >
           inactive
         </p>
       </label>
       <label
-        class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-j204z7-MuiFormControlLabel-root"
+        class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-19opgx6-MuiFormControlLabel-root"
       >
         <span
-          class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-vqmohf-MuiButtonBase-root-MuiRadio-root"
+          class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-13lvt8g-MuiButtonBase-root-MuiRadio-root"
           data-testid="active"
         >
           <input
-            class="PrivateSwitchBase-input css-1m9pwf3"
+            class="PrivateSwitchBase-input css-j8yymo"
             name="Status:"
             type="radio"
             value="1"
           />
           <span
-            class="css-hyxlzm"
+            class="css-1qiat4j"
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hbvpl3-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bz1rr0-MuiSvgIcon-root"
               data-testid="RadioButtonUncheckedIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -626,7 +623,7 @@ exports[`should render the radio 1`] = `
             </svg>
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hhw7if-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-o8rdeq-MuiSvgIcon-root"
               data-testid="RadioButtonCheckedIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -636,19 +633,16 @@ exports[`should render the radio 1`] = `
               />
             </svg>
           </span>
-          <span
-            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-          />
         </span>
         <p
-          class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+          class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-rizt0-MuiTypography-root"
         >
           active
         </p>
       </label>
     </div>
     <p
-      class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-1wc848c-MuiFormHelperText-root"
+      class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-er619e-MuiFormHelperText-root"
     />
   </div>
 </div>
@@ -658,7 +652,7 @@ exports[`should render the radio with empty style 1`] = `
 <body>
   <div>
     <div
-      class="MuiFormControl-root css-1nrlq1o-MuiFormControl-root"
+      class="MuiFormControl-root css-1iw3t7y-MuiFormControl-root"
     >
       <div
         class="css-2huy39-propertySectionLabel"
@@ -667,7 +661,7 @@ exports[`should render the radio with empty style 1`] = `
           class="css-1ccipwk-propertySectionLabel"
         >
           <h6
-            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
           >
             Status:
           </h6>
@@ -675,29 +669,29 @@ exports[`should render the radio with empty style 1`] = `
       </div>
       <div
         aria-label="Status:"
-        class="MuiFormGroup-root css-m4jxmk-radioGroupRoot MuiRadioGroup-root css-m4jxmk-radioGroupRoot css-dmmspl-MuiFormGroup-root"
+        class="MuiFormGroup-root css-m4jxmk-radioGroupRoot MuiRadioGroup-root css-m4jxmk-radioGroupRoot css-1mac7pt-MuiFormGroup-root"
         role="radiogroup"
       >
         <label
-          class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-j204z7-MuiFormControlLabel-root"
+          class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-19opgx6-MuiFormControlLabel-root"
         >
           <span
-            class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary Mui-checked MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-vqmohf-MuiButtonBase-root-MuiRadio-root"
+            class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary Mui-checked MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-13lvt8g-MuiButtonBase-root-MuiRadio-root"
             data-testid="inactive"
           >
             <input
               checked=""
-              class="PrivateSwitchBase-input css-1m9pwf3"
+              class="PrivateSwitchBase-input css-j8yymo"
               name="Status:"
               type="radio"
               value="0"
             />
             <span
-              class="css-hyxlzm"
+              class="css-1qiat4j"
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hbvpl3-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bz1rr0-MuiSvgIcon-root"
                 data-testid="RadioButtonUncheckedIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -708,7 +702,7 @@ exports[`should render the radio with empty style 1`] = `
               </svg>
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-11zohuh-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-z8nmqa-MuiSvgIcon-root"
                 data-testid="RadioButtonCheckedIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -718,35 +712,32 @@ exports[`should render the radio with empty style 1`] = `
                 />
               </svg>
             </span>
-            <span
-              class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-            />
           </span>
           <p
-            class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+            class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-rizt0-MuiTypography-root"
           >
             inactive
           </p>
         </label>
         <label
-          class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-j204z7-MuiFormControlLabel-root"
+          class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-19opgx6-MuiFormControlLabel-root"
         >
           <span
-            class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-vqmohf-MuiButtonBase-root-MuiRadio-root"
+            class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-13lvt8g-MuiButtonBase-root-MuiRadio-root"
             data-testid="active"
           >
             <input
-              class="PrivateSwitchBase-input css-1m9pwf3"
+              class="PrivateSwitchBase-input css-j8yymo"
               name="Status:"
               type="radio"
               value="1"
             />
             <span
-              class="css-hyxlzm"
+              class="css-1qiat4j"
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hbvpl3-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bz1rr0-MuiSvgIcon-root"
                 data-testid="RadioButtonUncheckedIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -757,7 +748,7 @@ exports[`should render the radio with empty style 1`] = `
               </svg>
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hhw7if-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-o8rdeq-MuiSvgIcon-root"
                 data-testid="RadioButtonCheckedIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -767,19 +758,16 @@ exports[`should render the radio with empty style 1`] = `
                 />
               </svg>
             </span>
-            <span
-              class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-            />
           </span>
           <p
-            class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+            class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-rizt0-MuiTypography-root"
           >
             active
           </p>
         </label>
       </div>
       <p
-        class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-1wc848c-MuiFormHelperText-root"
+        class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-er619e-MuiFormHelperText-root"
       />
     </div>
   </div>
@@ -790,7 +778,7 @@ exports[`should render the radio with help hint 1`] = `
 <body>
   <div>
     <div
-      class="MuiFormControl-root css-1nrlq1o-MuiFormControl-root"
+      class="MuiFormControl-root css-1iw3t7y-MuiFormControl-root"
     >
       <div
         class="css-2huy39-propertySectionLabel"
@@ -799,7 +787,7 @@ exports[`should render the radio with help hint 1`] = `
           class="css-1ccipwk-propertySectionLabel"
         >
           <h6
-            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
           >
             Status:
           </h6>
@@ -809,7 +797,7 @@ exports[`should render the radio with help hint 1`] = `
             <svg
               aria-hidden="true"
               aria-label=""
-              class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeMedium css-kw0y8f-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeMedium css-25to7p-MuiSvgIcon-root"
               data-mui-internal-clone-element="true"
               data-testid="HelpOutlineOutlinedIcon"
               focusable="false"
@@ -825,29 +813,29 @@ exports[`should render the radio with help hint 1`] = `
       </div>
       <div
         aria-label="Status:"
-        class="MuiFormGroup-root css-m4jxmk-radioGroupRoot MuiRadioGroup-root css-m4jxmk-radioGroupRoot css-dmmspl-MuiFormGroup-root"
+        class="MuiFormGroup-root css-m4jxmk-radioGroupRoot MuiRadioGroup-root css-m4jxmk-radioGroupRoot css-1mac7pt-MuiFormGroup-root"
         role="radiogroup"
       >
         <label
-          class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-j204z7-MuiFormControlLabel-root"
+          class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-19opgx6-MuiFormControlLabel-root"
         >
           <span
-            class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary Mui-checked MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-vqmohf-MuiButtonBase-root-MuiRadio-root"
+            class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary Mui-checked MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-13lvt8g-MuiButtonBase-root-MuiRadio-root"
             data-testid="inactive"
           >
             <input
               checked=""
-              class="PrivateSwitchBase-input css-1m9pwf3"
+              class="PrivateSwitchBase-input css-j8yymo"
               name="Status:"
               type="radio"
               value="0"
             />
             <span
-              class="css-hyxlzm"
+              class="css-1qiat4j"
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hbvpl3-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bz1rr0-MuiSvgIcon-root"
                 data-testid="RadioButtonUncheckedIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -858,7 +846,7 @@ exports[`should render the radio with help hint 1`] = `
               </svg>
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-11zohuh-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-z8nmqa-MuiSvgIcon-root"
                 data-testid="RadioButtonCheckedIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -868,35 +856,32 @@ exports[`should render the radio with help hint 1`] = `
                 />
               </svg>
             </span>
-            <span
-              class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-            />
           </span>
           <p
-            class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+            class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-rizt0-MuiTypography-root"
           >
             inactive
           </p>
         </label>
         <label
-          class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-j204z7-MuiFormControlLabel-root"
+          class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-19opgx6-MuiFormControlLabel-root"
         >
           <span
-            class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-vqmohf-MuiButtonBase-root-MuiRadio-root"
+            class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-13lvt8g-MuiButtonBase-root-MuiRadio-root"
             data-testid="active"
           >
             <input
-              class="PrivateSwitchBase-input css-1m9pwf3"
+              class="PrivateSwitchBase-input css-j8yymo"
               name="Status:"
               type="radio"
               value="1"
             />
             <span
-              class="css-hyxlzm"
+              class="css-1qiat4j"
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hbvpl3-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bz1rr0-MuiSvgIcon-root"
                 data-testid="RadioButtonUncheckedIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -907,7 +892,7 @@ exports[`should render the radio with help hint 1`] = `
               </svg>
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hhw7if-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-o8rdeq-MuiSvgIcon-root"
                 data-testid="RadioButtonCheckedIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -917,19 +902,16 @@ exports[`should render the radio with help hint 1`] = `
                 />
               </svg>
             </span>
-            <span
-              class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-            />
           </span>
           <p
-            class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+            class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-rizt0-MuiTypography-root"
           >
             active
           </p>
         </label>
       </div>
       <p
-        class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-1wc848c-MuiFormHelperText-root"
+        class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-er619e-MuiFormHelperText-root"
       />
     </div>
   </div>
@@ -940,7 +922,7 @@ exports[`should render the radio with style 1`] = `
 <body>
   <div>
     <div
-      class="MuiFormControl-root css-1nrlq1o-MuiFormControl-root"
+      class="MuiFormControl-root css-1iw3t7y-MuiFormControl-root"
     >
       <div
         class="css-2huy39-propertySectionLabel"
@@ -949,7 +931,7 @@ exports[`should render the radio with style 1`] = `
           class="css-1ccipwk-propertySectionLabel"
         >
           <h6
-            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
           >
             Status:
           </h6>
@@ -957,29 +939,29 @@ exports[`should render the radio with style 1`] = `
       </div>
       <div
         aria-label="Status:"
-        class="MuiFormGroup-root css-m4jxmk-radioGroupRoot MuiRadioGroup-root css-m4jxmk-radioGroupRoot css-dmmspl-MuiFormGroup-root"
+        class="MuiFormGroup-root css-m4jxmk-radioGroupRoot MuiRadioGroup-root css-m4jxmk-radioGroupRoot css-1mac7pt-MuiFormGroup-root"
         role="radiogroup"
       >
         <label
-          class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-j204z7-MuiFormControlLabel-root"
+          class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-19opgx6-MuiFormControlLabel-root"
         >
           <span
-            class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary Mui-checked MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-vqmohf-MuiButtonBase-root-MuiRadio-root"
+            class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary Mui-checked MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-13lvt8g-MuiButtonBase-root-MuiRadio-root"
             data-testid="inactive"
           >
             <input
               checked=""
-              class="PrivateSwitchBase-input css-1m9pwf3"
+              class="PrivateSwitchBase-input css-j8yymo"
               name="Status:"
               type="radio"
               value="0"
             />
             <span
-              class="css-hyxlzm"
+              class="css-1qiat4j"
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hbvpl3-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bz1rr0-MuiSvgIcon-root"
                 data-testid="RadioButtonUncheckedIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -990,7 +972,7 @@ exports[`should render the radio with style 1`] = `
               </svg>
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-11zohuh-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-z8nmqa-MuiSvgIcon-root"
                 data-testid="RadioButtonCheckedIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -1000,35 +982,32 @@ exports[`should render the radio with style 1`] = `
                 />
               </svg>
             </span>
-            <span
-              class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-            />
           </span>
           <p
-            class="MuiTypography-root css-d7358g-style MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+            class="MuiTypography-root css-d7358g-style MuiTypography-body1 css-rizt0-MuiTypography-root"
           >
             inactive
           </p>
         </label>
         <label
-          class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-j204z7-MuiFormControlLabel-root"
+          class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-19opgx6-MuiFormControlLabel-root"
         >
           <span
-            class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-vqmohf-MuiButtonBase-root-MuiRadio-root"
+            class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-13lvt8g-MuiButtonBase-root-MuiRadio-root"
             data-testid="active"
           >
             <input
-              class="PrivateSwitchBase-input css-1m9pwf3"
+              class="PrivateSwitchBase-input css-j8yymo"
               name="Status:"
               type="radio"
               value="1"
             />
             <span
-              class="css-hyxlzm"
+              class="css-1qiat4j"
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hbvpl3-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bz1rr0-MuiSvgIcon-root"
                 data-testid="RadioButtonUncheckedIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -1039,7 +1018,7 @@ exports[`should render the radio with style 1`] = `
               </svg>
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hhw7if-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-o8rdeq-MuiSvgIcon-root"
                 data-testid="RadioButtonCheckedIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -1049,19 +1028,16 @@ exports[`should render the radio with style 1`] = `
                 />
               </svg>
             </span>
-            <span
-              class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-            />
           </span>
           <p
-            class="MuiTypography-root css-d7358g-style MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+            class="MuiTypography-root css-d7358g-style MuiTypography-body1 css-rizt0-MuiTypography-root"
           >
             active
           </p>
         </label>
       </div>
       <p
-        class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-1wc848c-MuiFormHelperText-root"
+        class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-er619e-MuiFormHelperText-root"
       />
     </div>
   </div>
@@ -1072,7 +1048,7 @@ exports[`should render the radio without style 1`] = `
 <body>
   <div>
     <div
-      class="MuiFormControl-root css-1nrlq1o-MuiFormControl-root"
+      class="MuiFormControl-root css-1iw3t7y-MuiFormControl-root"
     >
       <div
         class="css-2huy39-propertySectionLabel"
@@ -1081,7 +1057,7 @@ exports[`should render the radio without style 1`] = `
           class="css-1ccipwk-propertySectionLabel"
         >
           <h6
-            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
           >
             Status:
           </h6>
@@ -1089,29 +1065,29 @@ exports[`should render the radio without style 1`] = `
       </div>
       <div
         aria-label="Status:"
-        class="MuiFormGroup-root css-m4jxmk-radioGroupRoot MuiRadioGroup-root css-m4jxmk-radioGroupRoot css-dmmspl-MuiFormGroup-root"
+        class="MuiFormGroup-root css-m4jxmk-radioGroupRoot MuiRadioGroup-root css-m4jxmk-radioGroupRoot css-1mac7pt-MuiFormGroup-root"
         role="radiogroup"
       >
         <label
-          class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-j204z7-MuiFormControlLabel-root"
+          class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-19opgx6-MuiFormControlLabel-root"
         >
           <span
-            class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary Mui-checked MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-vqmohf-MuiButtonBase-root-MuiRadio-root"
+            class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary Mui-checked MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-13lvt8g-MuiButtonBase-root-MuiRadio-root"
             data-testid="inactive"
           >
             <input
               checked=""
-              class="PrivateSwitchBase-input css-1m9pwf3"
+              class="PrivateSwitchBase-input css-j8yymo"
               name="Status:"
               type="radio"
               value="0"
             />
             <span
-              class="css-hyxlzm"
+              class="css-1qiat4j"
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hbvpl3-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bz1rr0-MuiSvgIcon-root"
                 data-testid="RadioButtonUncheckedIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -1122,7 +1098,7 @@ exports[`should render the radio without style 1`] = `
               </svg>
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-11zohuh-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-z8nmqa-MuiSvgIcon-root"
                 data-testid="RadioButtonCheckedIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -1132,35 +1108,32 @@ exports[`should render the radio without style 1`] = `
                 />
               </svg>
             </span>
-            <span
-              class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-            />
           </span>
           <p
-            class="MuiTypography-root css-d7358g-style MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+            class="MuiTypography-root css-d7358g-style MuiTypography-body1 css-rizt0-MuiTypography-root"
           >
             inactive
           </p>
         </label>
         <label
-          class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-j204z7-MuiFormControlLabel-root"
+          class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-19opgx6-MuiFormControlLabel-root"
         >
           <span
-            class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-vqmohf-MuiButtonBase-root-MuiRadio-root"
+            class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-13lvt8g-MuiButtonBase-root-MuiRadio-root"
             data-testid="active"
           >
             <input
-              class="PrivateSwitchBase-input css-1m9pwf3"
+              class="PrivateSwitchBase-input css-j8yymo"
               name="Status:"
               type="radio"
               value="1"
             />
             <span
-              class="css-hyxlzm"
+              class="css-1qiat4j"
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hbvpl3-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bz1rr0-MuiSvgIcon-root"
                 data-testid="RadioButtonUncheckedIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -1171,7 +1144,7 @@ exports[`should render the radio without style 1`] = `
               </svg>
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hhw7if-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-o8rdeq-MuiSvgIcon-root"
                 data-testid="RadioButtonCheckedIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -1181,19 +1154,16 @@ exports[`should render the radio without style 1`] = `
                 />
               </svg>
             </span>
-            <span
-              class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-            />
           </span>
           <p
-            class="MuiTypography-root css-d7358g-style MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+            class="MuiTypography-root css-d7358g-style MuiTypography-body1 css-rizt0-MuiTypography-root"
           >
             active
           </p>
         </label>
       </div>
       <p
-        class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-1wc848c-MuiFormHelperText-root"
+        class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-er619e-MuiFormHelperText-root"
       />
     </div>
   </div>
@@ -1203,7 +1173,7 @@ exports[`should render the radio without style 1`] = `
 exports[`should send mutation when clicked 1`] = `
 <div>
   <div
-    class="MuiFormControl-root css-1nrlq1o-MuiFormControl-root"
+    class="MuiFormControl-root css-1iw3t7y-MuiFormControl-root"
   >
     <div
       class="css-2huy39-propertySectionLabel"
@@ -1212,7 +1182,7 @@ exports[`should send mutation when clicked 1`] = `
         class="css-1ccipwk-propertySectionLabel"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
         >
           Status:
         </h6>
@@ -1220,29 +1190,29 @@ exports[`should send mutation when clicked 1`] = `
     </div>
     <div
       aria-label="Status:"
-      class="MuiFormGroup-root css-m4jxmk-radioGroupRoot MuiRadioGroup-root css-m4jxmk-radioGroupRoot css-dmmspl-MuiFormGroup-root"
+      class="MuiFormGroup-root css-m4jxmk-radioGroupRoot MuiRadioGroup-root css-m4jxmk-radioGroupRoot css-1mac7pt-MuiFormGroup-root"
       role="radiogroup"
     >
       <label
-        class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-j204z7-MuiFormControlLabel-root"
+        class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-19opgx6-MuiFormControlLabel-root"
       >
         <span
-          class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary Mui-checked MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-vqmohf-MuiButtonBase-root-MuiRadio-root"
+          class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary Mui-checked MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-13lvt8g-MuiButtonBase-root-MuiRadio-root"
           data-testid="inactive"
         >
           <input
             checked=""
-            class="PrivateSwitchBase-input css-1m9pwf3"
+            class="PrivateSwitchBase-input css-j8yymo"
             name="Status:"
             type="radio"
             value="0"
           />
           <span
-            class="css-hyxlzm"
+            class="css-1qiat4j"
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hbvpl3-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bz1rr0-MuiSvgIcon-root"
               data-testid="RadioButtonUncheckedIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -1253,7 +1223,7 @@ exports[`should send mutation when clicked 1`] = `
             </svg>
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-11zohuh-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-z8nmqa-MuiSvgIcon-root"
               data-testid="RadioButtonCheckedIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -1263,35 +1233,32 @@ exports[`should send mutation when clicked 1`] = `
               />
             </svg>
           </span>
-          <span
-            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-          />
         </span>
         <p
-          class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+          class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-rizt0-MuiTypography-root"
         >
           inactive
         </p>
       </label>
       <label
-        class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-j204z7-MuiFormControlLabel-root"
+        class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-19opgx6-MuiFormControlLabel-root"
       >
         <span
-          class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-vqmohf-MuiButtonBase-root-MuiRadio-root"
+          class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-13lvt8g-MuiButtonBase-root-MuiRadio-root"
           data-testid="active"
         >
           <input
-            class="PrivateSwitchBase-input css-1m9pwf3"
+            class="PrivateSwitchBase-input css-j8yymo"
             name="Status:"
             type="radio"
             value="1"
           />
           <span
-            class="css-hyxlzm"
+            class="css-1qiat4j"
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hbvpl3-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bz1rr0-MuiSvgIcon-root"
               data-testid="RadioButtonUncheckedIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -1302,7 +1269,7 @@ exports[`should send mutation when clicked 1`] = `
             </svg>
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hhw7if-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-o8rdeq-MuiSvgIcon-root"
               data-testid="RadioButtonCheckedIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -1312,19 +1279,16 @@ exports[`should send mutation when clicked 1`] = `
               />
             </svg>
           </span>
-          <span
-            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-          />
         </span>
         <p
-          class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+          class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-rizt0-MuiTypography-root"
         >
           active
         </p>
       </label>
     </div>
     <p
-      class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-1wc848c-MuiFormHelperText-root"
+      class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-er619e-MuiFormHelperText-root"
     />
   </div>
 </div>
@@ -1333,7 +1297,7 @@ exports[`should send mutation when clicked 1`] = `
 exports[`should send mutation when clicked 2`] = `
 <div>
   <div
-    class="MuiFormControl-root css-1nrlq1o-MuiFormControl-root"
+    class="MuiFormControl-root css-1iw3t7y-MuiFormControl-root"
   >
     <div
       class="css-2huy39-propertySectionLabel"
@@ -1342,7 +1306,7 @@ exports[`should send mutation when clicked 2`] = `
         class="css-1ccipwk-propertySectionLabel"
       >
         <h6
-          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
         >
           Status:
         </h6>
@@ -1350,29 +1314,29 @@ exports[`should send mutation when clicked 2`] = `
     </div>
     <div
       aria-label="Status:"
-      class="MuiFormGroup-root css-m4jxmk-radioGroupRoot MuiRadioGroup-root css-m4jxmk-radioGroupRoot css-dmmspl-MuiFormGroup-root"
+      class="MuiFormGroup-root css-m4jxmk-radioGroupRoot MuiRadioGroup-root css-m4jxmk-radioGroupRoot css-1mac7pt-MuiFormGroup-root"
       role="radiogroup"
     >
       <label
-        class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-j204z7-MuiFormControlLabel-root"
+        class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-19opgx6-MuiFormControlLabel-root"
       >
         <span
-          class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary Mui-checked MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-vqmohf-MuiButtonBase-root-MuiRadio-root"
+          class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary Mui-checked MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-13lvt8g-MuiButtonBase-root-MuiRadio-root"
           data-testid="inactive"
         >
           <input
             checked=""
-            class="PrivateSwitchBase-input css-1m9pwf3"
+            class="PrivateSwitchBase-input css-j8yymo"
             name="Status:"
             type="radio"
             value="0"
           />
           <span
-            class="css-hyxlzm"
+            class="css-1qiat4j"
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hbvpl3-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bz1rr0-MuiSvgIcon-root"
               data-testid="RadioButtonUncheckedIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -1383,7 +1347,7 @@ exports[`should send mutation when clicked 2`] = `
             </svg>
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-11zohuh-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-z8nmqa-MuiSvgIcon-root"
               data-testid="RadioButtonCheckedIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -1393,35 +1357,32 @@ exports[`should send mutation when clicked 2`] = `
               />
             </svg>
           </span>
-          <span
-            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-          />
         </span>
         <p
-          class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+          class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-rizt0-MuiTypography-root"
         >
           inactive
         </p>
       </label>
       <label
-        class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-j204z7-MuiFormControlLabel-root"
+        class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-19opgx6-MuiFormControlLabel-root"
       >
         <span
-          class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-vqmohf-MuiButtonBase-root-MuiRadio-root"
+          class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-13lvt8g-MuiButtonBase-root-MuiRadio-root"
           data-testid="active"
         >
           <input
-            class="PrivateSwitchBase-input css-1m9pwf3"
+            class="PrivateSwitchBase-input css-j8yymo"
             name="Status:"
             type="radio"
             value="1"
           />
           <span
-            class="css-hyxlzm"
+            class="css-1qiat4j"
           >
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hbvpl3-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bz1rr0-MuiSvgIcon-root"
               data-testid="RadioButtonUncheckedIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -1432,7 +1393,7 @@ exports[`should send mutation when clicked 2`] = `
             </svg>
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1hhw7if-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-o8rdeq-MuiSvgIcon-root"
               data-testid="RadioButtonCheckedIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -1443,18 +1404,27 @@ exports[`should send mutation when clicked 2`] = `
             </svg>
           </span>
           <span
-            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-          />
+            class="MuiTouchRipple-root css-r3djoj-MuiTouchRipple-root"
+          >
+            <span
+              class="css-y4cjyz-MuiTouchRipple-ripple MuiTouchRipple-ripple MuiTouchRipple-rippleVisible"
+              style="width: 1px; height: 1px; top: -0.5px; left: -0.5px;"
+            >
+              <span
+                class="MuiTouchRipple-child MuiTouchRipple-childLeaving"
+              />
+            </span>
+          </span>
         </span>
         <p
-          class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-ahj2mt-MuiTypography-root"
+          class="MuiTypography-root css-16p81af-style MuiTypography-body1 css-rizt0-MuiTypography-root"
         >
           active
         </p>
       </label>
     </div>
     <p
-      class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained Mui-focused css-1wc848c-MuiFormHelperText-root"
+      class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained Mui-focused css-er619e-MuiFormHelperText-root"
     />
   </div>
 </div>

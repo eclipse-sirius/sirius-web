@@ -36,14 +36,14 @@
     "@xstate/react": "3.0.0",
     "xstate": "4.32.1",
     "@lexical/react": "0.8.1",
-    "@mui/material": "5.15.19",
-    "@mui/icons-material": "5.15.19",
+    "@mui/material": "7.0.2",
+    "@mui/icons-material": "7.0.2",
     "@mui/x-tree-view": "7.6.1",
     "graphql": "16.8.1",
     "lexical": "0.8.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "tss-react": "4.9.7"
+    "tss-react": "4.9.16"
   },
   "devDependencies": {
     "@apollo/client": "3.10.4",
@@ -53,8 +53,8 @@
     "@xstate/react": "3.0.0",
     "xstate": "4.32.1",
     "@lexical/react": "0.8.1",
-    "@mui/material": "5.15.19",
-    "@mui/icons-material": "5.15.19",
+    "@mui/material": "7.0.2",
+    "@mui/icons-material": "7.0.2",
     "@mui/x-tree-view": "7.6.1",
     "@testing-library/react": "12.1.2",
     "@testing-library/user-event": "13.2.1",
@@ -69,7 +69,7 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "typescript": "5.4.5",
-    "tss-react": "4.9.7",
+    "tss-react": "4.9.16",
     "vite": "5.2.11",
     "vitest": "1.6.0"
   }

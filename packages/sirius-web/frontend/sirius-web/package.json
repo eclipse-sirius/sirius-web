@@ -31,9 +31,9 @@
     "@eclipse-sirius/sirius-web-application": "*",
     "@eclipse-sirius/sirius-web-papaya": "*",
     "@eclipse-sirius/sirius-web-view-fork": "*",
-    "@mui/icons-material": "5.15.19",
-    "@mui/material": "5.15.19",
-    "@ObeoNetwork/gantt-task-react": "0.6.1",
+    "@mui/icons-material": "7.0.2",
+    "@mui/material": "7.0.2",
+    "@ObeoNetwork/gantt-task-react": "0.6.2",
     "@ObeoNetwork/react-trello": "2.4.11",
     "@xstate/react": "3.0.0",
     "d3": "7.0.0",
@@ -54,7 +54,7 @@
     "react-window": "1.8.11",
     "@xyflow/react": "12.4.4",
     "subscriptions-transport-ws": "0.11.0",
-    "tss-react": "4.9.7",
+    "tss-react": "4.9.16",
     "xstate": "4.32.1"
   },
   "devDependencies": {

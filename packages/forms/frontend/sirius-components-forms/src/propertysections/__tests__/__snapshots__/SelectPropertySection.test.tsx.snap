@@ -4,7 +4,7 @@ exports[`should render a readOnly select from widget properties 1`] = `
 <body>
   <div>
     <div
-      class="MuiFormControl-root css-b0kbao-propertySection css-1nrlq1o-MuiFormControl-root"
+      class="MuiFormControl-root css-b0kbao-propertySection css-1iw3t7y-MuiFormControl-root"
     >
       <div
         class="css-2huy39-propertySectionLabel"
@@ -13,7 +13,7 @@ exports[`should render a readOnly select from widget properties 1`] = `
           class="css-1ccipwk-propertySectionLabel"
         >
           <h6
-            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
           >
             SelectLabel
           </h6>
@@ -23,15 +23,14 @@ exports[`should render a readOnly select from widget properties 1`] = `
         class="css-19oeos1-propertySectionWidget"
       >
         <div
-          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary Mui-disabled MuiInputBase-fullWidth MuiInputBase-formControl css-u5kk7y-MuiInputBase-root-MuiInput-root-MuiSelect-root"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary Mui-disabled MuiInputBase-fullWidth MuiInputBase-formControl MuiSelect-root css-95nkiw-MuiInputBase-root-MuiInput-root-MuiSelect-root"
           data-testid="SelectLabel"
         >
           <div
-            aria-controls=":r5:"
             aria-disabled="true"
             aria-expanded="false"
             aria-haspopup="listbox"
-            class="MuiSelect-select MuiSelect-standard Mui-disabled MuiInputBase-input MuiInput-input Mui-disabled css-ve6bqz-style css-1rxz5jq-MuiSelect-select-MuiInputBase-input-MuiInput-input"
+            class="MuiSelect-select MuiSelect-standard Mui-disabled MuiInputBase-input MuiInput-input Mui-disabled css-ve6bqz-style css-5lvf42-MuiSelect-select-MuiInputBase-input-MuiInput-input"
             role="combobox"
           >
             <em>
@@ -41,14 +40,14 @@ exports[`should render a readOnly select from widget properties 1`] = `
           <input
             aria-hidden="true"
             aria-invalid="false"
-            class="MuiSelect-nativeInput css-yf8vq0-MuiSelect-nativeInput"
+            class="MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput"
             disabled=""
             tabindex="-1"
             value=""
           />
           <svg
             aria-hidden="true"
-            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiSelect-icon MuiSelect-iconStandard Mui-disabled css-pqjvzy-MuiSvgIcon-root-MuiSelect-icon"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiSelect-icon MuiSelect-iconStandard Mui-disabled css-1gpuzre-MuiSvgIcon-root-MuiSelect-icon"
             data-testid="ArrowDropDownIcon"
             focusable="false"
             viewBox="0 0 24 24"
@@ -59,7 +58,7 @@ exports[`should render a readOnly select from widget properties 1`] = `
           </svg>
         </div>
         <p
-          class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-1wc848c-MuiFormHelperText-root"
+          class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-er619e-MuiFormHelperText-root"
         />
       </div>
     </div>
@@ -71,7 +70,7 @@ exports[`should render the select with empty style 1`] = `
 <body>
   <div>
     <div
-      class="MuiFormControl-root css-b0kbao-propertySection css-1nrlq1o-MuiFormControl-root"
+      class="MuiFormControl-root css-b0kbao-propertySection css-1iw3t7y-MuiFormControl-root"
     >
       <div
         class="css-2huy39-propertySectionLabel"
@@ -80,7 +79,7 @@ exports[`should render the select with empty style 1`] = `
           class="css-1ccipwk-propertySectionLabel"
         >
           <h6
-            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
           >
             SelectLabel
           </h6>
@@ -90,14 +89,13 @@ exports[`should render the select with empty style 1`] = `
         class="css-19oeos1-propertySectionWidget"
       >
         <div
-          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-u5kk7y-MuiInputBase-root-MuiInput-root-MuiSelect-root"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiSelect-root css-95nkiw-MuiInputBase-root-MuiInput-root-MuiSelect-root"
           data-testid="SelectLabel"
         >
           <div
-            aria-controls=":r2:"
             aria-expanded="false"
             aria-haspopup="listbox"
-            class="MuiSelect-select MuiSelect-standard MuiInputBase-input MuiInput-input css-ve6bqz-style css-1rxz5jq-MuiSelect-select-MuiInputBase-input-MuiInput-input"
+            class="MuiSelect-select MuiSelect-standard MuiInputBase-input MuiInput-input css-ve6bqz-style css-5lvf42-MuiSelect-select-MuiInputBase-input-MuiInput-input"
             role="combobox"
             tabindex="0"
           >
@@ -108,13 +106,13 @@ exports[`should render the select with empty style 1`] = `
           <input
             aria-hidden="true"
             aria-invalid="false"
-            class="MuiSelect-nativeInput css-yf8vq0-MuiSelect-nativeInput"
+            class="MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput"
             tabindex="-1"
             value=""
           />
           <svg
             aria-hidden="true"
-            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiSelect-icon MuiSelect-iconStandard css-pqjvzy-MuiSvgIcon-root-MuiSelect-icon"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiSelect-icon MuiSelect-iconStandard css-1gpuzre-MuiSvgIcon-root-MuiSelect-icon"
             data-testid="ArrowDropDownIcon"
             focusable="false"
             viewBox="0 0 24 24"
@@ -125,7 +123,7 @@ exports[`should render the select with empty style 1`] = `
           </svg>
         </div>
         <p
-          class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-1wc848c-MuiFormHelperText-root"
+          class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-er619e-MuiFormHelperText-root"
         />
       </div>
     </div>
@@ -137,7 +135,7 @@ exports[`should render the select with help hint 1`] = `
 <body>
   <div>
     <div
-      class="MuiFormControl-root css-b0kbao-propertySection css-1nrlq1o-MuiFormControl-root"
+      class="MuiFormControl-root css-b0kbao-propertySection css-1iw3t7y-MuiFormControl-root"
     >
       <div
         class="css-2huy39-propertySectionLabel"
@@ -146,7 +144,7 @@ exports[`should render the select with help hint 1`] = `
           class="css-1ccipwk-propertySectionLabel"
         >
           <h6
-            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
           >
             SelectLabel
           </h6>
@@ -156,7 +154,7 @@ exports[`should render the select with help hint 1`] = `
             <svg
               aria-hidden="true"
               aria-label=""
-              class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeMedium css-kw0y8f-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeMedium css-25to7p-MuiSvgIcon-root"
               data-mui-internal-clone-element="true"
               data-testid="HelpOutlineOutlinedIcon"
               focusable="false"
@@ -174,14 +172,13 @@ exports[`should render the select with help hint 1`] = `
         class="css-19oeos1-propertySectionWidget"
       >
         <div
-          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-u5kk7y-MuiInputBase-root-MuiInput-root-MuiSelect-root"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiSelect-root css-95nkiw-MuiInputBase-root-MuiInput-root-MuiSelect-root"
           data-testid="SelectLabel"
         >
           <div
-            aria-controls=":r4:"
             aria-expanded="false"
             aria-haspopup="listbox"
-            class="MuiSelect-select MuiSelect-standard MuiInputBase-input MuiInput-input css-ve6bqz-style css-1rxz5jq-MuiSelect-select-MuiInputBase-input-MuiInput-input"
+            class="MuiSelect-select MuiSelect-standard MuiInputBase-input MuiInput-input css-ve6bqz-style css-5lvf42-MuiSelect-select-MuiInputBase-input-MuiInput-input"
             role="combobox"
             tabindex="0"
           >
@@ -192,13 +189,13 @@ exports[`should render the select with help hint 1`] = `
           <input
             aria-hidden="true"
             aria-invalid="false"
-            class="MuiSelect-nativeInput css-yf8vq0-MuiSelect-nativeInput"
+            class="MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput"
             tabindex="-1"
             value=""
           />
           <svg
             aria-hidden="true"
-            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiSelect-icon MuiSelect-iconStandard css-pqjvzy-MuiSvgIcon-root-MuiSelect-icon"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiSelect-icon MuiSelect-iconStandard css-1gpuzre-MuiSvgIcon-root-MuiSelect-icon"
             data-testid="ArrowDropDownIcon"
             focusable="false"
             viewBox="0 0 24 24"
@@ -209,7 +206,7 @@ exports[`should render the select with help hint 1`] = `
           </svg>
         </div>
         <p
-          class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-1wc848c-MuiFormHelperText-root"
+          class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-er619e-MuiFormHelperText-root"
         />
       </div>
     </div>
@@ -221,7 +218,7 @@ exports[`should render the select with style 1`] = `
 <body>
   <div>
     <div
-      class="MuiFormControl-root css-b0kbao-propertySection css-1nrlq1o-MuiFormControl-root"
+      class="MuiFormControl-root css-b0kbao-propertySection css-1iw3t7y-MuiFormControl-root"
     >
       <div
         class="css-2huy39-propertySectionLabel"
@@ -230,7 +227,7 @@ exports[`should render the select with style 1`] = `
           class="css-1ccipwk-propertySectionLabel"
         >
           <h6
-            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
           >
             SelectLabel
           </h6>
@@ -240,14 +237,13 @@ exports[`should render the select with style 1`] = `
         class="css-19oeos1-propertySectionWidget"
       >
         <div
-          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-u5kk7y-MuiInputBase-root-MuiInput-root-MuiSelect-root"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiSelect-root css-95nkiw-MuiInputBase-root-MuiInput-root-MuiSelect-root"
           data-testid="SelectLabel"
         >
           <div
-            aria-controls=":r1:"
             aria-expanded="false"
             aria-haspopup="listbox"
-            class="MuiSelect-select MuiSelect-standard MuiInputBase-input MuiInput-input css-ijey5v-style css-1rxz5jq-MuiSelect-select-MuiInputBase-input-MuiInput-input"
+            class="MuiSelect-select MuiSelect-standard MuiInputBase-input MuiInput-input css-ijey5v-style css-5lvf42-MuiSelect-select-MuiInputBase-input-MuiInput-input"
             role="combobox"
             tabindex="0"
           >
@@ -258,13 +254,13 @@ exports[`should render the select with style 1`] = `
           <input
             aria-hidden="true"
             aria-invalid="false"
-            class="MuiSelect-nativeInput css-yf8vq0-MuiSelect-nativeInput"
+            class="MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput"
             tabindex="-1"
             value=""
           />
           <svg
             aria-hidden="true"
-            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiSelect-icon MuiSelect-iconStandard css-pqjvzy-MuiSvgIcon-root-MuiSelect-icon"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiSelect-icon MuiSelect-iconStandard css-1gpuzre-MuiSvgIcon-root-MuiSelect-icon"
             data-testid="ArrowDropDownIcon"
             focusable="false"
             viewBox="0 0 24 24"
@@ -275,7 +271,7 @@ exports[`should render the select with style 1`] = `
           </svg>
         </div>
         <p
-          class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-1wc848c-MuiFormHelperText-root"
+          class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-er619e-MuiFormHelperText-root"
         />
       </div>
     </div>
@@ -287,7 +283,7 @@ exports[`should render the select without style 1`] = `
 <body>
   <div>
     <div
-      class="MuiFormControl-root css-b0kbao-propertySection css-1nrlq1o-MuiFormControl-root"
+      class="MuiFormControl-root css-b0kbao-propertySection css-1iw3t7y-MuiFormControl-root"
     >
       <div
         class="css-2huy39-propertySectionLabel"
@@ -296,7 +292,7 @@ exports[`should render the select without style 1`] = `
           class="css-1ccipwk-propertySectionLabel"
         >
           <h6
-            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-ati914-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-subtitle2 css-t33jlf-typography css-1ypmsg6-MuiTypography-root"
           >
             SelectLabel
           </h6>
@@ -306,14 +302,13 @@ exports[`should render the select without style 1`] = `
         class="css-19oeos1-propertySectionWidget"
       >
         <div
-          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-u5kk7y-MuiInputBase-root-MuiInput-root-MuiSelect-root"
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiSelect-root css-95nkiw-MuiInputBase-root-MuiInput-root-MuiSelect-root"
           data-testid="SelectLabel"
         >
           <div
-            aria-controls=":r0:"
             aria-expanded="false"
             aria-haspopup="listbox"
-            class="MuiSelect-select MuiSelect-standard MuiInputBase-input MuiInput-input css-ve6bqz-style css-1rxz5jq-MuiSelect-select-MuiInputBase-input-MuiInput-input"
+            class="MuiSelect-select MuiSelect-standard MuiInputBase-input MuiInput-input css-ve6bqz-style css-5lvf42-MuiSelect-select-MuiInputBase-input-MuiInput-input"
             role="combobox"
             tabindex="0"
           >
@@ -324,13 +319,13 @@ exports[`should render the select without style 1`] = `
           <input
             aria-hidden="true"
             aria-invalid="false"
-            class="MuiSelect-nativeInput css-yf8vq0-MuiSelect-nativeInput"
+            class="MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput"
             tabindex="-1"
             value=""
           />
           <svg
             aria-hidden="true"
-            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiSelect-icon MuiSelect-iconStandard css-pqjvzy-MuiSvgIcon-root-MuiSelect-icon"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiSelect-icon MuiSelect-iconStandard css-1gpuzre-MuiSvgIcon-root-MuiSelect-icon"
             data-testid="ArrowDropDownIcon"
             focusable="false"
             viewBox="0 0 24 24"
@@ -341,7 +336,7 @@ exports[`should render the select without style 1`] = `
           </svg>
         </div>
         <p
-          class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-1wc848c-MuiFormHelperText-root"
+          class="MuiFormHelperText-root MuiFormHelperText-sizeMedium MuiFormHelperText-contained css-er619e-MuiFormHelperText-root"
         />
       </div>
     </div>

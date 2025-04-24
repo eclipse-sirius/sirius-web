@@ -55,7 +55,7 @@ export const LibraryBrowserView = () => {
       <NavigationBar />
       <Container maxWidth="xl">
         <Grid container justifyContent="center">
-          <Grid item xs={8}>
+          <Grid size={{ xs: 8 }}>
             <main className={classes.main}>
               <div className={classes.header}>
                 <Typography variant="h4">Libraries</Typography>

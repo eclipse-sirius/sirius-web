@@ -37,6 +37,9 @@ The following dependencies have been updated:
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.5[Spring Boot 3.4.5].
 - https://github.com/eclipse-sirius/sirius-web/issues/4895[4895] [releng] Remove the dependency to Sirius Desktop
 - [releng] Switch to https://www.jacoco.org/jacoco/trunk/doc/changes.html[JaCoCo 0.8.13].
+- [releng] Switch `@mui/material` to `7.0.2`
+- [releng] Switch `@mui/icons-material` to `7.0.2`
+- [releng] Switch `tss-react` to `4.9.16`
 
 
 === Bug fixes
