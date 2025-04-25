@@ -43,6 +43,8 @@ public final class SelectCell implements ICell {
 
     private String value;
 
+    private String tooltipValue;
+
     private SelectCell() {
         // Prevent instantiation
     }
@@ -86,6 +88,11 @@ public final class SelectCell implements ICell {
     }
 
     @Override
+    public String getTooltipValue() {
+        return this.tooltipValue;
+    }
+
+    @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, columnId: {2}, value: {3}', options: {4}}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.columnId, this.value, this.options);
@@ -116,6 +123,8 @@ public final class SelectCell implements ICell {
         private List<SelectCellOption> options;
 
         private String value;
+
+        private String tooltipValue;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -151,6 +160,11 @@ public final class SelectCell implements ICell {
             return this;
         }
 
+        public Builder tooltipValue(String tooltipValue) {
+            this.tooltipValue = Objects.requireNonNull(tooltipValue);
+            return this;
+        }
+
         public SelectCell build() {
             SelectCell cell = new SelectCell();
             cell.id = Objects.requireNonNull(this.id);
@@ -160,6 +174,7 @@ public final class SelectCell implements ICell {
             cell.columnId = Objects.requireNonNull(this.columnId);
             cell.options = Objects.requireNonNull(this.options);
             cell.value = this.value;
+            cell.tooltipValue = Objects.requireNonNull(this.tooltipValue);
             return cell;
         }
     }
