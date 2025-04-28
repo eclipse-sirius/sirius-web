@@ -24,6 +24,7 @@ During this refactoring some concepts have been moved and their package have bee
 
 === Dependency update
 
+- [releng] Switch to xyflow 12.6.0
 
 
 === Bug fixes
