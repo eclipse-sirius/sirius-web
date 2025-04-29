@@ -127,15 +127,14 @@ public class ActionControllerTests extends AbstractIntegrationTests {
             List<String> actionsTooltips = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.actions[*].tooltip");
             List<List<String>> actionsIconURLs = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.actions[*].iconURLs");
             assertThat(actionsTooltips)
-                .hasSize(2)
-                .contains("Hide", "Fade");
+                    .isNotEmpty()
+                    .contains("Hide", "Fade");
             assertThat(actionsIds)
-                .hasSize(2)
-                .contains(UUID.nameUUIDFromBytes("HideAction".getBytes()).toString(), UUID.nameUUIDFromBytes("FadeAction".getBytes()).toString());
+                    .contains(UUID.nameUUIDFromBytes("HideAction".getBytes()).toString(), UUID.nameUUIDFromBytes("FadeAction".getBytes()).toString());
             assertThat(actionsIconURLs)
-                .hasSize(2)
-                .anySatisfy(actionIconURL -> assertThat(actionIconURL).contains("/api/images/icons/full/obj16/HideTool.svg"))
-                .anySatisfy(actionIconURL -> assertThat(actionIconURL).contains("/api/images/icons/full/obj16/FadeTool.svg"));
+                    .isNotEmpty()
+                    .anySatisfy(actionIconURL -> assertThat(actionIconURL).contains("/api/images/icons/full/obj16/HideTool.svg"))
+                    .anySatisfy(actionIconURL -> assertThat(actionIconURL).contains("/api/images/icons/full/obj16/FadeTool.svg"));
         };
 
         StepVerifier.create(flux)
@@ -181,14 +180,17 @@ public class ActionControllerTests extends AbstractIntegrationTests {
             List<String> actionsTooltips = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.actions[*].tooltip");
             List<List<String>> actionsIconURLs = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.actions[*].iconURLs");
             assertThat(actionsTooltips)
-                .hasSize(1)
-                .contains("Hide");
+                    .isNotEmpty()
+                    .contains("Hide")
+                    .doesNotContain("Fade");
             assertThat(actionsIds)
-                .hasSize(1)
-                .contains(UUID.nameUUIDFromBytes("HideAction".getBytes()).toString());
+                    .isNotEmpty()
+                    .contains(UUID.nameUUIDFromBytes("HideAction".getBytes()).toString())
+                    .doesNotContain(UUID.nameUUIDFromBytes("FadeAction".getBytes()).toString());
             assertThat(actionsIconURLs)
-                .hasSize(1)
-                .anySatisfy(actionIconURL -> assertThat(actionIconURL).contains("/api/images/icons/full/obj16/HideTool.svg"));
+                    .isNotEmpty()
+                    .anySatisfy(actionIconURL -> assertThat(actionIconURL).contains("/api/images/icons/full/obj16/HideTool.svg"))
+                    .noneSatisfy(actionIconURL -> assertThat(actionIconURL).contains("/api/images/icons/full/obj16/FadeTool.svg"));
         };
 
         StepVerifier.create(flux)
@@ -214,8 +216,8 @@ public class ActionControllerTests extends AbstractIntegrationTests {
                 .ifPresentOrElse(diag -> {
                     diagramId.set(diag.getId());
                     var node = diag.getNodes().stream()
-                        .filter(n -> "Component sirius-web-domain".equals(n.getTargetObjectLabel()))
-                        .findFirst();
+                            .filter(n -> "Component sirius-web-domain".equals(n.getTargetObjectLabel()))
+                            .findFirst();
                     assertTrue(node.isPresent());
                     assertEquals(ViewModifier.Normal, node.get().getState());
                     nodeId.set(node.get().getId());

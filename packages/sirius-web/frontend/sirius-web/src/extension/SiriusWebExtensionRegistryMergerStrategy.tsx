@@ -16,6 +16,7 @@ import {
   DataExtension,
   ExtensionRegistryMergeStrategy,
 } from '@eclipse-sirius/sirius-components-core';
+import { diagramNodeActionOverrideContributionExtensionPoint } from '@eclipse-sirius/sirius-components-diagrams';
 import { omniboxCommandOverrideContributionExtensionPoint } from '@eclipse-sirius/sirius-components-omnibox';
 
 export class SiriusWebExtensionRegistryMergeStrategy implements ExtensionRegistryMergeStrategy {
@@ -35,6 +36,11 @@ export class SiriusWebExtensionRegistryMergeStrategy implements ExtensionRegistr
     if (identifier === omniboxCommandOverrideContributionExtensionPoint.identifier) {
       return {
         identifier: `siriusweb_${omniboxCommandOverrideContributionExtensionPoint.identifier}`,
+        data: [...existingValue.data, ...newValue.data],
+      };
+    } else if (identifier === diagramNodeActionOverrideContributionExtensionPoint.identifier) {
+      return {
+        identifier: `siriusweb_${diagramNodeActionOverrideContributionExtensionPoint.identifier}`,
         data: [...existingValue.data, ...newValue.data],
       };
     }
