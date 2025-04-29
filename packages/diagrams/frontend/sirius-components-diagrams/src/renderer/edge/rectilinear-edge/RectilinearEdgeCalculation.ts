@@ -43,7 +43,16 @@ export const cleanBendPoint = (bendPoints: XYPosition[]): XYPosition[] => {
           const { x: x2, y: y2 } = nextPoint;
           if (Math.abs(x1 - x2) <= margin && Math.abs(y1 - y2) <= margin) {
             isSimilar = true;
+            const prevPoint = bendPoints[i - 1];
+            const nextNextPoint = bendPoints[i + 2];
             i++;
+            if (prevPoint && nextNextPoint) {
+              if (determineSegmentAxis(prevPoint, nextNextPoint) === 'y') {
+                nextNextPoint.x = prevPoint.x;
+              } else {
+                nextNextPoint.y = prevPoint.y;
+              }
+            }
           }
         }
       }

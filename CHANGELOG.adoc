@@ -43,7 +43,7 @@ The following dependencies have been updated:
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4823[#4823] [sirius-web] Fix a potential ConcurrentModificationException when saving project's contents
 - https://github.com/eclipse-sirius/sirius-web/issues/4787[#4787] [sirius-web] Prevent flow action to be available without the flow nature
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4878[#4878] [diagram] Fix an issue where edge paths could lose their rectilinearity
 
 === New Features
 
