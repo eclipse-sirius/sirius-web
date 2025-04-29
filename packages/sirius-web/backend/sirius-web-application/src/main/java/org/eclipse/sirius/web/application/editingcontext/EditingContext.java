@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -69,12 +69,18 @@ public class EditingContext implements IEMFEditingContext {
         return this.views;
     }
 
+    @Override
+    public void dispose() {
+        this.changeRecorder.dispose();
+        IEMFEditingContext.super.dispose();
+    }
+
     public ChangeRecorder getChangeRecorder() {
-        return changeRecorder;
+        return this.changeRecorder;
     }
 
     public Map<String, ChangeDescription> getInputId2change() {
-        return inputId2change;
+        return this.inputId2change;
     }
 
 }
