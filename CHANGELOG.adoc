@@ -66,6 +66,7 @@ The improvement on project opening will be proportional to the size/complexity o
 - https://github.com/eclipse-sirius/sirius-web/issues/4858[#4858] [view] Switch to a service based approach to convert forms
 - https://github.com/eclipse-sirius/sirius-web/issues/4835[#4835] [view] Order Node/Edge palette's tools/tools sections the same way.
 - https://github.com/eclipse-sirius/sirius-web/issues/4861[#4861] [diagram] Keep the specified target position of the handle when creating an edge
+- https://github.com/eclipse-sirius/sirius-web/issues/4877[#4877] [diagram] Change handle position after dragging first/last segment on node borders
 
 
 

@@ -22,6 +22,7 @@ import {
   determineSegmentAxis,
   generateNewBendPointOnSourceSegment,
   generateNewBendPointOnTargetSegment,
+  getHandlePositionFromXYPosition,
 } from './RectilinearEdgeCalculation';
 import { MiddlePoint, UseTemporaryLinesValue } from './useTemporaryLines.types';
 import { BendPointData, LocalBendingPointsSetter } from './useBendingPoints.types';
@@ -56,14 +57,46 @@ export const useTemporaryLines = (
     const edges: Edge<EdgeData>[] = getEdges();
     const edge = edges.find((edge) => edge.id === edgeId);
     if (edge?.data) {
-      edge.data.bendingPoints = cleanBendPoint(localBendingPoints.sort((a, b) => a.pathOrder - b.pathOrder));
+      const newBendingPoint = cleanBendPoint(localBendingPoints.sort((a, b) => a.pathOrder - b.pathOrder));
+      edge.data.bendingPoints = newBendingPoint;
       let nodes = getNodes();
       if (isSourceSegment) {
-        nodes = getNodesUpdatedWithHandles(nodes, sourceNode, edge.id, sourceHandleId, source, sourcePosition);
+        let newPosition: Position | null = null;
+        if (newBendingPoint[0]) {
+          newPosition = getHandlePositionFromXYPosition(
+            sourceNode,
+            source,
+            determineSegmentAxis(source, newBendingPoint[0])
+          );
+        }
+        nodes = getNodesUpdatedWithHandles(
+          nodes,
+          sourceNode,
+          edge.id,
+          sourceHandleId,
+          source,
+          newPosition ?? sourcePosition
+        );
         setIsSourceSegment(false);
       }
       if (isTargetSegment) {
-        nodes = getNodesUpdatedWithHandles(nodes, targetNode, edge.id, targetHandleId, target, targetPosition);
+        let newPosition: Position | null = null;
+        const lastBendingPoint = newBendingPoint[newBendingPoint.length - 1];
+        if (lastBendingPoint) {
+          newPosition = getHandlePositionFromXYPosition(
+            targetNode,
+            target,
+            determineSegmentAxis(target, lastBendingPoint)
+          );
+        }
+        nodes = getNodesUpdatedWithHandles(
+          nodes,
+          targetNode,
+          edge.id,
+          targetHandleId,
+          target,
+          newPosition ?? targetPosition
+        );
         setIsTargetSegment(false);
       }
 
@@ -79,17 +112,7 @@ export const useTemporaryLines = (
     if (temporaryPointIndex === 0) {
       if (
         (direction === 'x' && sourceNode.internals.positionAbsolute.y > eventData.y) ||
-        (direction === 'y' && sourceNode.internals.positionAbsolute.x > eventData.x)
-      ) {
-        newPoints = generateNewBendPointOnSourceSegment(
-          originalBendingPoints,
-          eventData.x,
-          eventData.y,
-          direction,
-          sourceNode.internals.positionAbsolute,
-          temporaryPointIndex
-        );
-      } else if (
+        (direction === 'y' && sourceNode.internals.positionAbsolute.x > eventData.x) ||
         (direction === 'x' && sourceNode.internals.positionAbsolute.y + (sourceNode.height ?? 0) < eventData.y) ||
         (direction === 'y' && sourceNode.internals.positionAbsolute.x + (sourceNode.width ?? 0) < eventData.x)
       ) {
@@ -98,11 +121,11 @@ export const useTemporaryLines = (
           eventData.x,
           eventData.y,
           direction,
-          {
-            x: sourceNode.internals.positionAbsolute.x + (sourceNode.width ?? 0),
-            y: sourceNode.internals.positionAbsolute.y + (sourceNode.height ?? 0),
-          },
-          temporaryPointIndex
+          sourceNode.internals.positionAbsolute,
+          temporaryPointIndex,
+          sourcePosition,
+          sourceNode.height ?? 0,
+          sourceNode.width ?? 0
         );
       } else {
         const currentPoint = newPoints[temporaryPointIndex];
@@ -125,17 +148,7 @@ export const useTemporaryLines = (
     if (temporaryPointIndex === originalBendingPoints.length) {
       if (
         (direction === 'x' && targetNode.internals.positionAbsolute.y > eventData.y) ||
-        (direction === 'y' && targetNode.internals.positionAbsolute.x > eventData.x)
-      ) {
-        newPoints = generateNewBendPointOnTargetSegment(
-          originalBendingPoints,
-          eventData.x,
-          eventData.y,
-          direction,
-          targetNode.internals.positionAbsolute,
-          temporaryPointIndex
-        );
-      } else if (
+        (direction === 'y' && targetNode.internals.positionAbsolute.x > eventData.x) ||
         (direction === 'x' && targetNode.internals.positionAbsolute.y + (targetNode.height ?? 0) < eventData.y) ||
         (direction === 'y' && targetNode.internals.positionAbsolute.x + (targetNode.width ?? 0) < eventData.x)
       ) {
@@ -144,11 +157,11 @@ export const useTemporaryLines = (
           eventData.x,
           eventData.y,
           direction,
-          {
-            x: targetNode.internals.positionAbsolute.x + (targetNode.width ?? 0),
-            y: targetNode.internals.positionAbsolute.y + (targetNode.height ?? 0),
-          },
-          temporaryPointIndex
+          targetNode.internals.positionAbsolute,
+          temporaryPointIndex,
+          targetPosition,
+          targetNode.height ?? 0,
+          targetNode.width ?? 0
         );
       } else {
         const prevPoint = newPoints[temporaryPointIndex - 1];
