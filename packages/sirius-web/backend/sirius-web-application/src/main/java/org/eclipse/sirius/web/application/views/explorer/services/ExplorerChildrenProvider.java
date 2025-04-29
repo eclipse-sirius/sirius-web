@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerChildrenProvider;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerTreeItemAlteredContentProvider;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.springframework.stereotype.Service;
 
 /**
@@ -46,7 +47,9 @@ public class ExplorerChildrenProvider implements IExplorerChildrenProvider {
     public boolean hasChildren(VariableManager variableManager) {
         Object self = variableManager.getVariables().get(VariableManager.SELF);
         Optional<IEditingContext> optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
-        return this.explorerServices.hasChildren(self, optionalEditingContext.orElse(null));
+        @SuppressWarnings("unchecked")
+        List<RepresentationMetadata> existingRepresentations = variableManager.get("existingRepresentations", List.class).orElse(List.of());
+        return this.explorerServices.hasChildren(self, optionalEditingContext.orElse(null), existingRepresentations);
     }
 
     @Override
@@ -78,7 +81,9 @@ public class ExplorerChildrenProvider implements IExplorerChildrenProvider {
         }
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
         Object self = variableManager.getVariables().get(VariableManager.SELF);
-        return this.explorerServices.getDefaultChildren(self, optionalEditingContext.orElse(null), expandedIds);
+        @SuppressWarnings("unchecked")
+        List<RepresentationMetadata> existingRepresentations = variableManager.get("existingRepresentations", List.class).orElse(List.of());
+        return this.explorerServices.getDefaultChildren(self, optionalEditingContext.orElse(null), expandedIds, existingRepresentations);
     }
 
     private List<String> getActiveFilterIds(VariableManager variableManager) {

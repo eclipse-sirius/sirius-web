@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,11 +36,14 @@ import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
+import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerChildrenProvider;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerElementsProvider;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
 import org.eclipse.sirius.web.application.views.explorer.services.configuration.ExplorerDescriptionProviderConfiguration;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -75,9 +78,12 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
 
     private final IExplorerServices explorerServices;
 
+    private final IRepresentationMetadataSearchService representationMetadataSearchService;
+
+    @SuppressWarnings("checkstyle:ParameterNumber")
     public ExplorerDescriptionProvider(ExplorerDescriptionProviderConfiguration explorerDescriptionProviderConfiguration, List<IRepresentationImageProvider> representationImageProviders,
             IExplorerElementsProvider explorerElementsProvider, IExplorerChildrenProvider explorerChildrenProvider, List<IRenameTreeItemHandler> renameTreeItemHandlers,
-            List<IDeleteTreeItemHandler> deleteTreeItemHandlers, IExplorerServices explorerServices) {
+            List<IDeleteTreeItemHandler> deleteTreeItemHandlers, IExplorerServices explorerServices, IRepresentationMetadataSearchService representationMetadataSearchService) {
         this.objectService = explorerDescriptionProviderConfiguration.getObjectService();
         this.urlParser = explorerDescriptionProviderConfiguration.getUrlParser();
         this.explorerElementsProvider = Objects.requireNonNull(explorerElementsProvider);
@@ -85,6 +91,7 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
         this.renameTreeItemHandlers = Objects.requireNonNull(renameTreeItemHandlers);
         this.deleteTreeItemHandlers = Objects.requireNonNull(deleteTreeItemHandlers);
         this.explorerServices = Objects.requireNonNull(explorerServices);
+        this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
     }
 
     @Override
@@ -112,8 +119,21 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
                 .treeItemObjectProvider(this::getTreeItemObject)
                 .treeItemLabelProvider(this::getLabel)
                 .iconURLsProvider(variableManager -> List.of("/explorer/explorer.svg"))
+                .renderVariablesProvider(this::getRenderVariables)
                 .build();
         return List.of(explorerTreeDescription);
+    }
+
+    private VariableManager getRenderVariables(VariableManager variableManager) {
+        var result = new VariableManager();
+        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        if (optionalEditingContext.isPresent()) {
+            String editingContextId = optionalEditingContext.get().getId();
+            var optionalSemanticDataId = new UUIDParser().parse(editingContextId);
+            List<RepresentationMetadata> allRepresentationMetadata = this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticData(AggregateReference.to(optionalSemanticDataId.get()));
+            result.put("existingRepresentations", allRepresentationMetadata);
+        }
+        return result;
     }
 
     private String getTreeId(VariableManager variableManager) {
