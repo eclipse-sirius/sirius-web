@@ -10,7 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { XYPosition } from '@xyflow/react';
+import { InternalNode, Node, Position, XYPosition } from '@xyflow/react';
+import { NodeData } from '../../DiagramRenderer.types';
 import { BendPointData } from './useBendingPoints.types';
 
 export const getMiddlePoint = (p1: XYPosition, p2: XYPosition): XYPosition => {
@@ -112,23 +113,41 @@ export const generateNewBendPointOnSourceSegment = (
   newY: number,
   direction: 'x' | 'y',
   sourceNodeRelativePosition: XYPosition,
-  adjacentPointIndex: number
+  adjacentPointIndex: number,
+  sourcePosition: Position,
+  sourceNodeHeight: number,
+  sourceNodeWidth: number
 ): BendPointData[] => {
   const newPoints = [...existingBendPoint.map((bendingPoint, index) => ({ ...bendingPoint, pathOrder: index }))];
   const adjacentPoint = newPoints[adjacentPointIndex];
   newPoints.forEach((point) => {
     point.pathOrder += 2;
   });
-  newPoints.push({
-    x: direction === 'x' ? newX : sourceNodeRelativePosition.x,
-    y: direction === 'y' ? newY : sourceNodeRelativePosition.y,
-    pathOrder: 0,
-  });
-  newPoints.push({
-    x: newX,
-    y: newY,
-    pathOrder: 1,
-  });
+  if (sourcePosition === Position.Top) {
+    newPoints.push({
+      x: direction === 'x' ? sourceNodeRelativePosition.x : newX,
+      y: direction === 'y' ? sourceNodeRelativePosition.y : newY,
+      pathOrder: 0,
+    });
+  } else if (sourcePosition === Position.Bottom) {
+    newPoints.push({
+      x: direction === 'x' ? sourceNodeRelativePosition.x + sourceNodeHeight : newX,
+      y: direction === 'y' ? sourceNodeRelativePosition.y + sourceNodeHeight : newY,
+      pathOrder: 0,
+    });
+  } else if (sourcePosition === Position.Left) {
+    newPoints.push({
+      x: direction === 'x' ? sourceNodeRelativePosition.x : newX,
+      y: direction === 'y' ? sourceNodeRelativePosition.y : newY,
+      pathOrder: 0,
+    });
+  } else if (sourcePosition === Position.Right) {
+    newPoints.push({
+      x: direction === 'x' ? sourceNodeRelativePosition.x + sourceNodeWidth : newX,
+      y: direction === 'y' ? sourceNodeRelativePosition.y + sourceNodeWidth : newY,
+      pathOrder: 0,
+    });
+  }
   if (direction === 'x') {
     if (adjacentPoint) {
       adjacentPoint.y = newY;
@@ -148,21 +167,39 @@ export const generateNewBendPointOnTargetSegment = (
   newY: number,
   direction: 'x' | 'y',
   targetNodeRelativePosition: XYPosition,
-  adjacentPointIndex: number
+  adjacentPointIndex: number,
+  targetPosition: Position,
+  targetNodeHeight: number,
+  targetNodeWidth: number
 ): BendPointData[] => {
   const newPoints = [...existingBendPoint.map((bendingPoint, index) => ({ ...bendingPoint, pathOrder: index }))];
   const adjacentPoint = newPoints[adjacentPointIndex - 1];
+  if (targetPosition === Position.Top) {
+    newPoints.push({
+      x: direction === 'x' ? targetNodeRelativePosition.x : newX,
+      y: direction === 'y' ? targetNodeRelativePosition.y : newY,
+      pathOrder: adjacentPointIndex + 1,
+    });
+  } else if (targetPosition === Position.Bottom) {
+    newPoints.push({
+      x: direction === 'x' ? targetNodeRelativePosition.x + targetNodeHeight : newX,
+      y: direction === 'y' ? targetNodeRelativePosition.y + targetNodeHeight : newY,
+      pathOrder: adjacentPointIndex + 1,
+    });
+  } else if (targetPosition === Position.Left) {
+    newPoints.push({
+      x: direction === 'x' ? targetNodeRelativePosition.x : newX,
+      y: direction === 'y' ? targetNodeRelativePosition.y : newY,
+      pathOrder: adjacentPointIndex + 1,
+    });
+  } else if (targetPosition === Position.Right) {
+    newPoints.push({
+      x: direction === 'x' ? targetNodeRelativePosition.x + targetNodeWidth : newX,
+      y: direction === 'y' ? targetNodeRelativePosition.y + targetNodeWidth : newY,
+      pathOrder: adjacentPointIndex + 1,
+    });
+  }
 
-  newPoints.push({
-    x: newX,
-    y: newY,
-    pathOrder: adjacentPointIndex + 1,
-  });
-  newPoints.push({
-    x: direction === 'x' ? newX : targetNodeRelativePosition.x,
-    y: direction === 'y' ? newY : targetNodeRelativePosition.y,
-    pathOrder: adjacentPointIndex + 2,
-  });
   if (direction === 'x') {
     if (adjacentPoint) {
       adjacentPoint.y = newY;
@@ -174,4 +211,24 @@ export const generateNewBendPointOnTargetSegment = (
   }
 
   return newPoints;
+};
+
+export const getHandlePositionFromXYPosition = (
+  node: InternalNode<Node<NodeData>>,
+  handleXYPosition: XYPosition,
+  segmentDirection: 'x' | 'y'
+): Position => {
+  if (segmentDirection === 'x') {
+    if (handleXYPosition.x < node.internals.positionAbsolute.x + (node.width ?? 0) / 2) {
+      return Position.Left;
+    } else {
+      return Position.Right;
+    }
+  } else {
+    if (handleXYPosition.y < node.internals.positionAbsolute.y + (node.height ?? 0) / 2) {
+      return Position.Top;
+    } else {
+      return Position.Bottom;
+    }
+  }
 };
