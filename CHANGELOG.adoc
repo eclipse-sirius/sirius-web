@@ -63,6 +63,9 @@ Downstream projects can get access to them in their own test code by adding the 
   <scope>test</scope>
 </dependency>
 ----
+- https://github.com/eclipse-sirius/sirius-web/issues/4887[#4887] [diagram] Allow to override the default behavior of node actions.
+The `diagramNodeActionOverrideContributionExtensionPoint` extension point can be used to contribute components to use when a node action is available
+
 
 === Improvements
 
