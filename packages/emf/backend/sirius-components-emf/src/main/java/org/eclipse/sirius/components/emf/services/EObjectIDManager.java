@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -73,16 +73,14 @@ public class EObjectIDManager implements IDManager {
      * @return The cleared ID if the {@link IDAdapter} has existed, {@link Optional#empty()} otherwise
      */
     @Override
-    public Optional<String> clearId(EObject eObject) {
+    public void clearId(EObject eObject) {
         var iterator = eObject.eAdapters().iterator();
         while (iterator.hasNext()) {
             var adapter = iterator.next();
-            if (adapter instanceof IDAdapter idAdapter) {
+            if (adapter instanceof IDAdapter) {
                 iterator.remove();
-                return Optional.of(idAdapter.getId().toString());
             }
         }
-        return Optional.empty();
     }
 
     /**
@@ -95,15 +93,16 @@ public class EObjectIDManager implements IDManager {
      *            The ID to add on the given eObject
      */
     @Override
-    public void setId(EObject eObject, String id) {
-        var iterator = eObject.eAdapters().iterator();
-        while (iterator.hasNext()) {
-            var adapter = iterator.next();
-            if (adapter instanceof IDAdapter) {
-                iterator.remove();
-            }
+    public String setId(EObject eObject, String id) {
+        IDAdapter existingAdapter = this.findAdapter(eObject);
+        if (existingAdapter != null) {
+            String previousId = existingAdapter.getId().toString();
+            existingAdapter.setId(UUID.fromString(id));
+            return previousId;
+        } else {
+            eObject.eAdapters().add(new IDAdapter(UUID.fromString(id)));
+            return null;
         }
-        eObject.eAdapters().add(new IDAdapter(UUID.fromString(id)));
     }
 
     /**

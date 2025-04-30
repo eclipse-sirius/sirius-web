@@ -192,12 +192,12 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
                         "05e44ccc-9363-443f-a816-25fc73e3e7f7": {
                           "descriptionURI": "69030a1b-0b5f-3c1d-8399-8ca260e4a672",
                           "type": "siriusComponents://representation?type=Portal",
-                          "targetObjectURI": "sirius:///48dc942a-6b76-4133-bca5-5b29ebee133d#/"
+                          "targetObjectURI": "sirius:///48dc942a-6b76-4133-bca5-5b29ebee133d#3237b215-ae23-48d7-861e-f542a4b9a4b8"
                         },
                         "e81eec5c-42d6-491c-8bcc-9beb951356f8": {
                           "descriptionURI": "69030a1b-0b5f-3c1d-8399-8ca260e4a672",
                           "type": "siriusComponents://representation?type=Portal",
-                          "targetObjectURI": "sirius:///48dc942a-6b76-4133-bca5-5b29ebee133d#/"
+                          "targetObjectURI": "sirius:///48dc942a-6b76-4133-bca5-5b29ebee133d#3237b215-ae23-48d7-861e-f542a4b9a4b8"
                         }
                       }
                     }
@@ -300,7 +300,7 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
                                 "name":"humans",
                                 "many":true,
                                 "containment":true,
-                                "targetType":"//@types.2"
+                                "targetType":"1731ffb5-bfb0-46f3-a23d-0c0650300005"
                               }
                             }
                           ]
@@ -353,7 +353,7 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
                             }
                           ],
                           "superTypes":[
-                            "//@types.1"
+                            "c6fdba07-dea5-4a53-99c7-7eefc1bfdfcc"
                           ]
                         }
                       }
