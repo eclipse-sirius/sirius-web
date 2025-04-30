@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,12 +35,13 @@ public class EObjectRandomIDManager implements IDManager {
     }
 
     @Override
-    public Optional<String> clearId(EObject eObject) {
-        return Optional.empty();
+    public void clearId(EObject eObject) {
+        // Nothing to do.
     }
 
     @Override
-    public void setId(EObject eObject, String id) {
+    public String setId(EObject eObject, String id) {
         // Do nothing
+        return null;
     }
 }

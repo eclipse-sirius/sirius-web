@@ -21,6 +21,19 @@ Implementations of the interface `org.eclipse.sirius.components.view.emf.form.IW
 During this refactoring some concepts have been moved and their package have been updated such as `IFormIdProvider`.
 - https://github.com/eclipse-sirius/sirius-web/issues/4893[#4893] [compatibility] The support for odesign files from Sirius Desktop has been removed now that the support for the View DSL provides all the features that were supported in the odesign part.
 - https://github.com/eclipse-sirius/sirius-web/issues/4909[#4909] [sirius-web] The class `CreateForkedStudioMutationRuner` as been moved in `sirius-web-tests` and renamed to `CreateForkedStudioMutationRunner` to let downstream applications use it.
+- Sirius Web now uses Sirius EMF JSON 2.5.0, which includes breaking changes (and much improved performance).
+Of particular note: projects which create View-based, in-memory, representation description programatically and rely on `EcoreUtil.getURI()` to derive a stable object id should either:
+* Make sure they invoke `EcoreUtil.getURI()` *before* their objects are moved inside a `JsonResourceImpl` (see https://github.com/eclipse-sirius/sirius-web/blob/master/packages/sirius-web/backend/sirius-web-papaya/src/main/java/org/eclipse/sirius/web/papaya/services/PapayaViewProvider.java[`PapayaViewProvider`] for an example).
+* Create the JSON resource they use for their View models with the new option `JsonResource.OPTION_FORCE_DEFAULT_REFERENCE_SERIALIZATION` set:
++
+[source,java]
+----
+Map<String, Object> customOptions = Map.of(JsonResource.OPTION_FORCE_DEFAULT_REFERENCE_SERIALIZATION, Boolean.TRUE);
+JsonResource resource = jsonResourceFactory.createResource(uri, customOptions);
+----
++
+See https://github.com/eclipse-sirius/sirius-emf-json/blob/master/CHANGELOG.adoc#v250[the Sirius EMF JSON changelog] for details.
+
 
 === Dependency update
 
@@ -40,6 +53,7 @@ The following dependencies have been updated:
 - [releng] Switch `@mui/material` to `7.0.2`
 - [releng] Switch `@mui/icons-material` to `7.0.2`
 - [releng] Switch `tss-react` to `4.9.16`
+- [releng] Switch to Sirius EMF JSON 2.5.0
 
 
 === Bug fixes
@@ -47,6 +61,7 @@ The following dependencies have been updated:
 - https://github.com/eclipse-sirius/sirius-web/issues/4823[#4823] [sirius-web] Fix a potential ConcurrentModificationException when saving project's contents
 - https://github.com/eclipse-sirius/sirius-web/issues/4787[#4787] [sirius-web] Prevent flow action to be available without the flow nature
 - https://github.com/eclipse-sirius/sirius-web/issues/4878[#4878] [diagram] Fix an issue where edge paths could lose their rectilinearity
+
 
 === New Features
 
@@ -87,6 +102,9 @@ The improvement on project opening will be proportional to the size/complexity o
 - https://github.com/eclipse-sirius/sirius-web/issues/4840[#4850] [sirius-web] Reduce the amount of data fetched from the DB on project opening.
 `StudioCapableEditingContextPredicate` (called several times on projet open) now avoids fetching the documents content, which it does not need.
 On large projects this can significantly reduce the amount of data fetched from the DB and not actually used.
+- [sirius-web] The switch to Sirius EMF JSON 2.5.0 should greatly improve the performance of loading and saving semantic data.
+This is mostly visible when cold-opening projects with large documents (load performance), and when saving semantic data after edition operations.
+Note that the improvements will only be visible for projects created or modified after the update; existing semantic data which has not been modified will continue to be "slow" to load/read until it is modified at least once and saved in the new, improved format.
 
 
 
