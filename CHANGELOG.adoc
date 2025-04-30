@@ -36,6 +36,7 @@ The following dependencies have been updated:
 * `guava` from `32.0.0-jre` to `33.4.8-jre` 
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.5[Spring Boot 3.4.5].
 - https://github.com/eclipse-sirius/sirius-web/issues/4895[4895] [releng] Remove the dependency to Sirius Desktop
+- [releng] Switch to https://www.jacoco.org/jacoco/trunk/doc/changes.html[JaCoCo 0.8.13].
 
 
 === Bug fixes
