@@ -2,6 +2,10 @@ extend type Subscription {
   tableEvent(input: TableEventInput!): TableEventPayload!
 }
 
+extend type EditingContext {
+  table(tableId: ID!): Table!
+}
+
 input TableEventInput {
   id: ID!
   representationId: ID!
