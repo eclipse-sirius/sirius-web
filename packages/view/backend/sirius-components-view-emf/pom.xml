@@ -87,11 +87,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>org.eclipse.sirius.ecore.extender</artifactId>
-			<version>${sirius.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-diagram</artifactId>
 			<version>2025.4.0</version>
 		</dependency>

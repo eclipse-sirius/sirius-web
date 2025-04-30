@@ -18,15 +18,15 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.EPackageService;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.emf.diagram.providers.api.IViewToolImageProvider;
-import org.eclipse.sirius.ecore.extender.business.api.accessor.EcoreMetamodelDescriptor;
-import org.eclipse.sirius.ecore.extender.business.internal.accessor.ecore.EcoreIntrinsicExtender;
 import org.springframework.stereotype.Service;
 
 /**
@@ -76,13 +76,11 @@ public class ViewToolImageProvider implements IViewToolImageProvider {
             String className = domainClass.substring(matcher.end());
 
             var optionalEPackage = new EPackageService().findEPackage(this.ePackageRegistry, packageName);
-            if (optionalEPackage.isPresent()) {
-                EPackage ePackage = optionalEPackage.get();
-                EcoreIntrinsicExtender ecoreIntrinsicExtender = new EcoreIntrinsicExtender();
-                ecoreIntrinsicExtender.updateMetamodels(List.of(new EcoreMetamodelDescriptor(ePackage)));
-                EObject instance = ecoreIntrinsicExtender.createInstance(className);
-                return Optional.ofNullable(instance);
-            }
+            return optionalEPackage.map(ePackage -> ePackage.getEClassifier(className))
+                    .filter(EClass.class::isInstance)
+                    .map(EClass.class::cast)
+                    .filter(eClass -> !eClass.isAbstract() && !eClass.isInterface())
+                    .map(EcoreUtil::create);
         }
         return Optional.empty();
     }

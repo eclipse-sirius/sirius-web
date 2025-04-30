@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,9 +20,9 @@ import org.eclipse.sirius.components.core.api.ILabelServiceDelegate;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.emf.services.DefaultLabelService;
+import org.eclipse.sirius.components.emf.services.EditingDomainServices;
 import org.eclipse.sirius.components.emf.services.LabelFeatureProviderRegistry;
 import org.eclipse.sirius.components.task.TaskTag;
-import org.eclipse.sirius.ext.emf.edit.EditingDomainServices;
 import org.springframework.stereotype.Service;
 
 /**
