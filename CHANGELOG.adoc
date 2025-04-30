@@ -16,10 +16,10 @@
 
 === Breaking changes
 
-
 - https://github.com/eclipse-sirius/sirius-web/issues/4858[#4858] [view] The API used to provide custom form widgets for the view DLS has been updated to use a service based approach instead of an EMF based switch.
 Implementations of the interface `org.eclipse.sirius.components.view.emf.form.IWidgetConverterProvider` should now switch to `org.eclipse.sirius.components.view.emf.form.converters.widgets.api.IWidgetDescriptionConverter`.
 During this refactoring some concepts have been moved and their package have been updated such as `IFormIdProvider`.
+- https://github.com/eclipse-sirius/sirius-web/issues/4893[#4893] [compatibility] The support for odesign files from Sirius Desktop has been removed now that the support for the View DSL provides all the features that were supported in the odesign part.
 
 
 === Dependency update
@@ -35,6 +35,7 @@ The following dependencies have been updated:
 * `org.eclipse.emf.codegen.ecore` from `2.25.0` to `2.39.0`
 * `guava` from `32.0.0-jre` to `33.4.8-jre` 
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.5[Spring Boot 3.4.5].
+
 
 === Bug fixes
 

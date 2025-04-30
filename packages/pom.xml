@@ -56,7 +56,6 @@
 		<module>trees/backend</module>
 		<module>validation/backend</module>
 		<module>portals/backend</module>
-		<module>compatibility/backend</module>
 		<module>domain/backend</module>
 		<module>view/backend</module>
 		<module>emf/backend</module>
