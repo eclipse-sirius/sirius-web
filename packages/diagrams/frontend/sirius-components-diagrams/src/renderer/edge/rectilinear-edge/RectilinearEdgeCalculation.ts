@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { InternalNode, Node, Position, XYPosition } from '@xyflow/react';
 import { NodeData } from '../../DiagramRenderer.types';
+import { edgeBendPointOffset } from '../../layout/layoutParams';
 import { BendPointData } from './useBendingPoints.types';
 
 export const getMiddlePoint = (p1: XYPosition, p2: XYPosition): XYPosition => {
@@ -231,4 +232,20 @@ export const getHandlePositionFromXYPosition = (
       return Position.Bottom;
     }
   }
+};
+
+export const getNewPointToGoAroundNode = (
+  segmentAxis: 'x' | 'y',
+  position: Position,
+  pointX: number,
+  pointY: number
+): XYPosition | null => {
+  if (segmentAxis === 'x' && (position === Position.Right || position === Position.Left)) {
+    const newPointX = position === Position.Right ? pointX + edgeBendPointOffset : pointX - edgeBendPointOffset;
+    return { x: newPointX, y: pointY };
+  } else if (segmentAxis === 'y' && (position === Position.Top || position === Position.Bottom)) {
+    const newPointY = position === Position.Bottom ? pointY + edgeBendPointOffset : pointY - edgeBendPointOffset;
+    return { x: pointX, y: newPointY };
+  }
+  return null;
 };

@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Node, XYPosition } from '@xyflow/react';
+import { Node, Position, XYPosition } from '@xyflow/react';
 import { useState, useEffect } from 'react';
 import { DraggableData } from 'react-draggable';
 import { useStore } from '../../../representation/useStore';
@@ -22,6 +22,7 @@ import {
   generateNewBendPointToPreserveRectilinearSegment,
   cleanBendPoint,
   determineSegmentAxis,
+  getNewPointToGoAroundNode,
 } from './RectilinearEdgeCalculation';
 import { useEditableEdgePath } from '../useEditableEdgePath';
 import { BendPointData, UseBendingPointsValue } from './useBendingPoints.types';
@@ -33,7 +34,9 @@ export const useBendingPoints = (
   sourceY: number,
   targetX: number,
   targetY: number,
-  customEdge: boolean
+  customEdge: boolean,
+  sourcePosition: Position,
+  targetPosition: Position
 ): UseBendingPointsValue => {
   const { getEdges, getNodes, setEdges } = useStore();
   const { synchronizeEdgeLayoutData } = useEditableEdgePath();
@@ -113,6 +116,14 @@ export const useBendingPoints = (
         } else {
           firstPoint.y = sourceY;
         }
+      } else {
+        if (firstPoint) {
+          if (determineSegmentAxis(firstPoint, { x: sourceX, y: sourceY }) === 'x') {
+            firstPoint.y = sourceY;
+          } else {
+            firstPoint.x = sourceX;
+          }
+        }
       }
       setLocalBendingPoints(newPoints.map((bendingPoint, index) => ({ ...bendingPoint, pathOrder: index })));
     }
@@ -129,10 +140,72 @@ export const useBendingPoints = (
         } else {
           lastPoint.y = targetY;
         }
+      } else {
+        if (lastPoint) {
+          if (determineSegmentAxis({ x: targetX, y: targetY }, lastPoint) === 'x') {
+            lastPoint.y = targetY;
+          } else {
+            lastPoint.x = targetX;
+          }
+        }
       }
       setLocalBendingPoints(newPoints.map((bendingPoint, index) => ({ ...bendingPoint, pathOrder: index })));
     }
   }, [targetX, targetY, originalBendingPoints.map((point) => point.x + point.y).join(), customEdge]);
+
+  const updateEdgeBendingPoints = (newPoints) => {
+    const edges = getEdges();
+    const edge = edges.find((edge) => edge.id === edgeId);
+    if (edge?.data) {
+      edge.data.bendingPoints = newPoints.map((bendingPoint, index) => ({ ...bendingPoint, pathOrder: index }));
+    }
+    setEdges(edges);
+    synchronizeEdgeLayoutData(edges, [...getNodes()] as Node<NodeData, DiagramNodeType>[]);
+  };
+
+  useEffect(() => {
+    if (customEdge) {
+      const newPoints = [...originalBendingPoints];
+      const firstPoint = newPoints[0];
+      const secondPoint = newPoints[1];
+      if (firstPoint && secondPoint) {
+        const segmentAxis = determineSegmentAxis(firstPoint, secondPoint);
+        const newPoint = getNewPointToGoAroundNode(segmentAxis, sourcePosition, sourceX, sourceY);
+
+        if (newPoint) {
+          newPoints.unshift(newPoint);
+          if (segmentAxis === 'x') {
+            firstPoint.x = newPoint.x;
+          } else if (segmentAxis === 'y') {
+            firstPoint.y = newPoint.y;
+          }
+          updateEdgeBendingPoints(newPoints);
+        }
+      }
+    }
+  }, [sourcePosition, customEdge]);
+
+  useEffect(() => {
+    if (customEdge) {
+      const newPoints = [...originalBendingPoints];
+      const lastPoint = newPoints[newPoints.length - 1];
+      const penultimatePoint = newPoints[newPoints.length - 2];
+      if (lastPoint && penultimatePoint) {
+        const segmentAxis = determineSegmentAxis(penultimatePoint, lastPoint);
+        const newPoint = getNewPointToGoAroundNode(segmentAxis, targetPosition, targetX, targetY);
+
+        if (newPoint) {
+          newPoints.push(newPoint);
+          if (segmentAxis === 'x') {
+            lastPoint.x = newPoint.x;
+          } else if (segmentAxis === 'y') {
+            lastPoint.y = newPoint.y;
+          }
+          updateEdgeBendingPoints(newPoints);
+        }
+      }
+    }
+  }, [targetPosition, customEdge]);
 
   return {
     localBendingPoints,

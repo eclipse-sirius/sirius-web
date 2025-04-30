@@ -23,7 +23,6 @@ import { BendPoint, TemporaryMovingLine } from '../BendPoint';
 import { EdgeCreationHandle } from '../EdgeCreationHandle';
 import { MultiLabelEdgeData } from '../MultiLabelEdge.types';
 import { MultiLabelEditableEdgeProps } from './MultiLabelRectilinearEditableEdge.types';
-import { determineSegmentAxis } from './RectilinearEdgeCalculation';
 import { useBendingPoints } from './useBendingPoints';
 import { useTemporaryLines } from './useTemporaryLines';
 
@@ -115,7 +114,9 @@ export const MultiLabelRectilinearEditableEdge = memo(
       source.y,
       target.x,
       target.y,
-      customEdge
+      customEdge,
+      sourcePosition,
+      targetPosition
     );
 
     const { middleBendingPoints, onTemporaryLineDragStop, onTemporaryLineDrag } = useTemporaryLines(
@@ -158,15 +159,7 @@ export const MultiLabelRectilinearEditableEdge = memo(
       for (let i = 0; i < reorderBendPoint.length; i++) {
         const currentPoint = reorderBendPoint[i];
         if (currentPoint) {
-          if (i === 0) {
-            if (determineSegmentAxis({ x: source.x, y: source.y }, currentPoint) !== 'x') {
-              edgePath += ` L ${source.x} ${currentPoint.y}`;
-            } else {
-              edgePath += ` L ${currentPoint.x} ${source.y}`;
-            }
-          } else {
-            edgePath += ` L ${currentPoint.x} ${currentPoint.y}`;
-          }
+          edgePath += ` L ${currentPoint.x} ${currentPoint.y}`;
         }
       }
       edgePath += ` L ${target.x} ${target.y}`;
