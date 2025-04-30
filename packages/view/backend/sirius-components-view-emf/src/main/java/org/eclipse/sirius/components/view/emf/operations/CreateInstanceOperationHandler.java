@@ -28,10 +28,10 @@ import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.CreateInstance;
 import org.eclipse.sirius.components.view.Operation;
+import org.eclipse.sirius.components.view.emf.operations.api.IAddExecutor;
 import org.eclipse.sirius.components.view.emf.operations.api.IOperationHandler;
 import org.eclipse.sirius.components.view.emf.operations.api.OperationEvaluationResult;
 import org.eclipse.sirius.components.view.emf.operations.api.OperationExecutionStatus;
-import org.eclipse.sirius.ecore.extender.business.internal.accessor.ecore.EcoreIntrinsicExtender;
 import org.springframework.stereotype.Service;
 
 /**
@@ -41,6 +41,12 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CreateInstanceOperationHandler implements IOperationHandler {
+
+    private final IAddExecutor addExecutor;
+
+    public CreateInstanceOperationHandler(IAddExecutor addExecutor) {
+        this.addExecutor = Objects.requireNonNull(addExecutor);
+    }
 
     @Override
     public boolean canHandle(AQLInterpreter interpreter, VariableManager variableManager, Operation operation) {
@@ -58,7 +64,7 @@ public class CreateInstanceOperationHandler implements IOperationHandler {
             var optionalNewInstance = this.resolveType(editingDomain, createInstanceOperation.getTypeName()).map(EcoreUtil::create);
             if (optionalNewInstance.isPresent()) {
                 EObject newInstance = optionalNewInstance.get();
-                Object container = new EcoreIntrinsicExtender().eAdd(self, createInstanceOperation.getReferenceName(), newInstance);
+                Object container = this.addExecutor.eAdd(self, createInstanceOperation.getReferenceName(), newInstance);
                 if (container != null) {
                     VariableManager childVariableManager = variableManager.createChild();
                     childVariableManager.put(createInstanceOperation.getVariableName(), newInstance);
