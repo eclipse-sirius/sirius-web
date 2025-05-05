@@ -40,6 +40,17 @@ type ColumnSort {
   desc: Boolean!
 }
 
+extend type RepresentationMetadata {
+  configuration: TableConfiguration
+}
+
+type TableConfiguration {
+  globalFilter: String
+  columnFilters: [ColumnFilter!]!
+  columnSort: [ColumnSort!]!
+  defaultPageSize: Int!
+}
+
 type Table implements Representation {
   id: ID!
   metadata: RepresentationMetadata!

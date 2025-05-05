@@ -43,16 +43,21 @@ const getAllTableRowFiltersQuery = gql`
   }
 `;
 
-export const useTableRowFilters = (editingContextId: string, tableId: string): UseTableRowFilterValue => {
+export const useTableRowFilters = (
+  editingContextId: string,
+  representationId: string | null,
+  skip: boolean
+): UseTableRowFilterValue => {
   const [state, setState] = useState<UseTableRowFilterState>({ rowFilters: [], activeRowFilterIds: [] });
   const { loading, data, error } = useQuery<GQLGetAllTableRowFiltersData, GQLGetAllTableRowFiltersVariables>(
     getAllTableRowFiltersQuery,
     {
       variables: {
         editingContextId,
-        representationId: tableId,
-        tableId,
+        representationId: representationId ?? '',
+        tableId: representationId ?? '',
       },
+      skip,
     }
   );
 
@@ -78,7 +83,7 @@ export const useTableRowFilters = (editingContextId: string, tableId: string): U
         .map((gqlRowFilter) => gqlRowFilter.id);
       setState((prevState) => ({ ...prevState, rowFilters: allFilters, activeRowFilterIds: activeIds }));
     }
-  }, [loading, gqlRowFilters]);
+  }, [loading, gqlRowFilters.map((filter) => filter.id + filter.label).join()]);
 
   return {
     rowFilters: state.rowFilters,
