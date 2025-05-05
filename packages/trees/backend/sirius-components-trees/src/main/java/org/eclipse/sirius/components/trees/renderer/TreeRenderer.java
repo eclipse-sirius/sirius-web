@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import static java.util.stream.Collectors.joining;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -63,6 +64,17 @@ public class TreeRenderer {
         List<TreeItem> childrenItems = new ArrayList<>(rootElements.size());
 
         this.variableManager.put(ANCESTOR_IDS, new ArrayList<>());
+
+        // Compute any custom render variables and merge them (if they do not conflict with the default ones)
+        VariableManager renderVariables = this.treeDescription.getRenderVariablesProvider().apply(this.variableManager);
+        for (Map.Entry<String, Object> renderVariable : renderVariables.getVariables().entrySet()) {
+            String name = renderVariable.getKey();
+            Object value = renderVariable.getValue();
+            if (!this.variableManager.hasVariable(name)) {
+                this.variableManager.put(name, value);
+            }
+        }
+
         int index = 0;
         for (Object rootElement : rootElements) {
             VariableManager rootElementVariableManager = this.variableManager.createChild();

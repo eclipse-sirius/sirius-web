@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -86,6 +86,8 @@ public final class TreeDescription implements IRepresentationDescription {
     private Function<VariableManager, StyledString> treeItemLabelProvider;
 
     private Function<VariableManager, List<String>> iconURLsProvider;
+
+    private Function<VariableManager, VariableManager> renderVariablesProvider;
 
     private TreeDescription() {
         // Prevent instantiation
@@ -186,6 +188,10 @@ public final class TreeDescription implements IRepresentationDescription {
         return this.iconURLsProvider;
     }
 
+    public Function<VariableManager, VariableManager> getRenderVariablesProvider() {
+        return this.renderVariablesProvider;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}'}'";
@@ -242,6 +248,8 @@ public final class TreeDescription implements IRepresentationDescription {
 
         private Function<VariableManager, List<String>> iconURLsProvider;
 
+        private Function<VariableManager, VariableManager> renderVariablesProvider = (vm) -> new VariableManager();
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -268,6 +276,7 @@ public final class TreeDescription implements IRepresentationDescription {
             this.treeItemObjectProvider = treeDescription.getTreeItemObjectProvider();
             this.treeItemLabelProvider = treeDescription.getTreeItemLabelProvider();
             this.iconURLsProvider = treeDescription.getIconURLsProvider();
+            this.renderVariablesProvider = treeDescription.getRenderVariablesProvider();
         }
 
         public Builder id(String id) {
@@ -375,6 +384,11 @@ public final class TreeDescription implements IRepresentationDescription {
             return this;
         }
 
+        public Builder renderVariablesProvider(Function<VariableManager, VariableManager> renderVariablesProvider) {
+            this.renderVariablesProvider =  Objects.requireNonNull(renderVariablesProvider);
+            return this;
+        }
+
         public TreeDescription build() {
             TreeDescription treeDescription = new TreeDescription();
             treeDescription.id = Objects.requireNonNull(this.id);
@@ -398,6 +412,7 @@ public final class TreeDescription implements IRepresentationDescription {
             treeDescription.treeItemObjectProvider = Objects.requireNonNull(this.treeItemObjectProvider);
             treeDescription.treeItemLabelProvider = Objects.requireNonNull(this.treeItemLabelProvider);
             treeDescription.iconURLsProvider = Objects.requireNonNull(this.iconURLsProvider);
+            treeDescription.renderVariablesProvider = Objects.requireNonNull(this.renderVariablesProvider);
             return treeDescription;
         }
     }

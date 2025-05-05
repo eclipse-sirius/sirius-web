@@ -225,6 +225,48 @@ public class ExplorerServices implements IExplorerServices {
     }
 
     @Override
+    public boolean hasChildren(Object self, IEditingContext editingContext, List<RepresentationMetadata> existingRepresentations) {
+        boolean hasChildren = false;
+        if (self instanceof Resource resource) {
+            hasChildren = !resource.getContents().isEmpty();
+        } else if (self instanceof EObject eObject) {
+            hasChildren = !eObject.eContents().isEmpty();
+
+            var optionalSemanticDataId = new UUIDParser().parse(editingContext.getId());
+            if (!hasChildren && optionalSemanticDataId.isPresent()) {
+                String id = this.objectService.getId(eObject);
+                hasChildren = existingRepresentations.stream().anyMatch(representationMetadata -> representationMetadata.getTargetObjectId().equals(id));
+            }
+        }
+        return hasChildren;
+    }
+
+    @Override
+    public List<Object> getDefaultChildren(Object self, IEditingContext editingContext, List<String> expandedIds, List<RepresentationMetadata> existingRepresentations) {
+        List<Object> result = new ArrayList<>();
+        if (editingContext != null) {
+            String id = this.getTreeItemId(self);
+            if (expandedIds.contains(id)) {
+                if (self instanceof Resource resource) {
+                    result.addAll(resource.getContents());
+                } else if (self instanceof EObject) {
+                    var optionalSemanticDataId = new UUIDParser().parse(editingContext.getId());
+
+                    if (optionalSemanticDataId.isPresent()) {
+                        var representationMetadata = new ArrayList<>(existingRepresentations);
+                        representationMetadata.sort(Comparator.comparing(RepresentationMetadata::getLabel));
+                        result.addAll(representationMetadata);
+                    }
+
+                    List<Object> contents = this.objectService.getContents(self);
+                    result.addAll(contents);
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
     public List<Object> getDefaultChildren(Object self, IEditingContext editingContext, List<String> expandedIds) {
         List<Object> result = new ArrayList<>();
         if (editingContext != null) {
