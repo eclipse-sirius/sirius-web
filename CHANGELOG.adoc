@@ -123,6 +123,7 @@ If we really want to support "pathological" metamodels maybe we could introduce 
 - https://github.com/eclipse-sirius/sirius-web/issues/4099[#4099] [sirius-web] Use low-level code for performance-critical ProxyValidator
 - https://github.com/eclipse-sirius/sirius-web/issues/4099[#4099] [sirius-web] Upload new models directly into the existing ResourceSet.
 This can be disabled with a system property for easy testing/comparison and if some applications decide that it is too risky in their context and accept the additional cost of re-creating a whole temporary editing context for the upload operation.
+- https://github.com/eclipse-sirius/sirius-web/issues/4875[#4875] [table] Improve table representation lifecycle
 
 
 
