@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -48,7 +48,7 @@ const useStyle = makeStyles()((theme) => ({
     marginRight: theme.spacing(2),
   },
 }));
-export const ToolListItem = ({ tool, onToolClick }: ToolListItemProps) => {
+export const ToolListItem = ({ tool, disabled, onToolClick }: ToolListItemProps) => {
   const { classes } = useStyle();
 
   const handleToolClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, tool: GQLTool) => {
@@ -60,6 +60,7 @@ export const ToolListItem = ({ tool, onToolClick }: ToolListItemProps) => {
     <Tooltip title={tool.label} placement="right">
       <ListItemButton
         className={classes.listItemButton}
+        disabled={disabled}
         onClick={(event) => handleToolClick(event, tool)}
         data-testid={`tool-${tool.label}`}>
         <ListItemIcon className={classes.listItemIcon}>

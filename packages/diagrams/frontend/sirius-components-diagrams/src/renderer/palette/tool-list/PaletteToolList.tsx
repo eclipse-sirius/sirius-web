@@ -20,8 +20,8 @@ import Slide from '@mui/material/Slide';
 import Tooltip from '@mui/material/Tooltip';
 import React, { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { isPaletteDivider, isSingleClickOnDiagramElementTool, isToolSection } from '../Palette';
-import { GQLPaletteEntry, GQLToolSection } from '../Palette.types';
+import { isPaletteDivider, isSingleClickOnDiagramElementTool, isTool, isToolSection } from '../Palette';
+import { GQLPalette, GQLPaletteEntry, GQLTool, GQLToolSection } from '../Palette.types';
 import { ToolListItem } from '../tool-list-item/ToolListItem';
 import { useDiagramPalette } from '../useDiagramPalette';
 import { PaletteToolListProps, PaletteToolListStateValue } from './PaletteToolList.types';
@@ -67,6 +67,15 @@ const defaultStateValue: PaletteToolListStateValue = {
   toolSection: null,
 };
 
+const paletteContainsTool = (palette: GQLPalette, toolId: string) => {
+  const containsTool = (tools: GQLTool[]) => tools.some((tool) => tool.id === toolId);
+  return (
+    containsTool(palette.quickAccessTools) ||
+    containsTool(palette.paletteEntries.filter(isTool)) ||
+    palette.paletteEntries.filter(isToolSection).find((section) => containsTool(section.tools))
+  );
+};
+
 export const PaletteToolList = ({ palette, onToolClick, onBackToMainList }: PaletteToolListProps) => {
   const [state, setState] = useState<PaletteToolListStateValue>(defaultStateValue);
 
@@ -91,6 +100,7 @@ export const PaletteToolList = ({ palette, onToolClick, onBackToMainList }: Pale
         <ToolListItem
           onToolClick={onToolClick}
           tool={paletteEntry}
+          disabled={false}
           key={'toolItem_' + paletteEntry.id}
           data-testid={`paletteEntry-${paletteEntry.label}`}
         />
@@ -113,9 +123,10 @@ export const PaletteToolList = ({ palette, onToolClick, onBackToMainList }: Pale
     return [];
   });
 
+  const lastToolAvailable = lastToolInvoked && paletteContainsTool(palette, lastToolInvoked.id);
   const lastUsedTool: JSX.Element | null = lastToolInvoked ? (
     <>
-      <ToolListItem onToolClick={onToolClick} tool={lastToolInvoked} />
+      <ToolListItem onToolClick={onToolClick} tool={lastToolInvoked} disabled={!lastToolAvailable} />
       <Divider />
     </>
   ) : null;
