@@ -42,8 +42,8 @@ const changeColumnFilterMutation = gql`
   }
 `;
 
-export const getColumnFilters = (table: GQLTable) => {
-  return table.columnFilters.map((filter) => ({
+export const getColumnFilters = (columnFilters: ColumnFilter[]) => {
+  return columnFilters.map((filter) => ({
     id: filter.id,
     value: JSON.parse(filter.value as string),
   }));
@@ -81,7 +81,7 @@ export const useTableColumnFiltering = (
   ) => {
     let newColumnFilter: MRT_ColumnFiltersState;
     if (typeof columnFilters === 'function') {
-      newColumnFilter = columnFilters(getColumnFilters(table));
+      newColumnFilter = columnFilters(getColumnFilters(table.columnFilters));
     } else {
       newColumnFilter = columnFilters;
     }
@@ -89,7 +89,7 @@ export const useTableColumnFiltering = (
     changeColumnFilter(newColumnFilter);
   };
 
-  const columnFilters = useMemo(() => getColumnFilters(table), [table]);
+  const columnFilters = useMemo(() => getColumnFilters(table.columnFilters), [table]);
 
   useEffect(() => {
     onColumnFiltersChange(columnFilters);

@@ -19,6 +19,7 @@ import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -44,6 +45,7 @@ import org.eclipse.sirius.components.tables.ColumnSort;
 import org.eclipse.sirius.components.tables.tests.graphql.ChangeColumnFilterMutationRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.ChangeColumnSortMutationRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.ChangeGlobalFilterMutationRunner;
+import org.eclipse.sirius.components.tables.tests.graphql.TableConfigurationQueryRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.TableEventSubscriptionRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
@@ -70,7 +72,7 @@ import reactor.test.StepVerifier;
  */
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"sirius.web.test.enabled=studio"})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
 public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTests {
 
     private static final String MISSING_TABLE = "Missing table";
@@ -98,6 +100,9 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
 
     @Autowired
     private TableEventSubscriptionRunner tableEventSubscriptionRunner;
+
+    @Autowired
+    private TableConfigurationQueryRunner tableConfigurationQueryRunner;
 
 
     @BeforeEach
@@ -398,6 +403,37 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
                 .consumeNextWith(updatedTableContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a table persisted, when table configuration query is triggered, then configuration data are returned")
+    public void givenTablePersistedWhenTableConfigurationQueryIsTriggeredThenConfigurationDataAreReturned() {
+        this.givenCommittedTransaction.commit();
+
+        Map<String, Object> variables = Map.of(
+                "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                "representationId", PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString(),
+                "tableId", PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString()
+        );
+        var result = this.tableConfigurationQueryRunner.run(variables);
+
+
+        String globalFilterResult = JsonPath.read(result, "$.data.viewer.editingContext.representation.configuration.globalFilter");
+        assertThat(globalFilterResult).isEqualTo("PUB");
+
+        List<String> columnFiltersValues = JsonPath.read(result, "$.data.viewer.editingContext.representation.configuration.columnFilters[*].value");
+        assertThat(columnFiltersValues)
+                .isNotEmpty()
+                .hasSize(1)
+                .anySatisfy(tableFilterId -> assertThat(tableFilterId).isEqualTo("LIC"));
+
+        List<String> columnSortIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.configuration.columnSort[*].id");
+        assertThat(columnSortIds)
+                .isEmpty();
+
+        Integer defaultPageSizeResult = JsonPath.read(result, "$.data.viewer.editingContext.representation.configuration.defaultPageSize");
+        assertThat(defaultPageSizeResult).isEqualTo(10);
     }
 
 }

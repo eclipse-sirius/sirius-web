@@ -20,6 +20,7 @@ import { TableContent } from '../table/TableContent';
 import { ColumnFilter, ColumnSort } from '../table/TableContent.types';
 import { tableIdProvider } from './tableIdProvider';
 import { TableRepresentationPagination, TableRepresentationState } from './TableRepresentation.types';
+import { useTableConfiguration } from './useTableConfiguration';
 import { useTableSubscription } from './useTableSubscription';
 
 const useTableRepresentationStyles = makeStyles()((theme) => ({
@@ -51,7 +52,29 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
     columnSort: null,
   });
 
-  const representationFullId = tableIdProvider(
+  const { globalFilter, columnFilters, columnSort, defaultPageSize } = useTableConfiguration(
+    editingContextId,
+    representationId
+  );
+
+  useEffect(() => {
+    if (globalFilter !== null && columnFilters !== null && columnSort !== null && defaultPageSize !== null) {
+      setState((prevState) => ({
+        ...prevState,
+        size: defaultPageSize,
+        globalFilter: globalFilter,
+        columnFilters: getColumnFilters(columnFilters),
+        columnSort: columnSort,
+      }));
+    }
+  }, [
+    globalFilter,
+    columnFilters?.map((filter) => filter.id + filter.value).join(),
+    columnSort?.map((sort) => sort.id + sort.desc).join(),
+    defaultPageSize,
+  ]);
+
+  const representationFullId: string | null = tableIdProvider(
     representationId,
     state.cursor,
     state.direction,
@@ -62,31 +85,13 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
     state.activeRowFilterIds,
     state.columnSort
   );
-
   const { complete, table } = useTableSubscription(editingContextId, representationFullId);
 
-  const { rowFilters, activeRowFilterIds } = useTableRowFilters(editingContextId, representationFullId);
+  const { rowFilters, activeRowFilterIds } = useTableRowFilters(editingContextId, representationId, table === null);
 
   useEffect(() => {
     setState((prevState) => ({ ...prevState, activeRowFilterIds }));
   }, [activeRowFilterIds.join('')]);
-
-  useEffect(() => {
-    if (table) {
-      setState((prevState) => ({
-        ...prevState,
-        size: prevState.size === 0 ? table.defaultPageSize : prevState.size,
-        globalFilter: table.globalFilter,
-        columnFilters: getColumnFilters(table),
-        columnSort: table.columnSort,
-      }));
-    }
-  }, [
-    table?.defaultPageSize,
-    table?.globalFilter,
-    table?.columnFilters.map((filter) => filter.id + filter.value).join(),
-    table?.columnSort.map((sort) => sort.id + sort.desc).join(),
-  ]);
 
   const onPaginationChange = (cursor: string | null, direction: 'PREV' | 'NEXT', size: number | null) => {
     if (size) {
@@ -148,7 +153,7 @@ export const TableRepresentation = ({ editingContextId, representationId, readOn
         </Typography>
       </div>
     );
-  } else if (!table) {
+  } else if (!table || !representationFullId) {
     return <RepresentationLoadingIndicator />;
   } else {
     return (
