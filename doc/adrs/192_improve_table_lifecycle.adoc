@@ -1,0 +1,135 @@
+= ADR-192 - Improve table representation lifecycle
+
+== Context
+
+There are currently issues with the disposal of table representations.
+Indeed, to open a table, we first need to make an initial subscription to retrieve the persisted configuration information for that table (such as active filters or column sorting).
+We then make a second subscription (with the data retrieved from the first).
+
+== Decision
+
+Change this lifecycle to avoid having to make two subscriptions.
+
+To do this, replace the first subscription, which is only created to retrieve the configuration information needed for the second (main) subscription, with a query.
+
+=== Query to retrieve table configuration
+
+Open a new GraphQL API that allows retrieving table configuration
+
+[source,graphql]
+----
+extend type RepresentationMetadata {
+  configuration: TableConfiguration
+}
+
+type TableConfiguration {
+  globalFilter: String
+  columnFilters: [ColumnFilter!]!
+  columnSort: [ColumnSort!]!
+  defaultPageSize: Int!
+}
+----
+
+With the equivalent event handler
+
+[source,java]
+----
+@Service
+public class TableConfigurationEventHandler implements ITableEventHandler {
+
+    //...
+
+    @Override
+    public boolean canHandle(ITableInput tableInput) {
+        return tableInput instanceof TableConfigurationInput;
+    }
+
+    @Override
+    public void handle(Sinks.One<IPayload> payloadSink, Sinks.Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, ITableContext tableContext, TableDescription tableDescription, ITableInput tableInput) {
+
+        //...
+
+        Optional<IPayload> payload = this.representationSearchService
+                .findById(editingContext, tableInput.representationId(), Table.class)
+                .map(table -> new TableConfigurationSuccessPayload(tableInput.id(), table.getGlobalFilter(), table.getColumnFilters(), table.getColumnSort(), table.getDefaultPageSize()));
+
+        //...
+
+    }
+}
+----
+
+The frontend can then make a query to retrieve the table configuration information
+
+[source,graphql]
+----
+query getTableConfiguration($editingContextId: ID!, $representationId: ID!) {
+    viewer {
+      editingContext(editingContextId: $editingContextId) {
+        representation(representationId: $representationId) {
+          configuration {
+              globalFilter
+              columnFilters {
+                id
+                value
+              }
+              columnSort {
+                id
+                desc
+              }
+              defaultPageSize
+            }
+          }
+        }
+    }
+  }
+----
+
+=== New lifecycle for a representation
+
+The React component `TableRepresentation` starts by making the query to retrieve the table configuration, then updates its state with this information.
+
+
+[source, typescript]
+----
+ const { globalFilter, columnFilters, columnSort, defaultPageSize } = useTableConfiguration(
+    editingContextId,
+    representationId
+  );
+
+  useEffect(() => {
+    if (globalFilter !== null && columnFilters !== null && columnSort !== null && defaultPageSize !== null) {
+      setState((prevState) => ({
+        ...prevState,
+        size: defaultPageSize,
+        globalFilter: globalFilter,
+        columnFilters: getColumnFilters(columnFilters),
+        columnSort: columnSort,
+      }));
+    }
+  }, [
+    globalFilter,
+    columnFilters?.map((filter) => filter.id + filter.value).join(),
+    columnSort?.map((sort) => sort.id + sort.desc).join(),
+    defaultPageSize,
+  ]);
+----
+
+Once this information is retrieved, the complete representation ID is calculated via `tableIdProvider`, and only when this id can be constructed then the single subscription created.
+
+[source, typescript]
+----
+const { loading } = useSubscription<GQLTableEventData, GQLTableEventVariables>(gql(getTableEventSubscription), {
+    variables,
+    fetchPolicy: 'no-cache',
+    onData,
+    onComplete,
+    onError,
+    skip: representationId === null,
+  });
+----
+
+== Status
+
+Accepted
+
