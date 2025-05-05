@@ -1,0 +1,90 @@
+= ADR-200 - Add configurable render variables to TreeDescription
+
+== Context
+
+When rendering a `Tree` on the backend (e.g. the Explorer), each property of each individual tree item is computed using a separate provider.
+For exemple, the icon URL for an item is computed by evaluating `iconURLsProvider`, whether an item is editable uses `editableProvider`, whether it has children by `hasChildrenProvider`, etc.
+
+Each of these is only provided with the default/generic variables provided by `org.eclipse.sirius.components.trees.renderer.TreeRenderer`.
+For properties which depend on more global state, or on costly information, each individual provider of each tree item will have to "start from scratch" with just the default variables.
+Any global information a provider needs to compute, or any computation that other providers (sometimes even providers on the same tree item) will need to recompute it.
+
+This can have severe performance impacts, see for example https://github.com/eclipse-sirius/sirius-web/issues/4102 where every leaf tree item has to make a separate query to the database *on every render*.
+
+== Decision
+
+We will provide the ability for a `org.eclipse.sirius.components.trees.description.TreeDescription` to customize (including extends) the variables used to render the tree.
+
+For this we will introduce a new interface:
+
+[source,java]
+----
+public interface IRepresentationRenderVariableCustomizer {
+    VariableManager customize(IRepresentationDescription representationDescription, VariableManager variableManager);
+}
+----
+
+Implementations of this interface can customize the variables available during the refresh/render of a representation.
+For example this can be used to *add* new custom variables that will be computed only once per render, and leveraged many times inside the various
+expressions/providers invoked when rendering a complex representation.
+
+The new interface will be defined in the generic package `org.eclipse.sirius.components.representations`, but for the moment it will only be used by trees.
+
+More precisely, the `TreeService` class, which is responsible for rendering trees, will apply any available `IRepresentationRenderVariableCustomizer` to the default variables:
+
+[source,java]
+----
+VariableManager variableManager = this.createDefaultVariables(treeCreationParameters);
+for (var renderVariableCustomizer : this.renderVariableCustomizers) {
+    variableManager = renderVariableCustomizer.customize(treeCreationParameters.getTreeDescription(), variableManager);
+}
+----
+
+The order in which the customizers are applied is not guaranteed.
+
+These are evaluated *once per render* of the tree.
+
+Any variable added or modified by the customizers will be available during the rendering of the tree, and can be used by the various providers (e.g. `iconURLsProvider`, `editableProvider`, etc.) to compute their values.
+
+To solve the original issue https://github.com/eclipse-sirius/sirius-web/issues/4102, we will use this new mechanism to add a new variable `existingRepresentations`, which will contain the full list of representations that exist in the editing context using a single database query.
+This will only apply when rendering the _Explorer_ representation.
+
+[source,java]
+----
+@Service
+public class ExplorerRenderVariablesCustomizer implements IRepresentationRenderVariableCustomizer {
+    @Override
+    public VariableManager customize(IRepresentationDescription representationDescription, VariableManager variableManager) {
+        if (ExplorerDescriptionProvider.DESCRIPTION_ID.equals(representationDescription.getId())) {
+            var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+            if (optionalEditingContext.isPresent()) {
+                VariableManager customizedVariableManager = variableManager.createChild();
+                String editingContextId = optionalEditingContext.get().getId();
+                var optionalSemanticDataId = new UUIDParser().parse(editingContextId);
+                List<RepresentationMetadata> allRepresentationMetadata = this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticData(AggregateReference.to(optionalSemanticDataId.get()));
+                customizedVariableManager.put(ExplorerDescriptionProvider.EXISTING_REPRESENTATIONS, allRepresentationMetadata);
+                return customizedVariableManager;
+            }
+        }
+        return variableManager;
+    }
+}
+----
+
+The various explorer-related services (e.g. `ExplorerServices`, `ExplorerChildrenProvider`) will then be modifed to look into this in-memory variable to determine if a given semantic element has an associated representation or not, without having to query the database for each individual item.
+
+=== Cutting backs
+
+=== Rabbit holes
+
+== Status
+
+Accepted
+
+== Consequences
+
+* The same mechanism could be generalized to all representations.
+* It could probably also be exposed at the View DSL level, with the ability for studio makers to define their own custom render variables using AQL expressions, and then leverage these in the rest of their expressions.
+* This mechanism can probably be overused, with studio makers "stuffing" the environement with new variables which *may* be useful in some cases but not in others, and which are themselves be costly to compute.
+It would be nice to provide support for "lazy variables", which are computed only if/when an expression actually needs it.
+It's not obvious how to implement this given AQL's semantics (variable access is done inside AQL's engine, and `evaluationEngine.eval(build, variables)` expects to be given all the variables' values beforehand).
