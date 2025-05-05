@@ -1,0 +1,114 @@
+= ADR-192 - Add configurable render variables to TreeDescription
+
+== Context
+
+When rendering a `Tree` on the backend (e.g. the Explorer), each property of each individual tree item is computed using a separate provider.
+For exemple, the icon URL for an item is computed by evaluating `iconURLsProvider`, whether an item is editable uses `editableProvider`, whether it has children by `hasChildrenProvider`, etc.
+
+Each of these is only provided with the default/generic variables provided by `org.eclipse.sirius.components.trees.renderer.TreeRenderer`.
+For properties which depend on more global state, or on costly information, each individual provider of each tree item will have to "start from scratch" with just the default variables.
+Any global information a provider needs to compute, or any computation that other providers (sometimes even providers on the same tree item) will need to recompute it.
+
+This can have severe performance impacts, see for example https://github.com/eclipse-sirius/sirius-web/issues/4102 where every leaf tree item has to make a separate query to the database *on every render*.
+
+== Decision
+
+We will provide the ability for a `org.eclipse.sirius.components.trees.description.TreeDescription` to define custom "render variables".
+
+These are evaluated *once per render* of the tree, and are provided along with the system-provided ones to all the providers/expressions evaluated during the rest of this render.
+
+[source,java]
+----
+package org.eclipse.sirius.components.trees.description;
+
+public class TreeDescription implements IRepresentationDescription {
+    public Function<VariableManager, VariableManager> getRenderVariablesProvider() {
+        return this.renderVariablesProvider;
+    }
+}
+----
+
+[NOTE]
+====
+This proposed signature, `Function<VariableManager, VariableManager>`, may not be the best choice.
+It's good enough to show the idea and implement a a proof of concept, but can probably be improved.
+====
+
+In `TreeRenderer`, this provider will be executed _once_, before rendering the root elements (and recursively, the tree items).
+
+As long as they do not conflict with system-provided variables, the new variables returned will be added to the context (VariableManager) used for the main part of the tree rendering:
+
+[source,java]
+----
+// Compute any custom render variables and merge them (if they do not conflict with the default ones)
+VariableManager renderVariables = this.treeDescription.getRenderVariablesProvider().apply(this.variableManager);
+for (Map.Entry<String, Object> renderVariable : renderVariables.getVariables().entrySet()) {
+    String name = renderVariable.getKey();
+    Object value = renderVariable.getValue();
+    if (!this.variableManager.hasVariable(name)) {
+        this.variableManager.put(name, value);
+    }
+}
+----
+
+
+A specific tree description can use this to enrich the evaluation context with additional information it knows will be needed.
+
+For example, the definition if `ExplorerDescriptionProvider` can add:
+
+[source,java]
+----
+@Override
+public List<IRepresentationDescription> getRepresentationDescriptions(IEditingContext editingContext) {
+    var explorerTreeDescription = TreeDescription.newTreeDescription(DESCRIPTION_ID)
+         // ...
+         .renderVariablesProvider(this::getRenderVariables)
+         .build();
+    return List.of(explorerTreeDescription);
+}
+
+private VariableManager getRenderVariables(VariableManager variableManager) {
+    var result = new VariableManager();
+    var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+    if (optionalEditingContext.isPresent()) {
+        String editingContextId = optionalEditingContext.get().getId();
+        var optionalSemanticDataId = new UUIDParser().parse(editingContextId);
+        List<RepresentationMetadata> allRepresentationMetadata = this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticData(AggregateReference.to(optionalSemanticDataId.get()));
+        result.put("existingRepresentations", allRepresentationMetadata);
+    }
+    return result;
+}
+----
+
+Which, with *one* access to the database, contributes a new variable `existingRepresentations`.
+
+`ExplorerChildrenProvider.hasChildren` can then be rewritten to leverage this new variable:
+
+[source,java]
+----
+@Override
+public boolean hasChildren(VariableManager variableManager) {
+    Object self = variableManager.getVariables().get(VariableManager.SELF);
+    Optional<IEditingContext> optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+    List<RepresentationMetadata> existingRepresentations = variableManager.get("existingRepresentations", List.class).orElse(List.of());
+    return this.explorerServices.hasChildren(self, optionalEditingContext.orElse(null), existingRepresentations);
+}
+----
+
+With this change, the hundreds/thousands of individual DB queries currently needed to answer `hasChildren` for each leaf node (see issue #4202) are replaced with a single query at the beginning of the explorer render.
+
+=== Cutting backs
+
+=== Rabbit holes
+
+== Status
+
+Proposed
+
+== Consequences
+
+* If we implement this in `Tree` (notably to improve the _Explorer_) and it proves useful, the same mechanism could be generalized to all representations.
+* It could probably also be exposed at the View DSL level, with the ability for studio makers to define their own custom render variables using AQL expressions, and then leverage these in the rest of their expressions.
+* This mechanism can probably be overused, with studio makers "stuffing" the environement with new variables which *may* be useful in some cases but not in others, and which are themselves be costly to compute.
+It would be nice to provide support for "lazy variables", which are computed only if/when an expression actually needs it.
+It's not obvious how to implement this given AQL's semantics (variable access is done inside AQL's engine, and `evaluationEngine.eval(build, variables)` expects to be given all the variables' values beforehand).
