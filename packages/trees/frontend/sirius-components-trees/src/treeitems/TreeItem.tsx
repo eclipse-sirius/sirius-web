@@ -316,13 +316,12 @@ export const TreeItem = ({
     event.preventDefault();
   };
 
-  const tooltipText = getTooltipText(item);
-
   let currentTreeItem: JSX.Element | null;
   if (textToFilter && isFilterCandidate(item, textToFilter)) {
     currentTreeItem = null;
   } else {
     const label = getString(item.label);
+    const tooltipText = getTooltipText(item);
     /* ref, tabindex and onFocus are used to set the React component focusabled and to set the focus to the corresponding DOM part */
     currentTreeItem = (
       <>
