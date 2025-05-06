@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,6 +41,7 @@ import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescri
 import org.eclipse.sirius.web.domain.services.Failure;
 import org.eclipse.sirius.web.domain.services.Success;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -65,9 +66,10 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
 
     private final Counter counter;
 
+    private final boolean reuseActiveResourceSet;
 
     public UploadDocumentEventHandler(IEditingContextSearchService editingContextSearchService, List<IUploadDocumentReportProvider> uploadDocumentReportProviders, IMessageService messageService,
-            IUploadFileLoader uploadDocumentLoader, MeterRegistry meterRegistry) {
+            IUploadFileLoader uploadDocumentLoader, MeterRegistry meterRegistry, @Value("${sirius.web.upload.reuseActiveResourceSet:true}") boolean reuseActiveResourceSet) {
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.uploadDocumentReportProviders = Objects.requireNonNull(uploadDocumentReportProviders);
         this.messageService = Objects.requireNonNull(messageService);
@@ -75,6 +77,7 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
+        this.reuseActiveResourceSet = reuseActiveResourceSet;
     }
 
     @Override
@@ -89,7 +92,12 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
         IPayload payload = new ErrorPayload(input.id(), this.messageService.unexpectedError());
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
-        var optionalResourceSet = this.createResourceSet(editingContext.getId());
+        Optional<ResourceSet> optionalResourceSet;
+        if (this.reuseActiveResourceSet && editingContext instanceof IEMFEditingContext emfEditingContext) {
+            optionalResourceSet = Optional.of(emfEditingContext.getDomain().getResourceSet());
+        } else {
+            optionalResourceSet = this.createResourceSet(editingContext.getId());
+        }
         if (input instanceof UploadDocumentInput uploadDocumentInput && editingContext instanceof IEMFEditingContext emfEditingContext && optionalResourceSet.isPresent()) {
             var resourceSet = optionalResourceSet.get();
 
