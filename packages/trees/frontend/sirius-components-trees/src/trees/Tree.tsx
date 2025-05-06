@@ -14,6 +14,7 @@ import { makeStyles } from 'tss-react/mui';
 
 import { useEffect, useRef } from 'react';
 import { TreeItem } from '../treeitems/TreeItem';
+import { TreeItemWithChildren } from '../treeitems/TreeItemWithChildren';
 import { TreeProps } from './Tree.types';
 
 const useTreeStyle = makeStyles()((_) => ({
@@ -109,31 +110,45 @@ export const Tree = ({
   }, [treeElement, onExpand]);
 
   return (
-    <>
-      <div ref={treeElement}>
-        <ul className={classes.ul} data-testid="tree-root-elements">
-          {tree.children.map((item, index) => (
-            <li key={item.id}>
-              <TreeItem
-                editingContextId={editingContextId}
-                treeId={tree.id}
-                item={item}
-                itemIndex={index}
-                depth={1}
-                onExpand={onExpand}
-                onExpandAll={onExpandAll}
-                readOnly={readOnly}
-                textToHighlight={textToHighlight}
-                textToFilter={textToFilter}
-                markedItemIds={markedItemIds}
-                treeItemActionRender={treeItemActionRender}
-                onTreeItemClick={onTreeItemClick}
-                selectedTreeItemIds={selectedTreeItemIds}
-              />
-            </li>
-          ))}
-        </ul>
-      </div>
-    </>
+    <div ref={treeElement}>
+      <ul className={classes.ul} data-testid="tree-root-elements">
+        {tree.children.map((childItem, index) => (
+          <li key={childItem.id}>
+            <TreeItem
+              editingContextId={editingContextId}
+              treeId={tree.id}
+              item={childItem}
+              itemIndex={index}
+              depth={1}
+              onExpand={onExpand}
+              onExpandAll={onExpandAll}
+              readOnly={readOnly}
+              textToHighlight={textToHighlight}
+              textToFilter={textToFilter}
+              markedItemIds={markedItemIds}
+              treeItemActionRender={treeItemActionRender}
+              onTreeItemClick={onTreeItemClick}
+              selectedTreeItemIds={selectedTreeItemIds}
+            />
+            <TreeItemWithChildren
+              editingContextId={editingContextId}
+              treeId={tree.id}
+              item={childItem}
+              itemIndex={index}
+              depth={2}
+              onExpand={onExpand}
+              onExpandAll={onExpandAll}
+              readOnly={readOnly}
+              textToHighlight={textToHighlight}
+              textToFilter={textToFilter}
+              markedItemIds={markedItemIds}
+              treeItemActionRender={treeItemActionRender}
+              onTreeItemClick={onTreeItemClick}
+              selectedTreeItemIds={selectedTreeItemIds}
+            />
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 };

@@ -184,7 +184,8 @@ This changes the behavior if there are delegates which *override* the default re
 - https://github.com/eclipse-sirius/sirius-web/issues/4874[#4874] [diagram] Move View DSL node layout strategy from node description to node style.
 This modification will enable a conditional style with a different layout strategy.
 - https://github.com/eclipse-sirius/sirius-web/issues/667[#667] [sirius-web] Restore layout and unsynchronized nodes when importing a project with a diagram
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4094[#4094] [sirius-web] Improve the reacivity of the explorer rendering when hovering on a tree with many items are expanded/visible
+Handle the recursive part of the tree rendring in `Tree` instead of `TreeItem`, so that re-rendering a particular `TreeItem` has a fixed cost, independant of how many of its descendants are expanded/visible.
 
 
 == v2025.4.0
