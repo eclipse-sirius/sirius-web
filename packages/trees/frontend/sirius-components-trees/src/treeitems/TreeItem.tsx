@@ -14,6 +14,7 @@ import { DRAG_SOURCES_TYPE, GQLStyledString, IconOverlay, StyledLabel } from '@e
 import CropDinIcon from '@mui/icons-material/CropDin';
 import React, { useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
+import { GQLTreeItem } from '../views/TreeView.types';
 import { PartHovered, TreeItemProps, TreeItemState } from './TreeItem.types';
 import { TreeItemAction } from './TreeItemAction';
 import { TreeItemArrow } from './TreeItemArrow';
@@ -95,6 +96,24 @@ const useTreeItemStyle = makeStyles<TreeItemStyleProps>()((theme, { depth }) => 
 
 export const getString = (styledString: GQLStyledString): string => {
   return styledString.styledStringFragments.map((fragments) => fragments.text).join('');
+};
+
+const getTooltipText = (item: GQLTreeItem) => {
+  let tooltipText = '';
+  if (item.kind.startsWith('siriusComponents://semantic')) {
+    const query = item.kind.substring(item.kind.indexOf('?') + 1, item.kind.length);
+    const params = new URLSearchParams(query);
+    if (params.has('domain') && params.has('entity')) {
+      tooltipText = params.get('domain') + '::' + params.get('entity');
+    }
+  } else if (item.kind.startsWith('siriusComponents://representation')) {
+    const query = item.kind.substring(item.kind.indexOf('?') + 1, item.kind.length);
+    const params = new URLSearchParams(query);
+    if (params.has('type')) {
+      tooltipText = params.get('type') ?? 'representation';
+    }
+  }
+  return tooltipText;
 };
 
 // The list of characters that will enable the direct edit mechanism.
@@ -297,20 +316,7 @@ export const TreeItem = ({
     event.preventDefault();
   };
 
-  let tooltipText = '';
-  if (item.kind.startsWith('siriusComponents://semantic')) {
-    const query = item.kind.substring(item.kind.indexOf('?') + 1, item.kind.length);
-    const params = new URLSearchParams(query);
-    if (params.has('domain') && params.has('entity')) {
-      tooltipText = params.get('domain') + '::' + params.get('entity');
-    }
-  } else if (item.kind.startsWith('siriusComponents://representation')) {
-    const query = item.kind.substring(item.kind.indexOf('?') + 1, item.kind.length);
-    const params = new URLSearchParams(query);
-    if (params.has('type')) {
-      tooltipText = params.get('type') ?? 'representation';
-    }
-  }
+  const tooltipText = getTooltipText(item);
 
   let currentTreeItem: JSX.Element | null;
   if (textToFilter && isFilterCandidate(item, textToFilter)) {
