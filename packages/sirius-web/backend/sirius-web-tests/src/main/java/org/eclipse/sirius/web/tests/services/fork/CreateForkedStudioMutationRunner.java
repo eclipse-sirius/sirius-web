@@ -11,15 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.sirius.web.application.controllers.studiofork.graphql;
+package org.eclipse.sirius.web.tests.services.fork;
+
+import java.util.Objects;
 
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.eclipse.sirius.web.view.fork.dto.CreateForkedStudioInput;
-
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 /**
  * Used to send a createForkedStudio GraphQL mutation.
@@ -27,7 +26,7 @@ import java.util.Objects;
  * @author mcharfadi
  */
 @Service
-public class CreateForkedStudioMutationRuner implements IMutationRunner<CreateForkedStudioInput> {
+public class CreateForkedStudioMutationRunner implements IMutationRunner<CreateForkedStudioInput> {
 
     private static final String CREATE_FORK_MUTATION = """
             mutation createForkedStudio($input: CreateForkedStudioInput!) {
@@ -47,7 +46,7 @@ public class CreateForkedStudioMutationRuner implements IMutationRunner<CreateFo
 
     private final IGraphQLRequestor graphQLRequestor;
 
-    public CreateForkedStudioMutationRuner(IGraphQLRequestor graphQLRequestor) {
+    public CreateForkedStudioMutationRunner(IGraphQLRequestor graphQLRequestor) {
         this.graphQLRequestor = Objects.requireNonNull(graphQLRequestor);
     }
     @Override

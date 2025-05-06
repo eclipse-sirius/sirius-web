@@ -20,7 +20,7 @@
 Implementations of the interface `org.eclipse.sirius.components.view.emf.form.IWidgetConverterProvider` should now switch to `org.eclipse.sirius.components.view.emf.form.converters.widgets.api.IWidgetDescriptionConverter`.
 During this refactoring some concepts have been moved and their package have been updated such as `IFormIdProvider`.
 - https://github.com/eclipse-sirius/sirius-web/issues/4893[#4893] [compatibility] The support for odesign files from Sirius Desktop has been removed now that the support for the View DSL provides all the features that were supported in the odesign part.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4909[#4909] [sirius-web] The class `CreateForkedStudioMutationRuner` as been moved in `sirius-web-tests` and renamed to `CreateForkedStudioMutationRunner` to let downstream applications use it.
 
 === Dependency update
 
