@@ -21,14 +21,21 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 /**
- * Superclass of all the integration tests used to setup the test environment.
+ * Superclass of all the integration tests used to set up the test environment.
  *
  * <p>
- * NOTE: The annotation @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS) has been set to close jdbc connection after each test class
- * because without this annotation we have reached the max connection number.
+ *     NOTE: The annotation @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS) has been set to close jdbc
+ *     connection after each test class because without this annotation we have reached the max connection number.
  * </p>
  *
+ * @technical-debt The annotation @DirtiesContext should be deleted and the various issues in the lifecycle of our tests
+ * should be fixed properly. This annotation disables the Spring Test ApplicationContext cache between test classes which
+ * creates a significant impact on the time taken by the execution of our tests. Each test class is thus starting a Sirius
+ * Web server from scratch which will quickly make the build time of the backend unbearable. It may also hide issues by
+ * starting everything from scratch frequently.
+ *
  * @author sbegaudeau
+ * @since v2024.3.0
  */
 @SpringJUnitConfig(classes = { IntegrationTestConfiguration.class, SiriusWebStarterConfiguration.class, JDBCConfiguration.class, RestResponseSerializationCustomizer.class })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)

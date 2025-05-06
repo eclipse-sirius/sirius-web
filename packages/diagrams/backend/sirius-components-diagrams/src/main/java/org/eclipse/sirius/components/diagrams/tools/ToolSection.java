@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,11 @@ import org.eclipse.sirius.components.annotations.Immutable;
 /**
  * A group of tools.
  *
+ * @technical-debt This class and its related concepts such as {@link ITool} and {@link Palette} should be deleted. See
+ * the documentation of {@link Palette} for additional details.
+ *
  * @author nvannier
+ * @since v0.1.19
  */
 @Immutable
 public final class ToolSection {

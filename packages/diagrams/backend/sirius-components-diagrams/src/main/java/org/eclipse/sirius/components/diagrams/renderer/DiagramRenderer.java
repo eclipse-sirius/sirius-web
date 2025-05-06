@@ -36,9 +36,9 @@ import org.eclipse.sirius.components.representations.Element;
  *
  * {@snippet id="diagram-renderer-in-react" lang="typescript":
  * const element = &lt;DiagramComponent
-                          variableManager={variableManager}
-                          diagramDescription={diagramDescription}
-                          ... /&gt;
+ *                        variableManager={variableManager}
+ *                        diagramDescription={diagramDescription}
+ *                        ... /&gt;
  * const diagram = new DiagramRenderer().render(element);
  * }
  *
