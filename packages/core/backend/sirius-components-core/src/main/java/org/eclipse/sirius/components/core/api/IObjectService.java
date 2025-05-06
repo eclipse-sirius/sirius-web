@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,8 @@ import org.eclipse.sirius.components.core.api.labels.StyledString;
 /**
  * Interface of that allow us to regroup several services.
  *
- * @author mcharfadi
+ * @author sbegaudeau
+ * @since v0.1.11
  */
 public interface IObjectService {
 
@@ -40,6 +41,15 @@ public interface IObjectService {
 
     String getId(Object object);
 
+    /**
+     * Provides the kind of the given semantic element.
+     *
+     * @param object A semantic element
+     *
+     * @return The kind of the object
+     *
+     * @technical-debt This method should be deleted, see {@link IIdentityService#getKind(Object)} for additional details
+     */
     String getKind(Object object);
 
     Optional<Object> getObject(IEditingContext editingContext, String objectId);

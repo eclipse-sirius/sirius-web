@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,15 @@ public interface IIdentityServiceDelegate {
 
     String getId(Object object);
 
+    /**
+     * Provides the kind of the given semantic element.
+     *
+     * @param object A semantic element
+     *
+     * @return The kind of the object
+     *
+     * @technical-debt This method should be deleted, see {@link IIdentityService#getKind(Object)} for additional details
+     */
     String getKind(Object object);
 
     /**
