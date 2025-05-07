@@ -36,6 +36,8 @@ export type { GQLNode, GQLNodeStyle } from './graphql/subscription/nodeFragment.
 export type { ActionProps } from './renderer/actions/Action.types';
 export { diagramNodeActionOverrideContributionExtensionPoint } from './renderer/actions/DiagramNodeActionExtensionPoint';
 export type { DiagramNodeActionOverrideContribution } from './renderer/actions/DiagramNodeActionExtensionPoint.types';
+export { ManageVisibilityContext } from './renderer/actions/visibility/ManageVisibilityContextProvider';
+export type { ManageVisibilityContextValue } from './renderer/actions/visibility/ManageVisibilityContextProvider.types';
 export { useConnectorNodeStyle } from './renderer/connector/useConnectorNodeStyle';
 export { BorderNodePosition as BorderNodePosition } from './renderer/DiagramRenderer.types';
 export type { Diagram, EdgeData, NodeData, ReactFlowPropsCustomizer } from './renderer/DiagramRenderer.types';
