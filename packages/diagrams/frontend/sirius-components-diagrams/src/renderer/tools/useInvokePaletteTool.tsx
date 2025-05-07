@@ -22,16 +22,10 @@ import { useCollapseExpand } from './useCollapseExpand';
 import { GQLCollapsingState } from './useCollapseExpand.types';
 import { useDelete } from './useDelete';
 import { GQLDeletionPolicy } from './useDelete.types';
-import { UseInvokePaletteToolProps, UseInvokePaletteToolValue } from './useInvokePaletteTool.types';
+import { UseInvokePaletteToolValue } from './useInvokePaletteTool.types';
 import { useSingleClickTool } from './useSingleClickTool';
 
-export const useInvokePaletteTool = ({
-  x,
-  y,
-  diagramElementId,
-  targetObjectId,
-  onDirectEditClick,
-}: UseInvokePaletteToolProps): UseInvokePaletteToolValue => {
+export const useInvokePaletteTool = (): UseInvokePaletteToolValue => {
   const { nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
   const { invokeSingleClickTool } = useSingleClickTool();
@@ -39,15 +33,21 @@ export const useInvokePaletteTool = ({
   const { deleteDiagramElements } = useDelete();
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
 
-  const invokeDelete = (diagramElementId: string, deletionPolicy: GQLDeletionPolicy) => {
-    if (!!nodeLookup.get(diagramElementId)) {
-      deleteDiagramElements(editingContextId, diagramId, [diagramElementId], [], deletionPolicy);
-    } else if (!!edgeLookup.get(diagramElementId)) {
-      deleteDiagramElements(editingContextId, diagramId, [], [diagramElementId], deletionPolicy);
-    }
-  };
-
-  const invokeTool = (tool: GQLTool) => {
+  const invokeTool = (
+    tool: GQLTool,
+    diagramElementId: string,
+    targetObjectId: string,
+    x: number,
+    y: number,
+    onDirectEditClick: () => void
+  ) => {
+    const invokeDelete = (diagramElementId: string, deletionPolicy: GQLDeletionPolicy) => {
+      if (!!nodeLookup.get(diagramElementId)) {
+        deleteDiagramElements(editingContextId, diagramId, [diagramElementId], [], deletionPolicy);
+      } else if (!!edgeLookup.get(diagramElementId)) {
+        deleteDiagramElements(editingContextId, diagramId, [], [diagramElementId], deletionPolicy);
+      }
+    };
     switch (tool.id) {
       case 'edit':
         onDirectEditClick();
