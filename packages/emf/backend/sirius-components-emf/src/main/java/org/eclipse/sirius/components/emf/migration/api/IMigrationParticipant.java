@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,14 +12,15 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.emf.migration.api;
 
+import com.google.gson.JsonObject;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
-
-import com.google.gson.JsonObject;
 
 /**
  * Interface of MigrationParticipant.
@@ -124,5 +125,17 @@ public interface IMigrationParticipant {
      */
     default EPackage getPackage(String nsURI) {
         return null;
+    }
+
+    /**
+     * Return the URI used by a proxy.
+     *
+     * @param eObject The containing EObject
+     * @param eReference The reference of the containing EObject
+     * @param uri The proxy uri
+     * @return The newly updated URI of the proxy
+     */
+    default String getEObjectUri(EObject eObject, EReference eReference, String uri) {
+        return uri;
     }
 }

@@ -99,8 +99,12 @@ public class TableControllerTests extends AbstractIntegrationTests {
     }
 
     private Flux<Object> givenSubscriptionToFormWithTableWidget() {
-        var input = new CreateRepresentationInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), FormWithTableDescriptionProvider.TASK_FORM_ID,
-                PapayaIdentifiers.FIRST_ITERATION_OBJECT.toString(), "FormWithTable");
+        var input = new CreateRepresentationInput(
+                UUID.randomUUID(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                FormWithTableDescriptionProvider.TASK_FORM_ID,
+                PapayaIdentifiers.FIRST_ITERATION_OBJECT.toString(),
+                "FormWithTable");
         return this.givenCreatedFormSubscription.createAndSubscribe(input);
     }
 
@@ -116,11 +120,13 @@ public class TableControllerTests extends AbstractIntegrationTests {
                     assertThat(tableWidget.getTable().getColumns()).hasSize(9);
                     assertThat(tableWidget.getTable().getLines()).hasSize(3);
                     assertThat(tableWidget.getTable().getLines().stream().flatMap(line -> line.getCells().stream()).toList()).hasSize(9 * 3);
+
                     Line line = tableWidget.getTable().getLines().get(0);
                     LineNavigator lineNavigator = new LineNavigator(line);
                     LineCheckboxCellNavigator checkboxCellNavigator = new LineCheckboxCellNavigator(line);
 
                     TableNavigator tableNavigator = new TableNavigator(tableWidget.getTable());
+
                     assertThat(lineNavigator.textfieldCellByColumnId(tableNavigator.column("Name").getId())).hasValue("Improve some features of the deck");
                     assertThat(checkboxCellNavigator.checkboxCellByColumnId(tableNavigator.column("Done").getId())).hasValue(false);
                     assertThat(lineNavigator.selectCellByColumnId(tableNavigator.column("Priority").getId())).hasValue("P1");

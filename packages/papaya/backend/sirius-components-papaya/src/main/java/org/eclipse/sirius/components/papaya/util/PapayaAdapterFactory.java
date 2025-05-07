@@ -28,12 +28,15 @@ import org.eclipse.sirius.components.papaya.Component;
 import org.eclipse.sirius.components.papaya.ComponentExchange;
 import org.eclipse.sirius.components.papaya.ComponentPort;
 import org.eclipse.sirius.components.papaya.Constructor;
+import org.eclipse.sirius.components.papaya.Container;
 import org.eclipse.sirius.components.papaya.Contribution;
 import org.eclipse.sirius.components.papaya.Controller;
 import org.eclipse.sirius.components.papaya.DataType;
 import org.eclipse.sirius.components.papaya.Domain;
 import org.eclipse.sirius.components.papaya.EnumLiteral;
 import org.eclipse.sirius.components.papaya.Event;
+import org.eclipse.sirius.components.papaya.Folder;
+import org.eclipse.sirius.components.papaya.FolderElement;
 import org.eclipse.sirius.components.papaya.GenericType;
 import org.eclipse.sirius.components.papaya.Interface;
 import org.eclipse.sirius.components.papaya.InterfaceImplementation;
@@ -125,6 +128,21 @@ public class PapayaAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseNamedElement(NamedElement object) {
             return PapayaAdapterFactory.this.createNamedElementAdapter();
+        }
+
+        @Override
+        public Adapter caseContainer(Container object) {
+            return PapayaAdapterFactory.this.createContainerAdapter();
+        }
+
+        @Override
+        public Adapter caseFolder(Folder object) {
+            return PapayaAdapterFactory.this.createFolderAdapter();
+        }
+
+        @Override
+        public Adapter caseFolderElement(FolderElement object) {
+            return PapayaAdapterFactory.this.createFolderElementAdapter();
         }
 
         @Override
@@ -402,6 +420,47 @@ public class PapayaAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createNamedElementAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.papaya.Container
+     * <em>Container</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.papaya.Container
+     * @generated
+     */
+    public Adapter createContainerAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.papaya.Folder
+     * <em>Folder</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.papaya.Folder
+     * @generated
+     */
+    public Adapter createFolderAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.papaya.FolderElement
+     * <em>Folder Element</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.papaya.FolderElement
+     * @generated
+     */
+    public Adapter createFolderElementAdapter() {
         return null;
     }
 

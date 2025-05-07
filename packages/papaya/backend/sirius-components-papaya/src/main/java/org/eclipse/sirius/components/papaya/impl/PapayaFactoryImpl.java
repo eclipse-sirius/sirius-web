@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.papaya.DataType;
 import org.eclipse.sirius.components.papaya.Domain;
 import org.eclipse.sirius.components.papaya.EnumLiteral;
 import org.eclipse.sirius.components.papaya.Event;
+import org.eclipse.sirius.components.papaya.Folder;
 import org.eclipse.sirius.components.papaya.GenericType;
 import org.eclipse.sirius.components.papaya.Interface;
 import org.eclipse.sirius.components.papaya.Iteration;
@@ -65,7 +66,6 @@ import org.eclipse.sirius.components.papaya.spec.DataTypeSpec;
 import org.eclipse.sirius.components.papaya.spec.EnumSpec;
 import org.eclipse.sirius.components.papaya.spec.InterfaceSpec;
 import org.eclipse.sirius.components.papaya.spec.PackageSpec;
-import org.eclipse.sirius.components.papaya.spec.ProjectSpec;
 import org.eclipse.sirius.components.papaya.spec.RecordSpec;
 
 /**
@@ -110,6 +110,8 @@ public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
         switch (eClass.getClassifierID()) {
             case PapayaPackage.TAG:
                 return this.createTag();
+            case PapayaPackage.FOLDER:
+                return this.createFolder();
             case PapayaPackage.PROJECT:
                 return this.createProject();
             case PapayaPackage.ITERATION:
@@ -239,11 +241,22 @@ public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated NOT
+     * @generated
+     */
+    @Override
+    public Folder createFolder() {
+        FolderImpl folder = new FolderImpl();
+        return folder;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
      */
     @Override
     public Project createProject() {
-        ProjectImpl project = new ProjectSpec();
+        ProjectImpl project = new ProjectImpl();
         return project;
     }
 

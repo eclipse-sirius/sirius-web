@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -49,7 +49,7 @@ public class FasterXMLProjectFactory implements IObjectFactory {
         var jacksonCore = new ComponentInitializer().initialize("jackson-core", "com.fasterxml.jackson.core", packageName -> packageName.startsWith("com.fasterxml.jackson.core"));
         var jacksonDatabind = new ComponentInitializer().initialize("jackson-databind", "com.fasterxml.jackson.databind", packageName -> packageName.startsWith("com.fasterxml.jackson.databind"));
 
-        jackson.getComponents().addAll(List.of(jacksonCore, jacksonDatabind));
+        jackson.getElements().addAll(List.of(jacksonCore, jacksonDatabind));
         return jackson;
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -51,7 +51,7 @@ public class EmptyPapayaProjectTemplateInitializer implements IProjectTemplateIn
 
             var component = PapayaFactory.eINSTANCE.createComponent();
             component.setName("Component");
-            project.getComponents().add(component);
+            project.getElements().add(component);
 
             resource.getContents().add(project);
         }

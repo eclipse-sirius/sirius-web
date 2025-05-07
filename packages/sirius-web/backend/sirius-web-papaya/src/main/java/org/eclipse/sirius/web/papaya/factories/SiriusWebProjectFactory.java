@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -69,7 +69,7 @@ public class SiriusWebProjectFactory implements IObjectFactory {
 
         var siriusComponentsChartsBackend = PapayaFactory.eINSTANCE.createProject();
         siriusComponentsChartsBackend.setName("backend");
-        siriusComponentsChartsBackend.getComponents().addAll(List.of(siriusComponentsCharts, siriusComponentsCollaborativeCharts));
+        siriusComponentsChartsBackend.getElements().addAll(List.of(siriusComponentsCharts, siriusComponentsCollaborativeCharts));
 
         var resource = this.createResource(editingContext, "Sirius Components - Charts");
         resource.getContents().add(siriusComponentsChartsBackend);
@@ -90,7 +90,7 @@ public class SiriusWebProjectFactory implements IObjectFactory {
 
         var siriusComponentsCompatibilityBackend = PapayaFactory.eINSTANCE.createProject();
         siriusComponentsCompatibilityBackend.setName("backend");
-        siriusComponentsCompatibilityBackend.getComponents().addAll(List.of(siriusComponentsCompatibility, siriusComponentsCompatibilityEmf));
+        siriusComponentsCompatibilityBackend.getElements().addAll(List.of(siriusComponentsCompatibility, siriusComponentsCompatibilityEmf));
 
         var resource = this.createResource(editingContext, "Sirius Components - Compatibility");
         resource.getContents().add(siriusComponentsCompatibilityBackend);
@@ -121,7 +121,7 @@ public class SiriusWebProjectFactory implements IObjectFactory {
 
         var siriusComponentsCoreBackend = PapayaFactory.eINSTANCE.createProject();
         siriusComponentsCoreBackend.setName("backend");
-        siriusComponentsCoreBackend.getComponents().addAll(List.of(
+        siriusComponentsCoreBackend.getElements().addAll(List.of(
                 siriusComponentsAnnotations,
                 siriusComponentsAnnotationsSpring,
                 siriusComponentsCollaborative,
@@ -149,7 +149,7 @@ public class SiriusWebProjectFactory implements IObjectFactory {
 
         var siriusComponentsDeckBackend = PapayaFactory.eINSTANCE.createProject();
         siriusComponentsDeckBackend.setName("backend");
-        siriusComponentsDeckBackend.getComponents().addAll(List.of(siriusComponentsDeck, siriusComponentsCollaborativeDeck, siriusComponentsDeckGraphQL));
+        siriusComponentsDeckBackend.getElements().addAll(List.of(siriusComponentsDeck, siriusComponentsCollaborativeDeck, siriusComponentsDeckGraphQL));
 
         var resource = this.createResource(editingContext, "Sirius Components - Deck");
         resource.getContents().add(siriusComponentsDeckBackend);
@@ -173,7 +173,7 @@ public class SiriusWebProjectFactory implements IObjectFactory {
 
         var siriusComponentsDiagramsBackend = PapayaFactory.eINSTANCE.createProject();
         siriusComponentsDiagramsBackend.setName("backend");
-        siriusComponentsDiagramsBackend.getComponents().addAll(List.of(siriusComponentsDiagrams, siriusComponentsCollaborativeDiagrams, siriusComponentsDiagramsGraphQL));
+        siriusComponentsDiagramsBackend.getElements().addAll(List.of(siriusComponentsDiagrams, siriusComponentsCollaborativeDiagrams, siriusComponentsDiagramsGraphQL));
 
         var resource = this.createResource(editingContext, "Sirius Components - Diagrams");
         resource.getContents().add(siriusComponentsDiagramsBackend);
@@ -191,7 +191,7 @@ public class SiriusWebProjectFactory implements IObjectFactory {
 
         var siriusComponentsDomainBackend = PapayaFactory.eINSTANCE.createProject();
         siriusComponentsDomainBackend.setName("backend");
-        siriusComponentsDomainBackend.getComponents().addAll(List.of(siriusComponentsDomain, siriusComponentsDomainEdit, siriusComponentsDomainEMF));
+        siriusComponentsDomainBackend.getElements().addAll(List.of(siriusComponentsDomain, siriusComponentsDomainEdit, siriusComponentsDomainEMF));
 
         var resource = this.createResource(editingContext, "Sirius Components - Domain");
         resource.getContents().add(siriusComponentsDomainBackend);
@@ -217,7 +217,7 @@ public class SiriusWebProjectFactory implements IObjectFactory {
 
         var siriusComponentsEMFBackend = PapayaFactory.eINSTANCE.createProject();
         siriusComponentsEMFBackend.setName("backend");
-        siriusComponentsEMFBackend.getComponents().addAll(List.of(siriusComponentsEMF, siriusComponentsEMFForms, siriusComponentsInterpreter));
+        siriusComponentsEMFBackend.getElements().addAll(List.of(siriusComponentsEMF, siriusComponentsEMFForms, siriusComponentsInterpreter));
 
         var resource = this.createResource(editingContext, "Sirius Components - EMF");
         resource.getContents().add(siriusComponentsEMFBackend);
@@ -249,7 +249,7 @@ public class SiriusWebProjectFactory implements IObjectFactory {
 
         var siriusComponentsFormDescriptionEditorsBackend = PapayaFactory.eINSTANCE.createProject();
         siriusComponentsFormDescriptionEditorsBackend.setName("backend");
-        siriusComponentsFormDescriptionEditorsBackend.getComponents().addAll(List.of(siriusComponentsFormDescriptionEditors, siriusComponentsCollaborativeFormDescriptionEditors, siriusComponentsCollaborativeFormDescriptionEditorsWidgetReference, siriusComponentsFormDescriptionEditorsGraphQL));
+        siriusComponentsFormDescriptionEditorsBackend.getElements().addAll(List.of(siriusComponentsFormDescriptionEditors, siriusComponentsCollaborativeFormDescriptionEditors, siriusComponentsCollaborativeFormDescriptionEditorsWidgetReference, siriusComponentsFormDescriptionEditorsGraphQL));
 
         var resource = this.createResource(editingContext, "Sirius Components - Form Description Editors");
         resource.getContents().add(siriusComponentsFormDescriptionEditorsBackend);
@@ -291,7 +291,7 @@ public class SiriusWebProjectFactory implements IObjectFactory {
 
         var siriusComponentsFormsBackend = PapayaFactory.eINSTANCE.createProject();
         siriusComponentsFormsBackend.setName("backend");
-        siriusComponentsFormsBackend.getComponents().addAll(List.of(siriusComponentsForms, siriusComponentsCollaborativeForms, siriusComponentsFormsGraphQL, siriusComponentsWidgetReference, siriusComponentsCollaborativeWidgetReference, siriusComponentsWidgetReferenceGraphQL));
+        siriusComponentsFormsBackend.getElements().addAll(List.of(siriusComponentsForms, siriusComponentsCollaborativeForms, siriusComponentsFormsGraphQL, siriusComponentsWidgetReference, siriusComponentsCollaborativeWidgetReference, siriusComponentsWidgetReferenceGraphQL));
 
         var resource = this.createResource(editingContext, "Sirius Components - Forms");
         resource.getContents().add(siriusComponentsFormsBackend);
@@ -312,7 +312,7 @@ public class SiriusWebProjectFactory implements IObjectFactory {
 
         var siriusComponentsGanttBackend = PapayaFactory.eINSTANCE.createProject();
         siriusComponentsGanttBackend.setName("backend");
-        siriusComponentsGanttBackend.getComponents().addAll(List.of(siriusComponentsGantt, siriusComponentsCollaborativeGantt, siriusComponentsGanttGraphQL));
+        siriusComponentsGanttBackend.getElements().addAll(List.of(siriusComponentsGantt, siriusComponentsCollaborativeGantt, siriusComponentsGanttGraphQL));
 
         var resource = this.createResource(editingContext, "Sirius Components - Gantt");
         resource.getContents().add(siriusComponentsGanttBackend);
@@ -331,7 +331,7 @@ public class SiriusWebProjectFactory implements IObjectFactory {
 
         var siriusComponentsPapayaBackend = PapayaFactory.eINSTANCE.createProject();
         siriusComponentsPapayaBackend.setName("backend");
-        siriusComponentsPapayaBackend.getComponents().addAll(List.of(siriusComponentsPapaya, siriusComponentsPapayaEdit));
+        siriusComponentsPapayaBackend.getElements().addAll(List.of(siriusComponentsPapaya, siriusComponentsPapayaEdit));
 
         var resource = this.createResource(editingContext, "Sirius Components - Papaya");
         resource.getContents().add(siriusComponentsPapayaBackend);
@@ -349,7 +349,7 @@ public class SiriusWebProjectFactory implements IObjectFactory {
 
         var siriusComponentsPortalsBackend = PapayaFactory.eINSTANCE.createProject();
         siriusComponentsPortalsBackend.setName("backend");
-        siriusComponentsPortalsBackend.getComponents().addAll(List.of(siriusComponentsPortals, siriusComponentsCollaborativePortals, siriusComponentsPortalsGraphQL));
+        siriusComponentsPortalsBackend.getElements().addAll(List.of(siriusComponentsPortals, siriusComponentsCollaborativePortals, siriusComponentsPortalsGraphQL));
 
         var resource = this.createResource(editingContext, "Sirius Components - Portals");
         resource.getContents().add(siriusComponentsPortalsBackend);
@@ -367,7 +367,7 @@ public class SiriusWebProjectFactory implements IObjectFactory {
 
         var siriusComponentsSelectionBackend = PapayaFactory.eINSTANCE.createProject();
         siriusComponentsSelectionBackend.setName("backend");
-        siriusComponentsSelectionBackend.getComponents().addAll(List.of(siriusComponentsSelection, siriusComponentsCollaborativeSelection, siriusComponentsSelectionGraphQL));
+        siriusComponentsSelectionBackend.getElements().addAll(List.of(siriusComponentsSelection, siriusComponentsCollaborativeSelection, siriusComponentsSelectionGraphQL));
 
         var resource = this.createResource(editingContext, "Sirius Components - Selection");
         resource.getContents().add(siriusComponentsSelectionBackend);
@@ -383,7 +383,7 @@ public class SiriusWebProjectFactory implements IObjectFactory {
 
         var siriusWebBackend = PapayaFactory.eINSTANCE.createProject();
         siriusWebBackend.setName("backend");
-        siriusWebBackend.getComponents().addAll(List.of(siriusWebDomain, siriusWebApplication, siriusWebInfrastructure, siriusWebStarter, siriusWebPapaya, siriusWeb));
+        siriusWebBackend.getElements().addAll(List.of(siriusWebDomain, siriusWebApplication, siriusWebInfrastructure, siriusWebStarter, siriusWebPapaya, siriusWeb));
 
         var resource = this.createResource(editingContext, "Sirius Web");
         resource.getContents().add(siriusWebBackend);
@@ -401,7 +401,7 @@ public class SiriusWebProjectFactory implements IObjectFactory {
 
         var siriusComponentsTreesBackend = PapayaFactory.eINSTANCE.createProject();
         siriusComponentsTreesBackend.setName("backend");
-        siriusComponentsTreesBackend.getComponents().addAll(List.of(siriusComponentsTrees, siriusComponentsCollaborativeTrees, siriusComponentsTreesGraphQL));
+        siriusComponentsTreesBackend.getElements().addAll(List.of(siriusComponentsTrees, siriusComponentsCollaborativeTrees, siriusComponentsTreesGraphQL));
 
         var resource = this.createResource(editingContext, "Sirius Components - Trees");
         resource.getContents().add(siriusComponentsTreesBackend);
@@ -421,7 +421,7 @@ public class SiriusWebProjectFactory implements IObjectFactory {
 
         var siriusComponentsValidationBackend = PapayaFactory.eINSTANCE.createProject();
         siriusComponentsValidationBackend.setName("backend");
-        siriusComponentsValidationBackend.getComponents().addAll(List.of(siriusComponentsValidation, siriusComponentsCollaborativeValidation, siriusComponentsValidationGraphQL));
+        siriusComponentsValidationBackend.getElements().addAll(List.of(siriusComponentsValidation, siriusComponentsCollaborativeValidation, siriusComponentsValidationGraphQL));
 
         var resource = this.createResource(editingContext, "Sirius Components - Validation");
         resource.getContents().add(siriusComponentsValidationBackend);
@@ -498,7 +498,7 @@ public class SiriusWebProjectFactory implements IObjectFactory {
 
         var siriusComponentsViewBackend = PapayaFactory.eINSTANCE.createProject();
         siriusComponentsViewBackend.setName("backend");
-        siriusComponentsViewBackend.getComponents().addAll(List.of(
+        siriusComponentsViewBackend.getElements().addAll(List.of(
                 siriusComponentsView,
                 siriusComponentsViewEdit,
                 siriusComponentsViewBuilder,
@@ -525,7 +525,7 @@ public class SiriusWebProjectFactory implements IObjectFactory {
 
         var siriusComponentsWebBackend = PapayaFactory.eINSTANCE.createProject();
         siriusComponentsWebBackend.setName("backend");
-        siriusComponentsWebBackend.getComponents().addAll(List.of(siriusComponentsGraphQL, siriusComponentsWeb));
+        siriusComponentsWebBackend.getElements().addAll(List.of(siriusComponentsGraphQL, siriusComponentsWeb));
 
         var resource = this.createResource(editingContext, "Sirius Components - Web");
         resource.getContents().add(siriusComponentsWebBackend);

@@ -55,26 +55,26 @@ public class CursorBasedNavigationServicesTests {
                 .toList();
 
         var expectedNames = List.of(
-                "projects : Project",
-                "Project",
-                "components : Component",
-                "Component",
-                "allComponents : Component",
-                "Component",
-                "componentExchanges : ComponentExchange",
-                "ComponentExchange",
-                "iterations : Iteration",
-                "Iteration",
+                "homepage : EString",
+                "EString",
+                "NamedElement",
+                "Container",
+                "Iteration -> NamedElement, FolderElement [org.eclipse.sirius.components.papaya.Iteration]",
+                "startDate : Instant",
+                "Instant",
+                "endDate : Instant",
+                "Instant",
                 "tasks : Task",
                 "Task",
                 "contributions : Contribution",
                 "Contribution",
-                "applicationConcerns : ApplicationConcern",
-                "ApplicationConcern",
-                "domains : Domain",
-                "Domain",
-                "channels : Channel",
-                "Channel"
+                "NamedElement",
+                "FolderElement",
+                "Task -> NamedElement, FolderElement [org.eclipse.sirius.components.papaya.Task]",
+                "priority : Priority",
+                "Priority",
+                "cost : EInt",
+                "EInt"
         );
 
         assertThat(names)
@@ -117,9 +117,7 @@ public class CursorBasedNavigationServicesTests {
         var expectedNames = List.of(
                 "tasks : Task",
                 "Task",
-                "tasks : Task",
-                "Task",
-                "Task -> NamedElement [org.eclipse.sirius.components.papaya.Task]",
+                "Task -> NamedElement, FolderElement [org.eclipse.sirius.components.papaya.Task]",
                 "tasks : Task",
                 "Task",
                 "dependencies : Task",
@@ -145,7 +143,7 @@ public class CursorBasedNavigationServicesTests {
         var paginatedData = new CursorBasedNavigationServices().collect(self, cursor, "PREV", 20);
 
         assertThat(paginatedData).isNotNull();
-        assertThat(paginatedData.hasPreviousPage()).isFalse();
+        assertThat(paginatedData.hasPreviousPage()).isTrue();
         assertThat(paginatedData.hasNextPage()).isTrue();
 
         var names = paginatedData.rows().stream()
@@ -161,10 +159,6 @@ public class CursorBasedNavigationServicesTests {
                 .toList();
 
         var expectedNames = List.of(
-                "papaya",
-                "ModelElement [org.eclipse.sirius.components.papaya.ModelElement]",
-                "tags : Tag",
-                "Tag",
                 "Tag [org.eclipse.sirius.components.papaya.Tag]",
                 "key : EString",
                 "EString",
@@ -175,7 +169,16 @@ public class CursorBasedNavigationServicesTests {
                 "EString",
                 "description : EString",
                 "EString",
-                "ModelElement"
+                "ModelElement",
+                "Container [org.eclipse.sirius.components.papaya.Container]",
+                "folders : Folder",
+                "Folder",
+                "elements : FolderElement",
+                "FolderElement",
+                "Folder -> NamedElement, Container [org.eclipse.sirius.components.papaya.Folder]",
+                "NamedElement",
+                "Container",
+                "FolderElement [org.eclipse.sirius.components.papaya.FolderElement]"
         );
 
         assertThat(names)
