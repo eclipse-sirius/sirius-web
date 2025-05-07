@@ -47,6 +47,7 @@ import { NodeTypeContext } from '../contexts/NodeContext';
 import { NodeTypeContextValue } from '../contexts/NodeContext.types';
 import { useDiagramDescription } from '../contexts/useDiagramDescription';
 import { convertDiagram } from '../converter/convertDiagram';
+import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { useStore } from '../representation/useStore';
 import { Diagram, DiagramRendererProps, EdgeData, NodeData, ReactFlowPropsCustomizer } from './DiagramRenderer.types';
 import { diagramRendererReactFlowPropsCustomizerExtensionPoint } from './DiagramRendererExtensionPoints';
@@ -78,6 +79,7 @@ import { useSynchronizeLayoutData } from './layout/useSynchronizeLayoutData';
 import { useMoveChange } from './move/useMoveChange';
 import { useNodeType } from './node/useNodeType';
 import { DiagramPalette } from './palette/DiagramPalette';
+import { GQLTool } from './palette/Palette.types';
 import { GroupPalette } from './palette/group-tool/GroupPalette';
 import { useGroupPalette } from './palette/group-tool/useGroupPalette';
 import { useDiagramElementPalette } from './palette/useDiagramElementPalette';
@@ -88,9 +90,14 @@ import { useResizeChange } from './resize/useResizeChange';
 import { useDiagramSelection } from './selection/useDiagramSelection';
 import { useShiftSelection } from './selection/useShiftSelection';
 import { useSnapToGrid } from './snap-to-grid/useSnapToGrid';
+import { useInvokePaletteTool } from './tools/useInvokePaletteTool';
 
 const GRID_STEP: number = 10;
 
+/**
+ * Helper to keep track of the state of the "Alt" key used to trigger the "repeat last tool"
+ * behavior.
+ */
 const useAltKeyPressedStatus = (refDomNode: React.MutableRefObject<HTMLElement | null>) => {
   const [isKeyPressed, setKeyPressed] = useState<boolean>(false);
 
@@ -119,6 +126,21 @@ const useAltKeyPressedStatus = (refDomNode: React.MutableRefObject<HTMLElement |
   return isKeyPressed;
 };
 
+// FIXME: These two function only work for View-based diagrams and depends on details of the backend
+// See org.eclipse.sirius.components.view.emf.diagram.ViewPaletteProvider
+
+const getDiagramPaletteId = (diagramDescription: GQLDiagramDescription) => {
+  const fullId = diagramDescription.id;
+  const diagramDescriptionUUID = fullId.substring(fullId.lastIndexOf('=') + 1);
+  return `siriusComponents://diagramPalette?diagramId=${diagramDescriptionUUID}`;
+};
+
+const getNodePaletteId = (node: Node<NodeData>) => {
+  const fullId = node.data.descriptionId;
+  const nodeDescriptionUUID = fullId.substring(fullId.lastIndexOf('=') + 1);
+  return `siriusComponents://nodePalette?nodeId=${nodeDescriptionUUID}`;
+};
+
 export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRendererProps) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { diagramDescription } = useDiagramDescription();
@@ -137,9 +159,11 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     onDiagramBackgroundContextMenu,
     onDiagramElementContextMenu: diagramPaletteOnDiagramElementContextMenu,
     hideDiagramPalette,
+    getLastToolInvoked,
   } = useDiagramPalette();
   const { onDiagramElementContextMenu: elementPaletteOnDiagramElementContextMenu, hideDiagramElementPalette } =
     useDiagramElementPalette();
+  const { invokeTool } = useInvokePaletteTool();
 
   const {
     onDiagramElementContextMenu: groupPaletteOnDiagramElementContextMenu,
@@ -458,11 +482,27 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     [groupPaletteOnDiagramElementContextMenu]
   );
 
-  const onClick = useCallback(
-    (_: React.MouseEvent<Element, MouseEvent>) => {
+  const onClick = useCallback(() => {
+    hideAllPalettes();
+  }, [hideAllPalettes]);
+
+  const { screenToFlowPosition } = useReactFlow();
+
+  const handleClick = useCallback(
+    (event: React.MouseEvent<Element, MouseEvent>, node: Node<NodeData> | null) => {
       hideAllPalettes();
+      if (isAltKeyDown) {
+        const paletteContextId = node ? getNodePaletteId(node) : getDiagramPaletteId(diagramDescription);
+        const lastToolInvoked: GQLTool | null = getLastToolInvoked(paletteContextId);
+        if (lastToolInvoked) {
+          const { x, y } = screenToFlowPosition({ x: event.clientX, y: event.clientY });
+          const diagramElementId = node ? node.id : diagramRefreshedEventPayload.diagram.id;
+          const targetObjectId = node ? node.data.targetObjectId : diagramRefreshedEventPayload.diagram.targetObjectId;
+          invokeTool(lastToolInvoked, diagramElementId, targetObjectId, x, y, () => {});
+        }
+      }
     },
-    [hideAllPalettes]
+    [hideAllPalettes, isAltKeyDown, getLastToolInvoked, invokeTool]
   );
 
   const { onNodeMouseEnter, onNodeMouseLeave } = useNodeHover();
@@ -489,6 +529,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     edgesReconnectable: !readOnly,
     onKeyDown: onKeyDown,
     onClick: onClick,
+    onPaneClick: (e) => handleClick(e, null),
     onConnect: onConnect,
     onConnectStart: onConnectStart,
     onConnectEnd: onConnectEnd,
@@ -504,6 +545,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     nodeDragThreshold: 1,
     onDrop: onDrop,
     onDragOver: onDragOver,
+    onNodeClick: handleClick,
     onNodeDrag: handleNodeDrag,
     onNodeDragStart: onNodeDragStart,
     onNodeDragStop: onNodeDragStop,
