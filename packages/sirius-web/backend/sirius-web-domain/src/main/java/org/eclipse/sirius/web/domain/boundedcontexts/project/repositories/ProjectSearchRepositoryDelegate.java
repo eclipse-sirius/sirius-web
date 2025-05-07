@@ -45,32 +45,92 @@ public class ProjectSearchRepositoryDelegate implements IProjectSearchRepository
     private static final String FIND_ALL_BEFORE = """
             SELECT p.*
             FROM project p
-            WHERE
-                (cast(:cursorProjectId as uuid) IS NULL
-                    OR (p.id <> :cursorProjectId
-                        AND p.created_on <= (
-                        SELECT created_on
-                        FROM project
-                        WHERE project.id = :cursorProjectId))
+            WHERE (
+                cast(:cursorProjectId as uuid) IS NULL
+                OR (
+                    p.id <> :cursorProjectId
+                    AND p.created_on < (
+                        SELECT cursorProject.created_on
+                        FROM project cursorProject
+                        WHERE cursorProject.id = :cursorProjectId
+                    )
+                )
+                OR (
+                    p.id <> :cursorProjectId
+                    AND p.created_on = (
+                        SELECT cursorProject.created_on
+                        FROM project cursorProject
+                        WHERE cursorProject.id = :cursorProjectId
+                    )
+                    AND p.name < (
+                        SELECT cursorProject.name
+                        FROM project cursorProject
+                        WHERE cursorProject.id = :cursorProjectId
+                    )
+                )
+                OR (
+                    p.id <> :cursorProjectId
+                    AND p.created_on = (
+                        SELECT cursorProject.created_on
+                        FROM project cursorProject
+                        WHERE cursorProject.id = :cursorProjectId
+                    )
+                    AND p.name = (
+                        SELECT cursorProject.name
+                        FROM project cursorProject
+                        WHERE cursorProject.id = :cursorProjectId
+                    )
+                    AND p.id < :cursorProjectId
+                )
             )
             AND CASE WHEN :name <> '' THEN LOWER(p.name) LIKE CONCAT('%', CONCAT(LOWER(:name), '%')) ELSE true END
-            ORDER BY p.created_on desc, p.name
+            ORDER BY p.created_on desc, p.name asc, p.id asc
             LIMIT :limit;
             """;
 
     private static final String FIND_ALL_AFTER = """
             SELECT p.*
             FROM project p
-            WHERE
-                (cast(:cursorProjectId as uuid) IS NULL
-                    OR (p.id <> :cursorProjectId
-                        AND p.created_on >= (
-                        SELECT created_on
-                        FROM project
-                        WHERE project.id = :cursorProjectId))
+            WHERE (
+                cast(:cursorProjectId as uuid) IS NULL
+                OR (
+                    p.id <> :cursorProjectId
+                    AND p.created_on > (
+                        SELECT cursorProject.created_on
+                        FROM project cursorProject
+                        WHERE cursorProject.id = :cursorProjectId
+                    )
+                )
+                OR (
+                    p.id <> :cursorProjectId
+                    AND p.created_on = (
+                        SELECT cursorProject.created_on
+                        FROM project cursorProject
+                        WHERE cursorProject.id = :cursorProjectId
+                    )
+                    AND p.name > (
+                        SELECT cursorProject.name
+                        FROM project cursorProject
+                        WHERE cursorProject.id = :cursorProjectId
+                    )
+                )
+                OR (
+                    p.id <> :cursorProjectId
+                    AND p.created_on = (
+                        SELECT cursorProject.created_on
+                        FROM project cursorProject
+                        WHERE cursorProject.id = :cursorProjectId
+                    )
+                    AND p.name = (
+                        SELECT cursorProject.name
+                        FROM project cursorProject
+                        WHERE cursorProject.id = :cursorProjectId
+                    )
+                    AND p.id > :cursorProjectId
+                )
             )
             AND CASE WHEN :name <> '' THEN LOWER(p.name) LIKE CONCAT('%', CONCAT(LOWER(:name), '%')) ELSE true END
-            ORDER BY p.created_on asc, p.name
+            ORDER BY p.created_on asc, p.name asc, p.id asc
             LIMIT :limit;
             """;
 

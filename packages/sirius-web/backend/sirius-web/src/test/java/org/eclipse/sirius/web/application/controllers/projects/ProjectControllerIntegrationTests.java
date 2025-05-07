@@ -17,6 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -31,6 +33,7 @@ import org.eclipse.sirius.web.application.project.dto.ProjectEventInput;
 import org.eclipse.sirius.web.application.project.dto.ProjectRenamedEventPayload;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectInput;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectSuccessPayload;
+import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectDeletedEvent;
@@ -158,6 +161,45 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
 
         List<String> projectIds = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.id");
         assertThat(projectIds).hasSize(2);
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a set of projects, when they are requested one by one, then they are returned one by one")
+    public void givenSetOfProjectsWhenTheyAreRequestedOneByOneThenTheyAreReturnedOneByOne() {
+        boolean hasNextPage = true;
+        String after = null;
+        List<String> projectReceived = new ArrayList<>();
+
+        while (hasNextPage) {
+            Map<String, Object> variables = new HashMap<>();
+            variables.put("first", 1);
+            if (after != null) {
+                variables.put("after", after);
+            }
+
+            var result = this.projectsQueryRunner.run(variables);
+
+            boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasPreviousPage");
+            assertThat(hasPreviousPage).isEqualTo(projectReceived.size() > 0);
+
+            hasNextPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasNextPage");
+
+            String startCursor = JsonPath.read(result, "$.data.viewer.projects.pageInfo.startCursor");
+            assertThat(startCursor).isNotBlank();
+
+            String endCursor = JsonPath.read(result, "$.data.viewer.projects.pageInfo.endCursor");
+            assertThat(endCursor).isNotBlank();
+            after = endCursor;
+
+            int count = JsonPath.read(result, "$.data.viewer.projects.pageInfo.count");
+            assertThat(count).isEqualTo(1);
+
+            List<String> projectIds = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.id");
+            projectReceived.addAll(projectIds);
+        }
+
+        assertThat(projectReceived.size()).isPositive();
     }
 
     @Test
@@ -341,18 +383,18 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @GivenSiriusWebServer
     @DisplayName("Given a valid input, when a forward findAll is performed, then the returned window contains the projects after the input project")
     public void givenAValidInputWhenAForwardFindallIsPerformedThenTheReturnedWindowContainsTheProjectsAfterTheInputProject() {
-        var keyset = ScrollPosition.forward(Map.of("id", TestIdentifiers.UML_SAMPLE_PROJECT));
+        var keyset = ScrollPosition.forward(Map.of("id", TestIdentifiers.ECORE_SAMPLE_PROJECT));
         var window = this.projectSearchService.findAll(keyset, 1, Map.of());
         assertThat(window).isNotNull();
         assertThat(window.size()).isOne();
-        assertThat(window.getContent().get(0).getId()).isEqualTo(TestIdentifiers.ECORE_SAMPLE_PROJECT);
+        assertThat(window.getContent().get(0).getId()).isEqualTo(StudioIdentifiers.EMPTY_STUDIO_PROJECT);
     }
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a valid input, when a forward findAll is performed, then the returned window contains the projects after the input project")
+    @DisplayName("Given a valid input, when a backward findAll is performed, then the returned window contains the projects after the input project")
     public void givenAValidInputWhenABackwardFindallIsPerformedThenTheReturnedWindowContainsTheProjectsAfterTheInputProject() {
-        var keyset = ScrollPosition.backward(Map.of("id", TestIdentifiers.UML_SAMPLE_PROJECT));
+        var keyset = ScrollPosition.backward(Map.of("id", StudioIdentifiers.EMPTY_STUDIO_PROJECT));
         var window = this.projectSearchService.findAll(keyset, 1, Map.of());
         assertThat(window).isNotNull();
         assertThat(window.size()).isOne();

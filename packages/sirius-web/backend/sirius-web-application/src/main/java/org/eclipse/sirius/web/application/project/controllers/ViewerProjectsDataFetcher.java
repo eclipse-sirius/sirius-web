@@ -23,9 +23,10 @@ import java.util.stream.Collectors;
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.core.graphql.dto.PageInfoWithCount;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.web.application.pagination.services.api.ILimitProvider;
 import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
 import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.services.Window;
+import org.eclipse.sirius.web.domain.pagination.Window;
 import org.springframework.data.domain.KeysetScrollPosition;
 import org.springframework.data.domain.ScrollPosition;
 
@@ -46,8 +47,6 @@ import graphql.schema.DataFetchingEnvironment;
 @QueryDataFetcher(type = "Viewer", field = "projects")
 public class ViewerProjectsDataFetcher implements IDataFetcherWithFieldCoordinates<Connection<ProjectDTO>> {
 
-    private static final int DEFAULT_PAGE_SIZE = 20;
-
     private static final String FIRST_ARGUMENT = "first";
 
     private static final String LAST_ARGUMENT = "last";
@@ -60,8 +59,11 @@ public class ViewerProjectsDataFetcher implements IDataFetcherWithFieldCoordinat
 
     private final IProjectApplicationService projectApplicationService;
 
-    public ViewerProjectsDataFetcher(IProjectApplicationService projectApplicationService) {
+    private final ILimitProvider limitProvider;
+
+    public ViewerProjectsDataFetcher(IProjectApplicationService projectApplicationService, ILimitProvider limitProvider) {
         this.projectApplicationService = Objects.requireNonNull(projectApplicationService);
+        this.limitProvider = Objects.requireNonNull(limitProvider);
     }
 
     @Override
@@ -73,13 +75,13 @@ public class ViewerProjectsDataFetcher implements IDataFetcherWithFieldCoordinat
         Map<String, Object> filter = Optional.ofNullable(environment.<Map<String, Object>>getArgument(FILTER_ARGUMENT)).orElseGet(Map::of);
 
         KeysetScrollPosition position = this.getPosition(after, before);
-        int limit = this.getLimit(first, last, after, before);
+        int limit = this.limitProvider.getLimit(20, first, last, after, before);
 
         var projectPage = this.projectApplicationService.findAll(position, limit, filter);
         return this.toConnection(projectPage, position);
     }
 
-    private KeysetScrollPosition getPosition(Optional<String> after, Optional<String> before) {
+    public KeysetScrollPosition getPosition(Optional<String> after, Optional<String> before) {
         KeysetScrollPosition position = ScrollPosition.keyset();
         if (after.isPresent() && before.isEmpty()) {
             var projectId = after.get();
@@ -93,40 +95,8 @@ public class ViewerProjectsDataFetcher implements IDataFetcherWithFieldCoordinat
         return position;
     }
 
-    private int getLimit(Optional<Integer> first, Optional<Integer> last, Optional<String> after, Optional<String> before) {
-        int limit = 0;
-        if (after.isPresent() && before.isEmpty()) {
-            if (last.isPresent()) {
-                limit = 0;
-            } else if (first.isPresent()) {
-                limit = first.get();
-            } else {
-                limit = DEFAULT_PAGE_SIZE;
-            }
-        } else if (before.isPresent() && after.isEmpty()) {
-            if (first.isPresent()) {
-                limit = 0;
-            } else if (last.isPresent()) {
-                limit = last.get();
-            } else {
-                limit = DEFAULT_PAGE_SIZE;
-            }
-        } else if (before.isEmpty() && after.isEmpty()) {
-            if (first.isPresent() && last.isPresent()) {
-                limit = 0;
-            } else if (first.isPresent()) {
-                limit = first.get();
-            } else if (last.isPresent()) {
-                limit = last.get();
-            } else {
-                limit = DEFAULT_PAGE_SIZE;
-            }
-        }
-        return limit;
-    }
-
-    private Connection<ProjectDTO> toConnection(Window<ProjectDTO> projectPage, KeysetScrollPosition position) {
-        List<Edge<ProjectDTO>> edges = projectPage.stream().map(projectDTO -> {
+    private Connection<ProjectDTO> toConnection(Window<ProjectDTO> window, KeysetScrollPosition position) {
+        List<Edge<ProjectDTO>> edges = window.stream().map(projectDTO -> {
             var globalId = new Relay().toGlobalId("Project", projectDTO.id());
             var cursor = new DefaultConnectionCursor(globalId);
             return (Edge<ProjectDTO>) new DefaultEdge<>(projectDTO, cursor);
@@ -144,7 +114,7 @@ public class ViewerProjectsDataFetcher implements IDataFetcherWithFieldCoordinat
             endCursor = edges.get(edges.size() - 1).getCursor();
         }
 
-        var pageInfo = new PageInfoWithCount(startCursor, endCursor, projectPage.hasPrevious(), projectPage.hasNext(), projectPage.size());
+        var pageInfo = new PageInfoWithCount(startCursor, endCursor, window.hasPrevious(), window.hasNext(), window.size());
         return new DefaultConnection<>(edges, pageInfo);
     }
 }
