@@ -53,7 +53,7 @@ The following dependencies have been updated:
 - [releng] Switch `@mui/material` to `7.0.2`
 - [releng] Switch `@mui/icons-material` to `7.0.2`
 - [releng] Switch `tss-react` to `4.9.16`
-- [releng] Switch to Sirius EMF JSON 2.5.0
+- [releng] Switch to Sirius EMF JSON 2.5.1
 - [releng] Switch to `@mui/x-tree-view` to `7.29.1`
 
 
@@ -106,7 +106,7 @@ On large projects this can significantly reduce the amount of data fetched from 
 - [sirius-web] The switch to Sirius EMF JSON 2.5.0 should greatly improve the performance of loading and saving semantic data.
 This is mostly visible when cold-opening projects with large documents (load performance), and when saving semantic data after edition operations.
 Note that the improvements will only be visible for projects created or modified after the update; existing semantic data which has not been modified will continue to be "slow" to load/read until it is modified at least once and saved in the new, improved format.
-
+- [releng] Switch to Sirius EMF JSON 2.5.1 and thus add the ability for a migration participant to change the URI used by a proxy during a migration.
 
 
 == v2025.4.0

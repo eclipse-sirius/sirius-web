@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.BasicExtendedMetaData;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
@@ -147,6 +148,18 @@ public class MigrationService extends BasicExtendedMetaData implements JsonResou
             }
         }
         return returnValue;
+    }
+
+    @Override
+    public String getEObjectUri(EObject eObject, EReference eReference, String uri) {
+        String updatedUri = uri;
+        for (IMigrationParticipant migrationParticipant : this.migrationParticipantsCandidates) {
+            String newValue = migrationParticipant.getEObjectUri(eObject, eReference, updatedUri);
+            if (newValue != null) {
+                updatedUri = newValue;
+            }
+        }
+        return updatedUri;
     }
 
     private Optional<ResourceMetadataAdapter> getOptionalResourceMetadataAdapter(JsonResource resource) {
