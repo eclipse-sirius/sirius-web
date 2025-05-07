@@ -14,7 +14,13 @@
 export { DiagramContext } from './contexts/DiagramContext';
 export type { DiagramContextValue } from './contexts/DiagramContext.types';
 export { NodeTypeContext } from './contexts/NodeContext';
-export type { NodeTypeContextValue, NodeTypeContributionElement } from './contexts/NodeContext.types';
+export type {
+  NodeTypeAppearanceSectionContributionElement,
+  NodeTypeAppearanceSectionContributionProps,
+  NodeTypeAppearanceSectionProps,
+  NodeTypeContextValue,
+  NodeTypeContributionElement,
+} from './contexts/NodeContext.types';
 export { convertLineStyle, isListLayoutStrategy } from './converter/convertDiagram';
 export { AlignmentMap } from './converter/convertDiagram.types';
 export type { IConvertEngine, INodeConverter } from './converter/ConvertEngine.types';
@@ -63,6 +69,8 @@ export { NodeContext } from './renderer/node/NodeContext';
 export type { NodeContextValue } from './renderer/node/NodeContext.types';
 export { NodeTypeContribution } from './renderer/node/NodeTypeContribution';
 export type { DiagramNodeType } from './renderer/node/NodeTypes.types';
+export { NodeTypeAppearanceSectionContribution } from './renderer/palette/appearance/NodeTypeAppearanceSectionContribution';
+export { RectangularNodeAppearanceSection } from './renderer/palette/appearance/RectangularNodeAppearanceSection';
 export { DiagramElementPalette } from './renderer/palette/DiagramElementPalette';
 export type { DiagramPaletteToolComponentProps } from './renderer/palette/extensions/DiagramPaletteTool.types';
 export type {

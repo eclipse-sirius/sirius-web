@@ -98,6 +98,7 @@ type Node {
   defaultWidth: Int
   defaultHeight: Int
   labelEditable: Boolean!
+  customizedStyleProperties: [String!]!
 }
 
 type FreeFormLayoutStrategy {
@@ -130,6 +131,7 @@ type InsideLabel {
   headerSeparatorDisplayMode: HeaderSeparatorDisplayMode!
   overflowStrategy: LabelOverflowStrategy!
   textAlign: LabelTextAlign!
+  customizedStyleProperties: [String!]!
 }
 
 enum HeaderSeparatorDisplayMode {
@@ -408,6 +410,9 @@ extend type Mutation {
   pinDiagramElement(input: PinDiagramElementInput!): PinDiagramElementPayload!
   layoutDiagram(input: LayoutDiagramInput!): LayoutDiagramPayload!
   invokeAction(input: InvokeActionInput!): InvokeActionPayload!
+  editRectangularNodeAppearance(input: EditRectangularNodeAppearanceInput!): EditRectangularNodeAppearancePayload!
+  resetNodeAppearance(input: ResetNodeAppearanceInput!): ResetNodeAppearancePayload!
+  resetLabelAppearance(input: ResetLabelAppearanceInput!): ResetLabelAppearancePayload!
 }
 
 input DropNodeInput {
@@ -661,3 +666,42 @@ type DiagramImpactAnalysisReport {
   nbElementCreated: Int!
   additionalReports: [String!]!
 }
+
+input EditRectangularNodeAppearanceInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  nodeId: ID!
+  appearance: RectangularNodeAppearanceInput!
+}
+
+input RectangularNodeAppearanceInput {
+  background: String
+  insideLabel: LabelAppearanceInput
+}
+
+input LabelAppearanceInput {
+  labelId: String!
+  bold: Boolean
+}
+
+union EditRectangularNodeAppearancePayload = ErrorPayload | SuccessPayload
+
+input ResetLabelAppearanceInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  ownerElementId: ID!
+  labelId: ID!
+  propertiesToReset: [String!]!
+}
+input ResetNodeAppearanceInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  nodeId: ID!
+  propertiesToReset: [String!]!
+}
+union ResetLabelAppearancePayload = ErrorPayload | SuccessPayload
+
+union ResetNodeAppearancePayload = ErrorPayload | SuccessPayload
