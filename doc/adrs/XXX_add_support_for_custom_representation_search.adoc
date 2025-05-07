@@ -1,0 +1,63 @@
+= ADR-XXX - Add the capability of customizing the representation search
+
+== Context
+
+To open a representation in the frontend of the application, a query is performed with each selection change to verify if it is a representation.
+The only parameters for this query are the `selectionId` (corresponding to the `treeItemId` when using the explorer) and the `editingContextId`.
+A database request is then made with this ID in the `representation_metadata` table.
+Therefore, to open a representation, the `selectionId` must correspond to a `representation_metadata`.
+However, a downstream application might want a representation to be directly linked to a semantic object.
+Thus, it is necessary to open an API to customize the representation search.
+
+== Decision
+
+Add an interface `IDelegateRepresentationSearchService` as follows:
+
+[source, java]
+----
+package org.eclipse.sirius.web.application.representation.services.api;
+
+import java.util.Optional;
+
+import org.eclipse.sirius.components.core.graphql.dto.RepresentationMetadataDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+public interface IDelegateRepresentationSearchService {
+
+    Page<RepresentationMetadataDTO> findAllByEditingContextId(String editingContextId, Pageable pageable);
+
+    Optional<RepresentationMetadataDTO> findRepresentationMetadataByEditingContextId(String editingContextId, String representationMetadataId);
+
+}
+----
+
+This API will be used in `EditingContextRepresentationsDataFetcher` to override, if present, the default behavior defined in `IRepresentationApplicationService`.
+
+[source, java]
+----
+List<RepresentationMetadataDTO> allRepresentationMetadata = representationIds.stream()
+                    .flatMap(representationId -> this.delegateRepresentationSearchServices.stream()
+                            .map(service -> service.findRepresentationMetadataByEditingContextId(editingContextId, representationId))
+                            .filter(Optional::isPresent)
+                            .findFirst()
+                            .orElseGet(() -> this.representationApplicationService.findRepresentationMetadataById(representationId))
+                            .stream())
+                    .toList();
+
+----
+
+Similarly, it will be possible to override the retrieval of all representations for an editing context.
+
+[source, java]
+----
+representationMetadataPage = this.delegateRepresentationSearchServices.stream()
+                    .map(service -> service.findAllByEditingContextId(editingContextId, PageRequest.of(0, 20)))
+                    .filter(page -> !page.isEmpty())
+                    .findFirst()
+                    .orElseGet(() -> this.representationApplicationService.findAllByEditingContextId(editingContextId, PageRequest.of(0, 20)));
+----
+
+== Status
+
+Accepted

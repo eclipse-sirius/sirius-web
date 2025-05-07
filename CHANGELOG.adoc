@@ -9,6 +9,7 @@
 === Architectural decision records
 
 - [ADR-192] Improve table representation lifecycle
+- [ADR-XXX] Add the capability of customizing the representation search
 
 === Deprecation warning
 
