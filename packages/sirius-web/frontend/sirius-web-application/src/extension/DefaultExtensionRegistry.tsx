@@ -21,9 +21,12 @@ import {
 } from '@eclipse-sirius/sirius-components-core';
 import { DeckRepresentation } from '@eclipse-sirius/sirius-components-deck';
 import {
+  ActionProps,
   DiagramDialogContribution,
+  DiagramNodeActionOverrideContribution,
   DiagramRepresentation,
   diagramDialogContributionExtensionPoint,
+  diagramNodeActionOverrideContributionExtensionPoint,
   diagramPanelActionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
@@ -82,6 +85,7 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import { Navigate, PathRouteProps, Link as RouterLink, useMatch } from 'react-router-dom';
 import { DiagramFilter } from '../diagrams/DiagramFilter';
+import { SiriusWebManageVisibilityNodeAction } from '../diagrams/nodeaction/SiriusWebManageVisibilityNodeAction';
 import { ApolloLinkUndoRedoStack } from '../graphql/ApolloLinkUndoRedoStack';
 import { ApolloClientOptionsConfigurer } from '../graphql/useCreateApolloClient.types';
 import { apolloClientOptionsConfigurersExtensionPoint } from '../graphql/useCreateApolloClientExtensionPoints';
@@ -636,5 +640,29 @@ defaultExtensionRegistry.putData(routerExtensionPoint, {
   identifier: `siriusweb_${routerExtensionPoint.identifier}`,
   data: siriusWebRouterContributions,
 });
+
+/*******************************************************************************
+ *
+ * Diagram node action command overrides
+ *
+ * Used to override the default rendering of diagram node action manage visibility
+ *
+ *******************************************************************************/
+const diagramNodeActionOverrides: DiagramNodeActionOverrideContribution[] = [
+  {
+    canHandle: ({ action, diagramElementId }: ActionProps) => {
+      return action.id === 'siriusweb_manage_visibility' && !!diagramElementId;
+    },
+    component: SiriusWebManageVisibilityNodeAction,
+  },
+];
+
+defaultExtensionRegistry.putData<DiagramNodeActionOverrideContribution[]>(
+  diagramNodeActionOverrideContributionExtensionPoint,
+  {
+    identifier: `siriusweb_${diagramNodeActionOverrideContributionExtensionPoint.identifier}`,
+    data: diagramNodeActionOverrides,
+  }
+);
 
 export { defaultExtensionRegistry };

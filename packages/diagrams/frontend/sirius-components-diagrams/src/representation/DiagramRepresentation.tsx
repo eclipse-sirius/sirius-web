@@ -17,6 +17,7 @@ import { ReactFlowProvider } from '@xyflow/react';
 import { memo, useEffect, useState } from 'react';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramDescriptionContext } from '../contexts/DiagramDescriptionContext';
+import { ManageVisibilityContextProvider } from '../renderer/actions/visibility/ManageVisibilityContextProvider';
 import { ConnectorContextProvider } from '../renderer/connector/ConnectorContext';
 import { DiagramDirectEditContextProvider } from '../renderer/direct-edit/DiagramDirectEditContext';
 import { DropNodeContextProvider } from '../renderer/dropNode/DropNodeContext';
@@ -124,10 +125,12 @@ export const DiagramRepresentation = memo(
                             diagramId: representationId,
                             readOnly,
                           }}>
-                          <DiagramSubscriptionProvider
-                            diagramId={representationId}
-                            editingContextId={editingContextId}
-                            readOnly={readOnly}></DiagramSubscriptionProvider>
+                          <ManageVisibilityContextProvider>
+                            <DiagramSubscriptionProvider
+                              diagramId={representationId}
+                              editingContextId={editingContextId}
+                              readOnly={readOnly}></DiagramSubscriptionProvider>
+                          </ManageVisibilityContextProvider>
                         </DiagramContext.Provider>
                       </DiagramDescriptionContext.Provider>
                     </FullscreenContextProvider>
