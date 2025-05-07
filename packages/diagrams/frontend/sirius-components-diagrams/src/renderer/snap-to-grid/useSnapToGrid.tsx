@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,11 +11,17 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UseSnapToGridValue } from './useSnapToGrid.types';
 
-export const useSnapToGrid = (): UseSnapToGridValue => {
-  const [state, setState] = useState<boolean>(false);
+export const useSnapToGrid = (defaultState: boolean, canSnapToGrid: boolean): UseSnapToGridValue => {
+  const [state, setState] = useState<boolean>(defaultState);
+
+  useEffect(() => {
+    if (!canSnapToGrid) {
+      setState(false);
+    }
+  }, [state, canSnapToGrid]);
 
   return {
     snapToGrid: state,
