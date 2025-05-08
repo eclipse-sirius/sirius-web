@@ -1,0 +1,68 @@
+= For Studio Users
+
+== General Questions
+
+.What is {sw}? Why should I use it?
+[%collapsible]
+====
+xref:ROOT:introduction/overview.adoc[This page] presents {sw} and explains for which problems it is a good solution.
+====
+
+.What is the license under which {sw} is provided?
+[%collapsible]
+====
+{sw} is available under the xref:legal:index.adoc[Eclipse Public License v2.0].
+====
+
+.Can I use {sw} in a commercial product?
+[%collapsible]
+====
+Yes, as long as you follow the xref:legal:index.adoc[license].
+====
+
+.I would like to contribute a bug fix or a new feature to {sw}. How should I go about it?
+[%collapsible]
+====
+Refer to xref:support:community.adoc#_Contribute[this section] of this manual for how to contribute to {sw}.
+====
+
+== Troubleshooting
+
+.I am stuck on an issue. How can I progress?
+[%collapsible]
+====
+Start by searching in the xref:maker-manual:index.adoc[].
+Otherwise, get in touch with the xref:support:community.adoc[{sw} Community].
+====
+
+.I think I have found a bug in {sw}. What should I do?
+[%collapsible]
+====
+Look into the {sw-github}/issues[already-known issues] to check if the bug is already known. If it does not already exist, then feel free to {sw-github}/issues/new/choose[create a new issue] about it!
+====
+
+== Studio Runtime
+
+.In a xref:user-manual:studio-runtime/representation-editors/diagram.adoc[Diagram Representation], I would like to change the routing style of an edge.
+[%collapsible]
+====
+{sw} only supports 1 routing style for edges in diagram representations.
+====
+
+.In a xref:user-manual:studio-runtime/representation-editors/diagram.adoc[Diagram Representation], I would like to move the label of a node.
+[%collapsible]
+====
+{sw} does not support specifying the relative location of the label of a node. The label will always be right under/above the node.
+====
+
+.In a xref:user-manual:studio-runtime/representation-editors/diagram.adoc[Diagram Representation], I would like the label of a edge to get wrapped.
+[%collapsible]
+====
+{sw} does not support wrapping labels of edges.
+====
+
+.In a xref:user-manual:studio-runtime/representation-editors/diagram.adoc[Diagram Representation], I have a node with a quite long label, and I cannot reduce the width of the node.
+[%collapsible]
+====
+For now, this is a known issue.
+====
