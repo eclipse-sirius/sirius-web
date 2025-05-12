@@ -73,7 +73,7 @@ exports[`should display the error received 2`] = `
         class="css-pxfk4e-propertySectionWidget"
       >
         <span
-          class="MuiButtonBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium css-roq9hy-MuiButtonBase-root-MuiCheckbox-root"
+          class="MuiButtonBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium Mui-focusVisible PrivateSwitchBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium css-roq9hy-MuiButtonBase-root-MuiCheckbox-root"
           data-testid="CheckboxLabel"
         >
           <input
@@ -96,6 +96,14 @@ exports[`should display the error received 2`] = `
           <span
             class="MuiTouchRipple-root css-r3djoj-MuiTouchRipple-root"
           >
+            <span
+              class="css-y4cjyz-MuiTouchRipple-ripple MuiTouchRipple-ripple MuiTouchRipple-rippleVisible MuiTouchRipple-ripplePulsate"
+              style="width: 1px; height: 1px; top: -0.5px; left: -0.5px;"
+            >
+              <span
+                class="MuiTouchRipple-child MuiTouchRipple-childPulsate"
+              />
+            </span>
             <span
               class="css-y4cjyz-MuiTouchRipple-ripple MuiTouchRipple-ripple MuiTouchRipple-rippleVisible"
               style="width: 1px; height: 1px; top: -0.5px; left: -0.5px;"
@@ -551,7 +559,7 @@ exports[`should send mutation when clicked 2`] = `
       class="css-pxfk4e-propertySectionWidget"
     >
       <span
-        class="MuiButtonBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium css-roq9hy-MuiButtonBase-root-MuiCheckbox-root"
+        class="MuiButtonBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium Mui-focusVisible PrivateSwitchBase-root MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium MuiCheckbox-root css-16vmqnc-checkboxStyle MuiCheckbox-colorDefault MuiCheckbox-sizeMedium css-roq9hy-MuiButtonBase-root-MuiCheckbox-root"
         data-testid="CheckboxLabel"
       >
         <input
@@ -574,6 +582,14 @@ exports[`should send mutation when clicked 2`] = `
         <span
           class="MuiTouchRipple-root css-r3djoj-MuiTouchRipple-root"
         >
+          <span
+            class="css-y4cjyz-MuiTouchRipple-ripple MuiTouchRipple-ripple MuiTouchRipple-rippleVisible MuiTouchRipple-ripplePulsate"
+            style="width: 1px; height: 1px; top: -0.5px; left: -0.5px;"
+          >
+            <span
+              class="MuiTouchRipple-child MuiTouchRipple-childPulsate"
+            />
+          </span>
           <span
             class="css-y4cjyz-MuiTouchRipple-ripple MuiTouchRipple-ripple MuiTouchRipple-rippleVisible"
             style="width: 1px; height: 1px; top: -0.5px; left: -0.5px;"

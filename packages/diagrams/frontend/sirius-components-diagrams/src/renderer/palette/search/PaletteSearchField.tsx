@@ -62,20 +62,22 @@ export const PaletteSearchField = ({ onValueChanged }: PaletteSearchFieldProps) 
       placeholder="Search Tool"
       className={classes.paletteSearchField}
       ref={ref}
-      InputProps={{
-        disableUnderline: true,
-        startAdornment: (
-          <InputAdornment position="start">
-            <SearchIcon fontSize="small" />
-          </InputAdornment>
-        ),
-        endAdornment: state.value ? (
-          <InputAdornment position="end">
-            <IconButton aria-label="clear" size="small" onClick={onTextClear}>
-              <ClearIcon fontSize="small" />
-            </IconButton>
-          </InputAdornment>
-        ) : null,
+      slotProps={{
+        input: {
+          disableUnderline: true,
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon fontSize="small" />
+            </InputAdornment>
+          ),
+          endAdornment: state.value ? (
+            <InputAdornment position="end">
+              <IconButton aria-label="clear" size="small" onClick={onTextClear}>
+                <ClearIcon fontSize="small" />
+              </IconButton>
+            </InputAdornment>
+          ) : null,
+        },
       }}
       variant="standard"
       onChange={onChange}
