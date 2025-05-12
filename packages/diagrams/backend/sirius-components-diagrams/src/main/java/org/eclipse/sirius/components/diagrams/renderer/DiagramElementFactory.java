@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -138,6 +138,10 @@ public class DiagramElementFactory implements IElementFactory {
                 nodeBuilder.childrenLayoutStrategy(nodeElementProps.getChildrenLayoutStrategy());
             }
 
+            if (nodeElementProps.getCustomizedStyleProperties() != null) {
+                nodeBuilder.customizedStyleProperties(nodeElementProps.getCustomizedStyleProperties());
+            }
+
             return nodeBuilder.build();
         }
         return null;
@@ -199,6 +203,7 @@ public class DiagramElementFactory implements IElementFactory {
                     .headerSeparatorDisplayMode(insideLabelElementProps.getHeaderSeparatorDisplayMode())
                     .overflowStrategy(insideLabelElementProps.getOverflowStrategy())
                     .textAlign(insideLabelElementProps.getTextAlign())
+                    .customizedStyleProperties(insideLabelElementProps.getCustomizedStyleProperties())
                     .build();
         }
         return null;
