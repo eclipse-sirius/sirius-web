@@ -41,7 +41,8 @@ Every implementation of `IRepresentationMetadataUpdateService` should add its ow
 * `MigrationData getMigrationData()` method has been renamed to `MigrationData getLastMigrationData()`.
 * `void setMigrationData()` method has been renamed/changed to `boolean addMigrationData()`.
 * A new method `List<MigrationData> getAllMigrationData()` method has been added.
-
+* https://github.com/eclipse-sirius/sirius-web/issues/4102[#4102] [sirius-web] The `hasChildren()` and `getDefaultChildren()` of the [`IExplorerSerices`](https://github.com/eclipse-sirius/sirius-web/blob/master/packages/sirius-web/backend/sirius-web-application/src/main/java/org/eclipse/sirius/web/application/views/explorer/services/api/IExplorerServices.java) interface now expect an additional `List<RepresentationMetadata> existingRepresentations` argument with the list of all the representations to consider when rendering explorer items.
+In the default implementation (in `ExplorerChildrenProvider`) its value comes from the new variable `existingRepresentations` injected by `ExplorerRenderVariablesCustomizer`.
 
 === Dependency update
 
@@ -101,7 +102,9 @@ For that, one should simply use the parameter `mode=svg-viewer`
 - https://github.com/eclipse-sirius/sirius-web/issues/4941[#4941] [diagram] Add the ability to perform an arrange all before displaying the diagram in the image viewer.
 For that, one should use the parameter `arrangeAll=true`
 - https://github.com/eclipse-sirius/sirius-web/issues/4918[#4918] [diagram] Add a node action to manage visibility of children
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4102[#4102] [sirius-web] A new interface, `IRepresentationRenderVariableCustomizer`, can now be used to customize the set of variables available when rendering a Tree.
+In particular it can be used to add new variables which are costly to compute so that they can be set *once* per tree render, and then used from any expression in the tree definition.
+This mechanism is currently provisional and only available for `TreeDescription` but will probably be generalized (maybe in an updated form) for other representations in the future.
 
 === Improvements
 
@@ -158,6 +161,12 @@ Thanks to this mechanism one can trigger some behavior after the entire loading 
 - https://github.com/eclipse-sirius/sirius-web/issues/4822[#4822] [core] Allow the retrieval of all the representations.
 The onboard area can now display all the representations created in the project and it is not limited to the first 20 representations.
 - https://github.com/eclipse-sirius/sirius-web/issues/4963[#4963] [core] Avoid change recording overhead for some well-known read-only operations.
+- https://github.com/eclipse-sirius/sirius-web/issues/4102[#4102] [sirius-web] Rendering the contents of the _Explorer_ now uses much less accesses to the database, for faster results.
+The number of database queries used is now independent on the number of items to render.
+This is done thanks to the addition of a fast-path in `ExplorerServices#getTreeItemObject`.
+This avoids one DB query per tree item in most cases where the `IDefaultObjectSearchService` knows how to find the element.
+This changes the behavior if there are delegates which *override* the default response from `IDefaultObjectSearchService` instead of simply adding support for elements not handled at all by `IDefaultObjectSearchService`.
+
 
 
 == v2025.4.0

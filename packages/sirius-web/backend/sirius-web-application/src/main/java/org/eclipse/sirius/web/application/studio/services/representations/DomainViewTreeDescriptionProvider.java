@@ -36,6 +36,7 @@ import org.eclipse.sirius.components.view.tree.TreeItemLabelElementDescription;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.studio.services.api.IStudioCapableEditingContextPredicate;
+import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.springframework.stereotype.Service;
 
 /**
@@ -124,7 +125,7 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
                 .deletableExpression("aql:self.isDeletable()")
                 .editableExpression("aql:self.isEditable()")
                 .selectableExpression("aql:self.isSelectable()")
-                .hasChildrenExpression("aql:editingContext.hasChildren(self)")
+                .hasChildrenExpression("aql:editingContext.hasChildren(self, " + ExplorerDescriptionProvider.EXISTING_REPRESENTATIONS + ")")
                 .elementsExpression("aql:editingContext.getElements()")
                 .childrenExpression("aql:self.getChildren(editingContext, expanded)")
                 .parentExpression("aql:self.getParent(editingContext, id)")
