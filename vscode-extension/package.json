@@ -4,7 +4,7 @@
   "description": "Sirius Web extension for VSCode",
   "publisher": "eclipse-sirius",
   "license": "EPL-2.0",
-  "version": "2025.4.1",
+  "version": "2025.4.2",
   "homepage": "https://www.eclipse.dev/sirius/sirius-web.html",
   "repository": {
     "type": "git",
@@ -144,6 +144,7 @@
     "@eclipse-sirius/sirius-web-application": "*",
     "@mui/icons-material": "7.0.2",
     "@mui/material": "7.0.2",
+    "@mui/x-tree-view": "7.29.1",
     "@xstate/react": "3.0.0",
     "@xyflow/react": "12.4.4",
     "axios": "0.21.4",
