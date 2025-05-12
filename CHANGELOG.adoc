@@ -54,6 +54,7 @@ The following dependencies have been updated:
 - [releng] Switch `@mui/icons-material` to `7.0.2`
 - [releng] Switch `tss-react` to `4.9.16`
 - [releng] Switch to Sirius EMF JSON 2.5.0
+- [releng] Switch to `@mui/x-tree-view` to `7.29.1`
 
 
 === Bug fixes

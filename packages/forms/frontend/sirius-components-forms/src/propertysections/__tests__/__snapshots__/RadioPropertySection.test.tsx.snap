@@ -201,7 +201,7 @@ exports[`should display the error received 2`] = `
           class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-19opgx6-MuiFormControlLabel-root"
         >
           <span
-            class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-13lvt8g-MuiButtonBase-root-MuiRadio-root"
+            class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary Mui-focusVisible PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-13lvt8g-MuiButtonBase-root-MuiRadio-root"
             data-testid="active"
           >
             <input
@@ -239,6 +239,14 @@ exports[`should display the error received 2`] = `
             <span
               class="MuiTouchRipple-root css-r3djoj-MuiTouchRipple-root"
             >
+              <span
+                class="css-y4cjyz-MuiTouchRipple-ripple MuiTouchRipple-ripple MuiTouchRipple-rippleVisible MuiTouchRipple-ripplePulsate"
+                style="width: 1px; height: 1px; top: -0.5px; left: -0.5px;"
+              >
+                <span
+                  class="MuiTouchRipple-child MuiTouchRipple-childPulsate"
+                />
+              </span>
               <span
                 class="css-y4cjyz-MuiTouchRipple-ripple MuiTouchRipple-ripple MuiTouchRipple-rippleVisible"
                 style="width: 1px; height: 1px; top: -0.5px; left: -0.5px;"
@@ -1368,7 +1376,7 @@ exports[`should send mutation when clicked 2`] = `
         class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-19opgx6-MuiFormControlLabel-root"
       >
         <span
-          class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-13lvt8g-MuiButtonBase-root-MuiRadio-root"
+          class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary Mui-focusVisible PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary MuiRadio-root MuiRadio-colorPrimary css-gt2reg-radio css-13lvt8g-MuiButtonBase-root-MuiRadio-root"
           data-testid="active"
         >
           <input
@@ -1406,6 +1414,14 @@ exports[`should send mutation when clicked 2`] = `
           <span
             class="MuiTouchRipple-root css-r3djoj-MuiTouchRipple-root"
           >
+            <span
+              class="css-y4cjyz-MuiTouchRipple-ripple MuiTouchRipple-ripple MuiTouchRipple-rippleVisible MuiTouchRipple-ripplePulsate"
+              style="width: 1px; height: 1px; top: -0.5px; left: -0.5px;"
+            >
+              <span
+                class="MuiTouchRipple-child MuiTouchRipple-childPulsate"
+              />
+            </span>
             <span
               class="css-y4cjyz-MuiTouchRipple-ripple MuiTouchRipple-ripple MuiTouchRipple-rippleVisible"
               style="width: 1px; height: 1px; top: -0.5px; left: -0.5px;"

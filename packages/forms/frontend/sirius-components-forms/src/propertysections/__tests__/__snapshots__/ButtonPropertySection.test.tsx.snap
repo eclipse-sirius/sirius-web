@@ -44,7 +44,7 @@ exports[`should display the error received 2`] = `
         </h6>
       </div>
       <button
-        class="MuiButtonBase-root MuiButton-root css-35i3u7-style MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary MuiButton-root css-35i3u7-style MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary css-74d805-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root css-35i3u7-style MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary Mui-focusVisible MuiButton-root css-35i3u7-style MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary css-74d805-MuiButtonBase-root-MuiButton-root"
         data-testid="ButtonLabel"
         tabindex="0"
         type="button"
@@ -53,6 +53,14 @@ exports[`should display the error received 2`] = `
         <span
           class="MuiTouchRipple-root css-r3djoj-MuiTouchRipple-root"
         >
+          <span
+            class="css-y4cjyz-MuiTouchRipple-ripple MuiTouchRipple-ripple MuiTouchRipple-rippleVisible MuiTouchRipple-ripplePulsate"
+            style="width: 1px; height: 1px; top: -0.5px; left: -0.5px;"
+          >
+            <span
+              class="MuiTouchRipple-child MuiTouchRipple-childPulsate"
+            />
+          </span>
           <span
             class="css-y4cjyz-MuiTouchRipple-ripple MuiTouchRipple-ripple MuiTouchRipple-rippleVisible"
             style="width: 2.8284271247461903px; height: 2.8284271247461903px; top: -1.4142135623730951px; left: -1.4142135623730951px;"
@@ -322,7 +330,7 @@ exports[`should send mutation when clicked 2`] = `
       </h6>
     </div>
     <button
-      class="MuiButtonBase-root MuiButton-root css-35i3u7-style MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary MuiButton-root css-35i3u7-style MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary css-74d805-MuiButtonBase-root-MuiButton-root"
+      class="MuiButtonBase-root MuiButton-root css-35i3u7-style MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary Mui-focusVisible MuiButton-root css-35i3u7-style MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary css-74d805-MuiButtonBase-root-MuiButton-root"
       data-testid="ButtonLabel"
       tabindex="0"
       type="button"
@@ -331,6 +339,14 @@ exports[`should send mutation when clicked 2`] = `
       <span
         class="MuiTouchRipple-root css-r3djoj-MuiTouchRipple-root"
       >
+        <span
+          class="css-y4cjyz-MuiTouchRipple-ripple MuiTouchRipple-ripple MuiTouchRipple-rippleVisible MuiTouchRipple-ripplePulsate"
+          style="width: 1px; height: 1px; top: -0.5px; left: -0.5px;"
+        >
+          <span
+            class="MuiTouchRipple-child MuiTouchRipple-childPulsate"
+          />
+        </span>
         <span
           class="css-y4cjyz-MuiTouchRipple-ripple MuiTouchRipple-ripple MuiTouchRipple-rippleVisible"
           style="width: 2.8284271247461903px; height: 2.8284271247461903px; top: -1.4142135623730951px; left: -1.4142135623730951px;"

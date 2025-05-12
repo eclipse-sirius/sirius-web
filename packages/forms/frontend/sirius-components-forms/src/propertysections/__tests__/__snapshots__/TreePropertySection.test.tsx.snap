@@ -14,20 +14,21 @@ exports[`should change the selection when a selectable node is clicked 1`] = `
     </div>
     <ul
       aria-multiselectable="false"
-      class="MuiSimpleTreeView-root css-rejl51-MuiSimpleTreeView-root"
-      id=":r4:"
+      class="MuiSimpleTreeView-root css-1o8c9x7-MuiSimpleTreeView-root"
+      id="mui-tree-view-5"
       role="tree"
       style="--TreeView-itemChildrenIndentation: 12px;"
     >
       <li
         aria-expanded="true"
-        class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-        id=":r4:-0"
+        aria-selected="false"
+        class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+        id="mui-tree-view-5-0"
         role="treeitem"
         tabindex="0"
       >
         <div
-          class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content Mui-expanded"
+          class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content Mui-expanded"
         >
           <div
             class="MuiTreeItem-iconContainer"
@@ -59,24 +60,25 @@ exports[`should change the selection when a selectable node is clicked 1`] = `
           </div>
         </div>
         <ul
-          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-sothe1-MuiCollapse-root-MuiTreeItem-groupTransition"
+          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-9jkv99-MuiCollapse-root-MuiTreeItem-groupTransition"
           role="group"
           style="min-height: 0px;"
         >
           <div
-            class="MuiCollapse-wrapper MuiCollapse-vertical css-smkl36-MuiCollapse-wrapper"
+            class="MuiCollapse-wrapper MuiCollapse-vertical css-1x6hinx-MuiCollapse-wrapper"
           >
             <div
-              class="MuiCollapse-wrapperInner MuiCollapse-vertical css-9l5vo-MuiCollapse-wrapperInner"
+              class="MuiCollapse-wrapperInner MuiCollapse-vertical css-1i4ywhz-MuiCollapse-wrapperInner"
             >
               <li
-                class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-                id=":r4:-0/0"
+                aria-selected="false"
+                class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+                id="mui-tree-view-5-0/0"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content"
+                  class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
@@ -97,13 +99,14 @@ exports[`should change the selection when a selectable node is clicked 1`] = `
                 </div>
               </li>
               <li
-                class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-                id=":r4:-0/1"
+                aria-selected="false"
+                class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+                id="mui-tree-view-5-0/1"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content"
+                  class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
@@ -128,13 +131,14 @@ exports[`should change the selection when a selectable node is clicked 1`] = `
         </ul>
       </li>
       <li
-        class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-        id=":r4:-1"
+        aria-selected="false"
+        class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+        id="mui-tree-view-5-1"
         role="treeitem"
         tabindex="-1"
       >
         <div
-          class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content Mui-expanded"
+          class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content Mui-expanded"
         >
           <div
             class="MuiTreeItem-iconContainer"
@@ -154,15 +158,15 @@ exports[`should change the selection when a selectable node is clicked 1`] = `
           </div>
         </div>
         <ul
-          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-sothe1-MuiCollapse-root-MuiTreeItem-groupTransition"
+          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-9jkv99-MuiCollapse-root-MuiTreeItem-groupTransition"
           role="group"
           style="min-height: 0px;"
         >
           <div
-            class="MuiCollapse-wrapper MuiCollapse-vertical css-smkl36-MuiCollapse-wrapper"
+            class="MuiCollapse-wrapper MuiCollapse-vertical css-1x6hinx-MuiCollapse-wrapper"
           >
             <div
-              class="MuiCollapse-wrapperInner MuiCollapse-vertical css-9l5vo-MuiCollapse-wrapperInner"
+              class="MuiCollapse-wrapperInner MuiCollapse-vertical css-1i4ywhz-MuiCollapse-wrapperInner"
             />
           </div>
         </ul>
@@ -186,20 +190,21 @@ exports[`should collapse/expand a non-selectable node when clicked 1`] = `
     </div>
     <ul
       aria-multiselectable="false"
-      class="MuiSimpleTreeView-root css-rejl51-MuiSimpleTreeView-root"
-      id=":r5:"
+      class="MuiSimpleTreeView-root css-1o8c9x7-MuiSimpleTreeView-root"
+      id="mui-tree-view-6"
       role="tree"
       style="--TreeView-itemChildrenIndentation: 12px;"
     >
       <li
         aria-expanded="true"
-        class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-        id=":r5:-0"
+        aria-selected="false"
+        class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+        id="mui-tree-view-6-0"
         role="treeitem"
         tabindex="0"
       >
         <div
-          class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content Mui-expanded"
+          class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content Mui-expanded"
         >
           <div
             class="MuiTreeItem-iconContainer"
@@ -231,25 +236,26 @@ exports[`should collapse/expand a non-selectable node when clicked 1`] = `
           </div>
         </div>
         <ul
-          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-sothe1-MuiCollapse-root-MuiTreeItem-groupTransition"
+          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-9jkv99-MuiCollapse-root-MuiTreeItem-groupTransition"
           role="group"
           style="min-height: 0px;"
         >
           <div
-            class="MuiCollapse-wrapper MuiCollapse-vertical css-smkl36-MuiCollapse-wrapper"
+            class="MuiCollapse-wrapper MuiCollapse-vertical css-1x6hinx-MuiCollapse-wrapper"
           >
             <div
-              class="MuiCollapse-wrapperInner MuiCollapse-vertical css-9l5vo-MuiCollapse-wrapperInner"
+              class="MuiCollapse-wrapperInner MuiCollapse-vertical css-1i4ywhz-MuiCollapse-wrapperInner"
             >
               <li
                 aria-expanded="true"
-                class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-                id=":r5:-0/0"
+                aria-selected="false"
+                class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+                id="mui-tree-view-6-0/0"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content Mui-expanded"
+                  class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content Mui-expanded"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
@@ -281,24 +287,25 @@ exports[`should collapse/expand a non-selectable node when clicked 1`] = `
                   </div>
                 </div>
                 <ul
-                  class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-sothe1-MuiCollapse-root-MuiTreeItem-groupTransition"
+                  class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-9jkv99-MuiCollapse-root-MuiTreeItem-groupTransition"
                   role="group"
                   style="min-height: 0px;"
                 >
                   <div
-                    class="MuiCollapse-wrapper MuiCollapse-vertical css-smkl36-MuiCollapse-wrapper"
+                    class="MuiCollapse-wrapper MuiCollapse-vertical css-1x6hinx-MuiCollapse-wrapper"
                   >
                     <div
-                      class="MuiCollapse-wrapperInner MuiCollapse-vertical css-9l5vo-MuiCollapse-wrapperInner"
+                      class="MuiCollapse-wrapperInner MuiCollapse-vertical css-1i4ywhz-MuiCollapse-wrapperInner"
                     >
                       <li
-                        class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-                        id=":r5:-0/0/0"
+                        aria-selected="false"
+                        class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+                        id="mui-tree-view-6-0/0/0"
                         role="treeitem"
                         tabindex="-1"
                       >
                         <div
-                          class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content"
+                          class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content"
                         >
                           <div
                             class="MuiTreeItem-iconContainer"
@@ -345,20 +352,21 @@ exports[`should correctly interpret the order of nodes with the same parent in t
     </div>
     <ul
       aria-multiselectable="false"
-      class="MuiSimpleTreeView-root css-rejl51-MuiSimpleTreeView-root"
-      id=":r2:"
+      class="MuiSimpleTreeView-root css-1o8c9x7-MuiSimpleTreeView-root"
+      id="mui-tree-view-3"
       role="tree"
       style="--TreeView-itemChildrenIndentation: 12px;"
     >
       <li
         aria-expanded="true"
-        class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-        id=":r2:-0"
+        aria-selected="false"
+        class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+        id="mui-tree-view-3-0"
         role="treeitem"
         tabindex="0"
       >
         <div
-          class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content Mui-expanded"
+          class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content Mui-expanded"
         >
           <div
             class="MuiTreeItem-iconContainer"
@@ -390,24 +398,25 @@ exports[`should correctly interpret the order of nodes with the same parent in t
           </div>
         </div>
         <ul
-          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-sothe1-MuiCollapse-root-MuiTreeItem-groupTransition"
+          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-9jkv99-MuiCollapse-root-MuiTreeItem-groupTransition"
           role="group"
           style="min-height: 0px;"
         >
           <div
-            class="MuiCollapse-wrapper MuiCollapse-vertical css-smkl36-MuiCollapse-wrapper"
+            class="MuiCollapse-wrapper MuiCollapse-vertical css-1x6hinx-MuiCollapse-wrapper"
           >
             <div
-              class="MuiCollapse-wrapperInner MuiCollapse-vertical css-9l5vo-MuiCollapse-wrapperInner"
+              class="MuiCollapse-wrapperInner MuiCollapse-vertical css-1i4ywhz-MuiCollapse-wrapperInner"
             >
               <li
-                class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-                id=":r2:-0/0"
+                aria-selected="false"
+                class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+                id="mui-tree-view-3-0/0"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content"
+                  class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
@@ -433,13 +442,14 @@ exports[`should correctly interpret the order of nodes with the same parent in t
       </li>
       <li
         aria-expanded="true"
-        class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-        id=":r2:-1"
+        aria-selected="false"
+        class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+        id="mui-tree-view-3-1"
         role="treeitem"
         tabindex="-1"
       >
         <div
-          class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content Mui-expanded"
+          class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content Mui-expanded"
         >
           <div
             class="MuiTreeItem-iconContainer"
@@ -471,25 +481,26 @@ exports[`should correctly interpret the order of nodes with the same parent in t
           </div>
         </div>
         <ul
-          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-sothe1-MuiCollapse-root-MuiTreeItem-groupTransition"
+          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-9jkv99-MuiCollapse-root-MuiTreeItem-groupTransition"
           role="group"
           style="min-height: 0px;"
         >
           <div
-            class="MuiCollapse-wrapper MuiCollapse-vertical css-smkl36-MuiCollapse-wrapper"
+            class="MuiCollapse-wrapper MuiCollapse-vertical css-1x6hinx-MuiCollapse-wrapper"
           >
             <div
-              class="MuiCollapse-wrapperInner MuiCollapse-vertical css-9l5vo-MuiCollapse-wrapperInner"
+              class="MuiCollapse-wrapperInner MuiCollapse-vertical css-1i4ywhz-MuiCollapse-wrapperInner"
             >
               <li
                 aria-expanded="true"
-                class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-                id=":r2:-1/0"
+                aria-selected="false"
+                class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+                id="mui-tree-view-3-1/0"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content Mui-expanded"
+                  class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content Mui-expanded"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
@@ -521,24 +532,25 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                   </div>
                 </div>
                 <ul
-                  class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-sothe1-MuiCollapse-root-MuiTreeItem-groupTransition"
+                  class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-9jkv99-MuiCollapse-root-MuiTreeItem-groupTransition"
                   role="group"
                   style="min-height: 0px;"
                 >
                   <div
-                    class="MuiCollapse-wrapper MuiCollapse-vertical css-smkl36-MuiCollapse-wrapper"
+                    class="MuiCollapse-wrapper MuiCollapse-vertical css-1x6hinx-MuiCollapse-wrapper"
                   >
                     <div
-                      class="MuiCollapse-wrapperInner MuiCollapse-vertical css-9l5vo-MuiCollapse-wrapperInner"
+                      class="MuiCollapse-wrapperInner MuiCollapse-vertical css-1i4ywhz-MuiCollapse-wrapperInner"
                     >
                       <li
-                        class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-                        id=":r2:-1/0/0"
+                        aria-selected="false"
+                        class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+                        id="mui-tree-view-3-1/0/0"
                         role="treeitem"
                         tabindex="-1"
                       >
                         <div
-                          class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content"
+                          class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content"
                         >
                           <div
                             class="MuiTreeItem-iconContainer"
@@ -559,13 +571,14 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                         </div>
                       </li>
                       <li
-                        class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-                        id=":r2:-1/0/1"
+                        aria-selected="false"
+                        class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+                        id="mui-tree-view-3-1/0/1"
                         role="treeitem"
                         tabindex="-1"
                       >
                         <div
-                          class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content"
+                          class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content"
                         >
                           <div
                             class="MuiTreeItem-iconContainer"
@@ -591,13 +604,14 @@ exports[`should correctly interpret the order of nodes with the same parent in t
               </li>
               <li
                 aria-expanded="true"
-                class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-                id=":r2:-1/1"
+                aria-selected="false"
+                class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+                id="mui-tree-view-3-1/1"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content Mui-expanded"
+                  class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content Mui-expanded"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
@@ -629,25 +643,26 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                   </div>
                 </div>
                 <ul
-                  class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-sothe1-MuiCollapse-root-MuiTreeItem-groupTransition"
+                  class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-9jkv99-MuiCollapse-root-MuiTreeItem-groupTransition"
                   role="group"
                   style="min-height: 0px;"
                 >
                   <div
-                    class="MuiCollapse-wrapper MuiCollapse-vertical css-smkl36-MuiCollapse-wrapper"
+                    class="MuiCollapse-wrapper MuiCollapse-vertical css-1x6hinx-MuiCollapse-wrapper"
                   >
                     <div
-                      class="MuiCollapse-wrapperInner MuiCollapse-vertical css-9l5vo-MuiCollapse-wrapperInner"
+                      class="MuiCollapse-wrapperInner MuiCollapse-vertical css-1i4ywhz-MuiCollapse-wrapperInner"
                     >
                       <li
                         aria-expanded="true"
-                        class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-                        id=":r2:-1/1/0"
+                        aria-selected="false"
+                        class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+                        id="mui-tree-view-3-1/1/0"
                         role="treeitem"
                         tabindex="-1"
                       >
                         <div
-                          class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content Mui-expanded"
+                          class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content Mui-expanded"
                         >
                           <div
                             class="MuiTreeItem-iconContainer"
@@ -679,24 +694,25 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                           </div>
                         </div>
                         <ul
-                          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-sothe1-MuiCollapse-root-MuiTreeItem-groupTransition"
+                          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-9jkv99-MuiCollapse-root-MuiTreeItem-groupTransition"
                           role="group"
                           style="min-height: 0px;"
                         >
                           <div
-                            class="MuiCollapse-wrapper MuiCollapse-vertical css-smkl36-MuiCollapse-wrapper"
+                            class="MuiCollapse-wrapper MuiCollapse-vertical css-1x6hinx-MuiCollapse-wrapper"
                           >
                             <div
-                              class="MuiCollapse-wrapperInner MuiCollapse-vertical css-9l5vo-MuiCollapse-wrapperInner"
+                              class="MuiCollapse-wrapperInner MuiCollapse-vertical css-1i4ywhz-MuiCollapse-wrapperInner"
                             >
                               <li
-                                class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-                                id=":r2:-1/1/0/0"
+                                aria-selected="false"
+                                class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+                                id="mui-tree-view-3-1/1/0/0"
                                 role="treeitem"
                                 tabindex="-1"
                               >
                                 <div
-                                  class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content"
+                                  class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content"
                                 >
                                   <div
                                     class="MuiTreeItem-iconContainer"
@@ -717,13 +733,14 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                                 </div>
                               </li>
                               <li
-                                class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-                                id=":r2:-1/1/0/1"
+                                aria-selected="false"
+                                class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+                                id="mui-tree-view-3-1/1/0/1"
                                 role="treeitem"
                                 tabindex="-1"
                               >
                                 <div
-                                  class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content"
+                                  class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content"
                                 >
                                   <div
                                     class="MuiTreeItem-iconContainer"
@@ -752,13 +769,14 @@ exports[`should correctly interpret the order of nodes with the same parent in t
                 </ul>
               </li>
               <li
-                class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-                id=":r2:-1/2"
+                aria-selected="false"
+                class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+                id="mui-tree-view-3-1/2"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content"
+                  class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
@@ -801,20 +819,21 @@ exports[`should only expand the specified nodes on initial render 1`] = `
     </div>
     <ul
       aria-multiselectable="false"
-      class="MuiSimpleTreeView-root css-rejl51-MuiSimpleTreeView-root"
-      id=":r3:"
+      class="MuiSimpleTreeView-root css-1o8c9x7-MuiSimpleTreeView-root"
+      id="mui-tree-view-4"
       role="tree"
       style="--TreeView-itemChildrenIndentation: 12px;"
     >
       <li
         aria-expanded="true"
-        class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-        id=":r3:-0"
+        aria-selected="false"
+        class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+        id="mui-tree-view-4-0"
         role="treeitem"
         tabindex="0"
       >
         <div
-          class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content Mui-expanded"
+          class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content Mui-expanded"
         >
           <div
             class="MuiTreeItem-iconContainer"
@@ -846,25 +865,26 @@ exports[`should only expand the specified nodes on initial render 1`] = `
           </div>
         </div>
         <ul
-          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-sothe1-MuiCollapse-root-MuiTreeItem-groupTransition"
+          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-9jkv99-MuiCollapse-root-MuiTreeItem-groupTransition"
           role="group"
           style="min-height: 0px;"
         >
           <div
-            class="MuiCollapse-wrapper MuiCollapse-vertical css-smkl36-MuiCollapse-wrapper"
+            class="MuiCollapse-wrapper MuiCollapse-vertical css-1x6hinx-MuiCollapse-wrapper"
           >
             <div
-              class="MuiCollapse-wrapperInner MuiCollapse-vertical css-9l5vo-MuiCollapse-wrapperInner"
+              class="MuiCollapse-wrapperInner MuiCollapse-vertical css-1i4ywhz-MuiCollapse-wrapperInner"
             >
               <li
                 aria-expanded="false"
-                class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-                id=":r3:-0/0"
+                aria-selected="false"
+                class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+                id="mui-tree-view-4-0/0"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content"
+                  class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
@@ -897,13 +917,14 @@ exports[`should only expand the specified nodes on initial render 1`] = `
                 </div>
               </li>
               <li
-                class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-                id=":r3:-0/1"
+                aria-selected="false"
+                class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+                id="mui-tree-view-4-0/1"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content"
+                  class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
@@ -925,13 +946,14 @@ exports[`should only expand the specified nodes on initial render 1`] = `
               </li>
               <li
                 aria-expanded="false"
-                class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-                id=":r3:-0/2"
+                aria-selected="false"
+                class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+                id="mui-tree-view-4-0/2"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content"
+                  class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
@@ -969,13 +991,14 @@ exports[`should only expand the specified nodes on initial render 1`] = `
       </li>
       <li
         aria-expanded="true"
-        class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-        id=":r3:-1"
+        aria-selected="false"
+        class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+        id="mui-tree-view-4-1"
         role="treeitem"
         tabindex="-1"
       >
         <div
-          class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content Mui-expanded"
+          class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content Mui-expanded"
         >
           <div
             class="MuiTreeItem-iconContainer"
@@ -1007,24 +1030,25 @@ exports[`should only expand the specified nodes on initial render 1`] = `
           </div>
         </div>
         <ul
-          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-sothe1-MuiCollapse-root-MuiTreeItem-groupTransition"
+          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-9jkv99-MuiCollapse-root-MuiTreeItem-groupTransition"
           role="group"
           style="min-height: 0px;"
         >
           <div
-            class="MuiCollapse-wrapper MuiCollapse-vertical css-smkl36-MuiCollapse-wrapper"
+            class="MuiCollapse-wrapper MuiCollapse-vertical css-1x6hinx-MuiCollapse-wrapper"
           >
             <div
-              class="MuiCollapse-wrapperInner MuiCollapse-vertical css-9l5vo-MuiCollapse-wrapperInner"
+              class="MuiCollapse-wrapperInner MuiCollapse-vertical css-1i4ywhz-MuiCollapse-wrapperInner"
             >
               <li
-                class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-                id=":r3:-1/0"
+                aria-selected="false"
+                class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+                id="mui-tree-view-4-1/0"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content"
+                  class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
@@ -1067,20 +1091,21 @@ exports[`should render a multi-level tree correctly 1`] = `
     </div>
     <ul
       aria-multiselectable="false"
-      class="MuiSimpleTreeView-root css-rejl51-MuiSimpleTreeView-root"
-      id=":r1:"
+      class="MuiSimpleTreeView-root css-1o8c9x7-MuiSimpleTreeView-root"
+      id="mui-tree-view-2"
       role="tree"
       style="--TreeView-itemChildrenIndentation: 12px;"
     >
       <li
         aria-expanded="true"
-        class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-        id=":r1:-0"
+        aria-selected="false"
+        class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+        id="mui-tree-view-2-0"
         role="treeitem"
         tabindex="0"
       >
         <div
-          class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content Mui-expanded"
+          class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content Mui-expanded"
         >
           <div
             class="MuiTreeItem-iconContainer"
@@ -1112,25 +1137,26 @@ exports[`should render a multi-level tree correctly 1`] = `
           </div>
         </div>
         <ul
-          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-sothe1-MuiCollapse-root-MuiTreeItem-groupTransition"
+          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-9jkv99-MuiCollapse-root-MuiTreeItem-groupTransition"
           role="group"
           style="min-height: 0px;"
         >
           <div
-            class="MuiCollapse-wrapper MuiCollapse-vertical css-smkl36-MuiCollapse-wrapper"
+            class="MuiCollapse-wrapper MuiCollapse-vertical css-1x6hinx-MuiCollapse-wrapper"
           >
             <div
-              class="MuiCollapse-wrapperInner MuiCollapse-vertical css-9l5vo-MuiCollapse-wrapperInner"
+              class="MuiCollapse-wrapperInner MuiCollapse-vertical css-1i4ywhz-MuiCollapse-wrapperInner"
             >
               <li
                 aria-expanded="true"
-                class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-                id=":r1:-0/0"
+                aria-selected="false"
+                class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+                id="mui-tree-view-2-0/0"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content Mui-expanded"
+                  class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content Mui-expanded"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
@@ -1162,24 +1188,25 @@ exports[`should render a multi-level tree correctly 1`] = `
                   </div>
                 </div>
                 <ul
-                  class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-sothe1-MuiCollapse-root-MuiTreeItem-groupTransition"
+                  class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-9jkv99-MuiCollapse-root-MuiTreeItem-groupTransition"
                   role="group"
                   style="min-height: 0px;"
                 >
                   <div
-                    class="MuiCollapse-wrapper MuiCollapse-vertical css-smkl36-MuiCollapse-wrapper"
+                    class="MuiCollapse-wrapper MuiCollapse-vertical css-1x6hinx-MuiCollapse-wrapper"
                   >
                     <div
-                      class="MuiCollapse-wrapperInner MuiCollapse-vertical css-9l5vo-MuiCollapse-wrapperInner"
+                      class="MuiCollapse-wrapperInner MuiCollapse-vertical css-1i4ywhz-MuiCollapse-wrapperInner"
                     >
                       <li
-                        class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-                        id=":r1:-0/0/0"
+                        aria-selected="false"
+                        class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+                        id="mui-tree-view-2-0/0/0"
                         role="treeitem"
                         tabindex="-1"
                       >
                         <div
-                          class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content"
+                          class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content"
                         >
                           <div
                             class="MuiTreeItem-iconContainer"
@@ -1200,13 +1227,14 @@ exports[`should render a multi-level tree correctly 1`] = `
                         </div>
                       </li>
                       <li
-                        class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-                        id=":r1:-0/0/1"
+                        aria-selected="false"
+                        class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+                        id="mui-tree-view-2-0/0/1"
                         role="treeitem"
                         tabindex="-1"
                       >
                         <div
-                          class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content"
+                          class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content"
                         >
                           <div
                             class="MuiTreeItem-iconContainer"
@@ -1231,13 +1259,14 @@ exports[`should render a multi-level tree correctly 1`] = `
                 </ul>
               </li>
               <li
-                class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-                id=":r1:-0/1"
+                aria-selected="false"
+                class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+                id="mui-tree-view-2-0/1"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content"
+                  class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
@@ -1259,13 +1288,14 @@ exports[`should render a multi-level tree correctly 1`] = `
               </li>
               <li
                 aria-expanded="true"
-                class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-                id=":r1:-0/2"
+                aria-selected="false"
+                class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+                id="mui-tree-view-2-0/2"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content Mui-expanded"
+                  class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content Mui-expanded"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
@@ -1297,25 +1327,26 @@ exports[`should render a multi-level tree correctly 1`] = `
                   </div>
                 </div>
                 <ul
-                  class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-sothe1-MuiCollapse-root-MuiTreeItem-groupTransition"
+                  class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-9jkv99-MuiCollapse-root-MuiTreeItem-groupTransition"
                   role="group"
                   style="min-height: 0px;"
                 >
                   <div
-                    class="MuiCollapse-wrapper MuiCollapse-vertical css-smkl36-MuiCollapse-wrapper"
+                    class="MuiCollapse-wrapper MuiCollapse-vertical css-1x6hinx-MuiCollapse-wrapper"
                   >
                     <div
-                      class="MuiCollapse-wrapperInner MuiCollapse-vertical css-9l5vo-MuiCollapse-wrapperInner"
+                      class="MuiCollapse-wrapperInner MuiCollapse-vertical css-1i4ywhz-MuiCollapse-wrapperInner"
                     >
                       <li
                         aria-expanded="true"
-                        class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-                        id=":r1:-0/2/0"
+                        aria-selected="false"
+                        class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+                        id="mui-tree-view-2-0/2/0"
                         role="treeitem"
                         tabindex="-1"
                       >
                         <div
-                          class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content Mui-expanded"
+                          class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content Mui-expanded"
                         >
                           <div
                             class="MuiTreeItem-iconContainer"
@@ -1347,24 +1378,25 @@ exports[`should render a multi-level tree correctly 1`] = `
                           </div>
                         </div>
                         <ul
-                          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-sothe1-MuiCollapse-root-MuiTreeItem-groupTransition"
+                          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-9jkv99-MuiCollapse-root-MuiTreeItem-groupTransition"
                           role="group"
                           style="min-height: 0px;"
                         >
                           <div
-                            class="MuiCollapse-wrapper MuiCollapse-vertical css-smkl36-MuiCollapse-wrapper"
+                            class="MuiCollapse-wrapper MuiCollapse-vertical css-1x6hinx-MuiCollapse-wrapper"
                           >
                             <div
-                              class="MuiCollapse-wrapperInner MuiCollapse-vertical css-9l5vo-MuiCollapse-wrapperInner"
+                              class="MuiCollapse-wrapperInner MuiCollapse-vertical css-1i4ywhz-MuiCollapse-wrapperInner"
                             >
                               <li
-                                class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-                                id=":r1:-0/2/0/0"
+                                aria-selected="false"
+                                class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+                                id="mui-tree-view-2-0/2/0/0"
                                 role="treeitem"
                                 tabindex="-1"
                               >
                                 <div
-                                  class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content"
+                                  class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content"
                                 >
                                   <div
                                     class="MuiTreeItem-iconContainer"
@@ -1385,13 +1417,14 @@ exports[`should render a multi-level tree correctly 1`] = `
                                 </div>
                               </li>
                               <li
-                                class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-                                id=":r1:-0/2/0/1"
+                                aria-selected="false"
+                                class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+                                id="mui-tree-view-2-0/2/0/1"
                                 role="treeitem"
                                 tabindex="-1"
                               >
                                 <div
-                                  class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content"
+                                  class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content"
                                 >
                                   <div
                                     class="MuiTreeItem-iconContainer"
@@ -1425,13 +1458,14 @@ exports[`should render a multi-level tree correctly 1`] = `
       </li>
       <li
         aria-expanded="true"
-        class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-        id=":r1:-1"
+        aria-selected="false"
+        class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+        id="mui-tree-view-2-1"
         role="treeitem"
         tabindex="-1"
       >
         <div
-          class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content Mui-expanded"
+          class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content Mui-expanded"
         >
           <div
             class="MuiTreeItem-iconContainer"
@@ -1463,24 +1497,25 @@ exports[`should render a multi-level tree correctly 1`] = `
           </div>
         </div>
         <ul
-          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-sothe1-MuiCollapse-root-MuiTreeItem-groupTransition"
+          class="MuiCollapse-root MuiCollapse-vertical MuiTreeItem-groupTransition MuiCollapse-entered css-9jkv99-MuiCollapse-root-MuiTreeItem-groupTransition"
           role="group"
           style="min-height: 0px;"
         >
           <div
-            class="MuiCollapse-wrapper MuiCollapse-vertical css-smkl36-MuiCollapse-wrapper"
+            class="MuiCollapse-wrapper MuiCollapse-vertical css-1x6hinx-MuiCollapse-wrapper"
           >
             <div
-              class="MuiCollapse-wrapperInner MuiCollapse-vertical css-9l5vo-MuiCollapse-wrapperInner"
+              class="MuiCollapse-wrapperInner MuiCollapse-vertical css-1i4ywhz-MuiCollapse-wrapperInner"
             >
               <li
-                class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-                id=":r1:-1/0"
+                aria-selected="false"
+                class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+                id="mui-tree-view-2-1/0"
                 role="treeitem"
                 tabindex="-1"
               >
                 <div
-                  class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content"
+                  class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content"
                 >
                   <div
                     class="MuiTreeItem-iconContainer"
@@ -1523,19 +1558,20 @@ exports[`should render the tree 1`] = `
     </div>
     <ul
       aria-multiselectable="false"
-      class="MuiSimpleTreeView-root css-rejl51-MuiSimpleTreeView-root"
-      id=":r0:"
+      class="MuiSimpleTreeView-root css-1o8c9x7-MuiSimpleTreeView-root"
+      id="mui-tree-view-1"
       role="tree"
       style="--TreeView-itemChildrenIndentation: 12px;"
     >
       <li
-        class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-        id=":r0:-0"
+        aria-selected="false"
+        class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+        id="mui-tree-view-1-0"
         role="treeitem"
         tabindex="0"
       >
         <div
-          class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content"
+          class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content"
         >
           <div
             class="MuiTreeItem-iconContainer"
@@ -1592,19 +1628,20 @@ exports[`should render the tree with a help hint 1`] = `
     </div>
     <ul
       aria-multiselectable="false"
-      class="MuiSimpleTreeView-root css-rejl51-MuiSimpleTreeView-root"
-      id=":r7:"
+      class="MuiSimpleTreeView-root css-1o8c9x7-MuiSimpleTreeView-root"
+      id="mui-tree-view-7"
       role="tree"
       style="--TreeView-itemChildrenIndentation: 12px;"
     >
       <li
-        class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
-        id=":r7:-0"
+        aria-selected="false"
+        class="MuiTreeItem-root css-jq3mgl-MuiTreeItem-root"
+        id="mui-tree-view-7-0"
         role="treeitem"
         tabindex="0"
       >
         <div
-          class="css-1qdrhs7-MuiTreeItem-content MuiTreeItem-content css-1hbjxtc-content"
+          class="MuiTreeItem-content css-1hbjxtc-content css-1kk8xoz-MuiTreeItem-content"
         >
           <div
             class="MuiTreeItem-iconContainer"
