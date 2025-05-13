@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-emf-tables</artifactId>
-	<version>2025.4.2</version>
+	<version>2025.4.3</version>
 	<name>sirius-components-emf-tables</name>
 	<description>Sirius Components EMF Tables</description>
 
@@ -54,12 +54,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-emf</artifactId>
-			<version>2025.4.2</version>
+			<version>2025.4.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tables</artifactId>
-			<version>2025.4.2</version>
+			<version>2025.4.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -69,13 +69,13 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2025.4.2</version>
+			<version>2025.4.3</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-spring-tests</artifactId>
-			<version>2025.4.2</version>
+			<version>2025.4.3</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
