@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,12 +14,12 @@ package org.eclipse.sirius.web.application.configurationproperties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateProvider;
 import org.eclipse.sirius.web.application.studio.services.StudioProjectTemplateProvider;
+import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +32,11 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.enabled=*", "sirius.web.disabled=studio" })
 public class StudioDisabledTests extends AbstractIntegrationTests {
-    @Autowired(required = false)
-    private List<IProjectTemplateProvider> projectTemplateProviders = new ArrayList<>();
+    @Autowired
+    private List<IProjectTemplateProvider> projectTemplateProviders;
 
     @Test
+    @GivenSiriusWebServer
     @DisplayName("Given Sirius Web studio features disabled, when project template providers are requested, then studio support is not available")
     public void givenSiriusWebStudioFeaturesDisabledWhenProjectTemplateProvidersAreRequestedThenStudioSupportIsNotAvailable() {
         var hasStudioProjectTemplateProvider = this.projectTemplateProviders.stream().anyMatch(StudioProjectTemplateProvider.class::isInstance);

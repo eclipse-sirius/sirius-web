@@ -1,0 +1,49 @@
+= KB 001 - Removal of the `@DirtiesContext` annotation
+
+== Context
+
+A couple of months ago, some of our backend integration tests started to fail due to some issues with the PostgreSQL database which had reached its maximum number of clients.
+This issue was visible thanks to the exception `org.postgresql.util.PSQLException: FATAL: sorry, too many clients already`.
+While investigating this issue, we found out that some clients were kept in memory during the execution of the tests.
+
+During the execution of the integration tests, Spring will start an application context anytime the configuration of the test requires it.
+Multiple elements can trigger the start of a new application context, for example:
+
+- The active profiles `@ActiveProfiles`
+- The context initializer classes `@ContextConfiguration`
+- The property source locations `@TestPropertySource`
+- The property source properties `@TestPropertySource`
+- The context customizer `@MockBean` or `@DynamicPropertySource` among others
+
+We have multiple tests with those elements to active specific features, for example:
+
+```
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.enabled=validation" })
+```
+
+As a result, during the execution of our tests multiple application contexts are started and they are kept in a cache by the [Spring TestContext Framework Context Caching](https://docs.spring.io/spring-framework/reference/testing/testcontext-framework/ctx-management/caching.html) to improve performances.
+This caching strategy is keeping the entire application context in a cache and thus the Hikari connection pool for each of those contexts is kept in memory.
+
+The quickest solution available at the time was to use the annotation `@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)`.
+Thanks to this annotation, every single test class will trigger the loading of a new application context.
+One could thus consider that the entire server was started from scratch anytime a test class was executed.
+
+This annotation has one major drawbacks, it slows massively the execution of the tests.
+On top of that anytime a new test class is added to the project, it will also slow massively the build.
+
+
+== Solution
+
+To fix this issue, a `spring.properties` file has been introduced in `sirius-web/src/test/resources/spring.properties` to configure low level details of the execution of the tests.
+In this file, we have configured the caching strategy of the application context used by Spring.
+We have changed the size of the cache from its default value of `32` to `8`.
+We are using the value `8` because by default each application context will use a Hukari connection pool of `10` clients.
+The PostgreSQL database can only accept by default 100 clients and this making our tests crash.
+
+As a consequence, only 8 application contexts are kept in memory by Spring during the tests, which makes Spring go from 100+ application contexts started during out tests to 34.
+This improvement allow the build of the backend to be 40% faster.
+Executing the tests in an IDE is now massively faster too.
+
+As a consequence, some new issues may appear in our tests.
+Given that before, we were executing test classes in a brand new server instance, some tests may not have been written using a clean server state and they may be impacted by tests executed previously.
+As such, the annotation `@GivenSiriusWebServer` and the use of the service `IGivenInitialServerState` will be more relevant then before.

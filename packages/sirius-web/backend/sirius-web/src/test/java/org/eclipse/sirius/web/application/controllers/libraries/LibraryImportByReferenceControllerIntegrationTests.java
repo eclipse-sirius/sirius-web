@@ -37,6 +37,8 @@ import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.ImportLibrariesMutationRunner;
+import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +56,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class LibraryImportByReferenceControllerIntegrationTests extends AbstractIntegrationTests {
 
     @Autowired
+    private IGivenInitialServerState givenInitialServerState;
+
+    @Autowired
     private ImportLibrariesMutationRunner importLibrariesMutationRunner;
 
     @Autowired
@@ -61,6 +66,11 @@ public class LibraryImportByReferenceControllerIntegrationTests extends Abstract
 
     @Autowired
     private IExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
+
+    @BeforeEach
+    public void beforeEach() {
+        this.givenInitialServerState.initialize();
+    }
 
     @Test
     @GivenSiriusWebServer
