@@ -25,7 +25,7 @@ describe('Project creation', () => {
       it('Then it requires a valid name', () => {
         const newProject = new NewProject();
         newProject.getNameField().type('Cy');
-        newProject.getCreateProjectButton().should('be.disabled');
+        newProject.getCreateProjectButton().should('be.enable');
 
         newProject.getNameField().type('Cypress Project');
         newProject.getCreateProjectButton().should('be.enabled');
