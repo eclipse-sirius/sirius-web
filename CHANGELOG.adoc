@@ -105,6 +105,8 @@ For that, one should use the parameter `arrangeAll=true`
 - https://github.com/eclipse-sirius/sirius-web/issues/4102[#4102] [sirius-web] A new interface, `IRepresentationRenderVariableCustomizer`, can now be used to customize the set of variables available when rendering a Tree.
 In particular it can be used to add new variables which are costly to compute so that they can be set *once* per tree render, and then used from any expression in the tree definition.
 This mechanism is currently provisional and only available for `TreeDescription` but will probably be generalized (maybe in an updated form) for other representations in the future.
+- https://github.com/eclipse-sirius/sirius-web/issues/4927[#4927] [diagram] Add `IManageVisibilityMenuActionsHandler` and `IManageVisibilityMenuActionsProvider` to add menu items to the manage visibility modal
+
 
 === Improvements
 

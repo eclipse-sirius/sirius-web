@@ -10,9 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.collaborative.diagrams.dto.managevisibility;
 
-export interface ManageVisibilityMenuCheckBoxProps {
-  isOneElementChecked: boolean;
-  onCheckingAllElement: (checked: boolean) => void;
-  diagramElementId: string;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
+
+import java.util.UUID;
+
+/**
+ * The input for the "Invoke manage visibility action" mutation.
+ *
+ * @author mcharfadi
+ */
+public record InvokeManageVisibilityActionInput(UUID id, String editingContextId, String representationId, String diagramElementId, String actionId) implements IDiagramInput {
 }
