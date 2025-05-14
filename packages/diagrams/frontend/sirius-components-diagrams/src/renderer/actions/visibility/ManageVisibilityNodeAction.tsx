@@ -107,7 +107,8 @@ export const ManageVisibilityNodeAction = ({
             <ManageVisibilityModalSearchField onValueChanged={onSearchValueChanged}></ManageVisibilityModalSearchField>
             <ManageVisibilityModalMenuCheckBox
               isOneElementChecked={isOneElementChecked}
-              onCheckingAllElement={onCheckingAllElement}></ManageVisibilityModalMenuCheckBox>
+              onCheckingAllElement={onCheckingAllElement}
+              diagramElementId={diagramElementId}></ManageVisibilityModalMenuCheckBox>
             <ManageVisibilityModalListItems
               nodes={items}
               onListItemClick={onListItemClick}></ManageVisibilityModalListItems>
