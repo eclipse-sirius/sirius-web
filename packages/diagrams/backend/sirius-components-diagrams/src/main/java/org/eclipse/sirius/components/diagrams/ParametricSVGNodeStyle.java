@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.annotations.Immutable;
  */
 @Immutable
 public final class ParametricSVGNodeStyle implements INodeStyle {
+
     private String svgURL;
 
     private String backgroundColor;
@@ -35,6 +36,8 @@ public final class ParametricSVGNodeStyle implements INodeStyle {
     private int borderRadius;
 
     private LineStyle borderStyle;
+
+    private ILayoutStrategy childrenLayoutStrategy;
 
     private ParametricSVGNodeStyle() {
         // Prevent instantiation
@@ -64,6 +67,11 @@ public final class ParametricSVGNodeStyle implements INodeStyle {
         return this.borderStyle;
     }
 
+    @Override
+    public ILayoutStrategy getChildrenLayoutStrategy() {
+        return this.childrenLayoutStrategy;
+    }
+
     public static Builder newParametricSVGNodeStyle() {
         return new Builder();
     }
@@ -81,6 +89,7 @@ public final class ParametricSVGNodeStyle implements INodeStyle {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private String svgURL;
 
         private String backgroundColor = "white";
@@ -92,6 +101,8 @@ public final class ParametricSVGNodeStyle implements INodeStyle {
         private int borderRadius;
 
         private LineStyle borderStyle = LineStyle.Solid;
+
+        private ILayoutStrategy childrenLayoutStrategy;
 
         private Builder() {
             // Prevent instantiation
@@ -127,6 +138,11 @@ public final class ParametricSVGNodeStyle implements INodeStyle {
             return this;
         }
 
+        public Builder childrenLayoutStrategy(ILayoutStrategy childrenLayoutStrategy) {
+            this.childrenLayoutStrategy = Objects.requireNonNull(childrenLayoutStrategy);
+            return this;
+        }
+
         public ParametricSVGNodeStyle build() {
             ParametricSVGNodeStyle style = new ParametricSVGNodeStyle();
             style.svgURL = Objects.requireNonNull(this.svgURL);
@@ -135,6 +151,7 @@ public final class ParametricSVGNodeStyle implements INodeStyle {
             style.borderSize = this.borderSize;
             style.borderRadius = this.borderRadius;
             style.borderStyle = Objects.requireNonNull(this.borderStyle);
+            style.childrenLayoutStrategy = Objects.requireNonNull(this.childrenLayoutStrategy);
             return style;
         }
     }

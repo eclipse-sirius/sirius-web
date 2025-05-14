@@ -109,8 +109,6 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="actions" upperBound="-1"
         eType="#//Action" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="childrenLayoutStrategy"
-        eType="#//LayoutStrategyDescription" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//NodeStyleDescription"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
@@ -232,7 +230,10 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxWidthExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NodeStyleDescription" abstract="true"
-      interface="true" eSuperTypes="#//BorderStyle"/>
+      interface="true" eSuperTypes="#//BorderStyle">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="childrenLayoutStrategy"
+        eType="#//LayoutStrategyDescription" containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalNodeStyle" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Conditional">
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//NodeStyleDescription"
         containment="true"/>

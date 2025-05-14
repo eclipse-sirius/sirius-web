@@ -25,7 +25,6 @@ import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuild
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
-import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
@@ -61,7 +60,6 @@ public class DataSourceDescriptionProvider implements INodeDescriptionProvider {
                 .name(NAME)
                 .domainType("flow::DataSource")
                 .semanticCandidatesExpression("feature:elements")
-                .childrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())
                 .outsideLabels(this.flowViewBuilder.getOutsideLabelDescription(this.colorProvider, "aql:self.name"))
                 .defaultHeightExpression("aql:self.volume*15")
                 .defaultWidthExpression("aql:self.computeDataSourceHeight()")

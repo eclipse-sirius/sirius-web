@@ -125,6 +125,7 @@ public class TestDiagramDescriptionBuilder {
                 .borderColor("")
                 .borderSize(0)
                 .borderStyle(LineStyle.Solid)
+                .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .build();
 
         Function<VariableManager, String> idProvider = variableManager -> {
@@ -143,7 +144,6 @@ public class TestDiagramDescriptionBuilder {
                 .targetObjectLabelProvider(variableManager -> "")
                 .insideLabelDescription(insideLabelDescription)
                 .styleProvider(nodeStyleProvider)
-                .childrenLayoutStrategyProvider(variableManager -> new FreeFormLayoutStrategy())
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())
                 .labelEditHandler((variableManager, newLabel) -> new Success())

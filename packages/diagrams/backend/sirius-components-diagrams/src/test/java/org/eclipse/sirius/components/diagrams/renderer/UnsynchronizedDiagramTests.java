@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,6 @@ import java.util.function.Function;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
-import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
@@ -302,9 +301,8 @@ public class UnsynchronizedDiagramTests {
                 .borderColor("")
                 .borderSize(0)
                 .borderStyle(LineStyle.Solid)
+                .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .build();
-
-        Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider = variableManager -> new FreeFormLayoutStrategy();
 
         NodeDescription subUnsynchronizedNodeDescription = NodeDescription.newNodeDescription("subUnsynchronized")
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
@@ -315,7 +313,6 @@ public class UnsynchronizedDiagramTests {
                 .targetObjectLabelProvider(variableManager -> "")
                 .insideLabelDescription(insideLabelDescription)
                 .styleProvider(styleProvider)
-                .childrenLayoutStrategyProvider(childrenLayoutStrategyProvider)
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())
                 .labelEditHandler((variableManager, newLabel) -> new Success())
@@ -331,7 +328,6 @@ public class UnsynchronizedDiagramTests {
                 .targetObjectLabelProvider(variableManager -> "")
                 .insideLabelDescription(insideLabelDescription)
                 .styleProvider(styleProvider)
-                .childrenLayoutStrategyProvider(childrenLayoutStrategyProvider)
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(List.of(subUnsynchronizedNodeDescription))
                 .labelEditHandler((variableManager, newLabel) -> new Success())
@@ -347,7 +343,6 @@ public class UnsynchronizedDiagramTests {
                 .targetObjectLabelProvider(variableManager -> "")
                 .insideLabelDescription(insideLabelDescription)
                 .styleProvider(styleProvider)
-                .childrenLayoutStrategyProvider(childrenLayoutStrategyProvider)
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())
                 .labelEditHandler((variableManager, newLabel) -> new Success())

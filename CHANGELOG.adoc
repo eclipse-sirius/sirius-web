@@ -50,7 +50,9 @@ In the default implementation (in `ExplorerChildrenProvider`) its value comes fr
 layout.
 It is up to the specifier whether to create a tool to perform this action.
 Note that a migration participant adds this tool for existing diagram descriptions.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4874[#4874] [diagram] `childrenLayoutStrategy` feature has been moved from `NodeDescription` to `NodeStyleDescription`.
+All custom node style descriptions must be regenerated to add the new `childrenLayoutStrategy` feature from `NodeStyleDescription`.
+- All the `ParametricSVG` related code has been removed.
 
 === Dependency update
 
@@ -179,7 +181,8 @@ This avoids one DB query per tree item in most cases where the `IDefaultObjectSe
 This changes the behavior if there are delegates which *override* the default response from `IDefaultObjectSearchService` instead of simply adding support for elements not handled at all by `IDefaultObjectSearchService`.
 - https://github.com/eclipse-sirius/sirius-web/issues/4183[#4183] [workbench] Use `react-resizable-panels package` to layout the workbench
 - https://github.com/eclipse-sirius/sirius-web/issues/4667[#4667] [table] Add cell edit handler for table as form widget
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4874[#4874] [diagram] Move View DSL node layout strategy from node description to node style.
+This modification will enable a conditional style with a different layout strategy.
 
 
 == v2025.4.0

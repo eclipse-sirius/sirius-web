@@ -7,4 +7,5 @@ type ParametricSVGNodeStyle  {
   borderRadius: Int!
   borderSize: Int!
   borderStyle: LineStyle!
+  childrenLayoutStrategy: ILayoutStrategy!
 }

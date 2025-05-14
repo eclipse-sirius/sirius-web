@@ -99,7 +99,6 @@ public class DiagramImpactAnalysisViewProvider implements IE2EViewProvider {
                 .collapsible(true)
                 .userResizable(UserResizableDirection.BOTH)
                 .keepAspectRatio(false)
-                .childrenLayoutStrategy(new DiagramBuilders().newFreeFormLayoutStrategyDescription().build())
                 .style(
                         new DiagramBuilders()
                                 .newRectangularNodeStyleDescription()
@@ -108,6 +107,7 @@ public class DiagramImpactAnalysisViewProvider implements IE2EViewProvider {
                                 .borderRadius(3)
                                 .borderSize(1)
                                 .borderLineStyle(LineStyle.SOLID)
+                                .childrenLayoutStrategy(new DiagramBuilders().newFreeFormLayoutStrategyDescription().build())
                                 .build()
                 )
                 .insideLabel(

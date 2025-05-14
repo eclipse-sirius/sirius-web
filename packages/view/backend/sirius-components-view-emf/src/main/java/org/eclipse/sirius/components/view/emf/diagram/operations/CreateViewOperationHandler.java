@@ -154,6 +154,7 @@ public class CreateViewOperationHandler implements IOperationHandler {
                 .background("")
                 .borderColor("")
                 .borderStyle(LineStyle.Solid)
+                .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .build();
 
         return Node.newNode(nodeId)
@@ -168,7 +169,6 @@ public class CreateViewOperationHandler implements IOperationHandler {
                 .collapsingState(CollapsingState.EXPANDED)
                 .insideLabel(insideLabel)
                 .style(nodeStyle)
-                .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .borderNodes(List.of())
                 .childNodes(List.of())
                 .build();

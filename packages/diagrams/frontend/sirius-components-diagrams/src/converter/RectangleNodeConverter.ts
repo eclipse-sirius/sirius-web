@@ -93,7 +93,7 @@ const toRectangularNode = (
     connectionHandles,
     isNew,
     resizedByUser,
-    isListChild: isListLayoutStrategy(gqlParentNode?.childrenLayoutStrategy),
+    isListChild: isListLayoutStrategy(gqlParentNode?.style.childrenLayoutStrategy),
     isDropNodeTarget: false,
     isDropNodeCandidate: false,
     isHovered: false,
@@ -142,7 +142,7 @@ const toRectangularNode = (
 
 export class RectangleNodeConverter implements INodeConverter {
   canHandle(gqlNode: GQLNode<GQLNodeStyle>) {
-    return gqlNode.style.__typename === 'RectangularNodeStyle' && gqlNode.childrenLayoutStrategy?.kind !== 'List';
+    return gqlNode.style.__typename === 'RectangularNodeStyle' && gqlNode.style.childrenLayoutStrategy?.kind !== 'List';
   }
 
   handle(
