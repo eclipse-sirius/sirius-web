@@ -81,7 +81,7 @@ jobs:
         env:
           USERNAME: ${{github.actor}}
           PASSWORD: ${{secrets.GITHUB_TOKEN}}
-        run: mvn -U -B -e clean verify -f packages/pom.xml --settings settings.xml
+        run: mvn -T 4C -U -B -e clean verify -f packages/pom.xml --settings settings.xml
 
       - name: Check if all files have been commited
         run: node scripts/check-gitdiff.js
