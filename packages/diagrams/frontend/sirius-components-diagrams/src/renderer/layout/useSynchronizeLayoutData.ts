@@ -13,9 +13,12 @@
 
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { Node, Position } from '@xyflow/react';
 import { useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { NodeData } from '../DiagramRenderer.types';
+import { EdgeAnchorNodeData, isEdgeAnchorNode } from '../node/EdgeAnchorNode.types';
 import { RawDiagram } from './layout.types';
 import {
   GQLDiagramLayoutData,
@@ -79,6 +82,8 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
   }, [data, error]);
 
   const toDiagramLayoutData = (diagram: RawDiagram): GQLDiagramLayoutData => {
+    const nodeId2node = new Map<string, Node<NodeData | EdgeAnchorNodeData>>();
+    diagram.nodes.forEach((node) => nodeId2node.set(node.id, node));
     const nodeLayoutData: GQLNodeLayoutData[] = [];
     const edgeLayoutData: GQLEdgeLayoutData[] = [];
 
@@ -127,14 +132,32 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
     });
 
     diagram.edges.forEach((edge) => {
-      if (edge.data?.bendingPoints) {
-        edgeLayoutData.push({
-          id: edge.id,
-          bendingPoints: edge.data.bendingPoints.map((point) => {
-            return { x: point.x, y: point.y };
-          }),
+      let edgeLayout: GQLEdgeLayoutData = {
+        id: edge.id,
+        bendingPoints: [],
+        edgeAnchorLayoutData: [],
+      };
+
+      if (edge.data && edge.data.bendingPoints) {
+        edge.data.bendingPoints.forEach((point) => {
+          edgeLayout.bendingPoints.push({ x: point.x, y: point.y });
         });
       }
+
+      const edgeAnchorNode = nodeId2node.get(edge.id);
+      const isLayoutedEdgeAnchorNode =
+        edgeAnchorNode && isEdgeAnchorNode(edgeAnchorNode) && edgeAnchorNode.data.isLayouted;
+
+      if (isLayoutedEdgeAnchorNode) {
+        edgeLayout.edgeAnchorLayoutData.push({
+          edgeId: edgeAnchorNode.data.edgeId,
+          positionRatio: edgeAnchorNode.data.positionRatio,
+          handlePosition: Position.Left,
+          type: edgeAnchorNode.id === edge.source ? 'target' : 'source',
+        });
+      }
+
+      edgeLayoutData.push(edgeLayout);
     });
     return {
       nodeLayoutData,

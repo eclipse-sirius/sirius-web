@@ -44,9 +44,17 @@ export interface GQLHandleLayoutData {
   type: HandleType;
 }
 
+export interface GQLEdgeAnchorLayoutData {
+  edgeId: string;
+  positionRatio: number;
+  handlePosition: Position;
+  type: HandleType;
+}
+
 export interface GQLEdgeLayoutData {
   id: string;
   bendingPoints: GQLPosition[];
+  edgeAnchorLayoutData: GQLEdgeAnchorLayoutData[];
 }
 
 export interface GQLRepresentationMetadata {
