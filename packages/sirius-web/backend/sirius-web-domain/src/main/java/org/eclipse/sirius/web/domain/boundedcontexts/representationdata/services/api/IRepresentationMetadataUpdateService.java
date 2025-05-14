@@ -30,4 +30,6 @@ public interface IRepresentationMetadataUpdateService {
     IResult<RepresentationMetadata> updateDocumentation(ICause cause, UUID representationMetadataId, String documentation);
 
     IResult<Void> updateDescriptionId(ICause cause, UUID representationMetadataId, String descriptionId);
+
+    IResult<Void> updateTargetObjectId(ICause cause, UUID representationMetadataId, String targetObjectId);
 }
