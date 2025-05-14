@@ -1,0 +1,86 @@
+= ADR-194 - Add the ability to contribute new actions to manage the visibility
+
+== Context
+
+A node action is used to open a modal in order to manage the visibility of the children of a node.
+
+
+== Decision
+
+We will add an API for retreiving and executing actions from the backend.
+
+
+=== Frontend
+
+We will add 2 hooks that will be used to execute the needed query and mutation.
+
+[code,typescript]
+----
+const { manageVisibilityActions } = useManageVisibilityActions(diagramElementId);
+const { invokeManageVisibilityAction } = useInvokeManageVisibilityAction(diagramElementId);
+----
+
+=== GraphQL shema
+
+We will provide a new type to the GraphQL schema to manage the visibility.
+
+----
+type ManageVisibilityAction {
+  id: ID!
+  label: String!
+}
+----
+
+We will be able to retrieve them thanks to the diagram description type
+
+----
+type DiagramDescription implements RepresentationDescription {
+  manageVisibilityActions(diagramElementId: ID!): [ManageVisibilityAction!]!
+}
+----
+
+We will add one mutation to invoke the action:
+
+----
+invokeManageVisibilityAction(input: InvokeManageVisibilityActionInput!): InvokeManageVisibilityActionPayload!
+----
+
+
+=== Backend
+
+We will add new interfaces in order to contribute new actions and action handlers
+
+[code,java]
+----
+public interface IManageVisibilityActionHandler {
+
+    boolean canHandle(IEditingContext editingContext, IDiagramContext diagramContext, IDiagramElement diagramElement, String actionId);
+
+    IStatus handle(IEditingContext editingContext, IDiagramContext diagramContext, IDiagramElement diagramElement, String actionId);
+}
+----
+
+[code,java]
+----
+public interface IManageVisibilityActionProvider {
+
+    boolean canHandle(IEditingContext editingContext, DiagramDescription diagramDescription, IDiagramElement diagramElement);
+
+    List<ManageVisibilityAction> handle(IEditingContext editingContext, DiagramDescription diagramDescription, IDiagramElement diagramElement);
+}
+----
+
+We will also add the needed datafetcher and event handlers.
+
+
+== Rabbit holes
+
+None.
+
+
+== Consequences
+
+None identified
+
+
+== Cutting backs
