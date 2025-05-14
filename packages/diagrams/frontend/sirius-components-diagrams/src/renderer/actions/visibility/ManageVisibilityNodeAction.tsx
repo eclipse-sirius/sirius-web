@@ -116,7 +116,8 @@ export const ManageVisibilityNodeAction = ({
             <ManageVisibilityModalSearchField onValueChanged={onSearchValueChanged}></ManageVisibilityModalSearchField>
             <ManageVisibilityModalMenuCheckBox
               isChecked={isOneElementHidden}
-              onChecked={onAllElementCheck}></ManageVisibilityModalMenuCheckBox>
+              onChecked={onAllElementCheck}
+              diagramElementId={diagramElementId}></ManageVisibilityModalMenuCheckBox>
             <ManageVisibilityModalListItems items={items} onChecked={onElementCheck}></ManageVisibilityModalListItems>
           </Stack>
         </ClickAwayListener>
