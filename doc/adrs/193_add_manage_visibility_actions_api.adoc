@@ -1,0 +1,81 @@
+= ADR-193 - Add manage visibility actions API
+
+== Context
+
+A node action is used to open a modal in order to manage the visibility of the children of a node.
+
+== Decision
+
+We will add an API for retreiving and executing action from the backend.
+
+=== Frontend
+
+We will add 2 hooks that will be used to execute the needed query and mutation.
+
+[code,typescript]
+----
+const { manageVisibilityActions } = useManageVisibilityActions(diagramElementId);
+const { invokeManageVisibilityAction } = useInvokeManageVisibilityAction(diagramElementId);
+----
+
+=== GraphQL shema
+
+We will reuse the existing Action type.
+
+----
+type Action {
+  id: ID!
+  tooltip: String!
+  iconURLs: [String!]!
+}
+----
+
+We will add one mutation 
+
+----
+invokeManageVisibilityAction(input: InvokeManageVisibilityActionInput!): InvokeManageVisibilityActionPayload!
+----
+
+We will add the field `manageVisibilityActions` 
+
+----
+type DiagramDescription implements RepresentationDescription {
+  id: ID!
+  actions(diagramElementId: ID!): [Action!]!
+  manageVisibilityActions(diagramElementId: ID!): [Action!]!
+  debug: Boolean
+}
+----
+
+=== Backend
+
+We will add new interfaces in order to contribute new actions and action handlers
+
+[code,java]
+----
+public interface IManageVisibilityActionsHandler {
+
+    boolean canHandle(IEditingContext editingContext, IDiagramContext diagramContext, IDiagramElement diagramElement, String actionId);
+
+    IStatus handle(IEditingContext editingContext, IDiagramContext diagramContext, IDiagramElement diagramElement, String actionId);
+}
+
+public interface IManageVisibilityActionsProvider {
+
+    boolean canHandle(IEditingContext editingContext, DiagramDescription diagramDescription, IDiagramElement diagramElement);
+
+    List<Action> handle(IEditingContext editingContext, DiagramDescription diagramDescription, IDiagramElement diagramElement);
+}
+----
+
+We will also add the needed datafetcher and event handlers.
+
+== Rabbit holes
+
+None.
+
+== Consequences
+
+None identified
+
+== Cutting backs
