@@ -10,6 +10,7 @@
 
 - [ADR-192] Improve table representation lifecycle
 - [ADR-193] Leverage React router for nested routes
+- [ADR-194] Add the ability to contribute new actions to manage the visibility
 
 === Deprecation warning
 
