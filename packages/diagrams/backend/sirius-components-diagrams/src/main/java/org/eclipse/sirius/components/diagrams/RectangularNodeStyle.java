@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,6 +35,8 @@ public final class RectangularNodeStyle implements INodeStyle {
 
     private LineStyle borderStyle;
 
+    private ILayoutStrategy childrenLayoutStrategy;
+
     private RectangularNodeStyle() {
         // Prevent instantiation
     }
@@ -64,6 +66,11 @@ public final class RectangularNodeStyle implements INodeStyle {
     }
 
     @Override
+    public ILayoutStrategy getChildrenLayoutStrategy() {
+        return this.childrenLayoutStrategy;
+    }
+
+    @Override
     public String toString() {
         String pattern = "{0} '{'color: {1}, border: '{' background: {2}, size: {3}, radius: {4}, style: {5} '}''}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.background, this.borderColor, this.borderSize, this.borderRadius, this.borderStyle);
@@ -86,6 +93,8 @@ public final class RectangularNodeStyle implements INodeStyle {
         private int borderRadius;
 
         private LineStyle borderStyle;
+
+        private ILayoutStrategy childrenLayoutStrategy;
 
         private Builder() {
             // Prevent instantiation
@@ -116,6 +125,11 @@ public final class RectangularNodeStyle implements INodeStyle {
             return this;
         }
 
+        public Builder childrenLayoutStrategy(ILayoutStrategy childrenLayoutStrategy) {
+            this.childrenLayoutStrategy = Objects.requireNonNull(childrenLayoutStrategy);
+            return this;
+        }
+
         public RectangularNodeStyle build() {
             RectangularNodeStyle nodeStyleDescription = new RectangularNodeStyle();
             nodeStyleDescription.background = Objects.requireNonNull(this.background);
@@ -123,6 +137,7 @@ public final class RectangularNodeStyle implements INodeStyle {
             nodeStyleDescription.borderSize = this.borderSize;
             nodeStyleDescription.borderRadius = this.borderRadius;
             nodeStyleDescription.borderStyle = Objects.requireNonNull(this.borderStyle);
+            nodeStyleDescription.childrenLayoutStrategy = Objects.requireNonNull(this.childrenLayoutStrategy);
             return nodeStyleDescription;
         }
     }

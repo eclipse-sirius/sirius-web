@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,8 @@ public final class IconLabelNodeStyle implements INodeStyle {
 
     private String background;
 
+    private ILayoutStrategy childrenLayoutStrategy;
+
     private IconLabelNodeStyle() {
         // Prevent instantiation
     }
@@ -37,6 +39,11 @@ public final class IconLabelNodeStyle implements INodeStyle {
 
     public String getBackground() {
         return this.background;
+    }
+
+    @Override
+    public ILayoutStrategy getChildrenLayoutStrategy() {
+        return this.childrenLayoutStrategy;
     }
 
     @Override
@@ -55,6 +62,8 @@ public final class IconLabelNodeStyle implements INodeStyle {
 
         private String background;
 
+        private ILayoutStrategy childrenLayoutStrategy;
+
         private Builder() {
             // Prevent instantiation
         }
@@ -64,9 +73,15 @@ public final class IconLabelNodeStyle implements INodeStyle {
             return this;
         }
 
+        public Builder childrenLayoutStrategy(ILayoutStrategy childrenLayoutStrategy) {
+            this.childrenLayoutStrategy = Objects.requireNonNull(childrenLayoutStrategy);
+            return this;
+        }
+
         public IconLabelNodeStyle build() {
             IconLabelNodeStyle nodeStyleDescription = new IconLabelNodeStyle();
             nodeStyleDescription.background = Objects.requireNonNull(this.background);
+            nodeStyleDescription.childrenLayoutStrategy = Objects.requireNonNull(this.childrenLayoutStrategy);
             return nodeStyleDescription;
         }
     }

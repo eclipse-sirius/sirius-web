@@ -99,7 +99,6 @@ public class DiagramListViewProvider implements IE2EViewProvider {
                 .collapsible(true)
                 .userResizable(UserResizableDirection.BOTH)
                 .keepAspectRatio(false)
-                .childrenLayoutStrategy(new DiagramBuilders().newListLayoutStrategyDescription().build())
                 .style(
                         new DiagramBuilders()
                                 .newRectangularNodeStyleDescription()
@@ -108,6 +107,7 @@ public class DiagramListViewProvider implements IE2EViewProvider {
                                 .borderRadius(3)
                                 .borderSize(1)
                                 .borderLineStyle(LineStyle.SOLID)
+                                .childrenLayoutStrategy(new DiagramBuilders().newListLayoutStrategyDescription().build())
                                 .build()
                 )
                 .insideLabel(
@@ -149,7 +149,6 @@ public class DiagramListViewProvider implements IE2EViewProvider {
                 .collapsible(false)
                 .userResizable(UserResizableDirection.BOTH)
                 .keepAspectRatio(false)
-                .childrenLayoutStrategy(new DiagramBuilders().newListLayoutStrategyDescription().build())
                 .style(
                         new DiagramBuilders()
                                 .newRectangularNodeStyleDescription()
@@ -158,6 +157,7 @@ public class DiagramListViewProvider implements IE2EViewProvider {
                                 .borderRadius(0)
                                 .borderSize(1)
                                 .borderLineStyle(LineStyle.SOLID)
+                                .childrenLayoutStrategy(new DiagramBuilders().newListLayoutStrategyDescription().build())
                                 .build()
                 )
                 .childrenDescriptions(this.getIconListDescription(colorProvider))
@@ -221,7 +221,6 @@ public class DiagramListViewProvider implements IE2EViewProvider {
                 .collapsible(false)
                 .userResizable(UserResizableDirection.BOTH)
                 .keepAspectRatio(false)
-                .childrenLayoutStrategy(new DiagramBuilders().newFreeFormLayoutStrategyDescription().build())
                 .style(
                         new DiagramBuilders()
                                 .newRectangularNodeStyleDescription()
@@ -230,6 +229,7 @@ public class DiagramListViewProvider implements IE2EViewProvider {
                                 .borderRadius(0)
                                 .borderSize(1)
                                 .borderLineStyle(LineStyle.SOLID)
+                                .childrenLayoutStrategy(new DiagramBuilders().newFreeFormLayoutStrategyDescription().build())
                                 .build()
                 )
                 .childrenDescriptions(this.getSimpleRectangularDescription(colorProvider))

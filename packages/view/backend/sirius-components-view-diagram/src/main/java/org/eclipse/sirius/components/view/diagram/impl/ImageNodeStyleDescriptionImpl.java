@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.view.diagram.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -20,6 +21,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 
 /**
@@ -37,6 +39,8 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
  * Size</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ImageNodeStyleDescriptionImpl#getBorderLineStyle
  * <em>Border Line Style</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ImageNodeStyleDescriptionImpl#getChildrenLayoutStrategy
+ * <em>Children Layout Strategy</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ImageNodeStyleDescriptionImpl#getShape
  * <em>Shape</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ImageNodeStyleDescriptionImpl#isPositionDependentRotation
@@ -116,6 +120,16 @@ public class ImageNodeStyleDescriptionImpl extends MinimalEObjectImpl.Container 
      * @ordered
      */
     protected LineStyle borderLineStyle = BORDER_LINE_STYLE_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getChildrenLayoutStrategy() <em>Children Layout Strategy</em>}' containment
+     * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getChildrenLayoutStrategy()
+     * @generated
+     * @ordered
+     */
+    protected LayoutStrategyDescription childrenLayoutStrategy;
 
     /**
      * The default value of the '{@link #getShape() <em>Shape</em>}' attribute. <!-- begin-user-doc --> <!--
@@ -291,6 +305,55 @@ public class ImageNodeStyleDescriptionImpl extends MinimalEObjectImpl.Container 
      * @generated
      */
     @Override
+    public LayoutStrategyDescription getChildrenLayoutStrategy() {
+        return this.childrenLayoutStrategy;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetChildrenLayoutStrategy(LayoutStrategyDescription newChildrenLayoutStrategy, NotificationChain msgs) {
+        LayoutStrategyDescription oldChildrenLayoutStrategy = this.childrenLayoutStrategy;
+        this.childrenLayoutStrategy = newChildrenLayoutStrategy;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, oldChildrenLayoutStrategy,
+                    newChildrenLayoutStrategy);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setChildrenLayoutStrategy(LayoutStrategyDescription newChildrenLayoutStrategy) {
+        if (newChildrenLayoutStrategy != this.childrenLayoutStrategy) {
+            NotificationChain msgs = null;
+            if (this.childrenLayoutStrategy != null)
+                msgs = ((InternalEObject) this.childrenLayoutStrategy).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, null, msgs);
+            if (newChildrenLayoutStrategy != null)
+                msgs = ((InternalEObject) newChildrenLayoutStrategy).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, null, msgs);
+            msgs = this.basicSetChildrenLayoutStrategy(newChildrenLayoutStrategy, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, newChildrenLayoutStrategy, newChildrenLayoutStrategy));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public String getShape() {
         return this.shape;
     }
@@ -338,6 +401,20 @@ public class ImageNodeStyleDescriptionImpl extends MinimalEObjectImpl.Container 
      * @generated
      */
     @Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+        switch (featureID) {
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
+                return this.basicSetChildrenLayoutStrategy(null, msgs);
+        }
+        return super.eInverseRemove(otherEnd, featureID, msgs);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__BORDER_COLOR:
@@ -350,6 +427,8 @@ public class ImageNodeStyleDescriptionImpl extends MinimalEObjectImpl.Container 
                 return this.getBorderSize();
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
                 return this.getBorderLineStyle();
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
+                return this.getChildrenLayoutStrategy();
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE:
                 return this.getShape();
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__POSITION_DEPENDENT_ROTATION:
@@ -377,6 +456,9 @@ public class ImageNodeStyleDescriptionImpl extends MinimalEObjectImpl.Container 
                 return;
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
                 this.setBorderLineStyle((LineStyle) newValue);
+                return;
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
+                this.setChildrenLayoutStrategy((LayoutStrategyDescription) newValue);
                 return;
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE:
                 this.setShape((String) newValue);
@@ -408,6 +490,9 @@ public class ImageNodeStyleDescriptionImpl extends MinimalEObjectImpl.Container 
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
                 this.setBorderLineStyle(BORDER_LINE_STYLE_EDEFAULT);
                 return;
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
+                this.setChildrenLayoutStrategy((LayoutStrategyDescription) null);
+                return;
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE:
                 this.setShape(SHAPE_EDEFAULT);
                 return;
@@ -434,6 +519,8 @@ public class ImageNodeStyleDescriptionImpl extends MinimalEObjectImpl.Container 
                 return this.borderSize != BORDER_SIZE_EDEFAULT;
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
                 return this.borderLineStyle != BORDER_LINE_STYLE_EDEFAULT;
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
+                return this.childrenLayoutStrategy != null;
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE:
                 return SHAPE_EDEFAULT == null ? this.shape != null : !SHAPE_EDEFAULT.equals(this.shape);
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__POSITION_DEPENDENT_ROTATION:

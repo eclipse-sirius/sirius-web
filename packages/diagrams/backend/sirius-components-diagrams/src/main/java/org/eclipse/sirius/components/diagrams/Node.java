@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,8 +55,6 @@ public final class Node implements IDiagramElement {
     private List<OutsideLabel> outsideLabels;
 
     private INodeStyle style;
-
-    private ILayoutStrategy childrenLayoutStrategy;
 
     private List<Node> borderNodes;
 
@@ -136,10 +134,6 @@ public final class Node implements IDiagramElement {
         return this.style;
     }
 
-    public ILayoutStrategy getChildrenLayoutStrategy() {
-        return this.childrenLayoutStrategy;
-    }
-
     public List<Node> getBorderNodes() {
         return this.borderNodes;
     }
@@ -209,8 +203,6 @@ public final class Node implements IDiagramElement {
 
         private INodeStyle style;
 
-        private ILayoutStrategy childrenLayoutStrategy;
-
         private List<Node> borderNodes;
 
         private List<Node> childNodes;
@@ -241,7 +233,6 @@ public final class Node implements IDiagramElement {
             this.insideLabel = node.getInsideLabel();
             this.outsideLabels = node.getOutsideLabels();
             this.style = node.getStyle();
-            this.childrenLayoutStrategy = node.getChildrenLayoutStrategy();
             this.borderNodes = node.getBorderNodes();
             this.childNodes = node.getChildNodes();
             this.defaultWidth = node.getDefaultWidth();
@@ -310,11 +301,6 @@ public final class Node implements IDiagramElement {
             return this;
         }
 
-        public Builder childrenLayoutStrategy(ILayoutStrategy childrenLayoutStrategy) {
-            this.childrenLayoutStrategy = Objects.requireNonNull(childrenLayoutStrategy);
-            return this;
-        }
-
         public Builder borderNodes(List<Node> borderNodes) {
             this.borderNodes = Objects.requireNonNull(borderNodes);
             return this;
@@ -360,7 +346,6 @@ public final class Node implements IDiagramElement {
             node.insideLabel = this.insideLabel;
             node.outsideLabels = Objects.requireNonNull(this.outsideLabels);
             node.style = Objects.requireNonNull(this.style);
-            node.childrenLayoutStrategy = this.childrenLayoutStrategy;
             node.borderNodes = Objects.requireNonNull(this.borderNodes);
             node.childNodes = Objects.requireNonNull(this.childNodes);
             node.defaultWidth = this.defaultWidth; // Optional on purpose

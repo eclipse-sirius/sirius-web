@@ -27,7 +27,6 @@ import org.eclipse.sirius.components.view.diagram.Action;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
-import org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
@@ -104,16 +103,6 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @ordered
      */
     protected EList<Action> actions;
-
-    /**
-     * The cached value of the '{@link #getChildrenLayoutStrategy() <em>Children Layout Strategy</em>}' containment
-     * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getChildrenLayoutStrategy()
-     * @generated
-     * @ordered
-     */
-    protected LayoutStrategyDescription childrenLayoutStrategy;
 
     /**
      * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
@@ -430,55 +419,6 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
         this.palette = newPalette;
         if (this.eNotificationRequired()) {
             ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_DESCRIPTION__PALETTE, oldPalette, newPalette);
-            if (msgs == null)
-                msgs = notification;
-            else
-                msgs.add(notification);
-        }
-        return msgs;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public LayoutStrategyDescription getChildrenLayoutStrategy() {
-        return this.childrenLayoutStrategy;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setChildrenLayoutStrategy(LayoutStrategyDescription newChildrenLayoutStrategy) {
-        if (newChildrenLayoutStrategy != this.childrenLayoutStrategy) {
-            NotificationChain msgs = null;
-            if (this.childrenLayoutStrategy != null)
-                msgs = ((InternalEObject) this.childrenLayoutStrategy).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, null, msgs);
-            if (newChildrenLayoutStrategy != null)
-                msgs = ((InternalEObject) newChildrenLayoutStrategy).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, null, msgs);
-            msgs = this.basicSetChildrenLayoutStrategy(newChildrenLayoutStrategy, msgs);
-            if (msgs != null)
-                msgs.dispatch();
-        } else if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, newChildrenLayoutStrategy, newChildrenLayoutStrategy));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    public NotificationChain basicSetChildrenLayoutStrategy(LayoutStrategyDescription newChildrenLayoutStrategy, NotificationChain msgs) {
-        LayoutStrategyDescription oldChildrenLayoutStrategy = this.childrenLayoutStrategy;
-        this.childrenLayoutStrategy = newChildrenLayoutStrategy;
-        if (this.eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, oldChildrenLayoutStrategy,
-                    newChildrenLayoutStrategy);
             if (msgs == null)
                 msgs = notification;
             else
@@ -837,8 +777,6 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return this.basicSetPalette(null, msgs);
             case DiagramPackage.NODE_DESCRIPTION__ACTIONS:
                 return ((InternalEList<?>) this.getActions()).basicRemove(otherEnd, msgs);
-            case DiagramPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
-                return this.basicSetChildrenLayoutStrategy(null, msgs);
             case DiagramPackage.NODE_DESCRIPTION__STYLE:
                 return this.basicSetStyle(null, msgs);
             case DiagramPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
@@ -869,8 +807,6 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return this.getPalette();
             case DiagramPackage.NODE_DESCRIPTION__ACTIONS:
                 return this.getActions();
-            case DiagramPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
-                return this.getChildrenLayoutStrategy();
             case DiagramPackage.NODE_DESCRIPTION__STYLE:
                 return this.getStyle();
             case DiagramPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
@@ -923,9 +859,6 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             case DiagramPackage.NODE_DESCRIPTION__ACTIONS:
                 this.getActions().clear();
                 this.getActions().addAll((Collection<? extends Action>) newValue);
-                return;
-            case DiagramPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
-                this.setChildrenLayoutStrategy((LayoutStrategyDescription) newValue);
                 return;
             case DiagramPackage.NODE_DESCRIPTION__STYLE:
                 this.setStyle((NodeStyleDescription) newValue);
@@ -999,9 +932,6 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             case DiagramPackage.NODE_DESCRIPTION__ACTIONS:
                 this.getActions().clear();
                 return;
-            case DiagramPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
-                this.setChildrenLayoutStrategy((LayoutStrategyDescription) null);
-                return;
             case DiagramPackage.NODE_DESCRIPTION__STYLE:
                 this.setStyle((NodeStyleDescription) null);
                 return;
@@ -1065,8 +995,6 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return this.palette != null;
             case DiagramPackage.NODE_DESCRIPTION__ACTIONS:
                 return this.actions != null && !this.actions.isEmpty();
-            case DiagramPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
-                return this.childrenLayoutStrategy != null;
             case DiagramPackage.NODE_DESCRIPTION__STYLE:
                 return this.style != null;
             case DiagramPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:

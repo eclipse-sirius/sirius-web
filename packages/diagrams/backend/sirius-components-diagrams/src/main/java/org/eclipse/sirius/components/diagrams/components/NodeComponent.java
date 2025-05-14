@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.eclipse.sirius.components.diagrams.CollapsingState;
-import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
@@ -28,7 +27,6 @@ import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
-import org.eclipse.sirius.components.diagrams.elements.NodeElementProps.Builder;
 import org.eclipse.sirius.components.diagrams.events.FadeDiagramElementEvent;
 import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
@@ -167,9 +165,6 @@ public class NodeComponent implements IComponent {
 
         INodeStyle style = nodeDescription.getStyleProvider().apply(nodeVariableManager);
 
-        ILayoutStrategy layoutStrategy = nodeDescription.getChildrenLayoutStrategyProvider().apply(nodeVariableManager);
-
-
         var parentState = state;
         if (collapsingState == CollapsingState.COLLAPSED) {
             parentState = ViewModifier.Hidden;
@@ -186,7 +181,7 @@ public class NodeComponent implements IComponent {
         Integer defaultWidth = nodeDescription.getDefaultWidthProvider().apply(nodeVariableManager);
         Integer defaultHeight = nodeDescription.getDefaultHeightProvider().apply(nodeVariableManager);
 
-        Builder nodeElementPropsBuilder = NodeElementProps.newNodeElementProps(nodeId)
+        var nodeElementProps = NodeElementProps.newNodeElementProps(nodeId)
                 .type(type)
                 .targetObjectId(targetObjectId)
                 .targetObjectKind(targetObjectKind)
@@ -201,13 +196,10 @@ public class NodeComponent implements IComponent {
                 .collapsingState(collapsingState)
                 .defaultWidth(defaultWidth)
                 .defaultHeight(defaultHeight)
-                .labelEditable(nodeDescription.getLabelEditHandler() != null);
+                .labelEditable(nodeDescription.getLabelEditHandler() != null)
+                .build();
 
-        if (layoutStrategy != null) {
-            nodeElementPropsBuilder.childrenLayoutStrategy(layoutStrategy);
-        }
-
-        return new Element(NodeElementProps.TYPE, nodeElementPropsBuilder.build());
+        return new Element(NodeElementProps.TYPE, nodeElementProps);
     }
 
     private CollapsingState computeCollapsingState(String nodeId, Optional<Node> optionalPreviousNode, List<IDiagramEvent> diagramEvents, boolean isCollapsedByDefault) {
