@@ -66,6 +66,7 @@ public class DomainNodeDescriptionProvider implements INodeDescriptionProvider {
                 .borderSize(1)
                 .borderRadius(0)
                 .borderLineStyle(LineStyle.SOLID)
+                .childrenLayoutStrategy(childrenLayoutStrategy)
                 .build();
 
         return new DiagramBuilders().newNodeDescription()
@@ -75,7 +76,6 @@ public class DomainNodeDescriptionProvider implements INodeDescriptionProvider {
                 .insideLabel(insideLabel)
                 .style(nodeStyle)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .childrenLayoutStrategy(childrenLayoutStrategy)
                 .build();
     }
 

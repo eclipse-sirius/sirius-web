@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.UserResizableDirection;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -56,8 +55,6 @@ public final class NodeDescription implements IDiagramElementDescription {
     private List<OutsideLabelDescription> outsideLabelDescriptions;
 
     private Function<VariableManager, INodeStyle> styleProvider;
-
-    private Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider;
 
     private UserResizableDirection userResizable;
 
@@ -144,10 +141,6 @@ public final class NodeDescription implements IDiagramElementDescription {
 
     public Function<VariableManager, INodeStyle> getStyleProvider() {
         return this.styleProvider;
-    }
-
-    public Function<VariableManager, ILayoutStrategy> getChildrenLayoutStrategyProvider() {
-        return this.childrenLayoutStrategyProvider;
     }
 
     public UserResizableDirection getUserResizable() {
@@ -246,8 +239,6 @@ public final class NodeDescription implements IDiagramElementDescription {
 
         private Function<VariableManager, INodeStyle> styleProvider;
 
-        private Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider;
-
         private UserResizableDirection userResizable = UserResizableDirection.BOTH;
 
         private List<NodeDescription> borderNodeDescriptions = new ArrayList<>();
@@ -293,7 +284,6 @@ public final class NodeDescription implements IDiagramElementDescription {
             this.insideLabelDescription = nodeDescription.getInsideLabelDescription();
             this.outsideLabelDescriptions = nodeDescription.getOutsideLabelDescriptions();
             this.styleProvider = nodeDescription.getStyleProvider();
-            this.childrenLayoutStrategyProvider = nodeDescription.getChildrenLayoutStrategyProvider();
             this.borderNodeDescriptions = nodeDescription.getBorderNodeDescriptions();
             this.childNodeDescriptions = nodeDescription.getChildNodeDescriptions();
             this.collapsible = nodeDescription.isCollapsible();
@@ -358,11 +348,6 @@ public final class NodeDescription implements IDiagramElementDescription {
 
         public Builder styleProvider(Function<VariableManager, INodeStyle> styleProvider) {
             this.styleProvider = Objects.requireNonNull(styleProvider);
-            return this;
-        }
-
-        public Builder childrenLayoutStrategyProvider(Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider) {
-            this.childrenLayoutStrategyProvider = Objects.requireNonNull(childrenLayoutStrategyProvider);
             return this;
         }
 
@@ -455,7 +440,6 @@ public final class NodeDescription implements IDiagramElementDescription {
             nodeDescription.outsideLabelDescriptions = Objects.requireNonNull(this.outsideLabelDescriptions);
             nodeDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
             nodeDescription.userResizable = Objects.requireNonNull(this.userResizable);
-            nodeDescription.childrenLayoutStrategyProvider = Objects.requireNonNull(this.childrenLayoutStrategyProvider);
             nodeDescription.borderNodeDescriptions = Objects.requireNonNull(this.borderNodeDescriptions);
             nodeDescription.childNodeDescriptions = Objects.requireNonNull(this.childNodeDescriptions);
             nodeDescription.collapsible = this.collapsible;

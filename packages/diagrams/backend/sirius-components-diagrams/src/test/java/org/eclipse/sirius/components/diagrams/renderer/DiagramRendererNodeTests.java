@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -79,6 +79,7 @@ public class DiagramRendererNodeTests {
                 .borderColor("")
                 .borderSize(0)
                 .borderStyle(LineStyle.Solid)
+                .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .build();
         Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, Optional.empty());
 
@@ -110,6 +111,7 @@ public class DiagramRendererNodeTests {
                 .borderColor("")
                 .borderSize(0)
                 .borderStyle(LineStyle.Solid)
+                .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .build();
         Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, Optional.empty());
 
@@ -139,12 +141,11 @@ public class DiagramRendererNodeTests {
      */
     @Test
     public void testImageNodeRendering() {
-        Function<VariableManager, INodeStyle> styleProvider = variableManager -> {
-            return ImageNodeStyle.newImageNodeStyle()
-                    .imageURL("test")
-                    .scalingFactor(1)
-                    .build();
-        };
+        Function<VariableManager, INodeStyle> styleProvider = variableManager -> ImageNodeStyle.newImageNodeStyle()
+                .imageURL("test")
+                .scalingFactor(1)
+                .childrenLayoutStrategy(new FreeFormLayoutStrategy())
+                .build();
         Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_IMAGE, Optional.empty());
 
         assertThat(diagram).isNotNull();
@@ -175,6 +176,7 @@ public class DiagramRendererNodeTests {
                 .borderColor("")
                 .borderSize(0)
                 .borderStyle(LineStyle.Solid)
+                .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .build();
 
         Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, Optional.empty());
@@ -230,7 +232,6 @@ public class DiagramRendererNodeTests {
                 .targetObjectLabelProvider(variableManager -> "")
                 .insideLabelDescription(insideLbelDescription)
                 .styleProvider(styleProvider)
-                .childrenLayoutStrategyProvider(variableManager -> new FreeFormLayoutStrategy())
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())
                 .labelEditHandler((variableManager, newLabel) -> new Success())

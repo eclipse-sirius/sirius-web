@@ -745,7 +745,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getNodeDescription_ChildrenLayoutStrategy() {
+    public EReference getNodeDescription_Style() {
         return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(3);
     }
 
@@ -755,7 +755,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getNodeDescription_Style() {
+    public EReference getNodeDescription_ConditionalStyles() {
         return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(4);
     }
 
@@ -765,7 +765,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getNodeDescription_ConditionalStyles() {
+    public EReference getNodeDescription_ChildrenDescriptions() {
         return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(5);
     }
 
@@ -775,7 +775,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getNodeDescription_ChildrenDescriptions() {
+    public EReference getNodeDescription_BorderNodesDescriptions() {
         return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(6);
     }
 
@@ -785,7 +785,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getNodeDescription_BorderNodesDescriptions() {
+    public EReference getNodeDescription_ReusedChildNodeDescriptions() {
         return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(7);
     }
 
@@ -795,7 +795,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getNodeDescription_ReusedChildNodeDescriptions() {
+    public EReference getNodeDescription_ReusedBorderNodeDescriptions() {
         return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(8);
     }
 
@@ -805,18 +805,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getNodeDescription_ReusedBorderNodeDescriptions() {
-        return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(9);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public EAttribute getNodeDescription_UserResizable() {
-        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(10);
+        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(9);
     }
 
     /**
@@ -826,7 +816,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      */
     @Override
     public EAttribute getNodeDescription_DefaultWidthExpression() {
-        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(11);
+        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(10);
     }
 
     /**
@@ -836,7 +826,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      */
     @Override
     public EAttribute getNodeDescription_DefaultHeightExpression() {
-        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(12);
+        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(11);
     }
 
     /**
@@ -846,7 +836,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      */
     @Override
     public EAttribute getNodeDescription_KeepAspectRatio() {
-        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(13);
+        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(12);
     }
 
     /**
@@ -856,7 +846,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      */
     @Override
     public EAttribute getNodeDescription_IsCollapsedByDefaultExpression() {
-        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(14);
+        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(13);
     }
 
     /**
@@ -866,7 +856,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      */
     @Override
     public EReference getNodeDescription_InsideLabel() {
-        return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(15);
+        return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(14);
     }
 
     /**
@@ -876,7 +866,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      */
     @Override
     public EReference getNodeDescription_OutsideLabels() {
-        return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(16);
+        return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(15);
     }
 
     /**
@@ -886,7 +876,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      */
     @Override
     public EAttribute getNodeDescription_IsHiddenByDefaultExpression() {
-        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(17);
+        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(16);
     }
 
     /**
@@ -896,7 +886,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      */
     @Override
     public EAttribute getNodeDescription_IsFadedByDefaultExpression() {
-        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(18);
+        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(17);
     }
 
     /**
@@ -1387,6 +1377,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
     @Override
     public EClass getNodeStyleDescription() {
         return this.nodeStyleDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getNodeStyleDescription_ChildrenLayoutStrategy() {
+        return (EReference) this.nodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -2569,7 +2569,6 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEAttribute(this.nodeDescriptionEClass, NODE_DESCRIPTION__COLLAPSIBLE);
         this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__PALETTE);
         this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__ACTIONS);
-        this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY);
         this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__STYLE);
         this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__CONDITIONAL_STYLES);
         this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS);
@@ -2647,6 +2646,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEAttribute(this.nodeLabelStyleEClass, NODE_LABEL_STYLE__MAX_WIDTH_EXPRESSION);
 
         this.nodeStyleDescriptionEClass = this.createEClass(NODE_STYLE_DESCRIPTION);
+        this.createEReference(this.nodeStyleDescriptionEClass, NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY);
 
         this.conditionalNodeStyleEClass = this.createEClass(CONDITIONAL_NODE_STYLE);
         this.createEReference(this.conditionalNodeStyleEClass, CONDITIONAL_NODE_STYLE__STYLE);
@@ -2893,8 +2893,6 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getNodeDescription_Actions(), this.getAction(), null, "actions", null, 0, -1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getNodeDescription_ChildrenLayoutStrategy(), this.getLayoutStrategyDescription(), null, "childrenLayoutStrategy", null, 0, 1, NodeDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getNodeDescription_Style(), this.getNodeStyleDescription(), null, "style", null, 0, 1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getNodeDescription_ConditionalStyles(), this.getConditionalNodeStyle(), null, "conditionalStyles", null, 0, -1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
@@ -3026,6 +3024,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.nodeStyleDescriptionEClass, NodeStyleDescription.class, "NodeStyleDescription", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getNodeStyleDescription_ChildrenLayoutStrategy(), this.getLayoutStrategyDescription(), null, "childrenLayoutStrategy", null, 0, 1, NodeStyleDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalNodeStyleEClass, ConditionalNodeStyle.class, "ConditionalNodeStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getConditionalNodeStyle_Style(), this.getNodeStyleDescription(), null, "style", null, 0, 1, ConditionalNodeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,

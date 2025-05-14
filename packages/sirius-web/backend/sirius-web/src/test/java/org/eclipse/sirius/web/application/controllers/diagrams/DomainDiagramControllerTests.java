@@ -34,7 +34,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.NodeLayoutDataIn
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
-import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.layoutdata.Position;
 import org.eclipse.sirius.components.diagrams.layoutdata.Size;
 import org.eclipse.sirius.components.diagrams.tests.graphql.LayoutDiagramMutationRunner;
@@ -115,7 +114,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
                     var nodes = List.of(rootNode, namedElementNode, humanNode);
                     assertThat(nodes)
                             .isNotEmpty()
-                            .allSatisfy(node -> assertThat(node).isNotNull().extracting(Node::getChildrenLayoutStrategy).isInstanceOf(ListLayoutStrategy.class));
+                            .allSatisfy(node -> assertThat(node).isNotNull().extracting(n -> n.getStyle().getChildrenLayoutStrategy()).isInstanceOf(ListLayoutStrategy.class));
                 }, () -> fail(MISSING_DIAGRAM));
 
         StepVerifier.create(flux)
