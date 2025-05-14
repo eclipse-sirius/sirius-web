@@ -40,7 +40,11 @@ import { useDiagramDescription } from '../contexts/useDiagramDescription';
 import { convertDiagram } from '../converter/convertDiagram';
 import { useStore } from '../representation/useStore';
 import { Diagram, DiagramRendererProps, EdgeData, NodeData, ReactFlowPropsCustomizer } from './DiagramRenderer.types';
-import { diagramRendererReactFlowPropsCustomizerExtensionPoint } from './DiagramRendererExtensionPoints';
+import {
+  diagramRendererCanUserSnapToGridExtensionPoint,
+  diagramRendererDefaultSnapToGridExtensionPoint,
+  diagramRendererReactFlowPropsCustomizerExtensionPoint,
+} from './DiagramRendererExtensionPoints';
 import { useBorderChange } from './border/useBorderChange';
 import { ConnectorContextualMenu } from './connector/ConnectorContextualMenu';
 import { useConnector } from './connector/useConnector';
@@ -344,7 +348,15 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     onDelete(event);
   }, []);
 
-  const { snapToGrid, onSnapToGrid } = useSnapToGrid();
+  const { data: defaultSnapToGrid } = useData<(readOnly: boolean) => boolean>(
+    diagramRendererDefaultSnapToGridExtensionPoint
+  );
+  const { data: canSnapToGrid } = useData<(readOnly: boolean) => boolean>(
+    diagramRendererCanUserSnapToGridExtensionPoint
+  );
+  const defaultSnapToGridState = useMemo(() => defaultSnapToGrid(readOnly), [readOnly]);
+  const canSnapToGridState = useMemo(() => canSnapToGrid(readOnly), [readOnly]);
+  const { snapToGrid, onSnapToGrid } = useSnapToGrid(defaultSnapToGridState, canSnapToGridState);
 
   const hideAllPalettes = useCallback(() => {
     hideDiagramPalette();
