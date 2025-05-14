@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.eclipse.sirius.components.diagrams.CollapsingState;
-import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
@@ -167,9 +166,6 @@ public class NodeComponent implements IComponent {
 
         INodeStyle style = nodeDescription.getStyleProvider().apply(nodeVariableManager);
 
-        ILayoutStrategy layoutStrategy = nodeDescription.getChildrenLayoutStrategyProvider().apply(nodeVariableManager);
-
-
         var parentState = state;
         if (collapsingState == CollapsingState.COLLAPSED) {
             parentState = ViewModifier.Hidden;
@@ -202,10 +198,6 @@ public class NodeComponent implements IComponent {
                 .defaultWidth(defaultWidth)
                 .defaultHeight(defaultHeight)
                 .labelEditable(nodeDescription.getLabelEditHandler() != null);
-
-        if (layoutStrategy != null) {
-            nodeElementPropsBuilder.childrenLayoutStrategy(layoutStrategy);
-        }
 
         return new Element(NodeElementProps.TYPE, nodeElementPropsBuilder.build());
     }

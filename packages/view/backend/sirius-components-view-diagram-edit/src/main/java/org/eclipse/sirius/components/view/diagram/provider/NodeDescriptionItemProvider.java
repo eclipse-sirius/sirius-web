@@ -213,7 +213,6 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__PALETTE);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__ACTIONS);
-            this.childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__CONDITIONAL_STYLES);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS);
@@ -292,7 +291,6 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
                 return;
             case DiagramPackage.NODE_DESCRIPTION__PALETTE:
             case DiagramPackage.NODE_DESCRIPTION__ACTIONS:
-            case DiagramPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
             case DiagramPackage.NODE_DESCRIPTION__STYLE:
             case DiagramPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
             case DiagramPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
@@ -322,8 +320,9 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
 
         NodeDescription nodeChild = DiagramFactory.eINSTANCE.createNodeDescription();
         nodeChild.setName("Sub-node");
-        nodeChild.setStyle(DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription());
-        nodeChild.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
+        var subNodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
+        subNodeStyle.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
+        nodeChild.setStyle(subNodeStyle);
         nodeChild.setPalette(defaultToolsFactory.createDefaultNodePalette());
         nodeChild.setInsideLabel(defaultToolsFactory.createDefaultInsideLabelDescription());
 
@@ -340,8 +339,9 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
 
         NodeDescription borderNodeChild = DiagramFactory.eINSTANCE.createNodeDescription();
         borderNodeChild.setName("Border node");
-        borderNodeChild.setStyle(DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription());
-        borderNodeChild.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
+        var borderNodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
+        borderNodeStyle.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
+        borderNodeChild.setStyle(borderNodeStyle);
         borderNodeChild.setPalette(defaultToolsFactory.createDefaultNodePalette());
         borderNodeChild.getOutsideLabels().add(defaultToolsFactory.createDefaultOutsideLabelDescription());
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS, borderNodeChild));
@@ -352,8 +352,6 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
 
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__CONDITIONAL_STYLES, DiagramFactory.eINSTANCE.createConditionalNodeStyle()));
 
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription()));
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, DiagramFactory.eINSTANCE.createListLayoutStrategyDescription()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__INSIDE_LABEL, defaultToolsFactory.createDefaultInsideLabelDescription()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__OUTSIDE_LABELS, defaultToolsFactory.createDefaultOutsideLabelDescription()));
     }

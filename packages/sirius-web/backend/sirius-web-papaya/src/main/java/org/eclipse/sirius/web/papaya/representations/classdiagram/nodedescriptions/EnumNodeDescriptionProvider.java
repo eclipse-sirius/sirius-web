@@ -58,19 +58,20 @@ public class EnumNodeDescriptionProvider implements INodeDescriptionProvider {
                 .style(insideLabelStyle)
                 .build();
 
+        var childrenLayoutStrategy = new DiagramBuilders().newListLayoutStrategyDescription()
+                .areChildNodesDraggableExpression("aql:false")
+                .build();
+
         var enumNodeStyle = new DiagramBuilders().newRectangularNodeStyleDescription()
                 .background(this.colorProvider.getColor(PapayaColorPaletteProvider.BACKGROUND))
                 .borderColor(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .borderSize(1)
                 .borderRadius(0)
                 .borderLineStyle(LineStyle.SOLID)
+                .childrenLayoutStrategy(childrenLayoutStrategy)
                 .build();
 
         var enumLiteralNodeDescription = this.enumLiteralNodeDescription();
-
-        var childrenLayoutStrategy = new DiagramBuilders().newListLayoutStrategyDescription()
-                .areChildNodesDraggableExpression("aql:false")
-                .build();
 
         return new DiagramBuilders().newNodeDescription()
                 .name(NAME)
@@ -79,7 +80,6 @@ public class EnumNodeDescriptionProvider implements INodeDescriptionProvider {
                 .insideLabel(insideLabel)
                 .style(enumNodeStyle)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
-                .childrenLayoutStrategy(childrenLayoutStrategy)
                 .childrenDescriptions(enumLiteralNodeDescription)
                 .build();
     }

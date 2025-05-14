@@ -79,6 +79,16 @@ public class ImageNodeStyleDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for ChildrenLayoutStrategy.
+     *
+     * @generated
+     */
+    public ImageNodeStyleDescriptionBuilder childrenLayoutStrategy(org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription value) {
+        this.getImageNodeStyleDescription().setChildrenLayoutStrategy(value);
+        return this;
+    }
+
+    /**
      * Setter for Shape.
      *
      * @generated

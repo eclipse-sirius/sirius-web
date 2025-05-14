@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,6 @@ import java.util.Set;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
-import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.representations.Element;
@@ -56,8 +55,6 @@ public final class NodeElementProps implements IProps {
     private CollapsingState collapsingState;
 
     private INodeStyle style;
-
-    private ILayoutStrategy childrenLayoutStrategy;
 
     private Integer defaultWidth;
 
@@ -121,10 +118,6 @@ public final class NodeElementProps implements IProps {
         return this.style;
     }
 
-    public ILayoutStrategy getChildrenLayoutStrategy() {
-        return this.childrenLayoutStrategy;
-    }
-
     public Integer getDefaultWidth() {
         return this.defaultWidth;
     }
@@ -181,8 +174,6 @@ public final class NodeElementProps implements IProps {
         private CollapsingState collapsingState;
 
         private INodeStyle style;
-
-        private ILayoutStrategy childrenLayoutStrategy;
 
         private Integer defaultWidth;
 
@@ -248,11 +239,6 @@ public final class NodeElementProps implements IProps {
             return this;
         }
 
-        public Builder childrenLayoutStrategy(ILayoutStrategy childrenLayoutStrategy) {
-            this.childrenLayoutStrategy = Objects.requireNonNull(childrenLayoutStrategy);
-            return this;
-        }
-
         public Builder defaultWidth(Integer defaultWidth) {
             this.defaultWidth = defaultWidth;
             return this;
@@ -291,7 +277,6 @@ public final class NodeElementProps implements IProps {
             nodeElementProps.state = Objects.requireNonNull(this.state);
             nodeElementProps.collapsingState = Objects.requireNonNull(this.collapsingState);
             nodeElementProps.style = Objects.requireNonNull(this.style);
-            nodeElementProps.childrenLayoutStrategy = this.childrenLayoutStrategy;
             nodeElementProps.children = Objects.requireNonNull(this.children);
             nodeElementProps.labelEditable = this.labelEditable;
             nodeElementProps.defaultWidth = this.defaultWidth; // Optional on purpose

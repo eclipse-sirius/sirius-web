@@ -63,5 +63,15 @@ public abstract class NodeStyleDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for ChildrenLayoutStrategy.
+     *
+     * @generated
+     */
+    public NodeStyleDescriptionBuilder childrenLayoutStrategy(org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription value) {
+        this.getNodeStyleDescription().setChildrenLayoutStrategy(value);
+        return this;
+    }
+
 }
 

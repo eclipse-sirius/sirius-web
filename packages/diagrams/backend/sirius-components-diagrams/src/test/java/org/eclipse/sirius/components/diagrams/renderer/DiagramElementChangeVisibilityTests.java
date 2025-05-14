@@ -31,7 +31,6 @@ import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
-import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
@@ -143,7 +142,6 @@ public class DiagramElementChangeVisibilityTests {
                 .targetObjectKindProvider(variableManager -> "")
                 .targetObjectLabelProvider(variableManager -> "")
                 .insideLabelDescription(insideLabelDescription).styleProvider(STYLE_PROVIDER)
-                .childrenLayoutStrategyProvider(variableManager -> new FreeFormLayoutStrategy())
                 .borderNodeDescriptions(borderNodes)
                 .childNodeDescriptions(children)
                 .labelEditHandler((variableManager, newLabel) -> new Success())
@@ -158,7 +156,7 @@ public class DiagramElementChangeVisibilityTests {
             Map<Object, List<Element>> objectToNodes = optionalCache.map(DiagramRenderingCache::getObjectToElements).orElse(new HashMap<>());
 
             return objectToNodes.get(sourceObjectId).stream()
-                    .filter(node -> isFromDescription(node, sourceDescription))
+                    .filter(node -> this.isFromDescription(node, sourceDescription))
                     .toList();
         };
 
@@ -167,7 +165,7 @@ public class DiagramElementChangeVisibilityTests {
             Map<Object, List<Element>> objectToNodes = optionalCache.map(DiagramRenderingCache::getObjectToElements).orElse(new HashMap<>());
 
             return objectToNodes.get(targetObjectId).stream()
-                    .filter(node -> isFromDescription(node, targetDescription))
+                    .filter(node -> this.isFromDescription(node, targetDescription))
                     .toList();
         };
 
@@ -293,7 +291,7 @@ public class DiagramElementChangeVisibilityTests {
         assertThat(newDiagram.getNodes()).filteredOn(n -> n.getId().equals(modifiedNodeId)).extracting(Node::getState).allMatch(s -> s == ViewModifier.Hidden);
         assertThat(newDiagram.getNodes()).filteredOn(n -> !n.getId().equals(modifiedNodeId)).extracting(Node::getState).allMatch(s -> s == ViewModifier.Normal);
         assertThat(newDiagram.getEdges()).filteredOn(e -> e.getSourceId().equals(modifiedNodeId) || e.getTargetId().equals(modifiedNodeId)).extracting(Edge::getState)
-        .allMatch(s -> s == ViewModifier.Hidden);
+                .allMatch(s -> s == ViewModifier.Hidden);
 
         var node2 = Node.newNode(diagram.getNodes().get(1))
                 .modifiers(Set.of(ViewModifier.Hidden))

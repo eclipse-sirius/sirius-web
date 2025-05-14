@@ -79,6 +79,16 @@ public class IconLabelNodeStyleDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for ChildrenLayoutStrategy.
+     *
+     * @generated
+     */
+    public IconLabelNodeStyleDescriptionBuilder childrenLayoutStrategy(org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription value) {
+        this.getIconLabelNodeStyleDescription().setChildrenLayoutStrategy(value);
+        return this;
+    }
+
+    /**
      * Setter for Background.
      *
      * @generated

@@ -79,6 +79,16 @@ public class EllipseNodeStyleDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for ChildrenLayoutStrategy.
+     *
+     * @generated
+     */
+    public EllipseNodeStyleDescriptionBuilder childrenLayoutStrategy(org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription value) {
+        this.getEllipseNodeStyleDescription().setChildrenLayoutStrategy(value);
+        return this;
+    }
+
+    /**
      * Setter for Background.
      *
      * @generated

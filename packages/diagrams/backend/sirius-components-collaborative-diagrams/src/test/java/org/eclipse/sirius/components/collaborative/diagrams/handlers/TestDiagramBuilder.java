@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,6 @@ import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
-import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
@@ -92,7 +91,6 @@ public class TestDiagramBuilder {
                 .targetObjectLabel("")
                 .descriptionId(UUID.randomUUID().toString())
                 .style(this.getRectangularNodeStyle())
-                .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .borderNodes(List.of())
                 .childNodes(List.of())
                 .modifiers(Set.of())

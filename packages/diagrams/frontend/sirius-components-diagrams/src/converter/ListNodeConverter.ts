@@ -9,7 +9,6 @@
  *
  * Contributors:
  *     Obeo - initial API and implementation
- *     Aurelien Didier - Correct bug 4310
  *******************************************************************************/
 import { Node, XYPosition } from '@xyflow/react';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
@@ -94,15 +93,15 @@ const toListNode = (
     defaultWidth: gqlNode.defaultWidth,
     defaultHeight: gqlNode.defaultHeight,
     isNew,
-    areChildNodesDraggable: isListLayoutStrategy(gqlNode.childrenLayoutStrategy)
-      ? gqlNode.childrenLayoutStrategy.areChildNodesDraggable
+    areChildNodesDraggable: isListLayoutStrategy(style.childrenLayoutStrategy)
+      ? style.childrenLayoutStrategy.areChildNodesDraggable
       : true,
-    topGap: isListLayoutStrategy(gqlNode.childrenLayoutStrategy) ? gqlNode.childrenLayoutStrategy.topGap : 0,
-    bottomGap: isListLayoutStrategy(gqlNode.childrenLayoutStrategy) ? gqlNode.childrenLayoutStrategy.bottomGap : 0,
-    isListChild: isListLayoutStrategy(gqlParentNode?.childrenLayoutStrategy),
+    topGap: isListLayoutStrategy(style.childrenLayoutStrategy) ? style.childrenLayoutStrategy.topGap : 0,
+    bottomGap: isListLayoutStrategy(style.childrenLayoutStrategy) ? style.childrenLayoutStrategy.bottomGap : 0,
+    isListChild: isListLayoutStrategy(gqlParentNode?.style.childrenLayoutStrategy),
     resizedByUser,
-    growableNodeIds: isListLayoutStrategy(gqlNode.childrenLayoutStrategy)
-      ? gqlNode.childrenLayoutStrategy.growableNodeIds
+    growableNodeIds: isListLayoutStrategy(style.childrenLayoutStrategy)
+      ? style.childrenLayoutStrategy.growableNodeIds
       : [],
     isDropNodeTarget: false,
     isDropNodeCandidate: false,
@@ -178,7 +177,7 @@ const adaptChildrenBorderNodes = (nodes: Node<NodeData>[], gqlChildrenNodes: GQL
 
 export class ListNodeConverter implements INodeConverter {
   canHandle(gqlNode: GQLNode<GQLNodeStyle>) {
-    return gqlNode.style.__typename === 'RectangularNodeStyle' && gqlNode.childrenLayoutStrategy?.kind === 'List';
+    return gqlNode.style.__typename === 'RectangularNodeStyle' && gqlNode.style.childrenLayoutStrategy?.kind === 'List';
   }
 
   handle(

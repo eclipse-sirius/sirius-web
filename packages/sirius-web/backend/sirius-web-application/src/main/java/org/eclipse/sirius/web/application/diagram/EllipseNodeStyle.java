@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.text.MessageFormat;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 
@@ -34,6 +35,8 @@ public final class EllipseNodeStyle implements INodeStyle {
     private int borderSize;
 
     private LineStyle borderStyle;
+
+    private ILayoutStrategy childrenLayoutStrategy;
 
     private EllipseNodeStyle() {
         // Prevent instantiation
@@ -60,6 +63,11 @@ public final class EllipseNodeStyle implements INodeStyle {
     }
 
     @Override
+    public ILayoutStrategy getChildrenLayoutStrategy() {
+        return this.childrenLayoutStrategy;
+    }
+
+    @Override
     public String toString() {
         String pattern = "{0} '{'color: {1}, border: '{' background: {2}, size: {3}, style: {4} '}''}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.background, this.borderColor, this.borderSize, this.borderStyle);
@@ -80,6 +88,8 @@ public final class EllipseNodeStyle implements INodeStyle {
         private int borderSize;
 
         private LineStyle borderStyle;
+
+        private ILayoutStrategy childrenLayoutStrategy;
 
         private Builder() {
             // Prevent instantiation
@@ -105,6 +115,11 @@ public final class EllipseNodeStyle implements INodeStyle {
             return this;
         }
 
+        public Builder childrenLayoutStrategy(ILayoutStrategy childrenLayoutStrategy) {
+            this.childrenLayoutStrategy = Objects.requireNonNull(childrenLayoutStrategy);
+            return this;
+        }
+
 
         public EllipseNodeStyle build() {
             EllipseNodeStyle nodeStyleDescription = new EllipseNodeStyle();
@@ -112,6 +127,7 @@ public final class EllipseNodeStyle implements INodeStyle {
             nodeStyleDescription.borderColor = Objects.requireNonNull(this.borderColor);
             nodeStyleDescription.borderSize = this.borderSize;
             nodeStyleDescription.borderStyle = Objects.requireNonNull(this.borderStyle);
+            nodeStyleDescription.childrenLayoutStrategy = Objects.requireNonNull(this.childrenLayoutStrategy);
             return nodeStyleDescription;
         }
     }

@@ -64,6 +64,7 @@ public class ApplicationConcernNodeDescriptionProvider implements INodeDescripti
                 .borderSize(1)
                 .borderRadius(0)
                 .borderLineStyle(LineStyle.SOLID)
+                .childrenLayoutStrategy(childrenLayoutStrategy)
                 .build();
 
         return new DiagramBuilders().newNodeDescription()
@@ -73,7 +74,6 @@ public class ApplicationConcernNodeDescriptionProvider implements INodeDescripti
                 .insideLabel(insideLabel)
                 .style(nodeStyle)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .childrenLayoutStrategy(childrenLayoutStrategy)
                 .build();
     }
 

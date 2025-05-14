@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,6 +40,8 @@ public final class ImageNodeStyle implements INodeStyle {
 
     private boolean positionDependentRotation;
 
+    private ILayoutStrategy childrenLayoutStrategy;
+
     private ImageNodeStyle() {
         // Prevent instantiation
     }
@@ -77,6 +79,11 @@ public final class ImageNodeStyle implements INodeStyle {
     }
 
     @Override
+    public ILayoutStrategy getChildrenLayoutStrategy() {
+        return this.childrenLayoutStrategy;
+    }
+
+    @Override
     public String toString() {
         String pattern = "{0} '{'imageURL: {1}', border: '{' size: {2}, color: {3}, style: {4} '}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.imageURL, this.borderSize, this.borderColor, this.borderStyle);
@@ -103,6 +110,8 @@ public final class ImageNodeStyle implements INodeStyle {
         private LineStyle borderStyle = LineStyle.Solid;
 
         private boolean positionDependentRotation;
+
+        private ILayoutStrategy childrenLayoutStrategy;
 
         private Builder() {
             // Prevent instantiation
@@ -143,6 +152,11 @@ public final class ImageNodeStyle implements INodeStyle {
             return this;
         }
 
+        public Builder childrenLayoutStrategy(ILayoutStrategy childrenLayoutStrategy) {
+            this.childrenLayoutStrategy = Objects.requireNonNull(childrenLayoutStrategy);
+            return this;
+        }
+
         public ImageNodeStyle build() {
             ImageNodeStyle style = new ImageNodeStyle();
             style.imageURL = Objects.requireNonNull(this.imageURL);
@@ -152,6 +166,7 @@ public final class ImageNodeStyle implements INodeStyle {
             style.borderRadius = this.borderRadius;
             style.borderStyle = Objects.requireNonNull(this.borderStyle);
             style.positionDependentRotation = this.positionDependentRotation;
+            style.childrenLayoutStrategy = Objects.requireNonNull(this.childrenLayoutStrategy);
             return style;
         }
     }

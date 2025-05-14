@@ -181,7 +181,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
     /**
      * Used to filter the edge descriptions that are using node descriptions as their sources and targets.
      *
-     * @param edgeDescription The edge description
+     * @param edgeDescription
+     *         The edge description
      * @return true if we will use the edge description, false otherwise
      */
     private boolean edgeDescriptionWithNodesAsSourceAndTargetToConsider(org.eclipse.sirius.components.view.diagram.EdgeDescription edgeDescription) {
@@ -194,8 +195,10 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
      * We will only consider edge descriptions that are using node descriptions as their sources and targets
      * or another edge that is using node descriptions as their sources and targets
      *
-     * @param edgeDescription The edge description
-     * @param candidateEdgeDescriptions The edges that can be used as source or target
+     * @param edgeDescription
+     *         The edge description
+     * @param candidateEdgeDescriptions
+     *         The edges that can be used as source or target
      * @return true if we will use the edge description, false otherwise
      */
     private boolean edgeDescriptionWithAnotherEdgeAsSourceOrTargetToConsider(org.eclipse.sirius.components.view.diagram.EdgeDescription edgeDescription, List<org.eclipse.sirius.components.view.diagram.EdgeDescription> candidateEdgeDescriptions) {
@@ -203,7 +206,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 (edgeDescription.getTargetDescriptions().stream()
                         .allMatch(description -> description instanceof org.eclipse.sirius.components.view.diagram.NodeDescription
                                 || (description instanceof org.eclipse.sirius.components.view.diagram.EdgeDescription && candidateEdgeDescriptions.contains(description)))
-                && edgeDescription.getSourceDescriptions().stream()
+                        && edgeDescription.getSourceDescriptions().stream()
                         .allMatch(description -> description instanceof org.eclipse.sirius.components.view.diagram.NodeDescription
                                 || (description instanceof org.eclipse.sirius.components.view.diagram.EdgeDescription && candidateEdgeDescriptions.contains(description))));
     }
@@ -270,19 +273,15 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         Function<VariableManager, INodeStyle> styleProvider = variableManager -> {
             var effectiveStyle = this.findEffectiveStyle(viewNodeDescription, interpreter, variableManager);
             Optional<String> optionalEditingContextId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId);
-            return stylesFactory.createNodeStyle(effectiveStyle, optionalEditingContextId);
-        };
+            ILayoutStrategy childrenLayoutStrategy = new FreeFormLayoutStrategy(); //FreeForm as default value
 
-        Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider = variableManager -> {
-            ILayoutStrategy childrenLayoutStrategy = null;
-
-            LayoutStrategyDescription childrenLayoutStrategyFromViewModel = viewNodeDescription.getChildrenLayoutStrategy();
+            LayoutStrategyDescription childrenLayoutStrategyFromViewModel = effectiveStyle.getChildrenLayoutStrategy();
             if (childrenLayoutStrategyFromViewModel instanceof ListLayoutStrategyDescription listLayoutStrategyDescription) {
-                childrenLayoutStrategy = this.getiLayoutStrategy(listLayoutStrategyDescription, variableManager, interpreter);
+                childrenLayoutStrategy = this.getListLayoutStrategy(listLayoutStrategyDescription, variableManager, interpreter);
             } else if (childrenLayoutStrategyFromViewModel instanceof FreeFormLayoutStrategyDescription) {
                 childrenLayoutStrategy = new FreeFormLayoutStrategy();
             }
-            return childrenLayoutStrategy;
+            return stylesFactory.createNodeStyle(effectiveStyle, optionalEditingContextId, childrenLayoutStrategy);
         };
 
         Predicate<VariableManager> isCollapsedByDefaultPredicate = variableManager -> this.computeBooleanProvider(viewNodeDescription.getIsCollapsedByDefaultExpression(), interpreter, variableManager);
@@ -319,7 +318,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .typeProvider(typeProvider)
                 .outsideLabelDescriptions(this.getOutsideLabelDescriptions(viewNodeDescription, interpreter, stylesFactory))
                 .styleProvider(styleProvider)
-                .childrenLayoutStrategyProvider(childrenLayoutStrategyProvider)
                 .childNodeDescriptions(childNodeDescriptions)
                 .borderNodeDescriptions(borderNodeDescriptions)
                 .collapsible(viewNodeDescription.isCollapsible())
@@ -345,7 +343,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         return result;
     }
 
-    private ILayoutStrategy getiLayoutStrategy(ListLayoutStrategyDescription listLayoutStrategyDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+    private ILayoutStrategy getListLayoutStrategy(ListLayoutStrategyDescription listLayoutStrategyDescription, VariableManager variableManager, AQLInterpreter interpreter) {
         Result resultAreChildNodesDraggable = interpreter.evaluateExpression(variableManager.getVariables(), listLayoutStrategyDescription.getAreChildNodesDraggableExpression());
         var builder = ListLayoutStrategy.newListLayoutStrategy()
                 .areChildNodesDraggable(resultAreChildNodesDraggable.asBoolean().orElse(true))

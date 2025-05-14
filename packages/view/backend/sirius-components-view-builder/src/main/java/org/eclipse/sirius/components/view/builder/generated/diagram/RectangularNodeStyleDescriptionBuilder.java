@@ -79,6 +79,16 @@ public class RectangularNodeStyleDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for ChildrenLayoutStrategy.
+     *
+     * @generated
+     */
+    public RectangularNodeStyleDescriptionBuilder childrenLayoutStrategy(org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription value) {
+        this.getRectangularNodeStyleDescription().setChildrenLayoutStrategy(value);
+        return this;
+    }
+
+    /**
      * Setter for Background.
      *
      * @generated
