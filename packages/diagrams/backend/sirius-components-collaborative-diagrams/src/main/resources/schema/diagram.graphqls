@@ -100,7 +100,6 @@ type Node {
   state: ViewModifier!
   pinned: Boolean!
   style: INodeStyle!
-  childrenLayoutStrategy: ILayoutStrategy
   borderNodes: [Node!]!
   childNodes: [Node!]!
   defaultWidth: Int
@@ -211,10 +210,12 @@ type ImageNodeStyle {
   borderSize: Int!
   borderStyle: LineStyle!
   positionDependentRotation: Boolean!
+  childrenLayoutStrategy: ILayoutStrategy!
 }
 
 type IconLabelNodeStyle {
   background: String!
+  childrenLayoutStrategy: ILayoutStrategy!
 }
 
 type RectangularNodeStyle {
@@ -223,6 +224,7 @@ type RectangularNodeStyle {
   borderSize: Int!
   borderStyle: LineStyle!
   background: String!
+  childrenLayoutStrategy: ILayoutStrategy!
 }
 
 enum LineStyle {

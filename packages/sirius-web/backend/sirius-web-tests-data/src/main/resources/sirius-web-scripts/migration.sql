@@ -2041,3 +2041,168 @@ INSERT INTO document (
   '2025-05-26 10:00:0.000',
   '2025-05-26 10:00:0.000'
 );
+
+INSERT INTO project (
+  id,
+  name,
+  created_on,
+  last_modified_on
+) VALUES (
+  'c951f08b-e0c7-4367-975c-ef236ead2100',
+  'Migration Studio',
+  '2025-05-14 12:00:0.000',
+  '2025-05-14 12:00:0.000'
+);
+INSERT INTO nature (
+  project_id,
+  name
+) VALUES (
+  'c951f08b-e0c7-4367-975c-ef236ead2100',
+  'siriusComponents://nature?kind=studio'
+);
+INSERT INTO semantic_data (
+  id,
+  created_on,
+  last_modified_on
+) VALUES (
+  '402f51c9-96df-46f2-b39b-35ebd506ff31',
+  '2025-05-14 12:00:0.000',
+  '2025-05-14 12:00:0.000'
+);
+INSERT INTO project_semantic_data (
+  id,
+  project_id,
+  semantic_data_id,
+  name,
+  created_on,
+  last_modified_on
+) VALUES (
+  '5b55243b-8405-4537-8e09-8c05185f7c25',
+  'c951f08b-e0c7-4367-975c-ef236ead2100',
+  '402f51c9-96df-46f2-b39b-35ebd506ff31',
+  'main',
+  '2025-05-14 12:00:0.000',
+  '2025-05-14 12:00:0.000'
+);
+INSERT INTO semantic_data_domain (
+  semantic_data_id,
+  uri
+) VALUES (
+  '402f51c9-96df-46f2-b39b-35ebd506ff31',
+  'http://www.eclipse.org/sirius-web/view'
+);
+INSERT INTO semantic_data_domain (
+  semantic_data_id,
+  uri
+) VALUES (
+  '402f51c9-96df-46f2-b39b-35ebd506ff31',
+  'http://www.eclipse.org/sirius-web/diagram'
+);
+INSERT INTO document (
+  id,
+  semantic_data_id,
+  name,
+  content,
+  created_on,
+  last_modified_on
+) VALUES (
+  '3d6b34cb-4090-4f27-8c3b-e073fd79ed2d',
+  '402f51c9-96df-46f2-b39b-35ebd506ff31',
+  'NodeDescription#layoutStrategy migration',
+  '{
+      "json": {
+        "version": "1.0",
+        "encoding": "utf-8"
+      },
+      "ns": {
+        "diagram": "http://www.eclipse.org/sirius-web/diagram",
+        "view": "http://www.eclipse.org/sirius-web/view"
+      },
+      "content": [
+        {
+          "id": "2e1c0752-06b4-4b30-a739-0ec2ebf0bacb",
+          "eClass": "view:View",
+          "data": {
+            "descriptions": [
+              {
+                "id": "6d5de90a-a35b-40ce-afe5-154eed6a9fe0",
+                "eClass": "diagram:DiagramDescription",
+                "data": {
+                  "name": "NodeDescription#layoutStrategy migration",
+                  "domainType": "chaplygin::Root",
+                  "nodeDescriptions": [
+                    {
+                      "id": "021022da-66ac-47bf-a718-a3d2423838d7",
+                      "eClass": "diagram:NodeDescription",
+                      "data": {
+                        "name": "Node",
+                        "childrenLayoutStrategy": {
+                          "id": "a38d5fa1-d309-4921-b47a-ba23a19a53c3",
+                          "eClass": "diagram:ListLayoutStrategyDescription",
+                          "data": {
+                            "areChildNodesDraggableExpression": "aql:false",
+                            "topGapExpression": "10",
+                            "bottomGapExpression": "20",
+                            "growableNodes": [
+                              "668ed053-7661-4d9d-a166-5edb027d75db"
+                            ]
+                          }
+                        },
+                        "style": {
+                          "id": "be60a21a-7573-4a84-ae05-feadd351104e",
+                          "eClass": "diagram:RectangularNodeStyleDescription",
+                          "data": {
+                            "borderColor": "view:FixedColor 1952d117-7d88-32c4-a839-3858e5e779ae#c24dfb04-0d0d-4ca1-be01-ab3b6716fe22",
+                            "background": "view:FixedColor 1952d117-7d88-32c4-a839-3858e5e779ae#0afc1183-89e0-4854-8578-884dccce74b7"
+                          }
+                        },
+                        "conditionalStyles": [
+                          {
+                            "id": "237e3934-7b28-42b4-9ecd-91a554455b70",
+                            "eClass": "diagram:ConditionalNodeStyle",
+                            "data": {
+                              "style": {
+                                "id": "4252a8ee-3188-40f9-9399-db2c93b4e327",
+                                "eClass": "diagram:ImageNodeStyleDescription",
+                                "data": {
+                                  "borderColor": "view:FixedColor 1952d117-7d88-32c4-a839-3858e5e779ae#c24dfb04-0d0d-4ca1-be01-ab3b6716fe22",
+                                  "shape": "3c0ea081-3f50-4774-a54a-36a361442e94"
+                                }
+                              }
+                            }
+                          }
+                        ],
+                        "childrenDescriptions": [
+                          {
+                            "id": "668ed053-7661-4d9d-a166-5edb027d75db",
+                            "eClass": "diagram:NodeDescription",
+                            "data": {
+                              "name": "Sub-node",
+                              "childrenLayoutStrategy": {
+                                "id": "610a8024-10b5-48cd-bab0-fa1b61cfc9a4",
+                                "eClass": "diagram:FreeFormLayoutStrategyDescription"
+                              },
+                              "style": {
+                                "id": "d761ff71-0216-47ac-86b3-a932df9e007a",
+                                "eClass": "diagram:RectangularNodeStyleDescription",
+                                "data": {
+                                  "borderColor": "view:FixedColor 1952d117-7d88-32c4-a839-3858e5e779ae#c24dfb04-0d0d-4ca1-be01-ab3b6716fe22",
+                                  "background": "view:FixedColor 1952d117-7d88-32c4-a839-3858e5e779ae#0afc1183-89e0-4854-8578-884dccce74b7"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }',
+  '2025-05-14 12:00:0.000',
+  '2025-05-14 12:00:0.000'
+);

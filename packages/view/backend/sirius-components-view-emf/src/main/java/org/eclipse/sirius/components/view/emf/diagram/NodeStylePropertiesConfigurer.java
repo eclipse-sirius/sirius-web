@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -136,6 +136,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private List<NodeDescription> getSubNodes(VariableManager variableManager) {
         return variableManager.get("self", ListLayoutStrategyDescription.class)
+                .map(EObject::eContainer)
                 .map(EObject::eContainer)
                 .filter(NodeDescription.class::isInstance)
                 .map(NodeDescription.class::cast)

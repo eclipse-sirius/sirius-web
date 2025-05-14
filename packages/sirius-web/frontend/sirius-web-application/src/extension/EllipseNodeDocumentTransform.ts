@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -66,6 +66,26 @@ const backgroundField: SelectionNode = {
   },
 };
 
+const childrenLayoutStrategyFragment: SelectionNode = {
+  kind: Kind.FRAGMENT_SPREAD,
+  name: {
+    kind: Kind.NAME,
+    value: 'childrenLayoutStrategyFragment',
+  },
+};
+
+const childrenLayoutStrategy: SelectionNode = {
+  kind: Kind.FIELD,
+  name: {
+    kind: Kind.NAME,
+    value: 'childrenLayoutStrategy',
+  },
+  selectionSet: {
+    kind: Kind.SELECTION_SET,
+    selections: [childrenLayoutStrategyFragment],
+  },
+};
+
 export const ellipseNodeStyleDocumentTransform = new DocumentTransform((document) => {
   if (shouldTransform(document)) {
     const transformedDocument = visit(document, {
@@ -80,7 +100,7 @@ export const ellipseNodeStyleDocumentTransform = new DocumentTransform((document
           kind: Kind.INLINE_FRAGMENT,
           selectionSet: {
             kind: Kind.SELECTION_SET,
-            selections: [borderColorField, borderSizeField, borderStyleField, backgroundField],
+            selections: [borderColorField, borderSizeField, borderStyleField, backgroundField, childrenLayoutStrategy],
           },
           typeCondition: {
             kind: Kind.NAMED_TYPE,

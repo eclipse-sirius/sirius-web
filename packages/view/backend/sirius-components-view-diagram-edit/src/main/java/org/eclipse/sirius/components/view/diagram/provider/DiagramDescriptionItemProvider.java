@@ -192,8 +192,9 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
 
         NodeDescription nodeChild = DiagramFactory.eINSTANCE.createNodeDescription();
         nodeChild.setName("Node");
-        nodeChild.setStyle(DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription());
-        nodeChild.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
+        var style = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
+        style.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
+        nodeChild.setStyle(style);
         nodeChild.setPalette(defaultToolsFactory.createDefaultNodePalette());
         nodeChild.setInsideLabel(defaultToolsFactory.createDefaultInsideLabelDescription());
 

@@ -201,6 +201,7 @@ public class DiagramRendererEdgeTests {
                 .borderColor("")
                 .borderSize(0)
                 .borderStyle(LineStyle.Solid)
+                .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .build();
 
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> {
@@ -219,7 +220,6 @@ public class DiagramRendererEdgeTests {
                 .targetObjectLabelProvider(variableManager -> "")
                 .insideLabelDescription(insideLabelDescription)
                 .styleProvider(nodeStyleProvider)
-                .childrenLayoutStrategyProvider(variableManager -> new FreeFormLayoutStrategy())
                 .borderNodeDescriptions(new ArrayList<>())
                 .childNodeDescriptions(new ArrayList<>())
                 .labelEditHandler((variableManager, newLabel) -> new Success())
@@ -233,7 +233,7 @@ public class DiagramRendererEdgeTests {
             Map<Object, List<Element>> objectToNodes = optionalCache.map(DiagramRenderingCache::getObjectToElements).orElse(new HashMap<>());
 
             List<Element> sourceElements = objectToNodes.get(FIRST_OBJECT_ID).stream()
-                    .filter(element -> isFromDescription(element, nodeDescription))
+                    .filter(element -> this.isFromDescription(element, nodeDescription))
                     .filter(Objects::nonNull)
                     .toList();
 
@@ -245,7 +245,7 @@ public class DiagramRendererEdgeTests {
             Map<Object, List<Element>> objectToNodes = optionalCache.map(DiagramRenderingCache::getObjectToElements).orElse(new HashMap<>());
 
             List<Element> targetElements = objectToNodes.get(SECOND_OBJECT_ID).stream()
-                    .filter(element -> isFromDescription(element, nodeDescription))
+                    .filter(element -> this.isFromDescription(element, nodeDescription))
                     .filter(Objects::nonNull)
                     .toList();
 

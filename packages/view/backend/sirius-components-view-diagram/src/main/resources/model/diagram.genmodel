@@ -110,7 +110,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeDescription/collapsible"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeDescription/palette"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeDescription/actions"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeDescription/childrenLayoutStrategy"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeDescription/style"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeDescription/conditionalStyles"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeDescription/childrenDescriptions"/>
@@ -184,7 +183,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeLabelStyle/labelIcon"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeLabelStyle/maxWidthExpression"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="diagram.ecore#//NodeStyleDescription"/>
+    <genClasses image="false" ecoreClass="diagram.ecore#//NodeStyleDescription">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeStyleDescription/childrenLayoutStrategy"/>
+    </genClasses>
     <genClasses ecoreClass="diagram.ecore#//ConditionalNodeStyle">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//ConditionalNodeStyle/style"/>
     </genClasses>

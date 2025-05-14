@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -62,9 +62,6 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
     }
 
     private NodeDescription entityNodeDescription() {
-        var childrenLayoutStrategy = new DiagramBuilders()
-                .newListLayoutStrategyDescription()
-                .build();
 
         var nodeStyle = new DiagramBuilders()
                 .newRectangularNodeStyleDescription()
@@ -73,6 +70,7 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 .borderColor(this.colorProvider.getColor(DomainDiagramDescriptionProvider.MAIN_COLOR))
                 .background(this.colorProvider.getColor(DomainDiagramDescriptionProvider.BACKGROUND_COLOR))
                 .borderLineStyle(LineStyle.SOLID)
+                .childrenLayoutStrategy(new DiagramBuilders().newListLayoutStrategyDescription().build())
                 .build();
 
         var abstractEntityNodeStyle = new DiagramBuilders()
@@ -82,6 +80,7 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 .borderColor(this.colorProvider.getColor(DomainDiagramDescriptionProvider.MAIN_COLOR))
                 .background(this.colorProvider.getColor(DomainDiagramDescriptionProvider.LIGHT_GREY_COLOR))
                 .borderLineStyle(LineStyle.SOLID)
+                .childrenLayoutStrategy(new DiagramBuilders().newListLayoutStrategyDescription().build())
                 .build();
 
         var conditionalNodeStyle = new DiagramBuilders()
@@ -98,7 +97,6 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 .semanticCandidatesExpression("aql:self.types")
                 .insideLabel(this.entityNodeLabelDescription())
                 .childrenDescriptions(this.attributeNodeDescription())
-                .childrenLayoutStrategy(childrenLayoutStrategy)
                 .style(nodeStyle)
                 .conditionalStyles(conditionalNodeStyle)
                 .build();

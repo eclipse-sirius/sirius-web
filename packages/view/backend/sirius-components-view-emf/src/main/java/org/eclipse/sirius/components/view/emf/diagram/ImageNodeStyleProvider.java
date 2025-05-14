@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IParametricSVGImageRegistry;
 import org.eclipse.sirius.components.collaborative.diagrams.api.ParametricSVGImage;
+import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
@@ -85,7 +86,7 @@ public class ImageNodeStyleProvider implements INodeStyleProvider {
     }
 
     @Override
-    public Optional<INodeStyle> createNodeStyle(NodeStyleDescription nodeStyle, Optional<String> optionalEditingContextId) {
+    public Optional<INodeStyle> createNodeStyle(NodeStyleDescription nodeStyle, Optional<String> optionalEditingContextId, ILayoutStrategy childrenLayoutStrategy) {
         Optional<INodeStyle> optionalNodeStyle = Optional.empty();
         Optional<String> nodeType = this.getNodeType(nodeStyle);
         if (nodeType.equals(Optional.of(ParametricSVGNodeType.NODE_TYPE_PARAMETRIC_IMAGE))) {
@@ -99,6 +100,7 @@ public class ImageNodeStyleProvider implements INodeStyleProvider {
                     .borderRadius(nodeStyle.getBorderRadius())
                     .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
                     .svgURL("/api/parametricsvgs/" + ((ImageNodeStyleDescription) nodeStyle).getShape())
+                    .childrenLayoutStrategy(childrenLayoutStrategy)
                     .build());
         } else if (nodeType.equals(Optional.of(NodeType.NODE_IMAGE)) && nodeStyle instanceof ImageNodeStyleDescription imageNodeStyleDescription) {
             optionalNodeStyle = Optional.of(ImageNodeStyle.newImageNodeStyle()
@@ -113,6 +115,7 @@ public class ImageNodeStyleProvider implements INodeStyleProvider {
                     .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
                     .borderRadius(nodeStyle.getBorderRadius())
                     .positionDependentRotation(imageNodeStyleDescription.isPositionDependentRotation())
+                    .childrenLayoutStrategy(childrenLayoutStrategy)
                     .build());
         }
 
