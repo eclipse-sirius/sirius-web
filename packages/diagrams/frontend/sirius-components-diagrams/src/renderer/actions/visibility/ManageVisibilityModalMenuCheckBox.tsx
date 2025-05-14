@@ -19,10 +19,14 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
 import { ManageVisibilityMenuCheckBoxProps } from './ManageVisibilityModalMenuCheckBox.types';
+import { useManageVisibilityActions } from './hooks/useManageVisibilityActions';
+import { GQLManageVisibilityAction } from './hooks/useManageVisibilityActions.types';
+import { useManageVisibilityInvokeAction } from './hooks/useManageVisibilityInvokeAction';
 
 export const ManageVisibilityModalMenuCheckBox = ({
   isOneElementChecked,
   onCheckingAllElement,
+  diagramElementId,
 }: ManageVisibilityMenuCheckBoxProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -32,6 +36,9 @@ export const ManageVisibilityModalMenuCheckBox = ({
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const { actions } = useManageVisibilityActions(diagramElementId);
+  const { invokeAction } = useManageVisibilityInvokeAction();
 
   return (
     <Box
@@ -52,12 +59,16 @@ export const ManageVisibilityModalMenuCheckBox = ({
       </IconButton>
 
       <Menu id="filter-menu" anchorEl={anchorEl} open={anchorEl !== null} onClose={handleClose}>
-        <MenuItem onClick={() => onCheckingAllElement(true)} data-testid="manage_visibility_menu_hide_all_action">
-          All
-        </MenuItem>
-        <MenuItem onClick={() => onCheckingAllElement(false)} data-testid="manage_visibility_menu_reveal_all_action">
-          None
-        </MenuItem>
+        {actions.map((action: GQLManageVisibilityAction) => {
+          return (
+            <MenuItem
+              key={`manage_visibility_menu_action_${action.label}`}
+              data-testid={action.id}
+              onClick={() => invokeAction(diagramElementId, action)}>
+              {action.label}
+            </MenuItem>
+          );
+        })}
       </Menu>
     </Box>
   );

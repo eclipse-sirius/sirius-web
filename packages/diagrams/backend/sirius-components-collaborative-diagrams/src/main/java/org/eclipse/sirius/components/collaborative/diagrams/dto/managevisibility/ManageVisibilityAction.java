@@ -10,9 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.collaborative.diagrams.dto.managevisibility;
 
-export interface ManageVisibilityMenuCheckBoxProps {
-  isOneElementChecked: boolean;
-  onCheckingAllElement: (checked: boolean) => void;
-  diagramElementId: string;
+import java.util.Objects;
+
+/**
+ * An Action triggered by a click on a manage visibility menu action.
+ *
+ * @author mcharfadi
+ */
+public record ManageVisibilityAction(String id, String label) {
+    public ManageVisibilityAction {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(label);
+    }
 }
