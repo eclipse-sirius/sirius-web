@@ -33,6 +33,8 @@ JsonResource resource = jsonResourceFactory.createResource(uri, customOptions);
 ----
 +
 See https://github.com/eclipse-sirius/sirius-emf-json/blob/master/CHANGELOG.adoc#v250[the Sirius EMF JSON changelog] for details.
+- https://github.com/eclipse-sirius/sirius-web/issues/4931[#4931] [sirius-web] Add a new `updateTargetObjectId` method to `IRepresentationMetadataUpdateService`.
+Every implementation of `IRepresentationMetadataUpdateService` should add its own implementation of `updateTargetObjectId`.
 
 
 === Dependency update
@@ -126,7 +128,9 @@ This can be disabled with a system property for easy testing/comparison and if s
 - https://github.com/eclipse-sirius/sirius-web/issues/4875[#4875] [table] Improve table representation lifecycle
 - https://github.com/eclipse-sirius/sirius-web/issues/4825[#4825] [table] Add support for tooltip on table cells
 - https://github.com/eclipse-sirius/sirius-web/issues/4332[#4332] [table] Remove table dependency in `sirius-components-form`
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4931[#4931] [sirius-web] Add the ability to change programmatically the object to which a representation is attached.
+For that the service `IRepresentationMetadataUpdateService` has a new method named `updateTargetObjectId`.
+By itself, it will not be enough, one would also have to update the content of the representation too but `IRepresentationContentUpdateService` already support that.
 
 
 == v2025.4.0
