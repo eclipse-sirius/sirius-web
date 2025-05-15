@@ -77,8 +77,7 @@ In a second version, those color palettes are created with the ResourceSet (they
 A new utility method will be introduced in `sirius-components-core` to handle the special color values (e.g.: `red[500]`, `theme.palette.primary.light`, ...).
 This method will be used by `sirius-components-diagrams`, `sirius-components-forms`, ...
 
-[source, ts]
----
+``` typescript
 import red from '@material-ui/core/colors/red';
 import { Theme } from '@material-ui/core/styles';
 
@@ -103,7 +102,7 @@ export const getCSSColor = (colorValue: string, theme: Theme): string => {
   }
   return cssColor;
 };
----
+```
 
 == Status
 
