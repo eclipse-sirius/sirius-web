@@ -1,0 +1,3 @@
+* xref:getting-started:index.adoc[]
+** xref:getting-started:requirements.adoc[]
+** xref:getting-started:setup.adoc[]
