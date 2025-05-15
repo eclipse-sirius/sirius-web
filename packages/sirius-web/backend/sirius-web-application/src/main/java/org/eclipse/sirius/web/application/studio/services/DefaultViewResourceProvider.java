@@ -96,7 +96,7 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
         var resourceMetadataAdapter = new ResourceMetadataAdapter(VIEW_DOCUMENT_NAME);
         var migrationService = new MigrationService(this.migrationParticipants);
 
-        resourceMetadataAdapter.setMigrationData(migrationService.getMostRecentParticipantMigrationData());
+        resourceMetadataAdapter.addMigrationData(migrationService.getMostRecentParticipantMigrationData());
         resource.getContents().add(view);
         resource.eAdapters().add(resourceMetadataAdapter);
 

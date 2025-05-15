@@ -119,8 +119,9 @@ public class MigrationService extends BasicExtendedMetaData implements JsonResou
     @Override
     public void postSerialization(JsonResource resource, JsonObject jsonObject) {
         this.getOptionalResourceMetadataAdapter(resource).ifPresent(resourceMetadataAdapter -> {
-            if (resourceMetadataAdapter.getMigrationData() != null) {
-                var rootMigration = new Gson().toJsonTree(resourceMetadataAdapter.getMigrationData(), MigrationData.class);
+            MigrationData lastMigrationData = resourceMetadataAdapter.getLastMigrationData();
+            if (lastMigrationData != null) {
+                var rootMigration = new Gson().toJsonTree(lastMigrationData, MigrationData.class);
                 if (rootMigration != null) {
                     jsonObject.add(MigrationData.JSON_OBJECT_ROOT, rootMigration);
                 }
@@ -170,7 +171,7 @@ public class MigrationService extends BasicExtendedMetaData implements JsonResou
     }
 
     private void setResourceMetadataAdapterMigrationData(JsonResource resource, MigrationData migrationData) {
-        this.getOptionalResourceMetadataAdapter(resource).ifPresent(resourceMetadataAdapter -> resourceMetadataAdapter.setMigrationData(migrationData));
+        this.getOptionalResourceMetadataAdapter(resource).ifPresent(resourceMetadataAdapter -> resourceMetadataAdapter.addMigrationData(migrationData));
     }
 
     private void setMigrationDataFromDocumentContent(JsonObject jsonObject) {

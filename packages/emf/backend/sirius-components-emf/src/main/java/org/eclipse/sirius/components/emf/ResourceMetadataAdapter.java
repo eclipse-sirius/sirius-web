@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.emf;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Adapter;
@@ -34,7 +36,7 @@ import org.eclipse.sirius.components.emf.migration.api.MigrationData;
 public class ResourceMetadataAdapter implements Adapter {
     private String name;
 
-    private MigrationData migrationData;
+    private List<MigrationData> migrationData = new ArrayList<>();
 
     private Notifier notifier;
 
@@ -50,12 +52,19 @@ public class ResourceMetadataAdapter implements Adapter {
         this.name = name;
     }
 
-    public MigrationData getMigrationData() {
-        return migrationData;
+    public List<MigrationData> getAllMigrationData() {
+        return this.migrationData;
     }
 
-    public void setMigrationData(MigrationData migrationData) {
-        this.migrationData = migrationData;
+    public MigrationData getLastMigrationData() {
+        if (this.migrationData.isEmpty()) {
+            return null;
+        }
+        return this.migrationData.get(this.migrationData.size() - 1);
+    }
+
+    public boolean addMigrationData(MigrationData newMigrationData) {
+        return this.migrationData.add(newMigrationData);
     }
 
     @Override

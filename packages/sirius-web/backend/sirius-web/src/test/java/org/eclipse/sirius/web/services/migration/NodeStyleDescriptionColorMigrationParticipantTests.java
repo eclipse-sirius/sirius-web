@@ -198,9 +198,9 @@ public class NodeStyleDescriptionColorMigrationParticipantTests extends Abstract
                             .anyMatch(view -> view.eResource().eAdapters().stream()
                                     .filter(ResourceMetadataAdapter.class::isInstance)
                                     .map(ResourceMetadataAdapter.class::cast)
-                                    .filter(resourceMetadataAdapter -> resourceMetadataAdapter.getMigrationData() != null)
-                                    .anyMatch(resourceMetadataAdapter -> resourceMetadataAdapter.getMigrationData().migrationVersion().equals(lastMigrationData.migrationVersion())
-                                            && resourceMetadataAdapter.getMigrationData().lastMigrationPerformed().equals(lastMigrationData.lastMigrationPerformed()))
+                                    .filter(resourceMetadataAdapter -> resourceMetadataAdapter.getLastMigrationData() != null)
+                                    .anyMatch(resourceMetadataAdapter -> resourceMetadataAdapter.getLastMigrationData().migrationVersion().equals(lastMigrationData.migrationVersion())
+                                            && resourceMetadataAdapter.getLastMigrationData().lastMigrationPerformed().equals(lastMigrationData.lastMigrationPerformed()))
                             ))
                     .orElse(false);
             return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), isMigrated);
