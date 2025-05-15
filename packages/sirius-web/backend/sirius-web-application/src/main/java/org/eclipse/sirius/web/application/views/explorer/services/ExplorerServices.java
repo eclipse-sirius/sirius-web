@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
 import org.eclipse.sirius.components.core.CoreImageConstants;
+import org.eclipse.sirius.components.core.api.IDefaultObjectSearchService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IURLParser;
@@ -59,12 +60,15 @@ public class ExplorerServices implements IExplorerServices {
 
     private final IReadOnlyObjectPredicate readOnlyObjectPredicate;
 
-    public ExplorerServices(IObjectService objectService, IURLParser urlParser, List<IRepresentationImageProvider> representationImageProviders, IRepresentationMetadataSearchService representationMetadataSearchService, IReadOnlyObjectPredicate readOnlyObjectPredicate) {
+    private final IDefaultObjectSearchService defaultObjectSearchService;
+
+    public ExplorerServices(IObjectService objectService, IURLParser urlParser, List<IRepresentationImageProvider> representationImageProviders, IRepresentationMetadataSearchService representationMetadataSearchService, IReadOnlyObjectPredicate readOnlyObjectPredicate, IDefaultObjectSearchService defaultObjectSearchService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.urlParser = Objects.requireNonNull(urlParser);
         this.representationImageProviders = Objects.requireNonNull(representationImageProviders);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
+        this.defaultObjectSearchService = Objects.requireNonNull(defaultObjectSearchService);
     }
 
     @Override
@@ -165,7 +169,13 @@ public class ExplorerServices implements IExplorerServices {
     public Object getTreeItemObject(String treeItemId, IEditingContext editingContext) {
         Object result = null;
         if (editingContext != null && treeItemId != null) {
-            var optionalObject = this.objectService.getObject(editingContext, treeItemId);
+            // Fast path to avoid potentially costly IObjectSearchServiceDelegates
+            var optionalObject = this.defaultObjectSearchService.getObject(editingContext, treeItemId);
+            if (optionalObject.isEmpty()) {
+                // Slow path: fallback to the full algorithm
+                optionalObject = this.objectService.getObject(editingContext, treeItemId);
+            }
+
             if (optionalObject.isPresent()) {
                 result = optionalObject.get();
             } else {
