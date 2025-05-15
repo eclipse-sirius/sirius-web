@@ -136,6 +136,9 @@ This can be disabled with a system property for easy testing/comparison and if s
 For that the service `IRepresentationMetadataUpdateService` has a new method named `updateTargetObjectId`.
 By itself, it will not be enough, one would also have to update the content of the representation too but `IRepresentationContentUpdateService` already support that.
 - https://github.com/eclipse-sirius/sirius-web/issues/4933[#4933] [emf] Add the ability to know all the migration participants executed on a given resource through `ResourceMetadataAdapter`
+- https://github.com/eclipse-sirius/sirius-web/issues/4932[#4932] [core] Add a pre/post processor mechanism to `EditingContextEventProcessorRegistry`.
+Thanks to this mechanism one can trigger some behavior after the entire loading of the editing context and before the creation of the `IEditingContextEventProcessor` or just after the creation of the `IEditingContextEventProcessor`.
+
 
 
 == v2025.4.0
