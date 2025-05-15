@@ -17,6 +17,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -38,7 +39,6 @@ import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerS
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationIconURL;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -208,7 +208,7 @@ public class ExplorerServices implements IExplorerServices {
     }
 
     @Override
-    public boolean hasChildren(Object self, IEditingContext editingContext) {
+    public boolean hasChildren(Object self, IEditingContext editingContext, List<RepresentationMetadata> existingRepresentations) {
         boolean hasChildren = false;
         if (self instanceof Resource resource) {
             hasChildren = !resource.getContents().isEmpty();
@@ -218,14 +218,14 @@ public class ExplorerServices implements IExplorerServices {
             var optionalSemanticDataId = new UUIDParser().parse(editingContext.getId());
             if (!hasChildren && optionalSemanticDataId.isPresent()) {
                 String id = this.objectService.getId(eObject);
-                hasChildren = this.representationMetadataSearchService.existAnyRepresentationMetadataForSemanticDataAndTargetObjectId(AggregateReference.to(optionalSemanticDataId.get()), id);
+                hasChildren = this.findRepresentationsForTargetObjectId(existingRepresentations, id).findAny().isPresent();
             }
         }
         return hasChildren;
     }
 
     @Override
-    public List<Object> getDefaultChildren(Object self, IEditingContext editingContext, List<String> expandedIds) {
+    public List<Object> getDefaultChildren(Object self, IEditingContext editingContext, List<String> expandedIds, List<RepresentationMetadata> existingRepresentations) {
         List<Object> result = new ArrayList<>();
         if (editingContext != null) {
             String id = this.getTreeItemId(self);
@@ -236,9 +236,9 @@ public class ExplorerServices implements IExplorerServices {
                     var optionalSemanticDataId = new UUIDParser().parse(editingContext.getId());
 
                     if (optionalSemanticDataId.isPresent()) {
-                        var representationMetadata = new ArrayList<>(this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticDataAndTargetObjectId(AggregateReference.to(optionalSemanticDataId.get()), id));
-                        representationMetadata.sort(Comparator.comparing(RepresentationMetadata::getLabel));
-                        result.addAll(representationMetadata);
+                        this.findRepresentationsForTargetObjectId(existingRepresentations, id)
+                            .sorted(Comparator.comparing(RepresentationMetadata::getLabel))
+                            .forEachOrdered(result::add);
                     }
 
                     List<Object> contents = this.objectService.getContents(self);
@@ -247,6 +247,10 @@ public class ExplorerServices implements IExplorerServices {
             }
         }
         return result;
+    }
+
+    private Stream<RepresentationMetadata> findRepresentationsForTargetObjectId(List<RepresentationMetadata> existingRepresentations, String targetObjectd) {
+        return existingRepresentations.stream().filter(representationMetadata -> representationMetadata.getTargetObjectId().equals(targetObjectd));
     }
 
     @Override
@@ -263,5 +267,6 @@ public class ExplorerServices implements IExplorerServices {
                         .toList())
                 .orElseGet(ArrayList::new);
     }
+
 
 }

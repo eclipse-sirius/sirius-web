@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.Entity;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
@@ -68,7 +69,7 @@ public class DomainExplorerServices {
         return kind;
     }
 
-    public boolean hasChildren(IEditingContext editingContext, Object self) {
+    public boolean hasChildren(IEditingContext editingContext, Object self, List<RepresentationMetadata> existingRepresentations) {
         boolean hasChildren = false;
         if (self instanceof SettingWrapper wrapper) {
             var value = wrapper.setting.get(true);
@@ -76,7 +77,7 @@ public class DomainExplorerServices {
                 hasChildren = !collection.isEmpty();
             }
         } else {
-            hasChildren = this.explorerServices.hasChildren(self, editingContext);
+            hasChildren = this.explorerServices.hasChildren(self, editingContext, existingRepresentations);
             if (!hasChildren && self instanceof Entity) {
                 hasChildren = true;
             }

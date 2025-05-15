@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerChildrenProvider;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerTreeItemAlteredContentProvider;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.springframework.stereotype.Service;
 
 /**
@@ -44,15 +45,15 @@ public class ExplorerChildrenProvider implements IExplorerChildrenProvider {
 
     @Override
     public boolean hasChildren(VariableManager variableManager) {
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = this.getSelf(variableManager);
         Optional<IEditingContext> optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
-        return this.explorerServices.hasChildren(self, optionalEditingContext.orElse(null));
+        return this.explorerServices.hasChildren(self, optionalEditingContext.orElse(null), this.getExistingRepresentations(variableManager));
     }
 
     @Override
     public List<Object> getChildren(VariableManager variableManager) {
         List<Object> children = new ArrayList<>();
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = this.getSelf(variableManager);
         if (self != null) {
             children = this.getDefaultChildren(variableManager);
             List<String> activeFilterIds = this.getActiveFilterIds(variableManager);
@@ -77,13 +78,25 @@ public class ExplorerChildrenProvider implements IExplorerChildrenProvider {
                     .toList();
         }
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
-        return this.explorerServices.getDefaultChildren(self, optionalEditingContext.orElse(null), expandedIds);
+        Object self = this.getSelf(variableManager);
+        return this.explorerServices.getDefaultChildren(self, optionalEditingContext.orElse(null), expandedIds, this.getExistingRepresentations(variableManager));
+    }
+
+    private Object getSelf(VariableManager variableManager) {
+        return variableManager.get(VariableManager.SELF, Object.class).orElse(null);
+    }
+
+    private List<RepresentationMetadata> getExistingRepresentations(VariableManager variableManager) {
+        List<?> rawList = variableManager.get(ExplorerDescriptionProvider.EXISTING_REPRESENTATIONS, List.class).orElse(List.of());
+        return rawList.stream()
+                .filter(RepresentationMetadata.class::isInstance)
+                .map(RepresentationMetadata.class::cast)
+                .toList();
     }
 
     private List<String> getActiveFilterIds(VariableManager variableManager) {
         List<String> activeFilterIds;
-        Object objects = variableManager.getVariables().get(TreeRenderer.ACTIVE_FILTER_IDS);
+        Object objects = variableManager.get(TreeRenderer.ACTIVE_FILTER_IDS, Object.class).orElse(null);
         if (objects instanceof List<?> list) {
             activeFilterIds = list.stream().filter(String.class::isInstance).map(String.class::cast).toList();
         } else {
