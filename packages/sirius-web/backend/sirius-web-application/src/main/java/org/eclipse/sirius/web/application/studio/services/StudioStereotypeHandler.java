@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -64,8 +64,8 @@ public class StudioStereotypeHandler implements IStereotypeHandler {
     public Optional<DocumentDTO> handle(IEditingContext editingContext, String stereotypeId, String name) {
         if (editingContext instanceof IEMFEditingContext emfEditingContext) {
             return switch (stereotypeId) {
-                case StudioStereotypeProvider.DOMAIN_STEREOTYPE -> createDomainDocument(emfEditingContext, name);
-                case StudioStereotypeProvider.VIEW_STEREOTYPE -> createViewDocument(emfEditingContext, name);
+                case StudioStereotypeProvider.DOMAIN_STEREOTYPE -> this.createDomainDocument(emfEditingContext, name);
+                case StudioStereotypeProvider.VIEW_STEREOTYPE -> this.createViewDocument(emfEditingContext, name);
                 default -> Optional.empty();
             };
         }
@@ -79,7 +79,7 @@ public class StudioStereotypeHandler implements IStereotypeHandler {
         var resourceMetadataAdapter = new ResourceMetadataAdapter(name);
         var migrationService = new MigrationService(this.migrationParticipants);
 
-        resourceMetadataAdapter.setMigrationData(migrationService.getMostRecentParticipantMigrationData());
+        resourceMetadataAdapter.addMigrationData(migrationService.getMostRecentParticipantMigrationData());
 
         resource.eAdapters().add(resourceMetadataAdapter);
         editingContext.getDomain().getResourceSet().getResources().add(resource);
@@ -98,7 +98,7 @@ public class StudioStereotypeHandler implements IStereotypeHandler {
         var resourceMetadataAdapter = new ResourceMetadataAdapter(name);
         var migrationService = new MigrationService(this.migrationParticipants);
 
-        resourceMetadataAdapter.setMigrationData(migrationService.getMostRecentParticipantMigrationData());
+        resourceMetadataAdapter.addMigrationData(migrationService.getMostRecentParticipantMigrationData());
 
         resource.eAdapters().add(resourceMetadataAdapter);
         editingContext.getDomain().getResourceSet().getResources().add(resource);

@@ -35,6 +35,10 @@ JsonResource resource = jsonResourceFactory.createResource(uri, customOptions);
 See https://github.com/eclipse-sirius/sirius-emf-json/blob/master/CHANGELOG.adoc#v250[the Sirius EMF JSON changelog] for details.
 - https://github.com/eclipse-sirius/sirius-web/issues/4931[#4931] [sirius-web] Add a new `updateTargetObjectId` method to `IRepresentationMetadataUpdateService`.
 Every implementation of `IRepresentationMetadataUpdateService` should add its own implementation of `updateTargetObjectId`.
+- https://github.com/eclipse-sirius/sirius-web/issues/4933[#4933] [emf] Add the ability to know all the migration participants executed on a given resource through `ResourceMetadataAdapter`
+* `MigrationData getMigrationData()` method has been renamed to `MigrationData getLastMigrationData()`.
+* `void setMigrationData()` method has been renamed/changed to `boolean addMigrationData()`.
+* A new method `List<MigrationData> getAllMigrationData()` method has been added.
 
 
 === Dependency update
@@ -131,6 +135,7 @@ This can be disabled with a system property for easy testing/comparison and if s
 - https://github.com/eclipse-sirius/sirius-web/issues/4931[#4931] [sirius-web] Add the ability to change programmatically the object to which a representation is attached.
 For that the service `IRepresentationMetadataUpdateService` has a new method named `updateTargetObjectId`.
 By itself, it will not be enough, one would also have to update the content of the representation too but `IRepresentationContentUpdateService` already support that.
+- https://github.com/eclipse-sirius/sirius-web/issues/4933[#4933] [emf] Add the ability to know all the migration participants executed on a given resource through `ResourceMetadataAdapter`
 
 
 == v2025.4.0
