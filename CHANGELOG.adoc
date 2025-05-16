@@ -9,6 +9,7 @@
 === Architectural decision records
 
 - [ADR-192] Improve table representation lifecycle
+- [ADR-193] Add menu extension on manage visibility modal
 
 === Deprecation warning
 
