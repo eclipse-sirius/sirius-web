@@ -9,6 +9,7 @@
 === Architectural decision records
 
 - [ADR-192] Improve table representation lifecycle
+- [ADR-194] Improve diagram modals
 
 === Deprecation warning
 

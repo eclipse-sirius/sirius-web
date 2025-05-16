@@ -1,0 +1,189 @@
+= ADR-194 - Improve diagram modals
+
+== Context
+
+We have several components, context and custom hooks to handle the current palettes modals.
+
+We also added a new modal in SiriusWeb "manage visibility".
+
+The palette evolved a lot but some old behaviours could be simplified, also the behaviour and style of all modals should be the same.
+
+
+=== How the modal is closed
+
+Currently the palette modal is closed when : 
+
+	- Clicking on the arrow located on the header
+	- Opening another modal
+	- Pressing escape
+	- Changing the selection by selecting another semantic element in the explorer
+
+_note that the palette does not close when clicking outside the xyFlow container_
+
+We actually listen to several events in order to close the palette and not just native events like `onClick` or `onKeyPressed`.
+
+We're also listening to selection changes (this make every component that wants to close the palette to rerender if the selection changes even if the palette is already closed).
+
+We close the palette `onMoveStart`, `onClick`, `onSelectionStart`, `onDragNode`, `onConnectStart`, in `useAdjustSize` and when `DiagramDirectEditInput render`.
+
+By wrapping the palette in a `ClickAwayListener` we could close the palette everytime we click outside the modal.
+
+We would lose the fact that the palette is currently open when clicking outside the xyFlow pane.
+
+But by checking if one of the parent of event.target is the reactFlow renderer we could have the same behaviour as before.
+
+=== How the modal is opened
+
+To open the modal we use a context with a custom hook to handle the state of the modal (open/closed)
+
+This does allow us to open multiple modals but we're currently not reusing any logic.
+
+We then render it inside `rf__wrapper` (palette) or inside the `representation_area` (manage_visibility).
+
+There is a decision that should be made as to what should be the dom element parent of the modal.
+
+There is a dedicated https://reactflow.dev/api-reference/components/viewport-portal[xyFlow component] to render the modal inside the rf_wrapper but the rendered modal is then affected by zooming and we don't want that.
+
+_Note that we currently use a custom portal component to render the palette in rf_wrapper._
+
+It could be better to put the modal in `the representation_area` if we want to reuse it in another representation in the future but there is no evidence that the behaviour of the modal is changing because `rf__wrapper` is the parent.
+
+There are also some improvements that could be done to the palettes in order for them to have a common lifecycle.
+
+=== How the modal is dragged
+
+We use `react-draggable` to allow the modal to be dragged.
+
+We don't have a custom hook that we can reuse to easily get the bounds where the modal can be dragged.
+
+=== Modal UI
+
+All modals have a header but we don't reuse a header component.
+
+We also don't reuse the modal container and the logic attached to it.
+
+== Decision
+
+We will ensure that all modals behave the same behaviour when opened, closed, dragged and that they have a similar UI.
+
+=== Closing the modal
+
+The modal will be wrapped in a `ClickAwayListener` in order to close it when clicking outside the modal.
+
+The div that wraps the modal will listen to `onKeyPressed` to close it when pressing `escape`.
+
+All existing call to `hideXXXPalette` will be removed.
+
+=== How the modal is opened
+
+All palettes should be at the same level meaning that the `DiagramElementPalette` should be siblings of `DiagramPalette` and `GroupPalette`.
+
+Then all modals should be at the same level in `DiagramRenderer` or `DiagramRepresentation`.
+
+A portal should be used to render the modal under `rf__wrapper`.
+
+This is important because they will have the same z-index and will behave in the same way regarding dom events if they are at the same level.
+
+=== How the modal is dragged
+
+We can add a custom hook that will be used to always have the correct bounds.
+
+It will be useful if the left or right panel are expanded/minimized to always have the correct bounds.
+
+It could be also useful if we want to be more precise about the allowed bounds in the future, we could for example exclude the diagram panel from the available bounds.
+
+We will add a custom hook that will be used in a modal like this
+
+[source,typescript]
+----
+  const { getUpdatedModalPosition } = useGetUpdatedModalPosition();
+  const position = getUpdatedModalPosition(initialPosition, nodeRef);
+
+	  return (
+    <Draggable nodeRef={nodeRef} disabled={true} position={position}>
+      <Paper ref={nodeRef} className={classes.palette}>
+        <ClickAwayListener mouseEvent="onPointerDown" onClickAway={closeDialog}>
+					<MODALCONTENT></MODALCONTENT>
+        </ClickAwayListener>
+      </Paper>
+    </Draggable>
+  );
+----
+
+[source,typescript]
+----
+import { ReactFlowState, useStore, XYPosition } from '@xyflow/react';
+import { UseGetUpdatedModalPositionValue } from './useGetUpdatedModalPosition.types';
+const xyFlowDomBoundsSelector = (state: ReactFlowState): DOMRect | undefined => state.domNode?.getBoundingClientRect();
+
+export const useGetUpdatedModalPosition = (): UseGetUpdatedModalPositionValue => {
+  const xyFlowDomBounds = useStore(xyFlowDomBoundsSelector);
+  const getUpdatedModalPosition = (initialPosition: XYPosition, modalRef: React.RefObject<HTMLDivElement>) => {
+    let position: XYPosition = { ...initialPosition };
+    if (modalRef && modalRef.current && xyFlowDomBounds) {
+      const modalBounds: DOMRect = modalRef.current.getBoundingClientRect();
+      if (modalBounds) {
+        if (initialPosition.x + modalBounds.width > xyFlowDomBounds.width) {
+          position.x = xyFlowDomBounds.width - modalBounds.width;
+        }
+
+        if (initialPosition.y + modalBounds.height > xyFlowDomBounds.height) {
+          position.y = xyFlowDomBounds.height - modalBounds.height;
+        }
+      }
+    }
+    return position;
+  };
+
+  return { getUpdatedModalPosition };
+};
+----
+
+
+=== Modal UI
+
+All modals should have this shape and a component `ModalHeader` should be added.
+
+[source,typescript]
+----
+  return (
+    <Draggable nodeRef={nodeRef} disabled={true} position={position}>
+      <Paper ref={nodeRef} className={classes.palette}>
+        <ClickAwayListener mouseEvent="onPointerDown" onClickAway={closeDialog}>
+          <Stack>
+          <ModalHeader closeDialog={closeDialog} headerTitle={headerTitle}></ModalHeader>
+          <MODALCONTENT></MODALCONTENT>
+          </Stack>
+        </ClickAwayListener>
+      </Paper>
+    </Draggable>
+  );
+----
+
+Since `Draggable` and `ClickAwayListener` are used to manage the dragging events and the close events, we could have a component `ModalWrapper` managing just that.
+
+[source,typescript]
+----
+  return (
+    <ModalWrapper initialPosition={position} height={200} width={150} closeDialog={closeDialog} isDraggable={true}>
+      <Stack>
+      <ModalHeader closeDialog={closeDialog} headerTitle={headerTitle}></ModalHeader>
+      <MODALCONTENT></MODALCONTENT>
+      </Stack>
+    </ModalWrapper>
+  );
+----
+
+The `width` and `height` of the modal should be optional or be combined in a `sxProps`.
+
+_Note that if a height is set for the modal container (here Paper) then the palette can't have a dynamic minimum size._
+
+We should set the `max height` of the components inside modalContent that will need a dynamic height (usually a list).
+
+Making this wrapper could allow us to wrap the `filter element modal` accessible from the diagram panel and make it draggable for example.
+
+
+== Status
+
+draft
+
