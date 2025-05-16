@@ -92,6 +92,8 @@ Downstream projects can get access to them in their own test code by adding the 
 The `diagramNodeActionOverrideContributionExtensionPoint` extension point can be used to contribute components to use when a node action is available
 - https://github.com/eclipse-sirius/sirius-web/issues/4940[#4940] [diagram] Add the ability to open the image viewer for a diagram using the SVG support instead of the PNG one.
 For that, one should simply use the parameter `mode=svg-viewer`
+- https://github.com/eclipse-sirius/sirius-web/issues/4941[#4941] [diagram] Add the ability to perform an arrange all before displaying the diagram in the image viewer.
+For that, one should use the parameter `arrangeAll=true`
 
 
 === Improvements
