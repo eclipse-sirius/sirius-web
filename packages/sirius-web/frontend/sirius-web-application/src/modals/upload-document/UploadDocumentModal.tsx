@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,8 +17,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import FormGroup from '@mui/material/FormGroup';
 import { Theme } from '@mui/material/styles';
-import { makeStyles } from 'tss-react/mui';
 import { useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { FileUpload } from '../../core/file-upload/FileUpload';
 import { UploadDocumentModalProps, UploadDocumentModalState } from './UploadDocumentModal.types';
 import { UploadDocumentReport } from './UploadDocumentReport';
@@ -74,6 +74,7 @@ export const UploadDocumentModal = ({ editingContextId, onClose }: UploadDocumen
           color="primary"
           type="submit"
           form="upload-form-id"
+          loading={loading}
           data-testid="upload-document-submit">
           Upload
         </Button>
