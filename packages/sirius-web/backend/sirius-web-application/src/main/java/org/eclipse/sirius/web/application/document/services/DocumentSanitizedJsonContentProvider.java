@@ -22,12 +22,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.emf.migration.MigrationService;
 import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
+import org.eclipse.sirius.components.emf.services.EObjectIDManager;
+import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.document.services.api.IDocumentSanitizedJsonContentProvider;
@@ -76,7 +82,7 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
                 var hasProxies = this.proxyValidator.hasProxies(inputResource);
                 Duration timeToTestProxies = Duration.ofNanos(System.nanoTime() - start);
                 this.logger.trace("Checked for proxies in {}ms", timeToTestProxies.toMillis());
-                
+
                 if (hasProxies) {
                     this.logger.warn("The resource {} contains unresolvable proxies and will not be uploaded.", name);
                 } else {
@@ -89,11 +95,13 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
                         outputResource.getContents().addAll(inputResource.getContents());
                     }
 
+                    this.refreshElementIds(outputResource);
+
                     try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
                         Map<String, Object> saveOptions = new HashMap<>();
                         saveOptions.put(JsonResource.OPTION_ENCODING, JsonResource.ENCODING_UTF_8);
                         saveOptions.put(JsonResource.OPTION_SCHEMA_LOCATION, Boolean.TRUE);
-                        saveOptions.put(JsonResource.OPTION_ID_MANAGER, new EObjectRandomIDManager());
+                        saveOptions.put(JsonResource.OPTION_ID_MANAGER, new EObjectIDManager());
                         if (applyMigrationParticipants) {
                             var migrationExtendedMetaData = new MigrationService(this.migrationParticipants);
                             saveOptions.put(JsonResource.OPTION_EXTENDED_META_DATA, migrationExtendedMetaData);
@@ -118,6 +126,23 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
         }
 
         return optionalContent;
+    }
+
+    /**
+     * Give fresh, unique IDs to all the elements in the resource.
+     */
+    private void refreshElementIds(JsonResource outputResource) {
+        TreeIterator<Object> allProperContents = EcoreUtil.getAllProperContents(outputResource, false);
+        while (allProperContents.hasNext()) {
+            Object object = allProperContents.next();
+            if (object instanceof EObject eObject) {
+                eObject.eAdapters().forEach(adapter -> {
+                    if (adapter instanceof IDAdapter idAdapter) {
+                        idAdapter.setId(UUID.randomUUID());
+                    }
+                });
+            }
+        }
     }
 
     /**
