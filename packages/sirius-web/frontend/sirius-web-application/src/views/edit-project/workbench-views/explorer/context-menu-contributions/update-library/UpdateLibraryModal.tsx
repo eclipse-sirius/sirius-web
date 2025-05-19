@@ -15,7 +15,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useCurrentProject } from '../../../../useCurrentProject';
 import { UpdateLibraryModalProps, UpdateLibraryModalState } from './UpdateLibraryModal.types';
 import { UpdateLibraryTable } from './UpdateLibraryTable';
@@ -26,7 +26,7 @@ export const UpdateLibraryModal = ({ open, title, namespace, name, version, onCl
     selectedLibraryId: null,
   });
 
-  const { updateLibrary, data } = useUpdateLibrary();
+  const { updateLibrary, loading, data } = useUpdateLibrary();
   useEffect(() => {
     if (data) {
       onClose();
@@ -63,6 +63,7 @@ export const UpdateLibraryModal = ({ open, title, namespace, name, version, onCl
         <Button
           variant="contained"
           disabled={state.selectedLibraryId === null}
+          loading={loading}
           data-testid="update-library"
           color="primary"
           onClick={handleUpdateLibrary}>

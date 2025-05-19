@@ -56,7 +56,7 @@ export const PublishLibraryDialog = ({ open, title, message, publicationKind, on
     setState((prevState) => ({ ...prevState, description: value.toString() }));
   };
 
-  const { publishLibraries, data } = usePublishLibraries();
+  const { publishLibraries, loading, data } = usePublishLibraries();
   useEffect(() => {
     if (data) {
       onClose();
@@ -110,6 +110,7 @@ export const PublishLibraryDialog = ({ open, title, message, publicationKind, on
         <Button
           variant="contained"
           disabled={isInvalid}
+          loading={loading}
           data-testid="publish-library"
           color="primary"
           onClick={handlePublish}>

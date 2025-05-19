@@ -13,7 +13,7 @@
 import { GQLGetLibrariesQueryData } from '../views/library-browser/useLibraries.types';
 
 export interface LibrariesImportTableProps {
-  onSelectionChange(selection: string[]);
+  onSelectedLibrariesChange(selectedLibraryIds: string[]);
 }
 
 export interface LibrariesImportTableState {

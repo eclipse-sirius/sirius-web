@@ -27,7 +27,6 @@ import Typography from '@mui/material/Typography';
 import { useEffect, useRef, useState } from 'react';
 import { useCurrentProject } from '../views/edit-project/useCurrentProject';
 import {
-  ImportLibraryAction,
   ImportLibraryDialogProps,
   ImportLibraryDialogState,
   ImportStudioSplitButtonProps,
@@ -45,31 +44,18 @@ export const ImportLibraryDialog = ({ open, title, onClose }: ImportLibraryDialo
     ],
   });
 
-  const onSelectionChange = (selection) => {
+  const onSelectedLibrariesChange = (selectedLibraryIds: string[]) => {
     setState((prevState) => ({
       ...prevState,
-      selectedLibraries: selection,
+      selectedLibraries: selectedLibraryIds,
     }));
-  };
-
-  const { importLibraries, data } = useImportLibraries();
-  useEffect(() => {
-    if (data) {
-      onClose();
-    }
-  }, [data]);
-
-  const { project } = useCurrentProject();
-
-  const onImportLibraries = (action: ImportLibraryAction) => {
-    importLibraries(project.currentEditingContext.id, action.id, state.selectedLibraries);
   };
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="lg" scroll="paper" data-testid="import-library">
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>
-        <LibrariesImportTable onSelectionChange={onSelectionChange} />
+        <LibrariesImportTable onSelectedLibrariesChange={onSelectedLibrariesChange} />
       </DialogContent>
       <DialogActions>
         {state.actions.length > 0 ? (
@@ -80,25 +66,39 @@ export const ImportLibraryDialog = ({ open, title, onClose }: ImportLibraryDialo
           </Typography>
         )}
 
-        <ImportStudioSplitButton actions={state.actions} onClick={onImportLibraries} />
+        <ImportStudioSplitButton
+          selectedLibraries={state.selectedLibraries}
+          actions={state.actions}
+          onLibraryImported={onClose}
+        />
       </DialogActions>
     </Dialog>
   );
 };
 
-export const ImportStudioSplitButton = ({ actions, onClick }: ImportStudioSplitButtonProps) => {
-  const initialState: ImportStudioSplitButtonState = {
+export const ImportStudioSplitButton = ({
+  selectedLibraries,
+  actions,
+  onLibraryImported,
+}: ImportStudioSplitButtonProps) => {
+  const [state, setState] = useState<ImportStudioSplitButtonState>({
     selected: false,
     open: false,
     selectedIndex: 0,
     message: '',
-    actions,
-  };
-
-  const [state, setState] = useState<ImportStudioSplitButtonState>(initialState);
+  });
 
   const buttonGroupRef = useRef<HTMLDivElement>(null);
   const widgetRef = useRef<HTMLDivElement>(null);
+
+  const { importLibraries, loading, data } = useImportLibraries();
+  useEffect(() => {
+    if (data) {
+      onLibraryImported();
+    }
+  }, [data]);
+
+  const { project } = useCurrentProject();
 
   const handleMenuItemClick = (_event, index) => {
     setState((prevState) => ({ ...prevState, open: false, selectedIndex: index }));
@@ -114,8 +114,8 @@ export const ImportStudioSplitButton = ({ actions, onClick }: ImportStudioSplitB
   };
 
   const handleClick = () => {
-    const selectedAction = state.actions[state.selectedIndex];
-    onClick(selectedAction);
+    const selectedAction = actions[state.selectedIndex];
+    importLibraries(project.currentEditingContext.id, selectedAction.id, selectedLibraries);
   };
 
   return (
@@ -125,7 +125,7 @@ export const ImportStudioSplitButton = ({ actions, onClick }: ImportStudioSplitB
         color="primary"
         ref={buttonGroupRef}
         aria-label="split button"
-        disabled={state.actions.length === 0}
+        disabled={actions.length === 0}
         onFocus={() =>
           setState((prevState) => {
             return {
@@ -142,8 +142,13 @@ export const ImportStudioSplitButton = ({ actions, onClick }: ImportStudioSplitB
             };
           })
         }>
-        <Button data-testid="import-split-button" variant="contained" color="primary" onClick={handleClick}>
-          {state.actions.length > state.selectedIndex ? state.actions[state.selectedIndex].label : 'No Action'}
+        <Button
+          data-testid="import-split-button"
+          variant="contained"
+          color="primary"
+          loading={loading}
+          onClick={handleClick}>
+          {actions.length > state.selectedIndex ? actions[state.selectedIndex].label : 'No Action'}
         </Button>
         <Button
           color="primary"
@@ -172,7 +177,7 @@ export const ImportStudioSplitButton = ({ actions, onClick }: ImportStudioSplitB
             <Paper>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList id="split-button-menu">
-                  {state.actions.map((action, index) => (
+                  {actions.map((action, index) => (
                     <MenuItem
                       key={index}
                       selected={index === state.selectedIndex}
