@@ -11,7 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { ComponentExtension, ShareRepresentationModal, useComponents } from '@eclipse-sirius/sirius-components-core';
+import {
+  ComponentExtension,
+  ShareRepresentationModal,
+  useComponents,
+  useData,
+} from '@eclipse-sirius/sirius-components-core';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import AspectRatioIcon from '@mui/icons-material/AspectRatio';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
@@ -37,6 +42,7 @@ import { SmartEdgeIcon } from '../../icons/SmartEdgeIcon';
 import { SmoothStepEdgeIcon } from '../../icons/SmoothStepEdgeIcon';
 import { UnpinIcon } from '../../icons/UnpinIcon';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { diagramRendererCanUserSnapToGridExtensionPoint } from '../DiagramRendererExtensionPoints';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
 import { useFullscreen } from '../fullscreen/useFullscreen';
 import { useHideDiagramElements } from '../hide/useHideDiagramElements';
@@ -65,6 +71,9 @@ export const DiagramPanel = memo(
     const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
     const diagramPanelActionComponents: ComponentExtension<DiagramPanelActionProps>[] = useComponents(
       diagramPanelActionExtensionPoint
+    );
+    const { data: canSnapToGrid } = useData<(readOnly: boolean) => boolean>(
+      diagramRendererCanUserSnapToGridExtensionPoint
     );
 
     const { getNodes, getEdges, zoomIn, zoomOut, fitView } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
@@ -154,7 +163,11 @@ export const DiagramPanel = memo(
               </Tooltip>
             ) : (
               <Tooltip title="Toggle snap to grid mode">
-                <IconButton size="small" aria-label="toggle snap to grid mode" onClick={() => onSnapToGrid(true)}>
+                <IconButton
+                  disabled={!canSnapToGrid(readOnly)}
+                  size="small"
+                  aria-label="toggle snap to grid mode"
+                  onClick={() => onSnapToGrid(true)}>
                   <GridOnIcon />
                 </IconButton>
               </Tooltip>
