@@ -23,7 +23,7 @@ import { useLibraries } from '../views/library-browser/useLibraries';
 import { GQLLibrary } from '../views/library-browser/useLibraries.types';
 import { LibrariesImportTableProps, LibrariesImportTableState } from './LibrariesImportTable.types';
 
-export const LibrariesImportTable = ({ onSelectionChange }: LibrariesImportTableProps) => {
+export const LibrariesImportTable = ({ onSelectedLibrariesChange }: LibrariesImportTableProps) => {
   const [state, setState] = useState<LibrariesImportTableState>({
     data: null,
   });
@@ -45,7 +45,7 @@ export const LibrariesImportTable = ({ onSelectionChange }: LibrariesImportTable
   }, [data]);
 
   useEffect(() => {
-    onSelectionChange(Object.keys(rowSelection));
+    onSelectedLibrariesChange(Object.keys(rowSelection));
   }, [rowSelection]);
 
   const columns = useMemo<MRT_ColumnDef<GQLLibrary>[]>(
