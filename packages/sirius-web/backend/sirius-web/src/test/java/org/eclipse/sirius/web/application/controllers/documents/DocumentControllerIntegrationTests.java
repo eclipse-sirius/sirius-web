@@ -25,10 +25,13 @@ import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.domain.Domain;
+import org.eclipse.sirius.components.domain.Entity;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
@@ -42,7 +45,6 @@ import org.eclipse.sirius.web.application.document.dto.UploadDocumentInput;
 import org.eclipse.sirius.web.application.document.dto.UploadDocumentSuccessPayload;
 import org.eclipse.sirius.web.application.studio.services.StudioStereotypeProvider;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
-import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.CreateDocumentMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.StereotypesQueryRunner;
@@ -85,9 +87,6 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
 
     @Autowired
     private ExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
-
-    @Autowired
-    private IProjectSemanticDataSearchService projectSemanticDataSearchService;
 
     @BeforeEach
     public void beforeEach() {
@@ -144,14 +143,15 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
                       "data": {
                         "name":"test",
                         "types": [
-                          {"id":"1fb6fd00-5800-4ec5-abb8-76e95309ba55","eClass":"domain:Entity","data":{"name":"NewEntity"}}
+                          {"id":"1fb6fd00-5800-4ec5-abb8-76e95309ba55","eClass":"domain:Entity","data":{"name":"NewEntity1"}},
+                          {"id":"8b9e2835-2a53-42ad-8b1f-f07a9fbdda10","eClass":"domain:Entity","data":{"name":"NewEntity2","superTypes":["1fb6fd00-5800-4ec5-abb8-76e95309ba55"]}}
                         ]
                       }
                     }
                   ]
                 }
                 """;
-        this.uploadDocument(StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), "test", content);
+        this.uploadDocument(StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), "test", content, this::isExpectedDomain);
     }
 
     @Test
@@ -161,10 +161,22 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
         var content = """
                 <?xml version="1.0" encoding="utf-8"?>
                 <domain:Domain xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:domain="http://www.eclipse.org/sirius-web/domain" name="test">
-                  <types name="NewEntity"/>
+                  <types name="NewEntity1"/>
+                  <types name="NewEntity2" superTypes="//@types.0"/>
                 </domain:Domain>
                 """;
-        this.uploadDocument(StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), "test", content);
+        this.uploadDocument(StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), "test", content, this::isExpectedDomain);
+    }
+
+    private boolean isExpectedDomain(Resource resource) {
+        Domain domain = (Domain) resource.getContents().get(0);
+        if (domain.getTypes().size() == 2) {
+            Entity entity1 = domain.getTypes().get(0);
+            Entity entity2 = domain.getTypes().get(1);
+            return entity2.getSuperTypes().get(0) == entity1;
+        } else {
+            return false;
+        }
     }
 
     private void createDocument(String editingContextId, String stereotypeId, String name) {
@@ -184,11 +196,7 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
                     .filter(IEMFEditingContext.class::isInstance)
                     .map(IEMFEditingContext.class::cast)
                     .map(emfEditingContext -> emfEditingContext.getDomain().getResourceSet().getResources().stream()
-                            .anyMatch(resource -> resource.eAdapters().stream()
-                                    .filter(ResourceMetadataAdapter.class::isInstance)
-                                    .map(ResourceMetadataAdapter.class::cast)
-                                    .map(ResourceMetadataAdapter::getName)
-                                    .anyMatch(name::equals)))
+                            .anyMatch(resource -> this.isDocumentNamed(resource, name)))
                     .orElse(false);
             return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), resourceFound);
         };
@@ -236,7 +244,7 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
         assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
     }
 
-    private void uploadDocument(String editingContextId, String name, String content) {
+    private void uploadDocument(String editingContextId, String name, String content, Predicate<Resource> check) {
         this.givenCommittedTransaction.commit();
 
         var file = new UploadFile(name, new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
@@ -252,21 +260,20 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
         String report = JsonPath.read(result, "$.data.uploadDocument.report");
         assertThat(report).isEqualTo("This is a test report");
 
+        this.validateDocument(editingContextId, name, check);
+    }
+
+    private void validateDocument(String editingContextId, String name, Predicate<Resource> check) {
         BiFunction<IEditingContext, IInput, IPayload> function = (editingContext, executeEditingContextFunctionInput) -> {
-            var resourceFound = Optional.of(editingContext)
+            boolean documentFoundAndValid = Optional.of(editingContext)
                     .filter(IEMFEditingContext.class::isInstance)
                     .map(IEMFEditingContext.class::cast)
-                    .map(emfEditingContext -> emfEditingContext.getDomain().getResourceSet().getResources().stream()
-                            .anyMatch(resource -> resource.eAdapters().stream()
-                                    .filter(ResourceMetadataAdapter.class::isInstance)
-                                    .map(ResourceMetadataAdapter.class::cast)
-                                    .map(ResourceMetadataAdapter::getName)
-                                    .anyMatch(name::equals)))
-                    .orElse(false);
-            return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), resourceFound);
+                    .flatMap(emfEditingContext -> this.findDocumentByName(emfEditingContext, name))
+                    .filter(check)
+                    .isPresent();
+            return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), documentFoundAndValid);
         };
         var mono = this.executeEditingContextFunctionRunner.execute(new ExecuteEditingContextFunctionInput(UUID.randomUUID(), editingContextId, function));
-
         Predicate<IPayload> predicate = payload -> Optional.of(payload)
                 .filter(ExecuteEditingContextFunctionSuccessPayload.class::isInstance)
                 .map(ExecuteEditingContextFunctionSuccessPayload.class::cast)
@@ -279,5 +286,19 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
                 .expectNextMatches(predicate)
                 .thenCancel()
                 .verify();
+    }
+
+    private Optional<Resource> findDocumentByName(IEMFEditingContext emfEditingContext, String name) {
+        return emfEditingContext.getDomain().getResourceSet().getResources().stream()
+                .filter(resource -> this.isDocumentNamed(resource, name))
+                .findFirst();
+    }
+
+    private boolean isDocumentNamed(Resource resource, String name) {
+        return resource.eAdapters().stream()
+                .filter(ResourceMetadataAdapter.class::isInstance)
+                .map(ResourceMetadataAdapter.class::cast)
+                .map(ResourceMetadataAdapter::getName)
+                .anyMatch(name::equals);
     }
 }

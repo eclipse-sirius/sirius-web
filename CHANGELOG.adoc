@@ -72,7 +72,7 @@ The following dependencies have been updated:
 - https://github.com/eclipse-sirius/sirius-web/issues/4787[#4787] [sirius-web] Prevent flow action to be available without the flow nature
 - https://github.com/eclipse-sirius/sirius-web/issues/4878[#4878] [diagram] Fix an issue where edge paths could lose their rectilinearity
 - https://github.com/eclipse-sirius/sirius-web/issues/4772[#4772] [core] Dispose representation event processor even if there is no subscription
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4944[#4944] [sirius-web] Fix a bug in inter-object references when uploading models introduced with the switch to Sirius EMF JSON 2.5.0 (in 2025.4.2)
 
 === New Features
 
