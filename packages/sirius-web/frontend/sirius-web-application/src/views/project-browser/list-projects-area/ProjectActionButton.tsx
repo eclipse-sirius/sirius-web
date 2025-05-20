@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import { ComponentType, useState } from 'react';
 import { DeleteProjectModal } from '../../../modals/delete-project/DeleteProjectModal';
 import { RenameProjectModal } from '../../../modals/rename-project/RenameProjectModal';
 import {
+  ProjectActionButtonProps,
   ProjectActionButtonState,
   ProjectContextMenuEntryProps,
   ProjectContextMenuModal,
@@ -37,7 +38,7 @@ import {
   projectContextMenuEntryExtensionPoint,
 } from './ProjectContextMenuExtensionPoints';
 
-export const ProjectActionButton = ({ project, onChange }: ProjectContextMenuEntryProps) => {
+export const ProjectActionButton = ({ project, onChange }: ProjectActionButtonProps) => {
   const [state, setState] = useState<ProjectActionButtonState>({
     contextMenuAnchorElement: null,
   });
@@ -46,6 +47,11 @@ export const ProjectActionButton = ({ project, onChange }: ProjectContextMenuEnt
     setState((prevState) => ({ ...prevState, contextMenuAnchorElement: event.currentTarget }));
 
   const onCloseContextMenu = () => setState((prevState) => ({ ...prevState, contextMenuAnchorElement: null }));
+
+  const handleChange = () => {
+    onCloseContextMenu();
+    onChange();
+  };
 
   return (
     <>
@@ -58,7 +64,7 @@ export const ProjectActionButton = ({ project, onChange }: ProjectContextMenuEnt
         <ProjectContextMenu
           menuAnchor={state.contextMenuAnchorElement}
           project={project}
-          onChange={onChange}
+          onChange={handleChange}
           onClose={onCloseContextMenu}
         />
       ) : null}
@@ -80,7 +86,10 @@ const ProjectContextMenu = ({ menuAnchor, project, onChange, onClose }: ProjectC
 
   const onRename = () => setState((prevState) => ({ ...prevState, modalToDisplay: 'RENAME_PROJECT_DIALOG' }));
   const onDelete = () => setState((prevState) => ({ ...prevState, modalToDisplay: 'DELETE_PROJECT_DIALOG' }));
-  const onCancel = () => setState((prevState) => ({ ...prevState, modalToDisplay: null }));
+  const onCancel = () => {
+    setState((prevState) => ({ ...prevState, modalToDisplay: null }));
+    onClose();
+  };
 
   const onSuccess = () => {
     setState((prevState) => ({ ...prevState, modalToDisplay: null }));
@@ -114,7 +123,7 @@ const ProjectContextMenu = ({ menuAnchor, project, onChange, onClose }: ProjectC
           <ListItemText primary="Delete" />
         </MenuItem>
         {menuItemComponentExtensions.map(({ Component: ProjectContextMenuItem }, index) => (
-          <ProjectContextMenuItem key={index} project={project} onChange={onChange} />
+          <ProjectContextMenuItem key={index} project={project} onChange={onChange} onClose={onClose} />
         ))}
       </Menu>
       {ModalComponent ? <ModalComponent project={project} onSuccess={onSuccess} onCancel={onCancel} /> : null}
