@@ -201,9 +201,9 @@ export const Workbench = ({
         editingContextId={editingContextId}
         readOnly={readOnly}
         leftContributions={workbenchViewLeftSideContributions}
-        leftPanelInitialSize={400}
+        leftPanelInitialSize={25}
         rightContributions={workbenchViewRightSideContributions}
-        rightPanelInitialSize={450}
+        rightPanelInitialSize={25}
         mainArea={main}
       />
       <Toast

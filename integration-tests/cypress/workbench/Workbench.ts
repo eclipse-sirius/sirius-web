@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the erms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
+type WorkbenchSide = 'left' | 'right';
+type PanelState = 'expanded' | 'collapsed';
 
 export class Workbench {
   public openRepresentation(representationLabel: string): void {
@@ -33,5 +36,42 @@ export class Workbench {
 
   public closeTab(label: string): void {
     cy.getByTestId(`close-representation-tab-${label}`).click();
+  }
+
+  public checkPanelContent(side: WorkbenchSide, viewTitle: string) {
+    cy.getByTestId(`site-${side}`).children().eq(1).should('have.attr', 'data-testid', `view-${viewTitle}`);
+  }
+
+  public selectPanelView(side: WorkbenchSide, viewTitle: string) {
+    cy.getByTestId(`sidebar-${side}`).findByTestId(`viewselector-${viewTitle}`).should('exist').click();
+  }
+
+  private capitalize(val: string) {
+    return val.charAt(0).toUpperCase() + val.slice(1);
+  }
+
+  public isIconHighlighted(side: WorkbenchSide, viewTitle: string, selected: boolean = true) {
+    cy.getByTestId(`sidebar-${side}`)
+      .findByTestId(`viewselector-${viewTitle}`)
+      .invoke('attr', 'class')
+      .then((classList) =>
+        classList
+          ?.split(' ')
+          .some((className) =>
+            selected
+              ? className.endsWith(`-viewSelectorIconSelected${this.capitalize(side)}`)
+              : className.endsWith(`viewSelectorIcon${this.capitalize(side)}`)
+          )
+      );
+  }
+
+  public checkPanelState(side: WorkbenchSide, state: PanelState) {
+    if (state === 'expanded') {
+      cy.get(`#${side}`).should(($panel) => {
+        expect($panel).attr('data-panel-size').not.equal('0.0');
+      });
+    } else {
+      cy.get(`#${side}`).should('have.attr', 'data-panel-size', '0.0');
+    }
   }
 }

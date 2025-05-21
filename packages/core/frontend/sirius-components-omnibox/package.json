@@ -39,7 +39,8 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "tss-react": "4.9.16",
-    "xstate": "4.32.1"
+    "xstate": "4.32.1",
+    "react-resizable-panels": "3.0.2"
   },
   "devDependencies": {
     "@apollo/client": "3.10.4",
@@ -49,6 +50,7 @@
     "graphql": "16.8.1",
     "tss-react": "4.9.16",
     "xstate": "4.32.1",
+    "react-resizable-panels": "3.0.2",
     "@mui/icons-material": "7.0.2",
     "@mui/material": "7.0.2",
     "@types/node": "20.12.12",

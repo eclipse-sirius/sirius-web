@@ -64,6 +64,7 @@ The following dependencies have been updated:
 - [releng] Switch to Sirius EMF JSON 2.5.1
 - [releng] Switch to `@mui/x-tree-view` to `7.29.1`
 - [releng] Switch to xyflow 12.6.0
+- https://github.com/eclipse-sirius/sirius-web/issues/4183[4183] [workbench] Add a dependency to `react-resizable-panels 3.0.2`
 
 
 === Bug fixes
@@ -388,7 +389,7 @@ See the ADR 190 for additional details on the goal of this refactoring.
 - https://github.com/eclipse-sirius/sirius-web/issues/4762[#4762] [diagram] Enhance papaya lifecycle diagram with new concepts
 - https://github.com/eclipse-sirius/sirius-web/issues/4687[#4687] [table] Make table line header resizable
 - https://github.com/eclipse-sirius/sirius-web/issues/4804[#4804] [table] Avoid to reset the header column width when another column is resized
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4183[#4183] [workbench] Use `react-resizable-panels package` to layout the workbench
 
 
 == v2025.2.0

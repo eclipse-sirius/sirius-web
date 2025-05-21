@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,11 +12,9 @@
  *******************************************************************************/
 import { WorkbenchViewContribution, WorkbenchViewSide } from './Workbench.types';
 
-export interface SiteProps {
+export interface WorkbenchPartProps {
   editingContextId: string;
   readOnly: boolean;
   side: WorkbenchViewSide;
-  expanded: boolean;
-  toggleExpansion: () => void;
-  contributions: WorkbenchViewContribution[];
+  contribution: WorkbenchViewContribution;
 }
