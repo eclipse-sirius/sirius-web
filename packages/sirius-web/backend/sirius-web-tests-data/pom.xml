@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-web-tests-data</artifactId>
-	<version>2025.4.4</version>
+	<version>2025.4.5</version>
 	<name>sirius-web-tests-data</name>
 	<description>Sirius Web Tests Data</description>
 
