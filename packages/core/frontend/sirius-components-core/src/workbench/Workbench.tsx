@@ -75,6 +75,11 @@ const useWorkbenchStyles = makeStyles()(() => ({
   },
 }));
 
+// the width in percent of the global width of the left panel
+const LEFT_PANEL_SIZE = 20;
+// the width in percent of the global width of the right panel
+const RIGHT_PANEL_SIZE = 20;
+
 export const Workbench = ({
   editingContextId,
   initialRepresentationSelected,
@@ -201,9 +206,9 @@ export const Workbench = ({
         editingContextId={editingContextId}
         readOnly={readOnly}
         leftContributions={workbenchViewLeftSideContributions}
-        leftPanelInitialSize={400}
+        leftPanelInitialSize={LEFT_PANEL_SIZE}
         rightContributions={workbenchViewRightSideContributions}
-        rightPanelInitialSize={450}
+        rightPanelInitialSize={RIGHT_PANEL_SIZE}
         mainArea={main}
       />
       <Toast

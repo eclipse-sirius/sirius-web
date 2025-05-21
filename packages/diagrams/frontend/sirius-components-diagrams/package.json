@@ -45,7 +45,8 @@
     "xstate": "4.32.1",
     "@xstate/react": "3.0.0",
     "@xyflow/react": "12.6.0",
-    "tss-react": "4.9.16"
+    "tss-react": "4.9.16",
+    "react-resizable-panels": "3.0.2"
   },
   "devDependencies": {
     "@apollo/client": "3.10.4",
@@ -73,6 +74,7 @@
     "@xyflow/react": "12.6.0",
     "rollup-plugin-peer-deps-external": "2.2.4",
     "tss-react": "4.9.16",
+    "react-resizable-panels": "3.0.2",
     "typescript": "5.4.5",
     "vite": "5.2.11",
     "vitest": "1.6.0"
