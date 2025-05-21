@@ -162,6 +162,7 @@
     "subscriptions-transport-ws": "0.11.0",
     "uuid": "8.3.2",
     "websocket": "1.0.34",
-    "xstate": "4.32.1"
+    "xstate": "4.32.1",
+    "react-resizable-panels": "3.0.2"
   }
 }

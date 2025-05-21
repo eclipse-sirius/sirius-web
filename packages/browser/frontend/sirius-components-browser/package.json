@@ -43,7 +43,8 @@
     "lexical": "0.8.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "tss-react": "4.9.16"
+    "tss-react": "4.9.16",
+    "react-resizable-panels": "3.0.2"
   },
   "devDependencies": {
     "@apollo/client": "3.10.4",
@@ -52,6 +53,7 @@
     "@eclipse-sirius/sirius-components-tsconfig": "*",
     "@xstate/react": "3.0.0",
     "xstate": "4.32.1",
+    "react-resizable-panels": "3.0.2",
     "@lexical/react": "0.8.1",
     "@mui/material": "7.0.2",
     "@mui/icons-material": "7.0.2",
