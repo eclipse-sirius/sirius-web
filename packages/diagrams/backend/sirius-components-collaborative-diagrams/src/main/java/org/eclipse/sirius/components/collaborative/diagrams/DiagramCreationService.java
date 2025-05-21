@@ -124,7 +124,6 @@ public class DiagramCreationService implements IDiagramCreationService {
         variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
         variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, optionalDiagramContext.orElse(null));
         variableManager.put(IDiagramService.DIAGRAM_SERVICES, new DiagramService(optionalDiagramContext.orElse(null)));
-        variableManager.put(INodeAppearanceHandler.NODE_APPEARANCE_HANDLERS, this.nodeAppearanceHandlers);
 
         List<IDiagramEvent> diagramEvents = optionalDiagramContext.map(IDiagramContext::getDiagramEvents).orElse(List.of());
         Optional<Diagram> optionalPreviousDiagram = optionalDiagramContext.map(IDiagramContext::getDiagram);
@@ -139,7 +138,8 @@ public class DiagramCreationService implements IDiagramCreationService {
                 .viewCreationRequests(viewCreationRequests)
                 .viewDeletionRequests(viewDeletionRequests)
                 .previousDiagram(optionalPreviousDiagram)
-                .diagramEvents(diagramEvents);
+                .diagramEvents(diagramEvents)
+                .nodeAppearanceHandlers(this.nodeAppearanceHandlers);
 
         DiagramComponentProps props = builder.build();
         Element element = new Element(DiagramComponent.class, props);

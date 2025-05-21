@@ -18,7 +18,7 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Tooltip from '@mui/material/Tooltip';
-import { Edge, InternalNode, Node, useStoreApi, useViewport, XYPosition } from '@xyflow/react';
+import { Edge, Node, useStoreApi, useViewport, XYPosition } from '@xyflow/react';
 import React, { useEffect, useState } from 'react';
 import Draggable, { DraggableData } from 'react-draggable';
 import { makeStyles } from 'tss-react/mui';
@@ -114,6 +114,7 @@ export const Palette = ({
   targetObjectId,
   onDirectEditClick,
   onClose,
+  children,
 }: PaletteProps) => {
   const { domNode, nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
   const { x: viewportWidth, y: viewportHeight } = computeDraggableBounds(domNode?.getBoundingClientRect());
@@ -223,8 +224,9 @@ export const Palette = ({
             palette={palette}
             onToolClick={handleToolClick}
             onBackToMainList={handleBackToMainList}
-            diagramElement={diagramElement as Edge<EdgeData> | InternalNode<Node<NodeData>>}
-          />
+            diagramElementId={diagramElementId}>
+            {children}
+          </PaletteToolList>
         )}
       </Paper>
     </Draggable>

@@ -12,13 +12,16 @@
  *******************************************************************************/
 
 import { Edge, Node, useStoreApi } from '@xyflow/react';
-import { memo, useCallback, useContext } from 'react';
+import { memo, useCallback, useContext, useMemo } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useDiagramDirectEdit } from '../direct-edit/useDiagramDirectEdit';
+import { PaletteAppearanceSection } from './appearance/PaletteAppearanceSection';
 import { DiagramElementPaletteProps } from './DiagramElementPalette.types';
 import { Palette } from './Palette';
+import { PaletteExtensionSection } from './PaletteExtensionSection';
+import { PaletteExtensionSectionProps } from './PaletteExtensionSection.types';
 import { PalettePortal } from './PalettePortal';
 import { useDiagramElementPalette } from './useDiagramElementPalette';
 
@@ -64,6 +67,17 @@ export const DiagramElementPalette = memo(
       return null;
     }
 
+    const extensionSections = useMemo(() => {
+      const isNode = !!store.getState().nodeLookup.get(diagramElementId);
+      const sectionComponents: React.ReactElement<PaletteExtensionSectionProps>[] = [];
+      if (isNode) {
+        sectionComponents.push(
+          <PaletteExtensionSection component={PaletteAppearanceSection} title="Appearance" id="appearance" />
+        );
+      }
+      return sectionComponents;
+    }, [diagramElementId]);
+
     return isOpened && x && y && !currentlyEditedLabelId ? (
       <PalettePortal>
         <div onKeyDown={onKeyDown}>
@@ -73,8 +87,9 @@ export const DiagramElementPalette = memo(
             diagramElementId={diagramElementId}
             targetObjectId={targetObjectId}
             onDirectEditClick={handleDirectEditClick}
-            onClose={onClose}
-          />
+            onClose={onClose}>
+            {extensionSections}
+          </Palette>
         </div>
       </PalettePortal>
     ) : null;

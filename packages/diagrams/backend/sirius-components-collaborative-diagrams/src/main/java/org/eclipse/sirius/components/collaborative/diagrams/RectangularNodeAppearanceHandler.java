@@ -35,7 +35,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class RectangularNodeAppearanceHandler implements INodeAppearanceHandler {
 
-    public static final String BACKGROUND = "background";
+    public static final String BACKGROUND = "BACKGROUND";
 
     @Override
     public boolean canHandle(INodeStyle nodeStyle) {

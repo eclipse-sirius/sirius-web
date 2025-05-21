@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.diagrams;
 
 import java.text.MessageFormat;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -230,7 +229,7 @@ public final class Node implements IDiagramElement {
 
         private boolean pinned;
 
-        private Set<String> customizedStyleProperties = new HashSet<>();
+        private Set<String> customizedStyleProperties;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);

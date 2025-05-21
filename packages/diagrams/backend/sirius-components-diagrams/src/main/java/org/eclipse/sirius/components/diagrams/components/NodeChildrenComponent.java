@@ -65,7 +65,7 @@ public class NodeChildrenComponent implements IComponent {
             this.props.getVariableManager().put(InsideLabelDescription.OWNER_ID, nodeId);
 
             Optional<InsideLabel> optPreviousLabel = Optional.ofNullable(this.props.getPreviousParentNode()).map(Node::getInsideLabel);
-            InsideLabelComponentProps insideLabelComponentProps = new InsideLabelComponentProps(this.props.getVariableManager(), labelDescription, optPreviousLabel.orElse(null),
+            InsideLabelComponentProps insideLabelComponentProps = new InsideLabelComponentProps(this.props.getVariableManager(), labelDescription, optPreviousLabel,
                     this.props.getNodeComponentProps().getDiagramEvents());
             Element insideLabelElement = new Element(InsideLabelComponent.class, insideLabelComponentProps);
             nodeChildren.add(insideLabelElement);
@@ -113,6 +113,7 @@ public class NodeChildrenComponent implements IComponent {
                     .diagramEvents(this.props.getNodeComponentProps().getDiagramEvents())
                     .parentElementState(this.props.getState())
                     .operationValidator(this.props.getNodeComponentProps().getOperationValidator())
+                    .nodeAppearanceHandlers(this.props.getNodeComponentProps().getNodeAppearanceHandlers())
                     .build();
             return new Element(NodeComponent.class, nodeComponentProps);
         }).toList();
@@ -147,6 +148,7 @@ public class NodeChildrenComponent implements IComponent {
                     .diagramEvents(this.props.getNodeComponentProps().getDiagramEvents())
                     .parentElementState(this.props.getParentState())
                     .operationValidator(this.props.getNodeComponentProps().getOperationValidator())
+                    .nodeAppearanceHandlers(this.props.getNodeComponentProps().getNodeAppearanceHandlers())
                     .build();
 
             return new Element(NodeComponent.class, nodeComponentProps);

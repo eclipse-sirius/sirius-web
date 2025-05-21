@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.diagrams.elements;
 
 import java.text.MessageFormat;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -127,7 +126,7 @@ public final class InsideLabelElementProps implements IProps {
 
         private LabelTextAlign textAlign;
 
-        private Set<String> customizedStyleProperties = new HashSet<>();
+        private Set<String> customizedStyleProperties;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);

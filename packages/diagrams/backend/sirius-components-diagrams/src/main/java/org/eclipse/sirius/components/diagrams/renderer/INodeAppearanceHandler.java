@@ -26,8 +26,6 @@ import org.eclipse.sirius.components.diagrams.events.appearance.INodeAppearanceC
  */
 public interface INodeAppearanceHandler {
 
-    String NODE_APPEARANCE_HANDLERS = "NODE_APPEARANCE_HANDLERS";
-
     boolean canHandle(INodeStyle nodeStyle);
 
     NodeAppearance handle(INodeStyle providedStyle, List<INodeAppearanceChange> changes, Optional<NodeAppearance> previousAppearance);

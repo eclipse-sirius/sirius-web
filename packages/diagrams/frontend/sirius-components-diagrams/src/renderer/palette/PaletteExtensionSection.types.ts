@@ -10,8 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { NodeTypeAppearanceSectionContributionProps } from '../../../contexts/NodeContext.types';
+export interface PaletteExtensionSectionProps {
+  component: React.FC<PaletteExtensionSectionComponentProps>;
+  id: string;
+  title: string;
+}
 
-export const NodeTypeAppearanceSectionContribution = ({}: NodeTypeAppearanceSectionContributionProps) => {
-  return null;
-};
+export interface PaletteExtensionSectionComponentProps {
+  onBackToMainList: () => void;
+  diagramElementId: string;
+}

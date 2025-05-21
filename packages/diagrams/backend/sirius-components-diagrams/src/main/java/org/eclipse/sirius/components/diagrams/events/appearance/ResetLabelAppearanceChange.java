@@ -15,8 +15,6 @@ package org.eclipse.sirius.components.diagrams.events.appearance;
 /**
  * Appearance change to reset a label's style property.
  *
- * @param labelId
- * @param propertyName
  * @author nvannier
  */
 public record ResetLabelAppearanceChange(String labelId, String propertyName) implements ILabelAppearanceChange {

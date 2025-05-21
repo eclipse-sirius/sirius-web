@@ -15,8 +15,6 @@ package org.eclipse.sirius.components.diagrams.events.appearance;
 /**
  * Appearance change for a node's background style property.
  *
- * @param nodeId
- * @param background
  * @author nvannier
  */
 public record NodeBackgroundAppearanceChange(String nodeId, String background) implements INodeAppearanceChange {

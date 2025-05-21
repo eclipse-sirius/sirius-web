@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.diagrams.components;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
@@ -32,14 +33,14 @@ public class InsideLabelComponentProps implements IProps {
 
     private final InsideLabelDescription insideLabelDescription;
 
-    private final InsideLabel previousLabel;
+    private final Optional<InsideLabel> previousLabel;
 
     private List<IDiagramEvent> diagramEvents;
 
-    public InsideLabelComponentProps(VariableManager variableManager, InsideLabelDescription labelDescription, InsideLabel previousLabel, List<IDiagramEvent> diagramEvents) {
+    public InsideLabelComponentProps(VariableManager variableManager, InsideLabelDescription labelDescription, Optional<InsideLabel> previousLabel, List<IDiagramEvent> diagramEvents) {
         this.variableManager = Objects.requireNonNull(variableManager);
         this.insideLabelDescription = Objects.requireNonNull(labelDescription);
-        this.previousLabel = previousLabel;
+        this.previousLabel = Objects.requireNonNull(previousLabel);
         this.diagramEvents = Objects.requireNonNull(diagramEvents);
     }
 
@@ -51,7 +52,7 @@ public class InsideLabelComponentProps implements IProps {
         return this.insideLabelDescription;
     }
 
-    public InsideLabel getPreviousLabel() {
+    public Optional<InsideLabel> getPreviousLabel() {
         return previousLabel;
     }
 

@@ -18,11 +18,9 @@ import {
 } from '@eclipse-sirius/sirius-components-core';
 import {
   DiagramRepresentation,
-  NodeTypeAppearanceSectionContribution,
   NodeTypeContext,
   NodeTypeContextValue,
   NodeTypeContribution,
-  RectangularNodeAppearanceSection,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
 import { FormRepresentation } from '@eclipse-sirius/sirius-components-forms';
@@ -162,9 +160,6 @@ export const App = ({
     nodeLayoutHandlers: [new EllipseNodeLayoutHandler()],
     nodeConverters: [new EllipseNodeConverter()],
     nodeTypeContributions: [<NodeTypeContribution component={EllipseNode as any} type={'ellipseNode'} />],
-    nodeTypeAppearanceSectionContributions: [
-      <NodeTypeAppearanceSectionContribution component={RectangularNodeAppearanceSection} type="RectangularNodeStyle" />,
-    ],
   };
 
   return (

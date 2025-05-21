@@ -45,6 +45,8 @@ public final class MessageConstants {
 
     public static final String ACTION_HANDLER_NOT_FOUND = "ACTION_HANDLER_NOT_FOUND";
 
+    public static final String DIAGRAM_ELEMENT_NOT_FOUND = "DIAGRAM_ELEMENT_NOT_FOUND";
+
     private MessageConstants() {
         // Prevent instantiation
     }

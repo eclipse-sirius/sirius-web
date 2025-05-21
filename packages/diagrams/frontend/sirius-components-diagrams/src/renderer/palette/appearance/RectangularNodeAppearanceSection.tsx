@@ -21,30 +21,39 @@ import { useContext, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { DiagramContext } from '../../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../../contexts/DiagramContext.types';
-import { NodeTypeAppearanceSectionProps } from '../../../contexts/NodeContext.types';
 import { GQLRectangularNodeStyle } from '../../../graphql/subscription/nodeFragment.types';
 import { InsideLabel } from '../../DiagramRenderer.types';
+import { RectangularNodeAppearanceSectionProps } from './RectangularNodeAppearanceSection.types';
+import { useResetLabelAppearance } from './useResetLabelAppearance';
+import { useResetNodeAppearance } from './useResetNodeAppearance';
 import { useUpdateRectangularNodeAppearance } from './useUpdateRectangularNodeAppearance';
 
-const useStyle = makeStyles()(() => ({
+const useStyle = makeStyles()((theme) => ({
   appearanceSectionContainer: {},
   textfield: {
-    paddingLeft: '10px',
+    paddingLeft: theme.spacing(2),
   },
 }));
 
-export const RectangularNodeAppearanceSection = ({ nodeId, nodeData }: NodeTypeAppearanceSectionProps) => {
+export const RectangularNodeAppearanceSection = ({ nodeId, nodeData }: RectangularNodeAppearanceSectionProps) => {
   const { classes } = useStyle();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
 
-  const { updateBackground, updateInsideLabelBold, resetBackground, resetInsideLabelBold } =
-    useUpdateRectangularNodeAppearance(editingContextId, diagramId, nodeId);
+  const { updateBackground, updateInsideLabelBold } = useUpdateRectangularNodeAppearance(
+    editingContextId,
+    diagramId,
+    nodeId
+  );
+
+  const { resetBackground } = useResetNodeAppearance(editingContextId, diagramId, nodeId);
+
+  const { resetInsideLabelBold } = useResetLabelAppearance(editingContextId, diagramId, nodeId);
 
   const effectiveNodeStyle = nodeData.nodeAppearanceData.gqlStyle as GQLRectangularNodeStyle;
   const nodeCustomizedStyleProperties = nodeData.nodeAppearanceData.customizedStyleProperties;
 
   const effectiveNodeFillColor = effectiveNodeStyle.background;
-  const isNodeFillColorCustomized = nodeCustomizedStyleProperties.some((property) => property === 'background');
+  const isNodeFillColorCustomized = nodeCustomizedStyleProperties.some((property) => property === 'BACKGROUND');
 
   const hasInsideLabel = !!nodeData.insideLabel;
   const effectiveInsideLabelStyle = hasInsideLabel
@@ -56,7 +65,7 @@ export const RectangularNodeAppearanceSection = ({ nodeId, nodeData }: NodeTypeA
 
   const isLabelBold = hasInsideLabel ? !!effectiveInsideLabelStyle?.bold : false;
   const isLabelBoldCustomized = hasInsideLabel
-    ? labelCustomizedStyleProperties.some((property) => property === 'bold')
+    ? labelCustomizedStyleProperties.some((property) => property === 'BOLD')
     : false;
 
   const [localNodeFillColor, setLocalNodeFillColor] = useState<string>(effectiveNodeFillColor);
@@ -85,9 +94,7 @@ export const RectangularNodeAppearanceSection = ({ nodeId, nodeData }: NodeTypeA
             }}>
             <FormatColorResetIcon />
           </IconButton>
-        ) : (
-          <></>
-        )}
+        ) : null}
       </ListItem>
       {hasInsideLabel ? (
         <ListItem>
@@ -106,13 +113,9 @@ export const RectangularNodeAppearanceSection = ({ nodeId, nodeData }: NodeTypeA
               }}>
               <FormatColorResetIcon />
             </IconButton>
-          ) : (
-            <></>
-          )}
+          ) : null}
         </ListItem>
-      ) : (
-        <></>
-      )}
+      ) : null}
     </Box>
   );
 };

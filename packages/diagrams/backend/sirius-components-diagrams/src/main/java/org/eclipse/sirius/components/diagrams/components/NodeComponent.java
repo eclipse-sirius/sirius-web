@@ -39,7 +39,6 @@ import org.eclipse.sirius.components.diagrams.events.UpdateCollapsingStateEvent;
 import org.eclipse.sirius.components.diagrams.events.appearance.EditAppearanceEvent;
 import org.eclipse.sirius.components.diagrams.events.appearance.INodeAppearanceChange;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
-import org.eclipse.sirius.components.diagrams.renderer.INodeAppearanceHandler;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Fragment;
 import org.eclipse.sirius.components.representations.FragmentProps;
@@ -147,18 +146,6 @@ public class NodeComponent implements IComponent {
                 .anyMatch(viewDeletionRequest -> Objects.equals(viewDeletionRequest.getElementId(), elementId));
     }
 
-    private List<INodeAppearanceHandler> getNodeAppearanceHandlers(VariableManager variableManager) {
-        return variableManager.get(INodeAppearanceHandler.NODE_APPEARANCE_HANDLERS, List.class).map(list -> {
-            List<INodeAppearanceHandler> handlers = new ArrayList<>();
-            for (Object element : list) {
-                if (element instanceof INodeAppearanceHandler handler) {
-                    handlers.add(handler);
-                }
-            }
-            return handlers;
-        }).orElse(Collections.emptyList());
-    }
-
     private Element doRender(VariableManager nodeVariableManager, String targetObjectId, Optional<Node> optionalPreviousNode, List<IDiagramEvent> diagramEvents) {
         NodeDescription nodeDescription = this.props.getNodeDescription();
         NodeContainmentKind containmentKind = this.props.getContainmentKind();
@@ -186,7 +173,7 @@ public class NodeComponent implements IComponent {
         );
 
         nodeVariableManager.put(NodeAppearance.PREVIOUS_NODE_APPEARANCE, optPreviousAppearance.orElse(null));
-        
+
         INodeStyle providedStyle = nodeDescription.getStyleProvider().apply(nodeVariableManager);
 
         List<INodeAppearanceChange> appearanceChanges =
@@ -199,7 +186,7 @@ public class NodeComponent implements IComponent {
                         .filter(appearanceChange -> Objects.equals(nodeId,
                                 appearanceChange.nodeId())).toList();
 
-        NodeAppearance appearance = getNodeAppearanceHandlers(nodeVariableManager)
+        NodeAppearance appearance = this.props.getNodeAppearanceHandlers()
                 .stream()
                 .filter(handler -> handler.canHandle(providedStyle))
                 .findFirst()

@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.components;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.appearance.EditAppearanceEvent;
 import org.eclipse.sirius.components.diagrams.events.appearance.ILabelAppearanceChange;
 import org.eclipse.sirius.components.diagrams.renderer.LabelAppearanceHandler;
+import org.eclipse.sirius.components.diagrams.renderer.LabelAppearanceProperty;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -65,9 +66,10 @@ public class InsideLabelComponent implements IComponent {
         LabelStyleDescription labelStyleDescription = insideLabelDescription.getStyleDescriptionProvider().apply(variableManager);
 
         List<IDiagramEvent> diagramEvents = this.props.getDiagramEvents();
-        Optional<InsideLabel> optPreviousLabel = Optional.ofNullable(this.props.getPreviousLabel());
+        Optional<InsideLabel> optPreviousLabel = this.props.getPreviousLabel();
         Optional<LabelStyle> optPreviousLabelStyle = optPreviousLabel.map(InsideLabel::getStyle);
-        Set<String> previousCustomizedStyleProperties = optPreviousLabel.map(InsideLabel::getCustomizedStyleProperties).orElse(new HashSet<>());
+        Set<String> previousCustomizedStyleProperties = optPreviousLabel.map(InsideLabel::getCustomizedStyleProperties).orElse(new LinkedHashSet<>());
+        Set<String> newCustomizedStyleProperties = new LinkedHashSet<>();
         List<ILabelAppearanceChange> appearanceChanges =
                 diagramEvents.stream()
                         .filter(EditAppearanceEvent.class::isInstance)
@@ -82,7 +84,13 @@ public class InsideLabelComponent implements IComponent {
 
         String color = labelStyleDescription.getColorProvider().apply(variableManager);
         Integer fontSize = labelStyleDescription.getFontSizeProvider().apply(variableManager);
-        Boolean bold = labelAppearanceHandler.isBold(() -> labelStyleDescription.getBoldProvider().apply(variableManager));
+
+        LabelAppearanceProperty<Boolean> boldAppearance = labelAppearanceHandler.isBold(() -> labelStyleDescription.getBoldProvider().apply(variableManager));
+        Boolean bold = boldAppearance.value();
+        if (boldAppearance.customized()) {
+            newCustomizedStyleProperties.add(LabelAppearanceHandler.BOLD);
+        }
+
         Boolean italic = labelStyleDescription.getItalicProvider().apply(variableManager);
         Boolean strikeThrough = labelStyleDescription.getStrikeThroughProvider().apply(variableManager);
         Boolean underline = labelStyleDescription.getUnderlineProvider().apply(variableManager);
@@ -120,7 +128,7 @@ public class InsideLabelComponent implements IComponent {
                 .headerSeparatorDisplayMode(headerSeparatorDisplayMode)
                 .overflowStrategy(insideLabelDescription.getOverflowStrategy())
                 .textAlign(insideLabelDescription.getTextAlign())
-                .customizedStyleProperties(labelAppearanceHandler.getCustomizedStyleProperties())
+                .customizedStyleProperties(newCustomizedStyleProperties)
                 .build();
         return new Element(InsideLabelElementProps.TYPE, insideLabelElementProps);
     }

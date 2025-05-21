@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,20 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { NodeData } from '../../DiagramRenderer.types';
 
-import {
-  INodeConverter,
-  INodeLayoutHandler,
-  NodeData,
-  NodeTypeContributionElement,
-} from '@eclipse-sirius/sirius-components-diagrams';
-
-export interface DiagramRepresentationConfigurationProps {
-  nodeTypeRegistry: NodeTypeRegistry;
-}
-
-export interface NodeTypeRegistry {
-  nodeLayoutHandlers: INodeLayoutHandler<NodeData>[];
-  nodeConverters: INodeConverter[];
-  nodeTypeContributions: NodeTypeContributionElement[];
+export interface RectangularNodeAppearanceSectionProps {
+  nodeId: string;
+  nodeData: NodeData;
 }

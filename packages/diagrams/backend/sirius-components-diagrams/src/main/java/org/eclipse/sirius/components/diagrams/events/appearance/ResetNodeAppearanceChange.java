@@ -15,8 +15,6 @@ package org.eclipse.sirius.components.diagrams.events.appearance;
 /**
  * Appearance change to reset a node's style property.
  *
- * @param nodeId
- * @param propertyName
  * @author nvannier
  */
 public record ResetNodeAppearanceChange(String nodeId, String propertyName) implements INodeAppearanceChange {

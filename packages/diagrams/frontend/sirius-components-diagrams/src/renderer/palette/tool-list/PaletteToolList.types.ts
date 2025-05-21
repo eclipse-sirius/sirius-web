@@ -11,29 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Edge, InternalNode, Node } from '@xyflow/react';
-import { EdgeData, NodeData } from '../../DiagramRenderer.types';
 import { GQLPalette, GQLTool, GQLToolSection } from '../Palette.types';
+import { PaletteExtensionSectionProps } from '../PaletteExtensionSection.types';
 
 export interface PaletteToolListProps {
   onToolClick: (tool: GQLTool) => void;
   palette: GQLPalette;
   onBackToMainList: () => void;
-  diagramElement: Edge<EdgeData> | InternalNode<Node<NodeData>>;
+  diagramElementId: string;
+  children: React.ReactElement<PaletteExtensionSectionProps>[];
 }
-
-export const APPEARANCE_SECTION_ID = 'appearance';
-
-export interface AppearanceSection {
-  id: string;
-  label: string;
-}
-
-export const AppearanceSectionValue: AppearanceSection = {
-  id: APPEARANCE_SECTION_ID,
-  label: 'Appearance',
-};
 
 export interface PaletteToolListStateValue {
-  toolSection: GQLToolSection | AppearanceSection | null;
+  toolSection: GQLToolSection | null;
+  extensionSection: string | null;
 }

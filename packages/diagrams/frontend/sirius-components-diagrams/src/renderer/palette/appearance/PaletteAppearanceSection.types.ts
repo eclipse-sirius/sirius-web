@@ -10,11 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Edge, Node } from '@xyflow/react';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
 
 export interface PaletteAppearanceSectionProps {
   onBackToMainList: () => void;
-  elementId: string;
-  elementType: string | undefined;
-  elementData: NodeData | EdgeData | undefined;
+  element: Edge<EdgeData> | Node<NodeData>;
 }

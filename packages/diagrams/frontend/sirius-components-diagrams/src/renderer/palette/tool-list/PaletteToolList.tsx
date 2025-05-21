@@ -20,19 +20,11 @@ import Slide from '@mui/material/Slide';
 import Tooltip from '@mui/material/Tooltip';
 import React, { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { PaletteAppearanceSection } from '../appearance/PaletteAppearanceSection';
-import { isPaletteDivider, isSingleClickOnDiagramElementTool, isToolSection } from '../Palette';
-import { GQLPaletteEntry, GQLToolSection } from '../Palette.types';
 import { isPaletteDivider, isSingleClickOnDiagramElementTool, isTool, isToolSection } from '../Palette';
 import { GQLPalette, GQLPaletteEntry, GQLTool, GQLToolSection } from '../Palette.types';
 import { ToolListItem } from '../tool-list-item/ToolListItem';
 import { useDiagramPalette } from '../useDiagramPalette';
-import {
-  AppearanceSection,
-  AppearanceSectionValue,
-  PaletteToolListProps,
-  PaletteToolListStateValue,
-} from './PaletteToolList.types';
+import { PaletteToolListProps, PaletteToolListStateValue } from './PaletteToolList.types';
 import { PaletteToolSectionList } from './PaletteToolSectionList';
 
 const useStyle = makeStyles()((theme) => ({
@@ -73,6 +65,7 @@ const useStyle = makeStyles()((theme) => ({
 
 const defaultStateValue: PaletteToolListStateValue = {
   toolSection: null,
+  extensionSection: null,
 };
 
 const paletteContainsTool = (palette: GQLPalette, toolId: string) => {
@@ -84,7 +77,13 @@ const paletteContainsTool = (palette: GQLPalette, toolId: string) => {
   );
 };
 
-export const PaletteToolList = ({ palette, onToolClick, onBackToMainList, diagramElement }: PaletteToolListProps) => {
+export const PaletteToolList = ({
+  palette,
+  onToolClick,
+  onBackToMainList,
+  diagramElementId,
+  children,
+}: PaletteToolListProps) => {
   const [state, setState] = useState<PaletteToolListStateValue>(defaultStateValue);
 
   const { getLastToolInvoked } = useDiagramPalette();
@@ -92,16 +91,21 @@ export const PaletteToolList = ({ palette, onToolClick, onBackToMainList, diagra
 
   const { classes } = useStyle();
 
-  const handleToolSectionClick = (
+  const handleToolSectionClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, toolSection: GQLToolSection) => {
+    event.stopPropagation();
+    setState((prevState) => ({ ...prevState, toolSection, extensionSection: null }));
+  };
+
+  const handleExtensionSectionClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    toolSection: GQLToolSection | AppearanceSection
+    extensionSectionId: string
   ) => {
     event.stopPropagation();
-    setState((prevState) => ({ ...prevState, toolSection }));
+    setState((prevState) => ({ ...prevState, toolSection: null, extensionSection: extensionSectionId }));
   };
 
   const handleBackToMainList = () => {
-    setState((prevState) => ({ ...prevState, toolSection: null }));
+    setState((prevState) => ({ ...prevState, toolSection: null, extensionSection: null }));
     onBackToMainList();
   };
 
@@ -134,23 +138,23 @@ export const PaletteToolList = ({ palette, onToolClick, onBackToMainList, diagra
     return [];
   });
 
-  const lastToolAvailable = lastToolInvoked && paletteContainsTool(palette, lastToolInvoked.id);
-  const appearanceSection = AppearanceSectionValue;
-
-  if (!!diagramElement) {
+  children.forEach((extensionSection) => {
+    const extensionSectionId = extensionSection.props.id;
+    const extensionSectionTitle = extensionSection.props.title;
     listItemsRendered.push(
-      <Tooltip key={'tooltip_' + appearanceSection.id} title={appearanceSection.label} placement="right">
+      <Tooltip key={`tooltip_${extensionSectionId}`} title={extensionSectionTitle} placement="right">
         <ListItemButton
           className={classes.listItemButton}
-          onClick={(event) => handleToolSectionClick(event, appearanceSection)}
-          data-testid={`toolSection-${appearanceSection.label}`}>
-          <ListItemText primary={appearanceSection.label} className={classes.listItemText} />
+          onClick={(event) => handleExtensionSectionClick(event, extensionSectionId)}
+          data-testid={`toolSection-${extensionSectionTitle}`}>
+          <ListItemText primary={extensionSectionTitle} className={classes.listItemText} />
           <NavigateNextIcon />
         </ListItemButton>
       </Tooltip>
     );
-  }
+  });
 
+  const lastToolAvailable = lastToolInvoked && paletteContainsTool(palette, lastToolInvoked.id);
   const lastUsedTool: JSX.Element | null = lastToolInvoked ? (
     <>
       <ToolListItem onToolClick={onToolClick} tool={lastToolInvoked} disabled={!lastToolAvailable} />
@@ -181,28 +185,26 @@ export const PaletteToolList = ({ palette, onToolClick, onBackToMainList, diagra
           </Slide>
         ))}
 
-        {!!diagramElement ? (
-          <Slide
-            direction={'left'}
-            in={state.toolSection?.id === appearanceSection.id}
-            container={containerRef.current}
-            unmountOnExit
-            mountOnEnter>
-            <div className={classes.toolList}>
-              <PaletteAppearanceSection
-                onBackToMainList={handleBackToMainList}
-                elementId={diagramElement.id}
-                elementType={diagramElement.type}
-                elementData={diagramElement.data}
-              />
-            </div>
-          </Slide>
-        ) : (
-          <></>
-        )}
+        {children.map((extensionSection) => {
+          const extensionSectionId = extensionSection.props.id;
+          const SectionComponent = extensionSection.props.component;
+          return (
+            <Slide
+              direction={'left'}
+              in={state.extensionSection === extensionSectionId}
+              container={containerRef.current}
+              unmountOnExit
+              mountOnEnter>
+              <div className={classes.toolList}>
+                <SectionComponent onBackToMainList={handleBackToMainList} diagramElementId={diagramElementId} />
+              </div>
+            </Slide>
+          );
+        })}
+
         <Slide
           direction={'right'}
-          in={state.toolSection === null}
+          in={state.toolSection === null && state.extensionSection === null}
           container={containerRef.current}
           appear={false}
           unmountOnExit

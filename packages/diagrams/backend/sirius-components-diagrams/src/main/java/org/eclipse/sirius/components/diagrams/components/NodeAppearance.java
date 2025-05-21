@@ -19,8 +19,6 @@ import org.eclipse.sirius.components.diagrams.INodeStyle;
 /**
  * Wrapper for a node style and the list of its customized style properties.
  *
- * @param style
- * @param customizedStyleProperties
  * @author nvannier
  */
 public record NodeAppearance(INodeStyle style, Set<String> customizedStyleProperties) {

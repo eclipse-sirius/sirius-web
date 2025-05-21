@@ -36,7 +36,7 @@ import org.eclipse.sirius.components.diagrams.tests.graphql.ResetNodeAppearanceM
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
-import org.eclipse.sirius.web.services.diagrams.EditRectangularNodeAppearanceDiagramDescriptionProvider;
+import org.eclipse.sirius.web.services.diagrams.ExpandCollapseDiagramDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -76,7 +76,7 @@ public class EditRectangularNodeAppearanceControllerTests extends AbstractIntegr
     private ResetNodeAppearanceMutationRunner resetNodeAppearanceMutationRunner;
 
     @Autowired
-    private EditRectangularNodeAppearanceDiagramDescriptionProvider editRectangularNodeAppearanceDiagramDescriptionProvider;
+    private ExpandCollapseDiagramDescriptionProvider diagramDescriptionProvider;
 
     @BeforeEach
     public void beforeEach() {
@@ -87,7 +87,7 @@ public class EditRectangularNodeAppearanceControllerTests extends AbstractIntegr
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
-                this.editRectangularNodeAppearanceDiagramDescriptionProvider.getRepresentationDescriptionId(),
+                this.diagramDescriptionProvider.getRepresentationDescriptionId(),
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "EditRectangularNodeAppearanceDiagram"
         );
@@ -96,12 +96,8 @@ public class EditRectangularNodeAppearanceControllerTests extends AbstractIntegr
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("""
-            Setting a diagram node inside label to bold,
-            then the same node's background to be red,
-            and then resetting the label back to not being bold
-            and then the node's background to not being red, back to the default style""")
-    public void setNodeBackgroundRedLabelBoldAndReset() {
+    @DisplayName("Setting a diagram node label bold and resetting it to not be bold")
+    public void setLabelBoldAndReset() {
         var flux = givenDiagramSubscription();
         var diagramId = new AtomicReference<String>();
         var siriusWebApplicationNodeId = new AtomicReference<String>();
@@ -117,14 +113,29 @@ public class EditRectangularNodeAppearanceControllerTests extends AbstractIntegr
                             .filteredOn(node -> node.getInsideLabel() != null && node.getInsideLabel().getText().equals("sirius-web-application"))
                             .hasSize(1)
                             .allMatch(node -> !node.getInsideLabel().getStyle()
-                                    .isBold() && node.getStyle() instanceof RectangularNodeStyle rectangularNodeStyle && "#0000ff".equals(rectangularNodeStyle.getBackground()));
+                                    .isBold());
 
                     var siriusWebApplicationNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-application").getNode();
                     siriusWebApplicationNodeId.set(siriusWebApplicationNode.getId());
                     siriusWebApplicationNodeInsideLabelId.set(siriusWebApplicationNode.getInsideLabel().getId());
                 }, () -> fail("Missing diagram or invalid state for tested node."));
 
-        Runnable setLabelBold = getSetLabelBoldRunnable(diagramId, siriusWebApplicationNodeId, siriusWebApplicationNodeInsideLabelId);
+        Runnable setLabelBold = () -> {
+            var appearanceInput = new RectangularNodeAppearanceInput(
+                    null,
+                    new LabelAppearanceInput(siriusWebApplicationNodeInsideLabelId.get(), true)
+            );
+
+            var input = new EditRectangularNodeAppearanceInput(
+                    UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                    diagramId.get(),
+                    siriusWebApplicationNodeId.get(),
+                    appearanceInput
+            );
+
+            this.editRectangularNodeAppearanceMutationRunner.run(input);
+        };
 
         Consumer<Object> updatedAfterBoldDiagramContentConsumer = payload -> Optional.of(payload)
                 .filter(DiagramRefreshedEventPayload.class::isInstance)
@@ -135,24 +146,21 @@ public class EditRectangularNodeAppearanceControllerTests extends AbstractIntegr
                             .filteredOn(node -> node.getInsideLabel() != null && node.getInsideLabel().getText().equals("sirius-web-application"))
                             .hasSize(1)
                             .allMatch(node -> node.getInsideLabel().getStyle()
-                                    .isBold() && node.getStyle() instanceof RectangularNodeStyle rectangularNodeStyle && "#0000ff".equals(rectangularNodeStyle.getBackground()));
-                }, () -> fail("Missing diagram or node inside label has not been set to be bold or the node's background has changed unexpectedly."));
+                                    .isBold());
+                }, () -> fail("Missing diagram or node inside label has not been set to be bold."));
 
-        Runnable setNodeBackgroundRed = getSetNodeBackgroundRedRunnable(diagramId, siriusWebApplicationNodeId);
+        Runnable resetLabelBold = () -> {
+            var input = new ResetLabelAppearanceInput(
+                    UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                    diagramId.get(),
+                    siriusWebApplicationNodeId.get(),
+                    siriusWebApplicationNodeInsideLabelId.get(),
+                    List.of("BOLD")
+            );
 
-        Consumer<Object> updatedAfterRedBackgroundDiagramContentConsumer = payload -> Optional.of(payload)
-                .filter(DiagramRefreshedEventPayload.class::isInstance)
-                .map(DiagramRefreshedEventPayload.class::cast)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    assertThat(diagram.getNodes())
-                            .filteredOn(node -> node.getInsideLabel() != null && node.getInsideLabel().getText().equals("sirius-web-application"))
-                            .hasSize(1)
-                            .allMatch(node -> node.getInsideLabel().getStyle()
-                                    .isBold() && node.getStyle() instanceof RectangularNodeStyle rectangularNodeStyle && "#ff0000".equals(rectangularNodeStyle.getBackground()));
-                }, () -> fail("Missing diagram or node's background has not been set to red or node's inside label has unexpectedly switched back to not being bold."));
-
-        Runnable resetLabelBold = getResetLabelBoldRunnable(diagramId, siriusWebApplicationNodeId, siriusWebApplicationNodeInsideLabelId);
+            this.resetLabelAppearanceMutationRunner.run(input);
+        };
 
         Consumer<Object> updatedAfterResetBoldDiagramContentConsumer = payload -> Optional.of(payload)
                 .filter(DiagramRefreshedEventPayload.class::isInstance)
@@ -163,10 +171,82 @@ public class EditRectangularNodeAppearanceControllerTests extends AbstractIntegr
                             .filteredOn(node -> node.getInsideLabel() != null && node.getInsideLabel().getText().equals("sirius-web-application"))
                             .hasSize(1)
                             .allMatch(node -> !node.getInsideLabel().getStyle()
-                                    .isBold() && node.getStyle() instanceof RectangularNodeStyle rectangularNodeStyle && "#ff0000".equals(rectangularNodeStyle.getBackground()));
-                }, () -> fail("Missing diagram or node inside label has not been reset to not be bold or node's background has been unexpectedly switched back to not being red."));
+                                    .isBold());
+                }, () -> fail("Missing diagram or node inside label has not been reset to not be bold."));
 
-        Runnable resetNodeBackgroundRed = getResetNodeBackgroundRedRunnable(diagramId, siriusWebApplicationNodeId);
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(setLabelBold)
+                .consumeNextWith(updatedAfterBoldDiagramContentConsumer)
+                .then(resetLabelBold)
+                .consumeNextWith(updatedAfterResetBoldDiagramContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Setting a diagram node background and resetting it to its original value")
+    public void setNodeBackgroundRedAndReset() {
+        var flux = givenDiagramSubscription();
+        var diagramId = new AtomicReference<String>();
+        var siriusWebApplicationNodeId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
+                .map(DiagramRefreshedEventPayload::diagram)
+                .ifPresentOrElse(diagram -> {
+                    diagramId.set(diagram.getId());
+                    assertThat(diagram.getNodes())
+                            .filteredOn(node -> node.getInsideLabel() != null && node.getInsideLabel().getText().equals("sirius-web-application"))
+                            .hasSize(1)
+                            .allMatch(node -> node.getStyle() instanceof RectangularNodeStyle rectangularNodeStyle && "black".equals(rectangularNodeStyle.getBackground()));
+
+                    var siriusWebApplicationNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-application").getNode();
+                    siriusWebApplicationNodeId.set(siriusWebApplicationNode.getId());
+                }, () -> fail("Missing diagram or invalid state for tested node."));
+
+
+        Runnable setNodeBackgroundRed = () -> {
+            var appearanceInput = new RectangularNodeAppearanceInput(
+                    "red",
+                    null
+            );
+
+            var input = new EditRectangularNodeAppearanceInput(
+                    UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                    diagramId.get(),
+                    siriusWebApplicationNodeId.get(),
+                    appearanceInput
+            );
+
+            this.editRectangularNodeAppearanceMutationRunner.run(input);
+        };
+
+        Consumer<Object> updatedAfterRedBackgroundDiagramContentConsumer = payload -> Optional.of(payload)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
+                .map(DiagramRefreshedEventPayload::diagram)
+                .ifPresentOrElse(diagram -> {
+                    assertThat(diagram.getNodes())
+                            .filteredOn(node -> node.getInsideLabel() != null && node.getInsideLabel().getText().equals("sirius-web-application"))
+                            .hasSize(1)
+                            .allMatch(node -> node.getStyle() instanceof RectangularNodeStyle rectangularNodeStyle && "red".equals(rectangularNodeStyle.getBackground()));
+                }, () -> fail("Missing diagram or node's background has not been set to red."));
+
+        Runnable resetNodeBackgroundRed = () -> {
+            var input = new ResetNodeAppearanceInput(
+                    UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                    diagramId.get(),
+                    siriusWebApplicationNodeId.get(),
+                    List.of("BACKGROUND")
+            );
+
+            this.resetNodeAppearanceMutationRunner.run(input);
+        };
 
         Consumer<Object> updatedAfterResetRedBackgroundDiagramContentConsumer = payload -> Optional.of(payload)
                 .filter(DiagramRefreshedEventPayload.class::isInstance)
@@ -176,88 +256,17 @@ public class EditRectangularNodeAppearanceControllerTests extends AbstractIntegr
                     assertThat(diagram.getNodes())
                             .filteredOn(node -> node.getInsideLabel() != null && node.getInsideLabel().getText().equals("sirius-web-application"))
                             .hasSize(1)
-                            .allMatch(node -> !node.getInsideLabel().getStyle()
-                                    .isBold() && node.getStyle() instanceof RectangularNodeStyle rectangularNodeStyle && "#0000ff".equals(rectangularNodeStyle.getBackground()));
-                }, () -> fail("Missing diagram or node's background has not been resetted to being blue or node's inside label is unexpectedly bold again."));
+                            .allMatch(node -> node.getStyle() instanceof RectangularNodeStyle rectangularNodeStyle && "black".equals(rectangularNodeStyle.getBackground()));
+                }, () -> fail("Missing diagram or node's background has not been resetted to being black."));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
-                .then(setLabelBold)
-                .consumeNextWith(updatedAfterBoldDiagramContentConsumer)
                 .then(setNodeBackgroundRed)
                 .consumeNextWith(updatedAfterRedBackgroundDiagramContentConsumer)
-                .then(resetLabelBold)
-                .consumeNextWith(updatedAfterResetBoldDiagramContentConsumer)
                 .then(resetNodeBackgroundRed)
                 .consumeNextWith(updatedAfterResetRedBackgroundDiagramContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
 
-    private Runnable getResetNodeBackgroundRedRunnable(AtomicReference<String> diagramId, AtomicReference<String> nodeId) {
-        return () -> {
-            var input = new ResetNodeAppearanceInput(
-                    UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
-                    diagramId.get(),
-                    nodeId.get(),
-                    List.of("background")
-            );
-
-            this.resetNodeAppearanceMutationRunner.run(input);
-        };
-    }
-
-    private Runnable getSetLabelBoldRunnable(AtomicReference<String> diagramId, AtomicReference<String> nodeId, AtomicReference<String> insideLabelId) {
-        return () -> {
-            var appearanceInput = new RectangularNodeAppearanceInput(
-                    null,
-                    new LabelAppearanceInput(insideLabelId.get(), true)
-            );
-
-            var input = new EditRectangularNodeAppearanceInput(
-                    UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
-                    diagramId.get(),
-                    nodeId.get(),
-                    appearanceInput
-            );
-
-            this.editRectangularNodeAppearanceMutationRunner.run(input);
-        };
-    }
-
-    private Runnable getSetNodeBackgroundRedRunnable(AtomicReference<String> diagramId, AtomicReference<String> nodeId) {
-        return () -> {
-            var appearanceInput = new RectangularNodeAppearanceInput(
-                    "#ff0000",
-                    null
-            );
-
-            var input = new EditRectangularNodeAppearanceInput(
-                    UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
-                    diagramId.get(),
-                    nodeId.get(),
-                    appearanceInput
-            );
-
-            this.editRectangularNodeAppearanceMutationRunner.run(input);
-        };
-    }
-
-    private Runnable getResetLabelBoldRunnable(AtomicReference<String> diagramId, AtomicReference<String> nodeId, AtomicReference<String> labelId) {
-        return () -> {
-            var input = new ResetLabelAppearanceInput(
-                    UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
-                    diagramId.get(),
-                    nodeId.get(),
-                    labelId.get(),
-                    List.of("bold")
-            );
-
-            this.resetLabelAppearanceMutationRunner.run(input);
-        };
-    }
 }

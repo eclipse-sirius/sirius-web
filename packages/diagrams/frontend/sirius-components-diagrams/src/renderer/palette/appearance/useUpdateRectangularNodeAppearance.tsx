@@ -10,20 +10,33 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useMutation } from '@apollo/client';
+import { gql, useMutation } from '@apollo/client';
 import { useReporting } from '@eclipse-sirius/sirius-components-core';
 import {
   GQLEditRectangularNodeApparenceData,
   GQLEditRectangularNodeApparenceVariables,
-  GQLEditRectangularNodeAppearanceMutation,
-  GQLResetLabelApparenceData,
-  GQLResetLabelApparenceVariables,
-  GQLResetLabelAppearanceMutation,
-  GQLResetNodeApparenceData,
-  GQLResetNodeApparenceVariables,
-  GQLResetNodeAppearanceMutation,
   useUpdateRectangularNodeAppearanceValue,
 } from './useUpdateRectangularNodeAppearance.types';
+
+export const GQLEditRectangularNodeAppearanceMutation = gql`
+  mutation editRectangularNodeAppearance($input: EditRectangularNodeAppearanceInput!) {
+    editRectangularNodeAppearance(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
+    }
+  }
+`;
 
 export const useUpdateRectangularNodeAppearance = (
   editingContextId: string,
@@ -39,20 +52,6 @@ export const useUpdateRectangularNodeAppearance = (
     editRectangularNodeApparenceResult,
     (data: GQLEditRectangularNodeApparenceData) => data.editRectangularNodeAppearance
   );
-
-  const [resetNodeApparence, resetNodeApparenceResult] = useMutation<
-    GQLResetNodeApparenceData,
-    GQLResetNodeApparenceVariables
-  >(GQLResetNodeAppearanceMutation);
-
-  useReporting(resetNodeApparenceResult, (data: GQLResetNodeApparenceData) => data.resetNodeAppearance);
-
-  const [resetLabelApparence, resetLabelApparenceResult] = useMutation<
-    GQLResetLabelApparenceData,
-    GQLResetLabelApparenceVariables
-  >(GQLResetLabelAppearanceMutation);
-
-  useReporting(resetLabelApparenceResult, (data: GQLResetLabelApparenceData) => data.resetLabelAppearance);
 
   const updateInsideLabelBold = (labelId: string, isBold: boolean) =>
     editRectangularNodeApparence({
@@ -72,22 +71,6 @@ export const useUpdateRectangularNodeAppearance = (
       },
     });
 
-  const resetLabelStyleProperties = (labelId: string, propertiesToReset: string[]) =>
-    resetLabelApparence({
-      variables: {
-        input: {
-          id: crypto.randomUUID(),
-          editingContextId,
-          representationId,
-          ownerElementId: nodeId,
-          labelId,
-          propertiesToReset,
-        },
-      },
-    });
-
-  const resetInsideLabelBold = (labelId: string) => resetLabelStyleProperties(labelId, ['bold']);
-
   const updateBackground = (background: string) =>
     editRectangularNodeApparence({
       variables: {
@@ -103,27 +86,8 @@ export const useUpdateRectangularNodeAppearance = (
       },
     });
 
-  const resetNodeStyleProperties = (propertiesToReset: string[]) =>
-    resetNodeApparence({
-      variables: {
-        input: {
-          id: crypto.randomUUID(),
-          editingContextId,
-          representationId,
-          nodeId,
-          propertiesToReset,
-        },
-      },
-    });
-
-  const resetBackground = () => resetNodeStyleProperties(['background']);
-
   return {
     updateInsideLabelBold,
     updateBackground,
-    resetLabelStyleProperties,
-    resetNodeStyleProperties,
-    resetInsideLabelBold,
-    resetBackground,
   };
 };

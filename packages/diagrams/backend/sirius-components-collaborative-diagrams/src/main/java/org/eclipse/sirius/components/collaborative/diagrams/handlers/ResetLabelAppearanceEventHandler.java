@@ -95,9 +95,8 @@ public class ResetLabelAppearanceEventHandler implements IDiagramEventHandler {
                 payload = new SuccessPayload(diagramInput.id());
                 changeDescription = new ChangeDescription(DiagramChangeKind.DIAGRAM_APPEARANCE_CHANGE, diagramInput.representationId(), diagramInput);
             } else {
-                Message nodeNotFoundMessage = new Message(this.messageService.nodeNotFound(elementId), MessageLevel.ERROR);
-                Message edgeNotFoundMessage = new Message(this.messageService.edgeNotFound(elementId), MessageLevel.ERROR);
-                payload = new ErrorPayload(diagramInput.id(), List.of(nodeNotFoundMessage, edgeNotFoundMessage));
+                Message diagramElementNotFoundMessage = new Message(this.messageService.diagramElementNotFound(elementId), MessageLevel.ERROR);
+                payload = new ErrorPayload(diagramInput.id(), List.of(diagramElementNotFoundMessage));
             }
         }
 

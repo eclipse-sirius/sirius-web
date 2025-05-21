@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.renderer;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -31,9 +30,9 @@ import org.eclipse.sirius.components.diagrams.events.appearance.ResetLabelAppear
  */
 public class LabelAppearanceHandler {
 
-    public static final String BOLD = "bold";
+    public static final String BOLD = "BOLD";
 
-    protected Set<String> customizedStyleProperties;
+    protected Set<String> previousCustomizedStyleProperties;
 
     protected Optional<LabelStyle> optPreviousLabelStyle;
 
@@ -44,49 +43,41 @@ public class LabelAppearanceHandler {
      *
      * @param appearanceChanges
      *         list of label appearance changes to consider.
-     * @param customizedStyleProperties
+     * @param previousCustomizedStyleProperties
      *         customized style properties from previous render.
      * @param previousLabelStyle
      *         label style from previous render or null.
      */
-    public LabelAppearanceHandler(List<ILabelAppearanceChange> appearanceChanges, Set<String> customizedStyleProperties, LabelStyle previousLabelStyle) {
+    public LabelAppearanceHandler(List<ILabelAppearanceChange> appearanceChanges, Set<String> previousCustomizedStyleProperties, LabelStyle previousLabelStyle) {
         this.appearanceChanges = Objects.requireNonNull(appearanceChanges);
-        this.customizedStyleProperties = new HashSet<>();
-        this.customizedStyleProperties.addAll(Objects.requireNonNull(customizedStyleProperties));
+        this.previousCustomizedStyleProperties = Objects.requireNonNull(previousCustomizedStyleProperties);
         optPreviousLabelStyle = Optional.ofNullable(previousLabelStyle);
     }
 
-    public Boolean isBold(Supplier<Boolean> provider) {
+    public LabelAppearanceProperty<Boolean> isBold(Supplier<Boolean> provider) {
         boolean boldReset = this.appearanceChanges.stream()
                 .filter(ResetLabelAppearanceChange.class::isInstance)
                 .map(ResetLabelAppearanceChange.class::cast)
                 .anyMatch(reset -> Objects.equals(reset.propertyName(), BOLD));
 
         if (boldReset) {
-            this.customizedStyleProperties.remove(BOLD);
-            return provider.get();
+            return new LabelAppearanceProperty<Boolean>(provider.get(), false);
         } else {
             Optional<LabelBoldAppearanceChange> optBoldChange = this.appearanceChanges.stream()
                     .filter(LabelBoldAppearanceChange.class::isInstance)
                     .map(LabelBoldAppearanceChange.class::cast)
                     .findAny();
 
-            boolean result;
+            LabelAppearanceProperty<Boolean> result;
             if (optBoldChange.isPresent()) {
-                this.customizedStyleProperties.add(BOLD);
-                result = optBoldChange.get().bold();
-            } else if (this.customizedStyleProperties.contains(BOLD) && this.optPreviousLabelStyle.isPresent()) {
+                result = new LabelAppearanceProperty<>(optBoldChange.get().bold(), true);
+            } else if (this.previousCustomizedStyleProperties.contains(BOLD) && this.optPreviousLabelStyle.isPresent()) {
                 LabelStyle previousLabelStyle = this.optPreviousLabelStyle.get();
-                result = previousLabelStyle.isBold();
+                result = new LabelAppearanceProperty<>(previousLabelStyle.isBold(), true);
             } else {
-                this.customizedStyleProperties.remove(BOLD);
-                result = provider.get();
+                result = new LabelAppearanceProperty<>(provider.get(), false);
             }
             return result;
         }
-    }
-
-    public Set<String> getCustomizedStyleProperties() {
-        return this.customizedStyleProperties;
     }
 }

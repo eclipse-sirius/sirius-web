@@ -106,7 +106,11 @@ type Node {
   defaultWidth: Int
   defaultHeight: Int
   labelEditable: Boolean!
-  customizedStyleProperties: [String!]!
+  customizedStyleProperties: [NodeStyleProperty!]!
+}
+
+enum NodeStyleProperty {
+  BACKGROUND
 }
 
 type FreeFormLayoutStrategy {
@@ -139,7 +143,11 @@ type InsideLabel {
   headerSeparatorDisplayMode: HeaderSeparatorDisplayMode!
   overflowStrategy: LabelOverflowStrategy!
   textAlign: LabelTextAlign!
-  customizedStyleProperties: [String!]!
+  customizedStyleProperties: [LabelStyleProperty!]!
+}
+
+enum LabelStyleProperty {
+  BOLD
 }
 
 enum HeaderSeparatorDisplayMode {

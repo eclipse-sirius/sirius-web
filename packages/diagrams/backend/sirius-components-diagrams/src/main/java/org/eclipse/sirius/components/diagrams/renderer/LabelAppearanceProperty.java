@@ -10,9 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { NamedExoticComponent } from 'react';
-import { NodeTypeAppearanceSectionProps } from '../../../contexts/NodeContext.types';
+package org.eclipse.sirius.components.diagrams.renderer;
 
-export interface useNodeTypeAppearanceSectionsValue {
-  nodeTypeAppearanceSectionMap: Record<string, NamedExoticComponent<NodeTypeAppearanceSectionProps>>;
+/**
+ * Object wrapping the value of a label style property as well as the information about whether it is customized or not.
+ *
+ * @param <T>
+ *         Type of the property
+ */
+public record LabelAppearanceProperty<T>(T value, boolean customized) {
+
 }
