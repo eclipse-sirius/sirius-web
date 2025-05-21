@@ -4,6 +4,7 @@
 
 === Shapes
 
+- Control the views available in a workbench
 
 
 === Architectural decision records
@@ -11,6 +12,8 @@
 - [ADR-192] Improve table representation lifecycle
 - [ADR-193] Leverage React router for nested routes
 - [ADR-194] Add the ability to contribute new actions to manage the visibility
+- [ADR-195] Control the views available in a workbench
+- [ADR-196] Add the ability to contribute custom actions on graphical deletion
 
 === Deprecation warning
 

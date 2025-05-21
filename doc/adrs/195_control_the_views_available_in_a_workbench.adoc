@@ -1,4 +1,4 @@
-= ADR-196 - Control the views available in a workbench
+= ADR-195 - Control the views available in a workbench
 
 == Context
 
