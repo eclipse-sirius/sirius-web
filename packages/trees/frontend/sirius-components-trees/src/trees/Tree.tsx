@@ -14,6 +14,7 @@ import { makeStyles } from 'tss-react/mui';
 
 import { useEffect, useRef } from 'react';
 import { TreeItem } from '../treeitems/TreeItem';
+import { TreeItemProps } from '../treeitems/TreeItem.types';
 import { TreeProps } from './Tree.types';
 
 const useTreeStyle = makeStyles()((_) => ({
@@ -109,17 +110,99 @@ export const Tree = ({
   }, [treeElement, onExpand]);
 
   return (
-    <>
-      <div ref={treeElement}>
-        <ul className={classes.ul} data-testid="tree-root-elements">
-          {tree.children.map((item, index) => (
-            <li key={item.id}>
+    <div ref={treeElement}>
+      <ul className={classes.ul} data-testid="tree-root-elements">
+        {tree.children.map((childItem, index) => (
+          <li key={childItem.id}>
+            <TreeItem
+              editingContextId={editingContextId}
+              treeId={tree.id}
+              item={childItem}
+              itemIndex={index}
+              depth={1}
+              onExpand={onExpand}
+              onExpandAll={onExpandAll}
+              readOnly={readOnly}
+              textToHighlight={textToHighlight}
+              textToFilter={textToFilter}
+              markedItemIds={markedItemIds}
+              treeItemActionRender={treeItemActionRender}
+              onTreeItemClick={onTreeItemClick}
+              selectedTreeItemIds={selectedTreeItemIds}
+            />
+            <TreeItemWithChildren
+              editingContextId={editingContextId}
+              treeId={tree.id}
+              item={childItem}
+              itemIndex={index}
+              depth={2}
+              onExpand={onExpand}
+              onExpandAll={onExpandAll}
+              readOnly={readOnly}
+              textToHighlight={textToHighlight}
+              textToFilter={textToFilter}
+              markedItemIds={markedItemIds}
+              treeItemActionRender={treeItemActionRender}
+              onTreeItemClick={onTreeItemClick}
+              selectedTreeItemIds={selectedTreeItemIds}
+            />
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+const useTreeItemWithChildrenStyle = makeStyles()((_theme) => ({
+  ul: {
+    marginLeft: 0,
+  },
+}));
+
+const TreeItemWithChildren = ({
+  editingContextId,
+  treeId,
+  item,
+  depth,
+  onExpand,
+  onExpandAll,
+  readOnly,
+  textToHighlight,
+  textToFilter,
+  markedItemIds,
+  treeItemActionRender,
+  onTreeItemClick,
+  selectedTreeItemIds,
+}: TreeItemProps) => {
+  const { classes } = useTreeItemWithChildrenStyle();
+  if (item.expanded && item.children) {
+    return (
+      <ul className={classes.ul}>
+        {item.children.map((childItem, index) => {
+          return (
+            <li key={childItem.id}>
               <TreeItem
                 editingContextId={editingContextId}
-                treeId={tree.id}
-                item={item}
+                treeId={treeId}
+                item={childItem}
                 itemIndex={index}
-                depth={1}
+                depth={depth}
+                onExpand={onExpand}
+                onExpandAll={onExpandAll}
+                readOnly={readOnly}
+                textToHighlight={textToHighlight}
+                textToFilter={textToFilter}
+                markedItemIds={markedItemIds}
+                treeItemActionRender={treeItemActionRender}
+                onTreeItemClick={onTreeItemClick}
+                selectedTreeItemIds={selectedTreeItemIds}
+              />
+              <TreeItemWithChildren
+                editingContextId={editingContextId}
+                treeId={treeId}
+                item={childItem}
+                itemIndex={index}
+                depth={depth + 1}
                 onExpand={onExpand}
                 onExpandAll={onExpandAll}
                 readOnly={readOnly}
@@ -131,9 +214,11 @@ export const Tree = ({
                 selectedTreeItemIds={selectedTreeItemIds}
               />
             </li>
-          ))}
-        </ul>
-      </div>
-    </>
-  );
+          );
+        })}
+      </ul>
+    );
+  } else {
+    return null;
+  }
 };

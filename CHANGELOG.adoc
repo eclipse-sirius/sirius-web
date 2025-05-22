@@ -168,8 +168,7 @@ The number of database queries used is now independent on the number of items to
 This is done thanks to the addition of a fast-path in `ExplorerServices#getTreeItemObject`.
 This avoids one DB query per tree item in most cases where the `IDefaultObjectSearchService` knows how to find the element.
 This changes the behavior if there are delegates which *override* the default response from `IDefaultObjectSearchService` instead of simply adding support for elements not handled at all by `IDefaultObjectSearchService`.
-
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4094[#4094] [sirius-web] Improve the reacivity of the explorer rendering when hovering on a tree with many items are expanded/visible
 
 == v2025.4.0
 
