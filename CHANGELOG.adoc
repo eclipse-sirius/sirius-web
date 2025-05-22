@@ -5,11 +5,13 @@
 === Shapes
 
 - Add support for diagram customization
+- Add the ability to share the workbench state
 
 
 === Architectural decision records
 
 - [ADR-197] Add support for backend-driven diagram customization
+- [ADR-198] Add the ability to share a URL containing the views of the workbench
 
 
 === Deprecation warning
