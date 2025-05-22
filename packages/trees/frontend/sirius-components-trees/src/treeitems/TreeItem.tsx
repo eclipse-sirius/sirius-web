@@ -119,6 +119,18 @@ const getTooltipText = (item: GQLTreeItem) => {
 // The list of characters that will enable the direct edit mechanism.
 const directEditActivationValidCharacters = /[\w&é§èàùçÔØÁÛÊË"«»’”„´$¥€£\\¿?!=+-,;:%/{}[\]–#@*.]/;
 
+interface TreeItemIconProps {
+  item: GQLTreeItem;
+}
+
+const TreeItemIcon = ({ item }: TreeItemIconProps) => {
+  if (item.iconURL?.length > 0) {
+    return <IconOverlay iconURL={item.iconURL} alt={item.kind} />;
+  } else {
+    return <CropDinIcon />;
+  }
+};
+
 /**
  * Renders a *single* tree item (excluding its sub-items).
  */
@@ -191,37 +203,12 @@ export const TreeItem = ({
     }
   }, [selected]);
 
-  let image = <CropDinIcon />;
-  if (item.iconURL?.length > 0) {
-    image = <IconOverlay iconURL={item.iconURL} alt={item.kind} />;
-  }
-  let text: JSX.Element | null = null;
   const onCloseEditingMode = () => {
     setState((prevState) => {
       return { ...prevState, editingMode: false };
     });
     refDom.current.focus();
   };
-
-  const marked: boolean = markedItemIds.some((id) => id === item.id);
-  if (state.editingMode) {
-    text = (
-      <TreeItemDirectEditInput
-        editingContextId={editingContextId}
-        treeId={treeId}
-        treeItemId={item.id}
-        editingKey={state.editingKey}
-        onClose={onCloseEditingMode}></TreeItemDirectEditInput>
-    );
-  } else {
-    const styledLabelProps = {
-      styledString: item.label,
-      selected: false,
-      textToHighlight: textToHighlight ?? '',
-      marked: marked,
-    };
-    text = <StyledLabel {...styledLabelProps}></StyledLabel>;
-  }
 
   const onClick: React.MouseEventHandler<HTMLDivElement> = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!state.editingMode && event.currentTarget.contains(event.target as HTMLElement)) {
@@ -286,6 +273,23 @@ export const TreeItem = ({
     onDropTreeItem(selectedIds, item.id, itemIndex);
     event.preventDefault();
   };
+
+  const text: JSX.Element = state.editingMode ? (
+    <TreeItemDirectEditInput
+      editingContextId={editingContextId}
+      treeId={treeId}
+      treeItemId={item.id}
+      editingKey={state.editingKey}
+      onClose={onCloseEditingMode}
+    />
+  ) : (
+    <StyledLabel
+      styledString={item.label}
+      selected={false}
+      textToHighlight={textToHighlight ?? ''}
+      marked={markedItemIds.some((id) => id === item.id)}
+    />
+  );
 
   const itemAction = (
     <div onClick={onTreeItemAction}>
@@ -364,7 +368,7 @@ export const TreeItem = ({
                 onDoubleClick={() => item.hasChildren && onExpand(item.id, depth)}
                 title={tooltipText}
                 data-testid={label}>
-                {image}
+                <TreeItemIcon item={item} />
                 {text}
               </div>
               {itemAction}
