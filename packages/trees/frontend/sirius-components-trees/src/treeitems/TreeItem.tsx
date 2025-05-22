@@ -119,6 +119,9 @@ const getTooltipText = (item: GQLTreeItem) => {
 // The list of characters that will enable the direct edit mechanism.
 const directEditActivationValidCharacters = /[\w&é§èàùçÔØÁÛÊË"«»’”„´$¥€£\\¿?!=+-,;:%/{}[\]–#@*.]/;
 
+/**
+ * Renders a *single* tree item (excluding its sub-items).
+ */
 export const TreeItem = ({
   editingContextId,
   treeId,
@@ -155,9 +158,7 @@ export const TreeItem = ({
   };
 
   const onTreeItemAction = () => {
-    setState((prevState) => {
-      return { ...prevState, partHovered: null };
-    });
+    setState((prevState) => ({ ...prevState, partHovered: null }));
   };
 
   const enterEditingMode = () => {
@@ -167,36 +168,6 @@ export const TreeItem = ({
       editingKey: null,
     }));
   };
-
-  let content: JSX.Element | null = null;
-  if (item.expanded && item.children) {
-    content = (
-      <ul className={classes.ul}>
-        {item.children.map((childItem, index) => {
-          return (
-            <li key={childItem.id}>
-              <TreeItem
-                editingContextId={editingContextId}
-                treeId={treeId}
-                item={childItem}
-                itemIndex={index}
-                depth={depth + 1}
-                onExpand={onExpand}
-                onExpandAll={onExpandAll}
-                readOnly={readOnly}
-                textToHighlight={textToHighlight}
-                textToFilter={textToFilter}
-                markedItemIds={markedItemIds}
-                treeItemActionRender={treeItemActionRender}
-                onTreeItemClick={onTreeItemClick}
-                selectedTreeItemIds={selectedTreeItemIds}
-              />
-            </li>
-          );
-        })}
-      </ul>
-    );
-  }
 
   let className = classes.treeItem;
   let dataTestid: string | undefined = undefined;
@@ -316,6 +287,36 @@ export const TreeItem = ({
     event.preventDefault();
   };
 
+  const itemAction = (
+    <div onClick={onTreeItemAction}>
+      {treeItemActionRender ? (
+        treeItemActionRender({
+          editingContextId: editingContextId,
+          treeId: treeId,
+          item: item,
+          depth: depth,
+          onExpand: onExpand,
+          onExpandAll: onExpandAll,
+          readOnly: readOnly,
+          onEnterEditingMode: enterEditingMode,
+          isHovered: state.partHovered === 'item',
+        })
+      ) : (
+        <TreeItemAction
+          editingContextId={editingContextId}
+          treeId={treeId}
+          item={item}
+          depth={depth}
+          onExpand={onExpand}
+          onExpandAll={onExpandAll}
+          readOnly={readOnly}
+          onEnterEditingMode={enterEditingMode}
+          isHovered={state.partHovered === 'item'}
+        />
+      )}
+    </div>
+  );
+
   let currentTreeItem: JSX.Element | null;
   if (textToFilter && isFilterCandidate(item, textToFilter)) {
     currentTreeItem = null;
@@ -366,39 +367,12 @@ export const TreeItem = ({
                 {image}
                 {text}
               </div>
-              <div onClick={onTreeItemAction}>
-                {treeItemActionRender ? (
-                  treeItemActionRender({
-                    editingContextId: editingContextId,
-                    treeId: treeId,
-                    item: item,
-                    depth: depth,
-                    onExpand: onExpand,
-                    onExpandAll: onExpandAll,
-                    readOnly: readOnly,
-                    onEnterEditingMode: enterEditingMode,
-                    isHovered: state.partHovered === 'item',
-                  })
-                ) : (
-                  <TreeItemAction
-                    editingContextId={editingContextId}
-                    treeId={treeId}
-                    item={item}
-                    depth={depth}
-                    onExpand={onExpand}
-                    onExpandAll={onExpandAll}
-                    readOnly={readOnly}
-                    onEnterEditingMode={enterEditingMode}
-                    isHovered={state.partHovered === 'item'}
-                  />
-                )}
-              </div>
+              {itemAction}
             </div>
           </div>
         </div>
-        {content}
       </>
     );
   }
-  return <>{currentTreeItem}</>;
+  return currentTreeItem;
 };
