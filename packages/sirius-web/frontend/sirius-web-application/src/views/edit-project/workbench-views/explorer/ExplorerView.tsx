@@ -167,53 +167,63 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
 
   useEffect(() => {
     if (treePathData && treePathData.viewer?.editingContext?.treePath) {
-      const { expanded, maxDepth } = state;
-      const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } = treePathData.viewer.editingContext.treePath;
-      const newExpanded: string[] = [...expanded[state.activeTreeDescriptionId]];
+      setState((prevState) => {
+        const { expanded, maxDepth } = prevState;
+        const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } = treePathData.viewer.editingContext.treePath;
+        const newExpanded: string[] = [...expanded[prevState.activeTreeDescriptionId]];
 
-      treeItemIdsToExpand?.forEach((itemToExpand) => {
-        if (!expanded[state.activeTreeDescriptionId].includes(itemToExpand)) {
-          newExpanded.push(itemToExpand);
-        }
+        treeItemIdsToExpand?.forEach((itemToExpand) => {
+          if (!expanded[prevState.activeTreeDescriptionId].includes(itemToExpand)) {
+            newExpanded.push(itemToExpand);
+          }
+        });
+        return {
+          ...prevState,
+          expanded: {
+            ...prevState.expanded,
+            [prevState.activeTreeDescriptionId]: newExpanded,
+          },
+          maxDepth: {
+            ...prevState.maxDepth,
+            [prevState.activeTreeDescriptionId]: Math.max(
+              expandedMaxDepth,
+              maxDepth[prevState.activeTreeDescriptionId]
+            ),
+          },
+        };
       });
-      setState((prevState) => ({
-        ...prevState,
-        expanded: {
-          ...prevState.expanded,
-          [prevState.activeTreeDescriptionId]: newExpanded,
-        },
-        maxDepth: {
-          ...prevState.maxDepth,
-          [prevState.activeTreeDescriptionId]: Math.max(expandedMaxDepth, maxDepth[prevState.activeTreeDescriptionId]),
-        },
-      }));
     }
   }, [treePathData]);
 
   const { getExpandAllTreePath, data: expandAllTreePathData } = useExpandAllTreePath();
   useEffect(() => {
     if (expandAllTreePathData && expandAllTreePathData.viewer?.editingContext?.expandAllTreePath) {
-      const { expanded, maxDepth } = state;
-      const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } =
-        expandAllTreePathData.viewer.editingContext.expandAllTreePath;
-      const newExpanded: string[] = [...expanded[state.activeTreeDescriptionId]];
+      setState((prevState) => {
+        const { expanded, maxDepth } = prevState;
+        const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } =
+          expandAllTreePathData.viewer.editingContext.expandAllTreePath;
+        const newExpanded: string[] = [...expanded[prevState.activeTreeDescriptionId]];
 
-      treeItemIdsToExpand?.forEach((itemToExpand) => {
-        if (!expanded[state.activeTreeDescriptionId].includes(itemToExpand)) {
-          newExpanded.push(itemToExpand);
-        }
+        treeItemIdsToExpand?.forEach((itemToExpand) => {
+          if (!expanded[prevState.activeTreeDescriptionId].includes(itemToExpand)) {
+            newExpanded.push(itemToExpand);
+          }
+        });
+        return {
+          ...prevState,
+          expanded: {
+            ...prevState.expanded,
+            [prevState.activeTreeDescriptionId]: newExpanded,
+          },
+          maxDepth: {
+            ...prevState.maxDepth,
+            [prevState.activeTreeDescriptionId]: Math.max(
+              expandedMaxDepth,
+              maxDepth[prevState.activeTreeDescriptionId]
+            ),
+          },
+        };
       });
-      setState((prevState) => ({
-        ...prevState,
-        expanded: {
-          ...prevState.expanded,
-          [prevState.activeTreeDescriptionId]: newExpanded,
-        },
-        maxDepth: {
-          ...prevState.maxDepth,
-          [prevState.activeTreeDescriptionId]: Math.max(expandedMaxDepth, maxDepth[prevState.activeTreeDescriptionId]),
-        },
-      }));
     }
   }, [expandAllTreePathData]);
 
