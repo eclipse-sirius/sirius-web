@@ -53,6 +53,8 @@ public class FetchTreeItemContextMenuEntryItemProvider extends TreeItemContextMe
 
             this.addUrlExressionPropertyDescriptor(object);
             this.addKindPropertyDescriptor(object);
+            this.addLabelExpressionPropertyDescriptor(object);
+            this.addIconURLExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -79,6 +81,31 @@ public class FetchTreeItemContextMenuEntryItemProvider extends TreeItemContextMe
                 this.getString("_UI_FetchTreeItemContextMenuEntry_kind_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_FetchTreeItemContextMenuEntry_kind_feature", "_UI_FetchTreeItemContextMenuEntry_type"),
                 TreePackage.Literals.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__KIND, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Label Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addLabelExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_FetchTreeItemContextMenuEntry_labelExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_FetchTreeItemContextMenuEntry_labelExpression_feature", "_UI_FetchTreeItemContextMenuEntry_type"),
+                TreePackage.Literals.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Icon URL Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addIconURLExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_FetchTreeItemContextMenuEntry_iconURLExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_FetchTreeItemContextMenuEntry_iconURLExpression_feature", "_UI_FetchTreeItemContextMenuEntry_type"),
+                TreePackage.Literals.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -126,6 +153,8 @@ public class FetchTreeItemContextMenuEntryItemProvider extends TreeItemContextMe
         switch (notification.getFeatureID(FetchTreeItemContextMenuEntry.class)) {
             case TreePackage.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__URL_EXRESSION:
             case TreePackage.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__KIND:
+            case TreePackage.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION:
+            case TreePackage.FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }

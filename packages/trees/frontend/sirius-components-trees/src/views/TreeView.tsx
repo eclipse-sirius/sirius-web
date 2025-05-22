@@ -24,8 +24,9 @@ export const TreeView = ({
   textToFilter,
   markedItemIds = [],
   treeItemActionRender,
-  onExpand,
-  onExpandAll,
+  onExpandedElementChange,
+  expanded,
+  maxDepth,
   onTreeItemClick,
   selectedTreeItemIds,
 }: TreeViewProps) => {
@@ -41,8 +42,9 @@ export const TreeView = ({
       <Tree
         editingContextId={editingContextId}
         tree={convertedTree}
-        onExpand={onExpand}
-        onExpandAll={onExpandAll}
+        expanded={expanded}
+        maxDepth={maxDepth}
+        onExpandedElementChange={onExpandedElementChange}
         readOnly={readOnly}
         markedItemIds={markedItemIds}
         textToFilter={textToFilter}

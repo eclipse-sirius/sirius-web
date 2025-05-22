@@ -134,14 +134,18 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
             var result = this.treeItemContextMenuQueryRunner.run(variables);
 
             Object document = Configuration.defaultConfiguration().jsonProvider().parse(result);
-
             List<String> actionLabels = JsonPath.read(document, "$.data.viewer.editingContext.representation.description.contextMenu[*].label");
-            assertThat(actionLabels).isNotEmpty().hasSize(2);
-            assertThat(actionLabels.get(0)).isEqualTo("Help");
-            assertThat(actionLabels.get(1)).isEqualTo("Toggle abstract");
+            List<String> actionIds = JsonPath.read(document, "$.data.viewer.editingContext.representation.description.contextMenu[*].id");
+            assertThat(actionLabels).isNotEmpty().hasSize(3);
+            assertThat(actionIds).isNotEmpty().hasSize(3);
+            // The ExpandAll action doesn't have a label, it only contains the ID of the frontend component to use.
+            assertThat(actionLabels.get(0)).isEqualTo("");
+            assertThat(actionIds.get(0)).isEqualTo("expandAll");
+            assertThat(actionLabels.get(1)).isEqualTo("Help");
+            assertThat(actionLabels.get(2)).isEqualTo("Toggle abstract");
 
-            helpId.set(JsonPath.read(document, "$.data.viewer.editingContext.representation.description.contextMenu[0].id"));
-            toggleAbstractAction.set(JsonPath.read(document, "$.data.viewer.editingContext.representation.description.contextMenu[1].id"));
+            helpId.set(JsonPath.read(document, "$.data.viewer.editingContext.representation.description.contextMenu[1].id"));
+            toggleAbstractAction.set(JsonPath.read(document, "$.data.viewer.editingContext.representation.description.contextMenu[2].id"));
         };
 
         // 4- invoke fetch action data query to retrieve the fetch action data
