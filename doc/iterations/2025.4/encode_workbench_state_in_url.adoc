@@ -1,0 +1,109 @@
+= (M) Encode the workbench state in the URL
+
+Issue: https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886]
+
+== Problem
+
+When opening a project, the URL always starts with: `/projects/:projectId/edit/`.
+
+If at least 1 representation editor is opened, then the URL starts with: `/projects/:projectId/edit/:representationId` where `representationId` is the ID of the representation opened in the active editor.
+
+And since https://github.com/eclipse-sirius/sirius-web/issues/4376[#4376], the URL also contains the current selection of the workbench, meaning the URL can be of the form `/projects/:projectId/edit/?selection=id1%2Cid2` or `/projects/:projectId/edit/:representationId?selection=id1%2Cid2` (where `%2C` encodes `,`).
+
+Reversely, when resolving one of the above-mentioned URLs, the corresponding project, representation and selections are set.
+
+However, there are parts of the workbench state which are not encoded in the URL.
+
+These parts are the views opened in the left and right panels (e.g. in Sirius Web application, between `Explorer` and `Validation` on the left, and between `Details`, `Query`, `Representations` and `Related Elements` on the right).
+When loading a URL, the default views (`Explorer` and `Details`) are opened instead.
+Moreover, these views may be configurable (e.g. in view `Explorer`, the tree representation may be changed, and filters may be applied).
+As for editors, since only the active representation editor gets encoded into the URL (through the ID of the opened representation), other opened editors are not opened upon resolution of the URL.
+
+Being able to share the complete workbench state through the application URL would facilitate collaboration between users.
+
+== Key Result
+
+The URL should be synchronized with the full state of the workbench.
+
+=== Acceptance Criteria
+
+* The URL is synchronized with the full state of the workbench, which includes:
+** The active view on the left (and its configuration)
+** The opened editors in the center
+** The active view on the right (and its configuration)
+** The focused part of the workbench (one of the active views or the active editor)
+** The selection
+* When resolving a URL that specifies a workbench state, the matching workbench state is set up.
+
+== Solution
+
+* We will rework the URL to change based on the state of the workbench.
+* The base URL for an open project will be `/projects/:projectId/edit`.
+* The state of the workbench will be encoded in the URL through the following parameters:
+** `views`: will encode which views are active, e.g. `explorer%2Cdetails`.
+** `editors`: will encode which editors are opened, through the ID of their input, e.g. `representationId1%2CrepresentationId2%2CrepresentationId3`. (Note: what's the real difference between views and editors in this context? Maybe we should merge views and editors as parts).
+** `configurations`: will encode the configurations of the active views and editors, e.g. `explorer_state_closed%2Cexplorer_tree_activeFilterId_filterId1`.
+** `selection`: will encode the workbench selection, just like it already does, e.g. `id1%2Cid2`.
+** `active`: will encode the active part, e.g. `representationId2`.  
+
+=== Examples
+
+image::images/add_workbench_views_to_url_example1.png[Example 1]
+
+URL: `/projects/projectId/edit/views=explorer%2Cdetails`
+
+* In parameter `views`, `explorer` and `details` are used to encode that both the `Explorer` and `Details` view are active in the left and right panels.
+* Since each part may encode its configuration, and the default state for `Explorer` and `Details` is to be opened, we do not need to encode it into the URL.
+* There are no editors opened, so there is no value for parameter `editors`.
+* There is no selection in the workbench, so there is no value for parameter `selection`.
+* There is no active part in the workbench, so there is no value for parameter `active`.
+
+image::images/add_workbench_views_to_url_example2.png[Example 2]
+
+URL: `/projects/projectId/edit?views=explorer%2Cdetails&configurations=explorer_state_closed%2Cdetails_state_closed`
+
+* In parameter `configurations`:
+** `explorer_state_closed` encodes that the `Explorer` view is closed.
+** `details_state_closed` encodes that the `Details` view is closed.
+
+image::images/add_workbench_views_to_url_example3.png[Example 3]
+
+URL: `/projects/projectId/edit/views=explorer%2CrelatedElements&editors=topographyId%2Ctopography2Id&configurations=topographyId_zoomLevel_75%2CtopographyId_position_123_456&relatedElements_incoming%2CrelatedElements_current%2CrelatedElements_outgoing&selection=id1%2Cid2&active=topographyId`
+
+* In parameter `editors`, `topographyId` and `topography2Id` encode that these representations are opened in their default editor (diagram editor). (Note: if Sirius Web wants to support having different editors for same kinds of elements, we might need to also encode the ID of the editor with which the representation is opened).
+* In parameter `configurations`:
+** `topographyId_zoomLevel_75` encodes that the zoom level in diagram `topographyId` is 75.
+** `topographyId_position_123_456` encodes that the position in the diagram canvas is (123, 456).
+** `relatedElements_incoming` encodes that in view `Related Elements`, the `<- Incoming` category is active.
+** `relatedElements_current` encodes that in view `Related Elements`, the `Current` category is active.
+** `relatedElements_outgoing` encodes that in view `Related Elements`, the `Outgoing ->` category is active.
+* Parameter `selection` is the IDs of `CompositeProcessor1` and `DataSource1` which have been selected in diagram `Topography`.
+* Parameter `active` is `topographyId` because it is the active part of the workbench (has the focus).
+
+image::images/add_workbench_views_to_url_example4.png[Example 4]
+
+URL: `/projects/projectId/edit/views=explorer%2Cquery&configurations=explorer_activeFilterId_HideInMemoryStudioColorPalettes&query_expression_aql%3Aself.log%28%29%0A`
+
+* In parameter `configurations`:
+** `explorer_activeFilterId_HideInMemoryStudioColorPalettes` is used to encode that in the `Explorer` view, the filter with ID `HideInMemoryStudioColorPalettes` is active.
+** `query_expression_aql%3Aself.log%28%29%0A` is used to encode that in the `Query` view, the expression is `aql:self.log()`.
+
+=== Breadboarding
+
+N/A
+
+
+=== Cutting backs
+
+N/A
+
+
+== Rabbit holes
+
+* The maximum size for a URL is usually around 2000 characters. We might need to add a mechanism to make sure we don't go overboard. For instance we could stop synchronizing the selection with the URL once the selection reaches a particular size.
+* The configuration for a workbench part may be arbitrarily complex and long. We may want to enforce a naming convention for configurations to match the views/editors, e.g. all configurations for the `Explorer` view must start with `explorer_`.
+
+== No-gos
+
+N/A
+

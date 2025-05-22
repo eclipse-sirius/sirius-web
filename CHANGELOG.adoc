@@ -4,7 +4,7 @@
 
 === Shapes
 
-
+- Add shape to encode the workbench state in the URL.
 
 === Architectural decision records
 
