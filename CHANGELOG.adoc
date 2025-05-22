@@ -74,7 +74,8 @@ The following dependencies have been updated:
 - https://github.com/eclipse-sirius/sirius-web/issues/4772[#4772] [core] Dispose representation event processor even if there is no subscription
 - https://github.com/eclipse-sirius/sirius-web/issues/4944[#4944] [sirius-web] Fix a bug in inter-object references when uploading models introduced with the switch to Sirius EMF JSON 2.5.0 (in 2025.4.2)
 - https://github.com/eclipse-sirius/sirius-web/issues/4731[#4731] [sirius-web] Ensure that the project context menu is closed when an action is triggered
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4958[#4958] [tree] Fix state access in `useEffect` modifying the state
+These `useEffect` now read the state value from `prevState` instead of `state`, which may not be reflecting the modifications performed by other `useEffect`.
 
 === New Features
 

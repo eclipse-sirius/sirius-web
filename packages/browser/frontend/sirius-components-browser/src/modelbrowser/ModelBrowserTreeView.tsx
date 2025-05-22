@@ -68,21 +68,23 @@ export const ModelBrowserTreeView = ({
 
   useEffect(() => {
     if (expandAllTreePathData && expandAllTreePathData.viewer?.editingContext?.expandAllTreePath) {
-      const { expanded, maxDepth } = state;
-      const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } =
-        expandAllTreePathData.viewer.editingContext.expandAllTreePath;
-      const newExpanded: string[] = [...expanded];
+      setState((prevState) => {
+        const { expanded, maxDepth } = prevState;
+        const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } =
+          expandAllTreePathData.viewer.editingContext.expandAllTreePath;
+        const newExpanded: string[] = [...expanded];
 
-      treeItemIdsToExpand?.forEach((itemToExpand) => {
-        if (!expanded.includes(itemToExpand)) {
-          newExpanded.push(itemToExpand);
-        }
+        treeItemIdsToExpand?.forEach((itemToExpand) => {
+          if (!expanded.includes(itemToExpand)) {
+            newExpanded.push(itemToExpand);
+          }
+        });
+        return {
+          ...prevState,
+          expanded: newExpanded,
+          maxDepth: Math.max(expandedMaxDepth, maxDepth),
+        };
       });
-      setState((prevState) => ({
-        ...prevState,
-        expanded: newExpanded,
-        maxDepth: Math.max(expandedMaxDepth, maxDepth),
-      }));
     }
   }, [expandAllTreePathData]);
 
@@ -135,20 +137,22 @@ export const ModelBrowserTreeView = ({
 
   useEffect(() => {
     if (treePathData && treePathData.viewer?.editingContext?.treePath) {
-      const { expanded, maxDepth } = state;
-      const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } = treePathData.viewer.editingContext.treePath;
-      const newExpanded: string[] = [...expanded];
+      setState((prevState) => {
+        const { expanded, maxDepth } = prevState;
+        const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } = treePathData.viewer.editingContext.treePath;
+        const newExpanded: string[] = [...expanded];
 
-      treeItemIdsToExpand?.forEach((itemToExpand) => {
-        if (!expanded.includes(itemToExpand)) {
-          newExpanded.push(itemToExpand);
-        }
+        treeItemIdsToExpand?.forEach((itemToExpand) => {
+          if (!expanded.includes(itemToExpand)) {
+            newExpanded.push(itemToExpand);
+          }
+        });
+        return {
+          ...prevState,
+          expanded: newExpanded,
+          maxDepth: Math.max(expandedMaxDepth, maxDepth),
+        };
       });
-      setState((prevState) => ({
-        ...prevState,
-        expanded: newExpanded,
-        maxDepth: Math.max(expandedMaxDepth, maxDepth),
-      }));
     }
   }, [treePathData]);
 
