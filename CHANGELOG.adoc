@@ -4,12 +4,12 @@
 
 === Shapes
 
-
+- Add support for diagram customization
 
 
 === Architectural decision records
 
-
+- [ADR-197] Add support for backend-driven diagram customization
 
 
 === Deprecation warning
@@ -92,7 +92,6 @@ They were unused and out of date.
 
 === Shapes
 
-- Control the views available in a workbench
 
 
 === Architectural decision records
@@ -285,7 +284,7 @@ This modification will enable a conditional style with a different layout strate
 Handle the recursive part of the tree rendring in `Tree` instead of `TreeItem`, so that re-rendering a particular `TreeItem` has a fixed cost, independant of how many of its descendants are expanded/visible.
 - https://github.com/eclipse-sirius/sirius-web/issues/4373[#4373] [trees] Allow backend definition of ExpandAll tool in the explorer
 Specifiers can now create `CustomTreeItemContextMenuEntry` instances in the view DSL to indicate to use a frontend component as contextual menu entry.
-The _ExpandAll_ tool is now a Sirius Web contribution that can be enabled via this mechanism.  
+The _ExpandAll_ tool is now a Sirius Web contribution that can be enabled via this mechanism.
 - https://github.com/eclipse-sirius/sirius-web/issues/5017[#5017] [sirius-web] Improve the consistency and documentation of the extension points of the frontend
 
 
