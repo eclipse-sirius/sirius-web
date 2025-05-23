@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,10 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.document.services.api;
 
+import org.eclipse.emf.ecore.resource.ResourceSet;
+
 import java.io.InputStream;
 import java.util.Optional;
-
-import org.eclipse.emf.ecore.resource.ResourceSet;
 
 /**
  * Used to compute a sanitized content for a given resource.
@@ -24,5 +24,5 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
  */
 public interface IDocumentSanitizedJsonContentProvider {
 
-    Optional<String> getContent(ResourceSet resourceSet, String name, InputStream inputStream, boolean applyMigrationParticipants);
+    Optional<SanitizedResult> getContent(ResourceSet resourceSet, String name, InputStream inputStream, boolean applyMigrationParticipants);
 }

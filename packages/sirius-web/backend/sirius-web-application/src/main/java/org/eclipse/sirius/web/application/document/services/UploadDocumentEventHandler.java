@@ -37,8 +37,10 @@ import org.eclipse.sirius.web.application.document.dto.UploadDocumentInput;
 import org.eclipse.sirius.web.application.document.dto.UploadDocumentSuccessPayload;
 import org.eclipse.sirius.web.application.document.services.api.IUploadDocumentReportProvider;
 import org.eclipse.sirius.web.application.document.services.api.IUploadFileLoader;
+import org.eclipse.sirius.web.application.document.services.api.UploadedResource;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.domain.services.Failure;
+import org.eclipse.sirius.web.domain.services.IResult;
 import org.eclipse.sirius.web.domain.services.Success;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.beans.factory.annotation.Value;
@@ -101,9 +103,9 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
         if (input instanceof UploadDocumentInput uploadDocumentInput && editingContext instanceof IEMFEditingContext emfEditingContext && optionalResourceSet.isPresent()) {
             var resourceSet = optionalResourceSet.get();
 
-            var result = this.uploadDocumentLoader.load(resourceSet, emfEditingContext, uploadDocumentInput.file());
-            if (result instanceof Success<Resource> success) {
-                var newResource = success.data();
+            IResult<UploadedResource> result = this.uploadDocumentLoader.load(resourceSet, emfEditingContext, uploadDocumentInput.file());
+            if (result instanceof Success<UploadedResource> success) {
+                var newResource = success.data().resource();
 
                 var optionalId = new UUIDParser().parse(newResource.getURI().path().substring(1));
 
@@ -118,11 +120,11 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
                     var name = optionalName.get();
 
                     String report = this.getReport(newResource);
-                    payload = new UploadDocumentSuccessPayload(input.id(), new DocumentDTO(id, name, ExplorerDescriptionProvider.DOCUMENT_KIND), report);
+                    payload = new UploadDocumentSuccessPayload(input.id(), new DocumentDTO(id, name, ExplorerDescriptionProvider.DOCUMENT_KIND), report, success.data().idMapping());
                     changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
                 }
 
-            } else if (result instanceof Failure<Resource> failure) {
+            } else if (result instanceof Failure<UploadedResource> failure) {
                 payload = new ErrorPayload(input.id(), failure.message());
             }
         }

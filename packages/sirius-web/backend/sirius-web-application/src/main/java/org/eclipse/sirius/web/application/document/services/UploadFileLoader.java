@@ -18,12 +18,13 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
 import org.eclipse.sirius.web.application.document.services.api.IDocumentSanitizedJsonContentProvider;
+import org.eclipse.sirius.web.application.document.services.api.SanitizedResult;
 import org.eclipse.sirius.web.application.document.services.api.IUploadFileLoader;
+import org.eclipse.sirius.web.application.document.services.api.UploadedResource;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextMigrationParticipantPredicate;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceLoader;
 import org.eclipse.sirius.web.domain.services.Failure;
@@ -60,24 +61,24 @@ public class UploadFileLoader implements IUploadFileLoader {
     }
 
     @Override
-    public IResult<Resource> load(ResourceSet resourceSet, IEMFEditingContext emfEditingContext, UploadFile file) {
+    public IResult<UploadedResource> load(ResourceSet resourceSet, IEMFEditingContext emfEditingContext, UploadFile file) {
         var fileName = file.getName();
         var applyMigrationParticipants = this.migrationParticipantPredicates.stream().anyMatch(predicate -> predicate.test(emfEditingContext.getId()));
-        var optionalContent = this.getContent(resourceSet, file, applyMigrationParticipants);
-        if (optionalContent.isPresent()) {
+        var optionalSanitizedContent = this.getSanitizedContent(resourceSet, file, applyMigrationParticipants);
+        if (optionalSanitizedContent.isPresent()) {
             String id = UUID.randomUUID().toString();
-            String content = optionalContent.get();
+            SanitizedResult sanitizedContent = optionalSanitizedContent.get();
             ResourceSet targetResourceSet = emfEditingContext.getDomain().getResourceSet();
-            var optionalRessource = this.resourceLoader.toResource(targetResourceSet, id, fileName, content, applyMigrationParticipants);
+            var optionalRessource = this.resourceLoader.toResource(targetResourceSet, id, fileName, sanitizedContent.content(), applyMigrationParticipants);
             if (optionalRessource.isPresent()) {
-                return new Success<>(optionalRessource.get());
+                return new Success<>(new UploadedResource(optionalRessource.get(), sanitizedContent.idMapping()));
             }
         }
         return new Failure<>(this.messageService.unexpectedError());
     }
 
-    private Optional<String> getContent(ResourceSet resourceSet, UploadFile file, boolean applyMigrationParticipants) {
-        Optional<String> optionalContent = Optional.empty();
+    private Optional<SanitizedResult>  getSanitizedContent(ResourceSet resourceSet, UploadFile file, boolean applyMigrationParticipants) {
+        Optional<SanitizedResult> optionalContent = Optional.empty();
 
         try (var inputStream = file.getInputStream()) {
             optionalContent = this.documentSanitizedJsonContentProvider.getContent(resourceSet, file.getName(), inputStream, applyMigrationParticipants);
