@@ -24,7 +24,6 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProce
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSuccessPayload;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
-import org.eclipse.sirius.web.application.document.dto.DocumentDTO;
 import org.eclipse.sirius.web.application.document.dto.UploadDocumentInput;
 import org.eclipse.sirius.web.application.document.dto.UploadDocumentSuccessPayload;
 import org.slf4j.Logger;
@@ -39,8 +38,6 @@ public class ProjectImporter {
 
     private final Logger logger = LoggerFactory.getLogger(ProjectImporter.class);
 
-    private final String projectId;
-
     private final IEditingContextEventProcessor editingContextEventProcessor;
 
     private final Map<String, UploadFile> documents;
@@ -51,9 +48,10 @@ public class ProjectImporter {
 
     private final Map<String, UUID> oldDocumentIdToNewDocumentId = new HashMap<>();
 
-    public ProjectImporter(String projectId, IEditingContextEventProcessor editingContextEventProcessor, Map<String, UploadFile> documents, List<RepresentationImportData> representations,
+    private final Map<String, String> semanticElementsIdMappings = new HashMap<>();
+
+    public ProjectImporter(IEditingContextEventProcessor editingContextEventProcessor, Map<String, UploadFile> documents, List<RepresentationImportData> representations,
             Map<String, Object> projectManifest) {
-        this.projectId = Objects.requireNonNull(projectId);
         this.editingContextEventProcessor = Objects.requireNonNull(editingContextEventProcessor);
         this.documents = Objects.requireNonNull(documents);
         this.representations = Objects.requireNonNull(representations);
@@ -85,14 +83,7 @@ public class ProjectImporter {
             Map<?, ?> representationManifest = this.getRepresentationManifest(representationImportData);
 
             String targetObjectURI = (String) representationManifest.get("targetObjectURI");
-            String oldDocumentId = URI.create(targetObjectURI).getPath().substring(1);
-            UUID newDocumentId = this.oldDocumentIdToNewDocumentId.get(oldDocumentId);
-            final String objectId;
-            if (newDocumentId != null) {
-                objectId = targetObjectURI.replace(oldDocumentId, newDocumentId.toString());
-            } else {
-                objectId = targetObjectURI;
-            }
+            String objectId = this.getNewObjectId(targetObjectURI);
 
             String descriptionURI = (String) representationManifest.get("descriptionURI");
 
@@ -115,6 +106,34 @@ public class ProjectImporter {
         }
 
         return allRepresentationCreated;
+    }
+
+    /**
+     * Adapt the targetObjectURI/object id stored in the archive to point to the equivalent object after import. The new
+     * object will be in a document with a different id, and will itself have been given a new, unique id during the
+     * upload.
+     *
+     * @param targetObjectURI
+     *            the target object URI/id stored in the manifest.
+     * @return the URI/id of the equivalent model element in the newly imported documents.
+     */
+    private String getNewObjectId(String targetObjectURI) {
+        String objectId;
+
+        String oldDocumentId = URI.create(targetObjectURI).getPath().substring(1);
+        UUID newDocumentId = this.oldDocumentIdToNewDocumentId.get(oldDocumentId);
+        if (newDocumentId != null) {
+            objectId = targetObjectURI.replace(oldDocumentId, newDocumentId.toString());
+        } else {
+            objectId = targetObjectURI;
+        }
+
+        String oldSemantidElementId = URI.create(targetObjectURI).getFragment();
+        String newSemanticElementId = this.semanticElementsIdMappings.get(oldSemantidElementId);
+        if (newSemanticElementId != null) {
+            objectId = objectId.replace(oldSemantidElementId, newSemanticElementId);
+        }
+        return objectId;
     }
 
     /**
@@ -150,23 +169,25 @@ public class ProjectImporter {
             UploadFile uploadFile = entry.getValue();
             UploadDocumentInput input = new UploadDocumentInput(inputId, this.editingContextEventProcessor.getEditingContextId(), uploadFile);
 
-            UUID newDocumentId = this.editingContextEventProcessor.handle(input)
+            var optionalSuccess = this.editingContextEventProcessor.handle(input)
                     .filter(UploadDocumentSuccessPayload.class::isInstance)
                     .map(UploadDocumentSuccessPayload.class::cast)
-                    .map(UploadDocumentSuccessPayload::document)
-                    .map(DocumentDTO::id)
-                    .blockOptional()
-                    .orElse(null);
+                    .blockOptional();
+            if (optionalSuccess.isPresent()) {
+                UUID newDocumentId = optionalSuccess.get().document().id();
+                Map<String, String> idMapping = optionalSuccess.get().idMapping();
 
-            if (newDocumentId == null) {
-                String documentIdNotCreated = null;
-                Object documentIdsToName = this.projectManifest.get("documentIdsToName");
-                if (documentIdsToName instanceof Map) {
-                    documentIdNotCreated = (String) ((Map<?, ?>) documentIdsToName).get(oldDocumentId);
+                if (newDocumentId == null) {
+                    String documentIdNotCreated = null;
+                    Object documentIdsToName = this.projectManifest.get("documentIdsToName");
+                    if (documentIdsToName instanceof Map) {
+                        documentIdNotCreated = (String) ((Map<?, ?>) documentIdsToName).get(oldDocumentId);
+                    }
+                    this.logger.warn("The document {} has not been created", documentIdNotCreated);
                 }
-                this.logger.warn("The document {} has not been created", documentIdNotCreated);
+                this.oldDocumentIdToNewDocumentId.put(oldDocumentId, newDocumentId);
+                this.semanticElementsIdMappings.putAll(idMapping);
             }
-            this.oldDocumentIdToNewDocumentId.put(oldDocumentId, newDocumentId);
         }
 
         Map<String, String> documentIds = new HashMap<>();

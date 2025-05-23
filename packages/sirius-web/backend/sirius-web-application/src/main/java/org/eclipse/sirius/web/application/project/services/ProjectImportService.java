@@ -162,13 +162,13 @@ public class ProjectImportService implements IProjectImportService {
                     .map(AggregateReference::getId)
                     .map(UUID::toString);
 
-            Optional<IEditingContextEventProcessor> optionalEditingContextEventProcessor = optionalEditingContextId.flatMap(editingContextEventProcessorRegistry::getOrCreateEditingContextEventProcessor);
+            Optional<IEditingContextEventProcessor> optionalEditingContextEventProcessor = optionalEditingContextId.flatMap(this.editingContextEventProcessorRegistry::getOrCreateEditingContextEventProcessor);
 
             if (optionalEditingContextEventProcessor.isPresent() && optionalEditingContextId.isPresent()) {
                 IEditingContextEventProcessor editingContextEventProcessor = optionalEditingContextEventProcessor.get();
                 var editingContextId = optionalEditingContextId.get();
 
-                ProjectImporter projectImporter = new ProjectImporter(project.id(), editingContextEventProcessor, documents, representationImportDatas, projectManifest);
+                ProjectImporter projectImporter = new ProjectImporter(editingContextEventProcessor, documents, representationImportDatas, projectManifest);
                 boolean hasBeenImported = projectImporter.importProject(inputId);
 
                 if (!hasBeenImported) {

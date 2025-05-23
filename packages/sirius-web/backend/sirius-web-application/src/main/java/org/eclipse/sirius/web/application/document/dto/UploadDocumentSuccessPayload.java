@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.document.dto;
 
+import java.util.Map;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -23,5 +24,5 @@ import jakarta.validation.constraints.NotNull;
  *
  * @author sbegaudeau
  */
-public record UploadDocumentSuccessPayload(@NotNull UUID id, @NotNull DocumentDTO document, String report) implements IPayload {
+public record UploadDocumentSuccessPayload(@NotNull UUID id, @NotNull DocumentDTO document, String report, Map<String, String> idMapping) implements IPayload {
 }
