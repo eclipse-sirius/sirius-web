@@ -77,6 +77,7 @@ The following dependencies have been updated:
 - https://github.com/eclipse-sirius/sirius-web/issues/4731[#4731] [sirius-web] Ensure that the project context menu is closed when an action is triggered
 - https://github.com/eclipse-sirius/sirius-web/issues/4958[#4958] [tree] Fix state access in `useEffect` modifying the state
 These `useEffect` now read the state value from `prevState` instead of `state`, which may not be reflecting the modifications performed by other `useEffect`.
+- https://github.com/eclipse-sirius/sirius-web/issues/4967[#4967] [sirius-web] Fix representation creation when uploading whole projects
 
 === New Features
 
