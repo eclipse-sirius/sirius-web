@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { useRef, useState } from 'react';
+import {
+  disableGlobalCursorStyles,
+  ImperativePanelHandle,
+  Panel,
+  PanelGroup,
+  PanelResizeHandle,
+} from 'react-resizable-panels';
 import { makeStyles } from 'tss-react/mui';
-
-import React, { useRef, useState } from 'react';
-import { PanelState, PanelsProps } from './Panels.types';
+import { PanelsProps } from './Panels.types';
+import { Sidebar } from './Sidebar';
 import { Site } from './Site';
 
-const MIN_PANEL_WIDTH: number = 42;
-const MAIN_AREA_MIN_WIDTH: number = 100;
-const RESIZER_WIDTH: number = 4;
+/**
+ * React Resizable Panels based panels
+ */
 
 const usePanelStyles = makeStyles()((theme) => ({
   panel: {
@@ -26,16 +33,18 @@ const usePanelStyles = makeStyles()((theme) => ({
     gridTemplateRows: 'minmax(0, 1fr)',
     gridTemplateColumns: 'minmax(0, 1fr)',
   },
+  mainArea: {
+    display: 'grid',
+    height: '100%',
+  },
   verticalResizer: {
     display: 'grid',
-    width: `${RESIZER_WIDTH}px`,
+    width: `0.25rem`,
     cursor: 'col-resize',
-    '& div': {
-      backgroundColor: theme.palette.divider,
-      borderColor: theme.palette.divider,
-      borderRightStyle: 'solid',
-      borderRightWidth: '1px',
-    },
+    backgroundColor: theme.palette.divider,
+    borderColor: theme.palette.divider,
+    borderRightStyle: 'solid',
+    borderRightWidth: '1px',
   },
 }));
 
@@ -48,166 +57,67 @@ export const Panels = ({
   leftPanelInitialSize,
   rightPanelInitialSize,
 }: PanelsProps) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const [leftPanelState, setLeftPanelState] = useState<PanelState>({
-    isDragging: false,
-    initialPosition: 0,
-    expanded: true,
-    resizablePanelSize: leftPanelInitialSize,
-  });
-  const [rightPanelState, setRightPanelState] = useState<PanelState>({
-    isDragging: false,
-    initialPosition: 0,
-    expanded: true,
-    resizablePanelSize: rightPanelInitialSize,
-  });
+  disableGlobalCursorStyles();
 
-  const startResizeLeft: React.MouseEventHandler<HTMLDivElement> = (event) => {
-    const initialPosition: number = event.clientX;
-    event.preventDefault();
-    setLeftPanelState((prevState) => {
-      return {
-        isDragging: true,
-        initialPosition,
-        expanded: prevState.expanded,
-        resizablePanelSize: prevState.expanded ? prevState.resizablePanelSize : MIN_PANEL_WIDTH,
-      };
-    });
-  };
+  const { classes } = usePanelStyles();
+  const leftRef = useRef<ImperativePanelHandle>(null);
+  const rightRef = useRef<ImperativePanelHandle>(null);
+  const [leftSelectedContributionIndex, setLeftSelectedContributionIndex] = useState<number>(0);
+  const [rightSelectedContributionIndex, setRightSelectedContributionIndex] = useState<number>(0);
 
-  const startResizeRight: React.MouseEventHandler<HTMLDivElement> = (event) => {
-    const initialPosition: number = event.clientX;
-    event.preventDefault();
-    setRightPanelState((prevState) => {
-      return {
-        isDragging: true,
-        initialPosition,
-        expanded: prevState.expanded,
-        resizablePanelSize: prevState.expanded ? prevState.resizablePanelSize : MIN_PANEL_WIDTH,
-      };
-    });
-  };
-
-  const resizePanel: React.MouseEventHandler<HTMLDivElement> = (event) => {
-    if (leftPanelState.isDragging) {
-      const initialPosition: number = event.clientX;
-      event.preventDefault();
-      setLeftPanelState((prevState) => {
-        const delta = initialPosition - prevState.initialPosition;
-        let resizablePanelSize = Math.max(MIN_PANEL_WIDTH, prevState.resizablePanelSize + delta);
-        if (ref.current) {
-          resizablePanelSize = Math.min(
-            resizablePanelSize,
-            ref.current.clientWidth - rightPanelState.resizablePanelSize - 2 * RESIZER_WIDTH - MAIN_AREA_MIN_WIDTH
-          );
-        }
-        return {
-          ...prevState,
-          initialPosition,
-          resizablePanelSize,
-          expanded: resizablePanelSize > MIN_PANEL_WIDTH,
-        };
-      });
-    }
-    if (rightPanelState.isDragging) {
-      const initialPosition: number = event.clientX;
-      event.preventDefault();
-      setRightPanelState((prevState) => {
-        const delta = initialPosition - prevState.initialPosition;
-        let resizablePanelSize = Math.max(MIN_PANEL_WIDTH, prevState.resizablePanelSize - delta);
-        if (ref.current) {
-          resizablePanelSize = Math.min(
-            resizablePanelSize,
-            ref.current.clientWidth - leftPanelState.resizablePanelSize - 2 * RESIZER_WIDTH - MAIN_AREA_MIN_WIDTH
-          );
-        }
-        return {
-          ...prevState,
-          initialPosition,
-          resizablePanelSize,
-          expanded: resizablePanelSize > MIN_PANEL_WIDTH,
-        };
-      });
-    }
-  };
-
-  const stopResize: React.MouseEventHandler<HTMLDivElement> = () => {
-    if (leftPanelState.isDragging) {
-      setLeftPanelState((prevState) => {
-        return { ...prevState, isDragging: false, initialPosition: 0 };
-      });
-    }
-    if (rightPanelState.isDragging) {
-      setRightPanelState((prevState) => {
-        return { ...prevState, isDragging: false, initialPosition: 0 };
-      });
-    }
-  };
-
-  const leftWidth: number = leftPanelState.expanded ? leftPanelState.resizablePanelSize : MIN_PANEL_WIDTH;
-  const rightWidth: number = rightPanelState.expanded ? rightPanelState.resizablePanelSize : MIN_PANEL_WIDTH;
-  let style: React.CSSProperties = {
-    display: 'grid',
-    gridTemplateRows: 'minmax(0, 1fr)',
-    gridTemplateColumns: `${leftWidth}px min-content minmax(0, 1fr) min-content ${rightWidth}px`,
-  };
-
-  const { classes: styles } = usePanelStyles();
   return (
-    <div style={style} onMouseMove={resizePanel} onMouseUp={stopResize} onMouseLeave={stopResize} ref={ref}>
-      <div className={styles.panel}>
-        <Site
-          editingContextId={editingContextId}
-          readOnly={readOnly}
-          side="left"
-          expanded={leftPanelState.expanded}
-          toggleExpansion={() => {
-            setLeftPanelState((prevState) => {
-              const newExpanded: boolean = !prevState.expanded;
-              let newWidth: number = prevState.resizablePanelSize;
-              if (newExpanded && newWidth === MIN_PANEL_WIDTH) {
-                newWidth = leftPanelInitialSize;
-              }
-              return {
-                ...prevState,
-                expanded: !prevState.expanded,
-                resizablePanelSize: newWidth,
-              };
-            });
-          }}
-          contributions={leftContributions}
-        />
-      </div>
-      <div className={styles.verticalResizer} onMouseDown={startResizeLeft} data-testid="left-resizer">
-        <div />
-      </div>
-      <div className={styles.panel}>{mainArea}</div>
-      <div className={styles.verticalResizer} onMouseDown={startResizeRight} data-testid="right-resizer">
-        <div />
-      </div>
-      <div className={styles.panel}>
-        <Site
-          editingContextId={editingContextId}
-          readOnly={readOnly}
-          side="right"
-          expanded={rightPanelState.expanded}
-          toggleExpansion={() => {
-            setRightPanelState((prevState) => {
-              const newExpanded: boolean = !prevState.expanded;
-              let newWidth: number = prevState.resizablePanelSize;
-              if (newExpanded && newWidth === MIN_PANEL_WIDTH) {
-                newWidth = rightPanelInitialSize;
-              }
-              return {
-                ...prevState,
-                expanded: newExpanded,
-                resizablePanelSize: newWidth,
-              };
-            });
-          }}
-          contributions={rightContributions}
-        />
-      </div>
+    <div style={{ display: 'flex' }}>
+      <Sidebar
+        side="left"
+        panelRef={leftRef}
+        contributions={leftContributions}
+        selectedContributionIndex={leftSelectedContributionIndex}
+        onContributionSelected={setLeftSelectedContributionIndex}
+      />
+      <PanelGroup direction="horizontal">
+        <Panel
+          id="left"
+          className={classes.panel}
+          defaultSize={leftPanelInitialSize}
+          collapsible
+          collapsedSize={0}
+          minSize={0}
+          ref={leftRef}>
+          <Site
+            editingContextId={editingContextId}
+            readOnly={readOnly}
+            side="left"
+            contribution={leftContributions[leftSelectedContributionIndex]}
+          />
+        </Panel>
+        <PanelResizeHandle className={classes.verticalResizer} data-testid="left-resizer" />
+        <Panel id="mainArea">
+          <div className={classes.mainArea}>{mainArea}</div>
+        </Panel>
+        <PanelResizeHandle className={classes.verticalResizer} data-testid="right-resizer" />
+        <Panel
+          id="right"
+          className={classes.panel}
+          defaultSize={rightPanelInitialSize}
+          collapsible
+          collapsedSize={0}
+          minSize={0}
+          ref={rightRef}>
+          <Site
+            editingContextId={editingContextId}
+            readOnly={readOnly}
+            side="right"
+            contribution={rightContributions[rightSelectedContributionIndex]}
+          />
+        </Panel>
+      </PanelGroup>
+      <Sidebar
+        contributions={rightContributions}
+        side="right"
+        panelRef={rightRef}
+        selectedContributionIndex={rightSelectedContributionIndex}
+        onContributionSelected={setRightSelectedContributionIndex}
+      />
     </div>
   );
 };

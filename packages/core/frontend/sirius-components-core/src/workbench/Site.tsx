@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,59 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import React from 'react';
 import { makeStyles } from 'tss-react/mui';
-import React, { useEffect, useState } from 'react';
 import { SiteProps } from './Site.types';
 
 const useSiteStyles = makeStyles()((theme) => ({
-  leftSite: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  rightSite: {
-    display: 'flex',
-    flexDirection: 'row-reverse',
-  },
-  viewSelectorLeft: {
-    display: 'flex',
-    flexDirection: 'column',
-    background: theme.palette.navigation.leftBackground,
-  },
-  viewSelectorRight: {
-    display: 'flex',
-    flexDirection: 'column',
-    background: theme.palette.navigation.rightBackground,
-  },
-  viewSelectorIconLeft: {
-    color: theme.palette.text.disabled,
-    borderLeftStyle: 'solid',
-    borderLeftSize: '2px',
-    borderColor: theme.palette.navigation.leftBackground,
-    borderRadius: 0,
-  },
-  viewSelectorIconRight: {
-    color: theme.palette.text.disabled,
-    borderRightStyle: 'solid',
-    borderRightSize: '2px',
-    borderRightColor: theme.palette.navigation.rightBackground,
-    borderRadius: 0,
-  },
-  viewSelectorIconSelectedLeft: {
-    color: theme.palette.primary.main,
-    borderLeft: 'solid 2px',
-    borderRadius: 0,
-  },
-  viewSelectorIconSelectedRight: {
-    color: theme.palette.primary.main,
-    borderRight: 'solid 2px',
-    borderRadius: 0,
-  },
-  viewIcon: {
-    padding: theme.spacing(1),
-  },
   view: {
     flexGrow: 1,
     display: 'flex',
@@ -97,55 +50,13 @@ const useSiteStyles = makeStyles()((theme) => ({
   },
 }));
 
-export const Site = ({ editingContextId, readOnly, side, expanded, toggleExpansion, contributions }: SiteProps) => {
+export const Site = ({ editingContextId, readOnly, side, contribution }: SiteProps) => {
   const { classes } = useSiteStyles();
-  const [isExpanded, setExpanded] = useState<boolean>(expanded);
-  const [selectedViewIndex, setSelectedViewIndex] = useState<number>(0);
 
-  useEffect(() => {
-    setExpanded(expanded);
-  }, [expanded]);
-
-  const viewSelector = (
-    <div className={side === 'left' ? classes.viewSelectorLeft : classes.viewSelectorRight}>
-      {contributions.map((contribution, index) => {
-        const { title, icon } = contribution;
-
-        let iconClassName = side === 'left' ? classes.viewSelectorIconLeft : classes.viewSelectorIconRight;
-        if (index === selectedViewIndex) {
-          iconClassName =
-            side === 'left' ? classes.viewSelectorIconSelectedLeft : classes.viewSelectorIconSelectedRight;
-        }
-        return (
-          <Tooltip enterDelay={250} title={title} key={index} className={classes.viewIcon}>
-            <IconButton
-              className={iconClassName}
-              aria-label={title}
-              data-testid={`viewselector-${title}`}
-              onClick={() => {
-                if (index === selectedViewIndex) {
-                  toggleExpansion();
-                } else {
-                  setSelectedViewIndex(index);
-                  if (!expanded) {
-                    toggleExpansion();
-                  }
-                }
-              }}>
-              {icon}
-            </IconButton>
-          </Tooltip>
-        );
-      })}
-    </div>
-  );
-
-  let selectedView: JSX.Element | null = null;
-  const contribution = contributions[selectedViewIndex];
-  if (isExpanded && contribution) {
+  if (contribution) {
     const { title, icon, component: Component } = contribution;
-    selectedView = (
-      <div className={classes.view}>
+    return (
+      <div className={classes.view} data-testid={`site-${side}`}>
         <div className={classes.viewHeader}>
           {React.cloneElement(icon, { className: classes.viewHeaderIcon })}
           <Typography className={classes.viewHeaderTitle}>{title}</Typography>
@@ -157,11 +68,5 @@ export const Site = ({ editingContextId, readOnly, side, expanded, toggleExpansi
     );
   }
 
-  let classSite = side === 'left' ? classes.leftSite : classes.rightSite;
-  return (
-    <div className={classSite} data-testid={`site-${side}`}>
-      {viewSelector}
-      {selectedView}
-    </div>
-  );
+  return null;
 };
