@@ -63,6 +63,7 @@ export { NodeContext } from './renderer/node/NodeContext';
 export type { NodeContextValue } from './renderer/node/NodeContext.types';
 export { NodeTypeContribution } from './renderer/node/NodeTypeContribution';
 export type { DiagramNodeType } from './renderer/node/NodeTypes.types';
+export { RectangularNodeAppearanceSection } from './renderer/palette/appearance/RectangularNodeAppearanceSection';
 export { DiagramElementPalette } from './renderer/palette/DiagramElementPalette';
 export type { DiagramPaletteToolComponentProps } from './renderer/palette/extensions/DiagramPaletteTool.types';
 export type {

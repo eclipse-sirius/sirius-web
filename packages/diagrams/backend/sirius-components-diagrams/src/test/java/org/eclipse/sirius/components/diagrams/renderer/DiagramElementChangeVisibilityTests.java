@@ -212,6 +212,7 @@ public class DiagramElementChangeVisibilityTests {
                 .previousDiagram(previousDiagram)
                 .operationValidator(new IOperationValidator.NoOp())
                 .diagramEvents(List.of())
+                .nodeAppearanceHandlers(List.of())
                 .build();
 
         Element element = new Element(DiagramComponent.class, props);
@@ -293,7 +294,7 @@ public class DiagramElementChangeVisibilityTests {
         assertThat(newDiagram.getNodes()).filteredOn(n -> n.getId().equals(modifiedNodeId)).extracting(Node::getState).allMatch(s -> s == ViewModifier.Hidden);
         assertThat(newDiagram.getNodes()).filteredOn(n -> !n.getId().equals(modifiedNodeId)).extracting(Node::getState).allMatch(s -> s == ViewModifier.Normal);
         assertThat(newDiagram.getEdges()).filteredOn(e -> e.getSourceId().equals(modifiedNodeId) || e.getTargetId().equals(modifiedNodeId)).extracting(Edge::getState)
-        .allMatch(s -> s == ViewModifier.Hidden);
+                .allMatch(s -> s == ViewModifier.Hidden);
 
         var node2 = Node.newNode(diagram.getNodes().get(1))
                 .modifiers(Set.of(ViewModifier.Hidden))

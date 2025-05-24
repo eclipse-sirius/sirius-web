@@ -12,13 +12,17 @@
  *******************************************************************************/
 
 import { GQLPalette, GQLTool, GQLToolSection } from '../Palette.types';
+import { PaletteExtensionSectionProps } from '../PaletteExtensionSection.types';
 
 export interface PaletteToolListProps {
   onToolClick: (tool: GQLTool) => void;
   palette: GQLPalette;
   onBackToMainList: () => void;
+  diagramElementId: string;
+  children: React.ReactElement<PaletteExtensionSectionProps>[];
 }
 
 export interface PaletteToolListStateValue {
   toolSection: GQLToolSection | null;
+  extensionSection: string | null;
 }

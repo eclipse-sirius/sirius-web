@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { XYPosition } from '@xyflow/react';
+import { PaletteExtensionSectionProps } from './PaletteExtensionSection.types';
 
 export interface ContextualPaletteStyleProps {
   toolCount: number;
@@ -39,6 +40,7 @@ export interface PaletteProps {
   targetObjectId: string;
   onDirectEditClick: () => void;
   onClose: () => void;
+  children: React.ReactElement<PaletteExtensionSectionProps>[];
 }
 
 export interface PaletteState {

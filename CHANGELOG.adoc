@@ -98,7 +98,7 @@ The `diagramNodeActionOverrideContributionExtensionPoint` extension point can be
 For that, one should simply use the parameter `mode=svg-viewer`
 - https://github.com/eclipse-sirius/sirius-web/issues/4941[#4941] [diagram] Add the ability to perform an arrange all before displaying the diagram in the image viewer.
 For that, one should use the parameter `arrangeAll=true`
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4756[#4756] [diagram] Add first implementation of customized appearance on rectangular nodes
 
 === Improvements
 
@@ -345,7 +345,6 @@ Actions are visible on nodes on diagrams, on the top right corner of the nodes, 
 - https://github.com/eclipse-sirius/sirius-web/issues/4626[#4626] [diagram] Conserve rectilinearity of custom edges
 - https://github.com/eclipse-sirius/sirius-web/issues/4770[#4770] [diagram] Allow reconnecting an edge on another edge
 - https://github.com/eclipse-sirius/sirius-web/issues/4745[#4745] Add table cell extension point
-
 
 === Improvements
 

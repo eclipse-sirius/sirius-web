@@ -36,6 +36,7 @@ import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderer;
+import org.eclipse.sirius.components.diagrams.renderer.INodeAppearanceHandler;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IOperationValidator;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -60,15 +61,18 @@ public class DiagramCreationService implements IDiagramCreationService {
 
     private final IOperationValidator operationValidator;
 
+    private final List<INodeAppearanceHandler> nodeAppearanceHandlers;
+
     private final Timer timer;
 
     private final Logger logger = LoggerFactory.getLogger(DiagramCreationService.class);
 
     public DiagramCreationService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IObjectSearchService objectSearchService,
-                                  IOperationValidator operationValidator, MeterRegistry meterRegistry) {
+            IOperationValidator operationValidator, List<INodeAppearanceHandler> nodeAppearanceHandlers, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.operationValidator = Objects.requireNonNull(operationValidator);
+        this.nodeAppearanceHandlers = Objects.requireNonNull(nodeAppearanceHandlers);
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
                 .tag(Monitoring.NAME, "diagram")
                 .register(meterRegistry);
@@ -125,7 +129,7 @@ public class DiagramCreationService implements IDiagramCreationService {
         Optional<Diagram> optionalPreviousDiagram = optionalDiagramContext.map(IDiagramContext::getDiagram);
         List<ViewCreationRequest> viewCreationRequests = optionalDiagramContext.map(IDiagramContext::getViewCreationRequests).orElse(List.of());
         List<ViewDeletionRequest> viewDeletionRequests = optionalDiagramContext.map(IDiagramContext::getViewDeletionRequests).orElse(List.of());
-        
+
         Builder builder = DiagramComponentProps.newDiagramComponentProps()
                 .variableManager(variableManager)
                 .diagramDescription(diagramDescription)
@@ -134,7 +138,8 @@ public class DiagramCreationService implements IDiagramCreationService {
                 .viewCreationRequests(viewCreationRequests)
                 .viewDeletionRequests(viewDeletionRequests)
                 .previousDiagram(optionalPreviousDiagram)
-                .diagramEvents(diagramEvents);
+                .diagramEvents(diagramEvents)
+                .nodeAppearanceHandlers(this.nodeAppearanceHandlers);
 
         DiagramComponentProps props = builder.build();
         Element element = new Element(DiagramComponent.class, props);
