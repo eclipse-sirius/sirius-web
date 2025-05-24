@@ -1,0 +1,41 @@
+= (S-M) Add loading indicator for downloads
+
+== Problem
+
+Projects can be downloaded through the contextual menu of the `/projects` page and of the `/project/$projectId/edit` page.
+Documents can be downloaded through the contextual menu in the Explorer view.
+
+These operations can take a bit of time as the backend produces the corresponding file (zip file for projects, serialized file for the document, etc.), especially on larger projects and documents.
+
+During these operations, the user has no feedback that something is actually going on, resulting in the possibility of them getting confused (has an issue occurred?) and/or leaving the page or re-trying the operation.
+
+== Key Result
+
+There should be a loading indicator for these operations.
+
+=== Acceptance Criteria
+
+* The loading indicator starts when the operation gets triggered by the user.
+* The loading indicator ends when the bulk of the operation is finished and the user can interact with the application to decide what to do with the downloaded file.
+
+== Solution
+
+* The loading indicator used will be a Material UI CircularProgress.
+* It will replace the icon of the ongoing action upon selection of the action.
+* We will rely on the completion of the resource fetching (e.g. the call to `https://sirius-web.staging.factory.obeo.fr/api/projects/$projectId` has finished) to terminate the loading indicator.
+
+=== Breadboarding
+
+
+
+=== Cutting backs
+
+* If possible we want to keep the action as an href to the corresponding API call (e.g. `https://sirius-web.staging.factory.obeo.fr/api/projects/$projectId`).
+
+== Rabbit holes
+
+
+
+== No-gos
+
+

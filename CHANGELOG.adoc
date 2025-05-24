@@ -4,7 +4,7 @@
 
 === Shapes
 
-
+- Add loading indicator for downloads
 
 === Architectural decision records
 
