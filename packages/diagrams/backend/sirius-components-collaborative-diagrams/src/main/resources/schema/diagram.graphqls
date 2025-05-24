@@ -348,6 +348,7 @@ type DiagramDescription implements RepresentationDescription {
   edgeDescriptions: [EdgeDescription!]!
   palette(diagramElementId: ID!): Palette!
   actions(diagramElementId: ID!): [Action!]!
+  manageVisibilityActions(diagramElementId: ID!): [ManageVisibilityAction!]!
   connectorTools(sourceDiagramElementId: ID!, targetDiagramElementId: ID!): [Tool!]!
   dropNodeCompatibility: [DropNodeCompatibilityEntry!]!
   initialDirectEditElementLabel(labelId: ID!): String!
@@ -389,6 +390,11 @@ type Action {
   iconURLs: [String!]!
 }
 
+type ManageVisibilityAction {
+  id: ID!
+  label: String!
+}
+
 type EdgeDescription implements DiagramElementDescription {
   id: ID!
   synchronizationPolicy: SynchronizationPolicy!
@@ -416,6 +422,7 @@ extend type Mutation {
   pinDiagramElement(input: PinDiagramElementInput!): PinDiagramElementPayload!
   layoutDiagram(input: LayoutDiagramInput!): LayoutDiagramPayload!
   invokeAction(input: InvokeActionInput!): InvokeActionPayload!
+  invokeManageVisibilityAction(input: InvokeManageVisibilityActionInput!): InvokeManageVisibilityActionPayload!
 }
 
 input DropNodeInput {
@@ -527,7 +534,17 @@ input InvokeActionInput {
   actionId: ID!
 }
 
+input InvokeManageVisibilityActionInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  diagramElementId: ID!
+  actionId: ID!
+}
+
 union InvokeActionPayload = ErrorPayload | SuccessPayload
+
+union InvokeManageVisibilityActionPayload = ErrorPayload | SuccessPayload
 
 union InvokeSingleClickOnDiagramElementToolPayload = ErrorPayload | InvokeSingleClickOnDiagramElementToolSuccessPayload
 
