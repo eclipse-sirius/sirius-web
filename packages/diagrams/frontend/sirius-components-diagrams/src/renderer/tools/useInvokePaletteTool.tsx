@@ -21,7 +21,6 @@ import { GQLTool } from '../palette/Palette.types';
 import { useCollapseExpand } from './useCollapseExpand';
 import { GQLCollapsingState } from './useCollapseExpand.types';
 import { useDelete } from './useDelete';
-import { GQLDeletionPolicy } from './useDelete.types';
 import { UseInvokePaletteToolProps, UseInvokePaletteToolValue } from './useInvokePaletteTool.types';
 import { useSingleClickTool } from './useSingleClickTool';
 
@@ -39,11 +38,11 @@ export const useInvokePaletteTool = ({
   const { deleteDiagramElements } = useDelete();
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
 
-  const invokeDelete = (diagramElementId: string, deletionPolicy: GQLDeletionPolicy) => {
+  const invokeDelete = (diagramElementId: string) => {
     if (!!nodeLookup.get(diagramElementId)) {
-      deleteDiagramElements(editingContextId, diagramId, [diagramElementId], [], deletionPolicy);
+      deleteDiagramElements(editingContextId, diagramId, [diagramElementId], []);
     } else if (!!edgeLookup.get(diagramElementId)) {
-      deleteDiagramElements(editingContextId, diagramId, [], [diagramElementId], deletionPolicy);
+      deleteDiagramElements(editingContextId, diagramId, [], [diagramElementId]);
     }
   };
 
@@ -54,11 +53,8 @@ export const useInvokePaletteTool = ({
         break;
       case 'semantic-delete':
         showDeletionConfirmation(() => {
-          invokeDelete(diagramElementId, GQLDeletionPolicy.SEMANTIC);
+          invokeDelete(diagramElementId);
         });
-        break;
-      case 'graphical-delete':
-        invokeDelete(diagramElementId, GQLDeletionPolicy.GRAPHICAL);
         break;
       case 'expand':
         collapseExpandElement(editingContextId, diagramId, diagramElementId, GQLCollapsingState.EXPANDED);

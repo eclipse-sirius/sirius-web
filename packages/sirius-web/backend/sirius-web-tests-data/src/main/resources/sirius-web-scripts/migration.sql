@@ -1766,3 +1766,278 @@ INSERT INTO document (
   '2024-04-12 9:42:0.000',
   '2024-04-12 9:42:0.000'
 );
+
+-- Test project for NodePaletteDeleteFromDiagramMigrationParticipantTests
+INSERT INTO project (
+  id,
+  name,
+  created_on,
+  last_modified_on
+) VALUES (
+  'b1f064d3-b928-319d-8853-022b0c5dd63a',
+  'NodePaletteDeleteFromDiagramMigrationParticipantStudio',
+  '2025-05-26 10:00:0.000',
+  '2025-05-26 10:00:0.000'
+);
+INSERT INTO nature (
+  project_id,
+  name
+) VALUES (
+  'b1f064d3-b928-319d-8853-022b0c5dd63a',
+  'siriusComponents://nature?kind=studio'
+);
+INSERT INTO semantic_data (
+  id,
+  created_on,
+  last_modified_on
+) VALUES (
+  'c81968f1-73c8-3973-bdae-7a2997132706',
+  '2025-05-26 10:00:0.000',
+  '2025-05-26 10:00:0.000'
+);
+INSERT INTO project_semantic_data (
+  id,
+  project_id,
+  semantic_data_id,
+  name,
+  created_on,
+  last_modified_on
+) VALUES (
+  '630a0daf-07ec-4640-8ad2-f4f61a920f92',
+  'b1f064d3-b928-319d-8853-022b0c5dd63a',
+  'c81968f1-73c8-3973-bdae-7a2997132706',
+  'main',
+  '2025-05-26 10:00:0.000',
+  '2025-05-26 10:00:0.000'
+);
+INSERT INTO semantic_data_domain (
+  semantic_data_id,
+  uri
+) VALUES (
+  'c81968f1-73c8-3973-bdae-7a2997132706',
+  'http://www.eclipse.org/sirius-web/diagram'
+);
+INSERT INTO semantic_data_domain (
+  semantic_data_id,
+  uri
+) VALUES (
+  'c81968f1-73c8-3973-bdae-7a2997132706',
+  'http://www.eclipse.org/sirius-web/view'
+);
+INSERT INTO document (
+  id,
+  semantic_data_id,
+  name,
+  content,
+  created_on,
+  last_modified_on
+) VALUES (
+  '02fddab4-1ae2-4d58-aa91-41552d5a2395',
+  'c81968f1-73c8-3973-bdae-7a2997132706',
+  'NodePalette#DeleteFromDiagram migration',
+  '{
+  "json": {
+    "version": "1.0",
+    "encoding": "utf-8"
+  },
+  "ns": {
+    "diagram": "http://www.eclipse.org/sirius-web/diagram",
+    "view": "http://www.eclipse.org/sirius-web/view"
+  },
+  "content": [
+    {
+      "id": "e87cbdac-6815-4675-90ee-cdbd4d39221f",
+      "eClass": "view:View",
+      "data": {
+        "descriptions": [
+          {
+            "id": "e02836cd-2631-4233-bbd9-2aba5049b06d",
+            "eClass": "diagram:DiagramDescription",
+            "data": {
+              "name": "NodePalette#DeleteFromDiagram migration",
+              "domainType": "chaplygin::Root",
+              "titleExpression": "chaplygin diagram",
+              "nodeDescriptions": [
+                {
+                  "id": "8dcec73a-1f46-44ba-acff-351b2d954eaa",
+                  "eClass": "diagram:NodeDescription",
+                  "data": {
+                    "name": "Entity1 Node",
+                    "domainType": "chaplygin::Entity1",
+                    "synchronizationPolicy": "UNSYNCHRONIZED",
+                    "palette": {
+                      "id": "f075fb93-73e6-4fed-ab57-a59d7d1dc8a0",
+                      "eClass": "diagram:NodePalette",
+                      "data": {
+                        "deleteTool": {
+                          "id": "8b5d6d23-26b4-4279-adc5-2b15b37f8e59",
+                          "eClass": "diagram:DeleteTool",
+                          "data": {
+                            "name": "Delete",
+                            "body": [
+                              {
+                                "id": "a9338e15-f5a4-4963-b4c4-48d95da7b842",
+                                "eClass": "view:ChangeContext",
+                                "data": {
+                                  "expression": "aql:self.defaultDelete()"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "labelEditTool": {
+                          "id": "beadfd82-f254-491c-a810-8b03535d9737",
+                          "eClass": "diagram:LabelEditTool",
+                          "data": {
+                            "name": "Edit Label",
+                            "body": [
+                              {
+                                "id": "ade6614e-400d-45a7-a155-c75175de69fd",
+                                "eClass": "view:ChangeContext",
+                                "data": {
+                                  "expression": "aql:self.defaultEditLabel(newLabel)"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "quickAccessTools": [],
+                        "edgeTools": [],
+                        "toolSections": []
+                      }
+                    },
+                    "style": {
+                      "id": "d910ff27-12f7-47ca-bc36-5aa82539cd82",
+                      "eClass": "diagram:RectangularNodeStyleDescription",
+                      "data": {
+                        "borderColor": "c8e96959-0fd3-467e-af66-adf32a1a5f8b",
+                        "background": "40f8e69d-a875-4bd5-9be8-6a0e89ae2a36"
+                      }
+                    }
+                  }
+                },
+                {
+                  "id": "5b3bd157-6222-4545-98a7-760b7dc95751",
+                  "eClass": "diagram:NodeDescription",
+                  "data": {
+                    "name": "Entity2 Node",
+                    "domainType": "chaplygin::Entity2",
+                    "palette": {
+                      "id": "8ba50bdf-4354-4c1e-81d8-74a5436d9639",
+                      "eClass": "diagram:NodePalette",
+                      "data": {
+                        "deleteTool": {
+                          "id": "6ef277cd-1ef5-46b5-aaf1-6dae40d39420",
+                          "eClass": "diagram:DeleteTool",
+                          "data": {
+                            "name": "Delete",
+                            "body": [
+                              {
+                                "id": "9072bf72-6a30-43df-ada7-5813e521c34a",
+                                "eClass": "view:ChangeContext",
+                                "data": {
+                                  "expression": "aql:self.defaultDelete()"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "labelEditTool": {
+                          "id": "584a6455-ecbb-46fb-a465-4b0bb50686cd",
+                          "eClass": "diagram:LabelEditTool",
+                          "data": {
+                            "name": "Edit Label",
+                            "body": [
+                              {
+                                "id": "2d389853-7fdd-44be-bf95-0f189d333592",
+                                "eClass": "view:ChangeContext",
+                                "data": {
+                                  "expression": "aql:self.defaultEditLabel(newLabel)"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "toolSections": []
+                      }
+                    },
+                    "style": {
+                      "id": "6b414ab0-1334-472f-a9d8-f4680cdb8c69",
+                      "eClass": "diagram:RectangularNodeStyleDescription",
+                      "data": {
+                        "borderColor": "0a1efb1d-58ca-440d-86bd-c3ad3ff87471",
+                        "background": "cfa08285-18a5-4e01-8abd-3da01f048937"
+                      }
+                    }
+                  }
+                }
+              ],
+              "edgeDescriptions": []
+            }
+          }
+        ],
+        "colorPalettes": [
+          {
+            "id": "ab3dbd46-3377-40f5-941f-57603cfe7dd4",
+            "eClass": "view:ColorPalette",
+            "data": {
+              "colors": [
+                {
+                  "id": "34f254c5-88ae-44d9-93bc-7ed33b5d15ae",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "color_dark",
+                    "value": "#002639"
+                  }
+                },
+                {
+                  "id": "40f8e69d-a875-4bd5-9be8-6a0e89ae2a36",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "color_blue",
+                    "value": "#E5F5F8"
+                  }
+                },
+                {
+                  "id": "cfa08285-18a5-4e01-8abd-3da01f048937",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "color_green",
+                    "value": "#B1D8B7"
+                  }
+                },
+                {
+                  "id": "c8e96959-0fd3-467e-af66-adf32a1a5f8b",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "border_blue",
+                    "value": "#33B0C3"
+                  }
+                },
+                {
+                  "id": "0a1efb1d-58ca-440d-86bd-c3ad3ff87471",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "border_green",
+                    "value": "#76B947"
+                  }
+                },
+                {
+                  "id": "2a4a6d63-14d2-4a4c-a9d4-c98a38a73b75",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "color_transparent",
+                    "value": "transparent"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}',
+  '2025-05-26 10:00:0.000',
+  '2025-05-26 10:00:0.000'
+);

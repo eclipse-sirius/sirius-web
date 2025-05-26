@@ -43,6 +43,11 @@ Every implementation of `IRepresentationMetadataUpdateService` should add its ow
 * A new method `List<MigrationData> getAllMigrationData()` method has been added.
 * https://github.com/eclipse-sirius/sirius-web/issues/4102[#4102] [sirius-web] The `hasChildren()` and `getDefaultChildren()` of the [`IExplorerSerices`](https://github.com/eclipse-sirius/sirius-web/blob/master/packages/sirius-web/backend/sirius-web-application/src/main/java/org/eclipse/sirius/web/application/views/explorer/services/api/IExplorerServices.java) interface now expect an additional `List<RepresentationMetadata> existingRepresentations` argument with the list of all the representations to consider when rendering explorer items.
 In the default implementation (in `ExplorerChildrenProvider`) its value comes from the new variable `existingRepresentations` injected by `ExplorerRenderVariablesCustomizer`.
+- https://github.com/eclipse-sirius/sirius-web/issues/4968[#4968] [diagram] The `Delete from diagram` tool is no longer automatically added to the palette from a node with an unsynchronized
+layout.
+It is up to the specifier whether to create a tool to perform this action.
+Note that a migration participant adds this tool for existing diagram descriptions.
+
 
 === Dependency update
 
@@ -106,6 +111,7 @@ For that, one should use the parameter `arrangeAll=true`
 In particular it can be used to add new variables which are costly to compute so that they can be set *once* per tree render, and then used from any expression in the tree definition.
 This mechanism is currently provisional and only available for `TreeDescription` but will probably be generalized (maybe in an updated form) for other representations in the future.
 - https://github.com/eclipse-sirius/sirius-web/issues/4927[#4927] [diagram] Add `IManageVisibilityMenuActionsHandler` and `IManageVisibilityMenuActionsProvider` to add menu items to the manage visibility modal
+- https://github.com/eclipse-sirius/sirius-web/issues/4968[#4968] [diagram] Remove auto-generated tool `Delete from diagram` for unsynchronized nodes to let specifiers provide one with their desired behavior
 
 
 === Improvements

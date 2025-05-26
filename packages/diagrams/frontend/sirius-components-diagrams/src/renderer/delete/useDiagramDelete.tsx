@@ -17,7 +17,6 @@ import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useDelete } from '../tools/useDelete';
-import { GQLDeletionPolicy } from '../tools/useDelete.types';
 import { UseDiagramDeleteValue } from './useDiagramDelete.types';
 
 export const useDiagramDelete = (): UseDiagramDeleteValue => {
@@ -42,7 +41,7 @@ export const useDiagramDelete = (): UseDiagramDeleteValue => {
           .filter((node) => node.selected)
           .map((node) => node.id);
         showDeletionConfirmation(() => {
-          deleteDiagramElements(editingContextId, diagramId, nodeToDeleteIds, [], GQLDeletionPolicy.SEMANTIC);
+          deleteDiagramElements(editingContextId, diagramId, nodeToDeleteIds, []);
         });
       }
     },
