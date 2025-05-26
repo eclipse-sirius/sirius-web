@@ -7,6 +7,7 @@
 - Add support for diagram customization
 - Add the ability to share the workbench state
 - Add selected project setting tab to the URL
+- Add impact analysis before tool execution in trees
 
 
 === Architectural decision records
@@ -15,6 +16,7 @@
 - [ADR-198] Add the ability to share a URL containing the views of the workbench
 - [ADR-199] Add the ability to control the capabilities of the frontend from the backend
 - [ADR-200] Add configurable render variables to TreeDescription
+- [ADR-201] Add impact analysis for contextual menu actions of trees
 
 === Deprecation warning
 
@@ -182,6 +184,7 @@ The dialog can now display an impact analysis report, but isn't in charge of ret
 - [ADR-194] Add the ability to contribute new actions to manage the visibility
 - [ADR-195] Control the views available in a workbench
 - [ADR-196] Add the ability to contribute custom actions on graphical deletion
+
 
 === Deprecation warning
 
