@@ -157,7 +157,7 @@ Thanks to this mechanism one can trigger some behavior after the entire loading 
 - https://github.com/eclipse-sirius/sirius-web/issues/4850[#4850] [diagram] Impove handles placement on edges during connection or when the EdgeAnchorNode is rerendered
 - https://github.com/eclipse-sirius/sirius-web/issues/4822[#4822] [core] Allow the retrieval of all the representations.
 The onboard area can now display all the representations created in the project and it is not limited to the first 20 representations.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/4963[#4963] [core] Avoid change recording overhead for some well-known read-only operations.
 
 
 == v2025.4.0
