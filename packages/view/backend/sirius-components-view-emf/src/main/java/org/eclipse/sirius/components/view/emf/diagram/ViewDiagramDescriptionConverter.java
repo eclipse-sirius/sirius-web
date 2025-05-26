@@ -24,14 +24,9 @@ import java.util.stream.Stream;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DeletionPolicy;
-import org.eclipse.sirius.components.collaborative.diagrams.handlers.DeleteFromDiagramEventHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.ArrangeLayoutDirection;
-import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
@@ -41,10 +36,8 @@ import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelTextAlign;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
-import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.OutsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.UserResizableDirection;
-import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeLabelKind;
@@ -66,7 +59,6 @@ import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
-import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle;
@@ -181,7 +173,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
     /**
      * Used to filter the edge descriptions that are using node descriptions as their sources and targets.
      *
-     * @param edgeDescription The edge description
+     * @param edgeDescription
+     *         The edge description
      * @return true if we will use the edge description, false otherwise
      */
     private boolean edgeDescriptionWithNodesAsSourceAndTargetToConsider(org.eclipse.sirius.components.view.diagram.EdgeDescription edgeDescription) {
@@ -194,8 +187,10 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
      * We will only consider edge descriptions that are using node descriptions as their sources and targets
      * or another edge that is using node descriptions as their sources and targets
      *
-     * @param edgeDescription The edge description
-     * @param candidateEdgeDescriptions The edges that can be used as source or target
+     * @param edgeDescription
+     *         The edge description
+     * @param candidateEdgeDescriptions
+     *         The edges that can be used as source or target
      * @return true if we will use the edge description, false otherwise
      */
     private boolean edgeDescriptionWithAnotherEdgeAsSourceOrTargetToConsider(org.eclipse.sirius.components.view.diagram.EdgeDescription edgeDescription, List<org.eclipse.sirius.components.view.diagram.EdgeDescription> candidateEdgeDescriptions) {
@@ -203,7 +198,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 (edgeDescription.getTargetDescriptions().stream()
                         .allMatch(description -> description instanceof org.eclipse.sirius.components.view.diagram.NodeDescription
                                 || (description instanceof org.eclipse.sirius.components.view.diagram.EdgeDescription && candidateEdgeDescriptions.contains(description)))
-                && edgeDescription.getSourceDescriptions().stream()
+                        && edgeDescription.getSourceDescriptions().stream()
                         .allMatch(description -> description instanceof org.eclipse.sirius.components.view.diagram.NodeDescription
                                 || (description instanceof org.eclipse.sirius.components.view.diagram.EdgeDescription && candidateEdgeDescriptions.contains(description))));
     }
@@ -610,21 +605,15 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
     private Function<VariableManager, IStatus> createDeleteHandler(DiagramElementDescription diagramElementDescription, ViewDiagramDescriptionConverterContext converterContext) {
         Function<VariableManager, IStatus> handler = variableManager -> {
             IStatus result;
-            DeletionPolicy deletionPolicy = variableManager.get(DeleteFromDiagramEventHandler.DELETION_POLICY, DeletionPolicy.class).orElse(DeletionPolicy.SEMANTIC);
-            if (deletionPolicy == DeletionPolicy.GRAPHICAL) {
-                this.deleteFromDiagram(variableManager);
-                result = new Success();
-            } else {
-                VariableManager childVariableManager = variableManager.createChild();
-                var convertedNodes = Collections.unmodifiableMap(converterContext.getConvertedNodes());
-                childVariableManager.put(CONVERTED_NODES_VARIABLE, convertedNodes);
+            VariableManager childVariableManager = variableManager.createChild();
+            var convertedNodes = Collections.unmodifiableMap(converterContext.getConvertedNodes());
+            childVariableManager.put(CONVERTED_NODES_VARIABLE, convertedNodes);
 
-                var optionalDeleteTool = new ToolFinder().findDeleteTool(diagramElementDescription);
-                if (optionalDeleteTool.isPresent()) {
-                    result = this.toolExecutor.executeTool(optionalDeleteTool.get(), converterContext.getInterpreter(), childVariableManager);
-                } else {
-                    result = new Failure("No deletion tool configured");
-                }
+            var optionalDeleteTool = new ToolFinder().findDeleteTool(diagramElementDescription);
+            if (optionalDeleteTool.isPresent()) {
+                result = this.toolExecutor.executeTool(optionalDeleteTool.get(), converterContext.getInterpreter(), childVariableManager);
+            } else {
+                result = new Failure("No deletion tool configured");
             }
             return result;
         };
@@ -640,22 +629,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 return handler.apply(variableManager);
             }
         };
-    }
-
-    private void deleteFromDiagram(VariableManager variableManager) {
-        var optionalDiagramContext = variableManager.get(IDiagramContext.DIAGRAM_CONTEXT, DiagramContext.class);
-        if (optionalDiagramContext.isPresent()) {
-            String elementId = null;
-            if (variableManager.get(Node.SELECTED_NODE, Node.class).isPresent()) {
-                elementId = variableManager.get(Node.SELECTED_NODE, Node.class).get().getId();
-            } else if (variableManager.get(Edge.SELECTED_EDGE, Edge.class).isPresent()) {
-                elementId = variableManager.get(Edge.SELECTED_EDGE, Edge.class).get().getId();
-            }
-            if (elementId != null) {
-                ViewDeletionRequest viewDeletionRequest = ViewDeletionRequest.newViewDeletionRequest().elementId(elementId).build();
-                optionalDiagramContext.get().getViewDeletionRequests().add(viewDeletionRequest);
-            }
-        }
     }
 
     private BiFunction<VariableManager, String, IStatus> createNodeLabelEditHandler(org.eclipse.sirius.components.view.diagram.NodeDescription nodeDescription,

@@ -26,7 +26,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescript
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramSuccessPayload;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DeletionPolicy;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
@@ -106,7 +105,7 @@ public class DeleteFromDiagramEventHandlerTests {
 
         var nodeIds = List.of(NODE_ID);
         var edgeIds = List.<String>of();
-        var input = new DeleteFromDiagramInput(UUID.randomUUID(), "editingContextId", "representationId", nodeIds, edgeIds, DeletionPolicy.SEMANTIC);
+        var input = new DeleteFromDiagramInput(UUID.randomUUID(), "editingContextId", "representationId", nodeIds, edgeIds);
 
         One<IPayload> payloadSink = Sinks.one();
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
@@ -130,7 +129,7 @@ public class DeleteFromDiagramEventHandlerTests {
 
         var nodeIds = List.<String>of();
         var edgeIds = List.of(EDGE_ID);
-        var input = new DeleteFromDiagramInput(UUID.randomUUID(), "editingContextId", "representationId", nodeIds, edgeIds, DeletionPolicy.SEMANTIC);
+        var input = new DeleteFromDiagramInput(UUID.randomUUID(), "editingContextId", "representationId", nodeIds, edgeIds);
 
         One<IPayload> payloadSink = Sinks.one();
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();

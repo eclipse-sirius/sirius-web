@@ -13,20 +13,9 @@
 import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
 
 export interface UseDeleteValue {
-  deleteDiagramElements: (
-    editingContextId: string,
-    diagramId: string,
-    nodeIds: string[],
-    edgeIds: string[],
-    deletionPolicy: GQLDeletionPolicy
-  ) => void;
+  deleteDiagramElements: (editingContextId: string, diagramId: string, nodeIds: string[], edgeIds: string[]) => void;
   loading: boolean;
   data: GQLDeleteFromDiagramData | null;
-}
-
-export enum GQLDeletionPolicy {
-  SEMANTIC = 'SEMANTIC',
-  GRAPHICAL = 'GRAPHICAL',
 }
 
 export interface GQLDeleteFromDiagramVariables {
@@ -39,7 +28,6 @@ export interface GQLDeleteFromDiagramInput {
   representationId: string;
   nodeIds: string[];
   edgeIds: string[];
-  deletionPolicy: GQLDeletionPolicy;
 }
 
 export interface GQLDeleteFromDiagramData {

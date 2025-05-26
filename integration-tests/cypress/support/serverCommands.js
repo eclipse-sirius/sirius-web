@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
- * are made available under the erms of the Eclipse Public License v2.0
+ * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { v4 as uuid } from 'uuid';
+
 const url = Cypress.env('baseAPIUrl') + '/api/graphql';
 
 Cypress.Commands.add('deleteAllProjects', () => {
@@ -83,7 +84,6 @@ Cypress.Commands.add('deleteNodeFromDiagram', (editingContextId, representationI
       representationId,
       nodeIds: [nodeId],
       edgeIds: [],
-      deletionPolicy: 'SEMANTIC',
     },
   };
 

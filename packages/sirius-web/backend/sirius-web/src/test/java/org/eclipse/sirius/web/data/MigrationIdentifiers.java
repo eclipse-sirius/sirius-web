@@ -56,7 +56,7 @@ public final class MigrationIdentifiers {
     public static final UUID MIGRATION_INSIDE_LABEL_STYLE_HEADER_SEPARATOR_DISPLAY_STUDIO = UUID.fromString("dc9643f8-b1ce-4c93-a176-379063d42b32");
 
     public static final String MIGRATION_INSIDE_LABEL_STYLE_HEADER_SEPARATOR_DISPLAY_STUDIO_DIAGRAM = "InsideLabelStyle#displayHeaderSeparator migration";
-    
+
     public static final String MIGRATION_INSIDE_LABEL_STYLE_HEADER_SEPARATOR_DISPLAY_STUDIO_NODE_1 = "migration Node 1";
 
     public static final UUID MIGRATION_WIDGET_DESCRIPTION_STYLE_LAYOUT_PROPERTIES_MIGRATION_PARTICIPANT_STUDIO = UUID.fromString("e344d967-a639-4f6c-9c00-a466d51063c6");
@@ -66,6 +66,10 @@ public final class MigrationIdentifiers {
     public static final String MIGRATION_TREE_DESCRIPTION_ICON_URL_STUDIO = "340026b5-1363-4c93-8c2b-7f11188cca8b";
 
     public static final String MIGRATION_TREE_DESCRIPTION_ICON_URL_STUDIO_DOCUMENT_NAME = "TreeDescription#iconUrlDescription migration";
+
+    public static final UUID MIGRATION_NODE_PALETTE_DELETE_FROM_DIAGRAM_TOOL_STUDIO = UUID.fromString("c81968f1-73c8-3973-bdae-7a2997132706");
+
+    public static final String MIGRATION_NODE_PALETTE_DELETE_FROM_DIAGRAM_TOOL_STUDIO_DIAGRAM = "NodePalette#DeleteFromDiagram migration";
 
     private MigrationIdentifiers() {
         // Prevent instantiation

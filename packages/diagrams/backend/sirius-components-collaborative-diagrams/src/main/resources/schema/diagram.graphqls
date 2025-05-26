@@ -449,12 +449,6 @@ input DeleteFromDiagramInput {
   representationId: ID!
   nodeIds: [ID!]!
   edgeIds: [ID!]!
-  deletionPolicy: DeletionPolicy!
-}
-
-enum DeletionPolicy {
-  SEMANTIC
-  GRAPHICAL
 }
 
 union DeleteFromDiagramPayload = ErrorPayload | DeleteFromDiagramSuccessPayload
