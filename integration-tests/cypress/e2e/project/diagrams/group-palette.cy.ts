@@ -34,20 +34,25 @@ describe('Diagram - group palette', () => {
     it('Then the last distribute elements tool used is memorized', () => {
       const diagram = new Diagram();
       const explorer = new Explorer();
+
       diagram.getDiagram('diagram').should('exist');
       diagram.fitToScreen();
+
       explorer.select('Wifi');
       explorer.select('Central_Unit', true);
       diagram.getSelectedNodes('diagram', 'Wifi');
       diagram.getSelectedNodes('diagram', 'Central_Unit');
-      diagram.getNodes('diagram', 'Wifi').rightclick();
+
+      diagram.getNodes('diagram', 'Wifi').rightclick({ force: true });
       diagram.getGroupPalette().should('exist');
       diagram.getGroupPalette().findByTestId('Align left').should('exist');
       diagram.getGroupPalette().findByTestId('expand').click();
       diagram.getGroupPalette().findByTestId('Arrange in column').click();
+
       diagram.fitToScreen();
+
       diagram.getGroupPalette().should('not.exist');
-      diagram.getNodes('diagram', 'Wifi').rightclick();
+      diagram.getNodes('diagram', 'Wifi').rightclick({ force: true });
       diagram.getGroupPalette().should('exist');
       diagram.getGroupPalette().findByTestId('Align left').should('not.exist');
       diagram.getGroupPalette().findByTestId('Arrange in column').should('exist');
