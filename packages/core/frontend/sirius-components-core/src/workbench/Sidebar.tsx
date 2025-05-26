@@ -88,7 +88,12 @@ export const Sidebar = ({
             side === 'left' ? classes.viewSelectorIconSelectedLeft : classes.viewSelectorIconSelectedRight;
         }
         return (
-          <Tooltip enterDelay={250} title={title} key={index} className={classes.viewIcon}>
+          <Tooltip
+            enterDelay={250}
+            title={title}
+            placement={side === 'left' ? 'right' : 'left'}
+            key={index}
+            className={classes.viewIcon}>
             <IconButton
               className={iconClassName}
               aria-label={title}
