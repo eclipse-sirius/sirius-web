@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 import Typography from '@mui/material/Typography';
 import { Theme } from '@mui/material/styles';
+import { memo } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { GQLStyledString, GQLStyledStringFragmentStyle, StyledLabelInputProps } from './StyledLabel.type';
 
@@ -131,7 +132,7 @@ const getStyledString = (styledString: GQLStyledString) => {
   });
 };
 
-export const StyledLabel = ({ styledString, selected, textToHighlight, marked }: StyledLabelInputProps) => {
+export const StyledLabel = memo(({ styledString, selected, textToHighlight, marked }: StyledLabelInputProps) => {
   const { classes } = useTreeItemStyle();
   const textLabel = getTextFromStyledString(styledString);
   let itemLabel: JSX.Element;
@@ -164,12 +165,10 @@ export const StyledLabel = ({ styledString, selected, textToHighlight, marked }:
   }
 
   return (
-    <>
-      <Typography
-        variant="body2"
-        className={`${classes.label} ${selected ? classes.selectedLabel : ''} ${marked ? classes.marked : ''}`}>
-        {itemLabel}
-      </Typography>
-    </>
+    <Typography
+      variant="body2"
+      className={`${classes.label} ${selected ? classes.selectedLabel : ''} ${marked ? classes.marked : ''}`}>
+      {itemLabel}
+    </Typography>
   );
-};
+});
