@@ -56,6 +56,8 @@ const useStyle = makeStyles()((theme) => ({
   },
 }));
 
+const NO_MARKED_ITEMS = [];
+
 const createElementInReferenceMutation = gql`
   mutation createElementInReference($input: CreateElementInReferenceInput!) {
     createElementInReference(input: $input) {
@@ -364,7 +366,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
               ownerId={widget.ownerId}
               descriptionId={widget.descriptionId}
               isContainment={widget.reference.containment}
-              markedItemIds={[]}
+              markedItemIds={NO_MARKED_ITEMS}
               title={'Select the container'}
               leafType={'container'}
               ownerKind={widget.reference.referenceKind}
