@@ -15,6 +15,7 @@ import { makeStyles } from 'tss-react/mui';
 import { useEffect, useRef } from 'react';
 import { TreeItem } from '../treeitems/TreeItem';
 import { TreeItemWithChildren } from '../treeitems/TreeItemWithChildren';
+import { GQLTree, GQLTreeItem } from '../views/TreeView.types';
 import { TreeProps } from './Tree.types';
 
 const useTreeStyle = makeStyles()((_) => ({
@@ -23,6 +24,19 @@ const useTreeStyle = makeStyles()((_) => ({
     minWidth: 'fit-content',
   },
 }));
+
+const treeItemsCount = (items: GQLTreeItem[]) => {
+  let count = 0;
+  for (const item of items) {
+    count += 1;
+    if (item.children) {
+      count += treeItemsCount(item.children);
+    }
+  }
+  return count;
+};
+
+const treeSize = (tree: GQLTree) => treeItemsCount(tree.children);
 
 export const Tree = ({
   editingContextId,
@@ -112,6 +126,7 @@ export const Tree = ({
     return () => {};
   }, [treeElement, onExpandedElementChange]);
 
+  console.log(`Rendered tree with ${treeSize(tree)} items`);
   return (
     <div ref={treeElement}>
       <ul className={classes.ul} data-testid="tree-root-elements">
