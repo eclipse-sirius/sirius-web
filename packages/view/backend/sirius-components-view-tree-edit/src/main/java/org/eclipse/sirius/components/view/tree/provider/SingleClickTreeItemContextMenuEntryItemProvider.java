@@ -18,7 +18,9 @@ import java.util.List;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry;
@@ -52,8 +54,35 @@ public class SingleClickTreeItemContextMenuEntryItemProvider extends TreeItemCon
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
+            this.addLabelExpressionPropertyDescriptor(object);
+            this.addIconURLExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
+    }
+
+    /**
+     * This adds a property descriptor for the Label Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addLabelExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_SingleClickTreeItemContextMenuEntry_labelExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_SingleClickTreeItemContextMenuEntry_labelExpression_feature", "_UI_SingleClickTreeItemContextMenuEntry_type"),
+                TreePackage.Literals.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Icon URL Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addIconURLExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_SingleClickTreeItemContextMenuEntry_iconURLExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_SingleClickTreeItemContextMenuEntry_iconURLExpression_feature", "_UI_SingleClickTreeItemContextMenuEntry_type"),
+                TreePackage.Literals.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -129,6 +158,10 @@ public class SingleClickTreeItemContextMenuEntryItemProvider extends TreeItemCon
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(SingleClickTreeItemContextMenuEntry.class)) {
+            case TreePackage.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION:
+            case TreePackage.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
             case TreePackage.SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__BODY:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
