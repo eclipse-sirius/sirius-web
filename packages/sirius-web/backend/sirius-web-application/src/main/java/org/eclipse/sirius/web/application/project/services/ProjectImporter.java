@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSucce
 import org.eclipse.sirius.components.graphql.api.UploadFile;
 import org.eclipse.sirius.web.application.document.dto.UploadDocumentInput;
 import org.eclipse.sirius.web.application.document.dto.UploadDocumentSuccessPayload;
+import org.eclipse.sirius.web.application.project.services.api.IRepresentationImporterUpdateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,12 +51,15 @@ public class ProjectImporter {
 
     private final Map<String, String> semanticElementsIdMappings = new HashMap<>();
 
+    private final List<IRepresentationImporterUpdateService> diagramImporterUpdateServices;
+
     public ProjectImporter(IEditingContextEventProcessor editingContextEventProcessor, Map<String, UploadFile> documents, List<RepresentationImportData> representations,
-            Map<String, Object> projectManifest) {
+                           Map<String, Object> projectManifest, List<IRepresentationImporterUpdateService> diagramImporterUpdateServices) {
         this.editingContextEventProcessor = Objects.requireNonNull(editingContextEventProcessor);
         this.documents = Objects.requireNonNull(documents);
         this.representations = Objects.requireNonNull(representations);
         this.projectManifest = Objects.requireNonNull(projectManifest);
+        this.diagramImporterUpdateServices = Objects.requireNonNull(diagramImporterUpdateServices);
     }
 
     public boolean importProject(UUID inputId) {
@@ -91,12 +95,22 @@ public class ProjectImporter {
 
             CreateRepresentationInput createRepresentationInput = new CreateRepresentationInput(inputId, this.editingContextEventProcessor.getEditingContextId(), descriptionURI, objectId, representationImportData.label());
 
-            representationCreated = this.editingContextEventProcessor.handle(createRepresentationInput)
+            var representationPayloadCreated = this.editingContextEventProcessor.handle(createRepresentationInput)
                     .filter(CreateRepresentationSuccessPayload.class::isInstance)
                     .map(CreateRepresentationSuccessPayload.class::cast)
+                    .blockOptional();
+
+            representationCreated = representationPayloadCreated
                     .map(CreateRepresentationSuccessPayload::representation)
-                    .blockOptional()
                     .isPresent();
+
+            if (representationPayloadCreated.isPresent()) {
+                var newRepresentationId = representationPayloadCreated.get().representation().id();
+                var editingContextId = this.editingContextEventProcessor.getEditingContextId();
+                this.diagramImporterUpdateServices.stream()
+                        .filter(diagramImporterUpdateService -> diagramImporterUpdateService.canHandle(editingContextId, representationImportData))
+                        .forEach(diagramImporterUpdateService -> diagramImporterUpdateService.handle(this.semanticElementsIdMappings, createRepresentationInput, editingContextId, newRepresentationId, representationImportData));
+            }
 
             if (!representationCreated) {
                 this.logger.warn("The representation {} has not been created", representationImportData.label());
