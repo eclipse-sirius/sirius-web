@@ -183,6 +183,8 @@ This changes the behavior if there are delegates which *override* the default re
 - https://github.com/eclipse-sirius/sirius-web/issues/4667[#4667] [table] Add cell edit handler for table as form widget
 - https://github.com/eclipse-sirius/sirius-web/issues/4874[#4874] [diagram] Move View DSL node layout strategy from node description to node style.
 This modification will enable a conditional style with a different layout strategy.
+- https://github.com/eclipse-sirius/sirius-web/issues/667[#667] [sirius-web] Restore layout and unsynchronized nodes when importing a project with a diagram
+
 
 
 == v2025.4.0
