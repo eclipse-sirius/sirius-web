@@ -67,7 +67,8 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
     expanded: {},
     maxDepth: {},
     tree: null,
-    singleTreeItemSelected: null,
+    singleTreeItemSelectedId: null,
+    singleTreeItemSelectedKind: null,
   };
   const [state, setState] = useState<ExplorerViewState>(initialState);
   const treeToolBarContributionComponents = useContext<TreeToolBarContextValue>(TreeToolBarContext).map(
@@ -250,11 +251,21 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
         const newSelection: Selection = { entries: [...selection.entries, newEntry] };
         setSelection(newSelection);
       }
-      setState((prevState) => ({ ...prevState, singleTreeItemSelected: null }));
+      setState((prevState) => ({ ...prevState, singleTreeItemSelectedId: null, singleTreeItemSelectedKind: null }));
     } else {
-      const { id } = item;
-      setSelection({ entries: [{ id }] });
-      setState((prevState) => ({ ...prevState, singleTreeItemSelected: item }));
+      const sameSelection =
+        state.singleTreeItemSelectedId === item.id &&
+        state.singleTreeItemSelectedKind === item.kind &&
+        selection.entries.length === 1 &&
+        selection.entries[0].id === item.id;
+      if (!sameSelection) {
+        setSelection({ entries: [{ id: item.id }] });
+        setState((prevState) => ({
+          ...prevState,
+          singleTreeItemSelectedId: item.id,
+          singleTreeItemSelectedKind: item.kind,
+        }));
+      }
     }
   };
 
@@ -303,7 +314,8 @@ export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewCompon
       <DuplicateObjectKeyboardShortcut
         editingContextId={editingContextId}
         readOnly={readOnly}
-        selectedTreeItem={state.singleTreeItemSelected}>
+        selectedTreeItemId={state.singleTreeItemSelectedId}
+        selectedTreeItemKind={state.singleTreeItemSelectedKind}>
         <div className={styles.treeContent}>
           {filterBar}
           {state.tree !== null ? (
