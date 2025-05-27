@@ -73,15 +73,15 @@ export const ManageVisibilityNodeAction = ({
     items = items.filter((node) => getNodeLabel(node).includes(state.searchValue));
   }
 
-  const isOneElementChecked = !!items.find((item) => item.hidden);
+  const isOneElementRevealed = !!items.find((item) => !item.hidden);
 
   const onCheckingAllElement = (checked: boolean) => {
     if (checked) {
-      const candidateNodesToHide = items.filter((item) => !item.hidden).map((item) => item.id);
-      hideDiagramElements(candidateNodesToHide, true);
-    } else {
       const candidateNodesToReveal = items.filter((item) => item.hidden).map((item) => item.id);
       hideDiagramElements(candidateNodesToReveal, false);
+    } else {
+      const candidateNodesToHide = items.filter((item) => !item.hidden).map((item) => item.id);
+      hideDiagramElements(candidateNodesToHide, true);
     }
   };
 
@@ -106,7 +106,7 @@ export const ManageVisibilityNodeAction = ({
             <Divider />
             <ManageVisibilityModalSearchField onValueChanged={onSearchValueChanged}></ManageVisibilityModalSearchField>
             <ManageVisibilityModalMenuCheckBox
-              isOneElementChecked={isOneElementChecked}
+              isOneElementChecked={isOneElementRevealed}
               onCheckingAllElement={onCheckingAllElement}
               diagramElementId={diagramElementId}></ManageVisibilityModalMenuCheckBox>
             <ManageVisibilityModalListItems
