@@ -35,7 +35,7 @@ export const ManageVisibilityModalListItems = ({ nodes, onListItemClick }: Manag
             <ListItemIcon sx={{ minWidth: 0 }}>
               <Checkbox
                 disableRipple
-                checked={node.hidden}
+                checked={!node.hidden}
                 size="small"
                 sx={(theme) => ({ padding: theme.spacing(0.5) })}
               />
