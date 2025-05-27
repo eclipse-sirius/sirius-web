@@ -12,13 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.deck;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -40,6 +33,13 @@ import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverte
 import org.eclipse.sirius.components.view.emf.ViewIconURLsProvider;
 import org.eclipse.sirius.components.view.emf.operations.api.IOperationExecutor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * Converts a View-based deck description into an equivalent {@link DeckDescription}.
@@ -216,8 +216,8 @@ public class ViewDeckDescriptionConverter implements IRepresentationDescriptionC
     }
 
     private String getTargetObjectId(VariableManager variableManager) {
-        return variableManager.get(VariableManager.SELF, Object.class)//
-                .map(this.objectService::getId)//
+        return variableManager.get(VariableManager.SELF, Object.class)
+                .map(this.objectService::getId)
                 .orElse(null);
     }
 
