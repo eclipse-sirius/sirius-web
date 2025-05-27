@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.deck.renderer;
 
-import java.util.List;
-
 import org.eclipse.sirius.components.deck.Card;
 import org.eclipse.sirius.components.deck.Deck;
 import org.eclipse.sirius.components.deck.Lane;
@@ -22,6 +20,8 @@ import org.eclipse.sirius.components.deck.renderer.elements.DeckElementProps;
 import org.eclipse.sirius.components.deck.renderer.elements.LaneElementProps;
 import org.eclipse.sirius.components.representations.IElementFactory;
 import org.eclipse.sirius.components.representations.IProps;
+
+import java.util.List;
 
 /**
  * Used to instantiate the elements of the Deck representation.
@@ -48,24 +48,23 @@ public class DeckElementFactory implements IElementFactory {
     }
 
     private Deck instantiateDeck(DeckElementProps props, List<Object> children) {
-        List<Lane> lanes = children.stream()//
-                .filter(Lane.class::isInstance)//
-                .map(Lane.class::cast)//
+        List<Lane> lanes = children.stream()
+                .filter(Lane.class::isInstance)
+                .map(Lane.class::cast)
                 .toList();
         return new Deck(props.id(), props.descriptionId(), props.targetObjectId(), props.style(), lanes);
     }
 
     private Lane instantiateLane(LaneElementProps props, List<Object> children) {
-        List<Card> cards = children.stream()//
-                .filter(Card.class::isInstance)//
-                .map(Card.class::cast)//
+        List<Card> cards = children.stream()
+                .filter(Card.class::isInstance)
+                .map(Card.class::cast)
                 .toList();
         return new Lane(props.id(), props.descriptionId(), props.targetObjectId(), props.targetObjectKind(), props.targetObjectLabel(), props.title(), props.label(), props.collapsible(),
                 props.collapsed(), cards, props.style());
     }
 
     private Card instantiateCard(CardElementProps props, List<Object> children) {
-
         return new Card(props.id(), props.descriptionId(), props.targetObjectId(), props.targetObjectKind(), props.targetObjectLabel(), props.title(), props.label(), props.description(), props.visible(), props.style());
     }
 
