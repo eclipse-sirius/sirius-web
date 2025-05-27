@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.services;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.eclipse.sirius.components.representations.IRepresentation;
 
 import java.util.UUID;
 
@@ -28,6 +28,6 @@ public record RepresentationSerializedImportData(
         String targetObjectId,
         String label,
         String kind,
-        ObjectNode representation
+        IRepresentation representation
 ) {
 }
