@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,8 +35,13 @@ export const SelectionContextProvider = ({ initialSelection, children }: Selecti
     setState((prevState) => ({ ...prevState, selection }));
   }, []);
 
+  const tracingSetSelection = (selection: Selection) => {
+    console.trace('setSelection(' + JSON.stringify({ old: state.selection, new: selection }) + ')');
+    setSelection(selection);
+  };
+
   return (
-    <SelectionContext.Provider value={{ selection: state.selection, setSelection }}>
+    <SelectionContext.Provider value={{ selection: state.selection, setSelection: tracingSetSelection }}>
       {children}
     </SelectionContext.Provider>
   );
