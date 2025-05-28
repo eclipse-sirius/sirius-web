@@ -11,6 +11,7 @@
 - [ADR-192] Improve table representation lifecycle
 - [ADR-193] Leverage React router for nested routes
 - [ADR-194] Add the ability to contribute new actions to manage the visibility
+- [ADR-XXX] Add support for backend-driven diagram customization
 
 === Deprecation warning
 
@@ -187,7 +188,7 @@ This changes the behavior if there are delegates which *override* the default re
 - Add support to move edge handle
 - Add visibility tool on diagram nodes
 - Add support to manage the appearance of nodes in the palette
-
+- Add support for diagram customization
 
 === Architectural decision records
 
