@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -78,11 +78,16 @@ public class FanDescriptionProvider implements INodeDescriptionProvider {
 
     private NodePalette createNodePalette() {
 
-        return this.diagramBuilderHelper.newNodePalette()
+        var nodePaletteBuilder = this.diagramBuilderHelper.newNodePalette()
                 .toolSections(new DefaultToolsFactory().createDefaultHideRevealNodeToolSection())
                 .deleteTool(this.flowViewBuilder.createDeleteTool())
-                .labelEditTool(this.flowViewBuilder.createLabelEditTool())
-                .build();
+                .labelEditTool(this.flowViewBuilder.createLabelEditTool());
+
+        if (this.synchronizationPolicy == SynchronizationPolicy.UNSYNCHRONIZED) {
+            nodePaletteBuilder.quickAccessTools(this.flowViewBuilder.getDeleteFromDiagramTool());
+        }
+
+        return nodePaletteBuilder.build();
     }
 
 }
