@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,6 @@ import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.OutsideLabel;
-import org.eclipse.sirius.components.diagrams.ParametricSVGNodeStyle;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 
 /**
@@ -81,10 +80,6 @@ public class DiagramAssertions extends Assertions implements DiagramInstanceOfAs
 
     public static OutsideLabelAssert assertThat(OutsideLabel outsideLabel) {
         return new OutsideLabelAssert(outsideLabel);
-    }
-
-    public static ParametricSVGNodeStyleAssert assertThat(ParametricSVGNodeStyle parametricSvgNodeStyle) {
-        return new ParametricSVGNodeStyleAssert(parametricSvgNodeStyle);
     }
 
     public static RectangularNodeStyleAssert assertThat(RectangularNodeStyle rectangularNodeStyle) {

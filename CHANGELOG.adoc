@@ -49,6 +49,7 @@ It is up to the specifier whether to create a tool to perform this action.
 Note that a migration participant adds this tool for existing diagram descriptions.
 - https://github.com/eclipse-sirius/sirius-web/issues/4874[#4874] [diagram] `childrenLayoutStrategy` feature has been moved from `NodeDescription` to `NodeStyleDescription`.
 All custom node models must be regenerated to add the new `childrenLayoutStrategy` feature from `NodeStyleDescription`.
+- All the `ParametricSVG` related code has been removed.
 
 === Dependency update
 
