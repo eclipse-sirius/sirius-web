@@ -29,7 +29,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IParametricSVGImageRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -73,16 +72,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegistryConfigurer {
 
-    private final List<IParametricSVGImageRegistry> parametricSVGImageRegistries;
     private final ICustomImageMetadataSearchService customImageSearchService;
     private final IPropertiesConfigurerService propertiesConfigurerService;
     private final IPropertiesWidgetCreationService propertiesWidgetCreationService;
     private final IObjectService objectService;
 
     public NodeStylePropertiesConfigurer(ICustomImageMetadataSearchService customImageSearchService,
-            List<IParametricSVGImageRegistry> parametricSVGImageRegistries, PropertiesConfigurerService propertiesConfigurerService, IPropertiesWidgetCreationService propertiesWidgetCreationService, IObjectService objectService) {
+            PropertiesConfigurerService propertiesConfigurerService, IPropertiesWidgetCreationService propertiesWidgetCreationService, IObjectService objectService) {
         this.customImageSearchService = Objects.requireNonNull(customImageSearchService);
-        this.parametricSVGImageRegistries = parametricSVGImageRegistries;
         this.propertiesConfigurerService = Objects.requireNonNull(propertiesConfigurerService);
         this.propertiesWidgetCreationService = Objects.requireNonNull(propertiesWidgetCreationService);
         this.objectService = Objects.requireNonNull(objectService);
@@ -306,13 +303,9 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .optionsProvider(variableManager -> {
                     Optional<String> optionalEditingContextId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId);
 
-                    Stream<CustomImageMetadata> parametricSVGs = this.parametricSVGImageRegistries.stream()
-                            .flatMap(service -> service.getImages().stream())
-                            .map(image -> new CustomImageMetadata(image.getId(), image.getLabel(), "image/svg+xml"));
-
                     List<CustomImageMetadata> customImages = optionalEditingContextId.map(this.customImageSearchService::getAvailableImages).orElse(List.of());
 
-                    return Stream.concat(parametricSVGs, customImages.stream())
+                    return customImages.stream()
                             .sorted(Comparator.comparing(CustomImageMetadata::label))
                             .toList();
                 })
