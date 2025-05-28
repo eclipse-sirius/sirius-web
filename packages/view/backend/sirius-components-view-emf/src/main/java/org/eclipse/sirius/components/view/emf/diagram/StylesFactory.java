@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
+import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.IconLabelNodeStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
@@ -117,11 +118,11 @@ public final class StylesFactory {
         return type.orElse(NodeType.NODE_RECTANGLE);
     }
 
-    public INodeStyle createNodeStyle(NodeStyleDescription nodeStyle, Optional<String> optionalEditingContextId) {
+    public INodeStyle createNodeStyle(NodeStyleDescription nodeStyle, Optional<String> optionalEditingContextId, ILayoutStrategy childrenLayoutStrategy) {
         INodeStyle result = null;
         switch (this.getNodeType(nodeStyle)) {
             case NodeType.NODE_ICON_LABEL:
-                result = IconLabelNodeStyle.newIconLabelNodeStyle().background("transparent").build();
+                result = IconLabelNodeStyle.newIconLabelNodeStyle().background("transparent").childrenLayoutStrategy(childrenLayoutStrategy).build();
                 break;
             case NodeType.NODE_RECTANGLE:
                 result = RectangularNodeStyle.newRectangularNodeStyle()
@@ -130,11 +131,12 @@ public final class StylesFactory {
                         .borderSize(nodeStyle.getBorderSize())
                         .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
                         .borderRadius(nodeStyle.getBorderRadius())
+                        .childrenLayoutStrategy(childrenLayoutStrategy)
                         .build();
                 break;
             default:
                 for (INodeStyleProvider iNodeStyleProvider : this.iNodeStyleProviders) {
-                    Optional<INodeStyle> nodeStyleOpt = iNodeStyleProvider.createNodeStyle(nodeStyle, optionalEditingContextId);
+                    Optional<INodeStyle> nodeStyleOpt = iNodeStyleProvider.createNodeStyle(nodeStyle, optionalEditingContextId, childrenLayoutStrategy);
                     if (nodeStyleOpt.isPresent()) {
                         result = nodeStyleOpt.get();
                         break;

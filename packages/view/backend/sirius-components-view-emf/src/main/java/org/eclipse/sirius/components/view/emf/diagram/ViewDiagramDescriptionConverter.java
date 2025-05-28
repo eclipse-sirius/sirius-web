@@ -265,19 +265,15 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         Function<VariableManager, INodeStyle> styleProvider = variableManager -> {
             var effectiveStyle = this.findEffectiveStyle(viewNodeDescription, interpreter, variableManager);
             Optional<String> optionalEditingContextId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId);
-            return stylesFactory.createNodeStyle(effectiveStyle, optionalEditingContextId);
-        };
+            ILayoutStrategy childrenLayoutStrategy = new FreeFormLayoutStrategy(); //FreeForm as default value
 
-        Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider = variableManager -> {
-            ILayoutStrategy childrenLayoutStrategy = null;
-
-            LayoutStrategyDescription childrenLayoutStrategyFromViewModel = viewNodeDescription.getChildrenLayoutStrategy();
+            LayoutStrategyDescription childrenLayoutStrategyFromViewModel = effectiveStyle.getChildrenLayoutStrategy();
             if (childrenLayoutStrategyFromViewModel instanceof ListLayoutStrategyDescription listLayoutStrategyDescription) {
-                childrenLayoutStrategy = this.getiLayoutStrategy(listLayoutStrategyDescription, variableManager, interpreter);
+                childrenLayoutStrategy = this.getListLayoutStrategy(listLayoutStrategyDescription, variableManager, interpreter);
             } else if (childrenLayoutStrategyFromViewModel instanceof FreeFormLayoutStrategyDescription) {
                 childrenLayoutStrategy = new FreeFormLayoutStrategy();
             }
-            return childrenLayoutStrategy;
+            return stylesFactory.createNodeStyle(effectiveStyle, optionalEditingContextId, childrenLayoutStrategy);
         };
 
         Predicate<VariableManager> isCollapsedByDefaultPredicate = variableManager -> this.computeBooleanProvider(viewNodeDescription.getIsCollapsedByDefaultExpression(), interpreter, variableManager);
@@ -314,7 +310,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .typeProvider(typeProvider)
                 .outsideLabelDescriptions(this.getOutsideLabelDescriptions(viewNodeDescription, interpreter, stylesFactory))
                 .styleProvider(styleProvider)
-                .childrenLayoutStrategyProvider(childrenLayoutStrategyProvider)
                 .childNodeDescriptions(childNodeDescriptions)
                 .borderNodeDescriptions(borderNodeDescriptions)
                 .collapsible(viewNodeDescription.isCollapsible())
@@ -340,7 +335,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         return result;
     }
 
-    private ILayoutStrategy getiLayoutStrategy(ListLayoutStrategyDescription listLayoutStrategyDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+    private ILayoutStrategy getListLayoutStrategy(ListLayoutStrategyDescription listLayoutStrategyDescription, VariableManager variableManager, AQLInterpreter interpreter) {
         Result resultAreChildNodesDraggable = interpreter.evaluateExpression(variableManager.getVariables(), listLayoutStrategyDescription.getAreChildNodesDraggableExpression());
         var builder = ListLayoutStrategy.newListLayoutStrategy()
                 .areChildNodesDraggable(resultAreChildNodesDraggable.asBoolean().orElse(true))

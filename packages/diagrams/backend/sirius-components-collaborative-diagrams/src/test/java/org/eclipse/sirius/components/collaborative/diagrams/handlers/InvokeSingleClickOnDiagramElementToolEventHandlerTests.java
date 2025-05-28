@@ -43,7 +43,6 @@ import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
-import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
@@ -503,7 +502,6 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .descriptionId(nodeDescriptionId)
                 .insideLabel(label)
                 .style(new TestDiagramBuilder().getRectangularNodeStyle())
-                .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .borderNodes(List.of())
                 .childNodes(List.of())
                 .modifiers(Set.of())
@@ -543,7 +541,6 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
         return NodeDescription.newNodeDescription(nodeDescriptionId)
                 .borderNodeDescriptions(List.of())
                 .childNodeDescriptions(List.of())
-                .childrenLayoutStrategyProvider(vm -> new FreeFormLayoutStrategy())
                 .deleteHandler(vm -> new Success())
                 .insideLabelDescription(insideLabelDescription)
                 .labelEditHandler((vm, newLabel) -> new Success())

@@ -27,7 +27,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
 import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IURLParser;
-import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
@@ -275,7 +274,6 @@ public class ViewPaletteProviderTests {
                 .semanticElementsProvider(variableManager -> List.of())
                 .insideLabelDescription(insideLabelDescription)
                 .styleProvider(variableManager -> null)
-                .childrenLayoutStrategyProvider(variableManager -> new FreeFormLayoutStrategy())
                 .borderNodeDescriptions(List.of())
                 .childNodeDescriptions(List.of())
                 .labelEditHandler((variableManager, newLabel) -> new Success())

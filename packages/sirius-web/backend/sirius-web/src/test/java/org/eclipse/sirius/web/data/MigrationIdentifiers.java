@@ -71,6 +71,10 @@ public final class MigrationIdentifiers {
 
     public static final String MIGRATION_NODE_PALETTE_DELETE_FROM_DIAGRAM_TOOL_STUDIO_DIAGRAM = "NodePalette#DeleteFromDiagram migration";
 
+    public static final UUID MIGRATION_NODE_DESCRIPTION_LAYOUT_STRATEGY_STUDIO = UUID.fromString("402f51c9-96df-46f2-b39b-35ebd506ff31");
+
+    public static final String MIGRATION_NODE_DESCRIPTION_LAYOUT_STRATEGY_STUDIO_DIAGRAM = "NodeDescription#layoutStrategy migration";
+
     private MigrationIdentifiers() {
         // Prevent instantiation
     }

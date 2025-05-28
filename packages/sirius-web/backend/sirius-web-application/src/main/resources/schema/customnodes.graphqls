@@ -5,4 +5,5 @@ type EllipseNodeStyle {
   borderSize: Int!
   borderStyle: LineStyle!
   background: String!
+  childrenLayoutStrategy: ILayoutStrategy!
 }
