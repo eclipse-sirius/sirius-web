@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,6 @@ import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.OutsideLabel;
-import org.eclipse.sirius.components.diagrams.ParametricSVGNodeStyle;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 
 /**
@@ -60,8 +59,6 @@ public interface DiagramInstanceOfAssertFactories extends InstanceOfAssertFactor
     InstanceOfAssertFactory<Node, NodeAssert> NODE = new InstanceOfAssertFactory<>(Node.class, DiagramAssertions::assertThat);
 
     InstanceOfAssertFactory<OutsideLabel, OutsideLabelAssert> OUTSIDE_LABEL = new InstanceOfAssertFactory<>(OutsideLabel.class, DiagramAssertions::assertThat);
-
-    InstanceOfAssertFactory<ParametricSVGNodeStyle, ParametricSVGNodeStyleAssert> PARAMETRIC_SVG_NODE_STYLE = new InstanceOfAssertFactory<>(ParametricSVGNodeStyle.class, DiagramAssertions::assertThat);
 
     InstanceOfAssertFactory<RectangularNodeStyle, RectangularNodeStyleAssert> RECTANGULAR_NODE_STYLE = new InstanceOfAssertFactory<>(RectangularNodeStyle.class, DiagramAssertions::assertThat);
 }
