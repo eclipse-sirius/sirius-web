@@ -42,6 +42,7 @@ import org.eclipse.sirius.web.application.project.dto.CreateProjectSuccessPayloa
 import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
 import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
 import org.eclipse.sirius.web.application.project.services.api.IProjectImportService;
+import org.eclipse.sirius.web.application.project.services.api.IRepresentationImporterUpdateService;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.slf4j.Logger;
@@ -75,11 +76,14 @@ public class ProjectImportService implements IProjectImportService {
 
     private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
 
-    public ProjectImportService(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, ObjectMapper objectMapper, IProjectApplicationService projectApplicationService, IProjectSemanticDataSearchService projectSemanticDataSearchService) {
+    private final List<IRepresentationImporterUpdateService> representationImporterUpdateServices;
+
+    public ProjectImportService(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, ObjectMapper objectMapper, IProjectApplicationService projectApplicationService, IProjectSemanticDataSearchService projectSemanticDataSearchService, List<IRepresentationImporterUpdateService> representationImporterUpdateServices) {
         this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.projectApplicationService = Objects.requireNonNull(projectApplicationService);
         this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
+        this.representationImporterUpdateServices = Objects.requireNonNull(representationImporterUpdateServices);
     }
 
     /**
@@ -168,7 +172,7 @@ public class ProjectImportService implements IProjectImportService {
                 IEditingContextEventProcessor editingContextEventProcessor = optionalEditingContextEventProcessor.get();
                 var editingContextId = optionalEditingContextId.get();
 
-                ProjectImporter projectImporter = new ProjectImporter(editingContextEventProcessor, documents, representationImportDatas, projectManifest);
+                ProjectImporter projectImporter = new ProjectImporter(editingContextEventProcessor, documents, representationImportDatas, projectManifest, representationImporterUpdateServices);
                 boolean hasBeenImported = projectImporter.importProject(inputId);
 
                 if (!hasBeenImported) {
@@ -278,7 +282,7 @@ public class ProjectImportService implements IProjectImportService {
             RepresentationSerializedImportData representationSerializedImportData = this.objectMapper.readValue(representationDescriptorBytes, RepresentationSerializedImportData.class);
             var representationDescriptor = new RepresentationImportData(representationSerializedImportData.id(), representationSerializedImportData.projectId(),
                     representationSerializedImportData.descriptionId(), representationSerializedImportData.targetObjectId(), representationSerializedImportData.label(),
-                    representationSerializedImportData.kind(), representationSerializedImportData.representation().toString());
+                    representationSerializedImportData.kind(), representationSerializedImportData.representation());
             representations.add(representationDescriptor);
         }
         return representations;

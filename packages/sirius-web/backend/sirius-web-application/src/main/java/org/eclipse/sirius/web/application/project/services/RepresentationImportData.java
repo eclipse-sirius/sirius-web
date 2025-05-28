@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.services;
 
+import org.eclipse.sirius.components.representations.IRepresentation;
+
 import java.util.UUID;
 
 /**
@@ -26,6 +28,6 @@ public record RepresentationImportData(
         String targetObjectId,
         String label,
         String kind,
-        String representation
+        IRepresentation representation
 ) {
 }
