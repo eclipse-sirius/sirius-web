@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,7 +55,6 @@ public class DataSourceDescriptionProvider implements INodeDescriptionProvider {
         this.synchronizationPolicy = Objects.requireNonNull(synchronizationPolicy);
     }
 
-
     @Override
     public NodeDescription create() {
         return this.diagramBuilderHelper.newNodeDescription()
@@ -94,13 +93,17 @@ public class DataSourceDescriptionProvider implements INodeDescriptionProvider {
     }
 
     private NodePalette createNodePalette(NodeDescription processorNodeDescription) {
-
-        return this.diagramBuilderHelper.newNodePalette()
+        var nodePaletteBuilder = this.diagramBuilderHelper.newNodePalette()
                 .toolSections(new DefaultToolsFactory().createDefaultHideRevealNodeToolSection())
                 .deleteTool(this.flowViewBuilder.createDeleteTool())
                 .labelEditTool(this.flowViewBuilder.createLabelEditTool())
-                .edgeTools(this.flowViewBuilder.createEdgeToProcessorTool(processorNodeDescription))
-                .build();
+                .edgeTools(this.flowViewBuilder.createEdgeToProcessorTool(processorNodeDescription));
+
+        if (this.synchronizationPolicy == SynchronizationPolicy.UNSYNCHRONIZED) {
+            nodePaletteBuilder.quickAccessTools(this.flowViewBuilder.getDeleteFromDiagramTool());
+        }
+
+        return nodePaletteBuilder.build();
     }
 
 

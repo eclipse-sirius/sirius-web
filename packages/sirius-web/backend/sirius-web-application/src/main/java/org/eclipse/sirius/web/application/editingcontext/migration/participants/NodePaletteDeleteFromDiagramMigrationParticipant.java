@@ -44,7 +44,7 @@ public class NodePaletteDeleteFromDiagramMigrationParticipant implements IMigrat
                 if (nodePalette != null) {
                     var quickAccessDeleteFromDiagramTool = DiagramFactory.eINSTANCE.createNodeTool();
                     quickAccessDeleteFromDiagramTool.setName("Delete from diagram");
-                    quickAccessDeleteFromDiagramTool.setIconURLsExpression("aql:/diagram-images/graphicalDelete.svg");
+                    quickAccessDeleteFromDiagramTool.setIconURLsExpression("/diagram-images/graphicalDelete.svg");
                     quickAccessDeleteFromDiagramTool.getBody().add(DiagramFactory.eINSTANCE.createDeleteView());
                     nodePalette.getQuickAccessTools().add(quickAccessDeleteFromDiagramTool);
                 }

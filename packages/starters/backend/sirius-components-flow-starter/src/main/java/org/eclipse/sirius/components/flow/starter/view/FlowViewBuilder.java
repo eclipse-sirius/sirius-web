@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
 
@@ -153,6 +154,16 @@ public class FlowViewBuilder {
                         .borderSize(0)
                         .build())
                 .position(OutsideLabelPosition.BOTTOM_CENTER)
+                .build();
+    }
+
+    public NodeTool getDeleteFromDiagramTool() {
+        var deleteView = this.diagramBuilderHelper.newDeleteView();
+
+        return this.diagramBuilderHelper.newNodeTool()
+                .name("Delete from Diagram")
+                .iconURLsExpression("/diagram-images/graphicalDelete.svg")
+                .body(deleteView.build())
                 .build();
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -48,10 +48,8 @@ public class PowerInputDescriptionProvider implements INodeDescriptionProvider {
         this.colorProvider = Objects.requireNonNull(colorProvider);
     }
 
-
     @Override
     public NodeDescription create() {
-
         return this.diagramBuilderHelper.newNodeDescription()
                 .name(NAME)
                 .domainType("flow::PowerInput")
@@ -73,7 +71,6 @@ public class PowerInputDescriptionProvider implements INodeDescriptionProvider {
     }
 
     private NodePalette createNodePalette() {
-
         return this.diagramBuilderHelper.newNodePalette()
                 .toolSections(new DefaultToolsFactory().createDefaultHideRevealNodeToolSection())
                 .deleteTool(this.flowViewBuilder.createDeleteTool())
