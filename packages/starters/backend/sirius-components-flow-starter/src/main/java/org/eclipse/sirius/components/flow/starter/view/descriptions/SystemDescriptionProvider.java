@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -112,12 +112,16 @@ public class SystemDescriptionProvider implements INodeDescriptionProvider {
     }
 
     private NodePalette createNodePalette(IViewDiagramElementFinder cache) {
-
-        return this.diagramBuilderHelper.newNodePalette()
+        var nodePaletteBuilder = this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(this.flowViewBuilder.createDeleteTool())
                 .labelEditTool(this.flowViewBuilder.createLabelEditTool())
-                .toolSections(this.createNodeToolSection(cache), new DefaultToolsFactory().createDefaultHideRevealNodeToolSection())
-                .build();
+                .toolSections(this.createNodeToolSection(cache), new DefaultToolsFactory().createDefaultHideRevealNodeToolSection());
+
+        if (this.synchronizationPolicy == SynchronizationPolicy.UNSYNCHRONIZED) {
+            nodePaletteBuilder.quickAccessTools(this.flowViewBuilder.getDeleteFromDiagramTool());
+        }
+
+        return nodePaletteBuilder.build();
     }
 
     private NodeToolSection createNodeToolSection(IViewDiagramElementFinder cache) {
@@ -130,7 +134,6 @@ public class SystemDescriptionProvider implements INodeDescriptionProvider {
     }
 
     private NodeTool createNodeToolCreateFan(IViewDiagramElementFinder cache) {
-
         var setValueSpeed = this.viewBuilderHelper.newSetValue()
                 .featureName("speed")
                 .valueExpression("200");
@@ -164,7 +167,6 @@ public class SystemDescriptionProvider implements INodeDescriptionProvider {
     }
 
     private NodeTool createNodeToolProcessor(IViewDiagramElementFinder cache) {
-
         var setValueStatus = this.viewBuilderHelper.newSetValue()
                 .featureName("status")
                 .valueExpression("active");
@@ -201,7 +203,6 @@ public class SystemDescriptionProvider implements INodeDescriptionProvider {
     }
 
     private NodeTool createNodeToolCreateDataSource(IViewDiagramElementFinder cache) {
-
         var setValueVolume = this.viewBuilderHelper.newSetValue()
                 .featureName("volume")
                 .valueExpression("6");

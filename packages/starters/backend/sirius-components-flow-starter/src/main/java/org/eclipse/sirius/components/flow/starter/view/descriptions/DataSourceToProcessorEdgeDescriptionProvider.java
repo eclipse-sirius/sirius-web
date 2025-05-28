@@ -83,7 +83,6 @@ public class DataSourceToProcessorEdgeDescriptionProvider implements IEdgeDescri
     }
 
     private EdgePalette createEdgePalette() {
-
         return this.diagramBuilderHelper.newEdgePalette()
                 .toolSections(new DefaultToolsFactory().createDefaultHideRevealEdgeToolSection())
                 .deleteTool(this.flowViewBuilder.createDeleteTool())
