@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { useComponent } from '../extension/useComponent';
 import { useData } from '../extension/useData';
@@ -182,20 +182,30 @@ export const Workbench = ({
     }
   }, [onRepresentationSelected, initialRepresentationSelected, state.displayedRepresentationMetadata]);
 
-  const workbenchViewLeftSideContributions: WorkbenchViewContribution[] = [];
-  const workbenchViewRightSideContributions: WorkbenchViewContribution[] = [];
-
   const { data: workbenchViewContributions } = useData(workbenchViewContributionExtensionPoint);
-  for (const workbenchViewContribution of workbenchViewContributions) {
-    if (workbenchViewContribution.side === 'left') {
-      workbenchViewLeftSideContributions.push(workbenchViewContribution);
-    } else if (workbenchViewContribution.side === 'right') {
-      workbenchViewRightSideContributions.push(workbenchViewContribution);
+
+  const { workbenchViewLeftSideContributions, workbenchViewRightSideContributions } = useMemo(() => {
+    const workbenchViewLeftSideContributions: WorkbenchViewContribution[] = [];
+    const workbenchViewRightSideContributions: WorkbenchViewContribution[] = [];
+
+    for (const workbenchViewContribution of workbenchViewContributions) {
+      if (workbenchViewContribution.side === 'left') {
+        workbenchViewLeftSideContributions.push(workbenchViewContribution);
+      } else if (workbenchViewContribution.side === 'right') {
+        workbenchViewRightSideContributions.push(workbenchViewContribution);
+      }
     }
-  }
+    return {
+      workbenchViewLeftSideContributions,
+      workbenchViewRightSideContributions,
+    };
+  }, [workbenchViewContributions]);
 
   const { Component: MainComponent } = useComponent(workbenchMainAreaExtensionPoint);
-  let main = <MainComponent editingContextId={editingContextId} readOnly={readOnly} />;
+  let main = useMemo(
+    () => <MainComponent editingContextId={editingContextId} readOnly={readOnly} />,
+    [MainComponent, editingContextId, readOnly]
+  );
 
   const onRepresentationClick = (representation: RepresentationMetadata) => {
     setSelection({ entries: [{ id: representation.id }] });
