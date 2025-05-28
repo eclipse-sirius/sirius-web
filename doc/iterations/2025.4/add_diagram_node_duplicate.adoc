@@ -1,0 +1,54 @@
+= (S) Add diagram node duplicate tool
+
+== Problem
+
+Currently, in order to duplicate a node from a diagram, the end user needs to:
+* Identify the corresponding semantic element
+* Duplicate the semantic element
+* (if the corresponding node mapping is unsynchronized) re-create the node in the diagram (usually via drag-and-drop from the `Explorer` view if such a tool has been defined)
+
+It would be more practical to have a generic diagram tool on nodes that does all this.
+
+== Key Result
+
+The diagram user can duplicate a node (and the underlying semantic element) with a single operation from the node tool palette.
+
+=== Acceptance Criteria
+
+* The node duplicate tool is available in the node tool palette.
+* When the user invokes the tool on a node:
+** The semantic element represented by the node is duplicated in the same container and same containing feature as the original element.
+** The same `NodeDescription` as the original node element is applied to the newly-created semantic element.
+
+== Solution
+
+* We will create a new canonical service in `org.eclipse.sirius.components.view.emf.CanonicalServices`:
+
+[source,java]
+----
+public Node defaultDuplicateNode(Node self) { ... }
+----
+
+where:
+** The single parameter is the `Node` to duplicate
+** The return value is the created `Node`.
+* In `org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory`, when creating a default `NodePalette`, we will add a new "Quick Access" `NodeTools` whose implementation relies on this service.
+* The precondition of the tool will rely on the multiplicity of the containing feature of the original semantic element, so that the tool is disabled on nodes whose containing feature upper bound has already been reached.
+
+=== Breadboarding
+
+N/A.
+
+=== Cutting backs
+
+N/A.
+
+== Rabbit holes
+
+* The validation rules can still reject the duplication of the element at runtime. In that case the exception would get swallowed because it is thrown from within a Sirius service call.
+* We could try to bind this tool to the copy/paste shortcuts (`CTRL+C` / `CTRL+V`), but there may be a discussion to be had about drop tools that may be defined for the diagram.
+* Downstream applications may need to customize how the containing element or feature is determined, as opposed to using the same one as the original element. In that case, they can just define their own implementation of the duplicate operation.
+
+== No-gos
+
+N/A.
