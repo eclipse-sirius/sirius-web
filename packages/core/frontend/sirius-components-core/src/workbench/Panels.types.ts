@@ -22,3 +22,8 @@ export interface PanelsProps {
   leftPanelInitialSize: number;
   rightPanelInitialSize: number;
 }
+
+export type PanelState = {
+  selectedContributionIndex: number;
+  isOpen: boolean;
+};

@@ -89,6 +89,7 @@ The following dependencies have been updated:
 - https://github.com/eclipse-sirius/sirius-web/issues/4958[#4958] [tree] Fix state access in `useEffect` modifying the state
 These `useEffect` now read the state value from `prevState` instead of `state`, which may not be reflecting the modifications performed by other `useEffect`.
 - https://github.com/eclipse-sirius/sirius-web/issues/4967[#4967] [sirius-web] Fix representation creation when uploading whole projects
+- https://github.com/eclipse-sirius/sirius-web/issues/4979[#4977] [sirius-web] Fix a bug introduced with #4183 where collapsed views were still rendered (and updated by the backend)
 
 === New Features
 
