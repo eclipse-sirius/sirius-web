@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { ApolloError, gql, OnDataOptions, useSubscription } from '@apollo/client';
 import { useMachine } from '@xstate/react';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { flushSync } from 'react-dom';
 import { makeStyles } from 'tss-react/mui';
 import { StateMachine } from 'xstate';
@@ -156,20 +156,30 @@ export const Workbench = ({
     }
   }, [onRepresentationSelected, initialRepresentationSelected, displayedRepresentation]);
 
-  const workbenchViewLeftSideContributions: WorkbenchViewContribution[] = [];
-  const workbenchViewRightSideContributions: WorkbenchViewContribution[] = [];
-
   const { data: workbenchViewContributions } = useData(workbenchViewContributionExtensionPoint);
-  for (const workbenchViewContribution of workbenchViewContributions) {
-    if (workbenchViewContribution.side === 'left') {
-      workbenchViewLeftSideContributions.push(workbenchViewContribution);
-    } else if (workbenchViewContribution.side === 'right') {
-      workbenchViewRightSideContributions.push(workbenchViewContribution);
+
+  const { workbenchViewLeftSideContributions, workbenchViewRightSideContributions } = useMemo(() => {
+    const workbenchViewLeftSideContributions: WorkbenchViewContribution[] = [];
+    const workbenchViewRightSideContributions: WorkbenchViewContribution[] = [];
+
+    for (const workbenchViewContribution of workbenchViewContributions) {
+      if (workbenchViewContribution.side === 'left') {
+        workbenchViewLeftSideContributions.push(workbenchViewContribution);
+      } else if (workbenchViewContribution.side === 'right') {
+        workbenchViewRightSideContributions.push(workbenchViewContribution);
+      }
     }
-  }
+    return {
+      workbenchViewLeftSideContributions,
+      workbenchViewRightSideContributions,
+    };
+  }, [workbenchViewContributions]);
 
   const { Component: MainComponent } = useComponent(workbenchMainAreaExtensionPoint);
-  let main = <MainComponent editingContextId={editingContextId} readOnly={readOnly} />;
+  let main = useMemo(
+    () => <MainComponent editingContextId={editingContextId} readOnly={readOnly} />,
+    [MainComponent, editingContextId, readOnly]
+  );
 
   if (displayedRepresentation) {
     const RepresentationComponent = representationFactories
