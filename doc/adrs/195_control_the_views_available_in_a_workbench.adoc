@@ -1,0 +1,68 @@
+= ADR-196 - Control the views available in a workbench
+
+== Context
+
+We want to change the set of workbench views available per projects.
+The set of views is currently fixed for the entire application.
+
+
+== Decision
+
+A new GraphQL API will be provided to let the frontend receive the configuration of the workbench when it is opened.
+
+```
+type EditingContext {
+  workbench: WorkbenchConfiguration
+}
+
+type WorkbenchConfiguration {
+  panels: [WorkbenchPanelConfiguration!]!
+}
+
+type WorkbenchPanelConfiguration {
+  id: String!
+  views: [WorkbenchViewConfiguration!]!
+}
+
+type WorkbenchViewConfiguration {
+  id: String!
+}
+```
+
+To be able to send the following query:
+
+```
+query {
+  viewer {
+    project {
+      currentEditingContext {
+        workbench {
+          panels {
+            id
+            views {
+              id
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+On the backend an API will be provided to compute the workbench configuration for a specific editing context.
+If the GraphQL API does not return anything, then the frontend will fallback on the hardcoded behavior.
+
+The `Workbench` component will thus receive directly the various workbench views that it should use for the relevant panels.
+
+
+== Status
+
+Accepted.
+
+== Consequences
+
+Downstream application will be able to dynamically configure the set of workbench views available and their position.
+They should probably stop removing or changing the position of the default workbench views if they are doing so.
+
+== References
