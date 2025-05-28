@@ -19,7 +19,7 @@ import {
   PanelResizeHandle,
 } from 'react-resizable-panels';
 import { makeStyles } from 'tss-react/mui';
-import { PanelsProps } from './Panels.types';
+import { PanelsProps, PanelState } from './Panels.types';
 import { Sidebar } from './Sidebar';
 import { WorkbenchViewContribution } from './Workbench.types';
 import { WorkbenchPart } from './WorkbenchPart';
@@ -60,23 +60,44 @@ export const Panels = ({
 }: PanelsProps) => {
   disableGlobalCursorStyles();
 
+  const leftInitialState: PanelState = { selectedContributionIndex: 0, isOpen: false };
+  const rightInitialState: PanelState = { selectedContributionIndex: 0, isOpen: false };
+
   const { classes } = usePanelStyles();
   const leftRef = useRef<ImperativePanelHandle>(null);
   const rightRef = useRef<ImperativePanelHandle>(null);
-  const [leftSelectedContributionIndex, setLeftSelectedContributionIndex] = useState<number>(0);
-  const [rightSelectedContributionIndex, setRightSelectedContributionIndex] = useState<number>(0);
+  const [leftPanelState, setLeftPanelState] = useState<PanelState>(leftInitialState);
+  const [rightPanelState, setRightPanelState] = useState<PanelState>(rightInitialState);
 
-  const leftContribution: WorkbenchViewContribution | null = leftContributions[leftSelectedContributionIndex] || null;
+  const leftContribution: WorkbenchViewContribution | null =
+    leftContributions[leftPanelState.selectedContributionIndex] || null;
   const rightContribution: WorkbenchViewContribution | null =
-    rightContributions[rightSelectedContributionIndex] || null;
+    rightContributions[rightPanelState.selectedContributionIndex] || null;
+
+  const handleLeftContributionSelection = (index: number) => {
+    setLeftPanelState((prevState) => ({ ...prevState, selectedContributionIndex: index }));
+  };
+
+  const handleRightContributionSelection = (index: number) => {
+    setRightPanelState((prevState) => ({ ...prevState, selectedContributionIndex: index }));
+  };
+
+  const toggleLeftPanelOpen = () => {
+    setLeftPanelState((prevState) => ({ ...prevState, isOpen: !prevState.isOpen }));
+  };
+
+  const toggleRightPanelOpen = () => {
+    setRightPanelState((prevState) => ({ ...prevState, isOpen: !prevState.isOpen }));
+  };
+
   return (
     <div style={{ display: 'flex' }}>
       <Sidebar
         side="left"
         panelRef={leftRef}
         contributions={leftContributions}
-        selectedContributionIndex={leftSelectedContributionIndex}
-        onContributionSelected={setLeftSelectedContributionIndex}
+        selectedContributionIndex={leftPanelState.selectedContributionIndex}
+        onContributionSelected={handleLeftContributionSelection}
       />
       <PanelGroup direction="horizontal">
         <Panel
@@ -86,8 +107,10 @@ export const Panels = ({
           collapsible
           collapsedSize={0}
           minSize={10}
+          onExpand={toggleLeftPanelOpen}
+          onCollapse={toggleLeftPanelOpen}
           ref={leftRef}>
-          {leftContribution !== null ? (
+          {leftContribution !== null && leftPanelState.isOpen ? (
             <WorkbenchPart
               editingContextId={editingContextId}
               readOnly={readOnly}
@@ -108,8 +131,10 @@ export const Panels = ({
           collapsible
           collapsedSize={0}
           minSize={10}
+          onExpand={toggleRightPanelOpen}
+          onCollapse={toggleRightPanelOpen}
           ref={rightRef}>
-          {rightContribution !== null ? (
+          {rightContribution !== null && rightPanelState.isOpen ? (
             <WorkbenchPart
               editingContextId={editingContextId}
               readOnly={readOnly}
@@ -123,8 +148,8 @@ export const Panels = ({
         contributions={rightContributions}
         side="right"
         panelRef={rightRef}
-        selectedContributionIndex={rightSelectedContributionIndex}
-        onContributionSelected={setRightSelectedContributionIndex}
+        selectedContributionIndex={rightPanelState.selectedContributionIndex}
+        onContributionSelected={handleRightContributionSelection}
       />
     </div>
   );
