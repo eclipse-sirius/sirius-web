@@ -11,9 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { DataExtension, useData } from '@eclipse-sirius/sirius-components-core';
+import { useMemo } from 'react';
 import { Tree } from '../trees/Tree';
 import { GQLTree, TreeConverter, TreeViewProps } from './TreeView.types';
 import { treeViewTreeConverterExtensionPoint } from './TreeViewExtensionPoints';
+
+const convertTree = (editingContextId: string, treeConverters: TreeConverter[], tree: GQLTree) => {
+  let convertedTree: GQLTree = tree;
+  treeConverters.forEach((treeConverter) => {
+    convertedTree = treeConverter.convert(editingContextId, convertedTree);
+  });
+  return convertedTree;
+};
 
 export const TreeView = ({
   editingContextId,
@@ -31,11 +40,9 @@ export const TreeView = ({
   selectedTreeItemIds,
 }: TreeViewProps) => {
   const { data: treeConverters }: DataExtension<TreeConverter[]> = useData(treeViewTreeConverterExtensionPoint);
-
-  let convertedTree: GQLTree = tree;
-  treeConverters.forEach((treeConverter) => {
-    convertedTree = treeConverter.convert(editingContextId, convertedTree);
-  });
+  const convertedTree: GQLTree = useMemo(() => {
+    return convertTree(editingContextId, treeConverters, tree);
+  }, [editingContextId, tree, treeConverters]);
 
   return (
     <div data-testid={treeId}>
