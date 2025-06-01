@@ -65,7 +65,7 @@ public class NodePaletteDeleteFromDiagramMigrationParticipantTests extends Abstr
                         if (nodeDescription.getSynchronizationPolicy().equals(SynchronizationPolicy.UNSYNCHRONIZED)) {
                             assertThat(nodeDescription.getPalette().getQuickAccessTools()).anySatisfy(quickAccessTool -> {
                                 assertThat(quickAccessTool.getName()).isEqualTo("Delete from diagram");
-                                assertThat(quickAccessTool.getIconURLsExpression()).isEqualTo("aql:/diagram-images/graphicalDelete.svg");
+                                assertThat(quickAccessTool.getIconURLsExpression()).isEqualTo("aql:'/diagram-images/graphicalDelete.svg'");
                                 assertThat(quickAccessTool.getBody()).hasSize(1);
                                 assertThat(quickAccessTool.getBody().get(0)).isInstanceOf(DeleteView.class);
                             });
