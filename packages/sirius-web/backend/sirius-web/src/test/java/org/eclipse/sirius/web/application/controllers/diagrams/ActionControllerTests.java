@@ -108,7 +108,7 @@ public class ActionControllerTests extends AbstractIntegrationTests {
                 .ifPresentOrElse(diag -> {
                     diagramId.set(diag.getId());
                     var node = diag.getNodes().stream()
-                        .filter(n -> "Component sirius-web-domain".equals(n.getTargetObjectLabel()))
+                        .filter(n -> "sirius-web-domain".equals(n.getTargetObjectLabel()))
                         .findFirst();
                     assertTrue(node.isPresent());
                     assertEquals(ViewModifier.Normal, node.get().getState());
@@ -161,7 +161,7 @@ public class ActionControllerTests extends AbstractIntegrationTests {
                 .ifPresentOrElse(diag -> {
                     diagramId.set(diag.getId());
                     var node = diag.getNodes().stream()
-                        .filter(n -> "Component sirius-web-infrastructure".equals(n.getTargetObjectLabel()))
+                        .filter(n -> "sirius-web-infrastructure".equals(n.getTargetObjectLabel()))
                         .findFirst();
                     assertTrue(node.isPresent());
                     assertEquals(ViewModifier.Normal, node.get().getState());
@@ -216,7 +216,7 @@ public class ActionControllerTests extends AbstractIntegrationTests {
                 .ifPresentOrElse(diag -> {
                     diagramId.set(diag.getId());
                     var node = diag.getNodes().stream()
-                            .filter(n -> "Component sirius-web-domain".equals(n.getTargetObjectLabel()))
+                            .filter(n -> "sirius-web-domain".equals(n.getTargetObjectLabel()))
                             .findFirst();
                     assertTrue(node.isPresent());
                     assertEquals(ViewModifier.Normal, node.get().getState());
@@ -237,7 +237,7 @@ public class ActionControllerTests extends AbstractIntegrationTests {
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     var node = diagram.getNodes().stream()
-                            .filter(n -> "Component sirius-web-domain".equals(n.getTargetObjectLabel()))
+                            .filter(n -> "sirius-web-domain".equals(n.getTargetObjectLabel()))
                             .findFirst();
                     assertTrue(node.isPresent());
                     assertEquals(ViewModifier.Hidden, node.get().getState());

@@ -165,6 +165,16 @@ public class FolderItemProvider extends NamedElementItemProvider {
 
         newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.CONTAINER__FOLDERS, PapayaFactory.eINSTANCE.createFolder()));
 
+        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.CONTAINER__ELEMENTS, PapayaFactory.eINSTANCE.createOperationalCapability()));
+
+        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.CONTAINER__ELEMENTS, PapayaFactory.eINSTANCE.createOperationalEntity()));
+
+        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.CONTAINER__ELEMENTS, PapayaFactory.eINSTANCE.createOperationalActor()));
+
+        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.CONTAINER__ELEMENTS, PapayaFactory.eINSTANCE.createOperationalProcess()));
+
+        newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.CONTAINER__ELEMENTS, PapayaFactory.eINSTANCE.createOperationalActivity()));
+
         newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.CONTAINER__ELEMENTS, PapayaFactory.eINSTANCE.createIteration()));
 
         newChildDescriptors.add(this.createChildParameter(PapayaPackage.Literals.CONTAINER__ELEMENTS, PapayaFactory.eINSTANCE.createTask()));

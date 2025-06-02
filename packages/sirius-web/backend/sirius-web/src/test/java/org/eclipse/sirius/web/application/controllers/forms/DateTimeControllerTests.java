@@ -191,7 +191,7 @@ public class DateTimeControllerTests extends AbstractIntegrationTests {
                 .ifPresentOrElse(form -> {
                     formId.set(form.getId());
 
-                    var startDateTime = new FormNavigator(form).page("Iteration 2024.3.0").group("Core Properties").findWidget("Start Date", DateTime.class);
+                    var startDateTime = new FormNavigator(form).page("2024.3.0").group("Core Properties").findWidget("Start Date", DateTime.class);
                     startDate.set(startDateTime.getId());
 
                     assertThat(startDateTime).hasValue("2023-12-11T09:00:00Z");
@@ -208,7 +208,7 @@ public class DateTimeControllerTests extends AbstractIntegrationTests {
         Consumer<FormRefreshedEventPayload> updatedFormContentConsumer = payload -> Optional.of(payload)
                 .map(FormRefreshedEventPayload::form)
                 .ifPresentOrElse(form -> {
-                    var dateTime = new FormNavigator(form).page("Iteration 2024.3.0").group("Core Properties").findWidget("Start Date", DateTime.class);
+                    var dateTime = new FormNavigator(form).page("2024.3.0").group("Core Properties").findWidget("Start Date", DateTime.class);
                     assertThat(dateTime).hasValue("2024-02-11T09:00:00Z");
                 }, () -> fail("Missing form"));
 
@@ -223,7 +223,7 @@ public class DateTimeControllerTests extends AbstractIntegrationTests {
         Consumer<FormRefreshedEventPayload> updatedFormContentConsumer2 = payload -> Optional.of(payload)
                 .map(FormRefreshedEventPayload::form)
                 .ifPresentOrElse(form -> {
-                    var dateTime = new FormNavigator(form).page("Iteration 2024.3.0").group("Core Properties").findWidget("Start Date", DateTime.class);
+                    var dateTime = new FormNavigator(form).page("2024.3.0").group("Core Properties").findWidget("Start Date", DateTime.class);
                     assertThat(dateTime).hasValue("");
                 }, () -> fail("Missing form"));
 
