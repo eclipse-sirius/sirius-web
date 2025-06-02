@@ -47,6 +47,11 @@ public final class DiagramDescription implements IRepresentationDescription {
      */
     public static final String DESCRIPTION_ID = "descriptionId";
 
+    /**
+     * The name of the variable used to store the result of the rendering to allow specifiers to access data from the
+     * rendering before the entire diagram has been rendered. This variable can be used to allow the rendering of the edges
+     * to retrieve the nodes rendered beforehand.
+     */
     public static final String CACHE = "cache";
 
     /**
@@ -156,7 +161,16 @@ public final class DiagramDescription implements IRepresentationDescription {
     }
 
     /**
-     * Provides a function which will be used when a new diagram is created in order to compute its label.
+     * Provides a function which will be used when a new diagram is created in order to compute its label.<p>
+     *
+     * <p>
+     *     The following variables will at least be available when this behavior is executed:
+     * </p>
+     *
+     * <ul>
+     *     <li><strong>self</strong> - The semantic element on which the diagram is being created</li>
+     *     <li><strong>label</strong> - The text entered by the end user to use as the label of the diagram</li>
+     * </ul>
      *
      * @return A function used to compute the label of the representation.
      *
@@ -252,6 +266,14 @@ public final class DiagramDescription implements IRepresentationDescription {
 
     /**
      * Provides the function which will be used to retrieve the URL of the various images composing the icon of the diagram.
+     *
+     * <p>
+     *     The following variables will at least be available when this behavior is executed:
+     * </p>
+     *
+     * <ul>
+     *     <li><strong>self</strong> - The semantic element on which the diagram is being created</li>
+     * </ul>
      *
      * @return A function used to compute the URLs of the icon associated with the diagram.
      *

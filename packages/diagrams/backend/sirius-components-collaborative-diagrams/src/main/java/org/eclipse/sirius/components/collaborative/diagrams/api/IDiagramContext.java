@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo and others.
+ * Copyright (c) 2019, 2025 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,8 +33,21 @@ public interface IDiagramContext {
 
     Diagram getDiagram();
 
+    /**
+     * Used to update the internal diagram.
+     *
+     * @param updatedDiagram The updated diagram which should replace the current one
+     *
+     * @technical-debt This method should probably stop being used and be removed to use instead an immutable data structure
+     * for the diagram context. The interface itself could probably be removed entirely in favor of a simple record.
+     */
     void update(Diagram updatedDiagram);
 
+    /**
+     * Used to remove all the view creation / deletion requests and the various diagram events.
+     *
+     * @technical-debt The method should be deleted in favor of an immutable data structure for the diagram context.
+     */
     void reset();
 
     List<ViewCreationRequest> getViewCreationRequests();
