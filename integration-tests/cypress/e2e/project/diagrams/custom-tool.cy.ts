@@ -10,10 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Explorer } from '../../../workbench/Explorer';
-import { Diagram } from '../../../workbench/Diagram';
-import { Papaya } from '../../../usecases/Papaya';
 import { Project } from '../../../pages/Project';
+import { Papaya } from '../../../usecases/Papaya';
+import { Diagram } from '../../../workbench/Diagram';
+import { Explorer } from '../../../workbench/Explorer';
 
 describe('Custom tools', () => {
   context('Given a papaya blank project', () => {
@@ -25,9 +25,9 @@ describe('Custom tools', () => {
         project.visit(projectId);
         const explorer = new Explorer();
         explorer.expandWithDoubleClick('Papaya');
-        explorer.expandWithDoubleClick('Project Project');
-        explorer.expandWithDoubleClick('Component Component');
-        explorer.createRepresentation('Component Component', 'Component Diagram', 'diagram');
+        explorer.expandWithDoubleClick('Project');
+        explorer.expandWithDoubleClick('Component');
+        explorer.createRepresentation('Component', 'Component Diagram', 'diagram');
       });
     });
 

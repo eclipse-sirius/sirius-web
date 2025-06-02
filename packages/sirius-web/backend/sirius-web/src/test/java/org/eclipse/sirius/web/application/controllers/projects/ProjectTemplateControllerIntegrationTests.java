@@ -30,7 +30,7 @@ import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateS
 import org.eclipse.sirius.web.application.studio.services.StudioProjectTemplateProvider;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
-import org.eclipse.sirius.web.papaya.services.PapayaProjectTemplateProvider;
+import org.eclipse.sirius.web.papaya.projecttemplates.PapayaProjectTemplateProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.CreateProjectFromTemplateMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.ProjectTemplatesQueryRunner;
@@ -141,7 +141,7 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
-        var input = new CreateProjectFromTemplateInput(UUID.randomUUID(), PapayaProjectTemplateProvider.SIRIUS_WEB_PROJECT_TEMPLATE_ID);
+        var input = new CreateProjectFromTemplateInput(UUID.randomUUID(), PapayaProjectTemplateProvider.BENCHMARK_PROJECT_TEMPLATE_ID);
         var result = this.createProjectFromTemplateMutationRunner.run(input);
 
         String typename = JsonPath.read(result, "$.data.createProjectFromTemplate.__typename");

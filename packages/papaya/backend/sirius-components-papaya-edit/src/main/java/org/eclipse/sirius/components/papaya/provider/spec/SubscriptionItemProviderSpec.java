@@ -12,7 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.papaya.provider.spec;
 
+import java.util.Optional;
+
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.edit.provider.StyledString;
+import org.eclipse.sirius.components.papaya.Channel;
+import org.eclipse.sirius.components.papaya.Message;
+import org.eclipse.sirius.components.papaya.Subscription;
 import org.eclipse.sirius.components.papaya.provider.SubscriptionItemProvider;
 
 /**
@@ -28,5 +34,17 @@ public class SubscriptionItemProviderSpec extends SubscriptionItemProvider {
     @Override
     public Object getImage(Object object) {
         return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/Subscription.svg"));
+    }
+
+    @Override
+    public Object getStyledText(Object object) {
+        if (object instanceof Subscription subscription) {
+            StyledString styledLabel = new StyledString();
+            styledLabel.append(Optional.ofNullable(subscription.getMessage()).map(Message::getName).orElse("null"));
+            styledLabel.append(" over ");
+            styledLabel.append(Optional.ofNullable(subscription.getChannel()).map(Channel::getName).orElse("null"));
+            return styledLabel;
+        }
+        return super.getStyledText(object);
     }
 }
