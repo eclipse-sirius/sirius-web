@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * The description of the node.
  *
  * @author sbegaudeau
+ * @since v0.1.0
  */
 @Immutable
 public final class NodeDescription implements IDiagramElementDescription {
@@ -115,18 +116,61 @@ public final class NodeDescription implements IDiagramElementDescription {
         return this.targetObjectIdProvider;
     }
 
+    /**
+     * Provides a function used to compute the kind of the semantic element used as the target of the node.
+     *
+     * @return A function used to return the kind of the semantic element.
+     *
+     * @technical-debt This method should be removed since its addition was caused by some technical debt in the explorer.
+     */
     public Function<VariableManager, String> getTargetObjectKindProvider() {
         return this.targetObjectKindProvider;
     }
 
+    /**
+     * Provides a function used to compute the label of the semantic element used as the target of the node.
+     *
+     * @return A function used to return the label of the semantic element.
+     *
+     * @technical-debt This method should be removed since its addition was caused by some technical debt in the explorer.
+     */
     public Function<VariableManager, String> getTargetObjectLabelProvider() {
         return this.targetObjectLabelProvider;
     }
 
+    /**
+     * Provides the function which will be used to compute the semantic elements which will be used as the target of some
+     * nodes created from this description.
+     *
+     * <p>
+     *     The following variables will at least be available when this behavior is executed:
+     * </p>
+     *
+     * <ul>
+     *     <li><strong>self</strong> - The semantic element used by the parent element, for example the root of the diagram
+     *     for top level nodes or the semantic element used as a target by the parent node</li>
+     *     <li><strong>editingContext</strong> - The editing context used to access any semantic element thanks to the core
+     *     services</li>
+     *     <li><strong>previousDiagram</strong> - The previously rendered diagram or null if it is being rendered for the
+     *     first time</li>
+     *     <li><strong>diagramContext</strong> - The diagram context is used to access the various events along with the
+     *     view creation and deletion requests</li>
+     * </ul>
+     *
+     * @return A function used to return the semantic elements to use as the target of the nodes.
+     */
     public Function<VariableManager, List<?>> getSemanticElementsProvider() {
         return this.semanticElementsProvider;
     }
 
+    /**
+     * Provides a predicate used to indicate if a node should be rendered from the node description.
+     *
+     * @return A predicate to determine if a node should be rendered or not
+     *
+     * @technical-debt This method should probably be removed and the predicate be integrated in the semantic elements
+     * provider by downstream specifiers.
+     */
     public Predicate<VariableManager> getShouldRenderPredicate() {
         return this.shouldRenderPredicate;
     }
@@ -167,10 +211,58 @@ public final class NodeDescription implements IDiagramElementDescription {
         return this.reusedChildNodeDescriptionIds;
     }
 
+    /**
+     * Provides a function used to execute the deletion of the node.
+     *
+     * <p>
+     *     The following variables will at least be available when this behavior is executed:
+     * </p>
+     *
+     * <ul>
+     *     <li><strong>self</strong> - The semantic element used as a target by the node to be deleted</li>
+     *     <li><strong>editingContext</strong> - The editing context used to access any semantic element thanks to the
+     *     core services</li>
+     *     <li><strong>diagramContext</strong> - The diagram context is used to access the various events along with the
+     *     view creation and deletion requests</li>
+     *     <li><strong>selectedNode</strong> - The node which should be deleted</li>
+     * </ul>
+     *
+     * @return A function provided by a specifier to trigger the deletion of the node
+     *
+     * @technical-debt This function is unused during the rendering and should thus be removed. Hardcoding such behavior
+     * into the description also provides a poor extensibility of the diagram representation by preventing downstream
+     * consumers from updating the existing behavior or adding a new one easily
+     */
     public Function<VariableManager, IStatus> getDeleteHandler() {
         return this.deleteHandler;
     }
 
+    /**
+     * Provides a function used to let end users drop nodes on another node.
+     *
+     * <p>
+     *     The following variables will at least be available when this behavior is executed:
+     * </p>
+     *
+     * <ul>
+     *     <li><strong>editingContext</strong> - The editing context used to access any semantic element thanks to the
+     *     core services</li>
+     *     <li><strong>diagramContext</strong> - The diagram context is used to access the various events along with the
+     *     view creation and deletion requests</li>
+     *     <li><strong>droppedElement</strong> - The semantic element used as a target by the dropped node</li>
+     *     <li><strong>droppedNode</strong> - The node being dropped</li>
+     *     <li><strong>targetElement</strong> - The semantic element used as a target by the target of the drop (another
+     *     node or the diagram itself)</li>
+     *     <li><strong>targetNode</strong> - The node in which the node is being dropped or null if dropped on the diagram
+     *     itself</li>
+     * </ul>
+     *
+     * @return A function provided by a specifier to drop nodes on another node
+     *
+     * @technical-debt This function is unused during the rendering and should thus be removed. Hardcoding such behavior
+     * into the description also provides a poor extensibility of the diagram representation by preventing downstream
+     * consumers from updating the existing behavior or adding a new one easily
+     */
     public Function<VariableManager, IStatus> getDropNodeHandler() {
         return this.dropNodeHandler;
     }

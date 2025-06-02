@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.annotations.Immutable;
  *
  * @author hmarchadour
  * @author sbegaudeau
+ * @since v0.1.0
  */
 @Immutable
 public final class Node implements IDiagramElement {
@@ -93,10 +94,24 @@ public final class Node implements IDiagramElement {
         return this.targetObjectId;
     }
 
+    /**
+     * Returns the kind of the semantic element used as the target of the node.
+     *
+     * @return The kind of the semantic element
+     *
+     * @technical-debt This method should be removed since this requirement was caused by some technical debt
+     */
     public String getTargetObjectKind() {
         return this.targetObjectKind;
     }
 
+    /**
+     * Returns the label of the semantic element used as the target of the node.
+     *
+     * @return The label of the semantic element
+     *
+     * @technical-debt This method should be removed since this requirement was caused by some technical debt
+     */
     public String getTargetObjectLabel() {
         return this.targetObjectLabel;
     }
