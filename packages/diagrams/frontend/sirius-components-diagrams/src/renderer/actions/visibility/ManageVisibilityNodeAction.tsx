@@ -53,17 +53,7 @@ export const ManageVisibilityNodeAction = ({
     return null;
   }
 
-  const getChildren = (parent: Node<NodeData>): Node<NodeData>[] => nodes.filter((node) => parent.id === node.parentId);
-
-  const getAllChildren = (children: Node<NodeData>[], parent: Node<NodeData>): Node<NodeData>[] => {
-    getChildren(parent).forEach((child) => {
-      children.push(child);
-      getAllChildren(children, child);
-    });
-    return children;
-  };
-
-  let items: Node<NodeData>[] = getAllChildren([], targetedNode);
+  let items: Node<NodeData>[] = nodes.filter((node) => diagramElementId === node.parentId);
 
   const onSearchValueChanged = (newValue: string): void => {
     setState((prevState) => ({ ...prevState, searchValue: newValue }));
