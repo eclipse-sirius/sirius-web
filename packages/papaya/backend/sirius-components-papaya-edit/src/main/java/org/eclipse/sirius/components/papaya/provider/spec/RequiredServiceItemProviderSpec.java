@@ -13,6 +13,8 @@
 package org.eclipse.sirius.components.papaya.provider.spec;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.edit.provider.StyledString;
+import org.eclipse.sirius.components.papaya.RequiredService;
 import org.eclipse.sirius.components.papaya.provider.RequiredServiceItemProvider;
 
 /**
@@ -28,5 +30,19 @@ public class RequiredServiceItemProviderSpec extends RequiredServiceItemProvider
     @Override
     public Object getImage(Object object) {
         return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/RequiredService.svg"));
+    }
+
+    @Override
+    public Object getStyledText(Object object) {
+        if (object instanceof RequiredService requiredService) {
+            StyledString styledLabel = new StyledString();
+            if (requiredService.getName().isEmpty()) {
+                styledLabel.append(this.getString("_UI_RequiredService_type"));
+            } else {
+                styledLabel.append(requiredService.getName());
+            }
+            return styledLabel;
+        }
+        return super.getStyledText(object);
     }
 }

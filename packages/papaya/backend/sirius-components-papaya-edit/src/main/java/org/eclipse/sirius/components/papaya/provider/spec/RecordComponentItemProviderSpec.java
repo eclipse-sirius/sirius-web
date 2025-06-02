@@ -13,6 +13,8 @@
 package org.eclipse.sirius.components.papaya.provider.spec;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.edit.provider.StyledString;
+import org.eclipse.sirius.components.papaya.Record;
 import org.eclipse.sirius.components.papaya.provider.RecordComponentItemProvider;
 
 /**
@@ -28,5 +30,29 @@ public class RecordComponentItemProviderSpec extends RecordComponentItemProvider
     @Override
     public Object getImage(Object object) {
         return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/RecordComponent.svg"));
+    }
+
+    @Override
+    public Object getStyledText(Object object) {
+        if (object instanceof Record record && record.getName() != null && !record.getName().isBlank()) {
+            StyledString styledLabel = new StyledString();
+            styledLabel.append(record.getName());
+
+            if (!record.getTypeParameters().isEmpty()) {
+                styledLabel.append("<", PapayaStyledStringStyles.DECORATOR_STYLE);
+
+                for (var i = 0; i < record.getTypeParameters().size(); i++) {
+                    var typeParameter = record.getTypeParameters().get(i);
+                    styledLabel.append(typeParameter.getName(), PapayaStyledStringStyles.GENERIC_TYPE_STYLE);
+                    if (i < record.getTypeParameters().size() - 1) {
+                        styledLabel.append(", ", PapayaStyledStringStyles.DECORATOR_STYLE);
+                    }
+                }
+
+                styledLabel.append(">", PapayaStyledStringStyles.DECORATOR_STYLE);
+            }
+            return styledLabel;
+        }
+        return super.getStyledText(object);
     }
 }

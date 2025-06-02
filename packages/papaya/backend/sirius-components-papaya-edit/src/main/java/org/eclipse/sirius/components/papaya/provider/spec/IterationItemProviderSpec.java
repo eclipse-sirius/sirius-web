@@ -13,6 +13,8 @@
 package org.eclipse.sirius.components.papaya.provider.spec;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.edit.provider.StyledString;
+import org.eclipse.sirius.components.papaya.Iteration;
 import org.eclipse.sirius.components.papaya.provider.IterationItemProvider;
 
 /**
@@ -28,5 +30,19 @@ public class IterationItemProviderSpec extends IterationItemProvider {
     @Override
     public Object getImage(Object object) {
         return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/Iteration.svg"));
+    }
+
+    @Override
+    public Object getStyledText(Object object) {
+        if (object instanceof Iteration iteration) {
+            StyledString styledLabel = new StyledString();
+            if (iteration.getName().isEmpty()) {
+                styledLabel.append(this.getString("_UI_Iteration_type"));
+            } else {
+                styledLabel.append(iteration.getName());
+            }
+            return styledLabel;
+        }
+        return super.getStyledText(object);
     }
 }

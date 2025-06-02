@@ -13,6 +13,8 @@
 package org.eclipse.sirius.components.papaya.provider.spec;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.edit.provider.StyledString;
+import org.eclipse.sirius.components.papaya.Publication;
 import org.eclipse.sirius.components.papaya.provider.PublicationItemProvider;
 
 /**
@@ -28,5 +30,21 @@ public class PublicationItemProviderSpec extends PublicationItemProvider {
     @Override
     public Object getImage(Object object) {
         return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/Publication.svg"));
+    }
+
+    @Override
+    public Object getStyledText(Object object) {
+        if (object instanceof Publication publication) {
+            StyledString styledLabel = new StyledString();
+            if (publication.getChannel() == null && publication.getMessage() == null) {
+                styledLabel.append(this.getString("_UI_Publication_type"));
+            } else {
+                styledLabel.append(publication.getMessage().getName());
+                styledLabel.append(" over ");
+                styledLabel.append(publication.getChannel().getName());
+            }
+            return styledLabel;
+        }
+        return super.getStyledText(object);
     }
 }

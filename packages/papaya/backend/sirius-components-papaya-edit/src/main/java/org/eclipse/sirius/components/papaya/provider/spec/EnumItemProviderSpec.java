@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedImage;
+import org.eclipse.emf.edit.provider.StyledString;
 import org.eclipse.sirius.components.papaya.Enum;
 import org.eclipse.sirius.components.papaya.provider.EnumItemProvider;
 import org.eclipse.sirius.components.papaya.provider.spec.images.VisibilityOverlayImageProvider;
@@ -41,5 +42,19 @@ public class EnumItemProviderSpec extends EnumItemProvider {
             ));
         }
         return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/Enum.svg"));
+    }
+
+    @Override
+    public Object getStyledText(Object object) {
+        if (object instanceof Enum anEnum) {
+            StyledString styledLabel = new StyledString();
+            if (anEnum.getName().isEmpty()) {
+                styledLabel.append(this.getString("_UI_Enum_type"));
+            } else {
+                styledLabel.append(anEnum.getName());
+            }
+            return styledLabel;
+        }
+        return super.getStyledText(object);
     }
 }

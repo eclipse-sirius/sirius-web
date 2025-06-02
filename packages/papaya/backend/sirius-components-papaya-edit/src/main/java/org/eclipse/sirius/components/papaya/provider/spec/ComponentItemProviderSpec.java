@@ -13,6 +13,8 @@
 package org.eclipse.sirius.components.papaya.provider.spec;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.edit.provider.StyledString;
+import org.eclipse.sirius.components.papaya.Component;
 import org.eclipse.sirius.components.papaya.provider.ComponentItemProvider;
 
 /**
@@ -28,5 +30,19 @@ public class ComponentItemProviderSpec extends ComponentItemProvider {
     @Override
     public Object getImage(Object object) {
         return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/Component.svg"));
+    }
+
+    @Override
+    public Object getStyledText(Object object) {
+        if (object instanceof Component component) {
+            StyledString styledLabel = new StyledString();
+            if (component.getName().isEmpty()) {
+                styledLabel.append(this.getString("_UI_Component_type"));
+            } else {
+                styledLabel.append(component.getName());
+            }
+            return styledLabel;
+        }
+        return super.getStyledText(object);
     }
 }

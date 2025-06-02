@@ -13,6 +13,8 @@
 package org.eclipse.sirius.components.papaya.provider.spec;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.edit.provider.StyledString;
+import org.eclipse.sirius.components.papaya.Channel;
 import org.eclipse.sirius.components.papaya.provider.ChannelItemProvider;
 
 /**
@@ -28,5 +30,19 @@ public class ChannelItemProviderSpec extends ChannelItemProvider {
     @Override
     public Object getImage(Object object) {
         return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/Channel.svg"));
+    }
+
+    @Override
+    public Object getStyledText(Object object) {
+        if (object instanceof Channel channel) {
+            StyledString styledLabel = new StyledString();
+            if (channel.getName().isEmpty()) {
+                styledLabel.append(this.getString("_UI_Channel_type"));
+            } else {
+                styledLabel.append(channel.getName());
+            }
+            return styledLabel;
+        }
+        return super.getStyledText(object);
     }
 }

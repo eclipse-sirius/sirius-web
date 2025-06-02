@@ -13,6 +13,8 @@
 package org.eclipse.sirius.components.papaya.provider.spec;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.edit.provider.StyledString;
+import org.eclipse.sirius.components.papaya.Event;
 import org.eclipse.sirius.components.papaya.provider.EventItemProvider;
 
 /**
@@ -28,5 +30,19 @@ public class EventItemProviderSpec extends EventItemProvider {
     @Override
     public Object getImage(Object object) {
         return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/Event.svg"));
+    }
+
+    @Override
+    public Object getStyledText(Object object) {
+        if (object instanceof Event event) {
+            StyledString styledLabel = new StyledString();
+            if (event.getName().isEmpty()) {
+                styledLabel.append(this.getString("_UI_Event_type"));
+            } else {
+                styledLabel.append(event.getName());
+            }
+            return styledLabel;
+        }
+        return super.getStyledText(object);
     }
 }

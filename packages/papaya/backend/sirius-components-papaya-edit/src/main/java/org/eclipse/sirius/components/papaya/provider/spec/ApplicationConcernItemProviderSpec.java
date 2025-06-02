@@ -13,6 +13,8 @@
 package org.eclipse.sirius.components.papaya.provider.spec;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.edit.provider.StyledString;
+import org.eclipse.sirius.components.papaya.ApplicationConcern;
 import org.eclipse.sirius.components.papaya.provider.ApplicationConcernItemProvider;
 
 /**
@@ -28,5 +30,19 @@ public class ApplicationConcernItemProviderSpec extends ApplicationConcernItemPr
     @Override
     public Object getImage(Object object) {
         return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/ApplicationConcern.svg"));
+    }
+
+    @Override
+    public Object getStyledText(Object object) {
+        if (object instanceof ApplicationConcern applicationConcern) {
+            StyledString styledLabel = new StyledString();
+            if (applicationConcern.getName().isEmpty()) {
+                styledLabel.append(this.getString("_UI_ApplicationConcern_type"));
+            } else {
+                styledLabel.append(applicationConcern.getName());
+            }
+            return styledLabel;
+        }
+        return super.getStyledText(object);
     }
 }

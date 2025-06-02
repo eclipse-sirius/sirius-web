@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedImage;
+import org.eclipse.emf.edit.provider.StyledString;
 import org.eclipse.sirius.components.papaya.DataType;
 import org.eclipse.sirius.components.papaya.provider.DataTypeItemProvider;
 import org.eclipse.sirius.components.papaya.provider.spec.images.VisibilityOverlayImageProvider;
@@ -41,5 +42,19 @@ public class DataTypeItemProviderSpec extends DataTypeItemProvider {
             ));
         }
         return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/DataType.svg"));
+    }
+
+    @Override
+    public Object getStyledText(Object object) {
+        if (object instanceof DataType dataType) {
+            StyledString styledLabel = new StyledString();
+            if (dataType.getName().isEmpty()) {
+                styledLabel.append(this.getString("_UI_DataType_type"));
+            } else {
+                styledLabel.append(dataType.getName());
+            }
+            return styledLabel;
+        }
+        return super.getStyledText(object);
     }
 }

@@ -46,17 +46,17 @@ public class RecordItemProviderSpec extends RecordItemProvider {
 
     @Override
     public Object getStyledText(Object object) {
-        if (object instanceof Record aRecord && aRecord.getName() != null && !aRecord.getName().isBlank()) {
+        if (object instanceof Record record && record.getName() != null && !record.getName().isBlank()) {
             StyledString styledLabel = new StyledString();
-            styledLabel.append(aRecord.getName());
+            styledLabel.append(record.getName());
 
-            if (!aRecord.getTypeParameters().isEmpty()) {
+            if (!record.getTypeParameters().isEmpty()) {
                 styledLabel.append("<", PapayaStyledStringStyles.DECORATOR_STYLE);
 
-                for (var i = 0; i < aRecord.getTypeParameters().size(); i++) {
-                    var typeParameter = aRecord.getTypeParameters().get(i);
+                for (var i = 0; i < record.getTypeParameters().size(); i++) {
+                    var typeParameter = record.getTypeParameters().get(i);
                     styledLabel.append(typeParameter.getName(), PapayaStyledStringStyles.GENERIC_TYPE_STYLE);
-                    if (i < aRecord.getTypeParameters().size() - 1) {
+                    if (i < record.getTypeParameters().size() - 1) {
                         styledLabel.append(", ", PapayaStyledStringStyles.DECORATOR_STYLE);
                     }
                 }

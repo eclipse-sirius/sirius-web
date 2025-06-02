@@ -13,6 +13,8 @@
 package org.eclipse.sirius.components.papaya.provider.spec;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.edit.provider.StyledString;
+import org.eclipse.sirius.components.papaya.Command;
 import org.eclipse.sirius.components.papaya.provider.CommandItemProvider;
 
 /**
@@ -28,5 +30,19 @@ public class CommandItemProviderSpec extends CommandItemProvider {
     @Override
     public Object getImage(Object object) {
         return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/Command.svg"));
+    }
+
+    @Override
+    public Object getStyledText(Object object) {
+        if (object instanceof Command command) {
+            StyledString styledLabel = new StyledString();
+            if (command.getName().isEmpty()) {
+                styledLabel.append(this.getString("_UI_Command_type"));
+            } else {
+                styledLabel.append(command.getName());
+            }
+            return styledLabel;
+        }
+        return super.getStyledText(object);
     }
 }

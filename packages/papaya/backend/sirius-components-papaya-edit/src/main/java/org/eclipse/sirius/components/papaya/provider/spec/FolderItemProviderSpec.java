@@ -13,6 +13,8 @@
 package org.eclipse.sirius.components.papaya.provider.spec;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.edit.provider.StyledString;
+import org.eclipse.sirius.components.papaya.Folder;
 import org.eclipse.sirius.components.papaya.provider.FolderItemProvider;
 
 /**
@@ -28,5 +30,19 @@ public class FolderItemProviderSpec extends FolderItemProvider {
     @Override
     public Object getImage(Object object) {
         return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/Folder.svg"));
+    }
+
+    @Override
+    public Object getStyledText(Object object) {
+        if (object instanceof Folder folder) {
+            StyledString styledLabel = new StyledString();
+            if (folder.getName().isEmpty()) {
+                styledLabel.append(this.getString("_UI_Folder_type"));
+            } else {
+                styledLabel.append(folder.getName());
+            }
+            return styledLabel;
+        }
+        return super.getStyledText(object);
     }
 }

@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.papaya.provider.spec;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.edit.provider.StyledString;
 import org.eclipse.sirius.components.papaya.ApplicationConcern;
 import org.eclipse.sirius.components.papaya.Service;
 import org.eclipse.sirius.components.papaya.provider.ServiceItemProvider;
@@ -33,5 +34,19 @@ public class ServiceItemProviderSpec extends ServiceItemProvider {
             return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/ApplicationService.svg"));
         }
         return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/Service.svg"));
+    }
+
+    @Override
+    public Object getStyledText(Object object) {
+        if (object instanceof Service service) {
+            StyledString styledLabel = new StyledString();
+            if (service.getName().isEmpty()) {
+                styledLabel.append(this.getString("_UI_Service_type"));
+            } else {
+                styledLabel.append(service.getName());
+            }
+            return styledLabel;
+        }
+        return super.getStyledText(object);
     }
 }

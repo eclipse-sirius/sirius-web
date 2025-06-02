@@ -13,6 +13,8 @@
 package org.eclipse.sirius.components.papaya.provider.spec;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.edit.provider.StyledString;
+import org.eclipse.sirius.components.papaya.AnnotationField;
 import org.eclipse.sirius.components.papaya.provider.AnnotationFieldItemProvider;
 
 /**
@@ -28,5 +30,19 @@ public class AnnotationFieldItemProviderSpec extends AnnotationFieldItemProvider
     @Override
     public Object getImage(Object object) {
         return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/AnnotationField.svg"));
+    }
+
+    @Override
+    public Object getStyledText(Object object) {
+        if (object instanceof AnnotationField annotationField) {
+            StyledString styledLabel = new StyledString();
+            if (annotationField.getName().isEmpty()) {
+                styledLabel.append(this.getString("_UI_AnnotationField_type"));
+            } else {
+                styledLabel.append(annotationField.getName());
+            }
+            return styledLabel;
+        }
+        return super.getStyledText(object);
     }
 }

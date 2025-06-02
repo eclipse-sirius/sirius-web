@@ -13,6 +13,8 @@
 package org.eclipse.sirius.components.papaya.provider.spec;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.edit.provider.StyledString;
+import org.eclipse.sirius.components.papaya.EnumLiteral;
 import org.eclipse.sirius.components.papaya.provider.EnumLiteralItemProvider;
 
 /**
@@ -28,5 +30,19 @@ public class EnumLiteralItemProviderSpec extends EnumLiteralItemProvider {
     @Override
     public Object getImage(Object object) {
         return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/EnumLiteral.svg"));
+    }
+
+    @Override
+    public Object getStyledText(Object object) {
+        if (object instanceof EnumLiteral enumLiteral) {
+            StyledString styledLabel = new StyledString();
+            if (enumLiteral.getName().isEmpty()) {
+                styledLabel.append(this.getString("_UI_EnumLiteral_type"));
+            } else {
+                styledLabel.append(enumLiteral.getName());
+            }
+            return styledLabel;
+        }
+        return super.getStyledText(object);
     }
 }

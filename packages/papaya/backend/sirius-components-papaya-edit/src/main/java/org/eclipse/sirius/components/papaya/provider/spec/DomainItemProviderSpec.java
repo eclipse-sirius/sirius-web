@@ -13,6 +13,8 @@
 package org.eclipse.sirius.components.papaya.provider.spec;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.edit.provider.StyledString;
+import org.eclipse.sirius.components.papaya.Domain;
 import org.eclipse.sirius.components.papaya.provider.DomainItemProvider;
 
 /**
@@ -28,5 +30,21 @@ public class DomainItemProviderSpec extends DomainItemProvider {
     @Override
     public Object getImage(Object object) {
         return this.overlayImage(object, this.getResourceLocator().getImage("papaya/full/obj16/Domain.svg"));
+    }
+
+
+
+    @Override
+    public Object getStyledText(Object object) {
+        if (object instanceof Domain domain) {
+            StyledString styledLabel = new StyledString();
+            if (domain.getName().isEmpty()) {
+                styledLabel.append(this.getString("_UI_Domain_type"));
+            } else {
+                styledLabel.append(domain.getName());
+            }
+            return styledLabel;
+        }
+        return super.getStyledText(object);
     }
 }
