@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,9 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.papaya.services;
+package org.eclipse.sirius.web.papaya.projecttemplates;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.RepresentationMetadata;
@@ -23,8 +22,8 @@ import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateI
 import org.eclipse.sirius.web.papaya.factories.ApacheProjectFactory;
 import org.eclipse.sirius.web.papaya.factories.EMFProjectFactory;
 import org.eclipse.sirius.web.papaya.factories.FasterXMLProjectFactory;
-import org.eclipse.sirius.web.papaya.factories.GraphQLJavaProjectFactory;
 import org.eclipse.sirius.web.papaya.factories.GoogleProjectFactory;
+import org.eclipse.sirius.web.papaya.factories.GraphQLJavaProjectFactory;
 import org.eclipse.sirius.web.papaya.factories.JavaProjectFactory;
 import org.eclipse.sirius.web.papaya.factories.ReactiveStreamsProjectFactory;
 import org.eclipse.sirius.web.papaya.factories.ReactorProjectFactory;
@@ -40,14 +39,11 @@ import org.springframework.stereotype.Service;
  * @author sbegaudeau
  */
 @Service
-public class PapayaProjectTemplateInitializer implements IProjectTemplateInitializer {
+public class PapayaBenchmarkProjectTemplateInitializer implements IProjectTemplateInitializer {
 
     @Override
     public boolean canHandle(String projectTemplateId) {
-        return List.of(
-                PapayaProjectTemplateProvider.SIRIUS_WEB_PROJECT_TEMPLATE_ID,
-                PapayaProjectTemplateProvider.BENCHMARK_PROJECT_TEMPLATE_ID
-        ).contains(projectTemplateId);
+        return PapayaProjectTemplateProvider.BENCHMARK_PROJECT_TEMPLATE_ID.equals(projectTemplateId);
     }
 
     @Override

@@ -12,7 +12,21 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.diagrams;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.jayway.jsonpath.JsonPath;
+
+import java.time.Duration;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.managevisibility.InvokeManageVisibilityActionInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
@@ -36,19 +50,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
-
-import java.time.Duration;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Integration tests of the action controllers.
@@ -103,12 +104,13 @@ public class ManageVisibilityActionControllerTests extends AbstractIntegrationTe
                 .filter(DiagramRefreshedEventPayload.class::isInstance)
                 .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diag -> {
-                    diagramId.set(diag.getId());
-                    var node = diag.getNodes().stream()
-                            .filter(n -> "Component sirius-web-domain".equals(n.getTargetObjectLabel()))
+                .ifPresentOrElse(diagram -> {
+                    diagramId.set(diagram.getId());
+                    var node = diagram.getNodes().stream()
+                            .filter(n -> "sirius-web-domain".equals(n.getTargetObjectLabel()))
                             .findFirst();
                     assertTrue(node.isPresent());
+
                     node.get().getChildNodes().forEach(childNode -> assertEquals(ViewModifier.Normal, childNode.getState()));
                     assertEquals(ViewModifier.Normal, node.get().getState());
                     nodeId.set(node.get().getId());
@@ -154,10 +156,10 @@ public class ManageVisibilityActionControllerTests extends AbstractIntegrationTe
                 .filter(DiagramRefreshedEventPayload.class::isInstance)
                 .map(DiagramRefreshedEventPayload.class::cast)
                 .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diag -> {
-                    diagramId.set(diag.getId());
-                    var node = diag.getNodes().stream()
-                            .filter(n -> "Component sirius-web-domain".equals(n.getTargetObjectLabel()))
+                .ifPresentOrElse(diagram -> {
+                    diagramId.set(diagram.getId());
+                    var node = diagram.getNodes().stream()
+                            .filter(n -> "sirius-web-domain".equals(n.getTargetObjectLabel()))
                             .findFirst();
                     assertTrue(node.isPresent());
                     node.get().getChildNodes().forEach(childNode -> assertEquals(ViewModifier.Normal, childNode.getState()));
@@ -185,7 +187,7 @@ public class ManageVisibilityActionControllerTests extends AbstractIntegrationTe
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     var node = diagram.getNodes().stream()
-                            .filter(n -> "Component sirius-web-domain".equals(n.getTargetObjectLabel()))
+                            .filter(n -> "sirius-web-domain".equals(n.getTargetObjectLabel()))
                             .findFirst();
                     assertTrue(node.isPresent());
                     node.get().getChildNodes().forEach(childNode -> assertEquals(ViewModifier.Hidden, childNode.getState()));
@@ -198,7 +200,7 @@ public class ManageVisibilityActionControllerTests extends AbstractIntegrationTe
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     var node = diagram.getNodes().stream()
-                            .filter(n -> "Component sirius-web-domain".equals(n.getTargetObjectLabel()))
+                            .filter(n -> "sirius-web-domain".equals(n.getTargetObjectLabel()))
                             .findFirst();
                     assertTrue(node.isPresent());
                     node.get().getChildNodes().forEach(childNode -> assertEquals(ViewModifier.Normal, childNode.getState()));

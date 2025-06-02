@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.papaya.ModelElement#getTags <em>Tags</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.ModelElement#getLinks <em>Links</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.papaya.PapayaPackage#getModelElement()
@@ -40,5 +41,19 @@ public interface ModelElement extends EObject {
      * @generated
      */
     EList<Tag> getTags();
+
+    /**
+     * Returns the value of the '<em><b>Links</b></em>' containment reference list. The list contents are of type
+     * {@link org.eclipse.sirius.components.papaya.Link}. It is bidirectional and its opposite is
+     * '{@link org.eclipse.sirius.components.papaya.Link#getSource <em>Source</em>}'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Links</em>' containment reference list.
+     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getModelElement_Links()
+     * @see org.eclipse.sirius.components.papaya.Link#getSource
+     * @model opposite="source" containment="true"
+     * @generated
+     */
+    EList<Link> getLinks();
 
 } // ModelElement
