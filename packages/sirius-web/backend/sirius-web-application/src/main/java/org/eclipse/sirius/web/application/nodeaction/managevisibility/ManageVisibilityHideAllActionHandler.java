@@ -12,6 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.nodeaction.managevisibility;
 
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.nodeactions.IManageVisibilityMenuActionHandler;
@@ -22,12 +26,6 @@ import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Used to provide the hide all action handler for the manage visibility node action.
@@ -52,18 +50,9 @@ public class ManageVisibilityHideAllActionHandler implements IManageVisibilityMe
     public IStatus handle(IEditingContext editingContext, IDiagramContext diagramContext, IDiagramElement diagramElement, String actionId) {
         Optional<Node> optionalNode = this.diagramQueryService.findNodeById(diagramContext.getDiagram(), diagramElement.getId());
         if (optionalNode.isPresent()) {
-            List<Node> childrenNodes = new ArrayList<>();
-            this.getAllChildren(optionalNode.get(), childrenNodes);
-            var childrenIds = childrenNodes.stream().map(Node::getId).collect(Collectors.toSet());
+            var childrenIds = optionalNode.get().getChildNodes().stream().map(Node::getId).collect(Collectors.toSet());
             diagramContext.getDiagramEvents().add(new HideDiagramElementEvent(childrenIds, true));
         }
         return new Success();
-    }
-
-    private void getAllChildren(Node parent, List<Node> nodes) {
-        for (Node child : parent.getChildNodes()) {
-            nodes.add(child);
-            this.getAllChildren(child, nodes);
-        }
     }
 }
