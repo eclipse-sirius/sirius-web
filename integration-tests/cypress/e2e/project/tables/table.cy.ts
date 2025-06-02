@@ -27,22 +27,22 @@ describe('Tables', () => {
         project.disableDeletionConfirmationDialog();
         const explorer = new Explorer();
         explorer.expandWithDoubleClick('Papaya');
-        explorer.expandWithDoubleClick('Project Project');
-        explorer.expandWithDoubleClick('Component Component');
+        explorer.expandWithDoubleClick('Project');
+        explorer.expandWithDoubleClick('Component');
       });
     });
 
     afterEach(() => cy.deleteProject(projectId));
 
     it('Check table representation can be created', () => {
-      new Explorer().createRepresentation('Package Package', 'Papaya package table', 'Table');
+      new Explorer().createRepresentation('Package', 'Papaya package table', 'Table');
       const table = new Table();
       table.getTableRepresentation().should('exist');
       table.checkRowCount(7);
     });
 
     it('Check global filter reset keep the page size', () => {
-      new Explorer().createRepresentation('Package Package', 'Papaya package table', 'Table');
+      new Explorer().createRepresentation('Package', 'Papaya package table', 'Table');
       const table = new Table();
       table.getTableRepresentation().should('exist');
       table.checkRowCount(7);
@@ -55,7 +55,7 @@ describe('Tables', () => {
     });
 
     it('Check paginate to the next page is working', () => {
-      new Explorer().createRepresentation('Package Package', 'Papaya package table', 'Table');
+      new Explorer().createRepresentation('Package', 'Papaya package table', 'Table');
       const table = new Table();
       table.getTableRepresentation().should('exist');
       table.checkRowCount(7);

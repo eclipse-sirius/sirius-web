@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.papaya.services;
+
+package org.eclipse.sirius.web.papaya.projecttemplates;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -22,19 +23,21 @@ import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
+import org.eclipse.sirius.components.papaya.Project;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateInitializer;
+import org.eclipse.sirius.web.papaya.factories.services.EObjectIndexer;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to create the empty Papaya project.
+ * Used to initialize the Sirius Web papaya example project.
  *
  * @author sbegaudeau
  */
 @Service
-public class EmptyPapayaProjectTemplateInitializer implements IProjectTemplateInitializer {
+public class PapayaExampleProjectTemplateInitializer implements IProjectTemplateInitializer {
     @Override
     public boolean canHandle(String projectTemplateId) {
-        return PapayaProjectTemplateProvider.EMPTY_PROJECT_TEMPLATE_ID.equals(projectTemplateId);
+        return PapayaProjectTemplateProvider.SIRIUS_WEB_PROJECT_TEMPLATE_ID.equals(projectTemplateId);
     }
 
     @Override
@@ -42,20 +45,24 @@ public class EmptyPapayaProjectTemplateInitializer implements IProjectTemplateIn
         if (editingContext instanceof IEMFEditingContext emfEditingContext) {
             var documentId = UUID.randomUUID();
             var resource = new JSONResourceFactory().createResourceFromPath(documentId.toString());
-            var resourceMetadataAdapter = new ResourceMetadataAdapter("Papaya");
+            var resourceMetadataAdapter = new ResourceMetadataAdapter("Sirius");
             resource.eAdapters().add(resourceMetadataAdapter);
+
             emfEditingContext.getDomain().getResourceSet().getResources().add(resource);
 
-            var project = PapayaFactory.eINSTANCE.createProject();
-            project.setName("Project");
-
-            var component = PapayaFactory.eINSTANCE.createComponent();
-            component.setName("Component");
-            project.getElements().add(component);
-
+            Project project = PapayaFactory.eINSTANCE.createProject();
+            project.setName("Sirius Web");
             resource.getContents().add(project);
-        }
 
+            OperationalAnalysisObjectFactory operationalAnalysisObjectFactory = new OperationalAnalysisObjectFactory(project);
+            operationalAnalysisObjectFactory.create(emfEditingContext);
+
+            var eObjectIndexer = new EObjectIndexer();
+            eObjectIndexer.index(emfEditingContext.getDomain().getResourceSet());
+
+            operationalAnalysisObjectFactory.link(eObjectIndexer);
+
+        }
         return Optional.empty();
     }
 }
