@@ -22,6 +22,7 @@ export interface SelectionEntry {
 export interface SelectionContextValue {
   selection: Selection;
   setSelection: (selection: Selection) => void;
+  toggleSelected: (entry: SelectionEntry) => void;
 }
 
 export interface SelectionContextProviderProps {
