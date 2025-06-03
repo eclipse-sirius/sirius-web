@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-widget-table-view</artifactId>
-	<version>2025.4.7</version>
+	<version>2025.4.8</version>
 	<name>sirius-components-widget-table-view</name>
 	<description>View support for the table custom widget</description>
 
@@ -64,12 +64,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-form</artifactId>
-			<version>2025.4.7</version>
+			<version>2025.4.8</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-table</artifactId>
-			<version>2025.4.7</version>
+			<version>2025.4.8</version>
 		</dependency>
 	</dependencies>
 
