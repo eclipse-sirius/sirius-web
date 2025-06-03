@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,11 +17,13 @@ import {
   SelectionContextProviderProps,
   SelectionContextProviderState,
   SelectionContextValue,
+  SelectionEntry,
 } from './SelectionContext.types';
 
 const defaultValue: SelectionContextValue = {
   selection: { entries: [] },
   setSelection: () => {},
+  toggleSelected: () => {},
 };
 
 export const SelectionContext = React.createContext<SelectionContextValue>(defaultValue);
@@ -35,8 +37,28 @@ export const SelectionContextProvider = ({ initialSelection, children }: Selecti
     setState((prevState) => ({ ...prevState, selection }));
   }, []);
 
+  const toggleSelected = useCallback((entryToToggle: SelectionEntry) => {
+    setState((prevState) => {
+      const alreadySelected = prevState.selection.entries.some((entry) => entry.id === entryToToggle.id);
+      if (!alreadySelected) {
+        const newSelection: Selection = { entries: [...prevState.selection.entries, entryToToggle] };
+        return { ...prevState, selection: newSelection };
+      } else {
+        const newSelection: Selection = {
+          entries: prevState.selection.entries.filter((entry) => entry.id !== entryToToggle.id),
+        };
+        return { ...prevState, newSelection };
+      }
+    });
+  }, []);
+
   return (
-    <SelectionContext.Provider value={{ selection: state.selection, setSelection }}>
+    <SelectionContext.Provider
+      value={{
+        selection: state.selection,
+        setSelection: setSelection,
+        toggleSelected,
+      }}>
       {children}
     </SelectionContext.Provider>
   );
