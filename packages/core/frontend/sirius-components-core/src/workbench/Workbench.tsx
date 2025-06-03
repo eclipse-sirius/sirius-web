@@ -137,7 +137,7 @@ export const Workbench = ({
       representations: data?.viewer.editingContext.representations.edges.map((edge) => edge.node) ?? [],
     };
     dispatch(updateSelectedRepresentation);
-  }, [data, selection, dispatch]);
+  }, [data, dispatch]);
 
   const onRepresentationClick = (representation: RepresentationMetadata) => {
     setSelection({ entries: [{ id: representation.id }] });
