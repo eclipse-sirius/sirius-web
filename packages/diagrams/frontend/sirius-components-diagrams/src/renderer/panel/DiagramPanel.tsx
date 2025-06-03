@@ -172,7 +172,8 @@ export const DiagramPanel = memo(
                   size="small"
                   aria-label="show helper lines"
                   onClick={() => onHelperLines(true)}
-                  data-testid="show-helper-lines">
+                  data-testid="show-helper-lines"
+                  disabled={readOnly}>
                   <HelperLinesIcon />
                 </IconButton>
               </Tooltip>
@@ -184,7 +185,8 @@ export const DiagramPanel = memo(
                   size="small"
                   aria-label="smart step edge"
                   onClick={() => onEdgeType('smartStepEdge')}
-                  data-testid="smart-step-edge">
+                  data-testid="smart-step-edge"
+                  disabled={readOnly}>
                   <SmoothStepEdgeIcon />
                 </IconButton>
               </Tooltip>
@@ -194,7 +196,8 @@ export const DiagramPanel = memo(
                   size="small"
                   aria-label="smooth step edge"
                   onClick={() => onEdgeType('smoothStepEdge')}
-                  data-testid="smooth-step-edge">
+                  data-testid="smooth-step-edge"
+                  disabled={readOnly}>
                   <SmartEdgeIcon />
                 </IconButton>
               </Tooltip>
