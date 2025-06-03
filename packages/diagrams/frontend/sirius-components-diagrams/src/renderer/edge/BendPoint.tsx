@@ -10,14 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useRef, RefObject } from 'react';
+import { useRef, RefObject, useContext } from 'react';
 import { useViewport } from '@xyflow/react';
 import Draggable, { DraggableData } from 'react-draggable';
 import { BendPointProps, TemporaryMovingLineProps } from './BendPoint.types';
+import { DiagramContext } from '../../contexts/DiagramContext';
+import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 
 export const BendPoint = ({ x, y, index, onDrag, onDragStop }: BendPointProps) => {
   const { zoom } = useViewport();
   const nodeRef = useRef<SVGCircleElement>(null);
+  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
+
+  if (readOnly) {
+    return null;
+  }
 
   return (
     <Draggable
@@ -42,6 +49,12 @@ export const TemporaryMovingLine = ({
 }: TemporaryMovingLineProps) => {
   const { zoom } = useViewport();
   const nodeRef = useRef<SVGRectElement>(null);
+  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
+
+  if (readOnly) {
+    return null;
+  }
+
   const segmentLengthWithoutBoundaries = segmentLength - 2;
 
   const width = direction === 'x' ? segmentLengthWithoutBoundaries : 4;
