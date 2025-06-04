@@ -13,9 +13,12 @@
 package org.eclipse.sirius.web.application.project.services;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -23,16 +26,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramCreationService;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
+import org.eclipse.sirius.components.diagrams.events.FadeDiagramElementEvent;
+import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
 import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.layoutdata.EdgeLayoutData;
 import org.eclipse.sirius.components.diagrams.layoutdata.LabelLayoutData;
@@ -94,9 +101,10 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
                 var diagramContext = new DiagramContext(newRepresentation.get());
                 Map<String, String> nodeElementOldNewIds = new HashMap<>();
                 Map<String, String> edgeElementOldNewIds = new HashMap<>();
+                Map<String, ViewModifier> elementIdToViewModifier = new HashMap<>();
 
-                this.handleNodes(oldRepresentation.getNodes(), nodeElementOldNewIds, diagramDescription.get(), newRepresentationId, diagramContext, semanticElementsIdMappings);
-                this.handleEdges(oldRepresentation.getEdges(), nodeElementOldNewIds, edgeElementOldNewIds, semanticElementsIdMappings);
+                this.handleNodes(oldRepresentation.getNodes(), nodeElementOldNewIds, elementIdToViewModifier, diagramDescription.get(), newRepresentationId, diagramContext, semanticElementsIdMappings);
+                this.handleEdges(oldRepresentation.getEdges(), nodeElementOldNewIds, edgeElementOldNewIds, elementIdToViewModifier, semanticElementsIdMappings);
 
                 Map<String, NodeLayoutData> nodeLayoutData = new HashMap<>();
                 Map<String, EdgeLayoutData> edgeLayoutData = new HashMap<>();
@@ -104,7 +112,9 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
                 var newLayoutData = new DiagramLayoutData(nodeLayoutData, edgeLayoutData, labelLayoutData);
                 this.handleLayout(newLayoutData, oldRepresentation.getLayoutData(), nodeElementOldNewIds, edgeElementOldNewIds);
 
-                var updatedDiagram = this.diagramCreationService.refresh(editingContext.get(), diagramContext);
+                var updatedDiagram = this.diagramCreationService.refresh(editingContext.get(), diagramContext)
+                        .flatMap(diagram -> this.handleViewModifier(editingContext.get(), diagram, elementIdToViewModifier));
+
                 if (updatedDiagram.isPresent()) {
                     var laidOutDiagram = Diagram.newDiagram(updatedDiagram.get())
                             .layoutData(newLayoutData)
@@ -118,6 +128,30 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
                 }
             }
         }
+    }
+
+    private Optional<Diagram> handleViewModifier(IEditingContext editingContext, Diagram diagram, Map<String, ViewModifier> elementIdToViewModifier) {
+        Set<String> elementToHide = new HashSet<>();
+        Set<String> elementToReveal = new HashSet<>();
+        Set<String> elementToFade = new HashSet<>();
+
+        elementIdToViewModifier.forEach((key, value) -> {
+            if (value.equals(ViewModifier.Hidden)) {
+                elementToHide.add(key);
+            } else if (value.equals(ViewModifier.Normal)) {
+                elementToReveal.add(key);
+            } else if (value.equals(ViewModifier.Faded)) {
+                elementToFade.add(key);
+            }
+        });
+
+        var hideViewModifier = new HideDiagramElementEvent(elementToHide, true);
+        var revealViewModifier = new HideDiagramElementEvent(elementToReveal, false);
+        var fadeViewModifier = new FadeDiagramElementEvent(elementToFade, true);
+        var diagramContext = new DiagramContext(diagram);
+        diagramContext.getDiagramEvents().addAll(List.of(hideViewModifier, revealViewModifier, fadeViewModifier));
+
+        return this.diagramCreationService.refresh(editingContext, diagramContext);
     }
 
     private void handleLayout(DiagramLayoutData newLayoutData, DiagramLayoutData oldLayoutData, Map<String, String> nodeElementOldNewIds, Map<String, String> edgeElementOldNewIds) {
@@ -141,42 +175,48 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
         });
     }
 
-    private void handleNodes(List<Node> oldNodes, Map<String, String> nodeElementOldNewIds, DiagramDescription diagramDescription, String parentId, DiagramContext  diagramContext, Map<String, String> semanticElementsIdMappings) {
-        oldNodes.forEach(oldNode ->
-                handleNode(diagramDescription, oldNode, parentId, NodeContainmentKind.CHILD_NODE, semanticElementsIdMappings, nodeElementOldNewIds, diagramContext));
+    private void handleNodes(List<Node> oldNodes, Map<String, String> nodeElementOldNewIds, Map<String, ViewModifier> elementIdToViewModifier, DiagramDescription diagramDescription, String parentId, DiagramContext  diagramContext, Map<String, String> semanticElementsIdMappings) {
+        oldNodes.forEach(oldNode -> this.handleNode(diagramDescription, oldNode, parentId, elementIdToViewModifier, semanticElementsIdMappings, nodeElementOldNewIds, diagramContext));
     }
 
-    private void handleNode(DiagramDescription diagramDescription, Node oldNode, String parentId, NodeContainmentKind containmentKind, Map<String, String> semanticElementsIdMappings, Map<String, String> nodeElementOldNewIds, DiagramContext diagramContext) {
+    private void handleNode(DiagramDescription diagramDescription, Node oldNode, String parentId, Map<String, ViewModifier> elementIdToViewModifier, Map<String, String> semanticElementsIdMappings, Map<String, String> nodeElementOldNewIds, DiagramContext diagramContext) {
         var targetObjectId = oldNode.getTargetObjectId();
         if (semanticElementsIdMappings.get(oldNode.getTargetObjectId()) != null) {
             targetObjectId = semanticElementsIdMappings.get(oldNode.getTargetObjectId());
         }
+
+        var containmentKind = NodeContainmentKind.CHILD_NODE;
+        if (oldNode.isBorderNode()) {
+            containmentKind = NodeContainmentKind.BORDER_NODE;
+        }
+
         var nodeDescription = diagramDescription.getNodeDescriptions().stream().filter(nodeDesc -> nodeDesc.getId().equals(oldNode.getDescriptionId())).findFirst();
         if (nodeDescription.isPresent() && nodeDescription.get().getSynchronizationPolicy().equals(SynchronizationPolicy.UNSYNCHRONIZED)) {
             var viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
-                    .parentElementId(parentId)
-                    .targetObjectId(targetObjectId)
-                    .descriptionId(oldNode.getDescriptionId())
-                    .containmentKind(containmentKind)
-                    .build();
+                .parentElementId(parentId)
+                .targetObjectId(targetObjectId)
+                .descriptionId(oldNode.getDescriptionId())
+                .containmentKind(containmentKind)
+                .build();
             diagramContext.getViewCreationRequests().add(viewCreationRequest);
         }
 
         var oldNodeId = oldNode.getId();
         var newNodeId = this.computeNodeId(parentId, oldNode.getDescriptionId(), containmentKind, targetObjectId);
         nodeElementOldNewIds.put(oldNodeId, newNodeId);
+        elementIdToViewModifier.put(newNodeId, oldNode.getState());
 
         oldNode.getChildNodes().forEach(childNode ->
-                handleNode(diagramDescription, childNode, newNodeId, NodeContainmentKind.CHILD_NODE, semanticElementsIdMappings, nodeElementOldNewIds, diagramContext));
+                this.handleNode(diagramDescription, childNode, newNodeId, elementIdToViewModifier, semanticElementsIdMappings, nodeElementOldNewIds, diagramContext));
         oldNode.getBorderNodes().forEach(childNode ->
-                handleNode(diagramDescription, childNode, newNodeId, NodeContainmentKind.BORDER_NODE, semanticElementsIdMappings, nodeElementOldNewIds, diagramContext));
+                this.handleNode(diagramDescription, childNode, newNodeId, elementIdToViewModifier, semanticElementsIdMappings, nodeElementOldNewIds, diagramContext));
     }
 
     private String computeNodeId(String parentElementId, String nodeDescription, NodeContainmentKind containmentKind, String targetObjectId) {
         return new NodeIdProvider().getNodeId(parentElementId, nodeDescription, containmentKind, targetObjectId);
     }
 
-    private void handleEdges(List<Edge> oldEdges, Map<String, String> nodeElementOldNewIds, Map<String, String> edgeElementOldNewIds, Map<String, String> semanticElementsIdMappings) {
+    private void handleEdges(List<Edge> oldEdges, Map<String, String> nodeElementOldNewIds, Map<String, String> edgeElementOldNewIds, Map<String, ViewModifier> elementIdToViewModifier, Map<String, String> semanticElementsIdMappings) {
         int count = 0;
         // Create edges on edges last
         for (Edge oldEdge : oldEdges) {
@@ -184,6 +224,7 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
                 var oldEdgeId = oldEdge.getId();
                 var newEdgeId = this.computeEdgeId(oldEdge.getDescriptionId(), nodeElementOldNewIds.get(oldEdge.getSourceId()), nodeElementOldNewIds.get(oldEdge.getTargetId()), count);
                 edgeElementOldNewIds.put(oldEdgeId, newEdgeId);
+                elementIdToViewModifier.put(newEdgeId, oldEdge.getState());
                 count++;
             }
         }
