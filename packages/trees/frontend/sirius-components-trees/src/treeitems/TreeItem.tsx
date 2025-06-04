@@ -130,14 +130,15 @@ export const TreeItem = ({
   depth,
   expanded,
   maxDepth,
-  onExpandedElementChange,
   readOnly,
   textToHighlight,
   textToFilter,
-  markedItemIds,
-  treeItemActionRender,
+  marked,
+  selected,
+  onExpandedElementChange,
   onTreeItemClick,
-  selectedTreeItemIds,
+  onDragStart,
+  treeItemActionRender,
 }: TreeItemProps) => {
   const [state, setState] = useState<TreeItemState>({
     editingMode: false,
@@ -173,7 +174,6 @@ export const TreeItem = ({
   let className = classes.treeItem;
   let dataTestid: string | undefined = undefined;
 
-  const selected = selectedTreeItemIds.find((id) => id === item.id);
   if (selected) {
     className = `${className} ${classes.selected}`;
     dataTestid = 'selected';
@@ -234,17 +234,6 @@ export const TreeItem = ({
     }
   };
 
-  const dragStart: React.DragEventHandler<HTMLDivElement> = (event) => {
-    const isDraggedItemSelected = selectedTreeItemIds.map((id) => id).includes(item.id);
-    if (!isDraggedItemSelected) {
-      // If we're dragging a non-selected item, drag it alone
-      event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify([item.id]));
-    } else if (selectedTreeItemIds.length > 0) {
-      // Otherwise drag the whole selection
-      event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify(selectedTreeItemIds));
-    }
-  };
-
   const dragOver: React.DragEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
   };
@@ -272,12 +261,7 @@ export const TreeItem = ({
       onClose={onCloseEditingMode}
     />
   ) : (
-    <StyledLabel
-      styledString={item.label}
-      selected={false}
-      textToHighlight={textToHighlight ?? ''}
-      marked={markedItemIds.some((id) => id === item.id)}
-    />
+    <StyledLabel styledString={item.label} selected={false} textToHighlight={textToHighlight ?? ''} marked={marked} />
   );
 
   const onExpand = (id: string, depth: number) => {
@@ -322,7 +306,7 @@ export const TreeItem = ({
             tabIndex={0}
             onKeyDown={onBeginEditing}
             draggable
-            onDragStart={dragStart}
+            onDragStart={onDragStart}
             onDragOver={dragOver}
             data-treeitemid={item.id}
             data-treeitemlabel={label}
