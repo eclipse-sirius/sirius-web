@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo and others.
+ * Copyright (c) 2021, 2025 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,7 +39,7 @@ export interface WorkbenchViewContribution {
   side: WorkbenchViewSide;
   title: string;
   icon: React.ReactElement;
-  component: (props: WorkbenchViewComponentProps) => JSX.Element | null;
+  component: React.ComponentType<WorkbenchViewComponentProps>;
 }
 
 export interface WorkbenchViewComponentProps {

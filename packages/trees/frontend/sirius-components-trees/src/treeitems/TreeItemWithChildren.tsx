@@ -27,20 +27,23 @@ export const TreeItemWithChildren = ({
   depth,
   expanded,
   maxDepth,
-  onExpandedElementChange,
   readOnly,
   textToHighlight,
   textToFilter,
   markedItemIds,
-  treeItemActionRender,
-  onTreeItemClick,
   selectedTreeItemIds,
+  onExpandedElementChange,
+  onTreeItemClick,
+  onDragStart,
+  treeItemActionRender,
 }: TreeItemWithChildrenProps) => {
   const { classes } = useTreeItemWithChildrenStyle();
   if (item.expanded && item.children) {
     return (
       <ul className={classes.ul}>
         {item.children.map((childItem, index) => {
+          const itemSelected = selectedTreeItemIds.some((id) => id === childItem.id);
+          const itemMarked = markedItemIds.some((id) => id === childItem.id);
           return (
             <li key={childItem.id}>
               <TreeItem
@@ -51,32 +54,36 @@ export const TreeItemWithChildren = ({
                 depth={depth}
                 expanded={expanded}
                 maxDepth={maxDepth}
-                onExpandedElementChange={onExpandedElementChange}
                 readOnly={readOnly}
                 textToHighlight={textToHighlight}
                 textToFilter={textToFilter}
-                markedItemIds={markedItemIds}
-                treeItemActionRender={treeItemActionRender}
-                onTreeItemClick={onTreeItemClick}
-                selectedTreeItemIds={selectedTreeItemIds}
-              />
-              <TreeItemWithChildren
-                editingContextId={editingContextId}
-                treeId={treeId}
-                item={childItem}
-                itemIndex={index}
-                depth={depth + 1}
-                expanded={expanded}
-                maxDepth={maxDepth}
+                marked={itemMarked}
+                selected={itemSelected}
                 onExpandedElementChange={onExpandedElementChange}
-                readOnly={readOnly}
-                textToHighlight={textToHighlight}
-                textToFilter={textToFilter}
-                markedItemIds={markedItemIds}
-                treeItemActionRender={treeItemActionRender}
                 onTreeItemClick={onTreeItemClick}
-                selectedTreeItemIds={selectedTreeItemIds}
+                onDragStart={onDragStart}
+                treeItemActionRender={treeItemActionRender}
               />
+              {childItem.hasChildren ? (
+                <TreeItemWithChildren
+                  editingContextId={editingContextId}
+                  treeId={treeId}
+                  item={childItem}
+                  itemIndex={index}
+                  depth={depth + 1}
+                  expanded={expanded}
+                  maxDepth={maxDepth}
+                  readOnly={readOnly}
+                  textToHighlight={textToHighlight}
+                  textToFilter={textToFilter}
+                  markedItemIds={markedItemIds}
+                  selectedTreeItemIds={selectedTreeItemIds}
+                  onExpandedElementChange={onExpandedElementChange}
+                  onTreeItemClick={onTreeItemClick}
+                  onDragStart={onDragStart}
+                  treeItemActionRender={treeItemActionRender}
+                />
+              ) : null}
             </li>
           );
         })}

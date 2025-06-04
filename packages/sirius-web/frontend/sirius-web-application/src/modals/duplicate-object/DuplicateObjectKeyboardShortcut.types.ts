@@ -10,11 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLTreeItem } from '@eclipse-sirius/sirius-components-trees';
 
 export type KeyboardShortcutProps = {
   editingContextId: string;
   readOnly: boolean;
-  selectedTreeItem: GQLTreeItem | null;
+  selectedTreeItemId: string | null;
+  selectedTreeItemKind: string | null;
   children: React.ReactNode;
 };

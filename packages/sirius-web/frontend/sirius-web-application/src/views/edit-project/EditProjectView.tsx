@@ -26,7 +26,7 @@ import {
   TreeToolBarContribution,
 } from '@eclipse-sirius/sirius-components-trees';
 import { useMachine } from '@xstate/react';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { Navigate, useParams, useSearchParams } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { StateMachine } from 'xstate';
@@ -84,13 +84,16 @@ export const EditProjectView = () => {
     }
   }, [data]);
 
-  const onRepresentationSelected = (representationMetadata: RepresentationMetadata) => {
-    const selectRepresentationEvent: SelectRepresentationEvent = {
-      type: 'SELECT_REPRESENTATION',
-      representation: representationMetadata,
-    };
-    dispatch(selectRepresentationEvent);
-  };
+  const onRepresentationSelected = useCallback(
+    (representationMetadata: RepresentationMetadata) => {
+      const selectRepresentationEvent: SelectRepresentationEvent = {
+        type: 'SELECT_REPRESENTATION',
+        representation: representationMetadata,
+      };
+      dispatch(selectRepresentationEvent);
+    },
+    [dispatch]
+  );
 
   useSynchronizeSelectionAndURL(
     projectId,
@@ -148,10 +151,12 @@ export const EditProjectView = () => {
 };
 
 const TreeToolBarProvider = ({ children }: TreeToolBarProviderProps) => {
-  const treeToolBarContributions: TreeToolBarContextValue = [
-    <TreeToolBarContribution component={NewDocumentModalContribution} />,
-    <TreeToolBarContribution component={UploadDocumentModalContribution} />,
-  ];
-
+  const treeToolBarContributions: TreeToolBarContextValue = useMemo(
+    () => [
+      <TreeToolBarContribution component={NewDocumentModalContribution} />,
+      <TreeToolBarContribution component={UploadDocumentModalContribution} />,
+    ],
+    []
+  );
   return <TreeToolBarContext.Provider value={treeToolBarContributions}>{children}</TreeToolBarContext.Provider>;
 };
