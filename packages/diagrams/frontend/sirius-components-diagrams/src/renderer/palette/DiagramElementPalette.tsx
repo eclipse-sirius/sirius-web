@@ -63,10 +63,6 @@ export const DiagramElementPalette = memo(
       }
     };
 
-    if (readOnly) {
-      return null;
-    }
-
     const extensionSections = useMemo(() => {
       const isNode = !!store.getState().nodeLookup.get(diagramElementId);
       const sectionComponents: React.ReactElement<PaletteExtensionSectionProps>[] = [];
@@ -77,6 +73,10 @@ export const DiagramElementPalette = memo(
       }
       return sectionComponents;
     }, [diagramElementId]);
+
+    if (readOnly) {
+      return null;
+    }
 
     return isOpened && x && y && !currentlyEditedLabelId ? (
       <PalettePortal>
