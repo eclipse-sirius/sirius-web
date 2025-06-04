@@ -18,13 +18,14 @@ export interface TreeProps {
   tree: GQLTree;
   expanded: string[];
   maxDepth: number;
-  onExpandedElementChange: (expanded: string[], maxDepth: number) => void;
   readOnly: boolean;
   textToHighlight: string | null;
   textToFilter: string | null;
   markedItemIds: string[];
-  children?: React.ReactElement<any, any>;
-  treeItemActionRender?: (props: TreeItemActionProps) => React.ReactNode;
-  onTreeItemClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem) => void;
   selectedTreeItemIds: string[];
+  children?: React.ReactElement<any, any>;
+  onExpandedElementChange: (expanded: string[], maxDepth: number) => void;
+  onTreeItemClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem) => void;
+  onDragStart: React.DragEventHandler<HTMLDivElement>;
+  treeItemActionRender?: (props: TreeItemActionProps) => React.ReactNode;
 }
