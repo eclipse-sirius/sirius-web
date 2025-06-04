@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { makeStyles } from 'tss-react/mui';
 
+import { DRAG_SOURCES_TYPE } from '@eclipse-sirius/sirius-components-core';
 import { useEffect, useRef } from 'react';
 import { TreeItem } from '../treeitems/TreeItem';
 import { TreeItemWithChildren } from '../treeitems/TreeItemWithChildren';
@@ -115,44 +116,60 @@ export const Tree = ({
   return (
     <div ref={treeElement}>
       <ul className={classes.ul} data-testid="tree-root-elements">
-        {tree.children.map((childItem, index) => (
-          <li key={childItem.id}>
-            <TreeItem
-              editingContextId={editingContextId}
-              treeId={tree.id}
-              item={childItem}
-              itemIndex={index}
-              depth={1}
-              expanded={expanded}
-              maxDepth={maxDepth}
-              onExpandedElementChange={onExpandedElementChange}
-              readOnly={readOnly}
-              textToHighlight={textToHighlight}
-              textToFilter={textToFilter}
-              markedItemIds={markedItemIds}
-              treeItemActionRender={treeItemActionRender}
-              onTreeItemClick={onTreeItemClick}
-              selectedTreeItemIds={selectedTreeItemIds}
-            />
-            <TreeItemWithChildren
-              editingContextId={editingContextId}
-              treeId={tree.id}
-              item={childItem}
-              itemIndex={index}
-              depth={2}
-              expanded={expanded}
-              maxDepth={maxDepth}
-              onExpandedElementChange={onExpandedElementChange}
-              readOnly={readOnly}
-              textToHighlight={textToHighlight}
-              textToFilter={textToFilter}
-              markedItemIds={markedItemIds}
-              treeItemActionRender={treeItemActionRender}
-              onTreeItemClick={onTreeItemClick}
-              selectedTreeItemIds={selectedTreeItemIds}
-            />
-          </li>
-        ))}
+        {tree.children.map((childItem, index) => {
+          const itemSelected = selectedTreeItemIds.some((id) => id === childItem.id);
+          const itemMarked = markedItemIds.some((id) => id === childItem.id);
+          const dragStart: React.DragEventHandler<HTMLDivElement> = (event) => {
+            const isDraggedItemSelected = selectedTreeItemIds.map((id) => id).includes(childItem.id);
+            if (!isDraggedItemSelected) {
+              // If we're dragging a non-selected item, drag it alone
+              event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify([childItem.id]));
+            } else if (selectedTreeItemIds.length > 0) {
+              // Otherwise drag the whole selection
+              event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify(selectedTreeItemIds));
+            }
+          };
+
+          return (
+            <li key={childItem.id}>
+              <TreeItem
+                editingContextId={editingContextId}
+                treeId={tree.id}
+                item={childItem}
+                itemIndex={index}
+                depth={1}
+                expanded={expanded}
+                maxDepth={maxDepth}
+                readOnly={readOnly}
+                textToHighlight={textToHighlight}
+                textToFilter={textToFilter}
+                marked={itemMarked}
+                selected={itemSelected}
+                onExpandedElementChange={onExpandedElementChange}
+                onTreeItemClick={onTreeItemClick}
+                onDragStart={dragStart}
+                treeItemActionRender={treeItemActionRender}
+              />
+              <TreeItemWithChildren
+                editingContextId={editingContextId}
+                treeId={tree.id}
+                item={childItem}
+                itemIndex={index}
+                depth={2}
+                expanded={expanded}
+                maxDepth={maxDepth}
+                onExpandedElementChange={onExpandedElementChange}
+                readOnly={readOnly}
+                textToHighlight={textToHighlight}
+                textToFilter={textToFilter}
+                markedItemIds={markedItemIds}
+                treeItemActionRender={treeItemActionRender}
+                onTreeItemClick={onTreeItemClick}
+                selectedTreeItemIds={selectedTreeItemIds}
+              />
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
