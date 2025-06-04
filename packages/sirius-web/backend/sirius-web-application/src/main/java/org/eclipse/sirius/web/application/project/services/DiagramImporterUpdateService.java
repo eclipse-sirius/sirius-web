@@ -147,11 +147,15 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
     }
 
     private void handleNode(DiagramDescription diagramDescription, Node oldNode, String parentId, NodeContainmentKind containmentKind, Map<String, String> semanticElementsIdMappings, Map<String, String> nodeElementOldNewIds, DiagramContext diagramContext) {
+        var targetObjectId = oldNode.getTargetObjectId();
+        if (semanticElementsIdMappings.get(oldNode.getTargetObjectId()) != null) {
+            targetObjectId = semanticElementsIdMappings.get(oldNode.getTargetObjectId());
+        }
         var nodeDescription = diagramDescription.getNodeDescriptions().stream().filter(nodeDesc -> nodeDesc.getId().equals(oldNode.getDescriptionId())).findFirst();
         if (nodeDescription.isPresent() && nodeDescription.get().getSynchronizationPolicy().equals(SynchronizationPolicy.UNSYNCHRONIZED)) {
             var viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
                     .parentElementId(parentId)
-                    .targetObjectId(semanticElementsIdMappings.get(oldNode.getTargetObjectId()))
+                    .targetObjectId(targetObjectId)
                     .descriptionId(oldNode.getDescriptionId())
                     .containmentKind(containmentKind)
                     .build();
@@ -159,7 +163,7 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
         }
 
         var oldNodeId = oldNode.getId();
-        var newNodeId = this.computeNodeId(parentId, oldNode.getDescriptionId(), containmentKind, semanticElementsIdMappings.get(oldNode.getTargetObjectId()));
+        var newNodeId = this.computeNodeId(parentId, oldNode.getDescriptionId(), containmentKind, targetObjectId);
         nodeElementOldNewIds.put(oldNodeId, newNodeId);
 
         oldNode.getChildNodes().forEach(childNode ->
